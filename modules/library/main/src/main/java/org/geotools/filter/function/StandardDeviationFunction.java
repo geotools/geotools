@@ -122,7 +122,9 @@ public class StandardDeviationFunction extends ClassificationFunction {
         int classSize = classifier.getSize();
         Object firstMax = classifier.getMax(0);
         int totalSize = features.size();
-        Filter greaterThanOrEqualTo = FF.greaterOrEqual(attr, FF.literal(firstMax));
+        Filter greaterThanOrEqualTo =
+                FilterFactoryHolder.FF.greaterOrEqual(
+                        attr, FilterFactoryHolder.FF.literal(firstMax));
         FeatureCollection subCollection = features.subCollection(greaterThanOrEqualTo);
         int sizeFirstClass = totalSize - subCollection.size();
         double[] percentages = new double[classSize];

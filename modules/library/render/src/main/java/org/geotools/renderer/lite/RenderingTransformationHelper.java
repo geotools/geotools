@@ -72,7 +72,10 @@ import org.opengis.referencing.operation.TransformException;
  */
 public abstract class RenderingTransformationHelper {
 
-    private static final FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2(null);
+    /** filter factory */
+    private static final class FilterFactoryHolder {
+        static final FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2(null);
+    }
 
     private static final CoverageProcessor PROCESSOR = CoverageProcessor.getInstance();
 
@@ -270,7 +273,7 @@ public abstract class RenderingTransformationHelper {
                                 renderingQuery
                                         .getFilter()
                                         .accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, null);
-                Filter bbox = new FastBBOX(filterFactory.property(""), bounds, filterFactory);
+                Filter bbox = new FastBBOX(FilterFactoryHolder.filterFactory.property(""), bounds, FilterFactoryHolder.filterFactory);
                 optimizedQuery = new Query(null, bbox);
                 optimizedQuery.setHints(layerQuery.getHints());
             }

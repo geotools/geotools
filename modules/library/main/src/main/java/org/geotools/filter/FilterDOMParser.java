@@ -53,7 +53,9 @@ public final class FilterDOMParser {
             org.geotools.util.logging.Logging.getLogger(FilterDOMParser.class);
 
     /** Factory to create filters. */
-    private static final FilterFactory2 FILTER_FACT = CommonFactoryFinder.getFilterFactory2(null);
+    private static final class FilterFactoryHolder {
+        static final FilterFactory2 FILTER_FACT = CommonFactoryFinder.getFilterFactory2(null);
+    }
 
     /** Number of children in a between filter. */
     private static final int NUM_BETWEEN_CHILDREN = 3;
@@ -112,7 +114,8 @@ public final class FilterDOMParser {
      */
     public static org.opengis.filter.Filter parseFilter(Node root) {
 
-        final ExpressionDOMParser expressionDOMParser = new ExpressionDOMParser(FILTER_FACT);
+        final ExpressionDOMParser expressionDOMParser =
+                new ExpressionDOMParser(FilterFactoryHolder.FILTER_FACT);
 
         // NodeList children = root.getChildNodes();
         // LOGGER.finest("children "+children);
@@ -149,7 +152,9 @@ public final class FilterDOMParser {
                 if (type == AbstractFilter.FID) {
                     Set<FeatureId> ids = new HashSet<>();
                     Element fidElement = (Element) child;
-                    ids.add(FILTER_FACT.featureId(fidElement.getAttribute("fid")));
+                    ids.add(
+                            FilterFactoryHolder.FILTER_FACT.featureId(
+                                    fidElement.getAttribute("fid")));
 
                     Node sibling = fidElement.getNextSibling();
 
@@ -169,16 +174,19 @@ public final class FilterDOMParser {
                                         fidElementName.substring(fidElementName.indexOf(':') + 1);
                             }
                             if ("FeatureId".equals(fidElementName)) {
-                                ids.add(FILTER_FACT.featureId(fidElement.getAttribute("fid")));
+                                ids.add(
+                                        FilterFactoryHolder.FILTER_FACT.featureId(
+                                                fidElement.getAttribute("fid")));
                             }
                         }
 
                         sibling = sibling.getNextSibling();
                     }
 
-                    return FILTER_FACT.id(ids);
+                    return FilterFactoryHolder.FILTER_FACT.id(ids);
                 } else if (type == AbstractFilter.BETWEEN) {
-                    // BetweenFilter bfilter = FILTER_FACT.createBetweenFilter();
+                    // BetweenFilter bfilter =
+                    // FilterFactoryHolder.FILTER_FACT.createBetweenFilter();
 
                     NodeList kids = child.getChildNodes();
 
@@ -237,7 +245,7 @@ public final class FilterDOMParser {
                         }
                     }
 
-                    return FILTER_FACT.between(middle, lower, upper);
+                    return FilterFactoryHolder.FILTER_FACT.between(middle, lower, upper);
                 } else if (type == AbstractFilter.LIKE) {
                     String wildcard = null;
                     String single = null;
@@ -303,7 +311,7 @@ public final class FilterDOMParser {
                             || (single == null)
                             || (escape == null)
                             || (pattern == null))) {
-                        // LikeFilter lfilter = FILTER_FACT.createLikeFilter();
+                        // LikeFilter lfilter = FilterFactoryHolder.FILTER_FACT.createLikeFilter();
                         LOGGER.finer(
                                 "Building like filter "
                                         + value.toString()
@@ -318,7 +326,8 @@ public final class FilterDOMParser {
                         // lfilter.setValue(value);
                         // lfilter.setPattern(pattern, wildcard, single, escape);
 
-                        return FILTER_FACT.like(value, pattern, wildcard, single, escape);
+                        return FilterFactoryHolder.FILTER_FACT.like(
+                                value, pattern, wildcard, single, escape);
                     }
 
                     LOGGER.finer(
@@ -356,22 +365,22 @@ public final class FilterDOMParser {
 
                 switch (type) {
                     case FilterType.COMPARE_EQUALS:
-                        return FILTER_FACT.equals(left, right);
+                        return FilterFactoryHolder.FILTER_FACT.equals(left, right);
 
                     case FilterType.COMPARE_GREATER_THAN:
-                        return FILTER_FACT.greater(left, right);
+                        return FilterFactoryHolder.FILTER_FACT.greater(left, right);
 
                     case FilterType.COMPARE_GREATER_THAN_EQUAL:
-                        return FILTER_FACT.greaterOrEqual(left, right);
+                        return FilterFactoryHolder.FILTER_FACT.greaterOrEqual(left, right);
 
                     case FilterType.COMPARE_LESS_THAN:
-                        return FILTER_FACT.less(left, right);
+                        return FilterFactoryHolder.FILTER_FACT.less(left, right);
 
                     case FilterType.COMPARE_LESS_THAN_EQUAL:
-                        return FILTER_FACT.lessOrEqual(left, right);
+                        return FilterFactoryHolder.FILTER_FACT.lessOrEqual(left, right);
 
                     case FilterType.COMPARE_NOT_EQUALS:
-                        return FILTER_FACT.notEqual(left, right, true);
+                        return FilterFactoryHolder.FILTER_FACT.notEqual(left, right, true);
 
                     default:
                         LOGGER.warning("Unable to build filter for " + childName);
@@ -386,7 +395,8 @@ public final class FilterDOMParser {
 
             try {
                 short type = spatial.get(childName).shortValue();
-                //  GeometryFilter filter = FILTER_FACT.createGeometryFilter(type);
+                //  GeometryFilter filter =
+                // FilterFactoryHolder.FILTER_FACT.createGeometryFilter(type);
                 Node value = child.getFirstChild();
 
                 while (value.getNodeType() != Node.ELEMENT_NODE) {
@@ -430,28 +440,28 @@ public final class FilterDOMParser {
                 String nodeName = null;
                 switch (type) {
                     case FilterType.GEOMETRY_EQUALS:
-                        return FILTER_FACT.equal(left, right);
+                        return FilterFactoryHolder.FILTER_FACT.equal(left, right);
 
                     case FilterType.GEOMETRY_DISJOINT:
-                        return FILTER_FACT.disjoint(left, right);
+                        return FilterFactoryHolder.FILTER_FACT.disjoint(left, right);
 
                     case FilterType.GEOMETRY_INTERSECTS:
-                        return FILTER_FACT.intersects(left, right);
+                        return FilterFactoryHolder.FILTER_FACT.intersects(left, right);
 
                     case FilterType.GEOMETRY_TOUCHES:
-                        return FILTER_FACT.touches(left, right);
+                        return FilterFactoryHolder.FILTER_FACT.touches(left, right);
 
                     case FilterType.GEOMETRY_CROSSES:
-                        return FILTER_FACT.crosses(left, right);
+                        return FilterFactoryHolder.FILTER_FACT.crosses(left, right);
 
                     case FilterType.GEOMETRY_WITHIN:
-                        return FILTER_FACT.within(left, right);
+                        return FilterFactoryHolder.FILTER_FACT.within(left, right);
 
                     case FilterType.GEOMETRY_CONTAINS:
-                        return FILTER_FACT.contains(left, right);
+                        return FilterFactoryHolder.FILTER_FACT.contains(left, right);
 
                     case FilterType.GEOMETRY_OVERLAPS:
-                        return FILTER_FACT.overlaps(left, right);
+                        return FilterFactoryHolder.FILTER_FACT.overlaps(left, right);
 
                     case FilterType.GEOMETRY_DWITHIN:
                         value = nextNode;
@@ -475,7 +485,8 @@ public final class FilterDOMParser {
                         distance = Double.parseDouble(value.getTextContent());
                         if (value.getAttributes().getNamedItem("units") != null)
                             units = value.getAttributes().getNamedItem("units").getTextContent();
-                        return FILTER_FACT.dwithin(left, right, distance, units);
+                        return FilterFactoryHolder.FILTER_FACT.dwithin(
+                                left, right, distance, units);
 
                     case FilterType.GEOMETRY_BEYOND:
                         value = nextNode;
@@ -498,7 +509,8 @@ public final class FilterDOMParser {
                         distance = Double.parseDouble(value.getTextContent());
                         if (value.getAttributes().getNamedItem("units") != null)
                             units = value.getAttributes().getNamedItem("units").getTextContent();
-                        return FILTER_FACT.beyond(left, right, distance, units);
+                        return FilterFactoryHolder.FILTER_FACT.beyond(
+                                left, right, distance, units);
 
                     case FilterType.GEOMETRY_BBOX:
                         {
@@ -513,7 +525,7 @@ public final class FilterDOMParser {
                                 // no clue about CRS / srsName so we should guess
                                 bbox = new ReferencedEnvelope((Envelope) obj, null);
                             }
-                            return FILTER_FACT.bbox(left, bbox);
+                            return FilterFactoryHolder.FILTER_FACT.bbox(left, bbox);
                         }
                     default:
                         LOGGER.warning("Unable to build filter: " + childName);
@@ -542,14 +554,15 @@ public final class FilterDOMParser {
                     children.add(parseFilter(kid));
                 }
 
-                if (childName.equals("And")) return FILTER_FACT.and(children);
-                else if (childName.equals("Or")) return FILTER_FACT.or(children);
+                if (childName.equals("And")) return FilterFactoryHolder.FILTER_FACT.and(children);
+                else if (childName.equals("Or"))
+                    return FilterFactoryHolder.FILTER_FACT.or(children);
                 else if (childName.equals("Not")) {
                     if (children.size() != 1)
                         throw new IllegalFilterException(
                                 "Filter negation can be "
                                         + "applied to one and only one child filter");
-                    return FILTER_FACT.not(children.get(0));
+                    return FilterFactoryHolder.FILTER_FACT.not(children.get(0));
                 } else {
                     throw new RuntimeException(
                             "Logical filter, but not And, Or, Not? " + "This should not happen");
@@ -574,7 +587,8 @@ public final class FilterDOMParser {
      */
     private static PropertyIsNull parseNullFilter(Node nullNode) throws IllegalFilterException {
 
-        final ExpressionDOMParser expressionDOMParser = new ExpressionDOMParser(FILTER_FACT);
+        final ExpressionDOMParser expressionDOMParser =
+                new ExpressionDOMParser(FilterFactoryHolder.FILTER_FACT);
 
         LOGGER.finest("parsing null node: " + nullNode);
 
@@ -587,6 +601,6 @@ public final class FilterDOMParser {
         LOGGER.finest("add null value -> " + value + "<-");
         Expression expr = expressionDOMParser.expression(value);
 
-        return FILTER_FACT.isNull(expr);
+        return FilterFactoryHolder.FILTER_FACT.isNull(expr);
     }
 }

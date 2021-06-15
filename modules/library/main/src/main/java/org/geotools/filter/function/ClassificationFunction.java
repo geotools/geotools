@@ -35,7 +35,6 @@ import org.geotools.feature.visitor.Aggregate;
 import org.geotools.feature.visitor.GroupByVisitor;
 import org.geotools.filter.DefaultExpression;
 import org.geotools.filter.FunctionExpression;
-import org.geotools.util.factory.GeoTools;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Divide;
@@ -57,8 +56,12 @@ public abstract class ClassificationFunction extends DefaultExpression
     protected static final java.util.logging.Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(ClassificationFunction.class);
 
-    static final FilterFactory2 FF =
-            CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
+    /** filter factory */
+    static final class FilterFactoryHolder {
+        private FilterFactoryHolder() {}
+
+        static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2(null);
+    }
 
     FunctionName name;
 
@@ -266,9 +269,14 @@ public abstract class ClassificationFunction extends DefaultExpression
             double min,
             double classWidth)
             throws IOException {
-        Subtract subtract = FF.subtract(getParameters().get(0), FF.literal(min));
-        Divide divide = FF.divide(subtract, FF.literal(classWidth));
-        Function convert = FF.function("convert", divide, FF.literal(Integer.class));
+        Subtract subtract =
+                FilterFactoryHolder.FF.subtract(
+                        getParameters().get(0), FilterFactoryHolder.FF.literal(min));
+        Divide divide =
+                FilterFactoryHolder.FF.divide(subtract, FilterFactoryHolder.FF.literal(classWidth));
+        Function convert =
+                FilterFactoryHolder.FF.function(
+                        "convert", divide, FilterFactoryHolder.FF.literal(Integer.class));
         GroupByVisitor groupBy =
                 new GroupByVisitor(
                         Aggregate.COUNT, getParameters().get(0), Arrays.asList(convert), null);

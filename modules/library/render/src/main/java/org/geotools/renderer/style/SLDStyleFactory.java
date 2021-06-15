@@ -118,7 +118,10 @@ public class SLDStyleFactory {
     /** Allow mitering of angles of 70 degrees and above */
     private static final float MITER_LIMIT = 1.75f;
 
-    private static final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+    /** filter factory */
+    private static final class FilterFactoryHolder {
+        static final FilterFactory FILTER_FACTORY = CommonFactoryFinder.getFilterFactory(null);
+    }
 
     /**
      * The default size for Marks when a mark is used, but no size is provided (got from the default
@@ -609,9 +612,14 @@ public class SLDStyleFactory {
             StyleFactory sf = CommonFactoryFinder.getStyleFactory();
             Mark defaultMark =
                     sf.mark(
-                            ff.literal("square"),
-                            sf.fill(null, ff.literal("#808080"), null),
-                            sf.createStroke(ff.literal("#000000"), ff.literal(1)));
+                            FilterFactoryHolder.FILTER_FACTORY.literal("square"),
+                            sf.fill(
+                                    null,
+                                    FilterFactoryHolder.FILTER_FACTORY.literal("#808080"),
+                                    null),
+                            sf.createStroke(
+                                    FilterFactoryHolder.FILTER_FACTORY.literal("#000000"),
+                                    FilterFactoryHolder.FILTER_FACTORY.literal(1)));
             if (size <= 0) {
                 size = 6;
             }
@@ -1308,7 +1316,7 @@ public class SLDStyleFactory {
             // let's try and use the location as a literal
             if (LOGGER.isLoggable(Level.FINE))
                 LOGGER.log(Level.FINE, "Could not parse cql expressions out of " + strLocation, e);
-            location = ff.literal(strLocation);
+            location = FilterFactoryHolder.FILTER_FACTORY.literal(strLocation);
         }
 
         // scan the external graphic factories and see which one can be used
@@ -1548,7 +1556,7 @@ public class SLDStyleFactory {
                             "Unknown sort order '" + direction + "' in: '" + attributeSpec + "'");
                 }
             }
-            SortBy sort = ff.sort(attribute, order);
+            SortBy sort = FilterFactoryHolder.FILTER_FACTORY.sort(attribute, order);
             result.add(sort);
         }
 

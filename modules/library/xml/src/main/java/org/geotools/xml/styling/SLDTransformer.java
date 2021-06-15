@@ -113,7 +113,10 @@ public class SLDTransformer extends TransformerBase {
 
     static final String XLINK_NAMESPACE = "http://www.w3.org/1999/xlink";
 
-    static final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+    /** filter factory */
+    private static final class FilterFactoryHolder {
+        static final FilterFactory FILTER_FACTORY = CommonFactoryFinder.getFilterFactory(null);
+    }
 
     static final Font DEFAULT_FONT = CommonFactoryFinder.getStyleFactory().getDefaultFont();
 
@@ -439,7 +442,7 @@ public class SLDTransformer extends TransformerBase {
                 literalDash.append(((Literal) expression).getValue()).append(" ");
             }
             literalDash.deleteCharAt(literalDash.length() - 1);
-            encodeCssParam("stroke-dasharray", ff.literal(literalDash.toString()));
+            encodeCssParam("stroke-dasharray", FilterFactoryHolder.FILTER_FACTORY.literal(literalDash.toString()));
         }
 
         private void encodeMixedStrokeDasharray(List<Expression> expressions) {

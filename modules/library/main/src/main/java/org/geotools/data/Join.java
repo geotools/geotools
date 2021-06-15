@@ -54,7 +54,9 @@ import org.opengis.filter.expression.PropertyName;
 public class Join {
 
     /** filter factory */
-    static final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+    private static final class FilterFactoryHolder {
+        static final FilterFactory FF = CommonFactoryFinder.getFilterFactory(null);
+    }
 
     /** type of join */
     public static enum Type {
@@ -258,7 +260,7 @@ public class Join {
     public Join properties(String... properties) {
         this.properties = new ArrayList<>();
         for (String p : properties) {
-            this.properties.add(ff.property(p));
+            this.properties.add(FilterFactoryHolder.FF.property(p));
         }
         return this;
     }

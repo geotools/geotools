@@ -124,17 +124,17 @@ enum RescalingMode {
     public Expression rescaleToExpression(Expression scaleFactor, Measure measure) {
         if (measure.value != null && scaleFactor instanceof Literal) {
             Double scale = scaleFactor.evaluate(null, Double.class);
-            return Measure.ff.literal(rescaleToStringInternal(scale, measure));
+            return Measure.FilterFactoryHolder.FF.literal(rescaleToStringInternal(scale, measure));
         } else {
             // if it's an expression, there is still a chance the expression will have, at the
             // end,
             // a unit, so we have to delay the evaluation to later
-            return Measure.ff.function(
+            return Measure.FilterFactoryHolder.FF.function(
                     "rescaleToPixels",
                     measure.expression,
-                    Measure.ff.literal(measure.uom),
+                    Measure.FilterFactoryHolder.FF.literal(measure.uom),
                     scaleFactor,
-                    Measure.ff.literal(this));
+                    Measure.FilterFactoryHolder.FF.literal(this));
         }
     }
 

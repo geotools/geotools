@@ -332,6 +332,29 @@ public abstract class AbstractWfsDataStoreOnlineTest {
         List<String> typeNames = Arrays.asList(types);
         assertTrue(typeNames.contains(testType.FEATURETYPENAME));
 
+        for (String typeName : types) {
+            SimpleFeatureType type = wfs.getSchema(typeName);
+            type.getTypeName();
+            type.getName().getNamespaceURI();
+
+            SimpleFeatureSource source = wfs.getFeatureSource(typeName);
+            source.getBounds();
+
+            SimpleFeatureCollection features = source.getFeatures();
+            features.getBounds();
+            features.getSchema();
+
+            Query query = new Query(typeName, Filter.INCLUDE, 20, Query.ALL_NAMES, "work already");
+            features = source.getFeatures(query);
+            features.size();
+
+            try (SimpleFeatureIterator iterator = features.features()) {
+                while (iterator.hasNext()) {
+                    iterator.next();
+                }
+            }
+        }
+
         SimpleFeatureType schema = wfs.getSchema(testType.FEATURETYPENAME);
         assertNotNull(schema);
         GeometryDescriptor geometryDescriptor = schema.getGeometryDescriptor();

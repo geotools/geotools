@@ -145,6 +145,12 @@ public class WFSOnlineTestSupport {
             }
             assertNotNull("must have 1 feature ", feature);
             fid = feature.getID();
+            int j = 1;
+            while (fr.hasNext()) {
+                fr.next();
+                j++;
+            }
+            assertTrue("Query maxFeatures is respected.", j <= 5);
         }
 
         // test fid filter

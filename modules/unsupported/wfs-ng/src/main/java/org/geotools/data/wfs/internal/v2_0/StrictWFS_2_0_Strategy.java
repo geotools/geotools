@@ -665,12 +665,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
         return ftypeCrss;
     }
 
-    /**
-     * Returns parameters defined in OperationsMetadata
-     *
-     * @param parameterName
-     * @return
-     */
+    /** Returns parameters defined in OperationsMetadata */
     @SuppressWarnings("unchecked")
     private Set<String> findParameters(final String parameterName) {
         final OperationsMetadataType operationsMetadata = capabilities.getOperationsMetadata();
@@ -678,11 +673,11 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
         List<DomainType> parameters = operationsMetadata.getParameter();
         for (DomainType parameter : parameters) {
             if (parameterName.equals(parameter.getName())) {
-                Set<String> outputFormats = new HashSet<>();
+                Set<String> foundValues = new HashSet<>();
                 for (ValueType value : (List<ValueType>) parameter.getAllowedValues().getValue()) {
-                    outputFormats.add(value.getValue());
+                    foundValues.add(value.getValue());
                 }
-                return outputFormats;
+                return foundValues;
             }
         }
         return Collections.emptySet();
@@ -698,12 +693,12 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
             String paramName = param.getName();
 
             if (parameterName.equals(paramName)) {
-                Set<String> outputFormats = new HashSet<>();
+                Set<String> foundValues = new HashSet<>();
 
                 for (ValueType value : (List<ValueType>) param.getAllowedValues().getValue()) {
-                    outputFormats.add(value.getValue());
+                    foundValues.add(value.getValue());
                 }
-                return outputFormats;
+                return foundValues;
             }
         }
         return Collections.emptySet();

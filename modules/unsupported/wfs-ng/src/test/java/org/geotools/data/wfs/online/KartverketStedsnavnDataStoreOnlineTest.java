@@ -16,17 +16,25 @@
  */
 package org.geotools.data.wfs.online;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import javax.xml.namespace.QName;
 import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.data.wfs.WFSTestData.TestDataType;
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.locationtech.jts.geom.Polygon;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /** @author Roar Brænden */
 public class KartverketStedsnavnDataStoreOnlineTest extends AbstractWfsDataStoreOnlineTest {
@@ -68,6 +76,27 @@ public class KartverketStedsnavnDataStoreOnlineTest extends AbstractWfsDataStore
     protected void setUpParameters(final Map<String, Serializable> params) {
         super.setUpParameters(params);
         params.put(WFSDataStoreFactory.USE_HTTP_CONNECTION_POOLING.key, "False");
+    }
+
+    @Override
+    @Test
+    public void testTypes() throws IOException, NoSuchElementException {
+        if (Boolean.FALSE.equals(serviceAvailable)) {
+            return;
+        }
+
+        String[] types = wfs.getTypeNames();
+        List<String> typeNames = Arrays.asList(types);
+        Assert.assertTrue(typeNames.contains(testType.FEATURETYPENAME));
+
+        SimpleFeatureType schema = wfs.getSchema(testType.FEATURETYPENAME);
+        Assert.assertNotNull(schema);
+        GeometryDescriptor geometryDescriptor = schema.getGeometryDescriptor();
+        Assert.assertNotNull(geometryDescriptor);
+        Assert.assertEquals(defaultGeometryName, geometryDescriptor.getLocalName());
+        Assert.assertEquals(geometryType, geometryDescriptor.getType().getBinding());
+        CoordinateReferenceSystem crs = geometryDescriptor.getCoordinateReferenceSystem();
+        Assert.assertNotNull(crs);
     }
 
     @Override

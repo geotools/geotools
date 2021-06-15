@@ -29,6 +29,7 @@ import java.util.Map;
  */
 public class WMTSHelper {
 
+    /** Replaces first occurence of {dimName} with dimValue within the baseUrl */
     public static String replaceToken(String baseUrl, String dimName, String dimValue) {
         String token = "{" + dimName.toLowerCase() + "}";
         int index = baseUrl.toLowerCase().indexOf(token);
@@ -48,9 +49,7 @@ public class WMTSHelper {
      *
      * <p>Does not add existing parameters
      *
-     * @param baseUrl
-     * @param params
-     * @return
+     * <p>If a value starts with {, it will avoid url-encoding
      */
     public static String appendQueryString(String baseUrl, Map<String, String> params) {
         StringBuilder arguments = new StringBuilder();
@@ -81,10 +80,12 @@ public class WMTSHelper {
         }
     }
 
-    public static String usePercentEncodingForSpace(String name) {
+    /**
+     * Fixes a problem when spaces within url's are replaced with +. In parts of the url we should
+     * instead use %20. A fix for GEOT-4317
+     */
+    static String usePercentEncodingForSpace(String name) {
         try {
-            // spaces are converted to plus signs, but must be %20 for url calls
-            // [GEOT-4317]
             return URLEncoder.encode(name, "UTF-8").replaceAll("\\+", "%20");
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("Doesn't support UTF-8", e);

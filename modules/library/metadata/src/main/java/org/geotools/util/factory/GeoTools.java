@@ -1035,13 +1035,9 @@ public final class GeoTools {
             }
             LOGGER.log(Level.WARNING, sb.toString());
         }
-        if (e instanceof NamingException) {
-            return (NamingException) e;
-        } else {
-            NamingException throwing = new NamingException("Couldn't get Initial context.");
-            throwing.setRootCause(e);
-            return throwing;
-        }
+        NamingException throwing = new NamingException("Couldn't get Initial context.");
+        throwing.setRootCause(e);
+        return throwing;
     }
 
     /**

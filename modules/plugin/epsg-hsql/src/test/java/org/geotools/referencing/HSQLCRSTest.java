@@ -57,4 +57,18 @@ public class HSQLCRSTest extends AbstractCRSTest {
         DirectPosition2D position2Dres = new DirectPosition2D();
         mathTransform.transform(position2D, position2Dres);
     }
+
+    @Test
+    public void testSouthPolarEastNorth() throws Exception {
+        // force NE while decoding
+        CoordinateReferenceSystem crsEN = CRS.decode("EPSG:32761", true);
+        assertEquals(CRS.AxisOrder.EAST_NORTH, CRS.getAxisOrder(crsEN));
+    }
+
+    @Test
+    public void testSouthPolarNorthEast() throws Exception {
+        // leave native axis order, it should be recognized as north/east
+        CoordinateReferenceSystem crsNE = CRS.decode("EPSG:32761", false);
+        assertEquals(CRS.AxisOrder.NORTH_EAST, CRS.getAxisOrder(crsNE));
+    }
 }

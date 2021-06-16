@@ -16,13 +16,15 @@
  */
 package org.geotools.referencing.factory;
 
+import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.EASTING;
+import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.NORTHING;
+
 import java.util.Arrays;
 import java.util.Comparator;
 import javax.measure.Unit;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.ReferencingFactoryFinder;
-import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.factory.Hints;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
@@ -228,8 +230,7 @@ public class OrderedAxisAuthorityFactory extends TransformedAuthorityFactory
         hints.put(Hints.FORCE_STANDARD_AXIS_DIRECTIONS, forceStandardDirections);
         // The following hint has no effect on this class behaviour,
         // but tells to the user what this factory do about axis order.
-        if (compare(DefaultCoordinateSystemAxis.EASTING, DefaultCoordinateSystemAxis.NORTHING)
-                < 0) {
+        if (compare(EASTING, NORTHING) < 0) {
             hints.put(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
         }
     }
@@ -302,7 +303,23 @@ public class OrderedAxisAuthorityFactory extends TransformedAuthorityFactory
      * @since 2.3
      */
     public int compare(final Object axis1, final Object axis2) {
-        return rank((CoordinateSystemAxis) axis1) - rank((CoordinateSystemAxis) axis2);
+        CoordinateSystemAxis a1 = (CoordinateSystemAxis) axis1;
+        int r1 = rank(a1);
+        CoordinateSystemAxis a2 = (CoordinateSystemAxis) axis2;
+        int r2 = rank(a2);
+        if (r1 >= directionRanks.length && r2 >= directionRanks.length) {
+            // special directions, they were not ranked. Try a heuristic based on the axis labels,
+            // works for stereographic polars
+            String abb1 = a1.getAbbreviation();
+            String abb2 = a2.getAbbreviation();
+            if (abb1.equals(NORTHING.getAbbreviation()) && abb2.equals(EASTING.getAbbreviation())) {
+                return 1;
+            } else if (abb1.equals(EASTING.getAbbreviation())
+                    && abb2.equals(NORTHING.getAbbreviation())) {
+                return -1;
+            }
+        }
+        return r1 - r2;
     }
 
     /**

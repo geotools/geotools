@@ -107,6 +107,12 @@ public class WFSOnlineTestSupport {
 
             SimpleFeature next = reader.next();
             assertNotNull(next);
+            int j = 1;
+            while (reader.hasNext()) {
+                reader.next();
+                j++;
+            }
+            assertTrue("Query maxFeatures is respected.", j <= 5);
         }
     }
 

@@ -39,7 +39,7 @@ import org.geotools.swing.JMapFrame;
 import org.geotools.tile.impl.WebMercatorZoomLevel;
 import org.geotools.tile.impl.bing.BingService;
 import org.geotools.tile.impl.osm.OSMService;
-import org.geotools.tile.impl.osm.OSMTile;
+import org.geotools.tile.impl.osm.OSMTileFactory;
 import org.geotools.tile.impl.osm.OSMTileIdentifier;
 import org.geotools.tile.util.AsyncTileLayer;
 import org.geotools.tile.util.TileLayer;
@@ -131,12 +131,11 @@ public class TileViewer {
 
         String baseURL = "http://tile.openstreetmap.org/";
         TileService service = new OSMService("OSM", baseURL);
+        TileIdentifier identifier =
+                new OSMTileIdentifier(
+                        38596, 49269, new WebMercatorZoomLevel(17), service.getName());
 
-        Tile t =
-                new OSMTile(
-                        new OSMTileIdentifier(
-                                38596, 49269, new WebMercatorZoomLevel(17), service.getName()),
-                        service);
+        Tile t = new OSMTileFactory().create(identifier, service);
 
         GridCoverageFactory gf = new GridCoverageFactory();
 

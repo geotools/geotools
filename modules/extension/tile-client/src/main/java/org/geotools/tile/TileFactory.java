@@ -34,6 +34,15 @@ import org.geotools.tile.impl.ZoomLevel;
 public abstract class TileFactory {
 
     /**
+     * Creates a new tile for the given position using a service.
+     *
+     * @param identifier
+     * @param service
+     * @return
+     */
+    public abstract Tile create(TileIdentifier identifier, TileService service);
+
+    /**
      * Finds the tile for a service at the given position and zoom level.
      *
      * @param lon the longitude

@@ -16,11 +16,14 @@
  */
 package org.geotools.tile.impl.osm;
 
+import java.net.URL;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.tile.Tile;
+import org.geotools.tile.Tile.RenderState;
 import org.geotools.tile.TileFactory;
 import org.geotools.tile.TileFactoryTest;
+import org.geotools.tile.TileIdentifier;
 import org.geotools.tile.TileService;
 import org.geotools.tile.impl.WebMercatorTileFactory;
 import org.geotools.tile.impl.WebMercatorTileService;
@@ -30,6 +33,19 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class OSMTileFactoryTest extends TileFactoryTest {
+
+    @Test
+    public void testCreateTileFromXYZoom() throws Exception {
+        TileService service = createService();
+        TileIdentifier identifier =
+                new OSMTileIdentifier(20, 15, new WebMercatorZoomLevel(5), service.getName());
+        Tile tile = factory.create(identifier, service);
+
+        Assert.assertEquals(RenderState.NEW, tile.getRenderState());
+        URL expectedUrl = new URL("http://tile.openstreetmap.org/5/20/15.png");
+
+        Assert.assertEquals(expectedUrl, tile.getUrl());
+    }
 
     @Test
     public void testGetTileFromCoordinate() {

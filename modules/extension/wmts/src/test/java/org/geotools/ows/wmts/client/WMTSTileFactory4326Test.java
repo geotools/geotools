@@ -34,7 +34,10 @@ import org.geotools.ows.wmts.model.WMTSServiceType;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.tile.Tile;
+import org.geotools.tile.Tile.RenderState;
+import org.geotools.tile.TileIdentifier;
 import org.geotools.tile.TileService;
+import org.geotools.tile.impl.WebMercatorZoomLevel;
 import org.geotools.wmts.WMTSConfiguration;
 import org.geotools.xsd.Parser;
 import org.junit.Assert;
@@ -84,6 +87,25 @@ public class WMTSTileFactory4326Test {
             this.expectedLRow = expectedLimitedRow;
             this.expectedLCol = expectedLimitedCol;
         }
+    }
+
+    @Test
+    public void testCreateTileFromXYZoom() throws Exception {
+        Tile kvpTile = createTileFromXYZoom(createKVPService());
+        Assert.assertEquals(
+                new URL(
+                        "http://demo.geo-solutions.it/geoserver/gwc/service/wmts?REQUEST=getcapabilities&tilematrixset=EPSG%3A4326&TileRow=15&service=WMTS&format=image%2Fpng&TileCol=20&version=1.0.0&layer=unesco%3AUnesco_point&TileMatrix=EPSG%3A4326%3A5"),
+                kvpTile.getUrl());
+    }
+
+    private Tile createTileFromXYZoom(TileService service) throws Exception {
+        TileIdentifier identifier =
+                new WMTSTileIdentifier(20, 15, new WebMercatorZoomLevel(5), service.getName());
+        Tile tile = factory.create(identifier, service);
+
+        Assert.assertEquals(RenderState.NEW, tile.getRenderState());
+
+        return tile;
     }
 
     @Test

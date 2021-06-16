@@ -16,11 +16,14 @@
  */
 package org.geotools.tile.impl.bing;
 
+import java.net.URL;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.tile.Tile;
+import org.geotools.tile.Tile.RenderState;
 import org.geotools.tile.TileFactory;
 import org.geotools.tile.TileFactoryTest;
+import org.geotools.tile.TileIdentifier;
 import org.geotools.tile.TileService;
 import org.geotools.tile.impl.WebMercatorTileFactory;
 import org.geotools.tile.impl.WebMercatorZoomLevel;
@@ -28,6 +31,21 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class BingTileFactoryTest extends TileFactoryTest {
+
+    @Test
+    public void testCreateTileFromXYZoom() throws Exception {
+        TileService service = createService();
+        TileIdentifier identifier =
+                new BingTileIdentifier(20, 15, new WebMercatorZoomLevel(5), service.getName());
+        Tile tile = factory.create(identifier, service);
+
+        Assert.assertEquals(RenderState.NEW, tile.getRenderState());
+        URL expectedUrl =
+                new URL(
+                        "http://ak.dynamic.t2.tiles.virtualearth.net/comp/ch/12322?mkt=de-de&it=G,VE,BX,L,LA&shading=hill&og=78&n=z");
+
+        Assert.assertEquals(expectedUrl, tile.getUrl());
+    }
 
     @Test
     public void testGetTileFromCoordinate() {

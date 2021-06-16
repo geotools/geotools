@@ -28,15 +28,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLDecoder;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -839,7 +842,17 @@ public class ShpFiles {
     public String getTypeName() {
         String path = SHP.toBase(urls.get(SHP));
         int slash = Math.max(0, path.lastIndexOf('/') + 1);
-        return path.substring(slash);
+        String typeName = path.substring(slash);
+        try {
+            // ensure that special characters are correctly decoded
+            typeName = URLDecoder.decode(typeName, StandardCharsets.UTF_8.name());
+        } catch (UnsupportedEncodingException e) {
+            LOGGER.log(
+                    Level.WARNING,
+                    "Failed to decode shp file url using UTF-8. "
+                            + " Retrieving the Type Name from the not decoded url");
+        }
+        return typeName;
     }
 
     /**

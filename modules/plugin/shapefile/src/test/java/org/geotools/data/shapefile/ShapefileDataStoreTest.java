@@ -25,6 +25,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -98,6 +99,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
@@ -134,6 +136,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     static final String CHINESE = "shapes/chinese_poly.shp";
     static final String RUSSIAN = "shapes/rus-windows-1251.shp";
     static final String UTF8 = "shapes/wgs1snt.shp";
+    static final String SPECIAL_CHAR_NAME = "test-data/special-characters/Åéìòù.shp";
     static final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
     private ShapefileDataStore store;
 
@@ -2100,5 +2103,13 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
                 new File(getClass().getResource("test-data/measure/multilinezm.shp").toURI());
         // compare byte stream produced in shp file
         assertTrue(FileUtils.contentEquals(tmpFile, expected));
+    }
+
+    @Test
+    public void testTypeNameSpecialCharacters() throws FileNotFoundException {
+        URL url = getClass().getResource(SPECIAL_CHAR_NAME);
+        store = new ShapefileDataStore(url);
+        Name name = store.getTypeName();
+        assertEquals("Åéìòù", name.getLocalPart());
     }
 }

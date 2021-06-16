@@ -225,6 +225,13 @@ public class ShpFilesTest {
         assertEqualMaps(expected, shapefiles.getFileNames());
     }
 
+    @Test
+    public void testGetTypeNameSpecialCharacters() throws Exception {
+        assertEquals(
+                "Åéìòù",
+                new ShpFiles("shapefile/test-data/special-characters/Åéìòù.shp").getTypeName());
+    }
+
     private void assertEqualMaps(Map<ShpFileType, File> expected, Map<ShpFileType, String> files)
             throws MalformedURLException {
 

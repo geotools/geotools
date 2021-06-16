@@ -841,17 +841,18 @@ public class ShpFiles {
 
     public String getTypeName() {
         String path = SHP.toBase(urls.get(SHP));
+        int slash = Math.max(0, path.lastIndexOf('/') + 1);
+        String typeName = path.substring(slash);
         try {
             // ensure that special characters are correctly decoded
-            path = URLDecoder.decode(path, StandardCharsets.UTF_8.name());
+            typeName = URLDecoder.decode(typeName, StandardCharsets.UTF_8.name());
         } catch (UnsupportedEncodingException e) {
             LOGGER.log(
                     Level.WARNING,
                     "Failed to decode shp file url using UTF-8. "
                             + " Retrieving the Type Name from the not decoded url");
         }
-        int slash = Math.max(0, path.lastIndexOf('/') + 1);
-        return path.substring(slash);
+        return typeName;
     }
 
     /**

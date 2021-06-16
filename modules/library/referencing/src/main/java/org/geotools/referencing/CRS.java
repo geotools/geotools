@@ -16,6 +16,9 @@
  */
 package org.geotools.referencing;
 
+import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.EASTING;
+import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.NORTHING;
+
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.HashSet;
@@ -2286,6 +2289,18 @@ public final class CRS {
             } else {
                 return AxisOrder.NORTH_EAST;
             }
+        }
+
+        // if the AxisOrder does not help, try with the axis abbreviations (for polar
+        // stereographics)
+        String labelFirst = cs.getAxis(0).getAbbreviation();
+        String labelSecond = cs.getAxis(1).getAbbreviation();
+        if (labelFirst.equals(NORTHING.getAbbreviation())
+                && labelSecond.equals(EASTING.getAbbreviation())) {
+            return AxisOrder.NORTH_EAST;
+        } else if (labelFirst.equals(EASTING.getAbbreviation())
+                && labelSecond.equals(NORTHING.getAbbreviation())) {
+            return AxisOrder.EAST_NORTH;
         }
 
         return AxisOrder.INAPPLICABLE;

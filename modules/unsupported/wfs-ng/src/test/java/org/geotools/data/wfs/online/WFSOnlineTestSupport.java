@@ -108,7 +108,7 @@ public class WFSOnlineTestSupport {
             SimpleFeature next = reader.next();
             assertNotNull(next);
             int j = 1;
-            while (reader.hasNext()) {
+            while (j < 6 && reader.hasNext()) {
                 reader.next();
                 j++;
             }
@@ -152,7 +152,7 @@ public class WFSOnlineTestSupport {
             assertNotNull("must have 1 feature ", feature);
             fid = feature.getID();
             int j = 1;
-            while (fr.hasNext()) {
+            while (j < 6 && fr.hasNext()) {
                 fr.next();
                 j++;
             }
@@ -167,7 +167,7 @@ public class WFSOnlineTestSupport {
                 wfs.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
             assertNotNull("FeatureType was null", ft);
             int j = 0;
-            while (fr.hasNext()) {
+            while (j < 2 && fr.hasNext()) {
                 assertEquals(fid, fr.next().getID());
                 j++;
             }

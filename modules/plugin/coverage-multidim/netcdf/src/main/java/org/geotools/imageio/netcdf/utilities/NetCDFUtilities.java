@@ -38,6 +38,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.logging.Level;
@@ -49,10 +50,13 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.stream.StreamSource;
 import org.geotools.data.DataUtilities;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
+import org.geotools.imageio.netcdf.AncillaryFileManager;
+import org.geotools.imageio.netcdf.VariableAdapter;
 import org.geotools.imageio.netcdf.cv.CoordinateHandlerFinder;
 import org.geotools.imageio.netcdf.cv.CoordinateHandlerSpi;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.util.NumberRange;
+import org.geotools.util.SoftValueHashMap;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import thredds.featurecollection.FeatureCollectionConfig;
@@ -75,6 +79,7 @@ import ucar.nc2.dataset.NetcdfDataset;
 import ucar.nc2.dataset.VariableDS;
 import ucar.nc2.ft.fmrc.Fmrc;
 import ucar.nc2.jni.netcdf.Nc4Iosp;
+import ucar.nc2.util.cache.FileCache;
 
 /**
  * Set of NetCDF utility methods.
@@ -304,6 +309,8 @@ public class NetCDFUtilities {
 
     public static final String STORE_NAME = "StoreName";
 
+    protected static final Map<URI, FileFormat> URI_FORMAT_CACHE = new SoftValueHashMap<>();
+
     /**
      * Number of bytes at the start of a file to search for a GRIB signature. Some GRIB files have
      * WMO headers prepended by a telecommunications gateway. NetCDF-Java Grib{1,2}RecordScanner
@@ -311,55 +318,26 @@ public class NetCDFUtilities {
      */
     private static final int GRIB_SEARCH_BYTES = 16000;
 
-    static {
-        // TODO remove this block when enhance mode can be set some other way, possibly via read
-        // params
-
-        // Default used to be to just enhance coord systems
-        EnumSet<NetcdfDataset.Enhance> defaultEnhanceMode =
-                EnumSet.of(NetcdfDataset.Enhance.CoordSystems);
-
-        if (System.getProperty(ENHANCE_COORD_SYSTEMS) != null
-                && !Boolean.getBoolean(ENHANCE_COORD_SYSTEMS)) {
-            defaultEnhanceMode.remove(NetcdfDataset.Enhance.CoordSystems);
-        }
-
-        if (Boolean.getBoolean(ENHANCE_SCALE_MISSING)) {
-            defaultEnhanceMode.add(NetcdfDataset.Enhance.ScaleMissing);
-            ENHANCE_SCALE_OFFSET = true;
-        }
-
-        if (Boolean.getBoolean(ENHANCE_CONVERT_ENUMS)) {
-            defaultEnhanceMode.add(NetcdfDataset.Enhance.ConvertEnums);
-        }
-
-        if (Boolean.getBoolean(ENHANCE_SCALE_MISSING_DEFER)) {
-            defaultEnhanceMode.add(NetcdfDataset.Enhance.ScaleMissingDefer);
-        }
-
-        NetcdfDataset.setDefaultEnhanceMode(defaultEnhanceMode);
-    }
-
     /**
      * Global attribute for coordinate coverageDescriptorsCache.
      *
      * @author Simone Giannecchini, GeoSolutions S.A.S.
      */
-    public static enum Axis {
+    public enum Axis {
         X,
         Y,
         Z,
         T;
     }
 
-    public static enum CheckType {
+    public enum CheckType {
         NONE,
         UNSET,
         NOSCALARS,
         ONLYGEOGRIDS
     }
 
-    public static enum FileFormat {
+    public enum FileFormat {
         NONE,
         CDF,
         HDF5,
@@ -403,6 +381,45 @@ public class NetCDFUtilities {
                     + "PATH environment variable\n if you want to support NetCDF4-Classic files";
 
     static {
+        // TODO remove this block when enhance mode can be set some other way, possibly via read
+        // params
+
+        // Default used to be to just enhance coord systems
+        EnumSet<NetcdfDataset.Enhance> defaultEnhanceMode =
+                EnumSet.of(NetcdfDataset.Enhance.CoordSystems);
+
+        if (System.getProperty(ENHANCE_COORD_SYSTEMS) != null
+                && !Boolean.getBoolean(ENHANCE_COORD_SYSTEMS)) {
+            defaultEnhanceMode.remove(NetcdfDataset.Enhance.CoordSystems);
+        }
+
+        if (Boolean.getBoolean(ENHANCE_SCALE_MISSING)) {
+            defaultEnhanceMode.add(NetcdfDataset.Enhance.ScaleMissing);
+            ENHANCE_SCALE_OFFSET = true;
+        }
+
+        if (Boolean.getBoolean(ENHANCE_CONVERT_ENUMS)) {
+            defaultEnhanceMode.add(NetcdfDataset.Enhance.ConvertEnums);
+        }
+
+        if (Boolean.getBoolean(ENHANCE_SCALE_MISSING_DEFER)) {
+            defaultEnhanceMode.add(NetcdfDataset.Enhance.ScaleMissingDefer);
+        }
+
+        NetcdfDataset.setDefaultEnhanceMode(defaultEnhanceMode);
+
+        // Initializing NetCDF Caches
+        if (Boolean.getBoolean("org.geotools.coverage.io.netcdf.cachefile")) {
+            int minElements = Integer.getInteger("org.geotools.coverage.io.netcdf.cache.min", 200);
+            int maxElements = Integer.getInteger("org.geotools.coverage.io.netcdf.cache.max", 300);
+            int period =
+                    Integer.getInteger(
+                            "org.geotools.coverage.io.netcdf.cache.cleanup.period", 12 * 60);
+            NetcdfDataset.initNetcdfFileCache(minElements, maxElements, period);
+            ucar.unidata.io.RandomAccessFile.setGlobalFileCache(
+                    new FileCache(minElements, maxElements, period));
+        }
+
         String property = System.getProperty(CHECK_COORDINATE_PLUGINS_KEY);
         CHECK_COORDINATE_PLUGINS = Boolean.getBoolean(CHECK_COORDINATE_PLUGINS_KEY);
         if (LOGGER.isLoggable(Level.INFO)) {
@@ -717,6 +734,16 @@ public class NetCDFUtilities {
     }
 
     public static FileFormat getFormat(URI uri) throws IOException {
+        FileFormat format = URI_FORMAT_CACHE.get(uri);
+        if (format != null) {
+            return format;
+        }
+        format = getFormatFromUri(uri);
+        URI_FORMAT_CACHE.put(uri, format);
+        return format;
+    }
+
+    private static FileFormat getFormatFromUri(URI uri) throws IOException {
         // try binary
         try (InputStream input = uri.toURL().openStream()) {
             // Checking Magic Number
@@ -1491,5 +1518,19 @@ public class NetCDFUtilities {
         } else {
             return ParameterBehaviour.DO_NOTHING;
         }
+    }
+
+    private static void clearCache() {
+        URI_FORMAT_CACHE.clear();
+    }
+
+    /**
+     * Clear all the internal caches. Call this method if the datastore config has been updated or
+     * the NetCDF XML file has been modified.
+     */
+    public static void clearCaches() {
+        clearCache();
+        AncillaryFileManager.clearCache();
+        VariableAdapter.clearCache();
     }
 }

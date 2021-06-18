@@ -17,6 +17,7 @@
 package org.geotools.filter.function;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -63,5 +64,24 @@ public class DateDifferenceTest {
         Date d4 = calendar.getTime();
         function = ff.function("dateDifference", ff.literal(d4), ff.literal(d3));
         assertEquals(1000, function.evaluate(null, Integer.class), 0d);
+    }
+
+    @Test
+    public void testDifferenceWithNow() throws InterruptedException {
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        Function function = ff.function("now");
+
+        // Get the current time
+        long now = function.evaluate(null, Long.class);
+        Date d1 = new Date();
+        d1.setTime(now);
+
+        // let's waste a second :)
+        Thread.sleep(1000);
+        function =
+                ff.function("dateDifference", ff.function("now"), ff.literal(d1), ff.literal("s"));
+
+        // Make sure that the difference in seconds is greater than 1
+        assertTrue(function.evaluate(null, Integer.class) >= 1);
     }
 }

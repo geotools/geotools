@@ -24,7 +24,7 @@ import org.opengis.filter.capability.FunctionName;
 
 /**
  * Return the current time as a Date. When evaluated directly, it returns a new value at each
- * invocation. When evaluated as part of a filter againsta a DataStore, the value might be one, and
+ * invocation. When evaluated as part of a filter against a DataStore, the value might be one, and
  * fixed, during the data access. For example:
  *
  * <ul>

@@ -18,6 +18,7 @@
 package org.geotools.data.wfs.online;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -108,11 +109,11 @@ public class WFSOnlineTestSupport {
             SimpleFeature next = reader.next();
             assertNotNull(next);
             int j = 1;
-            while (j < 6 && reader.hasNext()) {
+            while (reader.hasNext()) {
+            	assertTrue("Query maxFeatures isn't respected.", j <= 5);
                 reader.next();
                 j++;
             }
-            assertTrue("Query maxFeatures is respected.", j <= 5);
         }
     }
 
@@ -152,11 +153,11 @@ public class WFSOnlineTestSupport {
             assertNotNull("must have 1 feature ", feature);
             fid = feature.getID();
             int j = 1;
-            while (j < 6 && fr.hasNext()) {
+            while (fr.hasNext()) {
+            	assertTrue("Query maxFeatures isn't respected.", j <= 5);
                 fr.next();
                 j++;
             }
-            assertTrue("Query maxFeatures is respected.", j <= 5);
         }
 
         // test fid filter
@@ -166,12 +167,9 @@ public class WFSOnlineTestSupport {
         try (FeatureReader<SimpleFeatureType, SimpleFeature> fr =
                 wfs.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
             assertNotNull("FeatureType was null", ft);
-            int j = 0;
-            while (j < 2 && fr.hasNext()) {
-                assertEquals(fid, fr.next().getID());
-                j++;
-            }
-            assertEquals(1, j);
+            assertTrue("Query should return one feature.", fr.hasNext());
+            assertEquals(fid, fr.next().getID());
+            assertFalse("Query should only return one feature.", fr.hasNext());
         }
     }
 

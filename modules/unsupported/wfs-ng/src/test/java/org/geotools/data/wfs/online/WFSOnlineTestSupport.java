@@ -110,7 +110,7 @@ public class WFSOnlineTestSupport {
             assertNotNull(next);
             int j = 1;
             while (reader.hasNext()) {
-            	assertTrue("Query maxFeatures isn't respected.", j <= 5);
+                assertTrue("Query maxFeatures isn't respected.", j <= 5);
                 reader.next();
                 j++;
             }
@@ -154,7 +154,7 @@ public class WFSOnlineTestSupport {
             fid = feature.getID();
             int j = 1;
             while (fr.hasNext()) {
-            	assertTrue("Query maxFeatures isn't respected.", j <= 5);
+                assertTrue("Query maxFeatures isn't respected.", j <= 5);
                 fr.next();
                 j++;
             }

@@ -141,9 +141,11 @@ import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.coverage.processing.OperationNotFoundException;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.MathTransformFactory;
+import org.opengis.referencing.operation.TransformException;
 
 /**
  * Helper methods for applying JAI operations on an image. The image is specified at {@linkplain
@@ -4186,205 +4188,10 @@ public class ImageWorker {
                     && sourceBoundsProperty instanceof Rectangle
                     && !preserveChainedAffines) {
                 try {
-                    // we can merge the affine into the warp
-                    MathTransform2D originalTransform = (MathTransform2D) mtProperty;
-                    MathTransformFactory factory =
-                            ReferencingFactoryFinder.getMathTransformFactory(null);
-                    MathTransform affineMT =
-                            factory.createAffineTransform(
-                                    new org.geotools.referencing.operation.matrix.AffineTransform2D(
-                                            tx));
-                    MathTransform2D chained =
-                            (MathTransform2D)
-                                    factory.createConcatenatedTransform(
-                                            affineMT.inverse(), originalTransform);
-
-                    // setup the warp builder
-                    Double tolerance = (Double) getRenderingHint(Hints.RESAMPLE_TOLERANCE);
-                    if (tolerance == null) {
-                        tolerance = (Double) Hints.getSystemDefault(Hints.RESAMPLE_TOLERANCE);
-                    }
-                    if (tolerance == null) {
-                        tolerance = 0.333;
-                    }
-
-                    // in case of oversampling, reduce the tolerance by the oversampling factor
-                    // as the oversampling magnifies errors that would not be otherwise visible
-                    if (tx.getScaleX() > 1 || tx.getScaleY() > 1) {
-                        double factor = Math.max(tx.getScaleX(), tx.getScaleY());
-                        tolerance = tolerance / factor;
-                    }
-
-                    // setup a warp builder that is not gong to use too much memory
-                    WarpBuilder wb = new WarpBuilder(tolerance);
-                    wb.setMaxPositions(4 * 1024 * 1024);
-
-                    // compute the target bbox the same way the affine would have to have a 1-1
-                    // match
-                    ParameterBlock pb = new ParameterBlock();
-                    pb.setSource(source, 0);
-                    pb.set(tx, 0);
-                    pb.set(interpolation, 1);
-                    pb.set(bgValues, 2);
-                    pb.set(roi, 3);
-                    pb.set(true, 5);
-                    pb.set(nodata, 6);
-                    RenderedOp at = JAI.create("Affine", pb, getRenderingHints());
-                    updateNoData(bgValues, image);
-
-                    // commonHints);
-                    Rectangle targetBB = at.getBounds();
-                    int tileWidth = at.getTileWidth();
-                    int tileHeight = at.getTileHeight();
-                    ImageUtilities.disposeSinglePlanarImage(at);
-                    Rectangle sourceBB = (Rectangle) sourceBoundsProperty;
-
-                    // warp
-                    Rectangle mappingBB;
-                    if (source.getProperty("ROI") instanceof ROI) {
-                        // Due to a limitation in JAI we need to make sure the
-                        // mapping bounding box covers both source and target bounding box
-                        // otherwise the warped roi image layout won't be computed properly
-                        mappingBB = sourceBB.union(targetBB);
-                    } else {
-                        mappingBB = targetBB;
-                    }
-                    Warp warp = wb.buildWarp(chained, mappingBB);
-
-                    // do the switch only if we get a warp that is as fast as the original one,
-                    // of if we are upsampling, in which case the merge is required to preserve
-                    // good image quality (warp on NN produces pixels that are aligned to the axis
-                    // and then scaled, while the pixels should appear rotated instead)
-                    Warp sourceWarp = (Warp) sourceParamBlock.getObjectParameter(0);
-                    if (warp instanceof WarpGrid
-                            || warp instanceof WarpAffine
-                            || !(sourceWarp instanceof WarpGrid || sourceWarp instanceof WarpAffine)
-                            || tx.getScaleX() > 1
-                            || tx.getScaleY() > 1) {
-                        // and then the JAI Operation
-                        PlanarImage sourceImage = op.getSourceImage(0);
-                        final ParameterBlock paramBlk = new ParameterBlock().addSource(sourceImage);
-                        Object property = sourceImage.getProperty("ROI");
-                        // Boolean indicating if optional ROI may be reprojected back to the initial
-                        // image
-                        boolean canProcessROI = true;
-                        // Boolean indicating if NoData are the same as for the source operation or
-                        // are not present
-                        Range oldNoData =
-                                (Range)
-                                        (sourceParamBlock.getNumParameters() > 3
-                                                ? sourceParamBlock.getObjectParameter(4)
-                                                : null);
-                        boolean hasSameNodata =
-                                (oldNoData == null && nodata == null)
-                                        || (oldNoData != null
-                                                && nodata != null
-                                                && oldNoData.equals(nodata));
-                        if (((property == null)
-                                || property.equals(java.awt.Image.UndefinedProperty)
-                                || !(property instanceof ROI))) {
-                            paramBlk.add(warp).add(interpolation).add(bgValues);
-                            if (oldNoData != null) {
-                                paramBlk.set(oldNoData, 4);
-                            }
-                            // Try to reproject ROI after Warp
-                            ROI newROI = null;
-                            if (roi != null) {
-                                ROI reprojectedROI = roi;
-                                try {
-                                    MathTransform inverse = originalTransform.inverse();
-                                    if (inverse instanceof AffineTransform) {
-                                        AffineTransform inv = (AffineTransform) inverse;
-                                        newROI = reprojectedROI.transform(inv);
-                                    }
-                                } catch (Exception e) {
-                                    if (LOGGER.isLoggable(Level.WARNING)) {
-                                        LOGGER.log(
-                                                Level.WARNING,
-                                                "Unable to compute the inverse of the new ROI provided",
-                                                e);
-                                    }
-                                    // Skip Warp Affine reduction
-                                    canProcessROI = false;
-                                }
-                            }
-
-                            if (newROI != null) {
-                                setROI(newROI);
-                                paramBlk.set(newROI, 3);
-                            }
-                        } else {
-                            // Intersect ROIs
-                            ROI newROI = null;
-                            if (roi != null) {
-                                // Try to reproject ROI after Warp
-                                ROI reprojectedROI = roi;
-                                try {
-                                    MathTransform inverse = originalTransform.inverse();
-                                    if (inverse instanceof AffineTransform) {
-                                        AffineTransform inv = (AffineTransform) inverse;
-                                        reprojectedROI = reprojectedROI.transform(inv);
-                                        newROI = reprojectedROI.intersect((ROI) property);
-                                    }
-                                } catch (Exception e) {
-                                    if (LOGGER.isLoggable(Level.WARNING)) {
-                                        LOGGER.log(
-                                                Level.WARNING,
-                                                "Unable to compute the inverse of the new ROI provided",
-                                                e);
-                                    }
-                                    // Skip Warp Affine reduction
-                                    canProcessROI = false;
-                                }
-                            } else {
-                                newROI = (ROI) property;
-                            }
-                            setROI(newROI);
-                            paramBlk.add(warp).add(interpolation).add(newROI);
-                            if (oldNoData != null) {
-                                paramBlk.set(oldNoData, 4);
-                            }
-                        }
-
-                        // handle background values
-                        if (bgValues == null && sourceParamBlock.getNumParameters() > 2) {
-                            bgValues = (double[]) sourceParamBlock.getObjectParameter(2);
-                        }
-                        if (bgValues != null) {
-                            paramBlk.set(bgValues, 2);
-                        }
-
-                        // Checks if ROI can be processed
-                        if (canProcessROI && hasSameNodata) {
-                            // force in the image layout, this way we get exactly the same
-                            // as the affine we're eliminating
-                            Hints localHints = new Hints(getRenderingHints());
-                            localHints.remove(JAI.KEY_IMAGE_LAYOUT);
-                            ImageLayout il = new ImageLayout();
-                            il.setMinX(targetBB.x);
-                            il.setMinY(targetBB.y);
-                            il.setWidth(targetBB.width);
-                            il.setHeight(targetBB.height);
-
-                            il.setTileHeight(tileWidth);
-                            il.setTileWidth(tileHeight);
-                            il.setTileGridXOffset(0);
-                            il.setTileGridYOffset(0);
-                            localHints.put(JAI.KEY_IMAGE_LAYOUT, il);
-
-                            RenderedOp result = JAI.create("Warp", paramBlk, localHints);
-                            result.setProperty("MathTransform", chained);
-                            image = result;
-                            // getting the new ROI property
-                            Object prop = result.getProperty("roi");
-                            if (prop != null && prop instanceof ROI) {
-                                setROI((ROI) prop);
-                            } else {
-                                setROI(null);
-                            }
-                            return this;
-                        }
-                    }
+                    WarpAffineReducer warpAffineReducer =
+                            new WarpAffineReducer(tx, interpolation, bgValues, op).invoke();
+                    if (warpAffineReducer.reduced()) return this;
+                    bgValues = warpAffineReducer.getBgValues();
                 } catch (Exception e) {
                     LOGGER.log(
                             Level.WARNING,
@@ -5748,5 +5555,233 @@ public class ImageWorker {
             } catch (Exception e) {
                 java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
+    }
+
+    private class WarpAffineReducer {
+        private boolean reduced;
+        private AffineTransform tx;
+        private Interpolation interpolation;
+        private double[] bgValues;
+        private RenderedOp op;
+
+        public WarpAffineReducer(
+                AffineTransform tx, Interpolation interpolation, double[] bgValues, RenderedOp op) {
+            this.tx = tx;
+            this.interpolation = interpolation;
+            this.bgValues = bgValues;
+            this.op = op;
+        }
+
+        boolean reduced() {
+            return reduced;
+        }
+
+        public double[] getBgValues() {
+            return bgValues;
+        }
+
+        public WarpAffineReducer invoke() throws FactoryException, TransformException {
+            // we can merge the affine into the warp
+            MathTransform2D originalTransform = (MathTransform2D) op.getProperty("MathTransform");
+            ParameterBlock sourceParamBlock = op.getParameterBlock();
+            MathTransformFactory factory = ReferencingFactoryFinder.getMathTransformFactory(null);
+            MathTransform affineMT =
+                    factory.createAffineTransform(
+                            new org.geotools.referencing.operation.matrix.AffineTransform2D(tx));
+            MathTransform2D chained =
+                    (MathTransform2D)
+                            factory.createConcatenatedTransform(
+                                    affineMT.inverse(), originalTransform);
+
+            // setup the warp builder
+            Double tolerance = (Double) getRenderingHint(Hints.RESAMPLE_TOLERANCE);
+            if (tolerance == null) {
+                tolerance = (Double) Hints.getSystemDefault(Hints.RESAMPLE_TOLERANCE);
+            }
+            if (tolerance == null) {
+                tolerance = 0.333;
+            }
+
+            // in case of oversampling, reduce the tolerance by the oversampling factor
+            // as the oversampling magnifies errors that would not be otherwise visible
+            if (tx.getScaleX() > 1 || tx.getScaleY() > 1) {
+                double factor = Math.max(tx.getScaleX(), tx.getScaleY());
+                tolerance = tolerance / factor;
+            }
+
+            // setup a warp builder that is not gong to use too much memory
+            WarpBuilder wb = new WarpBuilder(tolerance);
+            wb.setMaxPositions(4 * 1024 * 1024);
+
+            // compute the target bbox the same way the affine would have to have a 1-1
+            // match
+            ParameterBlock pb = new ParameterBlock();
+            pb.setSource(op, 0);
+            pb.set(tx, 0);
+            pb.set(interpolation, 1);
+            pb.set(bgValues, 2);
+            pb.set(roi, 3);
+            pb.set(true, 5);
+            pb.set(nodata, 6);
+            RenderedOp at = JAI.create("Affine", pb, getRenderingHints());
+            updateNoData(bgValues, image);
+
+            // commonHints);
+            Rectangle targetBB = at.getBounds();
+            int tileWidth = at.getTileWidth();
+            int tileHeight = at.getTileHeight();
+            ImageUtilities.disposeSinglePlanarImage(at);
+
+            // warp
+            Rectangle sourceBB = (Rectangle) op.getProperty("SourceBoundingBox");
+            Rectangle mappingBB;
+            if (op.getProperty("ROI") instanceof ROI) {
+                // Due to a limitation in JAI we need to make sure the
+                // mapping bounding box covers both source and target bounding box
+                // otherwise the warped roi image layout won't be computed properly
+                mappingBB = sourceBB.union(targetBB);
+            } else {
+                mappingBB = targetBB;
+            }
+            Warp warp = wb.buildWarp(chained, mappingBB);
+
+            // do the switch only if we get a warp that is as fast as the original one,
+            // of if we are upsampling, in which case the merge is required to preserve
+            // good image quality (warp on NN produces pixels that are aligned to the axis
+            // and then scaled, while the pixels should appear rotated instead)
+            Warp sourceWarp = (Warp) sourceParamBlock.getObjectParameter(0);
+            if (warp instanceof WarpGrid
+                    || warp instanceof WarpAffine
+                    || !(sourceWarp instanceof WarpGrid || sourceWarp instanceof WarpAffine)
+                    || tx.getScaleX() > 1
+                    || tx.getScaleY() > 1) {
+                // and then the JAI Operation
+                PlanarImage sourceImage = op.getSourceImage(0);
+                final ParameterBlock paramBlk = new ParameterBlock().addSource(sourceImage);
+                Object property = sourceImage.getProperty("ROI");
+                // Boolean indicating if optional ROI may be reprojected back to the initial
+                // image
+                boolean canProcessROI = true;
+                // Boolean indicating if NoData are the same as for the source operation or
+                // are not present
+                Range oldNoData =
+                        (Range)
+                                (sourceParamBlock.getNumParameters() > 3
+                                        ? sourceParamBlock.getObjectParameter(4)
+                                        : null);
+                boolean hasSameNodata =
+                        (oldNoData == null && nodata == null)
+                                || (oldNoData != null
+                                        && nodata != null
+                                        && oldNoData.equals(nodata));
+                if (((property == null)
+                        || property.equals(Image.UndefinedProperty)
+                        || !(property instanceof ROI))) {
+                    paramBlk.add(warp).add(interpolation).add(bgValues);
+                    if (oldNoData != null) {
+                        paramBlk.set(oldNoData, 4);
+                    }
+                    // Try to reproject ROI after Warp
+                    ROI newROI = null;
+                    if (roi != null) {
+                        ROI reprojectedROI = roi;
+                        try {
+                            MathTransform inverse = originalTransform.inverse();
+                            if (inverse instanceof AffineTransform) {
+                                AffineTransform inv = (AffineTransform) inverse;
+                                newROI = reprojectedROI.transform(inv);
+                            }
+                        } catch (Exception e) {
+                            if (LOGGER.isLoggable(Level.WARNING)) {
+                                LOGGER.log(
+                                        Level.WARNING,
+                                        "Unable to compute the inverse of the new ROI provided",
+                                        e);
+                            }
+                            // Skip Warp Affine reduction
+                            canProcessROI = false;
+                        }
+                    }
+
+                    if (newROI != null) {
+                        setROI(newROI);
+                        paramBlk.set(newROI, 3);
+                    }
+                } else {
+                    // Intersect ROIs
+                    ROI newROI = null;
+                    if (roi != null) {
+                        // Try to reproject ROI after Warp
+                        ROI reprojectedROI = roi;
+                        try {
+                            MathTransform inverse = originalTransform.inverse();
+                            if (inverse instanceof AffineTransform) {
+                                AffineTransform inv = (AffineTransform) inverse;
+                                reprojectedROI = reprojectedROI.transform(inv);
+                                newROI = reprojectedROI.intersect((ROI) property);
+                            }
+                        } catch (Exception e) {
+                            if (LOGGER.isLoggable(Level.WARNING)) {
+                                LOGGER.log(
+                                        Level.WARNING,
+                                        "Unable to compute the inverse of the new ROI provided",
+                                        e);
+                            }
+                            // Skip Warp Affine reduction
+                            canProcessROI = false;
+                        }
+                    } else {
+                        newROI = (ROI) property;
+                    }
+                    setROI(newROI);
+                    paramBlk.add(warp).add(interpolation).add(newROI);
+                    if (oldNoData != null) {
+                        paramBlk.set(oldNoData, 4);
+                    }
+                }
+
+                // handle background values
+                if (bgValues == null && sourceParamBlock.getNumParameters() > 2) {
+                    bgValues = (double[]) sourceParamBlock.getObjectParameter(2);
+                }
+                if (bgValues != null) {
+                    paramBlk.set(bgValues, 2);
+                }
+
+                // Checks if ROI can be processed
+                if (canProcessROI && hasSameNodata) {
+                    // force in the image layout, this way we get exactly the same
+                    // as the affine we're eliminating
+                    Hints localHints = new Hints(getRenderingHints());
+                    localHints.remove(JAI.KEY_IMAGE_LAYOUT);
+                    ImageLayout il = new ImageLayout();
+                    il.setMinX(targetBB.x);
+                    il.setMinY(targetBB.y);
+                    il.setWidth(targetBB.width);
+                    il.setHeight(targetBB.height);
+
+                    il.setTileHeight(tileWidth);
+                    il.setTileWidth(tileHeight);
+                    il.setTileGridXOffset(0);
+                    il.setTileGridYOffset(0);
+                    localHints.put(JAI.KEY_IMAGE_LAYOUT, il);
+
+                    RenderedOp result = JAI.create("Warp", paramBlk, localHints);
+                    result.setProperty("MathTransform", chained);
+                    image = result;
+                    // getting the new ROI property
+                    Object prop = result.getProperty("roi");
+                    if (prop != null && prop instanceof ROI) {
+                        setROI((ROI) prop);
+                    } else {
+                        setROI(null);
+                    }
+                    reduced = true;
+                    return this;
+                }
+            }
+            reduced = false;
+            return this;
+        }
     }
 }

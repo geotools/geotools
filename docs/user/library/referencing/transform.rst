@@ -197,7 +197,7 @@ Other Math Transform Parameters
 * ``dim`` - dimension of points (2 or 3)
 * ``dx`` - x shift (m)
 * ``dy`` - y shift (m)
-* dz - z shift (m)
+* ``dz`` - z shift (m)
 * ``src_semi_major`` - source equatorial radius (m)
 * ``src_semi_minor`` - source polar radius (m)
 * ``tgt_semi_major`` - target equatorial radius (m)

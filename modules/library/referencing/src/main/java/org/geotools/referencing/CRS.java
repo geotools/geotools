@@ -1245,7 +1245,7 @@ public final class CRS {
      *
      * @param sourceCRS The source CRS.
      * @param targetCRS The target CRS.
-     * @param transformation code - the transform operation desired.
+     * @param transformCode - the transform operation desired.
      * @return The math transform from {@code sourceCRS} to {@code targetCRS} using the {@code
      *     transformCode} if it is found, otherwise the first transform found will be returned.
      * @throws FactoryException If no math transform can be created for the specified source and
@@ -1256,14 +1256,12 @@ public final class CRS {
             CoordinateReferenceSystem targetCRS,
             String transformCode)
             throws FactoryException {
-        CoordinateOperationFactory fac = getCoordinateOperationFactory(false);
 
-        Map<String, MathTransform> transforms = getTransforms(sourceCRS, targetCRS);
+        Map<String, DefaultConcatenatedOperation> transforms = getTransforms(sourceCRS, targetCRS);
         MathTransform ret = null;
-        for (Entry<String, MathTransform> entry : transforms.entrySet()) {
-            System.out.println(entry.getKey() + " -> " + entry.getValue());
+        for (Entry<String, DefaultConcatenatedOperation> entry : transforms.entrySet()) {
             if (entry.getKey().equalsIgnoreCase(transformCode)) {
-                ret = entry.getValue();
+                ret = entry.getValue().getMathTransform();
             }
         }
         if (ret == null) {
@@ -1275,27 +1273,28 @@ public final class CRS {
     }
 
     /**
-     * List the available transforms from sourceCRS to targetCRS
+     * List the available <code>DefaultConcatenatedOperation</code> from sourceCRS to targetCRS
      *
      * @param sourceCRS - the starting CRS
      * @param targetCRS - the target CRS
-     * @return - a Map of transforms keyed by id code which can be used in <code>
+     * @return - a Map of transforms (<code>DefaultConcatenatedOperation</code>) keyed by id code
+     *     which can be used in <code>
      *     {@linkplain #findMathTransform(CoordinateReferenceSystem, CoordinateReferenceSystem, String)}
      * findMathTransform}(sourceCRS, targetCRS, transformCode)</code>
      * @throws FactoryException
      */
-    public static Map<String, MathTransform> getTransforms(
+    public static Map<String, DefaultConcatenatedOperation> getTransforms(
             CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS)
             throws FactoryException {
         Set<CoordinateOperation> ops =
                 getCoordinateOperationFactory(true).findOperations(sourceCRS, targetCRS);
-        Map<String, MathTransform> transforms = new HashMap<>();
+        Map<String, DefaultConcatenatedOperation> transforms = new HashMap<>();
         for (CoordinateOperation op : ops) {
             if (op instanceof DefaultConcatenatedOperation) {
                 for (SingleOperation opx : ((DefaultConcatenatedOperation) op).getOperations()) {
                     if (opx.getClass().isAssignableFrom(DefaultTransformation.class)) {
                         for (ReferenceIdentifier id : opx.getIdentifiers()) {
-                            transforms.put(id.toString(), op.getMathTransform());
+                            transforms.put(id.toString(), (DefaultConcatenatedOperation) op);
                         }
                     }
                 }

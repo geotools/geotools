@@ -17,6 +17,7 @@
 package org.geotools.referencing.factory.epsg.hsql;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.text.ParseException;
@@ -32,6 +33,7 @@ import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.operation.AbstractCoordinateOperation;
 import org.geotools.referencing.operation.AuthorityBackedFactory;
 import org.geotools.referencing.operation.BufferedCoordinateOperationFactory;
+import org.geotools.referencing.operation.DefaultConcatenatedOperation;
 import org.geotools.referencing.operation.TransformTestBase;
 import org.geotools.util.Classes;
 import org.geotools.util.factory.Hints;
@@ -472,9 +474,14 @@ public class OperationFactoryTest {
         assertPointsEqual(expected, output);
 
         sourceCRS = crsAuthFactory.createCoordinateReferenceSystem("EPSG:27700");
-        targetCRS = crsAuthFactory.createCoordinateReferenceSystem("EPSG:4258");
-        crsTransform = CRS.findMathTransform(sourceCRS, targetCRS, "EPSG:5339");
-        System.out.println(crsTransform);
+        targetCRS = crsAuthFactory.createCoordinateReferenceSystem("EPSG:4326");
+        crsTransform = CRS.findMathTransform(sourceCRS, targetCRS, "EPSG:1199");
+        assertNotNull(crsTransform);
+        input = new DirectPosition2D(sourceCRS, 10000, 40000);
+        expected = new DirectPosition2D(targetCRS, 50.1314925, -7.4594847);
+        output = new DirectPosition2D();
+        crsTransform.transform(input, output);
+        assertPointsEqual(expected, output);
     }
 
     @Test
@@ -484,9 +491,11 @@ public class OperationFactoryTest {
                 crsAuthFactory.createCoordinateReferenceSystem("EPSG:21036");
         CoordinateReferenceSystem targetCRS =
                 crsAuthFactory.createCoordinateReferenceSystem("EPSG:32736");
-        Map<String, MathTransform> transforms = CRS.getTransforms(sourceCRS, targetCRS);
+        Map<String, DefaultConcatenatedOperation> transforms =
+                CRS.getTransforms(sourceCRS, targetCRS);
         String[] expected = {"EPSG:3998", "EPSG:1284", "EPSG:1122", "EPSG:1285"};
         Set<String> keys = transforms.keySet();
+
         assertEquals("Wrong number of transforms", expected.length, keys.size());
         for (String code : expected) {
             assertTrue("Expected key " + code + " not found", keys.contains(code));
@@ -509,6 +518,9 @@ public class OperationFactoryTest {
         assertEquals("Wrong number of transforms", expected2.length, keys.size());
         for (String code : expected2) {
             assertTrue("Expected key " + code + " not found", keys.contains(code));
+            DefaultConcatenatedOperation op = transforms.get(code);
+            assertNotNull(op);
+            assertNotNull(op.getMathTransform());
         }
     }
     /**

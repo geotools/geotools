@@ -21,8 +21,10 @@ import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.NORTHING;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -46,7 +48,9 @@ import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
 import org.geotools.referencing.cs.DefaultEllipsoidalCS;
 import org.geotools.referencing.factory.AbstractAuthorityFactory;
 import org.geotools.referencing.factory.IdentifiedObjectFinder;
+import org.geotools.referencing.operation.DefaultConcatenatedOperation;
 import org.geotools.referencing.operation.DefaultMathTransformFactory;
+import org.geotools.referencing.operation.DefaultTransformation;
 import org.geotools.referencing.operation.projection.AzimuthalEquidistant;
 import org.geotools.referencing.operation.projection.LambertAzimuthalEqualArea;
 import org.geotools.referencing.operation.projection.MapProjection;
@@ -105,6 +109,7 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.NoninvertibleTransformException;
 import org.opengis.referencing.operation.Projection;
+import org.opengis.referencing.operation.SingleOperation;
 import org.opengis.referencing.operation.TransformException;
 
 /**
@@ -206,12 +211,6 @@ public final class CRS {
 
     /** Do not allow instantiation of this class. */
     private CRS() {}
-
-    //////////////////////////////////////////////////////////////
-    ////                                                      ////
-    ////        FACTORIES, CRS CREATION AND INSPECTION        ////
-    ////                                                      ////
-    //////////////////////////////////////////////////////////////
 
     /**
      * Returns the CRS authority factory used by the {@link #decode(String,boolean) decode} methods.
@@ -431,9 +430,8 @@ public final class CRS {
     public static CoordinateReferenceSystem decode(final String code)
             throws NoSuchAuthorityCodeException, FactoryException {
         /*
-         * Do not use Boolean.getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER).
-         * The boolean argument should be 'false', which means "use system default"
-         * (not "latitude first").
+         * Do not use Boolean.getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER). The boolean argument should be 'false', which means
+         * "use system default" (not "latitude first").
          */
         return decode(code, false);
     }
@@ -467,32 +465,27 @@ public final class CRS {
      *
      * <table border='1'>
      * <tr>
-     *   <th>This method argument</th>
-     *   <th>{@linkplain Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER Hint} value</th>
-     *   <th>Meaning</th>
+     * <th>This method argument</th>
+     * <th>{@linkplain Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER Hint} value</th>
+     * <th>Meaning</th>
      * </tr>
      * <tr>
-     *   <td>{@code true}</td>
-     *   <td>{@link Boolean#TRUE TRUE}</td>
-     *   <td>All coordinate reference systems are forced to
-     *       (<var>longitude</var>, <var>latitude</var>) axis order.</td>
+     * <td>{@code true}</td>
+     * <td>{@link Boolean#TRUE TRUE}</td>
+     * <td>All coordinate reference systems are forced to (<var>longitude</var>, <var>latitude</var>) axis order.</td>
      * </tr>
      * <tr>
-     *   <td>{@code false}</td>
-     *   <td>{@code null}</td>
-     *   <td>Coordinate reference systems may or may not be forced to
-     *       (<var>longitude</var>, <var>latitude</var>) axis order. The behavior depends on user
-     *       setting, for example the value of the <code>{@value
-     *       GeoTools#FORCE_LONGITUDE_FIRST_AXIS_ORDER}</code>
-     *       system property.</td>
+     * <td>{@code false}</td>
+     * <td>{@code null}</td>
+     * <td>Coordinate reference systems may or may not be forced to (<var>longitude</var>, <var>latitude</var>) axis order. The behavior depends on
+     * user setting, for example the value of the <code>{@value
+     *       GeoTools#FORCE_LONGITUDE_FIRST_AXIS_ORDER}</code> system property.</td>
      * </tr>
      * <tr>
-     *   <td></td>
-     *   <td>{@link Boolean#FALSE FALSE}</td>
-     *   <td>Forcing (<var>longitude</var>, <var>latitude</var>) axis order is not allowed,
-     *       no matter the value of the <code>{@value
-     *       GeoTools#FORCE_LONGITUDE_FIRST_AXIS_ORDER}</code>
-     *       system property.</td>
+     * <td></td>
+     * <td>{@link Boolean#FALSE FALSE}</td>
+     * <td>Forcing (<var>longitude</var>, <var>latitude</var>) axis order is not allowed, no matter the value of the <code>{@value
+     *       GeoTools#FORCE_LONGITUDE_FIRST_AXIS_ORDER}</code> system property.</td>
      * </tr>
      * </table>
      *
@@ -600,9 +593,8 @@ public final class CRS {
             }
         }
         /*
-         * If no envelope was found, uses the geographic bounding box as a fallback. We will
-         * need to transform it from WGS84 to the supplied CRS. This step was not required in
-         * the previous block because the later selected only envelopes in the right CRS.
+         * If no envelope was found, uses the geographic bounding box as a fallback. We will need to transform it from WGS84 to the supplied CRS. This
+         * step was not required in the previous block because the later selected only envelopes in the right CRS.
          */
         if (envelope == null) {
             final GeographicBoundingBox bounds = getGeographicBoundingBox(crs);
@@ -619,10 +611,8 @@ public final class CRS {
                                             bounds.getNorthBoundLatitude()
                                         });
                 /*
-                 * We do not assign WGS84 inconditionnaly to the geographic bounding box, because
-                 * it is not defined to be on a particular datum; it is only approximative bounds.
-                 * We try to get the GeographicCRS from the user-supplied CRS and fallback on WGS
-                 * 84 only if we found none.
+                 * We do not assign WGS84 inconditionnaly to the geographic bounding box, because it is not defined to be on a particular datum; it is
+                 * only approximative bounds. We try to get the GeographicCRS from the user-supplied CRS and fallback on WGS 84 only if we found none.
                  */
                 final SingleCRS targetCRS = getHorizontalCRS(crs);
                 final GeographicCRS sourceCRS = CRSUtilities.getStandardGeographicCRS2D(targetCRS);
@@ -631,19 +621,17 @@ public final class CRS {
                     envelope = transform(envelope, targetCRS);
                 } catch (TransformException exception) {
                     /*
-                     * The envelope is probably outside the range of validity for this CRS.
-                     * It should not occurs, since the envelope is supposed to describe the
-                     * CRS area of validity. Logs a warning and returns null, since it is a
-                     * legal return value according this method contract.
+                     * The envelope is probably outside the range of validity for this CRS. It should not occurs, since the envelope is supposed to
+                     * describe the CRS area of validity. Logs a warning and returns null, since it is a legal return value according this method
+                     * contract.
                      */
                     envelope = null;
                     unexpectedException("getEnvelope", exception);
                 }
                 /*
-                 * If transform(...) created a new envelope, its CRS is already targetCRS so it
-                 * doesn't matter if 'merged' is not anymore the right instance. If 'transform'
-                 * returned the envelope unchanged, the 'merged' reference still valid and we
-                 * want to ensure that it have the user-supplied CRS.
+                 * If transform(...) created a new envelope, its CRS is already targetCRS so it doesn't matter if 'merged' is not anymore the right
+                 * instance. If 'transform' returned the envelope unchanged, the 'merged' reference still valid and we want to ensure that it have the
+                 * user-supplied CRS.
                  */
                 merged.setCoordinateReferenceSystem(targetCRS);
             }
@@ -705,9 +693,8 @@ public final class CRS {
             final int dimension = cs.getDimension();
             if (dimension == 2) {
                 /*
-                 * For two-dimensional CRS, returns the CRS directly if it is either a
-                 * GeographicCRS, or any kind of derived CRS having a GeographicCRS as
-                 * its base.
+                 * For two-dimensional CRS, returns the CRS directly if it is either a GeographicCRS, or any kind of derived CRS having a
+                 * GeographicCRS as its base.
                  */
                 CoordinateReferenceSystem base = crs;
                 while (base instanceof GeneralDerivedCRS) {
@@ -723,9 +710,8 @@ public final class CRS {
                 }
             } else if (dimension >= 3 && crs instanceof GeographicCRS) {
                 /*
-                 * For three-dimensional Geographic CRS, extracts the axis having a direction
-                 * like "North", "North-East", "East", etc. If we find exactly two of them,
-                 * we can build a new GeographicCRS using them.
+                 * For three-dimensional Geographic CRS, extracts the axis having a direction like "North", "North-East", "East", etc. If we find
+                 * exactly two of them, we can build a new GeographicCRS using them.
                  */
                 CoordinateSystemAxis axis0 = null, axis1 = null;
                 int count = 0;
@@ -1047,6 +1033,7 @@ public final class CRS {
             return identifiers.iterator().next().toString();
         }
     }
+
     /**
      * Returns the <cite>Spatial Reference System</cite> identifier, or {@code null} if none.
      *
@@ -1076,6 +1063,7 @@ public final class CRS {
             return srsName;
         }
     }
+
     /**
      * Looks up an identifier for the specified object. This method searchs in registered factories
      * for an object {@linkplain #equalsIgnoreMetadata equals, ignoring metadata}, to the specified
@@ -1102,9 +1090,8 @@ public final class CRS {
     public static String lookupIdentifier(final IdentifiedObject object, final boolean fullScan)
             throws FactoryException {
         /*
-         * We perform the search using the 'xyFactory' because our implementation of
-         * IdentifiedObjectFinder should be able to inspect both the (x,y) and (y,x)
-         * axis order using this factory.
+         * We perform the search using the 'xyFactory' because our implementation of IdentifiedObjectFinder should be able to inspect both the (x,y)
+         * and (y,x) axis order using this factory.
          */
         final AbstractAuthorityFactory xyFactory =
                 (AbstractAuthorityFactory) getAuthorityFactory(true);
@@ -1194,12 +1181,6 @@ public final class CRS {
         return null;
     }
 
-    /////////////////////////////////////////////////
-    ////                                         ////
-    ////          COORDINATE OPERATIONS          ////
-    ////                                         ////
-    /////////////////////////////////////////////////
-
     /**
      * Grab a transform between two Coordinate Reference Systems. This convenience method is a
      * shorthand for the following:
@@ -1237,6 +1218,80 @@ public final class CRS {
             final CoordinateReferenceSystem sourceCRS, final CoordinateReferenceSystem targetCRS)
             throws FactoryException {
         return findMathTransform(sourceCRS, targetCRS, false);
+    }
+
+    /**
+     * Grab a transform between two Coordinate Reference Systems with the required transformation
+     * being used.
+     *
+     * <p>Sample use:
+     *
+     * <blockquote>
+     *
+     * <code>
+     * {@linkplain MathTransform} transform = CRS.findMathTransform(
+     * CRS.{@linkplain #decode decode}("EPSG:21036"),
+     * CRS.{@linkplain #decode decode}("EPSG:32736"), "EPSG:1285" );
+     * </blockquote></code>
+     *
+     * @param sourceCRS The source CRS.
+     * @param targetCRS The target CRS.
+     * @param transformCode - the transform operation desired.
+     * @return The math transform from {@code sourceCRS} to {@code targetCRS} using the {@code
+     *     transformCode} if it is found, otherwise the first transform found will be returned.
+     * @throws FactoryException If no math transform can be created for the specified source and
+     *     target CRS.
+     */
+    public static MathTransform findMathTransform(
+            CoordinateReferenceSystem sourceCRS,
+            CoordinateReferenceSystem targetCRS,
+            String transformCode)
+            throws FactoryException {
+
+        Map<String, DefaultConcatenatedOperation> transforms = getTransforms(sourceCRS, targetCRS);
+        MathTransform ret = null;
+        for (Entry<String, DefaultConcatenatedOperation> entry : transforms.entrySet()) {
+            if (entry.getKey().equalsIgnoreCase(transformCode)) {
+                ret = entry.getValue().getMathTransform();
+            }
+        }
+        if (ret == null) {
+            LOGGER.info("No transform matching " + transformCode + " can be found");
+            ret = CRS.findMathTransform(sourceCRS, targetCRS);
+        }
+
+        return ret;
+    }
+
+    /**
+     * List the available <code>DefaultConcatenatedOperation</code> from sourceCRS to targetCRS
+     *
+     * @param sourceCRS - the starting CRS
+     * @param targetCRS - the target CRS
+     * @return - a Map of transforms (<code>DefaultConcatenatedOperation</code>) keyed by id code
+     *     which can be used in <code>
+     *     {@linkplain #findMathTransform(CoordinateReferenceSystem, CoordinateReferenceSystem, String)}
+     * findMathTransform}(sourceCRS, targetCRS, transformCode)</code>
+     * @throws FactoryException
+     */
+    public static Map<String, DefaultConcatenatedOperation> getTransforms(
+            CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS)
+            throws FactoryException {
+        Set<CoordinateOperation> ops =
+                getCoordinateOperationFactory(true).findOperations(sourceCRS, targetCRS);
+        Map<String, DefaultConcatenatedOperation> transforms = new HashMap<>();
+        for (CoordinateOperation op : ops) {
+            if (op instanceof DefaultConcatenatedOperation) {
+                for (SingleOperation opx : ((DefaultConcatenatedOperation) op).getOperations()) {
+                    if (opx.getClass().isAssignableFrom(DefaultTransformation.class)) {
+                        for (ReferenceIdentifier id : opx.getIdentifiers()) {
+                            transforms.put(id.toString(), (DefaultConcatenatedOperation) op);
+                        }
+                    }
+                }
+            }
+        }
+        return transforms;
     }
 
     /**
@@ -1356,11 +1411,9 @@ public final class CRS {
         }
         if (transform.isIdentity()) {
             /*
-             * Slight optimisation: Just copy the envelope. Note that we need to set the CRS
-             * to null because we don't know what the target CRS was supposed to be. Even if
-             * an identity transform often imply that the target CRS is the same one than the
-             * source CRS, it is not always the case. The metadata may be differents, or the
-             * transform may be a datum shift without Bursa-Wolf parameters, etc.
+             * Slight optimisation: Just copy the envelope. Note that we need to set the CRS to null because we don't know what the target CRS was
+             * supposed to be. Even if an identity transform often imply that the target CRS is the same one than the source CRS, it is not always the
+             * case. The metadata may be differents, or the transform may be a datum shift without Bursa-Wolf parameters, etc.
              */
             final GeneralEnvelope e = new GeneralEnvelope(envelope);
             e.setCoordinateReferenceSystem(null);
@@ -1386,8 +1439,8 @@ public final class CRS {
             targetPt = new GeneralDirectPosition(transform.getTargetDimensions());
         }
         /*
-         * Before to run the loops, we must initialize the coordinates to the minimal values.
-         * This coordinates will be updated in the 'switch' statement inside the 'while' loop.
+         * Before to run the loops, we must initialize the coordinates to the minimal values. This coordinates will be updated in the 'switch'
+         * statement inside the 'while' loop.
          */
         final GeneralDirectPosition sourcePt = new GeneralDirectPosition(sourceDim);
         for (int i = sourceDim; --i >= 0; ) {
@@ -1396,8 +1449,8 @@ public final class CRS {
         loop:
         while (true) {
             /*
-             * Transform a point and add the transformed point to the destination envelope.
-             * Note that the very last point to be projected must be the envelope center.
+             * Transform a point and add the transformed point to the destination envelope. Note that the very last point to be projected must be the
+             * envelope center.
              */
             if (targetPt != transform.transform(sourcePt, targetPt)) {
                 throw new UnsupportedImplementationException(transform.getClass());
@@ -1408,14 +1461,11 @@ public final class CRS {
                 transformed = new GeneralEnvelope(targetPt, targetPt);
             }
             /*
-             * Get the next point's coordinates.  The 'coordinateNumber' variable should
-             * be seen as a number in base 5 where the number of digits is equals to the
-             * number of dimensions. For example, a 4-D space would have numbers ranging
-             * from "0000" to "4444" (numbers in base 4). The digits are then translated
-             * into minimal, central or maximal ordinates. The outer loop stops when the
-             * counter roll back to "0000".  Note that 'targetPt' must keep the value of
-             * the last projected point, which must be the envelope center identified by
-             * "4444" in the 4-D case.
+             * Get the next point's coordinates. The 'coordinateNumber' variable should be seen as a number in base 5 where the number of digits is
+             * equals to the number of dimensions. For example, a 4-D space would have numbers ranging from "0000" to "4444" (numbers in base 4). The
+             * digits are then translated into minimal, central or maximal ordinates. The outer loop stops when the counter roll back to "0000". Note
+             * that 'targetPt' must keep the value of the last projected point, which must be the envelope center identified by "4444" in the 4-D
+             * case.
              */
             int n = ++coordinateNumber;
             for (int i = sourceDim; --i >= 0; ) {
@@ -1481,12 +1531,10 @@ public final class CRS {
         final GeneralDirectPosition centerPt = new GeneralDirectPosition(mt.getTargetDimensions());
         final GeneralEnvelope transformed = transform(mt, envelope, centerPt);
         /*
-         * If the source envelope crosses the expected range of valid coordinates, also projects
-         * the range bounds as a safety. Example: if the source envelope goes from 150 to 200°E,
-         * some map projections will interpret 200° as if it was -160°, and consequently produce
-         * an envelope which do not include the 180°W extremum. We will add those extremum points
-         * explicitly as a safety. It may leads to bigger than necessary target envelope, but the
-         * contract is to include at least the source envelope, not to returns the smallest one.
+         * If the source envelope crosses the expected range of valid coordinates, also projects the range bounds as a safety. Example: if the source
+         * envelope goes from 150 to 200°E, some map projections will interpret 200° as if it was -160°, and consequently produce an envelope which do
+         * not include the 180°W extremum. We will add those extremum points explicitly as a safety. It may leads to bigger than necessary target
+         * envelope, but the contract is to include at least the source envelope, not to returns the smallest one.
          */
         if (sourceCRS != null) {
             final CoordinateSystem cs = sourceCRS.getCoordinateSystem();
@@ -1529,8 +1577,7 @@ public final class CRS {
 
         // check the target CRSS
         /*
-         * Special case for polar stereographic, if the envelope contains the origin, then
-         * the whole set of longitudes should be included
+         * Special case for polar stereographic, if the envelope contains the origin, then the whole set of longitudes should be included
          */
         final CoordinateReferenceSystem targetCRS = operation.getTargetCRS();
         if (targetCRS == null) {
@@ -1652,36 +1699,28 @@ public final class CRS {
             return transformed;
         }
         /*
-         * Checks for singularity points. For example the south pole is a singularity point in
-         * geographic CRS because we reach the maximal value allowed on one particular geographic
-         * axis, namely latitude. This point is not a singularity in the stereographic projection,
-         * where axis extends toward infinity in all directions (mathematically) and south pole
-         * has nothing special apart being the origin (0,0).
+         * Checks for singularity points. For example the south pole is a singularity point in geographic CRS because we reach the maximal value
+         * allowed on one particular geographic axis, namely latitude. This point is not a singularity in the stereographic projection, where axis
+         * extends toward infinity in all directions (mathematically) and south pole has nothing special apart being the origin (0,0).
          *
          * Algorithm:
          *
-         * 1) Inspect the target axis, looking if there is any bounds. If bounds are found, get
-         *    the coordinates of singularity points and project them from target to source CRS.
+         * 1) Inspect the target axis, looking if there is any bounds. If bounds are found, get the coordinates of singularity points and project them
+         * from target to source CRS.
          *
-         *    Example: if the transformed envelope above is (80°S to 85°S, 10°W to 50°W), and if
-         *             target axis inspection reveal us that the latitude in target CRS is bounded
-         *             at 90°S, then project (90°S,30°W) to source CRS. Note that the longitude is
-         *             set to the the center of the envelope longitude range (more on this later).
+         * Example: if the transformed envelope above is (80°S to 85°S, 10°W to 50°W), and if target axis inspection reveal us that the latitude in
+         * target CRS is bounded at 90°S, then project (90°S,30°W) to source CRS. Note that the longitude is set to the the center of the envelope
+         * longitude range (more on this later).
          *
-         * 2) If the singularity point computed above is inside the source envelope, add that
-         *    point to the target (transformed) envelope.
+         * 2) If the singularity point computed above is inside the source envelope, add that point to the target (transformed) envelope.
          *
-         * Note: We could choose to project the (-180, -90), (180, -90), (-180, 90), (180, 90)
-         * points, or the (-180, centerY), (180, centerY), (centerX, -90), (centerX, 90) points
-         * where (centerX, centerY) are transformed from the source envelope center. It make
-         * no difference for polar projections because the longitude is irrelevant at pole, but
-         * may make a difference for the 180° longitude bounds.  Consider a Mercator projection
-         * where the transformed envelope is between 20°N and 40°N. If we try to project (-180,90),
-         * we will get a TransformException because the Mercator projection is not supported at
-         * pole. If we try to project (-180, 30) instead, we will get a valid point. If this point
-         * is inside the source envelope because the later overlaps the 180° longitude, then the
-         * transformed envelope will be expanded to the full (-180 to 180) range. This is quite
-         * large, but at least it is correct (while the envelope without expansion is not).
+         * Note: We could choose to project the (-180, -90), (180, -90), (-180, 90), (180, 90) points, or the (-180, centerY), (180, centerY),
+         * (centerX, -90), (centerX, 90) points where (centerX, centerY) are transformed from the source envelope center. It make no difference for
+         * polar projections because the longitude is irrelevant at pole, but may make a difference for the 180° longitude bounds. Consider a Mercator
+         * projection where the transformed envelope is between 20°N and 40°N. If we try to project (-180,90), we will get a TransformException
+         * because the Mercator projection is not supported at pole. If we try to project (-180, 30) instead, we will get a valid point. If this point
+         * is inside the source envelope because the later overlaps the 180° longitude, then the transformed envelope will be expanded to the full
+         * (-180 to 180) range. This is quite large, but at least it is correct (while the envelope without expansion is not).
          */
         DirectPosition sourcePt = null;
         DirectPosition targetPt = null;
@@ -1696,9 +1735,8 @@ public final class CRS {
                 final double extremum = testMax ? axis.getMaximumValue() : axis.getMinimumValue();
                 if (Double.isInfinite(extremum) || Double.isNaN(extremum)) {
                     /*
-                     * The axis is unbounded. It should always be the case when the target CRS is
-                     * a map projection, in which case this loop will finish soon and this method
-                     * will do nothing more (no object instantiated, no MathTransform inversed...)
+                     * The axis is unbounded. It should always be the case when the target CRS is a map projection, in which case this loop will
+                     * finish soon and this method will do nothing more (no object instantiated, no MathTransform inversed...)
                      */
                     continue;
                 }
@@ -1707,15 +1745,12 @@ public final class CRS {
                         mt = mt.inverse();
                     } catch (NoninvertibleTransformException exception) {
                         /*
-                         * If the transform is non invertible, this method can't do anything. This
-                         * is not a fatal error because the envelope has already be transformed by
-                         * the caller. We lost the check for singularity points performed by this
-                         * method, but it make no difference in the common case where the source
-                         * envelope didn't contains any of those points.
+                         * If the transform is non invertible, this method can't do anything. This is not a fatal error because the envelope has
+                         * already be transformed by the caller. We lost the check for singularity points performed by this method, but it make no
+                         * difference in the common case where the source envelope didn't contains any of those points.
                          *
-                         * Note that this exception is normal if target dimension is smaller than
-                         * source dimension, since the math transform can not reconstituate the
-                         * lost dimensions. So we don't log any warning in this case.
+                         * Note that this exception is normal if target dimension is smaller than source dimension, since the math transform can not
+                         * reconstituate the lost dimensions. So we don't log any warning in this case.
                          */
                         if (dimension >= mt.getSourceDimensions()) {
                             unexpectedException("transform", exception);
@@ -1732,9 +1767,8 @@ public final class CRS {
                     sourcePt = mt.transform(targetPt, sourcePt);
                 } catch (Exception e) {
                     /*
-                     * This exception may be normal. For example we are sure to get this exception
-                     * when trying to project the latitude extremums with a cylindrical Mercator
-                     * projection. Do not log any message and try the other points.
+                     * This exception may be normal. For example we are sure to get this exception when trying to project the latitude extremums with
+                     * a cylindrical Mercator projection. Do not log any message and try the other points.
                      */
                     continue;
                 }
@@ -2024,7 +2058,9 @@ public final class CRS {
      *
      * <p>
      *
-     * <pre>transform(transform, new GeneralEnvelope(envelope)).toRectangle2D()</pre>
+     * <pre>
+     * transform(transform, new GeneralEnvelope(envelope)).toRectangle2D()
+     * </pre>
      *
      * <p>Note that this method can not handle the case where the rectangle contains the North or
      * South pole, or when it cross the &plusmn;180° longitude, because {@linkplain MathTransform
@@ -2071,11 +2107,9 @@ public final class CRS {
         double ymax = Double.NEGATIVE_INFINITY;
         for (int i = 0; i <= 8; i++) {
             /*
-             *   (0)----(5)----(1)
-             *    |             |
-             *   (4)    (8)    (7)
-             *    |             |
-             *   (2)----(6)----(3)
+             *  | (0)----(5)----(1) |
+             *  | (4)    (8)    (7) |
+             *  | (2)----(6)----(3) |
              *
              * (note: center must be last)
              */
@@ -2126,7 +2160,9 @@ public final class CRS {
      *
      * <p>
      *
-     * <pre>transform(operation, new GeneralEnvelope(envelope)).toRectangle2D()</pre>
+     * <pre>
+     * transform(operation, new GeneralEnvelope(envelope)).toRectangle2D()
+     * </pre>
      *
      * <p>This method can handle the case where the rectangle contains the North or South pole, or
      * when it cross the &plusmn;180° longitude.

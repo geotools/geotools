@@ -209,12 +209,6 @@ public final class CRS {
     /** Do not allow instantiation of this class. */
     private CRS() {}
 
-    //////////////////////////////////////////////////////////////
-    //// ////
-    //// FACTORIES, CRS CREATION AND INSPECTION ////
-    //// ////
-    //////////////////////////////////////////////////////////////
-
     /**
      * Returns the CRS authority factory used by the {@link #decode(String,boolean) decode} methods.
      * This factory is {@linkplain org.geotools.referencing.factory.BufferedAuthorityFactory
@@ -1184,12 +1178,6 @@ public final class CRS {
         return null;
     }
 
-    /////////////////////////////////////////////////
-    //// ////
-    //// COORDINATE OPERATIONS ////
-    //// ////
-    /////////////////////////////////////////////////
-
     /**
      * Grab a transform between two Coordinate Reference Systems. This convenience method is a
      * shorthand for the following:
@@ -2116,7 +2104,9 @@ public final class CRS {
         double ymax = Double.NEGATIVE_INFINITY;
         for (int i = 0; i <= 8; i++) {
             /*
-             * (0)----(5)----(1) | | (4) (8) (7) | | (2)----(6)----(3)
+             *  | (0)----(5)----(1) |
+             *  | (4)    (8)    (7) |
+             *  | (2)----(6)----(3) |
              *
              * (note: center must be last)
              */

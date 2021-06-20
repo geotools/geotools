@@ -299,6 +299,15 @@ which gives::
       PARAMETER["false_easting", 500000.0],
       PARAMETER["false_northing", 10000000.0]]]
 
+If you already know the code of the transform that you require you can fetch it directly by using::
+
+
+  CoordinateReferenceSystem sourceCRS =
+                crsAuthFactory.createCoordinateReferenceSystem("EPSG:21036");
+  CoordinateReferenceSystem targetCRS =
+                crsAuthFactory.createCoordinateReferenceSystem("EPSG:32736");
+  MathTransform transform = CRS.findMathTransform(sourceCRS, targetCRS, "EPSG:1285");
+
 Axis Order
 ^^^^^^^^^^
 

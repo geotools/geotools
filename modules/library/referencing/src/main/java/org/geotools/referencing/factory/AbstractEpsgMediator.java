@@ -75,7 +75,7 @@ public abstract class AbstractEpsgMediator extends AbstractAuthorityMediator {
             String name = (String) hint;
             InitialContext context;
             try {
-                context = GeoTools.getInitialContext(hints);
+                context = GeoTools.getInitialContext();
                 // name = GeoTools.fixName( context, name );
                 return (DataSource) context.lookup(name);
             } catch (Exception e) {

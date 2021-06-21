@@ -43,7 +43,7 @@ public class JNDIDataSourceFactory extends AbstractDataSourceFactorySpi {
 
     public static final Param JNDI_REFNAME =
             new Param(
-                    "jdniReferenceName",
+                    "jndiReferenceName",
                     String.class,
                     "The path where the connection pool must be located",
                     true);

@@ -564,7 +564,15 @@ public class IndexerUtils {
             setParam(parameters, props, Utils.Prop.TYPENAME);
             coverage.setName(props.getProperty(Utils.Prop.TYPENAME));
         }
+        
+        // location attribute
 
+        if (props.containsKey(Utils.Prop.LOCATION_ATTRIBUTE)) {
+
+            setParam(parameters, props, Utils.Prop.LOCATION_ATTRIBUTE);
+
+        }
+        
         // absolute
         if (props.containsKey(Utils.Prop.ABSOLUTE_PATH))
             setParam(parameters, props, Utils.Prop.ABSOLUTE_PATH);

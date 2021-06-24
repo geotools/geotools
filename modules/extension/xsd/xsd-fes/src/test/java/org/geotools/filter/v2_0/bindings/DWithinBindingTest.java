@@ -8,9 +8,12 @@ import org.geotools.filter.LiteralExpressionImpl;
 import org.geotools.filter.v1_1.FilterMockData;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.filter.v2_0.FESTestSupport;
+import org.geotools.gml3.v3_2.GML;
+import org.geotools.xsd.Encoder;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.spatial.DWithin;
+import org.w3c.dom.Document;
 
 public class DWithinBindingTest extends FESTestSupport {
     @Test
@@ -21,7 +24,7 @@ public class DWithinBindingTest extends FESTestSupport {
     }
 
     @Test
-    public void testParse() throws Exception {
+    public void testParseAndEncode() throws Exception {
         String dwithinStr =
                 "<fes:DWithin xmlns:xs='http://www.w3.org/2001/XMLSchema' xmlns:fes='http://www.opengis.net/fes/2.0' xmlns:gml='http://www.opengis.net/gml/3.2'>"
                         + "<fes:ValueReference>geom</fes:ValueReference>"
@@ -44,5 +47,19 @@ public class DWithinBindingTest extends FESTestSupport {
         Geometry geometry =
                 (Geometry) ((LiteralExpressionImpl) dwithin.getExpression2()).getValue();
         assertEquals("MultiSurface", geometry.getGeometryType());
+
+        Encoder encoder = new Encoder(createConfiguration());
+        Document encodedDWithin = encoder.encodeAsDOM(dwithin, FES.DWithin);
+
+        assertEquals(
+                1,
+                encodedDWithin
+                        .getElementsByTagNameNS(GML.NAMESPACE, GML.Polygon.getLocalPart())
+                        .getLength());
+        assertEquals(
+                1,
+                encodedDWithin
+                        .getElementsByTagNameNS(GML.NAMESPACE, GML.MultiSurface.getLocalPart())
+                        .getLength());
     }
 }

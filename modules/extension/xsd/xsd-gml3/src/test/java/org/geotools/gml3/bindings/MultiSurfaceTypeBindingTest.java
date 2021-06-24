@@ -29,7 +29,7 @@ import org.w3c.dom.NodeList;
 public class MultiSurfaceTypeBindingTest extends GML3TestSupport {
     @Test
     public void testEncode() throws Exception {
-        Geometry geometry = GML3MockData.multiPolygon();
+        Geometry geometry = GML3MockData.multiSurface();
         GML3EncodingUtils.setID(geometry, "geometry");
         Document dom = encode(geometry, GML.MultiSurface);
         // print(dom);

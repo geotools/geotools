@@ -32,6 +32,8 @@ public class MultiSurface extends MultiPolygon implements MultiCurvedGeometry<Mu
 
     private static final long serialVersionUID = -5796254063449438787L;
 
+    private static final String TYPENAME_MULTISURFACE = "MultiSurface";
+
     double tolerance;
 
     public MultiSurface(List<Polygon> components, GeometryFactory factory, double tolerance) {
@@ -130,5 +132,10 @@ public class MultiSurface extends MultiPolygon implements MultiCurvedGeometry<Mu
         }
 
         return new MultiSurface(polys, factory, tolerance);
+    }
+
+    @Override
+    public String getGeometryType() {
+        return TYPENAME_MULTISURFACE;
     }
 }

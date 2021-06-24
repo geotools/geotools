@@ -21,7 +21,15 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 
 public class MultiSurface extends MultiPolygon {
+
+    private static final String TYPENAME_MULTISURFACE = "MultiSurface";
+
     public MultiSurface(Polygon[] polygons, GeometryFactory factory) {
         super(polygons, factory);
+    }
+
+    @Override
+    public String getGeometryType() {
+        return TYPENAME_MULTISURFACE;
     }
 }

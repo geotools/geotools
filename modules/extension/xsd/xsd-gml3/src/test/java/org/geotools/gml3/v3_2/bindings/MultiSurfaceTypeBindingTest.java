@@ -28,10 +28,14 @@ public class MultiSurfaceTypeBindingTest extends GML32TestSupport {
 
     @Test
     public void testEncode() throws Exception {
-        Document dom = encode(GML3MockData.multiPolygon(), GML.MultiSurface);
+        Document dom = encode(GML3MockData.multiSurface(), GML.MultiSurface);
         // print(dom);
         assertEquals(
                 2,
                 dom.getElementsByTagNameNS(GML.NAMESPACE, GML.Polygon.getLocalPart()).getLength());
+        assertEquals(
+                1,
+                dom.getElementsByTagNameNS(GML.NAMESPACE, GML.MultiSurface.getLocalPart())
+                        .getLength());
     }
 }

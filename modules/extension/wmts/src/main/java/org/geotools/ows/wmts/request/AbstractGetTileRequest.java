@@ -18,8 +18,10 @@
 package org.geotools.ows.wmts.request;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +31,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.lang3.StringUtils;
 import org.geotools.data.ows.Response;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.http.HTTPClient;
@@ -36,7 +39,6 @@ import org.geotools.http.HTTPClientFinder;
 import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wms.StyleImpl;
-import org.geotools.ows.wmts.WMTSHelper;
 import org.geotools.ows.wmts.client.WMTSTileFactory;
 import org.geotools.ows.wmts.client.WMTSTileService;
 import org.geotools.ows.wmts.model.TileMatrixLimits;
@@ -205,7 +207,29 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
             throw new ServiceException("GetTiles called with no layer set");
         }
 
-        if (LOGGER.isLoggable(Level.FINE)) {
+        if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("getTiles: layer:" + layer);
+
+        String layerString = "";
+        String styleString = "";
+
+        try {
+            // spaces are converted to plus signs, but must be %20 for url calls
+            // [GEOT-4317]
+            layerString = URLEncoder.encode(layer.getName(), "UTF-8").replaceAll("\\+", "%20");
+        } catch (UnsupportedEncodingException | NullPointerException e) {
+            layerString = layerString + layer.getName();
+        }
+        styleName = styleName == null ? "" : styleName;
+        try {
+            styleString = URLEncoder.encode(styleName, "UTF-8").replaceAll("\\+", "%20");
+        } catch (UnsupportedEncodingException | NullPointerException e1) {
+            styleString = styleString + styleName;
+        }
+
+        setProperty(LAYER, layerString);
+        setProperty(STYLE, styleString);
+
+        if (LOGGER.isLoggable(Level.FINE))
             LOGGER.fine(
                     "getTiles:  layer:"
                             + layer
@@ -213,16 +237,33 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
                             + requestedWidth
                             + " x h:"
                             + requestedHeight);
-        }
 
         TileMatrixSet matrixSet = selectMatrixSet();
+        if (StringUtils.isEmpty(format)) {
+            if (!layer.getFormats().isEmpty()) {
+                format = layer.getFormats().get(0);
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine(
+                            "Format is not set, available formats: "
+                                    + layer.getFormats()
+                                    + " -- Selecting "
+                                    + format);
+                }
+            }
+        }
 
-        String templateUrl = createTemplateUrl(matrixSet.getIdentifier());
-
-        templateUrl = WMTSHelper.replaceToken(templateUrl, "time", requestedTime);
-
+        if (StringUtils.isEmpty(format)) {
+            format = "image/png";
+            if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("Format not set, trying with " + format);
+        }
+        String requestUrl = getFinalURL().toExternalForm();
+        // TODO - Add properties that match the URL {}
         WMTSTileService wmtsService =
-                new WMTSTileService(templateUrl, layer, matrixSet, this.client);
+                new WMTSTileService(requestUrl, type, layer, styleString, matrixSet, this.client);
+
+        wmtsService.setFormat(format);
+
+        wmtsService.getDimensions().put(WMTSTileService.DIMENSION_TIME, requestedTime);
 
         @SuppressWarnings("unchecked")
         Map<String, String> extraHeaders =
@@ -286,16 +327,6 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
 
         return tiles;
     }
-
-    /**
-     * The templateUrl should contain {TileMatrix}, {TileRow} and {TileCol}.
-     *
-     * <p>The rest of the url should constitute a sufficient url to request a tile.
-     *
-     * @param tileMatrixSetName
-     * @return
-     */
-    protected abstract String createTemplateUrl(String tileMatrixSetName);
 
     @Override
     public URL getFinalURL() {

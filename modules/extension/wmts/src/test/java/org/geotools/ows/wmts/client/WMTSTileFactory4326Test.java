@@ -111,7 +111,9 @@ public class WMTSTileFactory4326Test {
     @Test
     public void testGetTileFromCoordinate() throws Exception {
 
-        WMTSTileService service = createKVPService(); // TODO: create a testpoint array for REST too
+        WMTSTileService[] services = new WMTSTileService[1];
+
+        services[0] = createKVPService(); // TODO: create a testpoint array for REST too
 
         // unesco_points has this bbox:
         //  <ows:WGS84BoundingBox>
@@ -132,44 +134,49 @@ public class WMTSTileFactory4326Test {
         };
 
         for (TestPoint tp : tests) {
-            int offset = 0;
+            for (int i1 = 0; i1 < 1; i1++) {
+                WMTSTileService service = services[i1];
+                int offset = 0;
+                if (service.getType().equals(WMTSServiceType.REST)) {
+                    offset = 1; // extra level (e.g. mapproxy wrt to geoserver)
+                }
+                WMTSZoomLevel zoomLevel = service.getZoomLevel(tp.zoomlevel + offset);
 
-            WMTSZoomLevel zoomLevel = service.getZoomLevel(tp.zoomlevel + offset);
+                Tile mtile = factory.findTileAtCoordinate(tp.lon, tp.lat, zoomLevel, service);
+                Tile ltile = factory.constrainToUpperLeftTile(mtile, zoomLevel, service);
 
-            Tile mtile = factory.findTileAtCoordinate(tp.lon, tp.lat, zoomLevel, service);
-            Tile ltile = factory.constrainToUpperLeftTile(mtile, zoomLevel, service);
+                /*System.out.println(
+                tp.lat
+                        + ","
+                        + tp.lon
+                        + " z:"
+                        + tp.zoomlevel
+                        + " in matrix["
+                        + mtile.getTileIdentifier().getX()
+                        + ","
+                        + mtile.getTileIdentifier().getY()
+                        + "]"
+                        + " limited["
+                        + ltile.getTileIdentifier().getX()
+                        + ","
+                        + ltile.getTileIdentifier().getY()
+                        + "]"
+                        + " expectedM: ["
+                        + tp.expectedMCol
+                        + ","
+                        + tp.expectedMRow
+                        + "]"
+                        + " expectedL: ["
+                        + tp.expectedLCol
+                        + ","
+                        + tp.expectedLRow
+                        + "]");*/
 
-            /*System.out.println(
-            tp.lat
-                    + ","
-                    + tp.lon
-                    + " z:"
-                    + tp.zoomlevel
-                    + " in matrix["
-                    + mtile.getTileIdentifier().getX()
-                    + ","
-                    + mtile.getTileIdentifier().getY()
-                    + "]"
-                    + " limited["
-                    + ltile.getTileIdentifier().getX()
-                    + ","
-                    + ltile.getTileIdentifier().getY()
-                    + "]"
-                    + " expectedM: ["
-                    + tp.expectedMCol
-                    + ","
-                    + tp.expectedMRow
-                    + "]"
-                    + " expectedL: ["
-                    + tp.expectedLCol
-                    + ","
-                    + tp.expectedLRow
-                    + "]");*/
-
-            Assert.assertEquals("Bad mX", tp.expectedMCol, mtile.getTileIdentifier().getX());
-            Assert.assertEquals("Bad mY", tp.expectedMRow, mtile.getTileIdentifier().getY());
-            Assert.assertEquals("Bad lX", tp.expectedLCol, ltile.getTileIdentifier().getX());
-            Assert.assertEquals("Bad lY", tp.expectedLRow, ltile.getTileIdentifier().getY());
+                Assert.assertEquals("Bad mX", tp.expectedMCol, mtile.getTileIdentifier().getX());
+                Assert.assertEquals("Bad mY", tp.expectedMRow, mtile.getTileIdentifier().getY());
+                Assert.assertEquals("Bad lX", tp.expectedLCol, ltile.getTileIdentifier().getX());
+                Assert.assertEquals("Bad lY", tp.expectedLRow, ltile.getTileIdentifier().getY());
+            }
         }
     }
 
@@ -224,7 +231,10 @@ public class WMTSTileFactory4326Test {
             TileService service = services[i];
             // For some reason map proxy has an extra level compared to
             // GeoServer!
-            int offset = (i == 0 ? 1 : 0); // REST has 1 in offset
+            int offset = 0;
+            if (((WMTSTileService) service).getType().equals(WMTSServiceType.REST)) {
+                offset = 1;
+            }
             WMTSZoomLevel zoomLevel = ((WMTSTileService) service).getZoomLevel(1 + offset);
             WMTSTileIdentifier tileId = new WMTSTileIdentifier(1, 1, zoomLevel, "SomeName");
             WMTSTile tile = new WMTSTile(tileId, service);
@@ -339,7 +349,7 @@ public class WMTSTileFactory4326Test {
         WMTSTile tile = new WMTSTile(tileId, service);
         String url = tile.getUrl().toString();
         // check that url contains style instead of {style}
-        assertTrue(url.contains("/overlay-all/default/default/"));
+        assertTrue(url.contains(service.getStyleName()));
         assertFalse(url.contains("{style}"));
     }
 
@@ -366,7 +376,7 @@ public class WMTSTileFactory4326Test {
         WMTSTile tile = new WMTSTile(tileId, service);
         String url = tile.getUrl().toString();
         // check that url contains style name instead of {Style}
-        assertTrue(url.contains("/normal/"));
+        assertTrue(url.contains(service.getStyleName()));
         assertFalse(url.contains("{Style}"));
     }
 }

@@ -698,83 +698,11 @@ public class Encoder {
             List sub = safeCopy(entry.element.getSubstitutionGroup());
 
             if (!sub.isEmpty()) {
-                // match up by type
-                List<Object[]> matches = new ArrayList<>();
-
-                for (Object o : sub) {
-                    XSDElementDeclaration e = (XSDElementDeclaration) o;
-
-                    if (e == null || e.equals(entry.element)) {
-                        continue;
-                    }
-
-                    if (e.getName() == null) {
-                        continue;
-                    }
-
-                    // look up the binding
-                    Binding binding =
-                            bindingLoader.loadBinding(
-                                    new QName(e.getTargetNamespace(), e.getName()), context);
-
-                    if (binding == null) {
-                        // try the type
-                        XSDTypeDefinition type = e.getType();
-
-                        if (type == null || type.getName() == null) {
-                            continue;
-                        }
-
-                        binding =
-                                bindingLoader.loadBinding(
-                                        new QName(type.getTargetNamespace(), type.getName()),
-                                        context);
-                    }
-
-                    if (binding == null) {
-                        continue;
-                    }
-
-                    if (binding.getType() == null) {
-                        logger.warning("Binding: " + binding.getTarget() + " returns null type.");
-                        continue;
-                    }
-
-                    // match up the type
-                    if (binding.getType().isAssignableFrom(entry.object.getClass())) {
-                        // we have a match, store as an (element,binding) tuple
-                        matches.add(new Object[] {e, binding});
-                    }
+                XSDElementDeclaration substitute = getConcreteSubstitute(entry, sub);
+                if (substitute != null) {
+                    entry.element = substitute;
                 }
-
-                // if one, we are gold
-                if (matches.size() == 1) {
-                    entry.element = (XSDElementDeclaration) matches.get(0)[0];
-                }
-                // if multiple we have a problem
-                else if (!matches.isEmpty()) {
-                    if (logger.isLoggable(Level.FINE)) {
-                        StringBuffer msg =
-                                new StringBuffer("Found multiple non-abstract bindings for ");
-                        msg.append(entry.element.getName()).append(": ");
-
-                        for (Object[] match : matches) {
-                            msg.append(match.getClass().getName());
-                            msg.append(", ");
-                        }
-
-                        logger.fine(msg.toString());
-                    }
-
-                    // try sorting by the type of the binding
-                    Collections.sort(matches, new MatchComparator());
-                }
-
-                if (!matches.isEmpty()) {
-                    entry.element = (XSDElementDeclaration) matches.get(0)[0];
-                }
-
-                // if zero, just use the abstract element
+                // otherwise just use the abstract element
             }
         }
 
@@ -789,6 +717,13 @@ public class Encoder {
                         : (Element) encode(entry.object, entry.element);
 
         // add any more attributes
+        setupEntryAttributes(object, entry);
+        setupSchemaLocations(entry);
+        start(entry.encoding, entry.element);
+        populateChildren(entry);
+    }
+
+    private void setupEntryAttributes(Object object, EncodingEntry entry) {
         List attributes = index.getAttributes(entry.element);
 
         for (Object value : attributes) {
@@ -818,44 +753,11 @@ public class Encoder {
                 }
             }
         }
+    }
 
-        // write out the leading edge of the element
-        if (schemaLocations != null) {
-            // root element, add schema locations if set
-            if (!schemaLocations.isEmpty()) {
-                // declare the schema instance mapping
-                serializer.startPrefixMapping("xsi", XSDUtil.SCHEMA_INSTANCE_URI_2001);
-                serializer.endPrefixMapping("xsi");
-                namespaces.declarePrefix("xsi", XSDUtil.SCHEMA_INSTANCE_URI_2001);
-
-                StringBuffer schemaLocation = new StringBuffer();
-
-                for (Iterator e = schemaLocations.entrySet().iterator(); e.hasNext(); ) {
-                    Map.Entry tuple = (Map.Entry) e.next();
-                    String namespaceURI = (String) tuple.getKey();
-                    String location = (String) tuple.getValue();
-
-                    schemaLocation.append(namespaceURI + " " + location);
-
-                    if (e.hasNext()) {
-                        schemaLocation.append(" ");
-                    }
-                }
-
-                entry.encoding.setAttributeNS(
-                        XSDUtil.SCHEMA_INSTANCE_URI_2001,
-                        "xsi:schemaLocation",
-                        schemaLocation.toString());
-            }
-
-            schemaLocations = null;
-        }
-
-        start(entry.encoding, entry.element);
-
+    private void populateChildren(EncodingEntry entry) throws SAXException, IOException {
         // TODO: this method of getting at properties won't maintain order very well,
-        // need
-        // to come up with a better system that is capable of handling feature types
+        // need to come up with a better system that is capable of handling feature types
         for (PropertyExtractor propertyExtractor : propertyExtractors) {
             if (propertyExtractor.canHandle(entry.object)) {
                 List extracted = propertyExtractor.properties(entry.object, entry.element);
@@ -977,6 +879,117 @@ public class Encoder {
                 }
             }
         }
+    }
+
+    private void setupSchemaLocations(EncodingEntry entry) throws SAXException {
+        // write out the leading edge of the element
+        if (schemaLocations != null) {
+            // root element, add schema locations if set
+            if (!schemaLocations.isEmpty()) {
+                // declare the schema instance mapping
+                serializer.startPrefixMapping("xsi", XSDUtil.SCHEMA_INSTANCE_URI_2001);
+                serializer.endPrefixMapping("xsi");
+                namespaces.declarePrefix("xsi", XSDUtil.SCHEMA_INSTANCE_URI_2001);
+
+                StringBuffer schemaLocation = new StringBuffer();
+
+                for (Iterator e = schemaLocations.entrySet().iterator(); e.hasNext(); ) {
+                    Map.Entry tuple = (Map.Entry) e.next();
+                    String namespaceURI = (String) tuple.getKey();
+                    String location = (String) tuple.getValue();
+
+                    schemaLocation.append(namespaceURI + " " + location);
+
+                    if (e.hasNext()) {
+                        schemaLocation.append(" ");
+                    }
+                }
+
+                entry.encoding.setAttributeNS(
+                        XSDUtil.SCHEMA_INSTANCE_URI_2001,
+                        "xsi:schemaLocation",
+                        schemaLocation.toString());
+            }
+
+            schemaLocations = null;
+        }
+    }
+
+    private XSDElementDeclaration getConcreteSubstitute(EncodingEntry entry, List sub) {
+        // match up by type
+        List<Object[]> matches = new ArrayList<>();
+
+        for (Object o : sub) {
+            XSDElementDeclaration e = (XSDElementDeclaration) o;
+
+            if (e == null || e.equals(entry.element)) {
+                continue;
+            }
+
+            if (e.getName() == null) {
+                continue;
+            }
+
+            // look up the binding
+            Binding binding =
+                    bindingLoader.loadBinding(
+                            new QName(e.getTargetNamespace(), e.getName()), context);
+
+            if (binding == null) {
+                // try the type
+                XSDTypeDefinition type = e.getType();
+
+                if (type == null || type.getName() == null) {
+                    continue;
+                }
+
+                binding =
+                        bindingLoader.loadBinding(
+                                new QName(type.getTargetNamespace(), type.getName()), context);
+            }
+
+            if (binding == null) {
+                continue;
+            }
+
+            if (binding.getType() == null) {
+                logger.warning("Binding: " + binding.getTarget() + " returns null type.");
+                continue;
+            }
+
+            // match up the type
+            if (binding.getType().isAssignableFrom(entry.object.getClass())) {
+                // we have a match, store as an (element,binding) tuple
+                matches.add(new Object[] {e, binding});
+            }
+        }
+
+        // if one, we are gold
+        if (matches.size() == 1) {
+            entry.element = (XSDElementDeclaration) matches.get(0)[0];
+        }
+        // if multiple we have a problem
+        else if (!matches.isEmpty()) {
+            if (logger.isLoggable(Level.FINE)) {
+                StringBuffer msg = new StringBuffer("Found multiple non-abstract bindings for ");
+                msg.append(entry.element.getName()).append(": ");
+
+                for (Object[] match : matches) {
+                    msg.append(match.getClass().getName());
+                    msg.append(", ");
+                }
+
+                logger.fine(msg.toString());
+            }
+
+            // try sorting by the type of the binding
+            Collections.sort(matches, new MatchComparator());
+        }
+
+        if (!matches.isEmpty()) {
+            return (XSDElementDeclaration) matches.get(0)[0];
+        }
+        return null;
     }
 
     private void finishElement(Stack<EncodingEntry> encoded, EncodingEntry entry)

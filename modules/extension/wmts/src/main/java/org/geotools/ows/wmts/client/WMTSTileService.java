@@ -29,8 +29,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPClientFinder;
 import org.geotools.ows.wms.CRSEnvelope;
-import org.geotools.ows.wmts.WMTSHelper;
-import org.geotools.ows.wmts.WMTSSpecification;
+import org.geotools.ows.wms.StyleImpl;
 import org.geotools.ows.wmts.model.TileMatrix;
 import org.geotools.ows.wmts.model.TileMatrixSet;
 import org.geotools.ows.wmts.model.TileMatrixSetLink;
@@ -51,11 +50,9 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
 /**
- * A tile service for a single matrix set of a WMTS servers.
+ * A tile service for WMTS servers.
  *
- * <p>An instance of this class is tied to a single layer, style and matrixset.
- *
- * <p>Use WebMapTileServer to negotiate capabilities, or specifying other properties
+ * <p>This is tied to a single layer, style and matrixset.
  *
  * @author ian
  * @author Emanuele Tajariol (etj at geo-solutions dot it)
@@ -64,9 +61,9 @@ public class WMTSTileService extends TileService {
 
     protected static final Logger LOGGER = Logging.getLogger(WMTSTileService.class);
 
-    @Deprecated public static final String DIMENSION_TIME = "time";
+    public static final String DIMENSION_TIME = "time";
 
-    @Deprecated public static final String DIMENSION_ELEVATION = "elevation";
+    public static final String DIMENSION_ELEVATION = "elevation";
 
     public static final String EXTRA_HEADERS = "HEADERS";
 
@@ -86,7 +83,7 @@ public class WMTSTileService extends TileService {
 
     private ReferencedEnvelope envelope;
 
-    private final TileURLBuilder urlBuilder;
+    private String templateURL = "";
 
     private WMTSServiceType type = WMTSServiceType.REST;
 
@@ -98,9 +95,6 @@ public class WMTSTileService extends TileService {
 
     /**
      * create a service directly with out parsing the capabilities again.
-     *
-     * <p>This constructor should not be used. A proper formatted templateURL should be used
-     * instead.
      *
      * @param templateURL - where to ask for tiles
      * @param type - KVP or REST
@@ -120,9 +114,6 @@ public class WMTSTileService extends TileService {
     /**
      * create a service directly with out parsing the capabilities again.
      *
-     * <p>This constructor should not be used. A proper formatted templateURL should be used
-     * instead.
-     *
      * @param templateURL - where to ask for tiles
      * @param type - KVP or REST
      * @param layer - layer to request
@@ -137,69 +128,26 @@ public class WMTSTileService extends TileService {
             String styleName,
             TileMatrixSet tileMatrixSet,
             HTTPClient client) {
-        this(
-                prepareWithLayerStyleTileMatrixSet(
-                        templateURL,
-                        type,
-                        layer.getName(),
-                        styleName,
-                        tileMatrixSet.getIdentifier()),
-                layer,
-                tileMatrixSet,
-                client);
-    }
-
-    private static String prepareWithLayerStyleTileMatrixSet(
-            String templateURL,
-            WMTSServiceType type,
-            String layerName,
-            String styleName,
-            String tileMatrixSet) {
-        switch (type) {
-            case KVP:
-                return WMTSHelper.appendQueryString(
-                        templateURL,
-                        WMTSSpecification.GetTileRequest.getKVPparams(
-                                layerName, styleName, tileMatrixSet, "image/png"));
-            case REST:
-                templateURL = WMTSHelper.replaceToken(templateURL, "layer", layerName);
-                templateURL = WMTSHelper.replaceToken(templateURL, "style", styleName);
-                templateURL = WMTSHelper.replaceToken(templateURL, "tilematrixset", tileMatrixSet);
-                return templateURL;
-            default:
-                throw new IllegalArgumentException("Unexpected WMTS Service type " + type);
-        }
-    }
-
-    /**
-     * Creates a WMTSTileService based on the templateURL. Using extent given by layer and
-     * tileMatrixSet.
-     *
-     * @param templateURL
-     * @param layer
-     * @param tileMatrixSet
-     */
-    public WMTSTileService(String templateURL, WMTSLayer layer, TileMatrixSet tileMatrixSet) {
-        this(templateURL, layer, tileMatrixSet, HTTPClientFinder.createClient());
-    }
-
-    /**
-     * create a service directly with out parsing the capabilties again.
-     *
-     * @param templateURL - where to ask for tiles
-     * @param layer - layer to request
-     * @param tileMatrixSet - matrixset
-     * @param client - HttpClient instance to use for Tile requests.
-     */
-    public WMTSTileService(
-            String templateURL, WMTSLayer layer, TileMatrixSet tileMatrixSet, HTTPClient client) {
         super("wmts", templateURL, client);
 
         this.layer = layer;
         this.tileMatrixSetName = tileMatrixSet.getIdentifier();
+
         this.envelope = new ReferencedEnvelope(layer.getLatLonBoundingBox());
+
         this.scaleList = buildScaleList(tileMatrixSet);
-        this.urlBuilder = new TileURLBuilder(templateURL);
+
+        setTemplateURL(templateURL);
+        setLayerName(layer.getName());
+        if (styleName != null && !styleName.isEmpty()) {
+            setStyleName(styleName);
+        } else {
+            StyleImpl defaultStyle = layer.getDefaultStyle();
+            if (defaultStyle != null) {
+                setStyleName(defaultStyle.getName());
+            }
+        }
+        setType(type);
         setMatrixSet(tileMatrixSet);
     }
 
@@ -552,31 +500,31 @@ public class WMTSTileService extends TileService {
     }
 
     /** @return the type */
-    @Deprecated
     public WMTSServiceType getType() {
         return type;
     }
 
     /** @param type the type to set */
-    @Deprecated
     public void setType(WMTSServiceType type) {
         this.type = type;
     }
 
+    /** @param layerName */
+    private void setLayerName(String layerName) {
+        this.layerName = layerName;
+    }
+
     /** @return the layerName */
-    @Deprecated
     public String getLayerName() {
         return layerName;
     }
 
     /** @return the styleName */
-    @Deprecated
     public String getStyleName() {
         return styleName;
     }
 
     /** @param styleName the styleName to set */
-    @Deprecated
     public void setStyleName(String styleName) {
         this.styleName = styleName;
     }
@@ -602,13 +550,11 @@ public class WMTSTileService extends TileService {
     }
 
     /** @return the tileMatrixSetName */
-    @Deprecated
     public String getTileMatrixSetName() {
         return tileMatrixSetName;
     }
 
     /** @param tileMatrixSetName the tileMatrixSetName to set */
-    @Deprecated
     public void setTileMatrixSetName(String tileMatrixSetName) {
         if (tileMatrixSetName == null || tileMatrixSetName.isEmpty()) {
             throw new IllegalArgumentException("Tile matrix set name cannot be null");
@@ -622,17 +568,13 @@ public class WMTSTileService extends TileService {
     }
 
     /** @return the templateURL */
-    @Deprecated
     public String getTemplateURL() {
-        return getBaseUrl();
+        return templateURL;
     }
 
     /** @param templateURL the templateURL to set */
-    @Deprecated
-    public void setTemplateURL(String templateURL) {}
-
-    TileURLBuilder getURLBuilder() {
-        return urlBuilder;
+    public void setTemplateURL(String templateURL) {
+        this.templateURL = templateURL;
     }
 
     /** */
@@ -659,16 +601,11 @@ public class WMTSTileService extends TileService {
     }
 
     /** @return */
-    @Deprecated
     public String getFormat() {
         return format;
     }
 
-    /**
-     * @param format the format to set
-     * @deprecated include in templateURL
-     */
-    @Deprecated
+    /** @param format the format to set */
     public void setFormat(String format) {
         this.format = format;
     }
@@ -678,17 +615,10 @@ public class WMTSTileService extends TileService {
         return new WMTSZoomLevel(zoom, this);
     }
 
-    /** @deprecated Dimensions should be a part of templateUrl */
-    @Deprecated
     public Map<String, String> getDimensions() {
         return dimensions;
     }
 
-    /**
-     * A place to put any Header that should be sent in http calls.
-     *
-     * @return
-     */
     public Map<String, Object> getExtrainfo() {
         return extrainfo;
     }

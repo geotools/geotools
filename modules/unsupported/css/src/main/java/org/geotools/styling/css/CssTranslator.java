@@ -30,6 +30,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -356,7 +357,7 @@ public class CssTranslator {
             LOGGER.fine("Split the rules into " + zIndexRules + "  sets after z-index separation");
         }
         int translatedRuleCount = 0;
-        boolean backgroundFound = false;
+        AtomicBoolean backgroundFound = new AtomicBoolean();
         for (Map.Entry<Integer, List<CssRule>> zEntry : zIndexRules.entrySet()) {
             final Integer zIndex = zEntry.getKey();
             List<CssRule> rules = zEntry.getValue();
@@ -369,19 +370,7 @@ public class CssTranslator {
                 final FeatureType targetFeatureType =
                         getTargetFeatureType(featureTypeName, localRules);
                 if (targetFeatureType != null) {
-                    // attach the target feature type to all Data selectors to allow range based
-                    // simplification
-                    for (CssRule rule : localRules) {
-                        rule.getSelector()
-                                .accept(
-                                        new AbstractSelectorVisitor() {
-                                            @Override
-                                            public Object visit(Data data) {
-                                                data.featureType = targetFeatureType;
-                                                return super.visit(data);
-                                            }
-                                        });
-                    }
+                    qualifyRules(localRules, targetFeatureType);
                 }
                 // at this point we can have rules with selectors having two scale ranges
                 // in or, we should split them, as we cannot represent them in SLD
@@ -402,19 +391,8 @@ public class CssTranslator {
                 CachedSimplifyingFilterVisitor cachedSimplifier =
                         new CachedSimplifyingFilterVisitor(targetFeatureType);
                 RulePowerSetBuilder builder =
-                        new RulePowerSetBuilder(flattenedRules, cachedSimplifier, maxCombinations) {
-                            @Override
-                            protected java.util.List<CssRule> buildResult(
-                                    java.util.List<CssRule> rules) {
-                                if (zIndex != null && zIndex > 0) {
-                                    TreeSet<Integer> zIndexes = getZIndexesForRules(rules);
-                                    if (!zIndexes.contains(zIndex)) {
-                                        return null;
-                                    }
-                                }
-                                return super.buildResult(rules);
-                            }
-                        };
+                        new ZIndexPowerSetBuilder(
+                                flattenedRules, cachedSimplifier, maxCombinations, zIndex);
                 List<CssRule> combinedRules = builder.buildPowerSet();
                 if (combinedRules.isEmpty()) {
                     continue;
@@ -439,150 +417,191 @@ public class CssTranslator {
                                     + rulesCount
                                     + " combined rules after filtered power set expansion");
                 }
-                String composite = null;
-                Boolean compositeBase = null;
-                String sortBy = null;
-                String sortByGroup = null;
-                Expression transform = null;
                 // setup the tool that will eliminate redundant rules (if necessary)
                 DomainCoverage coverage = new DomainCoverage(targetFeatureType, cachedSimplifier);
-                if (mode == TranslationMode.Exclusive) {
-                    // create a SLD rule for each css one, making them exclusive, that is,
-                    // remove from each rule the union of the zoom/data domain matched by previous
-                    // rules
-                    coverage.exclusiveRulesEnabled = true;
-                } else if (mode == TranslationMode.Auto) {
-                    if (rulesCount < autoThreshold) {
-                        LOGGER.fine(
-                                "Sticking to Exclusive translation mode, rules number is "
-                                        + rulesCount
-                                        + " with a threshold of "
-                                        + autoThreshold);
-                        coverage.exclusiveRulesEnabled = true;
-                        coverage.complexityThreshold = autoThreshold;
-                    } else {
-                        LOGGER.info(
-                                "Switching to Simple translation mode, rules number is "
-                                        + rulesCount
-                                        + " with a threshold of "
-                                        + autoThreshold);
-                        coverage.exclusiveRulesEnabled = false;
-                        // switch the translation mode permanently from this point on
-                        mode = TranslationMode.Simple;
-                    }
-
-                } else {
-                    // just skip rules with the same selector
-                    coverage.exclusiveRulesEnabled = false;
-                }
+                mode = configureDomainCoverage(mode, autoThreshold, rulesCount, coverage);
                 // generate the SLD rules
-                for (int i = 0; i < rulesCount; i++) {
-                    // skip eventual combinations that are not sporting any
-                    // root pseudo class
-                    CssRule cssRule = combinedRules.get(i);
-                    if (!cssRule.hasSymbolizerProperty()) {
-                        continue;
-                    }
-                    if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine("Current domain coverage: " + coverage);
-                        LOGGER.fine("Adding rule to domain coverage: " + cssRule);
-                        LOGGER.fine("Rules left to process: " + (rulesCount - i));
-                    }
-                    List<CssRule> derivedRules = coverage.addRule(cssRule);
-                    if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine(
-                                "Derived rules not yet covered in domain coverage: "
-                                        + derivedRules.size()
-                                        + "\n"
-                                        + derivedRules);
-                    }
-                    for (CssRule derived : derivedRules) {
-                        if (!derived.hasNonNullSymbolizerProperty()) {
-                            continue;
-                        }
-                        buildSldRule(derived, ftsBuilder, targetFeatureType, null);
-
-                        translatedRuleCount++;
-
-                        // Reminder about why this is done the way it's done. These are all rule
-                        // properties
-                        // in CSS and are subject to override. In SLD they contribute to containing
-                        // FeatureTypeStyle, so the first one found wins and controls this z-level
-
-                        // check if we have global composition going, and use the value of
-                        // the first rule providing the information (the one with the highest
-                        // priority)
-                        if (composite == null) {
-                            List<Value> values =
-                                    derived.getPropertyValues(PseudoClass.ROOT, COMPOSITE)
-                                            .get(COMPOSITE);
-                            if (values != null && !values.isEmpty()) {
-                                composite = values.get(0).toLiteral();
-                            }
-                        }
-                        if (compositeBase == null) {
-                            List<Value> values =
-                                    derived.getPropertyValues(PseudoClass.ROOT, COMPOSITE_BASE)
-                                            .get(COMPOSITE_BASE);
-                            if (values != null && !values.isEmpty()) {
-                                compositeBase = Boolean.valueOf(values.get(0).toLiteral());
-                            }
-                        }
-
-                        // check if we have any sort-by
-                        if (sortBy == null) {
-                            List<Value> values =
-                                    derived.getPropertyValues(PseudoClass.ROOT, SORT_BY)
-                                            .get(SORT_BY);
-                            if (values != null && !values.isEmpty()) {
-                                sortBy = values.get(0).toLiteral();
-                            }
-                        }
-
-                        // check if we have any sort-by-group
-                        if (sortByGroup == null) {
-                            List<Value> values =
-                                    derived.getPropertyValues(PseudoClass.ROOT, SORT_BY_GROUP)
-                                            .get(SORT_BY_GROUP);
-                            if (values != null && !values.isEmpty()) {
-                                sortByGroup = values.get(0).toLiteral();
-                            }
-                        }
-
-                        // check if we have a transform, apply it
-                        if (transform == null) {
-                            List<Value> values =
-                                    derived.getPropertyValues(PseudoClass.ROOT, TRANSFORM)
-                                            .get(TRANSFORM);
-                            if (values != null && !values.isEmpty()) {
-                                transform = values.get(0).toExpression();
-                            }
-                        }
-
-                        if (!backgroundFound) {
-                            backgroundFound = buildBackground(styleBuilder, derived);
-                        }
-                    }
-
-                    if (composite != null) {
-                        ftsBuilder.option(COMPOSITE, composite);
-                    }
-                    if (Boolean.TRUE.equals(compositeBase)) {
-                        ftsBuilder.option(COMPOSITE_BASE, "true");
-                    }
-                    if (sortBy != null) {
-                        ftsBuilder.option(FeatureTypeStyle.SORT_BY, sortBy);
-                    }
-                    if (sortByGroup != null) {
-                        ftsBuilder.option(FeatureTypeStyle.SORT_BY_GROUP, sortByGroup);
-                    }
-                    if (transform != null) {
-                        ftsBuilder.transformation(transform);
-                    }
-                }
+                translatedRuleCount =
+                        translateRules(
+                                styleBuilder,
+                                translatedRuleCount,
+                                backgroundFound,
+                                targetFeatureType,
+                                combinedRules,
+                                ftsBuilder,
+                                coverage);
             }
         }
         return translatedRuleCount;
+    }
+
+    private int translateRules(
+            StyleBuilder styleBuilder,
+            int translatedRuleCount,
+            AtomicBoolean backgroundFound,
+            FeatureType targetFeatureType,
+            List<CssRule> combinedRules,
+            FeatureTypeStyleBuilder ftsBuilder,
+            DomainCoverage coverage) {
+        String composite = null;
+        Boolean compositeBase = null;
+        String sortBy = null;
+        String sortByGroup = null;
+        Expression transform = null;
+        int rulesCount = combinedRules.size();
+        for (int i = 0; i < rulesCount; i++) {
+            // skip eventual combinations that are not sporting any
+            // root pseudo class
+            CssRule cssRule = combinedRules.get(i);
+            if (!cssRule.hasSymbolizerProperty()) {
+                continue;
+            }
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("Current domain coverage: " + coverage);
+                LOGGER.fine("Adding rule to domain coverage: " + cssRule);
+                LOGGER.fine("Rules left to process: " + (rulesCount - i));
+            }
+            List<CssRule> derivedRules = coverage.addRule(cssRule);
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine(
+                        "Derived rules not yet covered in domain coverage: "
+                                + derivedRules.size()
+                                + "\n"
+                                + derivedRules);
+            }
+            for (CssRule derived : derivedRules) {
+                if (!derived.hasNonNullSymbolizerProperty()) {
+                    continue;
+                }
+                buildSldRule(derived, ftsBuilder, targetFeatureType, null);
+
+                translatedRuleCount++;
+
+                // Reminder about why this is done the way it's done. These are all rule
+                // properties
+                // in CSS and are subject to override. In SLD they contribute to containing
+                // FeatureTypeStyle, so the first one found wins and controls this z-level
+
+                // check if we have global composition going, and use the value of
+                // the first rule providing the information (the one with the highest
+                // priority)
+                if (composite == null) {
+                    List<Value> values =
+                            derived.getPropertyValues(PseudoClass.ROOT, COMPOSITE).get(COMPOSITE);
+                    if (values != null && !values.isEmpty()) {
+                        composite = values.get(0).toLiteral();
+                    }
+                }
+                if (compositeBase == null) {
+                    List<Value> values =
+                            derived.getPropertyValues(PseudoClass.ROOT, COMPOSITE_BASE)
+                                    .get(COMPOSITE_BASE);
+                    if (values != null && !values.isEmpty()) {
+                        compositeBase = Boolean.valueOf(values.get(0).toLiteral());
+                    }
+                }
+
+                // check if we have any sort-by
+                if (sortBy == null) {
+                    List<Value> values =
+                            derived.getPropertyValues(PseudoClass.ROOT, SORT_BY).get(SORT_BY);
+                    if (values != null && !values.isEmpty()) {
+                        sortBy = values.get(0).toLiteral();
+                    }
+                }
+
+                // check if we have any sort-by-group
+                if (sortByGroup == null) {
+                    List<Value> values =
+                            derived.getPropertyValues(PseudoClass.ROOT, SORT_BY_GROUP)
+                                    .get(SORT_BY_GROUP);
+                    if (values != null && !values.isEmpty()) {
+                        sortByGroup = values.get(0).toLiteral();
+                    }
+                }
+
+                // check if we have a transform, apply it
+                if (transform == null) {
+                    List<Value> values =
+                            derived.getPropertyValues(PseudoClass.ROOT, TRANSFORM).get(TRANSFORM);
+                    if (values != null && !values.isEmpty()) {
+                        transform = values.get(0).toExpression();
+                    }
+                }
+
+                if (!backgroundFound.get()) {
+                    backgroundFound.set(buildBackground(styleBuilder, derived));
+                }
+            }
+
+            if (composite != null) {
+                ftsBuilder.option(COMPOSITE, composite);
+            }
+            if (Boolean.TRUE.equals(compositeBase)) {
+                ftsBuilder.option(COMPOSITE_BASE, "true");
+            }
+            if (sortBy != null) {
+                ftsBuilder.option(FeatureTypeStyle.SORT_BY, sortBy);
+            }
+            if (sortByGroup != null) {
+                ftsBuilder.option(FeatureTypeStyle.SORT_BY_GROUP, sortByGroup);
+            }
+            if (transform != null) {
+                ftsBuilder.transformation(transform);
+            }
+        }
+
+        return translatedRuleCount;
+    }
+
+    private TranslationMode configureDomainCoverage(
+            TranslationMode mode, int autoThreshold, int rulesCount, DomainCoverage coverage) {
+        if (mode == TranslationMode.Exclusive) {
+            // create a SLD rule for each css one, making them exclusive, that is,
+            // remove from each rule the union of the zoom/data domain matched by previous
+            // rules
+            coverage.exclusiveRulesEnabled = true;
+        } else if (mode == TranslationMode.Auto) {
+            if (rulesCount < autoThreshold) {
+                LOGGER.fine(
+                        "Sticking to Exclusive translation mode, rules number is "
+                                + rulesCount
+                                + " with a threshold of "
+                                + autoThreshold);
+                coverage.exclusiveRulesEnabled = true;
+                coverage.complexityThreshold = autoThreshold;
+            } else {
+                LOGGER.info(
+                        "Switching to Simple translation mode, rules number is "
+                                + rulesCount
+                                + " with a threshold of "
+                                + autoThreshold);
+                coverage.exclusiveRulesEnabled = false;
+                // switch the translation mode permanently from this point on
+                mode = TranslationMode.Simple;
+            }
+
+        } else {
+            // just skip rules with the same selector
+            coverage.exclusiveRulesEnabled = false;
+        }
+        return mode;
+    }
+
+    private void qualifyRules(List<CssRule> localRules, FeatureType targetFeatureType) {
+        // attach the target feature type to all Data selectors to allow range based
+        // simplification
+        for (CssRule rule : localRules) {
+            rule.getSelector()
+                    .accept(
+                            new AbstractSelectorVisitor() {
+                                @Override
+                                public Object visit(Data data) {
+                                    data.featureType = targetFeatureType;
+                                    return super.visit(data);
+                                }
+                            });
+        }
     }
 
     private int translateFlat(List<CssRule> allRules, StyleBuilder styleBuilder) {
@@ -2082,5 +2101,29 @@ public class CssTranslator {
         long end = System.currentTimeMillis();
 
         System.out.println("Translation performed in " + (end - start) / 1000d + " seconds");
+    }
+
+    private class ZIndexPowerSetBuilder extends RulePowerSetBuilder {
+        private final Integer zIndex;
+
+        public ZIndexPowerSetBuilder(
+                List<CssRule> flattenedRules,
+                CachedSimplifyingFilterVisitor cachedSimplifier,
+                int maxCombinations,
+                Integer zIndex) {
+            super(flattenedRules, cachedSimplifier, maxCombinations);
+            this.zIndex = zIndex;
+        }
+
+        @Override
+        protected List<CssRule> buildResult(List<CssRule> rules) {
+            if (zIndex != null && zIndex > 0) {
+                TreeSet<Integer> zIndexes = getZIndexesForRules(rules);
+                if (!zIndexes.contains(zIndex)) {
+                    return null;
+                }
+            }
+            return super.buildResult(rules);
+        }
     }
 }

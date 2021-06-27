@@ -98,6 +98,7 @@ public class XsDateTimeFormat extends Format {
         return parseObject(pString, pParsePosition, false);
     }
 
+    @SuppressWarnings("PMD.CognitiveComplexity")
     public Object parseObject(String pString, ParsePosition pParsePosition, boolean lenient) {
         if (pString == null) {
             throw new NullPointerException("The String argument must not be null.");

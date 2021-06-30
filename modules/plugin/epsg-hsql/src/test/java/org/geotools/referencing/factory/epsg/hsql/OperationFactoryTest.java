@@ -33,7 +33,6 @@ import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.operation.AbstractCoordinateOperation;
 import org.geotools.referencing.operation.AuthorityBackedFactory;
 import org.geotools.referencing.operation.BufferedCoordinateOperationFactory;
-import org.geotools.referencing.operation.DefaultConcatenatedOperation;
 import org.geotools.referencing.operation.TransformTestBase;
 import org.geotools.util.Classes;
 import org.geotools.util.factory.Hints;
@@ -491,7 +490,7 @@ public class OperationFactoryTest {
                 crsAuthFactory.createCoordinateReferenceSystem("EPSG:21036");
         CoordinateReferenceSystem targetCRS =
                 crsAuthFactory.createCoordinateReferenceSystem("EPSG:32736");
-        Map<String, DefaultConcatenatedOperation> transforms =
+        Map<String, AbstractCoordinateOperation> transforms =
                 CRS.getTransforms(sourceCRS, targetCRS);
         String[] expected = {"EPSG:3998", "EPSG:1284", "EPSG:1122", "EPSG:1285"};
         Set<String> keys = transforms.keySet();
@@ -518,7 +517,23 @@ public class OperationFactoryTest {
         assertEquals("Wrong number of transforms", expected2.length, keys.size());
         for (String code : expected2) {
             assertTrue("Expected key " + code + " not found", keys.contains(code));
-            DefaultConcatenatedOperation op = transforms.get(code);
+            AbstractCoordinateOperation op = transforms.get(code);
+            assertNotNull(op);
+            assertNotNull(op.getMathTransform());
+        }
+
+        CoordinateReferenceSystem gda94 = CRS.decode("epsg:4283");
+        CoordinateReferenceSystem gda2020 = CRS.decode("epsg:7844");
+
+        transforms = CRS.getTransforms(gda94, gda2020);
+
+        String[] expected3 = {"EPSG:8048", "EPSG:8447"};
+        keys = transforms.keySet();
+
+        assertEquals("Wrong number of transforms", expected3.length, keys.size());
+        for (String code : expected3) {
+            assertTrue("Expected key " + code + " not found", keys.contains(code));
+            AbstractCoordinateOperation op = transforms.get(code);
             assertNotNull(op);
             assertNotNull(op.getMathTransform());
         }

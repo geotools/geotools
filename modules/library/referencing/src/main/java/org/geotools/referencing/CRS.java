@@ -47,6 +47,7 @@ import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
 import org.geotools.referencing.cs.DefaultEllipsoidalCS;
 import org.geotools.referencing.factory.AbstractAuthorityFactory;
 import org.geotools.referencing.factory.IdentifiedObjectFinder;
+import org.geotools.referencing.operation.AbstractCoordinateOperation;
 import org.geotools.referencing.operation.DefaultConcatenatedOperation;
 import org.geotools.referencing.operation.DefaultMathTransformFactory;
 import org.geotools.referencing.operation.DefaultTransformation;
@@ -1239,9 +1240,9 @@ public final class CRS {
             String transformCode)
             throws FactoryException {
 
-        Map<String, DefaultConcatenatedOperation> transforms = getTransforms(sourceCRS, targetCRS);
+        Map<String, AbstractCoordinateOperation> transforms = getTransforms(sourceCRS, targetCRS);
         MathTransform ret = null;
-        for (Entry<String, DefaultConcatenatedOperation> entry : transforms.entrySet()) {
+        for (Entry<String, AbstractCoordinateOperation> entry : transforms.entrySet()) {
             if (entry.getKey().equalsIgnoreCase(transformCode)) {
                 ret = entry.getValue().getMathTransform();
             }
@@ -1265,12 +1266,12 @@ public final class CRS {
      * findMathTransform}(sourceCRS, targetCRS, transformCode)</code>
      * @throws FactoryException
      */
-    public static Map<String, DefaultConcatenatedOperation> getTransforms(
+    public static Map<String, AbstractCoordinateOperation> getTransforms(
             CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS)
             throws FactoryException {
         Set<CoordinateOperation> ops =
-                getCoordinateOperationFactory(true).findOperations(sourceCRS, targetCRS);
-        Map<String, DefaultConcatenatedOperation> transforms = new HashMap<>();
+                CRS.getCoordinateOperationFactory(true).findOperations(sourceCRS, targetCRS);
+        Map<String, AbstractCoordinateOperation> transforms = new HashMap<>();
         for (CoordinateOperation op : ops) {
             if (op instanceof DefaultConcatenatedOperation) {
                 for (SingleOperation opx : ((DefaultConcatenatedOperation) op).getOperations()) {
@@ -1280,8 +1281,13 @@ public final class CRS {
                         }
                     }
                 }
+            } else if (op instanceof DefaultTransformation) {
+                for (ReferenceIdentifier id : op.getIdentifiers()) {
+                    transforms.put(id.toString(), (DefaultTransformation) op);
+                }
             }
         }
+
         return transforms;
     }
 

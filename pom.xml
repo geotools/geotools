@@ -1512,6 +1512,11 @@
           <artifactId>maven-dependency-plugin</artifactId>
           <version>3.1.2</version>
         </plugin>
+        <plugin>
+          <groupId>com.ruleoftech</groupId>
+          <artifactId>markdown-page-generator-plugin</artifactId>
+          <version>2.3.1</version>
+        </plugin>
       </plugins>
     </pluginManagement>
 
@@ -1609,6 +1614,43 @@
       <!-- ======================================================= -->
       <!--     Resources.                                          -->
       <!-- ======================================================= -->
+      <plugin>
+        <groupId>com.ruleoftech</groupId>
+        <artifactId>markdown-page-generator-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>licenses</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputDirectory>${project.basedir}/licenses</inputDirectory>
+              <outputDirectory>${project.build.directory}/html/licenses</outputDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>readme</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputDirectory>${project.basedir}/build</inputDirectory>
+              <outputDirectory>${project.build.directory}/html</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+        <configuration>
+          <recursiveInput>false</recursiveInput>
+          <transformRelativeMarkdownLinks>true</transformRelativeMarkdownLinks>
+          <headerHtmlFile>${project.basedir}/build/maven/markdown/html/header.html</headerHtmlFile>
+          <footerHtmlFile>${project.basedir}/build/maven/markdown/html/footer.html</footerHtmlFile>
+          <pegdownExtensions>TABLES,FENCED_CODE_BLOCKS</pegdownExtensions>
+          <defaultTitle>true</defaultTitle>
+        </configuration>
+      </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>

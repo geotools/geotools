@@ -37,6 +37,11 @@
       <replacefilter token="@DATE@" value="${date}"/>
       <replacefilter token="@LINK@" value="${series}"/>
     </replace>
+    <replace file="README.md">
+      <replacefilter token="@RELEASE@" value="${release}"/>
+      <replacefilter token="@DATE@" value="${date}"/>
+      <replacefilter token="@LINK@" value="${series}"/>
+    </replace>
   </target>
 
 </project>

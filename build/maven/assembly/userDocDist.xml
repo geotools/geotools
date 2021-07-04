@@ -19,15 +19,17 @@
   </formats>
   <fileSets>
     <fileSet>
-      <directory>build</directory>
+      <directory>target/html</directory>
       <outputDirectory></outputDirectory>
       <includes>
         <include>README.html</include>
       </includes>
     </fileSet>
     <fileSet>
+      <directory>target/html/licenses</directory>
+      <outputDirectory>licenses</outputDirectory>
       <includes>
-        <include>geotools-logo.png</include>
+        <include>CreativeCommonsByAttribution.html</include>
       </includes>
     </fileSet>
     <fileSet>
@@ -41,11 +43,4 @@
       <outputDirectory></outputDirectory>
     </fileSet>
   </fileSets>
-  <files>
-    <file>
-      <source>licenses/CreativeCommonsByAttribution.md</source>
-      <outputDirectory></outputDirectory>
-      <destName>LICENSE.md</destName>
-    </file>
-  </files>
 </assembly>

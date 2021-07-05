@@ -189,7 +189,7 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
         double[] expected = {31, 5.590822639508929E8, 68247.34667369298};
         double delta = 0.00001;
         double[] scales = service.getScaleList();
-        String msg = service.getType() + "::" + service.getLayerName();
+        String msg = "Wrong scales of KVP::unesco:Unesco_point";
         assertEquals(msg, (int) expected[0], scales.length);
         assertEquals(msg, expected[1], scales[0], delta);
         assertEquals(msg, expected[2], scales[13], delta);
@@ -211,7 +211,7 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
         double delta = 0.001;
 
         ReferencedEnvelope env = service.getBounds();
-        String msg = service.getType() + "::" + service.getLayerName();
+        String msg = "Wrong bounds of KVP::unesco:Unesco_point";
         assertEquals(msg, expected.getMinimum(1), env.getMinimum(1), delta);
         assertEquals(msg, expected.getMinimum(0), env.getMinimum(0), delta);
         assertEquals(msg, expected.getMaximum(1), env.getMaximum(1), delta);

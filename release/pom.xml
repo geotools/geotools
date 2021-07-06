@@ -23,7 +23,8 @@
   <packaging>pom</packaging>
   <name>Geotools Release</name>
   <description>Geotools library release packaging</description>
-
+  
+  <!-- please keep the list of dependencies alphabetical so it is easier to maintain -->
   <dependencies>
     <dependency>
       <groupId>org.geotools</groupId>
@@ -34,7 +35,7 @@
       <groupId>org.geotools</groupId>
       <artifactId>gt-app-schema</artifactId>
       <version>${project.version}</version>
-    </dependency>
+    </dependency>    
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-arcgrid</artifactId>
@@ -55,8 +56,11 @@
       <artifactId>gt-complex</artifactId>
       <version>${project.version}</version>
     </dependency>
-
-    <!-- gt-coverage-multidim -->
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-cql-json</artifactId>
+      <version>${project.version}</version>
+    </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-coverage-api</artifactId>
@@ -245,6 +249,11 @@
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
+      <artifactId>gt-sample-data-access</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
       <artifactId>gt-shapefile</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -288,7 +297,46 @@
       <artifactId>gt-ysld</artifactId>
       <version>${project.version}</version>
     </dependency>
-    
+    <dependency>
+      <groupId>org.geotools.jdbc</groupId>
+      <artifactId>gt-jdbc-db2</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools.jdbc</groupId>
+      <artifactId>gt-jdbc-h2</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools.jdbc</groupId>
+      <artifactId>gt-jdbc-hana</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools.jdbc</groupId>
+      <artifactId>gt-jdbc-mysql</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools.jdbc</groupId>
+      <artifactId>gt-jdbc-oracle</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools.jdbc</groupId>
+      <artifactId>gt-jdbc-postgis</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools.jdbc</groupId>
+      <artifactId>gt-jdbc-sqlserver</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools.jdbc</groupId>
+      <artifactId>gt-jdbc-teradata</artifactId>
+      <version>${project.version}</version>
+    </dependency>
     <dependency>
       <groupId>org.geotools.xsd</groupId>
       <artifactId>gt-xsd-core</artifactId>
@@ -354,47 +402,6 @@
       <artifactId>gt-xsd-wps</artifactId>
       <version>${project.version}</version>
     </dependency>
-    
-    <dependency>
-      <groupId>org.geotools.jdbc</groupId>
-      <artifactId>gt-jdbc-db2</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.geotools.jdbc</groupId>
-      <artifactId>gt-jdbc-h2</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.geotools.jdbc</groupId>
-      <artifactId>gt-jdbc-hana</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.geotools.jdbc</groupId>
-      <artifactId>gt-jdbc-mysql</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.geotools.jdbc</groupId>
-      <artifactId>gt-jdbc-oracle</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.geotools.jdbc</groupId>
-      <artifactId>gt-jdbc-postgis</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.geotools.jdbc</groupId>
-      <artifactId>gt-jdbc-sqlserver</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.geotools.jdbc</groupId>
-      <artifactId>gt-jdbc-teradata</artifactId>
-      <version>${project.version}</version>
-    </dependency>
   </dependencies>
 
   <!-- =========================================================== -->
@@ -439,14 +446,13 @@
           <defaultTitle>true</defaultTitle>
         </configuration>
       </plugin>
+
       <!-- package distribution -->
-      <!-- ModuleSets require `mvn package assembly:single` (or bind to package as done below) -->
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <executions>
           <execution>
             <id>make-assembly</id>
-            <phase>package</phase>
             <goals>
               <goal>single</goal>
             </goals>
@@ -454,10 +460,7 @@
         </executions>
         <configuration>
           <descriptors>
-            <!-- moduleSets approach requires complete build -->
-            <descriptor>src/assembly/binaryDist.xml</descriptor>
-            <!-- dependencySet approach lots of duplication -->
-            <descriptor>src/assembly/binaryDist2.xml</descriptor>
+            <descriptor>src/assembly/binaryDistDependencies.xml</descriptor>
             <descriptor>src/assembly/sourceDist.xml</descriptor>
             <descriptor>src/assembly/userDocDist.xml</descriptor>
           </descriptors>

@@ -52,15 +52,25 @@ To use the GeoTools libraries you will need:
 Details on JRE compatibility and optional extensions are found in our
 [developers guide](http://docs.geotools.org/@LINK@/userguide/build/install/jdk.html).
 
-### Use
+### Quickstart
 
 As a java library GeoTools is intended for use within your own program, the binary distribution includes jars of the geotools library, and third-party jars required for their operation.
 
-Select classes provide a *main* method and can be used in isolation:
+The GeoTools utility class provide a *main* method to verify installation:
 
 ````
 java -cp "lib/*" org.geotools.util.factory.GeoTools 
 ````
+
+To compile and run Quickstart.java:
+
+```
+mkdir bin
+javac -cp "lib/*" -d bin src/org/geotools/tutorial/quickstart/Quickstart.java 
+java -cp "lib/*:bin" org.geotools.tutorial.quickstart.Quickstart
+```
+
+For more information see user Guide [Quickstart](http://docs.geotools.org/@LINK@/userguide/tutorial/quickstart/index.html).
 
 ### Building (Optional)
 

@@ -18,20 +18,21 @@
     <format>zip</format>
   </formats>
   
-  <!-- module sets work - but only during a full build -->
-
-  <moduleSets>
-
-    <moduleSet>
-      <useAllReactorProjects>true</useAllReactorProjects>
-      <includeSubModules>true</includeSubModules>
+  <!-- dependency sets work, but then we have the maintenance of gt-release depending on everything -->
+  <dependencySets>
+    <dependencySet>
+      <outputDirectory>lib</outputDirectory>
+      <unpack>false</unpack>
+      <useProjectArtifact>false</useProjectArtifact>
+      <useTransitiveDependencies>true</useTransitiveDependencies>
+      <useTransitiveFiltering>true</useTransitiveFiltering>
+      <useStrictFiltering>true</useStrictFiltering>
       <includes>
         <include>org.geotools:gt-arcgrid</include>
         <include>org.geotools:gt-brewer</include>
         <include>org.geotools:gt-charts</include>
         <include>org.geotools:gt-complex</include>
         <include>org.geotools:gt-coverage-api</include>
-        <include>org.geotools:gt-coverage-multidim</include>
         <include>org.geotools:gt-coverage</include>
         <include>org.geotools:gt-cql</include>
         <include>org.geotools:gt-csv</include>
@@ -75,17 +76,7 @@
         <include>org.geotools:gt-wmts</include>
         <include>org.geotools:gt-xml</include>
         <include>org.geotools:gt-ysld</include>
-
-        <include>org.geotools.jdbc:gt-jdbc-oracle</include>
-        <include>org.geotools.jdbc:gt-jdbc-db2</include>
-        <include>org.geotools.jdbc:gt-jdbc-h2</include>
-        <include>org.geotools.jdbc:gt-jdbc-hana</include>
-        <include>org.geotools.jdbc:gt-jdbc-mysql</include>
-        <include>org.geotools.jdbc:gt-jdbc-oracle</include>
-        <include>org.geotools.jdbc:gt-jdbc-postgis</include>
-        <include>org.geotools.jdbc:gt-jdbc-sqlserver</include>
-        <include>org.geotools.jdbc:gt-jdbc-teradata</include>
-
+        
         <include>org.geotools.xsd:gt-xsd-core</include>
         <include>org.geotools.xsd:gt-xsd-csw</include>
         <include>org.geotools.xsd:gt-xsd-fes</include>
@@ -100,40 +91,34 @@
         <include>org.geotools.xsd:gt-xsd-wms</include>
         <include>org.geotools.xsd:gt-xsd-wmts</include>
         <include>org.geotools.xsd:gt-xsd-wps</include>
-
+        
+        <include>org.geotools.jdbc:gt-jdbc-oracle</include>
+        <include>org.geotools.jdbc:gt-jdbc-db2</include>
+        <include>org.geotools.jdbc:gt-jdbc-h2</include>
+        <include>org.geotools.jdbc:gt-jdbc-hana</include>
+        <include>org.geotools.jdbc:gt-jdbc-mysql</include>
+        <include>org.geotools.jdbc:gt-jdbc-oracle</include>
+        <include>org.geotools.jdbc:gt-jdbc-postgis</include>
+        <include>org.geotools.jdbc:gt-jdbc-sqlserver</include>
+        <include>org.geotools.jdbc:gt-jdbc-teradata</include>
+        
         <include>org.geotools:gt-app-schema</include>
         <include>org.geotools:gt-app-schema-resolver</include>
         <include>org.geotools:gt-sample-data-access</include>
-        
       </includes>
-      <binaries>
-        <unpack>false</unpack>
-        <includeDependencies>true</includeDependencies>
-        <outputDirectory>lib</outputDirectory>
-        <dependencySets>
-          <dependencySet>
-            <outputDirectory>lib</outputDirectory>
-            <unpack>false</unpack>
-            <useTransitiveDependencies>true</useTransitiveDependencies>
-          </dependencySet>
-        </dependencySets>
-      </binaries>
-    </moduleSet>
-   
-    <moduleSet>
-      <useAllReactorProjects>true</useAllReactorProjects>
+    </dependencySet>
+    <dependencySet>
+      <outputDirectory>optional</outputDirectory>
+      <unpack>false</unpack>
+      <useProjectArtifact>false</useProjectArtifact>
+      <useStrictFiltering>true</useStrictFiltering>
       <includes>
         <include>org.geotools:gt-epsg-postgresql</include>
         <include>org.geotools:gt-epsg-wkt</include>
       </includes>
-      <binaries>
-        <unpack>false</unpack>
-        <includeDependencies>false</includeDependencies>
-        <outputDirectory>optional</outputDirectory>
-      </binaries>
-    </moduleSet>
-    
-  </moduleSets>
+    </dependencySet>
+  </dependencySets>
+  
   
   <fileSets>
     <fileSet>
@@ -158,11 +143,15 @@
       </includes>
     </fileSet>
   </fileSets>
-  
   <files>
     <file>
       <source>target/html/licenses/README.html</source>
       <destName>licenses/NOTICE.html</destName>
+    </file>
+    <!-- tutorials -->
+    <file>
+      <source>../docs/src/main/java/org/geotools/tutorial/quickstart/Quickstart.java</source>
+      <destName>src/org/geotools/tutorial/quickstart/Quickstart.java</destName>
     </file>
   </files>
 </assembly>

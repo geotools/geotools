@@ -144,7 +144,7 @@ if [ "$SKIP_BUILD" != true ]; then
   echo "building release"
   mvn $MAVEN_FLAGS -DskipTests -Dall clean install
   echo "building release: assemble artifacts"
-  mvn $MAVEN_FLAGS -f release/pom.xml -DskipTests package
+  mvn $MAVEN_FLAGS -f release/pom.xml -DskipTests assembly:single
 fi
 
 target=`pwd`/target
@@ -164,12 +164,13 @@ echo "copying artifacts to $dist"
 cp $target/*.zip $dist
 cp release/target/*.zip $dist
 
-
 init_git $git_user $git_email
 
 # commit changes, excluding release staging dir
-git add docs modules
-git add pom.xml build/pom.xml build/README.html build/README.md build/maven
+# expecting:
+# - docs modules release
+# - pom.xml build/pom.xml build/maven
+git add .
 git commit -m "updating version numbers and README for $tag"
 
 # tag release branch

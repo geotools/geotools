@@ -39,7 +39,7 @@
       </includes>
     </fileSet>
     <fileSet>
-      <directory>docs/target/user/html</directory>
+      <directory>../docs/target/user/html</directory>
       <outputDirectory></outputDirectory>
     </fileSet>
   </fileSets>

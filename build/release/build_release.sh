@@ -142,9 +142,9 @@ popd > /dev/null
 if [ "$SKIP_BUILD" != true ]; then
   export MAVEN_OPTS="-Xmx2048m"
   echo "building release"
-  mvn $MAVEN_FLAGS -DskipTests -Dall clean -Pcollect install
+  mvn $MAVEN_FLAGS -DskipTests -Dall clean install
   echo "building release: assemble artifacts"
-  mvn $MAVEN_FLAGS -DskipTests assembly:assembly
+  mvn $MAVEN_FLAGS -f release/pom.xml -DskipTests package
 fi
 
 target=`pwd`/target
@@ -162,6 +162,8 @@ fi
 
 echo "copying artifacts to $dist"
 cp $target/*.zip $dist
+cp release/target/*.zip $dist
+
 
 init_git $git_user $git_email
 

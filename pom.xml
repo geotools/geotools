@@ -356,6 +356,7 @@
   <modules>
     <module>build</module>
     <module>modules</module>
+    <module>release</module>
   </modules>
 
   <scm>
@@ -1451,7 +1452,10 @@
     <pluginManagement>
       <plugins>
         <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>3.3.0</version>
+        </plugin>
+        <plugin>
           <artifactId>maven-eclipse-plugin</artifactId>
           <version>2.10</version>
         </plugin>
@@ -1461,7 +1465,6 @@
           <version>${maven.jacoco.plugin.version}</version>
         </plugin>
         <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
           <version>${maven.javadoc.plugin.version}</version>
         </plugin>
@@ -1471,7 +1474,6 @@
           <version>1.9.1</version>
         </plugin>
         <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-plugin-plugin</artifactId>
           <version>3.6.0</version>
         </plugin>
@@ -1481,22 +1483,18 @@
           <version>2.4.0</version>
         </plugin>
         <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-checkstyle-plugin</artifactId>
           <version>3.1.1</version>
         </plugin>
         <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-clean-plugin</artifactId>
           <version>3.1.0</version>
         </plugin>
         <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-install-plugin</artifactId>
           <version>3.0.0-M1</version>
         </plugin>
         <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-deploy-plugin</artifactId>
           <version>3.0.0-M1</version>
         </plugin>
@@ -1525,7 +1523,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>3.2.0</version>
         <executions>
           <execution>
             <id>remove_gt_from_modulename</id>
@@ -1574,19 +1572,6 @@
         </executions>
       </plugin>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <version>2.4</version>
-        <configuration>
-          <descriptors>
-            <descriptor>build/maven/assembly/binaryDist.xml</descriptor>
-            <descriptor>build/maven/assembly/sourceDist.xml</descriptor>
-            <descriptor>build/maven/assembly/userDocDist.xml</descriptor>
-          </descriptors>
-        </configuration>
-      </plugin>
-
       <!-- ======================================================= -->
       <!--     Compilation.                                        -->
       <!-- ======================================================= -->
@@ -1614,43 +1599,6 @@
       <!-- ======================================================= -->
       <!--     Resources.                                          -->
       <!-- ======================================================= -->
-      <plugin>
-        <groupId>com.ruleoftech</groupId>
-        <artifactId>markdown-page-generator-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>licenses</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-            <configuration>
-              <inputDirectory>${project.basedir}/licenses</inputDirectory>
-              <outputDirectory>${project.build.directory}/html/licenses</outputDirectory>
-            </configuration>
-          </execution>
-          <execution>
-            <id>readme</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-            <configuration>
-              <inputDirectory>${project.basedir}/build</inputDirectory>
-              <outputDirectory>${project.build.directory}/html</outputDirectory>
-            </configuration>
-          </execution>
-        </executions>
-        <configuration>
-          <recursiveInput>false</recursiveInput>
-          <transformRelativeMarkdownLinks>true</transformRelativeMarkdownLinks>
-          <headerHtmlFile>${project.basedir}/build/maven/markdown/html/header.html</headerHtmlFile>
-          <footerHtmlFile>${project.basedir}/build/maven/markdown/html/footer.html</footerHtmlFile>
-          <pegdownExtensions>TABLES,FENCED_CODE_BLOCKS</pegdownExtensions>
-          <defaultTitle>true</defaultTitle>
-        </configuration>
-      </plugin>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>

@@ -21,7 +21,7 @@
   <!-- module sets work - but only during a full build -->
 
   <moduleSets>
-  
+
     <moduleSet>
       <useAllReactorProjects>true</useAllReactorProjects>
       <includeSubModules>true</includeSubModules>
@@ -50,7 +50,6 @@
         <include>org.geotools:gt-imageio-ext-gdal</include>
         <include>org.geotools:gt-imagemosaic</include>
         <include>org.geotools:gt-imagepyramid</include>
-        <include>org.geotools:gt-jdbc-postgis</include>
         <include>org.geotools:gt-jdbc</include>
         <include>org.geotools:gt-jp2k</include>
         <include>org.geotools:gt-main</include>
@@ -77,6 +76,16 @@
         <include>org.geotools:gt-xml</include>
         <include>org.geotools:gt-ysld</include>
 
+        <include>org.geotools.jdbc:gt-jdbc-oracle</include>
+        <include>org.geotools.jdbc:gt-jdbc-db2</include>
+        <include>org.geotools.jdbc:gt-jdbc-h2</include>
+        <include>org.geotools.jdbc:gt-jdbc-hana</include>
+        <include>org.geotools.jdbc:gt-jdbc-mysql</include>
+        <include>org.geotools.jdbc:gt-jdbc-oracle</include>
+        <include>org.geotools.jdbc:gt-jdbc-postgis</include>
+        <include>org.geotools.jdbc:gt-jdbc-sqlserver</include>
+        <include>org.geotools.jdbc:gt-jdbc-teradata</include>
+
         <include>org.geotools.xsd:gt-xsd-core</include>
         <include>org.geotools.xsd:gt-xsd-csw</include>
         <include>org.geotools.xsd:gt-xsd-fes</include>
@@ -92,6 +101,10 @@
         <include>org.geotools.xsd:gt-xsd-wmts</include>
         <include>org.geotools.xsd:gt-xsd-wps</include>
 
+        <include>org.geotools:gt-app-schema</include>
+        <include>org.geotools:gt-app-schema-resolver</include>
+        <include>org.geotools:gt-sample-data-access</include>
+        
       </includes>
       <binaries>
         <unpack>false</unpack>
@@ -102,73 +115,11 @@
             <outputDirectory>lib</outputDirectory>
             <unpack>false</unpack>
             <useTransitiveDependencies>true</useTransitiveDependencies>
-            <useTransitiveFiltering>true</useTransitiveFiltering>
           </dependencySet>
         </dependencySets>
       </binaries>
     </moduleSet>
-    
-    <moduleSet>
-      <useAllReactorProjects>true</useAllReactorProjects>
-      <includeSubModules/>
-      <includes>
-        <include>org.geotools.jdbc:jdbc-oracle</include>
-        <include>org.geotools.jdbc:jdbc-db2</include>
-        <include>org.geotools.jdbc:jdbc-h2</include>
-        <include>org.geotools.jdbc:jdbc-hana</include>
-        <include>org.geotools.jdbc:jdbc-mysql</include>
-        <include>org.geotools.jdbc:jdbc-oracle</include>
-        <include>org.geotools.jdbc:jdbc-postgis</include>
-        <include>org.geotools.jdbc:jdbc-sqlserver</include>
-        <include>org.geotools.jdbc:jdbc-teradata</include>
-      </includes>
-      <excludes>
-        <exclude>org.geotools:gt-jdbc</exclude>
-      </excludes>
-      <binaries>
-        <unpack>false</unpack>
-        <includeDependencies>true</includeDependencies>
-        <outputDirectory>jdbc</outputDirectory>
-        <dependencySets>
-          <dependencySet>
-            <excludes>
-              <exclude>org.geotools:gt-jdbc</exclude>
-            </excludes>
-            <useTransitiveDependencies>true</useTransitiveDependencies>
-            <useTransitiveFiltering>true</useTransitiveFiltering>
-          </dependencySet>
-        </dependencySets>
-      </binaries>
-    </moduleSet>
-    
-    <moduleSet>
-      <useAllReactorProjects>true</useAllReactorProjects>
-      <includeSubModules/>
-      <includes>
-        <include>org.geotools:app-schema</include>
-        <include>org.geotools:app-schema-resolver</include>
-        <include>org.geotools:gt-sample-data-access</include>
-        <include>org.geotools:gt-app-schema-example</include>
-      </includes>
-      <excludes>
-        <exclude>org.geotools:*</exclude>
-      </excludes>
-      <binaries>
-        <unpack>false</unpack>
-        <includeDependencies>true</includeDependencies>
-        <outputDirectory>plugin</outputDirectory>
-        <dependencySets>
-          <dependencySet>
-            <excludes>
-              <exclude>org.geotools:*</exclude>
-            </excludes>
-            <useTransitiveDependencies>true</useTransitiveDependencies>
-            <useTransitiveFiltering>true</useTransitiveFiltering>
-          </dependencySet>
-        </dependencySets>
-      </binaries>
-    </moduleSet>
-    
+   
     <moduleSet>
       <useAllReactorProjects>true</useAllReactorProjects>
       <includes>
@@ -178,7 +129,7 @@
       <binaries>
         <unpack>false</unpack>
         <includeDependencies>false</includeDependencies>
-        <outputDirectory>plugin</outputDirectory>
+        <outputDirectory>optional</outputDirectory>
       </binaries>
     </moduleSet>
     

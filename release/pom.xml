@@ -455,7 +455,7 @@
         <configuration>
           <descriptors>
             <!-- moduleSets approach requires complete build -->
-            <!--descriptor>src/assembly/binaryDist.xml</descriptor-->
+            <descriptor>src/assembly/binaryDist.xml</descriptor>
             <!-- dependencySet approach lots of duplication -->
             <descriptor>src/assembly/binaryDist2.xml</descriptor>
             <descriptor>src/assembly/sourceDist.xml</descriptor>

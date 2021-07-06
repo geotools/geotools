@@ -86,6 +86,10 @@
         <include>org.geotools.xsd:gt-xsd-wms</include>
         <include>org.geotools.xsd:gt-xsd-wmts</include>
         <include>org.geotools.xsd:gt-xsd-wps</include>
+        
+        <include>org.geotools:gt-app-schema</include>
+        <include>org.geotools:gt-app-schema-resolver</include>
+        <include>org.geotools:gt-sample-data-access</include>
       </includes>
       <unpack>false</unpack>
       <useProjectArtifact>false</useProjectArtifact>
@@ -93,7 +97,7 @@
       <useTransitiveFiltering>true</useTransitiveFiltering>
     </dependencySet>
     <dependencySet>
-      <outputDirectory>plugin</outputDirectory>
+      <outputDirectory>optional</outputDirectory>
       <includes>
         <include>org.geotools:gt-epsg-postgresql</include>
         <include>org.geotools:gt-epsg-wkt</include>

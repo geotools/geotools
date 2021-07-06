@@ -134,6 +134,8 @@ public class MetadataTablePrimaryKeyFinder extends PrimaryKeyFinder {
                             }
 
                         } catch (Exception e) {
+                            LOGGER.log(Level.WARNING, "Error retrieving database metadata: ", e);
+
                             // clean up the transaction status in case we are in auto-commit mode
                             if (e instanceof SQLException && !cx.getAutoCommit()) {
                                 cx.rollback();

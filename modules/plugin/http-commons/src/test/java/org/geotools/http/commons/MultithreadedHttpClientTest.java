@@ -22,6 +22,9 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.isNull;
 import static org.mockito.Mockito.mock;
@@ -35,13 +38,20 @@ import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.Collections;
 import org.apache.http.HttpException;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.conn.HttpHostConnectException;
+import org.apache.http.params.HttpParams;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -88,32 +98,51 @@ public class MultithreadedHttpClientTest {
     @Test
     public void testGetWithNoMatchingNonProxyHost() throws MalformedURLException, IOException {
         System.setProperty(SYS_PROP_KEY_HOST, "myproxy");
-        System.setProperty(SYS_PROP_KEY_NONPROXYHOSTS, "localhost");
-        try (MultithreadedHttpClient sut = new MultithreadedHttpTestClient()) {
-
-            sut.get(new URL("http://www.geotools.org"));
-            // HttpClient.executeMethod(HttpMethod) has to be called (w/o
-            // HostConfig)
-            verify(mockHttpClient, times(1)).execute(any(HttpRequestBase.class));
+        System.setProperty(SYS_PROP_KEY_NONPROXYHOSTS, "*.geotools.org|localhost");
+        try (MultithreadedHttpClient sut = new MultithreadedHttpClient()) {
+            sut.setConnectTimeout(1);
+            HttpClient client = sut.createHttpClient();
+            try {
+                HttpResponse resp = client.execute(new HttpHost("www.google.com"), new HttpGet());
+                fail("Proxy fail");
+            } catch (UnknownHostException e) {
+                //all is good
+            }
+            try {
+                HttpResponse resp = client.execute(new HttpHost("localhost"), new HttpGet());
+                assertNotNull("proxy non-host fail",resp);
+            } catch (HttpHostConnectException e) {
+              //all is good
+            }
+            try {
+                HttpResponse resp = client.execute(new HttpHost("www.geotools.org"), new HttpGet());
+                assertNotNull("proxy non-host fail",resp);
+            } catch (HttpHostConnectException e) {
+              //all is good
+            }
         }
     }
 
     /** Verifies that method is executed without specifying nonProxyHosts. */
     @Test
     public void testGetWithoutNonProxyHost() throws MalformedURLException, IOException {
-        try (MultithreadedHttpClient sut = new MultithreadedHttpTestClient()) {
-
-            sut.get(new URL("http://www.geotools.org"));
+        try (MultithreadedHttpClient sut = new MultithreadedHttpClient()) {
+            HttpClient client = sut.createHttpClient();
+            HttpResponse resp = client.execute(new HttpHost("www.geotools.org"), new HttpGet());
+            assertNotNull("network fail",resp);
         }
 
         System.setProperty(SYS_PROP_KEY_HOST, "myproxy");
         try (MultithreadedHttpClient sut = new MultithreadedHttpTestClient()) {
-            sut.get(new URL("http://www.geotools.org"));
+            //sut.get(new URL("http://www.geotools.org"));
+            HttpClient client = sut.createHttpClient();
+            HttpResponse resp = client.execute(new HttpHost("www.geotools.org"), new HttpGet());
+            assertNull("Proxy look up failed", resp);
         }
 
         // HttpClient.executeMethod(HttpMethod) has to be called (w/o
         // HostConfig)
-        verify(mockHttpClient, times(2)).execute(any(HttpRequestBase.class));
+  
     }
 
     /** Verifies that the nonProxyConfig is used when a GET is executed, matching a nonProxyHost. */

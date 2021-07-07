@@ -109,10 +109,6 @@
       <version>${project.version}</version>
       <exclusions>
         <exclusion>
-          <artifactId>gt-wfs</artifactId>
-          <groupId>org.geotools</groupId>
-        </exclusion>
-        <exclusion>
           <artifactId>gt-xsd-wfs</artifactId>
           <groupId>org.geotools.xsd</groupId>
         </exclusion>

@@ -23,7 +23,7 @@
   <packaging>pom</packaging>
   <name>Geotools Release</name>
   <description>Geotools library release packaging</description>
-  
+
   <!-- please keep the list of dependencies alphabetical so it is easier to maintain -->
   <dependencies>
     <dependency>
@@ -35,7 +35,7 @@
       <groupId>org.geotools</groupId>
       <artifactId>gt-app-schema</artifactId>
       <version>${project.version}</version>
-    </dependency>    
+    </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-arcgrid</artifactId>

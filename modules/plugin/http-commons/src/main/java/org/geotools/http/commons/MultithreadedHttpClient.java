@@ -21,11 +21,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -54,7 +51,6 @@ import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPConnectionPooling;
 import org.geotools.http.HTTPProxy;
 import org.geotools.http.HTTPResponse;
-import org.geotools.util.logging.Logging;
 
 /**
  * An Apache commons HTTP client based {@link HTTPClient} backed by a multithreaded connection
@@ -72,8 +68,6 @@ import org.geotools.util.logging.Logging;
  */
 public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPooling, HTTPProxy {
 
-    private static final Logger LOGGER = Logging.getLogger(MultithreadedHttpClient.class);
-
     private final PoolingHttpClientConnectionManager connectionManager;
 
     private HttpClient client;
@@ -83,11 +77,6 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
     private String password;
 
     private boolean tryGzip = true;
-
-    /** Available if a proxy was specified as system property */
-    private RequestConfig hostConfigNoProxy;
-
-    private Set<String> nonProxyHosts = new HashSet<>();
 
     private RequestConfig connectionConfig;
 
@@ -127,7 +116,7 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
         HttpPost postMethod = new HttpPost(url.toExternalForm());
         postMethod.setConfig(connectionConfig);
         if (user != null && password != null) {
-            List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+            List<NameValuePair> nvps = new ArrayList<>();
             nvps.add(new BasicNameValuePair("username", user));
             nvps.add(new BasicNameValuePair("password", password));
             postMethod.setEntity(new UrlEncodedFormEntity(nvps));

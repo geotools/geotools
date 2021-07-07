@@ -32,7 +32,7 @@
   </target>
   
   <target name="readme">
-    <replace file="README.html">
+    <replace file="../release/src/markdown/README.md">
       <replacefilter token="@RELEASE@" value="${release}"/>
       <replacefilter token="@DATE@" value="${date}"/>
       <replacefilter token="@LINK@" value="${series}"/>

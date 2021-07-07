@@ -46,12 +46,9 @@ import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.HttpHostConnectException;
-import org.apache.http.params.HttpParams;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -106,19 +103,19 @@ public class MultithreadedHttpClientTest {
                 HttpResponse resp = client.execute(new HttpHost("www.google.com"), new HttpGet());
                 fail("Proxy fail");
             } catch (UnknownHostException e) {
-                //all is good
+                // all is good
             }
             try {
                 HttpResponse resp = client.execute(new HttpHost("localhost"), new HttpGet());
-                assertNotNull("proxy non-host fail",resp);
+                assertNotNull("proxy non-host fail", resp);
             } catch (HttpHostConnectException e) {
-              //all is good
+                // all is good
             }
             try {
                 HttpResponse resp = client.execute(new HttpHost("www.geotools.org"), new HttpGet());
-                assertNotNull("proxy non-host fail",resp);
+                assertNotNull("proxy non-host fail", resp);
             } catch (HttpHostConnectException e) {
-              //all is good
+                // all is good
             }
         }
     }
@@ -129,12 +126,12 @@ public class MultithreadedHttpClientTest {
         try (MultithreadedHttpClient sut = new MultithreadedHttpClient()) {
             HttpClient client = sut.createHttpClient();
             HttpResponse resp = client.execute(new HttpHost("www.geotools.org"), new HttpGet());
-            assertNotNull("network fail",resp);
+            assertNotNull("network fail", resp);
         }
 
         System.setProperty(SYS_PROP_KEY_HOST, "myproxy");
         try (MultithreadedHttpClient sut = new MultithreadedHttpTestClient()) {
-            //sut.get(new URL("http://www.geotools.org"));
+            // sut.get(new URL("http://www.geotools.org"));
             HttpClient client = sut.createHttpClient();
             HttpResponse resp = client.execute(new HttpHost("www.geotools.org"), new HttpGet());
             assertNull("Proxy look up failed", resp);
@@ -142,7 +139,7 @@ public class MultithreadedHttpClientTest {
 
         // HttpClient.executeMethod(HttpMethod) has to be called (w/o
         // HostConfig)
-  
+
     }
 
     /** Verifies that the nonProxyConfig is used when a GET is executed, matching a nonProxyHost. */

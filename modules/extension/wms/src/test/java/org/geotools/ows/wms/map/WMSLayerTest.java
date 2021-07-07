@@ -22,7 +22,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +49,7 @@ public class WMSLayerTest {
     Map<String, String> parseParams(String query) {
 
         List<org.apache.http.NameValuePair> params =
-                URLEncodedUtils.parse(query, Charset.forName("UTF-8"));
+                URLEncodedUtils.parse(query, StandardCharsets.UTF_8);
         Map<String, String> result = new HashMap<>();
         for (Object param : params) {
             NameValuePair pair = (NameValuePair) param;

@@ -7,7 +7,7 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +39,7 @@ public class WMSCoverageReaderTest {
 
     Map<String, String> parseParams(String query) {
 
-        List<NameValuePair> params = URLEncodedUtils.parse(query, Charset.forName("UTF-8"));
+        List<NameValuePair> params = URLEncodedUtils.parse(query, StandardCharsets.UTF_8);
         Map<String, String> result = new HashMap<>();
         for (Object param : params) {
             NameValuePair pair = (NameValuePair) param;

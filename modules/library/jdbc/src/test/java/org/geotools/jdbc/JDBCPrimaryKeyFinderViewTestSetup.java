@@ -42,18 +42,13 @@ public abstract class JDBCPrimaryKeyFinderViewTestSetup extends JDBCDelegatingTe
     /**
      * Creates the default geotools metadata table, empty.
      *
-     * <p>The table is named "gt_pk_metdata". See {@link MetadataTablePrimaryKeyFinder} javadoc for
+     * <p>The table is named "tbl_gt_pk_metadata". See {@link MetadataTablePrimaryKeyFinder} javadoc for
      * the expected table structure
      */
     protected abstract void createMetadataTable() throws Exception;
 
     /**
-     * Creates a table named 'plaintable' with no primary key and the following structure
-     *
-     * <p>plaintable( key1:Integer, key2: Integer, name:String; geom:Geometry; )
-     *
-     * <p>The table should be populated with the following data: 1, 2, "one" | NULL 2, 3, "two" |
-     * NULL 3, 4, "three" | NULL
+     * Creates a view named 'gt_pk_metadata' which queries from 'tbl_gt_pk_metadata'
      */
     protected abstract void createMetadataView() throws Exception;
 

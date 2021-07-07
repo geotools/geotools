@@ -5,17 +5,19 @@ The GeoTools library plays host to several "unsupported" components, here is the
 
 * Why Support your Module
   
-  You do get a couple of benefits from having a supported module:
+  Benefits from having a supported module:
   
-  * your work is bundled up as part of the GeoTools release process
-  * You can have a couple of seconds JUnit test time to verify your module works
-  * You can create Online-Tests for cruise control to run
+  * Module bundled up as part of the GeoTools release process and is available for download
+  * Module JUnit test are run time to verify your module works and is not broken by changes
+  * You can create Online-Tests for builder server to run
 
 * Picking up a Module
   
   If you are interested in picking up an unsupported module (perhaps it was abandoned?)
   have a look into the section on Module Maintainers - you can volunteer as Module
   Maintainer if you interested.
+
+Here is a check-list for module graduation:
 
 ====== ============================= ==========================================
 Check  Step                          Notes
@@ -36,9 +38,9 @@ The GeoTools Gold Star Quality Assurance Check defines a couple of quick QA test
    
    :doc:`check`
 
-2. GeoTools 2.5 and onward expects four stars for a supported module.
+2. GeoTools expects four stars for a supported module.
 
-3. Create a README.md file:
+3. Create a `README.md` file:
    
    * show project status
    * show IP status
@@ -169,6 +171,7 @@ User Documentation
    
 2. It is recommended that you make a single example showing how to use your module
    or plugin (you can use a a code example if you must).
+   
 3. You may wish to refer to the writing guidelines for the user guide
    
    * :doc:`/docs/index`
@@ -176,7 +179,26 @@ User Documentation
 Ask to be included in the next release
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1. Finally you can ask to be included in the next release
-2. Send an email to the list, indicating your module is ready
-3. Chances are there will be questions and the occasional code review
+1. Finally you can ask to be included in the next release.
+   
+   * Create a JIRA issue describing the new feature. This issue will be used in the pull request and release announcement.
+   
+   * Send an email to the list, indicating your module is ready and asking for review.
+
+2. Chances are there will be questions and code review.
+
+3. Create a pull-request moving your module from unsupported, and including it in the release:
+   
+   * Move your plugin from `modules/unsupported` to `modules/plugin` or `modules/extension` as appropriate.
+   
+   * Update :file:`release/pom.xml` with a dependency on your module, taking care to keep the list of dependencies alphabetical so it is easier to maintain.
+   
+   * Update :file:`release/src/assembly/binaryDistDependencies.xml` to *include* your module in the :file:`libs` folder.
+
+   * Move your module documentation to the appropriate location in the library documentation.
+     
+     A DataStore plugin for example is moved from `unsupported/<module>` to `library/data/<module>`.
+   
+   The jira issue for this pull request will be used in the release announcement.
+   
 4. Congratulations and welcome to GeoTools!

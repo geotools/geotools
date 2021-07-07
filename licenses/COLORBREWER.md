@@ -1,6 +1,4 @@
-The following license is used in gt-brewer extension:
-
-### Apache-Style Software License for ColorBrewer Color Schemes
+# Apache-Style Software License for ColorBrewer Color Schemes
 
 Copyright (c) 2002 Cynthia Brewer, Mark Harrower, and The Pennsylvania State University.
 
@@ -20,3 +18,5 @@ are permitted provided that the following conditions are met:
 4. The name "ColorBrewer" must not be used to endorse or promote products derived  from this software without prior written permission. For written permission,  please contact Cynthia Brewer at cbrewer@psu.edu.
 
 5. Products derived from this software may not be called "ColorBrewer", nor may "ColorBrewer" appear in their name, without prior written permission of Cynthia Brewer.
+
+<cite>source: [colorbrewer2.org](https://colorbrewer2.org/export/LICENSE.txt)</cite>

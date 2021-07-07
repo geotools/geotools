@@ -36,24 +36,16 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
-
 import org.apache.http.HttpException;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
-
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.geotools.http.HTTPResponse;
-import org.geotools.http.commons.MultithreadedHttpClient.HttpMethodResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Mock;
 
 /**
  * Tests for {@link org.geotools.http.commons.MultithreadedHttpClient}.
@@ -74,17 +66,16 @@ public class MultithreadedHttpClientTest {
         public HttpClient createHttpClient() {
             return mockHttpClient;
         }
-        
     };
 
     private HttpClient mockHttpClient = mock(HttpClient.class);
-    
+
     HttpResponse mockHttpResponse = mock(HttpResponse.class);
     StatusLine statusLine = mock(StatusLine.class);
 
     @Before
     public void setupMocks() throws ClientProtocolException, IOException {
-      
+
         when(mockHttpClient.execute(any(HttpRequestBase.class))).thenReturn(mockHttpResponse);
         when(mockHttpResponse.getStatusLine()).thenReturn(statusLine);
         when(statusLine.getStatusCode()).thenReturn(200);
@@ -99,7 +90,7 @@ public class MultithreadedHttpClientTest {
         System.setProperty(SYS_PROP_KEY_HOST, "myproxy");
         System.setProperty(SYS_PROP_KEY_NONPROXYHOSTS, "localhost");
         try (MultithreadedHttpClient sut = new MultithreadedHttpTestClient()) {
-            
+
             sut.get(new URL("http://www.geotools.org"));
             // HttpClient.executeMethod(HttpMethod) has to be called (w/o
             // HostConfig)
@@ -111,7 +102,7 @@ public class MultithreadedHttpClientTest {
     @Test
     public void testGetWithoutNonProxyHost() throws MalformedURLException, IOException {
         try (MultithreadedHttpClient sut = new MultithreadedHttpTestClient()) {
-           
+
             sut.get(new URL("http://www.geotools.org"));
         }
 
@@ -131,7 +122,7 @@ public class MultithreadedHttpClientTest {
         System.setProperty(SYS_PROP_KEY_HOST, "myproxy");
         System.setProperty(SYS_PROP_KEY_NONPROXYHOSTS, "localhost");
         try (MultithreadedHttpClient sut = new MultithreadedHttpTestClient()) {
-            
+
             when(mockHttpClient.execute(isNull(), any(HttpRequestBase.class))).thenReturn(null);
             sut.get(new URL("http://localhost"));
         }

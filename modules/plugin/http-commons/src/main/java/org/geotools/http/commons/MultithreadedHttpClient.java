@@ -27,11 +27,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
-
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpException;
-import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
@@ -46,11 +44,9 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.config.ConnectionConfig;
 import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
 import org.geotools.data.ows.AbstractOpenWebService;
@@ -61,14 +57,14 @@ import org.geotools.http.HTTPResponse;
 import org.geotools.util.logging.Logging;
 
 /**
- * An Apache commons HTTP client based {@link HTTPClient} backed by a multithreaded connection manager that allows to reuse connections to the backing
- * server and to limit the {@link #setMaxConnections(int) max number of concurrent connections}.
+ * An Apache commons HTTP client based {@link HTTPClient} backed by a multithreaded connection
+ * manager that allows to reuse connections to the backing server and to limit the {@link
+ * #setMaxConnections(int) max number of concurrent connections}.
  *
- * <p>
- * Java System properties {@code http.proxyHost}, {@code http.proxyPort}, {@code http.proxyUser}, and {@code http.proxyPassword} are respected.
+ * <p>Java System properties {@code http.proxyHost}, {@code http.proxyPort}, {@code http.proxyUser},
+ * and {@code http.proxyPassword} are respected.
  *
- * <p>
- * Copied from gt-wms.
+ * <p>Copied from gt-wms.
  *
  * @author groldan
  * @author awaterme
@@ -104,16 +100,17 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
          */
         connectionManager.setMaxTotal(6);
         connectionManager.setDefaultMaxPerRoute(6);
-        connectionConfig = RequestConfig.custom()
-                .setCookieSpec(CookieSpecs.DEFAULT)
-                .setExpectContinueEnabled(true)
-                .setSocketTimeout(30000)
-                .setConnectTimeout(30000)
-                .build();
+        connectionConfig =
+                RequestConfig.custom()
+                        .setCookieSpec(CookieSpecs.DEFAULT)
+                        .setExpectContinueEnabled(true)
+                        .setSocketTimeout(30000)
+                        .setConnectTimeout(30000)
+                        .build();
 
         client = createHttpClient();
-
     }
+
     HttpClientBuilder clientBuilder = HttpClientBuilder.create();
     // package private to support testing || JNH Public for refactoring
     public HttpClient createHttpClient() {
@@ -121,10 +118,11 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
         clientBuilder.setConnectionManager(connectionManager);
         return clientBuilder.build();
     }
-    
+
     @Override
-    public HttpMethodResponse post(final URL url, final InputStream postContent,
-            final String postContentType) throws IOException {
+    public HttpMethodResponse post(
+            final URL url, final InputStream postContent, final String postContentType)
+            throws IOException {
 
         HttpPost postMethod = new HttpPost(url.toExternalForm());
         postMethod.setConfig(connectionConfig);
@@ -151,8 +149,11 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
         }
         if (200 != response.getStatusCode()) {
             postMethod.releaseConnection();
-            throw new IOException("Server returned HTTP error code " + response.getStatusCode()
-                    + " for URL " + url.toExternalForm());
+            throw new IOException(
+                    "Server returned HTTP error code "
+                            + response.getStatusCode()
+                            + " for URL "
+                            + url.toExternalForm());
         }
 
         return response;
@@ -176,9 +177,10 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
     public HTTPResponse get(URL url, Map<String, String> headers) throws IOException {
         HttpGet getMethod = new HttpGet(url.toExternalForm());
         getMethod.setConfig(connectionConfig);
-        if(user != null && password != null) {
-            resetCredentials(); 
-            String encoding = Base64.getEncoder().encodeToString((user+":"+password).getBytes());
+        if (user != null && password != null) {
+            resetCredentials();
+            String encoding =
+                    Base64.getEncoder().encodeToString((user + ":" + password).getBytes());
             getMethod.setHeader("Authorization", "Basic " + encoding);
         }
         if (tryGzip) {
@@ -191,7 +193,6 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
             }
         }
 
-        
         HttpMethodResponse response = null;
         try {
             response = executeMethod(getMethod);
@@ -240,7 +241,7 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
             credsProvider.setCredentials(authscope, credentials);
             clientBuilder.setDefaultCredentialsProvider(credsProvider);
             client = createHttpClient();
-        } 
+        }
     }
 
     @Override
@@ -250,7 +251,10 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
 
     @Override
     public void setConnectTimeout(int connectTimeout) {
-        connectionConfig = RequestConfig.copy(connectionConfig).setConnectionRequestTimeout(connectTimeout * 1000).build();
+        connectionConfig =
+                RequestConfig.copy(connectionConfig)
+                        .setConnectionRequestTimeout(connectTimeout * 1000)
+                        .build();
     }
 
     @Override
@@ -260,7 +264,8 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
 
     @Override
     public void setReadTimeout(int readTimeout) {
-        connectionConfig = RequestConfig.copy(connectionConfig).setSocketTimeout(readTimeout * 1000).build();
+        connectionConfig =
+                RequestConfig.copy(connectionConfig).setSocketTimeout(readTimeout * 1000).build();
     }
 
     @Override
@@ -284,9 +289,7 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
             this.methodResponse = methodResponse;
         }
 
-        /**
-         * @return
-         */
+        /** @return */
         public int getStatusCode() {
             StatusLine statusLine = methodResponse.getStatusLine();
             return statusLine.getStatusCode();
@@ -305,7 +308,6 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
             if (methodResponse != null) {
                 methodResponse = null;
             }
-
         }
 
         @Override
@@ -338,7 +340,6 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
         public String getResponseCharset() {
 
             return methodResponse.getEntity().getContentEncoding().getValue();
-
         }
     }
 

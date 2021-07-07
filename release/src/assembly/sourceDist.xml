@@ -26,7 +26,7 @@
       </includes>
     </fileSet>
     <fileSet>
-      <directory>.</directory>
+      <directory>..</directory>
       <outputDirectory></outputDirectory>
       <useDefaultExcludes>true</useDefaultExcludes>
       <excludes>

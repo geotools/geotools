@@ -19,29 +19,40 @@ package org.geotools.http.commons;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.StringTokenizer;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
-import org.apache.commons.httpclient.Credentials;
-import org.apache.commons.httpclient.Header;
-import org.apache.commons.httpclient.HostConfiguration;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.HttpMethodBase;
-import org.apache.commons.httpclient.HttpState;
-import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.auth.AuthScope;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.methods.InputStreamRequestEntity;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.RequestEntity;
-import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
+
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpException;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.StatusLine;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.Credentials;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.CookieSpecs;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.config.ConnectionConfig;
+import org.apache.http.entity.InputStreamEntity;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.message.BasicNameValuePair;
 import org.geotools.data.ows.AbstractOpenWebService;
 import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPConnectionPooling;
@@ -50,14 +61,14 @@ import org.geotools.http.HTTPResponse;
 import org.geotools.util.logging.Logging;
 
 /**
- * An Apache commons HTTP client based {@link HTTPClient} backed by a multithreaded connection
- * manager that allows to reuse connections to the backing server and to limit the {@link
- * #setMaxConnections(int) max number of concurrent connections}.
+ * An Apache commons HTTP client based {@link HTTPClient} backed by a multithreaded connection manager that allows to reuse connections to the backing
+ * server and to limit the {@link #setMaxConnections(int) max number of concurrent connections}.
  *
- * <p>Java System properties {@code http.proxyHost}, {@code http.proxyPort}, {@code http.proxyUser},
- * and {@code http.proxyPassword} are respected.
+ * <p>
+ * Java System properties {@code http.proxyHost}, {@code http.proxyPort}, {@code http.proxyUser}, and {@code http.proxyPassword} are respected.
  *
- * <p>Copied from gt-wms.
+ * <p>
+ * Copied from gt-wms.
  *
  * @author groldan
  * @author awaterme
@@ -67,7 +78,7 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
 
     private static final Logger LOGGER = Logging.getLogger(MultithreadedHttpClient.class);
 
-    private final MultiThreadedHttpConnectionManager connectionManager;
+    private final PoolingHttpClientConnectionManager connectionManager;
 
     private HttpClient client;
 
@@ -78,122 +89,82 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
     private boolean tryGzip = true;
 
     /** Available if a proxy was specified as system property */
-    private HostConfiguration hostConfigNoProxy;
+    private RequestConfig hostConfigNoProxy;
 
     private Set<String> nonProxyHosts = new HashSet<>();
 
+    private RequestConfig connectionConfig;
+
     public MultithreadedHttpClient() {
-        connectionManager = new MultiThreadedHttpConnectionManager();
+        connectionManager = new PoolingHttpClientConnectionManager();
 
-        HttpConnectionManagerParams params = new HttpConnectionManagerParams();
-        params.setSoTimeout(30000);
-        params.setConnectionTimeout(30000);
-        params.setMaxTotalConnections(6);
-        params.setDefaultMaxConnectionsPerHost(6);
-
-        connectionManager.setParams(params);
+        /*
+         * params.setSoTimeout(30000); params.setConnectionTimeout(30000); params.setMaxTotalConnections(6);
+         * params.setDefaultMaxConnectionsPerHost(6);
+         */
+        connectionManager.setMaxTotal(6);
+        connectionManager.setDefaultMaxPerRoute(6);
+        connectionConfig = RequestConfig.custom()
+                .setCookieSpec(CookieSpecs.DEFAULT)
+                .setExpectContinueEnabled(true)
+                .setSocketTimeout(30000)
+                .setConnectTimeout(30000)
+                .build();
 
         client = createHttpClient();
 
-        applySystemProxySettings();
     }
-
+    HttpClientBuilder clientBuilder = HttpClientBuilder.create();
     // package private to support testing || JNH Public for refactoring
     public HttpClient createHttpClient() {
-        return new HttpClient(connectionManager);
+        clientBuilder.useSystemProperties();
+        clientBuilder.setConnectionManager(connectionManager);
+        return clientBuilder.build();
     }
-
-    private void applySystemProxySettings() {
-        final String proxyHost = System.getProperty("http.proxyHost");
-        final int proxyPort = Integer.parseInt(System.getProperty("http.proxyPort", "80"));
-        String nonProxyHostProp = System.getProperty("http.nonProxyHosts");
-
-        if (proxyHost != null) {
-            LOGGER.fine(
-                    "Found 'http.proxyHost' Java System property. Using it as proxy server. Port: "
-                            + proxyPort);
-            HostConfiguration hostConfig = client.getHostConfiguration();
-            if (nonProxyHostProp != null) {
-                if (nonProxyHostProp.startsWith("\"")) {
-                    nonProxyHostProp = nonProxyHostProp.substring(1);
-                }
-                if (nonProxyHostProp.endsWith("\"")) {
-                    nonProxyHostProp = nonProxyHostProp.substring(0, nonProxyHostProp.length() - 1);
-                }
-                hostConfigNoProxy = (HostConfiguration) hostConfig.clone();
-                StringTokenizer tokenizer = new StringTokenizer(nonProxyHostProp, "|");
-                while (tokenizer.hasMoreTokens()) {
-                    nonProxyHosts.add(tokenizer.nextToken().trim().toLowerCase());
-                }
-                LOGGER.fine("Initialized with nonProxyHosts: " + nonProxyHosts);
-            }
-            hostConfig.setProxy(proxyHost, proxyPort);
-        }
-
-        final String proxyUser = System.getProperty("http.proxyUser");
-        final String proxyPassword = System.getProperty("http.proxyPassword");
-        if (proxyUser != null) {
-            if (proxyPassword == null || proxyPassword.length() == 0) {
-                LOGGER.warning(
-                        "System property http.proxyUser provided but http.proxyPassword "
-                                + "not provided or empty. Proxy auth credentials will be passed as is anyway.");
-            } else {
-                LOGGER.fine(
-                        "System property http.proxyUser and http.proxyPassword found,"
-                                + " setting proxy auth credentials");
-            }
-            HttpState state = client.getState();
-            if (state == null) {
-                state = new HttpState();
-                client.setState(state);
-            }
-            AuthScope authscope = AuthScope.ANY;
-            Credentials credentials = new UsernamePasswordCredentials(proxyUser, proxyPassword);
-            state.setProxyCredentials(authscope, credentials);
-        }
-    }
-
+    
     @Override
-    public HTTPResponse post(
-            final URL url, final InputStream postContent, final String postContentType)
-            throws IOException {
+    public HttpMethodResponse post(final URL url, final InputStream postContent,
+            final String postContentType) throws IOException {
 
-        PostMethod postMethod = new PostMethod(url.toExternalForm());
-        postMethod.setDoAuthentication(user != null && password != null);
+        HttpPost postMethod = new HttpPost(url.toExternalForm());
+        postMethod.setConfig(connectionConfig);
+        if (user != null && password != null) {
+            List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+            nvps.add(new BasicNameValuePair("username", user));
+            nvps.add(new BasicNameValuePair("password", password));
+            postMethod.setEntity(new UrlEncodedFormEntity(nvps));
+        }
         if (tryGzip) {
-            postMethod.setRequestHeader("Accept-Encoding", "gzip");
+            postMethod.setHeader("Accept-Encoding", "gzip");
         }
         if (postContentType != null) {
-            postMethod.setRequestHeader("Content-type", postContentType);
+            postMethod.setHeader("Content-type", postContentType);
         }
-        RequestEntity requestEntity = new InputStreamRequestEntity(postContent);
-        postMethod.setRequestEntity(requestEntity);
+        HttpEntity requestEntity = new InputStreamEntity(postContent);
+        postMethod.setEntity(requestEntity);
 
-        int responseCode = executeMethod(postMethod);
-        if (200 != responseCode) {
+        HttpMethodResponse response = null;
+        try {
+            response = executeMethod(postMethod);
+        } catch (HttpException e) {
+            throw new IOException(e);
+        }
+        if (200 != response.getStatusCode()) {
             postMethod.releaseConnection();
-            throw new IOException(
-                    "Server returned HTTP error code "
-                            + responseCode
-                            + " for URL "
-                            + url.toExternalForm());
+            throw new IOException("Server returned HTTP error code " + response.getStatusCode()
+                    + " for URL " + url.toExternalForm());
         }
 
-        return new HttpMethodResponse(postMethod);
+        return response;
     }
 
     /** @return the http status code of the execution */
-    private int executeMethod(HttpMethod method) throws IOException, HttpException {
-        String host = method.getURI().getHost();
-        if (host != null && nonProxyHosts.contains(host.toLowerCase())) {
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine(
-                        "Bypassing proxy config due to nonProxyHosts for "
-                                + method.getURI().toString());
-            }
-            return client.executeMethod(hostConfigNoProxy, method);
-        }
-        return client.executeMethod(method);
+    private HttpMethodResponse executeMethod(HttpRequestBase method)
+            throws IOException, HttpException {
+
+        HttpResponse resp = client.execute(method);
+        HttpMethodResponse response = new HttpMethodResponse(resp);
+        return response;
     }
 
     @Override
@@ -203,28 +174,39 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
 
     @Override
     public HTTPResponse get(URL url, Map<String, String> headers) throws IOException {
-        GetMethod getMethod = new GetMethod(url.toExternalForm());
-        getMethod.setDoAuthentication(user != null && password != null);
+        HttpGet getMethod = new HttpGet(url.toExternalForm());
+        getMethod.setConfig(connectionConfig);
+        if(user != null && password != null) {
+            resetCredentials(); 
+            String encoding = Base64.getEncoder().encodeToString((user+":"+password).getBytes());
+            getMethod.setHeader("Authorization", "Basic " + encoding);
+        }
         if (tryGzip) {
-            getMethod.setRequestHeader("Accept-Encoding", "gzip");
+            getMethod.setHeader("Accept-Encoding", "gzip");
         }
 
         if (headers != null) {
             for (Map.Entry<String, String> headerNameValue : headers.entrySet()) {
-                getMethod.setRequestHeader(headerNameValue.getKey(), headerNameValue.getValue());
+                getMethod.setHeader(headerNameValue.getKey(), headerNameValue.getValue());
             }
         }
 
-        int responseCode = executeMethod(getMethod);
-        if (200 != responseCode) {
+        
+        HttpMethodResponse response = null;
+        try {
+            response = executeMethod(getMethod);
+        } catch (HttpException e) {
+            throw new IOException(e);
+        }
+        if (200 != response.getStatusCode()) {
             getMethod.releaseConnection();
             throw new IOException(
                     "Server returned HTTP error code "
-                            + responseCode
+                            + response.getStatusCode()
                             + " for URL "
                             + url.toExternalForm());
         }
-        return new HttpMethodResponse(getMethod);
+        return response;
     }
 
     @Override
@@ -250,57 +232,64 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
     }
 
     private void resetCredentials() {
-        client.getState().clearCredentials();
         if (user != null && password != null) {
             AuthScope authscope = AuthScope.ANY;
             Credentials credentials = new UsernamePasswordCredentials(user, password);
-
-            client.getParams().setAuthenticationPreemptive(true);
-            client.getState().setCredentials(authscope, credentials);
-        } else {
-            client.getParams().setAuthenticationPreemptive(false);
-        }
+            // TODO - check if this works for all types of auth or do we need to look it up?
+            CredentialsProvider credsProvider = new BasicCredentialsProvider();
+            credsProvider.setCredentials(authscope, credentials);
+            clientBuilder.setDefaultCredentialsProvider(credsProvider);
+            client = createHttpClient();
+        } 
     }
 
     @Override
     public int getConnectTimeout() {
-        return connectionManager.getParams().getConnectionTimeout() / 1000;
+        return connectionConfig.getConnectionRequestTimeout() / 1000;
     }
 
     @Override
     public void setConnectTimeout(int connectTimeout) {
-        connectionManager.getParams().setConnectionTimeout(connectTimeout * 1000);
+        connectionConfig = RequestConfig.copy(connectionConfig).setConnectionRequestTimeout(connectTimeout * 1000).build();
     }
 
     @Override
     public int getReadTimeout() {
-        return connectionManager.getParams().getSoTimeout() / 1000;
+        return connectionConfig.getSocketTimeout() / 1000;
     }
 
     @Override
     public void setReadTimeout(int readTimeout) {
-        connectionManager.getParams().setSoTimeout(readTimeout * 1000);
+        connectionConfig = RequestConfig.copy(connectionConfig).setSocketTimeout(readTimeout * 1000).build();
     }
 
     @Override
     public int getMaxConnections() {
-        return connectionManager.getParams().getDefaultMaxConnectionsPerHost();
+        return connectionManager.getDefaultMaxPerRoute();
     }
 
     @Override
     public void setMaxConnections(final int maxConnections) {
-        connectionManager.getParams().setMaxTotalConnections(maxConnections);
-        connectionManager.getParams().setDefaultMaxConnectionsPerHost(maxConnections);
+        connectionManager.setDefaultMaxPerRoute(maxConnections);
+        connectionManager.setMaxTotal(maxConnections);
     }
 
-    private static class HttpMethodResponse implements HTTPResponse {
+    static class HttpMethodResponse implements HTTPResponse {
 
-        private HttpMethod methodResponse;
+        private org.apache.http.HttpResponse methodResponse;
 
         private InputStream responseBodyAsStream;
 
-        public HttpMethodResponse(final HttpMethod methodResponse) {
+        public HttpMethodResponse(final org.apache.http.HttpResponse methodResponse) {
             this.methodResponse = methodResponse;
+        }
+
+        /**
+         * @return
+         */
+        public int getStatusCode() {
+            StatusLine statusLine = methodResponse.getStatusLine();
+            return statusLine.getStatusCode();
         }
 
         @Override
@@ -312,10 +301,11 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
                     // ignore
                 }
             }
+
             if (methodResponse != null) {
-                methodResponse.releaseConnection();
                 methodResponse = null;
             }
+
         }
 
         @Override
@@ -325,17 +315,17 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
 
         @Override
         public String getResponseHeader(final String headerName) {
-            Header responseHeader = methodResponse.getResponseHeader(headerName);
+            Header responseHeader = methodResponse.getFirstHeader(headerName);
             return responseHeader == null ? null : responseHeader.getValue();
         }
 
         @Override
         public InputStream getResponseStream() throws IOException {
             if (responseBodyAsStream == null) {
-                responseBodyAsStream = methodResponse.getResponseBodyAsStream();
+                responseBodyAsStream = methodResponse.getEntity().getContent();
                 // commons httpclient does not handle gzip encoding automatically, we have to check
                 // ourselves: https://issues.apache.org/jira/browse/HTTPCLIENT-816
-                Header header = methodResponse.getResponseHeader("Content-Encoding");
+                Header header = methodResponse.getFirstHeader("Content-Encoding");
                 if (header != null && "gzip".equals(header.getValue())) {
                     responseBodyAsStream = new GZIPInputStream(responseBodyAsStream);
                 }
@@ -346,11 +336,9 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
         /** @see org.geotools.data.ows.HTTPResponse#getResponseCharset() */
         @Override
         public String getResponseCharset() {
-            String responseCharSet = null;
-            if (methodResponse instanceof HttpMethodBase) {
-                responseCharSet = ((HttpMethodBase) methodResponse).getResponseCharSet();
-            }
-            return responseCharSet;
+
+            return methodResponse.getEntity().getContentEncoding().getValue();
+
         }
     }
 

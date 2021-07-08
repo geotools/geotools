@@ -100,7 +100,7 @@ public class MultithreadedHttpClientTest {
             sut.setConnectTimeout(1);
             HttpClient client = sut.createHttpClient();
             try {
-                HttpResponse resp = client.execute(new HttpHost("www.google.com"), new HttpGet());
+                client.execute(new HttpHost("www.google.com"), new HttpGet());
                 fail("Proxy fail");
             } catch (UnknownHostException e) {
                 // all is good

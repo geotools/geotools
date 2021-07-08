@@ -21,6 +21,8 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.unmodifiableList;
 
 import java.util.List;
+import si.uom.NonSI;
+import systems.uom.common.USCustomary;
 import tech.units.indriya.AbstractUnit;
 import tech.units.indriya.unit.Units;
 
@@ -90,4 +92,36 @@ public final class UnitDefinitions {
                             UnitDefinition.withStandardPrefixes(Units.WEBER),
                             UnitDefinition.of(Units.WEEK, emptyList(), "week", emptyList()),
                             UnitDefinition.of(Units.YEAR, emptyList(), "year", asList("days365"))));
+
+    /** Additional unit definitions for custom units defined by Geotools. */
+    public static List<UnitDefinition> GEOTOOLS =
+            unmodifiableList(
+                    asList(
+                            UnitDefinition.of(
+                                    org.geotools.measure.Units.DEGREE_MINUTE_SECOND,
+                                    emptyList(),
+                                    "DMS",
+                                    asList("degree minute second")),
+                            UnitDefinition.of(
+                                    org.geotools.measure.Units.SEXAGESIMAL_DMS,
+                                    emptyList(),
+                                    "D.MS",
+                                    asList(
+                                            "sexagesimal DMS",
+                                            "DDD.MMSSsss",
+                                            "sexagesimal degree DDD.MMSSsss")),
+                            UnitDefinition.of(
+                                    org.geotools.measure.Units.PPM,
+                                    emptyList(),
+                                    "ppm",
+                                    emptyList()),
+                            UnitDefinition.of(NonSI.DEGREE_ANGLE, emptyList(), "°", asList("deg")),
+                            UnitDefinition.of(
+                                    org.geotools.measure.Units.PIXEL,
+                                    emptyList(),
+                                    "pixel",
+                                    emptyList()),
+                            UnitDefinition.of(
+                                    USCustomary.GRADE, emptyList(), "grad", asList("grade")),
+                            UnitDefinition.of(USCustomary.FOOT, emptyList(), "ft", emptyList())));
 }

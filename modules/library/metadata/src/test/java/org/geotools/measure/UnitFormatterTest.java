@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.measure.Unit;
 import javax.measure.format.UnitFormat;
+import org.geotools.measure.SimpleUnitFormatForwarder.BaseUnitFormatter;
 import org.junit.Test;
 import tech.units.indriya.format.SimpleUnitFormat;
 import tech.units.indriya.unit.Units;
@@ -44,7 +45,8 @@ public class UnitFormatterTest {
 
         List<Map.Entry<Unit<?>, String>> unitToName =
                 toSortedList1(getUnitToNameMap(simpleUnitFormat));
-        List<Map.Entry<Unit<?>, String>> unitToSymbol = toSortedList1(formatter.getUnitToSymbol());
+        List<Map.Entry<Unit<?>, String>> unitToSymbol =
+                toSortedList1(formatter.getUnitToSymbolMap());
 
         List<Map.Entry<Unit<?>, String>> unitsOnlyInOld =
                 unitToName
@@ -69,7 +71,8 @@ public class UnitFormatterTest {
 
         List<Map.Entry<Unit<?>, String>> unitToNameMap =
                 toSortedList1(getUnitToNameMap(simpleUnitFormat));
-        List<Map.Entry<Unit<?>, String>> unitToSymbol = toSortedList1(formatter.getUnitToSymbol());
+        List<Map.Entry<Unit<?>, String>> unitToSymbol =
+                toSortedList1(formatter.getUnitToSymbolMap());
 
         List<Map.Entry<Unit<?>, String>> unitsOnlyInNew =
                 unitToSymbol
@@ -94,7 +97,8 @@ public class UnitFormatterTest {
 
         List<Map.Entry<String, Unit<?>>> nameToUnitMap =
                 toSortedList2(getNameToUnitMap(simpleUnitFormat));
-        List<Map.Entry<String, Unit<?>>> symbolToUnit = toSortedList2(formatter.getSymbolToUnit());
+        List<Map.Entry<String, Unit<?>>> symbolToUnit =
+                toSortedList2(formatter.getSymbolToUnitMap());
 
         List<Map.Entry<String, Unit<?>>> unitsOnlyInOld =
                 nameToUnitMap
@@ -113,7 +117,8 @@ public class UnitFormatterTest {
 
         List<Map.Entry<String, Unit<?>>> nameToUnitMap =
                 toSortedList2(getNameToUnitMap(simpleUnitFormat));
-        List<Map.Entry<String, Unit<?>>> symbolToUnit = toSortedList2(formatter.getSymbolToUnit());
+        List<Map.Entry<String, Unit<?>>> symbolToUnit =
+                toSortedList2(formatter.getSymbolToUnitMap());
 
         List<Map.Entry<String, Unit<?>>> unitsOnlyInNew =
                 symbolToUnit
@@ -152,14 +157,14 @@ public class UnitFormatterTest {
         return (HashMap<String, Unit<?>>) nameToUnitField.get(instance);
     }
 
-    private static List<Map.Entry<Unit<?>, String>> toSortedList1(HashMap<Unit<?>, String> map) {
+    private static List<Map.Entry<Unit<?>, String>> toSortedList1(Map<Unit<?>, String> map) {
         return map.entrySet()
                 .stream()
                 .sorted(Comparator.nullsFirst(Comparator.comparing(x -> x.getKey().toString())))
                 .collect(Collectors.toList());
     }
 
-    private static List<Map.Entry<String, Unit<?>>> toSortedList2(HashMap<String, Unit<?>> map) {
+    private static List<Map.Entry<String, Unit<?>>> toSortedList2(Map<String, Unit<?>> map) {
         return map.entrySet()
                 .stream()
                 .sorted(Comparator.nullsFirst(Comparator.comparing(x -> x.getValue().toString())))
@@ -167,7 +172,7 @@ public class UnitFormatterTest {
     }
 
     private static final BaseUnitFormatter formatter =
-            BaseUnitFormatter.of(
+            new BaseUnitFormatter(
                     Stream.of(
                                     UnitDefinitions.DIMENSIONLESS,
                                     UnitDefinitions.BASE,

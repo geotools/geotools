@@ -16,6 +16,10 @@
  */
 package org.geotools.measure;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.geotools.measure.SimpleUnitFormatForwarder.BaseUnitFormatter;
 import tech.units.indriya.format.SimpleUnitFormat;
 
@@ -27,10 +31,18 @@ public final class GeoToolsUnitFormatterFactory {
     }
 
     public static SimpleUnitFormat create() {
-        return new BaseUnitFormatter();
+        List<UnitDefinition> unitDefinitions =
+                Stream.of(
+                                UnitDefinitions.DIMENSIONLESS,
+                                UnitDefinitions.BASE,
+                                UnitDefinitions.DERIVED,
+                                UnitDefinitions.GEOTOOLS)
+                        .flatMap(Collection::stream)
+                        .collect(Collectors.toList());
+        return new BaseUnitFormatter(unitDefinitions);
     }
 
     private GeoToolsUnitFormatterFactory() {}
 
-    private static final BaseUnitFormatter INSTANCE = new BaseUnitFormatter();
+    private static final BaseUnitFormatter INSTANCE = (BaseUnitFormatter) create();
 }

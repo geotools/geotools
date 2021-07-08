@@ -16,9 +16,12 @@
  */
 package org.geotools.measure;
 
-import si.uom.NonSI;
-import si.uom.SI;
-import systems.uom.common.USCustomary;
+import static org.geotools.measure.SimpleUnitFormatForwarder.BaseUnitFormatter;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import tech.units.indriya.format.SimpleUnitFormat;
 
 /** A factory for unit formatters that support the EPSG dialect. */
@@ -29,32 +32,19 @@ public final class EsriUnitFormatterFactory {
     }
 
     public static SimpleUnitFormat create() {
-        return new EsriUnitFormatter();
+        return new BaseUnitFormatter(UNIT_DEFINITIONS);
     }
 
     private EsriUnitFormatterFactory() {}
 
-    private static final EsriUnitFormatter INSTANCE = new EsriUnitFormatter();
+    private static final List<UnitDefinition> UNIT_DEFINITIONS =
+            Stream.of(
+                            UnitDefinitions.DIMENSIONLESS,
+                            UnitDefinitions.BASE,
+                            UnitDefinitions.DERIVED,
+                            UnitDefinitions.ESRI)
+                    .flatMap(Collection::stream)
+                    .collect(Collectors.toList());
 
-    /**
-     * Subclass adding overrides for the ESRI dialect
-     *
-     * @author Andrea Aime - GeoSolutions
-     */
-    static class EsriUnitFormatter extends SimpleUnitFormatForwarder.BaseUnitFormatter
-            implements UnitFormatter {
-        private static final long serialVersionUID = 5769662824845469523L;
-
-        public EsriUnitFormatter() {
-            addEsriLabelsAndAliases(this);
-        }
-    }
-
-    static void addEsriLabelsAndAliases(SimpleUnitFormatForwarder.BaseUnitFormatter format) {
-        format.label(NonSI.DEGREE_ANGLE, "Degree");
-        format.label(SI.METRE, "Meter");
-        format.label(SI.METRE.multiply(0.3047997101815088), "Foot_Gold_Coast");
-        format.alias(USCustomary.FOOT, "Foot");
-        format.label(USCustomary.FOOT_SURVEY, "Foot_US");
-    }
+    private static final BaseUnitFormatter INSTANCE = (BaseUnitFormatter) create();
 }

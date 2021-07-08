@@ -124,4 +124,126 @@ public final class UnitDefinitions {
                             UnitDefinition.of(
                                     USCustomary.GRADE, emptyList(), "grad", asList("grade")),
                             UnitDefinition.of(USCustomary.FOOT, emptyList(), "ft", emptyList())));
+
+    /** Additional unit definitions for custom units defined by EPSG formats. */
+    public static List<UnitDefinition> EPSG =
+            unmodifiableList(
+                    asList(
+                            UnitDefinition.of(
+                                    org.geotools.measure.Units.DEGREE_MINUTE_SECOND,
+                                    emptyList(),
+                                    "DMS",
+                                    asList("degree minute second")),
+                            UnitDefinition.of(
+                                    org.geotools.measure.Units.SEXAGESIMAL_DMS,
+                                    emptyList(),
+                                    "D.MS",
+                                    asList(
+                                            "sexagesimal DMS",
+                                            "DDD.MMSSsss",
+                                            "sexagesimal degree DDD.MMSSsss")),
+                            UnitDefinition.of(
+                                    org.geotools.measure.Units.PPM,
+                                    emptyList(),
+                                    "ppm",
+                                    emptyList()),
+                            UnitDefinition.of(
+                                    NonSI.DEGREE_ANGLE, emptyList(), "degree", emptyList()),
+                            UnitDefinition.of(
+                                    org.geotools.measure.Units.PIXEL,
+                                    emptyList(),
+                                    "pixel",
+                                    emptyList()),
+                            UnitDefinition.of(
+                                    USCustomary.GRADE, emptyList(), "grad", asList("grade")),
+                            UnitDefinition.of(USCustomary.FOOT, emptyList(), "ft", emptyList())));
+
+    /** Additional unit definitions for custom units defined by ESRI formats. */
+    public static List<UnitDefinition> ESRI =
+            unmodifiableList(
+                    asList(
+                            UnitDefinition.of(
+                                    org.geotools.measure.Units.DEGREE_MINUTE_SECOND,
+                                    emptyList(),
+                                    "DMS",
+                                    asList("degree minute second")),
+                            UnitDefinition.of(
+                                    org.geotools.measure.Units.SEXAGESIMAL_DMS,
+                                    emptyList(),
+                                    "D.MS",
+                                    asList(
+                                            "sexagesimal DMS",
+                                            "DDD.MMSSsss",
+                                            "sexagesimal degree DDD.MMSSsss")),
+                            UnitDefinition.of(
+                                    org.geotools.measure.Units.PPM,
+                                    emptyList(),
+                                    "ppm",
+                                    emptyList()),
+                            UnitDefinition.of(
+                                    NonSI.DEGREE_ANGLE, emptyList(), "Degree", emptyList()),
+                            UnitDefinition.of(
+                                    org.geotools.measure.Units.PIXEL,
+                                    emptyList(),
+                                    "pixel",
+                                    emptyList()),
+                            UnitDefinition.of(
+                                    USCustomary.GRADE, emptyList(), "grad", asList("grade")),
+                            UnitDefinition.of(USCustomary.FOOT, emptyList(), "ft", asList("Foot")),
+                            UnitDefinition.of(
+                                    org.geotools.measure.Units.FOOT_GOLD_COAST,
+                                    emptyList(),
+                                    null,
+                                    emptyList()),
+                            UnitDefinition.of(
+                                    USCustomary.FOOT_SURVEY, emptyList(), "Foot_US", emptyList()),
+                            UnitDefinition.of(
+                                    org.geotools.measure.Units.METRE,
+                                    emptyList(),
+                                    "Meter",
+                                    emptyList())));
+
+    public static List<UnitDefinition> WKT =
+            unmodifiableList(
+                    asList(
+                            UnitDefinition.of(
+                                    org.geotools.measure.Units.DEGREE_MINUTE_SECOND,
+                                    emptyList(),
+                                    "DMS",
+                                    asList("degree minute second")),
+                            UnitDefinition.of(
+                                    org.geotools.measure.Units.SEXAGESIMAL_DMS,
+                                    emptyList(),
+                                    "D.MS",
+                                    asList(
+                                            "sexagesimal DMS",
+                                            "DDD.MMSSsss",
+                                            "sexagesimal degree DDD.MMSSsss")),
+                            UnitDefinition.of(
+                                    org.geotools.measure.Units.PPM,
+                                    emptyList(),
+                                    "ppm",
+                                    emptyList()),
+                            UnitDefinition.of(
+                                    org.geotools.measure.Units.PIXEL,
+                                    emptyList(),
+                                    "pixel",
+                                    emptyList()),
+                            UnitDefinition.of(
+                                    USCustomary.GRADE, emptyList(), "grad", asList("grade")),
+                            UnitDefinition.of(
+                                    org.geotools.measure.Units.FOOT_GOLD_COAST,
+                                    emptyList(),
+                                    null,
+                                    emptyList()),
+                            UnitDefinition.of(
+                                    USCustomary.FOOT_SURVEY, emptyList(), "Foot_US", emptyList()),
+                            UnitDefinition.of(
+                                    NonSI.DEGREE_ANGLE, emptyList(), "degree", emptyList()),
+                            UnitDefinition.of(USCustomary.FOOT, emptyList(), "ft", emptyList()),
+                            UnitDefinition.of(
+                                    org.geotools.measure.Units.METRE,
+                                    emptyList(),
+                                    "Meter",
+                                    emptyList())));
 }

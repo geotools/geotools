@@ -30,6 +30,7 @@ import si.uom.NonSI;
 import si.uom.SI;
 import systems.uom.common.USCustomary;
 import tech.units.indriya.AbstractUnit;
+import tech.units.indriya.function.MultiplyConverter;
 import tech.units.indriya.unit.TransformedUnit;
 
 /**
@@ -99,6 +100,9 @@ public final class Units {
     public static final Unit<Length> METRE = tech.units.indriya.unit.Units.METRE;
     public static final Unit<Length> KILOMETER = MetricPrefix.KILO(METRE);
     public static final Unit<Length> NAUTICAL_MILE = USCustomary.NAUTICAL_MILE;
+    static final Unit<Length> FOOT_GOLD_COAST =
+            new TransformedUnit<>(
+                    "Foot_Gold_Coast", SI.METRE, MultiplyConverter.of(0.3047997101815088));
 
     /** Length of <code>1/72</code> of a {@link USCustomary#INCH} */
     public static final Unit<Length> PIXEL = USCustomary.INCH.divide(72);

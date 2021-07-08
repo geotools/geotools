@@ -16,7 +16,12 @@
  */
 package org.geotools.measure;
 
-import si.uom.NonSI;
+import static org.geotools.measure.SimpleUnitFormatForwarder.BaseUnitFormatter;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import tech.units.indriya.format.SimpleUnitFormat;
 
 /** A factory for unit formatters that support the EPSG dialect. */
@@ -27,28 +32,19 @@ public final class EpsgUnitFormatterFactory {
     }
 
     public static SimpleUnitFormat create() {
-        return new EpsgUnitFormatter();
+        return new BaseUnitFormatter(UNIT_DEFINITIONS);
     }
 
     private EpsgUnitFormatterFactory() {}
 
-    private static final EpsgUnitFormatter INSTANCE = new EpsgUnitFormatter();
+    private static final List<UnitDefinition> UNIT_DEFINITIONS =
+            Stream.of(
+                            UnitDefinitions.DIMENSIONLESS,
+                            UnitDefinitions.BASE,
+                            UnitDefinitions.DERIVED,
+                            UnitDefinitions.EPSG)
+                    .flatMap(Collection::stream)
+                    .collect(Collectors.toList());
 
-    /**
-     * Subclass adding overrides for the EPSG dialect
-     *
-     * @author Andrea Aime - GeoSolutions
-     */
-    static class EpsgUnitFormatter extends SimpleUnitFormatForwarder.BaseUnitFormatter
-            implements UnitFormatter {
-        private static final long serialVersionUID = -1207705344688824557L;
-
-        public EpsgUnitFormatter() {
-            addEpsgLabelsAndAliases(this);
-        }
-    }
-
-    static void addEpsgLabelsAndAliases(SimpleUnitFormatForwarder.BaseUnitFormatter format) {
-        format.label(NonSI.DEGREE_ANGLE, "degree");
-    }
+    private static final BaseUnitFormatter INSTANCE = (BaseUnitFormatter) create();
 }

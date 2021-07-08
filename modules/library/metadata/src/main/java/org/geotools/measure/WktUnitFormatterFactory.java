@@ -19,8 +19,14 @@
  */
 package org.geotools.measure;
 
+import static org.geotools.measure.SimpleUnitFormatForwarder.BaseUnitFormatter;
+
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.measure.Quantity;
 import javax.measure.Unit;
 import tech.units.indriya.unit.TransformedUnit;
@@ -37,22 +43,28 @@ public final class WktUnitFormatterFactory {
     }
 
     public static UnitFormatter create() {
-        return new WktUnitFormatter();
+        return new WktUnitFormatter(UNIT_DEFINITIONS);
     }
 
-    private static final WktUnitFormatter INSTANCE = new WktUnitFormatter();
+    private static final List<UnitDefinition> UNIT_DEFINITIONS =
+            Stream.of(
+                            UnitDefinitions.DIMENSIONLESS,
+                            UnitDefinitions.BASE,
+                            UnitDefinitions.DERIVED,
+                            UnitDefinitions.WKT)
+                    .flatMap(Collection::stream)
+                    .collect(Collectors.toList());
+
+    private static final WktUnitFormatter INSTANCE = (WktUnitFormatter) create();
 
     private WktUnitFormatterFactory() {}
 
-    static class WktUnitFormatter extends SimpleUnitFormatForwarder.BaseUnitFormatter
-            implements UnitFormatter {
+    static class WktUnitFormatter extends BaseUnitFormatter implements UnitFormatter {
 
         private HashMap<UnitWrapper, Unit<?>> unitWrapperToUnitMap;
 
-        WktUnitFormatter() {
-            EsriUnitFormatterFactory.addEsriLabelsAndAliases(this);
-            // add epsg labels the latest, to override esri ones if they collide
-            EpsgUnitFormatterFactory.addEpsgLabelsAndAliases(this);
+        WktUnitFormatter(List<UnitDefinition> unitDefinitions) {
+            super(unitDefinitions);
         }
 
         @Override
@@ -83,7 +95,7 @@ public final class WktUnitFormatterFactory {
      * @author cesar
      */
     static class UnitWrapper {
-        private Unit<?> unit;
+        private final Unit<?> unit;
 
         public UnitWrapper(Unit<?> unit) {
             this.unit = unit;

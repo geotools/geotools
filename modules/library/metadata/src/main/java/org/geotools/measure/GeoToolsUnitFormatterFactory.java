@@ -34,8 +34,11 @@ public final class GeoToolsUnitFormatterFactory {
         List<UnitDefinition> unitDefinitions =
                 Stream.of(
                                 UnitDefinitions.DIMENSIONLESS,
-                                UnitDefinitions.BASE,
-                                UnitDefinitions.DERIVED,
+                                UnitDefinitions.CONSTANTS,
+                                UnitDefinitions.SI_BASE,
+                                UnitDefinitions.SI_DERIVED,
+                                UnitDefinitions.NON_SI,
+                                UnitDefinitions.US_CUSTOMARY,
                                 UnitDefinitions.GEOTOOLS)
                         .flatMap(Collection::stream)
                         .collect(Collectors.toList());

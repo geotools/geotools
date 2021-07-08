@@ -23,6 +23,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.lang.reflect.Field;
 import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -59,8 +60,14 @@ public class UnitFormatterTest {
                         entry(Units.GRAM.prefix(MICRO), "µg"),
                         entry(Units.LITRE.prefix(MICRO), "µl"),
                         entry(Units.CELSIUS.prefix(MICRO), "µ℃"));
+        List<Map.Entry<Unit<?>, String>> unitsOnlyInOldWithoutBugs =
+                new ArrayList<>(unitsOnlyInOld);
+        unitsOnlyInOldWithoutBugs.removeAll(indriyaBug);
         assertEquals(
-                unitsOnlyInOld.size() + " units only in old: " + unitsOnlyInOld + "\n",
+                unitsOnlyInOldWithoutBugs.size()
+                        + " units only in old: "
+                        + unitsOnlyInOldWithoutBugs
+                        + "\n",
                 indriyaBug,
                 unitsOnlyInOld);
     }
@@ -85,8 +92,14 @@ public class UnitFormatterTest {
                         entry(Units.GRAM.prefix(MICRO), "μg"),
                         entry(Units.LITRE.prefix(MICRO), "μl"),
                         entry(Units.CELSIUS.prefix(MICRO), "μ℃"));
+        List<Map.Entry<Unit<?>, String>> unitsOnlyInNewWithoutBugs =
+                new ArrayList<>(unitsOnlyInNew);
+        unitsOnlyInNewWithoutBugs.removeAll(indriyaBug);
         assertEquals(
-                unitsOnlyInNew.size() + " units only in new: " + unitsOnlyInNew + "\n",
+                unitsOnlyInNewWithoutBugs.size()
+                        + " units only in new: "
+                        + unitsOnlyInNewWithoutBugs
+                        + "\n",
                 indriyaBug,
                 unitsOnlyInNew);
     }
@@ -130,11 +143,16 @@ public class UnitFormatterTest {
                 asList(
                         entry("μg", Units.GRAM.prefix(MICRO)),
                         entry("μl", Units.LITRE.prefix(MICRO)),
-                        entry("μ℃", Units.CELSIUS.prefix(MICRO)),
                         entry("μ°C", Units.CELSIUS.prefix(MICRO)),
+                        entry("μ℃", Units.CELSIUS.prefix(MICRO)),
                         entry("μOhm", Units.OHM.prefix(MICRO)));
+        List<Map.Entry<String, Unit<?>>> unitsOnlyInNewWithoutBug = new ArrayList<>(unitsOnlyInNew);
+        unitsOnlyInNewWithoutBug.removeAll(indriyaBug);
         assertEquals(
-                unitsOnlyInNew.size() + " names only in new: " + unitsOnlyInNew + "\n",
+                unitsOnlyInNewWithoutBug.size()
+                        + " names only in new: "
+                        + unitsOnlyInNewWithoutBug
+                        + "\n",
                 indriyaBug,
                 unitsOnlyInNew);
     }
@@ -175,8 +193,11 @@ public class UnitFormatterTest {
             new BaseUnitFormatter(
                     Stream.of(
                                     UnitDefinitions.DIMENSIONLESS,
-                                    UnitDefinitions.BASE,
-                                    UnitDefinitions.DERIVED)
+                                    UnitDefinitions.SI_BASE,
+                                    UnitDefinitions.CONSTANTS,
+                                    UnitDefinitions.SI_DERIVED,
+                                    UnitDefinitions.NON_SI,
+                                    UnitDefinitions.US_CUSTOMARY)
                             .flatMap(Collection::stream)
                             .collect(Collectors.toList()));
 }

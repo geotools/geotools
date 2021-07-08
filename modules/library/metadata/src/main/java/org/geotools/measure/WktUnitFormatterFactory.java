@@ -49,8 +49,11 @@ public final class WktUnitFormatterFactory {
     private static final List<UnitDefinition> UNIT_DEFINITIONS =
             Stream.of(
                             UnitDefinitions.DIMENSIONLESS,
-                            UnitDefinitions.BASE,
-                            UnitDefinitions.DERIVED,
+                            UnitDefinitions.CONSTANTS,
+                            UnitDefinitions.SI_BASE,
+                            UnitDefinitions.SI_DERIVED,
+                            UnitDefinitions.NON_SI,
+                            UnitDefinitions.US_CUSTOMARY,
                             UnitDefinitions.WKT)
                     .flatMap(Collection::stream)
                     .collect(Collectors.toList());

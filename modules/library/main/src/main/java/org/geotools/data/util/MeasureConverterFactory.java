@@ -56,7 +56,11 @@ public class MeasureConverterFactory implements ConverterFactory {
                         }
                         String v = format.format(m.doubleValue());
                         if (m.getUnit() != null) {
-                            return target.cast((v + m.getUnit()));
+                            return target.cast(
+                                    (v
+                                            + GeoToolsUnitFormatterFactory
+                                                    .getUnitFormatterSingleton()
+                                                    .format(m.getUnit())));
                         } else {
                             return target.cast(v);
                         }

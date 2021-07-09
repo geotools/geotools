@@ -16,8 +16,6 @@
  */
 package org.geotools.measure;
 
-import static org.geotools.measure.SimpleUnitFormatForwarder.BaseUnitFormatter;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;

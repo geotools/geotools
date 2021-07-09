@@ -20,7 +20,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.geotools.measure.SimpleUnitFormatForwarder.BaseUnitFormatter;
 import tech.units.indriya.format.SimpleUnitFormat;
 
 /** A factory for unit formatters that support the units required by GeoTools. */

@@ -33,7 +33,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.measure.Unit;
 import javax.measure.format.UnitFormat;
-import org.geotools.measure.SimpleUnitFormatForwarder.BaseUnitFormatter;
 import org.junit.Test;
 import tech.units.indriya.format.SimpleUnitFormat;
 import tech.units.indriya.unit.Units;

@@ -28,7 +28,6 @@ import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -49,6 +48,7 @@ import org.geotools.coverage.grid.GeneralGridEnvelope;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.coverage.grid.InvalidGridGeometryException;
 import org.geotools.coverage.processing.CannotReprojectException;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.util.CoverageUtilities;
@@ -85,6 +85,7 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.MathTransformFactory;
 import org.opengis.referencing.operation.NoninvertibleTransformException;
+import org.opengis.referencing.operation.OperationNotFoundException;
 import org.opengis.referencing.operation.TransformException;
 
 /**
@@ -224,6 +225,62 @@ final class Resampler2D extends GridCoverage2D {
         return reproject(sourceCoverage, targetCRS, targetGG, interpolation, hints, null);
     }
 
+    private static class ResampleState {
+        static class TransformSteps {
+            @SuppressWarnings("unused")
+            final MathTransform step1, step2, step3, allSteps;
+            final MathTransform2D allSteps2D;
+
+            public TransformSteps(
+                    MathTransform step1,
+                    MathTransform step2,
+                    MathTransform step3,
+                    MathTransform allSteps,
+                    MathTransform2D allSteps2D) {
+                this.step1 = step1;
+                this.step2 = step2;
+                this.step3 = step3;
+                this.allSteps = allSteps;
+                this.allSteps2D = allSteps2D;
+            }
+        }
+
+        final GridCoverage2D sourceCoverage;
+        PlanarImage sourceImage;
+
+        Hints hints;
+
+        CoordinateReferenceSystem sourceCRS;
+        CoordinateReferenceSystem targetCRS;
+
+        Interpolation interpolation;
+
+        boolean automaticGridRange;
+        boolean automaticGridGeometry;
+
+        GridGeometry2D sourceGridGeometry;
+        GridGeometry2D targetGridGeometry;
+
+        Map<String, Object> sourceProps;
+        ROI roi;
+        Range nodata;
+        double[] backgroundValues;
+
+        CoordinateOperationFactory factory;
+        MathTransformFactory mtFactory;
+
+        TransformSteps transformSteps;
+
+        RenderedOp targetImage;
+        String operationName;
+        Warp warp;
+        RenderingHints targetHints;
+
+        public ResampleState(GridCoverage2D sourceCoverage) {
+            this.sourceCoverage = sourceCoverage;
+        }
+    }
+
     /**
      * Creates a new coverage with a different coordinate reference reference system. If a grid
      * geometry is supplied, only its {@linkplain GridGeometry2D#getRange grid range} and
@@ -243,13 +300,17 @@ final class Resampler2D extends GridCoverage2D {
      * @throws TransformException if a transformation failed.
      */
     public static GridCoverage2D reproject(
-            GridCoverage2D sourceCoverage,
-            CoordinateReferenceSystem targetCRS,
-            GridGeometry2D targetGG,
-            Interpolation interpolation,
+            final GridCoverage2D sourceCoverage,
+            final CoordinateReferenceSystem targetCRS,
+            final GridGeometry2D targetGG,
+            final Interpolation interpolation,
             final Hints hints,
             final double[] backgroundValues)
             throws FactoryException, TransformException {
+
+        ResampleState state;
+        GridCoverage2D targetCoverage;
+
         ////////////////////////////////////////////////////////////////////////////////////////
         ////                                                                                ////
         //// =======>>  STEP 1: Extracts needed informations from the parameters   <<====== ////
@@ -258,9 +319,742 @@ final class Resampler2D extends GridCoverage2D {
         ////            STEP 4: Applies the JAI operation ("Affine", "Warp", etc)           ////
         ////                                                                                ////
         ////////////////////////////////////////////////////////////////////////////////////////
-        Utilities.ensureNonNull("sourceCoverage", sourceCoverage);
-        // CRS
-        final CoordinateReferenceSystem sourceCRS = sourceCoverage.getCoordinateReferenceSystem();
+        state =
+                resolveParameters(
+                        sourceCoverage,
+                        targetCRS,
+                        targetGG,
+                        interpolation,
+                        hints,
+                        backgroundValues);
+
+        /*
+         * Optimization: If the source coverage is already the result of a previous "Resample" operation,
+         * go up in the chain and check if a previously computed image could fits (i.e. the requested
+         * resampling may be the inverse of a previous resampling), returning immediately if a suitable image is found.
+         */
+        targetCoverage = reuseExistingCoverage(state);
+        if (targetCoverage == null) {
+            createSourcePlanarImage(state);
+            resolveRoiAndNoData(state);
+
+            //// =======>>  STEP 2: Creates the "target to source" MathTransform       <<====== ////
+            createTargetToSourceTransform(state);
+
+            //// =======>>  STEP 3: Computes the target image layout                   <<====== ////
+            computeTargetImageLayout(state);
+
+            //// =======>>  STEP 4: Applies the JAI operation ("Affine", "Warp", etc)  <<====== ////
+            targetCoverage = applyJaiOpAndCreateCoverage(state);
+        }
+        return targetCoverage;
+    }
+
+    private static GridCoverage2D applyJaiOpAndCreateCoverage(ResampleState state)
+            throws FactoryException, TransformException {
+
+        GridCoverage2D targetCoverage = null;
+
+        final Rectangle sourceBB = state.sourceGridGeometry.getGridRange2D();
+        final Rectangle targetBB = state.targetGridGeometry.getGridRange2D();
+        final PlanarImage sourceImage = state.sourceImage;
+        final MathTransform allSteps = state.transformSteps.allSteps;
+
+        ImageWorker w = new ImageWorker(sourceImage);
+        w.setROI(state.roi);
+        w.setBackground(state.backgroundValues);
+        w.setNoData(state.nodata);
+        w.setRenderingHints(state.targetHints);
+        final Map<String, Object> imageProperties = new HashMap<>();
+
+        final boolean txIsAffine = allSteps instanceof AffineTransform;
+        final boolean txIsIdentity =
+                allSteps.isIdentity()
+                        || (txIsAffine
+                                && XAffineTransform.isIdentity((AffineTransform) allSteps, EPS));
+        final boolean optimizedAffinePath =
+                txIsAffine && (state.automaticGridRange || targetBB.equals(sourceBB));
+
+        if (txIsIdentity) {
+            targetCoverage = prepareOrCreateIdentityTargetImage(w, state);
+        } else if (optimizedAffinePath) {
+            targetCoverage = prepareOrCreateAffineTargetImage(w, state);
+        } else {
+            targetCoverage = prepareOrCreateWarpTargetImage(w, imageProperties, state);
+        }
+
+        final boolean createdByAnOptimizedPath = targetCoverage != null;
+        if (!createdByAnOptimizedPath) {
+            state.targetImage = w.getRenderedOperation();
+            for (Map.Entry<String, Object> entry : imageProperties.entrySet()) {
+                state.targetImage.setProperty(entry.getKey(), entry.getValue());
+            }
+
+            adjustTargetGridRangeToActualGridRange(state);
+            targetCoverage = createTargetCoverage(state);
+            logResult(state, targetCoverage);
+        }
+        return targetCoverage;
+    }
+
+    private static GridCoverage2D prepareOrCreateWarpTargetImage(
+            ImageWorker w, Map<String, Object> imageProperties, ResampleState state)
+            throws InvalidGridGeometryException, TransformException, FactoryException {
+
+        final GridCoverage2D sourceCoverage = state.sourceCoverage;
+        final PlanarImage sourceImage = state.sourceImage;
+
+        /*
+         * General case: constructs the warp transform.
+         *
+         * TODO: JAI 1.1.3 seems to have a bug when the target envelope is greater than
+         *       the source envelope:  Warp on float values doesn't set to 'background'
+         *       the points outside the envelope. The operation seems to work correctly
+         *       on integer values, so as a workaround we restart the operation without
+         *       interpolation (which increase the chances to get it down on integers).
+         *       Remove this hack when this JAI bug will be fixed.
+         *
+         * TODO: Move the check for AffineTransform into WarpTransform2D.
+         */
+        boolean forceAdapter = false;
+        if (!JAIExt.isJAIExtOperation("Warp")) {
+            switch (sourceImage.getSampleModel().getTransferType()) {
+                case DataBuffer.TYPE_DOUBLE:
+                case DataBuffer.TYPE_FLOAT:
+                    {
+                        CoordinateReferenceSystem targetCRS = state.targetCRS;
+                        GridGeometry2D targetGG = state.targetGridGeometry;
+
+                        Envelope sourceBB = state.sourceGridGeometry.getEnvelope();
+                        Envelope targetBB = targetGG.getEnvelope();
+
+                        Envelope source = CRS.transform(sourceBB, targetCRS);
+                        source = targetGG.reduce(source);
+
+                        Envelope target = CRS.transform(targetBB, targetCRS);
+                        target = targetGG.reduce(target);
+                        if (!(new GeneralEnvelope(source).contains(target, true))) {
+                            Interpolation interpolation = state.interpolation;
+                            if (interpolation != null
+                                    && !(interpolation instanceof InterpolationNearest)) {
+                                state.hints.add(ImageUtilities.NN_INTERPOLATION_HINT);
+                                return reproject(
+                                        sourceCoverage,
+                                        targetCRS,
+                                        targetGG,
+                                        null,
+                                        state.hints,
+                                        state.backgroundValues);
+                            } else {
+                                // If we were already using nearest-neighbor interpolation,
+                                // force usage of WarpAdapter2D instead of WarpAffine. The
+                                // price will be a slower reprojection.
+                                forceAdapter = true;
+                            }
+                        }
+                    }
+            }
+        }
+        // -------- End of JAI bug workaround --------
+        setupWarp(state, w, imageProperties, forceAdapter);
+        return null;
+    }
+
+    /**
+     * Special case for the affine transform. Try to use the JAI "Affine" operation instead of the
+     * more general "Warp" one. JAI provides native acceleration for the affine operation.
+     *
+     * <p>NOTE 1: There is no need to check for "Scale" and "Translate" as special cases of "Affine"
+     * since JAI already does this check for us.
+     *
+     * <p>NOTE 2: "Affine", "Scale", "Translate", "Rotate" and similar operations ignore the 'xmin',
+     * 'ymin', 'width' and 'height' image layout. Consequently, we can't use this operation if the
+     * user provided explicitly a grid range.
+     *
+     * <p>NOTE 3: If the user didn't specified any grid geometry, then a yet cheaper approach is to
+     * just update the 'gridToCRS' value. We returns a grid coverage wrapping the SOURCE image with
+     * the updated grid geometry.
+     */
+    private static GridCoverage2D prepareOrCreateAffineTargetImage(
+            ImageWorker w, ResampleState state)
+            throws NoninvertibleTransformException, FactoryException {
+        if (state.automaticGridGeometry) {
+            // Cheapest approach: just update 'gridToCRS'.
+            MathTransform mtr;
+            mtr = state.sourceGridGeometry.getGridToCRS(CORNER);
+            mtr =
+                    state.mtFactory.createConcatenatedTransform(
+                            mtr, state.transformSteps.step2.inverse());
+            state.targetGridGeometry =
+                    new GridGeometry2D(
+                            state.sourceGridGeometry.getGridRange(), mtr, state.targetCRS);
+            /*
+             * Note: do NOT use the "GridGeometry2D(sourceGridRange, targetEnvelope)"
+             * constructor in the above line. We must give a MathTransform argument to
+             * the constructor, not an Envelope, because the later infer a MathTransform
+             * using heuristic rules. Only the constructor with a MathTransform argument
+             * is fully accurate.
+             */
+            return create(
+                    state.sourceCoverage,
+                    state.sourceImage,
+                    state.targetGridGeometry,
+                    null,
+                    null,
+                    state.hints,
+                    state.sourceProps);
+        }
+        // More general approach: apply the affine transform.
+        final AffineTransform affine = (AffineTransform) state.transformSteps.allSteps.inverse();
+        w.affine(affine, state.interpolation, state.backgroundValues);
+        state.operationName = "Affine";
+        CoverageUtilities.setROIProperty(state.sourceProps, w.getROI());
+        CoverageUtilities.setNoDataProperty(state.sourceProps, w.getNoData());
+        return null;
+    }
+
+    private static GridCoverage2D prepareOrCreateIdentityTargetImage(
+            ImageWorker w, ResampleState state) {
+        PlanarImage sourceImage = state.sourceImage;
+        w.setImage(sourceImage);
+        final Rectangle sourceBB = state.sourceGridGeometry.getGridRange2D();
+        final Rectangle targetBB = state.targetGridGeometry.getGridRange2D();
+        if (targetBB.equals(sourceBB)) {
+            /*
+             * Optimization in case we have nothing to do, not even a crop. Reverts to the
+             * original coverage BEFORE to creates Resampler2D. Note that while there is
+             * nothing to do, the target CRS is not identical to the source CRS (so we need
+             * to create a new coverage) otherwise this condition would have been detected
+             * sooner in this method.
+             */
+            return create(
+                    state.sourceCoverage,
+                    sourceImage,
+                    state.targetGridGeometry,
+                    null,
+                    null,
+                    state.hints,
+                    state.sourceProps);
+        }
+        /*
+         * If the user requests a new grid geometry with the same coordinate reference system,
+         * and if the grid geometry is equivalents to a simple extraction of a sub-area, then
+         * delegates the work to a "Crop" operation.
+         */
+        if (sourceBB.contains(targetBB)) {
+            w.crop(targetBB.x, targetBB.y, targetBB.width, targetBB.height);
+            CoverageUtilities.setROIProperty(state.sourceProps, w.getROI());
+            CoverageUtilities.setNoDataProperty(state.sourceProps, w.getNoData());
+            state.operationName = "Crop";
+        } else {
+            w.setNoData(null);
+            w.mosaic(
+                    new RenderedImage[] {sourceImage},
+                    MosaicDescriptor.MOSAIC_TYPE_OVERLAY,
+                    null,
+                    new ROI[] {state.roi},
+                    null,
+                    state.nodata != null ? new Range[] {state.nodata} : null);
+            CoverageUtilities.setROIProperty(state.sourceProps, w.getROI());
+            CoverageUtilities.setNoDataProperty(state.sourceProps, w.getNoData());
+            state.operationName = "Mosaic";
+        }
+        return null; // prepared parameters, no optimized return
+    }
+
+    private static void setupWarp(
+            ResampleState state,
+            ImageWorker w,
+            final Map<String, Object> imageProperties,
+            boolean forceAdapter)
+            throws TransformException, FactoryException {
+        final MathTransform2D transform = state.transformSteps.allSteps2D;
+        final CharSequence name = state.sourceCoverage.getName();
+        final Rectangle sourceBB = state.sourceGridGeometry.getGridRange2D();
+        final Rectangle targetBB = state.targetGridGeometry.getGridRange2D();
+        state.operationName = "Warp";
+        if (forceAdapter) {
+            state.warp = new WarpBuilder(0.0).buildWarp(transform, sourceBB);
+        } else {
+            state.warp =
+                    createWarp(name, sourceBB, targetBB, transform, state.mtFactory, state.hints);
+        }
+        // store the transformation in the properties, as we might want to retrieve and
+        // chain it with affine transforms down the chain
+        imageProperties.put("MathTransform", transform);
+        imageProperties.put("SourceBoundingBox", sourceBB);
+        w.warp(state.warp, state.interpolation);
+        CoverageUtilities.setROIProperty(state.sourceProps, w.getROI());
+        CoverageUtilities.setNoDataProperty(state.sourceProps, w.getNoData());
+    }
+
+    /**
+     * The JAI operation sometime returns an image with a bounding box different than what we
+     * expected. This is true especially for the "Affine" operation: the JAI documentation said
+     * explicitly that xmin, ymin, width and height image layout hints are ignored for this one. As
+     * a safety, we check the bounding box in any case. If it doesn't matches, then we will
+     * reconstruct the target grid geometry.
+     */
+    private static void adjustTargetGridRangeToActualGridRange(ResampleState state) {
+        final GridEnvelope targetGR = state.targetGridGeometry.getGridRange();
+        final int[] lower = targetGR.getLow().getCoordinateValues();
+        final int[] upper = targetGR.getHigh().getCoordinateValues();
+        offsetUpper(upper);
+        lower[state.targetGridGeometry.gridDimensionX] = state.targetImage.getMinX();
+        lower[state.targetGridGeometry.gridDimensionY] = state.targetImage.getMinY();
+        upper[state.targetGridGeometry.gridDimensionX] = state.targetImage.getMaxX();
+        upper[state.targetGridGeometry.gridDimensionY] = state.targetImage.getMaxY();
+        final GridEnvelope actualGR = new GeneralGridEnvelope(lower, upper);
+        if (!targetGR.equals(actualGR)) {
+            state.targetGridGeometry =
+                    new GridGeometry2D(
+                            actualGR,
+                            state.targetGridGeometry.getGridToCRS(PixelInCell.CELL_CENTER),
+                            state.targetCRS);
+            if (!state.automaticGridRange) {
+                log(
+                        Loggings.getResources(state.sourceCoverage.getLocale())
+                                .getLogRecord(
+                                        Level.FINE,
+                                        LoggingKeys.ADJUSTED_GRID_GEOMETRY_$1,
+                                        state.sourceCoverage
+                                                .getName()
+                                                .toString(state.sourceCoverage.getLocale())));
+            }
+        }
+    }
+
+    private static void logResult(final ResampleState state, GridCoverage2D targetCoverage) {
+        if (CoverageProcessor.LOGGER.isLoggable(LOGGING_LEVEL)) {
+            log(
+                    Loggings.getResources(state.sourceCoverage.getLocale())
+                            .getLogRecord(
+                                    LOGGING_LEVEL,
+                                    LoggingKeys.APPLIED_RESAMPLE_$11,
+                                    new Object[] {
+                                        /*  {0} */ state.sourceCoverage
+                                                .getName()
+                                                .toString(state.sourceCoverage.getLocale()),
+                                        /*  {1} */ state.sourceCoverage
+                                                .getCoordinateReferenceSystem()
+                                                .getName()
+                                                .getCode(),
+                                        /*  {2} */ state.sourceImage.getWidth(),
+                                        /*  {3} */ state.sourceImage.getHeight(),
+                                        /*  {4} */ targetCoverage
+                                                .getCoordinateReferenceSystem()
+                                                .getName()
+                                                .getCode(),
+                                        /*  {5} */ state.targetImage.getWidth(),
+                                        /*  {6} */ state.targetImage.getHeight(),
+                                        /*  {7} */ state.targetImage.getOperationName(),
+                                        /*  {8} */ Integer.valueOf(1),
+                                        /*  {9} */ ImageUtilities.getInterpolationName(
+                                                state.interpolation),
+                                        /* {10} */ (state.backgroundValues != null)
+                                                ? state.backgroundValues.length == 1
+                                                        ? (Double.isNaN(state.backgroundValues[0])
+                                                                ? "NaN"
+                                                                : Double.valueOf(
+                                                                        state.backgroundValues[0]))
+                                                        : XArray.toString(
+                                                                state.backgroundValues,
+                                                                state.sourceCoverage.getLocale())
+                                                : "No background used"
+                                    }));
+        }
+    }
+
+    private static GridCoverage2D createTargetCoverage(final ResampleState state) {
+        GridCoverage2D targetCoverage;
+        /*
+         * Constructs the final grid coverage, then log a message as in the following example:
+         *
+         *     Resampled coverage "Foo" from coordinate system "myCS" (for an image of size
+         *     1000x1500) to coordinate system "WGS84" (image size 1000x1500). JAI operation
+         *     is "Warp" with "Nearest" interpolation on geophysics pixels values. Background
+         *     value is 255.
+         */
+        targetCoverage =
+                create(
+                        state.sourceCoverage,
+                        state.targetImage,
+                        state.targetGridGeometry,
+                        state.operationName,
+                        state.warp,
+                        state.hints,
+                        state.sourceProps);
+        assert CRS.equalsIgnoreMetadata(
+                        targetCoverage.getCoordinateReferenceSystem(), state.targetCRS)
+                : state.targetGridGeometry;
+        assert targetCoverage
+                        .getGridGeometry()
+                        .getGridRange2D()
+                        .equals(state.targetImage.getBounds())
+                : state.targetGridGeometry;
+        return targetCoverage;
+    }
+
+    private static void computeTargetImageLayout(final ResampleState state) {
+        state.targetHints = ImageUtilities.getRenderingHints(state.sourceImage);
+        if (state.targetHints == null) {
+            state.targetHints =
+                    new RenderingHints(
+                            JAI.KEY_INTERPOLATION,
+                            Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+        } else {
+            state.targetHints.put(
+                    JAI.KEY_INTERPOLATION, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+        }
+        state.targetHints.put(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, false);
+        state.targetHints.put(JAI.KEY_TRANSFORM_ON_COLORMAP, false);
+        if (state.hints != null) {
+            state.targetHints.add(state.hints);
+        }
+        ImageLayout layout = (ImageLayout) state.targetHints.get(JAI.KEY_IMAGE_LAYOUT);
+        if (layout != null) {
+            layout = (ImageLayout) layout.clone();
+        } else {
+            layout = new ImageLayout();
+            // Do not inherit the color model and sample model from the 'sourceImage';
+            // Let the operation decide itself. This is necessary in case we change the
+            // source, as we do if we choose the "Mosaic" operation.
+        }
+        final Rectangle targetBB = state.targetGridGeometry.getGridRange2D();
+        if (isBoundsUndefined(layout, false)) {
+            layout.setMinX(targetBB.x);
+            layout.setMinY(targetBB.y);
+            layout.setWidth(targetBB.width);
+            layout.setHeight(targetBB.height);
+        }
+        if (isBoundsUndefined(layout, true)) {
+            Dimension size =
+                    new Dimension(
+                            layout.getWidth(state.sourceImage),
+                            layout.getHeight(state.sourceImage));
+            size = ImageUtilities.toTileSize(size);
+            layout.setTileGridXOffset(layout.getMinX(state.sourceImage));
+            layout.setTileGridYOffset(layout.getMinY(state.sourceImage));
+            layout.setTileWidth(size.width);
+            layout.setTileHeight(size.height);
+        }
+        /*
+         * Creates the background values array.
+         */
+        if (state.backgroundValues == null) {
+            state.backgroundValues = CoverageUtilities.getBackgroundValues(state.sourceCoverage);
+        }
+
+        /*
+         * We need to correctly manage the Hints to control the replacement of IndexColorModel.
+         * It is worth to point out that setting the JAI.KEY_REPLACE_INDEX_COLOR_MODEL hint to
+         * Boolean.TRUE is not enough to force the operators to do an expansion. If we explicitly
+         * provide an ImageLayout built with the source image where the CM and the SM are valid.
+         * those will be employed overriding a the possibility to expand the color model.
+         */
+
+        state.targetHints.put(JAI.KEY_IMAGE_LAYOUT, layout);
+    }
+
+    private static void createTargetToSourceTransform(final ResampleState state)
+            throws NoninvertibleTransformException, FactoryException, TransformException,
+                    OperationNotFoundException {
+        /*
+         * Computes the INVERSE of the math transform from [Source Grid] to [Target Grid].
+         * The transform will be computed using the following path:
+         *
+         *      Target Grid --> Target CRS --> Source CRS --> Source Grid
+         *                   ^              ^              ^
+         *                 step 1         step 2         step 3
+         *
+         * If source and target CRS are equal, a shorter path is used. This special
+         * case is needed because 'sourceCRS' and 'targetCRS' may be null.
+         *
+         *      Target Grid --> Common CRS --> Source Grid
+         *                   ^              ^
+         *                 step 1         step 3
+         */
+        final MathTransform step1, step2, step3, allSteps;
+        if (CRS.equalsIgnoreMetadata(state.sourceCRS, state.targetCRS)) {
+            /*
+             * Note: targetGG should not be null, otherwise 'existingCoverage(...)' should
+             *       have already detected that this resample is not doing anything.
+             */
+            if (!state.targetGridGeometry.isDefined(GridGeometry2D.GRID_TO_CRS_BITMASK)) {
+                step1 =
+                        state.sourceGridGeometry.getGridToCRS(
+                                CORNER); // Really sourceGG, not targetGG
+                step2 = IdentityTransform.create(step1.getTargetDimensions());
+                step3 = step1.inverse();
+                allSteps = IdentityTransform.create(step1.getSourceDimensions());
+                state.targetGridGeometry =
+                        new GridGeometry2D(
+                                state.targetGridGeometry.getGridRange(), step1, state.targetCRS);
+            } else {
+                step1 = state.targetGridGeometry.getGridToCRS(CORNER);
+                step2 = IdentityTransform.create(step1.getTargetDimensions());
+                step3 = state.sourceGridGeometry.getGridToCRS(CORNER).inverse();
+                allSteps = state.mtFactory.createConcatenatedTransform(step1, step3);
+                if (!state.targetGridGeometry.isDefined(GridGeometry2D.GRID_RANGE_BITMASK)) {
+                    /*
+                     * If the target grid range was not explicitly specified, a grid range will be
+                     * automatically computed in such a way that it will maps to the same envelope
+                     * (at least approximatively).
+                     */
+                    Envelope gridRange;
+                    gridRange = toEnvelope(state.sourceGridGeometry.getGridRange());
+                    gridRange = CRS.transform(allSteps.inverse(), gridRange);
+                    state.targetGridGeometry =
+                            new GridGeometry2D(
+                                    new GeneralGridEnvelope(gridRange, PixelInCell.CELL_CORNER),
+                                    state.targetGridGeometry.getGridToCRS(PixelInCell.CELL_CENTER),
+                                    state.targetCRS);
+                }
+            }
+        } else {
+            if (state.sourceCRS == null) {
+                throw new CannotReprojectException(Errors.format(ErrorKeys.UNSPECIFIED_CRS));
+            }
+            CoordinateOperation operation =
+                    state.factory.createOperation(state.sourceCRS, state.targetCRS);
+            final CoordinateReferenceSystem compatibleSourceCRS =
+                    compatibleSourceCRS(
+                            state.sourceCoverage.getCoordinateReferenceSystem2D(),
+                            state.sourceCRS,
+                            state.targetCRS);
+            final boolean force2D = (state.sourceCRS != compatibleSourceCRS);
+            step2 =
+                    state.factory
+                            .createOperation(state.targetCRS, compatibleSourceCRS)
+                            .getMathTransform();
+            step3 =
+                    (force2D
+                                    ? state.sourceGridGeometry.getGridToCRS2D(CORNER)
+                                    : state.sourceGridGeometry.getGridToCRS(CORNER))
+                            .inverse();
+            final Envelope sourceEnvelope =
+                    state.sourceCoverage.getEnvelope(); // Don't force this one to 2D.
+            final GeneralEnvelope targetEnvelope = CRS.transform(operation, sourceEnvelope);
+            targetEnvelope.setCoordinateReferenceSystem(state.targetCRS);
+            // 'targetCRS' may be different than the one set by CRS.transform(...).
+            /*
+             * If the target GridGeometry is incomplete, provides default
+             * values for the missing fields. Three cases may occurs:
+             *
+             * - User provided no GridGeometry at all. Then, constructs an image of the same size
+             *   than the source image and set an envelope big enough to contains the projected
+             *   coordinates. The transform will derive from the grid range and the envelope.
+             *
+             * - User provided only a grid range.  Then, set an envelope big enough to contains
+             *   the projected coordinates. The transform will derive from the grid range and
+             *   the envelope.
+             *
+             * - User provided only a "grid to CRS" transform. Then, transform the projected
+             *   envelope to "grid units" using the specified transform and create a grid range
+             *   big enough to hold the result.
+             */
+            if (state.targetGridGeometry == null) {
+                final GridEnvelope targetGR =
+                        force2D
+                                ? new GridEnvelope2D(state.sourceGridGeometry.getGridRange2D())
+                                : state.sourceGridGeometry.getGridRange();
+                state.targetGridGeometry = new GridGeometry2D(targetGR, targetEnvelope);
+                step1 = state.targetGridGeometry.getGridToCRS(CORNER);
+            } else if (!state.targetGridGeometry.isDefined(GridGeometry2D.GRID_TO_CRS_BITMASK)) {
+                state.targetGridGeometry =
+                        new GridGeometry2D(state.targetGridGeometry.getGridRange(), targetEnvelope);
+                step1 = state.targetGridGeometry.getGridToCRS(CORNER);
+            } else {
+                step1 = state.targetGridGeometry.getGridToCRS(CORNER);
+                if (!state.targetGridGeometry.isDefined(GridGeometry2D.GRID_RANGE_BITMASK)) {
+                    GeneralEnvelope gridRange = CRS.transform(step1.inverse(), targetEnvelope);
+                    // According OpenGIS specification, GridGeometry maps pixel's center.
+                    state.targetGridGeometry =
+                            new GridGeometry2D(
+                                    new GeneralGridEnvelope(gridRange, PixelInCell.CELL_CENTER),
+                                    step1,
+                                    state.targetCRS);
+                }
+            }
+            /*
+             * Computes the final transform.
+             */
+            allSteps =
+                    state.mtFactory.createConcatenatedTransform(
+                            state.mtFactory.createConcatenatedTransform(step1, step2), step3);
+        }
+        final MathTransform allSteps2D =
+                toMathTransform2D(allSteps, state.mtFactory, state.targetGridGeometry);
+        if (!(allSteps2D instanceof MathTransform2D)) {
+            // Should not happen with Geotools implementations. May happen
+            // with some external implementations, but should stay unusual.
+            throw new TransformException(Errors.format(ErrorKeys.NO_TRANSFORM2D_AVAILABLE));
+        }
+        state.transformSteps =
+                new ResampleState.TransformSteps(
+                        step1, step2, step3, allSteps, (MathTransform2D) allSteps2D);
+    }
+
+    private static void createSourcePlanarImage(ResampleState state) {
+        PlanarImage sourceImage =
+                PlanarImage.wrapRenderedImage(state.sourceCoverage.getRenderedImage());
+        assert state.sourceCoverage.getCoordinateReferenceSystem() == state.sourceCRS
+                : state.sourceCoverage;
+        state.sourceImage = sourceImage;
+        state.factory = ReferencingFactoryFinder.getCoordinateOperationFactory(state.hints);
+        state.mtFactory = findMathTransformFactory(state.factory, state.hints);
+    }
+
+    private static ResampleState resolveParameters(
+            final GridCoverage2D providedSourceCoverage,
+            final CoordinateReferenceSystem providedTargetCRS,
+            final GridGeometry2D providedTargetGG,
+            final Interpolation providedInterpolation,
+            final Hints providedHints,
+            double[] providedBackgroundValues)
+            throws FactoryException {
+
+        Utilities.ensureNonNull("sourceCoverage", providedSourceCoverage);
+
+        ResampleState state = new ResampleState(providedSourceCoverage);
+        state.hints = providedHints == null ? new Hints() : new Hints(providedHints);
+        state.sourceCRS = state.sourceCoverage.getCoordinateReferenceSystem();
+        state.targetCRS = resolveTargetCRS(state.sourceCRS, providedTargetCRS, providedTargetGG);
+        state.interpolation = prepareHints(providedInterpolation, state.hints);
+        state.backgroundValues = providedBackgroundValues;
+
+        state.sourceGridGeometry = state.sourceCoverage.getGridGeometry();
+        state.automaticGridRange = shallComputeGridRange(providedTargetGG);
+        state.automaticGridGeometry =
+                shallComputeGridGeometry(providedTargetGG, state.automaticGridRange);
+        state.targetGridGeometry =
+                computeTargetGridGeometry(
+                        state.sourceCoverage, providedTargetGG, state.automaticGridRange);
+
+        @SuppressWarnings("unchecked")
+        Map<String, Object> sourceProps = state.sourceCoverage.getProperties();
+        state.sourceProps = sourceProps != null ? new HashMap<>(sourceProps) : new HashMap<>();
+
+        return state;
+    }
+
+    private static ResampleState resolveRoiAndNoData(ResampleState state) {
+        /*
+         * The projection are usually applied on floating-point values, in order
+         * to gets maximal precision and to handle correctly the special case of
+         * NaN values. However, we can apply the projection on integer values if
+         * the interpolation type is "nearest neighbor", since this is not really
+         * an interpolation.
+         *
+         * If this condition is met, then we verify if an "integer version" of the image
+         * is available as a source of the source coverage (i.e. the floating-point image
+         * is derived from the integer image, not the converse).
+         */
+        // Getting optional ROI and NoData as properties
+        Object roiProp = state.sourceProps.get("GC_ROI");
+        NoDataContainer nodataProp = CoverageUtilities.getNoDataProperty(state.sourceCoverage);
+        state.roi = (roiProp != null && roiProp instanceof ROI) ? (ROI) roiProp : null;
+        state.nodata = nodataProp != null ? nodataProp.getAsRange() : null;
+
+        return state;
+    }
+
+    private static MathTransformFactory findMathTransformFactory(
+            CoordinateOperationFactory factory, Hints hints) {
+        if (factory instanceof AbstractCoordinateOperationFactory) {
+            return ((AbstractCoordinateOperationFactory) factory).getMathTransformFactory();
+        }
+        return ReferencingFactoryFinder.getMathTransformFactory(hints);
+    }
+
+    private static GridGeometry2D computeTargetGridGeometry(
+            GridCoverage2D sourceCoverage, GridGeometry2D targetGG, final boolean automaticGR) {
+        if (targetGG == null) {
+            return null;
+        }
+        /*
+         * Grid range and "grid to CRS" transform are the only grid geometry informations used
+         * by this method. If they are not available, this is equivalent to not providing grid
+         * geometry at all. In such case set to 'targetGG' reference to null, since null value
+         * is what the remaining code will check for.
+         */
+        if (!automaticGR || targetGG.isDefined(GridGeometry2D.GRID_TO_CRS_BITMASK)) {
+            return targetGG;
+        }
+        /*
+         * Before to abandon the grid geometry, checks if it contains an envelope (note:
+         * we really want it in sourceCRS, not targetCRS - the reprojection will be done
+         * later in this method). If so, we will recreate a new grid geometry from the
+         * envelope using the same "grid to CRS" transform than the original coverage.
+         * The result may be an image with a different size.
+         */
+        if (targetGG.isDefined(GridGeometry2D.ENVELOPE_BITMASK)) {
+            final Envelope envelope = targetGG.getEnvelope();
+            final GridGeometry2D sourceGG = sourceCoverage.getGridGeometry();
+            final MathTransform gridToCRS;
+            switch (envelope.getDimension()) {
+                case 2:
+                    gridToCRS = sourceGG.getGridToCRS2D(CORNER);
+                    break;
+                default:
+                    gridToCRS = sourceGG.getGridToCRS(CORNER);
+                    break;
+            }
+            return new GridGeometry2D(PixelInCell.CELL_CENTER, gridToCRS, envelope, null);
+        }
+        return null;
+    }
+
+    /** Whether the target GridRange should be computed automatically. */
+    private static boolean shallComputeGridRange(GridGeometry2D targetGG) {
+        return null == targetGG || !targetGG.isDefined(GridGeometry2D.GRID_RANGE_BITMASK);
+    }
+
+    /**
+     * Whether the target GridGeometry should be computed automatically, or if we should follow
+     * strictly what the user said. Note that "automaticGG" implies "automaticGR" but the converse
+     * is not necessarily true.
+     */
+    private static boolean shallComputeGridGeometry(GridGeometry2D targetGG, boolean automaticGR) {
+        if (targetGG == null) {
+            return true;
+        }
+        if (!automaticGR || targetGG.isDefined(GridGeometry2D.GRID_TO_CRS_BITMASK)) {
+            return false;
+        }
+        if (targetGG.isDefined(GridGeometry2D.ENVELOPE_BITMASK)) {
+            return false;
+        }
+        return true;
+    }
+
+    // INTERPOLATION MANAGEMENT as well as BORDER_EXTENDER
+    private static Interpolation prepareHints(Interpolation interpolation, final Hints hints) {
+        if (interpolation == null) {
+
+            // if we did not the interpolation, let's try to get it from hints
+            if (hints != null) {
+                // JAI interpolation
+                if (hints.containsKey(JAI.KEY_INTERPOLATION))
+                    interpolation = (Interpolation) hints.get(JAI.KEY_INTERPOLATION);
+            }
+        } else {
+            // we have been provided with interpolation, let's override hints
+            hints.put(JAI.KEY_INTERPOLATION, interpolation);
+        }
+        if (hints != null && !hints.containsKey(JAI.KEY_BORDER_EXTENDER)) {
+            hints.put(
+                    JAI.KEY_BORDER_EXTENDER,
+                    BorderExtender.createInstance(BorderExtender.BORDER_COPY));
+        }
+        return interpolation;
+    }
+
+    private static CoordinateReferenceSystem resolveTargetCRS(
+            final CoordinateReferenceSystem sourceCRS,
+            CoordinateReferenceSystem targetCRS,
+            GridGeometry2D targetGG)
+            throws FactoryException {
         if (targetCRS == null) {
             // in case the TargetCRS has not been set we try to use the CRS that was part of the
             // TargetGG
@@ -287,579 +1081,7 @@ final class Resampler2D extends GridCoverage2D {
                 }
             }
         }
-
-        //
-        // INTERPOLATION MANAGEMENT as well as BORDER_EXTENDER
-        //
-        if (interpolation == null) {
-
-            // if we did not the interpolation, let's try to get it from hints
-            if (hints != null) {
-                // JAI interpolation
-                if (hints.containsKey(JAI.KEY_INTERPOLATION))
-                    interpolation = (Interpolation) hints.get(JAI.KEY_INTERPOLATION);
-            }
-        } else {
-            // we have been provided with interpolation, let's override hints
-            hints.put(JAI.KEY_INTERPOLATION, interpolation);
-        }
-        if (hints != null && !hints.containsKey(JAI.KEY_BORDER_EXTENDER)) {
-            hints.put(
-                    JAI.KEY_BORDER_EXTENDER,
-                    BorderExtender.createInstance(BorderExtender.BORDER_COPY));
-        }
-
-        /*
-         * The following will tell us if the target GridRange (GR) and GridGeometry (GG) should
-         * be computed automatically, or if we should follow strictly what the user said. Note
-         * that "automaticGG" implies "automaticGR" but the converse is not necessarily true.
-         */
-        final boolean automaticGG, automaticGR;
-
-        /*
-         * Grid range and "grid to CRS" transform are the only grid geometry informations used
-         * by this method. If they are not available, this is equivalent to not providing grid
-         * geometry at all. In such case set to 'targetGG' reference to null, since null value
-         * is what the remaining code will check for.
-         */
-        if (targetGG == null) {
-            automaticGG = true;
-            automaticGR = true;
-        } else {
-            automaticGR = !targetGG.isDefined(GridGeometry2D.GRID_RANGE_BITMASK);
-            if (!automaticGR || targetGG.isDefined(GridGeometry2D.GRID_TO_CRS_BITMASK)) {
-                automaticGG = false;
-            } else {
-                /*
-                 * Before to abandon the grid geometry, checks if it contains an envelope (note:
-                 * we really want it in sourceCRS, not targetCRS - the reprojection will be done
-                 * later in this method). If so, we will recreate a new grid geometry from the
-                 * envelope using the same "grid to CRS" transform than the original coverage.
-                 * The result may be an image with a different size.
-                 */
-                if (targetGG.isDefined(GridGeometry2D.ENVELOPE_BITMASK)) {
-                    final Envelope envelope = targetGG.getEnvelope();
-                    final GridGeometry2D sourceGG = sourceCoverage.getGridGeometry();
-                    final MathTransform gridToCRS;
-                    switch (envelope.getDimension()) {
-                        case 2:
-                            gridToCRS = sourceGG.getGridToCRS2D(CORNER);
-                            break;
-                        default:
-                            gridToCRS = sourceGG.getGridToCRS(CORNER);
-                            break;
-                    }
-                    targetGG =
-                            new GridGeometry2D(PixelInCell.CELL_CENTER, gridToCRS, envelope, null);
-                    automaticGG = false;
-                } else {
-                    targetGG = null;
-                    automaticGG = true;
-                }
-            }
-        }
-        /*
-         * If the source coverage is already the result of a previous "Resample" operation,
-         * go up in the chain and check if a previously computed image could fits (i.e. the
-         * requested resampling may be the inverse of a previous resampling). This method
-         * may stop immediately if a suitable image is found.
-         */
-        GridCoverage2D targetCoverage = existingCoverage(sourceCoverage, targetCRS, targetGG);
-        if (targetCoverage != null) {
-            return targetCoverage;
-        }
-        final GridGeometry2D sourceGG = sourceCoverage.getGridGeometry();
-        final CoordinateReferenceSystem compatibleSourceCRS =
-                compatibleSourceCRS(
-                        sourceCoverage.getCoordinateReferenceSystem2D(), sourceCRS, targetCRS);
-        /*
-         * The projection are usually applied on floating-point values, in order
-         * to gets maximal precision and to handle correctly the special case of
-         * NaN values. However, we can apply the projection on integer values if
-         * the interpolation type is "nearest neighbor", since this is not really
-         * an interpolation.
-         *
-         * If this condition is meets, then we verify if an "integer version" of the image
-         * is available as a source of the source coverage (i.e. the floating-point image
-         * is derived from the integer image, not the converse).
-         */
-        PlanarImage sourceImage = PlanarImage.wrapRenderedImage(sourceCoverage.getRenderedImage());
-        assert sourceCoverage.getCoordinateReferenceSystem() == sourceCRS : sourceCoverage;
-
-        // Getting optional ROI and NoData as properties
-        @SuppressWarnings("unchecked")
-        Map<String, Object> sourceProps = sourceCoverage.getProperties();
-        sourceProps = sourceProps != null ? new HashMap<>(sourceProps) : new HashMap<>();
-        Object roiProp = sourceProps.get("GC_ROI");
-        NoDataContainer nodataProp = CoverageUtilities.getNoDataProperty(sourceCoverage);
-        ROI roi = (roiProp != null && roiProp instanceof ROI) ? (ROI) roiProp : null;
-        Range nodata = nodataProp != null ? nodataProp.getAsRange() : null;
-
-        // From this point, consider 'sourceCoverage' as final.
-
-        ////////////////////////////////////////////////////////////////////////////////////////
-        ////                                                                                ////
-        ////            STEP 1: Extracts needed informations from the parameters            ////
-        //// =======>>  STEP 2: Creates the "target to source" MathTransform       <<====== ////
-        ////            STEP 3: Computes the target image layout                            ////
-        ////            STEP 4: Applies the JAI operation ("Affine", "Warp", etc)           ////
-        ////                                                                                ////
-        ////////////////////////////////////////////////////////////////////////////////////////
-
-        final CoordinateOperationFactory factory =
-                ReferencingFactoryFinder.getCoordinateOperationFactory(hints);
-        final MathTransformFactory mtFactory;
-        if (factory instanceof AbstractCoordinateOperationFactory) {
-            mtFactory = ((AbstractCoordinateOperationFactory) factory).getMathTransformFactory();
-        } else {
-            mtFactory = ReferencingFactoryFinder.getMathTransformFactory(hints);
-        }
-        /*
-         * Computes the INVERSE of the math transform from [Source Grid] to [Target Grid].
-         * The transform will be computed using the following path:
-         *
-         *      Target Grid --> Target CRS --> Source CRS --> Source Grid
-         *                   ^              ^              ^
-         *                 step 1         step 2         step 3
-         *
-         * If source and target CRS are equal, a shorter path is used. This special
-         * case is needed because 'sourceCRS' and 'targetCRS' may be null.
-         *
-         *      Target Grid --> Common CRS --> Source Grid
-         *                   ^              ^
-         *                 step 1         step 3
-         */
-        final MathTransform step1, step2, step3, allSteps;
-        if (CRS.equalsIgnoreMetadata(sourceCRS, targetCRS)) {
-            /*
-             * Note: targetGG should not be null, otherwise 'existingCoverage(...)' should
-             *       have already detected that this resample is not doing anything.
-             */
-            if (!targetGG.isDefined(GridGeometry2D.GRID_TO_CRS_BITMASK)) {
-                step1 = sourceGG.getGridToCRS(CORNER); // Really sourceGG, not targetGG
-                step2 = IdentityTransform.create(step1.getTargetDimensions());
-                step3 = step1.inverse();
-                allSteps = IdentityTransform.create(step1.getSourceDimensions());
-                targetGG = new GridGeometry2D(targetGG.getGridRange(), step1, targetCRS);
-            } else {
-                step1 = targetGG.getGridToCRS(CORNER);
-                step2 = IdentityTransform.create(step1.getTargetDimensions());
-                step3 = sourceGG.getGridToCRS(CORNER).inverse();
-                allSteps = mtFactory.createConcatenatedTransform(step1, step3);
-                if (!targetGG.isDefined(GridGeometry2D.GRID_RANGE_BITMASK)) {
-                    /*
-                     * If the target grid range was not explicitly specified, a grid range will be
-                     * automatically computed in such a way that it will maps to the same envelope
-                     * (at least approximatively).
-                     */
-                    Envelope gridRange;
-                    gridRange = toEnvelope(sourceGG.getGridRange());
-                    gridRange = CRS.transform(allSteps.inverse(), gridRange);
-                    targetGG =
-                            new GridGeometry2D(
-                                    new GeneralGridEnvelope(gridRange, PixelInCell.CELL_CORNER),
-                                    targetGG.getGridToCRS(PixelInCell.CELL_CENTER),
-                                    targetCRS);
-                }
-            }
-        } else {
-            if (sourceCRS == null) {
-                throw new CannotReprojectException(Errors.format(ErrorKeys.UNSPECIFIED_CRS));
-            }
-            final CoordinateOperation operation = factory.createOperation(sourceCRS, targetCRS);
-            final boolean force2D = (sourceCRS != compatibleSourceCRS);
-            step2 = factory.createOperation(targetCRS, compatibleSourceCRS).getMathTransform();
-            step3 =
-                    (force2D ? sourceGG.getGridToCRS2D(CORNER) : sourceGG.getGridToCRS(CORNER))
-                            .inverse();
-            final Envelope sourceEnvelope =
-                    sourceCoverage.getEnvelope(); // Don't force this one to 2D.
-            final GeneralEnvelope targetEnvelope = CRS.transform(operation, sourceEnvelope);
-            targetEnvelope.setCoordinateReferenceSystem(targetCRS);
-            // 'targetCRS' may be different than the one set by CRS.transform(...).
-            /*
-             * If the target GridGeometry is incomplete, provides default
-             * values for the missing fields. Three cases may occurs:
-             *
-             * - User provided no GridGeometry at all. Then, constructs an image of the same size
-             *   than the source image and set an envelope big enough to contains the projected
-             *   coordinates. The transform will derive from the grid range and the envelope.
-             *
-             * - User provided only a grid range.  Then, set an envelope big enough to contains
-             *   the projected coordinates. The transform will derive from the grid range and
-             *   the envelope.
-             *
-             * - User provided only a "grid to CRS" transform. Then, transform the projected
-             *   envelope to "grid units" using the specified transform and create a grid range
-             *   big enough to hold the result.
-             */
-            if (targetGG == null) {
-                final GridEnvelope targetGR =
-                        force2D
-                                ? new GridEnvelope2D(sourceGG.getGridRange2D())
-                                : sourceGG.getGridRange();
-                targetGG = new GridGeometry2D(targetGR, targetEnvelope);
-                step1 = targetGG.getGridToCRS(CORNER);
-            } else if (!targetGG.isDefined(GridGeometry2D.GRID_TO_CRS_BITMASK)) {
-                targetGG = new GridGeometry2D(targetGG.getGridRange(), targetEnvelope);
-                step1 = targetGG.getGridToCRS(CORNER);
-            } else {
-                step1 = targetGG.getGridToCRS(CORNER);
-                if (!targetGG.isDefined(GridGeometry2D.GRID_RANGE_BITMASK)) {
-                    GeneralEnvelope gridRange = CRS.transform(step1.inverse(), targetEnvelope);
-                    // According OpenGIS specification, GridGeometry maps pixel's center.
-                    targetGG =
-                            new GridGeometry2D(
-                                    new GeneralGridEnvelope(gridRange, PixelInCell.CELL_CENTER),
-                                    step1,
-                                    targetCRS);
-                }
-            }
-            /*
-             * Computes the final transform.
-             */
-            allSteps =
-                    mtFactory.createConcatenatedTransform(
-                            mtFactory.createConcatenatedTransform(step1, step2), step3);
-        }
-        final MathTransform allSteps2D = toMathTransform2D(allSteps, mtFactory, targetGG);
-        if (!(allSteps2D instanceof MathTransform2D)) {
-            // Should not happen with Geotools implementations. May happen
-            // with some external implementations, but should stay unusual.
-            throw new TransformException(Errors.format(ErrorKeys.NO_TRANSFORM2D_AVAILABLE));
-        }
-
-        ////////////////////////////////////////////////////////////////////////////////////////
-        ////                                                                                ////
-        ////            STEP 1: Extracts needed informations from the parameters            ////
-        ////            STEP 2: Creates the "target to source" MathTransform                ////
-        //// =======>>  STEP 3: Computes the target image layout                   <<====== ////
-        ////            STEP 4: Applies the JAI operation ("Affine", "Warp", etc)           ////
-        ////                                                                                ////
-        ////////////////////////////////////////////////////////////////////////////////////////
-
-        RenderingHints targetHints = ImageUtilities.getRenderingHints(sourceImage);
-        if (targetHints == null) {
-            targetHints =
-                    new RenderingHints(
-                            JAI.KEY_INTERPOLATION,
-                            Interpolation.getInstance(Interpolation.INTERP_NEAREST));
-        } else {
-            targetHints.put(
-                    JAI.KEY_INTERPOLATION, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
-        }
-        targetHints.put(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, false);
-        targetHints.put(JAI.KEY_TRANSFORM_ON_COLORMAP, false);
-
-        if (hints != null) {
-            targetHints.add(hints);
-        }
-        ImageLayout layout = (ImageLayout) targetHints.get(JAI.KEY_IMAGE_LAYOUT);
-        if (layout != null) {
-            layout = (ImageLayout) layout.clone();
-        } else {
-            layout = new ImageLayout();
-            // Do not inherit the color model and sample model from the 'sourceImage';
-            // Let the operation decide itself. This is necessary in case we change the
-            // source, as we do if we choose the "Mosaic" operation.
-        }
-        final Rectangle sourceBB = sourceGG.getGridRange2D();
-        final Rectangle targetBB = targetGG.getGridRange2D();
-        if (isBoundsUndefined(layout, false)) {
-            layout.setMinX(targetBB.x);
-            layout.setMinY(targetBB.y);
-            layout.setWidth(targetBB.width);
-            layout.setHeight(targetBB.height);
-        }
-        if (isBoundsUndefined(layout, true)) {
-            Dimension size =
-                    new Dimension(layout.getWidth(sourceImage), layout.getHeight(sourceImage));
-            size = ImageUtilities.toTileSize(size);
-            layout.setTileGridXOffset(layout.getMinX(sourceImage));
-            layout.setTileGridYOffset(layout.getMinY(sourceImage));
-            layout.setTileWidth(size.width);
-            layout.setTileHeight(size.height);
-        }
-        /*
-         * Creates the background values array.
-         */
-        final double[] background =
-                backgroundValues != null
-                        ? backgroundValues
-                        : CoverageUtilities.getBackgroundValues(sourceCoverage);
-
-        /*
-         * We need to correctly manage the Hints to control the replacement of IndexColorModel.
-         * It is worth to point out that setting the JAI.KEY_REPLACE_INDEX_COLOR_MODEL hint to
-         * Boolean.TRUE is not enough to force the operators to do an expansion. If we explicitly
-         * provide an ImageLayout built with the source image where the CM and the SM are valid.
-         * those will be employed overriding a the possibility to expand the color model.
-         */
-
-        targetHints.put(JAI.KEY_IMAGE_LAYOUT, layout);
-
-        ////////////////////////////////////////////////////////////////////////////////////////
-        ////                                                                                ////
-        ////            STEP 1: Extracts needed informations from the parameters            ////
-        ////            STEP 2: Creates the "target to source" MathTransform                ////
-        ////            STEP 3: Computes the target image layout                            ////
-        //// =======>>  STEP 4: Applies the JAI operation ("Affine", "Warp", etc)  <<====== ////
-        ////                                                                                ////
-        ////////////////////////////////////////////////////////////////////////////////////////
-        /*
-         * If the user requests a new grid geometry with the same coordinate reference system,
-         * and if the grid geometry is equivalents to a simple extraction of a sub-area, then
-         * delegates the work to a "Crop" operation.
-         */
-        final String operation;
-
-        // Using ImageWorker instead
-        ImageWorker w = new ImageWorker(sourceImage);
-        w.setROI(roi);
-        w.setBackground(background);
-        w.setNoData(nodata);
-        w.setRenderingHints(targetHints);
-        ROI newROI = null;
-        Range newNoData = null;
-        final Map<String, Object> imageProperties = new HashMap<>();
-        Warp warp = null;
-        if (allSteps.isIdentity()
-                || (allSteps instanceof AffineTransform
-                        && XAffineTransform.isIdentity((AffineTransform) allSteps, EPS))) {
-            sourceImage = PlanarImage.wrapRenderedImage(sourceCoverage.getRenderedImage());
-            w.setImage(sourceImage);
-            if (targetBB.equals(sourceBB)) {
-                /*
-                 * Optimization in case we have nothing to do, not even a crop. Reverts to the
-                 * original coverage BEFORE to creates Resampler2D. Note that while there is
-                 * nothing to do, the target CRS is not identical to the source CRS (so we need
-                 * to create a new coverage) otherwise this condition would have been detected
-                 * sooner in this method.
-                 */
-
-                sourceImage = PlanarImage.wrapRenderedImage(sourceCoverage.getRenderedImage());
-                return create(
-                        sourceCoverage, sourceImage, targetGG, null, null, hints, sourceProps);
-            }
-            if (sourceBB.contains(targetBB)) {
-                w.crop(
-                        Float.valueOf(targetBB.x),
-                        Float.valueOf(targetBB.y),
-                        Float.valueOf(targetBB.width),
-                        Float.valueOf(targetBB.height));
-                newROI = w.getROI();
-                newNoData = w.getNoData();
-                CoverageUtilities.setROIProperty(sourceProps, newROI);
-                CoverageUtilities.setNoDataProperty(sourceProps, newNoData);
-                operation = "Crop";
-            } else {
-                w.setNoData(null);
-                w.mosaic(
-                        new RenderedImage[] {sourceImage},
-                        MosaicDescriptor.MOSAIC_TYPE_OVERLAY,
-                        null,
-                        new ROI[] {roi},
-                        null,
-                        nodata != null ? new Range[] {nodata} : null);
-                newROI = w.getROI();
-                newNoData = w.getNoData();
-                CoverageUtilities.setROIProperty(sourceProps, newROI);
-                CoverageUtilities.setNoDataProperty(sourceProps, newNoData);
-                operation = "Mosaic";
-            }
-        } else {
-            /*
-             * Special case for the affine transform. Try to use the JAI "Affine" operation
-             * instead of the more general "Warp" one. JAI provides native acceleration for
-             * the affine operation.
-             *
-             * NOTE 1: There is no need to check for "Scale" and "Translate" as special cases
-             *         of "Affine" since JAI already does this check for us.
-             *
-             * NOTE 2: "Affine", "Scale", "Translate", "Rotate" and similar operations ignore
-             *         the 'xmin', 'ymin', 'width' and 'height' image layout. Consequently, we
-             *         can't use this operation if the user provided explicitly a grid range.
-             *
-             * NOTE 3: If the user didn't specified any grid geometry, then a yet cheaper approach
-             *         is to just update the 'gridToCRS' value. We returns a grid coverage wrapping
-             *         the SOURCE image with the updated grid geometry.
-             */
-            if ((automaticGR || targetBB.equals(sourceBB)) && allSteps instanceof AffineTransform) {
-                if (automaticGG) {
-                    // Cheapest approach: just update 'gridToCRS'.
-                    MathTransform mtr;
-                    mtr = sourceGG.getGridToCRS(CORNER);
-                    mtr = mtFactory.createConcatenatedTransform(mtr, step2.inverse());
-                    targetGG = new GridGeometry2D(sourceGG.getGridRange(), mtr, targetCRS);
-                    /*
-                     * Note: do NOT use the "GridGeometry2D(sourceGridRange, targetEnvelope)"
-                     * constructor in the above line. We must give a MathTransform argument to
-                     * the constructor, not an Envelope, because the later infer a MathTransform
-                     * using heuristic rules. Only the constructor with a MathTransform argument
-                     * is fully accurate.
-                     */
-                    return create(
-                            sourceCoverage, sourceImage, targetGG, null, null, hints, sourceProps);
-                }
-                // More general approach: apply the affine transform.
-                final AffineTransform affine = (AffineTransform) allSteps.inverse();
-                w.affine(affine, interpolation, backgroundValues);
-                operation = "Affine";
-                newROI = w.getROI();
-                newNoData = w.getNoData();
-                CoverageUtilities.setROIProperty(sourceProps, newROI);
-                CoverageUtilities.setNoDataProperty(sourceProps, newNoData);
-            } else {
-                /*
-                 * General case: constructs the warp transform.
-                 *
-                 * TODO: JAI 1.1.3 seems to have a bug when the target envelope is greater than
-                 *       the source envelope:  Warp on float values doesn't set to 'background'
-                 *       the points outside the envelope. The operation seems to work correctly
-                 *       on integer values, so as a workaround we restart the operation without
-                 *       interpolation (which increase the chances to get it down on integers).
-                 *       Remove this hack when this JAI bug will be fixed.
-                 *
-                 * TODO: Move the check for AffineTransform into WarpTransform2D.
-                 */
-                boolean forceAdapter = false;
-                if (!JAIExt.isJAIExtOperation("Warp")) {
-                    switch (sourceImage.getSampleModel().getTransferType()) {
-                        case DataBuffer.TYPE_DOUBLE:
-                        case DataBuffer.TYPE_FLOAT:
-                            {
-                                Envelope source = CRS.transform(sourceGG.getEnvelope(), targetCRS);
-                                Envelope target = CRS.transform(targetGG.getEnvelope(), targetCRS);
-                                source = targetGG.reduce(source);
-                                target = targetGG.reduce(target);
-                                if (!(new GeneralEnvelope(source).contains(target, true))) {
-                                    if (interpolation != null
-                                            && !(interpolation instanceof InterpolationNearest)) {
-                                        hints.add(ImageUtilities.NN_INTERPOLATION_HINT);
-                                        return reproject(
-                                                sourceCoverage,
-                                                targetCRS,
-                                                targetGG,
-                                                null,
-                                                hints,
-                                                background);
-                                    } else {
-                                        // If we were already using nearest-neighbor interpolation,
-                                        // force
-                                        // usage of WarpAdapter2D instead of WarpAffine. The price
-                                        // will be
-                                        // a slower reprojection.
-                                        forceAdapter = true;
-                                    }
-                                }
-                            }
-                    }
-                }
-                // -------- End of JAI bug workaround --------
-                final MathTransform2D transform = (MathTransform2D) allSteps2D;
-                final CharSequence name = sourceCoverage.getName();
-                operation = "Warp";
-                if (forceAdapter) {
-                    warp = new WarpBuilder(0.0).buildWarp(transform, sourceBB);
-                } else {
-                    warp = createWarp(name, sourceBB, targetBB, transform, mtFactory, hints);
-                }
-                // store the transormation in the properties, as we might want to retrieve and chain
-                // it with affine transforms down the chain
-                imageProperties.put("MathTransform", transform);
-                imageProperties.put("SourceBoundingBox", sourceBB);
-                w.warp(warp, interpolation);
-                newROI = w.getROI();
-                newNoData = w.getNoData();
-                CoverageUtilities.setROIProperty(sourceProps, newROI);
-                CoverageUtilities.setNoDataProperty(sourceProps, newNoData);
-            }
-        }
-        final RenderedOp targetImage =
-                w.getRenderedOperation(); // getJAI(hints).createNS(operation, paramBlk,
-        // targetHints);
-        for (Map.Entry<String, Object> entry : imageProperties.entrySet()) {
-            targetImage.setProperty(entry.getKey(), entry.getValue());
-        }
-        final Locale locale = sourceCoverage.getLocale(); // For logging purpose.
-        /*
-         * The JAI operation sometime returns an image with a bounding box different than what we
-         * expected. This is true especially for the "Affine" operation: the JAI documentation said
-         * explicitly that xmin, ymin, width and height image layout hints are ignored for this one.
-         * As a safety, we check the bounding box in any case. If it doesn't matches, then we will
-         * reconstruct the target grid geometry.
-         */
-        final GridEnvelope targetGR = targetGG.getGridRange();
-        final int[] lower = targetGR.getLow().getCoordinateValues();
-        final int[] upper = targetGR.getHigh().getCoordinateValues();
-        offsetUpper(upper);
-        lower[targetGG.gridDimensionX] = targetImage.getMinX();
-        lower[targetGG.gridDimensionY] = targetImage.getMinY();
-        upper[targetGG.gridDimensionX] = targetImage.getMaxX();
-        upper[targetGG.gridDimensionY] = targetImage.getMaxY();
-        final GridEnvelope actualGR = new GeneralGridEnvelope(lower, upper);
-        if (!targetGR.equals(actualGR)) {
-            targetGG =
-                    new GridGeometry2D(
-                            actualGR, targetGG.getGridToCRS(PixelInCell.CELL_CENTER), targetCRS);
-            if (!automaticGR) {
-                log(
-                        Loggings.getResources(locale)
-                                .getLogRecord(
-                                        Level.FINE,
-                                        LoggingKeys.ADJUSTED_GRID_GEOMETRY_$1,
-                                        sourceCoverage.getName().toString(locale)));
-            }
-        }
-        /*
-         * Constructs the final grid coverage, then log a message as in the following example:
-         *
-         *     Resampled coverage "Foo" from coordinate system "myCS" (for an image of size
-         *     1000x1500) to coordinate system "WGS84" (image size 1000x1500). JAI operation
-         *     is "Warp" with "Nearest" interpolation on geophysics pixels values. Background
-         *     value is 255.
-         */
-        targetCoverage =
-                create(sourceCoverage, targetImage, targetGG, operation, warp, hints, sourceProps);
-        assert CRS.equalsIgnoreMetadata(targetCoverage.getCoordinateReferenceSystem(), targetCRS)
-                : targetGG;
-        assert targetCoverage.getGridGeometry().getGridRange2D().equals(targetImage.getBounds())
-                : targetGG;
-        if (CoverageProcessor.LOGGER.isLoggable(LOGGING_LEVEL)) {
-            log(
-                    Loggings.getResources(locale)
-                            .getLogRecord(
-                                    LOGGING_LEVEL,
-                                    LoggingKeys.APPLIED_RESAMPLE_$11,
-                                    new Object[] {
-                                        /*  {0} */ sourceCoverage.getName().toString(locale),
-                                        /*  {1} */ sourceCoverage
-                                                .getCoordinateReferenceSystem()
-                                                .getName()
-                                                .getCode(),
-                                        /*  {2} */ sourceImage.getWidth(),
-                                        /*  {3} */ sourceImage.getHeight(),
-                                        /*  {4} */ targetCoverage
-                                                .getCoordinateReferenceSystem()
-                                                .getName()
-                                                .getCode(),
-                                        /*  {5} */ targetImage.getWidth(),
-                                        /*  {6} */ targetImage.getHeight(),
-                                        /*  {7} */ targetImage.getOperationName(),
-                                        /*  {8} */ Integer.valueOf(1),
-                                        /*  {9} */ ImageUtilities.getInterpolationName(
-                                                interpolation),
-                                        /* {10} */ (background != null)
-                                                ? background.length == 1
-                                                        ? (Double.isNaN(background[0])
-                                                                ? "NaN"
-                                                                : Double.valueOf(background[0]))
-                                                        : XArray.toString(background, locale)
-                                                : "No background used"
-                                    }));
-        }
-
-        return targetCoverage;
+        return targetCRS;
     }
 
     @SuppressWarnings("PMD.ForLoopCanBeForeach")
@@ -874,8 +1096,11 @@ final class Resampler2D extends GridCoverage2D {
      * go up in the chain and check if a previously computed image could fits (i.e. the
      * requested resampling may be the inverse of a previous resampling).
      */
-    private static GridCoverage2D existingCoverage(
-            GridCoverage2D coverage, CoordinateReferenceSystem targetCRS, GridGeometry2D targetGG) {
+    private static GridCoverage2D reuseExistingCoverage(ResampleState state) {
+        GridCoverage2D coverage = state.sourceCoverage;
+        CoordinateReferenceSystem targetCRS = state.targetCRS;
+        GridGeometry2D targetGG = state.targetGridGeometry;
+
         // NoData and ROI must be handled
         ROI roiProp = CoverageUtilities.getROIProperty(coverage);
         Object nodataProp = CoverageUtilities.getNoDataProperty(coverage);

@@ -18,12 +18,14 @@
 package org.geotools.gce.imagemosaic;
 
 import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
+import static org.geotools.util.URLs.fileToUrl;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import com.sun.media.jai.operator.ImageReadDescriptor;
@@ -33,6 +35,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -45,11 +48,13 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.imageio.ImageReader;
@@ -67,9 +72,13 @@ import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.DefaultRepository;
 import org.geotools.data.Query;
+import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.data.store.DecoratingDataStore;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -957,5 +966,84 @@ public class HeterogenousCRSTest {
                                 CRS.decode(crs, true), envelope.getCoordinateReferenceSystem()));
             }
         }
+    }
+
+    @Test
+    public void testHeteroSentinel2DryRun() throws Exception {
+        String testLocation = "hetero_s2";
+        URL storeUrl = TestData.url(this, testLocation);
+
+        File testDataFolder = new File(storeUrl.toURI());
+        File testDirectory = crsMosaicFolder.newFolder(testLocation);
+        FileUtils.copyDirectory(testDataFolder, testDirectory);
+
+        // create a reader so that the shapefile store is generated
+        ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, null);
+        Assert.assertNotNull(imReader);
+        imReader.dispose();
+
+        // setup the datastore.properties wit the store name
+        final String TEST_STORE = "testStore";
+        File dsProperties = new File(testDirectory, "datastore.properties");
+        Properties properties = new Properties();
+        properties.put(Utils.Prop.STORE_NAME, "testStore");
+        try (FileOutputStream fos = new FileOutputStream(dsProperties)) {
+            properties.store(fos, null);
+        }
+
+        // wrap the shapefile store with one that records the Queries being used
+        URL shapefileURL = fileToUrl(new File(testDirectory, "hetero_s2.shp"));
+        ShapefileDataStore ds = new ShapefileDataStore(shapefileURL);
+        List<Query> queries = new ArrayList<>();
+        AtomicBoolean recordQueries = new AtomicBoolean(false);
+        DecoratingDataStore decoratingStore =
+                new DecoratingDataStore(ds) {
+                    @Override
+                    public SimpleFeatureSource getFeatureSource(String typeName)
+                            throws IOException {
+                        SimpleFeatureSource source = super.getFeatureSource(typeName);
+                        if (recordQueries.get()) {
+                            return new QueryCollectingFeatureSource(source, queries);
+                        }
+                        return source;
+                    }
+                };
+
+        // setup and pass the repository
+        DefaultRepository repository = new DefaultRepository();
+        repository.register(TEST_STORE, decoratingStore);
+
+        ImageMosaicReader repoReader =
+                new ImageMosaicReader(testDirectory, new Hints(Hints.REPOSITORY, repository));
+
+        // setup a grid geometry matching data, but a filter that won't let tiles be loaded
+        ParameterValue<GridGeometry2D> ggp = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        GridEnvelope2D range = new GridEnvelope2D(0, 0, 158, 103);
+        GridGeometry2D gg =
+                new GridGeometry2D(
+                        range,
+                        new ReferencedEnvelope(
+                                11.6834779,
+                                11.8616874,
+                                47.6380806,
+                                47.7542552,
+                                CRS.decode("EPSG:4236", true)));
+        ggp.setValue(gg);
+        ParameterValue<Filter> filter = ImageMosaicFormat.FILTER.createValue();
+        filter.setValue(CQL.toFilter("location = 'IAmNotThere.tif'"));
+
+        // record queries only during the read
+        recordQueries.set(true);
+        GridCoverage2D coverage = repoReader.read(new GeneralParameterValue[] {ggp, filter});
+        recordQueries.set(false);
+        if (coverage != null) coverage.dispose(true);
+        repoReader.dispose();
+        repository.dataStore(TEST_STORE).dispose();
+
+        // check the last query did not have the sorting, but the second to last, did not
+        // (a bit fragile, but don't have a better idea)
+        int size = queries.size();
+        assertNotNull(queries.get(size - 2).getSortBy());
+        assertNull(queries.get(size - 1).getSortBy());
     }
 }

@@ -34,6 +34,8 @@ import tech.units.indriya.unit.TransformedUnit;
  * particular unit literal definition, this format includes the aliases of EPSG and ESRI citations,
  * in order to be able to parse the widest possible range of units.
  */
+// this is in `org.geotools.measure` instead of `org.geotools.referencing.wkt`, because
+// `Units.autoCorrect` depends on it & we need `Units` for the unit definitions in gt-measure there
 public final class WktUnitFormat {
 
     public static UnitFormatter getInstance() {

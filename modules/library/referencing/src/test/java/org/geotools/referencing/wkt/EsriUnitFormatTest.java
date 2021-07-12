@@ -14,20 +14,22 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.measure;
+package org.geotools.referencing.wkt;
 
-import static org.geotools.measure.GeoToolsUnitFormatterTest.doTestFormatForGTDefinedUnits;
-import static org.geotools.measure.GeoToolsUnitFormatterTest.doTestNotModifiedUnits;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
+import javax.measure.Unit;
+import org.geotools.measure.UnitFormatter;
+import org.geotools.measure.Units;
 import org.junit.Test;
 import si.uom.NonSI;
 import si.uom.SI;
+import systems.uom.common.USCustomary;
 
-public class EpsgUnitFormatterTest {
+public class EsriUnitFormatTest {
 
-    private final UnitFormatter epsgUnitFormatter =
-            EpsgUnitFormatterFactory.getUnitFormatterSingleton();
+    private final UnitFormatter esriUnitFormatter = EsriUnitFormat.getInstance();
 
     /**
      * Test method for {@link UnitFormatter#format(javax.measure.Unit, java.lang.Appendable)} for
@@ -37,7 +39,16 @@ public class EpsgUnitFormatterTest {
      */
     @Test
     public void testFormatUnitOfQAppendable() throws IOException {
-        doTestNotModifiedUnits(SI.CELSIUS, epsgUnitFormatter);
+        UnitFormatTest.doTestNotModifiedUnits(SI.CELSIUS, esriUnitFormatter);
+    }
+    /**
+     * Test ESRI representation of {@link systems.uom.common.USCustomary#FOOT_SURVEY) for formatting and parsing.
+     */
+    @Test
+    public void testFootSurvey() {
+        assertEquals("Foot_US", esriUnitFormatter.format(USCustomary.FOOT_SURVEY));
+        Unit<?> unit = esriUnitFormatter.parse("Foot_US");
+        assertEquals(USCustomary.FOOT_SURVEY, unit);
     }
 
     /**
@@ -46,7 +57,10 @@ public class EpsgUnitFormatterTest {
      */
     @Test
     public void testGTDefinedFormats() throws IOException {
-        doTestFormatForGTDefinedUnits(NonSI.DEGREE_ANGLE, epsgUnitFormatter, "degree");
-        doTestFormatForGTDefinedUnits(Units.SEXAGESIMAL_DMS, epsgUnitFormatter, "D.MS");
+        UnitFormatTest.doTestFormatForGTDefinedUnits(
+                NonSI.DEGREE_ANGLE, esriUnitFormatter, "Degree");
+        UnitFormatTest.doTestFormatForGTDefinedUnits(SI.METRE, esriUnitFormatter, "Meter");
+        UnitFormatTest.doTestFormatForGTDefinedUnits(
+                Units.SEXAGESIMAL_DMS, esriUnitFormatter, "D.MS");
     }
 }

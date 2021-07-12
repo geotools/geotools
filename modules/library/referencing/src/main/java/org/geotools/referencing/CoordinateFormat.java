@@ -31,9 +31,9 @@ import javax.measure.UnitConverter;
 import javax.measure.quantity.Time;
 import org.geotools.measure.Angle;
 import org.geotools.measure.AngleFormat;
-import org.geotools.measure.GeoToolsUnitFormatterFactory;
 import org.geotools.measure.Latitude;
 import org.geotools.measure.Longitude;
+import org.geotools.measure.UnitFormat;
 import org.geotools.measure.UnitFormatter;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
@@ -448,7 +448,7 @@ public class CoordinateFormat extends Format {
                 final Unit<?> unit = cs.getAxis(i).getUnit();
                 if (unit != null) {
                     if (unitFormatter == null) {
-                        unitFormatter = GeoToolsUnitFormatterFactory.getUnitFormatterSingleton();
+                        unitFormatter = UnitFormat.getInstance();
                     }
                     final String asText = unitFormatter.format(unit);
                     if (asText.length() != 0) {

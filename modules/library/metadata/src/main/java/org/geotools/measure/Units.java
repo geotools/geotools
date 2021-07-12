@@ -120,15 +120,15 @@ public final class Units {
      * SimpleUnitFormat.getInstance()}, since custom Geotools units are not known to {@code
      * SimpleUnitFormat.getInstance()}.
      *
-     * @see GeoToolsUnitFormatterFactory#getUnitFormatterSingleton()
+     * @see UnitFormat#getInstance()
      */
     public static UnitFormatter getDefaultFormat() {
-        return GeoToolsUnitFormatterFactory.getUnitFormatterSingleton();
+        return UnitFormat.getInstance();
     }
 
     /**
-     * Unit name, willing to use {@link GeoToolsUnitFormatterFactory} to look up appropriate label
-     * if a name has not been not defined.
+     * Unit name, willing to use {@link UnitFormat} to look up appropriate label if a name has not
+     * been not defined.
      *
      * <p>This allows us to format units like {@link Units#PIXEL}.
      */
@@ -136,17 +136,16 @@ public final class Units {
         if (unit.getName() != null) {
             return unit.getName();
         }
-        UnitFormatter format = GeoToolsUnitFormatterFactory.getUnitFormatterSingleton();
+        UnitFormatter format = UnitFormat.getInstance();
         return format.format(unit);
     }
     /**
-     * Unit symbol, willing to use {@link GeoToolsUnitFormatterFactory} to look up appropriate label
-     * if required.
+     * Unit symbol, willing to use {@link UnitFormat} to look up appropriate label if required.
      *
      * <p>This allows us to format units like {@link Units#PIXEL}.
      */
     public static String toSymbol(Unit<?> unit) {
-        UnitFormatter format = GeoToolsUnitFormatterFactory.getUnitFormatterSingleton();
+        UnitFormatter format = UnitFormat.getInstance();
         return format.format(unit);
     }
 
@@ -158,8 +157,7 @@ public final class Units {
      */
     @SuppressWarnings("unchecked")
     public static <Q extends Quantity<Q>> Unit<Q> autoCorrect(Unit<Q> unit) {
-        return ((WktUnitFormatterFactory.WktUnitFormatter)
-                        WktUnitFormatterFactory.getUnitFormatterSingleton())
+        return ((WktUnitFormat.WktUnitFormatterImpl) WktUnitFormat.getInstance())
                 .getEquivalentUnit(unit);
     }
 
@@ -226,6 +224,6 @@ public final class Units {
      * @return A unit instance
      */
     public static Unit<?> parseUnit(String name) {
-        return Units.autoCorrect(WktUnitFormatterFactory.getUnitFormatterSingleton().parse(name));
+        return Units.autoCorrect(WktUnitFormat.getInstance().parse(name));
     }
 }

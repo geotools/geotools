@@ -22,8 +22,8 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.measure.Unit;
-import org.geotools.measure.GeoToolsUnitFormatterFactory;
 import org.geotools.measure.Measure;
+import org.geotools.measure.UnitFormat;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.factory.Hints;
@@ -56,11 +56,7 @@ public class MeasureConverterFactory implements ConverterFactory {
                         }
                         String v = format.format(m.doubleValue());
                         if (m.getUnit() != null) {
-                            return target.cast(
-                                    (v
-                                            + GeoToolsUnitFormatterFactory
-                                                    .getUnitFormatterSingleton()
-                                                    .format(m.getUnit())));
+                            return target.cast((v + UnitFormat.getInstance().format(m.getUnit())));
                         } else {
                             return target.cast(v);
                         }
@@ -82,9 +78,7 @@ public class MeasureConverterFactory implements ConverterFactory {
                             // this will throw an exception in case of failure
                             String group = matcher.group(2).trim();
                             if (!group.isEmpty()) {
-                                unit =
-                                        GeoToolsUnitFormatterFactory.getUnitFormatterSingleton()
-                                                .parse(group);
+                                unit = UnitFormat.getInstance().parse(group);
                             }
                         }
 

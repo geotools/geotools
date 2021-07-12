@@ -14,26 +14,25 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.measure;
+package org.geotools.referencing.wkt;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import tech.units.indriya.format.SimpleUnitFormat;
+import org.geotools.measure.BaseUnitFormatter;
+import org.geotools.measure.UnitDefinition;
+import org.geotools.measure.UnitDefinitions;
+import org.geotools.measure.UnitFormatter;
 
 /** A factory for unit formatters that support the EPSG dialect. */
-public final class EpsgUnitFormatterFactory {
+public final class EsriUnitFormat {
 
-    public static UnitFormatter getUnitFormatterSingleton() {
+    public static UnitFormatter getInstance() {
         return INSTANCE;
     }
 
-    public static SimpleUnitFormat create() {
-        return new BaseUnitFormatter(UNIT_DEFINITIONS);
-    }
-
-    private EpsgUnitFormatterFactory() {}
+    private EsriUnitFormat() {}
 
     private static final List<UnitDefinition> UNIT_DEFINITIONS =
             Stream.of(
@@ -43,9 +42,9 @@ public final class EpsgUnitFormatterFactory {
                             UnitDefinitions.SI_DERIVED,
                             UnitDefinitions.NON_SI,
                             UnitDefinitions.US_CUSTOMARY,
-                            UnitDefinitions.EPSG)
+                            UnitDefinitions.ESRI)
                     .flatMap(Collection::stream)
                     .collect(Collectors.toList());
 
-    private static final BaseUnitFormatter INSTANCE = (BaseUnitFormatter) create();
+    private static final BaseUnitFormatter INSTANCE = new BaseUnitFormatter(UNIT_DEFINITIONS);
 }

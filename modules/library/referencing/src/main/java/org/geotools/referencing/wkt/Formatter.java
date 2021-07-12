@@ -30,8 +30,6 @@ import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Length;
-import org.geotools.measure.EpsgUnitFormatterFactory;
-import org.geotools.measure.EsriUnitFormatterFactory;
 import org.geotools.measure.UnitFormatter;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
@@ -139,15 +137,15 @@ public class Formatter {
         this.authority = authority;
         this.unitFormatter =
                 CRS.equalsIgnoreMetadata(Citations.ESRI, authority)
-                        ? EsriUnitFormatterFactory.getUnitFormatterSingleton()
-                        : EpsgUnitFormatterFactory.getUnitFormatterSingleton();
+                        ? EsriUnitFormat.getInstance()
+                        : EpsgUnitFormat.getInstance();
     }
 
     /** The object to use for formatting numbers. */
     private final NumberFormat numberFormat;
 
     /** The object to use for formatting units. */
-    private UnitFormatter unitFormatter = EpsgUnitFormatterFactory.getUnitFormatterSingleton();
+    private UnitFormatter unitFormatter = EpsgUnitFormat.getInstance();
 
     /** Dummy field position. */
     private final FieldPosition dummy = new FieldPosition(0);

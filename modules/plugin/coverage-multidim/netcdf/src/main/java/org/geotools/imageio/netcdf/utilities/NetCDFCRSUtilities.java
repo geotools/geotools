@@ -29,7 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.measure.Unit;
 import org.geotools.imageio.Identification;
-import org.geotools.measure.GeoToolsUnitFormatterFactory;
+import org.geotools.measure.UnitFormat;
 import org.geotools.measure.UnitFormatter;
 import org.geotools.metadata.sql.MetadataException;
 import org.geotools.referencing.CRS;
@@ -152,8 +152,7 @@ public class NetCDFCRSUtilities {
     }
 
     /** The object to use for parsing and formatting units. */
-    private static final UnitFormatter UNIT_FORMATTER =
-            GeoToolsUnitFormatterFactory.getUnitFormatterSingleton();
+    private static final UnitFormatter UNIT_FORMATTER = UnitFormat.getInstance();
 
     /** Adds a mapping between UCAR type and ISO direction. */
     private static void add(final AxisType type, final String direction, final String opposite) {

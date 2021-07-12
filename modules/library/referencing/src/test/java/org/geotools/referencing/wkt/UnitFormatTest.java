@@ -14,24 +14,28 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.measure;
+package org.geotools.referencing.wkt;
 
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import javax.measure.Unit;
+import org.geotools.measure.UnitFormat;
+import org.geotools.measure.UnitFormatter;
+import org.geotools.measure.Units;
 import org.junit.Test;
 
 /** @author ian */
-public class GeoToolsUnitFormatterTest {
+public class UnitFormatTest {
 
     /**
-     * Test method for {@link UnitFormatter#format(javax.measure.Unit, java.lang.Appendable)} for
-     * units that have labels or aliases defined by GT in the default format
+     * Test method for {@link org.geotools.measure.UnitFormatter#format(javax.measure.Unit,
+     * java.lang.Appendable)} for units that have labels or aliases defined by GT in the default
+     * format
      */
     @Test
     public void testFormatForGTDefinedUnits() throws IOException {
-        UnitFormatter unitFormatter = GeoToolsUnitFormatterFactory.getUnitFormatterSingleton();
+        UnitFormatter unitFormatter = UnitFormat.getInstance();
         doTestFormatForGTDefinedUnits(Units.SEXAGESIMAL_DMS, unitFormatter, "D.MS");
     }
 

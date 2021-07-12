@@ -112,8 +112,6 @@ public final class Measure extends Number {
     /** Returns a string representation of this measure. */
     @Override
     public String toString() {
-        return String.valueOf(value)
-                + ' '
-                + GeoToolsUnitFormatterFactory.getUnitFormatterSingleton().format(unit);
+        return String.valueOf(value) + ' ' + UnitFormat.getInstance().format(unit);
     }
 }

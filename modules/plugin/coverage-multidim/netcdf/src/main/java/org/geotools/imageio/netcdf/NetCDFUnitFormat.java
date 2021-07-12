@@ -29,7 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.measure.Unit;
 import javax.measure.format.MeasurementParseException;
-import org.geotools.measure.GeoToolsUnitFormatterFactory;
+import org.geotools.measure.UnitFormat;
 import org.geotools.util.logging.Logging;
 import si.uom.NonSI;
 import tech.units.indriya.format.SimpleUnitFormat;
@@ -122,7 +122,7 @@ public class NetCDFUnitFormat {
      * Configures the aliases to be used on the unit parser. An alias is a different name for a unit
      */
     public static void setAliases(Map<String, String> aliases) {
-        SimpleUnitFormat format = GeoToolsUnitFormatterFactory.create();
+        SimpleUnitFormat format = UnitFormat.create();
 
         // missing unit that cannot be expressed via config files
         Unit<?> bel = ONE.transform(new LogConverter(10));

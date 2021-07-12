@@ -30,7 +30,7 @@ import static tech.units.indriya.unit.Units.WATT;
 import java.util.Arrays;
 import java.util.Collection;
 import javax.measure.Unit;
-import org.geotools.measure.GeoToolsUnitFormatterFactory;
+import org.geotools.measure.UnitFormat;
 import org.geotools.measure.UnitFormatter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,7 +40,7 @@ import si.uom.SI;
 import tech.units.indriya.AbstractUnit;
 
 @RunWith(Parameterized.class)
-public class GeoToolsUnitFormatterRoundTripTest {
+public class UnitFormatRoundTripTest {
 
     @Parameterized.Parameters(name = "{index}: {0}")
     public static Collection<Object[]> data() {
@@ -111,13 +111,13 @@ public class GeoToolsUnitFormatterRoundTripTest {
 
     private Unit<?> unit;
 
-    public GeoToolsUnitFormatterRoundTripTest(Unit<?> unit) {
+    public UnitFormatRoundTripTest(Unit<?> unit) {
         this.unit = unit;
     }
 
     @Test
     public void testRoundTrip() {
-        UnitFormatter format = GeoToolsUnitFormatterFactory.getUnitFormatterSingleton();
+        UnitFormatter format = UnitFormat.getInstance();
         String formatted = format.format(unit);
         Unit<?> parsed = format.parse(formatted);
         // the library re-builds units that are not exactly equal in all details, but work

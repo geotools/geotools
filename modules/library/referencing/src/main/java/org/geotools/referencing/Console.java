@@ -27,8 +27,8 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.StringTokenizer;
 import org.geotools.geometry.GeneralDirectPosition;
-import org.geotools.measure.GeoToolsUnitFormatterFactory;
 import org.geotools.measure.Measure;
+import org.geotools.measure.UnitFormat;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
@@ -559,9 +559,7 @@ public class Console extends AbstractConsole {
                     table.write("  ");
                     table.nextColumn();
                     table.write(
-                            String.valueOf(
-                                    GeoToolsUnitFormatterFactory.getUnitFormatterSingleton()
-                                            .format(distance.getUnit())));
+                            String.valueOf(UnitFormat.getInstance().format(distance.getUnit())));
                     table.setAlignment(TableWriter.ALIGN_LEFT);
                     return;
                 } catch (UnsupportedOperationException ignore) {

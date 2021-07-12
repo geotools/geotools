@@ -20,7 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
-import org.geotools.measure.GeoToolsUnitFormatterFactory;
+import org.geotools.measure.UnitFormat;
 import org.geotools.util.Utilities;
 import systems.uom.common.USCustomary;
 
@@ -100,7 +100,7 @@ class SpeedConverter {
 
         // ok let's try harder --> this is going to be slower
         try {
-            Unit unit = GeoToolsUnitFormatterFactory.getUnitFormatterSingleton().parse(uom);
+            Unit unit = UnitFormat.getInstance().parse(uom);
             UnitConverter converter = unit.getConverterTo(USCustomary.KNOT);
             return converter.convert(speed);
         } catch (Exception e) {

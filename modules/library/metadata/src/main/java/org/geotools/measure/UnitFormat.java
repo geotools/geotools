@@ -23,28 +23,31 @@ import java.util.stream.Stream;
 import tech.units.indriya.format.SimpleUnitFormat;
 
 /** A factory for unit formatters that support the units required by GeoTools. */
-public final class GeoToolsUnitFormatterFactory {
+public final class UnitFormat {
 
-    public static UnitFormatter getUnitFormatterSingleton() {
+    public static UnitFormatter getInstance() {
         return INSTANCE;
     }
 
+    // Only required because a mutable instance is required in NetCDFFormat.
+    // Ideally, we would move all the construction logic for NetCDFFormat to that class.
     public static SimpleUnitFormat create() {
-        List<UnitDefinition> unitDefinitions =
-                Stream.of(
-                                UnitDefinitions.DIMENSIONLESS,
-                                UnitDefinitions.CONSTANTS,
-                                UnitDefinitions.SI_BASE,
-                                UnitDefinitions.SI_DERIVED,
-                                UnitDefinitions.NON_SI,
-                                UnitDefinitions.US_CUSTOMARY,
-                                UnitDefinitions.GEOTOOLS)
-                        .flatMap(Collection::stream)
-                        .collect(Collectors.toList());
-        return new BaseUnitFormatter(unitDefinitions);
+        return new BaseUnitFormatter(UNIT_DEFINITIONS);
     }
 
-    private GeoToolsUnitFormatterFactory() {}
+    private UnitFormat() {}
+
+    private static final List<UnitDefinition> UNIT_DEFINITIONS =
+            Stream.of(
+                            UnitDefinitions.DIMENSIONLESS,
+                            UnitDefinitions.CONSTANTS,
+                            UnitDefinitions.SI_BASE,
+                            UnitDefinitions.SI_DERIVED,
+                            UnitDefinitions.NON_SI,
+                            UnitDefinitions.US_CUSTOMARY,
+                            UnitDefinitions.GEOTOOLS)
+                    .flatMap(Collection::stream)
+                    .collect(Collectors.toList());
 
     private static final BaseUnitFormatter INSTANCE = (BaseUnitFormatter) create();
 }

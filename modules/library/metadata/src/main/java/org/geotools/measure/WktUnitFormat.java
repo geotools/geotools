@@ -34,14 +34,10 @@ import tech.units.indriya.unit.TransformedUnit;
  * particular unit literal definition, this format includes the aliases of EPSG and ESRI citations,
  * in order to be able to parse the widest possible range of units.
  */
-public final class WktUnitFormatterFactory {
+public final class WktUnitFormat {
 
-    public static UnitFormatter getUnitFormatterSingleton() {
+    public static UnitFormatter getInstance() {
         return INSTANCE;
-    }
-
-    public static UnitFormatter create() {
-        return new WktUnitFormatter(UNIT_DEFINITIONS);
     }
 
     private static final List<UnitDefinition> UNIT_DEFINITIONS =
@@ -56,15 +52,15 @@ public final class WktUnitFormatterFactory {
                     .flatMap(Collection::stream)
                     .collect(Collectors.toList());
 
-    private static final WktUnitFormatter INSTANCE = (WktUnitFormatter) create();
+    private static final WktUnitFormatterImpl INSTANCE = new WktUnitFormatterImpl(UNIT_DEFINITIONS);
 
-    private WktUnitFormatterFactory() {}
+    private WktUnitFormat() {}
 
-    static class WktUnitFormatter extends BaseUnitFormatter implements UnitFormatter {
+    static class WktUnitFormatterImpl extends BaseUnitFormatter implements UnitFormatter {
 
         private HashMap<UnitWrapper, Unit<?>> unitWrapperToUnitMap;
 
-        WktUnitFormatter(List<UnitDefinition> unitDefinitions) {
+        WktUnitFormatterImpl(List<UnitDefinition> unitDefinitions) {
             super(unitDefinitions);
         }
 

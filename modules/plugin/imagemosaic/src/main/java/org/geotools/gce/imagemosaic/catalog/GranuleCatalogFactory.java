@@ -86,9 +86,18 @@ public abstract class GranuleCatalogFactory {
 
         // locking wrappers
         if (store instanceof Wrapper) {
-            store =
-                    Optional.ofNullable((DataStore) ((Wrapper) store).unwrap(JDBCDataStore.class))
-                            .orElse(store);
+            try {
+                store =
+                        Optional.ofNullable(
+                                        (DataStore) ((Wrapper) store).unwrap(JDBCDataStore.class))
+                                .orElse(store);
+            } catch (IllegalArgumentException e) {
+                LOGGER.log(
+                        Level.FINER,
+                        "The store is a wrapper but does not wrap a JDBCDataStore "
+                                + "(not a problem per se, just a note)",
+                        e);
+            }
         }
         if (!(store instanceof JDBCDataStore)) {
             catalog = new LockingGranuleCatalog(catalog, hints);

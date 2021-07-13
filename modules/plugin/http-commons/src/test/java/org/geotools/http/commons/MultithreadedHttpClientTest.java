@@ -20,13 +20,15 @@ import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.isNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -35,6 +37,7 @@ import static org.mockito.Mockito.when;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -190,17 +193,25 @@ public class MultithreadedHttpClientTest {
             new WireMockRule(WireMockConfiguration.options().dynamicPort());
 
     @Test
-    public void testBasicHeader() throws IOException {
+    public void testBasicHeaderGET() throws IOException {
+        String longPassword = String.join("", Collections.nCopies(10, "0123456789"));
+        String userName = "user";
         stubFor(
                 get(urlEqualTo("/test"))
+                        .willReturn(
+                                aResponse()
+                                        .withStatus(401)
+                                        .withHeader(
+                                                "WWW-Authenticate",
+                                                "Basic realm=\"User Visible Realm\"")));
+        stubFor(
+                get(urlEqualTo("/test"))
+                        .withBasicAuth(userName, longPassword)
                         .willReturn(
                                 aResponse()
                                         .withStatus(200)
                                         .withHeader("Content-Type", "text/xml")
                                         .withBody("<response>Some content</response>")));
-
-        String longPassword = String.join("", Collections.nCopies(10, "0123456789"));
-        String userName = "user";
         try (MultithreadedHttpClient client = new MultithreadedHttpClient()) {
             client.setUser(userName);
             client.setPassword(longPassword);
@@ -210,6 +221,43 @@ public class MultithreadedHttpClientTest {
                     "dXNlcjowMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5";
             WireMock.verify(
                     getRequestedFor(urlEqualTo("/test"))
+                            .withHeader("Authorization", equalTo("Basic " + encodedCredentials)));
+        }
+    }
+
+    @Test
+    public void testBasicHeaderPOST() throws IOException {
+        String longPassword = String.join("", Collections.nCopies(10, "0123456789"));
+        String userName = "user";
+        stubFor(
+                post(urlEqualTo("/test"))
+                        .willReturn(
+                                aResponse()
+                                        .withStatus(401)
+                                        .withHeader(
+                                                "WWW-Authenticate",
+                                                "Basic realm=\"User Visible Realm\"")));
+        stubFor(
+                post(urlEqualTo("/test"))
+                        .withBasicAuth(userName, longPassword)
+                        .willReturn(
+                                aResponse()
+                                        .withStatus(200)
+                                        .withHeader("Content-Type", "text/xml")
+                                        .withBody("<response>Some content</response>")));
+        try (MultithreadedHttpClient client = new MultithreadedHttpClient()) {
+            client.setUser(userName);
+            client.setPassword(longPassword);
+            String body = "<data>A body string</data>";
+            client.post(
+                    new URL("http://localhost:" + wireMockRule.port() + "/test"),
+                    new ByteArrayInputStream(body.getBytes()),
+                    "text/xml");
+
+            String encodedCredentials =
+                    "dXNlcjowMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5";
+            WireMock.verify(
+                    postRequestedFor(urlEqualTo("/test"))
                             .withHeader("Authorization", equalTo("Basic " + encodedCredentials)));
         }
     }

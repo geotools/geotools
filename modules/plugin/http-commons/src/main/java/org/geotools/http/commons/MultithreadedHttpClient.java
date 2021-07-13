@@ -16,36 +16,34 @@
  */
 package org.geotools.http.commons;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.zip.GZIPInputStream;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpException;
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.Credentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.entity.InputStreamEntity;
+import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.message.BasicNameValuePair;
 import org.geotools.data.ows.AbstractOpenWebService;
 import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPConnectionPooling;
@@ -101,6 +99,9 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
     }
 
     HttpClientBuilder clientBuilder = HttpClientBuilder.create();
+
+    private BasicCredentialsProvider credsProvider;
+
     // package private to support testing || JNH Public for refactoring
     public HttpClient createHttpClient() {
         clientBuilder.useSystemProperties();
@@ -116,10 +117,7 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
         HttpPost postMethod = new HttpPost(url.toExternalForm());
         postMethod.setConfig(connectionConfig);
         if (user != null && password != null) {
-            List<NameValuePair> nvps = new ArrayList<>();
-            nvps.add(new BasicNameValuePair("username", user));
-            nvps.add(new BasicNameValuePair("password", password));
-            postMethod.setEntity(new UrlEncodedFormEntity(nvps));
+            resetCredentials();
         }
         if (tryGzip) {
             postMethod.setHeader("Accept-Encoding", "gzip");
@@ -127,7 +125,11 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
         if (postContentType != null) {
             postMethod.setHeader("Content-type", postContentType);
         }
-        HttpEntity requestEntity = new InputStreamEntity(postContent);
+        String input =
+                new BufferedReader(new InputStreamReader(postContent, StandardCharsets.UTF_8))
+                        .lines()
+                        .collect(Collectors.joining("\n"));
+        HttpEntity requestEntity = new StringEntity(input);
         postMethod.setEntity(requestEntity);
 
         HttpMethodResponse response = null;
@@ -152,7 +154,15 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
     private HttpMethodResponse executeMethod(HttpRequestBase method)
             throws IOException, HttpException {
 
-        HttpResponse resp = client.execute(method);
+        HttpClientContext localContext = HttpClientContext.create();
+        HttpResponse resp;
+        if (credsProvider != null) {
+            localContext.setCredentialsProvider(credsProvider);
+            resp = client.execute(method, localContext);
+        } else {
+            resp = client.execute(method);
+        }
+
         HttpMethodResponse response = new HttpMethodResponse(resp);
         return response;
     }
@@ -168,9 +178,10 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
         getMethod.setConfig(connectionConfig);
         if (user != null && password != null) {
             resetCredentials();
-            String encoding =
-                    Base64.getEncoder().encodeToString((user + ":" + password).getBytes());
-            getMethod.setHeader("Authorization", "Basic " + encoding);
+            /*
+             * String encoding = Base64.getEncoder().encodeToString((user + ":" + password).getBytes()); getMethod.setHeader("Authorization", "Basic "
+             * + encoding);
+             */
         }
         if (tryGzip) {
             getMethod.setHeader("Accept-Encoding", "gzip");
@@ -188,6 +199,7 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
         } catch (HttpException e) {
             throw new IOException(e);
         }
+
         if (200 != response.getStatusCode()) {
             getMethod.releaseConnection();
             throw new IOException(
@@ -226,7 +238,7 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
             AuthScope authscope = AuthScope.ANY;
             Credentials credentials = new UsernamePasswordCredentials(user, password);
             // TODO - check if this works for all types of auth or do we need to look it up?
-            CredentialsProvider credsProvider = new BasicCredentialsProvider();
+            credsProvider = new BasicCredentialsProvider();
             credsProvider.setCredentials(authscope, credentials);
             clientBuilder.setDefaultCredentialsProvider(credsProvider);
             client = createHttpClient();
@@ -280,8 +292,12 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
 
         /** @return */
         public int getStatusCode() {
-            StatusLine statusLine = methodResponse.getStatusLine();
-            return statusLine.getStatusCode();
+            if (methodResponse != null) {
+                StatusLine statusLine = methodResponse.getStatusLine();
+                return statusLine.getStatusCode();
+            } else {
+                return -1;
+            }
         }
 
         @Override

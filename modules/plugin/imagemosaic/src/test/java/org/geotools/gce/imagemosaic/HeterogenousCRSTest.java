@@ -23,6 +23,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -79,6 +80,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.store.DecoratingDataStore;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -90,6 +92,7 @@ import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.Hints;
+import org.hamcrest.Matchers;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -100,7 +103,12 @@ import org.junit.rules.TemporaryFolder;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.filter.And;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.sort.SortBy;
+import org.opengis.filter.sort.SortOrder;
+import org.opengis.filter.spatial.BBOX;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.FactoryException;
@@ -1040,10 +1048,19 @@ public class HeterogenousCRSTest {
         repoReader.dispose();
         repository.dataStore(TEST_STORE).dispose();
 
-        // check the last query did not have the sorting, but the second to last, did not
+        // check the last query did not have the sorting (it's the dry run),
+        // but the second to last, which was the first attempt load the granules, did
         // (a bit fragile, but don't have a better idea)
         int size = queries.size();
-        assertNotNull(queries.get(size - 2).getSortBy());
-        assertNull(queries.get(size - 1).getSortBy());
+        Query dryRunQuery = queries.get(size - 1);
+        // dry run, no sorting, just spatial filtering
+        assertNull(dryRunQuery.getSortBy());
+        assertThat(dryRunQuery.getFilter(), Matchers.instanceOf(BBOX.class));
+        // data access query, also attribute filtering and sorting present
+        Query dataQuery = queries.get(size - 2);
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        assertArrayEquals(
+                new SortBy[] {ff.sort("crs", SortOrder.ASCENDING)}, dataQuery.getSortBy());
+        assertThat(dataQuery.getFilter(), Matchers.instanceOf(And.class));
     }
 }

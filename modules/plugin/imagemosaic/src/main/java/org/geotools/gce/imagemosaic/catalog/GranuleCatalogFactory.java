@@ -95,7 +95,7 @@ public abstract class GranuleCatalogFactory {
                 LOGGER.log(
                         Level.FINER,
                         "The store is a wrapper but does not wrap a JDBCDataStore "
-                                + "(not a problem per se, just a note",
+                                + "(not a problem per se, just a note)",
                         e);
             }
         }

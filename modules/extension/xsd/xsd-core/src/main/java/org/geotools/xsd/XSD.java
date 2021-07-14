@@ -183,8 +183,10 @@ public abstract class XSD {
         if (schema == null) {
             synchronized (this) {
                 if (schema == null) {
-                    LOGGER.fine("building schema for schema: " + getNamespaceURI());
-                    schema = buildSchema();
+                    synchronized (Schemas.class) {
+                        LOGGER.fine("building schema for schema: " + getNamespaceURI());
+                        schema = buildSchema();
+                    }
                 }
             }
         }

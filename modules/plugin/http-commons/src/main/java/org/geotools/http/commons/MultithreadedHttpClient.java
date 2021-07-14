@@ -40,6 +40,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -116,8 +117,18 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
 
         HttpPost postMethod = new HttpPost(url.toExternalForm());
         postMethod.setConfig(connectionConfig);
+        HttpEntity requestEntity;
         if (user != null && password != null) {
             resetCredentials();
+            // we can't read the input stream twice as would be needed if the server asks us to
+            // authenticate
+            String input =
+                    new BufferedReader(new InputStreamReader(postContent, StandardCharsets.UTF_8))
+                            .lines()
+                            .collect(Collectors.joining("\n"));
+            requestEntity = new StringEntity(input);
+        } else {
+            requestEntity = new InputStreamEntity(postContent);
         }
         if (tryGzip) {
             postMethod.setHeader("Accept-Encoding", "gzip");
@@ -125,11 +136,7 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
         if (postContentType != null) {
             postMethod.setHeader("Content-type", postContentType);
         }
-        String input =
-                new BufferedReader(new InputStreamReader(postContent, StandardCharsets.UTF_8))
-                        .lines()
-                        .collect(Collectors.joining("\n"));
-        HttpEntity requestEntity = new StringEntity(input);
+
         postMethod.setEntity(requestEntity);
 
         HttpMethodResponse response = null;

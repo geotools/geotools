@@ -171,6 +171,7 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
         }
 
         HttpMethodResponse response = new HttpMethodResponse(resp);
+
         return response;
     }
 

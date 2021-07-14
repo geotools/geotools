@@ -24,34 +24,15 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
-import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.util.Collections;
 import org.apache.http.HttpException;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.conn.HttpHostConnectException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -67,102 +48,74 @@ import org.junit.Test;
 public class MultithreadedHttpClientTest {
 
     private static final String SYS_PROP_KEY_NONPROXYHOSTS = "http.nonProxyHosts";
+
     private static final String SYS_PROP_KEY_HOST = "http.proxyHost";
 
-    private String[] sysPropOriginalValue = new String[2];
+    private static final String SYS_PROP_KEY_PORT = "http.proxyPort";
 
-    private final class MultithreadedHttpTestClient extends MultithreadedHttpClient {
-        @Override
-        public HttpClient createHttpClient() {
-            return mockHttpClient;
-        }
-    };
-
-    private HttpClient mockHttpClient = mock(HttpClient.class);
-
-    HttpResponse mockHttpResponse = mock(HttpResponse.class);
-    StatusLine statusLine = mock(StatusLine.class);
-
-    @Before
-    public void setupMocks() throws ClientProtocolException, IOException {
-
-        when(mockHttpClient.execute(any(HttpRequestBase.class))).thenReturn(mockHttpResponse);
-        when(mockHttpResponse.getStatusLine()).thenReturn(statusLine);
-        when(statusLine.getStatusCode()).thenReturn(200);
-    }
-
-    /**
-     * Verifies that the default configuration (with proxy settings) is used when a GET is executed,
-     * matching no nonProxyHost.
-     */
-    @Test
-    public void testGetWithNoMatchingNonProxyHost() throws MalformedURLException, IOException {
-        System.setProperty(SYS_PROP_KEY_HOST, "myproxy");
-        System.setProperty(SYS_PROP_KEY_NONPROXYHOSTS, "*.geotools.org|localhost");
-        try (MultithreadedHttpClient sut = new MultithreadedHttpClient()) {
-            sut.setConnectTimeout(1);
-            HttpClient client = sut.createHttpClient();
-            try {
-                client.execute(new HttpHost("www.google.com"), new HttpGet());
-                fail("Proxy fail");
-            } catch (UnknownHostException e) {
-                // all is good
-            }
-            try {
-                HttpResponse resp = client.execute(new HttpHost("localhost"), new HttpGet());
-                assertNotNull("proxy non-host fail", resp);
-            } catch (HttpHostConnectException e) {
-                // all is good
-            }
-            try {
-                HttpResponse resp = client.execute(new HttpHost("www.geotools.org"), new HttpGet());
-                assertNotNull("proxy non-host fail", resp);
-            } catch (HttpHostConnectException e) {
-                // all is good
-            }
-        }
-    }
+    private String[] sysPropOriginalValue = new String[3];
 
     /** Verifies that method is executed without specifying nonProxyHosts. */
     @Test
     public void testGetWithoutNonProxyHost() throws MalformedURLException, IOException {
+
+        URL proxy = new URL("http://localhost:" + wireMockProxyRule.port());
+        System.setProperty(SYS_PROP_KEY_HOST, proxy.getHost());
+        System.setProperty(SYS_PROP_KEY_PORT, Integer.toString(proxy.getPort()));
+        wireMockProxyRule.addStubMapping(
+                stubFor(
+                        get(urlEqualTo("/fred"))
+                                .willReturn(
+                                        aResponse()
+                                                .withStatus(200)
+                                                .withHeader("Content-Type", "text/xml")
+                                                .withBody("<response>Some content</response>"))));
         try (MultithreadedHttpClient sut = new MultithreadedHttpClient()) {
-            HttpClient client = sut.createHttpClient();
-            HttpResponse resp = client.execute(new HttpHost("www.geotools.org"), new HttpGet());
-            assertNotNull("network fail", resp);
+            sut.get(new URL("http://geotools.org/fred"));
         }
-
-        System.setProperty(SYS_PROP_KEY_HOST, "myproxy");
-        try (MultithreadedHttpClient sut = new MultithreadedHttpTestClient()) {
-            // sut.get(new URL("http://www.geotools.org"));
-            HttpClient client = sut.createHttpClient();
-            HttpResponse resp = client.execute(new HttpHost("www.geotools.org"), new HttpGet());
-            assertNull("Proxy look up failed", resp);
-        }
-
-        // HttpClient.executeMethod(HttpMethod) has to be called (w/o
-        // HostConfig)
-
+        // check we intercepted the request with our "proxy"
+        wireMockProxyRule.verify(getRequestedFor(urlEqualTo("/fred")));
     }
 
     /** Verifies that the nonProxyConfig is used when a GET is executed, matching a nonProxyHost. */
     @Test
     public void testGetWithMatchingNonProxyHost() throws HttpException, IOException {
-        System.setProperty(SYS_PROP_KEY_HOST, "myproxy");
+        URL proxy = new URL("http://localhost:" + wireMockProxyRule.port());
+
+        System.setProperty(SYS_PROP_KEY_HOST, proxy.getHost());
+        System.setProperty(SYS_PROP_KEY_PORT, Integer.toString(wireMockProxyRule.port()));
         System.setProperty(SYS_PROP_KEY_NONPROXYHOSTS, "localhost");
-        try (MultithreadedHttpClient sut = new MultithreadedHttpTestClient()) {
 
-            when(mockHttpClient.execute(isNull(), any(HttpRequestBase.class))).thenReturn(null);
-            sut.get(new URL("http://localhost"));
+        URL testURL = new URL("http://localhost:" + wireMockRule.port() + "/test");
+
+        wireMockProxyRule.addStubMapping(
+                stubFor(
+                        get(urlEqualTo("/fred"))
+                                .willReturn(
+                                        aResponse()
+                                                .withStatus(200)
+                                                .withHeader("Content-Type", "text/xml")
+                                                .withBody("<response>Some content</response>"))));
+        try (MultithreadedHttpClient sut = new MultithreadedHttpClient()) {
+            sut.get(new URL("http://geotools.org/fred"));
         }
+        // check we intercepted the request with our "proxy"
+        wireMockProxyRule.verify(getRequestedFor(urlEqualTo("/fred")));
 
+        wireMockRule.addStubMapping(
+                stubFor(
+                        get(urlEqualTo("/test"))
+                                .willReturn(
+                                        aResponse()
+                                                .withStatus(200)
+                                                .withHeader("Content-Type", "text/xml")
+                                                .withBody("<response>Some content</response>"))));
         System.setProperty(SYS_PROP_KEY_NONPROXYHOSTS, "\"localhost|www.geotools.org\"");
-        try (MultithreadedHttpClient sut = new MultithreadedHttpTestClient()) {
-            sut.get(new URL("http://localhost"));
-            // HttpClient.executeMethod(HostConfig, HttpMethod) has to be called
-            // (with HostConfig)
-            verify(mockHttpClient, times(2)).execute(any(HttpRequestBase.class));
+        try (MultithreadedHttpClient sut = new MultithreadedHttpClient()) {
+            sut.get(testURL);
         }
+        // check we actually got the "page" we asked for
+        wireMockRule.verify(getRequestedFor(urlEqualTo("/test")));
     }
 
     /** Save original system properties for later restore to avoid affecting other tests. */
@@ -170,6 +123,7 @@ public class MultithreadedHttpClientTest {
     public void setupSaveOriginalSysPropValue() {
         sysPropOriginalValue[0] = System.getProperty(SYS_PROP_KEY_NONPROXYHOSTS);
         sysPropOriginalValue[1] = System.getProperty(SYS_PROP_KEY_HOST);
+        sysPropOriginalValue[2] = System.getProperty(SYS_PROP_KEY_PORT);
     }
 
     /** Restore original system properties to avoid affecting other tests. */
@@ -185,6 +139,11 @@ public class MultithreadedHttpClientTest {
         } else {
             System.setProperty(SYS_PROP_KEY_HOST, sysPropOriginalValue[1]);
         }
+        if (sysPropOriginalValue[2] == null) {
+            System.clearProperty(SYS_PROP_KEY_PORT);
+        } else {
+            System.setProperty(SYS_PROP_KEY_PORT, sysPropOriginalValue[2]);
+        }
     }
 
     // use a dynamic http port to avoid conflicts
@@ -192,26 +151,32 @@ public class MultithreadedHttpClientTest {
     public WireMockRule wireMockRule =
             new WireMockRule(WireMockConfiguration.options().dynamicPort());
 
+    @Rule
+    public WireMockRule wireMockProxyRule =
+            new WireMockRule(WireMockConfiguration.options().dynamicPort());
+
     @Test
     public void testBasicHeaderGET() throws IOException {
         String longPassword = String.join("", Collections.nCopies(10, "0123456789"));
         String userName = "user";
-        stubFor(
-                get(urlEqualTo("/test"))
-                        .willReturn(
-                                aResponse()
-                                        .withStatus(401)
-                                        .withHeader(
-                                                "WWW-Authenticate",
-                                                "Basic realm=\"User Visible Realm\"")));
-        stubFor(
-                get(urlEqualTo("/test"))
-                        .withBasicAuth(userName, longPassword)
-                        .willReturn(
-                                aResponse()
-                                        .withStatus(200)
-                                        .withHeader("Content-Type", "text/xml")
-                                        .withBody("<response>Some content</response>")));
+        wireMockRule.addStubMapping(
+                stubFor(
+                        get(urlEqualTo("/test"))
+                                .willReturn(
+                                        aResponse()
+                                                .withStatus(401)
+                                                .withHeader(
+                                                        "WWW-Authenticate",
+                                                        "Basic realm=\"User Visible Realm\""))));
+        wireMockRule.addStubMapping(
+                stubFor(
+                        get(urlEqualTo("/test"))
+                                .withBasicAuth(userName, longPassword)
+                                .willReturn(
+                                        aResponse()
+                                                .withStatus(200)
+                                                .withHeader("Content-Type", "text/xml")
+                                                .withBody("<response>Some content</response>"))));
         try (MultithreadedHttpClient client = new MultithreadedHttpClient()) {
             client.setUser(userName);
             client.setPassword(longPassword);
@@ -219,7 +184,7 @@ public class MultithreadedHttpClientTest {
 
             String encodedCredentials =
                     "dXNlcjowMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5";
-            WireMock.verify(
+            wireMockRule.verify(
                     getRequestedFor(urlEqualTo("/test"))
                             .withHeader("Authorization", equalTo("Basic " + encodedCredentials)));
         }
@@ -229,22 +194,24 @@ public class MultithreadedHttpClientTest {
     public void testBasicHeaderPOST() throws IOException {
         String longPassword = String.join("", Collections.nCopies(10, "0123456789"));
         String userName = "user";
-        stubFor(
-                post(urlEqualTo("/test"))
-                        .willReturn(
-                                aResponse()
-                                        .withStatus(401)
-                                        .withHeader(
-                                                "WWW-Authenticate",
-                                                "Basic realm=\"User Visible Realm\"")));
-        stubFor(
-                post(urlEqualTo("/test"))
-                        .withBasicAuth(userName, longPassword)
-                        .willReturn(
-                                aResponse()
-                                        .withStatus(200)
-                                        .withHeader("Content-Type", "text/xml")
-                                        .withBody("<response>Some content</response>")));
+        wireMockRule.addStubMapping(
+                stubFor(
+                        post(urlEqualTo("/test"))
+                                .willReturn(
+                                        aResponse()
+                                                .withStatus(401)
+                                                .withHeader(
+                                                        "WWW-Authenticate",
+                                                        "Basic realm=\"User Visible Realm\""))));
+        wireMockRule.addStubMapping(
+                stubFor(
+                        post(urlEqualTo("/test"))
+                                .withBasicAuth(userName, longPassword)
+                                .willReturn(
+                                        aResponse()
+                                                .withStatus(200)
+                                                .withHeader("Content-Type", "text/xml")
+                                                .withBody("<response>Some content</response>"))));
         try (MultithreadedHttpClient client = new MultithreadedHttpClient()) {
             client.setUser(userName);
             client.setPassword(longPassword);
@@ -256,7 +223,7 @@ public class MultithreadedHttpClientTest {
 
             String encodedCredentials =
                     "dXNlcjowMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5";
-            WireMock.verify(
+            wireMockRule.verify(
                     postRequestedFor(urlEqualTo("/test"))
                             .withHeader("Authorization", equalTo("Basic " + encodedCredentials)));
         }

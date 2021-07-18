@@ -44,14 +44,15 @@ Keep in mind:
 
 For the following GeoJSON feature::
 
-   {   "type": "Feature",
+   {   
+       "type": "Feature",
        "geometry": {
            "type": "Point",
            "coordinates": [ 45.52, -122.681944 ]
        },
        "properties": {
            "city": "Portland",
-           "year": "2014"
+           "year": "2014",
            "attendance": "840"
        }
    }

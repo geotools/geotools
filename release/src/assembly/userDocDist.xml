@@ -39,6 +39,7 @@
       </includes>
     </fileSet>
     <fileSet>
+      <useDefaultExcludes>true</useDefaultExcludes>
       <directory>../docs/target/user/html</directory>
       <outputDirectory></outputDirectory>
     </fileSet>

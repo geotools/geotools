@@ -28,6 +28,11 @@
   <dependencies>
     <dependency>
       <groupId>org.geotools</groupId>
+      <artifactId>docs</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
       <artifactId>gt-app-schema-resolver</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -459,6 +464,7 @@
           </execution>
         </executions>
         <configuration>
+          <finalName>geotools-${project.version}</finalName>
           <descriptors>
             <descriptor>src/assembly/binaryDistDependencies.xml</descriptor>
             <descriptor>src/assembly/sourceDist.xml</descriptor>

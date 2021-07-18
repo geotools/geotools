@@ -21,7 +21,6 @@ import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
@@ -61,7 +60,6 @@ import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyleFactoryImpl;
 import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.geotools.xml.styling.SLDParser;
 import org.geotools.xml.styling.SLDTransformer;
@@ -115,27 +113,16 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Jody Garnett
  */
-public class LocalGeoServerOnlineTest {
-
-    private static String LOCAL_GEOSERVER = "http://127.0.0.1:8080/geoserver/ows?SERVICE=WMS&";
-    private static String LOCAL_LAYERS = "test_shp:TRONCON_ROUTE";
+public class LocalGeoServerOnlineTest extends WMSOnlineTestSupport {
 
     private static WebMapServer wms;
 
     private static WMSCapabilities capabilities;
 
-    private static URL serverURL;
-
-    static {
-        try {
-            serverURL = new URL(LOCAL_GEOSERVER);
-        } catch (MalformedURLException e) {
-            serverURL = null;
-        }
-    }
-
+    @Override
     @Before
-    public void setUp() throws Exception {
+    public void setUpInternal() throws Exception {
+        super.setUpInternal();
         // System.out.println("CRS configured to
         // forceXY"+System.getProperty("org.geotools.referencing.forceXY"));
         // Hints.putSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
@@ -216,8 +203,6 @@ public class LocalGeoServerOnlineTest {
         ServiceInfo info = wms.getInfo();
         Assert.assertNotNull(info);
 
-        Assert.assertEquals(
-                serverURL, wms.getCapabilities().getRequest().getGetCapabilities().getGet());
         Assert.assertEquals("GeoServer Web Map Service", info.getTitle());
 
         Assert.assertNotNull(info.getDescription());
@@ -316,6 +301,10 @@ public class LocalGeoServerOnlineTest {
         checkGetFeatureInfo(wms111, water_bodies, CRS.decode("CRS:84"));
         checkGetFeatureInfo(wms111, water_bodies, CRS.decode("EPSG:4326"));
         checkGetFeatureInfo(wms111, water_bodies, CRS.decode("urn:x-ogc:def:crs:EPSG::4326"));
+
+        // DescribeLayer
+
+        // GetLegendGraphic
     }
 
     private String format(OperationType operationType, String search) {
@@ -335,18 +324,47 @@ public class LocalGeoServerOnlineTest {
     private void checkGetMap(WebMapServer wms, Layer layer, CoordinateReferenceSystem crs)
             throws Exception {
 
+        GetMapRequest getMap = generateGetMap(wms, layer, crs);
+        GetMapResponse response = wms.issueRequest(getMap);
+        Assert.assertEquals("image/jpeg", response.getContentType());
+
+        try (InputStream stream = response.getInputStream()) {
+            BufferedImage image = ImageIO.read(stream);
+            Assert.assertNotNull("jpeg", image);
+            Assert.assertEquals(500, image.getWidth());
+            Assert.assertEquals(500, image.getHeight());
+
+            int rgb = image.getRGB(70, 420);
+            Color sample = new Color(rgb);
+
+            if (Color.WHITE.equals(sample)) {
+                // System.out.println("FAIL: " + context + ": GetMap BBOX=" + envelope);
+                // System.out.println("--> " + url);
+                Assert.fail("Bad image returned");
+            }
+        }
+    }
+
+    /**
+     * @param wms2
+     * @param layer
+     * @param crs
+     * @return
+     */
+    private GetMapRequest generateGetMap(
+            WebMapServer wms2, Layer layer, CoordinateReferenceSystem crs) {
         layer.clearCache();
-        GeneralEnvelope envelope = wms.getEnvelope(layer, crs);
+        GeneralEnvelope envelope = wms2.getEnvelope(layer, crs);
         Assert.assertFalse(envelope.isEmpty() || envelope.isNull() || envelope.isInfinite());
         Assert.assertNotNull("Envelope " + CRS.toSRS(crs), envelope);
 
-        GetMapRequest getMap = wms.createGetMapRequest();
-        OperationType operationType = wms.getCapabilities().getRequest().getGetMap();
+        GetMapRequest getMap = wms2.createGetMapRequest();
+        OperationType operationType = wms2.getCapabilities().getRequest().getGetMap();
 
         getMap.addLayer(layer);
-        String version = wms.getCapabilities().getVersion();
 
         getMap.setBBox(envelope);
+        getMap.setSRS(CRS.toSRS(envelope.getCoordinateReferenceSystem()));
 
         Properties properties = getMap.getProperties();
         String srs = null;
@@ -366,26 +384,7 @@ public class LocalGeoServerOnlineTest {
         String format = format(operationType, "jpeg");
         getMap.setFormat(format);
         getMap.setDimensions(500, 500);
-
-        GetMapResponse response = wms.issueRequest(getMap);
-        Assert.assertEquals("image/jpeg", response.getContentType());
-
-        try (InputStream stream = response.getInputStream()) {
-            BufferedImage image = ImageIO.read(stream);
-            Assert.assertNotNull("jpeg", image);
-            Assert.assertEquals(500, image.getWidth());
-            Assert.assertEquals(500, image.getHeight());
-
-            int rgb = image.getRGB(70, 420);
-            Color sample = new Color(rgb);
-            boolean forceXY = Boolean.getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
-            String context = "srs=" + srs + " forceXY=" + forceXY + " Version=" + version;
-            if (Color.WHITE.equals(sample)) {
-                // System.out.println("FAIL: " + context + ": GetMap BBOX=" + envelope);
-                // System.out.println("--> " + url);
-                Assert.fail(context + ": GetMap BBOX=" + envelope);
-            }
-        }
+        return getMap;
     }
 
     /**
@@ -396,29 +395,14 @@ public class LocalGeoServerOnlineTest {
     private void checkGetFeatureInfo(WebMapServer wms, Layer layer, CoordinateReferenceSystem crs)
             throws Exception {
 
-        layer.clearCache();
-        GeneralEnvelope envelope = wms.getEnvelope(layer, crs);
-        Assert.assertFalse(envelope.isEmpty() || envelope.isNull() || envelope.isInfinite());
-        Assert.assertNotNull("Envelope " + CRS.toSRS(crs), envelope);
-
-        GetMapRequest getMap = wms.createGetMapRequest();
-        OperationType operationType = wms.getCapabilities().getRequest().getGetMap();
-
-        getMap.addLayer(layer);
-        String version = wms.getCapabilities().getVersion();
-        String srs = CRS.toSRS(envelope.getCoordinateReferenceSystem());
-        getMap.setBBox(envelope);
-        String format = format(operationType, "jpeg");
-        getMap.setFormat(format);
-        getMap.setDimensions(500, 500);
-
+        GetMapRequest getMap = generateGetMap(wms, layer, crs);
         GetFeatureInfoRequest getFeatureInfo = wms.createGetFeatureInfoRequest(getMap);
         getFeatureInfo.setInfoFormat("text/html");
         getFeatureInfo.setQueryLayers(Collections.singleton(layer));
         getFeatureInfo.setQueryPoint(75, 100);
 
         GetFeatureInfoResponse response = wms.issueRequest(getFeatureInfo);
-        Assert.assertEquals("text/html", response.getContentType());
+        Assert.assertTrue(response.getContentType().contains("text/html"));
         try (InputStream stream = response.getInputStream();
                 StringBuilderWriter writer = new StringBuilderWriter()) {
             IOUtils.copy(stream, writer, "UTF-8");
@@ -426,13 +410,9 @@ public class LocalGeoServerOnlineTest {
             String info = writer.toString();
             Assert.assertFalse("response available", info.isEmpty());
             Assert.assertTrue("html", info.contains("<html") || info.contains("<HTML"));
-            boolean forceXY = Boolean.getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
-            String context = "srs=" + srs + " forceXY=" + forceXY + " Version=" + version;
+
             if (!info.contains("tasmania_water_bodies.3")) {
-                // System.out.println("FAIL: " + context + ": GetFeatureInfo BBOX=" + envelope);
-                // System.out.println("GETMAP         --> " + url);
-                // System.out.println("GETFEATUREINFO --> " + url2);
-                Assert.fail(context + ": GetFeatureInfo BBOX=" + envelope);
+                Assert.fail("Bad GetFeature Request");
             }
         }
     }
@@ -440,8 +420,8 @@ public class LocalGeoServerOnlineTest {
     @Test
     public void testGetStyle() throws Exception {
 
-        String baseUrl = LocalGeoServerOnlineTest.LOCAL_GEOSERVER;
-        String layers = LocalGeoServerOnlineTest.LOCAL_LAYERS;
+        String baseUrl = serverURL.toExternalForm();
+        String layers = "topp:states";
 
         URL url = new URL(baseUrl);
 

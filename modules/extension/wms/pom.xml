@@ -170,20 +170,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <excludes>
-            <!-- The following tests are skipped because they do not extend OnlineTestCase -->
-            <exclude>**/LocalGeoServerOnlineTest.java</exclude>
-            <exclude>**/WMSReaderOnlineTest.java</exclude>
-            <exclude>**/WebMapServerOnlineTest.java</exclude>
-            <exclude>**/WMS1_0_0_OnlineTest.java</exclude>
-            <exclude>**/WMS1_1_0_OnlineTest.java</exclude>
-            <exclude>**/WMS1_1_1_OnlineTest.java</exclude>
-            <exclude>**/WMS1_3_0_OnlineTest.java</exclude>
-            <!-- The following tests fail -->
-            <exclude>**/WMSSchemaTest.java</exclude>
-          </excludes>
-        </configuration>
+        <configuration></configuration>
       </plugin>
     </plugins>
   </build>

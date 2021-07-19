@@ -28,7 +28,7 @@ import systems.uom.common.USCustomary;
 public class MeasureConverterTest {
 
     @Test
-    public void testToMeasure() {
+    public void testStringToMeasure() {
         assertEquals(new Measure(10, SI.METRE), Converters.convert("10m", Measure.class));
         assertEquals(new Measure(0.3, USCustomary.FOOT), Converters.convert(".3ft", Measure.class));
         assertEquals(

@@ -22,18 +22,15 @@ import javax.measure.Quantity;
 import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
-import javax.measure.format.UnitFormat;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Dimensionless;
 import javax.measure.quantity.Length;
 import javax.measure.quantity.Time;
-import org.geotools.referencing.wkt.DefaultUnitParser;
-import org.geotools.util.GeoToolsUnitFormat;
 import si.uom.NonSI;
 import si.uom.SI;
 import systems.uom.common.USCustomary;
 import tech.units.indriya.AbstractUnit;
-import tech.units.indriya.format.SimpleUnitFormat;
+import tech.units.indriya.function.MultiplyConverter;
 import tech.units.indriya.unit.TransformedUnit;
 
 /**
@@ -103,6 +100,9 @@ public final class Units {
     public static final Unit<Length> METRE = tech.units.indriya.unit.Units.METRE;
     public static final Unit<Length> KILOMETER = MetricPrefix.KILO(METRE);
     public static final Unit<Length> NAUTICAL_MILE = USCustomary.NAUTICAL_MILE;
+    static final Unit<Length> FOOT_GOLD_COAST =
+            new TransformedUnit<>(
+                    "Foot_Gold_Coast", SI.METRE, MultiplyConverter.of(0.3047997101815088));
 
     /** Length of <code>1/72</code> of a {@link USCustomary#INCH} */
     public static final Unit<Length> PIXEL = USCustomary.INCH.divide(72);
@@ -115,49 +115,20 @@ public final class Units {
 
     public static final Unit<Time> YEAR = SI.YEAR;
 
-    static final UnitFormat format = SimpleUnitFormat.getInstance();
-
-    static {
-        /** Associates the labels to units created in this class. */
-        registerCustomUnits((SimpleUnitFormat) format);
-    }
     /**
-     * Gets an instance of the default system-wide Unit format. Use this method instead of
-     * SimpleUnitFormat.getInstance(), since custom Geotools units might not get registered if
-     * SimpleUnitFormat.getInstance() is directly accessed.
+     * Gets an instance of the default system-wide Unit format. Use this method instead of {@code
+     * SimpleUnitFormat.getInstance()}, since custom Geotools units are not known to {@code
+     * SimpleUnitFormat.getInstance()}.
      *
-     * @see GeoToolsUnitFormat#getInstance()
+     * @see UnitFormat#getInstance()
      */
-    public static UnitFormat getDefaultFormat() {
-        return format;
+    public static UnitFormatter getDefaultFormat() {
+        return UnitFormat.getInstance();
     }
 
     /**
-     * Registers the labels and aliases for the custom units defined by Geotools.
-     *
-     * @param format The UnitFormat in which the labels and aliases must be registered.
-     */
-    static void registerCustomUnits(SimpleUnitFormat format) {
-        format.label(Units.DEGREE_MINUTE_SECOND, "DMS");
-        format.alias(Units.DEGREE_MINUTE_SECOND, "degree minute second");
-
-        format.label(Units.SEXAGESIMAL_DMS, "D.MS");
-        format.alias(Units.SEXAGESIMAL_DMS, "sexagesimal DMS");
-        format.alias(Units.SEXAGESIMAL_DMS, "DDD.MMSSsss");
-        format.alias(Units.SEXAGESIMAL_DMS, "sexagesimal degree DDD.MMSSsss");
-
-        format.label(Units.PPM, "ppm");
-
-        format.label(NonSI.DEGREE_ANGLE, "°");
-        format.label(Units.PIXEL, "pixel");
-
-        format.label(USCustomary.GRADE, "grad");
-        format.alias(USCustomary.GRADE, "grade");
-    }
-
-    /**
-     * Unit name, willing to use {@link SimpleUnitFormat} to look up appropriate label if a name has
-     * not been not defined.
+     * Unit name, willing to use {@link UnitFormat} to look up appropriate label if a name has not
+     * been not defined.
      *
      * <p>This allows us to format units like {@link Units#PIXEL}.
      */
@@ -165,17 +136,16 @@ public final class Units {
         if (unit.getName() != null) {
             return unit.getName();
         }
-        SimpleUnitFormat format = SimpleUnitFormat.getInstance();
+        UnitFormatter format = UnitFormat.getInstance();
         return format.format(unit);
     }
     /**
-     * Unit symbol, willing to use {@link SimpleUnitFormat} to look up appropriate label if
-     * required.
+     * Unit symbol, willing to use {@link UnitFormat} to look up appropriate label if required.
      *
      * <p>This allows us to format units like {@link Units#PIXEL}.
      */
     public static String toSymbol(Unit<?> unit) {
-        SimpleUnitFormat format = SimpleUnitFormat.getInstance();
+        UnitFormatter format = UnitFormat.getInstance();
         return format.format(unit);
     }
 
@@ -187,7 +157,7 @@ public final class Units {
      */
     @SuppressWarnings("unchecked")
     public static <Q extends Quantity<Q>> Unit<Q> autoCorrect(Unit<Q> unit) {
-        return DefaultUnitParser.getInstance(SimpleUnitFormat.Flavor.Default)
+        return ((WktUnitFormat.WktUnitFormatterImpl) WktUnitFormat.getInstance())
                 .getEquivalentUnit(unit);
     }
 
@@ -247,13 +217,13 @@ public final class Units {
     /**
      * Parses the text into an instance of unit
      *
-     * @see UnitFormat#parse(CharSequence)
+     * @see UnitFormatter#parse(CharSequence)
      * @throws javax.measure.format.MeasurementParseException if any problem occurs while parsing
      *     the specified character sequence (e.g. illegal syntax).
-     * @throws UnsupportedOperationException if the {@link UnitFormat} is unable to parse.
+     * @throws UnsupportedOperationException if the {@link UnitFormatter} is unable to parse.
      * @return A unit instance
      */
     public static Unit<?> parseUnit(String name) {
-        return Units.autoCorrect(DefaultUnitParser.getInstance().parse(name));
+        return Units.autoCorrect(WktUnitFormat.getInstance().parse(name));
     }
 }

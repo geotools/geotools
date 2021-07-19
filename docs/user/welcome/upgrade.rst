@@ -34,8 +34,7 @@ GeoTools 26.x
 Shapefile
 ^^^^^^^^^
 
-``ShapefileDataStore`` will autodetect DBF charset from CPG sidecar file, the feature now enabled by default. When this feature 
-enabled the following rules apply:
+``ShapefileDataStore`` will autodetect DBF charset from CPG sidecar file, the feature now enabled by default. When this feature is enabled, the following rules apply:
 
 * if no explicit charset parameter passed to ``ShapefileDataStoreFactory``, it will instruct created ``ShapefileDataStore``
   to try and figure out DBF file charset from CPG file. In this case, CPG files must contain correct charset name, otherwise, 
@@ -45,6 +44,28 @@ enabled the following rules apply:
 
 In case of trouble there is an ability to bring old behavior back by setting ``org.geotools.shapefile.enableCPG`` system property
 to "false". This turns autodetection off. The name of the property stored in ``ShapefileDataStoreFactory.ENABLE_CPG_SWITCH`` constant.
+
+Unit of Measurement Formatting
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+As more third-party libraries adopt the Java module system, stricter rules regarding access to
+non-public parts of other modules apply.
+
+One such case was the way GeoTools' unit formatters were previously initialized, which caused
+GeoTools to fail immediately when run from the module path.
+
+Fixing this required changes to multiple classes:
+
+* ``GeoToolsUnitFormat`` which was previously used to access innards of a third-party library and
+  provide access to GeoTools-specific unit formatting instance has been split up and moved:
+  * Building and initializing individual unit formatting instances can now be done using the
+  ``org.geotools.measure.BaseUnitFormatter`` constructor (instead of extending
+  ``org.geotools.util.GeoToolsUnitFormat`` and its inner class ``BaseGT2Format``).
+  * The GeoTools-specific formatting instance can now be accessed with
+  ``org.geotools.measure.UnitFormat.getInstance()`` (instead of
+  ``org.geotools.util.GeoToolsUnitFormat.getInstance()``).
+* ``org.geotools.referencing.wkt.DefaultUnitParser`` has been moved and renamed to
+  ``org.geotools.measure.WktUnitFormat``.
 
 GeoTools 25.x
 -------------

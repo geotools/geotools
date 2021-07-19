@@ -892,7 +892,7 @@ public final class CRS {
     /**
      * Compares the specified objects for equality. If both objects are Geotools implementations of
      * class {@link AbstractIdentifiedObject}, then this method will ignore the metadata during the
-     * comparaison.
+     * comparison.
      *
      * @param object1 The first object to compare (may be null).
      * @param object2 The second object to compare (may be null).

@@ -28,6 +28,10 @@
       <useTransitiveFiltering>true</useTransitiveFiltering>
       <useStrictFiltering>true</useStrictFiltering>
       <includes>
+        <include>javax.media:jai_core</include>
+        <include>javax.media:jai_codec</include>
+        <include>javax.media:jai_imageio</include>
+      
         <include>org.geotools:gt-arcgrid</include>
         <include>org.geotools:gt-brewer</include>
         <include>org.geotools:gt-charts</include>

@@ -22,147 +22,44 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
+import java.io.File;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
-import org.geotools.data.ows.Specification;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.ows.wms.CRSEnvelope;
 import org.geotools.ows.wms.Layer;
-import org.geotools.ows.wms.WMS1_1_0;
 import org.geotools.ows.wms.WMSCapabilities;
-import org.geotools.ows.wms.WebMapServer;
-import org.geotools.ows.wms.request.GetMapRequest;
+import org.geotools.ows.wms.xml.WMSSchema;
+import org.geotools.test.TestData;
+import org.geotools.util.logging.Logging;
+import org.geotools.xml.DocumentFactory;
+import org.geotools.xml.SchemaFactory;
+import org.geotools.xml.handlers.DocumentHandler;
+import org.junit.Assert;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 /**
  * @author Richard Gould
- *     <p>TODO To change the template for this generated type comment go to Window - Preferences -
- *     Java - Code Style - Code Templates
+ * @author ian
  */
-public class WMS1_1_0_OnlineTest extends WMS1_0_0_OnlineTest {
-    protected URL getStylesURL;
+public class WMS1_1_0_Test {
+    protected static final Logger LOGGER = Logging.getLogger(WMS1_1_0_Test.class);
 
-    public WMS1_1_0_OnlineTest() throws Exception {
-        server =
-                new URL(
-                        "http://www2.dmsolutions.ca/cgi-bin/mswms_gmap?VERSION=1.1.0&REQUEST=GetCapabilities");
-        spec = new WMS1_1_0();
-    }
-
-    @Override
-    @Test
-    public void testGetVersion() {
-        assertEquals(spec.getVersion(), "1.1.0");
-    }
+    public WMS1_1_0_Test() throws Exception {}
 
     /* (non-Javadoc)
      * @see org.geotools.data.wms.test.WMS1_0_0Test#checkProperties(java.util.Properties)
      */
-    @Override
+
     protected void checkProperties(Properties properties) {
         assertEquals(properties.get("REQUEST"), "GetCapabilities");
         assertEquals(properties.get("VERSION"), "1.1.0");
         assertEquals(properties.get("SERVICE"), "WMS");
     }
 
-    @Override
-    @Test
-    public void testCreateDescribeLayerRequest() throws Exception {
-        /* TODO FIX
-                try{
-                    WebMapServer wms = new CustomWMS(server);
-                    DescribeLayerRequest request = wms.createDescribeLayerRequest();
-                    assertNotNull(request);
-                    request.setLayers("land_fn,park,drain_fn,road,popplace");
-                    // System.out.println(request.getFinalURL());
-                    DescribeLayerResponse response = (DescribeLayerResponse) wms.issueRequest(request);
-                    assertNotNull(response);
-
-                    LayerDescription[] layerDescs = response.getLayerDescs();
-                    assertEquals(layerDescs.length, 5);
-
-                    assertEquals(layerDescs[0].getName(), "land_fn");
-                    assertEquals(layerDescs[1].getName(), "park");
-                    assertEquals(layerDescs[2].getName(), "drain_fn");
-                    assertEquals(layerDescs[3].getName(), "road");
-                    assertEquals(layerDescs[4].getName(), "popplace");
-
-                    assertEquals(layerDescs[1].getWfs(), new URL("http://dev1.dmsolutions.ca/cgi-bin/mswfs_gmap?"));
-                    assertEquals(layerDescs[4].getWfs(), new URL("http://dev1.dmsolutions.ca/cgi-bin/mswfs_gmap?"));
-
-                    assertEquals(layerDescs[1].getQueries().length, 1);
-                    assertEquals(layerDescs[4].getQueries().length, 1);
-
-                    assertEquals(layerDescs[1].getQueries()[0], "park");
-                    assertEquals(layerDescs[4].getQueries()[0], "popplace");
-                } catch(java.net.ConnectException ce){
-                    if(ce.getMessage().indexOf("timed out")>0){
-                        // System.err.println("Unable to test - timed out: "+ce);
-                    } else{
-                        throw(ce);
-                    }
-                }
-        */
-    }
-
-    @Test
-    public void testCreateGetLegendGraphicRequest() throws Exception {
-        /* TODO FIX
-                try{
-
-                    WebMapServer wms = new CustomWMS(server);
-                    GetLegendGraphicRequest request = wms.createGetLegendGraphicRequest();
-
-                    assertNotNull(request);
-
-                    Layer[] layers = WMSUtils.getNamedLayers(wms.getCapabilities());
-                    SimpleLayer park = null;
-                    for (int i = 0; i < layers.length; i++) {
-                        if (layers[i].getName().equals("park")) {
-                            park = new SimpleLayer(layers[i].getName(), "");
-                            break;
-                        }
-                    }
-
-                    assertNotNull(park);
-                    request.setLayer(park);
-
-                    request.setFormat("image/gif");
-
-                    request.setWidth("50");
-                    request.setHeight("50");
-
-                    // System.out.println(request.getFinalURL());
-
-                    GetLegendGraphicResponse response = (GetLegendGraphicResponse) wms.issueRequest(request);
-                    assertNotNull(response);
-
-                    assertEquals(response.getContentType(), "image/gif");
-
-                    BufferedImage image = ImageIO.read(response.getInputStream());
-                    assertEquals(image.getHeight(), 50);
-                } catch(java.net.ConnectException ce){
-                    if(ce.getMessage().indexOf("timed out")>0){
-                        // System.err.println("Unable to test - timed out: "+ce);
-                    } else{
-                        throw(ce);
-                    }
-                }
-        */
-    }
-
-    // Cannot test 1.1.0 versioning.. I don't have a 1.1.0 server that will do GetStyles
-    //    public void testCreateGetStylesRequest() throws Exception {
-    //        WebMapServer wms = new CustomWMS(getStylesURL);
-    //
-    //        GetStylesRequest request = wms.createGetStylesRequest();
-    //        assertNotNull(request);
-    //
-    //    }
-
-    @Override
     @Test
     public void testCreateParser() throws Exception {
         WMSCapabilities capabilities = createCapabilities("1.1.0Capabilities.xml");
@@ -282,31 +179,29 @@ public class WMS1_1_0_OnlineTest extends WMS1_0_0_OnlineTest {
         }
     }
 
-    @Override
-    @Test
-    public void testCreateGetMapRequest() throws Exception {
+    protected WMSCapabilities createCapabilities(String capFile) throws Exception {
         try {
-            WebMapServer wms = new WebMapServer(server);
-            wms.getCapabilities();
-            GetMapRequest request = wms.createGetMapRequest();
-            request.setFormat("image/jpeg");
-            // System.out.println(request.getFinalURL().toExternalForm());
+            File getCaps = TestData.file(this, capFile);
+            URL getCapsURL = getCaps.toURI().toURL();
+            Map<String, Object> hints = new HashMap<>();
+            hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WMSSchema.getInstance());
+            Object object =
+                    DocumentFactory.getInstance(getCapsURL.openStream(), hints, Level.WARNING);
 
-            String externalForm = request.getFinalURL().toExternalForm();
-            assertTrue(externalForm.indexOf("image%2Fjpeg") >= 0);
+            SchemaFactory.getInstance(WMSSchema.NAMESPACE);
+
+            Assert.assertTrue("Capabilities failed to parse", object instanceof WMSCapabilities);
+
+            WMSCapabilities capabilities = (WMSCapabilities) object;
+            return capabilities;
         } catch (java.net.ConnectException ce) {
             if (ce.getMessage().indexOf("timed out") > 0) {
-                LOGGER.warning("Unable to test - timed out: " + ce);
+                // System.err.println("Unable to test - timed out: " + ce);
+                return null;
             } else {
                 throw (ce);
             }
         }
-    }
-
-    @Override
-    protected WebMapServer getCustomWMS(URL featureURL)
-            throws SAXException, URISyntaxException, IOException {
-        return new CustomWMS(featureURL);
     }
 
     protected void validateBoundingBox(
@@ -316,21 +211,5 @@ public class WMS1_1_0_OnlineTest extends WMS1_0_0_OnlineTest {
         assertEquals(llbbox.getMinY(), minY, 0.0);
         assertEquals(llbbox.getMaxX(), maxX, 0.0);
         assertEquals(llbbox.getMaxY(), maxY, 0.0);
-    }
-
-    // forces use of 1.1.0 spec
-    private class CustomWMS extends WebMapServer {
-
-        /** */
-        public CustomWMS(URL serverURL) throws SAXException, URISyntaxException, IOException {
-            super(serverURL);
-            // TODO Auto-generated constructor stub
-        }
-
-        @Override
-        protected void setupSpecifications() {
-            specs = new Specification[1];
-            specs[0] = new WMS1_1_0();
-        }
     }
 }

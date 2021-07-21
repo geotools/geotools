@@ -22,46 +22,35 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
+import java.io.File;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
-import org.geotools.data.ows.Specification;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.ows.wms.CRSEnvelope;
 import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wms.StyleImpl;
-import org.geotools.ows.wms.WMS1_1_1;
 import org.geotools.ows.wms.WMSCapabilities;
-import org.geotools.ows.wms.WebMapServer;
+import org.geotools.ows.wms.xml.WMSSchema;
+import org.geotools.test.TestData;
+import org.geotools.util.logging.Logging;
+import org.geotools.xml.DocumentFactory;
+import org.geotools.xml.SchemaFactory;
+import org.geotools.xml.handlers.DocumentHandler;
+import org.junit.Assert;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 /**
  * @author Richard Gould
- *     <p>TODO To change the template for this generated type comment go to Window - Preferences -
- *     Java - Code Style - Code Templates
+ * @author ian
  */
-public class WMS1_1_1_OnlineTest extends WMS1_1_0_OnlineTest {
+public class WMS1_1_1_Test {
+    protected static final Logger LOGGER = Logging.getLogger(WMS1_1_1_Test.class);
 
-    public WMS1_1_1_OnlineTest() throws Exception {
-        this.spec = new WMS1_1_1();
+    public WMS1_1_1_Test() throws Exception {}
 
-        this.server =
-                new URL(
-                        "http://www2.dmsolutions.ca/cgi-bin/mswms_gmap?VERSION=1.1.0&REQUEST=GetCapabilities");
-
-        this.getStylesURL =
-                new URL(
-                        "http://mapserv2.esrin.esa.it/cubestor/cubeserv/cubeserv.cgi?VERSION=1.1.1&REQUEST=GetCapabilities&SERVICE=WMS");
-    }
-
-    @Override
-    @Test
-    public void testGetVersion() {
-        assertEquals(spec.getVersion(), "1.1.1");
-    }
-
-    @Override
     @Test
     public void testCreateParser() throws Exception {
         try {
@@ -278,42 +267,45 @@ public class WMS1_1_1_OnlineTest extends WMS1_1_0_OnlineTest {
         }
     }
 
-    // Don't have working server to test against yet.
-    //	public void testCreateGetStylesRequest() throws Exception {
-    //      WebMapServer wms = new CustomWMS(getStylesURL);
-    //
-    //      GetStylesRequest request = wms.createGetStylesRequest();
-    //      assertNotNull(request);
-    //	}
+    protected WMSCapabilities createCapabilities(String capFile) throws Exception {
+        try {
+            File getCaps = TestData.file(this, capFile);
+            URL getCapsURL = getCaps.toURI().toURL();
+            Map<String, Object> hints = new HashMap<>();
+            hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WMSSchema.getInstance());
+            Object object =
+                    DocumentFactory.getInstance(getCapsURL.openStream(), hints, Level.WARNING);
 
+            SchemaFactory.getInstance(WMSSchema.NAMESPACE);
+
+            Assert.assertTrue("Capabilities failed to parse", object instanceof WMSCapabilities);
+
+            WMSCapabilities capabilities = (WMSCapabilities) object;
+            return capabilities;
+        } catch (java.net.ConnectException ce) {
+            if (ce.getMessage().indexOf("timed out") > 0) {
+                // System.err.println("Unable to test - timed out: " + ce);
+                return null;
+            } else {
+                throw (ce);
+            }
+        }
+    }
+
+    protected void validateBoundingBox(
+            CRSEnvelope llbbox, double minX, double minY, double maxX, double maxY) {
+        assertNotNull(llbbox);
+        assertEquals(llbbox.getMinX(), minX, 0.0);
+        assertEquals(llbbox.getMinY(), minY, 0.0);
+        assertEquals(llbbox.getMaxX(), maxX, 0.0);
+        assertEquals(llbbox.getMaxY(), maxY, 0.0);
+    }
     /* (non-Javadoc)
      * @see org.geotools.data.wms.test.WMS1_0_0Test#checkProperties(java.util.Properties)
      */
-    @Override
     protected void checkProperties(Properties properties) {
         assertEquals(properties.get("VERSION"), "1.1.1");
         assertEquals(properties.get("REQUEST"), "GetCapabilities");
         assertEquals(properties.get("SERVICE"), "WMS");
-    }
-
-    @Override
-    protected WebMapServer getCustomWMS(URL featureURL)
-            throws SAXException, URISyntaxException, IOException {
-        return new CustomWMS(featureURL);
-    }
-    // forces use of 1.1.1 spec
-    private class CustomWMS extends WebMapServer {
-
-        /** */
-        public CustomWMS(URL serverURL) throws SAXException, URISyntaxException, IOException {
-            super(serverURL);
-            // TODO Auto-generated constructor stub
-        }
-
-        @Override
-        protected void setupSpecifications() {
-            specs = new Specification[1];
-            specs[0] = new WMS1_1_1();
-        }
     }
 }

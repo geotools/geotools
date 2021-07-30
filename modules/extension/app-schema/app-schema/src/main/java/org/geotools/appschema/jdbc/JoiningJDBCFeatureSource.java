@@ -1327,13 +1327,18 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             finalSql.append("SELECT ");
             SimpleFeatureType featureType = store.getSchema(mv.getTargetTable());
             PrimaryKey primaryKeys = store.getPrimaryKey(featureType);
+            List<String> pkNames = new ArrayList<>();
             for (PrimaryKeyColumn primaryKey : primaryKeys.getColumns()) {
-                encodeColumnName(finalSql, mv.getTargetTable(), primaryKey.getName());
+                String pkName = primaryKey.getName();
+                pkNames.add(pkName);
+                encodeColumnName(finalSql, mv.getTargetTable(), pkName);
                 finalSql.append(", ");
             }
             for (String property : mv.getProperties()) {
-                encodeColumnName(finalSql, mv.getTargetTable(), property);
-                finalSql.append(", ");
+                if (!pkNames.contains(property)) {
+                    encodeColumnName(finalSql, mv.getTargetTable(), property);
+                    finalSql.append(", ");
+                }
             }
             finalSql.delete(finalSql.length() - 2, finalSql.length());
             // encode value expression

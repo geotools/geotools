@@ -29,7 +29,7 @@ public class GrowableInternationalStringTest {
 
     @Test
     public void testEmptyLanguage() {
-               GrowableInternationalString toCopy = new GrowableInternationalString();
+        GrowableInternationalString toCopy = new GrowableInternationalString();
         toCopy.add(Locale.ENGLISH, "english text");
         toCopy.add(null, "default text");
         GrowableInternationalString newGrowable = new GrowableInternationalString(toCopy);

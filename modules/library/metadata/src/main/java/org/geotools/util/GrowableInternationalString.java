@@ -111,8 +111,7 @@ public class GrowableInternationalString extends AbstractInternationalString
                         : Stream.of(Locale.getAvailableLocales()).collect(Collectors.toSet());
         for (Locale locale : locales) {
             String value = internationalString.toString(locale);
-            if (value != null && locale != null && !value.equals(defaultValue))
-                localMap.put(locale, value);
+            if (value != null && !value.equals(defaultValue)) localMap.put(locale, value);
         }
         if (defaultValue != null) localMap.put(Locale.getDefault(), defaultValue);
     }
@@ -142,13 +141,11 @@ public class GrowableInternationalString extends AbstractInternationalString
                     }
             }
             String old = localMap.get(locale);
-            if (old != null) {
-                if (string.equals(old)) {
-                    return;
-                }
-                // TODO: provide a localized message "String value already set for locale ...".
-                throw new IllegalArgumentException();
+
+            if (string.equals(old)) {
+                return;
             }
+
             localMap.put(locale, string);
             defaultValue = null; // Will be recomputed when first needed.
         }

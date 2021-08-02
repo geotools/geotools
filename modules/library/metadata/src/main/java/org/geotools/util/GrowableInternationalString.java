@@ -142,8 +142,12 @@ public class GrowableInternationalString extends AbstractInternationalString
             }
             String old = localMap.get(locale);
 
-            if (string.equals(old)) {
-                return;
+            if (old != null) {
+                if (string.equals(old)) {
+                    return;
+                }
+                // TODO: provide a localized message "String value already set for locale ...".
+                throw new IllegalArgumentException();
             }
 
             localMap.put(locale, string);

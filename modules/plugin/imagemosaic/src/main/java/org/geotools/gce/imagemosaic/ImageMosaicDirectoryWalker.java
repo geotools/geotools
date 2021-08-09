@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
+import org.apache.commons.io.DirectoryWalker;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.FalseFileFilter;
@@ -58,8 +59,7 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
      * @author Simone Giannecchini, GeoSolutions SAS
      * @author Daniele Romagnoli, GeoSolutions SAS
      */
-    @SuppressWarnings("deprecation")
-    final class MosaicDirectoryWalker extends org.apache.commons.io.DirectoryWalker
+    final class MosaicDirectoryWalker extends DirectoryWalker
             implements ImageMosaicElementConsumer<File> {
 
         private ImageMosaicWalker walker;

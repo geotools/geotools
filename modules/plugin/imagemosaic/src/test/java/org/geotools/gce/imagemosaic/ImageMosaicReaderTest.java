@@ -215,6 +215,7 @@ public class ImageMosaicReaderTest {
 
     private URL mixedSampleModelURL;
     private URL coverageBandsURL;
+    private URL coverageBands2URL;
 
     private URL heterogeneousGranulesURL;
 
@@ -2375,6 +2376,7 @@ public class ImageMosaicReaderTest {
         rgbURL = TestData.url(this, "rgb");
         mixedSampleModelURL = TestData.url(this, "mixed_sample_model");
         coverageBandsURL = TestData.url(this, "coverage_bands");
+        coverageBands2URL = TestData.url(this, "coverage_bands_heterogeneous");
         heterogeneousGranulesURL = TestData.url(this, "heterogeneous");
         timeURL = TestData.url(this, "time_geotiff");
         timeFormatURL = TestData.url(this, "time_format_geotiff");
@@ -4629,6 +4631,40 @@ public class ImageMosaicReaderTest {
         format = TestUtils.getFormat(coverageBandsURL);
         reader = getReader(coverageBandsURL, format);
         testMultiCoverages(reader);
+        reader.dispose();
+    }
+
+    @Test
+    public void testHeterogeneousConfigs() throws Exception {
+        // we have 2 coverages in this mosaic:
+        // - a gray coverage with homogeneous granules
+        // - a RGB coverage with heterogeneous granules
+
+        File mosaicFolder = URLs.urlToFile(coverageBands2URL);
+        for (File configFile :
+                mosaicFolder.listFiles(
+                        (FileFilter)
+                                FileFilterUtils.or(
+                                        FileFilterUtils.suffixFileFilter("db"),
+                                        FileFilterUtils.suffixFileFilter(Utils.SAMPLE_IMAGE_NAME),
+                                        FileFilterUtils.and(
+                                                FileFilterUtils.suffixFileFilter(".properties"),
+                                                FileFilterUtils.notFileFilter(
+                                                        FileFilterUtils.or(
+                                                                FileFilterUtils.nameFileFilter(
+                                                                        "indexer.properties"),
+                                                                FileFilterUtils.nameFileFilter(
+                                                                        "datastore.properties"))))))) {
+            configFile.delete();
+        }
+        // Before GEOT-6958 fix, this read would have thrown a
+        // java.lang.NullPointerException: Argument "overviewsController" should not be null.
+        // due to the reader assuming to deal with an homogeneous mosaic whilst it's actually
+        // heterogeneous
+
+        AbstractGridFormat format = TestUtils.getFormat(coverageBands2URL);
+        ImageMosaicReader reader = getReader(coverageBands2URL, format);
+        reader.read("rgb", null);
         reader.dispose();
     }
 

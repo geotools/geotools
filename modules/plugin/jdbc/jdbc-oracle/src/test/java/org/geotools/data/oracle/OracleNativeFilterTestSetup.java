@@ -49,18 +49,21 @@ public final class OracleNativeFilterTestSetup extends JDBCNativeFilterTestSetup
                 "CREATE INDEX GT_JDBC_TEST_MEASUREMENTS_GEOM_INDEX ON "
                         + "GT_JDBC_TEST_MEASUREMENTS(location) INDEXTYPE IS MDSYS.SPATIAL_INDEX");
         // insert the needed records
+        // NB we could use '"INSERT INTO GT_JDBC_TEST_MEASUREMENTS VALUES (1, '#1', 'temperature',
+        // 15.0, SDO_GEOMETRY('POINT (1.0 2.0)', 4326))"'
+        // but that relies on a Java stored procedure being available
         run(
-                "INSERT INTO GT_JDBC_TEST_MEASUREMENTS VALUES (1, '#1', 'temperature', 15.0, SDO_GEOMETRY('POINT (1.0 2.0)', 4326))");
+                "INSERT INTO GT_JDBC_TEST_MEASUREMENTS VALUES (1, '#1', 'temperature', 15.0, SDO_GEOMETRY(2001, 4326, SDO_POINT_TYPE(1.0, 2.0, NULL), NULL, NULL))");
         run(
-                "INSERT INTO GT_JDBC_TEST_MEASUREMENTS VALUES (2, '#2', 'temperature', 18.5, SDO_GEOMETRY('POINT (1.0 4.0)', 4326))");
+                "INSERT INTO GT_JDBC_TEST_MEASUREMENTS VALUES (2, '#2', 'temperature', 18.5, SDO_GEOMETRY(2001, 4326, SDO_POINT_TYPE(1.0, 4.0, NULL), NULL, NULL))");
         run(
-                "INSERT INTO GT_JDBC_TEST_MEASUREMENTS VALUES (3, '#3', 'wind', 8.5, SDO_GEOMETRY('POINT (2.0 4.0)', 4326))");
+                "INSERT INTO GT_JDBC_TEST_MEASUREMENTS VALUES (3, '#3', 'wind',        8.5,  SDO_GEOMETRY(2001, 4326, SDO_POINT_TYPE(2.0, 4.0, NULL), NULL, NULL))");
         run(
-                "INSERT INTO GT_JDBC_TEST_MEASUREMENTS VALUES (4, '#4', 'wind', 4.5, SDO_GEOMETRY('POINT (2.0 2.0)', 4326))");
+                "INSERT INTO GT_JDBC_TEST_MEASUREMENTS VALUES (4, '#4', 'wind',        4.5,  SDO_GEOMETRY(2001, 4326, SDO_POINT_TYPE(2.0, 2.0, NULL), NULL, NULL))");
         run(
-                "INSERT INTO GT_JDBC_TEST_MEASUREMENTS VALUES (5, '#5', 'humidity', 0.7, SDO_GEOMETRY('POINT (1.0 4.0)', 4326))");
+                "INSERT INTO GT_JDBC_TEST_MEASUREMENTS VALUES (5, '#5', 'humidity',    0.7,  SDO_GEOMETRY(2001, 4326, SDO_POINT_TYPE(1.0, 4.0, NULL), NULL, NULL))");
         run(
-                "INSERT INTO GT_JDBC_TEST_MEASUREMENTS VALUES (6, '#6', 'humidity', 0.5, SDO_GEOMETRY('POINT (5.0 4.0)', 4326))");
+                "INSERT INTO GT_JDBC_TEST_MEASUREMENTS VALUES (6, '#6', 'humidity',    0.5,  SDO_GEOMETRY(2001, 4326, SDO_POINT_TYPE(5.0, 4.0, NULL), NULL, NULL))");
     }
 
     @Override

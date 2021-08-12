@@ -5,16 +5,18 @@ on: [pull_request]
 jobs:
   build:
     name: Java ${{ matrix.java }}
-    runs-on: [ubuntu-18.04]
+    runs-on: [ubuntu-20.04]
     strategy:
       matrix:
         java: [11]
+        java-dist: ['adopt']
 
     steps:
     - name: Set up JDK ${{ matrix.java }}
-      uses: actions/setup-java@v1
+      uses: actions/setup-java@v2
       with:
         java-version: ${{ matrix.java }}
+        distribution: ${{ matrix.java-dist }}
     - uses: actions/checkout@v2
     - name: Maven repository caching
       uses: actions/cache@v2
@@ -25,10 +27,8 @@ jobs:
           oracle-${{ runner.os }}-maven-
     - name: Free up diskspace
       run: |
-        docker container prune --force
-        docker image prune -a --force
         sudo rm -rf /usr/local/lib/android
-        sudo rm -rf /usr/share/dotnet 
+        sudo rm -rf /usr/share/dotnet
         df -h
     - name: Setup test environment for Oracle XE 
       run: |

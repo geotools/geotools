@@ -20,8 +20,8 @@ and ArcGIS Online.
 
 To include in Geotools code base builds: ``mvn -P arcgis-rest``
 
-Supported
----------
+Supported features
+------------------
 
 Specifically, only the ``FeatureServer`` services on either ArcGIS Online (Open Data) or 
 ArcGIS Server ``FeatureServers`` are covered so far.

@@ -380,15 +380,23 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                 } else {
                     params.put(Utils.SCAN_FOR_TYPENAMES, Boolean.TRUE);
                 }
-                if (beans.size() > 0) {
-                    CatalogConfigurationBean bean = beans.get(0).getCatalogConfigurationBean();
-                    catalog =
-                            GranuleCatalogFactory.createGranuleCatalog(
-                                    sourceURL, bean, params, getCatalogHints(bean));
-                } else {
+                if (beans.isEmpty()) {
                     catalog =
                             ImageMosaicConfigHandler.createGranuleCatalogFromDatastore(
                                     parentDirectory, datastoreProperties, true, getHints());
+                } else {
+                    // We need to figure out if there is an heterogeneous mosaic in the list and use
+                    // it as reference. (Otherwise, read on heterogeneous coverages may not work
+                    // properly)
+                    MosaicConfigurationBean mosaicBean =
+                            beans.stream()
+                                    .filter(p -> p.getCatalogConfigurationBean().isHeterogeneous())
+                                    .findFirst()
+                                    .orElse(beans.get(0));
+                    CatalogConfigurationBean bean = mosaicBean.getCatalogConfigurationBean();
+                    catalog =
+                            GranuleCatalogFactory.createGranuleCatalog(
+                                    sourceURL, bean, params, getCatalogHints(bean));
                 }
                 MultiLevelROIProvider rois =
                         MultiLevelROIProviderMosaicFactory.createFootprintProvider(parentDirectory);

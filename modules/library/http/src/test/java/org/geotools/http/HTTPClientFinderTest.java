@@ -119,8 +119,6 @@ public class HTTPClientFinderTest {
         try {
             HTTPClient client = HTTPClientFinder.createClient(HTTPProxy.class);
             assertTrue(client instanceof SimpleHttpClient);
-        } catch (HTTPFactoryException e) {
-            // Check message?
         } finally {
             if (nullInitially) {
                 System.clearProperty("http.proxyHost");

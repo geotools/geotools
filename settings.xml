@@ -1,0 +1,46 @@
+<settings>
+  <servers>
+    <server>
+      <id>boundless</id>
+      <configuration>
+        <httpHeaders>
+          <property>
+            <name>X-JFrog-Art-Api</name>
+            <value>AKCp5buJVJZmPsb9qajDnmRXyKxxsw7AaKC7VKw8F4ZsMFQnAd7Ap2QHgRJV1Rjrq23fe5mYr</value>
+          </property>
+        </httpHeaders>
+      </configuration>
+    </server>
+    <server>
+       <id>osgeo</id>
+       <username>geotools</username>
+       <password>j0dyg@rn!</password>
+    </server>
+    <server>
+      <id>nexus</id>
+      <username>gsbuild</username>
+      <password>cuOPLtfJ814Gt5jb</password>
+    </server>
+    <server>
+		<id>osgeo-docker</id>
+		<username>gsbuild</username>
+		<password>cuOPLtfJ814Gt5jb</password>
+	</server>
+  </servers>
+   <profiles>
+	<profile>
+	 <id>useosgeonexus</id>
+	 <repositories>
+	   <repository>
+		 <id>nexus</id>
+		 <name>OSGEO Nexus</name>
+		 <url>https://repo.osgeo.org/repository/geotools-releases</url>
+	   </repository>
+	 </repositories>
+	</profile>
+  </profiles>
+	 
+	 <activeProfiles>
+	   <activeProfile>useosgeonexus</activeProfile>
+	 </activeProfiles>
+</settings>

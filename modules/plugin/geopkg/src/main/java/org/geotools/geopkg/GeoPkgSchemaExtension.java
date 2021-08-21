@@ -231,6 +231,12 @@ public class GeoPkgSchemaExtension extends GeoPkgExtension {
         }
     }
 
+    public void addConstraint(DataColumnConstraint constraint) throws SQLException {
+        try (Connection cx = geoPackage.connPool.getConnection()) {
+            addConstraint(cx, constraint);
+        }
+    }
+
     public void addConstraint(Connection cx, DataColumnConstraint constraint) throws SQLException {
         String constraintName = constraint.getName();
         String sql =

@@ -36,7 +36,7 @@ import org.geotools.util.logging.Logging;
  *
  * @author groldan
  */
-public class SimpleHttpClient implements HTTPClient {
+public class SimpleHttpClient implements HTTPClient, HTTPProxy {
 
     private static final Logger LOGGER = Logging.getLogger(SimpleHttpClient.class);
 

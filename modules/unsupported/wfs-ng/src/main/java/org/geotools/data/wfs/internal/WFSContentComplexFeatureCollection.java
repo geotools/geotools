@@ -74,12 +74,13 @@ public class WFSContentComplexFeatureCollection
             @SuppressWarnings("PMD.CloseResource") // wrapped and returned
             InputStream stream = request.getFinalURL().openStream();
             XmlComplexFeatureParser parser =
-                    new XmlComplexFeatureParser(stream, schema, name, filter);
+                    new XmlComplexFeatureParser(
+                            stream, schema, name, filter, request.getStrategy());
             return new ComplexFeatureIteratorImpl(parser);
         } catch (IOException e) {
-            LOGGER.log(Level.FINER, e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new RuntimeException("Couldn't read features of collection.", e);
         }
-        return null;
     }
 
     @Override

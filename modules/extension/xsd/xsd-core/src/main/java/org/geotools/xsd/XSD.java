@@ -180,7 +180,18 @@ public abstract class XSD {
     /** Returns the XSD object representing the contents of the schema. */
     public final XSDSchema getSchema() throws IOException {
         if (schema == null) {
-            synchronized (this) {
+            // buildSchema in general will need to parse dependencies, which through
+            // schema locators will circle back to XSD.getSchema(), potentially causing
+            // a deadlock, if this synchronization uses synchronized(this). Example:
+            // 1) t1 loads OGC, holding a lock on it, and parses its own schema
+            //    holding a lock on Schemas.classes
+            // 2) t2 starts loading GML, holding a lock on it, and tries to parse its schema
+            //    waiting on Schemas.classes lock
+            // 3) t1 parsing finds an import from OGC filters to GML, the locators bring it
+            //    to call GML.getSchema(), and we have the deadlock.
+            // So the old synchronized(this) was replaced with synchronized(Schemas.class)
+            // to avert the possibility of the above cited lock
+            synchronized (Schemas.class) {
                 if (schema == null) {
                     LOGGER.fine("building schema for schema: " + getNamespaceURI());
                     schema = buildSchema();

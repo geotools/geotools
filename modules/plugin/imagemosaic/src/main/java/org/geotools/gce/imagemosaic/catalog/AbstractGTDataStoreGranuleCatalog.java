@@ -21,11 +21,13 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.spi.IIORegistry;
 import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.spi.ImageReaderSpi;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
@@ -126,11 +128,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             this.pathType = (PathType) params.get(Utils.Prop.PATH_TYPE);
             this.locationAttribute = (String) params.get(Utils.Prop.LOCATION_ATTRIBUTE);
             final String temp = (String) params.get(Utils.Prop.SUGGESTED_SPI);
-            this.suggestedRasterSPI =
-                    temp != null
-                            ? (ImageReaderSpi)
-                                    Class.forName(temp).getDeclaredConstructor().newInstance()
-                            : null;
+            this.suggestedRasterSPI = temp != null ? getImageReaderSpi(temp) : null;
             final String temp2 = (String) params.get(Utils.Prop.SUGGESTED_FORMAT);
             this.suggestedFormat =
                     temp2 != null
@@ -160,6 +158,18 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             this.tracer = new Throwable();
             this.tracer.fillInStackTrace();
         }
+    }
+
+    static ImageReaderSpi getImageReaderSpi(String className) {
+        Iterator<ImageReaderSpi> serviceProviders =
+                IIORegistry.lookupProviders(ImageReaderSpi.class);
+        while (serviceProviders.hasNext()) {
+            ImageReaderSpi serviceProvider = serviceProviders.next();
+            if (serviceProvider.getClass().getName() == className) {
+                return serviceProvider;
+            }
+        }
+        return null;
     }
 
     protected void initializeTypeNames(final Properties params) throws IOException {

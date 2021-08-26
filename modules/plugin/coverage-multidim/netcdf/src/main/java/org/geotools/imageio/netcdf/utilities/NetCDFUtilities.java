@@ -947,7 +947,7 @@ public class NetCDFUtilities {
      *   <li>For all other kind of axis, a {@link NumberFormat}.
      * </ul>
      *
-     * <p>The {@linkplain Locale#CANADA Canada locale} is used by default for most formats because
+     * <p>The {@linkplain Locale#ENGLISH English locale} is used by default for most formats because
      * it is relatively close to ISO (for example regarding days and months order in dates) while
      * using the English symbols.
      *
@@ -960,7 +960,7 @@ public class NetCDFUtilities {
      */
     public static Format getAxisFormat(final AxisType type, final String prototype) {
         if (!type.equals(AxisType.Time) && !(type.equals(AxisType.RunTime))) {
-            return NumberFormat.getNumberInstance(Locale.CANADA);
+            return NumberFormat.getNumberInstance(Locale.ENGLISH);
         }
         char dateSeparator = '-'; // The separator used in ISO format.
         boolean twoDigitYear = false; // Year is two digits
@@ -1046,7 +1046,7 @@ public class NetCDFUtilities {
         // TODO: Improve me:
         // Handle timeZone
         pattern += appendZ ? "'Z'" : "";
-        final DateFormat format = new SimpleDateFormat(pattern, Locale.CANADA);
+        final DateFormat format = new SimpleDateFormat(pattern, Locale.ENGLISH);
         format.setTimeZone(TimeZone.getTimeZone("UTC"));
         return format;
     }

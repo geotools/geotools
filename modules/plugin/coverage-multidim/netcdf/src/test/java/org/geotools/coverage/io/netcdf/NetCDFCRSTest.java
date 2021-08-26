@@ -23,8 +23,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -82,20 +80,6 @@ public class NetCDFCRSTest {
     private static final double DELTA = 1E-6;
 
     private static CoordinateReferenceSystem UTM32611;
-
-    private void setFinalStaticField(String fieldName, boolean value)
-            throws NoSuchFieldException, SecurityException, IllegalArgumentException,
-                    IllegalAccessException {
-        // Playing with System.Properties and Static boolean fields can raises issues
-        // when running Junit tests via Maven, due to initialization orders.
-        // So let's change the fields via reflections for these tests
-        Field field = NetCDFCRSUtilities.class.getDeclaredField(fieldName);
-        field.setAccessible(true);
-        Field modifiersField = Field.class.getDeclaredField("modifiers");
-        modifiersField.setAccessible(true);
-        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-        field.set(null, value);
-    }
 
     /** Sets up the custom definitions */
     @BeforeClass
@@ -504,7 +488,7 @@ public class NetCDFCRSTest {
 
     @Test
     public void testPreserveKM() throws Exception {
-        setFinalStaticField("CONVERT_AXIS_KM", false);
+        NetCDFCRSUtilities.setConvertAxisKm(false);
         String fileName = "samplekm.nc";
         File nc1 = TestData.file(this, fileName);
         File converted = tempFolder.newFolder("converted");
@@ -523,7 +507,7 @@ public class NetCDFCRSTest {
 
     @Test
     public void testAutoConversionKmToM() throws Exception {
-        setFinalStaticField("CONVERT_AXIS_KM", true);
+        NetCDFCRSUtilities.setConvertAxisKm(true);
         String fileName = "samplekm.nc";
         File nc1 = TestData.file(this, fileName);
         File converted = tempFolder.newFolder("converted");
@@ -543,5 +527,6 @@ public class NetCDFCRSTest {
     @After
     public void cleanUpDefinitions() throws Exception {
         System.clearProperty(NetCDFCRSAuthorityFactory.SYSTEM_DEFAULT_USER_PROJ_FILE);
+        NetCDFCRSUtilities.setConvertAxisKm(false);
     }
 }

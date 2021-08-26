@@ -129,7 +129,7 @@ public class NetCDFCRSUtilities {
     public static final String CONVERT_AXIS_KM_KEY =
             "org.geotools.coverage.io.netcdf.convertAxis.km";
 
-    private static final boolean CONVERT_AXIS_KM;
+    private static boolean convertAxisKm;
 
     static {
         add(AxisType.Time, "future", "past");
@@ -148,7 +148,7 @@ public class NetCDFCRSUtilities {
         VERTICAL_AXIS_NAMES.add("pressure");
 
         // Default is false, resulting into no automatic conversion anymore
-        CONVERT_AXIS_KM = Boolean.parseBoolean(System.getProperty(CONVERT_AXIS_KM_KEY, "false"));
+        convertAxisKm = Boolean.parseBoolean(System.getProperty(CONVERT_AXIS_KM_KEY, "false"));
     }
 
     /** The object to use for parsing and formatting units. */
@@ -214,6 +214,11 @@ public class NetCDFCRSUtilities {
             }
         }
         return false;
+    }
+
+    /** Provides means to override flag CONVERT_AXIS_KM_KEY in runtime. */
+    public static void setConvertAxisKm(boolean convertAxisKm) {
+        NetCDFCRSUtilities.convertAxisKm = convertAxisKm;
     }
 
     public static VerticalCRS buildVerticalCrs(CoordinateAxis zAxis) {
@@ -512,6 +517,6 @@ public class NetCDFCRSUtilities {
 
     /** Return true if the NetCDF CRS Parsing machinery will convert km coordinates to meter */
     public static boolean isConvertAxisKm() {
-        return CONVERT_AXIS_KM;
+        return convertAxisKm;
     }
 }

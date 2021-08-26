@@ -98,6 +98,14 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
                                 + (exclusiveRulesEnabled ? "" : "-first")
                                 + "_java9.sld");
 
+        // Java 17 pretty-print has slightly different indentation
+        File sldFile_java17 =
+                new File(
+                        file.getParentFile(),
+                        FilenameUtils.getBaseName(file.getName())
+                                + (exclusiveRulesEnabled ? "" : "-first")
+                                + "_java17.sld");
+
         if (!sldFile.exists()) {
             Stylesheet ss = CssParser.parse(css);
             CssTranslator tx = new CssTranslator();
@@ -149,6 +157,13 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
             // Try the java9 version
             if (sldFile_java9.exists()) {
                 expectedSLD = parseToSld(FileUtils.readFileToString(sldFile_java9, "UTF-8"));
+                if (expectedSLD.equals(actualSLD)) {
+                    return;
+                }
+            }
+
+            if (sldFile_java17.exists()) {
+                expectedSLD = parseToSld(FileUtils.readFileToString(sldFile_java17, "UTF-8"));
                 if (expectedSLD.equals(actualSLD)) {
                     return;
                 }

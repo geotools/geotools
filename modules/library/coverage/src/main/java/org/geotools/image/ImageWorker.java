@@ -234,12 +234,14 @@ public class ImageWorker {
     static {
         ImageWriterSpi temp = null;
         try {
-
-            Class<?> clazz = Class.forName("com.sun.imageio.plugins.jpeg.JPEGImageWriterSpi");
-            if (clazz != null) {
-                temp = (ImageWriterSpi) clazz.getDeclaredConstructor().newInstance();
-            } else {
-                temp = null;
+            Iterator<ImageWriter> writers = ImageIO.getImageWritersByMIMEType("image/jpeg");
+            while (writers.hasNext()) {
+                ImageWriter temp2 = writers.next();
+                if (temp2.getOriginatingProvider().getClass().getName()
+                        == "com.sun.imageio.plugins.jpeg.JPEGImageWriterSpi") {
+                    temp = temp2.getOriginatingProvider();
+                    break;
+                }
             }
         } catch (Exception e) {
             LOGGER.log(Level.FINER, e.getMessage(), e);
@@ -255,14 +257,7 @@ public class ImageWorker {
     static {
         ImageWriterSpi temp = null;
         try {
-
-            Class<?> clazz =
-                    Class.forName("com.sun.media.imageioimpl.plugins.gif.GIFImageWriterSpi");
-            if (clazz != null) {
-                temp = (ImageWriterSpi) clazz.getDeclaredConstructor().newInstance();
-            } else {
-                temp = null;
-            }
+            temp = getImageWriterSpi("com.sun.media.imageioimpl.plugins.gif.GIFImageWriterSpi");
         } catch (Exception e) {
             LOGGER.log(Level.FINER, e.getMessage(), e);
             temp = null;
@@ -278,11 +273,10 @@ public class ImageWorker {
     static {
         ImageWriterSpi temp = null;
         try {
-
-            Class<?> clazz =
-                    Class.forName("com.sun.media.imageioimpl.plugins.jpeg.CLibJPEGImageWriterSpi");
-            if (clazz != null && PackageUtil.isCodecLibAvailable()) {
-                temp = (ImageWriterSpi) clazz.getDeclaredConstructor().newInstance();
+            if (PackageUtil.isCodecLibAvailable()) {
+                temp =
+                        getImageWriterSpi(
+                                "com.sun.media.imageioimpl.plugins.jpeg.CLibJPEGImageWriterSpi");
             } else {
                 temp = null;
             }
@@ -301,14 +295,7 @@ public class ImageWorker {
     static {
         ImageWriterSpi temp = null;
         try {
-
-            Class<?> clazz =
-                    Class.forName("it.geosolutions.imageioimpl.plugins.tiff.TIFFImageWriterSpi");
-            if (clazz != null) {
-                temp = (ImageWriterSpi) clazz.getDeclaredConstructor().newInstance();
-            } else {
-                temp = null;
-            }
+            temp = getImageWriterSpi("it.geosolutions.imageioimpl.plugins.tiff.TIFFImageWriterSpi");
         } catch (Exception e) {
             LOGGER.log(Level.FINER, e.getMessage(), e);
             temp = null;
@@ -324,11 +311,10 @@ public class ImageWorker {
     static {
         ImageWriterSpi temp = null;
         try {
-
-            Class<?> clazz =
-                    Class.forName("com.sun.media.imageioimpl.plugins.png.CLibPNGImageWriterSpi");
-            if (clazz != null && PackageUtil.isCodecLibAvailable()) {
-                temp = (ImageWriterSpi) clazz.getDeclaredConstructor().newInstance();
+            if (PackageUtil.isCodecLibAvailable()) {
+                temp =
+                        getImageWriterSpi(
+                                "com.sun.media.imageioimpl.plugins.png.CLibPNGImageWriterSpi");
             } else {
                 temp = null;
             }
@@ -340,6 +326,18 @@ public class ImageWorker {
 
         // assign
         CLIB_PNG_IMAGE_WRITER_SPI = temp;
+    }
+
+    static ImageWriterSpi getImageWriterSpi(String className) throws Exception {
+        Iterator<ImageWriterSpi> serviceProviders =
+                IIORegistry.lookupProviders(ImageWriterSpi.class);
+        while (serviceProviders.hasNext()) {
+            ImageWriterSpi serviceProvider = serviceProviders.next();
+            if (serviceProvider.getClass().getName() == className) {
+                return serviceProvider;
+            }
+        }
+        throw new Exception("Class " + className + " not found");
     }
 
     /** Raster space epsilon */

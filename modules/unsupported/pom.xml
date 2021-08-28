@@ -66,17 +66,6 @@
       </modules>
     </profile>
     <profile>
-      <id>gtopo30</id>
-      <activation>
-        <property>
-          <name>all</name>
-        </property>
-      </activation>
-      <modules>
-        <module>gtopo30</module>
-      </modules>
-    </profile>
-    <profile>
       <id>wps</id>
       <activation>
         <property>
@@ -212,7 +201,6 @@
         <module>css</module>
         <module>geojsonstore</module>
         <module>s3-geotiff</module>
-        <module>gtopo30</module>
         <module>vpf</module>
       </modules>
     </profile>

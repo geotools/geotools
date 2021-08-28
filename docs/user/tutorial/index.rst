@@ -34,7 +34,6 @@ Intermediate:
    function
    process
    raster/jaiext
-   affinetransform
 
 Advanced:
 

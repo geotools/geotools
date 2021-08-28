@@ -24,9 +24,6 @@ Research and Development:
    swt/index
    wps
    sample
-   imagemosaic-jdbc/index
-   imagemosaic-jdbc/pgraster
-   imagemosaic-jdbc/oracle-raster
    gml-geometry-streaming
 
 Unsupported DataStore implementations:
@@ -42,9 +39,6 @@ Unsupported Raster modules:
 * :doc:`/library/coverage/geotiff_new`
 * :doc:`/library/coverage/matlab`
 * :doc:`/library/coverage/multidim` - New plugins supporting NetCDF and Grib formats
-* :doc:`/unsupported/imagemosaic-jdbc/index` Support for rasters stored in relational databases
-* :doc:`/unsupported/imagemosaic-jdbc/pgraster` Support for rasters stored in PostGIS, based on the imagemosaic-jdbc plugin
-* :doc:`/unsupported/imagemosaic-jdbc/oracle` Support for rasters stored in Oracle, based on the imagemsaoic-jdbc plugin
 * :doc:`/library/coverage/tools`
 
 Unsupported Referencing implementations:

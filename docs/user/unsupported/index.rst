@@ -23,7 +23,6 @@ Research and Development:
    swing/index
    swt/index
    wps
-   gtopo30
    sample
    imagemosaic-jdbc/index
    imagemosaic-jdbc/pgraster

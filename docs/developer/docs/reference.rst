@@ -223,7 +223,6 @@ gathering up the other pages.
         .. toctree::
            :maxdepth: 1
            
-           gtopo30
            coverageio
            experiment
            geotiff_new

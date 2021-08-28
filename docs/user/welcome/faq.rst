@@ -59,7 +59,6 @@ by your application by only including the plug-ins you require.
   
   * ``geotiff`` 
   * ``grassraster`` 
-  * ``gtopo30`` 
   * ``image``  - world plus image files using common image formats such as JPEG, TIFF, GIF and PNG
   * ``imageio-ext-gdal`` (allows access to additional GDAL formats thanks to the ImageIO project)
   * ``imagemoasaic`` 

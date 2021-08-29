@@ -52,6 +52,15 @@ public class CoordinateFormatterTest {
         formatter.setMaximumFractionDigits(3);
         formatter.setPadWithZeros(true);
         Assert.assertEquals("0.000", formatter.format(0.00001));
+
+        formatter.setPadWithZeros(false);
+        formatter.setForcedDecimal(true);
+        Assert.assertEquals("-0.001", formatter.format(-0.000623D));
+        Assert.assertEquals("0.001", formatter.format(0.000623D));
+        // it is expected that this path returns different results
+        formatter.setForcedDecimal(false);
+        Assert.assertEquals("-6.23E-4", formatter.format(-0.000623D));
+        Assert.assertEquals("6.23E-4", formatter.format(0.000623D));
     }
 
     @Test
@@ -73,6 +82,23 @@ public class CoordinateFormatterTest {
         formatter.setForcedDecimal(true);
         Assert.assertEquals("2139681400.12346", formatter.format(2139681400.123456));
         Assert.assertEquals("-2139681400.12346", formatter.format(-2139681400.123456));
+    }
+
+    @Test
+    public void testTruncate() {
+        CoordinateFormatter formatter = new CoordinateFormatter(1);
+        // Assert.assertEquals(expected,actual,delta)
+        Assert.assertEquals(0D, formatter.truncate(0D), 0D);
+        Assert.assertEquals(0D, formatter.truncate(-0D), 0D);
+        Assert.assertEquals(0.1D, formatter.truncate(0.123D), 0D);
+        Assert.assertEquals(-0.1D, formatter.truncate(-0.123D), 0D);
+        Assert.assertEquals(0.6D, formatter.truncate(0.647D), 0D);
+        Assert.assertEquals(-0.6D, formatter.truncate(-0.647D), 0D);
+        // despite the name "truncate", it rounds up above 0, down below 0
+        Assert.assertEquals(0.7D, formatter.truncate(0.657D), 0D);
+        Assert.assertEquals(-0.7D, formatter.truncate(-0.657D), 0D);
+        Assert.assertEquals(1.0D, formatter.truncate(0.999D), 0D);
+        Assert.assertEquals(-1.0D, formatter.truncate(-0.999D), 0D);
     }
 
     @Test

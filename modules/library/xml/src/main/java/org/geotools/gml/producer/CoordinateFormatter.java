@@ -124,9 +124,9 @@ public final class CoordinateFormatter {
         //  e.g. if we want 8 decimals: 3.123456786 * 10E8 = 312345678.6
         double scaled = x * scale;
         // add 0.5 to round the decimal part, e.g 312345678.6 + 0.5 = 312345679.1
-        scaled += 0.5;
+        scaled += Math.signum(x) * 0.5;
         // take only the decimal part, e.g.  312345679
-        scaled = Math.floor(scaled);
+        scaled = Math.signum(x) < 0 ? Math.ceil(scaled) : Math.floor(scaled);
         // remove the scale factor, the number will now have the desired number of decimals
         return scaled / scale;
     }

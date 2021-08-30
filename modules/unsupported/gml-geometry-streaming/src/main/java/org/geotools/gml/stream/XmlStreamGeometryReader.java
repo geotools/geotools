@@ -37,6 +37,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.opengis.referencing.FactoryException;
@@ -167,6 +168,8 @@ public class XmlStreamGeometryReader {
             geom = parseCurve(dimension, crs);
         } else if (GML.Polygon.equals(startingGeometryTagName)) {
             geom = parsePolygon(dimension, crs);
+        } else if (GML.Surface.equals(startingGeometryTagName)) {
+            geom = parseSurface(dimension, crs);
         } else if (GML.MultiPoint.equals(startingGeometryTagName)) {
             geom = parseMultiPoint(dimension, crs);
         } else if (GML.MultiLineString.equals(startingGeometryTagName)) {
@@ -338,15 +341,41 @@ public class XmlStreamGeometryReader {
                     // we're done
                     break;
                 }
-                Polygon p = parsePolygon(dimension, crs);
-                polygons.add(p);
+
+                switch (reader.getLocalName()) {
+                    case GML.Polygon:
+                        Polygon p = parsePolygon(dimension, crs);
+                        polygons.add(p);
+                        break;
+                    case GML.Surface:
+                        MultiPolygon mp = parseSurface(dimension, crs);
+                        for (int i = 0; i < mp.getNumGeometries(); i++)
+                            polygons.add((Polygon) mp.getGeometryN(i));
+                        break;
+                    default:
+                        throw new IllegalStateException(
+                                "Unknown polygon boundary element: " + reader.getLocalName());
+                }
             }
             reader.nextTag();
         } else if (GML.surfaceMember.equals(memberTag)) {
             while (true) {
                 reader.nextTag();
-                Polygon p = parsePolygon(dimension, crs);
-                polygons.add(p);
+                switch (reader.getLocalName()) {
+                    case GML.Polygon:
+                        Polygon p = parsePolygon(dimension, crs);
+                        polygons.add(p);
+                        break;
+                    case GML.Surface:
+                        MultiPolygon mp = parseSurface(dimension, crs);
+                        for (int i = 0; i < mp.getNumGeometries(); i++)
+                            polygons.add((Polygon) mp.getGeometryN(i));
+                        break;
+                    default:
+                        throw new IllegalStateException(
+                                "Unknown polygon boundary element: " + reader.getLocalName());
+                }
+
                 reader.nextTag();
                 reader.require(END_ELEMENT, this.gmlNamespace, GML.surfaceMember);
                 reader.nextTag();
@@ -449,6 +478,113 @@ public class XmlStreamGeometryReader {
         }
 
         reader.require(END_ELEMENT, this.gmlNamespace, GML.Polygon);
+
+        LinearRing[] holesArray = null;
+        if (holes != null) {
+            holesArray = holes.toArray(new LinearRing[0]);
+        }
+        Polygon geom = curvedGeometryFactory.createPolygon(shell, holesArray);
+        geom.setUserData(crs);
+        return geom;
+    }
+
+    /**
+     * Parse a Polygon out of a Surface element.
+     *
+     * <p>Precondition: parser positioned at a {@link GML#Surface Surface} start tag
+     *
+     * <p>Postcondition: parser positioned at the {@link GML#Surface Surface} end tag of the
+     * starting tag
+     */
+    private MultiPolygon parseSurface(int dimension, CoordinateReferenceSystem crs)
+            throws XMLStreamException, FactoryException, IOException {
+
+        List<Polygon> polygons = new ArrayList<>(2);
+
+        reader.nextTag();
+        // patches
+        reader.require(START_ELEMENT, this.gmlNamespace, null);
+        String patchesName = reader.getLocalName();
+
+        if (GML.patches.equals(patchesName)) {
+            while (true) {
+                reader.nextTag();
+                if (END_ELEMENT == reader.getEventType()) {
+                    if (GML.Surface.equals(reader.getLocalName())) {
+                        // we're done
+                        break;
+                    } else if (GML.patches.equals(reader.getLocalName())) {
+                        reader.nextTag();
+                        break;
+                    }
+                }
+                reader.require(START_ELEMENT, this.gmlNamespace, GML.PolygonPatch);
+                Polygon p = parsePolygonPatch(dimension, crs);
+                polygons.add(p);
+            }
+        } else {
+            throw new IllegalStateException("Unknown polygon boundary element: " + patchesName);
+        }
+
+        reader.require(END_ELEMENT, this.gmlNamespace, GML.Surface);
+
+        return geomFac.createMultiPolygon(polygons.toArray(new Polygon[0]));
+    }
+
+    /**
+     * Parses a PolygonPatch.
+     *
+     * <p>Precondition: parser positioned at a {@link GML#PolygonPatch PolygonPatch} start tag
+     *
+     * <p>Postcondition: parser positioned at the {@link GML#PolygonPatch PolygonPatch} end tag of
+     * the starting tag
+     */
+    private Polygon parsePolygonPatch(int dimension, CoordinateReferenceSystem crs)
+            throws XMLStreamException, IOException, FactoryException {
+        LinearRing shell;
+        List<LinearRing> holes = null;
+
+        reader.nextTag();
+        reader.require(START_ELEMENT, this.gmlNamespace, null);
+
+        String name = reader.getLocalName();
+
+        if (GML.exterior.equals(name)) {
+            reader.nextTag();
+            shell = parseRing(dimension, crs);
+            reader.nextTag();
+            reader.require(END_ELEMENT, this.gmlNamespace, GML.exterior);
+        } else {
+            throw new IllegalStateException("Unknown polygon boundary element: " + name);
+        }
+
+        reader.nextTag();
+
+        name = reader.getLocalName();
+
+        if (START_ELEMENT == reader.getEventType()) {
+            if (GML.interior.equals(name)) {
+                // parse interior rings
+                holes = new ArrayList<>(2);
+                while (true) {
+                    reader.require(START_ELEMENT, this.gmlNamespace, name);
+                    reader.nextTag();
+                    LinearRing hole = parseRing(dimension, crs);
+                    holes.add(hole);
+
+                    reader.nextTag();
+                    reader.require(END_ELEMENT, this.gmlNamespace, name);
+                    reader.nextTag();
+                    if (END_ELEMENT == reader.getEventType()) {
+                        // we're done
+                        reader.require(END_ELEMENT, this.gmlNamespace, GML.PolygonPatch);
+                        break;
+                    }
+                }
+            }
+        }
+
+        reader.require(END_ELEMENT, this.gmlNamespace, GML.PolygonPatch);
 
         LinearRing[] holesArray = null;
         if (holes != null) {

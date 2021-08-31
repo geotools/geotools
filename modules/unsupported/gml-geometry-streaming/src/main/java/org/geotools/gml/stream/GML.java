@@ -47,6 +47,9 @@ public class GML {
     public static final String pointMembers = "pointMembers";
     public static final String Polygon = "Polygon";
     public static final String polygonMember = "polygonMember";
+    public static final String Surface = "Surface";
+    public static final String patches = "patches";
+    public static final String PolygonPatch = "PolygonPatch";
     public static final String pos = "pos";
     public static final String posList = "posList";
     public static final String Ring = "Ring";

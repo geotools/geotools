@@ -28,6 +28,7 @@ Research and Development:
    imagemosaic-jdbc/index
    imagemosaic-jdbc/pgraster
    imagemosaic-jdbc/oracle-raster
+   gml-geometry-streaming
 
 Unsupported DataStore implementations:
 

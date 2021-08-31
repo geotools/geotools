@@ -62,25 +62,48 @@ public class XmlStreamGeometryReader {
 
     private String gmlNamespace;
 
+    /**
+     * Create a new instance of the XML Stream Geometry Reader.
+     *
+     * @param reader the reader providing the data to parse
+     */
     public XmlStreamGeometryReader(final XMLStreamReader reader) {
         this(reader, new GeometryFactory());
     }
 
-    public XmlStreamGeometryReader(final XMLStreamReader reader, final GeometryFactory geomFac) {
-        this(reader, geomFac, new CurvedGeometryFactory(geomFac, DEFAULT_CURVE_TOLERANCE));
+    /**
+     * Create a new instance of the XML Stream Geometry Reader.
+     *
+     * @param reader the reader providing the data to parse
+     * @param geometryFactory a specific {@link GeometryFactory} to use for constructing geometries
+     */
+    public XmlStreamGeometryReader(
+            final XMLStreamReader reader, final GeometryFactory geometryFactory) {
+        this(
+                reader,
+                geometryFactory,
+                new CurvedGeometryFactory(geometryFactory, DEFAULT_CURVE_TOLERANCE));
     }
 
+    /**
+     * Create a new instance of the XML Stream Geometry Reader.
+     *
+     * @param reader the reader providing the data to parse
+     * @param geometryFactory a specific {@link GeometryFactory} to use for constructing geometries
+     * @param curvedGeometryFactory a specific {@link CurvedGeometryFactory} to use for constructing
+     *     curved geometries
+     */
     public XmlStreamGeometryReader(
             final XMLStreamReader reader,
-            final GeometryFactory geomFac,
+            final GeometryFactory geometryFactory,
             final CurvedGeometryFactory curvedGeometryFactory) {
         this.reader = reader;
-        this.geomFac = geomFac;
+        this.geomFac = geometryFactory;
         this.curvedGeometryFactory = curvedGeometryFactory;
     }
 
-    public void setGeometryFactory(GeometryFactory geomFac) {
-        this.geomFac = geomFac;
+    public void setGeometryFactory(GeometryFactory geometryFactory) {
+        this.geomFac = geometryFactory;
     }
 
     public GeometryFactory getGeometryFactory() {
@@ -134,10 +157,18 @@ public class XmlStreamGeometryReader {
     }
 
     /**
-     * Precondition: parser cursor positioned on a geometry property (ej, {@code gml:Point}, etc)
+     * Reads the next {@link Geometry} from the stream.
+     *
+     * <p>Precondition: parser cursor positioned on a geometry property (eg. {@code gml:Point},
+     * etc).
      *
      * <p>Postcondition: parser gets positioned at the end tag of the element it started parsing the
      * geometry at.
+     *
+     * @throws XMLStreamException when the parser cursor is not positioned on the expected element
+     * @throws NoSuchAuthorityCodeException when parsing the EPSG code fails
+     * @throws FactoryException when finding an EPSG parser fails
+     * @throws IOException unkown error
      */
     public Geometry readGeometry()
             throws NoSuchAuthorityCodeException, FactoryException, XMLStreamException, IOException {

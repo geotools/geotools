@@ -16,6 +16,9 @@
  */
 package org.geotools.gce.imagepyramid;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.color.ColorSpace;
@@ -34,12 +37,8 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.geometry.GeneralEnvelope;
-import org.geotools.referencing.CRS;
 import org.geotools.test.TestData;
 import org.geotools.util.URLs;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -49,21 +48,7 @@ import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 
 /** Test the resolutionLevel-to-ImageMosaicReader mapping machinery. */
-public class ImageLevelsMapperTest extends Assert {
-
-    protected static final Double DELTA = 1E-6;
-
-    @BeforeClass
-    public static void init() {
-        System.setProperty("org.geotools.referencing.forceXY", "true");
-        CRS.reset("all");
-    }
-
-    @AfterClass
-    public static void close() {
-        System.clearProperty("org.geotools.referencing.forceXY");
-        CRS.reset("all");
-    }
+public class ImageLevelsMapperTest extends AbstractPyramidTest {
 
     @Test
     public void multicoveragePyramidWithOverviews()
@@ -204,24 +189,5 @@ public class ImageLevelsMapperTest extends Assert {
     private void match(double[] expected, double[] actual) {
         assertEquals(expected[0], actual[0], DELTA);
         assertEquals(expected[1], actual[1], DELTA);
-    }
-
-    protected void cleanFiles(File mosaicFolder) {
-        for (File configFile :
-                mosaicFolder.listFiles(
-                        (FileFilter)
-                                FileFilterUtils.or(
-                                        FileFilterUtils.suffixFileFilter("db"),
-                                        FileFilterUtils.suffixFileFilter("sample_image"),
-                                        FileFilterUtils.and(
-                                                FileFilterUtils.suffixFileFilter(".properties"),
-                                                FileFilterUtils.notFileFilter(
-                                                        FileFilterUtils.or(
-                                                                FileFilterUtils.nameFileFilter(
-                                                                        "indexer.properties"),
-                                                                FileFilterUtils.nameFileFilter(
-                                                                        "datastore.properties"))))))) {
-            configFile.delete();
-        }
     }
 }

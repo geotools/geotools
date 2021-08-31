@@ -162,8 +162,16 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                     Polygon[] polygons;
                     // NC - Empty Geometry Support
                     if (sourceGeometry.isEmpty()) polygons = new Polygon[0];
-                    else if (source instanceof Polygon) polygons = new Polygon[] {(Polygon) source};
-                    else if (source instanceof GeometryCollection)
+                    else if (source instanceof Polygon) {
+                        // copy polygon
+                        Polygon polygon = (Polygon) source;
+                        LinearRing exterior = (LinearRing) polygon.getExteriorRing();
+                        LinearRing[] interiors = new LinearRing[polygon.getNumInteriorRing()];
+                        for (int i = 0; i < interiors.length; i++) {
+                            interiors[i] = (LinearRing) polygon.getInteriorRingN(i);
+                        }
+                        polygons = new Polygon[] {gFac.createPolygon(exterior, interiors)};
+                    } else if (source instanceof GeometryCollection)
                         polygons =
                                 this.convertAll((GeometryCollection) source, Polygon.class)
                                         .toArray(new Polygon[] {});

@@ -18,10 +18,12 @@ package org.geotools.renderer.style;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.TexturePaint;
 import java.awt.font.TextAttribute;
@@ -36,7 +38,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
+import org.apache.commons.collections4.IteratorUtils;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -64,6 +68,7 @@ import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.util.NumberRange;
+import org.geotools.util.factory.Hints;
 import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.Assert;
@@ -633,5 +638,26 @@ public class SLDStyleFactoryTest {
         assertThat(ls2d.getStroke(), CoreMatchers.instanceOf(BasicStroke.class));
         BasicStroke bs = (BasicStroke) ls2d.getStroke();
         Assert.assertNull(bs.getDashArray());
+    }
+
+    @Test
+    public void testOptimizedMarkFactoryHints() {
+        // create a list with two mark factories identifiers
+        List<String> list = Arrays.asList("WellKnownMarkFactory", "WKTMarkFactory");
+        Map<RenderingHints.Key, Object> map = new HashMap<>();
+        map.put(DynamicSymbolFactoryFinder.MARK_FACTORY_FILTER, new MarkFactoryListPredicate(list));
+        map.put(DynamicSymbolFactoryFinder.MARK_FACTORY_ORDER, new MarkFactoryListComparator(list));
+
+        Hints hints = new Hints(map);
+
+        List<MarkFactory> factories =
+                IteratorUtils.toList(DynamicSymbolFactoryFinder.getMarkFactories(hints));
+        assertEquals(2, factories.size());
+        List<String> result =
+                factories
+                        .stream()
+                        .map(mf -> mf.getClass().getSimpleName())
+                        .collect(Collectors.toList());
+        assertEquals(list, result);
     }
 }

@@ -1359,7 +1359,8 @@ public class SLDStyleFactory {
             if (expression != null) name = ExpressionExtractor.extractCqlExpressions(expression);
         }
 
-        Iterator<MarkFactory> it = DynamicSymbolFactoryFinder.getMarkFactories();
+        Iterator<MarkFactory> it =
+                DynamicSymbolFactoryFinder.getMarkFactories(new Hints(renderingHints));
         while (it.hasNext()) {
             MarkFactory factory = it.next();
             try {
@@ -1375,6 +1376,7 @@ public class SLDStyleFactory {
 
         return null;
     }
+
     /**
      * @param g2d graphics context
      * @param tx x offset

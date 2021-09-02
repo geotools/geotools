@@ -17,8 +17,11 @@
 package org.geotools.renderer.style;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.function.Predicate;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 import org.geotools.util.factory.FactoryCreator;
 import org.geotools.util.factory.FactoryRegistry;
 import org.geotools.util.factory.Hints;
@@ -47,6 +50,17 @@ public final class DynamicSymbolFactoryFinder {
     protected static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(DynamicSymbolFactoryFinder.class);
 
+    /**
+     * Rendering hint key to store a {@link Comparator}<{@link MarkFactory}> instance to set the
+     * {@link MarkFactory} execution order.
+     */
+    public static final Hints.Key MARK_FACTORY_ORDER = new Hints.Key(Comparator.class);
+    /**
+     * Rendering hint key to store a {@link Predicate}<{@link MarkFactory}> instance to set the
+     * allowed {@link MarkFactory} instances to be evaluated.
+     */
+    public static final Hints.Key MARK_FACTORY_FILTER = new Hints.Key(Predicate.class);
+
     /** The service registry for this manager. Will be initialized only when first needed. */
     private static volatile FactoryRegistry registry;
 
@@ -62,6 +76,29 @@ public final class DynamicSymbolFactoryFinder {
      */
     public static synchronized Iterator<MarkFactory> getMarkFactories() {
         return getServiceRegistry().getFactories(MarkFactory.class, null, null).iterator();
+    }
+
+    /**
+     * Finds all implementations of {@link MarkFactory} which have registered using the services
+     * mechanism. Returns a filtered and ordered iterator based on the provided Hints input
+     * parameter.
+     *
+     * @param hints An optional map of hints for factory configuration, or {@code null} if none.
+     *     Allowed Hints are: {@link DynamicSymbolFactoryFinder.MARK_FACTORY_ORDER}, {@link
+     *     DynamicSymbolFactoryFinder.MARK_FACTORY_FILTER}
+     * @return A filtered and ordered iterator over all discovered datastores which have registered
+     *     factories, and whose available method returns true.
+     */
+    @SuppressWarnings("unchecked")
+    public static synchronized Iterator<MarkFactory> getMarkFactories(Hints hints) {
+        Comparator<MarkFactory> sort =
+                hints != null ? (Comparator<MarkFactory>) hints.get(MARK_FACTORY_ORDER) : null;
+        Predicate<MarkFactory> filter =
+                hints != null ? (Predicate<MarkFactory>) hints.get(MARK_FACTORY_FILTER) : null;
+        Stream<MarkFactory> factories =
+                getServiceRegistry().getFactories(MarkFactory.class, filter, hints);
+
+        return sort != null ? factories.sorted(sort).iterator() : factories.iterator();
     }
 
     /**

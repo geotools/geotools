@@ -78,7 +78,7 @@ public class MultiPolygonTypeBindingTest extends GML3TestSupport {
         geometry.setUserData(CRS.decode("EPSG:4326"));
         GML3EncodingUtils.setID(geometry, "geometry");
         Document dom = encode(geometry, GML.MultiPolygon);
-        print(dom);
+        // print(dom);
         assertEquals(
                 "urn:x-ogc:def:crs:EPSG:4326",
                 dom.getElementsByTagNameNS(GML.NAMESPACE, "MultiPolygon")

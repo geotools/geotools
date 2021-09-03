@@ -194,7 +194,6 @@
         </property>
       </activation>
       <modules>
-        <module>jdbc-ng</module>
         <module>solr</module>
         <module>elasticsearch</module>
         <module>css</module>

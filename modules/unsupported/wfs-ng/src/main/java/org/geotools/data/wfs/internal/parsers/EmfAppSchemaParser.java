@@ -207,7 +207,9 @@ public class EmfAppSchemaParser {
             final CoordinateReferenceSystem crs,
             final Map<QName, Class<?>> mappedBindings)
             throws IOException {
-        XSDElementDeclaration elementDecl = parseFeatureType(featureName, schemaLocation);
+        ApplicationSchemaConfiguration configuration =
+                getConfiguration(featureName, schemaLocation);
+        XSDElementDeclaration elementDecl = parseFeatureType(featureName, configuration);
 
         Map<QName, Object> bindings = wfsConfiguration.setupBindings();
         if (mappedBindings != null) {
@@ -270,18 +272,15 @@ public class EmfAppSchemaParser {
                             + " from "
                             + schemaLocation.toExternalForm();
             throw (IOException) new IOException(msg).initCause(e);
+        } finally {
+            configuration.getXSD().dispose();
         }
     }
 
     /** TODO: add connectionfactory parameter to handle authentication, gzip, etc */
     private static XSDElementDeclaration parseFeatureType(
-            final QName featureTypeName, final URL schemaLocation) throws DataSourceException {
-        ApplicationSchemaConfiguration configuration;
-        {
-            String namespaceURI = featureTypeName.getNamespaceURI();
-            String uri = schemaLocation.toExternalForm();
-            configuration = new ApplicationSchemaConfiguration(namespaceURI, uri);
-        }
+            final QName featureTypeName, ApplicationSchemaConfiguration configuration)
+            throws DataSourceException {
         SchemaIndex schemaIndex;
         try {
             schemaIndex = Schemas.findSchemas(configuration);
@@ -296,6 +295,17 @@ public class EmfAppSchemaParser {
             throw new DataSourceException("No XSDElementDeclaration found for " + featureTypeName);
         }
         return elementDeclaration;
+    }
+
+    private static ApplicationSchemaConfiguration getConfiguration(
+            final QName featureTypeName, final URL schemaLocation) {
+        ApplicationSchemaConfiguration configuration;
+        {
+            String namespaceURI = featureTypeName.getNamespaceURI();
+            String uri = schemaLocation.toExternalForm();
+            configuration = new ApplicationSchemaConfiguration(namespaceURI, uri);
+        }
+        return configuration;
     }
 
     public static SimpleFeatureType parseSimpleFeatureType(

@@ -18,6 +18,7 @@ package org.geotools.data.geobuf;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -851,6 +852,93 @@ public class GeobufDataStoreTest {
                     assertEquals("ABC", feature.getAttribute("name"));
                 }
                 i++;
+            }
+        }
+        store.dispose();
+    }
+
+    @Test
+    public void readPointsWithNegativeIntegerOrNullProperties() throws Exception {
+        File file =
+                URLs.urlToFile(
+                        getClass()
+                                .getClassLoader()
+                                .getResource(
+                                        "org/geotools/data/geobuf/negint_and_null_values.pbf"));
+        Map<String, Serializable> params = new HashMap<>();
+        params.put("file", file);
+        DataStore store = DataStoreFinder.getDataStore(params);
+        assertEquals(1, store.getTypeNames().length);
+        assertEquals("negint_and_null_values", store.getTypeNames()[0]);
+        SimpleFeatureSource featureSource = store.getFeatureSource("negint_and_null_values");
+        assertEquals(
+                "geom:Point,id:Integer,name:String",
+                DataUtilities.encodeType(featureSource.getSchema()));
+        SimpleFeatureCollection featureCollection = featureSource.getFeatures();
+        assertEquals(3, featureCollection.size());
+        try (SimpleFeatureIterator it = featureCollection.features()) {
+            int c = 0;
+            while (it.hasNext()) {
+                SimpleFeature feature = it.next();
+                if (c == 0) {
+                    assertEquals(
+                            "POINT (24.257813 49.61071)", feature.getDefaultGeometry().toString());
+                    assertEquals(-1, feature.getAttribute("id"));
+                    assertEquals("number -1", feature.getAttribute("name"));
+                } else if (c == 1) {
+                    assertEquals(
+                            "POINT (-92.460937 40.178873)",
+                            feature.getDefaultGeometry().toString());
+                    assertEquals(-2, feature.getAttribute("id"));
+                    assertEquals("number -2", feature.getAttribute("name"));
+                } else if (c == 3) {
+                    assertEquals(
+                            "POINT (-92.460937 40.178873)",
+                            feature.getDefaultGeometry().toString());
+                    assertNull(feature.getAttribute("id"));
+                    assertEquals("number null", feature.getAttribute("name"));
+                }
+                c++;
+            }
+        }
+        store.dispose();
+    }
+
+    @Test
+    public void readGeobufWrittenByLegacyGeotools() throws Exception {
+        File file =
+                URLs.urlToFile(
+                        getClass()
+                                .getClassLoader()
+                                .getResource("org/geotools/data/geobuf/geobuf_legacy.pbf"));
+        Map<String, Serializable> params = new HashMap<>();
+        params.put("file", file);
+        DataStore store = DataStoreFinder.getDataStore(params);
+        assertEquals(1, store.getTypeNames().length);
+        assertEquals("geobuf_legacy", store.getTypeNames()[0]);
+        SimpleFeatureSource featureSource = store.getFeatureSource("geobuf_legacy");
+        assertEquals(
+                "geom:Point,name:String,id:Integer",
+                DataUtilities.encodeType(featureSource.getSchema()));
+        SimpleFeatureCollection featureCollection = featureSource.getFeatures();
+        assertEquals(2, featureCollection.size());
+        try (SimpleFeatureIterator it = featureCollection.features()) {
+            int c = 0;
+            while (it.hasNext()) {
+                SimpleFeature feature = it.next();
+                if (c == 0) {
+                    assertEquals(
+                            "POINT (-8.349609 14.349548)", feature.getDefaultGeometry().toString());
+                    assertEquals(1, feature.getAttribute("id"));
+                    assertEquals("ABC", feature.getAttribute("name"));
+                } else if (c == 1) {
+                    assertEquals(
+                            "POINT (-18.349609 24.349548)",
+                            feature.getDefaultGeometry().toString());
+                    assertEquals(-2, feature.getAttribute("id"));
+                    assertEquals("DEF", feature.getAttribute("name"));
+                }
+                c++;
             }
         }
         store.dispose();

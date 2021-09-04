@@ -17,6 +17,7 @@
 package org.geotools.data.geobuf;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -48,7 +49,7 @@ public class GeobufFeatureCollectionTest {
 
         MemoryDataStore store = new MemoryDataStore();
         SimpleFeatureType featureType =
-                DataUtilities.createType("points", "geom:Point,name:String,id:int");
+                DataUtilities.createType("points", "geom:Point,name:String,nullable:String,id:int");
         store.createSchema(featureType);
         SimpleFeatureStore featureStore = (SimpleFeatureStore) store.getFeatureSource("points");
         GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
@@ -58,6 +59,7 @@ public class GeobufFeatureCollectionTest {
                         new Object[] {
                             gf.createPoint(new Coordinate(-8.349609375, 14.349547837185362)),
                             "ABC",
+                            null,
                             1
                         },
                         "location.1");
@@ -67,7 +69,8 @@ public class GeobufFeatureCollectionTest {
                         new Object[] {
                             gf.createPoint(new Coordinate(-18.349609375, 24.349547837185362)),
                             "DEF",
-                            2
+                            "not_null",
+                            -2
                         },
                         "location.2");
         SimpleFeatureCollection collection = DataUtilities.collection(feature1, feature2);
@@ -86,15 +89,19 @@ public class GeobufFeatureCollectionTest {
                 while (it.hasNext()) {
                     SimpleFeature f = it.next();
                     if (c == 0) {
+                        assertEquals("location.1", f.getID());
                         assertEquals(
                                 "POINT (-8.349609 14.349548)", f.getDefaultGeometry().toString());
                         assertEquals(1, f.getAttribute("id"));
                         assertEquals("ABC", f.getAttribute("name"));
+                        assertNull(f.getAttribute("nullable"));
                     } else if (c == 1) {
+                        assertEquals("location.2", f.getID());
                         assertEquals(
                                 "POINT (-18.349609 24.349548)", f.getDefaultGeometry().toString());
-                        assertEquals(2, f.getAttribute("id"));
+                        assertEquals(-2, f.getAttribute("id"));
                         assertEquals("DEF", f.getAttribute("name"));
+                        assertEquals("not_null", f.getAttribute("nullable"));
                     }
                     c++;
                 }

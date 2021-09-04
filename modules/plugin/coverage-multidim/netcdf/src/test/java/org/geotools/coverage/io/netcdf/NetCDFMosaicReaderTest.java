@@ -711,6 +711,9 @@ public class NetCDFMosaicReaderTest {
             // now replace the netcdf file with a more up to date version of the same
             File nc2 = TestData.file(this, "polyphemus_20130301_test_more_times.nc");
             File target = new File(mosaic, "polyphemus_20130301_test.nc");
+            Date now = new Date();
+            nc2.setLastModified(now.getTime());
+            FileUtils.copyFile(nc2, target, false);
             FileUtils.copyFile(nc2, target, false);
             File fileToHarvest = new File(mosaic, "polyphemus_20130301_test.nc");
             List<HarvestedSource> harvestSummary = reader.harvest(null, fileToHarvest, null);

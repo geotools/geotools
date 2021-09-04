@@ -23,16 +23,12 @@ Research and Development:
    swing/index
    swt/index
    wps
-   gtopo30
    sample
-   imagemosaic-jdbc/index
-   imagemosaic-jdbc/pgraster
-   imagemosaic-jdbc/oracle-raster
+   gml-geometry-streaming
 
 Unsupported DataStore implementations:
 
 * :doc:`/library/data/elasticsearch` Support for search and analytics engine
-* :doc:`/library/data/georest` (Unknown) Support for a REST service using GeoJSON
 * :doc:`/library/data/wfs-ng` (Active) Supports communication with a Web Feature Server using the standard GeoTools DataStore API
 * :doc:`/library/data/mongodb` (Unknown) Support for using mongodb (https://www.mongodb.com/, https://en.wikipedia.org/wiki/MongoDB) as a feature store.
 
@@ -42,15 +38,7 @@ Unsupported Raster modules:
 * :doc:`/library/coverage/geotiff_new`
 * :doc:`/library/coverage/matlab`
 * :doc:`/library/coverage/multidim` - New plugins supporting NetCDF and Grib formats
-* :doc:`/unsupported/imagemosaic-jdbc/index` Support for rasters stored in relational databases
-* :doc:`/unsupported/imagemosaic-jdbc/pgraster` Support for rasters stored in PostGIS, based on the imagemosaic-jdbc plugin
-* :doc:`/unsupported/imagemosaic-jdbc/oracle` Support for rasters stored in Oracle, based on the imagemsaoic-jdbc plugin
 * :doc:`/library/coverage/tools`
-
-Unsupported Referencing implementations:
-
-* :doc:`/library/referencing/oracle` - allows an application to work an `EPSG <http://www.epsg-registry.org/>`_ table of map projections in an  Oracle database
-* :doc:`/library/referencing/h2`- Allows an application to work an `EPSG <http://www.epsg-registry.org/>`_ table of map projections in an H2 (pure Java) database
 
 .. note::
 

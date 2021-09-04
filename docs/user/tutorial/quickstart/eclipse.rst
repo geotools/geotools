@@ -565,7 +565,6 @@ time.
    However only one copy can be used at a time so we will need to remove the following jars from the Library Manager:
 
    * ``gt-epsg-hsql``
-   * ``gt-epsg-oracle``
    * ``gt-epsg-postgresql``
    * ``gt-epsg-wkt``
       

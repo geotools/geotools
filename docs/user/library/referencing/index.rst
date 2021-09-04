@@ -90,10 +90,4 @@ EPSG plugins (choose only one to prevent conflict):
    3d
    extension
 
-Unsupported plugins:
-   
-.. toctree::
-   :maxdepth: 1
-   
-   h2
-   oracle
+

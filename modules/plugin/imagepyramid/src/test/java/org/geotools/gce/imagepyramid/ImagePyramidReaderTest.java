@@ -16,6 +16,12 @@
  */
 package org.geotools.gce.imagepyramid;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -67,7 +73,7 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  *     and referenced by URLs
  * @since 2.3
  */
-public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
+public class ImagePyramidReaderTest extends AbstractPyramidTest {
 
     /** File to be used for testing purposes. */
     private static final String TEST_FILE = "pyramid.properties";

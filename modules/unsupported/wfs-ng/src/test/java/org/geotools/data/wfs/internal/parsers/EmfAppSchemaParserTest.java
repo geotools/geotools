@@ -20,13 +20,16 @@ import static org.geotools.data.wfs.WFSTestData.url;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.namespace.QName;
+import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.data.wfs.WFSTestData;
+import org.geotools.gml3.GML;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.wfs.v1_1.WFSConfiguration;
 import org.geotools.xsd.Configuration;
@@ -61,6 +64,17 @@ public class EmfAppSchemaParserTest {
         assertNotNull(ftype);
         assertNotNull(ftype.getGeometryDescriptor());
         assertEquals("the_geom", ftype.getGeometryDescriptor().getLocalName());
+
+        // check that XSD schema was disposed
+        for (XSDElementDeclaration dec :
+                GML.getInstance()
+                        .getSchema()
+                        .resolveElementDeclaration(GML._Feature.getLocalPart())
+                        .getSubstitutionGroup()) {
+            if ("states".equals(dec.getName())) {
+                assertTrue(false);
+            }
+        }
     }
 
     @Test

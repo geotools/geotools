@@ -26,4 +26,15 @@ public class GrowableInternationalStringTest {
         assertEquals("testo italiano", newGrowable.toString(Locale.ITALIAN));
         assertEquals("texte français", newGrowable.toString(Locale.FRENCH));
     }
+
+    @Test
+    public void testEmptyLanguage() {
+        GrowableInternationalString toCopy = new GrowableInternationalString();
+        toCopy.add(Locale.ENGLISH, "english text");
+        toCopy.add(null, "default text");
+        GrowableInternationalString newGrowable = new GrowableInternationalString(toCopy);
+        assertEquals(2, newGrowable.getLocales().size());
+        assertEquals("english text", newGrowable.toString(Locale.ENGLISH));
+        assertEquals("default text", newGrowable.toString(null));
+    }
 }

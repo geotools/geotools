@@ -73,8 +73,9 @@ public class WFSContentComplexFeatureSourceTest {
         FeatureCollection<FeatureType, Feature> collection = featureSource.getFeatures(query);
         Assert.assertNotNull(collection);
 
-        FeatureIterator<Feature> features = collection.features();
-        Assert.assertNotNull(features);
+        try (FeatureIterator<Feature> features = collection.features()) {
+            Assert.assertNotNull(features);
+        }
     }
 
     private TestWFSClient createWFSClient() throws Exception {

@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.geotools</groupId>
         <artifactId>unsupported</artifactId>
-        <version>26-SNAPSHOT</version>
+        <version>27-SNAPSHOT</version>
     </parent>
     <groupId>org.geotools</groupId>
     <artifactId>gt-sdmx</artifactId>

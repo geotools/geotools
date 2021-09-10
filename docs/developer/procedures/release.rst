@@ -57,7 +57,7 @@ Release in JIRA
 If you are cutting the first RC of a series, create the stable branch
 ---------------------------------------------------------------------
 
-.. note:: The RC is the first release of a series, released one month before the .0 release. This replaces the beta release, which no longer exists.
+.. note:: The RC is the first release of a series, released prior to the .0 release.
 
 When creating the first release candidate of a series, there are some extra steps to create the new stable branch and update the version on main.
 
@@ -72,12 +72,12 @@ When creating the first release candidate of a series, there are some extra step
     git checkout -b 27.x
     git push upstream 27.x
 
-* `GitHub branch protection <https://github.com/geotools/geotools/settings/branches>`_ uses some wild cards to protect the new branch.
+* `GitHub branch protection <https://github.com/geotools/geotools/settings/branches>`_ uses wild cards to protect the new branch (so no further configuration is required).
 
-* Checkout the main branch and update the version in all ``pom.xml`` files and a few miscellaneous files; for example, if changing main from ``27-SNAPSHOT`` to ``28-SNAPSHOT``::
+* Checkout the main branch and use `branch.xml` to update the version in all ``pom.xml`` files and a few miscellaneous files; for example, if changing main from ``27-SNAPSHOT`` to ``28-SNAPSHOT``::
 
     git checkout main
-    ant -f build/release.xml -Drelease=24-SNAPSHOT
+    ant -f build/branch.xml -Drelease=27-SNAPSHOT
     
   This replaces::
 

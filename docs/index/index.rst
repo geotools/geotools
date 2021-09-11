@@ -3,48 +3,53 @@ GeoTools Documentation
 
 Quickstart to get up and running with GeoTools in minutes:
 
-* `Eclipse Quickstart <http://docs.geotools.org/latest/userguide/tutorial/quickstart/eclipse.html>`_ ( `stable <http://docs.geotools.org/stable/tutorials/quickstart/eclipse.html>`_ )
-* `NetBeans Quickstart <http://docs.geotools.org/latest/userguide/tutorial/quickstart/netbeans.html>`_ ( `stable <http://docs.geotools.org/stable/tutorials/quickstart/netbeans.html>`_ )
-* `Maven command line Quickstart <http://docs.geotools.org/latest/userguide/tutorial/quickstart/maven.html>`_ 
+* :user:`Eclipse Quickstart <tutorial/quickstart/eclipse.html>`
+  ( `stable <https://docs.geotools.org/stable/userguide/tutorial/quickstart/eclipse.html>`__
+  | `maintenance <https://docs.geotools.org/maintenance/userguide/tutorial/quickstart/eclipse.html>`__ )
+* :user:`NetBeans Quickstart <tutorial/quickstart/netbeans.html>`
+  ( `stable <https://docs.geotools.org/stable/userguide/tutorial/quickstart/netbeans.html>`__
+  | `maintenance <https://docs.geotools.org/maintenance/userguide/tutorial/quickstart/netbeans.html>`__ )
+* :user:`Maven command line Quickstart <tutorial/quickstart/maven.html>`
+  ( `stable <https://docs.geotools.org/stable/userguide/tutorial/quickstart/maven.html>`__
+  | `maintenance <https://docs.geotools.org/maintenance/userguide/tutorial/quickstart/maven.html>`__ )
 
 GeoTools API
 ------------
 
-GeoTools javadocs are `available online <http://docs.geotools.org/latest/javadocs/>`_ ( `stable <http://docs.geotools.org/stable/javadocs/>`_ )
-or `download <http://sourceforge.net/projects/geotools/files/>`_ them as a zip file.
+GeoTools javadocs are :api:`available online <>` ( `stable <https://docs.geotools.org/stable/javadocs/>`__ ) zip file `download <http://sourceforge.net/projects/geotools/files/>`_ download.
 
 User Guide
 ----------
 
-The GeoTools user guide is available online:
+The GeoTools User Guide is available online:
 
-`User Guide <http://docs.geotools.org/latest/userguide/>`_ ( `stable <http://docs.geotools.org/stable/userguide/>`_ | `maintenance <http://docs.geotools.org/maintenance/userguide/>`_ )
+:user:`User Guide <>` ( `stable <https://docs.geotools.org/stable/userguide/>`__ | `maintenance <https://docs.geotools.org/maintenance/userguide/>`__ )
     Tutorials, module reference and examples illustrating the uses of GeoTools. Updated with
     build instructions and advanced tutorials and integration instructions.
     
-    The user guide is available for `download <http://sourceforge.net/projects/geotools/files/>`_
+    The user guide is available for `download <http://sourceforge.net/projects/geotools/files/>`__
     as a zip file.
        
-`Tutorials <http://docs.geotools.org/latest/userguide/tutorial/>`_ ( `stable <http://docs.geotools.org/stable/userguide/tutorial/>`_ | `maintenance <http://docs.geotools.org/maintenance/userguide/tutorial/>`_ )
+:user:`Tutorials <tutorial/>` ( `stable <https://docs.geotools.org/stable/userguide/tutorial/>`__ | `maintenance <https://docs.geotools.org/maintenance/userguide/tutorial/>`__ )
     Step by step tutorials introducing both GeoTools and geospatial concepts for Java developers.
 
-`FAQ <http://docs.geotools.org/latest/userguide/faq.html>`_ ( `stable <http://docs.geotools.org/stable/userguide/faq.html>`_ | `maintenance <http://docs.geotools.org/maintenance/userguide/faq.html>`_ )
+:user:`FAQ <faq.html>` ( `stable <https://docs.geotools.org/stable/userguide/faq.html>`__ | `maintenance <https://docs.geotools.org/maintenance/userguide/faq.html>`__ )
     Convey wisdom gleaned from the GeoTools user list.
 
 Developing GeoTools
 -------------------
 
-See the `Get Involved <http://geotools.org/getinvolved.html>`_ page for the `Developer's Guide <http://docs.geotools.org/latest/developer/index.html>`_ ,
+See the :website:`Get Involved <getinvolved.html>` page for the :developer:`Developer's Guide <>`,
 issue tracker and information on joining the GeoTools community.
 
-**For the impatient**, please read at least the `contributor guidelines <http://docs.geotools.org/latest/developer/roles/contributor.html>`_ before start working
-on your code contributions to the project.
+**For the impatient**, please read at least the :developer:`contributor guidelines <roles/contributor.html>` before starting work
+on code contributions to the project.
 
 Welcome Developers
 ------------------
 
 We would like to welcome developers from the following GeoTools powered projects.
 
-`Geomajas <http://docs.geotools.org/latest/userguide/welcome/geomajas.html>`_
-`GeoServer <http://docs.geotools.org/latest/userguide/welcome/geoserver.html>`_ 
-`uDig <http://docs.geotools.org/latest/userguide/welcome/udig.html>`_ 
+:user:`Geomajas <welcome/geomajas.html>`
+:user:`GeoServer <welcome/geoserver.html>`
+:user:`uDig <welcome/udig.html>`

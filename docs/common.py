@@ -30,7 +30,7 @@ extlinks = {
     'wiki': ('https://github.com/geotools/geotools/wiki/%s',''),
     'website': ('http://geotools.org/%s',''),
     'geoserver': ('http://docs.geoserver.org/stable/en/user/%s',''),
-    'developer': ('http://docs.geotools.org/stable/developer/%s',''),
+    'developer': ('http://docs.geotools.org/maintenance/developer/%s',''),
     'user': ('http://docs.geotools.org/latest/userguide/%s',''),
     'geot': ('https://osgeo-org.atlassian.net/browse/GEOT-%s','GEOT-')
 }

@@ -135,7 +135,7 @@ git checkout -b rel_$tag $rev
 
 # update versions
 pushd build > /dev/null
-ant -f rename.xml -Drelease=$tag -Dseries=$series
+ant -f build.xml release -Drelease=$tag -Dseries=$series
 popd > /dev/null
 
 # build the release

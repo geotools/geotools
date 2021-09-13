@@ -26,10 +26,17 @@
 
   <dependencies>
     <!-- docs dependency only used to schedule release after docs module order        -->
+    <!-- uses exclusions to avoid contributing additional dependencies to release     -->
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>docs</artifactId>
       <version>${project.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>*</artifactId>
+          <groupId>*</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <!-- please keep the list of dependencies alphabetical so it is easier to maintain -->

@@ -9,14 +9,14 @@ mvn assembly:single
 To list the bin release:
 
 ```
-unzip -t release/target/gt-release-26-SNAPSHOT-bin.zip 
+unzip -t target/geotools-27-SNAPSHOT-bin.zip
 ```
 
 To test the bin release:
 
 ```
-unzip release/target/gt-release-26-SNAPSHOT-bin.zip
-java -cp "gt-release-26-SNAPSHOT/lib/*" org.geotools.util.factory.GeoTools
+unzip target/geotools-27-SNAPSHOT-bin.zip
+java -cp "geotools-27-SNAPSHOT/lib/*" org.geotools.util.factory.GeoTools
 ```
 
 For more information see [Controlling the Contents of an Assembly](https://books.sonatype.com/mvnref-book/reference/assemblies-sect-controlling-contents.html)
@@ -27,8 +27,8 @@ The binary assembly is defined using dependencySets.
 
 To add a geotools module update:
 
-* pom.xml to list the dependency
-* src/assembly/binaryDistDependency.xml to include the dependency
+* `pom.xml` to list the dependency
+* `src/assembly/binaryDistDependency.xml` to include the dependency
 
 The filters to include/exclude jars are strictly enforced:
 

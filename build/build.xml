@@ -81,6 +81,7 @@
       <include name="docs/common.py"/>
       <include name="docs/**/pom3.xml"/>
       <include name="docs/**/pom3.xml"/>
+      <include name="release/README.md"/>
       <replacefilter token="${version}" value="${release}"/>
     </replace>
   </target>

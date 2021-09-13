@@ -67,6 +67,18 @@ Fixing this required changes to multiple classes:
 * ``org.geotools.referencing.wkt.DefaultUnitParser`` has been moved and renamed to
   ``org.geotools.measure.WktUnitFormat``.
 
+New HTTP module
+^^^^^^^^^^^^^^^
+
+A new module, ``gt-http``, was added that hosts all HTTP classes, some of which previously lived in ``gt-main``.
+This requires adding the ``gt-http`` module to your project and updating package names for (at least) the following (non-exhaustive list of) classes:
+
+* ``org.geotools.data.ows.HTTPClient`` moved to ``org.geotools.http.HTTPClient``
+* ``org.geotools.data.ows.SimpleHttpClient`` moved to ``org.geotools.http.SimpleHttpClient``
+
+Also, you may have had a transitive dependency on ``commons-httpclient:commons-httpclient:3.1`` that will need resolving as the new module uses Java native classes and no longer relies on a third party library to provide HTTP functionality and as such does not provide ``commons-httpclient``.
+
+
 GeoTools 25.x
 -------------
 

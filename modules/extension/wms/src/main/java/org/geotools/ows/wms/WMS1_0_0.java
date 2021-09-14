@@ -205,13 +205,13 @@ public class WMS1_0_0 extends WMSSpecification {
 
         @Override
         protected void initVersion() {
-            setProperty("WMTVER", "1.0.0"); // $NON-NLS-1$ //$NON-NLS-2$
-            properties.remove("VERSION");
+            setProperty(processKey("WMTVER"), "1.0.0"); // $NON-NLS-1$ //$NON-NLS-2$
+            properties.remove(processKey("VERSION"));
         }
 
         @Override
         protected void initRequest() {
-            setProperty("REQUEST", "capabilities"); // $NON-NLS-1$ //$NON-NLS-2$
+            setProperty(processKey("REQUEST"), "capabilities"); // $NON-NLS-1$ //$NON-NLS-2$
         }
 
         @Override
@@ -246,26 +246,26 @@ public class WMS1_0_0 extends WMSSpecification {
 
         @Override
         protected void initRequest() {
-            setProperty("REQUEST", "map"); // $NON-NLS-1$ //$NON-NLS-2$
+            setProperty(processKey("REQUEST"), "map"); // $NON-NLS-1$ //$NON-NLS-2$
 
             /*
              * A 1.0.0 WMS server has been encountered that has EXCEPTIONS as
              * a required parameter. It does not hurt to explicitly ask for
              * this, anyway.
              */
-            setProperty("EXCEPTIONS", AbstractRequest.EXCEPTION_XML);
+            setProperty(processKey("EXCEPTIONS"), AbstractRequest.EXCEPTION_XML);
         }
 
         @Override
         protected void initVersion() {
-            setProperty(VERSION, "1.0.0");
+            setProperty(processKey(VERSION), "1.0.0");
         }
 
         @Override
         public void setProperty(String name, String value) {
-            if (name.equals(FORMAT)) {
+            if (name.equalsIgnoreCase(FORMAT)) {
                 value = getRequestFormat(value);
-            } else if (name.equals(EXCEPTIONS)) {
+            } else if (name.equalsIgnoreCase(EXCEPTIONS)) {
                 value = getRequestException(value);
             }
 
@@ -284,7 +284,7 @@ public class WMS1_0_0 extends WMSSpecification {
 
         @Override
         public void setExceptions(String exceptions) {
-            setProperty(EXCEPTIONS, exceptions);
+            setProperty(processKey(EXCEPTIONS), exceptions);
         }
 
         protected String getRequestException(String exception) {
@@ -317,7 +317,7 @@ public class WMS1_0_0 extends WMSSpecification {
 
         @Override
         protected void initVersion() {
-            setProperty("WMTVER", "1.0.0");
+            setProperty(processKey("WMTVER"), "1.0.0");
         }
 
         @Override
@@ -389,7 +389,7 @@ public class WMS1_0_0 extends WMSSpecification {
          */
         @Override
         protected void initVersion() {
-            setProperty(VERSION, "1.1.0");
+            setProperty(processKey(VERSION), "1.1.0");
         }
 
         @Override

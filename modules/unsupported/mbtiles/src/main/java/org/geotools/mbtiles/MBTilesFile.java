@@ -96,6 +96,7 @@ public class MBTilesFile implements AutoCloseable {
         }
 
         @Override
+        @SuppressWarnings("PMD.UseTryWithResources") // field closure
         public void close() throws IOException {
             try {
                 try {

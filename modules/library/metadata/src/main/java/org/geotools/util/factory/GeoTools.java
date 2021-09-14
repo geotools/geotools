@@ -26,8 +26,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -91,6 +94,7 @@ public final class GeoTools {
         PROPS = loadProperites("GeoTools.properties");
     }
 
+    @SuppressWarnings("PMD.UseTryWithResources") // stream may be null
     private static Properties loadProperites(String resource) {
         Properties props = new Properties();
         InputStream stream = GeoTools.class.getResourceAsStream(resource);
@@ -938,13 +942,103 @@ public final class GeoTools {
      * @throws NamingException if the initial context can't be created.
      * @see #init(InitialContext)
      * @since 2.4
+     * @deprecated hints isn't really used. Use the function without hints
      */
+    @Deprecated
     public static synchronized InitialContext getInitialContext(final Hints hints)
             throws NamingException {
+
+        return getInitialContext();
+    }
+
+    /**
+     * Returns the default initial context.
+     *
+     * @return The initial context (never {@code null}).
+     * @throws NamingException if the initial context can't be created.
+     */
+    public static synchronized InitialContext getInitialContext() throws NamingException {
         if (context == null) {
-            context = new InitialContext();
+            try {
+                context = new InitialContext();
+            } catch (Exception e) {
+                throw handleException(e);
+            }
         }
         return context;
+    }
+
+    private static NamingException handleException(Exception e) {
+        final Logger LOGGER = Logging.getLogger(GeoTools.class);
+        final String propFileName = "jndi.properties";
+
+        if (LOGGER.isLoggable(Level.WARNING)) {
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("Error while retriving Initial Context.\n\n")
+                    .append("Exception: ")
+                    .append(e.getMessage())
+                    .append("\n");
+
+            Object contextFactory = System.getProperty(Context.INITIAL_CONTEXT_FACTORY);
+            sb.append("Factory could be taken from System property: ")
+                    .append(Context.INITIAL_CONTEXT_FACTORY)
+                    .append("=")
+                    .append(contextFactory == null ? "" : (String) contextFactory)
+                    .append("\n");
+
+            Enumeration<URL> urls =
+                    AccessController.doPrivileged(
+                            new PrivilegedAction<Enumeration<URL>>() {
+                                @Override
+                                public Enumeration<URL> run() {
+                                    try {
+                                        return ClassLoader.getSystemResources(propFileName);
+                                    } catch (IOException e) {
+                                        return null;
+                                    }
+                                }
+                            });
+            if (urls != null) {
+                sb.append("Or from these property files:\n");
+                while (urls.hasMoreElements()) {
+                    sb.append(urls.nextElement().getPath()).append("\n");
+                }
+                sb.append("\n");
+            }
+
+            String javaHome =
+                    AccessController.doPrivileged(
+                            new PrivilegedAction<String>() {
+                                @Override
+                                public String run() {
+                                    try {
+                                        String javahome = System.getProperty("java.home");
+                                        if (javahome == null) {
+                                            return null;
+                                        }
+                                        String pathname =
+                                                javahome
+                                                        + java.io.File.separator
+                                                        + "lib"
+                                                        + java.io.File.separator
+                                                        + propFileName;
+                                        return pathname;
+                                    } catch (Exception e) {
+                                        return null;
+                                    }
+                                }
+                            });
+            if (javaHome != null) {
+                sb.append("Or from a file specified by system property java.home:\n")
+                        .append(javaHome)
+                        .append("\n");
+            }
+            LOGGER.log(Level.WARNING, sb.toString());
+        }
+        NamingException throwing = new NamingException("Couldn't get Initial context.");
+        throwing.setRootCause(e);
+        return throwing;
     }
 
     /**
@@ -1006,7 +1100,7 @@ public final class GeoTools {
                 } else
                     try {
                         if (context == null) {
-                            context = getInitialContext(hints);
+                            context = getInitialContext();
                         }
                         fixed = context.composeName(fixed, part);
                     } catch (NamingException e) {

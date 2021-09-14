@@ -29,6 +29,7 @@ import org.geotools.ows.wmts.model.TileMatrixSet;
 import org.geotools.ows.wmts.model.TileMatrixSetLink;
 import org.geotools.tile.Tile;
 import org.geotools.tile.TileFactory;
+import org.geotools.tile.TileIdentifier;
 import org.geotools.tile.TileService;
 import org.geotools.tile.impl.ZoomLevel;
 import org.geotools.util.logging.Logging;
@@ -49,6 +50,11 @@ public class WMTSTileFactory extends TileFactory {
     private static final double PixelSizeMeters = 0.28e-3;
 
     private static final Logger LOGGER = Logging.getLogger(WMTSTileFactory.class);
+
+    @Override
+    public Tile create(TileIdentifier identifier, TileService service) {
+        return new WMTSTile(identifier, service);
+    }
 
     /**
      * Return a tile with the proper row and column indexes.
@@ -105,7 +111,9 @@ public class WMTSTileFactory extends TileFactory {
                             + zoomLevel.getZoomLevel());
         }
 
-        return new WMTSTile((int) xTile, (int) yTile, zoomLevel, service);
+        return create(
+                new WMTSTileIdentifier((int) xTile, (int) yTile, zoomLevel, service.getName()),
+                service);
     }
 
     /** Find the first valid Upper Left tile for the current layer. */
@@ -171,7 +179,10 @@ public class WMTSTileFactory extends TileFactory {
             }
         }
 
-        return new WMTSTile((int) xTile, (int) yTile, zl, service);
+        return (WMTSTile)
+                create(
+                        new WMTSTileIdentifier((int) xTile, (int) yTile, zl, service.getName()),
+                        service);
     }
 
     @Override
@@ -182,13 +193,13 @@ public class WMTSTileFactory extends TileFactory {
     @Override
     public Tile findRightNeighbour(Tile tile, TileService service) {
         WMTSTileIdentifier id = (WMTSTileIdentifier) tile.getTileIdentifier().getRightNeighbour();
-        return id == null ? null : new WMTSTile(id, service);
+        return id == null ? null : create(id, service);
     }
 
     @Override
     public Tile findLowerNeighbour(Tile tile, TileService service) {
         WMTSTileIdentifier id = (WMTSTileIdentifier) tile.getTileIdentifier().getLowerNeighbour();
-        return id == null ? null : new WMTSTile(id, service);
+        return id == null ? null : create(id, service);
     }
 
     /** */

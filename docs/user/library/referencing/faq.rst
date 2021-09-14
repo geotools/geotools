@@ -46,11 +46,6 @@ There are several alternatives:
 * ``gt-epsg-access``: directly use the official EPSG database as distributed.
   A great solution for windows users that need the latest official database.
 
-Unsupported:
-
-* ``gt-epsg-oracle``: Load the official EPSG database into oracle to use this plugin
-* ``gt-epsg-h2``: use this popular pure java database
-
 Q: Are other authorities other than EPSG supported?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

@@ -37,27 +37,15 @@ public class PostGISCitextOnlineTest extends JDBCTestSupport {
         JDBCTestSetup setup = createTestSetup();
         setup.setFixture(fixture);
 
-        Connection cx = null;
-        Statement st = null;
-        try {
-            DataSource dataSource = setup.getDataSource();
-            cx = dataSource.getConnection();
-            st = cx.createStatement();
+        DataSource dataSource = setup.getDataSource();
+        try (Connection cx = dataSource.getConnection();
+                Statement st = cx.createStatement(); ) {
             // check if the extension exists, and creates it in the database if needed
             st.execute("create extension if not exists citext");
-            st.close();
-            cx.close();
             return true;
         } catch (Throwable t) {
-
             return false;
         } finally {
-            if (st != null) {
-                st.close();
-            }
-            if (cx != null) {
-                cx.close();
-            }
             try {
                 setup.tearDown();
             } catch (Exception e) {

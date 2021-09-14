@@ -16,6 +16,8 @@
  */
 package org.geotools.data.hana.metadata;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +30,7 @@ public class UomReaderTest {
     @Test
     public void testUomReading() throws IOException {
         String csv = "meter,linear,1.0\ndegree,angular,0.017453292519943278";
-        InputStream is = new ByteArrayInputStream(csv.getBytes("UTF-8"));
+        InputStream is = new ByteArrayInputStream(csv.getBytes(UTF_8));
         UomReader reader = new UomReader(is);
 
         Uom uom = reader.readNextUom();
@@ -50,7 +52,7 @@ public class UomReaderTest {
     @Test
     public void testWrongEntryCount() throws IOException {
         String csv = "meter,linear";
-        InputStream is = new ByteArrayInputStream(csv.getBytes("UTF-8"));
+        InputStream is = new ByteArrayInputStream(csv.getBytes(UTF_8));
         UomReader reader = new UomReader(is);
         try {
             reader.readNextUom();
@@ -62,7 +64,7 @@ public class UomReaderTest {
     @Test
     public void testInvalidType() throws IOException {
         String csv = "meter,lin,1.0";
-        InputStream is = new ByteArrayInputStream(csv.getBytes("UTF-8"));
+        InputStream is = new ByteArrayInputStream(csv.getBytes(UTF_8));
         UomReader reader = new UomReader(is);
         try {
             reader.readNextUom();

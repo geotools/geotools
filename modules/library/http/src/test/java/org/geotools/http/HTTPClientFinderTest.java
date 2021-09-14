@@ -106,4 +106,23 @@ public class HTTPClientFinderTest {
                     ex.getMessage());
         }
     }
+
+    /**
+     * Test that a HTTPProxy behavior is added when http.proxyhost is set. In support of GEOT-6850.
+     */
+    @Test
+    public void createClientWithSystemProxyHost() throws Exception {
+        final boolean nullInitially = System.getProperty("http.proxyHost") == null;
+        if (nullInitially) {
+            System.setProperty("http.proxyHost", "http://proxy.dummy/");
+        }
+        try {
+            HTTPClient client = HTTPClientFinder.createClient(HTTPProxy.class);
+            assertTrue(client instanceof SimpleHttpClient);
+        } finally {
+            if (nullInitially) {
+                System.clearProperty("http.proxyHost");
+            }
+        }
+    }
 }

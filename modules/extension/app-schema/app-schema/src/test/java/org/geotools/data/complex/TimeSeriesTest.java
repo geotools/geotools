@@ -40,6 +40,7 @@ import java.util.logging.Logger;
 import org.geotools.appschema.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.config.AppSchemaDataAccessDTO;
@@ -382,7 +383,7 @@ public class TimeSeriesTest extends AppSchemaTestSupport {
             assertNotNull(fType);
             fSource = mappingDataStore.getFeatureSource(typeName);
         }
-        FeatureCollection features;
+        FeatureCollection<FeatureType, Feature> features;
         // make a getFeatures request with a nested properties filter.
         //
         // was 96, but now 3 as mapped features are grouped by id
@@ -392,7 +393,7 @@ public class TimeSeriesTest extends AppSchemaTestSupport {
         {
             features = fSource.getFeatures();
 
-            int resultCount = getCount(features);
+            int resultCount = DataUtilities.count(features);
             String msg = "be sure difference in result count is not due to different dataset.";
             assertEquals(msg, EXPECTED_MAPPED_FEATURE_COUNT, resultCount);
         }
@@ -505,19 +506,5 @@ public class TimeSeriesTest extends AppSchemaTestSupport {
 
             assertEquals(EXPECTED_SIMPLE_FEATURE_COUNT, count);
         }
-    }
-
-    private int getCount(FeatureCollection features) {
-        FeatureIterator iterator = features.features();
-        int count = 0;
-        try {
-            while (iterator.hasNext()) {
-                iterator.next();
-                count++;
-            }
-        } finally {
-            iterator.close();
-        }
-        return count;
     }
 }

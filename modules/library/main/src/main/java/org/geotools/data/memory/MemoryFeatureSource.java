@@ -62,20 +62,18 @@ public class MemoryFeatureSource extends ContentFeatureSource {
     @Override
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
         if (query.getFilter() == Filter.INCLUDE) { // filtering not implemented
-            FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
-                    getReaderInternal(query);
-            CoordinateReferenceSystem crs =
-                    featureReader.getFeatureType().getCoordinateReferenceSystem();
-            ReferencedEnvelope bounds = ReferencedEnvelope.create(crs);
-            try {
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
+                    getReaderInternal(query)) {
+                CoordinateReferenceSystem crs =
+                        featureReader.getFeatureType().getCoordinateReferenceSystem();
+                ReferencedEnvelope bounds = ReferencedEnvelope.create(crs);
+
                 while (featureReader.hasNext()) {
                     SimpleFeature feature = featureReader.next();
                     bounds.include(feature.getBounds());
                 }
-            } finally {
-                featureReader.close();
+                return bounds;
             }
-            return bounds;
         }
         return null; // feature by feature scan required to count records
     }

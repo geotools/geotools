@@ -18,6 +18,7 @@ package org.geotools.xml.transform;
 
 import java.io.StringWriter;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -41,8 +42,8 @@ import org.xml.sax.helpers.NamespaceSupport;
 import org.xml.sax.helpers.XMLFilterImpl;
 
 /**
- * TransformerBase provides support for writing Object->XML encoders. The basic pattern for useage
- * is to extend TransformerBase and implement the createTranslator(ContentHandler) method. This is
+ * TransformerBase provides support for writing Object->XML encoders. The basic pattern for usage is
+ * to extend TransformerBase and implement the createTranslator(ContentHandler) method. This is
  * easiest done by extending the inner class TranslatorSupport. A Translator uses a ContentHandler
  * to issue SAX events to a javax.xml.transform.Transformer. If possible, make the translator public
  * so it can be used by others as well.
@@ -53,7 +54,7 @@ public abstract class TransformerBase {
     private int indentation = -1;
     private boolean xmlDecl = false;
     private boolean nsDecl = true;
-    private Charset charset = Charset.forName("UTF-8");
+    private Charset charset = StandardCharsets.UTF_8;
 
     public static final String XMLNS_NAMESPACE = "http://www.w3.org/2000/xmlns/";
 
@@ -806,11 +807,19 @@ public abstract class TransformerBase {
         }
 
         private void _start(String element, Attributes atts) {
+            if (atts != null) {
+                for (int i = 0; i < atts.getLength(); i++) {
+                    if (atts.getValue(i) == null) {
+                        throw new IllegalArgumentException(
+                                "Value of attribute " + atts.getQName(i) + " was set to null.");
+                    }
+                }
+            }
             try {
                 String el = (prefix == null) ? element : (prefix + ":" + element);
                 contentHandler.startElement("", "", el, atts);
-            } catch (SAXException se) {
-                throw new RuntimeException(se);
+            } catch (Exception e) {
+                throw new RuntimeException("Error transforming start of element: " + element, e);
             }
         }
 
@@ -822,8 +831,8 @@ public abstract class TransformerBase {
             try {
                 char[] ch = text.toCharArray();
                 contentHandler.characters(ch, 0, ch.length);
-            } catch (SAXException se) {
-                throw new RuntimeException(se);
+            } catch (Exception e) {
+                throw new RuntimeException("Error transforming chars:" + text, e);
             }
         }
 
@@ -835,8 +844,8 @@ public abstract class TransformerBase {
             try {
                 String el = (prefix == null) ? element : (prefix + ":" + element);
                 contentHandler.endElement("", "", el);
-            } catch (SAXException se) {
-                throw new RuntimeException(se);
+            } catch (Exception e) {
+                throw new RuntimeException("Error transforming end of element: " + element, e);
             }
         }
 
@@ -852,8 +861,8 @@ public abstract class TransformerBase {
                     char[] carray = cdata.toCharArray();
                     contentHandler.characters(carray, 0, carray.length);
                     lexicalHandler.endCDATA();
-                } catch (SAXException e) {
-                    throw new RuntimeException(e);
+                } catch (Exception e) {
+                    throw new RuntimeException("Error transforming cdata: " + cdata, e);
                 }
             }
         }
@@ -868,8 +877,8 @@ public abstract class TransformerBase {
                 try {
                     char[] carray = comment.toCharArray();
                     lexicalHandler.comment(carray, 0, carray.length);
-                } catch (SAXException e) {
-                    throw new RuntimeException(e);
+                } catch (Exception e) {
+                    throw new RuntimeException("Error transforming comment: " + comment, e);
                 }
             }
         }

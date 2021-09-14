@@ -62,7 +62,7 @@ public class SourceDataStore implements Serializable {
     }
 
     public void setDataAccess(String isDataAccess) {
-        this.isDataAccess = Boolean.valueOf(isDataAccess).booleanValue();
+        this.isDataAccess = Boolean.parseBoolean(isDataAccess);
     }
 
     public boolean isDataAccess() {

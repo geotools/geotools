@@ -169,12 +169,9 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
                 source.getBounds(q));
 
         SimpleFeatureCollection features = source.getFeatures(q);
-        SimpleFeatureIterator it = features.features();
-        try {
+        try (SimpleFeatureIterator it = features.features()) {
             assertTrue(it.hasNext());
             assertFeature(it.next(), 0);
-        } finally {
-            it.close();
         }
 
         // test again passing Date object as literal
@@ -188,12 +185,9 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         assertEquals(
                 new ReferencedEnvelope(0d, 2d, 0d, 2d, DefaultGeographicCRS.WGS84),
                 source.getBounds(q));
-        it = source.getFeatures(q).features();
-        try {
+        try (SimpleFeatureIterator it = source.getFeatures(q).features()) {
             assertTrue(it.hasNext());
             assertFeature(it.next(), 0);
-        } finally {
-            it.close();
         }
 
         // test no-match filter

@@ -7,12 +7,13 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
-import org.apache.commons.httpclient.NameValuePair;
-import org.apache.commons.httpclient.util.ParameterParser;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -37,8 +38,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public class WMSCoverageReaderTest {
 
     Map<String, String> parseParams(String query) {
-        ParameterParser pp = new ParameterParser();
-        List params = pp.parse(query, '&');
+
+        List<NameValuePair> params = URLEncodedUtils.parse(query, StandardCharsets.UTF_8);
         Map<String, String> result = new HashMap<>();
         for (Object param : params) {
             NameValuePair pair = (NameValuePair) param;

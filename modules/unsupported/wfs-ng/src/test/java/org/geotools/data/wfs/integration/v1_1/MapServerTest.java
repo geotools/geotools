@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import org.apache.commons.io.IOUtils;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -80,7 +81,9 @@ public class MapServerTest {
                                     URL url, InputStream postContent, String postContentType)
                                     throws IOException {
                                 String request =
-                                        new String(IOUtils.toByteArray(postContent), "UTF-8");
+                                        new String(
+                                                IOUtils.toByteArray(postContent),
+                                                StandardCharsets.UTF_8);
                                 if (request.contains("<wfs:DescribeFeatureType")) {
                                     return new TestHttpResponse(
                                             url(

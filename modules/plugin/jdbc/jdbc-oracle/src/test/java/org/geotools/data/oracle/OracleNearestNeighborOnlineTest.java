@@ -89,59 +89,43 @@ public class OracleNearestNeighborOnlineTest extends JDBCTestSupport {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         ContentFeatureSource source = dataStore.getFeatureSource(tname("NEIGHBORS"));
 
-        SimpleFeatureIterator features = execSdoNN(source, ff, -10, -10, 1, -1, null);
-        try {
+        try (SimpleFeatureIterator features = execSdoNN(source, ff, -10, -10, 1, -1, null)) {
             assertTrue(features.hasNext());
             SimpleFeature f = features.next();
             Point point = (Point) f.getDefaultGeometry();
             assertEquals(0.0, point.getCoordinate().x);
             assertEquals(0.0, point.getCoordinate().y);
             assertFalse(features.hasNext());
-        } finally {
-            features.close();
         }
 
-        features = execSdoNN(source, ff, 100, 100, 1, -1, null);
-        try {
+        try (SimpleFeatureIterator features = execSdoNN(source, ff, 100, 100, 1, -1, null)) {
             assertTrue(features.hasNext());
             SimpleFeature f = features.next();
             Point point = (Point) f.getDefaultGeometry();
             assertEquals(40.0, point.getCoordinate().x);
             assertEquals(40.0, point.getCoordinate().y);
             assertFalse(features.hasNext());
-        } finally {
-            features.close();
         }
 
-        features = execSdoNN(source, ff, -10, -10, 3, -1, null);
-        try {
+        try (SimpleFeatureIterator features = execSdoNN(source, ff, -10, -10, 3, -1, null)) {
             checkSizeAndMagicNumber(features, 3, -1);
-        } finally {
-            features.close();
         }
 
         // test using sdo_batch_size hint
-        features = execSdoNN(source, ff, -10, -10, 3, 10, "magicnumber >= 10");
-        try {
+        try (SimpleFeatureIterator features =
+                execSdoNN(source, ff, -10, -10, 3, 10, "magicnumber >= 10")) {
             checkSizeAndMagicNumber(features, 3, 10);
-        } finally {
-            features.close();
         }
 
         // test using CQL and no batch_size
-        features = execSdoNN(source, ff, -10, -10, 3, -1, "magicnumber >= 15");
-        try {
+        try (SimpleFeatureIterator features =
+                execSdoNN(source, ff, -10, -10, 3, -1, "magicnumber >= 15")) {
             checkSizeAndMagicNumber(features, 1, 10);
-        } finally {
-            features.close();
         }
 
         // test with limit greater than rows
-        features = execSdoNN(source, ff, -10, -10, 50, -1, null);
-        try {
+        try (SimpleFeatureIterator features = execSdoNN(source, ff, -10, -10, 50, -1, null)) {
             checkSizeAndMagicNumber(features, 25, -1);
-        } finally {
-            features.close();
         }
     }
 

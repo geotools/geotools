@@ -177,10 +177,8 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
                             1,
                             Query.ALL_NAMES,
                             null);
-            SimpleFeatureIterator inStore = fs.getFeatures(query).features();
-
             SimpleFeature f, f2;
-            try {
+            try (SimpleFeatureIterator inStore = fs.getFeatures(query).features()) {
                 SimpleFeature feature = inStore.next();
 
                 SimpleFeature copy = SimpleFeatureBuilder.deep(feature);
@@ -189,8 +187,6 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
                 f = SimpleFeatureBuilder.build(ft, copy.getAttributes(), null);
                 f2 = SimpleFeatureBuilder.build(ft, copy2.getAttributes(), null);
                 assertFalse("Max Feature failed", inStore.hasNext());
-            } finally {
-                inStore.close();
             }
 
             org.geotools.util.logging.Logging.getLogger(GeoServerOnlineTest.class)

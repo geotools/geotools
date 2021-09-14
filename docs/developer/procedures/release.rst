@@ -45,6 +45,22 @@ To obtain the GeoServer and GeoTools revisions that have passed testing, navigat
 
 Since we don't make any release from main, ensure you select the right nightly download page to obtain the right revision.
 
+To obtain information about the current environment::
+
+   ant -f build/build.xml info
+   
+:: 
+
+     [echo] version: '27-SNAPSHOT'
+     [echo] date: 'September 10 2021'
+     [echo] series: 'latest' (used for url references)
+     [echo] 
+     [echo] The `release` target requires next release version:
+     [echo]   ant release -Drelease='27.0'
+     [echo] 
+     [echo] The `latest` target requires next snapshot version:
+     [echo]   ant latest -Drelease='28-SNAPSHOT'
+
 Release in JIRA
 ---------------
 
@@ -52,12 +68,12 @@ Release in JIRA
 
 2. Add a new version for the next version to be released after the current release. For example, if you are releasing GeoTools 17.5, create version 17.6.
 
-3. Click in the Actions column for the version you are releasing and select Release. Enter the release date when prompted. If there are still unsolved issues remaining in this release, you will be prompted to move them to an unreleased version. If so, choose the new version you created in step 2.
+3. Click in the Actions column for the version you are releasing and select Release. Enter the release date when prompted. If there are still unsolved issues remaining in this release, you will be prompted to move them to an unreleased version. If so, choose the new version you created in step 
 
 If you are cutting the first RC of a series, create the stable branch
 ---------------------------------------------------------------------
 
-.. note:: The RC is the first release of a series, released one month before the .0 release. This replaces the beta release, which no longer exists.
+.. note:: The RC is the first release of a series, released prior to the .0 release.
 
 When creating the first release candidate of a series, there are some extra steps to create the new stable branch and update the version on main.
 
@@ -72,49 +88,27 @@ When creating the first release candidate of a series, there are some extra step
     git checkout -b 27.x
     git push upstream 27.x
 
-* `GitHub branch protection <https://github.com/geotools/geotools/settings/branches>`_ uses some wild cards to protect the new branch.
+* `GitHub branch protection <https://github.com/geotools/geotools/settings/branches>`_ uses wild cards to protect the new branch (so no further configuration is required).
 
-* Checkout the main branch and update the version in all ``pom.xml`` files and a few miscellaneous files; for example, if changing main from ``27-SNAPSHOT`` to ``28-SNAPSHOT``::
+* Checkout the main branch and use `branch.xml` to update the version in all ``pom.xml`` files and a few miscellaneous files; for example, if changing main from ``27-SNAPSHOT`` to ``28-SNAPSHOT``::
 
     git checkout main
-    ant -f build/release.xml -Drelease=24-SNAPSHOT
-    
-  This replaces::
-
-    find . -name ``pom.xml`` -exec sed -i 's/27-SNAPSHOT/28-SNAPSHOT/g' {} \;
-    sed -i 's/17-SNAPSHOT/18-SNAPSHOT/g' \
-        build/rename.xml \
-        docs/build.xml \
-        docs/common.py \
-        docs/user/artifacts/xml/pom3.xml \
-        docs/user/tutorial/quickstart/artifacts/pom2.xml \
-        modules/library/metadata/src/main/java/org/geotools/factory/GeoTools.java
-
-  .. note:: If you are on macOS, you will need to add ``''`` after the ``-i`` argument for each ``sed`` command.
-     
-     ::
-  
-        find . -name ``pom.xml`` -exec sed -i '' 's/17-SNAPSHOT/28-SNAPSHOT/g' {} \;
+    ant -f build/build.xml latest -Drelease=28-SNAPSHOT
 
 * Commit the changes and push to the main branch on GitHub::
 
-    git commit -am "Update version to 27-SNAPSHOT"
+    git commit -am "Update version to 28-SNAPSHOT"
     git push geotools main
       
-* Create the new release candidate version in `JIRA <https://osgeo-org.atlassian.net/projects/GEOT>`_ for issues on main; for example, if main is now ``24-SNAPSHOT``, create a Jira version ``24-RC1`` for the first release of the ``24.x`` series
+* Create the new release candidate version in `JIRA <https://osgeo-org.atlassian.net/projects/GEOT>`_ for issues on main; for example, if `main` branch is now ``28-SNAPSHOT``, create a Jira version ``28-RC1`` for the first release of the ``28.x`` series
 
-* Create the new ``GeoTools $VER Releases`` (e.g. ``GeoTools 22 Releases``) folder in `SourceForge <https://sourceforge.net/projects/geotools/files/>`__
+* Create the new ``GeoTools $VER Releases`` (e.g. ``GeoTools 27 Releases``) folder in `SourceForge <https://sourceforge.net/projects/geotools/files/>`__
 
 * Update the jobs on build.geoserver.org:
   
   * Disable the previous maintenance jobs, and remove them from the geotools view
 
-  * The previous stable branch is changed to maintenance role by editing to ``DIST=maintenance`` so that javadocs and user manual are uploaded to the correct documentation folder.
-  
-  * For the new stable Create new jobs, duplicate from the existing ``main`` jobs, editing:
-  
-    * the branch specifier 
-    * the ``DIST=stable`` configuration
+  * For the new stable branch create new jobs, duplicate from the existing ``main`` jobs, editing branch specifier to the new branch (e.g. `27.x`)
     
   * Special care is needed when setting up java11 build which uses `A`, `B` and `C` groups.
     
@@ -132,25 +126,25 @@ When creating the first release candidate of a series, there are some extra step
 
 * This is the time to update the README.md, README.html and documentation links
   
-  For the new stable branch:
+  For the new `stable` branch::
   
-  * common.py - update the external links block changing 'latest' to 'stable'
-  * README.md - update the user guide links changing 'latest' to 'stable'  
-  
-    ::
-    
-      sed -i 's/docs.geotools.org\/latest/docs.geotools.org\/stable/g' README.md docs/common.py
-      sed -i 's/docs.geoserver.org\/latest/docs.geoserver.org\/stable/g' docs/common.py
+    git checkout 26.x
+    git pull
+    ant -f build/build.xml latest
+    git add .
+    git commit -m "Change 26.x to stable branch"
+    git push geotools 26.x
 
-  For the new maintenance branch:
+  For the new `maintenance` branch::
   
-  * common.py - update the external links block changing 'stable' to 'maintenance' (the geoserver link will change to 'maintain').
-  * README.md - update the user guide links changing 'stable' to 'maintenance'  
+    git checkout 25.x
+    git pull
+    ant -f build/build.xml maintenance
+    git add .
+    git commit -m "Change 25.x to stable branch"
+    git push geotools 25.x
   
-    ::
-    
-      sed -i 's/docs.geotools.org\/stable/docs.geotools.org\/maintenance/g' README.md docs/common.py
-      sed -i 's/docs.geoserver.org\/stable/docs.geoserver.org\/maintain/g' docs/common.py
+  This change will update the `pom.xml` series used to determine where documentation from the branch is published.
 
 Build the Release
 -----------------

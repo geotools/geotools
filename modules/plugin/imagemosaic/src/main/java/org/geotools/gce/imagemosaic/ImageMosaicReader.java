@@ -385,7 +385,15 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                             ImageMosaicConfigHandler.createGranuleCatalogFromDatastore(
                                     parentDirectory, datastoreProperties, true, getHints());
                 } else {
-                    CatalogConfigurationBean bean = beans.get(0).getCatalogConfigurationBean();
+                    // We need to figure out if there is an heterogeneous mosaic in the list and use
+                    // it as reference. (Otherwise, read on heterogeneous coverages may not work
+                    // properly)
+                    MosaicConfigurationBean mosaicBean =
+                            beans.stream()
+                                    .filter(p -> p.getCatalogConfigurationBean().isHeterogeneous())
+                                    .findFirst()
+                                    .orElse(beans.get(0));
+                    CatalogConfigurationBean bean = mosaicBean.getCatalogConfigurationBean();
                     catalog =
                             GranuleCatalogFactory.createGranuleCatalog(
                                     sourceURL, bean, params, getCatalogHints(bean));

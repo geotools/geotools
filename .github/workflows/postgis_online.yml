@@ -23,9 +23,9 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ~/.m2/repository
-        key: postgis-${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        key: gt-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
-          postgis-${{ runner.os }}-maven-
+          gt-maven-
     - name: Build GeoTools dependent modules (no tests, prepare fresh artifacts)
       run: mvn -B clean install -T2 -Dall --file pom.xml -DskipTests -pl modules/plugin/jdbc/jdbc-postgis -pl modules/plugin/imagemosaic -am
     - name: Build PostGIS data store with online tests

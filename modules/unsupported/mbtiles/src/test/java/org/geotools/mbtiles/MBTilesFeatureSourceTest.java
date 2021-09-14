@@ -28,7 +28,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.List;
@@ -174,7 +174,7 @@ public class MBTilesFeatureSourceTest {
                         .read(
                                 IOUtils.toString(
                                         getClass().getResourceAsStream("ocean_1_0_1.wkt"),
-                                        Charset.forName("UTF8")));
+                                        StandardCharsets.UTF_8));
         Geometry actual = (Geometry) feature.getDefaultGeometry();
         // there is some difference in size, but nothing major (200k square meters are a square
         // with a side of less than 500 meters, against a tile that covers 1/4 of the planet
@@ -197,7 +197,7 @@ public class MBTilesFeatureSourceTest {
                         .read(
                                 IOUtils.toString(
                                         getClass().getResourceAsStream("ocean_1_0_1.wkt"),
-                                        Charset.forName("UTF8")));
+                                        StandardCharsets.UTF_8));
         Geometry actual = (Geometry) feature.getDefaultGeometry();
         // there is some difference in size, but nothing major (200k square meters are a square
         // with a side of less than 500 meters, against a tile that covers 1/4 of the planet

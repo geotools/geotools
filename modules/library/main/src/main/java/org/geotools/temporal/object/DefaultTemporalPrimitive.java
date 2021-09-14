@@ -16,6 +16,7 @@
  */
 package org.geotools.temporal.object;
 
+import java.util.Date;
 import org.opengis.temporal.Instant;
 import org.opengis.temporal.Period;
 import org.opengis.temporal.RelativePosition;
@@ -78,367 +79,124 @@ public abstract class DefaultTemporalPrimitive extends DefaultTemporalObject
     @Override
     public RelativePosition relativePosition(TemporalPrimitive other) {
         if (this instanceof Instant && other instanceof Instant) {
-            Instant timeobject = (Instant) this;
-            Instant instantOther = (Instant) other;
+            Instant thisInstant = (Instant) this;
+            Instant otherIstant = (Instant) other;
 
-            if (timeobject.getPosition().getDate().before(instantOther.getPosition().getDate())) {
-                return RelativePosition.BEFORE;
-            } else {
-                return (timeobject
-                                        .getPosition()
-                                        .getDate()
-                                        .compareTo(instantOther.getPosition().getDate())
-                                == 0)
-                        ? RelativePosition.EQUALS
-                        : RelativePosition.AFTER;
-            }
-
+            return relativePosition(thisInstant, otherIstant);
         } else {
             if (this instanceof Period && other instanceof Instant) {
-                Period timeobject = (Period) this;
-                Instant instantarg = (Instant) other;
+                Period thisPeriod = (Period) this;
+                Instant otherInstant = (Instant) other;
 
-                if (timeobject
-                        .getEnding()
-                        .getPosition()
-                        .getDate()
-                        .before(instantarg.getPosition().getDate())) {
-                    return RelativePosition.BEFORE;
-                } else {
-                    if (timeobject
-                                    .getEnding()
-                                    .getPosition()
-                                    .getDate()
-                                    .compareTo(instantarg.getPosition().getDate())
-                            == 0) {
-                        return RelativePosition.ENDED_BY;
-                    } else {
-                        if (timeobject
-                                        .getBeginning()
-                                        .getPosition()
-                                        .getDate()
-                                        .before(instantarg.getPosition().getDate())
-                                && timeobject
-                                        .getEnding()
-                                        .getPosition()
-                                        .getDate()
-                                        .after(instantarg.getPosition().getDate())) {
-                            return RelativePosition.CONTAINS;
-                        } else {
-                            return (timeobject
-                                                    .getBeginning()
-                                                    .getPosition()
-                                                    .getDate()
-                                                    .compareTo(instantarg.getPosition().getDate())
-                                            == 0)
-                                    ? RelativePosition.BEGUN_BY
-                                    : RelativePosition.AFTER;
-                        }
-                    }
-                }
+                return relativePosition(thisPeriod, otherInstant);
             } else {
                 if (this instanceof Instant && other instanceof Period) {
-                    Instant timeobject = (Instant) this;
-                    Period instantarg = (Period) other;
+                    Instant thisIstant = (Instant) this;
+                    Period otherPeriod = (Period) other;
 
-                    if (instantarg
-                            .getEnding()
-                            .getPosition()
-                            .getDate()
-                            .before(timeobject.getPosition().getDate())) {
-                        return RelativePosition.AFTER;
-                    } else {
-                        if (instantarg
-                                        .getEnding()
-                                        .getPosition()
-                                        .getDate()
-                                        .compareTo(timeobject.getPosition().getDate())
-                                == 0) {
-                            return RelativePosition.ENDS;
-                        } else {
-                            if (instantarg
-                                            .getBeginning()
-                                            .getPosition()
-                                            .getDate()
-                                            .before(timeobject.getPosition().getDate())
-                                    && instantarg
-                                            .getEnding()
-                                            .getPosition()
-                                            .getDate()
-                                            .after(timeobject.getPosition().getDate())) {
-                                return RelativePosition.DURING;
-                            } else {
-                                return (instantarg
-                                                        .getBeginning()
-                                                        .getPosition()
-                                                        .getDate()
-                                                        .compareTo(
-                                                                timeobject.getPosition().getDate())
-                                                == 0)
-                                        ? RelativePosition.BEGINS
-                                        : RelativePosition.BEFORE;
-                            }
-                        }
-                    }
+                    return relativePosition(thisIstant, otherPeriod);
                 } else {
                     if (this instanceof Period && other instanceof Period) {
-                        Period timeobject = (Period) this;
-                        Period instantarg = (Period) other;
+                        Period thisPeriod = (Period) this;
+                        Period otherPeriod = (Period) other;
 
-                        if (timeobject
-                                .getEnding()
-                                .getPosition()
-                                .getDate()
-                                .before(instantarg.getBeginning().getPosition().getDate())) {
-                            return RelativePosition.BEFORE;
-                        } else {
-                            if (timeobject
-                                            .getEnding()
-                                            .getPosition()
-                                            .getDate()
-                                            .compareTo(
-                                                    instantarg
-                                                            .getBeginning()
-                                                            .getPosition()
-                                                            .getDate())
-                                    == 0) {
-                                return RelativePosition.MEETS;
-                            } else {
-                                if (timeobject
-                                                .getBeginning()
-                                                .getPosition()
-                                                .getDate()
-                                                .before(
-                                                        instantarg
-                                                                .getBeginning()
-                                                                .getPosition()
-                                                                .getDate())
-                                        && timeobject
-                                                .getEnding()
-                                                .getPosition()
-                                                .getDate()
-                                                .after(
-                                                        instantarg
-                                                                .getBeginning()
-                                                                .getPosition()
-                                                                .getDate())
-                                        && timeobject
-                                                .getEnding()
-                                                .getPosition()
-                                                .getDate()
-                                                .before(
-                                                        instantarg
-                                                                .getEnding()
-                                                                .getPosition()
-                                                                .getDate())) {
-                                    return RelativePosition.OVERLAPS;
-                                } else {
-                                    if (timeobject
-                                                            .getBeginning()
-                                                            .getPosition()
-                                                            .getDate()
-                                                            .compareTo(
-                                                                    instantarg
-                                                                            .getBeginning()
-                                                                            .getPosition()
-                                                                            .getDate())
-                                                    == 0
-                                            && timeobject
-                                                    .getEnding()
-                                                    .getPosition()
-                                                    .getDate()
-                                                    .before(
-                                                            instantarg
-                                                                    .getEnding()
-                                                                    .getPosition()
-                                                                    .getDate())) {
-                                        return RelativePosition.BEGINS;
-                                    } else {
-                                        if (timeobject
-                                                                .getBeginning()
-                                                                .getPosition()
-                                                                .getDate()
-                                                                .compareTo(
-                                                                        instantarg
-                                                                                .getBeginning()
-                                                                                .getPosition()
-                                                                                .getDate())
-                                                        == 0
-                                                && timeobject
-                                                        .getEnding()
-                                                        .getPosition()
-                                                        .getDate()
-                                                        .after(
-                                                                instantarg
-                                                                        .getEnding()
-                                                                        .getPosition()
-                                                                        .getDate())) {
-                                            return RelativePosition.BEGUN_BY;
-                                        } else {
-                                            if (timeobject
-                                                            .getBeginning()
-                                                            .getPosition()
-                                                            .getDate()
-                                                            .after(
-                                                                    instantarg
-                                                                            .getBeginning()
-                                                                            .getPosition()
-                                                                            .getDate())
-                                                    && timeobject
-                                                            .getEnding()
-                                                            .getPosition()
-                                                            .getDate()
-                                                            .before(
-                                                                    instantarg
-                                                                            .getEnding()
-                                                                            .getPosition()
-                                                                            .getDate())) {
-                                                return RelativePosition.DURING;
-                                            } else {
-                                                if (timeobject
-                                                                .getBeginning()
-                                                                .getPosition()
-                                                                .getDate()
-                                                                .before(
-                                                                        instantarg
-                                                                                .getBeginning()
-                                                                                .getPosition()
-                                                                                .getDate())
-                                                        && timeobject
-                                                                .getEnding()
-                                                                .getPosition()
-                                                                .getDate()
-                                                                .after(
-                                                                        instantarg
-                                                                                .getEnding()
-                                                                                .getPosition()
-                                                                                .getDate())) {
-                                                    return RelativePosition.CONTAINS;
-                                                } else {
-                                                    if (timeobject
-                                                                            .getBeginning()
-                                                                            .getPosition()
-                                                                            .getDate()
-                                                                            .compareTo(
-                                                                                    instantarg
-                                                                                            .getBeginning()
-                                                                                            .getPosition()
-                                                                                            .getDate())
-                                                                    == 0
-                                                            && timeobject
-                                                                            .getEnding()
-                                                                            .getPosition()
-                                                                            .getDate()
-                                                                            .compareTo(
-                                                                                    instantarg
-                                                                                            .getEnding()
-                                                                                            .getPosition()
-                                                                                            .getDate())
-                                                                    == 0) {
-                                                        return RelativePosition.EQUALS;
-                                                    } else {
-                                                        if (timeobject
-                                                                        .getBeginning()
-                                                                        .getPosition()
-                                                                        .getDate()
-                                                                        .after(
-                                                                                instantarg
-                                                                                        .getBeginning()
-                                                                                        .getPosition()
-                                                                                        .getDate())
-                                                                && timeobject
-                                                                        .getBeginning()
-                                                                        .getPosition()
-                                                                        .getDate()
-                                                                        .before(
-                                                                                instantarg
-                                                                                        .getEnding()
-                                                                                        .getPosition()
-                                                                                        .getDate())
-                                                                && timeobject
-                                                                        .getEnding()
-                                                                        .getPosition()
-                                                                        .getDate()
-                                                                        .after(
-                                                                                instantarg
-                                                                                        .getEnding()
-                                                                                        .getPosition()
-                                                                                        .getDate())) {
-                                                            return RelativePosition.OVERLAPPED_BY;
-                                                        } else {
-                                                            if (timeobject
-                                                                            .getBeginning()
-                                                                            .getPosition()
-                                                                            .getDate()
-                                                                            .after(
-                                                                                    instantarg
-                                                                                            .getBeginning()
-                                                                                            .getPosition()
-                                                                                            .getDate())
-                                                                    && timeobject
-                                                                                    .getEnding()
-                                                                                    .getPosition()
-                                                                                    .getDate()
-                                                                                    .compareTo(
-                                                                                            instantarg
-                                                                                                    .getEnding()
-                                                                                                    .getPosition()
-                                                                                                    .getDate())
-                                                                            == 0) {
-                                                                return RelativePosition.ENDS;
-                                                            } else {
-                                                                if (timeobject
-                                                                                .getBeginning()
-                                                                                .getPosition()
-                                                                                .getDate()
-                                                                                .before(
-                                                                                        instantarg
-                                                                                                .getBeginning()
-                                                                                                .getPosition()
-                                                                                                .getDate())
-                                                                        && timeobject
-                                                                                        .getEnding()
-                                                                                        .getPosition()
-                                                                                        .getDate()
-                                                                                        .compareTo(
-                                                                                                instantarg
-                                                                                                        .getEnding()
-                                                                                                        .getPosition()
-                                                                                                        .getDate())
-                                                                                == 0) {
-                                                                    return RelativePosition
-                                                                            .ENDED_BY;
-                                                                } else {
-                                                                    return (timeobject
-                                                                                            .getBeginning()
-                                                                                            .getPosition()
-                                                                                            .getDate()
-                                                                                            .compareTo(
-                                                                                                    instantarg
-                                                                                                            .getEnding()
-                                                                                                            .getPosition()
-                                                                                                            .getDate())
-                                                                                    == 0)
-                                                                            ? RelativePosition
-                                                                                    .MET_BY
-                                                                            : RelativePosition
-                                                                                    .AFTER;
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        return relativePosition(thisPeriod, otherPeriod);
                     } else {
                         return null;
                     }
                 }
             }
+        }
+    }
+
+    private RelativePosition relativePosition(Period thisPeriod, Period otherPeriod) {
+        Date thisBeginning = thisPeriod.getBeginning().getPosition().getDate();
+        Date thisEnding = thisPeriod.getEnding().getPosition().getDate();
+        Date otherBeginning = otherPeriod.getBeginning().getPosition().getDate();
+        Date otherEnding = otherPeriod.getEnding().getPosition().getDate();
+        if (thisEnding.before(otherBeginning)) {
+            return RelativePosition.BEFORE;
+        } else if (thisEnding.compareTo(otherBeginning) == 0) {
+            return RelativePosition.MEETS;
+        } else if (thisBeginning.before(otherBeginning)
+                && thisEnding.after(otherBeginning)
+                && thisEnding.before(otherEnding)) {
+            return RelativePosition.OVERLAPS;
+        } else if (thisBeginning.compareTo(otherBeginning) == 0 && thisEnding.before(otherEnding)) {
+            return RelativePosition.BEGINS;
+        } else if (thisBeginning.compareTo(otherBeginning) == 0 && thisEnding.after(otherEnding)) {
+            return RelativePosition.BEGUN_BY;
+        } else if (thisBeginning.after(otherBeginning) && thisEnding.before(otherEnding)) {
+            return RelativePosition.DURING;
+        } else if (thisBeginning.before(otherBeginning) && thisEnding.after(otherEnding)) {
+            return RelativePosition.CONTAINS;
+        } else if (thisBeginning.compareTo(otherBeginning) == 0
+                && thisEnding.compareTo(otherEnding) == 0) {
+            return RelativePosition.EQUALS;
+        } else if (thisBeginning.after(otherBeginning)
+                && thisBeginning.before(otherEnding)
+                && thisEnding.after(otherEnding)) {
+            return RelativePosition.OVERLAPPED_BY;
+        } else if (thisBeginning.after(otherBeginning) && thisEnding.compareTo(otherEnding) == 0) {
+            return RelativePosition.ENDS;
+        } else if (thisBeginning.before(otherBeginning) && thisEnding.compareTo(otherEnding) == 0) {
+            return RelativePosition.ENDED_BY;
+        } else {
+            return (thisBeginning.compareTo(otherEnding) == 0)
+                    ? RelativePosition.MET_BY
+                    : RelativePosition.AFTER;
+        }
+    }
+
+    private RelativePosition relativePosition(Instant thisInstant, Period otherPeriod) {
+        Date otherEnd = otherPeriod.getEnding().getPosition().getDate();
+        Date thisDate = thisInstant.getPosition().getDate();
+        if (otherEnd.before(thisDate)) {
+            return RelativePosition.AFTER;
+        } else {
+            if (otherEnd.compareTo(thisDate) == 0) {
+                return RelativePosition.ENDS;
+            } else {
+                Date otherBeginning = otherPeriod.getBeginning().getPosition().getDate();
+                if (otherBeginning.before(thisDate) && otherEnd.after(thisDate)) {
+                    return RelativePosition.DURING;
+                } else {
+                    return (otherBeginning.compareTo(thisDate) == 0)
+                            ? RelativePosition.BEGINS
+                            : RelativePosition.BEFORE;
+                }
+            }
+        }
+    }
+
+    private RelativePosition relativePosition(Period thisPeriod, Instant otherInstant) {
+        Date thisEnd = thisPeriod.getEnding().getPosition().getDate();
+        Date otherDate = otherInstant.getPosition().getDate();
+        if (thisEnd.before(otherDate)) {
+            return RelativePosition.BEFORE;
+        } else if (thisEnd.compareTo(otherDate) == 0) {
+            return RelativePosition.ENDED_BY;
+        } else {
+            Date thisStart = thisPeriod.getBeginning().getPosition().getDate();
+            if (thisStart.before(otherDate) && thisEnd.after(otherDate)) {
+                return RelativePosition.CONTAINS;
+            } else {
+                return (thisStart.compareTo(otherDate) == 0)
+                        ? RelativePosition.BEGUN_BY
+                        : RelativePosition.AFTER;
+            }
+        }
+    }
+
+    private RelativePosition relativePosition(Instant thisInstant, Instant otherIstant) {
+        Date thisDate = thisInstant.getPosition().getDate();
+        Date otherDate = otherIstant.getPosition().getDate();
+        if (thisDate.before(otherDate)) {
+            return RelativePosition.BEFORE;
+        } else {
+            return (thisDate.compareTo(otherDate) == 0)
+                    ? RelativePosition.EQUALS
+                    : RelativePosition.AFTER;
         }
     }
 }

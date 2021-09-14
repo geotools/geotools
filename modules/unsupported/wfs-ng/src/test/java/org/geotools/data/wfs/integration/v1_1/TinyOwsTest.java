@@ -16,6 +16,7 @@
  */
 package org.geotools.data.wfs.integration.v1_1;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.geotools.data.wfs.WFSTestData.url;
 import static org.junit.Assert.assertEquals;
 
@@ -102,7 +103,7 @@ public class TinyOwsTest {
     }
 
     private void assertXMLEqual(String expectedXmlResource, String actualXml) throws IOException {
-        String control = IOUtils.toString(url(expectedXmlResource), "UTF-8");
+        String control = IOUtils.toString(url(expectedXmlResource), UTF_8);
         control = control.replace("${getfeature.handle}", newRequestHandle());
         try {
             XMLAssert.assertXMLEqual(control, actualXml);
@@ -126,7 +127,7 @@ public class TinyOwsTest {
                                     URL url, InputStream postContent, String postContentType)
                                     throws IOException {
                                 String request =
-                                        new String(IOUtils.toByteArray(postContent), "UTF-8");
+                                        new String(IOUtils.toByteArray(postContent), UTF_8);
                                 if (stringContains(
                                         request,
                                         "<wfs:GetFeature",
@@ -149,7 +150,7 @@ public class TinyOwsTest {
                                 } else {
                                     return super.post(
                                             url,
-                                            new ByteArrayInputStream(request.getBytes("UTF-8")),
+                                            new ByteArrayInputStream(request.getBytes(UTF_8)),
                                             postContentType);
                                 }
                             }
@@ -172,7 +173,7 @@ public class TinyOwsTest {
                                     URL url, InputStream postContent, String postContentType)
                                     throws IOException {
                                 String request =
-                                        new String(IOUtils.toByteArray(postContent), "UTF-8");
+                                        new String(IOUtils.toByteArray(postContent), UTF_8);
                                 if (isResultsRequest(
                                         request,
                                         "<wfs:GetFeature",
@@ -234,7 +235,7 @@ public class TinyOwsTest {
                                     URL url, InputStream postContent, String postContentType)
                                     throws IOException {
                                 String request =
-                                        new String(IOUtils.toByteArray(postContent), "UTF-8");
+                                        new String(IOUtils.toByteArray(postContent), UTF_8);
                                 if (isHitsRequest(request, queryTokens)) {
                                     assertXMLEqual(
                                             "tinyows/CountFeaturesByBBoxRequest.xml", request);
@@ -247,7 +248,7 @@ public class TinyOwsTest {
                                 } else {
                                     return super.post(
                                             url,
-                                            new ByteArrayInputStream(request.getBytes("UTF-8")),
+                                            new ByteArrayInputStream(request.getBytes(UTF_8)),
                                             postContentType);
                                 }
                             }
@@ -279,7 +280,7 @@ public class TinyOwsTest {
                                     URL url, InputStream postContent, String postContentType)
                                     throws IOException {
                                 String request =
-                                        new String(IOUtils.toByteArray(postContent), "UTF-8");
+                                        new String(IOUtils.toByteArray(postContent), UTF_8);
                                 if (isResultsRequest(request, queryTokens)) {
                                     assertXMLEqual("tinyows/GetFeaturesByBBoxRequest.xml", request);
                                     return new TestHttpResponse(
@@ -287,7 +288,7 @@ public class TinyOwsTest {
                                 } else {
                                     return super.post(
                                             url,
-                                            new ByteArrayInputStream(request.getBytes("UTF-8")),
+                                            new ByteArrayInputStream(request.getBytes(UTF_8)),
                                             postContentType);
                                 }
                             }
@@ -325,7 +326,7 @@ public class TinyOwsTest {
                                     URL url, InputStream postContent, String postContentType)
                                     throws IOException {
                                 String request =
-                                        new String(IOUtils.toByteArray(postContent), "UTF-8");
+                                        new String(IOUtils.toByteArray(postContent), UTF_8);
                                 if (isResultsRequest(request, queryTokens)) {
                                     assertXMLEqual("tinyows/GetFeaturesByBBoxRequest.xml", request);
                                     return new TestHttpResponse(
@@ -333,7 +334,7 @@ public class TinyOwsTest {
                                 } else {
                                     return super.post(
                                             url,
-                                            new ByteArrayInputStream(request.getBytes("UTF-8")),
+                                            new ByteArrayInputStream(request.getBytes(UTF_8)),
                                             postContentType);
                                 }
                             }
@@ -372,7 +373,7 @@ public class TinyOwsTest {
                                     URL url, InputStream postContent, String postContentType)
                                     throws IOException {
                                 String request =
-                                        new String(IOUtils.toByteArray(postContent), "UTF-8");
+                                        new String(IOUtils.toByteArray(postContent), UTF_8);
                                 if (isHitsRequest(request, idQueryTokens)) {
                                     return new TestHttpResponse(
                                             url("tinyows/CountFeatureById.xml"), "text/xml");
@@ -385,7 +386,7 @@ public class TinyOwsTest {
                                 } else {
                                     return super.post(
                                             url,
-                                            new ByteArrayInputStream(request.getBytes("UTF-8")),
+                                            new ByteArrayInputStream(request.getBytes(UTF_8)),
                                             postContentType);
                                 }
                             }
@@ -468,9 +469,9 @@ public class TinyOwsTest {
         }
 
         size = 0;
-        SimpleFeatureIterator reader = features.features();
+
         SimpleFeature sf = null;
-        try {
+        try (SimpleFeatureIterator reader = features.features()) {
             while (reader.hasNext()) {
                 if (sf == null) {
                     sf = reader.next();
@@ -479,8 +480,6 @@ public class TinyOwsTest {
                 }
                 size++;
             }
-        } finally {
-            reader.close();
         }
 
         assertEquals(expectedSize, size);
@@ -502,7 +501,7 @@ public class TinyOwsTest {
         public HTTPResponse post(URL url, InputStream postContent, String postContentType)
                 throws IOException {
             String query = "<ogc:FeatureId fid=\"comuni11.2671\"/>";
-            String request = new String(IOUtils.toByteArray(postContent), "UTF-8");
+            String request = new String(IOUtils.toByteArray(postContent), UTF_8);
             if (isHitsRequest(request, query)) {
                 assertXMLEqual("tinyows/CountFeatureByIdRequest.xml", request);
                 return new TestHttpResponse(url("tinyows/CountFeatureById.xml"), "text/xml");

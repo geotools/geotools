@@ -537,7 +537,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
             }
 
             if (!readerFileHeaderMap.get("format").equals("")) {
-                readerMapType = Integer.valueOf(readerFileHeaderMap.get("format")).intValue();
+                readerMapType = Integer.parseInt(readerFileHeaderMap.get("format"));
                 if (readerMapType > -1) {
                     readerMapType++;
                     /*
@@ -1261,15 +1261,12 @@ public class GrassBinaryRasterReadHandler implements Closeable {
         File projWtkFile = new File(projWtkFilePath);
         if (projWtkFile.exists()) {
 
-            BufferedReader crsReader = new BufferedReader(new FileReader(projWtkFile));
             StringBuffer wtkString = new StringBuffer();
-            try {
+            try (BufferedReader crsReader = new BufferedReader(new FileReader(projWtkFile))) {
                 String line = null;
                 while ((line = crsReader.readLine()) != null) {
                     wtkString.append(line.trim());
                 }
-            } finally {
-                crsReader.close();
             }
             try {
                 readCrs = CRS.parseWKT(wtkString.toString());

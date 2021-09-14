@@ -72,6 +72,10 @@ class ZGroupLayer extends Layer {
         addLayer(layer);
     }
 
+    @SuppressWarnings({
+        "PMD.CloseResource",
+        "PMD.UseTryWithResources"
+    }) // assured closed in the finally method
     public void drawFeatures(Graphics2D graphics, final StreamingRenderer renderer, String layerId)
             throws IOException, FactoryException, NoninvertibleTransformException, SchemaException,
                     TransformException {
@@ -128,8 +132,7 @@ class ZGroupLayer extends Layer {
             }
         } finally {
             if (painters != null) {
-                for (@SuppressWarnings("PMD.CloseResource") // assured closed in the finally method
-                ZGroupLayerPainter painter : painters) {
+                for (ZGroupLayerPainter painter : painters) {
                     painter.close();
                 }
             }
@@ -152,6 +155,10 @@ class ZGroupLayer extends Layer {
         return new SortKey(smallest);
     }
 
+    @SuppressWarnings({
+        "PMD.CloseResource",
+        "PMD.UseTryWithResources"
+    }) // assured closed in the finally method
     private List<ZGroupLayerPainter> buildLayerPainters(
             Graphics2D graphics,
             StreamingRenderer renderer,
@@ -193,14 +200,16 @@ class ZGroupLayer extends Layer {
                 // but we'd have to delay opening the MarkFeatureIterator to recognize the
                 // situation
                 int maxFeatures = SortedFeatureReader.getMaxFeaturesInMemory(layer.getQuery());
-                try (MarkFeatureIterator fi =
-                        MarkFeatureIterator.create(features, maxFeatures, cancellationListener)) {
-                    if (fi.hasNext()) {
-                        @SuppressWarnings("PMD.CloseResource") // returned
-                        ZGroupLayerPainter painter =
-                                new ZGroupLayerPainter(fi, lfts, renderer, layerId);
-                        painters.add(painter);
-                    }
+
+                @SuppressWarnings("PMD.CloseResource")
+                // iterator will be closed after drawing when painter is closed
+                MarkFeatureIterator fi =
+                        MarkFeatureIterator.create(features, maxFeatures, cancellationListener);
+                if (fi.hasNext()) {
+                    @SuppressWarnings("PMD.CloseResource") // returned
+                    ZGroupLayerPainter painter =
+                            new ZGroupLayerPainter(fi, lfts, renderer, layerId);
+                    painters.add(painter);
                 }
             }
 
@@ -210,8 +219,7 @@ class ZGroupLayer extends Layer {
             closePainters = false;
         } finally {
             if (closePainters) {
-                for (@SuppressWarnings("PMD.CloseResource") // actually closing them here
-                ZGroupLayerPainter painter : painters) {
+                for (ZGroupLayerPainter painter : painters) {
                     try {
                         painter.close();
                     } catch (Exception e) {

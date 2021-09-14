@@ -785,12 +785,15 @@ public class SLDTransformer extends TransformerBase {
         public void visit(ExternalGraphic exgr) {
             start("ExternalGraphic");
 
-            AttributesImpl atts = new AttributesImpl();
-            atts.addAttribute(XMLNS_NAMESPACE, "xlink", "xmlns:xlink", "", XLINK_NAMESPACE);
-            atts.addAttribute(XLINK_NAMESPACE, "type", "xlink:type", "", "simple");
-            atts.addAttribute(XLINK_NAMESPACE, "xlink", "xlink:href", "", exgr.getURI());
-            element("OnlineResource", (String) null, atts);
-
+            if (exgr.getURI() != null) {
+                AttributesImpl atts = new AttributesImpl();
+                atts.addAttribute(XMLNS_NAMESPACE, "xlink", "xmlns:xlink", "", XLINK_NAMESPACE);
+                atts.addAttribute(XLINK_NAMESPACE, "type", "xlink:type", "", "simple");
+                atts.addAttribute(XLINK_NAMESPACE, "xlink", "xlink:href", "", exgr.getURI());
+                element("OnlineResource", (String) null, atts);
+            } else if (exgr.getInlineContent() != null) {
+                throw new RuntimeException("SLDTransformer doesn't support InlineContent.");
+            }
             element("Format", exgr.getFormat());
 
             end("ExternalGraphic");
@@ -871,6 +874,10 @@ public class SLDTransformer extends TransformerBase {
 
             for (Symbolizer symbolizer : rule.symbolizers()) {
                 symbolizer.accept(this);
+            }
+
+            if (rule.getOptions() != null) {
+                encodeVendorOptions(rule.getOptions());
             }
 
             end("Rule");

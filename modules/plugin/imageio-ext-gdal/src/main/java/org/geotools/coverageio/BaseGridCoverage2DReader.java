@@ -387,54 +387,18 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
         this.crs = null;
         String prjPath = this.parentPath + File.separatorChar + coverageName + ".prj";
 
-        // read the prj serviceInfo from the file
-        PrjFileReader projReader = null;
-
-        FileInputStream inStream = null;
-        FileChannel channel = null;
-        try {
-            final File prj = new File(prjPath);
-            if (prj.exists() && prj.canRead()) {
-
-                inStream = new FileInputStream(prj);
-                channel = inStream.getChannel();
-                projReader = new PrjFileReader(channel);
+        final File prj = new File(prjPath);
+        if (prj.exists() && prj.canRead()) {
+            // read the prj serviceInfo from the file
+            try (FileInputStream inStream = new FileInputStream(prj);
+                    FileChannel channel = inStream.getChannel();
+                    PrjFileReader projReader = new PrjFileReader(channel); ) {
                 this.crs = projReader.getCoordinateReferenceSystem();
-            }
-            // If some exception occurs, warn about the error but proceed
-            // using a default CRS
-        } catch (FactoryException | IOException e) {
-            if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
-            }
-        } finally {
-            if (projReader != null) {
-                try {
-                    projReader.close();
-                } catch (IOException e) {
-                    if (LOGGER.isLoggable(Level.WARNING)) {
-                        LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
-                    }
-                }
-            }
-
-            if (inStream != null) {
-                try {
-                    inStream.close();
-                } catch (Throwable e) {
-                    if (LOGGER.isLoggable(Level.WARNING)) {
-                        LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
-                    }
-                }
-            }
-
-            if (channel != null) {
-                try {
-                    channel.close();
-                } catch (Throwable e) {
-                    if (LOGGER.isLoggable(Level.WARNING)) {
-                        LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
-                    }
+                // If some exception occurs, warn about the error but proceed
+                // using a default CRS
+            } catch (FactoryException | IOException e) {
+                if (LOGGER.isLoggable(Level.WARNING)) {
+                    LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
                 }
             }
         }

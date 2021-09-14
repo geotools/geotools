@@ -18,6 +18,7 @@
 package org.geotools.data.wfs.online;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -50,7 +51,6 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
-import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.FeatureId;
 
 /** */
@@ -101,16 +101,19 @@ public class WFSOnlineTestSupport {
         Query query = new Query(typeName);
         query.setMaxFeatures(5);
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                wfs.getFeatureReader(query, Transaction.AUTO_COMMIT);
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                wfs.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
             assertNotNull("FeatureType was null", reader);
             assertTrue("must have 1 feature -- fair assumption", reader.hasNext());
 
             SimpleFeature next = reader.next();
             assertNotNull(next);
-        } finally {
-            reader.close();
+            int j = 1;
+            while (reader.hasNext()) {
+                assertTrue("Query maxFeatures isn't respected.", j <= 5);
+                reader.next();
+                j++;
+            }
         }
     }
 
@@ -122,11 +125,12 @@ public class WFSOnlineTestSupport {
 
         Query query = new Query(ft.getTypeName());
         query.setPropertyNames(props);
+        query.setMaxFeatures(5);
+
         String fid = null;
         // get
-        FeatureReader<SimpleFeatureType, SimpleFeature> fr =
-                wfs.getFeatureReader(query, Transaction.AUTO_COMMIT);
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> fr =
+                wfs.getFeatureReader(query, Transaction.AUTO_COMMIT); ) {
             assertNotNull("FeatureType was null", ft);
 
             SimpleFeatureType featureType = fr.getFeatureType();
@@ -148,43 +152,38 @@ public class WFSOnlineTestSupport {
             }
             assertNotNull("must have 1 feature ", feature);
             fid = feature.getID();
-            int j = 0;
+            int j = 1;
             while (fr.hasNext()) {
+                assertTrue("Query maxFeatures isn't respected.", j <= 5);
                 fr.next();
                 j++;
             }
-            assertTrue(j > 0);
-        } finally {
-            fr.close();
         }
 
         // test fid filter
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         query.setFilter(ff.id(ff.featureId(fid)));
 
-        fr = wfs.getFeatureReader(query, Transaction.AUTO_COMMIT);
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> fr =
+                wfs.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
             assertNotNull("FeatureType was null", ft);
-            int j = 0;
-            while (fr.hasNext()) {
-                assertEquals(fid, fr.next().getID());
-                j++;
-            }
-            assertEquals(1, j);
-        } finally {
-            fr.close();
+            assertTrue("Query should return one feature.", fr.hasNext());
+            assertEquals(fid, fr.next().getID());
+            assertFalse("Query should only return one feature.", fr.hasNext());
         }
     }
 
     public static void doFeatureReaderWithBBox(
-            DataStore wfs, String typeName, ReferencedEnvelope bbox) throws Exception {
+            DataStore wfs, String typeName, String geometryName, ReferencedEnvelope bbox)
+            throws Exception {
         SimpleFeatureType featureType = wfs.getSchema(typeName);
 
         // take atleast attributeType 3 to avoid the undeclared one .. inherited optional attrs
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
-        Query query = new Query(featureType.getTypeName());
-        PropertyName theGeom = ff.property(featureType.getGeometryDescriptor().getName());
-        Filter filter = ff.bbox(theGeom, bbox);
+        Query query = new Query(typeName);
+        query.setCoordinateSystem(bbox.getCoordinateReferenceSystem());
+        query.setMaxFeatures(5);
+        Filter filter = ff.bbox(ff.property(geometryName), bbox);
 
         query.setFilter(filter);
         try (FeatureReader<SimpleFeatureType, SimpleFeature> fr =

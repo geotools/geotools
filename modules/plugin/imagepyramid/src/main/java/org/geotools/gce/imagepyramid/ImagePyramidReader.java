@@ -159,33 +159,27 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
 
         // get the crs if able to
         final URL prjURL = URLs.changeUrlExt(sourceURL, "prj");
-        PrjFileReader crsReader = null;
-        try {
-            crsReader = new PrjFileReader(Channels.newChannel(prjURL.openStream()));
+
+        try (PrjFileReader crsReader =
+                new PrjFileReader(Channels.newChannel(prjURL.openStream()))) {
+            final Object tempCRS = hints.get(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM);
+            if (tempCRS != null) {
+                this.crs = (CoordinateReferenceSystem) tempCRS;
+                LOGGER.log(
+                        Level.WARNING, "Using forced coordinate reference system " + crs.toWKT());
+            } else {
+                final CoordinateReferenceSystem tempcrs = crsReader.getCoordinateReferenceSystem();
+                if (tempcrs == null) {
+                    // use the default crs
+                    crs = AbstractGridFormat.getDefaultCRS();
+                    LOGGER.log(
+                            Level.WARNING,
+                            "Unable to find a CRS for this coverage, using a default one: "
+                                    + crs.toWKT());
+                } else crs = tempcrs;
+            }
         } catch (FactoryException e) {
             throw new DataSourceException(e);
-        } finally {
-            try {
-                crsReader.close();
-            } catch (Throwable e) {
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
-            }
-        }
-        final Object tempCRS = hints.get(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM);
-        if (tempCRS != null) {
-            this.crs = (CoordinateReferenceSystem) tempCRS;
-            LOGGER.log(Level.WARNING, "Using forced coordinate reference system " + crs.toWKT());
-        } else {
-            final CoordinateReferenceSystem tempcrs = crsReader.getCoordinateReferenceSystem();
-            if (tempcrs == null) {
-                // use the default crs
-                crs = AbstractGridFormat.getDefaultCRS();
-                LOGGER.log(
-                        Level.WARNING,
-                        "Unable to find a CRS for this coverage, using a default one: "
-                                + crs.toWKT());
-            } else crs = tempcrs;
         }
 
         // Load properties file with information about levels and envelope

@@ -54,6 +54,7 @@ public abstract class AbstractGridCoverageWriter implements GridCoverageWriter {
 
     /** Releases resources held by this {@link AbstractGridCoverageWriter}. */
     @Override
+    @SuppressWarnings("PMD.UseTryWithResources")
     public void dispose() {
         if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("Disposing writer:" + destination);
 

@@ -277,7 +277,7 @@ public final class IndexesConfig {
             return isDefault;
         }
 
-        private static GeometryConfig create(
+        private static GeometryConfig create( // NOPMD - Unused method
                 String attributeName, String srid, String type, String isDefault) {
             CoordinateReferenceSystem crs;
             try {

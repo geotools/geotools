@@ -25,6 +25,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -32,6 +33,7 @@ import java.math.BigInteger;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -96,6 +98,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
@@ -132,6 +135,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     static final String CHINESE = "shapes/chinese_poly.shp";
     static final String RUSSIAN = "shapes/rus-windows-1251.shp";
     static final String UTF8 = "shapes/wgs1snt.shp";
+    static final String SPECIAL_CHAR_NAME = "test-data/special-characters/Åéìòù.shp";
     static final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
     private ShapefileDataStore store;
 
@@ -248,7 +252,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
      */
     @Test
     public void testLoadingAndReadingUTF8Wrongly() throws Exception {
-        SimpleFeatureCollection features = loadFeatures(UTF8, Charset.forName("ISO-8859-1"), null);
+        SimpleFeatureCollection features = loadFeatures(UTF8, StandardCharsets.ISO_8859_1, null);
 
         try (SimpleFeatureIterator iterator = features.features()) {
             assertTrue(iterator.hasNext());
@@ -274,7 +278,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
      */
     @Test
     public void testLoadingAndReadingUTF8Correctly() throws Exception {
-        SimpleFeatureCollection features = loadFeatures(UTF8, Charset.forName("UTF8"), null);
+        SimpleFeatureCollection features = loadFeatures(UTF8, StandardCharsets.UTF_8, null);
 
         try (SimpleFeatureIterator iterator = features.features()) {
             assertTrue(iterator.hasNext());
@@ -533,11 +537,10 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         ShapefileDataStore ds = new ShapefileDataStore(url);
         SimpleFeatureSource featureSource = ds.getFeatureSource();
         SimpleFeatureCollection features = featureSource.getFeatures();
-        SimpleFeatureIterator indexIter = features.features();
 
         Set<String> expectedFids = new LinkedHashSet<>();
         final Filter fidFilter;
-        try {
+        try (SimpleFeatureIterator indexIter = features.features()) {
             FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
             Set<FeatureId> fids = new HashSet<>();
             while (indexIter.hasNext()) {
@@ -547,23 +550,16 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
                 fids.add(ff.featureId(id));
             }
             fidFilter = ff.id(fids);
-        } finally {
-            indexIter.close();
         }
 
         Set<String> actualFids = new HashSet<>();
         {
             features = featureSource.getFeatures(fidFilter);
-            try {
-                indexIter = features.features();
+            try (SimpleFeatureIterator indexIter = features.features()) {
                 while (indexIter.hasNext()) {
                     SimpleFeature next = indexIter.next();
                     String id = next.getID();
                     actualFids.add(id);
-                }
-            } finally {
-                if (indexIter != null) {
-                    indexIter.close();
                 }
             }
         }
@@ -613,13 +609,11 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         SimpleFeatureCollection features = indexedDS.getFeatureSource().getFeatures(filter);
         SimpleFeatureCollection features2 = baselineDS.getFeatureSource().getFeatures(filter);
 
-        SimpleFeatureIterator baselineIter = features2.features();
-        SimpleFeatureIterator indexIter = features.features();
-
         ArrayList<SimpleFeature> baselineFeatures = new ArrayList<>();
         ArrayList<SimpleFeature> indexedFeatures = new ArrayList<>();
 
-        try {
+        try (SimpleFeatureIterator baselineIter = features2.features();
+                SimpleFeatureIterator indexIter = features.features()) {
             while (baselineIter.hasNext()) {
                 baselineFeatures.add(baselineIter.next());
             }
@@ -634,9 +628,6 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
                         f.getID() + ((Geometry) f.getDefaultGeometry()).getEnvelopeInternal(),
                         indexedFeatures.contains(f));
             }
-        } finally {
-            indexIter.close();
-            baselineIter.close();
         }
         return indexedFeatures;
     }
@@ -928,20 +919,12 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         int idx = loadFeatures(sds).size();
 
         while (idx > 0) {
-            FeatureWriter<SimpleFeatureType, SimpleFeature> writer = null;
-
-            try {
-                writer =
-                        sds.getFeatureWriter(
-                                sds.getTypeNames()[0], Filter.INCLUDE, Transaction.AUTO_COMMIT);
+            try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                    sds.getFeatureWriter(
+                            sds.getTypeNames()[0], Filter.INCLUDE, Transaction.AUTO_COMMIT)) {
                 writer.next();
                 // System.out.println(feature);
                 writer.remove();
-            } finally {
-                if (writer != null) {
-                    writer.close();
-                    writer = null;
-                }
             }
             assertEquals(--idx, loadFeatures(sds).size());
         }
@@ -980,20 +963,13 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         int idx = loadFeatures(sds).size();
 
         while (idx > 0) {
-            FeatureWriter<SimpleFeatureType, SimpleFeature> writer = null;
-            try {
-                writer =
-                        sds.getFeatureWriter(
-                                sds.getTypeNames()[0], Filter.INCLUDE, Transaction.AUTO_COMMIT);
+            try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                    sds.getFeatureWriter(
+                            sds.getTypeNames()[0], Filter.INCLUDE, Transaction.AUTO_COMMIT)) {
                 while (writer.hasNext()) {
                     writer.next();
                 }
                 writer.remove();
-            } finally {
-                if (writer != null) {
-                    writer.close();
-                    writer = null;
-                }
             }
             assertEquals(--idx, loadFeatures(sds).size());
         }
@@ -1784,16 +1760,13 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
 
     private int count(DataStore ds, String typeName, Filter filter, Transaction t)
             throws Exception {
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                ds.getFeatureReader(new Query(typeName, filter), t);
         int count = 0;
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                ds.getFeatureReader(new Query(typeName, filter), t)) {
             while (reader.hasNext()) {
                 reader.next();
                 count++;
             }
-        } finally {
-            reader.close();
         }
         return count;
     }
@@ -2091,5 +2064,13 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
                 new File(getClass().getResource("test-data/measure/multilinezm.shp").toURI());
         // compare byte stream produced in shp file
         assertTrue(FileUtils.contentEquals(tmpFile, expected));
+    }
+
+    @Test
+    public void testTypeNameSpecialCharacters() throws FileNotFoundException {
+        URL url = getClass().getResource(SPECIAL_CHAR_NAME);
+        store = new ShapefileDataStore(url);
+        Name name = store.getTypeName();
+        assertEquals("Åéìòù", name.getLocalPart());
     }
 }

@@ -169,6 +169,11 @@ public class PreparedFilterToSQL extends FilterToSQL {
                 out.write("(");
 
                 for (int j = 0; j < attValues.size(); j++) {
+                    // in case of join the pk columns need to be qualified with alias
+                    if (filter instanceof JoinId) {
+                        out.write(escapeName(((JoinId) filter).getAlias()));
+                        out.write(".");
+                    }
                     out.write(escapeName(columns.get(j).getName()));
                     out.write(" = ");
                     out.write('?');

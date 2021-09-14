@@ -20,6 +20,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.logging.Level;
@@ -90,7 +91,8 @@ public class XMLEncoderTest {
         StringWriter output = new StringWriter();
         DocumentWriter.writeFragment(test, FilterSchema.getInstance(), output, null);
         // System.out.println( output );
-        InputStream stream = new ByteArrayInputStream(output.toString().getBytes("UTF-8"));
+        InputStream stream =
+                new ByteArrayInputStream(output.toString().getBytes(StandardCharsets.UTF_8));
 
         Object o = DocumentFactory.getInstance(stream, new HashMap<>(), Level.FINEST);
         Assert.assertNotNull(o);

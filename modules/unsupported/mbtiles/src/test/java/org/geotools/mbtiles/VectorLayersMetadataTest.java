@@ -18,7 +18,7 @@ package org.geotools.mbtiles;
 
 import static org.junit.Assert.assertEquals;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
@@ -30,7 +30,7 @@ public class VectorLayersMetadataTest {
         String json =
                 IOUtils.toString(
                         getClass().getResourceAsStream("vectorLayers.json"),
-                        Charset.forName("UTF-8"));
+                        StandardCharsets.UTF_8);
         VectorLayersMetadata layersMetadata = VectorLayersMetadata.parseMetadata(json);
         List<VectorLayerMetadata> layers = layersMetadata.getLayers();
         assertEquals(15, layers.size());

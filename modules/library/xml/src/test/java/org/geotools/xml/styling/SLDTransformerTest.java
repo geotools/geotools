@@ -2249,4 +2249,52 @@ public class SLDTransformerTest {
                 "//sld:UserStyle/sld:Background/sld:GraphicFill/sld:Graphic/sld:Mark/sld:Stroke",
                 doc);
     }
+
+    @Test
+    public void testVendorOptionsRule() throws Exception {
+        String xml =
+                "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>"
+                        + "<StyledLayerDescriptor version=\"1.0.0\" "
+                        + "              xsi:schemaLocation=\"http://www.opengis.net/sld StyledLayerDescriptor.xsd\" "
+                        + "              xmlns=\"http://www.opengis.net/sld\" "
+                        + "              xmlns:ogc=\"http://www.opengis.net/ogc\" "
+                        + "              xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
+                        + "              xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">"
+                        + "      <NamedLayer>"
+                        + "              <Name>Default Line</Name>"
+                        + "              <UserStyle>"
+                        + "                      <Title>A boring default style</Title>"
+                        + "                      <Abstract>A sample style that just prints out a blue line</Abstract>"
+                        + "                              <FeatureTypeStyle>"
+                        + "                              <Rule>"
+                        + "                                      <Name>Rule 1</Name>"
+                        + "                                      <Title>Blue Line</Title>"
+                        + "                                      <Abstract>A blue line with a 1 pixel width</Abstract>"
+                        + "                                      <LineSymbolizer>"
+                        + "                                              <Stroke>"
+                        + "                                                      <CssParameter name=\"stroke\">#0000ff</CssParameter>"
+                        + "                                              </Stroke>"
+                        + "                                      </LineSymbolizer>"
+                        + "                                      <VendorOption name=\"firstOption\">firstValue</VendorOption>"
+                        + "                                      <VendorOption name=\"secondOption\">secondValue</VendorOption>"
+                        + "                              </Rule>"
+                        + "                  </FeatureTypeStyle>"
+                        + "              </UserStyle>"
+                        + "      </NamedLayer>"
+                        + "</StyledLayerDescriptor>";
+
+        StringReader reader = new StringReader(xml);
+        SLDParser sldParser = new SLDParser(sf, reader);
+
+        Style[] parsed = sldParser.readXML();
+        assertNotNull("parsed xml", parsed);
+        assertTrue("parsed xml into style", parsed.length > 0);
+
+        Style style = parsed[0];
+        assertNotNull(style);
+        org.geotools.styling.Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        assertNotNull(rule);
+        assertEquals("firstValue", rule.getOptions().get("firstOption"));
+        assertEquals("secondValue", rule.getOptions().get("secondOption"));
+    }
 }

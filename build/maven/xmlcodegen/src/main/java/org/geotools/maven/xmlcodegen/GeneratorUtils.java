@@ -73,7 +73,7 @@ public class GeneratorUtils {
                 XSDParticle particle = (XSDParticle) o;
                 XSDElementDeclaration element = (XSDElementDeclaration) particle.getContent();
 
-                //ignore element references, caught in teh above loop
+                //ignore element references, caught in the above loop
                 if (element.isElementDeclarationReference())
                     continue;
 

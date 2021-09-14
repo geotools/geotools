@@ -69,6 +69,7 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.visitor.CountVisitor;
 import org.geotools.feature.visitor.GroupByVisitor;
 import org.geotools.feature.visitor.LimitingVisitor;
+import org.geotools.feature.visitor.UniqueCountVisitor;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JoinInfo.JoinPart;
@@ -1316,9 +1317,14 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * condition that allows to use spatial index statistics to compute the table bounds)
      */
     private boolean isFullBoundsQuery(Query query, SimpleFeatureType schema) {
-
         if (query == null) {
             return true;
+        }
+        if (!query.isMaxFeaturesUnlimited()) {
+            return false; // there is a limit
+        }
+        if (query.getStartIndex() != null && query.getStartIndex() > 0) {
+            return false; // there is an offset
         }
         if (!Filter.INCLUDE.equals(query.getFilter())) {
             return false;
@@ -3221,7 +3227,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
             sqlTypes[i] = sqlType;
 
-            // if this a geometric type, get the name from teh dialect
+            // if this a geometric type, get the name from the dialect
             // if ( attributeType instanceof GeometryDescriptor ) {
             if (Geometry.class.isAssignableFrom(clazz)) {
                 String sqlTypeName = dialect.getGeometryTypeName(sqlType);
@@ -3979,10 +3985,11 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         } else if (queryLimitOffset) {
             applyLimitOffset(sql, query.getStartIndex(), query.getMaxFeatures());
         }
-
+        boolean isUniqueCount = visitor instanceof UniqueCountVisitor;
         // if the limits were in query or there is a group by with complex expressions
+        // or there is a UniqueCountVisitor
         // we need to roll what was built so far in a sub-query
-        if (queryLimitOffset || groupByComplexExpressions) {
+        if (queryLimitOffset || groupByComplexExpressions || isUniqueCount) {
             StringBuffer sql2 = new StringBuffer("SELECT ");
             try {
                 if (groupByExpressions != null && !groupByExpressions.isEmpty()) {
@@ -4002,15 +4009,12 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 throw new RuntimeException("Failed to encode group by expressions", e);
             }
             FilterToSQL filterToSQL = getFilterToSQL(featureType);
-            if (groupByComplexExpressions) {
-                if ("count".equals(function)) {
-                    sql2.append("count(*)");
-                } else {
-                    sql2.append(function).append("(").append("gt_agg_src").append(")");
-                }
-            } else {
-                encodeFunction(function, expr, sql2, filterToSQL);
-            }
+            boolean countQuery =
+                    isUniqueCount || (groupByComplexExpressions && "count".equals(function));
+            if (countQuery) sql2.append("count(*)");
+            else if (groupByComplexExpressions)
+                sql2.append(function).append("(").append("gt_agg_src").append(")");
+            else encodeFunction(function, expr, sql2, filterToSQL);
             toSQL.add(filterToSQL);
             sql2.append(" AS gt_result_");
             sql2.append(" FROM (");

@@ -28,13 +28,14 @@ import java.util.Locale;
 import javax.measure.IncommensurableException;
 import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
-import javax.measure.format.UnitFormat;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Length;
+import org.geotools.measure.UnitFormatter;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.metadata.math.XMath;
+import org.geotools.referencing.CRS;
 import org.geotools.util.Arguments;
 import org.geotools.util.Utilities;
 import org.geotools.util.X364;
@@ -134,14 +135,17 @@ public class Formatter {
 
     public void setAuthority(Citation authority) {
         this.authority = authority;
-        this.unitFormat = GeoToolsCRSUnitFormat.getInstance(authority);
+        this.unitFormatter =
+                CRS.equalsIgnoreMetadata(Citations.ESRI, authority)
+                        ? EsriUnitFormat.getInstance()
+                        : EpsgUnitFormat.getInstance();
     }
 
     /** The object to use for formatting numbers. */
     private final NumberFormat numberFormat;
 
     /** The object to use for formatting units. */
-    private UnitFormat unitFormat = GeoToolsCRSUnitFormat.getInstance(Citations.EPSG);
+    private UnitFormatter unitFormatter = EpsgUnitFormat.getInstance();
 
     /** Dummy field position. */
     private final FieldPosition dummy = new FieldPosition(0);
@@ -579,7 +583,7 @@ public class Formatter {
                 buffer.append("UNIT").append(symbols.open);
                 setColor(UNIT_COLOR);
                 buffer.append(symbols.quote);
-                unitFormat.format(unit, buffer);
+                unitFormatter.format(unit, buffer);
                 buffer.append(symbols.quote);
                 resetColor();
                 Unit<?> base = null;

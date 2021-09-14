@@ -72,23 +72,13 @@ public abstract class CSVStrategy {
      * efficiency and utilise the different strategies
      */
     public static SimpleFeatureTypeBuilder createBuilder(CSVFileState csvFileState) {
-        CSVReader csvReader = null;
-        Map<String, Class<?>> typesFromData = null;
-        String[] headers = null;
-        try {
-            csvReader = csvFileState.openCSVReader();
+        Map<String, Class<?>> typesFromData;
+        String[] headers;
+        try (CSVReader csvReader = csvFileState.openCSVReader()) {
             headers = csvFileState.getCSVHeaders();
             typesFromData = findMostSpecificTypesFromData(csvReader, headers);
         } catch (IOException | CsvValidationException e) {
             throw new RuntimeException("Failure reading csv file", e);
-        } finally {
-            if (csvReader != null) {
-                try {
-                    csvReader.close();
-                } catch (IOException e) {
-                    // who cares!
-                }
-            }
         }
         return createBuilder(csvFileState, headers, typesFromData);
     }

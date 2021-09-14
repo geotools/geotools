@@ -7,6 +7,7 @@ jobs:
     name: MySQL ${{ matrix.mysql }} online test
     runs-on: [ubuntu-latest]
     strategy:
+      fail-fast: false
       matrix:
         mysql: [5, 8]
         java: [1.8]
@@ -21,9 +22,9 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ~/.m2/repository
-        key: mysql-${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        key: gt-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
-          mysql-${{ runner.os }}-maven-
+          gt-maven-
     - name: Setup test environment for MySQL ${{ matrix.mysql }} 
       run: |
         ./build/ci/mysql/start-mysql.sh ${{ matrix.mysql }}

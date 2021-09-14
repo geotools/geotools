@@ -268,22 +268,16 @@ public class PropertyFeatureWriter implements FeatureWriter<SimpleFeatureType, S
         read.delete();
 
         if (write.exists() && !write.renameTo(read)) {
-            FileOutputStream outStream = new FileOutputStream(read);
-            FileInputStream inStream = new FileInputStream(write);
-            FileChannel out = outStream.getChannel();
-            FileChannel in = inStream.getChannel();
-            try {
+            try (FileOutputStream outStream = new FileOutputStream(read);
+                    FileInputStream inStream = new FileInputStream(write);
+                    FileChannel out = outStream.getChannel();
+                    FileChannel in = inStream.getChannel()) {
                 long len = in.size();
                 long copied = out.transferFrom(in, 0, in.size());
 
                 if (len != copied) {
                     throw new IOException("unable to complete write");
                 }
-            } finally {
-                in.close();
-                out.close();
-                inStream.close();
-                outStream.close();
             }
         }
         read = null;

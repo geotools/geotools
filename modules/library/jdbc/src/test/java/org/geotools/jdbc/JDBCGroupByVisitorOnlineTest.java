@@ -31,6 +31,7 @@ import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.expression.InternalVolatileFunction;
 import org.geotools.filter.function.DateDifferenceFunction;
 import org.geotools.filter.function.math.FilterFunction_floor;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
@@ -463,5 +464,53 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
                                     }
                                     return true;
                                 }));
+    }
+
+    @Test
+    public void testTimestampHistogramDateWithDifferenceInDays()
+            throws ParseException, IOException {
+        testTimestampHistogramDateWithDifferenceInSpecificTimeUnits("d", 1);
+    }
+
+    @Test
+    public void testTimestampHistogramDateWithDifferenceInHours()
+            throws ParseException, IOException {
+        testTimestampHistogramDateWithDifferenceInSpecificTimeUnits("h", 24);
+    }
+
+    @Test
+    public void testTimestampHistogramDateWithDifferenceInMinutes()
+            throws ParseException, IOException {
+        testTimestampHistogramDateWithDifferenceInSpecificTimeUnits("m", 24 * 60);
+    }
+
+    @Test
+    public void testTimestampHistogramDateWithDifferenceInSeconds()
+            throws ParseException, IOException {
+        testTimestampHistogramDateWithDifferenceInSpecificTimeUnits("s", 24 * 60 * 60);
+    }
+
+    private void testTimestampHistogramDateWithDifferenceInSpecificTimeUnits(
+            String timeUnits, int multiplyingFactor) throws ParseException, IOException {
+
+        // buckets with a size of one day, the function returns an integer from 0 onwards, which
+        // is a zero based bucket number in the bucket sequence
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyName pn = ff.property(aname("last_update_date"));
+        Date baseDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2016-06-03 00:00:00");
+        Expression difference =
+                ff.function("dateDifference", pn, ff.literal(baseDate), ff.literal(timeUnits));
+        FilterCapabilities capabilities = dataStore.getFilterCapabilities();
+        boolean expectOptimized = capabilities.supports(DateDifferenceFunction.class);
+        List<Object[]> value =
+                genericGroupByTestTest(Query.ALL, Aggregate.COUNT, expectOptimized, difference);
+        assertNotNull(value);
+
+        assertEquals(5, value.size());
+        checkValueContains(value, Integer.toString(0 * multiplyingFactor), "3"); // 2016-06-03
+        checkValueContains(value, Integer.toString(2 * multiplyingFactor), "1"); // 2016-06-05
+        checkValueContains(value, Integer.toString(3 * multiplyingFactor), "2"); // 2016-06-06
+        checkValueContains(value, Integer.toString(4 * multiplyingFactor), "3"); // 2016-06-07
+        checkValueContains(value, Integer.toString(12 * multiplyingFactor), "3"); // 2016-06-15
     }
 }

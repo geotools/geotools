@@ -261,7 +261,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
         if ((abstracT1 == null) || "".equals(abstracT1)) {
             this.abstracT = false;
         } else {
-            this.abstracT = Boolean.valueOf(abstracT1).booleanValue();
+            this.abstracT = Boolean.parseBoolean(abstracT1);
         }
 
         String block1 = atts.getValue("", "block");
@@ -387,69 +387,11 @@ public class ComplexTypeHandler extends XSIElementHandler {
                 SimpleContentHandler sch = (SimpleContentHandler) child;
 
                 if (sch.getChild() instanceof ExtensionHandler) {
-                    ExtensionHandler ext = (ExtensionHandler) sch.getChild();
-
-                    // attributes
-                    if (ext.getAttributeDeclarations() != null) {
-                        Iterator it = ext.getAttributeDeclarations().iterator();
-
-                        while (it.hasNext()) {
-                            Object o = it.next();
-
-                            if (o instanceof AttributeHandler) {
-                                AttributeHandler ah = (AttributeHandler) o;
-                                attr.add(ah.compress(parent));
-                            } else {
-                                AttributeGroupHandler agh = (AttributeGroupHandler) o;
-                                AttributeGroup ag = agh.compress(parent);
-                                attr.addAll(Arrays.asList(ag.getAttributes()));
-                            }
-                        }
-                    }
-
-                    SimpleType st;
-
-                    if ((ext.getBase() == null) || ext.getBase().equalsIgnoreCase("")) {
-                        st = ((SimpleTypeHandler) ext.getChild()).compress(parent);
-                    } else {
-                        st = parent.lookUpSimpleType(ext.getBase());
-                    }
-
-                    dct.parent = st;
-                    dct.simple = true;
+                    compressSimpleExtensionHandler(
+                            parent, dct, attr, (ExtensionHandler) sch.getChild());
                 } else {
-                    // restriction
-                    RestrictionHandler rest = (RestrictionHandler) sch.getChild();
-
-                    // attributes
-                    if (rest.getAttributeDeclarations() != null) {
-                        Iterator it = rest.getAttributeDeclarations().iterator();
-
-                        while (it.hasNext()) {
-                            Object o = it.next();
-
-                            if (o instanceof AttributeHandler) {
-                                AttributeHandler ah = (AttributeHandler) o;
-                                attr.add(ah.compress(parent));
-                            } else {
-                                AttributeGroupHandler agh = (AttributeGroupHandler) o;
-                                AttributeGroup ag = agh.compress(parent);
-                                attr.addAll(Arrays.asList(ag.getAttributes()));
-                            }
-                        }
-                    }
-
-                    SimpleType st =
-                            new SimpleTypeGT(
-                                    id,
-                                    name,
-                                    parent.getTargetNamespace(),
-                                    SimpleType.RESTRICTION,
-                                    SimpleTypeHandler.getSimpleTypes(rest, parent),
-                                    SimpleTypeHandler.getFacets(rest),
-                                    finaL);
-                    dct.parent = st;
-                    dct.simple = true;
+                    compressSimpleRestriction(
+                            parent, dct, attr, (RestrictionHandler) sch.getChild());
                 }
 
                 dct.mixed = true;
@@ -461,87 +403,9 @@ public class ComplexTypeHandler extends XSIElementHandler {
                 if (cch.getChild() instanceof ExtensionHandler) {
                     ExtensionHandler ext = (ExtensionHandler) cch.getChild();
 
-                    ComplexType ct = parent.lookUpComplexType(ext.getBase());
-                    dct.parent = ct;
-
-                    // attributes
-                    if (ct != null && ct.getAttributes() != null) {
-                        Attribute[] it = ct.getAttributes();
-
-                        for (Attribute attribute : it) {
-                            attr.add(attribute);
-                        }
-                    }
-
-                    if (ext.getAttributeDeclarations() != null) {
-                        Iterator it = ext.getAttributeDeclarations().iterator();
-
-                        while (it.hasNext()) {
-                            Object o = it.next();
-
-                            if (o instanceof AttributeHandler) {
-                                AttributeHandler ah = (AttributeHandler) o;
-                                attr.add(ah.compress(parent));
-                            } else {
-                                AttributeGroupHandler agh = (AttributeGroupHandler) o;
-                                AttributeGroup ag = agh.compress(parent);
-                                attr.addAll(Arrays.asList(ag.getAttributes()));
-                            }
-                        }
-                    }
-
-                    if (ct != null && ext.getChild() != null) {
-                        logger.finest(
-                                "Looked up "
-                                        + ext.getBase()
-                                        + " and found "
-                                        + ((ct == null)
-                                                ? null
-                                                : (ct.getName() + ":::" + ct.getNamespace()))
-                                        + " for "
-                                        + name);
-
-                        ElementGrouping extensionBaseType = ct.getChild();
-                        ElementGrouping extensionChild =
-                                ((ElementGroupingHandler) ext.getChild()).compress(parent);
-                        dct.child =
-                                loadNewEG(
-                                        extensionBaseType,
-                                        extensionChild,
-                                        parent); // note should override element def only ... not
-                        // spot
-                    } else {
-                        if (ct != null) dct.child = ct.getChild();
-                    }
+                    compressComplexExtensionHandler(parent, dct, attr, ext);
                 } else {
-                    // restriction
-                    RestrictionHandler ext = (RestrictionHandler) cch.getChild();
-
-                    // attributes
-                    if (ext.getAttributeDeclarations() != null) {
-                        Iterator it = ext.getAttributeDeclarations().iterator();
-
-                        while (it.hasNext()) {
-                            Object o = it.next();
-
-                            if (o instanceof AttributeHandler) {
-                                AttributeHandler ah = (AttributeHandler) o;
-                                attr.add(ah.compress(parent));
-                            } else {
-                                AttributeGroupHandler agh = (AttributeGroupHandler) o;
-                                AttributeGroup ag = agh.compress(parent);
-                                attr.addAll(Arrays.asList(ag.getAttributes()));
-                            }
-                        }
-                    }
-
-                    if (ext.getChild() == null) {
-                        dct.child = null; // empty child
-                    } else {
-                        dct.child = ((ElementGroupingHandler) ext.getChild()).compress(parent);
-                    }
-
-                    dct.parent = parent.lookUpComplexType(ext.getBase());
+                    compressComplexRestriction(parent, dct, attr, cch);
                 }
 
                 if (dct.child == null) {
@@ -615,6 +479,167 @@ public class ComplexTypeHandler extends XSIElementHandler {
         child = null;
 
         return cache;
+    }
+
+    private void compressComplexRestriction(
+            SchemaHandler parent,
+            DefaultComplexType dct,
+            Set<Attribute> attr,
+            ComplexContentHandler cch)
+            throws SAXException {
+        // restriction
+        RestrictionHandler ext = (RestrictionHandler) cch.getChild();
+
+        // attributes
+        if (ext.getAttributeDeclarations() != null) {
+            Iterator it = ext.getAttributeDeclarations().iterator();
+
+            while (it.hasNext()) {
+                Object o = it.next();
+
+                if (o instanceof AttributeHandler) {
+                    AttributeHandler ah = (AttributeHandler) o;
+                    attr.add(ah.compress(parent));
+                } else {
+                    AttributeGroupHandler agh = (AttributeGroupHandler) o;
+                    AttributeGroup ag = agh.compress(parent);
+                    attr.addAll(Arrays.asList(ag.getAttributes()));
+                }
+            }
+        }
+
+        if (ext.getChild() == null) {
+            dct.child = null; // empty child
+        } else {
+            dct.child = ((ElementGroupingHandler) ext.getChild()).compress(parent);
+        }
+
+        dct.parent = parent.lookUpComplexType(ext.getBase());
+    }
+
+    private void compressComplexExtensionHandler(
+            SchemaHandler parent, DefaultComplexType dct, Set<Attribute> attr, ExtensionHandler ext)
+            throws SAXException {
+        ComplexType ct = parent.lookUpComplexType(ext.getBase());
+        dct.parent = ct;
+
+        // attributes
+        if (ct != null && ct.getAttributes() != null) {
+            Attribute[] it = ct.getAttributes();
+
+            for (Attribute attribute : it) {
+                attr.add(attribute);
+            }
+        }
+
+        if (ext.getAttributeDeclarations() != null) {
+            Iterator it = ext.getAttributeDeclarations().iterator();
+
+            while (it.hasNext()) {
+                Object o = it.next();
+
+                if (o instanceof AttributeHandler) {
+                    AttributeHandler ah = (AttributeHandler) o;
+                    attr.add(ah.compress(parent));
+                } else {
+                    AttributeGroupHandler agh = (AttributeGroupHandler) o;
+                    AttributeGroup ag = agh.compress(parent);
+                    attr.addAll(Arrays.asList(ag.getAttributes()));
+                }
+            }
+        }
+
+        if (ct != null && ext.getChild() != null) {
+            logger.finest(
+                    "Looked up "
+                            + ext.getBase()
+                            + " and found "
+                            + ((ct == null) ? null : (ct.getName() + ":::" + ct.getNamespace()))
+                            + " for "
+                            + name);
+
+            ElementGrouping extensionBaseType = ct.getChild();
+            ElementGrouping extensionChild =
+                    ((ElementGroupingHandler) ext.getChild()).compress(parent);
+            dct.child =
+                    loadNewEG(
+                            extensionBaseType,
+                            extensionChild,
+                            parent); // note should override element def only ... not
+            // spot
+        } else {
+            if (ct != null) dct.child = ct.getChild();
+        }
+    }
+
+    private void compressSimpleRestriction(
+            SchemaHandler parent,
+            DefaultComplexType dct,
+            Set<Attribute> attr,
+            RestrictionHandler rest)
+            throws SAXException {
+        // attributes
+        if (rest.getAttributeDeclarations() != null) {
+            Iterator it = rest.getAttributeDeclarations().iterator();
+
+            while (it.hasNext()) {
+                Object o = it.next();
+
+                if (o instanceof AttributeHandler) {
+                    AttributeHandler ah = (AttributeHandler) o;
+                    attr.add(ah.compress(parent));
+                } else {
+                    AttributeGroupHandler agh = (AttributeGroupHandler) o;
+                    AttributeGroup ag = agh.compress(parent);
+                    attr.addAll(Arrays.asList(ag.getAttributes()));
+                }
+            }
+        }
+
+        SimpleType st =
+                new SimpleTypeGT(
+                        id,
+                        name,
+                        parent.getTargetNamespace(),
+                        SimpleType.RESTRICTION,
+                        SimpleTypeHandler.getSimpleTypes(rest, parent),
+                        SimpleTypeHandler.getFacets(rest),
+                        finaL);
+        dct.parent = st;
+        dct.simple = true;
+    }
+
+    private void compressSimpleExtensionHandler(
+            SchemaHandler parent, DefaultComplexType dct, Set<Attribute> attr, ExtensionHandler ext)
+            throws SAXException {
+        // attributes
+        if (ext.getAttributeDeclarations() != null) {
+            Iterator it = ext.getAttributeDeclarations().iterator();
+
+            while (it.hasNext()) {
+                Object o = it.next();
+
+                if (o instanceof AttributeHandler) {
+                    AttributeHandler ah = (AttributeHandler) o;
+                    attr.add(ah.compress(parent));
+                } else {
+                    AttributeGroupHandler agh = (AttributeGroupHandler) o;
+                    AttributeGroup ag = agh.compress(parent);
+                    attr.addAll(Arrays.asList(ag.getAttributes()));
+                }
+            }
+        }
+
+        SimpleType st;
+
+        if ((ext.getBase() == null) || ext.getBase().equalsIgnoreCase("")) {
+            st = ((SimpleTypeHandler) ext.getChild()).compress(parent);
+        } else {
+            st = parent.lookUpSimpleType(ext.getBase());
+        }
+
+        dct.parent = st;
+        dct.simple = true;
     }
 
     /*

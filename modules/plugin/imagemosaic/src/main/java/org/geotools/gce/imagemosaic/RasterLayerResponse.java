@@ -726,6 +726,7 @@ public class RasterLayerResponse {
                                                 .getName()),
                                 bboxExtractor.getBBox()));
                 query.setMaxFeatures(1);
+                query.setSortBy(null);
                 rasterManager.getGranuleDescriptors(query, dryRunVisitor);
                 if (dryRunVisitor.granulesNumber > 0) {
                     LOGGER.fine(

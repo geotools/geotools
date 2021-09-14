@@ -166,7 +166,6 @@ public class NetCDFMosaicReaderTest {
         // have the reader harvest it
         ImageMosaicFormat format = new ImageMosaicFormat();
         ImageMosaicReader reader = format.getReader(mosaic);
-        SimpleFeatureIterator it = null;
         assertNotNull(reader);
         try {
             String[] names = reader.getGridCoverageNames();
@@ -180,51 +179,47 @@ public class NetCDFMosaicReaderTest {
             q.setSortBy(ff.sort("time", SortOrder.ASCENDING));
             SimpleFeatureCollection granules = source.getGranules(q);
             assertEquals(2, granules.size());
-            it = granules.features();
-            assertTrue(it.hasNext());
-            SimpleFeature f = it.next();
-            assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
-            assertEquals(0, f.getAttribute("imageindex"));
-            assertEquals(
-                    "2013-03-01T00:00:00.000Z",
-                    ConvertersHack.convert(f.getAttribute("time"), String.class));
-            assertTrue(it.hasNext());
-            f = it.next();
-            assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
-            assertEquals(1, f.getAttribute("imageindex"));
-            assertEquals(
-                    "2013-03-01T01:00:00.000Z",
-                    ConvertersHack.convert(f.getAttribute("time"), String.class));
-            it.close();
+            try (SimpleFeatureIterator it = granules.features()) {
+                assertTrue(it.hasNext());
+                SimpleFeature f = it.next();
+                assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
+                assertEquals(0, f.getAttribute("imageindex"));
+                assertEquals(
+                        "2013-03-01T00:00:00.000Z",
+                        ConvertersHack.convert(f.getAttribute("time"), String.class));
+                assertTrue(it.hasNext());
+                f = it.next();
+                assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
+                assertEquals(1, f.getAttribute("imageindex"));
+                assertEquals(
+                        "2013-03-01T01:00:00.000Z",
+                        ConvertersHack.convert(f.getAttribute("time"), String.class));
+            }
             testHarvest(reader, mosaic, source, q);
         } finally {
-            if (it != null) {
-                it.close();
-            }
             reader.dispose();
         }
     }
 
     private void testHarvest(ImageMosaicReader reader, File mosaic, GranuleSource source, Query q)
             throws IOException {
-        SimpleFeatureIterator it = null;
         assertNotNull(reader);
-        try {
-            // now add another netcdf and harvest it
-            File nc2 = TestData.file(this, "polyphemus_20130302_test.nc");
-            FileUtils.copyFileToDirectory(nc2, mosaic);
-            File fileToHarvest = new File(mosaic, "polyphemus_20130302_test.nc");
-            List<HarvestedSource> harvestSummary = reader.harvest(null, fileToHarvest, null);
-            assertEquals(1, harvestSummary.size());
-            HarvestedSource hf = harvestSummary.get(0);
-            assertEquals("polyphemus_20130302_test.nc", ((File) hf.getSource()).getName());
-            assertTrue(hf.success());
-            assertEquals(1, reader.getGridCoverageNames().length);
 
-            // check that we have four times now
-            SimpleFeatureCollection granules = source.getGranules(q);
-            assertEquals(4, granules.size());
-            it = granules.features();
+        // now add another netcdf and harvest it
+        File nc2 = TestData.file(this, "polyphemus_20130302_test.nc");
+        FileUtils.copyFileToDirectory(nc2, mosaic);
+        File fileToHarvest = new File(mosaic, "polyphemus_20130302_test.nc");
+        List<HarvestedSource> harvestSummary = reader.harvest(null, fileToHarvest, null);
+        assertEquals(1, harvestSummary.size());
+        HarvestedSource hf = harvestSummary.get(0);
+        assertEquals("polyphemus_20130302_test.nc", ((File) hf.getSource()).getName());
+        assertTrue(hf.success());
+        assertEquals(1, reader.getGridCoverageNames().length);
+
+        // check that we have four times now
+        SimpleFeatureCollection granules = source.getGranules(q);
+        assertEquals(4, granules.size());
+        try (SimpleFeatureIterator it = granules.features()) {
             SimpleFeature f = it.next();
             assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
             assertEquals(0, f.getAttribute("imageindex"));
@@ -251,11 +246,6 @@ public class NetCDFMosaicReaderTest {
             assertEquals(
                     "2013-03-02T01:00:00.000Z",
                     ConvertersHack.convert(f.getAttribute("time"), String.class));
-
-        } finally {
-            if (it != null) {
-                it.close();
-            }
         }
         ImageLayout layout = reader.getImageLayout();
         SampleModel sampleModel = layout.getSampleModel(null);
@@ -464,7 +454,7 @@ public class NetCDFMosaicReaderTest {
 
         final String name = "O3";
         NetCDFImageReader imageReader = null;
-        SimpleFeatureIterator it = null;
+
         assertNotNull(reader);
         GridCoverage2D coverage = null;
         try {
@@ -482,17 +472,14 @@ public class NetCDFMosaicReaderTest {
             q.setSortBy(ff.sort("time", SortOrder.ASCENDING));
             SimpleFeatureCollection granules = source.getGranules(q);
             assertEquals(4, granules.size());
-            it = granules.features();
-            assertTrue(it.hasNext());
-            SimpleFeature f = it.next();
-            assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
+            try (SimpleFeatureIterator it = granules.features()) {
+                assertTrue(it.hasNext());
+                SimpleFeature f = it.next();
+                assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
+            }
         } finally {
             if (coverage != null) {
                 coverage.dispose(true);
-            }
-
-            if (it != null) {
-                it.close();
             }
 
             if (reader != null) {
@@ -568,7 +555,6 @@ public class NetCDFMosaicReaderTest {
 
         final String name = "O3";
         NetCDFImageReader imageReader = null;
-        SimpleFeatureIterator it = null;
         assertNotNull(reader);
         try {
 
@@ -578,19 +564,15 @@ public class NetCDFMosaicReaderTest {
             q.setSortBy(ff.sort("time", SortOrder.ASCENDING));
             SimpleFeatureCollection granules = source.getGranules(q);
             assertEquals(2, granules.size());
-            it = granules.features();
-            assertTrue(it.hasNext());
-            SimpleFeature f = it.next();
-            assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
+            try (SimpleFeatureIterator it = granules.features()) {
+                assertTrue(it.hasNext());
+                SimpleFeature f = it.next();
+                assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
 
-            // now add another netcdf and harvest it
-            testHarvest(reader, mosaic, source, q);
-        } finally {
-
-            if (it != null) {
-                it.close();
+                // now add another netcdf and harvest it
+                testHarvest(reader, mosaic, source, q);
             }
-
+        } finally {
             if (reader != null) {
                 try {
                     reader.dispose();
@@ -612,7 +594,6 @@ public class NetCDFMosaicReaderTest {
 
     public void checkCustomTimeAttribute(File nc1, ImageMosaicReader reader) throws IOException {
         NetCDFImageReader imageReader = null;
-        SimpleFeatureIterator it = null;
         assertNotNull(reader);
         GridCoverage2D coverage = null;
         try {
@@ -630,30 +611,26 @@ public class NetCDFMosaicReaderTest {
             q.setSortBy(ff.sort("time", SortOrder.ASCENDING));
             SimpleFeatureCollection granules = source.getGranules(q);
             assertEquals(2, granules.size());
-            it = granules.features();
-            assertTrue(it.hasNext());
-            SimpleFeature f = it.next();
-            assertEquals("polyphemus_20130301_NO2_time2.nc", f.getAttribute("location"));
-            SimpleFeatureType featureType = f.getType();
+            try (SimpleFeatureIterator it = granules.features()) {
+                assertTrue(it.hasNext());
+                SimpleFeature f = it.next();
+                assertEquals("polyphemus_20130301_NO2_time2.nc", f.getAttribute("location"));
+                SimpleFeatureType featureType = f.getType();
 
-            // check the underlying data has a time2 dimension
-            imageReader = (NetCDFImageReader) new NetCDFImageReaderSpi().createReaderInstance();
-            imageReader.setInput(nc1);
-            Variable var = imageReader.getVariableByName("NO2");
-            String dimensions = var.getDimensionsString();
-            assertTrue(dimensions.contains("time2"));
+                // check the underlying data has a time2 dimension
+                imageReader = (NetCDFImageReader) new NetCDFImageReaderSpi().createReaderInstance();
+                imageReader.setInput(nc1);
+                Variable var = imageReader.getVariableByName("NO2");
+                String dimensions = var.getDimensionsString();
+                assertTrue(dimensions.contains("time2"));
 
-            // check I'm getting a "time" attribute instead of "time2" due to the
-            // uniqueTimeAttribute remap
-            assertNotNull(featureType.getDescriptor("time"));
-
+                // check I'm getting a "time" attribute instead of "time2" due to the
+                // uniqueTimeAttribute remap
+                assertNotNull(featureType.getDescriptor("time"));
+            }
         } finally {
             if (coverage != null) {
                 coverage.dispose(true);
-            }
-
-            if (it != null) {
-                it.close();
             }
 
             if (reader != null) {
@@ -693,7 +670,6 @@ public class NetCDFMosaicReaderTest {
         // have the reader harvest it
         ImageMosaicFormat format = new ImageMosaicFormat();
         ImageMosaicReader reader = format.getReader(mosaic);
-        SimpleFeatureIterator it = null;
         assertNotNull(reader);
         try {
             String[] names = reader.getGridCoverageNames();
@@ -707,22 +683,22 @@ public class NetCDFMosaicReaderTest {
             q.setSortBy(ff.sort("time", SortOrder.ASCENDING));
             SimpleFeatureCollection granules = source.getGranules(q);
             assertEquals(2, granules.size());
-            it = granules.features();
-            assertTrue(it.hasNext());
-            SimpleFeature f = it.next();
-            assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
-            assertEquals(0, f.getAttribute("imageindex"));
-            assertEquals(
-                    "2013-03-01T00:00:00.000Z",
-                    ConvertersHack.convert(f.getAttribute("time"), String.class));
-            assertTrue(it.hasNext());
-            f = it.next();
-            assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
-            assertEquals(1, f.getAttribute("imageindex"));
-            assertEquals(
-                    "2013-03-01T01:00:00.000Z",
-                    ConvertersHack.convert(f.getAttribute("time"), String.class));
-            it.close();
+            try (SimpleFeatureIterator it = granules.features()) {
+                assertTrue(it.hasNext());
+                SimpleFeature f = it.next();
+                assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
+                assertEquals(0, f.getAttribute("imageindex"));
+                assertEquals(
+                        "2013-03-01T00:00:00.000Z",
+                        ConvertersHack.convert(f.getAttribute("time"), String.class));
+                assertTrue(it.hasNext());
+                f = it.next();
+                assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
+                assertEquals(1, f.getAttribute("imageindex"));
+                assertEquals(
+                        "2013-03-01T01:00:00.000Z",
+                        ConvertersHack.convert(f.getAttribute("time"), String.class));
+            }
 
             // close the reader and re-open it
             reader.dispose();
@@ -735,6 +711,9 @@ public class NetCDFMosaicReaderTest {
             // now replace the netcdf file with a more up to date version of the same
             File nc2 = TestData.file(this, "polyphemus_20130301_test_more_times.nc");
             File target = new File(mosaic, "polyphemus_20130301_test.nc");
+            Date now = new Date();
+            nc2.setLastModified(now.getTime());
+            FileUtils.copyFile(nc2, target, false);
             FileUtils.copyFile(nc2, target, false);
             File fileToHarvest = new File(mosaic, "polyphemus_20130301_test.nc");
             List<HarvestedSource> harvestSummary = reader.harvest(null, fileToHarvest, null);
@@ -748,38 +727,35 @@ public class NetCDFMosaicReaderTest {
             source = reader.getGranules("O3", true);
             granules = source.getGranules(q);
             assertEquals(4, granules.size());
-            it = granules.features();
-            f = it.next();
-            assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
-            assertEquals(0, f.getAttribute("imageindex"));
-            assertEquals(
-                    "2013-03-01T00:00:00.000Z",
-                    ConvertersHack.convert(f.getAttribute("time"), String.class));
-            assertTrue(it.hasNext());
-            f = it.next();
-            assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
-            assertEquals(1, f.getAttribute("imageindex"));
-            assertEquals(
-                    "2013-03-01T01:00:00.000Z",
-                    ConvertersHack.convert(f.getAttribute("time"), String.class));
-            f = it.next();
-            assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
-            assertEquals(2, f.getAttribute("imageindex"));
-            assertEquals(
-                    "2013-03-01T02:00:00.000Z",
-                    ConvertersHack.convert(f.getAttribute("time"), String.class));
-            assertTrue(it.hasNext());
-            f = it.next();
-            assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
-            assertEquals(3, f.getAttribute("imageindex"));
-            assertEquals(
-                    "2013-03-01T03:00:00.000Z",
-                    ConvertersHack.convert(f.getAttribute("time"), String.class));
-            it.close();
-        } finally {
-            if (it != null) {
-                it.close();
+            try (SimpleFeatureIterator it = granules.features()) {
+                SimpleFeature f = it.next();
+                assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
+                assertEquals(0, f.getAttribute("imageindex"));
+                assertEquals(
+                        "2013-03-01T00:00:00.000Z",
+                        ConvertersHack.convert(f.getAttribute("time"), String.class));
+                assertTrue(it.hasNext());
+                f = it.next();
+                assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
+                assertEquals(1, f.getAttribute("imageindex"));
+                assertEquals(
+                        "2013-03-01T01:00:00.000Z",
+                        ConvertersHack.convert(f.getAttribute("time"), String.class));
+                f = it.next();
+                assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
+                assertEquals(2, f.getAttribute("imageindex"));
+                assertEquals(
+                        "2013-03-01T02:00:00.000Z",
+                        ConvertersHack.convert(f.getAttribute("time"), String.class));
+                assertTrue(it.hasNext());
+                f = it.next();
+                assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
+                assertEquals(3, f.getAttribute("imageindex"));
+                assertEquals(
+                        "2013-03-01T03:00:00.000Z",
+                        ConvertersHack.convert(f.getAttribute("time"), String.class));
             }
+        } finally {
             reader.dispose();
         }
     }
@@ -834,7 +810,6 @@ public class NetCDFMosaicReaderTest {
         // have the reader harvest it
         ImageMosaicFormat format = new ImageMosaicFormat();
         ImageMosaicReader reader = format.getReader(mosaic);
-        SimpleFeatureIterator it = null;
         assertNotNull(reader);
         try {
             String[] names = reader.getGridCoverageNames();
@@ -848,22 +823,22 @@ public class NetCDFMosaicReaderTest {
             q.setSortBy(ff.sort("time", SortOrder.ASCENDING));
             SimpleFeatureCollection granules = source.getGranules(q);
             assertEquals(2, granules.size());
-            it = granules.features();
-            assertTrue(it.hasNext());
-            SimpleFeature f = it.next();
-            assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
-            assertEquals(0, f.getAttribute("imageindex"));
-            assertEquals(
-                    "2013-03-01T00:00:00.000Z",
-                    ConvertersHack.convert(f.getAttribute("time"), String.class));
-            assertTrue(it.hasNext());
-            f = it.next();
-            assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
-            assertEquals(1, f.getAttribute("imageindex"));
-            assertEquals(
-                    "2013-03-01T01:00:00.000Z",
-                    ConvertersHack.convert(f.getAttribute("time"), String.class));
-            it.close();
+            try (SimpleFeatureIterator it = granules.features()) {
+                assertTrue(it.hasNext());
+                SimpleFeature f = it.next();
+                assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
+                assertEquals(0, f.getAttribute("imageindex"));
+                assertEquals(
+                        "2013-03-01T00:00:00.000Z",
+                        ConvertersHack.convert(f.getAttribute("time"), String.class));
+                assertTrue(it.hasNext());
+                f = it.next();
+                assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
+                assertEquals(1, f.getAttribute("imageindex"));
+                assertEquals(
+                        "2013-03-01T01:00:00.000Z",
+                        ConvertersHack.convert(f.getAttribute("time"), String.class));
+            }
 
             // now add another netcdf and harvest it
             File nc2 = TestData.file(this, "polyphemus_20130301_NO2.nc");
@@ -886,25 +861,22 @@ public class NetCDFMosaicReaderTest {
             source = reader.getGranules("NO2", true);
             granules = source.getGranules(q);
             assertEquals(2, granules.size());
-            it = granules.features();
-            f = it.next();
-            assertEquals("polyphemus_20130301_NO2.nc", f.getAttribute("location"));
-            assertEquals(0, f.getAttribute("imageindex"));
-            assertEquals(
-                    "2013-03-01T00:00:00.000Z",
-                    ConvertersHack.convert(f.getAttribute("time"), String.class));
-            assertTrue(it.hasNext());
-            f = it.next();
-            assertEquals("polyphemus_20130301_NO2.nc", f.getAttribute("location"));
-            assertEquals(1, f.getAttribute("imageindex"));
-            assertEquals(
-                    "2013-03-01T01:00:00.000Z",
-                    ConvertersHack.convert(f.getAttribute("time"), String.class));
-            it.close();
-        } finally {
-            if (it != null) {
-                it.close();
+            try (SimpleFeatureIterator it = granules.features()) {
+                SimpleFeature f = it.next();
+                assertEquals("polyphemus_20130301_NO2.nc", f.getAttribute("location"));
+                assertEquals(0, f.getAttribute("imageindex"));
+                assertEquals(
+                        "2013-03-01T00:00:00.000Z",
+                        ConvertersHack.convert(f.getAttribute("time"), String.class));
+                assertTrue(it.hasNext());
+                f = it.next();
+                assertEquals("polyphemus_20130301_NO2.nc", f.getAttribute("location"));
+                assertEquals(1, f.getAttribute("imageindex"));
+                assertEquals(
+                        "2013-03-01T01:00:00.000Z",
+                        ConvertersHack.convert(f.getAttribute("time"), String.class));
             }
+        } finally {
             reader.dispose();
         }
     }
@@ -939,7 +911,6 @@ public class NetCDFMosaicReaderTest {
         // have the reader harvest it
         ImageMosaicFormat format = new ImageMosaicFormat();
         ImageMosaicReader reader = format.getReader(mosaic);
-        SimpleFeatureIterator it = null;
         assertNotNull(reader);
         try {
             // specify time
@@ -975,9 +946,7 @@ public class NetCDFMosaicReaderTest {
             assertEquals(1, names.length);
             assertEquals("NO2", names[0]);
         } finally {
-            if (it != null) {
-                it.close();
-            }
+
             reader.dispose();
         }
     }
@@ -1021,7 +990,6 @@ public class NetCDFMosaicReaderTest {
         // have the reader harvest it
         ImageMosaicFormat format = new ImageMosaicFormat();
         ImageMosaicReader reader = format.getReader(mosaic);
-        SimpleFeatureIterator it = null;
         assertNotNull(reader);
         try {
             String[] names = reader.getGridCoverageNames();
@@ -1035,15 +1003,15 @@ public class NetCDFMosaicReaderTest {
             q.setSortBy(ff.sort("time", SortOrder.DESCENDING));
             SimpleFeatureCollection granules = source.getGranules(q);
             assertEquals(1, granules.size());
-            it = granules.features();
-            assertTrue(it.hasNext());
-            SimpleFeature f = it.next();
-            assertEquals("20130101.METOPA.GOME2.NO2.DUMMY.nc", f.getAttribute("location"));
-            assertEquals(0, f.getAttribute("imageindex"));
-            assertEquals(
-                    "2013-01-01T00:00:00.000Z",
-                    ConvertersHack.convert(f.getAttribute("time"), String.class));
-            it.close();
+            try (SimpleFeatureIterator it = granules.features()) {
+                assertTrue(it.hasNext());
+                SimpleFeature f = it.next();
+                assertEquals("20130101.METOPA.GOME2.NO2.DUMMY.nc", f.getAttribute("location"));
+                assertEquals(0, f.getAttribute("imageindex"));
+                assertEquals(
+                        "2013-01-01T00:00:00.000Z",
+                        ConvertersHack.convert(f.getAttribute("time"), String.class));
+            }
 
             // now add another netcdf and harvest it
             File nc2 = TestData.file(this, "20130116.METOPA.GOME2.NO2.DUMMY.nc");
@@ -1072,32 +1040,28 @@ public class NetCDFMosaicReaderTest {
             // check that we have 2 times now
             granules = source.getGranules(q);
             assertEquals(3, granules.size());
-            it = granules.features();
-            f = it.next();
-            assertEquals("20130116.METOPA.GOME2.NO2.DUMMY.nc", f.getAttribute("location"));
-            assertEquals(0, f.getAttribute("imageindex"));
-            assertEquals(
-                    "2013-01-16T00:00:00.000Z",
-                    ConvertersHack.convert(f.getAttribute("time"), String.class));
-            assertTrue(it.hasNext());
-            f = it.next();
-            assertEquals("20130108.METOPA.GOME2.NO2.DUMMY.nc", f.getAttribute("location"));
-            assertEquals(0, f.getAttribute("imageindex"));
-            assertEquals(
-                    "2013-01-08T00:00:00.000Z",
-                    ConvertersHack.convert(f.getAttribute("time"), String.class));
-            f = it.next();
-            assertEquals("20130101.METOPA.GOME2.NO2.DUMMY.nc", f.getAttribute("location"));
-            assertEquals(0, f.getAttribute("imageindex"));
-            assertEquals(
-                    "2013-01-01T00:00:00.000Z",
-                    ConvertersHack.convert(f.getAttribute("time"), String.class));
-
-            it.close();
-        } finally {
-            if (it != null) {
-                it.close();
+            try (SimpleFeatureIterator it = granules.features()) {
+                SimpleFeature f = it.next();
+                assertEquals("20130116.METOPA.GOME2.NO2.DUMMY.nc", f.getAttribute("location"));
+                assertEquals(0, f.getAttribute("imageindex"));
+                assertEquals(
+                        "2013-01-16T00:00:00.000Z",
+                        ConvertersHack.convert(f.getAttribute("time"), String.class));
+                assertTrue(it.hasNext());
+                f = it.next();
+                assertEquals("20130108.METOPA.GOME2.NO2.DUMMY.nc", f.getAttribute("location"));
+                assertEquals(0, f.getAttribute("imageindex"));
+                assertEquals(
+                        "2013-01-08T00:00:00.000Z",
+                        ConvertersHack.convert(f.getAttribute("time"), String.class));
+                f = it.next();
+                assertEquals("20130101.METOPA.GOME2.NO2.DUMMY.nc", f.getAttribute("location"));
+                assertEquals(0, f.getAttribute("imageindex"));
+                assertEquals(
+                        "2013-01-01T00:00:00.000Z",
+                        ConvertersHack.convert(f.getAttribute("time"), String.class));
             }
+        } finally {
             reader.dispose();
         }
     }

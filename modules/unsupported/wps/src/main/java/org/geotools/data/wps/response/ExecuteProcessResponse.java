@@ -48,6 +48,7 @@ public class ExecuteProcessResponse extends Response {
     private String rawContentType;
 
     /** */
+    @SuppressWarnings("PMD.UseTryWithResources") // multiple init points for InputStream
     public ExecuteProcessResponse(HTTPResponse httpResponse, boolean raw)
             throws IOException, ServiceException {
         super(httpResponse);

@@ -19,6 +19,7 @@ package org.geotools.tile.impl.osm;
 
 import org.geotools.tile.Tile;
 import org.geotools.tile.TileFactory;
+import org.geotools.tile.TileIdentifier;
 import org.geotools.tile.TileService;
 import org.geotools.tile.impl.WebMercatorTileFactory;
 import org.geotools.tile.impl.WebMercatorTileService;
@@ -32,6 +33,11 @@ import org.geotools.tile.impl.ZoomLevel;
  * @since 12
  */
 public class OSMTileFactory extends WebMercatorTileFactory {
+
+    @Override
+    public Tile create(TileIdentifier identifier, TileService service) {
+        return new OSMTile(identifier, service);
+    }
 
     @Override
     public Tile findTileAtCoordinate(
@@ -66,7 +72,7 @@ public class OSMTileFactory extends WebMercatorTileFactory {
                                         / 2
                                         * (1 << zoomLevel.getZoomLevel()));
         if (yTile < 0) yTile = 0;
-        return new OSMTile(xTile, yTile, zoomLevel, service);
+        return create(new OSMTileIdentifier(xTile, yTile, zoomLevel, service.getName()), service);
     }
 
     /**
@@ -85,11 +91,11 @@ public class OSMTileFactory extends WebMercatorTileFactory {
 
     @Override
     public Tile findRightNeighbour(Tile tile, TileService service) {
-        return new OSMTile(tile.getTileIdentifier().getRightNeighbour(), service);
+        return create(tile.getTileIdentifier().getRightNeighbour(), service);
     }
 
     @Override
     public Tile findLowerNeighbour(Tile tile, TileService service) {
-        return new OSMTile(tile.getTileIdentifier().getLowerNeighbour(), service);
+        return create(tile.getTileIdentifier().getLowerNeighbour(), service);
     }
 }

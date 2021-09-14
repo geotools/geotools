@@ -14,6 +14,7 @@ import java.awt.Rectangle;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -84,7 +85,7 @@ public class GenerateSVG {
         LOGGER.finest("rendering map");
         renderer.paint(g2d, outputArea, dataArea);
         LOGGER.finest("writing to file");
-        try (OutputStreamWriter osw = new OutputStreamWriter(out, "UTF-8")) {
+        try (OutputStreamWriter osw = new OutputStreamWriter(out, StandardCharsets.UTF_8)) {
             g2d.stream(osw);
         }
     }

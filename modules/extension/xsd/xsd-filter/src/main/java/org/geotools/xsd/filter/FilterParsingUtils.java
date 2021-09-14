@@ -116,7 +116,7 @@ public class FilterParsingUtils {
             filters.addAll(parseExtendedOperators(node, factory));
         }
 
-        // TODO: this parsing returns teh children out of order...
+        // TODO: this parsing returns the children out of order...
         return filters;
     }
 

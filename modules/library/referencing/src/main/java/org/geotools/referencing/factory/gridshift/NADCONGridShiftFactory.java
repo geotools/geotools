@@ -165,20 +165,16 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
         final int HEADER_BYTES = 96;
         final int SEPARATOR_BYTES = 4;
         final int DESCRIPTION_LENGTH = 64;
-        ReadableByteChannel latChannel = null;
-        ReadableByteChannel longChannel = null;
         NADConGridShift gridShift = null;
         ByteBuffer latBuffer;
         ByteBuffer longBuffer;
 
-        try {
+        try (ReadableByteChannel latChannel = getReadChannel(latGridUrl);
+                ReadableByteChannel longChannel = getReadChannel(longGridUrl)) {
             // //////////////////////
             // setup
             // //////////////////////
-            latChannel = getReadChannel(latGridUrl);
             latBuffer = fillBuffer(latChannel, HEADER_BYTES);
-
-            longChannel = getReadChannel(longGridUrl);
             longBuffer = fillBuffer(longChannel, HEADER_BYTES);
 
             // //////////////////////
@@ -244,13 +240,6 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
 
             assert i == nr : i;
             assert j == nc : j;
-        } finally {
-            if (latChannel != null) {
-                latChannel.close();
-            }
-            if (longChannel != null) {
-                longChannel.close();
-            }
         }
 
         return gridShift;

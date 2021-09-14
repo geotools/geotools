@@ -18,10 +18,12 @@ package org.geotools.gml3.bindings;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
+import org.geotools.referencing.CRS;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -68,5 +70,26 @@ public class MultiPolygonTypeBindingTest extends GML3TestSupport {
         assertEquals(2, children.getLength());
         assertEquals("geometry.1", getID(children.item(0)));
         assertEquals("geometry.2", getID(children.item(1)));
+    }
+
+    @Test
+    public void testEncodePolygon() throws Exception {
+        Geometry geometry = GML3MockData.polygon();
+        geometry.setUserData(CRS.decode("EPSG:4326"));
+        GML3EncodingUtils.setID(geometry, "geometry");
+        Document dom = encode(geometry, GML.MultiPolygon);
+        // print(dom);
+        assertEquals(
+                "urn:x-ogc:def:crs:EPSG:4326",
+                dom.getElementsByTagNameNS(GML.NAMESPACE, "MultiPolygon")
+                        .item(0)
+                        .getAttributes()
+                        .getNamedItem("srsName")
+                        .getTextContent());
+        assertNull(
+                dom.getElementsByTagNameNS(GML.NAMESPACE, "Polygon")
+                        .item(0)
+                        .getAttributes()
+                        .getNamedItem("srsName"));
     }
 }

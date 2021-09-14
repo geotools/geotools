@@ -47,4 +47,14 @@
         <gav regex="true">^net\.sourceforge\.jtds:jtds:.*$</gav>
         <cpe>cpe:/a:microsoft:sql_server</cpe>
     </suppress>
+    <suppress>
+        <notes><![CDATA[file name: jcc-X.Y.Z.M.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.ibm\.db2/jcc@.*$</packageUrl>
+        <cpe>cpe:/a:ibm:db2_server</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[module: org.geotools.jdbc:gt-jdbc-mysql:NN]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.geotools\.jdbc/gt\-jdbc\-mysql@.*$</packageUrl>
+        <cpe>cpe:/a:mysql:mysql</cpe>
+    </suppress>
 </suppressions>

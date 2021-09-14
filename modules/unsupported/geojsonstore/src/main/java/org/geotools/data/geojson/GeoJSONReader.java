@@ -25,19 +25,24 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.DoubleNode;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FilenameUtils;
@@ -74,8 +79,6 @@ public class GeoJSONReader implements AutoCloseable {
 
     private SimpleFeatureType schema;
 
-    SimpleFeatureTypeBuilder typeBuilder = null;
-
     private SimpleFeatureBuilder builder;
 
     private int nextID = 0;
@@ -88,6 +91,11 @@ public class GeoJSONReader implements AutoCloseable {
 
     private URL url;
 
+    private boolean guessingDates = true;
+
+    /** For reading be a bit more lenient regarding what we parse */
+    private DateParser dateParser = new DateParser();
+
     public GeoJSONReader(URL url) throws IOException {
         this.url = url;
         parser = factory.createParser(url);
@@ -96,6 +104,19 @@ public class GeoJSONReader implements AutoCloseable {
 
     public GeoJSONReader(InputStream is) throws IOException {
         parser = factory.createParser(is);
+    }
+
+    /**
+     * Returns true if the parser is trying to convert string formatted as dates into
+     * java.util.Date, false otherwise. Defaults to true.
+     */
+    public boolean isGuessingDates() {
+        return guessingDates;
+    }
+
+    /** Enables/Disables guessing strings formatted as dates into java.util.Date. */
+    public void setGuessingDates(boolean guessingDates) {
+        this.guessingDates = guessingDates;
     }
 
     public boolean isConnected() {
@@ -134,7 +155,6 @@ public class GeoJSONReader implements AutoCloseable {
      * @return
      */
     public static SimpleFeatureCollection parseFeatureCollection(String jsonString) {
-
         try (GeoJSONReader reader =
                 new GeoJSONReader(new ByteArrayInputStream(jsonString.getBytes()))) {
             SimpleFeatureCollection features = (SimpleFeatureCollection) reader.getFeatures();
@@ -191,7 +211,6 @@ public class GeoJSONReader implements AutoCloseable {
         }
         if (isSchemaChanged()) {
             // retype the features if the schema changes
-
             List<SimpleFeature> nFeatures = new ArrayList<>(features.size());
             for (SimpleFeature feature : features) {
                 if (feature.getFeatureType() != schema) {
@@ -209,6 +228,10 @@ public class GeoJSONReader implements AutoCloseable {
     /** */
     private SimpleFeature getNextFeature(ObjectNode node) throws IOException {
         JsonNode type = node.get("type");
+        if (type == null) {
+            throw new RuntimeException(
+                    "Missing object type in GeoJSON Parsing, expected type=Feature here");
+        }
         if (!"Feature".equalsIgnoreCase(type.asText())) {
             throw new RuntimeException(
                     "Unexpected object type in GeoJSON Parsing, expected Feature got '"
@@ -246,13 +269,56 @@ public class GeoJSONReader implements AutoCloseable {
                     builder.set(n.getKey(), n.getValue().asDouble());
                 } else if (binding == String.class) {
                     builder.set(n.getKey(), n.getValue().textValue());
-                } else if (binding.isAssignableFrom(Geometry.class)) {
+                } else if (binding == Boolean.class) {
+                    builder.set(n.getKey(), n.getValue().booleanValue());
+                } else if (binding == Object.class) {
+                    builder.set(n.getKey(), n.getValue());
+                } else if (binding == List.class) {
+                    ArrayNode array = (ArrayNode) n.getValue();
+                    List<Object> list = new ArrayList<>();
+                    for (int i = 0; i < array.size(); i++) {
+                        JsonNode item = array.get(i);
+                        Object vc;
+                        switch (item.getNodeType()) {
+                            case BOOLEAN:
+                                vc = item.asBoolean();
+                                break;
+                            case NUMBER:
+                                vc = item.asDouble();
+                                break;
+                            case STRING:
+                                vc = item.asText();
+                                break;
+                            case NULL:
+                                vc = null;
+                                break;
+                            default:
+                                throw new IllegalArgumentException(
+                                        "Cannot handle arrays with values of type "
+                                                + item.getNodeType());
+                        }
+                        list.add(vc);
+                    }
+                    builder.set(n.getKey(), list);
+                } else if (Geometry.class.isAssignableFrom(binding)) {
                     GeometryParser<Geometry> gParser = new GenericGeometryParser(gFac);
                     Geometry g = gParser.geometryFromJson(n.getValue());
                     builder.set(n.getKey(), g);
+                } else if (Date.class.isAssignableFrom(binding)) {
+                    String text = n.getValue().asText();
+                    Date date = dateParser.parse(text);
+                    if (date != null) {
+                        builder.set(n.getKey(), date);
+                    } else {
+                        // will go through the Converter machinery which, depending on the
+                        // classpath, might try out a larger set of conversions, or end up
+                        // with a null value
+                        builder.set(n.getKey(), n.getValue().asText());
+                    }
+
                 } else {
                     LOGGER.warning("Unable to parse object of type " + binding);
-                    builder.set(n.getKey(), n.getValue().toString());
+                    builder.set(n.getKey(), n.getValue().asText());
                 }
             }
             JsonNode geom = node.get("geometry");
@@ -269,7 +335,7 @@ public class GeoJSONReader implements AutoCloseable {
     /** Create a simpleFeatureBuilder for the current schema + these new properties. */
     private SimpleFeatureBuilder getBuilder(JsonNode props) {
 
-        typeBuilder = new SimpleFeatureTypeBuilder();
+        SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
         // GeoJSON is always WGS84
         typeBuilder.setCRS(DefaultGeographicCRS.WGS84);
         typeBuilder.setName(baseName);
@@ -303,11 +369,28 @@ public class GeoJSONReader implements AutoCloseable {
                 typeBuilder.add(n.getKey(), Integer.class);
             } else if (value instanceof DoubleNode) {
                 typeBuilder.add(n.getKey(), Double.class);
+            } else if (value instanceof BooleanNode) {
+                typeBuilder.add(n.getKey(), Boolean.class);
             } else if (value instanceof ObjectNode) {
-                String type = value.get("type").asText();
-                Geometries namedType = Geometries.getForName(type);
-                if (namedType != null) {
+                if (Optional.ofNullable(value.get("type"))
+                        .map(t -> t.asText())
+                        .map(t -> Geometries.getForName(t))
+                        .isPresent()) {
                     typeBuilder.add(n.getKey(), Geometry.class, DefaultGeographicCRS.WGS84);
+                } else {
+                    // a complex object, we don't know what it is going to be
+                    typeBuilder.add(n.getKey(), Object.class);
+                }
+            } else if (value instanceof ArrayNode) {
+                typeBuilder.add(n.getKey(), List.class);
+            } else if (value instanceof TextNode && guessingDates) {
+                // it could be a date too
+                Date date = dateParser.parse(value.asText());
+                if (date != null) {
+                    typeBuilder.add(n.getKey(), Date.class);
+                } else {
+                    typeBuilder.defaultValue("");
+                    typeBuilder.add(n.getKey(), String.class);
                 }
             } else {
                 typeBuilder.defaultValue("");

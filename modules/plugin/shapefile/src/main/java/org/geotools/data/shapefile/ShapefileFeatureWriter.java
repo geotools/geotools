@@ -269,6 +269,7 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
         }
     }
 
+    @SuppressWarnings("PMD.UseTryWithResources") // resources not created here
     protected void doClose() throws IOException {
         // close reader, flush headers, and copy temp files, if any
         try {

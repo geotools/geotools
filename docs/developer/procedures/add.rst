@@ -59,58 +59,79 @@ References:
 * http://maven.apache.org/guides/getting-started/index.html
 * http://maven.apache.org/guides/mini/guide-3rd-party-jars-local.html
 
-Our build process does not include jar files inside the subversion repository, instead Maven downloads jar files it needs from remote repositories (web sites). The location of these web sites is specified in the parent ``pom.xml`` file, which is inherited by all modules. There are mainly three sites available:
+Our build process does not include jar files inside the source code repository, instead Maven downloads jar files it needs from remote repositories (web sites). The location of these web sites is specified in the parent ``pom.xml`` file, which is inherited by all modules.
 
-* Java.net repository
-  
-  http://download.java.net/maven/2
+.. literalinclude:: /../../pom.xml
+   :language: xml
+   :start-at:   <repositories>
+   :end-at:   </repositories>
 
-* Open Source Geospatial Foundation Repository
-  
-  Jars specific to us such as JTS.
-  
-  http://download.osgeo.org/webdav/geotools/
+There are mainly three repositories available:
 
-* OpenGeo Maven Repository
+* Maven Central repository
   
-  This is our SNAPSHOT repository, offering better performance and often
-  contains the same jars as osgeo foundation repository.
+  Contents from a wide range of organizations:
   
-  http://repo.opengeo.org
-
-* http://www.ibiblio.org/maven2/
+  https://repo1.maven.org/maven2/
   
-  General utility open source projects, especially apache related
+* OSGeo Nexus Release Repository
+  
+  Release jars specific to us such as JTS:
+  
+  https://repo.osgeo.org/repository/release/
+  
+* OSGeo Nexus Snapshot Repository
+  
+  Snapshot repository hosting nightly builds:
+  
+  https://repo.osgeo.org/repository/snapshot
 
-Take a look at these sites and some of the "mystery" out of how Maven works. You may notice that the directory structure matches the dependency entries that you see in the ``pom.xml`` files. If the dependency entry has a groupId tag then this will be the name of the folder, if it just has an id tag then this will be used for the name of the folder and the jar within it.
+The OSGeo release repository above caches artifacts from a number of repositories used or maintained by communnity members:
 
-It is always worth taking a look at these sites (particularly the maven one) just to check that a version of the jar you want to use is not already available.
+* ucar-cache - https://artifacts.unidata.ucar.edu/content/repositories/unidata-releases
+* restlet-cache - http://maven.restlet.org
+* geo-solutions-cache - http://maven.geo-solutions.it/
+* k-int-cache - http://maven.k-int.com/content/repositories/releases/
+* seasar-cache - http://maven.seasar.org/maven2
+* no.ecc-cache - https://maven.ecc.no/releases
+
+Take a look at these sites and some of the "mystery" out of how Maven works. You may notice that the directory structure matches the dependency entries that you see in the ``pom.xml`` files. If the dependency entry has a `groupId` tag then this will be the name of the folder, if it just has an ``artifactId`` tag then this will be used for the name of the folder and the jar within it.
+
+It is always worth taking a look at these sites to check that a version of the jar you want to use is not already available.
+
+References:
+
+* https://search.maven.org
+* http://repo.osgeo.org/
+* https://wiki.osgeo.org/wiki/SAC:Repo
 
 It really is not available - how to upload?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Assuming the jar you want is not already hosted on one of these sites you need to upload it and add a dependency entry to your ``pom.xml`` file.
 
-* Upload with Maven (not by copy-and-paste)
-  
-  Uploading a jar file is not enough. A clean repository also needs the associated jar.md5,
-  jar.sha1, pom, pom.md5, pom.sha1 files to be uploaded, and needs the various
-  maven-metadata.xml files to be updated (as well as their associated md5 and sha1 files).
-  
-  This is very tedious, so don't do that by hand! Maven 2 will do this automatically for you.
+The GeoTools project has access to two repositories for distributing content:
 
-Deploying to Open Source Geospatial Foundation Maven 2 Repository:
+.. literalinclude:: /../../pom.xml
+   :language: xml
+   :start-at:   <distributionManagement>
+   :end-at:   </distributionManagement>
+
+Uploading a jar file is not enough. A clean repository also needs the associated ``jar.md5``,
+``jar.sha1``, ``pom``, ``pom.md5``, ``pom.sha1`` files to be uploaded or generated,
+and needs the various ``maven-metadata.xml`` files to be updated (as well as their
+associated ``md5`` and ``sha1`` files).
+  
+This is very tedious, so don't do that by hand! Maven will do this automatically for you.
+
+Deploying to Open Source Geospatial Foundation Nexus Repository:
    
 1. This is the GeoTools repository used for stable releases; as such it is the best place to host
    extra 3rd party dependencies. Use your OSGeo ID login credentials:
    
-   * http://download.osgeo.org/webdav/geotools/
+   * https://repo.osgeo.org/repository/geotools-releases/
    
-   Your OSGeo ID must be on this list to enable WebDAV access. Anyone on the list can add you:
-   
-   * https://id.osgeo.org/ldap/group?group=geotools
-
-3. Create or update your ~/.m2/settings.xml file as below (~ is your home directory)::
+2. Create or update your ~/.m2/settings.xml file as below (~ is your home directory)::
      
      <?xml version="1.0" encoding="ISO-8859-1"?>
      <settings>
@@ -130,44 +151,20 @@ Deploying to Open Source Geospatial Foundation Maven 2 Repository:
                             -Dversion=<version>          \
                             -Dfile=<path-to-file>        \
                             -Dpackaging=jar              \
-                            -DrepositoryId=osgeo   \
+                            -DrepositoryId=osgeo         \
                             -Durl=dav:http://download.osgeo.org/upload/geotools/
 
 4. Or if you have a pom file::
      
      mvn deploy:deploy-file -DpomFile=<path-to-pom>      \
                             -Dfile=<path-to-file>        \
-                            -DrepositoryId=osgeo   \
+                            -DrepositoryId=osgeo         \
                             -Durl=dav:http://download.osgeo.org/upload/geotools/
 
 5. Elements in bracket (<foo>) need to be replaced by their actual values.
 
-Deploying to OpenGeo Maven 2 Repository:
-
-1. This is the repository used for SNAPSHOT releases; you can ask on the email list for access.
-2. Although this really is more the target for a "mvn deploy" then something to upload to by
-   hand.
-   
-   * http://repo.opengeo.org
-
-Uploading to Ibiblio
-
-1. You can also upload your new jar to ibiblio - in case lists.refractions.net is hacked again.
-   
-2. Unfortunately only a limited number of GeoTools developers have ibiblio access so unless you
-   are one of the lucky few you will have to ask someone else to do that part for you.
-3. To do this create a JIRA task requesting that your jar be uploaded/
-   
-   * https://osgeo-org.atlassian.net/secure/CreateIssue!default.jspa
-
-4. In this task request include the following information:
-   
-   * Location where the jar can be obtained from
-   * A version number for the jar (this should match what you specify in the pom.xml)
-   * The license under which the jar can be re-distributed
-
-Examples of Updating JTS Jar
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Examples of deploy-file to upload JTS JAR
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 1. Change into one of the GeoTools directories (the geotools ``pom.xml`` has all the
    repository definitions so changing directories is easier than editing your settings.xml)::
@@ -181,3 +178,24 @@ Examples of Updating JTS Jar
 3. And the source code (you will need to zip this up first since JTS does not provide a source download)::
     
     C:\java\geotools\trunk>mvn deploy:deploy-file -DgroupId=org.locationtech -DartifactId=jts -Dversion=1.13 -Dfile=C:\java\jts\jts-1.13-src.zip -Dpackaging=java-source -DrepositoryId=osgeo -Durl=dav:http://download.osgeo.org/webdav/geotools/ -DgeneratePom=false
+
+Alternative uploading to Nexus Repository
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Uploading to Open Source Geospatial Foundation Nexus Repository:
+
+1. Login (using your OSGeo User id) to https://repo.osgeo.org/
+
+2. Visit the upload page, and select geotools-releases from the list.
+
+   * https://repo.osgeo.org/#browse/upload:geotools-releases
+
+   If this is not shown you do not have permission, please ask on the developer list.
+   
+3. Upload your third-party jar browsing for the jar to upload, and providing a classifier and extension if required.
+   
+   Be sure to:
+   
+   * Use :guilabel:`Add another assest` button to include a ``src`` or ``javadoc`` zip at the same time using approprite classifier.
+   
+   * Either upload a ``pom.xml`` as one of the assets, or fill in the component coordinates: groupId, artifactId, and Version.

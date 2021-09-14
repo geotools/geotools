@@ -92,6 +92,7 @@ public class DBCPDataSourceFactory extends AbstractDataSourceFactorySpi {
     }
 
     @Override
+    @SuppressWarnings("PMD.UseTryWithResources") // just a conn. test, we want to manage closing
     public DataSource createNewDataSource(Map<String, ?> params) throws IOException {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName((String) DRIVERCLASS.lookUp(params));

@@ -99,7 +99,7 @@ public final class CoordinateFormatter {
     /** Formats a number with the configured number of decimals */
     public StringBuffer format(double x, StringBuffer sb) {
         String formatted;
-        if ((Math.abs(x) >= DECIMAL_MIN && x < DECIMAL_MAX) || x == 0) {
+        if ((Math.abs(x) >= DECIMAL_MIN && Math.abs(x) < DECIMAL_MAX) || x == 0) {
             x = truncate(x);
             long lx = (long) x;
             if (lx == x) {
@@ -124,9 +124,9 @@ public final class CoordinateFormatter {
         //  e.g. if we want 8 decimals: 3.123456786 * 10E8 = 312345678.6
         double scaled = x * scale;
         // add 0.5 to round the decimal part, e.g 312345678.6 + 0.5 = 312345679.1
-        scaled += 0.5;
+        scaled += Math.signum(x) * 0.5;
         // take only the decimal part, e.g.  312345679
-        scaled = Math.floor(scaled);
+        scaled = Math.signum(x) < 0 ? Math.ceil(scaled) : Math.floor(scaled);
         // remove the scale factor, the number will now have the desired number of decimals
         return scaled / scale;
     }

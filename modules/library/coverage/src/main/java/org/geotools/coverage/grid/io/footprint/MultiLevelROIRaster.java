@@ -79,7 +79,8 @@ public class MultiLevelROIRaster implements MultiLevelROI {
     }
 
     @Override
-    @SuppressWarnings("PMD.CloseResource") // if delayed read we should not close immediately
+    // if delayed read we should not close immediately
+    @SuppressWarnings({"PMD.CloseResource", "PMD.UseTryWithResources"})
     public ROI getTransformedROI(
             AffineTransform at,
             int imageIndex,

@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -48,6 +49,11 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
     public static final Param URLP =
             new Param(
                     "url", URL.class, "url to a .shp file", true, null, new KVP(Param.EXT, "shp"));
+
+    /**
+     * This system property will enable "DBF charset autodetection from CPG sidecar file" feature.
+     */
+    public static final String ENABLE_CPG_SWITCH = "org.geotools.shapefile.enableCPG";
 
     /** Optional - uri of the FeatureType's namespace */
     public static final Param NAMESPACEP =
@@ -112,7 +118,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
                     Charset.class,
                     "character used to decode strings from the DBF file",
                     false,
-                    Charset.forName("ISO-8859-1"),
+                    StandardCharsets.ISO_8859_1,
                     new KVP(Param.LEVEL, "advanced")) {
                 /*
                  * This is an example of a non simple Param type where a custom parse method is required.
@@ -248,7 +254,9 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
             store.setMemoryMapped(useMemoryMappedBuffer);
             store.setBufferCachingEnabled(cacheMemoryMaps);
             store.setCharset(dbfCharset);
-            if (!hasParam(DBFCHARSET, params)) {
+            // CPG sidecar file enabled by default
+            boolean enableCPG = Boolean.valueOf(System.getProperty(ENABLE_CPG_SWITCH, "true"));
+            if (enableCPG && !hasParam(DBFCHARSET, params)) {
                 store.setTryCPGFile(true);
             }
             store.setTimeZone(dbfTimeZone);

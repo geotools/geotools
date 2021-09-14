@@ -422,15 +422,13 @@ public class CoordinateVariableTest extends Assert {
                 TestData.file(this, "climatological.zip"), new File(workDir, "climatological.zip"));
         TestData.unzipFile(this, "climatologicalaxis/climatological.zip");
 
-        final NetcdfDataset dataset =
+        try (NetcdfDataset dataset =
                 NetcdfDataset.openDataset(
                         TestData.url(this, "climatologicalaxis/climatological.nc")
-                                .toExternalForm());
-        Dimension dim = dataset.findDimension("time");
-
-        CoordinateAxis1D coordinateAxis =
-                (CoordinateAxis1D) dataset.findCoordinateAxis(dim.getShortName());
-        try {
+                                .toExternalForm())) {
+            Dimension dim = dataset.findDimension("time");
+            CoordinateAxis1D coordinateAxis =
+                    (CoordinateAxis1D) dataset.findCoordinateAxis(dim.getShortName());
 
             CoordinateHandler handler = CoordinateHandlerFinder.findHandler(coordinateAxis);
             assertNotNull(handler);
@@ -460,7 +458,6 @@ public class CoordinateVariableTest extends Assert {
                     timeVariable.read(Collections.singletonMap("time", 2)).getTime());
 
         } finally {
-            dataset.close();
             FileUtils.deleteDirectory(TestData.file(this, "climatologicalaxis"));
         }
     }

@@ -71,7 +71,7 @@ public class NumericConverterFactory implements ConverterFactory {
                 || Float.class.equals(target)
                 || Number.class.equals(target)) {
 
-            // check if teh safe conversion flag was set and if so only allow save conversions
+            // check if the safe conversion flag was set and if so only allow save conversions
             if (hints != null) {
                 Object safeConversion = hints.get(ConverterFactory.SAFE_CONVERSION);
                 if (safeConversion instanceof Boolean

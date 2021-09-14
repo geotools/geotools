@@ -19,6 +19,7 @@ package org.geotools.gce.geotiff;
 import it.geosolutions.imageio.plugins.tiff.TIFFImageWriteParam;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageMetadata;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageWriter;
+import it.geosolutions.io.output.adapter.OutputStreamAdapter;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
@@ -118,9 +119,12 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
             }
 
         } else if (destination instanceof OutputStream) {
-
-            this.outStream = ImageIOExt.createImageOutputStream(null, destination);
-
+            if (destination instanceof OutputStreamAdapter) {
+                this.outStream = ((OutputStreamAdapter) destination).getWrappedStream();
+                this.destination = outStream;
+            } else {
+                this.outStream = ImageIOExt.createImageOutputStream(null, destination);
+            }
         } else if (destination instanceof ImageOutputStream)
             this.outStream = (ImageOutputStream) destination;
         else throw new IllegalArgumentException("The provided destination canno be used!");

@@ -43,7 +43,7 @@ public class JRendererStatusBarItem extends StatusBarItem {
     private final ImageIcon idleIcon;
 
     /*
-     * Creates a new item associated with teh given map.
+     * Creates a new item associated with the given map.
      */
     public JRendererStatusBarItem(MapPane mapPane) {
         super("Busy", false);

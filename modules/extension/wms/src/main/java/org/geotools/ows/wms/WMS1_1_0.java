@@ -88,21 +88,21 @@ public class WMS1_1_0 extends WMS1_0_0 {
          */
         @Override
         protected void initRequest() {
-            setProperty("REQUEST", "GetCapabilities");
+            setProperty(processKey("REQUEST"), "GetCapabilities");
         }
         /* (non-Javadoc)
          * @see org.geotools.data.wms.request.AbstractGetCapabilitiesRequest#initService()
          */
         @Override
         protected void initService() {
-            setProperty("SERVICE", "WMS");
+            setProperty(processKey("SERVICE"), "WMS");
         }
         /* (non-Javadoc)
          * @see org.geotools.data.wms.request.AbstractGetCapabilitiesRequest#initVersion()
          */
         @Override
         protected void initVersion() {
-            setProperty("VERSION", "1.1.0");
+            setProperty(processKey("VERSION"), "1.1.0");
         }
 
         @Override

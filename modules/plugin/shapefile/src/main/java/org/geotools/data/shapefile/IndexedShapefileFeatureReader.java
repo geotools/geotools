@@ -60,6 +60,7 @@ class IndexedShapefileFeatureReader extends ShapefileFeatureReader {
     }
 
     @Override
+    @SuppressWarnings("PMD.UseTryWithResources") // not declared here
     public void close() throws IOException {
         try {
             super.close();

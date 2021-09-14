@@ -16,6 +16,11 @@
  */
 package org.geotools.referencing.factory.epsg.hsql;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -47,6 +52,7 @@ import org.opengis.referencing.operation.Conversion;
 import org.opengis.referencing.operation.CoordinateOperation;
 import org.opengis.referencing.operation.CoordinateOperationFactory;
 import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.TransformException;
 import org.opengis.referencing.operation.Transformation;
 
 /**
@@ -128,8 +134,7 @@ public class OperationFactoryTest {
         Assert.assertEquals(1.0, AbstractCoordinateOperation.getAccuracy(operation), 1E-6);
         Assert.assertTrue(operation instanceof Transformation);
         /*
-         * Tests a transformation not backed directly by an authority factory.
-         * However, the inverse transform may exist in the authority factory.
+         * Tests a transformation not backed directly by an authority factory. However, the inverse transform may exist in the authority factory.
          */
         sourceCRS = crsAuthFactory.createCoordinateReferenceSystem("4326");
         targetCRS = crsAuthFactory.createCoordinateReferenceSystem("2995");
@@ -222,9 +227,9 @@ public class OperationFactoryTest {
         DirectPosition expected =
                 new DirectPosition2D(targetCRS, 214741.10238960697, 26957.60506898933);
 
-        // geoserver vecmath:  TransformedDirectPosition[214741.10238960697, 26957.60506898933]
-        // geoserver    ejml:  TransformedDirectPosition[214636.7447572897,  27218.077500249085]
-        // geotools     ejml:  TransformedDirectPosition[214636.7447572897,  27218.077500249085]
+        // geoserver vecmath: TransformedDirectPosition[214741.10238960697, 26957.60506898933]
+        // geoserver ejml: TransformedDirectPosition[214636.7447572897, 27218.077500249085]
+        // geotools ejml: TransformedDirectPosition[214636.7447572897, 27218.077500249085]
         Assert.assertEquals(expected.getOrdinate(0), arbitraryToInternal.getOrdinate(0), 1e-9);
         Assert.assertEquals(expected.getOrdinate(1), arbitraryToInternal.getOrdinate(1), 1e-9);
     }
@@ -443,5 +448,102 @@ public class OperationFactoryTest {
         // try reverse order
         operation = opFactory.createOperation(targetCRS, sourceCRS);
         assertOperation(operation, targetCRS, sourceCRS);
+    }
+
+    @Test
+    public void testGetSpecificTransform()
+            throws FactoryException, TransformException, ParseException {
+
+        CoordinateReferenceSystem sourceCRS =
+                crsAuthFactory.createCoordinateReferenceSystem("EPSG:21036");
+        CoordinateReferenceSystem targetCRS =
+                crsAuthFactory.createCoordinateReferenceSystem("EPSG:32736");
+
+        MathTransform crsTransform = CRS.findMathTransform(sourceCRS, targetCRS, "EPSG:1285");
+        // in an ideal world we would examine the transform to see what the TOWGS parameter is but
+        // that is locked away from us.
+        assertTrue(crsTransform.toString().contains("PARAMETER[\"dx\", -175.0]"));
+        assertTrue(crsTransform.toString().contains("PARAMETER[\"dy\", -23.0]"));
+        assertTrue(crsTransform.toString().contains("PARAMETER[\"dz\", -303.0]"));
+        DirectPosition input = new DirectPosition2D(sourceCRS, 790615.026, 9316007.421);
+        DirectPosition expected =
+                new DirectPosition2D(targetCRS, 790691.8117871293, 9315700.848637346);
+        DirectPosition output = new DirectPosition2D();
+        crsTransform.transform(input, output);
+        assertPointsEqual(expected, output);
+
+        sourceCRS = crsAuthFactory.createCoordinateReferenceSystem("EPSG:27700");
+        targetCRS = crsAuthFactory.createCoordinateReferenceSystem("EPSG:4326");
+        crsTransform = CRS.findMathTransform(sourceCRS, targetCRS, "EPSG:1199");
+        assertNotNull(crsTransform);
+        input = new DirectPosition2D(sourceCRS, 10000, 40000);
+        expected = new DirectPosition2D(targetCRS, 50.1314925, -7.4594847);
+        output = new DirectPosition2D();
+        crsTransform.transform(input, output);
+        assertPointsEqual(expected, output);
+    }
+
+    @Test
+    public void testGetTransforms() throws FactoryException, TransformException, ParseException {
+
+        CoordinateReferenceSystem sourceCRS =
+                crsAuthFactory.createCoordinateReferenceSystem("EPSG:21036");
+        CoordinateReferenceSystem targetCRS =
+                crsAuthFactory.createCoordinateReferenceSystem("EPSG:32736");
+        Map<String, AbstractCoordinateOperation> transforms =
+                CRS.getTransforms(sourceCRS, targetCRS);
+        String[] expected = {"EPSG:3998", "EPSG:1284", "EPSG:1122", "EPSG:1285"};
+        Set<String> keys = transforms.keySet();
+
+        assertEquals("Wrong number of transforms", expected.length, keys.size());
+        for (String code : expected) {
+            assertTrue("Expected key " + code + " not found", keys.contains(code));
+        }
+
+        sourceCRS = crsAuthFactory.createCoordinateReferenceSystem("EPSG:27700");
+        targetCRS = crsAuthFactory.createCoordinateReferenceSystem("EPSG:4326");
+        transforms = CRS.getTransforms(sourceCRS, targetCRS);
+        String[] expected2 = {
+            "EPSG:1195",
+            "EPSG:1314",
+            "EPSG:5622",
+            "EPSG:1197",
+            "EPSG:1196",
+            "EPSG:1199",
+            "EPSG:1198"
+        };
+        keys = transforms.keySet();
+
+        assertEquals("Wrong number of transforms", expected2.length, keys.size());
+        for (String code : expected2) {
+            assertTrue("Expected key " + code + " not found", keys.contains(code));
+            AbstractCoordinateOperation op = transforms.get(code);
+            assertNotNull(op);
+            assertNotNull(op.getMathTransform());
+        }
+
+        CoordinateReferenceSystem gda94 = CRS.decode("epsg:4283");
+        CoordinateReferenceSystem gda2020 = CRS.decode("epsg:7844");
+
+        transforms = CRS.getTransforms(gda94, gda2020);
+
+        String[] expected3 = {"EPSG:8048", "EPSG:8447"};
+        keys = transforms.keySet();
+
+        assertEquals("Wrong number of transforms", expected3.length, keys.size());
+        for (String code : expected3) {
+            assertTrue("Expected key " + code + " not found", keys.contains(code));
+            AbstractCoordinateOperation op = transforms.get(code);
+            assertNotNull(op);
+            assertNotNull(op.getMathTransform());
+        }
+    }
+    /**
+     * @param expected
+     * @param output
+     */
+    private void assertPointsEqual(DirectPosition expected, DirectPosition output) {
+        Assert.assertEquals(expected.getOrdinate(0), output.getOrdinate(0), 1e-6);
+        Assert.assertEquals(expected.getOrdinate(1), output.getOrdinate(1), 1e-6);
     }
 }

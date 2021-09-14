@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ======================================================================
+       Assembly descriptor for binaries. This descriptor is a modified
+       copy of the Maven "bin" predefined descriptor published there:
+
+       http://maven.apache.org/plugins/maven-assembly-plugin/descriptor-refs.html#bin
+
+       It will creates a "gt2-${project.version}-bin.zip" file.  This file
+       will contains a "gt2-${project.version}" root directory, which will
+       contains every JAR copied by our custom "jar-collector" plugin.
+
+       $Id$
+       $URL$
+     ====================================================================== -->
+<assembly>
+  <id>bin</id>
+  <formats>
+    <format>zip</format>
+  </formats>
+  
+  <!-- dependency sets work, but then we have the maintenance of gt-release depending on everything -->
+  <dependencySets>
+    <dependencySet>
+      <outputDirectory>lib</outputDirectory>
+      <unpack>false</unpack>
+      <useProjectArtifact>false</useProjectArtifact>
+      <useTransitiveDependencies>true</useTransitiveDependencies>
+      <useTransitiveFiltering>true</useTransitiveFiltering>
+      <useStrictFiltering>true</useStrictFiltering>
+      <includes>
+        <include>javax.media:jai_core</include>
+        <include>javax.media:jai_codec</include>
+        <include>javax.media:jai_imageio</include>
+      
+        <include>org.geotools:gt-arcgrid</include>
+        <include>org.geotools:gt-brewer</include>
+        <include>org.geotools:gt-charts</include>
+        <include>org.geotools:gt-complex</include>
+        <include>org.geotools:gt-coverage-api</include>
+        <include>org.geotools:gt-coverage</include>
+        <include>org.geotools:gt-cql</include>
+        <include>org.geotools:gt-csv</include>
+        <include>org.geotools:gt-epsg-extension</include>
+        <include>org.geotools:gt-epsg-hsql</include>
+        <include>org.geotools:gt-feature-pregeneralized</include>
+        <include>org.geotools:gt-geopkg</include>
+        <include>org.geotools:gt-geotiff</include>
+        <include>org.geotools:gt-graph</include>
+        <include>org.geotools:gt-grassraster</include>
+        <include>org.geotools:gt-grib</include>
+        <include>org.geotools:gt-grid</include>
+        <include>org.geotools:gt-http-commons</include>
+        <include>org.geotools:gt-http</include>
+        <include>org.geotools:gt-image</include>
+        <include>org.geotools:gt-imageio-ext-gdal</include>
+        <include>org.geotools:gt-imagemosaic</include>
+        <include>org.geotools:gt-imagepyramid</include>
+        <include>org.geotools:gt-jdbc</include>
+        <include>org.geotools:gt-jp2k</include>
+        <include>org.geotools:gt-main</include>
+        <include>org.geotools:gt-mbstyle</include>
+        <include>org.geotools:gt-metadata</include>
+        <include>org.geotools:gt-mongodb</include>
+        <include>org.geotools:gt-netcdf</include>
+        <include>org.geotools:gt-opengis</include>
+        <include>org.geotools:gt-process-feature</include>
+        <include>org.geotools:gt-process-geometry</include>
+        <include>org.geotools:gt-process-raster</include>
+        <include>org.geotools:gt-process</include>
+        <include>org.geotools:gt-property</include>
+        <include>org.geotools:gt-referencing</include>
+        <include>org.geotools:gt-render</include>
+        <include>org.geotools:gt-sample-data</include>
+        <include>org.geotools:gt-shapefile</include>
+        <include>org.geotools:gt-swing</include>
+        <include>org.geotools:gt-tile-client</include>
+        <include>org.geotools:gt-transform</include>
+        <include>org.geotools:gt-wfs-ng</include>
+        <include>org.geotools:gt-wms</include>
+        <include>org.geotools:gt-wmts</include>
+        <include>org.geotools:gt-xml</include>
+        <include>org.geotools:gt-ysld</include>
+        
+        <include>org.geotools.xsd:gt-xsd-core</include>
+        <include>org.geotools.xsd:gt-xsd-csw</include>
+        <include>org.geotools.xsd:gt-xsd-fes</include>
+        <include>org.geotools.xsd:gt-xsd-filter</include>
+        <include>org.geotools.xsd:gt-xsd-gml2</include>
+        <include>org.geotools.xsd:gt-xsd-gml3</include>
+        <include>org.geotools.xsd:gt-xsd-kml</include>
+        <include>org.geotools.xsd:gt-xsd-ows</include>
+        <include>org.geotools.xsd:gt-xsd-sld</include>
+        <include>org.geotools.xsd:gt-xsd-wcs</include>
+        <include>org.geotools.xsd:gt-xsd-wfs</include>
+        <include>org.geotools.xsd:gt-xsd-wms</include>
+        <include>org.geotools.xsd:gt-xsd-wmts</include>
+        <include>org.geotools.xsd:gt-xsd-wps</include>
+        
+        <include>org.geotools.jdbc:gt-jdbc-oracle</include>
+        <include>org.geotools.jdbc:gt-jdbc-db2</include>
+        <include>org.geotools.jdbc:gt-jdbc-h2</include>
+        <include>org.geotools.jdbc:gt-jdbc-hana</include>
+        <include>org.geotools.jdbc:gt-jdbc-mysql</include>
+        <include>org.geotools.jdbc:gt-jdbc-oracle</include>
+        <include>org.geotools.jdbc:gt-jdbc-postgis</include>
+        <include>org.geotools.jdbc:gt-jdbc-sqlserver</include>
+        <include>org.geotools.jdbc:gt-jdbc-teradata</include>
+        
+        <include>org.geotools:gt-app-schema</include>
+        <include>org.geotools:gt-app-schema-resolver</include>
+        <include>org.geotools:gt-sample-data-access</include>
+      </includes>
+    </dependencySet>
+    <dependencySet>
+      <outputDirectory>optional</outputDirectory>
+      <unpack>false</unpack>
+      <useProjectArtifact>false</useProjectArtifact>
+      <useStrictFiltering>true</useStrictFiltering>
+      <includes>
+        <include>org.geotools:gt-epsg-postgresql</include>
+        <include>org.geotools:gt-epsg-wkt</include>
+      </includes>
+    </dependencySet>
+  </dependencySets>
+  
+  
+  <fileSets>
+    <fileSet>
+      <directory>target/html</directory>
+      <outputDirectory></outputDirectory>
+      <includes>
+        <include>README.html</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>target/html/licenses</directory>
+      <outputDirectory>licenses</outputDirectory>
+      <excludes>
+        <exclude>CreativeCommonsByAttribution.html</exclude>
+        <exclude>README.html</exclude>
+      </excludes>
+    </fileSet>
+    <fileSet>
+      <directory>target</directory>
+      <includes>
+        <include>VERSION*</include>
+      </includes>
+    </fileSet>
+  </fileSets>
+  <files>
+    <file>
+      <source>target/html/licenses/README.html</source>
+      <destName>licenses/NOTICE.html</destName>
+    </file>
+    <!-- tutorials -->
+    <file>
+      <source>../docs/src/main/java/org/geotools/tutorial/quickstart/Quickstart.java</source>
+      <destName>src/org/geotools/tutorial/quickstart/Quickstart.java</destName>
+    </file>
+  </files>
+</assembly>

@@ -82,7 +82,7 @@ public class ESRIWMTSServerOnlineTest extends OnlineTestCase {
         request.setCRS(DefaultGeographicCRS.WGS84);
         Set<Tile> tiles = request.getTiles();
         for (Tile tile : tiles) {
-            assertTrue(tile.getUrl().toString().contains("style=default"));
+            assertTrue(tile.getUrl().toString().toLowerCase().contains("style=default"));
         }
     }
 }

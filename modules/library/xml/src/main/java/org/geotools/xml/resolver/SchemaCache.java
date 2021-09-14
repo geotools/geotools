@@ -109,6 +109,10 @@ public class SchemaCache {
         }
     }
 
+    /** Max number of attempts to follow a redirect to avoid redirect loop * */
+    private static final int MAX_FOLLOW_REDIRECT =
+            Integer.getInteger("org.geotools.xml.schema.maxFollowRedirect", 16);
+
     /**
      * A cache of XML schemas (or other file types) rooted in the given directory, with optional
      * downloading.
@@ -179,24 +183,13 @@ public class SchemaCache {
 
     /** Store the bytes in the given file, creating any necessary intervening directories. */
     static void store(File file, byte[] bytes) {
-
-        OutputStream output = null;
-        try {
-            if (file.getParentFile() != null && !file.getParentFile().exists()) {
-                file.getParentFile().mkdirs();
-            }
-            output = new BufferedOutputStream(new FileOutputStream(file));
+        if (file.getParentFile() != null && !file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
+        try (OutputStream output = new BufferedOutputStream(new FileOutputStream(file))) {
             output.write(bytes);
         } catch (Exception e) {
             throw new RuntimeException(e);
-        } finally {
-            if (output != null) {
-                try {
-                    output.close();
-                } catch (Exception e) {
-                    // we tried
-                }
-            }
         }
     }
 
@@ -226,14 +219,20 @@ public class SchemaCache {
         return download(location, DEFAULT_DOWNLOAD_BLOCK_SIZE);
     }
 
+    static byte[] download(URI location, int blockSize) {
+        return download(location, blockSize, 0);
+    }
+
     /**
      * Retrieve the contents of a remote URL.
      *
      * @param location and absolute http/https URL.
      * @param blockSize download block size
+     * @param redirectionCount the number of redirection attempts already performed while
+     *     downloading
      * @return the bytes contained by the resource, or null if it could not be downloaded
      */
-    static byte[] download(URI location, int blockSize) {
+    static byte[] download(URI location, int blockSize, int redirectionCount) {
         try {
             URL url = location.toURL();
             String protocol = url.getProtocol();
@@ -246,7 +245,10 @@ public class SchemaCache {
             connection.setReadTimeout(downloadTimeout);
             connection.setUseCaches(false);
             connection.connect();
-            if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+            int responseCode = connection.getResponseCode();
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                if (hasRedirect(responseCode))
+                    return followRedirect(connection, blockSize, redirectionCount);
                 LOGGER.warning(
                         String.format(
                                 "Unexpected response \"%d %s\" while downloading %s",
@@ -255,11 +257,10 @@ public class SchemaCache {
                                 location.toString()));
                 return null;
             }
+
             // read all the blocks into a list
-            InputStream input = null;
             List<byte[]> blocks = new LinkedList<>();
-            try {
-                input = connection.getInputStream();
+            try (InputStream input = connection.getInputStream()) {
                 while (true) {
                     byte[] block = new byte[blockSize];
                     int count = input.read(block);
@@ -274,14 +275,6 @@ public class SchemaCache {
                         byte[] shortBlock = new byte[count];
                         System.arraycopy(block, 0, shortBlock, 0, count);
                         blocks.add(shortBlock);
-                    }
-                }
-            } finally {
-                if (input != null) {
-                    try {
-                        input.close();
-                    } catch (Exception e) {
-                        // we tried
                     }
                 }
             }
@@ -462,5 +455,37 @@ public class SchemaCache {
         File defaultXmlFile = new File(workspacesDir, "default.xml");
         if (!defaultXmlFile.exists()) return false;
         return true;
+    }
+
+    private static boolean hasRedirect(int responseCode) {
+        return responseCode == HttpURLConnection.HTTP_SEE_OTHER
+                || responseCode == HttpURLConnection.HTTP_MOVED_PERM
+                || responseCode == HttpURLConnection.HTTP_MOVED_TEMP;
+    }
+
+    private static byte[] followRedirect(
+            HttpURLConnection connection, int blockSize, int redirectionCount) {
+        String redirect = connection.getHeaderField("Location");
+        byte[] result = null;
+        if (redirect == null) {
+            LOGGER.warning("Tried to follow redirect but no url was provided in Location header");
+        } else if (redirectionCount <= MAX_FOLLOW_REDIRECT) {
+            redirectionCount++;
+            try {
+                URI redirectURL = new URI(redirect);
+                LOGGER.info("Following redirect to " + redirect);
+                result = download(redirectURL, blockSize, redirectionCount);
+            } catch (URISyntaxException uri) {
+                LOGGER.warning(
+                        "Tried to follow redirect but invalid url was provided in Location header: "
+                                + redirect);
+            }
+        } else {
+            LOGGER.warning(
+                    "Max number of follow redirect attempts ("
+                            + MAX_FOLLOW_REDIRECT
+                            + ") reached. Returning null");
+        }
+        return result;
     }
 }

@@ -17,8 +17,10 @@
 package org.geotools.jdbc;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.Join;
 import org.geotools.data.Join.Type;
 import org.geotools.data.Query;
@@ -31,6 +33,7 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.sort.SortOrder;
 
 @SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
@@ -639,5 +642,29 @@ public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
                 assertEquals(ftjoin2StringProp[idx], g.getAttribute(aname("stringProperty2")));
             }
         }
+    }
+
+    public void testJoinWithFidFilter() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        Query q = new Query(tname("ft1"));
+        Join join =
+                new Join(
+                        tname("ftjoin"),
+                        ff.equal(
+                                ff.property(aname("stringProperty")),
+                                ff.property(aname("name")),
+                                true));
+        join.setAlias("b");
+        q.getJoins().add(join);
+        // add a filter for the feature id of the primary table
+        FeatureId id = ff.featureId(tname("ft1") + ".2");
+        q.setFilter(ff.id(Collections.singleton(id)));
+
+        SimpleFeatureCollection features = dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
+        assertEquals(1, features.size());
+        SimpleFeature f = DataUtilities.first(features);
+        assertEquals(id.getID(), f.getID());
+        SimpleFeature b = (SimpleFeature) f.getAttribute("b");
+        assertEquals(tname("ftjoin") + ".2", b.getID());
     }
 }

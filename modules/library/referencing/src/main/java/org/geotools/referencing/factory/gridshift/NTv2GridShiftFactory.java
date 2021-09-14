@@ -166,10 +166,8 @@ public class NTv2GridShiftFactory extends ReferencingFactory implements Buffered
      * @return the grid, or {@code null} on error
      */
     private GridShiftFile loadNTv2Grid(URL location) throws FactoryException {
-        InputStream in = null;
-        try {
+        try (InputStream in = new BufferedInputStream(location.openStream())) {
             GridShiftFile grid = new GridShiftFile();
-            in = new BufferedInputStream(location.openStream());
             grid.loadGridShiftFile(in, false); // Load full grid in memory
             in.close();
             return grid;
@@ -179,14 +177,6 @@ public class NTv2GridShiftFactory extends ReferencingFactory implements Buffered
         } catch (IllegalArgumentException e) {
             LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
             throw new FactoryException(e.getLocalizedMessage(), e);
-        } finally {
-            try {
-                if (in != null) {
-                    in.close();
-                }
-            } catch (IOException e) {
-                // never mind
-            }
         }
     }
 }

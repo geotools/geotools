@@ -24,9 +24,12 @@ import java.lang.reflect.Modifier;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.logging.Logging;
@@ -90,6 +93,30 @@ public class GrowableInternationalString extends AbstractInternationalString
     }
 
     /**
+     * Constructs an international string from the specified InternationalString. It avoids to add
+     * an entry for each locales in cases where {@link InternationalString#toString(Locale)} returns
+     * always the same string, by considering the result returned by {@link
+     * InternationalString#toString()} as the default value.
+     *
+     * @param internationalString the internationalString from which construct a new instance.
+     */
+    public GrowableInternationalString(InternationalString internationalString) {
+        localMap = new LinkedHashMap<>();
+        boolean isGrowable = internationalString instanceof GrowableInternationalString;
+        String defaultValue = null;
+        if (!isGrowable) defaultValue = internationalString.toString();
+        Set<Locale> locales =
+                isGrowable
+                        ? ((GrowableInternationalString) internationalString).getLocales()
+                        : Stream.of(Locale.getAvailableLocales()).collect(Collectors.toSet());
+        for (Locale locale : locales) {
+            String value = internationalString.toString(locale);
+            if (value != null && !value.equals(defaultValue)) localMap.put(locale, value);
+        }
+        if (defaultValue != null) localMap.put(Locale.getDefault(), defaultValue);
+    }
+
+    /**
      * Adds a string for the given locale.
      *
      * @param locale The locale for the {@code string} value, or {@code null}.
@@ -109,11 +136,12 @@ public class GrowableInternationalString extends AbstractInternationalString
                     }
                 case 1:
                     {
-                        localMap = new HashMap<>(localMap);
+                        localMap = new LinkedHashMap<>(localMap);
                         break;
                     }
             }
             String old = localMap.get(locale);
+
             if (old != null) {
                 if (string.equals(old)) {
                     return;
@@ -121,6 +149,7 @@ public class GrowableInternationalString extends AbstractInternationalString
                 // TODO: provide a localized message "String value already set for locale ...".
                 throw new IllegalArgumentException();
             }
+
             localMap.put(locale, string);
             defaultValue = null; // Will be recomputed when first needed.
         }

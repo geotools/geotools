@@ -138,6 +138,10 @@ public class GeoPackage implements Closeable {
     // requirement 11, two generic SRID are to be considered
     protected static final int GENERIC_GEOGRAPHIC_SRID = 0;
     protected static final int GENERIC_PROJECTED_SRID = -1;
+    /** The application id for GeoPackage 1.2 onwards (GPKG) */
+    static final int GPKG_120_APPID = 0x47504B47;
+    /** The application id for GeoPackage 1.0 (GP10) */
+    static final int GPKG_100_APPID = 0x47503130;
 
     public static enum DataType {
         Feature("features"),
@@ -301,7 +305,8 @@ public class GeoPackage implements Closeable {
                 ResultSet rs = st.executeQuery("PRAGMA application_id")) {
             if (rs.next()) {
                 int applicationId = rs.getInt(1);
-                initialized = (0x47503130 == applicationId);
+                // support legacy application id (before 1.2) as well as newer one (from 1.2)
+                initialized = (GPKG_100_APPID == applicationId || GPKG_120_APPID == applicationId);
             }
         }
         if (!initialized) {
@@ -316,7 +321,7 @@ public class GeoPackage implements Closeable {
             runScript(METADATA_REFERENCE + ".sql", cx);
             runScript(DATA_COLUMN_CONSTRAINTS + ".sql", cx);
             addDefaultSpatialReferences(cx);
-            runSQL("PRAGMA application_id = 0x47503130;", cx);
+            runSQL("PRAGMA application_id = " + GPKG_120_APPID + ";", cx);
         }
     }
 
@@ -797,6 +802,7 @@ public class GeoPackage implements Closeable {
      * @param collection The simple feature collection to add to the geopackage.
      * @throws IOException Any errors occurring while adding the new feature dataset.
      */
+    @SuppressWarnings("PMD.UseTryWithResources") // Transaction needs to be rolled back ìn catch
     public void add(FeatureEntry entry, SimpleFeatureCollection collection) throws IOException {
         FeatureEntry e = new FeatureEntry();
         e.init(entry);
@@ -1111,12 +1117,7 @@ public class GeoPackage implements Closeable {
         properties.put("i", pk.getColumns().get(0).getName());
 
         try (Connection cx = connPool.getConnection()) {
-            try {
-                runScript(SPATIAL_INDEX + ".sql", cx, properties);
-            } finally {
-                cx.close();
-            }
-
+            runScript(SPATIAL_INDEX + ".sql", cx, properties);
         } catch (SQLException ex) {
             throw new IOException(ex);
         }

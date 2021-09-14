@@ -68,14 +68,11 @@ public class PreGeneralizedSimpleFeatureTest {
             DataStore baseDs = TestSetup.REPOSITORY.dataStore("dsStreams");
             SimpleFeatureSource fs = baseDs.getFeatureSource(baseName);
             SimpleFeatureCollection fColl = fs.getFeatures();
-            SimpleFeatureIterator iterator = fColl.features();
             Geometry original = null;
-            try {
+            try (SimpleFeatureIterator iterator = fColl.features()) {
                 if (iterator.hasNext()) {
                     original = (Geometry) iterator.next().getDefaultGeometry();
                 }
-            } finally {
-                iterator.close();
             }
             double width = original.getEnvelope().getEnvelopeInternal().getWidth();
 
@@ -92,12 +89,9 @@ public class PreGeneralizedSimpleFeatureTest {
             }
             Geometry simplified = null;
             fColl = fs.getFeatures(query);
-            iterator = fColl.features();
-            try {
+            try (SimpleFeatureIterator iterator = fColl.features()) {
                 if (iterator.hasNext())
                     simplified = (Geometry) iterator.next().getDefaultGeometry();
-            } finally {
-                iterator.close();
             }
             return original.getNumPoints() > simplified.getNumPoints();
         } catch (IOException ex) {

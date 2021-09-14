@@ -35,6 +35,7 @@ import org.opengis.filter.temporal.After;
 import org.opengis.filter.temporal.BegunBy;
 import org.opengis.temporal.Instant;
 import org.opengis.temporal.Period;
+import wiremock.com.google.common.collect.Lists;
 
 /**
  * Unit test for FilterCapabilities.
@@ -86,6 +87,30 @@ public class CapabilitiesTest {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         Filter filter = ff.lessOrEqual(ff.property("x"), ff.literal(2));
         Assert.assertTrue("supports", capabilities.supports(filter));
+    }
+
+    @Test
+    public void testCapabilities_ComparisonsByName() {
+        Capabilities capabilities = new Capabilities();
+        capabilities.addType(And.class);
+        capabilities.addName("GreaterThan");
+        capabilities.addName("GreaterThanEqualTo");
+        capabilities.addName("LessThan");
+        capabilities.addName("LessThanEqualTo");
+        capabilities.addName("EqualTo");
+        capabilities.addName("NotEqualTo");
+
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        Filter filter =
+                ff.and(
+                        Lists.newArrayList(
+                                ff.greater(ff.property("a"), ff.literal(2)),
+                                ff.greaterOrEqual(ff.property("a"), ff.literal(2)),
+                                ff.less(ff.property("a"), ff.literal(2)),
+                                ff.lessOrEqual(ff.property("a"), ff.literal(2)),
+                                ff.equals(ff.property("a"), ff.literal(2)),
+                                ff.notEqual(ff.property("a"), ff.literal(2))));
+        Assert.assertTrue("supports", capabilities.fullySupports(filter));
     }
 
     @Test

@@ -27,6 +27,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import org.apache.commons.io.IOUtils;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -65,7 +66,7 @@ public abstract class AbstractLabelLineTest {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
 
         java.net.URL url = TestData.getResource(loader, sldFilename);
-        String styleTemplate = IOUtils.toString(url, "UTF-8");
+        String styleTemplate = IOUtils.toString(url, StandardCharsets.UTF_8);
         for (int i = 0; i < parameters.length; i += 2) {
             String key = parameters[i];
             String value = parameters[i + 1];

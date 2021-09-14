@@ -9,6 +9,20 @@ This datastore implements a very limited portion of the ArcGIS REST API
 (http://resources.arcgis.com/en/help/arcgis-rest-api/), which is supported by both ArcGIS Server 
 and ArcGIS Online. 
 
+
+**Maven**::
+   
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-arcgisrest</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
+
+To include in Geotools code base builds: ``mvn -P arcgis-rest``
+
+Supported features
+------------------
+
 Specifically, only the ``FeatureServer`` services on either ArcGIS Online (Open Data) or 
 ArcGIS Server ``FeatureServers`` are covered so far.
 

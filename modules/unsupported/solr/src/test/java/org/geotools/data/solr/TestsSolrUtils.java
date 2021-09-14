@@ -388,7 +388,7 @@ public final class TestsSolrUtils {
          * @param response Sorl response
          * @return a response container
          */
-        private static Response parse(SolrResponseBase response) {
+        private static Response parse(SolrResponseBase response) { // NOPMD (unused private method)
             if (response.getResponse().get("errors") != null) {
                 // at least one error happen during the request execution
                 return new Response(true, response.toString());

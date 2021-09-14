@@ -425,9 +425,9 @@ class RasterLayerResponse {
             throws IOException {
         PlanarImage raster;
         final ImageReader reader;
-        FileImageInputStreamExtImpl fiis = null;
         if (useJAI) {
-            fiis = new FileImageInputStreamExtImpl(input);
+            @SuppressWarnings("PMD.CloseResource") // wrapped and returned
+            FileImageInputStreamExtImpl fiis = new FileImageInputStreamExtImpl(input);
             reader = readerSpi.createReaderInstance();
 
             final ParameterBlock pbjImageRead = new ParameterBlock();
@@ -450,22 +450,10 @@ class RasterLayerResponse {
             raster = JAI.create(jaiOperation, pbjImageRead, hints);
         } else {
             reader = readerSpi.createReaderInstance();
-            fiis = new FileImageInputStreamExtImpl(input);
-            try {
+            try (FileImageInputStreamExtImpl fiis = new FileImageInputStreamExtImpl(input)) {
                 reader.setInput(fiis, true, true);
                 raster = PlanarImage.wrapRenderedImage(reader.read(0, imageReadParam));
             } finally {
-
-                if (fiis != null) {
-                    try {
-                        fiis.close();
-                    } catch (Exception e) {
-                        if (LOGGER.isLoggable(Level.FINE)) {
-                            LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
-                        }
-                    }
-                }
-
                 if (reader != null)
                     try {
                         reader.dispose();

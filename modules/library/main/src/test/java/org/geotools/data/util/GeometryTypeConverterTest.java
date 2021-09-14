@@ -22,6 +22,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.io.WKTReader;
 
 /**
@@ -129,5 +130,18 @@ public class GeometryTypeConverterTest {
         Assert.assertEquals(1, cr.getComponents().size());
         Assert.assertEquals(ls, cr.getComponents().get(0));
         Assert.assertEquals(userData, cr.getUserData());
+    }
+
+    @Test
+    public void testPolygonToMultiPolygon() throws Exception {
+        Geometry pol = new WKTReader().read("POLYGON((0 0, 10 10, 10 0, 0 0))");
+        Map<String, String> userData = Collections.singletonMap("test", "value");
+        pol.setUserData(userData);
+        Converter converter = getConverter(pol, MultiPolygon.class);
+        MultiPolygon mp = converter.convert(pol, MultiPolygon.class);
+        Assert.assertEquals(1, mp.getNumGeometries());
+        Assert.assertEquals(pol, mp.getGeometryN(0));
+        Assert.assertNull(mp.getGeometryN(0).getUserData());
+        Assert.assertEquals(userData, mp.getUserData());
     }
 }

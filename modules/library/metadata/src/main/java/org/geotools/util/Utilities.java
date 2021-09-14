@@ -561,7 +561,7 @@ public final class Utilities {
      *       invoked.
      *   <li>Otherwise if the object is an array of primitive type, then the corresponding {@link
      *       Arrays#toString(double[]) Arrays.toString(...)} method is invoked.
-     *   <li>Otherwise {@link String#valueOf(String)} is invoked.
+     *   <li>Otherwise {@link String#valueOf(Object)} is invoked.
      *   <li>
      * </ul>
      *

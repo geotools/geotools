@@ -222,33 +222,17 @@ public class CreateIndexer {
 
         // initialize StreamResult with File object to save to file
         StreamResult result = new StreamResult(new StringWriter());
-        InputStream is = null;
-        PrintWriter out = null;
-        try {
-            is = new FileInputStream(auxiliaryFile);
+        try (InputStream is = new FileInputStream(auxiliaryFile);
+                PrintWriter out = new PrintWriter(finalAuxFile); ) {
 
             transformer.transform(new StreamSource(is), result);
             String xmlString = result.getWriter().toString();
 
-            out = new PrintWriter(finalAuxFile);
             out.println(xmlString);
             out.flush();
 
-        } finally {
-            if (is != null) {
-                try {
-                    is.close();
-                } catch (Exception e) {
-                    // does nothing
-                }
-            }
-            if (out != null) {
-                try {
-                    out.close();
-                } catch (Exception e) {
-                    // does nothing
-                }
-            }
+        } catch (Exception e) {
+            // does nothing
         }
     }
 

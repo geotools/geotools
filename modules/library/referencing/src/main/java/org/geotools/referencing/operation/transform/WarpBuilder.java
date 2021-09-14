@@ -506,27 +506,20 @@ public class WarpBuilder {
     void dumpPropertyFile(float[] points, String name) {
         long start = System.currentTimeMillis();
 
-        BufferedWriter writer = null;
         try {
             File output = File.createTempFile(start + name, ".properties");
-            writer = new BufferedWriter(new FileWriter(output));
-            writer.write("_=geom:Point:srid=32632");
-            writer.newLine();
-            for (int i = 0; i < points.length; i += 2) {
-                writer.write("p." + (i / 2) + "=POINT(" + points[i] + " " + points[i + 1] + ")");
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(output))) {
+                writer.write("_=geom:Point:srid=32632");
                 writer.newLine();
+                for (int i = 0; i < points.length; i += 2) {
+                    writer.write(
+                            "p." + (i / 2) + "=POINT(" + points[i] + " " + points[i + 1] + ")");
+                    writer.newLine();
+                }
+                LOGGER.info(name + " dumped as " + output.getName());
             }
-            LOGGER.info(name + " dumped as " + output.getName());
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Failed to dump points: " + e.getMessage(), e);
-        } finally {
-            if (writer != null) {
-                try {
-                    writer.close();
-                } catch (IOException e) {
-                    // ignore
-                }
-            }
         }
     }
 }

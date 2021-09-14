@@ -280,7 +280,7 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
         try (FeatureWriter w = dataStore.getFeatureWriter(tname("ft2"), Transaction.AUTO_COMMIT)) {
             w.hasNext();
 
-            // write out a feature with a geomety in teh srs, basically accomodate databases that
+            // write out a feature with a geometry in the srs, basically accomodate databases that
             // have
             // to query the first feature in order to get the srs for the feature type
             SimpleFeature f = (SimpleFeature) w.next();

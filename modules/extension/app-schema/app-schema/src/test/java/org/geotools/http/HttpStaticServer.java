@@ -19,6 +19,7 @@ package org.geotools.http;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.InetAddress;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -98,7 +99,7 @@ final class HttpStaticServer {
                                 resourceName, resourcePath));
             }
             // read the resource from the classpath
-            String resource = IOUtils.toString(input, "UTF-8");
+            String resource = IOUtils.toString(input, StandardCharsets.UTF_8);
             // substitute host and port place holders
             String relativePath =
                     URLs.urlToFile(URLs.getParentUrl(this.getClass().getResource(resourcePath)))

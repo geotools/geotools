@@ -18,6 +18,7 @@ package org.geotools.sld.bindings;
 
 import java.util.List;
 import javax.xml.namespace.QName;
+import org.geotools.sld.CssParameter;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.Rule;
 import org.geotools.styling.StyleFactory;
@@ -162,6 +163,12 @@ public class SLDRuleBinding extends AbstractComplexBinding {
         if (node.hasChild("MaxScaleDenominator")) {
             rule.setMaxScaleDenominator(
                     ((Double) node.getChildValue("MaxScaleDenominator")).doubleValue());
+        }
+
+        // &lt;xsd:element ref="sld:VendorOption" minOccurs="0" maxOccurs="unbounded"/&gt;
+        for (CssParameter param : node.getChildValues(CssParameter.class)) {
+            rule.getOptions()
+                    .put(param.getName(), param.getExpression().evaluate(null, String.class));
         }
 
         // &lt;xsd:element ref="sld:Symbolizer" maxOccurs="unbounded"/&gt;

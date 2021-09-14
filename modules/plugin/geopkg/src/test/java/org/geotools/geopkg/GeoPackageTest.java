@@ -76,6 +76,7 @@ import org.geotools.jdbc.util.SqlUtil;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.util.NumberRange;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 import org.junit.After;
@@ -159,22 +160,18 @@ public class GeoPackageTest {
         try (Connection cx = geopkg.getDataSource().getConnection();
                 Statement st = cx.createStatement();
                 ResultSet rs = st.executeQuery("PRAGMA application_id;")) {
-            assertEquals(rs.getInt(1), 0x47503130);
+            assertEquals(rs.getInt(1), GeoPackage.GPKG_120_APPID);
         } catch (Exception e) {
             fail(e.getMessage());
         }
     }
 
     void assertTableExists(String table) throws Exception {
-        Connection cx = geopkg.getDataSource().getConnection();
-        Statement st = cx.createStatement();
-        try {
+        try (Connection cx = geopkg.getDataSource().getConnection();
+                Statement st = cx.createStatement()) {
             st.execute(String.format("SELECT count(*) FROM %s;", table));
         } catch (Exception e) {
             fail(e.getMessage());
-        } finally {
-            st.close();
-            cx.close();
         }
     }
 
@@ -1023,10 +1020,7 @@ public class GeoPackageTest {
     @Test
     public void testMetadata() throws Exception {
         // create a geopacakge from a shapefile
-        ShapefileDataStore shp = new ShapefileDataStore(setUpShapefile());
-        FeatureEntry entry = new FeatureEntry();
-        geopkg.add(entry, shp.getFeatureSource(), null);
-        assertTableExists("bugsites");
+        createBugSites();
 
         // grab the metadata extension, check it's initially empty
         GeoPkgMetadataExtension ext = geopkg.getExtension(GeoPkgMetadataExtension.class);
@@ -1061,11 +1055,7 @@ public class GeoPackageTest {
 
     @Test
     public void testMetadataReferences() throws Exception {
-        // create a geopacakge from a shapefile
-        ShapefileDataStore shp = new ShapefileDataStore(setUpShapefile());
-        FeatureEntry entry = new FeatureEntry();
-        geopkg.add(entry, shp.getFeatureSource(), null);
-        assertTableExists("bugsites");
+        createBugSites();
 
         // grab the metadata extension and add a couple of metadata entries
         GeoPkgMetadataExtension ext = geopkg.getExtension(GeoPkgMetadataExtension.class);
@@ -1109,5 +1099,28 @@ public class GeoPackageTest {
         // clean up
         ext.removeReference(reference);
         assertEquals(0, ext.getReferences(metadata).size());
+    }
+
+    @Test
+    public void testRangeExtension() throws Exception {
+        createBugSites();
+
+        // grab the metadata extension and add a couple of metadata entries
+        GeoPkgSchemaExtension ext = geopkg.getExtension(GeoPkgSchemaExtension.class);
+        String constraintName = "oneToTen";
+        DataColumnConstraint.Range<Double> range =
+                new DataColumnConstraint.Range<>(constraintName, NumberRange.create(1d, 10d));
+        ext.addConstraint(range);
+
+        DataColumnConstraint constraint = ext.getConstraint(constraintName);
+        assertEquals(range, constraint);
+    }
+
+    private void createBugSites() throws Exception {
+        // create a geopackage from a shapefile
+        ShapefileDataStore shp = new ShapefileDataStore(setUpShapefile());
+        FeatureEntry entry = new FeatureEntry();
+        geopkg.add(entry, shp.getFeatureSource(), null);
+        assertTableExists("bugsites");
     }
 }

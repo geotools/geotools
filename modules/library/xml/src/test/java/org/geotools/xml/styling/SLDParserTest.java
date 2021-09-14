@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -401,6 +402,34 @@ public class SLDParserTest {
                     + "    </UserStyle>\n"
                     + "</StyledLayerDescriptor>";
 
+    static String SLD_RULE_WITH_VENDOR_OPTIONS =
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                    + "<StyledLayerDescriptor version=\"1.0.0\" \n"
+                    + "        xsi:schemaLocation=\"http://www.opengis.net/sld StyledLayerDescriptor.xsd\" \n"
+                    + "        xmlns=\"http://www.opengis.net/sld\" xmlns:ogc=\"http://www.opengis.net/ogc\" \n"
+                    + "        xmlns:xlink=\"http://www.w3.org/1999/xlink\" \n"
+                    + "        xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n"
+                    + "    <UserStyle>\n"
+                    + "        <Name>Default Styler</Name>\n"
+                    + "        <Title>Default Styler</Title>\n"
+                    + "        <Abstract></Abstract>\n"
+                    + "        <FeatureTypeStyle>\n"
+                    + "            <Rule>\n"
+                    + "                <RasterSymbolizer>\n"
+                    + "                    <ColorMap>\n"
+                    + "                     <ColorMapEntry color=\"#FF0000\" quantity=\"0\" />\n"
+                    + "                     <ColorMapEntry color=\"#FFFFFF\" quantity=\"100\"/>\n"
+                    + "                     <ColorMapEntry color=\"#00FF00\" quantity=\"2000\"/>\n"
+                    + "                     <ColorMapEntry color=\"#0000FF\" quantity=\"5000\"/>\n"
+                    + "                    </ColorMap>\n"
+                    + "                </RasterSymbolizer>\n"
+                    + "			       <VendorOption name=\"FirstVendorOption\">FIRST_VENDOR_OPTION</VendorOption>\n"
+                    + "				   <VendorOption name=\"SecondVendorOption\">SECOND_VENDOR_OPTION</VendorOption>\n"
+                    + "            </Rule>\n"
+                    + "        </FeatureTypeStyle>\n"
+                    + "    </UserStyle>\n"
+                    + "</StyledLayerDescriptor>";
+
     static StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
 
     @Test
@@ -725,7 +754,8 @@ public class SLDParserTest {
         DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         org.w3c.dom.Document node =
                 builder.parse(
-                        new ByteArrayInputStream(formattedCssStrokeParameter.getBytes("UTF-8")));
+                        new ByteArrayInputStream(
+                                formattedCssStrokeParameter.getBytes(StandardCharsets.UTF_8)));
         SLDParser parser = new SLDParser(styleFactory);
         Stroke stroke = parser.parseStroke(node.getDocumentElement());
         // <strConcat([#], [env([stroke_color], [" + color + "])])>";
@@ -832,6 +862,22 @@ public class SLDParserTest {
         assertTrue(ps.getOptions().containsKey("SecondVendorOption"));
         assertEquals("FIRST_VENDOR_OPTION", ps.getOptions().get("FirstVendorOption"));
         assertEquals("SECOND_VENDOR_OPTION", ps.getOptions().get("SecondVendorOption"));
+    }
+
+    @Test
+    public void testVendorOptionsInRule() throws Exception {
+        // tests that VendorOptions placed under a RasterSymbolizer
+        // are correctly parsed
+        SLDParser parser = new SLDParser(styleFactory, input(SLD_RULE_WITH_VENDOR_OPTIONS));
+        Style[] styles = parser.readXML();
+        List<FeatureTypeStyle> fts = styles[0].featureTypeStyles();
+        Rule rule = fts.get(0).rules().get(0);
+
+        assertEquals(2, rule.getOptions().size());
+        assertTrue(rule.getOptions().containsKey("FirstVendorOption"));
+        assertTrue(rule.getOptions().containsKey("SecondVendorOption"));
+        assertEquals("FIRST_VENDOR_OPTION", rule.getOptions().get("FirstVendorOption"));
+        assertEquals("SECOND_VENDOR_OPTION", rule.getOptions().get("SecondVendorOption"));
     }
 
     void assertStyles(Style[] styles) {

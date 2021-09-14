@@ -18,6 +18,7 @@ package org.geotools.data.wfs.internal.parsers;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -55,6 +56,10 @@ public class PullParserFeatureReader implements GetParser<SimpleFeature> {
 
     GeometryCoordinateSequenceTransformer transformer;
 
+    private long lastLogMessage = 0;
+    private long logCounter = 0;
+    private final long WAIT_LOG = 5000;
+
     public PullParserFeatureReader(
             final Configuration wfsConfiguration,
             final InputStream getFeatureResponseStream,
@@ -82,6 +87,7 @@ public class PullParserFeatureReader implements GetParser<SimpleFeature> {
         if (inputStream != null) {
             try {
                 inputStream.close();
+
             } finally {
                 inputStream = null;
                 parser = null;
@@ -95,6 +101,18 @@ public class PullParserFeatureReader implements GetParser<SimpleFeature> {
         Object parsed;
         try {
             parsed = parser.parse();
+            if (parsed != null && LOGGER.isLoggable(Level.FINE)) {
+                logCounter++;
+                long time = System.currentTimeMillis();
+                if (lastLogMessage == 0) {
+                    LOGGER.fine("First feature parsed.");
+                    lastLogMessage = time;
+                } else if (time - lastLogMessage > WAIT_LOG) {
+                    LOGGER.fine(String.format("Number of features parsed: %d", logCounter));
+                    lastLogMessage = time;
+                }
+            }
+
         } catch (XMLStreamException | SAXException e) {
             throw new IOException(e);
         }

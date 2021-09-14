@@ -198,6 +198,9 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
      * @param input the GeoTiff file
      * @param uHints user-supplied hints TODO currently are unused
      */
+    @SuppressWarnings({
+        "PMD.UseTryWithResources" // closing is conditional
+    })
     public GeoTiffReader(Object input, Hints uHints) throws DataSourceException {
         super(input, uHints);
 
@@ -307,6 +310,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
     }
 
     /** Collect georeferencing information about this geotiff. */
+    @SuppressWarnings("PMD.UseTryWithResources") // stream is reset, not closed
     private void getHRInfo(Hints hints) throws DataSourceException {
         ImageReader reader = null;
         ImageReader ovrReader = null;
@@ -822,7 +826,10 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
      *
      * @return the metadata
      */
-    @SuppressWarnings("PMD.CloseResource") // conditional, might have to close the stream, or not
+    @SuppressWarnings({
+        "PMD.CloseResource",
+        "PMD.UseTryWithResources"
+    }) // conditional, might have to close the stream, or not
     public GeoTiffIIOMetadataDecoder getMetadata() {
         GeoTiffIIOMetadataDecoder metadata = null;
         ImageReader reader = null;
@@ -979,25 +986,14 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             final File prjFile = new File(base.toString());
             if (prjFile.exists()) {
                 // it exists then we have top read it
-                PrjFileReader projReader = null;
-
                 try (FileInputStream instream = new FileInputStream(prjFile);
-                        FileChannel channel = instream.getChannel()) {
-                    projReader = new PrjFileReader(channel);
+                        FileChannel channel = instream.getChannel();
+                        PrjFileReader projReader = new PrjFileReader(channel)) {
                     crs = projReader.getCoordinateReferenceSystem();
                 } catch (FactoryException | IOException e) {
                     // warn about the error but proceed, it is not fatal
                     // we have at least the default crs to use
                     LOGGER.log(Level.INFO, e.getLocalizedMessage(), e);
-                } finally {
-                    if (projReader != null)
-                        try {
-                            projReader.close();
-                        } catch (IOException e) {
-                            // warn about the error but proceed, it is not fatal
-                            // we have at least the default crs to use
-                            LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
-                        }
                 }
             }
         }

@@ -113,7 +113,6 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
             return null;
         }
 
-        List<Object[ /* 2 */]> properties = new ArrayList<>();
         XSDTypeDefinition typeDef = element.getTypeDefinition();
         boolean isAnyType =
                 typeDef.getName() != null
@@ -121,40 +120,14 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
                         && typeDef.getName().equals(XS.ANYTYPE.getLocalPart())
                         && typeDef.getTargetNamespace().equals(XS.NAMESPACE);
         if (isAnyType) {
-            Collection complexAtts;
-            if (object instanceof Collection) {
-                // collection of features
-                complexAtts = (Collection) object;
-            } else if (object instanceof ComplexAttribute) {
-                // get collection of features from this attribute
-                complexAtts = ((ComplexAttribute) object).getProperties();
-            } else {
-                return null;
-            }
-            for (Object complex : complexAtts) {
-                if (complex instanceof ComplexAttribute) {
-                    PropertyDescriptor descriptor = ((Attribute) complex).getDescriptor();
-                    if (descriptor.getUserData() != null) {
-                        Object propertyElement =
-                                descriptor.getUserData().get(XSDElementDeclaration.class);
-                        if (propertyElement != null
-                                && propertyElement instanceof XSDElementDeclaration) {
-                            XSDParticle substitutedChildParticle =
-                                    XSDFactory.eINSTANCE.createXSDParticle();
-                            substitutedChildParticle.setMaxOccurs(descriptor.getMaxOccurs());
-                            substitutedChildParticle.setMinOccurs(descriptor.getMinOccurs());
-                            XSDElementDeclaration wrapper =
-                                    XSDFactory.eINSTANCE.createXSDElementDeclaration();
-                            wrapper.setResolvedElementDeclaration(
-                                    (XSDElementDeclaration) propertyElement);
-                            substitutedChildParticle.setContent(wrapper);
-                            properties.add(new Object[] {substitutedChildParticle, complex});
-                        }
-                    }
-                }
-            }
-            return properties;
+            return getPropertiesFromAny(object);
         }
+
+        return getPropertiesFromComplex(object, element);
+    }
+
+    private List<Object[]> getPropertiesFromComplex(Object object, XSDElementDeclaration element) {
+        List<Object[ /* 2 */]> properties = new ArrayList<>();
         if (object instanceof ComplexAttribute) {
             ComplexAttribute complex = (ComplexAttribute) object;
             for (XSDParticle childParticle :
@@ -188,36 +161,8 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
                             if (property instanceof ComplexAttribute) {
                                 properties.add(new Object[] {substitutedChildParticle, property});
                             } else if (property instanceof GeometryAttribute) {
-                                Object attType =
-                                        complex.getType()
-                                                .getUserData()
-                                                .get(XSDTypeDefinition.class);
-                                boolean duplicate = false;
-                                // handle substitution group for geometries too, but make sure
-                                // it's not already handled in BindingPropertyExtractor
-                                // otherwise it would be encoded as xlink:href as the id has already
-                                // been seen
-                                if (attType != null && attType instanceof XSDTypeDefinition) {
-                                    XSDTypeDefinition attTypeDef = (XSDTypeDefinition) attType;
-                                    for (XSDParticle attChild :
-                                            Schemas.getChildElementParticles(attTypeDef, true)) {
-                                        XSDElementDeclaration childEl =
-                                                (XSDElementDeclaration) attChild.getContent();
-                                        if (childEl.isElementDeclarationReference()) {
-                                            childEl = childEl.getResolvedElementDeclaration();
-                                        }
-                                        if (childEl.equals(e)) {
-                                            duplicate = true;
-                                            break;
-                                        }
-                                    }
-                                }
-                                if (!duplicate) {
-                                    properties.add(
-                                            new Object[] {
-                                                substitutedChildParticle, property.getValue()
-                                            });
-                                }
+                                collectPropertiesFromComplexAtt(
+                                        properties, complex, e, substitutedChildParticle, property);
                             }
                         }
                     }
@@ -247,25 +192,7 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
                     // only process complex attributes
                     if (complex instanceof ComplexAttribute) {
                         ComplexAttribute newComplexAtt = (ComplexAttribute) complex;
-                        PropertyDescriptor descriptor = newComplexAtt.getDescriptor();
-                        if (descriptor.getUserData() != null) {
-                            Object propertyElement =
-                                    descriptor.getUserData().get(XSDElementDeclaration.class);
-                            if (propertyElement != null
-                                    && propertyElement instanceof XSDElementDeclaration) {
-                                XSDParticle substitutedChildParticle =
-                                        XSDFactory.eINSTANCE.createXSDParticle();
-                                substitutedChildParticle.setMaxOccurs(descriptor.getMaxOccurs());
-                                substitutedChildParticle.setMinOccurs(descriptor.getMinOccurs());
-                                XSDElementDeclaration wrapper =
-                                        XSDFactory.eINSTANCE.createXSDElementDeclaration();
-                                wrapper.setResolvedElementDeclaration(
-                                        (XSDElementDeclaration) propertyElement);
-                                substitutedChildParticle.setContent(wrapper);
-                                properties.add(
-                                        new Object[] {substitutedChildParticle, newComplexAtt});
-                            }
-                        }
+                        collectPropertiesFromComplexAtt(properties, newComplexAtt);
                     }
                 }
             }
@@ -328,6 +255,90 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
                                 }
                             }
                         }
+                    }
+                }
+            }
+        }
+        return properties;
+    }
+
+    private void collectPropertiesFromComplexAtt(
+            List<Object[]> properties, ComplexAttribute newComplexAtt) {
+        PropertyDescriptor descriptor = newComplexAtt.getDescriptor();
+        if (descriptor.getUserData() != null) {
+            Object propertyElement = descriptor.getUserData().get(XSDElementDeclaration.class);
+            if (propertyElement != null && propertyElement instanceof XSDElementDeclaration) {
+                XSDParticle substitutedChildParticle = XSDFactory.eINSTANCE.createXSDParticle();
+                substitutedChildParticle.setMaxOccurs(descriptor.getMaxOccurs());
+                substitutedChildParticle.setMinOccurs(descriptor.getMinOccurs());
+                XSDElementDeclaration wrapper = XSDFactory.eINSTANCE.createXSDElementDeclaration();
+                wrapper.setResolvedElementDeclaration((XSDElementDeclaration) propertyElement);
+                substitutedChildParticle.setContent(wrapper);
+                properties.add(new Object[] {substitutedChildParticle, newComplexAtt});
+            }
+        }
+    }
+
+    private void collectPropertiesFromComplexAtt(
+            List<Object[]> properties,
+            ComplexAttribute complex,
+            XSDElementDeclaration e,
+            XSDParticle substitutedChildParticle,
+            Property property) {
+        Object attType = complex.getType().getUserData().get(XSDTypeDefinition.class);
+        boolean duplicate = false;
+        // handle substitution group for geometries too, but make sure
+        // it's not already handled in BindingPropertyExtractor
+        // otherwise it would be encoded as xlink:href as the id has already
+        // been seen
+        if (attType != null && attType instanceof XSDTypeDefinition) {
+            XSDTypeDefinition attTypeDef = (XSDTypeDefinition) attType;
+            for (XSDParticle attChild : Schemas.getChildElementParticles(attTypeDef, true)) {
+                XSDElementDeclaration childEl = (XSDElementDeclaration) attChild.getContent();
+                if (childEl.isElementDeclarationReference()) {
+                    childEl = childEl.getResolvedElementDeclaration();
+                }
+                if (childEl.equals(e)) {
+                    duplicate = true;
+                    break;
+                }
+            }
+        }
+        if (!duplicate) {
+            properties.add(new Object[] {substitutedChildParticle, property.getValue()});
+        }
+    }
+
+    private List<Object[]> getPropertiesFromAny(Object object) {
+        List<Object[ /* 2 */]> properties = new ArrayList<>();
+        Collection complexAtts;
+        if (object instanceof Collection) {
+            // collection of features
+            complexAtts = (Collection) object;
+        } else if (object instanceof ComplexAttribute) {
+            // get collection of features from this attribute
+            complexAtts = ((ComplexAttribute) object).getProperties();
+        } else {
+            return null;
+        }
+        for (Object complex : complexAtts) {
+            if (complex instanceof ComplexAttribute) {
+                PropertyDescriptor descriptor = ((Attribute) complex).getDescriptor();
+                if (descriptor.getUserData() != null) {
+                    Object propertyElement =
+                            descriptor.getUserData().get(XSDElementDeclaration.class);
+                    if (propertyElement != null
+                            && propertyElement instanceof XSDElementDeclaration) {
+                        XSDParticle substitutedChildParticle =
+                                XSDFactory.eINSTANCE.createXSDParticle();
+                        substitutedChildParticle.setMaxOccurs(descriptor.getMaxOccurs());
+                        substitutedChildParticle.setMinOccurs(descriptor.getMinOccurs());
+                        XSDElementDeclaration wrapper =
+                                XSDFactory.eINSTANCE.createXSDElementDeclaration();
+                        wrapper.setResolvedElementDeclaration(
+                                (XSDElementDeclaration) propertyElement);
+                        substitutedChildParticle.setContent(wrapper);
+                        properties.add(new Object[] {substitutedChildParticle, complex});
                     }
                 }
             }

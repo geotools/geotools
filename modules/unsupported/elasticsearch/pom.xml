@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>unsupported</artifactId>
-    <version>26-SNAPSHOT</version>
+    <version>27-SNAPSHOT</version>
   </parent>
   <groupId>org.geotools</groupId>
   <artifactId>gt-elasticsearch</artifactId>
@@ -38,7 +38,10 @@
     </developer>
   </developers>
   <properties>
-    <elastic.test.version>${elasticsearch.version}</elastic.test.version>
+    <!-- apparently the ES docker image that Testcontainers looks for does not exist with the current version,
+         7.10.2 is the latest "OSS" version: https://www.docker.elastic.co/r/elasticsearch/elasticsearch-oss -->
+    <!-- <elastic.test.version>${elasticsearch.version}</elastic.test.version> -->
+    <elastic.test.version>7.10.2</elastic.test.version>
   </properties>
   <dependencies>
     <dependency>
@@ -154,7 +157,7 @@
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>elasticsearch</artifactId>
-      <version>1.15.1</version>
+      <version>1.16.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>

@@ -220,7 +220,7 @@ public class ParseExecutor implements Visitor {
                 //                }
 
                 //                if (!type.getEnumerationFacets().isEmpty()) {
-                //                    // gather up all teh possible values
+                //                    // gather up all the possible values
                 //                    Set values = new HashSet();
                 //
                 //                    for (Iterator e = type.getEnumerationFacets().iterator();

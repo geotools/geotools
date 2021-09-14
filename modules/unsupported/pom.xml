@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>modules</artifactId>
-    <version>26-SNAPSHOT</version>
+    <version>27-SNAPSHOT</version>
   </parent>
   <!-- =========================================================== -->
   <!-- Module Description -->
@@ -35,12 +35,12 @@
     <module>geojsonstore</module>
     <module>geojson</module>
     <module>mbtiles</module>
+    <module>gml-geometry-streaming</module>
     <module>wfs-ng</module>
     <module>ogr</module>
     <module>postgis-raster</module>
     <module>ogcapi-client</module>
     <module>tpk</module>
-    <module>imagemosaic-jdbc</module>
     <module>cql-json</module>
   </modules>
   <profiles>
@@ -62,17 +62,6 @@
       </activation>
       <modules>
         <module>vpf</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>gtopo30</id>
-      <activation>
-        <property>
-          <name>all</name>
-        </property>
-      </activation>
-      <modules>
-        <module>gtopo30</module>
       </modules>
     </profile>
     <profile>
@@ -205,13 +194,11 @@
         </property>
       </activation>
       <modules>
-        <module>jdbc-ng</module>
         <module>solr</module>
         <module>elasticsearch</module>
         <module>css</module>
         <module>geojsonstore</module>
         <module>s3-geotiff</module>
-        <module>gtopo30</module>
         <module>vpf</module>
       </modules>
     </profile>

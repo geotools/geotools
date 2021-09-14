@@ -19,7 +19,6 @@ package org.geotools.data.shapefile;
 import static org.geotools.data.shapefile.files.ShpFileType.SHP;
 
 import java.io.IOException;
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
@@ -225,76 +224,53 @@ class ShapefileFeatureSource extends ContentFeatureSource {
             return null;
         }
 
-        ReadableByteChannel in = null;
-        try {
-            ByteBuffer buffer = ByteBuffer.allocate(100);
-            FileReader reader = () -> "Shapefile Datastore's getBounds Method";
+        ByteBuffer buffer = ByteBuffer.allocate(100);
+        FileReader reader = () -> "Shapefile Datastore's getBounds Method";
+        try (ReadableByteChannel in = shpFiles.getReadChannel(SHP, reader)) {
+            in.read(buffer);
+            buffer.flip();
 
-            in = shpFiles.getReadChannel(SHP, reader);
-            try {
-                in.read(buffer);
-                ((Buffer) buffer).flip();
+            ShapefileHeader header = new ShapefileHeader();
+            header.read(buffer, true);
 
-                ShapefileHeader header = new ShapefileHeader();
-                header.read(buffer, true);
+            SimpleFeatureType schema = getSchema();
 
-                SimpleFeatureType schema = getSchema();
+            Envelope env;
 
-                Envelope env;
-
-                // If it is a shapefile without any data (file length equals 50), return an empty
-                // envelope as expected
-                if (header.getFileLength() == 50) {
-                    env = new Envelope();
-                } else {
-                    env = new Envelope(header.minX(), header.maxX(), header.minY(), header.maxY());
-                }
-
-                CoordinateReferenceSystem crs = null;
-                if (schema != null) {
-                    crs = schema.getCoordinateReferenceSystem();
-                }
-                return new ReferencedEnvelope(env, crs);
-            } finally {
-                in.close();
+            // If it is a shapefile without any data (file length equals 50), return an empty
+            // envelope as expected
+            if (header.getFileLength() == 50) {
+                env = new Envelope();
+            } else {
+                env = new Envelope(header.minX(), header.maxX(), header.minY(), header.maxY());
             }
 
+            CoordinateReferenceSystem crs = null;
+            if (schema != null) {
+                crs = schema.getCoordinateReferenceSystem();
+            }
+            return new ReferencedEnvelope(env, crs);
         } catch (IOException ioe) {
             throw new DataSourceException("Problem getting Bbox", ioe);
-        } finally {
-            try {
-                if (in != null) {
-                    in.close();
-                }
-            } catch (IOException ioe) {
-                // do nothing
-            }
         }
     }
 
     @Override
     protected int getCountInternal(Query query) throws IOException {
         if (query.getFilter() == Filter.INCLUDE) {
-            IndexFile file = getDataStore().shpManager.openIndexFile();
-            if (file != null) {
-                try {
+            try (IndexFile file = getDataStore().shpManager.openIndexFile()) {
+                if (file != null) {
                     return file.getRecordCount();
-                } finally {
-                    file.close();
                 }
             }
 
             // no Index file so use the number of shapefile records
-            ShapefileReader reader =
-                    getDataStore().shpManager.openShapeReader(new GeometryFactory(), false);
             int count = -1;
-
-            try {
+            try (ShapefileReader reader =
+                    getDataStore().shpManager.openShapeReader(new GeometryFactory(), false)) {
                 count = reader.getCount(count);
             } catch (IOException e) {
                 throw e;
-            } finally {
-                reader.close();
             }
 
             return count;
@@ -360,6 +336,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         }
 
         // get the .fix file reader, if we have a .fix file
+        @SuppressWarnings("PMD.CloseResource") // wrapped and returned
         IndexedFidReader fidReader = null;
         if (getDataStore().isFidIndexed() && indexManager.hasFidIndex(false)) {
             fidReader = new IndexedFidReader(shpFiles);
@@ -505,6 +482,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
      * @return List of new AttributeDescriptor
      * @throws IOException If AttributeType reading fails
      */
+    @SuppressWarnings("PMD.UseTryWithResources") // resources might be null
     protected List<AttributeDescriptor> readAttributes() throws IOException {
         ShapefileSetManager shpManager = getDataStore().shpManager;
         PrjFileReader prj = null;

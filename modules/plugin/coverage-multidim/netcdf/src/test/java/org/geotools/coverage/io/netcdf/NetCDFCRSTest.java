@@ -28,7 +28,10 @@ import java.lang.reflect.Modifier;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import javax.measure.Unit;
 import org.apache.commons.io.FileUtils;
+import org.geotools.coverage.GridSampleDimension;
+import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.io.netcdf.crs.NetCDFCRSAuthorityFactory;
 import org.geotools.coverage.io.netcdf.crs.NetCDFCoordinateReferenceSystemType;
 import org.geotools.coverage.io.netcdf.crs.NetCDFProjection;
@@ -284,6 +287,35 @@ public class NetCDFCRSTest {
                 reader.dispose();
             }
         }
+    }
+
+    @Test
+    public void testCachedUnits() throws Exception {
+        final File file = TestData.file(this, "rotated-pole.nc");
+        NetCDFReader reader = null;
+        Unit<?> unit1 = null;
+        Unit<?> unit2 = null;
+        try {
+            reader = new NetCDFReader(file, null);
+            GridCoverage2D coverage = reader.read(null);
+            GridSampleDimension sampleDimension = coverage.getSampleDimension(0);
+            unit1 = sampleDimension.getUnits();
+        } finally {
+            if (reader != null) {
+                reader.dispose();
+            }
+        }
+        try {
+            reader = new NetCDFReader(file, null);
+            GridCoverage2D coverage = reader.read(null);
+            GridSampleDimension sampleDimension = coverage.getSampleDimension(0);
+            unit2 = sampleDimension.getUnits();
+        } finally {
+            if (reader != null) {
+                reader.dispose();
+            }
+        }
+        assertSame(unit1, unit2);
     }
 
     @Test

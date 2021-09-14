@@ -174,7 +174,6 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
 
     @Override
     public ReferencedEnvelope getBounds() {
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = null;
         try {
             ReferencedEnvelope result = featureSource.getBounds(query);
             if (result != null) {
@@ -197,38 +196,31 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
                 q.setPropertyNames(geometries);
             }
             // grab the features and scan through them
-            reader = featureSource.getReader(q);
-            while (reader.hasNext()) {
-                SimpleFeature f = reader.next();
-                ReferencedEnvelope featureBounds = ReferencedEnvelope.reference(f.getBounds());
-                if (result == null) {
-                    result = featureBounds;
-                } else if (featureBounds != null) {
-                    result.expandToInclude(featureBounds);
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                    featureSource.getReader(q)) {
+                while (reader.hasNext()) {
+                    SimpleFeature f = reader.next();
+                    ReferencedEnvelope featureBounds = ReferencedEnvelope.reference(f.getBounds());
+                    if (result == null) {
+                        result = featureBounds;
+                    } else if (featureBounds != null) {
+                        result.expandToInclude(featureBounds);
+                    }
                 }
-            }
-            // return the results if we got any, or return an empty one otherwise
-            if (result != null) {
-                return result;
-            } else {
-                return ReferencedEnvelope.create(getSchema().getCoordinateReferenceSystem());
+                // return the results if we got any, or return an empty one otherwise
+                if (result != null) {
+                    return result;
+                } else {
+                    return ReferencedEnvelope.create(getSchema().getCoordinateReferenceSystem());
+                }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException ex) {
-                    // we tried...
-                }
-            }
         }
     }
 
     @Override
     public int size() {
-        FeatureReader<?, ?> fr = null;
         try {
             int size = featureSource.getCount(query);
             if (size >= 0) {
@@ -244,24 +236,17 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
                     q.setPropertyNames(Collections.singletonList(chosen.getLocalName()));
                 }
                 // bean counting...
-                fr = featureSource.getReader(q);
-                int count = 0;
-                while (fr.hasNext()) {
-                    fr.next();
-                    count++;
+                try (FeatureReader<?, ?> fr = featureSource.getReader(q)) {
+                    int count = 0;
+                    while (fr.hasNext()) {
+                        fr.next();
+                        count++;
+                    }
+                    return count;
                 }
-                return count;
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } finally {
-            if (fr != null) {
-                try {
-                    fr.close();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
         }
     }
 

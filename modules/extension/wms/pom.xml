@@ -13,7 +13,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>extension</artifactId>
-    <version>26-SNAPSHOT</version>
+    <version>27-SNAPSHOT</version>
   </parent>
 
   <!-- =========================================================== -->
@@ -87,10 +87,6 @@
       <version>${project.version}</version>
       <exclusions>
         <exclusion>
-          <artifactId>gt-wfs</artifactId>
-          <groupId>org.geotools</groupId>
-        </exclusion>
-        <exclusion>
           <artifactId>gt-xsd-wfs</artifactId>
           <groupId>org.geotools.xsd</groupId>
         </exclusion>
@@ -99,10 +95,6 @@
           <groupId>org.geotools.ogc</groupId>
         </exclusion>
       </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>commons-httpclient</groupId>
-      <artifactId>commons-httpclient</artifactId>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
@@ -178,20 +170,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <excludes>
-            <!-- The following tests are skipped because they do not extend OnlineTestCase -->
-            <exclude>**/LocalGeoServerOnlineTest.java</exclude>
-            <exclude>**/WMSReaderOnlineTest.java</exclude>
-            <exclude>**/WebMapServerOnlineTest.java</exclude>
-            <exclude>**/WMS1_0_0_OnlineTest.java</exclude>
-            <exclude>**/WMS1_1_0_OnlineTest.java</exclude>
-            <exclude>**/WMS1_1_1_OnlineTest.java</exclude>
-            <exclude>**/WMS1_3_0_OnlineTest.java</exclude>
-            <!-- The following tests fail -->
-            <exclude>**/WMSSchemaTest.java</exclude>
-          </excludes>
-        </configuration>
+        <configuration></configuration>
       </plugin>
     </plugins>
   </build>

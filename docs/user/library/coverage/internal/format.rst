@@ -174,10 +174,6 @@ mosaics and pyramids from pregenerated files.
 * Image Mosaic Plugin
 * Image Pyramid Plugin
 
-Christian Mueller has created the ``imagemosaic-jdbc`` module to read pregenerated tiles which are stored in a database.
-
-* Image Mosaicing Pyramidal JDBC Plugin
-
 An alternative approach has been created in the ``coverageio`` module of the unsupported module group.
 
 Multi-dimensional

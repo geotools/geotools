@@ -65,7 +65,6 @@ Unsupported plugins:
 .. toctree::
    :maxdepth: 1
    
-   georest
    kml
    solr
    elasticsearch

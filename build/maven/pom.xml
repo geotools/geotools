@@ -13,7 +13,7 @@
   <parent>
     <groupId>org.geotools.maven</groupId>
     <artifactId>build</artifactId>
-    <version>26-SNAPSHOT</version>
+    <version>27-SNAPSHOT</version>
   </parent>
 
   <!-- =========================================================== -->
@@ -41,7 +41,6 @@
   <!--     built and deployed separatly when needed.               -->
   <!-- =========================================================== -->
   <modules>
-    <module>jar-collector</module>
     <!--module>javadoc</module-->
     <module>jjtree-javacc</module>
     <module>xmlcodegen</module>

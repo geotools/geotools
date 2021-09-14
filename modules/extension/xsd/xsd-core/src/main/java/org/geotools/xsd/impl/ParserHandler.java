@@ -341,38 +341,212 @@ public class ParserHandler extends DefaultHandler2 {
             logger.finest("startElement(" + uri + "," + localName + "," + qName);
         }
 
+        boolean root = loadSchemas(uri, attributes);
+
+        // set up a new namespace context
+        namespaces.pushContext();
+
+        // create a qName object from the string
+        if ((uri == null) || uri.equals("")) {
+            uri = namespaces.getURI("");
+        }
+
+        String prefix = namespaces.getPrefix(uri);
+        QName qualifiedName =
+                prefix != null ? new QName(uri, localName, prefix) : new QName(uri, localName);
+
+        // get the handler at top of the stack and lookup child
+        ElementHandler handler = getHandler(attributes, root, qualifiedName);
+
+        if (handler != null) {
+            // we may have actually matched an element whose namespace does
+            // not match the one passed in, update the context if so
+            if ((handler.getElementDeclaration().getTargetNamespace() != null)
+                    && !handler.getElementDeclaration().getTargetNamespace().equals(uri)) {
+
+                if (!handler.getElementDeclaration().isAbstract()) {
+                    namespaces.declarePrefix(
+                            "", handler.getElementDeclaration().getTargetNamespace());
+                    qualifiedName =
+                            new QName(
+                                    handler.getElementDeclaration().getTargetNamespace(),
+                                    qualifiedName.getLocalPart());
+                }
+            }
+
+            // signal the handler to start the element, and place it on the stack
+            handler.startElement(qualifiedName, attributes);
+            handlers.push(handler);
+        } else {
+            String msg = "Handler for " + qName + " could not be found.";
+            throw new SAXException(msg);
+        }
+    }
+
+    private ElementHandler getHandler(Attributes attributes, boolean root, QName qualifiedName)
+            throws SAXException {
+        // First ask the parent handler for a child
+        Handler parent = handlers.peek();
+        ElementHandler handler = (ElementHandler) parent.createChildHandler(qualifiedName);
+
+        if (handler == null) {
+            // look for a global element
+            XSDElementDeclaration element = index.getElementDeclaration(qualifiedName);
+
+            if (element != null) {
+                handler = handlerFactory.createElementHandler(element, parent, this);
+            }
+        }
+
+        if (handler == null) {
+            // perform a lookup in the context for an element factory that create a child handler
+            List handlerFactories = context.getComponentInstancesOfType(HandlerFactory.class);
+
+            for (Iterator hf = handlerFactories.iterator(); (handler == null) && hf.hasNext(); ) {
+                HandlerFactory handlerFactory = (HandlerFactory) hf.next();
+                handler = handlerFactory.createElementHandler(qualifiedName, parent, this);
+            }
+        }
+
+        if (handler == null || forceParserDelegate) {
+            // look for ParserDelegate instances in the context to see if there is a delegate
+            // around to handle this
+            List adapters = Schemas.getComponentAdaptersOfType(context, ParserDelegate.class);
+            // List delegates = Schemas.getComponentInstancesOfType(context,ParserDelegate.class);
+            for (Object o : adapters) {
+                ComponentAdapter adapter = (ComponentAdapter) o;
+                ParserDelegate delegate = (ParserDelegate) adapter.getComponentInstance(context);
+                boolean canHandle = delegate.canHandle(qualifiedName, attributes, handler, parent);
+
+                if (canHandle) {
+                    // found one
+                    handler = new DelegatingHandler(delegate, qualifiedName, parent);
+
+                    DelegatingHandler dh = (DelegatingHandler) handler;
+                    dh.startDocument();
+
+                    // inject the current namespace context
+                    Enumeration e = namespaces.getPrefixes();
+                    while (e.hasMoreElements()) {
+                        String pre = (String) e.nextElement();
+                        dh.startPrefixMapping(pre, namespaces.getURI(pre));
+                    }
+                }
+            }
+        }
+        if (handler == null) {
+            // if the type only contains one type of element, just assume the
+            // the element is of that type
+            // if( context.getComponentInstance( Parser.Properties.PARSE_UNKNOWN_ELEMENTS ) != null)
+            // {
+            if (!isStrict()) {
+                if (logger.isLoggable(Level.FINE)) {
+                    logger.fine(
+                            "Could not find declaration for: "
+                                    + qualifiedName
+                                    + ". Checking if containing type declares a single particle.");
+                }
+
+                if (parent.getComponent() instanceof ElementInstance) {
+                    ElementInstance parentElement = (ElementInstance) parent.getComponent();
+                    List childParticles =
+                            index.getChildElementParticles(parentElement.getElementDeclaration());
+
+                    if (childParticles.size() == 1) {
+                        XSDParticle particle = (XSDParticle) childParticles.iterator().next();
+                        XSDElementDeclaration child = (XSDElementDeclaration) particle.getContent();
+
+                        if (child.isElementDeclarationReference()) {
+                            child = child.getResolvedElementDeclaration();
+                        }
+
+                        handler =
+                                handlerFactory.createElementHandler(
+                                        new QName(child.getTargetNamespace(), child.getName()),
+                                        parent,
+                                        this);
+                    }
+                }
+            }
+        }
+
+        if (handler == null) {
+            // check the case of where the namespace is wrong, do a lookup from
+            // the parent just on local name
+            if (!isStrict()) {
+                String msg =
+                        "Could not find declaration for: "
+                                + qualifiedName
+                                + ". Performing lookup by ignoring namespace";
+                logger.fine(msg);
+
+                // * = match any namespace
+                handler =
+                        (ElementHandler)
+                                parent.createChildHandler(
+                                        new QName("*", qualifiedName.getLocalPart()));
+            }
+        }
+
+        if (handler == null) {
+            // check the parser flag, and just parse it anyways
+            // if( context.getComponentInstance( Parser.Properties.PARSE_UNKNOWN_ELEMENTS ) != null)
+            // {
+            if (!isStrict()) {
+                String msg =
+                        "Could not find declaration for: "
+                                + qualifiedName
+                                + ". Creating a mock element declaration and parsing anyways...";
+                logger.fine(msg);
+
+                // create a mock element declaration
+                XSDElementDeclaration decl = XSDFactory.eINSTANCE.createXSDElementDeclaration();
+                decl.setName(qualifiedName.getLocalPart());
+                decl.setTargetNamespace(qualifiedName.getNamespaceURI());
+
+                QName typeDefinition = null;
+                if (root && rootElementType != null) {
+                    typeDefinition = rootElementType;
+                }
+
+                // check for a type definition in the context, this is only used by
+                // the parser in test mode
+                if (typeDefinition == null) {
+                    typeDefinition =
+                            (QName)
+                                    context.getComponentInstance(
+                                            "http://geotools.org/typeDefinition");
+                    if (typeDefinition != null) {
+                        context.unregisterComponent("http://geotools.org/typeDefinition");
+                    }
+                }
+
+                if (typeDefinition != null) {
+                    XSDTypeDefinition type = index.getTypeDefinition(typeDefinition);
+
+                    if (type == null) {
+                        throw new NullPointerException();
+                    }
+
+                    decl.setTypeDefinition(type);
+                } else {
+                    // normal case, just set the type to be of string
+                    XSDTypeDefinition type = index.getTypeDefinition(XS.ANYTYPE);
+                    decl.setTypeDefinition(type);
+                }
+
+                handler = handlerFactory.createElementHandler(decl, parent, this);
+            }
+        }
+        return handler;
+    }
+
+    private boolean loadSchemas(String uri, Attributes attributes) throws SAXException {
         boolean root = schemas == null;
         if (root) {
             // root element, parse the schema
             // TODO: this processing is too loose, do some validation will ya!
-            String[] locations = null;
-
-            for (int i = 0; i < attributes.getLength(); i++) {
-                String name = attributes.getQName(i);
-
-                if (name.endsWith("schemaLocation")) {
-                    logger.finer("schemaLocation found: " + attributes.getValue(i));
-
-                    // create an array of alternating namespace, location pairs
-                    locations = attributes.getValue(i).split(" +");
-
-                    break;
-                }
-            }
-
-            //            }
-            if (!isStrict() && (locations == null)) {
-                // use the configuration
-                logger.finer(
-                        "No schemaLocation found, using '"
-                                + config.getNamespaceURI()
-                                + " "
-                                + config.getXSD().getSchemaLocation());
-                locations =
-                        new String[] {
-                            config.getNamespaceURI(), config.getXSD().getSchemaLocation()
-                        };
-            }
+            String[] locations = getSchemaLocations(attributes);
 
             // look up schema overrides
             List<XSDSchemaLocator> locators = Arrays.asList(findSchemaLocators());
@@ -567,198 +741,37 @@ public class ParserHandler extends DefaultHandler2 {
                 namespaces.declarePrefix("", config.getNamespaceURI());
             }
         }
+        return root;
+    }
 
-        // set up a new namespace context
-        namespaces.pushContext();
+    private String[] getSchemaLocations(Attributes attributes) {
+        String[] locations = null;
 
-        // create a qName object from the string
-        if ((uri == null) || uri.equals("")) {
-            uri = namespaces.getURI("");
-        }
+        for (int i = 0; i < attributes.getLength(); i++) {
+            String name = attributes.getQName(i);
 
-        String prefix = namespaces.getPrefix(uri);
-        QName qualifiedName =
-                prefix != null ? new QName(uri, localName, prefix) : new QName(uri, localName);
+            if (name.endsWith("schemaLocation")) {
+                logger.finer("schemaLocation found: " + attributes.getValue(i));
 
-        // get the handler at top of the stack and lookup child
+                // create an array of alternating namespace, location pairs
+                locations = attributes.getValue(i).split(" +");
 
-        // First ask the parent handler for a child
-        Handler parent = handlers.peek();
-        ElementHandler handler = (ElementHandler) parent.createChildHandler(qualifiedName);
-
-        if (handler == null) {
-            // look for a global element
-            XSDElementDeclaration element = index.getElementDeclaration(qualifiedName);
-
-            if (element != null) {
-                handler = handlerFactory.createElementHandler(element, parent, this);
+                break;
             }
         }
 
-        if (handler == null) {
-            // perform a lookup in the context for an element factory that create a child handler
-            List handlerFactories = context.getComponentInstancesOfType(HandlerFactory.class);
-
-            for (Iterator hf = handlerFactories.iterator(); (handler == null) && hf.hasNext(); ) {
-                HandlerFactory handlerFactory = (HandlerFactory) hf.next();
-                handler = handlerFactory.createElementHandler(qualifiedName, parent, this);
-            }
+        //            }
+        if (!isStrict() && (locations == null)) {
+            // use the configuration
+            logger.finer(
+                    "No schemaLocation found, using '"
+                            + config.getNamespaceURI()
+                            + " "
+                            + config.getXSD().getSchemaLocation());
+            locations =
+                    new String[] {config.getNamespaceURI(), config.getXSD().getSchemaLocation()};
         }
-
-        if (handler == null || forceParserDelegate) {
-            // look for ParserDelegate instances in the context to see if there is a delegate
-            // around to handle this
-            List adapters = Schemas.getComponentAdaptersOfType(context, ParserDelegate.class);
-            // List delegates = Schemas.getComponentInstancesOfType(context,ParserDelegate.class);
-            for (Object o : adapters) {
-                ComponentAdapter adapter = (ComponentAdapter) o;
-                ParserDelegate delegate = (ParserDelegate) adapter.getComponentInstance(context);
-                boolean canHandle = delegate.canHandle(qualifiedName, attributes, handler, parent);
-
-                if (canHandle) {
-                    // found one
-                    handler = new DelegatingHandler(delegate, qualifiedName, parent);
-
-                    DelegatingHandler dh = (DelegatingHandler) handler;
-                    dh.startDocument();
-
-                    // inject the current namespace context
-                    Enumeration e = namespaces.getPrefixes();
-                    while (e.hasMoreElements()) {
-                        String pre = (String) e.nextElement();
-                        dh.startPrefixMapping(pre, namespaces.getURI(pre));
-                    }
-                }
-            }
-        }
-        if (handler == null) {
-            // if the type only contains one type of element, just assume the
-            // the element is of that type
-            // if( context.getComponentInstance( Parser.Properties.PARSE_UNKNOWN_ELEMENTS ) != null)
-            // {
-            if (!isStrict()) {
-                if (logger.isLoggable(Level.FINE)) {
-                    logger.fine(
-                            "Could not find declaration for: "
-                                    + qualifiedName
-                                    + ". Checking if containing type declares a single particle.");
-                }
-
-                if (parent.getComponent() instanceof ElementInstance) {
-                    ElementInstance parentElement = (ElementInstance) parent.getComponent();
-                    List childParticles =
-                            index.getChildElementParticles(parentElement.getElementDeclaration());
-
-                    if (childParticles.size() == 1) {
-                        XSDParticle particle = (XSDParticle) childParticles.iterator().next();
-                        XSDElementDeclaration child = (XSDElementDeclaration) particle.getContent();
-
-                        if (child.isElementDeclarationReference()) {
-                            child = child.getResolvedElementDeclaration();
-                        }
-
-                        handler =
-                                handlerFactory.createElementHandler(
-                                        new QName(child.getTargetNamespace(), child.getName()),
-                                        parent,
-                                        this);
-                    }
-                }
-            }
-        }
-
-        if (handler == null) {
-            // check the case of where the namespace is wrong, do a lookup from
-            // the parent just on local name
-            if (!isStrict()) {
-                String msg =
-                        "Could not find declaration for: "
-                                + qualifiedName
-                                + ". Performing lookup by ignoring namespace";
-                logger.fine(msg);
-
-                // * = match any namespace
-                handler =
-                        (ElementHandler)
-                                parent.createChildHandler(
-                                        new QName("*", qualifiedName.getLocalPart()));
-            }
-        }
-
-        if (handler == null) {
-            // check the parser flag, and just parse it anyways
-            // if( context.getComponentInstance( Parser.Properties.PARSE_UNKNOWN_ELEMENTS ) != null)
-            // {
-            if (!isStrict()) {
-                String msg =
-                        "Could not find declaration for: "
-                                + qualifiedName
-                                + ". Creating a mock element declaration and parsing anyways...";
-                logger.fine(msg);
-
-                // create a mock element declaration
-                XSDElementDeclaration decl = XSDFactory.eINSTANCE.createXSDElementDeclaration();
-                decl.setName(qualifiedName.getLocalPart());
-                decl.setTargetNamespace(qualifiedName.getNamespaceURI());
-
-                QName typeDefinition = null;
-                if (root && rootElementType != null) {
-                    typeDefinition = rootElementType;
-                }
-
-                // check for a type definition in the context, this is only used by
-                // the parser in test mode
-                if (typeDefinition == null) {
-                    typeDefinition =
-                            (QName)
-                                    context.getComponentInstance(
-                                            "http://geotools.org/typeDefinition");
-                    if (typeDefinition != null) {
-                        context.unregisterComponent("http://geotools.org/typeDefinition");
-                    }
-                }
-
-                if (typeDefinition != null) {
-                    XSDTypeDefinition type = index.getTypeDefinition(typeDefinition);
-
-                    if (type == null) {
-                        throw new NullPointerException();
-                    }
-
-                    decl.setTypeDefinition(type);
-                } else {
-                    // normal case, just set the type to be of string
-                    XSDTypeDefinition type = index.getTypeDefinition(XS.ANYTYPE);
-                    decl.setTypeDefinition(type);
-                }
-
-                handler = handlerFactory.createElementHandler(decl, parent, this);
-            }
-        }
-
-        if (handler != null) {
-            // we may have actually matched an element whose namespace does
-            // not match the one passed in, update the context if so
-            if ((handler.getElementDeclaration().getTargetNamespace() != null)
-                    && !handler.getElementDeclaration().getTargetNamespace().equals(uri)) {
-
-                if (!handler.getElementDeclaration().isAbstract()) {
-                    namespaces.declarePrefix(
-                            "", handler.getElementDeclaration().getTargetNamespace());
-                    qualifiedName =
-                            new QName(
-                                    handler.getElementDeclaration().getTargetNamespace(),
-                                    qualifiedName.getLocalPart());
-                }
-            }
-
-            // signal the handler to start the element, and place it on the stack
-            handler.startElement(qualifiedName, attributes);
-            handlers.push(handler);
-        } else {
-            String msg = "Handler for " + qName + " could not be found.";
-            throw new SAXException(msg);
-        }
+        return locations;
     }
 
     @Override

@@ -126,20 +126,15 @@ public class VPFTest extends OnlineTestCase {
         List<Name> names = store.getNames();
 
         Name name = names.get(0);
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                store.getFeatureReader(new Query(name.getLocalPart()), Transaction.AUTO_COMMIT);
 
         int count = 0;
         ReferencedEnvelope bounds = new ReferencedEnvelope(DefaultGeographicCRS.WGS84);
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                store.getFeatureReader(new Query(name.getLocalPart()), Transaction.AUTO_COMMIT)) {
             while (reader.hasNext()) {
                 SimpleFeature feature = reader.next();
                 count++;
                 bounds.include(feature.getBounds());
-            }
-        } finally {
-            if (reader != null) {
-                reader.close();
             }
         }
         VPFLogger.log("count:" + count);
@@ -162,19 +157,14 @@ public class VPFTest extends OnlineTestCase {
         VPFLogger.log("extent:" + extent);
 
         SimpleFeatureCollection features = source.getFeatures();
-        SimpleFeatureIterator iterator = null;
+
         int count = 0;
         ReferencedEnvelope bounds = new ReferencedEnvelope(DefaultGeographicCRS.WGS84);
-        try {
-            iterator = features.features();
+        try (SimpleFeatureIterator iterator = features.features()) {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
                 count++;
                 bounds.include(feature.getBounds());
-            }
-        } finally {
-            if (iterator != null) {
-                iterator.close();
             }
         }
         VPFLogger.log("count:" + count);

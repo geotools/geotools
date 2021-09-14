@@ -215,6 +215,7 @@ public class ImageMosaicReaderTest {
 
     private URL mixedSampleModelURL;
     private URL coverageBandsURL;
+    private URL coverageBands2URL;
 
     private URL heterogeneousGranulesURL;
 
@@ -549,11 +550,9 @@ public class ImageMosaicReaderTest {
 
         // Testing the FileGroupProvider
         int groups = 0;
-        CloseableIterator<FileGroup> filesIterator = null;
-        try {
-            Query query = new Query("water_temp3");
-            query.setFilter(FF.like(FF.property("location"), "*100_20081031T00*"));
-            filesIterator = fileInfo.getFiles(query);
+        Query query = new Query("water_temp3");
+        query.setFilter(FF.like(FF.property("location"), "*100_20081031T00*"));
+        try (CloseableIterator<FileGroup> filesIterator = fileInfo.getFiles(query)) {
             while (filesIterator.hasNext()) {
                 FileGroup group = filesIterator.next();
                 if (groups == 0) {
@@ -569,10 +568,6 @@ public class ImageMosaicReaderTest {
                     assertEquals(envelope.getMaximum(1), metadataBBOX.getMaxY(), DELTA);
                 }
                 groups++;
-            }
-        } finally {
-            if (filesIterator != null) {
-                filesIterator.close();
             }
         }
         // Check the fileGroupProvider returned 4 fileGroups
@@ -2381,6 +2376,7 @@ public class ImageMosaicReaderTest {
         rgbURL = TestData.url(this, "rgb");
         mixedSampleModelURL = TestData.url(this, "mixed_sample_model");
         coverageBandsURL = TestData.url(this, "coverage_bands");
+        coverageBands2URL = TestData.url(this, "coverage_bands_heterogeneous");
         heterogeneousGranulesURL = TestData.url(this, "heterogeneous");
         timeURL = TestData.url(this, "time_geotiff");
         timeFormatURL = TestData.url(this, "time_format_geotiff");
@@ -3699,27 +3695,17 @@ public class ImageMosaicReaderTest {
         }
 
         // Editing indexer RootMosaicDirectory path
-        InputStream stream = null;
-        OutputStream outStream = null;
-        try {
+        final String indexerPath = directory1.getCanonicalPath() + "/indexer.properties";
+        String path = directory1.getCanonicalPath();
+        path = path.replace("\\", "/");
 
-            final String indexerPath = directory1.getCanonicalPath() + "/indexer.properties";
-            stream = new FileInputStream(indexerPath);
-            String path = directory1.getCanonicalPath();
-            path = path.replace("\\", "/");
-            Properties prop = new Properties();
+        Properties prop = new Properties();
+        try (InputStream stream = new FileInputStream(indexerPath)) {
             prop.load(stream);
-
-            outStream = new FileOutputStream(indexerPath);
+        }
+        try (OutputStream outStream = new FileOutputStream(indexerPath)) {
             prop.setProperty(Prop.ROOT_MOSAIC_DIR, path);
             prop.store(outStream, null);
-        } finally {
-            if (stream != null) {
-                stream.close();
-            }
-            if (outStream != null) {
-                outStream.close();
-            }
         }
         // move month 5 to another dir, we'll harvet it later
         String monthFiveName = "world.200405.3x5400x2700.tiff";
@@ -3811,24 +3797,14 @@ public class ImageMosaicReaderTest {
         }
 
         // Editing indexer RootMosaicDirectory path
-        InputStream stream = null;
-        OutputStream outStream = null;
-        try {
-            final File indexer = new File(mosaic, "indexer.properties");
-            stream = new FileInputStream(indexer);
-            Properties prop = new Properties();
+        final File indexer = new File(mosaic, "indexer.properties");
+        Properties prop = new Properties();
+        try (InputStream stream = new FileInputStream(indexer)) {
             prop.load(stream);
-
-            outStream = new FileOutputStream(indexer);
+        }
+        try (OutputStream outStream = new FileOutputStream(indexer)) {
             prop.setProperty(Prop.INDEXING_DIRECTORIES, data.getCanonicalPath());
             prop.store(outStream, null);
-        } finally {
-            if (stream != null) {
-                stream.close();
-            }
-            if (outStream != null) {
-                outStream.close();
-            }
         }
 
         // ok, let's create the mosaic and check it harvested the data in the "data" directory
@@ -4655,6 +4631,40 @@ public class ImageMosaicReaderTest {
         format = TestUtils.getFormat(coverageBandsURL);
         reader = getReader(coverageBandsURL, format);
         testMultiCoverages(reader);
+        reader.dispose();
+    }
+
+    @Test
+    public void testHeterogeneousConfigs() throws Exception {
+        // we have 2 coverages in this mosaic:
+        // - a gray coverage with homogeneous granules
+        // - a RGB coverage with heterogeneous granules
+
+        File mosaicFolder = URLs.urlToFile(coverageBands2URL);
+        for (File configFile :
+                mosaicFolder.listFiles(
+                        (FileFilter)
+                                FileFilterUtils.or(
+                                        FileFilterUtils.suffixFileFilter("db"),
+                                        FileFilterUtils.suffixFileFilter(Utils.SAMPLE_IMAGE_NAME),
+                                        FileFilterUtils.and(
+                                                FileFilterUtils.suffixFileFilter(".properties"),
+                                                FileFilterUtils.notFileFilter(
+                                                        FileFilterUtils.or(
+                                                                FileFilterUtils.nameFileFilter(
+                                                                        "indexer.properties"),
+                                                                FileFilterUtils.nameFileFilter(
+                                                                        "datastore.properties"))))))) {
+            configFile.delete();
+        }
+        // Before GEOT-6958 fix, this read would have thrown a
+        // java.lang.NullPointerException: Argument "overviewsController" should not be null.
+        // due to the reader assuming to deal with an homogeneous mosaic whilst it's actually
+        // heterogeneous
+
+        AbstractGridFormat format = TestUtils.getFormat(coverageBands2URL);
+        ImageMosaicReader reader = getReader(coverageBands2URL, format);
+        reader.read("rgb", null);
         reader.dispose();
     }
 

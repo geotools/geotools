@@ -34,7 +34,7 @@ public class DataDefinition {
     }
 
     public final boolean isValid() {
-        return (this.charset != null) && (this.fields.size() > 0);
+        return (this.charset != null) && (!this.fields.isEmpty());
     }
 
     public int getFieldsCount() {

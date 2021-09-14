@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -139,7 +140,7 @@ public final class StationsSetup {
                 IOUtils.copy(input, output);
             } else {
                 // we have context, substitute placeholders with the provided context
-                String content = IOUtils.toString(input, "UTF-8");
+                String content = IOUtils.toString(input, StandardCharsets.UTF_8);
                 content = replace(content, context);
                 IOUtils.write(content, output, "UTF-8");
             }

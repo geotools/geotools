@@ -26,6 +26,8 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -37,13 +39,18 @@ import org.geotools.renderer.RenderListener;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Style;
 import org.geotools.test.TestData;
+import org.geotools.util.factory.Hints;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * Z-order rendering test making use of FeatureTypeStyle sortBy to refine query used for styling.
  */
+@RunWith(Parameterized.class)
 public class ZOrderTest {
     private static final long TIME = 40000;
 
@@ -57,6 +64,15 @@ public class ZOrderTest {
 
     SimpleFeatureSource zbuildings;
 
+    @Parameterized.Parameters
+    public static Collection<Integer> maxMemorySortValues() {
+        return Arrays.asList(new Integer[] {1000, 2});
+    }
+
+    public ZOrderTest(Integer maxMemorySort) {
+        Hints.putSystemDefault(Hints.MAX_MEMORY_SORT, maxMemorySort);
+    }
+
     @Before
     public void setUp() throws Exception {
         File property = new File(TestData.getResource(this, "zorder/zsquares.properties").toURI());
@@ -68,7 +84,11 @@ public class ZOrderTest {
         bounds.expandBy(0.2, 0.2);
 
         // System.setProperty("org.geotools.test.interactive", "true");
+    }
 
+    @After
+    public void tearDown() throws Exception {
+        Hints.removeSystemDefault(Hints.MAX_MEMORY_SORT);
     }
 
     @Test

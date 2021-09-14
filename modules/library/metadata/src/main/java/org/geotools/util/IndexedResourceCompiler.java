@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collections;
@@ -408,7 +409,9 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
             return;
         }
         try (BufferedWriter out =
-                new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"))) {
+                new BufferedWriter(
+                        new OutputStreamWriter(
+                                new FileOutputStream(file), StandardCharsets.UTF_8))) {
             out.write(
                     "/*\n"
                             + " *    GeoTools - The Open Source Java GIS Toolkit\n"

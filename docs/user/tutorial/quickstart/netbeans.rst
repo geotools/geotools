@@ -389,8 +389,7 @@ To start with we will obtain GeoTools from the website:
    The EPSG database is distributed as an Access database and has been converted into the pure java
    database HSQL for our use.
    
-   * ``gt-epsg-h2``
-   * ``gt-epsg-oracle``
+   * ``gt-epsg-hsql``
    * ``gt-epsg-postgresql``
    * ``gt-epsg-wkt-2.6``
 

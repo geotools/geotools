@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="release" default="info"
+  xmlns:if="ant:if" xmlns:unless="ant:unless">
+  <description>
+    Perform common search an replace tasks to support the release process.
+  </description>
+  
+  <macrodef name="pom-version">
+    <attribute name="property"/>
+    <attribute name="pom.dir" default=".."/>
+    <sequential>
+      <loadfile
+        encoding="UTF-8"
+        property="@{property}"
+        srcFile="@{pom.dir}/pom.xml" >
+        <filterchain>
+          <tokenfilter>
+            <containsregex pattern="^\s*&lt;version&gt;(\S*)&lt;/version&gt;$" replace="\1" />
+          </tokenfilter>
+          <filterreader classname="org.apache.tools.ant.filters.HeadFilter">
+            <param name="lines" value="1"/>
+          </filterreader>
+          <striplinebreaks/>
+        </filterchain>
+      </loadfile>
+    </sequential>
+  </macrodef>
+  
+  <macrodef name="pom-property">
+    <attribute name="property"/>
+    <attribute name="pom.dir" default=".."/>
+    <sequential>
+      <loadfile
+        encoding="UTF-8"
+        property="@{property}"
+        srcFile="@{pom.dir}/pom.xml" >
+        <filterchain>
+          <tokenfilter>
+            <containsregex pattern="^\s*&lt;@{property}&gt;(\S*)&lt;/@{property}&gt;$" replace="\1" />
+          </tokenfilter>
+          <filterreader classname="org.apache.tools.ant.filters.HeadFilter">
+            <param name="lines" value="1"/>
+          </filterreader>
+          <striplinebreaks/>
+        </filterchain>
+      </loadfile>
+    </sequential>
+  </macrodef>
+  
+  <!-- extract build environment details -->
+  <tstamp/>
+  <pom-version property="version"/>
+  <property name="date" value="${TODAY}"/>
+  <pom-property property="series"/>
+  
+  <!-- review enviornment -->
+  <target name="info" description="Review details of build environment.">
+     <echo>version: '${version}'</echo>
+     <echo>date: '${date}'</echo>
+     <echo>series: '${series}' (used for url references)</echo>
+     
+     <echo if:set="release">release: '${release}'</echo>
+     <echo unless:set="release"/>
+     <echo unless:set="release">The `release` target requires next release version:</echo>
+     <echo unless:set="release">  ant release -Drelease='27.0'</echo>
+     <echo unless:set="release"/>
+     <echo unless:set="release">The `latest` target requires next snapshot version:</echo>
+     <echo unless:set="release">  ant latest -Drelease='28-SNAPSHOT'</echo>
+  </target>
+  
+  <!-- update environment -->
+  <target name="latest"
+          description="Update version when changing main to latest (requires `release` parameter for new version).">
+    <replace dir="..">
+      <include name="**/pom.xml"/>
+      <include name="**/GeoTools.java"/>
+      <include name="**/common.py"/>
+      <include name="build/rename.xml"/>
+      <include name="build/release.xml"/>
+      <include name="docs/build.xml"/>
+      <include name="docs/common.py"/>
+      <include name="docs/**/pom3.xml"/>
+      <include name="docs/**/pom3.xml"/>
+      <include name="release/README.md"/>
+      <replacefilter token="${version}" value="${release}"/>
+    </replace>
+  </target>
+  
+  <target name="stable"
+          description="Update url references from latest to stable">
+    <replace dir="..">
+      <include name="docs/common.py"/>
+      <include name="release/src/markdown/README.md"/>
+      <replacefilter token="docs.geotools.org/latest" value="docs.geotools.org/stable"/>
+    </replace>
+    <replace dir="..">
+      <include name="build/rename.xml"/>
+      <include name="build/release.xml"/>
+      <replacefilter
+         token="&lt;property name=&quot;series&quot; value=&quot;latest&quot;/&gt;"
+         value="&lt;property name=&quot;series&quot; value=&quot;stable&quot;/&gt;"/>
+    </replace>
+    <replace dir="..">
+      <include name="pom.xml"/>
+      <replacefilter token="&lt;series&gt;latest&lt;/series&gt;"
+                     value="&lt;series&gt;stable&lt;/series&gt;"/>
+    </replace>
+  </target>
+
+  <target name="maintenance"
+          description="Update url references from stable to maintenance">
+    <replace dir="..">
+      <include name="docs/common.py"/>
+      <include name="release/src/markdown/README.md"/>
+      <replacefilter token="docs.geotools.org/stable" value="docs.geotools.org/maintenance"/>
+    </replace>
+    <replace dir="..">
+      <include name="build/rename.xml"/>
+      <include name="build/release.xml"/>
+      <replacefilter
+         token="&lt;property name=&quot;series&quot; value=&quot;stable&quot;/&quot;"
+         value="&lt;property name=&quot;series&quot; value=&quot;maintenance&quot;/&gt;"/>
+    </replace>
+    <replace dir="..">
+      <include name="pom.xml"/>
+      <replacefilter token="&lt;series&gt;stable&lt;/series&gt;"
+                     value="&lt;series&gt;maintenance&lt;/series&gt;"/>
+    </replace>
+  </target>
+  
+  
+  <!-- update release version -->
+  <target name="release"
+          description="Release updating ${release} references in code and readme for release (requires `release` and `series` parameters).">
+    <fail unless:set="release">Property 'release' required to update pom.xml</fail>
+    <replace dir="..">
+      <include name="**/pom.xml"/>
+      <include name="**/GeoTools.java"/>
+      <include name="**/common.py"/>
+      <replacefilter token="${version}" value="${release}"/>
+    </replace>
+    <replace file="../release/src/markdown/README.md">
+      <replacefilter token="@RELEASE@" value="${release}"/>
+      <replacefilter token="@DATE@" value="${date}"/>
+      <replacefilter token="@LINK@" value="${series}"/>
+    </replace>
+  </target>
+
+</project>

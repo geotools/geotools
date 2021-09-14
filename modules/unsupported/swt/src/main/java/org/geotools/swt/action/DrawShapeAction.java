@@ -77,7 +77,7 @@ public class DrawShapeAction extends MapAction implements MapBoundsListener {
     /**
      * Draws shapes on the map.
      *
-     * @param visibleRect the rectangle in teh screen space.
+     * @param visibleRect the rectangle in the screen space.
      * @param areaOfInterest the area of interest in world coordinates.
      */
     private void drawShapes(

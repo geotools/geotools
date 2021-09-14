@@ -96,7 +96,7 @@ public abstract class AbstractEnvelope implements Envelope {
      *
      * <p>This string is okay for occasional formatting (for example for debugging purpose). But if
      * there is a lot of envelopes to format, users will get more control by using their own
-     * instance of {@link org.geotools.measure.CoordinateFormat}.
+     * instance of {@link org.geotools.referencing.CoordinateFormat}.
      */
     @Override
     public String toString() {

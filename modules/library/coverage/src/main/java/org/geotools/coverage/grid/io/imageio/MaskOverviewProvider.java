@@ -130,7 +130,7 @@ public class MaskOverviewProvider {
         // Handling Overviews
         hasDatasetLayout = layout != null;
         boolean hasExternalOverviews = false;
-        if (!ImageIOUtilities.isSkipExternalFilesLookup()) {
+        if (!ImageIOUtilities.isSkipExternalFilesLookup() && !spiProvider.isMultidim()) {
             ovrURL = new URL(inputFile.toString() + OVR_EXTENSION);
             if (hasDatasetLayout && layout.getExternalOverviews() != null) {
                 ovrURL = URLs.fileToUrl(layout.getExternalOverviews());

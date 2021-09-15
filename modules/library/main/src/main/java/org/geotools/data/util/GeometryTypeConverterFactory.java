@@ -30,6 +30,7 @@ import org.geotools.geometry.jts.CompoundRing;
 import org.geotools.geometry.jts.CurvedGeometry;
 import org.geotools.geometry.jts.MultiCurve;
 import org.geotools.geometry.jts.MultiCurvedGeometry;
+import org.geotools.geometry.jts.MultiSurface;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
@@ -316,27 +317,50 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
 
     private class CurvedGeometryConverter implements Converter {
 
+        @SuppressWarnings("unchecked")
+        private <C extends GeometryCollection, G extends Geometry> List<G> getGeoms(C original) {
+            List<G> components = new ArrayList<>();
+            for (int i = 0; i < original.getNumGeometries(); i++) {
+                components.add((G) original.getGeometryN(i));
+            }
+            return components;
+        }
+
+        private <G extends Geometry> Double getTolerance(List<G> components) {
+            double tolerance = Double.MAX_VALUE;
+            for (G currentGeom : components) {
+                if (currentGeom instanceof CurvedGeometry) {
+                    tolerance = Math.min(tolerance, ((CurvedGeometry) currentGeom).getTolerance());
+                }
+            }
+            return tolerance;
+        }
+
         @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {
             Geometry result = null;
             Geometry sourceGeometry = (Geometry) source;
             if (MultiCurvedGeometry.class.isAssignableFrom(target)) {
-                MultiLineString multiLineString = Converters.convert(source, MultiLineString.class);
-                if (multiLineString == null) {
-                    return null;
-                } else {
-                    List<LineString> components = new ArrayList<>();
-                    double tolerance = Double.MAX_VALUE;
-
-                    for (int i = 0; i < multiLineString.getNumGeometries(); i++) {
-                        LineString geom = (LineString) multiLineString.getGeometryN(0);
-                        if (geom instanceof CurvedGeometry) {
-                            tolerance = Math.min(tolerance, ((CurvedGeometry) geom).getTolerance());
-                        }
-                        components.add(geom);
+                GeometryFactory factory = ((Geometry) source).getFactory();
+                if (MultiSurface.class.isAssignableFrom(target)) {
+                    List<Polygon> components = null;
+                    if (source instanceof Polygon) {
+                        components = Arrays.asList((Polygon) source);
+                    } else {
+                        components = getGeoms((MultiPolygon) source);
                     }
-                    GeometryFactory factory = ((Geometry) source).getFactory();
-                    result = new MultiCurve(components, factory, tolerance);
+                    double tolerance = getTolerance(components);
+                    result = new MultiSurface(components, factory, tolerance);
+                } else {
+                    MultiLineString multiLineString =
+                            Converters.convert(source, MultiLineString.class);
+                    if (multiLineString == null) {
+                        return null;
+                    } else {
+                        List<LineString> components = getGeoms(multiLineString);
+                        double tolerance = getTolerance(components);
+                        result = new MultiCurve(components, factory, tolerance);
+                    }
                 }
             } else if (source instanceof CircularRing
                     && CircularString.class.isAssignableFrom(target)) {

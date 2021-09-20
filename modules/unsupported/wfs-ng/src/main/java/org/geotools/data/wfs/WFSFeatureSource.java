@@ -44,6 +44,7 @@ import org.geotools.data.wfs.internal.GetParser;
 import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -334,8 +335,8 @@ class WFSFeatureSource extends ContentFeatureSource {
             GetFeatureRequest request) {
         FeatureReader<SimpleFeatureType, SimpleFeature> tmp = reader;
         if (query.getCoordinateSystem() != null
-                && !query.getCoordinateSystem()
-                        .equals(reader.getFeatureType().getCoordinateReferenceSystem())) {
+                && FeatureTypes.shouldReproject(
+                        reader.getFeatureType(), query.getCoordinateSystem())) {
             if (request.getSrsName() != null) {
                 try {
                     reader =

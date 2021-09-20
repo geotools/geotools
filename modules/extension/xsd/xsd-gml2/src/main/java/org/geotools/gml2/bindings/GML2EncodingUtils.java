@@ -129,29 +129,6 @@ public class GML2EncodingUtils {
     }
 
     /**
-     * Determines the crs of the geometry by checking {@link Geometry#getUserData()}.
-     *
-     * <p>This method returns <code>null</code> when no crs can be found.
-     */
-    public static CoordinateReferenceSystem getCRS(Geometry g) {
-        if (g.getUserData() == null) {
-            return null;
-        }
-
-        if (g.getUserData() instanceof CoordinateReferenceSystem) {
-            return (CoordinateReferenceSystem) g.getUserData();
-        }
-
-        if (g.getUserData() instanceof Map) {
-            Map userData = (Map) g.getUserData();
-
-            return (CoordinateReferenceSystem) userData.get(CoordinateReferenceSystem.class);
-        }
-
-        return null;
-    }
-
-    /**
      * Determines the identifier (gml:id) of the geometry by checking {@link
      * Geometry#getUserData()}.
      *

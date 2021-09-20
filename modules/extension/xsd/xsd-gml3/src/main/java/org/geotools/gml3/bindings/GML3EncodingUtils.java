@@ -106,10 +106,6 @@ public class GML3EncodingUtils {
         }
     }
 
-    static CoordinateReferenceSystem getCRS(Geometry g) {
-        return GML2EncodingUtils.getCRS(g);
-    }
-
     /** Get uomLabels for the geometry if set in app-schema mapping configuration. */
     public static String getUomLabels(Geometry g) {
         Object userData = g.getUserData();

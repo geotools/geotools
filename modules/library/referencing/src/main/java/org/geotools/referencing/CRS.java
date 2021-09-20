@@ -267,6 +267,25 @@ public final class CRS {
     }
 
     /**
+     * Determines if two coordinate reference systems are compatible with each other, i.e. can be
+     * converted from one to another in a meaningful way.
+     *
+     * <p>They must have the same dimension (see OGC 09-025r2).
+     *
+     * @param crs
+     * @param otherCrs
+     * @return compatibility as boolean
+     */
+    public static boolean isCompatible(
+            CoordinateReferenceSystem crs, CoordinateReferenceSystem otherCrs) {
+        if (crs == null || otherCrs == null) {
+            return false;
+        }
+        return crs.getCoordinateSystem().getDimension()
+                == otherCrs.getCoordinateSystem().getDimension();
+    }
+
+    /**
      * Returns the coordinate operation factory used by {@link
      * #findMathTransform(CoordinateReferenceSystem, CoordinateReferenceSystem) findMathTransform}
      * convenience methods.

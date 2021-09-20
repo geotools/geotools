@@ -36,6 +36,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeImpl;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.LengthFunction;
 import org.geotools.geometry.jts.JTS;
+import org.geotools.referencing.CRS;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.logging.Logging;
@@ -344,7 +345,11 @@ public class FeatureTypes {
                 GeometryDescriptor geometryType = (GeometryDescriptor) attributeType;
 
                 tb.descriptor(geometryType);
-                if (!forceOnlyMissing || geometryType.getCoordinateReferenceSystem() == null) {
+
+                if (geometryType.getCoordinateReferenceSystem() == null
+                        || !forceOnlyMissing
+                                && CRS.isCompatible(
+                                        crs, geometryType.getCoordinateReferenceSystem())) {
                     tb.crs(crs);
                 }
 
@@ -383,6 +388,27 @@ public class FeatureTypes {
         feature.setAttribute(geomType.getLocalName(), geom);
 
         return feature;
+    }
+
+    /**
+     * Tells if there is any work to be done for reprojection, i.e. if there are any CRS that differ
+     * but are compatible.
+     *
+     * @param schema the schema to be reprojected
+     * @param crs the crs to reproject to
+     * @return answer as boolean
+     */
+    public static boolean shouldReproject(SimpleFeatureType schema, CoordinateReferenceSystem crs) {
+        for (int i = 0; i < schema.getDescriptors().size(); i++) {
+            if (schema.getDescriptor(i) instanceof GeometryDescriptor) {
+                GeometryDescriptor descr = (GeometryDescriptor) schema.getDescriptor(i);
+                if (!crs.equals(descr.getCoordinateReferenceSystem())
+                        && CRS.isCompatible(crs, descr.getCoordinateReferenceSystem())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**

@@ -75,10 +75,6 @@ public class GML3EncodingUtils {
         }
     }
 
-    static CoordinateReferenceSystem getCRS(Geometry g) {
-        return GML2EncodingUtils.getCRS(g);
-    }
-
     static String getID(Geometry g) {
         return GML2EncodingUtils.getID(g);
     }

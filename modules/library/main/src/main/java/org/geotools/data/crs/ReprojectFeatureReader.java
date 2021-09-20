@@ -17,6 +17,8 @@
 package org.geotools.data.crs;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DelegatingFeatureReader;
@@ -25,11 +27,14 @@ import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
+import org.geotools.geometry.jts.GeometryUtil;
 import org.geotools.referencing.CRS;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.feature.type.Name;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
@@ -70,8 +75,10 @@ public class ReprojectFeatureReader
         implements DelegatingFeatureReader<SimpleFeatureType, SimpleFeature> {
 
     FeatureReader<SimpleFeatureType, SimpleFeature> reader;
+    SimpleFeatureType originalType;
     SimpleFeatureType schema;
-    GeometryCoordinateSequenceTransformer transformer = new GeometryCoordinateSequenceTransformer();
+    GeometryCoordinateSequenceTransformer transformer;
+    Map<Name, GeometryCoordinateSequenceTransformer> transformers;
 
     /**
      * Direct constructor reprojecting the provided reader into the schema indicated (using the
@@ -92,8 +99,10 @@ public class ReprojectFeatureReader
             MathTransform transform) {
         this.reader = reader;
         this.schema = schema;
+        this.transformer = new GeometryCoordinateSequenceTransformer();
         transformer.setMathTransform(transform);
     }
+
     /**
      * Constructor that will generate schema and mathTransform for the results.
      *
@@ -109,18 +118,37 @@ public class ReprojectFeatureReader
             throw new NullPointerException("CoordinateSystem required");
         }
 
-        SimpleFeatureType type = reader.getFeatureType();
-        CoordinateReferenceSystem original =
-                type.getGeometryDescriptor().getCoordinateReferenceSystem();
+        this.originalType = reader.getFeatureType();
 
-        if (cs.equals(original)) {
+        if (!FeatureTypes.shouldReproject(originalType, cs)) {
             throw new IllegalArgumentException(
                     "CoordinateSystem " + cs + " already used (check before using wrapper)");
         }
 
-        this.schema = FeatureTypes.transform(type, cs);
+        this.schema = FeatureTypes.transform(originalType, cs);
+
         this.reader = reader;
-        transformer.setMathTransform(CRS.findMathTransform(original, cs, true));
+        this.transformers = new HashMap<>();
+        for (int i = 0; i < originalType.getDescriptors().size(); i++) {
+            if (originalType.getDescriptor(i) instanceof GeometryDescriptor) {
+                GeometryDescriptor descr = (GeometryDescriptor) originalType.getDescriptor(i);
+                CoordinateReferenceSystem original = descr.getCoordinateReferenceSystem();
+                if (CRS.isCompatible(cs, original)) {
+                    GeometryCoordinateSequenceTransformer transformer =
+                            new GeometryCoordinateSequenceTransformer();
+                    transformer.setMathTransform(CRS.findMathTransform(original, cs, true));
+                    transformers.put(originalType.getDescriptor(i).getName(), transformer);
+                }
+            }
+        }
+    }
+
+    protected GeometryCoordinateSequenceTransformer getTransformer(Name attributeName) {
+        if (transformer != null) {
+            return transformer;
+        } else {
+            return transformers.get(attributeName);
+        }
     }
 
     @Override
@@ -162,9 +190,19 @@ public class ReprojectFeatureReader
         Object[] attributes = next.getAttributes().toArray();
 
         try {
-            for (int i = 0; i < attributes.length; i++) {
-                if (attributes[i] instanceof Geometry) {
-                    attributes[i] = transformer.transform((Geometry) attributes[i]);
+            for (int i = 0; i < schema.getDescriptors().size(); i++) {
+                if (schema.getDescriptor(i) instanceof GeometryDescriptor
+                        && attributes[i] != null) {
+                    GeometryDescriptor descr = (GeometryDescriptor) originalType.getDescriptor(i);
+                    GeometryCoordinateSequenceTransformer transformer =
+                            getTransformer(descr.getName());
+                    if (transformer != null) {
+                        attributes[i] = transformer.transform((Geometry) attributes[i]);
+                        GeometryUtil.setCRS(
+                                (Geometry) attributes[i],
+                                ((GeometryDescriptor) schema.getDescriptor(i))
+                                        .getCoordinateReferenceSystem());
+                    }
                 }
             }
         } catch (TransformException e) {

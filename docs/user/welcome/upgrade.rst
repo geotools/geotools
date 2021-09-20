@@ -5,13 +5,14 @@ With a library as old as GeoTools you will occasionally run into a project from 
 needs to be upgraded. This page collects the upgrade notes for each release change; highlighting any
 fundamental changes with code examples showing how to upgrade your code.
 
-But first to upgrade - change your dependency geotools.version to |release| (or an appropriate stable version):
+The first step to upgrade: change the ``geotools.version`` of your dependencies in your ``pom.xml`` to |release| (or an appropriate stable version):
 
-.. code-block:: xml
+.. use a parsed-literal here instead of a code-block because substitution of the RELEASE token does not work in a code-block
+.. parsed-literal::
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <geotools.version>|release|</geotools.version>
+        <geotools.version>\ |release|\ </geotools.version>
     </properties>
     ....
     <dependencies>
@@ -27,6 +28,7 @@ But first to upgrade - change your dependency geotools.version to |release| (or 
         </dependency>
         ....
     </dependencies>
+
 
 GeoTools 26.x
 -------------

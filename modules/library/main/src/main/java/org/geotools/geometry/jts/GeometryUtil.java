@@ -53,7 +53,7 @@ public class GeometryUtil {
      */
     public static void setCRS(Geometry geometry, CoordinateReferenceSystem crs) {
         Object obj = geometry.getUserData();
-        Map<Object, Object> userData = new HashMap<Object, Object>();
+        Map<Object, Object> userData = new HashMap<>();
         if (obj != null && obj instanceof Map) {
             userData.putAll((Map<?, ?>) obj);
         }

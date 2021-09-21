@@ -30,6 +30,6 @@ public class ShapefileSizeException extends IOException {
     private static final long serialVersionUID = 6539095903426714802L;
 
     public ShapefileSizeException(String message) {
-        super.getMessage();
+        super(message);
     }
 }

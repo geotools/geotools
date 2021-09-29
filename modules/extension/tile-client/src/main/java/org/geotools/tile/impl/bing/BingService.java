@@ -17,7 +17,9 @@
 package org.geotools.tile.impl.bing;
 
 import org.geotools.tile.TileFactory;
+import org.geotools.tile.TileIdentifier;
 import org.geotools.tile.impl.WebMercatorTileService;
+import org.geotools.tile.impl.ZoomLevel;
 
 /**
  * The Bing tile service.
@@ -104,5 +106,15 @@ public class BingService extends WebMercatorTileService {
     @Override
     public TileFactory getTileFactory() {
         return tileFactory;
+    }
+
+    @Override
+    public TileIdentifier identifyTileAtCoordinate(double lon, double lat, ZoomLevel zoomLevel) {
+        int[] tileXY = BingTileUtil.lonLatToPixelXY(lon, lat, zoomLevel.getZoomLevel());
+
+        int colX = (int) Math.floor(tileXY[0] / BingTile.DEFAULT_TILE_SIZE);
+        int rowY = (int) Math.floor(tileXY[1] / BingTile.DEFAULT_TILE_SIZE);
+
+        return new BingTileIdentifier(colX, rowY, zoomLevel, getName());
     }
 }

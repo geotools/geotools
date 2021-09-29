@@ -18,7 +18,9 @@
 package org.geotools.tile.impl.osm;
 
 import org.geotools.tile.TileFactory;
+import org.geotools.tile.TileIdentifier;
 import org.geotools.tile.impl.WebMercatorTileService;
+import org.geotools.tile.impl.ZoomLevel;
 
 /**
  * The tile service for the OpenStreetMap family.
@@ -70,5 +72,40 @@ public class OSMService extends WebMercatorTileService {
     @Override
     public TileFactory getTileFactory() {
         return tileFactory;
+    }
+
+    @Override
+    public TileIdentifier identifyTileAtCoordinate(double lon, double lat, ZoomLevel zoomLevel) {
+        lat = TileFactory.normalizeDegreeValue(lat, 90);
+        lon = TileFactory.normalizeDegreeValue(lon, 180);
+
+        /**
+         * Because the latitude is only valid in 85.0511 °N to 85.0511 °S
+         * (http://wiki.openstreetmap.org/wiki/Tilenames#X_and_Y), we have to correct if necessary.
+         */
+        lat =
+                OSMTileFactory.moveInRange(
+                        lat,
+                        WebMercatorTileService.MIN_LATITUDE,
+                        WebMercatorTileService.MAX_LATITUDE);
+
+        int xTile = (int) Math.floor((lon + 180) / 360 * (1 << zoomLevel.getZoomLevel()));
+        int yTile =
+                (int)
+                        Math.floor(
+                                (1
+                                                - Math.log(
+                                                                Math.tan(lat * Math.PI / 180)
+                                                                        + 1
+                                                                                / Math.cos(
+                                                                                        lat
+                                                                                                * Math
+                                                                                                        .PI
+                                                                                                / 180))
+                                                        / Math.PI)
+                                        / 2
+                                        * (1 << zoomLevel.getZoomLevel()));
+        if (yTile < 0) yTile = 0;
+        return new OSMTileIdentifier(xTile, yTile, zoomLevel, getName());
     }
 }

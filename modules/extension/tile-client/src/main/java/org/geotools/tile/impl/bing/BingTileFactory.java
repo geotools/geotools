@@ -39,12 +39,7 @@ class BingTileFactory extends WebMercatorTileFactory {
     public Tile findTileAtCoordinate(
             double lon, double lat, ZoomLevel zoomLevel, TileService service) {
 
-        int[] tileXY = BingTileUtil.lonLatToPixelXY(lon, lat, zoomLevel.getZoomLevel());
-
-        int colX = (int) Math.floor(tileXY[0] / BingTile.DEFAULT_TILE_SIZE);
-        int rowY = (int) Math.floor(tileXY[1] / BingTile.DEFAULT_TILE_SIZE);
-
-        return create(new BingTileIdentifier(colX, rowY, zoomLevel, service.getName()), service);
+        return create(service.identifyTileAtCoordinate(lon, lat, zoomLevel), service);
     }
 
     @Override

@@ -270,11 +270,10 @@ public abstract class TileService implements ImageLoader {
         Set<Tile> tileList = new HashSet<>(100);
 
         // Let's get the first tile which covers the upper-left corner
-        Tile firstTile =
-                tileFactory.findTileAtCoordinate(
-                        extent.getMinX(), extent.getMaxY(), zoomLevel, this);
+        TileIdentifier identifier =
+                identifyTileAtCoordinate(extent.getMinX(), extent.getMaxY(), zoomLevel);
+        Tile firstTile = obtainTile(identifier);
 
-        addTileToCache(firstTile);
         tileList.add(firstTile);
 
         Tile firstTileOfRow = firstTile;
@@ -290,10 +289,10 @@ public abstract class TileService implements ImageLoader {
 
                 // Check if the new tile is still part of the extent and
                 // that we don't have the first tile again
-                if (extent.intersects((Envelope) rightNeighbour.getExtent())
+                if (rightNeighbour != null
+                        && extent.intersects((Envelope) rightNeighbour.getExtent())
                         && !firstTileOfRow.equals(rightNeighbour)) {
 
-                    addTileToCache(rightNeighbour);
                     tileList.add(rightNeighbour);
 
                     movingTile = rightNeighbour;
@@ -314,10 +313,10 @@ public abstract class TileService implements ImageLoader {
             Tile lowerNeighbour = tileFactory.findLowerNeighbour(firstTileOfRow, this);
 
             // Check if the new tile is still part of the extent
-            if (extent.intersects((Envelope) lowerNeighbour.getExtent())
+            if (lowerNeighbour != null
+                    && extent.intersects((Envelope) lowerNeighbour.getExtent())
                     && !firstTile.equals(lowerNeighbour)) {
 
-                addTileToCache(lowerNeighbour);
                 tileList.add(lowerNeighbour);
 
                 firstTileOfRow = movingTile = lowerNeighbour;
@@ -328,6 +327,10 @@ public abstract class TileService implements ImageLoader {
 
         return tileList;
     }
+
+    /** Returns tile identifier for the tile at the given coordinate */
+    public abstract TileIdentifier identifyTileAtCoordinate(
+            double lon, double lat, ZoomLevel zoomLevel);
 
     /** Fetches the image from url given by tile. */
     @Override
@@ -349,6 +352,7 @@ public abstract class TileService implements ImageLoader {
      * <p>Subclasses services (such as WMTS) may have some more hints about the tile TTL, so a more
      * controllable cache should be implemented in these cases.
      */
+    @Deprecated
     protected Tile addTileToCache(Tile tile) {
         String id = tile.getId();
         boolean isInCache = !(tiles.peek(id) == null || tiles.get(id) == null);
@@ -367,6 +371,26 @@ public abstract class TileService implements ImageLoader {
         }
     }
 
+    /** Check cache for given identifier. Call TileFactory to create new if not present. */
+    public Tile obtainTile(TileIdentifier identifier) {
+        String id = identifier.getId();
+        boolean isInCache = !(tiles.peek(id) == null || tiles.get(id) == null);
+
+        if (isInCache) {
+            if (LOGGER.isLoggable(Level.FINER)) {
+                LOGGER.fine("Tile already in cache: " + id);
+            }
+            return tiles.get(id);
+        } else {
+            if (LOGGER.isLoggable(Level.FINER)) {
+                LOGGER.fine("Tile created new: " + id);
+            }
+            final Tile newTile = getTileFactory().create(identifier, this);
+            tiles.put(id, newTile);
+            return newTile;
+        }
+    }
+
     /**
      * Returns a list that represents a mapping between zoom-levels and map scale.
      *
@@ -377,6 +401,7 @@ public abstract class TileService implements ImageLoader {
      */
     public abstract double[] getScaleList();
 
+    /** Returns the bounds for the complete TileService */
     public abstract ReferencedEnvelope getBounds();
 
     /** The projection the tiles are drawn in. */
@@ -438,6 +463,7 @@ public abstract class TileService implements ImageLoader {
         return getName();
     }
 
+    /** Returns the http client to use for fetching images */
     public final HTTPClient getHttpClient() {
         return this.client;
     }

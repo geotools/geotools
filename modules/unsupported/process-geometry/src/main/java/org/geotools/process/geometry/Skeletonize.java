@@ -1,3 +1,21 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2021, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ */
+
 package org.geotools.process.geometry;
 
 import java.util.ArrayList;
@@ -64,7 +82,7 @@ public class Skeletonize {
         double dist = poly.getLength() * (perc_tolerance / 100);
         Polygon spoly = (Polygon) TopologyPreservingSimplifier.simplify(poly, dist / 100.0);
         Polygon vpoly = (Polygon) Densifier.densify(spoly, dist);
-        System.out.println(vpoly);
+
         Geometry triangles = getVoroni(vpoly);
 
         // System.out.println(outW.toString());

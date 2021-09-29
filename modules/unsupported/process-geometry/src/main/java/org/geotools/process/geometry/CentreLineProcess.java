@@ -1,3 +1,21 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2021, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ */
+
 package org.geotools.process.geometry;
 
 import java.util.logging.Logger;
@@ -7,10 +25,8 @@ import org.geotools.process.factory.DescribeResult;
 import org.geotools.process.factory.StaticMethodsProcessFactory;
 import org.geotools.text.Text;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.util.InternationalString;
 
-@SuppressWarnings("rawtypes")
-public class CentreLineProcess extends StaticMethodsProcessFactory {
+public class CentreLineProcess extends StaticMethodsProcessFactory<CentreLineProcess> {
     private static final Logger LOG =
             Logger.getLogger("com.ianturton.cookbook.processes.CentreLineProcess");
 
@@ -18,11 +34,6 @@ public class CentreLineProcess extends StaticMethodsProcessFactory {
     public CentreLineProcess() {
 
         super(Text.text("CentreLine"), "CentreLine", CentreLineProcess.class);
-    }
-
-    @SuppressWarnings("unchecked")
-    public CentreLineProcess(InternationalString title, String namespace, Class<?> targetClass) {
-        super(title, namespace, targetClass);
     }
 
     @DescribeProcess(title = "Centre Line", description = "Extract Centre Line of a Polygon")

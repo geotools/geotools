@@ -343,34 +343,6 @@ public abstract class TileService implements ImageLoader {
         }
     }
 
-    /**
-     * Add a tile to the cache.
-     *
-     * <p>The cache used here is a soft cache, which has an un-controllable time to live (could last
-     * a split seconds or 100 years).
-     *
-     * <p>Subclasses services (such as WMTS) may have some more hints about the tile TTL, so a more
-     * controllable cache should be implemented in these cases.
-     */
-    @Deprecated
-    protected Tile addTileToCache(Tile tile) {
-        String id = tile.getId();
-        boolean isInCache = !(tiles.peek(id) == null || tiles.get(id) == null);
-
-        if (isInCache) {
-            if (LOGGER.isLoggable(Level.FINER)) {
-                LOGGER.fine("Tile already in cache: " + id);
-            }
-            return tiles.get(id);
-        } else {
-            if (LOGGER.isLoggable(Level.FINER)) {
-                LOGGER.fine("Tile added to cache: " + id);
-            }
-            tiles.put(id, tile);
-            return tile;
-        }
-    }
-
     /** Check cache for given identifier. Call TileFactory to create new if not present. */
     public Tile obtainTile(TileIdentifier identifier) {
         String id = identifier.getId();

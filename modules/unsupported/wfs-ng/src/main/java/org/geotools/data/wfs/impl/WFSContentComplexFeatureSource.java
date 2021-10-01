@@ -84,12 +84,16 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
     /** Get features based on the query specified. */
     @Override
     public FeatureCollection<FeatureType, Feature> getFeatures(Query query) throws IOException {
-
+        if (query.getTypeName() != null && !typeName.getLocalPart().equals(query.getTypeName())) {
+            throw new IllegalArgumentException(
+                    String.format(
+                            "Query's local typeName %s doesn't match the one of this feature source %s.",
+                            query.getTypeName(), typeName.getLocalPart()));
+        }
         GetFeatureRequest request = client.createGetFeatureRequest();
         FeatureType schema = dataAccess.getSchema(typeName);
         QName name = dataAccess.getRemoteTypeName(typeName);
-        request.setTypeName(new QName(query.getTypeName()));
-
+        request.setTypeName(name);
         request.setFullType(schema);
         request.setFilter(query.getFilter());
         request.setPropertyNames(query.getPropertyNames());

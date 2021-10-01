@@ -56,6 +56,27 @@ public class TWKBReaderTest {
     }
 
     @Test
+    public void testGeometriesWithDecimalDigits() throws ParseException, IOException {
+        checkTWKBGeometry(
+                "020002b88f75ba928c061600", "LINESTRING(959452 6390941,959463 6390941)", 2);
+
+        checkTWKBGeometry(
+                "220002b89a9309d6b8f93ce40103",
+                "LINESTRING(959452.4 6390941.9,959463.8 6390941.7)",
+                2);
+
+        checkTWKBGeometry(
+                "420002c088c05be6b6bee104ea1127",
+                "LINESTRING(959452.48 6390941.95,959463.89 6390941.75)",
+                2);
+
+        checkTWKBGeometry(
+                "62000286d58093078ea4f0ce2fa2b201a103",
+                "LINESTRING(959452.483 6390941.959,959463.892 6390941.750)",
+                2);
+    }
+
+    @Test
     public void testNonPointGeometries() throws ParseException, IOException {
         checkTWKBGeometry("a20002c09a0c80b51880b51880b518", "LINESTRING(1 2, 3 4)");
         checkTWKBGeometry(

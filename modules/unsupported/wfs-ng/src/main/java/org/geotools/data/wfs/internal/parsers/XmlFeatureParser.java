@@ -29,6 +29,7 @@ import javax.xml.stream.XMLStreamReader;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.wfs.internal.GetParser;
 import org.geotools.data.wfs.internal.Loggers;
+import org.geotools.data.wfs.internal.WFSStrategy;
 import org.geotools.gml.stream.XmlStreamGeometryReader;
 import org.geotools.gml3.GML;
 import org.geotools.util.Converters;
@@ -68,7 +69,8 @@ public abstract class XmlFeatureParser<FT extends FeatureType, F extends Feature
     public XmlFeatureParser(
             final InputStream getFeatureResponseStream,
             final FT targetType,
-            QName featureDescriptorName)
+            QName featureDescriptorName,
+            WFSStrategy strategy)
             throws IOException {
         this.inputStream = getFeatureResponseStream;
         this.featureNamespace = featureDescriptorName.getNamespaceURI();
@@ -95,7 +97,11 @@ public abstract class XmlFeatureParser<FT extends FeatureType, F extends Feature
                     break;
                 }
             }
-            parser.require(START_ELEMENT, WFS.NAMESPACE, WFS.FeatureCollection.getLocalPart());
+            final String namespace =
+                    (strategy == null
+                            ? WFS.NAMESPACE
+                            : strategy.getWfsConfiguration().getNamespaceURI());
+            parser.require(START_ELEMENT, namespace, WFS.FeatureCollection.getLocalPart());
 
             String nof = parser.getAttributeValue(null, "numberOfFeatures");
             if (nof != null) {
@@ -106,6 +112,8 @@ public abstract class XmlFeatureParser<FT extends FeatureType, F extends Feature
                 }
             }
         } catch (XMLStreamException e) {
+            getFeatureResponseStream.close();
+            this.inputStream = null;
             throw new DataSourceException(e);
         }
     }

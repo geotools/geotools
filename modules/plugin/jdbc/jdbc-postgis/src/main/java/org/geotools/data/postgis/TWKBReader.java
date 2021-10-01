@@ -281,7 +281,7 @@ public class TWKBReader {
     }
 
     protected double readNextDouble(double scale) throws IOException {
-        int value = dis.readSignedInt();
+        long value = dis.readSignedLong();
         return value / scale;
     }
 

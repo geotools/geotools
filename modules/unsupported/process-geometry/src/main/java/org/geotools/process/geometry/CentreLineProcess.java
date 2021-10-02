@@ -30,14 +30,15 @@ public class CentreLineProcess extends StaticMethodsProcessFactory<CentreLinePro
     private static final Logger LOG =
             Logger.getLogger("com.ianturton.cookbook.processes.CentreLineProcess");
 
-    @SuppressWarnings("unchecked")
     public CentreLineProcess() {
 
         super(Text.text("CentreLine"), "CentreLine", CentreLineProcess.class);
     }
 
     @DescribeProcess(title = "Centre Line", description = "Extract Centre Line of a Polygon")
-    @DescribeResult(description = "A Geometry that is the centre line (skeleton) of the input")
+    @DescribeResult(
+        description = "A geometry that is the centre line (skeleton) of the input polygon"
+    )
     public static Geometry centreLine(
             @DescribeParameter(
                         name = "geometry",
@@ -46,9 +47,40 @@ public class CentreLineProcess extends StaticMethodsProcessFactory<CentreLinePro
                         max = 1
                     )
                     Geometry geometry) {
-        LOG.info("got " + geometry.getClass());
-        Geometry ret = CentreLine.getCentreLine(geometry, 5.0);
-        LOG.info("Returning " + ret.getClass());
+        LOG.fine("got " + geometry.getClass());
+        Geometry ret = CentreLine.getCentreLine(geometry);
+        LOG.fine("Returning " + ret.getClass());
+        return ret;
+    }
+
+    @DescribeProcess(
+        title = "Centre Line with tolerance",
+        description = "Extract Centre Line of a Polygon"
+    )
+    @DescribeResult(
+        description = "A geometry that is the centre line (skeleton) of the input polygon"
+    )
+    public static Geometry centreLineWithTolerance(
+            @DescribeParameter(
+                        name = "geometry",
+                        description = "The Geometry to extract the centre line from",
+                        min = 1,
+                        max = 1
+                    )
+                    Geometry geometry,
+            @DescribeParameter(
+                        name = "tolerance",
+                        description =
+                                "%age of perimeter to use for densification/simplification of input/output",
+                        min = 1,
+                        max = 1,
+                        minValue = 1,
+                        maxValue = 100
+                    )
+                    double tolerance) {
+        LOG.fine("got " + geometry.getClass());
+        Geometry ret = CentreLine.getCentreLine(geometry, tolerance);
+        LOG.fine("Returning " + ret.getClass());
         return ret;
     }
 }

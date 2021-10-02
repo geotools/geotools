@@ -80,7 +80,7 @@ public class CentreLine {
     }
 
     public static Geometry getCentreLine(Geometry geom) {
-        return getCentreLine(geom, 50);
+        return getCentreLine(geom, 5.0);
     }
     /**
      * @param geom
@@ -125,18 +125,18 @@ public class CentreLine {
                 };
         double bestLen = Double.NEGATIVE_INFINITY;
         Path bestPath = null;
-        for (Node source : graph.getNodesOfDegree(1)) {
+        List<Node> ends = graph.getNodesOfDegree(1);
+        for (int i = 0; i < ends.size(); i++) {
+            Node source = ends.get(i);
             // calculate the cost(distance) of each graph node to the node closest to
             // the origin
             // System.out.println("starting at " + source.getObject());
             DijkstraShortestPathFinder dspf =
                     new DijkstraShortestPathFinder(graph, source, weighter);
             dspf.calculate();
-            for (Node dest : graph.getNodesOfDegree(1)) {
-                // System.out.println("\troute to " + dest.getObject());
-                if (dest.equals(source)) {
-                    continue;
-                }
+            for (int j = i + 1; j < ends.size(); j++) {
+                Node dest = ends.get(j);
+
                 // get length
                 double len = 0.0;
                 Path path = dspf.getPath(dest);

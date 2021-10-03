@@ -42,6 +42,11 @@
     </developer>
   </developers>
 
+  <properties>
+    <!-- Allow old version of EHCache to work, I presume? This module is on the chopping block anyways -->
+    <test.otherJVMParams>--add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.ref=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=ALL-UNNAMED --add-opens=java.base/java.util.concurrent.locks=ALL-UNNAMED</test.otherJVMParams>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.amazonaws</groupId>

@@ -33,6 +33,11 @@
     </developer>
   </developers>
 
+  <properties>
+    <!-- TODO: remove once EsyMock is updated, see https://github.com/easymock/easymock/issues/274 -->
+    <test.otherJVMParams>--add-opens=java.base/java.lang=ALL-UNNAMED</test.otherJVMParams>
+  </properties>
+
   <dependencyManagement>
     <dependencies>
       <dependency>

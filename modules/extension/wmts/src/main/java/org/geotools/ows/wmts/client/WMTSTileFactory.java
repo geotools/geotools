@@ -65,55 +65,7 @@ public class WMTSTileFactory extends TileFactory {
     @Override
     public Tile findTileAtCoordinate(
             double lon, double lat, ZoomLevel zoomLevel, TileService service) {
-
-        WMTSZoomLevel zl = (WMTSZoomLevel) zoomLevel;
-        TileMatrix tileMatrix =
-                ((WMTSTileService) service).getMatrixSet().getMatrices().get(zl.getZoomLevel());
-
-        double pixelSpan = getPixelSpan(tileMatrix);
-
-        double tileSpanY = (tileMatrix.getTileHeight() * pixelSpan);
-        double tileSpanX = (tileMatrix.getTileWidth() * pixelSpan);
-        double tileMatrixMinX;
-        double tileMatrixMaxY;
-        if (tileMatrix
-                .getCrs()
-                .getCoordinateSystem()
-                .getAxis(0)
-                .getDirection()
-                .equals(AxisDirection.EAST)) {
-            tileMatrixMinX = tileMatrix.getTopLeft().getX();
-            tileMatrixMaxY = tileMatrix.getTopLeft().getY();
-        } else {
-            tileMatrixMaxY = tileMatrix.getTopLeft().getX();
-            tileMatrixMinX = tileMatrix.getTopLeft().getY();
-        }
-        // to compensate for floating point computation inaccuracies
-        double epsilon = 1e-6;
-        long xTile = (int) Math.floor((lon - tileMatrixMinX) / tileSpanX + epsilon);
-        long yTile = (int) Math.floor((tileMatrixMaxY - lat) / tileSpanY + epsilon);
-
-        // sanitize
-        xTile = Math.max(0, xTile);
-        yTile = Math.max(0, yTile);
-
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine(
-                    "findTile: (lon,lat)=("
-                            + lon
-                            + ","
-                            + lat
-                            + ")  (col,row)="
-                            + xTile
-                            + ", "
-                            + yTile
-                            + " zoom:"
-                            + zoomLevel.getZoomLevel());
-        }
-
-        return create(
-                new WMTSTileIdentifier((int) xTile, (int) yTile, zoomLevel, service.getName()),
-                service);
+        return create(service.identifyTileAtCoordinate(lon, lat, zoomLevel), service);
     }
 
     /** Find the first valid Upper Left tile for the current layer. */
@@ -243,7 +195,7 @@ public class WMTSTileFactory extends TileFactory {
     }
 
     /** */
-    private static double getPixelSpan(TileMatrix tileMatrix) {
+    static double getPixelSpan(TileMatrix tileMatrix) {
         CoordinateSystem coordinateSystem = tileMatrix.getCrs().getCoordinateSystem();
         @SuppressWarnings("unchecked")
         Unit<Length> unit = (Unit<Length>) coordinateSystem.getAxis(0).getUnit();

@@ -40,13 +40,16 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.tile.Tile;
 import org.geotools.tile.TileFactory;
+import org.geotools.tile.TileIdentifier;
 import org.geotools.tile.TileService;
 import org.geotools.tile.impl.ScaleZoomLevelMatcher;
+import org.geotools.tile.impl.ZoomLevel;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
@@ -449,7 +452,6 @@ public class WMTSTileService extends TileService {
                             + ")");
         }
 
-        addTileToCache(firstTile);
         tileList.add(firstTile);
 
         Tile firstTileOfRow = firstTile;
@@ -459,17 +461,16 @@ public class WMTSTileService extends TileService {
             do { // Loop row
 
                 // get the next tile right of this one
-                Tile rightNeighbour =
-                        tileFactory.findRightNeighbour(
-                                movingTile, this); // movingTile.getRightNeighbour();
+                TileIdentifier rightIdentifier = movingTile.getTileIdentifier().getRightNeighbour();
 
-                if (rightNeighbour == null) { // no more tiles to the right
+                if (rightIdentifier == null) { // no more tiles to the right
                     if (LOGGER.isLoggable(Level.FINE)) {
                         LOGGER.log(Level.FINE, "No tiles on the right of " + movingTile.getId());
                     }
 
                     break;
                 }
+                Tile rightNeighbour = obtainTile(rightIdentifier);
 
                 // Check if the new tile is still part of the extent
                 boolean intersects =
@@ -479,7 +480,6 @@ public class WMTSTileService extends TileService {
                         LOGGER.log(Level.FINE, "Adding right neighbour " + rightNeighbour.getId());
                     }
 
-                    addTileToCache(rightNeighbour);
                     tileList.add(rightNeighbour);
 
                     movingTile = rightNeighbour;
@@ -502,9 +502,9 @@ public class WMTSTileService extends TileService {
             } while (tileList.size() < maxNumberOfTilesForZoomLevel);
 
             // get the next tile under the first one of the row
-            Tile lowerNeighbour = tileFactory.findLowerNeighbour(firstTileOfRow, this);
 
-            if (lowerNeighbour == null) { // no more tiles to the right
+            TileIdentifier lowerIdentifier = firstTileOfRow.getTileIdentifier().getLowerNeighbour();
+            if (lowerIdentifier == null) { // no more tiles to the right
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.log(Level.FINE, "No more tiles below " + firstTileOfRow.getId());
                 }
@@ -512,6 +512,7 @@ public class WMTSTileService extends TileService {
                 break;
             }
 
+            Tile lowerNeighbour = obtainTile(lowerIdentifier);
             // Check if the new tile is still part of the extent
             boolean intersects =
                     reqExtentInTileCrs.intersects((Envelope) lowerNeighbour.getExtent());
@@ -521,7 +522,6 @@ public class WMTSTileService extends TileService {
                     LOGGER.log(Level.FINE, "Adding lower neighbour " + lowerNeighbour.getId());
                 }
 
-                addTileToCache(lowerNeighbour);
                 tileList.add(lowerNeighbour);
 
                 firstTileOfRow = movingTile = lowerNeighbour;
@@ -534,21 +534,6 @@ public class WMTSTileService extends TileService {
         } while (tileList.size() < maxNumberOfTilesForZoomLevel);
 
         return tileList;
-    }
-
-    /**
-     * Add a tile to the cache.
-     *
-     * <p>At the moment we are delegating the cache to the super class, which handles the cache as a
-     * soft cache. The soft cache has an un-controllable time to live, could last a split seconds or
-     * 100 years. However, WMTS services normally come with caching headers of some sort, e.g., do
-     * not cache, or keep for 1 hour, or 6 months and so on.
-     *
-     * <p>TODO: The code should account for that.
-     */
-    @Override
-    protected Tile addTileToCache(Tile tile) {
-        return super.addTileToCache(tile);
     }
 
     /** @return the type */
@@ -673,7 +658,6 @@ public class WMTSTileService extends TileService {
         this.format = format;
     }
 
-    /** */
     public WMTSZoomLevel getZoomLevel(int zoom) {
         return new WMTSZoomLevel(zoom, this);
     }
@@ -733,5 +717,55 @@ public class WMTSTileService extends TileService {
                 return zoomLevel;
             }
         };
+    }
+
+    @Override
+    public TileIdentifier identifyTileAtCoordinate(double lon, double lat, ZoomLevel zoomLevel) {
+
+        WMTSZoomLevel zl = (WMTSZoomLevel) zoomLevel;
+        TileMatrix tileMatrix = getMatrixSet().getMatrices().get(zl.getZoomLevel());
+
+        double pixelSpan = WMTSTileFactory.getPixelSpan(tileMatrix);
+
+        double tileSpanY = (tileMatrix.getTileHeight() * pixelSpan);
+        double tileSpanX = (tileMatrix.getTileWidth() * pixelSpan);
+        double tileMatrixMinX;
+        double tileMatrixMaxY;
+        if (tileMatrix
+                .getCrs()
+                .getCoordinateSystem()
+                .getAxis(0)
+                .getDirection()
+                .equals(AxisDirection.EAST)) {
+            tileMatrixMinX = tileMatrix.getTopLeft().getX();
+            tileMatrixMaxY = tileMatrix.getTopLeft().getY();
+        } else {
+            tileMatrixMaxY = tileMatrix.getTopLeft().getX();
+            tileMatrixMinX = tileMatrix.getTopLeft().getY();
+        }
+        // to compensate for floating point computation inaccuracies
+        double epsilon = 1e-6;
+        long xTile = (int) Math.floor((lon - tileMatrixMinX) / tileSpanX + epsilon);
+        long yTile = (int) Math.floor((tileMatrixMaxY - lat) / tileSpanY + epsilon);
+
+        // sanitize
+        xTile = Math.max(0, xTile);
+        yTile = Math.max(0, yTile);
+
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine(
+                    "identifyTile: (lon,lat)=("
+                            + lon
+                            + ","
+                            + lat
+                            + ")  (col,row)="
+                            + xTile
+                            + ", "
+                            + yTile
+                            + " zoom:"
+                            + zoomLevel.getZoomLevel());
+        }
+
+        return new WMTSTileIdentifier((int) xTile, (int) yTile, zoomLevel, getName());
     }
 }

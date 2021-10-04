@@ -135,8 +135,8 @@ public class WMTSTileFactory4326Test {
             int offset = 0;
 
             WMTSZoomLevel zoomLevel = service.getZoomLevel(tp.zoomlevel + offset);
-
-            Tile mtile = factory.findTileAtCoordinate(tp.lon, tp.lat, zoomLevel, service);
+            TileIdentifier identifier = service.identifyTileAtCoordinate(tp.lon, tp.lat, zoomLevel);
+            Tile mtile = service.obtainTile(identifier);
             Tile ltile = factory.constrainToUpperLeftTile(mtile, zoomLevel, service);
 
             /*System.out.println(

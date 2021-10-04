@@ -87,8 +87,9 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpclient</artifactId>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-http</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
@@ -96,6 +97,14 @@
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-http</artifactId>
+      <version>${project.version}</version>
+      <classifier>tests</classifier>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
 </project>

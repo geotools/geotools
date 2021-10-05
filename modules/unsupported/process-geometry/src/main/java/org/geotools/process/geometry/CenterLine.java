@@ -41,10 +41,10 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 
-public class CentreLine {
+public class CenterLine {
     public static final GeometryFactory GF = new GeometryFactory();
 
-    public static SimpleFeatureCollection extractCentreLine(
+    public static SimpleFeatureCollection extractCenterLine(
             SimpleFeatureCollection features, double perc) {
         List<SimpleFeature> ret = new ArrayList<>();
         SimpleFeatureType schema = features.getSchema();
@@ -67,7 +67,7 @@ public class CentreLine {
                 SimpleFeature feature = itr.next();
                 Geometry geom = (Geometry) feature.getDefaultGeometry();
 
-                Geometry outGeom = getCentreLine(geom, perc);
+                Geometry outGeom = getCenterLine(geom, perc);
 
                 builder.addAll(feature.getAttributes());
                 builder.set(geomName, outGeom);
@@ -79,18 +79,18 @@ public class CentreLine {
         return DataUtilities.collection(ret);
     }
 
-    public static Geometry getCentreLine(Geometry geom) {
-        return getCentreLine(geom, 5.0);
+    public static Geometry getCenterLine(Geometry geom) {
+        return getCenterLine(geom, 5.0);
     }
     /**
      * @param geom
      * @param perc_density TODO
      * @return
      */
-    public static Geometry getCentreLine(Geometry geom, double perc_density) {
+    public static Geometry getCenterLine(Geometry geom, double perc_density) {
         Geometry skel = Skeletonize.getSkeleton(geom, perc_density);
         // System.out.println(skel);
-        Geometry outGeom = reduceToCentreLine(skel);
+        Geometry outGeom = reduceToCenterLine(skel);
         // System.out.println(outGeom);
         outGeom =
                 TopologyPreservingSimplifier.simplify(
@@ -108,7 +108,7 @@ public class CentreLine {
      * @param geom the skeleton of the polygon
      * @return the longest path through the geometry
      */
-    private static Geometry reduceToCentreLine(Geometry geom) {
+    private static Geometry reduceToCenterLine(Geometry geom) {
         LineStringGraphGenerator gen = new LineStringGraphGenerator();
         for (int i = 0; i < geom.getNumGeometries(); i++) {
             Geometry g = geom.getGeometryN(i);

@@ -81,11 +81,6 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
 
     public MultithreadedHttpClient() {
         connectionManager = new PoolingHttpClientConnectionManager();
-
-        /*
-         * params.setSoTimeout(30000); params.setConnectionTimeout(30000); params.setMaxTotalConnections(6);
-         * params.setDefaultMaxConnectionsPerHost(6);
-         */
         connectionManager.setMaxTotal(6);
         connectionManager.setDefaultMaxPerRoute(6);
         connectionConfig =
@@ -96,18 +91,26 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
                         .setConnectTimeout(30000)
                         .build();
 
-        client = createHttpClient();
+        client = builder().build();
     }
 
-    HttpClientBuilder clientBuilder = HttpClientBuilder.create();
+    private BasicCredentialsProvider credsProvider = null;
 
-    private BasicCredentialsProvider credsProvider;
+    private HttpClientBuilder builder() {
+        HttpClientBuilder builder =
+                HttpClientBuilder.create()
+                        .setUserAgent("Geotools (MultithreadedHttpClient)")
+                        .useSystemProperties()
+                        .setConnectionManager(connectionManager);
+        if (credsProvider != null) {
+            builder.setDefaultCredentialsProvider(credsProvider);
+        }
+        return builder;
+    }
 
-    // package private to support testing || JNH Public for refactoring
+    @Deprecated
     public HttpClient createHttpClient() {
-        clientBuilder.useSystemProperties();
-        clientBuilder.setConnectionManager(connectionManager);
-        return clientBuilder.build();
+        return builder().build();
     }
 
     @Override
@@ -118,8 +121,7 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
         HttpPost postMethod = new HttpPost(url.toExternalForm());
         postMethod.setConfig(connectionConfig);
         HttpEntity requestEntity;
-        if (user != null && password != null) {
-            resetCredentials();
+        if (credsProvider != null) {
             // we can't read the input stream twice as would be needed if the server asks us to
             // authenticate
             String input =
@@ -184,13 +186,7 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
     public HTTPResponse get(URL url, Map<String, String> headers) throws IOException {
         HttpGet getMethod = new HttpGet(url.toExternalForm());
         getMethod.setConfig(connectionConfig);
-        if (user != null && password != null) {
-            resetCredentials();
-            /*
-             * String encoding = Base64.getEncoder().encodeToString((user + ":" + password).getBytes()); getMethod.setHeader("Authorization", "Basic "
-             * + encoding);
-             */
-        }
+
         if (tryGzip) {
             getMethod.setHeader("Accept-Encoding", "gzip");
         }
@@ -248,9 +244,10 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
             // TODO - check if this works for all types of auth or do we need to look it up?
             credsProvider = new BasicCredentialsProvider();
             credsProvider.setCredentials(authscope, credentials);
-            clientBuilder.setDefaultCredentialsProvider(credsProvider);
-            client = createHttpClient();
+        } else {
+            credsProvider = null;
         }
+        client = builder().build();
     }
 
     @Override
@@ -351,8 +348,8 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
         /** @see org.geotools.data.ows.HTTPResponse#getResponseCharset() */
         @Override
         public String getResponseCharset() {
-
-            return methodResponse.getEntity().getContentEncoding().getValue();
+            final Header encoding = methodResponse.getEntity().getContentEncoding();
+            return encoding == null ? null : encoding.getValue();
         }
     }
 

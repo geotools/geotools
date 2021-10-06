@@ -27,16 +27,20 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.github.tomakehurst.wiremock.matching.ContainsPattern;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
 import org.apache.http.HttpException;
+import org.geotools.http.HTTPResponse;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import wiremock.org.apache.commons.io.IOUtils;
 
 /**
  * Tests for {@link org.geotools.http.commons.MultithreadedHttpClient}.
@@ -226,6 +230,33 @@ public class MultithreadedHttpClientTest {
             wireMockRule.verify(
                     postRequestedFor(urlEqualTo("/test"))
                             .withHeader("Authorization", equalTo("Basic " + encodedCredentials)));
+        }
+    }
+
+    @Test
+    public void testUserAgentInRequests() throws Exception {
+        wireMockRule.addStubMapping(
+                stubFor(
+                        get(urlEqualTo("/agent"))
+                                .withHeader("User-Agent", new ContainsPattern("Geotools"))
+                                .willReturn(
+                                        aResponse()
+                                                .withStatus(200)
+                                                .withHeader("Content-Type", "plain/text")
+                                                .withBody("OK"))));
+
+        HTTPResponse response = null;
+        try (MultithreadedHttpClient client = new MultithreadedHttpClient()) {
+            response = client.get(new URL("http://localhost:" + wireMockRule.port() + "/agent"));
+            String result =
+                    IOUtils.toString(response.getResponseStream(), response.getResponseCharset());
+            Assert.assertEquals("OK", result);
+
+            wireMockRule.verify(getRequestedFor(urlEqualTo("/agent")));
+        } finally {
+            if (response != null) {
+                response.dispose();
+            }
         }
     }
 }

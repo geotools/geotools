@@ -173,6 +173,9 @@ public class JiffleProcess implements RasterProcess {
         }
 
         Integer awtDataType = dataType == null ? null : dataType.getDataType();
+        if (outputBandCount == null && outputBandNames != null) {
+            outputBandCount = outputBandNames.split("\\s*,\\s*").length;
+        }
         RenderedOp result =
                 JiffleDescriptor.create(
                         sources,
@@ -209,19 +212,23 @@ public class JiffleProcess implements RasterProcess {
 
     private Stream<String> getSampleDimensionNames(int numBands, String outputBandNames) {
         if (outputBandNames == null) {
-            if (numBands == 1) {
-                return Stream.of("jiffle");
-            } else {
-                return IntStream.range(1, numBands + 1).mapToObj(n -> "jiffle" + n);
-            }
+            return getDefaultBandNames(numBands);
         } else {
             String[] split = outputBandNames.split("\\s*,\\s*");
-            if (split.length != numBands) {
-                throw new IllegalArgumentException(
-                        String.format(
-                                "Expected %d bands names but got %d", numBands, split.length));
+            if (split.length < numBands) {
+                String[] defaultBands = getDefaultBandNames(numBands).toArray(b -> new String[b]);
+                System.arraycopy(split, 0, defaultBands, 0, split.length);
+                return Arrays.stream(defaultBands);
             }
             return Arrays.stream(split);
+        }
+    }
+
+    private Stream<String> getDefaultBandNames(int numBands) {
+        if (numBands == 1) {
+            return Stream.of("jiffle");
+        } else {
+            return IntStream.range(1, numBands + 1).mapToObj(n -> "jiffle" + n);
         }
     }
 

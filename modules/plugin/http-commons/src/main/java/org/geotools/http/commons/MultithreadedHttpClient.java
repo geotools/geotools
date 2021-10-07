@@ -103,8 +103,7 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
                         .setUserAgent(
                                 String.format(
                                         "GeoTools/%s (%s)",
-                                        GeoTools.getVersion(),
-                                        this.getClass().getSimpleName()))
+                                        GeoTools.getVersion(), this.getClass().getSimpleName()))
                         .useSystemProperties()
                         .setConnectionManager(connectionManager);
         if (credsProvider != null) {

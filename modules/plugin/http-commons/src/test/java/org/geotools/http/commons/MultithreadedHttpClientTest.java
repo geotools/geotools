@@ -238,7 +238,7 @@ public class MultithreadedHttpClientTest {
         wireMockRule.addStubMapping(
                 stubFor(
                         get(urlEqualTo("/agent"))
-                                .withHeader("User-Agent", new ContainsPattern("Geotools"))
+                                .withHeader("User-Agent", new ContainsPattern("GeoTools"))
                                 .willReturn(
                                         aResponse()
                                                 .withStatus(200)

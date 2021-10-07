@@ -50,6 +50,7 @@ import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPConnectionPooling;
 import org.geotools.http.HTTPProxy;
 import org.geotools.http.HTTPResponse;
+import org.geotools.util.factory.GeoTools;
 
 /**
  * An Apache commons HTTP client based {@link HTTPClient} backed by a multithreaded connection
@@ -99,7 +100,11 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
     private HttpClientBuilder builder() {
         HttpClientBuilder builder =
                 HttpClientBuilder.create()
-                        .setUserAgent("Geotools (MultithreadedHttpClient)")
+                        .setUserAgent(
+                                String.format(
+                                        "GeoTools/%s (%s)",
+                                        GeoTools.getVersion(),
+                                        this.getClass().getSimpleName()))
                         .useSystemProperties()
                         .setConnectionManager(connectionManager);
         if (credsProvider != null) {
@@ -244,10 +249,11 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
             // TODO - check if this works for all types of auth or do we need to look it up?
             credsProvider = new BasicCredentialsProvider();
             credsProvider.setCredentials(authscope, credentials);
-        } else {
+            client = builder().build();
+        } else if (credsProvider != null) {
             credsProvider = null;
+            client = builder().build();
         }
-        client = builder().build();
     }
 
     @Override

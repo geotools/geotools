@@ -38,6 +38,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -46,20 +47,25 @@ import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
+
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.util.FeatureUtilities;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.collection.CollectionFeatureSource;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.property.PropertyFeatureSource;
+import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.store.ContentEntry;
+import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -76,6 +82,7 @@ import org.geotools.map.MapContent;
 import org.geotools.map.MapViewport;
 import org.geotools.referencing.CRS;
 import org.geotools.renderer.RenderListener;
+import org.geotools.renderer.lite.StreamingRenderer.RenderableFeature;
 import org.geotools.renderer.lite.StreamingRenderer.RenderingRequest;
 import org.geotools.styling.DescriptionImpl;
 import org.geotools.styling.Rule;
@@ -90,6 +97,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
@@ -945,5 +953,41 @@ public class StreamingRendererTest {
         sr.paint((Graphics2D) image.getGraphics(), new Rectangle(200, 200), cornerHomolosine);
         mapContent.dispose();
         assertEquals(0, errors);
+    }
+    
+    @Test
+    public void testGEOT6995() throws IOException, FactoryException {
+        URL url = TestData.url(StreamingRenderer.class, "mzdata/170715_1_TrjLines.shp");
+        ShapefileDataStore store = new ShapefileDataStore(url);
+        ContentFeatureCollection inFeatures = store.getFeatureSource().getFeatures();
+        Layer fred = new FeatureLayer(inFeatures, createPointStyle());
+        MapContent mapContent = new MapContent();
+        mapContent.addLayer(fred);
+        StreamingRenderer gRender = new StreamingRenderer();
+        gRender.setMapContent(mapContent);
+        gRender.addRenderListener(
+                new RenderListener() {
+                    @Override
+                    public void featureRenderer(SimpleFeature feature) {
+                        features++;
+                    }
+
+                    @Override
+                    public void errorOccurred(Exception e) {
+                        errors++;
+                    }
+                });
+        features = 0;
+        errors = 0;
+        // defining the paint area and performing the rendering
+        BufferedImage image = new BufferedImage(40, 40, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D graphics = image.createGraphics();
+        Rectangle paintArea = new Rectangle(40, 40);
+        
+        gRender.paint(graphics, paintArea, fred.getBounds());
+        mapContent.dispose();
+
+        Assert.assertEquals(0, errors);
+        Assert.assertEquals(inFeatures.size(), features);
     }
 }

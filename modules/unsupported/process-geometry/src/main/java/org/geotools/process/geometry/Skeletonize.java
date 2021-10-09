@@ -70,11 +70,11 @@ public class Skeletonize {
     }
 
     static Geometry getSkeleton(Geometry poly) {
-        return getSkeleton(poly, 50);
+        return getSkeleton(poly, 5);
     }
 
     static Geometry getSkeleton(Polygon poly) {
-        return getSkeleton(poly, 50);
+        return getSkeleton(poly, 5);
     }
 
     @SuppressWarnings("unchecked")

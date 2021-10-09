@@ -26,18 +26,21 @@ import org.geotools.process.factory.StaticMethodsProcessFactory;
 import org.geotools.text.Text;
 import org.locationtech.jts.geom.Geometry;
 
-public class CenterLineProcess extends StaticMethodsProcessFactory<CenterLineProcess> {
+public class SkeletonizeProcess extends StaticMethodsProcessFactory<SkeletonizeProcess> {
     private static final Logger LOG =
-            Logger.getLogger("org.geotools.process.geometry.CenterLineProcess");
+            Logger.getLogger("org.geotools.process.geometry.SkeletonizeProcess");
 
-    public CenterLineProcess() {
+    public SkeletonizeProcess() {
 
-        super(Text.text("geo"), "centerLine", CenterLineProcess.class);
+        super(Text.text("geo"), "skeltonize", SkeletonizeProcess.class);
     }
 
-    @DescribeProcess(title = "Center Line", description = "Extract Center Line of a Polygon")
+    @DescribeProcess(
+        title = "Skeletonize",
+        description = "Create the full skeleton line of a Polygon"
+    )
     @DescribeResult(
-        description = "A geometry that is the longest center line (skeleton) of the input polygon"
+        description = "A geometry that is the center line (skeleton) of the input polygon"
     )
     public static Geometry centerLine(
             @DescribeParameter(
@@ -64,7 +67,7 @@ public class CenterLineProcess extends StaticMethodsProcessFactory<CenterLinePro
         } else {
             tol = tolerance.doubleValue();
         }
-        Geometry ret = CenterLine.getCenterLine(geometry, tol);
+        Geometry ret = Skeletonize.getSkeleton(geometry, tol);
         LOG.fine("Returning " + ret.getClass());
         return ret;
     }

@@ -403,8 +403,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                         new MaskOverviewProvider(
                                 null,
                                 cogSourceProvider.getSourceUrl(),
-                                new MaskOverviewProvider.SpiHelper(cogSourceProvider),
-                                false);
+                                new MaskOverviewProvider.SpiHelper(cogSourceProvider));
                 hasMaskOvrProvider = true;
             }
 

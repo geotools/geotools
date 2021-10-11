@@ -33,6 +33,7 @@
         <exclude>build/release/distribution/**</exclude>
         <exclude>**/target/**</exclude>
         <exclude>.git</exclude>
+        <exclude>settings.xml</exclude>
       </excludes>
     </fileSet>
   </fileSets>

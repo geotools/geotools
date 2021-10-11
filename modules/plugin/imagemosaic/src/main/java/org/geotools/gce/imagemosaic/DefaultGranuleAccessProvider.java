@@ -49,7 +49,7 @@ class DefaultGranuleAccessProvider implements GranuleAccessProvider, GranuleDesc
     protected MaskOverviewProvider ovrProvider;
     protected SpiHelper spiHelper;
     protected Object input;
-    protected URL inputUrl;
+    protected URL inputURL;
     protected Hints hints;
 
     public DefaultGranuleAccessProvider(Hints hints) {
@@ -74,7 +74,11 @@ class DefaultGranuleAccessProvider implements GranuleAccessProvider, GranuleDesc
                     "Only URL type is supported by this provider: " + input);
         }
         this.input = input;
-        this.inputUrl = (URL) input;
+        this.inputURL = (URL) input;
+    }
+
+    public URL getInputURL() {
+        return this.inputURL;
     }
 
     @Override
@@ -97,12 +101,12 @@ class DefaultGranuleAccessProvider implements GranuleAccessProvider, GranuleDesc
         if (ovrProvider == null) {
             AbstractGridCoverage2DReader reader = getGridCoverageReader();
             DatasetLayout layout = reader.getDatasetLayout();
-            spiHelper = new SpiHelper(inputUrl, imageReaderSpi, imageInputStreamSpi);
-            ovrProvider = new MaskOverviewProvider(layout, inputUrl, spiHelper);
+            spiHelper = new SpiHelper(inputURL, imageReaderSpi, imageInputStreamSpi);
+            ovrProvider = new MaskOverviewProvider(layout, inputURL, spiHelper);
         }
         if (ovrProvider == null) {
             throw new IOException(
-                    "Unable to find a MaskOverviewProvider for the specified input: " + inputUrl);
+                    "Unable to find a MaskOverviewProvider for the specified input: " + inputURL);
         }
         return ovrProvider;
     }
@@ -133,16 +137,16 @@ class DefaultGranuleAccessProvider implements GranuleAccessProvider, GranuleDesc
         ImageInputStreamSpi streamSpi = getInputStreamSpi();
         ImageInputStream inStream =
                 streamSpi.createInputStreamInstance(
-                        inputUrl, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
+                        inputURL, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
         if (inStream == null) {
-            final File file = URLs.urlToFile(inputUrl);
+            final File file = URLs.urlToFile(inputURL);
             if (file != null) {
                 if (LOGGER.isLoggable(Level.WARNING)) {
                     LOGGER.log(Level.WARNING, Utils.getFileInfo(file));
                 }
             }
             throw new IllegalArgumentException(
-                    "Unable to get an input stream for the provided file " + inputUrl.toString());
+                    "Unable to get an input stream for the provided file " + inputURL.toString());
         }
         return inStream;
     }
@@ -152,12 +156,12 @@ class DefaultGranuleAccessProvider implements GranuleAccessProvider, GranuleDesc
         ImageReaderSpi imageReaderSpi = getImageReaderSpi();
         if (imageReaderSpi == null) {
             throw new IllegalArgumentException(
-                    "No ReaderSPI has been found for input: " + inputUrl.toString());
+                    "No ReaderSPI has been found for input: " + inputURL.toString());
         }
         ImageReader imageReader = imageReaderSpi.createReaderInstance();
         if (imageReader == null)
             throw new IllegalArgumentException(
-                    "Unable to get an ImageReader for the provided file " + inputUrl.toString());
+                    "Unable to get an ImageReader for the provided file " + inputURL.toString());
 
         return imageReader;
     }

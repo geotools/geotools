@@ -274,10 +274,8 @@ public class MaskOverviewProvider {
         }
         // Creating overview file URL
         overviewStreamSpi = streamSpi == null ? getInputStreamSPIFromURL(ovrURL) : streamSpi;
-        ImageInputStream ovrStream = null;
         SourceSPIProvider ovrProvider = sourceSpiProvider.getCompatibleSourceProvider(ovrURL);
-        try {
-            ovrStream = ovrProvider.getStream();
+        try (ImageInputStream ovrStream = ovrProvider.getStream()) {
             if (ovrStream == null) {
                 // No Overview file so we fall back to the original file spis
                 overviewStreamSpi = streamSpi;
@@ -288,20 +286,12 @@ public class MaskOverviewProvider {
                 ovrProvider.setReaderSpi(overviewReaderSpi);
             }
         } catch (Exception e) {
-            if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.log(Level.WARNING, "Unable to create a Reader for: " + ovrURL, e);
+            // COG readers might throw an exception while creating the stream, as they do I/O
+            // to fill header. So tolerate the exception and return no overview file found.
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.log(Level.FINE, "Unable to create a reader for overview: " + ovrURL, e);
             }
-            throw new IllegalArgumentException(e);
-        } finally {
-            if (ovrStream != null) {
-                try {
-                    ovrStream.close();
-                } catch (Exception e) {
-                    if (LOGGER.isLoggable(Level.SEVERE)) {
-                        LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                    }
-                }
-            }
+            return null;
         }
         return ovrProvider;
     }

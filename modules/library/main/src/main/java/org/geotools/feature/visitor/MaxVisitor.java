@@ -36,7 +36,6 @@ import org.opengis.filter.expression.Expression;
 public class MaxVisitor implements FeatureCalc, FeatureAttributeVisitor {
     private Expression expr;
     Comparable maxvalue;
-    Comparable curvalue;
     boolean visited = false;
     int countNull = 0;
     int countNaN = 0;
@@ -85,7 +84,7 @@ public class MaxVisitor implements FeatureCalc, FeatureAttributeVisitor {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     public void visit(org.opengis.feature.Feature feature) {
         Object attribValue = expr.evaluate(feature);
 
@@ -102,14 +101,22 @@ public class MaxVisitor implements FeatureCalc, FeatureAttributeVisitor {
             }
         }
 
-        curvalue = (Comparable) attribValue;
+        Comparable curvalue = (Comparable) attribValue;
 
-        if ((!visited) || (curvalue.compareTo(maxvalue) > 0)) {
+        if (!visited || compare(curvalue)) {
             maxvalue = curvalue;
             visited = true;
         }
 
         // throw new IllegalStateException("Expression is not comparable!");
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private boolean compare(Comparable curvalue) {
+        if (maxvalue == null) {
+            throw new IllegalStateException("maxvalue shouldn't be null when visited = true");
+        }
+        return curvalue.compareTo(maxvalue) > 0;
     }
 
     /**
@@ -138,7 +145,7 @@ public class MaxVisitor implements FeatureCalc, FeatureAttributeVisitor {
     public void reset() {
         /** Reset the count and current maximum */
         this.visited = false;
-        this.maxvalue = Integer.valueOf(Integer.MIN_VALUE);
+        this.maxvalue = null;
         this.countNaN = 0;
         this.countNull = 0;
     }

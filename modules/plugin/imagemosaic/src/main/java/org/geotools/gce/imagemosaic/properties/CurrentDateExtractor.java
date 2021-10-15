@@ -17,6 +17,7 @@
 package org.geotools.gce.imagemosaic.properties;
 
 import java.io.File;
+import java.net.URI;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
@@ -40,6 +41,12 @@ class CurrentDateExtractor extends PropertiesCollector {
 
     @Override
     public PropertiesCollector collect(final URL url) {
+        date = new Date();
+        return this;
+    }
+
+    @Override
+    public PropertiesCollector collect(final URI uri) {
         date = new Date();
         return this;
     }

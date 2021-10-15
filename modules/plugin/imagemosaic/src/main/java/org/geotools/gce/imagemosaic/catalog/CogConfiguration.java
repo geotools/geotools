@@ -23,18 +23,17 @@ import it.geosolutions.imageioimpl.plugins.cog.CogImageReaderSpi;
 import it.geosolutions.imageioimpl.plugins.cog.CogSourceSPIProvider;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
-import java.net.URL;
 import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.spi.ImageReaderSpi;
 import org.apache.commons.beanutils.BeanUtils;
-import org.geotools.gce.imagemosaic.URLSourceSPIProvider;
+import org.geotools.gce.imagemosaic.SourceSPIProviderFactory;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer;
 import org.geotools.gce.imagemosaic.catalog.index.IndexerUtils;
 import org.geotools.util.Utilities;
 
 /** Bean containing all COG related configuration properties */
-public class CogConfiguration implements URLSourceSPIProvider {
+public class CogConfiguration implements SourceSPIProviderFactory {
 
     private static final ImageReaderSpi COG_IMAGE_READER_SPI = new CogImageReaderSpi();
 
@@ -118,17 +117,17 @@ public class CogConfiguration implements URLSourceSPIProvider {
     }
 
     /**
-     * Create a {@link BasicAuthURI} instance on top of the provided url String optionally embedding
-     * (when provided) user/pass credentials as UserInfo component of the underlying URI.
+     * Create a {@link BasicAuthURI} instance on top of the provided source String optionally
+     * embedding (when provided) user/pass credentials as UserInfo component of the underlying URI.
      */
-    public BasicAuthURI createUri(String url) {
+    public BasicAuthURI createUri(String source) {
         // Create basic uri
-        URI uri = URI.create(url);
+        URI uri = URI.create(source);
         return new BasicAuthURI(uri, isUseCache(), getUser(), getPassword());
     }
 
     @Override
-    public SourceSPIProvider getSourceSPIProvider(URL sourceUrl) {
+    public SourceSPIProvider getSourceSPIProvider(Object sourceUrl) {
         SourceSPIProvider readerInputObject =
                 new CogSourceSPIProvider(
                         createUri(sourceUrl.toString()),

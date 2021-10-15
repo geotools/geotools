@@ -18,6 +18,7 @@ package org.geotools.gce.imagemosaic;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
@@ -228,6 +229,41 @@ abstract class ImageMosaicSourceElement<T> {
                 String message) {
             eventHandler.fireUrlEvent(
                     Level.FINE, url, true, message, ((elementIndex + 1) * 99.0) / numElements);
+        }
+    }
+
+    /** A {@link URL} ImageMosaic source element. */
+    static class URIElement extends ImageMosaicSourceElement<URI> {
+
+        URI uri;
+
+        public URIElement(URI url) {
+            this.uri = url;
+        }
+
+        @Override
+        URI getInnerObject() {
+            return uri;
+        }
+
+        @Override
+        String getLocation(CatalogBuilderConfiguration config) throws IOException {
+            return uri.toString();
+        }
+
+        @Override
+        void addToCollector(PropertiesCollector pc) {
+            pc.collect(getInnerObject());
+        }
+
+        @Override
+        void fireHarvestingEvent(
+                ImageMosaicEventHandlers eventHandler,
+                int elementIndex,
+                int numElements,
+                String message) {
+            eventHandler.fireURIEvent(
+                    Level.FINE, uri, true, message, ((elementIndex + 1) * 99.0) / numElements);
         }
     }
 }

@@ -16,6 +16,9 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.image.Raster;
@@ -24,6 +27,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -84,9 +88,9 @@ public class ImageMosaicCogOnlineTest {
         int numTileX = image.getNumXTiles();
         int numTileY = image.getNumYTiles();
         Raster raster = image.getTile(numTileX / 2, numTileY / 2);
-        Assert.assertEquals(512, raster.getWidth());
-        Assert.assertEquals(512, raster.getHeight());
-        Assert.assertEquals(1, raster.getNumBands());
+        assertEquals(512, raster.getWidth());
+        assertEquals(512, raster.getHeight());
+        assertEquals(1, raster.getNumBands());
         reader.dispose();
     }
 
@@ -116,9 +120,9 @@ public class ImageMosaicCogOnlineTest {
         int numTileX = image.getNumXTiles();
         int numTileY = image.getNumYTiles();
         Raster raster = image.getTile(numTileX / 2, numTileY / 2);
-        Assert.assertEquals(512, raster.getWidth());
-        Assert.assertEquals(512, raster.getHeight());
-        Assert.assertEquals(1, raster.getNumBands());
+        assertEquals(512, raster.getWidth());
+        assertEquals(512, raster.getHeight());
+        assertEquals(1, raster.getNumBands());
         Object fileLocation =
                 coverage.getProperty(AbstractGridCoverage2DReader.FILE_SOURCE_PROPERTY);
         Assert.assertNotNull(fileLocation);
@@ -151,9 +155,9 @@ public class ImageMosaicCogOnlineTest {
         int numTileX = image.getNumXTiles();
         int numTileY = image.getNumYTiles();
         Raster raster = image.getTile(numTileX / 2, numTileY / 2);
-        Assert.assertEquals(512, raster.getWidth());
-        Assert.assertEquals(512, raster.getHeight());
-        Assert.assertEquals(1, raster.getNumBands());
+        assertEquals(512, raster.getWidth());
+        assertEquals(512, raster.getHeight());
+        assertEquals(1, raster.getNumBands());
         reader.dispose();
     }
 
@@ -176,7 +180,7 @@ public class ImageMosaicCogOnlineTest {
         GranuleSource granules = reader.getGranules(coverageName, true);
 
         // Only 1 granule available before doing the harvest
-        Assert.assertEquals(1, granules.getCount(Query.ALL));
+        assertEquals(1, granules.getCount(Query.ALL));
 
         try {
             // now go and harvest the url
@@ -189,7 +193,7 @@ public class ImageMosaicCogOnlineTest {
             granules = reader.getGranules(coverageName, true);
 
             // We now have 2 granules
-            Assert.assertEquals(2, granules.getCount(Query.ALL));
+            assertEquals(2, granules.getCount(Query.ALL));
         } finally {
             reader.dispose();
         }
@@ -217,18 +221,18 @@ public class ImageMosaicCogOnlineTest {
                     "https://s3-us-west-2.amazonaws.com/landsat-pds/c1/L8/153/075/LC08_L1TP_153075_20190515_20190515_01_RT/LC08_L1TP_153075_20190515_20190515_01_RT_B3.TIF";
             URL source = new URL(granuleUrl);
             List<HarvestedSource> summary = reader.harvest(null, source, null);
-            Assert.assertSame(originalCatalog, reader.granuleCatalog);
-            Assert.assertEquals(1, summary.size());
+            assertSame(originalCatalog, reader.granuleCatalog);
+            assertEquals(1, summary.size());
 
             // check the granule catalog
             String coverageName = reader.getGridCoverageNames()[0];
             GranuleSource granules = reader.getGranules(coverageName, true);
-            Assert.assertEquals(1, granules.getCount(Query.ALL));
+            assertEquals(1, granules.getCount(Query.ALL));
             Query q = new Query(Query.ALL);
             try (SimpleFeatureIterator fi = granules.getGranules(q).features()) {
                 Assert.assertTrue(fi.hasNext());
                 SimpleFeature f = fi.next();
-                Assert.assertEquals(granuleUrl, f.getAttribute("location"));
+                assertEquals(granuleUrl, f.getAttribute("location"));
             }
 
         } finally {
@@ -278,13 +282,13 @@ public class ImageMosaicCogOnlineTest {
                     new URL(
                             "https://s3-us-west-2.amazonaws.com/landsat-pds/c1/L8/153/075/LC08_L1TP_153075_20190515_20190515_01_RT/LC08_L1TP_153075_20190515_20190515_01_RT_B3.TIF"));
             List<HarvestedSource> summary = reader.harvest(null, urls, null);
-            Assert.assertSame(originalCatalog, reader.granuleCatalog);
-            Assert.assertEquals(2, summary.size());
+            assertSame(originalCatalog, reader.granuleCatalog);
+            assertEquals(2, summary.size());
 
-            Assert.assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
-            Assert.assertEquals(
+            assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
+            assertEquals(
                     "2019-04-29T00:00:00.000Z", reader.getMetadataValue("TIME_DOMAIN_MINIMUM"));
-            Assert.assertEquals(
+            assertEquals(
                     "2019-05-15T00:00:00.000Z", reader.getMetadataValue("TIME_DOMAIN_MAXIMUM"));
         } finally {
             reader.dispose();
@@ -310,9 +314,9 @@ public class ImageMosaicCogOnlineTest {
         GregorianCalendar calendar = (GregorianCalendar) GregorianCalendar.getInstance();
         Date date = (Date) feature.getAttribute("createdate");
         calendar.setTime(date);
-        Assert.assertEquals(2019, calendar.get(Calendar.YEAR));
-        Assert.assertEquals(29, calendar.get(Calendar.DAY_OF_MONTH));
-        Assert.assertEquals(4, calendar.get(Calendar.MONTH) + 1);
+        assertEquals(2019, calendar.get(Calendar.YEAR));
+        assertEquals(29, calendar.get(Calendar.DAY_OF_MONTH));
+        assertEquals(4, calendar.get(Calendar.MONTH) + 1);
     }
 
     private File prepareWorkingDir(String zipName, String folder, String subFolder)
@@ -335,48 +339,6 @@ public class ImageMosaicCogOnlineTest {
         return workDir;
     }
 
-    /** Harvests single Google Storage file using public URLs */
-    @Test
-    public void testHarvestGSPublicURL() throws Exception {
-        final File workDir = prepareWorkingDir("emptycog.zip", "emptyGSCogMosaic", "");
-        try (FileWriter out =
-                new FileWriter(
-                        new File(
-                                TestData.file(this, "."),
-                                "/emptyGSCogMosaic/datastore.properties"))) {
-            out.write("database=cogmosaic\n");
-            out.write(ImageMosaicReaderTest.H2_SAMPLE_PROPERTIES);
-            out.flush();
-        }
-        ImageMosaicReader reader = IMAGE_MOSAIC_FORMAT.getReader(workDir);
-        GranuleCatalog originalCatalog = reader.granuleCatalog;
-
-        try {
-            // now go and harvest a granule
-            String granuleUrl =
-                    "https://storage.googleapis.com/gcp-public-data-landsat/LC08/01/044/034"
-                            + "/LC08_L1GT_044034_20130330_20170310_01_T2"
-                            + "/LC08_L1GT_044034_20130330_20170310_01_T2_B11.TIF";
-            URL source = new URL(granuleUrl);
-            List<HarvestedSource> summary = reader.harvest(null, source, null);
-            Assert.assertSame(originalCatalog, reader.granuleCatalog);
-            Assert.assertEquals(1, summary.size());
-
-            // check the granule catalog
-            String coverageName = reader.getGridCoverageNames()[0];
-            GranuleSource granules = reader.getGranules(coverageName, true);
-            Assert.assertEquals(1, granules.getCount(Query.ALL));
-            Query q = new Query(Query.ALL);
-            try (SimpleFeatureIterator fi = granules.getGranules(q).features()) {
-                Assert.assertTrue(fi.hasNext());
-                SimpleFeature f = fi.next();
-                Assert.assertEquals(granuleUrl, f.getAttribute("location"));
-            }
-        } finally {
-            reader.dispose();
-        }
-    }
-
     @Test
     public void testGSCogMosaic() throws Exception {
         File workDir = prepareWorkingDir("gscogtest.zip", "gscogtest", "");
@@ -387,9 +349,9 @@ public class ImageMosaicCogOnlineTest {
         int numTileX = image.getNumXTiles();
         int numTileY = image.getNumYTiles();
         Raster raster = image.getTile(numTileX / 2, numTileY / 2);
-        Assert.assertEquals(512, raster.getWidth());
-        Assert.assertEquals(512, raster.getHeight());
-        Assert.assertEquals(1, raster.getNumBands());
+        assertEquals(512, raster.getWidth());
+        assertEquals(512, raster.getHeight());
+        assertEquals(1, raster.getNumBands());
         reader.dispose();
     }
 
@@ -403,9 +365,81 @@ public class ImageMosaicCogOnlineTest {
         int numTileX = image.getNumXTiles();
         int numTileY = image.getNumYTiles();
         Raster raster = image.getTile(numTileX / 2, numTileY / 2);
-        Assert.assertEquals(512, raster.getWidth());
-        Assert.assertEquals(512, raster.getHeight());
-        Assert.assertEquals(1, raster.getNumBands());
+        assertEquals(512, raster.getWidth());
+        assertEquals(512, raster.getHeight());
+        assertEquals(1, raster.getNumBands());
         reader.dispose();
+    }
+
+    /** Harvests single Google Storage file using public URLs */
+    @Test
+    public void testHarvestGSPublicURL() throws Exception {
+        String folder = "emptyGSCogMosaic";
+        String granuleUrl =
+                "https://storage.googleapis.com/gcp-public-data-landsat/LC08/01/044/034"
+                        + "/LC08_L1GT_044034_20130330_20170310_01_T2"
+                        + "/LC08_L1GT_044034_20130330_20170310_01_T2_B11.TIF";
+        URL source = new URL(granuleUrl);
+
+        harvestSingleGoogleCOG(folder, granuleUrl, source);
+    }
+
+    /** Harvests single Google Storage file using the gsutil URI */
+    @Test
+    public void testHarvestGSURI() throws Exception {
+        String folder = "emptyGSURICogMosaic";
+        String uri =
+                "gs://gcp-public-data-landsat/LC08/01/044/034"
+                        + "/LC08_L1GT_044034_20130330_20170310_01_T2"
+                        + "/LC08_L1GT_044034_20130330_20170310_01_T2_B11.TIF";
+        URI granuleUri = new URI(uri);
+
+        harvestSingleGoogleCOG(folder, uri, granuleUri);
+    }
+
+    /** Harvests single Google Storage file using the gsutil URI (as a string) */
+    @Test
+    public void testHarvestGSString() throws Exception {
+        String folder = "emptyGSStringCogMosaic";
+        String uri =
+                "gs://gcp-public-data-landsat/LC08/01/044/034"
+                        + "/LC08_L1GT_044034_20130330_20170310_01_T2"
+                        + "/LC08_L1GT_044034_20130330_20170310_01_T2_B11.TIF";
+
+        harvestSingleGoogleCOG(folder, uri, uri);
+    }
+
+    private void harvestSingleGoogleCOG(String folder, String expected, Object source)
+            throws IOException {
+        final File workDir = prepareWorkingDir("emptygscog.zip", folder, "");
+        try (FileWriter out =
+                new FileWriter(
+                        new File(TestData.file(this, "."), folder + "/datastore.properties"))) {
+            out.write("database=cogmosaic\n");
+            out.write(ImageMosaicReaderTest.H2_SAMPLE_PROPERTIES);
+            out.flush();
+        }
+        ImageMosaicReader reader = IMAGE_MOSAIC_FORMAT.getReader(workDir);
+        GranuleCatalog originalCatalog = reader.granuleCatalog;
+
+        try {
+            // now go and harvest a granule
+            List<HarvestedSource> summary = reader.harvest(null, source, null);
+            assertSame(originalCatalog, reader.granuleCatalog);
+            assertEquals(1, summary.size());
+
+            // check the granule catalog
+            String coverageName = reader.getGridCoverageNames()[0];
+            GranuleSource granules = reader.getGranules(coverageName, true);
+            assertEquals(1, granules.getCount(Query.ALL));
+            Query q = new Query(Query.ALL);
+            try (SimpleFeatureIterator fi = granules.getGranules(q).features()) {
+                Assert.assertTrue(fi.hasNext());
+                SimpleFeature f = fi.next();
+                assertEquals(expected, f.getAttribute("location"));
+            }
+        } finally {
+            reader.dispose();
+        }
     }
 }

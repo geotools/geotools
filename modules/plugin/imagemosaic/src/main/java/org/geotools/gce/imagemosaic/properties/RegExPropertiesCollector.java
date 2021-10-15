@@ -17,6 +17,7 @@
 package org.geotools.gce.imagemosaic.properties;
 
 import java.io.File;
+import java.net.URI;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
@@ -72,7 +73,19 @@ public abstract class RegExPropertiesCollector extends PropertiesCollector {
 
         // get name of the url
         final String fullUrl = url.toString();
-        String name = fullUrl;
+        return collectFromPath(fullUrl);
+    }
+
+    @Override
+    public RegExPropertiesCollector collect(URI uri) {
+        super.collect(uri);
+
+        // get path of the uri
+        final String path = uri.toString();
+        return collectFromPath(path);
+    }
+
+    private RegExPropertiesCollector collectFromPath(String name) {
         if (!fullPath) {
             int index = name.lastIndexOf("/");
             name = name.substring(index + 1);

@@ -17,6 +17,7 @@
 package org.geotools.gce.imagemosaic;
 
 import java.io.File;
+import java.net.URI;
 import java.net.URL;
 import java.util.EventListener;
 import java.util.EventObject;
@@ -124,6 +125,32 @@ public class ImageMosaicEventHandlers {
 
         public URL getUrl() {
             return url;
+        }
+
+        public boolean isIngested() {
+            return ingested;
+        }
+    }
+
+    /** A special ProcessingEvent raised when a url has completed/failed ingestion */
+    public static class URIProcessingEvent extends ProcessingEvent {
+        private URI uri;
+
+        private boolean ingested;
+
+        public URIProcessingEvent(
+                final Object source,
+                final URI uri,
+                final boolean ingested,
+                final String message,
+                final double percentage) {
+            super(source, message, percentage);
+            this.uri = uri;
+            this.ingested = ingested;
+        }
+
+        public URI getURI() {
+            return uri;
         }
 
         public boolean isIngested() {
@@ -289,6 +316,36 @@ public class ImageMosaicEventHandlers {
             message.append(this.getClass().toString()).append(newLine).append(inMessage);
             final URLProcessingEvent evt =
                     new URLProcessingEvent(this, url, ingested, message.toString(), percentage);
+            ProgressEventDispatchThreadEventLauncher eventLauncher =
+                    new ProgressEventDispatchThreadEventLauncher();
+            eventLauncher.setEvent(evt, this.notificationListeners.toArray());
+            sendEvent(eventLauncher);
+        }
+    }
+
+    /**
+     * Firing an event to listeners in order to inform them about what we are doing and about the
+     * percentage of work already carried out.
+     *
+     * @param inMessage The message to show.
+     * @param percentage The percentage for the process.
+     */
+    protected void fireURIEvent(
+            Level level,
+            final URI uri,
+            final boolean ingested,
+            final String inMessage,
+            final double percentage) {
+        if (LOGGER.isLoggable(level)) {
+            LOGGER.log(level, inMessage);
+        }
+        synchronized (notificationListeners) {
+            final String newLine = System.getProperty("line.separator");
+            final StringBuilder message = new StringBuilder("Thread Name ");
+            message.append(Thread.currentThread().getName()).append(newLine);
+            message.append(this.getClass().toString()).append(newLine).append(inMessage);
+            final URIProcessingEvent evt =
+                    new URIProcessingEvent(this, uri, ingested, message.toString(), percentage);
             ProgressEventDispatchThreadEventLauncher eventLauncher =
                     new ProgressEventDispatchThreadEventLauncher();
             eventLauncher.setEvent(evt, this.notificationListeners.toArray());

@@ -23,7 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBException;
 import org.geotools.coverage.util.CoverageUtilities;
-import org.geotools.gce.imagemosaic.URLSourceSPIProvider;
+import org.geotools.gce.imagemosaic.SourceSPIProviderFactory;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.catalog.CogConfiguration;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Collectors;
@@ -703,7 +703,7 @@ public class IndexerUtils {
         return indexer;
     }
 
-    public static URLSourceSPIProvider getURLSourceSPIProvider(Indexer indexer) {
+    public static SourceSPIProviderFactory getSourceSPIProviderFactory(Indexer indexer) {
         boolean cog = getParameterAsBoolean(Utils.Prop.COG, indexer);
         if (cog) {
             return new CogConfiguration(indexer);

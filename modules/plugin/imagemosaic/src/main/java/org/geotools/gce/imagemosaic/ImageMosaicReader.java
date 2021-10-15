@@ -21,6 +21,7 @@ import java.awt.Rectangle;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -68,6 +69,7 @@ import org.geotools.gce.imagemosaic.catalog.MultiLevelROIProviderMosaicFactory;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
+import org.geotools.util.Converters;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
@@ -1039,6 +1041,10 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                             source, false, "Specified file path does not exist"));
             return result;
         }
+        // in case it's a simple string, convert to the target type
+        if (source instanceof String) {
+            source = Converters.convert(source, resource.getType());
+        }
         // Harvesting of the input source
         resource.harvest(defaultCoverage, source, hints, result, this);
         String coverage = defaultCoverage != null ? defaultCoverage : this.defaultName;
@@ -1229,7 +1235,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
         public ImageMosaicURLCollectionWalker(
                 ImageMosaicConfigHandler configHandler,
                 ImageMosaicEventHandlers eventHandler,
-                URLSourceSPIProvider urlSourceSPIProvider,
+                SourceSPIProviderFactory urlSourceSPIProvider,
                 Collection<URL> urls) {
             super(configHandler, eventHandler);
             imageMosaicUrlConsumer =
@@ -1265,6 +1271,103 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                     } else {
                         // SKIP and log
                         skip(url.toString());
+                    }
+                }
+
+                // close transaction
+                if (getStop()) {
+                    rollbackTransaction();
+                } else {
+                    commitTransaction();
+                }
+
+            } catch (IOException e) {
+                // Exception Logged
+                LOGGER.log(Level.WARNING, e.getMessage(), e);
+                try {
+                    // Rollback of the Transaction
+                    rollbackTransaction();
+                } catch (IOException e1) {
+                    throw new IllegalStateException(e);
+                }
+            } finally {
+                // close transaction
+                try {
+                    closeTransaction();
+                } catch (Exception e) {
+                    final String message = "Unable to close transaction" + e.getLocalizedMessage();
+                    if (LOGGER.isLoggable(Level.WARNING)) {
+                        LOGGER.log(Level.WARNING, message, e);
+                    }
+                    // notify listeners
+                    eventHandler.fireException(e);
+                }
+
+                // close indexing
+                try {
+                    configHandler.indexingPostamble(!getStop());
+                } catch (Exception e) {
+                    final String message = "Unable to close indexing" + e.getLocalizedMessage();
+                    if (LOGGER.isLoggable(Level.WARNING)) {
+                        LOGGER.log(Level.WARNING, message, e);
+                    }
+                    // notify listeners
+                    eventHandler.fireException(e);
+                }
+            }
+        }
+    }
+
+    /**
+     * This subclass of the {@link ImageMosaicWalker} cycles around a List of URIs and for each one
+     * calls the superclass handleElement() method.
+     */
+    static class ImageMosaicURICollectionWalker extends ImageMosaicWalker implements Runnable {
+
+        ImageMosaicURIFeatureConsumer.ImageMosaicURIConsumer imageMosaicUriConsumer;
+
+        /** Input list to walk on */
+        private Collection<URI> uris;
+
+        public ImageMosaicURICollectionWalker(
+                ImageMosaicConfigHandler configHandler,
+                ImageMosaicEventHandlers eventHandler,
+                SourceSPIProviderFactory uriSourceSPIProvider,
+                Collection<URI> uris) {
+            super(configHandler, eventHandler);
+            imageMosaicUriConsumer =
+                    new ImageMosaicURIFeatureConsumer.ImageMosaicURIConsumer(uriSourceSPIProvider);
+            this.uris = uris;
+        }
+
+        @Override
+        public void run() {
+            try {
+                // Initialization steps
+                configHandler.indexingPreamble();
+                startTransaction();
+
+                // Setting of the Collection size
+                setNumElements(uris.size());
+
+                // Creation of an Iterator on the input files
+                Iterator<URI> it = uris.iterator();
+
+                // Cycle on all the input files
+                while (it.hasNext()) {
+                    URI uri = it.next();
+
+                    // Stop the Harvesting if requested
+                    if (getStop()) {
+                        break;
+                    }
+
+                    // Check if the File has an absolute path
+                    if (imageMosaicUriConsumer.checkElement(uri, this)) {
+                        imageMosaicUriConsumer.handleElement(uri, this);
+                    } else {
+                        // SKIP and log
+                        skip(uri.toString());
                     }
                 }
 

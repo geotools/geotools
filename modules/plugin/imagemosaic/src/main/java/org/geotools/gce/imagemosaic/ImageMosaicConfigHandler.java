@@ -1244,7 +1244,7 @@ public class ImageMosaicConfigHandler {
             properties.setProperty(Prop.SUGGESTED_FORMAT, cachedFormat.getClass().getName());
         }
 
-        URLSourceSPIProvider urlSourceSpiProvider =
+        SourceSPIProviderFactory urlSourceSpiProvider =
                 catalogConfigurationBean.getUrlSourceSPIProvider();
         if (urlSourceSpiProvider instanceof CogConfiguration) {
             CogConfiguration cogBean = (CogConfiguration) urlSourceSpiProvider;
@@ -1765,7 +1765,7 @@ public class ImageMosaicConfigHandler {
             // COG CASE:
             // Create an ImageMosaicURLConsumer to consume urls and an ImageMosaicDatastoreWalker
             // to provide them to the consumer
-            URLSourceSPIProvider urlSourceSPIProvider =
+            SourceSPIProviderFactory urlSourceSPIProvider =
                     new CogConfiguration(getRunConfiguration().getIndexer());
             ImageMosaicURLFeatureConsumer.ImageMosaicURLConsumer urlsConsumer =
                     new ImageMosaicURLFeatureConsumer.ImageMosaicURLConsumer(urlSourceSPIProvider);

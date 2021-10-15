@@ -17,10 +17,9 @@
 package org.geotools.gce.imagemosaic;
 
 import it.geosolutions.imageio.core.SourceSPIProvider;
-import java.net.URL;
 
-/** Simple interface returning a {@link SourceSPIProvider} from a source URL. */
-public interface URLSourceSPIProvider {
+/** Simple interface returning a {@link SourceSPIProvider} from a source object. */
+public interface SourceSPIProviderFactory {
 
-    SourceSPIProvider getSourceSPIProvider(URL url);
+    SourceSPIProvider getSourceSPIProvider(Object source);
 }

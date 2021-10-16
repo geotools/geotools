@@ -5808,4 +5808,27 @@ public class ImageMosaicReaderTest {
         Assert.assertNotNull(gc);
         reader.dispose();
     }
+
+    @Test
+    public void testConcurrentMosaic() throws Exception {
+        // instantiate image mosaic reader
+        AbstractGridFormat format = TestUtils.getFormat(rgbURL);
+        ExecutorService es =
+                Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        ImageMosaicReader mtReader = null, reader = null;
+        try {
+            reader = getReader(rgbURL, format);
+            GridCoverage2D coverage = TestUtils.checkCoverage(reader, null, null);
+
+            Hints hints = new Hints(Hints.EXECUTOR_SERVICE, es);
+            mtReader = getReader(rgbURL, format, hints);
+            GridCoverage2D mtCoverage = TestUtils.checkCoverage(mtReader, null, null);
+
+            assertEquals(coverage.getEnvelope2D(), mtCoverage.getEnvelope2D());
+            ImageAssert.assertEquals(coverage.getRenderedImage(), mtCoverage.getRenderedImage(), 0);
+        } finally {
+            if (reader != null) reader.dispose();
+            if (mtReader != null) mtReader.dispose();
+        }
+    }
 }

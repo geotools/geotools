@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
@@ -32,6 +33,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.renderer.crs.ProjectionHandler;
 import org.geotools.renderer.crs.ProjectionHandlerFinder;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.PropertyName;
@@ -59,8 +61,19 @@ class MosaicQueryBuilder {
         Query query = initQuery();
         handleAdditionalFilters(query);
         handleSortByClause(query);
+        handleMultiThreadedLoading(query);
 
         return query;
+    }
+
+    private void handleMultiThreadedLoading(Query query) {
+        if (request.isMultithreadingAllowed()) {
+            ImageMosaicReader reader = request.getRasterManager().getParentReader();
+            ExecutorService executor = reader.getMultiThreadedLoader();
+            if (executor != null) {
+                query.getHints().put(Hints.EXECUTOR_SERVICE, executor);
+            }
+        }
     }
 
     /**

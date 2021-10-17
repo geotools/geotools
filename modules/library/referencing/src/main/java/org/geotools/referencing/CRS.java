@@ -267,22 +267,33 @@ public final class CRS {
     }
 
     /**
-     * Determines if two coordinate reference systems are compatible with each other, i.e. can be
-     * converted from one to another in a meaningful way.
+     * Determines if one coordinate reference system is compatible with another, i.e. can be
+     * transformed to the other (usually, returns false if they have different dimensions, see OGC
+     * 09-025r2).
      *
-     * <p>They must have the same dimension (see OGC 09-025r2).
-     *
-     * @param crs
-     * @param otherCrs
+     * @param sourceCrs the source CRS
+     * @param targetCrs the target CRS
      * @return compatibility as boolean
      */
     public static boolean isCompatible(
-            CoordinateReferenceSystem crs, CoordinateReferenceSystem otherCrs) {
-        if (crs == null || otherCrs == null) {
+            CoordinateReferenceSystem sourceCrs,
+            CoordinateReferenceSystem targetCrs,
+            boolean allowDifferentDimension) {
+        if (sourceCrs == null || targetCrs == null) {
+            return true;
+        } else if (equalsIgnoreMetadata(sourceCrs, targetCrs)) {
+            return true;
+        } else if (!allowDifferentDimension
+                && sourceCrs.getCoordinateSystem().getDimension()
+                        != targetCrs.getCoordinateSystem().getDimension()) {
             return false;
+        } else {
+            try {
+                return CRS.findMathTransform(sourceCrs, targetCrs, true) != null;
+            } catch (FactoryException e) {
+                return false;
+            }
         }
-        return crs.getCoordinateSystem().getDimension()
-                == otherCrs.getCoordinateSystem().getDimension();
     }
 
     /**

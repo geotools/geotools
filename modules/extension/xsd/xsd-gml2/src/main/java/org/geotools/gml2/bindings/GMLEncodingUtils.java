@@ -40,7 +40,7 @@ import org.eclipse.xsd.XSDParticle;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.util.XSDConstants;
 import org.geotools.feature.NameImpl;
-import org.geotools.geometry.jts.GeometryUtil;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.gml2.GMLConfiguration;
 import org.geotools.util.logging.Logging;
 import org.geotools.xlink.XLINK;
@@ -209,7 +209,7 @@ public class GMLEncodingUtils {
                 // get the value
                 Object attributeValue = ((SimpleFeature) feature).getAttribute(attribute.getName());
                 if (attributeValue != null && attributeValue instanceof Geometry) {
-                    GeometryUtil.setCRS(
+                    JTS.setCRS(
                             ((Geometry) attributeValue),
                             featureType.getCoordinateReferenceSystem());
                 }

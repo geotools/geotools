@@ -80,10 +80,14 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
             if (query.getCoordinateSystemReproject() != null) {
                 this.featureType =
                         FeatureTypes.transform(
-                                this.featureType, query.getCoordinateSystemReproject());
+                                this.featureType,
+                                query.getCoordinateSystemReproject(),
+                                false,
+                                true);
             } else if (query.getCoordinateSystem() != null) {
                 this.featureType =
-                        FeatureTypes.transform(this.featureType, query.getCoordinateSystem());
+                        FeatureTypes.transform(
+                                this.featureType, query.getCoordinateSystem(), false, true);
             }
         } catch (SchemaException e) {
             LOGGER.log(

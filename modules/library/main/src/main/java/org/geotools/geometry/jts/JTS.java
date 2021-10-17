@@ -1713,4 +1713,41 @@ public final class JTS {
 
         return true;
     }
+
+    /**
+     * Get the CRS of a geometry.
+     *
+     * @param geometry the geometry
+     * @return the CRS
+     */
+    public static CoordinateReferenceSystem getCRS(Geometry geometry) {
+        Object userData = geometry.getUserData();
+        if (userData != null && userData instanceof CoordinateReferenceSystem) {
+            return (CoordinateReferenceSystem) userData;
+        } else if (userData instanceof Map) {
+            Map<?, ?> userDataMap = (Map<?, ?>) userData;
+            CoordinateReferenceSystem crs =
+                    (CoordinateReferenceSystem) userDataMap.get(CoordinateReferenceSystem.class);
+            if (crs != null) {
+                return crs;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Set the CRS of a geometry.
+     *
+     * @param geometry the geometry
+     * @param crs the CRS
+     */
+    public static void setCRS(Geometry geometry, CoordinateReferenceSystem crs) {
+        Object obj = geometry.getUserData();
+        Map<Object, Object> userData = new HashMap<>();
+        if (obj != null && obj instanceof Map) {
+            userData.putAll((Map<?, ?>) obj);
+        }
+        userData.put(CoordinateReferenceSystem.class, crs);
+        geometry.setUserData(userData);
+    }
 }

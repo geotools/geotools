@@ -19,7 +19,7 @@
 package org.geotools.gml4wcs.bindings;
 
 import javax.xml.namespace.QName;
-import org.geotools.geometry.jts.GeometryUtil;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.gml4wcs.GML;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
@@ -101,7 +101,7 @@ public class AbstractGeometryTypeBinding extends AbstractComplexBinding {
     public Object getProperty(Object object, QName name) throws Exception {
         Geometry geometry = (Geometry) object;
         if ("srsName".equals(name.getLocalPart())) {
-            CoordinateReferenceSystem crs = GeometryUtil.getCRS(geometry);
+            CoordinateReferenceSystem crs = JTS.getCRS(geometry);
 
             if (crs != null) {
                 return GML3EncodingUtils.toURI(crs);

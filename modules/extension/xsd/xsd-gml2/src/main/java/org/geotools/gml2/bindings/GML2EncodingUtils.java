@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 import javax.xml.namespace.QName;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDTypeDefinition;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 import org.geotools.gml2.GML;
@@ -126,6 +127,12 @@ public class GML2EncodingUtils {
             }
         }
         return null;
+    }
+
+    /** @deprecated please use {@link org.geotools.geometry.jts.JTS#getCRS(Geometry)} */
+    @Deprecated
+    public static CoordinateReferenceSystem getCRS(Geometry g) {
+        return JTS.getCRS(g);
     }
 
     /**

@@ -17,7 +17,7 @@
 package org.geotools.gml3.bindings;
 
 import javax.xml.namespace.QName;
-import org.geotools.geometry.jts.GeometryUtil;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.gml2.SrsSyntax;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.gml3.GML;
@@ -124,7 +124,7 @@ public class AbstractGeometryTypeBinding extends AbstractComplexBinding {
         Geometry geometry = (Geometry) object;
 
         if ("srsName".equals(name.getLocalPart())) {
-            CoordinateReferenceSystem crs = GeometryUtil.getCRS(geometry);
+            CoordinateReferenceSystem crs = JTS.getCRS(geometry);
             if (crs != null) {
                 return GML3EncodingUtils.toURI(crs, srsSyntax);
             }

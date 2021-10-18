@@ -268,11 +268,12 @@ public final class CRS {
 
     /**
      * Determines if one coordinate reference system is compatible with another, i.e. can be
-     * transformed to the other (usually, returns false if they have different dimensions, see OGC
-     * 09-025r2).
+     * transformed to the other
      *
      * @param sourceCrs the source CRS
      * @param targetCrs the target CRS
+     * @param allowDifferentDimension if true, returns false if CRS's have different dimensions
+     *     regardless of the ability to transform.
      * @return compatibility as boolean
      */
     public static boolean isCompatible(

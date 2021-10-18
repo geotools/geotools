@@ -25,6 +25,7 @@ import java.util.Map;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.ComplexTypeImpl;
 import org.geotools.feature.type.Types;
+import org.geotools.geometry.jts.JTS;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Association;
 import org.opengis.feature.Attribute;
@@ -214,15 +215,15 @@ public class AttributeBuilder {
 
     /** @return The coordinate reference system of the feature, or null if not set. */
     public CoordinateReferenceSystem getCRS(Object geom) {
-        if (crs != null) {
-            return crs;
-        } else if (geom != null && geom instanceof Geometry) {
-            Object userData = ((Geometry) geom).getUserData();
-            if (userData != null && userData instanceof CoordinateReferenceSystem) {
-                return (CoordinateReferenceSystem) userData;
+        if (geom != null && geom instanceof Geometry) {
+            // the CRS in the geometry itself is preferred
+            // to support multiple geometries/CRS
+            CoordinateReferenceSystem featureCrs = JTS.getCRS((Geometry) geom);
+            if (featureCrs != null) {
+                return featureCrs;
             }
         }
-        return null;
+        return crs;
     }
 
     /** Sets the default geometry of the feature. */

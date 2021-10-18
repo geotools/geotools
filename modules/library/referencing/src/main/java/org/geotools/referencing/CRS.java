@@ -267,6 +267,37 @@ public final class CRS {
     }
 
     /**
+     * Determines if one coordinate reference system is compatible with another, i.e. can be
+     * transformed to the other
+     *
+     * @param sourceCrs the source CRS
+     * @param targetCrs the target CRS
+     * @param allowDifferentDimension if true, returns false if CRS's have different dimensions
+     *     regardless of the ability to transform.
+     * @return compatibility as boolean
+     */
+    public static boolean isCompatible(
+            CoordinateReferenceSystem sourceCrs,
+            CoordinateReferenceSystem targetCrs,
+            boolean allowDifferentDimension) {
+        if (sourceCrs == null || targetCrs == null) {
+            return true;
+        } else if (equalsIgnoreMetadata(sourceCrs, targetCrs)) {
+            return true;
+        } else if (!allowDifferentDimension
+                && sourceCrs.getCoordinateSystem().getDimension()
+                        != targetCrs.getCoordinateSystem().getDimension()) {
+            return false;
+        } else {
+            try {
+                return CRS.findMathTransform(sourceCrs, targetCrs, true) != null;
+            } catch (FactoryException e) {
+                return false;
+            }
+        }
+    }
+
+    /**
      * Returns the coordinate operation factory used by {@link
      * #findMathTransform(CoordinateReferenceSystem, CoordinateReferenceSystem) findMathTransform}
      * convenience methods.

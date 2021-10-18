@@ -28,6 +28,7 @@ import org.eclipse.xsd.XSDParticle;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml2.FeatureTypeCache;
 import org.geotools.gml2.GML;
@@ -460,7 +461,7 @@ public class GML2ParsingUtils {
 
     static Object GeometryCollectionType_getProperty(Object object, QName name) {
         if ("srsName".equals(name.getLocalPart())) {
-            CoordinateReferenceSystem crs = GML2EncodingUtils.getCRS((GeometryCollection) object);
+            CoordinateReferenceSystem crs = JTS.getCRS((GeometryCollection) object);
             if (crs != null) {
                 return GML2EncodingUtils.toURI(crs, true);
             }

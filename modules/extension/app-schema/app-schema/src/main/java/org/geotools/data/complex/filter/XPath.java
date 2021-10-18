@@ -276,11 +276,8 @@ public class XPath extends XPathUtil {
                                             new GeometryTypeImpl(
                                                     targetNodeType.getName(),
                                                     targetNodeType.getBinding(),
-                                                    crs != null
-                                                            ? crs
-                                                            : ((GeometryDescriptor)
-                                                                            actualDescriptor)
-                                                                    .getCoordinateReferenceSystem(),
+                                                    ((GeometryDescriptor) actualDescriptor)
+                                                            .getCoordinateReferenceSystem(),
                                                     targetNodeType.isIdentified(),
                                                     targetNodeType.isAbstract(),
                                                     targetNodeType.getRestrictions(),

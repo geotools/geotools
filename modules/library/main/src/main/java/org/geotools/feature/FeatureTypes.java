@@ -36,6 +36,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeImpl;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.LengthFunction;
 import org.geotools.geometry.jts.JTS;
+import org.geotools.referencing.CRS;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.logging.Logging;
@@ -333,6 +334,25 @@ public class FeatureTypes {
     public static SimpleFeatureType transform(
             SimpleFeatureType schema, CoordinateReferenceSystem crs, boolean forceOnlyMissing)
             throws SchemaException {
+        return transform(schema, crs, forceOnlyMissing, false);
+    }
+
+    /**
+     * Forces the specified CRS on geometry attributes (all or some, depends on the parameters).
+     *
+     * @param schema the original schema
+     * @param crs the forced crs
+     * @param forceOnlyMissing if true, will force the specified crs only on the attributes that do
+     *     miss one
+     * @param onlyIfCompatible if true, will force the specified crs only if the original CRS is
+     *     compatible with it. This property is ignored if forceOnlyMissing is true.
+     */
+    public static SimpleFeatureType transform(
+            SimpleFeatureType schema,
+            CoordinateReferenceSystem crs,
+            boolean forceOnlyMissing,
+            boolean onlyIfCompatible)
+            throws SchemaException {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName(schema.getTypeName());
         tb.setNamespaceURI(schema.getName().getNamespaceURI());
@@ -344,7 +364,12 @@ public class FeatureTypes {
                 GeometryDescriptor geometryType = (GeometryDescriptor) attributeType;
 
                 tb.descriptor(geometryType);
-                if (!forceOnlyMissing || geometryType.getCoordinateReferenceSystem() == null) {
+
+                if (forceOnlyMissing
+                        ? geometryType.getCoordinateReferenceSystem() == null
+                        : !onlyIfCompatible
+                                || CRS.isCompatible(
+                                        geometryType.getCoordinateReferenceSystem(), crs, false)) {
                     tb.crs(crs);
                 }
 
@@ -383,6 +408,27 @@ public class FeatureTypes {
         feature.setAttribute(geomType.getLocalName(), geom);
 
         return feature;
+    }
+
+    /**
+     * Tells if there is any work to be done for reprojection, i.e. if there are any CRS that differ
+     * but are compatible.
+     *
+     * @param schema the schema to be reprojected
+     * @param crs the crs to reproject to
+     * @return answer as boolean
+     */
+    public static boolean shouldReproject(SimpleFeatureType schema, CoordinateReferenceSystem crs) {
+        for (int i = 0; i < schema.getDescriptors().size(); i++) {
+            if (schema.getDescriptor(i) instanceof GeometryDescriptor) {
+                GeometryDescriptor descr = (GeometryDescriptor) schema.getDescriptor(i);
+                if (!crs.equals(descr.getCoordinateReferenceSystem())
+                        && CRS.isCompatible(descr.getCoordinateReferenceSystem(), crs, false)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**

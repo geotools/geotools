@@ -54,6 +54,7 @@ import org.geotools.data.sort.SortedFeatureReader;
 import org.geotools.data.util.NullProgressListener;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.function.Collection_AverageFunction;
@@ -713,7 +714,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
             if (targetCRS != null) {
                 if (sourceCRS == null) {
                     throw new IOException("Cannot reproject data, the source CRS is not available");
-                } else if (!sourceCRS.equals(targetCRS)) {
+                } else if (FeatureTypes.shouldReproject(reader.getFeatureType(), targetCRS)) {
                     try {
                         reader = new ReprojectFeatureReader(reader, targetCRS);
                     } catch (Exception e) {

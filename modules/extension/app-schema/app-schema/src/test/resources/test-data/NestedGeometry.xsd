@@ -17,6 +17,8 @@
           <xs:element name="shape" type="gml:GeometryPropertyType" />
           <xs:element name="length" type="gml:MeasureType" />
           <xs:element name="nestedFeature" type="ex:nestedFeaturePropertyType" nillable="true" maxOccurs="unbounded"/>
+          <xs:element name="nestedFeature2" type="ex:nestedFeaturePropertyType" nillable="true" maxOccurs="unbounded"/>
+          <xs:element name="location" type="gml:GeometricPrimitivePropertyType" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>

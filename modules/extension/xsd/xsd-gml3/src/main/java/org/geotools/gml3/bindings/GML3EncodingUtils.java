@@ -27,6 +27,7 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.feature.NameImpl;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.SingleCurvedGeometry;
 import org.geotools.gml2.SrsSyntax;
@@ -106,8 +107,10 @@ public class GML3EncodingUtils {
         }
     }
 
+    /** @deprecated please use {@link org.geotools.geometry.jts.JTS#getCRS(Geometry)} */
+    @Deprecated
     static CoordinateReferenceSystem getCRS(Geometry g) {
-        return GML2EncodingUtils.getCRS(g);
+        return JTS.getCRS(g);
     }
 
     /** Get uomLabels for the geometry if set in app-schema mapping configuration. */

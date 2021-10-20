@@ -37,6 +37,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import it.geosolutions.imageio.pam.PAMDataset;
 import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
@@ -1945,7 +1946,7 @@ public class ImageMosaicReaderTest {
                             .getReader(rgbURL, new Hints(Hints.MOSAIC_LOCATION_ATTRIBUTE, "aaaa"));
             Assert.assertNull(reader);
         } catch (Throwable e) {
-            Assert.fail(e.getLocalizedMessage());
+            fail(e.getLocalizedMessage());
         }
         //		try {
         //			reader=(AbstractGridCoverage2DReader) ((AbstractGridFormat)
@@ -1965,7 +1966,7 @@ public class ImageMosaicReaderTest {
             reader.dispose();
             Assert.assertTrue(true);
         } catch (Throwable e) {
-            Assert.fail(e.getLocalizedMessage());
+            fail(e.getLocalizedMessage());
         }
 
         //		try {
@@ -1995,7 +1996,7 @@ public class ImageMosaicReaderTest {
             // read the coverage
             @SuppressWarnings("unused")
             GridCoverage2D gc = reader.read(null);
-            Assert.fail("MAX_ALLOWED_TILES was not respected");
+            fail("MAX_ALLOWED_TILES was not respected");
         } catch (Throwable e) {
 
             if (reader != null) reader.dispose();
@@ -2016,7 +2017,7 @@ public class ImageMosaicReaderTest {
             gc.dispose(true);
             reader.dispose();
         } catch (Exception e) {
-            Assert.fail(e.getLocalizedMessage());
+            fail(e.getLocalizedMessage());
         }
     }
 
@@ -5829,6 +5830,63 @@ public class ImageMosaicReaderTest {
         } finally {
             if (reader != null) reader.dispose();
             if (mtReader != null) mtReader.dispose();
+        }
+    }
+
+    @Test
+    public void testSkipOverviews() throws IOException {
+        // copy over the RGB mosaic
+        String workDirName = "skipOverviews";
+        File workDir = new File(TestData.file(this, "."), workDirName);
+        if (!workDir.mkdir()) {
+            FileUtils.deleteDirectory(workDir);
+            if (!workDir.mkdir()) {
+                fail("Unable to create workdir:" + workDir);
+            }
+        }
+        final File source = TestData.file(this, "rgba");
+        FileUtils.copyDirectory(source, workDir);
+        // clean up config files created by other tests
+        for (File file : workDir.listFiles(f -> f.getName().startsWith("rgba."))) {
+            file.delete();
+        }
+
+        // add an indexer telling the mosaic to skip overviews
+        try (FileWriter out = new FileWriter(new File(workDir, "indexer.properties"), true)) {
+            out.write(Prop.SKIP_EXTERNAL_OVERVIEWS + "=true");
+            out.flush();
+        }
+        ImageMosaicFormat format = new ImageMosaicFormat();
+        ImageMosaicReader reader = format.getReader(workDir);
+        try {
+            // check the property was transferred to the main mosaic config
+            try (FileReader fr = new FileReader(new File(workDir, workDirName + ".properties"))) {
+                Properties p = new Properties();
+                p.load(fr);
+                assertEquals("true", p.getProperty(Prop.SKIP_EXTERNAL_OVERVIEWS));
+            }
+
+            // check the catalog is actually skipping overviews
+            RasterManager manager = reader.rasterManagers.get(workDirName);
+            manager.granuleCatalog.getGranuleDescriptors(
+                    new Query(workDirName),
+                    (granule, feature) ->
+                            assertTrue(granule.getMaskOverviewProvider().isSkipExternalLookup()));
+        } finally {
+            if (reader != null) reader.dispose();
+        }
+
+        // check again, from a reader initialized from the property file rather than by indexing
+        ImageMosaicReader reader2 = format.getReader(workDir);
+        try {
+            // check the catalog is actually skipping overviews
+            RasterManager manager = reader2.rasterManagers.get(workDirName);
+            manager.granuleCatalog.getGranuleDescriptors(
+                    new Query(workDirName),
+                    (granule, feature) ->
+                            assertTrue(granule.getMaskOverviewProvider().isSkipExternalLookup()));
+        } finally {
+            if (reader2 != null) reader2.dispose();
         }
     }
 }

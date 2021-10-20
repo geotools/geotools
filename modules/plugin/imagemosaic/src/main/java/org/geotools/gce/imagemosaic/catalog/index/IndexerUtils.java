@@ -700,6 +700,10 @@ public class IndexerUtils {
             setParam(parameters, props, Utils.Prop.NO_DATA);
         }
 
+        if (props.containsKey(Utils.Prop.SKIP_EXTERNAL_OVERVIEWS)) {
+            setParam(parameters, props, Utils.Prop.SKIP_EXTERNAL_OVERVIEWS);
+        }
+
         return indexer;
     }
 

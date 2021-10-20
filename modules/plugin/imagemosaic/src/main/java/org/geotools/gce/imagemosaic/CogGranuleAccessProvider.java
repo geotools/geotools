@@ -65,6 +65,7 @@ public class CogGranuleAccessProvider extends DefaultGranuleAccessProvider
                             + urlSourceSpiProvider
                             + " has been found.");
         }
+        this.skipExternalOverviews = bean.isSkipExternalOverviews();
     }
 
     private static Hints getHints(CatalogConfigurationBean bean) {
@@ -115,7 +116,9 @@ public class CogGranuleAccessProvider extends DefaultGranuleAccessProvider
         if (ovrProvider == null) {
             SourceSPIProvider inputProvider = (SourceSPIProvider) input;
             spiHelper = new SpiHelper(inputProvider);
-            ovrProvider = new MaskOverviewProvider(null, inputProvider.getSourceUrl(), spiHelper);
+            ovrProvider =
+                    new MaskOverviewProvider(
+                            null, inputProvider.getSourceUrl(), spiHelper, skipExternalOverviews);
         }
         if (ovrProvider == null) {
             throw new IOException(
@@ -147,6 +150,7 @@ public class CogGranuleAccessProvider extends DefaultGranuleAccessProvider
     public GranuleAccessProvider copyProviders() {
         CogGranuleAccessProvider provider = new CogGranuleAccessProvider(hints);
         provider.cogConfig = this.cogConfig;
+        provider.skipExternalOverviews = this.skipExternalOverviews;
         return provider;
     }
 }

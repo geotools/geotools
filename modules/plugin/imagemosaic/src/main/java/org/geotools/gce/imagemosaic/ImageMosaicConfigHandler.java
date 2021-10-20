@@ -337,6 +337,15 @@ public class ImageMosaicConfigHandler {
             if (indexerTypeName != null && properties.getProperty(Prop.TYPENAME) == null) {
                 properties.put(Prop.TYPENAME, indexerTypeName);
             }
+            // pass the overview skipping hint
+            String skipExtOverviews = runConfiguration.getParameter(Prop.SKIP_EXTERNAL_OVERVIEWS);
+            if ("true".equalsIgnoreCase(skipExtOverviews)) {
+                properties.put(Prop.SKIP_EXTERNAL_OVERVIEWS, skipExtOverviews);
+            }
+            String location = runConfiguration.getParameter(Prop.LOCATION_ATTRIBUTE);
+            if (location != null) {
+                properties.put(Prop.LOCATION_ATTRIBUTE, location);
+            }
             catalog =
                     createGranuleCatalogFromDatastore(
                             parent,
@@ -1301,6 +1310,12 @@ public class ImageMosaicConfigHandler {
             properties.setProperty(Prop.NO_DATA, String.valueOf(mosaicConfiguration.getNoData()));
         }
 
+        if (catalogConfigurationBean.isSkipExternalOverviews()) {
+            properties.setProperty(
+                    Prop.SKIP_EXTERNAL_OVERVIEWS,
+                    String.valueOf(catalogConfigurationBean.isSkipExternalOverviews()));
+        }
+
         String filePath =
                 runConfiguration.getParameter(Prop.ROOT_MOSAIC_DIR)
                         + "/"
@@ -1504,6 +1519,8 @@ public class ImageMosaicConfigHandler {
             } else {
                 catalogConfigurationBean.setTypeName(targetCoverageName);
             }
+            catalogConfigurationBean.setSkipExternalOverviews(
+                    IndexerUtils.getParameterAsBoolean(Prop.SKIP_EXTERNAL_OVERVIEWS, indexer));
             configBuilder.setCatalogConfigurationBean(catalogConfigurationBean);
             configBuilder.setCheckAuxiliaryMetadata(
                     IndexerUtils.getParameterAsBoolean(Prop.CHECK_AUXILIARY_METADATA, indexer));

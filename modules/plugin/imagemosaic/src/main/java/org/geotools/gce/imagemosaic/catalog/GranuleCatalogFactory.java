@@ -133,6 +133,9 @@ public abstract class GranuleCatalogFactory {
             params.put(Utils.Prop.SUGGESTED_IS_SPI, catalogConfigurationBean.getSuggestedIsSPI());
 
         params.put(Utils.Prop.HETEROGENEOUS, catalogConfigurationBean.isHeterogeneous());
+        params.put(
+                Utils.Prop.SKIP_EXTERNAL_OVERVIEWS,
+                catalogConfigurationBean.isSkipExternalOverviews());
         SourceSPIProviderFactory urlSourceSpiProvider =
                 catalogConfigurationBean.getUrlSourceSPIProvider();
         params.put(

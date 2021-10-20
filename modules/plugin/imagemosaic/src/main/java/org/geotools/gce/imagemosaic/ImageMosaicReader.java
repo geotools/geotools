@@ -38,6 +38,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.media.jai.ImageLayout;
 import org.apache.commons.io.FileUtils;
@@ -1041,10 +1042,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                             source, false, "Specified file path does not exist"));
             return result;
         }
-        // in case it's a simple string, convert to the target type
-        if (source instanceof String) {
-            source = Converters.convert(source, resource.getType());
-        }
+        source = convertToElementType(source, resource);
         // Harvesting of the input source
         resource.harvest(defaultCoverage, source, hints, result, this);
         String coverage = defaultCoverage != null ? defaultCoverage : this.defaultName;
@@ -1054,6 +1052,21 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
         rasterManager.initialize(true);
 
         return result;
+    }
+
+    private Object convertToElementType(Object source, HarvestedResource resource) {
+        if (source instanceof Collection) {
+            @SuppressWarnings("unchecked")
+            Collection<Object> collection = ((Collection<Object>) source);
+            source =
+                    collection
+                            .stream()
+                            .map(o -> Converters.convert(o, resource.getElementType()))
+                            .collect(Collectors.toList());
+        } else {
+            source = Converters.convert(source, resource.getElementType());
+        }
+        return source;
     }
 
     /** Simple method used for checking if the list contains a single object and it is a file */

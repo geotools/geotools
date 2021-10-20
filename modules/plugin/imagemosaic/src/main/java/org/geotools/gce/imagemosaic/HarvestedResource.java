@@ -77,7 +77,7 @@ enum HarvestedResource {
             harvestCalculation(defaultCoverage, result, reader, directory, null);
         }
     },
-    FILE_COLLECTION(Collection.class) {
+    FILE_COLLECTION(File.class) {
         @Override
         public void harvest(
                 String defaultCoverage,
@@ -103,7 +103,7 @@ enum HarvestedResource {
                     defaultCoverage, result, reader, Collections.singletonList((URL) source));
         }
     },
-    URL_COLLECTION(Collection.class) {
+    URL_COLLECTION(URL.class) {
         @Override
         public void harvest(
                 String defaultCoverage,
@@ -143,7 +143,7 @@ enum HarvestedResource {
                     defaultCoverage, result, reader, Collections.singletonList((URI) source));
         }
     },
-    URI_COLLECTION(Collection.class) {
+    URI_COLLECTION(URI.class) {
         @Override
         public void harvest(
                 String defaultCoverage,
@@ -239,7 +239,16 @@ enum HarvestedResource {
                 return URL_COLLECTION;
             } else if (sample instanceof String) {
                 HarvestedResource resource = getResourceFromString((String) sample);
-                return resource == FILE ? FILE_COLLECTION : URL_COLLECTION;
+                switch (resource) {
+                    case FILE:
+                        return FILE_COLLECTION;
+                    case URL:
+                        return URL_COLLECTION;
+                    case URI:
+                        return URI_COLLECTION;
+                    default:
+                        throw new RuntimeException("Unexepected collection content: " + resource);
+                }
             }
         }
         return null;
@@ -617,14 +626,18 @@ enum HarvestedResource {
         walker.run();
     }
 
-    Class<?> type;
+    Class<?> elementType;
 
-    HarvestedResource(Class<?> type) {
-        this.type = type;
+    HarvestedResource(Class<?> elementType) {
+        this.elementType = elementType;
     }
 
-    public Class<?> getType() {
-        return type;
+    /**
+     * Returns the element type of the resource. It can be the actual type, for single sources, or
+     * the type of the contained element, for collection sources
+     */
+    public Class<?> getElementType() {
+        return elementType;
     }
 
     private static class HarvestMosaicConfigHandler extends ImageMosaicConfigHandler {

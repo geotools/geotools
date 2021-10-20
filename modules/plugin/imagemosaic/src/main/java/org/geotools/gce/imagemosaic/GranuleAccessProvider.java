@@ -47,6 +47,8 @@ public interface GranuleAccessProvider {
 
     public static final Hints.Key SUGGESTED_FORMAT = new Hints.Key(AbstractGridFormat.class);
 
+    public static final Hints.Key SKIP_EXTERNAL_OVERVIEWS = new Hints.Key(Boolean.class);
+
     public static final Hints.Key GRANULE_ACCESS_PROVIDER =
             new Hints.Key(GranuleAccessProvider.class);
 

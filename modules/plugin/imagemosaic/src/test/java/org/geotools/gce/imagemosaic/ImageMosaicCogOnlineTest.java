@@ -18,7 +18,9 @@ package org.geotools.gce.imagemosaic;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
+import it.geosolutions.imageioimpl.plugins.cog.GSRangeReader;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.image.Raster;
@@ -49,6 +51,7 @@ import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.properties.FSDateExtractorSPI;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
@@ -135,10 +138,10 @@ public class ImageMosaicCogOnlineTest {
         Object fileLocation =
                 coverage.getProperty(AbstractGridCoverage2DReader.FILE_SOURCE_PROPERTY);
         Assert.assertNotNull(fileLocation);
-        Assert.assertTrue(fileLocation instanceof String);
+        assertTrue(fileLocation instanceof String);
         String path = (String) fileLocation;
         Assert.assertFalse(path.isEmpty());
-        Assert.assertTrue(path.endsWith(".ovr"));
+        assertTrue(path.endsWith(".ovr"));
         reader.dispose();
     }
 
@@ -239,7 +242,7 @@ public class ImageMosaicCogOnlineTest {
             assertEquals(1, granules.getCount(Query.ALL));
             Query q = new Query(Query.ALL);
             try (SimpleFeatureIterator fi = granules.getGranules(q).features()) {
-                Assert.assertTrue(fi.hasNext());
+                assertTrue(fi.hasNext());
                 SimpleFeature f = fi.next();
                 assertEquals(granuleUrl, f.getAttribute("location"));
             }
@@ -334,7 +337,7 @@ public class ImageMosaicCogOnlineTest {
         destinationPath += zipName;
         if (!workDir.mkdirs()) {
             FileUtils.deleteDirectory(workDir);
-            Assert.assertTrue("Unable to create workdir:" + workDir, workDir.mkdirs());
+            assertTrue("Unable to create workdir:" + workDir, workDir.mkdirs());
         }
         File zipFile = new File(workDir, zipName);
         FileUtils.copyFile(TestData.file(this, zipName), zipFile);
@@ -427,23 +430,91 @@ public class ImageMosaicCogOnlineTest {
         GranuleCatalog originalCatalog = reader.granuleCatalog;
 
         try {
-            // now go and harvest a granule
-            List<HarvestedSource> summary = reader.harvest(null, source, null);
-            assertSame(originalCatalog, reader.granuleCatalog);
-            assertEquals(1, summary.size());
-
-            // check the granule catalog
-            String coverageName = reader.getGridCoverageNames()[0];
-            GranuleSource granules = reader.getGranules(coverageName, true);
-            assertEquals(1, granules.getCount(Query.ALL));
-            Query q = new Query(Query.ALL);
-            try (SimpleFeatureIterator fi = granules.getGranules(q).features()) {
-                Assert.assertTrue(fi.hasNext());
-                SimpleFeature f = fi.next();
-                assertEquals(expected, f.getAttribute("location"));
-            }
+            harvestGranule(expected, source, reader, originalCatalog);
         } finally {
             reader.dispose();
+        }
+    }
+
+    private void harvestGranule(
+            String expected,
+            Object source,
+            ImageMosaicReader reader,
+            GranuleCatalog originalCatalog)
+            throws IOException {
+
+        // now go and harvest a granule
+        List<HarvestedSource> summary = reader.harvest(null, source, null);
+        assertSame(originalCatalog, reader.granuleCatalog);
+        assertEquals(1, summary.size());
+
+        // check the granule catalog
+        String coverageName = reader.getGridCoverageNames()[0];
+        GranuleSource granules = reader.getGranules(coverageName, true);
+        assertEquals(1, granules.getCount(Query.ALL));
+        Query q = new Query(Query.ALL);
+        try (SimpleFeatureIterator fi = granules.getGranules(q).features()) {
+            assertTrue(fi.hasNext());
+            SimpleFeature f = fi.next();
+            assertEquals(expected, f.getAttribute("location"));
+        }
+    }
+
+    @Test
+    public void testSkipExternalOverviews() throws Exception {
+        // setup a COG mosaic with no overviews
+        String folder = "cogNoOverviews";
+        final File workDir = new File("./target/" + folder);
+        FileUtils.deleteDirectory(workDir);
+        assertTrue(workDir.mkdir());
+        try (FileWriter out = new FileWriter(new File(workDir, "datastore.properties"))) {
+            out.write("database=cogmosaic\n");
+            out.write(ImageMosaicReaderTest.H2_SAMPLE_PROPERTIES);
+            out.flush();
+        }
+        String name = "emptycog";
+        try (FileWriter out = new FileWriter(new File(workDir, "indexer.properties"))) {
+            Properties p = new Properties();
+            p.put(Prop.COG, "true");
+            p.put(Prop.NAME, name);
+            p.put(Prop.TYPENAME, name);
+            p.put(Prop.CAN_BE_EMPTY, "true");
+            p.put(Prop.COG_RANGE_READER, GSRangeReader.class.getName());
+            p.put(Prop.SKIP_EXTERNAL_OVERVIEWS, "true");
+            p.store(out, null);
+        }
+        // reader from first indexing
+        ImageMosaicReader reader = IMAGE_MOSAIC_FORMAT.getReader(workDir);
+        try {
+            GranuleCatalog originalCatalog = reader.granuleCatalog;
+
+            String location =
+                    "gs://gcp-public-data-landsat/LC08/01/044/034"
+                            + "/LC08_L1GT_044034_20130330_20170310_01_T2"
+                            + "/LC08_L1GT_044034_20130330_20170310_01_T2_B11.TIF";
+            harvestGranule(location, location, reader, originalCatalog);
+
+            // check the catalog is actually skipping overviews
+            RasterManager manager = reader.rasterManagers.get(name);
+            manager.granuleCatalog.getGranuleDescriptors(
+                    new Query(name),
+                    (granule, feature) ->
+                            assertTrue(granule.getMaskOverviewProvider().isSkipExternalLookup()));
+        } finally {
+            if (reader != null) reader.dispose();
+        }
+
+        // now try a reader from config file
+        ImageMosaicReader reader2 = IMAGE_MOSAIC_FORMAT.getReader(workDir);
+        try {
+            // check the catalog is actually skipping overviews
+            RasterManager manager = reader2.rasterManagers.get(name);
+            manager.granuleCatalog.getGranuleDescriptors(
+                    new Query(name),
+                    (granule, feature) ->
+                            assertTrue(granule.getMaskOverviewProvider().isSkipExternalLookup()));
+        } finally {
+            if (reader2 != null) reader.dispose();
         }
     }
 }

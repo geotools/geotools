@@ -49,6 +49,8 @@ public class CatalogConfigurationBean {
 
     private SourceSPIProviderFactory urlSourceSPIProvider;
 
+    private boolean skipExternalOverviews;
+
     /**
      * Whether the specified store should be wrapped. Only PostGis stores support this parameter.
      * (Oracle stores are wrapped by default).
@@ -158,5 +160,13 @@ public class CatalogConfigurationBean {
 
     public void setUrlSourceSPIProvider(SourceSPIProviderFactory urlSourceSPIProvider) {
         this.urlSourceSPIProvider = urlSourceSPIProvider;
+    }
+
+    public boolean isSkipExternalOverviews() {
+        return skipExternalOverviews;
+    }
+
+    public void setSkipExternalOverviews(boolean skipExternalOverviews) {
+        this.skipExternalOverviews = skipExternalOverviews;
     }
 }

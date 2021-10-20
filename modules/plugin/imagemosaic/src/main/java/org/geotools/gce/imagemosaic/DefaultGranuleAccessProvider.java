@@ -51,6 +51,7 @@ class DefaultGranuleAccessProvider implements GranuleAccessProvider, GranuleDesc
     protected Object input;
     protected URL inputURL;
     protected Hints hints;
+    protected boolean skipExternalOverviews;
 
     public DefaultGranuleAccessProvider(Hints hints) {
         this.hints = hints;
@@ -63,6 +64,9 @@ class DefaultGranuleAccessProvider implements GranuleAccessProvider, GranuleDesc
             }
             if (hints.containsKey(SUGGESTED_STREAM_SPI)) {
                 this.imageInputStreamSpi = (ImageInputStreamSpi) hints.get(SUGGESTED_STREAM_SPI);
+            }
+            if (hints.containsKey(SKIP_EXTERNAL_OVERVIEWS)) {
+                this.skipExternalOverviews = (Boolean) hints.get(SKIP_EXTERNAL_OVERVIEWS);
             }
         }
     }
@@ -102,7 +106,8 @@ class DefaultGranuleAccessProvider implements GranuleAccessProvider, GranuleDesc
             AbstractGridCoverage2DReader reader = getGridCoverageReader();
             DatasetLayout layout = reader.getDatasetLayout();
             spiHelper = new SpiHelper(inputURL, imageReaderSpi, imageInputStreamSpi);
-            ovrProvider = new MaskOverviewProvider(layout, inputURL, spiHelper);
+            ovrProvider =
+                    new MaskOverviewProvider(layout, inputURL, spiHelper, skipExternalOverviews);
         }
         if (ovrProvider == null) {
             throw new IOException(

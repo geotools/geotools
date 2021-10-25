@@ -122,7 +122,7 @@ public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
     public void reset() {
         /** Reset the count and current minimum */
         this.visited = false;
-        this.minvalue = Integer.valueOf(0);
+        this.minvalue = null;
     }
 
     @Override

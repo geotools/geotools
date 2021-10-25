@@ -19,6 +19,7 @@ package org.geotools.feature.visitor;
 import org.geotools.data.memory.MemoryFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -35,6 +36,7 @@ public class MaxVisitorTest {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName("Test");
         builder.add("AInteger", Integer.class);
+        builder.add("ALong", Long.class);
         SCHEMA = builder.buildFeatureType();
     }
 
@@ -42,7 +44,7 @@ public class MaxVisitorTest {
     public void visitedFlagSetWithoutValue() throws Exception {
 
         final MemoryFeatureCollection collection = new MemoryFeatureCollection(SCHEMA);
-        collection.add(SimpleFeatureBuilder.build(SCHEMA, new Object[] {1}, "1"));
+        collection.add(SimpleFeatureBuilder.build(SCHEMA, new Object[] {1, 0}, "1"));
 
         final MaxVisitor falseVisitor = new PreVisitedMaxVisitor("AInteger");
         try {
@@ -53,6 +55,22 @@ public class MaxVisitorTest {
             }
             throw e;
         }
+    }
+
+    /** Check's that maxValue is set to null, and not a presumably low number. */
+    @Test
+    public void resetCallWillNullify() throws Exception {
+        final MemoryFeatureCollection collection = new MemoryFeatureCollection(SCHEMA);
+        collection.add(
+                SimpleFeatureBuilder.build(SCHEMA, new Object[] {0, Integer.MIN_VALUE - 1}, "1"));
+
+        final MaxVisitor visitor = new MaxVisitor("ALong");
+        collection.accepts(visitor, null);
+
+        visitor.reset();
+
+        collection.accepts(visitor, null);
+        Assert.assertEquals(Long.valueOf(Integer.MIN_VALUE - 1), (Long) visitor.getMax());
     }
 
     /** A MaxVisitor that set's visitied without maxvalue being set. */

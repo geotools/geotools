@@ -19,6 +19,7 @@ package org.geotools.feature.visitor;
 import org.geotools.data.memory.MemoryFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -55,7 +56,22 @@ public class MinVisitorTest {
         }
     }
 
-    /** A MinVisitor that set's visitied without minvalue being set. */
+    /** Checks that reset causes minvalue to be set to null, and not the integer 0. */
+    @Test
+    public void resetCallWillNullify() throws Exception {
+        final MemoryFeatureCollection collection = new MemoryFeatureCollection(SCHEMA);
+        collection.add(SimpleFeatureBuilder.build(SCHEMA, new Object[] {1}, "1"));
+
+        final MinVisitor visitor = new MinVisitor("AInteger");
+        collection.accepts(visitor, null);
+
+        visitor.reset();
+
+        collection.accepts(visitor, null);
+        Assert.assertEquals(Integer.valueOf(1), (Integer) visitor.getMin());
+    }
+
+    /** A MinVisitor that set's visited without minvalue being set. */
     private class PreVisitedMinVisitor extends MinVisitor {
         PreVisitedMinVisitor(String attribute) {
             super(attribute);

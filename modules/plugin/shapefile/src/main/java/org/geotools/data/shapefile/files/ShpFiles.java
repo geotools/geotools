@@ -50,6 +50,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.lang3.SystemUtils;
 import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 
@@ -66,6 +67,8 @@ import org.geotools.util.logging.Logging;
  * @author jesse
  */
 public class ShpFiles {
+
+    public static final boolean DEFAULT_SKIP_SCAN = false;
 
     static final Logger LOGGER = Logging.getLogger(ShpFiles.class);
 
@@ -89,19 +92,24 @@ public class ShpFiles {
 
     private boolean memoryMapCacheEnabled;
 
+    public ShpFiles(String fileName) throws MalformedURLException {
+        this(fileName, DEFAULT_SKIP_SCAN);
+    }
+
     /**
      * Searches for all the files and adds then to the map of files.
      *
      * @param fileName the filename or url of any one of the shapefile files
+     * @param skipScan skip the scan for alternative shapefile extensions (i.e. .SHP, .shp.XML, ...)
      * @throws MalformedURLException if it isn't possible to create a URL from string. It will be
      *     used to create a file and create a URL from that if both fail this exception is thrown
      */
-    public ShpFiles(String fileName) throws MalformedURLException {
+    public ShpFiles(String fileName, boolean skipScan) throws MalformedURLException {
         try {
             URL url = new URL(fileName);
-            init(url);
+            init(url, skipScan);
         } catch (MalformedURLException e) {
-            init(new File(fileName).toURI().toURL());
+            init(new File(fileName).toURI().toURL(), skipScan);
         }
     }
 
@@ -112,7 +120,11 @@ public class ShpFiles {
      * @throws FileNotFoundException if the shapefile associated with file is not found
      */
     public ShpFiles(File file) throws MalformedURLException {
-        init(file.toURI().toURL());
+        this(file, DEFAULT_SKIP_SCAN);
+    }
+
+    public ShpFiles(File file, boolean skipScan) throws MalformedURLException {
+        init(file.toURI().toURL(), skipScan);
     }
 
     /**
@@ -121,10 +133,20 @@ public class ShpFiles {
      * @param url any one of the shapefile files
      */
     public ShpFiles(URL url) throws IllegalArgumentException {
-        init(url);
+        this(url, DEFAULT_SKIP_SCAN);
     }
 
-    private void init(URL url) {
+    /**
+     * Searches for all the files and adds then to the map of files.
+     *
+     * @param url any one of the shapefile files
+     * @param skipScan avoid searching for other extensions when missing.
+     */
+    public ShpFiles(URL url, boolean skipScan) throws IllegalArgumentException {
+        init(url, skipScan);
+    }
+
+    private void init(URL url, boolean skipScan) {
         String base = baseName(url);
         if (base == null) {
             throw new IllegalArgumentException(
@@ -159,8 +181,9 @@ public class ShpFiles {
         // if the files are local check each file to see if it exists
         // if not then search for a file of the same name but try all combinations of the
         // different cases that the extension can be made up of.
-        // IE Shp, SHP, Shp, ShP etc...
-        if (isLocal()) {
+        // IE Shp, SHP, shp, ShP etc...
+        // Note that WINDOWS is case-insensitive, so we can skip the search in that case
+        if (!SystemUtils.IS_OS_WINDOWS && isLocal() && !skipScan) {
             Set<Entry<ShpFileType, URL>> entries = urls.entrySet();
             Map<ShpFileType, URL> toUpdate = new HashMap<>();
             for (Entry<ShpFileType, URL> entry : entries) {

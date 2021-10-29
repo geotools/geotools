@@ -65,8 +65,8 @@ class DefaultGranuleAccessProvider implements GranuleAccessProvider, GranuleDesc
             if (hints.containsKey(SUGGESTED_STREAM_SPI)) {
                 this.imageInputStreamSpi = (ImageInputStreamSpi) hints.get(SUGGESTED_STREAM_SPI);
             }
-            if (hints.containsKey(SKIP_EXTERNAL_OVERVIEWS)) {
-                this.skipExternalOverviews = (Boolean) hints.get(SKIP_EXTERNAL_OVERVIEWS);
+            if (hints.containsKey(Hints.SKIP_EXTERNAL_OVERVIEWS)) {
+                this.skipExternalOverviews = (Boolean) hints.get(Hints.SKIP_EXTERNAL_OVERVIEWS);
             }
         }
     }

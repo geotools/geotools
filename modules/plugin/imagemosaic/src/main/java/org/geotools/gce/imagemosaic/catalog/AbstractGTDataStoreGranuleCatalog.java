@@ -46,7 +46,6 @@ import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.visitor.FeatureCalc;
-import org.geotools.gce.imagemosaic.GranuleAccessProvider;
 import org.geotools.gce.imagemosaic.GranuleDescriptor;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.gce.imagemosaic.PathType;
@@ -156,7 +155,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
                 // depending on the code path, the value may come as a string (initialize from
                 // datastore) or boolean (index and create a shapefile)
                 this.hints.put(
-                        GranuleAccessProvider.SKIP_EXTERNAL_OVERVIEWS,
+                        Hints.SKIP_EXTERNAL_OVERVIEWS,
                         Converters.convert(
                                 params.get(Utils.Prop.SKIP_EXTERNAL_OVERVIEWS), Boolean.class));
             }

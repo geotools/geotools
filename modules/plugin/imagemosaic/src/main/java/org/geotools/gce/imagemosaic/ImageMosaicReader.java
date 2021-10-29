@@ -450,6 +450,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
         Hints catalogHints = getHints();
         if (bean != null && bean.getUrlSourceSPIProvider() != null) {
             catalogHints = new Hints(catalogHints);
+            if (bean.isSkipExternalOverviews())
+                catalogHints.put(Hints.SKIP_EXTERNAL_OVERVIEWS, true);
             CogGranuleAccessProvider provider = new CogGranuleAccessProvider(bean);
             catalogHints.put(GranuleAccessProvider.GRANULE_ACCESS_PROVIDER, provider);
         }
@@ -1059,8 +1061,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
             @SuppressWarnings("unchecked")
             Collection<Object> collection = ((Collection<Object>) source);
             source =
-                    collection
-                            .stream()
+                    collection.stream()
                             .map(o -> Converters.convert(o, resource.getElementType()))
                             .collect(Collectors.toList());
         } else {

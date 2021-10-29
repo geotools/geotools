@@ -554,8 +554,7 @@ public class GranuleDescriptor {
             suggestedObjectHints.put(GranuleAccessProvider.SUGGESTED_STREAM_SPI, suggestedIsSPI);
         }
         if (skipExternalOverviews) {
-            suggestedObjectHints.put(
-                    GranuleAccessProvider.SKIP_EXTERNAL_OVERVIEWS, skipExternalOverviews);
+            suggestedObjectHints.put(Hints.SKIP_EXTERNAL_OVERVIEWS, skipExternalOverviews);
         }
         // When looking for formats which may parse this file, make sure to exclude the
         // ImageMosaicFormat as return

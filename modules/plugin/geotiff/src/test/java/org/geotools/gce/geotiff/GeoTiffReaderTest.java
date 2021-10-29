@@ -28,6 +28,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import it.geosolutions.imageio.maskband.DatasetLayout;
+import it.geosolutions.imageio.stream.input.FileImageInputStreamExtImpl;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.jaiext.range.NoDataContainer;
 import it.geosolutions.jaiext.range.Range;
@@ -53,6 +54,7 @@ import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
+import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.MosaicDescriptor;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -68,6 +70,7 @@ import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.operation.Scale;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataSourceException;
+import org.geotools.data.FileGroupProvider;
 import org.geotools.data.PrjFileReader;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
@@ -1085,6 +1088,50 @@ public class GeoTiffReaderTest {
         resolutions = reader.getReadingResolutions(OverviewPolicy.QUALITY, availableResolutions[0]);
         assertEquals(resolutions[0], availableResolutions[0][0], delta);
         assertEquals(resolutions[1], availableResolutions[0][1], delta);
+    }
+
+    @Test
+    //    @Ignore
+    public void testExternalOverviewsDisabled() throws Exception {
+        final File file = TestData.file(GeoTiffReaderTest.class, "ovr.tif");
+        assertNotNull(file);
+        assertTrue(file.exists());
+        GeoTiffReader reader =
+                new GeoTiffReader(file, new Hints(Hints.SKIP_EXTERNAL_OVERVIEWS, true));
+
+        // no external overviews, no overviews period
+        assertEquals(0, reader.getDatasetLayout().getNumExternalOverviews());
+        double[][] availableResolutions = reader.getResolutionLevels();
+        assertEquals(1, availableResolutions.length);
+
+        // no external files
+        List<FileGroupProvider.FileGroup> files = reader.getFiles();
+        assertEquals(1, files.size());
+
+        // read from reader
+        final ParameterValue<GridGeometry2D> gg =
+                AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        final Dimension dim = new Dimension();
+        dim.setSize(
+                reader.getOriginalGridRange().getSpan(0) / 64.0,
+                reader.getOriginalGridRange().getSpan(1) / 64.0);
+        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        rasterArea.setSize(dim);
+        final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
+        GridGeometry2D gridGeometry = new GridGeometry2D(range, envelope);
+        gg.setValue(gridGeometry);
+
+        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {gg});
+        RenderedOp op = (RenderedOp) coverage.getRenderedImage();
+        @SuppressWarnings("PMD.CloseResource") // closed along with the coverage
+        FileImageInputStreamExtImpl fis =
+                (FileImageInputStreamExtImpl) op.getParameterBlock().getParameters().get(0);
+        assertEquals("ovr.tif", fis.getTarget().getName());
+
+        // cleanup
+        coverage.dispose(true);
+        reader.dispose();
     }
 
     /**

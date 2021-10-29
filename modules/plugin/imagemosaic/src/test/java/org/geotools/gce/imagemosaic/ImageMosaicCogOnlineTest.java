@@ -51,6 +51,7 @@ import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.properties.FSDateExtractorSPI;
@@ -498,8 +499,13 @@ public class ImageMosaicCogOnlineTest {
             RasterManager manager = reader.rasterManagers.get(name);
             manager.granuleCatalog.getGranuleDescriptors(
                     new Query(name),
-                    (granule, feature) ->
-                            assertTrue(granule.getMaskOverviewProvider().isSkipExternalLookup()));
+                    (granule, feature) -> {
+                        assertTrue(granule.getMaskOverviewProvider().isSkipExternalLookup());
+                        assertTrue(
+                                ((GeoTiffReader) granule.getReader())
+                                        .getMaskOverviewProvider()
+                                        .isSkipExternalLookup());
+                    });
         } finally {
             if (reader != null) reader.dispose();
         }

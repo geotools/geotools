@@ -131,6 +131,15 @@ public class MaskOverviewProvider {
         this(layout, inputUrl, spiHelper, DEFAULT_SKIP_EXTERNAL_FILES_LOOKUP);
     }
 
+    public MaskOverviewProvider(DatasetLayout dtLayout, File inputFile, boolean skipOverviews)
+            throws IOException {
+        this(
+                dtLayout,
+                URLs.fileToUrl(inputFile),
+                new SpiHelper(URLs.fileToUrl(inputFile), null),
+                skipOverviews);
+    }
+
     public MaskOverviewProvider(
             DatasetLayout layout, URL inputFile, SpiHelper spiHelper, boolean skipExternalLookup)
             throws IOException {

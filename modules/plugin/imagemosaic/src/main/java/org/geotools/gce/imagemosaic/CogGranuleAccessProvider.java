@@ -89,6 +89,9 @@ public class CogGranuleAccessProvider extends DefaultGranuleAccessProvider
             format = DEFAULT_COG_FORMAT;
         }
         hints.put(GranuleAccessProvider.SUGGESTED_FORMAT, format);
+        if (bean.isSkipExternalOverviews()) {
+            hints.put(Hints.SKIP_EXTERNAL_OVERVIEWS, true);
+        }
 
         hints.add(EXCLUDE_MOSAIC);
         return hints;

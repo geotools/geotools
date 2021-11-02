@@ -36,7 +36,6 @@ import org.opengis.filter.expression.Expression;
 public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
     private Expression expr;
     Comparable minvalue;
-    Comparable curvalue;
     boolean visited = false;
 
     public MinVisitor(String attributeTypeName) {
@@ -83,7 +82,7 @@ public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     public void visit(org.opengis.feature.Feature feature) {
         Object attribValue = expr.evaluate(feature);
 
@@ -91,11 +90,19 @@ public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
             return; // attribute is null, therefore skip
         }
 
-        curvalue = (Comparable) attribValue;
-        if ((!visited) || (curvalue.compareTo(minvalue) < 0)) {
+        Comparable curvalue = (Comparable) attribValue;
+        if (!visited || compare(curvalue)) {
             minvalue = curvalue;
             visited = true;
         }
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private boolean compare(Comparable curvalue) {
+        if (minvalue == null) {
+            throw new IllegalStateException("minvalue shouldn't be null when visiting = true.");
+        }
+        return curvalue.compareTo(minvalue) < 0;
     }
 
     /**
@@ -115,7 +122,7 @@ public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
     public void reset() {
         /** Reset the count and current minimum */
         this.visited = false;
-        this.minvalue = Integer.valueOf(0);
+        this.minvalue = null;
     }
 
     @Override

@@ -67,10 +67,6 @@ public class WMTSTileService extends TileService {
 
     protected static final Logger LOGGER = Logging.getLogger(WMTSTileService.class);
 
-    @Deprecated public static final String DIMENSION_TIME = "time";
-
-    @Deprecated public static final String DIMENSION_ELEVATION = "elevation";
-
     public static final String EXTRA_HEADERS = "HEADERS";
 
     private static final TileFactory tileFactory = new WMTSTileFactory();
@@ -83,19 +79,9 @@ public class WMTSTileService extends TileService {
 
     private final WMTSLayer layer;
 
-    private String layerName;
-
-    private String styleName = ""; // Default style is ""
-
     private ReferencedEnvelope envelope;
 
     private final TileURLBuilder urlBuilder;
-
-    private WMTSServiceType type = WMTSServiceType.REST;
-
-    private String format = "image/png";
-
-    private Map<String, String> dimensions = new HashMap<>();
 
     private Map<String, Object> extrainfo = new HashMap<>();
 
@@ -536,36 +522,6 @@ public class WMTSTileService extends TileService {
         return tileList;
     }
 
-    /** @return the type */
-    @Deprecated
-    public WMTSServiceType getType() {
-        return type;
-    }
-
-    /** @param type the type to set */
-    @Deprecated
-    public void setType(WMTSServiceType type) {
-        this.type = type;
-    }
-
-    /** @return the layerName */
-    @Deprecated
-    public String getLayerName() {
-        return layerName;
-    }
-
-    /** @return the styleName */
-    @Deprecated
-    public String getStyleName() {
-        return styleName;
-    }
-
-    /** @param styleName the styleName to set */
-    @Deprecated
-    public void setStyleName(String styleName) {
-        this.styleName = styleName;
-    }
-
     @Override
     public double[] getScaleList() {
         return scaleList;
@@ -586,35 +542,9 @@ public class WMTSTileService extends TileService {
         return tileFactory;
     }
 
-    /** @return the tileMatrixSetName */
-    @Deprecated
-    public String getTileMatrixSetName() {
-        return tileMatrixSetName;
-    }
-
-    /** @param tileMatrixSetName the tileMatrixSetName to set */
-    @Deprecated
-    public void setTileMatrixSetName(String tileMatrixSetName) {
-        if (tileMatrixSetName == null || tileMatrixSetName.isEmpty()) {
-            throw new IllegalArgumentException("Tile matrix set name cannot be null");
-        }
-
-        this.tileMatrixSetName = tileMatrixSetName;
-    }
-
     public TileMatrixSetLink getMatrixSetLink() {
         return layer.getTileMatrixLinks().get(tileMatrixSetName);
     }
-
-    /** @return the templateURL */
-    @Deprecated
-    public String getTemplateURL() {
-        return getBaseUrl();
-    }
-
-    /** @param templateURL the templateURL to set */
-    @Deprecated
-    public void setTemplateURL(String templateURL) {}
 
     TileURLBuilder getURLBuilder() {
         return urlBuilder;
@@ -643,29 +573,8 @@ public class WMTSTileService extends TileService {
         }
     }
 
-    /** @return */
-    @Deprecated
-    public String getFormat() {
-        return format;
-    }
-
-    /**
-     * @param format the format to set
-     * @deprecated include in templateURL
-     */
-    @Deprecated
-    public void setFormat(String format) {
-        this.format = format;
-    }
-
     public WMTSZoomLevel getZoomLevel(int zoom) {
         return new WMTSZoomLevel(zoom, this);
-    }
-
-    /** @deprecated Dimensions should be a part of templateUrl */
-    @Deprecated
-    public Map<String, String> getDimensions() {
-        return dimensions;
     }
 
     /**

@@ -250,15 +250,6 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
         return type;
     }
 
-    /**
-     * @deprecated headers should be set by a constructor
-     * @return
-     */
-    @Deprecated
-    public Map<String, String> getHeaders() {
-        return headers;
-    }
-
     /** */
     public GeneralEnvelope getEnvelope(Layer layer, CoordinateReferenceSystem crs) {
         Map<String, CRSEnvelope> boundingBoxes = layer.getBoundingBoxes();

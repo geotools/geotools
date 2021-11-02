@@ -25,7 +25,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.http.HTTPResponse;
 import org.geotools.image.io.ImageIOExt;
-import org.geotools.ows.wmts.model.WMTSServiceType;
 import org.geotools.tile.Tile;
 import org.geotools.tile.TileIdentifier;
 import org.geotools.tile.TileService;
@@ -88,12 +87,6 @@ class WMTSTile extends Tile {
                         .getTileWidth());
 
         this.service = (WMTSTileService) service;
-    }
-
-    /** @return the type of WMTS KVP or REST */
-    @Deprecated
-    public WMTSServiceType getType() {
-        return getService().getType();
     }
 
     private WMTSTileService getService() {

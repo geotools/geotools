@@ -19,8 +19,10 @@ package org.geotools.data.shapefile;
 import static org.geotools.data.shapefile.files.ShpFileType.DBF;
 import static org.geotools.data.shapefile.files.ShpFileType.PRJ;
 import static org.geotools.data.shapefile.files.ShpFileType.SHP;
+import static org.geotools.data.shapefile.files.ShpFileType.SHP_XML;
 import static org.geotools.data.shapefile.files.ShpFileType.SHX;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -95,6 +97,38 @@ public class ShpFilesTest {
             shpFiles.unlockRead(dbfURL, requestor);
             shpFiles.unlockRead(shxURL, requestor);
         }
+    }
+
+    @Test
+    public void testCaseFileSkipScan() throws Exception {
+        Map<ShpFileType, File> files = createFiles("TEST", ShpFileType.values(), true);
+
+        String fileName = files.get(SHP).getPath();
+        fileName = fileName.substring(0, fileName.length() - 4) + ".shp";
+        File file = new File(fileName);
+
+        String shpXml = files.get(SHP_XML).getPath();
+        File shpxmlFile = new File(shpXml);
+        shpxmlFile.delete();
+
+        File shpXMLFile = new File(shpXml.replace(".shp.xml", ".shp.XML"));
+        shpXMLFile.createNewFile();
+        shpXMLFile.deleteOnExit();
+
+        // skipScan isn't set. The Lookup will find .shp.XML and update the mapping
+        // by associating it to the SHP_XML type.
+        ShpFiles shpFiles = new ShpFiles(file);
+        assertTrue(shpFiles.exists(SHP_XML));
+
+        // skipScan is set. When testing on a Linux environment, the .shp.XML
+        // won't be found since the mapping wasn't updated
+        shpFiles = new ShpFiles(file, true);
+        File caseSensitiveFile = new File("TEST.TXT");
+        caseSensitiveFile.createNewFile();
+        caseSensitiveFile.deleteOnExit();
+        File checkCaseFile = new File("test.txt");
+        boolean isCaseSensitive = !checkCaseFile.exists();
+        assertEquals(shpFiles.exists(SHP_XML), !isCaseSensitive);
     }
 
     @Test

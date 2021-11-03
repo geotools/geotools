@@ -18,6 +18,7 @@ package org.geotools.data.shapefile;
 
 import java.awt.RenderingHints.Key;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
@@ -33,7 +34,7 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFactorySpi;
 import org.geotools.data.directory.DirectoryDataStore;
-import org.geotools.data.directory.FileStoreFactory;
+import org.geotools.data.directory.FilteringFileStoreFactory;
 import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.util.KVP;
 import org.geotools.util.URLs;
@@ -177,6 +178,17 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
                     true,
                     new KVP(Param.LEVEL, "advanced"));
 
+    /** Optional - skip the scan for alternative shapefile extensions (i.e. .SHP, .shp.XML, ...) */
+    public static final Param SKIP_SCAN =
+            new Param(
+                    "skipScan",
+                    Boolean.class,
+                    "Skip scan for alternative shapefile extensions (i.e. .SHP, .shp.XML, ...)",
+                    false,
+                    true,
+                    new KVP(Param.LEVEL, "advanced"));
+
+    @Override
     public String getDisplayName() {
         return "Shapefile";
     }
@@ -196,7 +208,8 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
             MEMORY_MAPPED,
             CACHE_MEMORY_MAPS,
             FILE_TYPE,
-            FSTYPE
+            FSTYPE,
+            SKIP_SCAN
         };
     }
 
@@ -216,6 +229,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
         Charset dbfCharset = lookup(DBFCHARSET, params, Charset.class);
         TimeZone dbfTimeZone = lookup(DBFTIMEZONE, params, TimeZone.class);
         Boolean isCreateSpatialIndex = lookup(CREATE_SPATIAL_INDEX, params, Boolean.class);
+        Boolean skipScan = lookup(SKIP_SCAN, params, Boolean.class);
         Boolean isEnableSpatialIndex = (Boolean) ENABLE_SPATIAL_INDEX.lookUp(params);
         if (isEnableSpatialIndex == null) {
             // should not be needed as default is TRUE
@@ -228,7 +242,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
             return new DirectoryDataStore(
                     URLs.urlToFile(url), new ShpFileStoreFactory(this, params));
         } else {
-            ShpFiles shpFiles = new ShpFiles(url);
+            ShpFiles shpFiles = new ShpFiles(url, skipScan);
 
             boolean isLocal = shpFiles.isLocal();
             boolean useMemoryMappedBuffer = isLocal && isMemoryMapped.booleanValue();
@@ -236,7 +250,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
             boolean createIndex = isCreateSpatialIndex.booleanValue() && enableIndex;
 
             // build the store
-            ShapefileDataStore store = new ShapefileDataStore(url);
+            ShapefileDataStore store = new ShapefileDataStore(url, skipScan);
             if (namespace != null) {
                 store.setNamespaceURI(namespace.toString());
             }
@@ -327,11 +341,14 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
      *
      * @author Andrea Aime - OpenGeo
      */
-    public static class ShpFileStoreFactory implements FileStoreFactory {
+    public static class ShpFileStoreFactory implements FilteringFileStoreFactory {
 
         ShapefileDataStoreFactory shpFactory;
 
         Map<String, ?> originalParams;
+
+        static FileFilter SHP_FILE_FILTER =
+                file -> file != null && file.getName().toUpperCase().endsWith("SHP");
 
         public ShpFileStoreFactory(
                 ShapefileDataStoreFactory factory, Map<String, ?> originalParams) {
@@ -348,6 +365,11 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
             } else {
                 return null;
             }
+        }
+
+        @Override
+        public FileFilter getFilter() throws IOException {
+            return SHP_FILE_FILTER;
         }
     }
 

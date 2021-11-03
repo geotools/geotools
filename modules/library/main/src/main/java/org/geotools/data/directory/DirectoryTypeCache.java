@@ -207,7 +207,12 @@ class DirectoryTypeCache {
         }
 
         // grab all the candidate files
-        File[] files = directory.listFiles();
+        FileFilter filter = null;
+        if (factory instanceof FilteringFileStoreFactory) {
+            filter = ((FilteringFileStoreFactory) factory).getFilter();
+        }
+
+        File[] files = directory.listFiles(filter);
         if (files != null) {
             for (File file : files) {
                 // skip over directories, we don't recurse

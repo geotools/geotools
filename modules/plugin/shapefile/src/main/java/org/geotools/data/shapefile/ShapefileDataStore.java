@@ -120,7 +120,11 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
     private boolean tryCPGFile = false;
 
     public ShapefileDataStore(URL url) {
-        shpFiles = new ShpFiles(url);
+        this(url, ShpFiles.DEFAULT_SKIP_SCAN);
+    }
+
+    public ShapefileDataStore(URL url, boolean skipScan) {
+        shpFiles = new ShpFiles(url, skipScan);
         if (TRACE_ENABLED) {
             trace = new Exception();
             trace.fillInStackTrace();

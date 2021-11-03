@@ -980,4 +980,9 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         }
         return super.convertValue(value, ad);
     }
+
+    @Override
+    public boolean canGroupOnGeometry() {
+        return true;
+    }
 }

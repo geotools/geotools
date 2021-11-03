@@ -39,6 +39,7 @@ import org.geotools.filter.LengthFunction;
 import org.geotools.filter.LiteralExpressionImpl;
 import org.geotools.filter.function.DateDifferenceFunction;
 import org.geotools.filter.function.FilterFunction_area;
+import org.geotools.filter.function.FilterFunction_buffer;
 import org.geotools.filter.function.FilterFunction_equalTo;
 import org.geotools.filter.function.FilterFunction_strConcat;
 import org.geotools.filter.function.FilterFunction_strEndsWith;
@@ -195,6 +196,9 @@ class FilterToSqlHelper {
 
             // compare functions
             caps.addType(FilterFunction_equalTo.class);
+
+            // one geometry function (to support testing, but otherwise fully functional)
+            caps.addType(FilterFunction_buffer.class);
         }
         // native filter support
         caps.addType(NativeFilter.class);
@@ -638,12 +642,24 @@ class FilterToSqlHelper {
             out.write(")");
         } else if (function instanceof JsonPointerFunction) {
             encodeJsonPointer(function, extraData);
+        } else if (function instanceof FilterFunction_buffer) {
+            encodeBuffer(function, extraData);
         } else {
             // function not supported
             return false;
         }
 
         return true;
+    }
+
+    private void encodeBuffer(Function function, Object extraData) throws IOException {
+        Expression source = getParameter(function, 0, true);
+        Expression distance = getParameter(function, 1, true);
+        out.write("ST_Buffer(");
+        source.accept(delegate, extraData);
+        out.write(", ");
+        distance.accept(delegate, extraData);
+        out.write(")");
     }
 
     private void encodeJsonPointer(Function jsonPointer, Object extraData) throws IOException {

@@ -41,6 +41,8 @@ public class PostgisPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSe
 
     @Override
     protected void dropMetadataTable() throws Exception {
+        // other tests set it up as a view as well
+        runSafe("DROP VIEW IF EXISTS gt_pk_metadata");
         runSafe("DROP TABLE gt_pk_metadata");
     }
 

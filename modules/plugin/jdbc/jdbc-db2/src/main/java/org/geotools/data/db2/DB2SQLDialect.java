@@ -862,4 +862,11 @@ public class DB2SQLDialect extends SQLDialect {
     protected boolean supportsSchemaForIndex() {
         return true;
     }
+
+    @Override
+    public boolean canGroupOnGeometry() {
+        // not supported
+        // DB2 SQL Error: SQLCODE=-134, SQLSTATE=42907, SQLERRMC=geometry, DRIVER=4.29.24
+        return false;
+    }
 }

@@ -278,4 +278,9 @@ public class DB2SQLDialectPrepared extends PreparedStatementSQLDialect {
     protected boolean supportsSchemaForIndex() {
         return delegate.supportsSchemaForIndex();
     }
+
+    @Override
+    public boolean canGroupOnGeometry() {
+        return delegate.canGroupOnGeometry();
+    }
 }

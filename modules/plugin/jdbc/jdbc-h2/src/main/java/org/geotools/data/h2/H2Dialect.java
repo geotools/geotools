@@ -562,4 +562,9 @@ public class H2Dialect extends SQLDialect {
     public void registerSqlTypeToSqlTypeNameOverrides(Map<Integer, String> overrides) {
         overrides.put(Types.BLOB, "BYTEA");
     }
+
+    @Override
+    public boolean canGroupOnGeometry() {
+        return true;
+    }
 }

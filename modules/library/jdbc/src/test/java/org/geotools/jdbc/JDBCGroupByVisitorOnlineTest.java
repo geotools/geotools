@@ -19,6 +19,7 @@ package org.geotools.jdbc;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import org.geotools.data.Query;
@@ -32,6 +33,8 @@ import org.geotools.filter.expression.InternalVolatileFunction;
 import org.geotools.filter.function.DateDifferenceFunction;
 import org.geotools.filter.function.math.FilterFunction_floor;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
@@ -423,8 +426,27 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
             boolean expectOptimized,
             Expression... groupByAttributes)
             throws IOException {
-        ContentFeatureSource featureSource =
-                dataStore.getFeatureSource(tname("buildings_group_by_tests"));
+        @SuppressWarnings("unchecked")
+        List<Object[]> value =
+                genericGroupByTestTest(
+                        "buildings_group_by_tests",
+                        query,
+                        aggregateVisitor,
+                        aggregateAttribute,
+                        expectOptimized,
+                        groupByAttributes);
+        return value;
+    }
+
+    private List<Object[]> genericGroupByTestTest(
+            String tableName,
+            Query query,
+            Aggregate aggregateVisitor,
+            Expression aggregateAttribute,
+            boolean expectOptimized,
+            Expression... groupByAttributes)
+            throws IOException {
+        ContentFeatureSource featureSource = dataStore.getFeatureSource(tname(tableName));
 
         GroupByVisitorBuilder visitorBuilder =
                 new GroupByVisitorBuilder()
@@ -512,5 +534,75 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         checkValueContains(value, Integer.toString(3 * multiplyingFactor), "2"); // 2016-06-06
         checkValueContains(value, Integer.toString(4 * multiplyingFactor), "3"); // 2016-06-07
         checkValueContains(value, Integer.toString(12 * multiplyingFactor), "3"); // 2016-06-15
+    }
+
+    @Test
+    // Geometry should be Comparable<Geometry> but it's just Comparable, this causes issues
+    // with usage of Comparable.comparing(...)
+    @SuppressWarnings("unchecked")
+    public void testGroupByGeometry() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyName aggProperty = ff.property(aname("intProperty"));
+        PropertyName groupProperty = ff.property(aname("geometry"));
+        boolean expectOptimized = dataStore.getSQLDialect().canGroupOnGeometry();
+        List<Object[]> value =
+                genericGroupByTestTest(
+                        "ft1_group_by",
+                        Query.ALL,
+                        Aggregate.SUM,
+                        aggProperty,
+                        expectOptimized,
+                        groupProperty);
+        assertEquals(3, value.size());
+        // get them in predictable order
+        value.sort(Comparator.comparing(v -> ((Geometry) v[0])));
+        // geometries have been parsed, sums have the expected value
+        Object[] v0 = value.get(0);
+        assertEquals(new WKTReader().read("POINT(0 0)"), v0[0]);
+        assertEquals(3, ((Number) v0[1]).intValue());
+        Object[] v1 = value.get(1);
+        assertEquals(new WKTReader().read("POINT(1 1)"), v1[0]);
+        assertEquals(33, ((Number) v1[1]).intValue());
+        Object[] v2 = value.get(2);
+        assertEquals(new WKTReader().read("POINT(2 2)"), v2[0]);
+        assertEquals(63, ((Number) v2[1]).intValue());
+    }
+
+    /**
+     * We don't have the machinery to optimize this one, the code to write and read geometry columns
+     * in dialects needs a GeometryDescriptor, which cannot be provided for a function. The PostGIS
+     * dialect has been improved to support the buffer function, to check SQL encoding is not
+     * attempted even if the function is actually supported
+     */
+    @Test
+    // Geometry should be Comparable<Geometry> but it's just Comparable, this causes issues
+    // with usage of Comparable.comparing(...)
+    @SuppressWarnings("unchecked")
+    public void testGroupByGeometryFunction() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyName aggProperty = ff.property(aname("intProperty"));
+        Expression groupProperty =
+                ff.function("buffer", ff.property(aname("geometry")), ff.literal(1));
+        List<Object[]> value =
+                genericGroupByTestTest(
+                        "ft1_group_by",
+                        Query.ALL,
+                        Aggregate.SUM,
+                        aggProperty,
+                        false,
+                        groupProperty);
+        assertEquals(3, value.size());
+        // get them in predictable order
+        value.sort(Comparator.comparing(v -> ((Geometry) v[0])));
+        // geometries have been parsed, sums have the expected value
+        Object[] v0 = value.get(0);
+        assertEquals(new WKTReader().read("POINT(0 0)").buffer(1), v0[0]);
+        assertEquals(3, ((Number) v0[1]).intValue());
+        Object[] v1 = value.get(1);
+        assertEquals(new WKTReader().read("POINT(1 1)").buffer(1), v1[0]);
+        assertEquals(33, ((Number) v1[1]).intValue());
+        Object[] v2 = value.get(2);
+        assertEquals(new WKTReader().read("POINT(2 2)").buffer(1), v2[0]);
+        assertEquals(63, ((Number) v2[1]).intValue());
     }
 }

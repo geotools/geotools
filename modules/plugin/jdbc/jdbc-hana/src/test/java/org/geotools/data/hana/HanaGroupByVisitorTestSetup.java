@@ -80,4 +80,10 @@ public class HanaGroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetup {
             htu.dropTestTableCascade(TABLE);
         }
     }
+
+    @Override
+    protected void createFt1GroupByTable() throws Exception {}
+
+    @Override
+    protected void dropFt1GroupByTable() throws Exception {}
 }

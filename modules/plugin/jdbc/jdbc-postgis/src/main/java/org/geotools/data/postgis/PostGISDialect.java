@@ -1562,4 +1562,9 @@ public class PostGISDialect extends BasicSQLDialect {
     public String[] getDesiredTablesType() {
         return new String[] {"TABLE", "VIEW", "MATERIALIZED VIEW", "SYNONYM", "PARTITIONED TABLE"};
     }
+
+    @Override
+    public boolean canGroupOnGeometry() {
+        return true;
+    }
 }

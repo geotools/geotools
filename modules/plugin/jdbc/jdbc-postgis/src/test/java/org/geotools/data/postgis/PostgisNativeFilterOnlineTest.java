@@ -17,6 +17,7 @@
 package org.geotools.data.postgis;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -28,6 +29,7 @@ import org.geotools.data.util.FeatureStreams;
 import org.geotools.jdbc.JDBCNativeFilterOnlineTest;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory;
@@ -65,6 +67,9 @@ public final class PostgisNativeFilterOnlineTest extends JDBCNativeFilterOnlineT
 
     /** Check pgNearest filter with 3 results */
     @Test
+    // Geometry should be Comparable<Geometry> but it's just Comparable, this causes issues
+    // with usage of Comparable.comparing(...)
+    @SuppressWarnings("unchecked")
     public void testNearestNativeFilterNumResults() throws IOException {
         ContentFeatureSource fs = dataStore.getFeatureSource(tname("gt_jdbc_test_measurements"));
         FilterFactory ff = dataStore.getFilterFactory();
@@ -80,14 +85,16 @@ public final class PostgisNativeFilterOnlineTest extends JDBCNativeFilterOnlineT
         try (Stream<SimpleFeature> featuresStream = FeatureStreams.toFeatureStream(fc)) {
             List<SimpleFeature> featuresList = featuresStream.collect(Collectors.toList());
             assertEquals(3, featuresList.size());
+            // get predictable order
+            featuresList.sort(Comparator.comparing(f -> (Geometry) f.getDefaultGeometry()));
             assertEquals(
                     "POINT (1 2)",
                     featuresList.get(0).getDefaultGeometryProperty().getValue().toString());
             assertEquals(
-                    "POINT (2 2)",
+                    "POINT (1 4)",
                     featuresList.get(1).getDefaultGeometryProperty().getValue().toString());
             assertEquals(
-                    "POINT (1 4)",
+                    "POINT (2 2)",
                     featuresList.get(2).getDefaultGeometryProperty().getValue().toString());
         }
     }

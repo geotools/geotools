@@ -1381,4 +1381,12 @@ public abstract class SQLDialect {
         Class<?> binding = ad.getType().getBinding();
         return Converters.convert(value, binding);
     }
+
+    /**
+     * Returns true if this database can "group by" on a Geometry column. Defaults to false,
+     * specific implementations with this capability should override
+     */
+    public boolean canGroupOnGeometry() {
+        return false;
+    }
 }

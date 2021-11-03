@@ -1010,4 +1010,10 @@ public class SQLServerDialect extends BasicSQLDialect {
         super.registerAggregateFunctions(aggregates);
         aggregates.put(StandardDeviationVisitor.class, "STDEVP");
     }
+
+    @Override
+    public boolean canGroupOnGeometry() {
+        // The type "geometry" is not comparable. It cannot be used in the GROUP BY clause.
+        return false;
+    }
 }

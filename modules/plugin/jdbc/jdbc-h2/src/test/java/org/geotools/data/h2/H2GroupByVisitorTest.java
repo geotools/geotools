@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2018, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2021, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -14,25 +14,14 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.hana;
+package org.geotools.data.h2;
 
 import org.geotools.jdbc.JDBCGroupByVisitorOnlineTest;
+import org.geotools.jdbc.JDBCTestSetup;
 
-/** @author Stefan Uhrig, SAP SE */
-public class HanaGroupByVisitorOnlineTest extends JDBCGroupByVisitorOnlineTest {
-
+public class H2GroupByVisitorTest extends JDBCGroupByVisitorOnlineTest {
     @Override
-    protected HanaGroupByVisitorTestSetup createTestSetup() {
-        return new HanaGroupByVisitorTestSetup(new HanaTestSetup());
-    }
-
-    @Override
-    public void testGroupByGeometry() throws Exception {
-        // setup not implemented yet
-    }
-
-    @Override
-    public void testGroupByGeometryFunction() throws Exception {
-        // setup not implemented yet
+    protected JDBCTestSetup createTestSetup() {
+        return new H2GroupByVisitorTestSetup();
     }
 }

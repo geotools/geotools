@@ -595,4 +595,9 @@ public class MySQLDialect extends SQLDialect {
             dataStore.closeSafe(cx);
         }
     }
+
+    @Override
+    public boolean canGroupOnGeometry() {
+        return true;
+    }
 }

@@ -29,9 +29,30 @@ public abstract class JDBCGroupByVisitorTestSetup extends JDBCDelegatingTestSetu
         } finally {
             createBuildingsTable();
         }
+
+        try {
+            dropFt1GroupByTable();
+        } finally {
+            createFt1GroupByTable();
+        }
     }
 
     protected abstract void createBuildingsTable() throws Exception;
 
     protected abstract void dropBuildingsTable() throws Exception;
+
+    /**
+     * It's unclear if all databases support grouping on geometry attributes. The default for this
+     * method returns false. When returning true, also implement the creation/drop of the
+     * ft1_group_by table.
+     *
+     * @return True if the database supports grouping on geometry attributes.
+     */
+    public boolean supportsGeometryGroupBy() {
+        return false;
+    }
+
+    protected abstract void createFt1GroupByTable() throws Exception;
+
+    protected abstract void dropFt1GroupByTable() throws Exception;
 }

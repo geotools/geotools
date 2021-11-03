@@ -199,16 +199,16 @@ public class XmlComplexFeatureParser extends XmlFeatureParser<FeatureType, Featu
     }
 
     /**
-     * Given a href and an expected type, return either the actual manifestation of that href's
-     * target or a placeholder object. The real instance will be returned if it's already been
-     * parsed, otherwise the placeholder will be returned. The placeholder will automatically be
-     * replaced upon calling RegisterGmlTarget(...) once the actual object is parsed.
+     * Given a href and an expected descriptor, return either the actual manifestation of that
+     * href's target or a placeholder object. The real instance will be returned if it's already
+     * been parsed, otherwise the placeholder will be returned. The placeholder will automatically
+     * be replaced upon calling RegisterGmlTarget(...) once the actual object is parsed.
      *
      * @param href The href that you wish to resolve.
-     * @param expectedType The attribute type that you expect the href to point to.
+     * @param expectedDescriptor The attribute descriptor that you expect the href to point to.
      * @return An attribute of the type specified, either the actual attribute or a placeholder.
      */
-    private Attribute resolveHref(String href, AttributeType expectedType) {
+    private Attribute resolveHref(String href, AttributeDescriptor expectedDescriptor) {
         // See what kind of href it is:
         if (href.startsWith("#")) {
             String hrefId = href.substring(1);
@@ -221,7 +221,8 @@ public class XmlComplexFeatureParser extends XmlFeatureParser<FeatureType, Featu
             } else {
                 // If not, then we create a placeholderComplexAttribute instead:
                 Attribute placeholderComplexAttribute =
-                        new AttributeImpl(Collections.<Property>emptyList(), expectedType, null);
+                        new AttributeImpl(
+                                Collections.<Property>emptyList(), expectedDescriptor, null);
 
                 // I must maintain a reference back to this object so that I can
                 // change it once its target is found:
@@ -239,7 +240,7 @@ public class XmlComplexFeatureParser extends XmlFeatureParser<FeatureType, Featu
             // need be.
             // This is temporary code to get things to work:
             Attribute placeholderComplexAttribute =
-                    new AttributeImpl(Collections.<Property>emptyList(), expectedType, null);
+                    new AttributeImpl(Collections.<Property>emptyList(), expectedDescriptor, null);
 
             return placeholderComplexAttribute;
         }
@@ -304,7 +305,7 @@ public class XmlComplexFeatureParser extends XmlFeatureParser<FeatureType, Featu
                 // 4. Parse the tag's contents based on whether it's a:
                 if (href != null) {
                     // Resolve the href:
-                    Attribute hrefAttribute = resolveHref(href, (AttributeType) type);
+                    Attribute hrefAttribute = resolveHref(href, (AttributeDescriptor) descriptor);
 
                     // We've got the attribute but the parser is still
                     // pointing at this tag so
@@ -327,7 +328,7 @@ public class XmlComplexFeatureParser extends XmlFeatureParser<FeatureType, Featu
                     // attribute.
                     AttributeBuilder attributeBuilder =
                             new AttributeBuilder(new LenientFeatureFactoryImpl());
-                    attributeBuilder.setType((AttributeType) type);
+                    attributeBuilder.setDescriptor((AttributeDescriptor) descriptor);
 
                     if (type.getBinding() == Collection.class && Types.isSimpleContentType(type)) {
 

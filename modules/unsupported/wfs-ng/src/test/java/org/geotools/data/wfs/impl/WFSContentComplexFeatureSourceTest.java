@@ -14,7 +14,6 @@
 package org.geotools.data.wfs.impl;
 
 import java.net.URL;
-import java.nio.file.Files;
 import org.geotools.TestData;
 import org.geotools.data.Query;
 import org.geotools.data.wfs.TestHttpClient;
@@ -88,7 +87,8 @@ public class WFSContentComplexFeatureSourceTest {
                 new URL(
                         "https://wfs.geonorge.no/skwms1/wfs.stedsnavn?REQUEST=GetCapabilities&SERVICE=WFS"),
                 new MockHttpResponse(
-                        TestData.file(TestHttpClient.class, "KartverketNo/GetCapabilities.xml"), "text/xml"));
+                        TestData.file(TestHttpClient.class, "KartverketNo/GetCapabilities.xml"),
+                        "text/xml"));
 
         TestWFSClient client = new TestWFSClient(capabilities, mockHttp);
         client.setProtocol(false); // Http GET method

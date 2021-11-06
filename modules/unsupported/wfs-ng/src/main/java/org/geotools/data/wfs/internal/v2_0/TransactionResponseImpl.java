@@ -77,10 +77,8 @@ public class TransactionResponseImpl extends WFSResponse implements TransactionR
             TransactionResponseType tr = (TransactionResponseType) parsed;
             ActionResultsType insertResults = tr.getInsertResults();
             if (insertResults != null) {
-                @SuppressWarnings("unchecked")
                 List<CreatedOrModifiedFeatureType> inserted = insertResults.getFeature();
                 for (CreatedOrModifiedFeatureType i : inserted) {
-                    @SuppressWarnings("unchecked")
                     List<FeatureId> featureIds = i.getResourceId();
                     if (null != featureIds) {
                         this.inserted.addAll(featureIds);

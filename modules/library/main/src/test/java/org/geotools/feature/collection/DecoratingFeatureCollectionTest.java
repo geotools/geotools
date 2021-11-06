@@ -35,7 +35,6 @@ public class DecoratingFeatureCollectionTest {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         UniqueVisitor visitor = new UniqueVisitor(ff.property("test"));
 
-        @SuppressWarnings("unchecked")
         FeatureCollection<FeatureType, Feature> mock = EasyMock.createMock(FeatureCollection.class);
         mock.accepts(visitor, null);
         EasyMock.expectLastCall();
@@ -57,9 +56,8 @@ public class DecoratingFeatureCollectionTest {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         UniqueVisitor visitor = new UniqueVisitor(ff.property("test"));
 
-        @SuppressWarnings("unchecked")
         FeatureCollection<FeatureType, Feature> mock = EasyMock.createMock(FeatureCollection.class);
-        @SuppressWarnings({"unchecked", "PMD.CloseResource"})
+        @SuppressWarnings("PMD.CloseResource")
         FeatureIterator<Feature> iterator = EasyMock.createNiceMock(FeatureIterator.class);
         EasyMock.expect(mock.features()).andReturn(iterator);
         EasyMock.replay(mock, iterator);

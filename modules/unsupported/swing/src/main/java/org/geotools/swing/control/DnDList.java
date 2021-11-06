@@ -84,7 +84,6 @@ public class DnDList<T> extends JList<T>
         overIndex = -1;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public DnDListModel<T> getModel() {
         return (DnDListModel<T>) super.getModel();

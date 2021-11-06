@@ -388,7 +388,6 @@ public class Parser extends MathTransformParser {
      * @todo Authority code is currently ignored. We may consider to create a subclass of {@link
      *     Unit} which implements {@link IdentifiedObject} in a future version.
      */
-    @SuppressWarnings("unchecked")
     private <T extends Quantity<T>> Unit<T> parseUnit(final Element parent, final Unit<T> unit)
             throws ParseException {
         final Element element = parent.pullElement("UNIT");

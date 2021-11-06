@@ -196,7 +196,6 @@ class RangeVisitor implements FeatureCalc {
             if (collection != null) {
                 this.set = new HashSet<>(collection);
             } else {
-                @SuppressWarnings("unchecked")
                 Set<Range> singleton = Collections.singleton((Range) newSet);
                 this.set = new HashSet<>(singleton);
             }

@@ -48,7 +48,6 @@ import org.opengis.coverage.grid.GridCoverageReader;
  * @author <a href="mailto:simboss1@gmil.com">Simone Giannecchini (simboss)</a>
  * @version 1.0
  */
-@SuppressWarnings("deprecation")
 public final class ArcGridVisualizationTest extends ArcGridTestCaseAdapter {
 
     @Test

@@ -44,7 +44,6 @@ import org.opengis.feature.type.Name;
  *
  * @author Andrea Aime - GeoSolutions
  */
-@SuppressWarnings("rawtypes")
 public class OGRDataStore extends ContentDataStore {
 
     OGRDataSourcePool dataSourcePool;

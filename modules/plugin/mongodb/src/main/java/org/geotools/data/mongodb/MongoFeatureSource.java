@@ -331,7 +331,6 @@ public class MongoFeatureSource extends ContentFeatureSource {
         return f == null || f == Filter.INCLUDE;
     }
 
-    @SuppressWarnings("deprecation")
     Filter[] splitFilter(Filter f) {
         PostPreProcessFilterSplittingVisitor splitter =
                 new PostPreProcessFilterSplittingVisitor(

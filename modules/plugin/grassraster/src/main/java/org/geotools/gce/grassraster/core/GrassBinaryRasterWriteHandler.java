@@ -357,7 +357,6 @@ public class GrassBinaryRasterWriteHandler implements Closeable {
      * @param chformat the map type.
      * @param chcompressed the compression type.
      */
-    @SuppressWarnings("nls")
     private void createCellhd(
             int chproj,
             int chzone,

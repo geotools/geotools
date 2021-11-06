@@ -130,7 +130,6 @@ public class MaplayerTableViewer extends TableViewer implements ISelectionChange
                             Layer p = (Layer) element;
                             String title = p.getTitle();
                             if (title == null || title.length() == 0) {
-                                @SuppressWarnings("rawtypes")
                                 FeatureSource featureSource = p.getFeatureSource();
                                 if (featureSource != null) {
                                     title = featureSource.getName().getLocalPart().toString();

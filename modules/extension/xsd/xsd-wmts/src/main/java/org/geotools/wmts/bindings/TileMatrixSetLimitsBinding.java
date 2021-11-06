@@ -100,7 +100,6 @@ public class TileMatrixSetLimitsBinding extends AbstractComplexEMFBinding {
 
         TileMatrixSetLimitsType limits = factory.createTileMatrixSetLimitsType();
 
-        @SuppressWarnings("unchecked")
         List<Node> children = node.getChildren("TileMatrixLimits");
         for (Node c : children) {
             limits.getTileMatrixLimits().add((TileMatrixLimitsType) c.getValue());

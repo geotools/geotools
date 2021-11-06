@@ -52,8 +52,7 @@ public final class ExceptionMonitor {
      * @param exception Exception which has been thrown and is to be reported to the user.
      * @param message Message to display.
      */
-    @SuppressWarnings("nls")
-    public static void show(final Shell parent, final Throwable exception, final String message) {
+        public static void show(final Shell parent, final Throwable exception, final String message) {
         if (Display.getCurrent() != null) {
             Status status =
                     new Status(

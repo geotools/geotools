@@ -822,7 +822,6 @@ public class GML {
         return null; // not available as a feature!
     }
 
-    @SuppressWarnings("unchecked")
     protected XSDSchema xsd(SimpleFeatureType simpleFeatureType) throws IOException {
         XSDFactory factory = XSDFactory.eINSTANCE;
         XSDSchema xsd = factory.createXSDSchema();
@@ -889,7 +888,6 @@ public class GML {
      * @param BASE_TYPE definition to use as the base type, or null
      * @return XSDComplexTypeDefinition generated for the provided type
      */
-    @SuppressWarnings("unchecked")
     protected XSDComplexTypeDefinition xsd(
             XSDSchema xsd, ComplexType type, final XSDComplexTypeDefinition BASE_TYPE) {
         XSDFactory factory = XSDFactory.eINSTANCE;

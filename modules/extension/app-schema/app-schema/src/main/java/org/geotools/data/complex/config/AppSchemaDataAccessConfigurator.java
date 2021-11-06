@@ -945,14 +945,12 @@ public class AppSchemaDataAccessConfigurator {
                 getClass().getName(), "acquireSourceDatastores");
 
         final Map<String, DataAccess<FeatureType, Feature>> datastores = new LinkedHashMap<>();
-        @SuppressWarnings("unchecked")
         final List<SourceDataStore> dsParams = config.getSourceDataStores();
         String id;
 
         for (SourceDataStore dsconfig : dsParams) {
             id = dsconfig.getId();
 
-            @SuppressWarnings("unchecked")
             Map<String, Serializable> datastoreParams = dsconfig.getParams();
 
             datastoreParams = resolveRelativePaths(datastoreParams);

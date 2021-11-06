@@ -179,7 +179,6 @@ public class CSWCapabilitiesTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testExtendedCapabilities() throws Exception {
         Csw20Factory cswf = Csw20Factory.eINSTANCE;
         Ows10Factory owsf = Ows10Factory.eINSTANCE;

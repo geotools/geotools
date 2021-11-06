@@ -53,7 +53,7 @@ public class DefaultFeatureResultsTest {
 
         // mock up the feature source so that it'll return a count of -1 (too expensive)
         // and then will return a reader
-        @SuppressWarnings({"unchecked", "PMD.CloseResource"})
+        @SuppressWarnings("PMD.CloseResource")
         FeatureReader<SimpleFeatureType, SimpleFeature> fr = createNiceMock(FeatureReader.class);
         expect(fr.hasNext()).andReturn(true).times(2).andReturn(false);
         replay(fr);

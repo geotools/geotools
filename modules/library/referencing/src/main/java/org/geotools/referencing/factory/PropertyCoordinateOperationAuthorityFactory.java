@@ -109,7 +109,7 @@ public class PropertyCoordinateOperationAuthorityFactory extends DirectAuthority
      * An unmodifiable view of the authority keys. This view is always up to date even if entries
      * are added or removed in the {@linkplain #definitions} map.
      */
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings("unchecked")
     private final Set<String> codes = Collections.unmodifiableSet((Set) definitions.keySet());
 
     /**

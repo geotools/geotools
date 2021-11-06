@@ -77,7 +77,6 @@ public class Skeletonize {
         return getSkeleton(poly, 5);
     }
 
-    @SuppressWarnings("unchecked")
     static Geometry getSkeleton(Polygon poly, double perc_tolerance) {
         double dist = poly.getLength() * (perc_tolerance / 100);
         Polygon spoly = (Polygon) TopologyPreservingSimplifier.simplify(poly, dist / 100.0);

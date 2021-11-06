@@ -34,7 +34,6 @@ public class LatLongBoundingBoxBinding extends AbstractComplexEMFBinding {
         return WFSCapabilities.LatLongBoundingBox;
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
     public Class getType() {
         return WGS84BoundingBoxType.class;

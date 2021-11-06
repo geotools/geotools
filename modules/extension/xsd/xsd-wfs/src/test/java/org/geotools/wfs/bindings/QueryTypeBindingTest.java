@@ -102,7 +102,6 @@ public class QueryTypeBindingTest extends WFSTestSupport {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     @Test
     public void testEncode() throws Exception {
         final QueryType query = buildTestQuery();

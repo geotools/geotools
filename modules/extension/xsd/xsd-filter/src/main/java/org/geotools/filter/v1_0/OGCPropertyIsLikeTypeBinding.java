@@ -86,7 +86,6 @@ public class OGCPropertyIsLikeTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     @Override
-    @SuppressWarnings("unchecked")
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Expression name = null;
         List<Expression> names = node.getChildValues(Expression.class);

@@ -65,26 +65,26 @@ public class FeatureLayer extends StyleLayer {
      * @param featureSource the data source for this layer
      * @param style the style used to represent this layer
      */
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings("unchecked")
     public FeatureLayer(FeatureSource featureSource, Style style) {
         super(style);
         this.featureSource = featureSource;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings("unchecked")
     public FeatureLayer(FeatureSource featureSource, Style style, String title) {
         super(style, title);
         this.featureSource = featureSource;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings("unchecked")
     public FeatureLayer(FeatureCollection collection, Style style) {
         super(style);
         this.featureSource = DataUtilities.source(collection);
         this.style = style;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings("unchecked")
     public FeatureLayer(FeatureCollection collection, Style style, String title) {
         super(style, title);
         this.featureSource = DataUtilities.source(collection);

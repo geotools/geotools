@@ -61,7 +61,6 @@ import org.opengis.referencing.operation.TransformException;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini, GeoSolutions
  */
-@SuppressWarnings("rawtypes")
 public class RasterLayerRequest {
     /** Logger. */
     private static final Logger LOGGER =

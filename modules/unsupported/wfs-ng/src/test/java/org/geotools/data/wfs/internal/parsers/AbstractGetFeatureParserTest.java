@@ -76,7 +76,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @see XmlSimpleFeatureParserTest
  * @see StreamingParserFeatureReaderTest
  */
-@SuppressWarnings("nls")
 public abstract class AbstractGetFeatureParserTest {
 
     private boolean supportsCount = true;

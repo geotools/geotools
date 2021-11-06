@@ -108,7 +108,6 @@ import org.opengis.referencing.operation.MathTransform;
  *     jar:file:foo.jar/bar.properties URLs
  * @since 2.3
  */
-@SuppressWarnings("rawtypes")
 public class ImageMosaicReader extends AbstractGridCoverage2DReader
         implements StructuredGridCoverage2DReader {
 

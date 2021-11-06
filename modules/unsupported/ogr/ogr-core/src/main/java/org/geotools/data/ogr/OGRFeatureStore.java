@@ -38,7 +38,6 @@ import org.opengis.feature.type.Name;
  *
  * @author Andrea Aime - GeoSolutions
  */
-@SuppressWarnings("rawtypes")
 class OGRFeatureStore extends ContentFeatureStore {
 
     OGRFeatureSource delegate;

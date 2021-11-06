@@ -245,7 +245,6 @@ public class DefaultRepository implements Repository {
         return map;
     }
 
-    @SuppressWarnings("unchecked")
     public Set<Name> getNames() {
         return new HashSet<>(repository.keySet());
     }

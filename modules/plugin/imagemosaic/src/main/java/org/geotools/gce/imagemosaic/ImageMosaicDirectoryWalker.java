@@ -43,7 +43,7 @@ import org.geotools.gce.imagemosaic.Utils.Prop;
  * @author Simone Giannecchini, GeoSolutions
  * @author Carlo Cancellieri - GeoSolutions SAS
  */
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings("unchecked")
 public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
 
     /**

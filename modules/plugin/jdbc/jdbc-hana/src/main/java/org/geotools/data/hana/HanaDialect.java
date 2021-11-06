@@ -785,7 +785,6 @@ public class HanaDialect extends PreparedStatementSQLDialect {
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
     public void prepareGeometryValue(
             Class<? extends Geometry> gClass,
             int dimension,
@@ -798,7 +797,6 @@ public class HanaDialect extends PreparedStatementSQLDialect {
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
     public void setGeometryValue(
             Geometry g, int dimension, int srid, Class binding, PreparedStatement ps, int column)
             throws SQLException {
@@ -816,7 +814,6 @@ public class HanaDialect extends PreparedStatementSQLDialect {
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
     public void setValue(
             Object value, Class binding, PreparedStatement ps, int column, Connection cx)
             throws SQLException {

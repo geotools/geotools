@@ -129,7 +129,7 @@ class ElasticCapabilities extends Capabilities {
     }
 
     @Override
-    public String toOperationName(@SuppressWarnings("rawtypes") Class filterType) {
+    public String toOperationName(Class filterType) {
         if (filterType != null && temporalNames.containsKey(filterType)) {
             return temporalNames.get(filterType);
         }

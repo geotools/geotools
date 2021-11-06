@@ -135,7 +135,7 @@ import org.opengis.filter.temporal.TOverlaps;
  * @author ported to work upon {@code org.geotools.filter.Capabilities} by Gabriel Roldan
  * @since 2.5.3
  */
-@SuppressWarnings({"nls", "unchecked"})
+@SuppressWarnings("unchecked")
 public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisitor {
 
     private static final Logger LOGGER =

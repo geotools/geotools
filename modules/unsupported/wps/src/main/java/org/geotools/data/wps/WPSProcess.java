@@ -62,7 +62,6 @@ public class WPSProcess extends AbstractProcess {
      *     implemented in some form in the future.
      */
     @Override
-    @SuppressWarnings("unchecked")
     public Map<String, Object> execute(Map<String, Object> input, ProgressListener monitor) {
 
         // Get the describeprocess object so we can use it to build up a request and

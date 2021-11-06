@@ -326,7 +326,6 @@ public class WFS_2_0_0_ParsingTest {
         Assert.assertEquals(targetNs, type.getTargetNamespace());
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     @Ignore
     public void testParseGetFeature() throws Exception {

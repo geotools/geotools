@@ -34,7 +34,6 @@ public class ServiceTypeBinding extends AbstractComplexEMFBinding {
         return WFSCapabilities.Service;
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
     public Class getType() {
         return ServiceIdentificationType.class;

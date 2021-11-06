@@ -103,7 +103,6 @@ public abstract class GranuleCatalog {
     @Deprecated
     public abstract int removeGranules(Query query);
 
-    @SuppressWarnings("deprecation")
     public int removeGranules(Query query, Transaction transaction) {
         if (transaction == null || transaction == Transaction.AUTO_COMMIT) {
             return removeGranules(query);

@@ -50,7 +50,6 @@ import org.opengis.referencing.operation.TransformException;
  * @author Jesse
  * @author ported from PostPreProcessFilterSplittingVisitor at 2.5.2 by Gabriel Roldan
  */
-@SuppressWarnings("nls")
 public class AbstractCapabilitiesFilterSplitterTests {
     public class TestAccessor implements ClientTransactionAccessor {
 

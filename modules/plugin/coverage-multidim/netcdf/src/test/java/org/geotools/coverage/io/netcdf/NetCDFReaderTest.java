@@ -1361,7 +1361,7 @@ public class NetCDFReaderTest extends Assert {
         Assert.assertSame(datastoreConfig1, datastoreConfig2);
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings("unchecked")
     @Test
     @Ignore
     public void IASI() throws Exception {

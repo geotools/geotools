@@ -1031,7 +1031,6 @@ public class ImageMosaicReaderTest {
     /** Simple test method accessing time and 2 custom dimensions for the sample dataset */
     @Test
     // @Ignore
-    @SuppressWarnings("rawtypes")
     public void timeAdditionalDim() throws Exception {
 
         final AbstractGridFormat format = TestUtils.getFormat(timeAdditionalDomainsURL);
@@ -1114,7 +1113,6 @@ public class ImageMosaicReaderTest {
 
     /** Simple test method accessing time and 2 custom dimensions for the sample dataset */
     @Test
-    @SuppressWarnings("rawtypes")
     public void timeAdditionalDimRanges() throws Exception {
 
         final AbstractGridFormat format = TestUtils.getFormat(timeAdditionalDomainsRangeURL);
@@ -1425,7 +1423,6 @@ public class ImageMosaicReaderTest {
 
     /** Simple test method accessing time and 2 custom dimensions for the sample dataset */
     @Test
-    @SuppressWarnings("rawtypes")
     public void granuleSourceTest() throws Exception {
 
         final AbstractGridFormat format = TestUtils.getFormat(timeAdditionalDomainsRangeURL);
@@ -2456,7 +2453,6 @@ public class ImageMosaicReaderTest {
     /** Simple test method accessing time and 2 custom dimensions for the sample dataset */
     @Test
     // @Ignore
-    @SuppressWarnings("rawtypes")
     public void timeAdditionalDimNoResultsDueToWrongDim() throws Exception {
 
         final AbstractGridFormat format = TestUtils.getFormat(timeAdditionalDomainsURL);

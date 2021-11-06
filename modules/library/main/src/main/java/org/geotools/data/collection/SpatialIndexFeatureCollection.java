@@ -330,7 +330,6 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
         throw new UnsupportedOperationException("Cannot remove items from STRtree");
     }
 
-    @SuppressWarnings("unchecked")
     public boolean retainAll(Collection<?> c) {
         throw new UnsupportedOperationException("Cannot remove items from STRtree");
     }

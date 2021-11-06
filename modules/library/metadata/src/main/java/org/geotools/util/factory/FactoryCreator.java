@@ -95,7 +95,7 @@ public class FactoryCreator extends FactoryRegistry {
             c = new LinkedList<>();
             cache.put(category, c);
         }
-        @SuppressWarnings({"unchecked", "rawtypes"})
+        @SuppressWarnings("unchecked")
         final List<Reference<T>> cheat = (List) c;
         /*
          * Should be safe because we created an empty list, there is no other place where this

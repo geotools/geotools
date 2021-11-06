@@ -36,7 +36,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @version $Id$
  * @since 2.6
  */
-@SuppressWarnings("nls")
 public class WFSResponse extends Response {
 
     private static final Logger LOGGER = Logging.getLogger(WFSResponse.class);

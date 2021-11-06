@@ -60,7 +60,7 @@ import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
  * @see WFSDataStore
  * @see WFSClient
  */
-@SuppressWarnings({"unchecked", "nls"})
+@SuppressWarnings("unchecked")
 public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataStoreFactorySpi {
 
     private static int GMLComplianceLevel = 0;
@@ -177,7 +177,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
      * </ul>
      */
     @Override
-    public boolean canProcess(@SuppressWarnings("rawtypes") final Map params) {
+    public boolean canProcess(final Map params) {
         return super.canProcess(params, GMLComplianceLevel);
     }
 

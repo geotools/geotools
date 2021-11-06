@@ -281,7 +281,6 @@ public final class GrassBinaryImageMetadata extends IIOMetadata {
     }
 
     @Override
-    @SuppressWarnings("nls")
     protected IIOMetadataNode getStandardCompressionNode() {
         IIOMetadataNode node = new IIOMetadataNode("Compression");
         IIOMetadataNode subNode = new IIOMetadataNode("Lossless");
@@ -345,7 +344,6 @@ public final class GrassBinaryImageMetadata extends IIOMetadata {
     }
 
     @Override
-    @SuppressWarnings("nls")
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         buffer.append("GrassBinaryImageMetadata[");

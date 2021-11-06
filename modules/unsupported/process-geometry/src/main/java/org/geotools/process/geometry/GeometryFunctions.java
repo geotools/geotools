@@ -638,11 +638,9 @@ public class GeometryFunctions {
     public static Geometry polygonize(
             @DescribeParameter(name = "geom", description = "Linework to polygonize")
                     Geometry geom) {
-        @SuppressWarnings("rawtypes")
         List lines = LineStringExtracter.getLines(geom);
         Polygonizer polygonizer = new Polygonizer();
         polygonizer.add(lines);
-        @SuppressWarnings("rawtypes")
         Collection polys = polygonizer.getPolygons();
         Polygon[] polyArray = GeometryFactory.toPolygonArray(polys);
         return geom.getFactory().createGeometryCollection(polyArray);

@@ -231,7 +231,6 @@ public interface StyleVisitor {
      *
      * @param ob the {@link OverlapBehavior} to visit.
      */
-    @SuppressWarnings("deprecation")
     void visit(OverlapBehavior ob);
 
     /**

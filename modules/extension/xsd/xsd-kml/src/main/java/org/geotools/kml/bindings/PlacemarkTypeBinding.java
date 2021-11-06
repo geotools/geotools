@@ -74,7 +74,6 @@ public class PlacemarkTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     @Override
-    @SuppressWarnings("rawtypes")
     public Class getType() {
         return SimpleFeature.class;
     }

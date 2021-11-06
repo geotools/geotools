@@ -77,7 +77,6 @@ public class NetCDFMultiDimTest {
         DF.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
-    @SuppressWarnings("rawtypes")
     @Test
     public void test() throws Exception {
         NetCDFFormat format = new NetCDFFormat();
@@ -209,7 +208,6 @@ public class NetCDFMultiDimTest {
         reader.dispose();
     }
 
-    @SuppressWarnings("rawtypes")
     @Test
     public void test2DTime() throws Exception {
         NetCDFFormat format = new NetCDFFormat();

@@ -37,7 +37,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 
-@SuppressWarnings("unchecked")
 class WFSFeatureStore extends ContentFeatureStore {
 
     private WFSFeatureSource delegate;

@@ -157,7 +157,6 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
 
     // if someone can tell me how to write this with "? extends Feature" and still have it accepted
     // by features.close, I would like to know
-    @SuppressWarnings("unchecked")
     private ReferencedEnvelope getBounds(FeatureSource source) {
         try {
             ReferencedEnvelope boundingBox = new ReferencedEnvelope(DefaultGeographicCRS.WGS84);

@@ -30,7 +30,6 @@ import org.geotools.jdbc.SQLDialect;
  * @author Justin Deoliveira, OpenGEO
  */
 // temporary work around, the factory parameters map will be fixed separately
-@SuppressWarnings("unchecked")
 public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
     /** parameter for database type */
     public static final Param DBTYPE =
@@ -130,7 +129,6 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
         return "select 1";
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     protected void setupParameters(Map<String, Object> parameters) {
         super.setupParameters(parameters);
@@ -146,7 +144,6 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     /** Builds up the JDBC url in a jdbc:<database>://<host>:<port>;DatabaseName=<dbname> */
-    @SuppressWarnings("unchecked")
     @Override
     protected String getJDBCUrl(Map<String, ?> params) throws IOException {
         String host = (String) HOST.lookUp(params);

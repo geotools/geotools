@@ -141,7 +141,7 @@ public class FeatureTypeTypeBinding extends AbstractComplexEMFBinding {
         return FeatureTypeType.class;
     }
 
-    @SuppressWarnings({"unchecked", "nls"})
+    @SuppressWarnings("unchecked")
     @Override
     protected void setProperty(EObject eObject, String property, Object value, boolean lax) {
         if ("OtherSRS".equals(property)) {

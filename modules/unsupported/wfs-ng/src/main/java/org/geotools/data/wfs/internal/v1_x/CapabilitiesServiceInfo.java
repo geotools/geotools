@@ -80,7 +80,6 @@ public final class CapabilitiesServiceInfo implements WFSServiceInfo {
         Set<String> kws = new HashSet<>();
         ServiceIdentificationType serviceIdentification = capabilities.getServiceIdentification();
         if (serviceIdentification != null) {
-            @SuppressWarnings("unchecked")
             List<KeywordsType> keywords = serviceIdentification.getKeywords();
             if (keywords != null) {
                 for (KeywordsType k : keywords) {

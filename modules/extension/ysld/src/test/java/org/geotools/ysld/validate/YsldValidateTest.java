@@ -618,7 +618,6 @@ public class YsldValidateTest {
         return Ysld.validate(ysld, ctxts, new UomMapper());
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testRenderingTransform() throws Exception {
         StringBuilder builder = new StringBuilder();
@@ -650,7 +649,6 @@ public class YsldValidateTest {
         assertThat(errors, empty());
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testNestedRenderingTransform() throws Exception {
         StringBuilder builder = new StringBuilder();
@@ -706,7 +704,6 @@ public class YsldValidateTest {
         assertThat(errors, empty());
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testErrorAfterNestedRenderingTransform() throws Exception {
         StringBuilder builder = new StringBuilder();
@@ -768,7 +765,6 @@ public class YsldValidateTest {
         assertThat(errors, contains(hasProperty("problemMark", problemOn(26))));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testTupleInVariable() throws Exception {
         String yaml =
@@ -783,7 +779,6 @@ public class YsldValidateTest {
         assertThat(errors, empty());
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testVariableInTuple() throws Exception {
         String yaml =
@@ -798,7 +793,6 @@ public class YsldValidateTest {
         assertThat(errors, empty());
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testVariableInPermissive() throws Exception {
         StringBuilder builder = new StringBuilder();
@@ -831,7 +825,6 @@ public class YsldValidateTest {
         assertThat(errors, empty());
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testPermissiveInVariable() throws Exception {
         StringBuilder builder = new StringBuilder();
@@ -864,7 +857,6 @@ public class YsldValidateTest {
         assertThat(errors, empty());
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testColourMapEntryAsVariable() throws Exception {
         StringBuilder builder = new StringBuilder();
@@ -879,7 +871,6 @@ public class YsldValidateTest {
         assertThat(errors, empty());
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testColourMapAsVariable() throws Exception {
         StringBuilder builder = new StringBuilder();
@@ -895,7 +886,6 @@ public class YsldValidateTest {
         assertThat(errors, empty());
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testColourAsVariable() throws Exception {
         // GEOT-5445 - Try each permutation of variables with fill-color and stroke-color.

@@ -256,7 +256,6 @@ public class PointStackerProcessTest {
         checkResultPoint(result, new Coordinate(-121.813201, 48.777343), 2, 2, null, null);
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testWeightClusterPosition()
             throws NoSuchAuthorityCodeException, FactoryException, ProcessException,

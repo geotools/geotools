@@ -63,7 +63,6 @@ final class CommonsLogger extends LoggerAdapter {
 
     /** Returns {@code true} if the specified level is loggable. */
     @Override
-    @SuppressWarnings("fallthrough")
     public boolean isLoggable(final Level level) {
         final int n = level.intValue();
         switch (n / 100) {
@@ -99,7 +98,6 @@ final class CommonsLogger extends LoggerAdapter {
 
     /** Logs a record at the specified level. */
     @Override
-    @SuppressWarnings("fallthrough")
     public void log(final Level level, final String message, final Throwable thrown) {
         final int n = level.intValue();
         switch (n / 100) {

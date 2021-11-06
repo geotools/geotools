@@ -33,7 +33,6 @@ import org.eclipse.swt.widgets.Display;
  *
  * @author Andrea Antonello (www.hydrologis.com)
  */
-@SuppressWarnings("nls")
 public class ImageCache {
 
     public static final String CHECKED = "/icons/checked.gif";

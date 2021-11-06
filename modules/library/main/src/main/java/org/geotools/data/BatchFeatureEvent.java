@@ -61,7 +61,6 @@ public class BatchFeatureEvent extends FeatureEvent {
      * This is a weak hash set as we don't need to track changes on FeatureIds that are not being
      * used by the client to track selection.
      */
-    @SuppressWarnings("unchecked")
     protected WeakHashSet<Identifier> fids = new WeakHashSet<>(Identifier.class);
 
     /** Used to change this into a COMMIT or ROLLBACK if needed. */
@@ -141,7 +140,6 @@ public class BatchFeatureEvent extends FeatureEvent {
      *
      * @return Set of Identifiers created during this commit
      */
-    @SuppressWarnings("unchecked")
     public WeakHashSet<Identifier> getCreatedFeatureIds() {
         return fids;
     }

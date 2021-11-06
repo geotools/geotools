@@ -34,7 +34,6 @@ import org.geotools.gce.grassraster.GrassBinaryImageWriter;
  * @see GrassBinaryImageReader
  * @see GrassBinaryImageWriterSpi
  */
-@SuppressWarnings("nls")
 public class GrassBinaryImageWriterSpi extends ImageWriterSpi {
     private static final String[] suffixes = {""};
     private static final String[] formatNames = {

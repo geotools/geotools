@@ -89,7 +89,6 @@ public class DataAccessFinderTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testGetAllDataStores() {
         Iterator<DataStoreFactorySpi> availableDataStores = DataStoreFinder.getAllDataStores();
 
@@ -114,7 +113,6 @@ public class DataAccessFinderTest {
 
     /** Does DataAccessFinder.getAllDataStores() return both the DataStores and DataAccess? */
     @Test
-    @SuppressWarnings("unchecked")
     public void testGetAllDataAccess() {
         Iterator<DataAccessFactory> availableDataStores = DataAccessFinder.getAllDataStores();
 
@@ -144,7 +142,6 @@ public class DataAccessFinderTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testGetAvailableDataStores() {
         Iterator<DataStoreFactorySpi> availableDataStores =
                 DataStoreFinder.getAvailableDataStores();
@@ -164,7 +161,6 @@ public class DataAccessFinderTest {
      * DataAccess factories?
      */
     @Test
-    @SuppressWarnings("unchecked")
     public void testGetAvailableDataAccess() {
         Iterator<DataAccessFactory> availableDataAccess = DataAccessFinder.getAvailableDataStores();
 

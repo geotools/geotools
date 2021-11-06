@@ -28,7 +28,6 @@ import org.junit.Test;
  *
  * @author Andrea Antonello (www.hydrologis.com)
  */
-@SuppressWarnings("nls")
 public class JGrassRegionTest {
 
     private static final double EPSI = 0.0001;

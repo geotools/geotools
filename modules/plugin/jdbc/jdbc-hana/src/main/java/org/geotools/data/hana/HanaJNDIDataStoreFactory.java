@@ -33,7 +33,7 @@ public class HanaJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
     }
 
     @Override
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings("unchecked")
     protected void setupParameters(Map parameters) {
         super.setupParameters(parameters);
         parameters.put(ENCODE_FUNCTIONS.key, ENCODE_FUNCTIONS);

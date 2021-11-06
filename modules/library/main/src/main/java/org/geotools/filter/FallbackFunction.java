@@ -47,7 +47,6 @@ public class FallbackFunction extends FunctionExpressionImpl {
         return fallback.evaluate(object);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <T> T evaluate(Object object, Class<T> context) {
         return fallback.evaluate(object, context);

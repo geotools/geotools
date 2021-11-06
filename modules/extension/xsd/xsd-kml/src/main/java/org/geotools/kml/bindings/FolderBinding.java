@@ -42,7 +42,6 @@ public class FolderBinding extends AbstractComplexBinding {
         return KML.Folder;
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
     public Class getType() {
         return SimpleFeature.class;

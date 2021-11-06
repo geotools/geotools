@@ -151,7 +151,6 @@ public class CoverageUtilities {
                 final int dataBuffType = TypeMap.getDataBufferType(sdType);
 
                 // TODO I think this should be a public utility inside the FeatureUtilities class
-                @SuppressWarnings("rawtypes")
                 final Class bandClass;
                 switch (dataBuffType) {
                     case DataBuffer.TYPE_BYTE:

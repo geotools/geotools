@@ -171,7 +171,6 @@ public class PostPreProcessFilterSplittingVisitorTest
         assertEquals(filter, visitor.getFilterPre());
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     @Test
     public void testVisitIdFilterWithNoIdCapabilities() throws Exception {
         // Id Filter

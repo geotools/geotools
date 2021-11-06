@@ -285,7 +285,6 @@ public class JGrassRegion {
     }
 
     @Override
-    @SuppressWarnings("nls")
     public String toString() {
         return ("region:\nwest="
                 + west
@@ -507,7 +506,6 @@ public class JGrassRegion {
      * @param filePath the path to the region file.
      * @param region the region to be set to the region file informations.
      */
-    @SuppressWarnings("nls")
     private void readRegionFromFile(String filePath, JGrassRegion region) throws IOException {
         try (BufferedReader windReader = new BufferedReader(new FileReader(filePath))) {
             LinkedHashMap<String, String> store = new LinkedHashMap<>();
@@ -678,7 +676,6 @@ public class JGrassRegion {
      * @param west the west string.
      * @return the array of the bounds in doubles.
      */
-    @SuppressWarnings("nls")
     private double[] nsewStringsToNumbers(String north, String south, String east, String west) {
 
         double no = -1.0;

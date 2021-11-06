@@ -1501,7 +1501,6 @@ public class NetCDFMosaicReaderTest {
             String timestamp,
             double expected)
             throws Exception {
-        @SuppressWarnings("rawtypes")
         ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
         time.setValue(Arrays.asList(new Date[] {parseTimeStamp(timestamp)}));
         GeneralParameterValue[] params = {NO_DEFERRED_LOADING_PARAM, time};

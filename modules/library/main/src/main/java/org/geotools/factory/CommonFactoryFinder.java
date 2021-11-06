@@ -61,7 +61,6 @@ public final class CommonFactoryFinder extends FactoryFinder {
      * Returns the service registry. The registry will be created the first time this method is
      * invoked.
      */
-    @SuppressWarnings("deprecation")
     private static FactoryRegistry getServiceRegistry() {
         assert Thread.holdsLock(CommonFactoryFinder.class);
         if (registry == null) {

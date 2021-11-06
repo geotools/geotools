@@ -52,7 +52,6 @@ public class UniqueNameFeatureTypeFactoryImpl extends FeatureTypeFactoryImpl {
      *     java.util.List, org.opengis.feature.type.AttributeType,
      *     org.opengis.util.InternationalString)
      */
-    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public FeatureType createFeatureType(
             Name name,

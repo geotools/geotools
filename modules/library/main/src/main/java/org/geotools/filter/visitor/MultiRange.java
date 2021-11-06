@@ -193,7 +193,6 @@ public class MultiRange<T extends Comparable<? super T>> {
                 // no exclusions, this range is isolated
                 filters.add(toFilter(ff, variable, range));
             } else {
-                @SuppressWarnings("unchecked")
                 Range<T> union =
                         new Range<>(
                                 range.getElementClass(),

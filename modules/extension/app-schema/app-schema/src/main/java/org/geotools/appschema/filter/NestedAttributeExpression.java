@@ -285,7 +285,6 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
      * Extract the value that might be wrapped in an attribute. If the value is a collection, gets
      * the first value.
      */
-    @SuppressWarnings("rawtypes")
     private Object extractAttributeValue(Object value) {
         if (value == null) {
             return null;

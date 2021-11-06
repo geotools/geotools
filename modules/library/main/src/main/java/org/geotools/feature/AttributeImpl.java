@@ -150,7 +150,6 @@ public class AttributeImpl extends PropertyImpl implements Attribute {
             Class<?> target = getType().getBinding();
             if (!target.isAssignableFrom(value.getClass())) {
                 // attempt to convert
-                @SuppressWarnings("unchecked")
                 Object converted = Converters.convert(value, target);
                 if (converted != null) {
                     value = converted;

@@ -66,7 +66,6 @@ public final class ECWTest extends GDALTestCase {
         super("ECW", new ECWFormatFactory());
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void test() throws Exception {
         if (!testingEnabled()) {

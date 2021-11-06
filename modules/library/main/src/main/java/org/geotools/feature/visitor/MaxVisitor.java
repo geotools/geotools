@@ -84,7 +84,6 @@ public class MaxVisitor implements FeatureCalc, FeatureAttributeVisitor {
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
     public void visit(org.opengis.feature.Feature feature) {
         Object attribValue = expr.evaluate(feature);
 
@@ -111,7 +110,7 @@ public class MaxVisitor implements FeatureCalc, FeatureAttributeVisitor {
         // throw new IllegalStateException("Expression is not comparable!");
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings("unchecked")
     private boolean compare(Comparable curvalue) {
         if (maxvalue == null) {
             throw new IllegalStateException("maxvalue shouldn't be null when visited = true");

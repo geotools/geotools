@@ -33,7 +33,6 @@ import org.opengis.filter.expression.Literal;
  *
  * @author Jody Garnett, Refractions Research
  */
-@SuppressWarnings("deprecation")
 public class ConstantExpression implements Literal, Cloneable {
     public static final ConstantExpression NULL = constant(null);
     public static final ConstantExpression BLACK = color(Color.BLACK);

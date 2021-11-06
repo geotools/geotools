@@ -351,7 +351,6 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
 
     @Override
     public Object visit(Function expression, Object extraData) {
-        @SuppressWarnings("unchecked")
         List<Expression> old = expression.getParameters();
         Expression[] args = new Expression[old.size()];
         int i = 0;

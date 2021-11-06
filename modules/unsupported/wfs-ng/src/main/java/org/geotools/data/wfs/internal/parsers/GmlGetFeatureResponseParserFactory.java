@@ -36,7 +36,6 @@ import org.opengis.feature.type.FeatureType;
  *
  * <p>
  */
-@SuppressWarnings("nls")
 public class GmlGetFeatureResponseParserFactory extends AbstractGetFeatureResponseParserFactory {
 
     private static final List<String> SUPPORTED_FORMATS =

@@ -77,7 +77,7 @@ public class AppSchemaXSD extends XSD {
     }
 
     /** @see XSD#addDependencies(java.util.Set) */
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings("unchecked")
     @Override
     protected void addDependencies(Set dependencies) {
         if (configuration != null) {

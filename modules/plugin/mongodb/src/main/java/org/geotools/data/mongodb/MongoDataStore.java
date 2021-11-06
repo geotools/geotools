@@ -89,7 +89,6 @@ public class MongoDataStore extends ContentDataStore {
     // for reading schema from hosted files
     private HTTPClient httpClient;
 
-    @SuppressWarnings("deprecation")
     FilterCapabilities filterCapabilities;
 
     // parameters for precise schema generation from actual mongodb data
@@ -279,7 +278,6 @@ public class MongoDataStore extends ContentDataStore {
         return null;
     }
 
-    @SuppressWarnings("deprecation")
     final FilterCapabilities createFilterCapabilties() {
         FilterCapabilities capabilities = new FilterCapabilities();
 

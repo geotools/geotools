@@ -22,7 +22,7 @@ import javax.xml.namespace.NamespaceContext;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /** NamespaceContext wrapper around namespace support. */
-@SuppressWarnings("unchecked")
+@SuppressWarnings("unchecked") // Java 9 has different API
 public class NamespaceSupportWrapper implements NamespaceContext {
     NamespaceSupport namespaceSupport;
 
@@ -45,7 +45,6 @@ public class NamespaceSupportWrapper implements NamespaceContext {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Iterator getPrefixes(String namespaceURI) {
         final Enumeration e = namespaceSupport.getPrefixes(namespaceURI);
 

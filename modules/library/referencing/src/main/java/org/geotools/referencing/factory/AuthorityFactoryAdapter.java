@@ -1254,6 +1254,7 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
     }
 
     /** Returns {@code true} if the {@link #toBackingFactoryCode} method is overriden. */
+    @SuppressWarnings("ReturnValueIgnored")
     final boolean isCodeMethodOverriden() {
         final Class<?>[] arguments = {String.class};
         for (Class<?> type = getClass();

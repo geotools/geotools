@@ -516,7 +516,7 @@
     <batik.version>1.14</batik.version>
     <logging-profile>quiet-logging</logging-profile>
     <errorProneFlags></errorProneFlags>
-    <errorProne.version>2.9.0</errorProne.version>
+    <errorProne.version>2.10.0</errorProne.version>
     <javac.version>9+181-r4173-1</javac.version>
     <pmd.skip>false</pmd.skip>
     <spotbugs.skip>false</spotbugs.skip>

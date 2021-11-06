@@ -170,6 +170,7 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
 
     // docs start isAvailable
     @Override
+    @SuppressWarnings("ReturnValueIgnored")
     public boolean isAvailable() {
         try {
             CSVDataStore.class.getName();

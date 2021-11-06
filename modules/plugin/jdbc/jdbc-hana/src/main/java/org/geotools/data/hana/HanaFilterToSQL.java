@@ -87,7 +87,6 @@ import org.opengis.referencing.crs.GeographicCRS;
  *
  * @author Stefan Uhrig, SAP SE
  */
-@SuppressWarnings("deprecation")
 public class HanaFilterToSQL extends PreparedFilterToSQL {
 
     private static final Map<String, Double> UNITS_MAP = new HashMap<>();

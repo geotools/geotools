@@ -66,7 +66,6 @@ public class ExtendedDataTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     @Override
-    @SuppressWarnings("rawtypes")
     public Class getType() {
         return Map.class;
     }
@@ -79,7 +78,6 @@ public class ExtendedDataTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     @Override
-    @SuppressWarnings("unchecked")
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         Map<String, Object> extendedData = new HashMap<>();

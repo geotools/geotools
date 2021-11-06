@@ -108,7 +108,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *     jar:file:foo.jar/bar.properties URLs
  * @since 2.3
  */
-@SuppressWarnings("rawtypes")
 public final class ImageMosaicFormat extends AbstractGridFormat implements Format {
 
     static final double DEFAULT_ARTIFACTS_FILTER_PTILE_THRESHOLD = 0.1;

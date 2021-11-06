@@ -37,7 +37,6 @@ public class HanaGeographyOnlineTest extends JDBCGeographyOnlineTest {
         // Currently, HANA only supports point-point distances
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void testVirtualTable() throws Exception {
         // We have to override to use the proper schema in the select-statement.

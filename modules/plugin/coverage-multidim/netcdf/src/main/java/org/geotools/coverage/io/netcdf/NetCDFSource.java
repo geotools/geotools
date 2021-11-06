@@ -37,7 +37,6 @@ import org.opengis.util.ProgressListener;
  *
  * @author Simone Giannecchini, GeoSolutions SAS
  */
-@SuppressWarnings("rawtypes")
 public class NetCDFSource extends DefaultCoverageSource {
 
     /** Logger. */

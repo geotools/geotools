@@ -258,7 +258,6 @@ public class WFSParsingTest {
         assertEquals(targetNs, type.getTargetNamespace());
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testParseGetFeature() throws Exception {
         File tmp = File.createTempFile("geoserver-DescribeFeatureType", "xml");

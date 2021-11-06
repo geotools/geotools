@@ -49,7 +49,6 @@ public class NameBinding extends AbstractComplexBinding {
         return Binding.OVERRIDE;
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
     public Class getType() {
         return String.class;

@@ -91,7 +91,6 @@ import org.opengis.referencing.operation.TransformException;
  * @author Alessio Fabiani, GeoSolutions SAS
  * @version $Id$
  */
-@SuppressWarnings("deprecation")
 public final class GridCoverageRenderer {
 
     /** Logger. */

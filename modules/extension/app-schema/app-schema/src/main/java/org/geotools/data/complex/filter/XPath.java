@@ -606,7 +606,6 @@ public class XPath extends XPathUtil {
      * @param value List of features
      * @return The attribute with simple content
      */
-    @SuppressWarnings("unchecked")
     private List<Property> getSimpleContentList(Object value) {
         if (value == null || !(value instanceof Collection)) {
             return null;
@@ -678,7 +677,6 @@ public class XPath extends XPathUtil {
      * @param value value to check
      * @return true if the value is an arraylist containing a feature with the descriptor.
      */
-    @SuppressWarnings("unchecked")
     private boolean isFeatureChainedSimpleContent(AttributeDescriptor descriptor, Object value) {
         boolean isFeatureChainedSimpleContent = false;
         if (value != null) {
@@ -710,7 +708,6 @@ public class XPath extends XPathUtil {
     }
 
     /** Return value converted into a type suitable for this descriptor. */
-    @SuppressWarnings("serial")
     private Object convertValue(final AttributeDescriptor descriptor, final Object value) {
         final AttributeType type = descriptor.getType();
         Class<?> binding = type.getBinding();

@@ -19,7 +19,6 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsLike;
 
-@SuppressWarnings("deprecation")
 public class FiltersTest {
 
     private static final double DELTA = 0.0000001;

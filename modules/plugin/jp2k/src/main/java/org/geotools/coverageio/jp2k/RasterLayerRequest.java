@@ -168,7 +168,6 @@ class RasterLayerRequest {
         prepare();
     }
 
-    @SuppressWarnings({"unchecked", "deprecation"})
     private void setDefaultParameterValues() {
         final ParameterValueGroup readParams =
                 this.rasterManager.parent.getFormat().getReadParameters();

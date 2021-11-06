@@ -265,7 +265,6 @@ public class Parameter<T> implements org.opengis.parameter.Parameter<T> {
      * @see #MAX
      * @see #MIN
      */
-    @SuppressWarnings("unchecked")
     public Parameter(
             String key,
             Class<T> type,

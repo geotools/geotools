@@ -37,7 +37,7 @@ import org.opengis.filter.spatial.BBOX;
  * @author Jesse
  * @author ported from PostPreProcessFilterSplittingVisitor at 2.5.2 by Gabriel Roldan
  */
-@SuppressWarnings({"nls", "unchecked"})
+@SuppressWarnings("unchecked")
 public class CapabilitiesFilterSplitterTest extends AbstractCapabilitiesFilterSplitterTests {
 
     private Capabilities simpleLogicalCaps = new Capabilities();
@@ -166,7 +166,6 @@ public class CapabilitiesFilterSplitterTest extends AbstractCapabilitiesFilterSp
     }
 
     @Test
-    @SuppressWarnings("rawtypes")
     public void testVisitIdFilterWithNoIdCapabilities() throws Exception {
         // Id Filter
         HashSet ids = new HashSet();

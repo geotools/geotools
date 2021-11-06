@@ -33,7 +33,6 @@ class SortKey {
     private static java.util.Comparator<Comparable> FORWARD_COMPARATOR =
             (o1, o2) -> o1.compareTo(o2);
 
-    @SuppressWarnings("unchecked")
     private static java.util.Comparator<Comparable> REVERSE_COMPARATOR =
             (o1, o2) -> -FORWARD_COMPARATOR.compare(o1, o2);
 

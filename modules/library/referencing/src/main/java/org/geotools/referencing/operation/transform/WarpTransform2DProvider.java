@@ -46,12 +46,12 @@ public class WarpTransform2DProvider extends MathTransformProvider {
             DefaultParameterDescriptor.create("degree", 2, 1, WarpTransform2D.MAX_DEGREE);
 
     /** Descriptor for the "{@link WarpPolynomial#getXCoeffs xCoeffs}" parameter value. */
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings("unchecked")
     public static final ParameterDescriptor<?> X_COEFFS =
             new DefaultParameterDescriptor("xCoeffs", float[].class, null, null);
 
     /** Descriptor for the "{@link WarpPolynomial#getYCoeffs yCoeffs}" parameter value. */
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings("unchecked")
     public static final ParameterDescriptor<?> Y_COEFFS =
             new DefaultParameterDescriptor("yCoeffs", float[].class, null, null);
 

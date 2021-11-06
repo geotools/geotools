@@ -52,7 +52,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Andrea Aime - GeoSolutions
  */
-@SuppressWarnings("rawtypes")
 class OGRFeatureSource extends ContentFeatureSource {
 
     OGR ogr;

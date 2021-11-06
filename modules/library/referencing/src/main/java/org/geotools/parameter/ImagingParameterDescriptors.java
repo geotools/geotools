@@ -89,7 +89,6 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
      * for wrapping a JAI operation in the {@value
      * javax.media.jai.registry.RenderedRegistryMode#MODE_NAME} registry mode.
      */
-    @SuppressWarnings("unchecked")
     public static final Map<Class<?>, Class<?>> DEFAULT_SOURCE_TYPE_MAP =
             Collections.singletonMap(RenderedImage.class, GridCoverage.class);
 

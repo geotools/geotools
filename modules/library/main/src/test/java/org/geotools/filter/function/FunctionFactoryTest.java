@@ -62,7 +62,6 @@ public class FunctionFactoryTest {
                                     new FunctionFactory() {
 
                                         @Override
-                                        @SuppressWarnings("unchecked")
                                         public List<FunctionName> getFunctionNames() {
                                             return Arrays.asList(
                                                     new FunctionNameImpl(

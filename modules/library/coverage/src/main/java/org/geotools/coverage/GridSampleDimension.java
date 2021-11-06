@@ -301,7 +301,6 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      *     the value to be returned by {@link #getUnits}.
      * @throws IllegalArgumentException if the range {@code [minimum..maximum]} is not valid.
      */
-    @SuppressWarnings("deprecation")
     public GridSampleDimension(
             final CharSequence description,
             final SampleDimensionType type,
@@ -322,7 +321,6 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     }
 
     /** Constructs a list of categories. Used by constructors only. */
-    @SuppressWarnings("deprecation")
     private static CategoryList list(
             CharSequence description,
             SampleDimensionType type,
@@ -657,7 +655,6 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      * @return A code value indicating grid value data type.
      */
     @Override
-    @SuppressWarnings("unchecked")
     public SampleDimensionType getSampleDimensionType() {
         final NumberRange range = getRange();
         if (range == null) {

@@ -518,7 +518,6 @@ public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {
         return wfsFilterCapabilities;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     protected String getOperationURI(WFSOperationType operation, HttpMethod method) {
 
@@ -639,7 +638,6 @@ public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {
         return ftypeCrss;
     }
 
-    @SuppressWarnings("unchecked")
     protected Set<String> findParameters(
             final OperationType operationMetadata, final String parameterName) {
         Set<String> outputFormats = new HashSet<>();
@@ -692,7 +690,6 @@ public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {
      */
     protected OperationType getOperationMetadata(final WFSOperationType operation) {
         final OperationsMetadataType operationsMetadata = capabilities.getOperationsMetadata();
-        @SuppressWarnings("unchecked")
         final List<OperationType> operations = operationsMetadata.getOperation();
         final String expectedOperationName = operation.getName();
         for (OperationType operationType : operations) {

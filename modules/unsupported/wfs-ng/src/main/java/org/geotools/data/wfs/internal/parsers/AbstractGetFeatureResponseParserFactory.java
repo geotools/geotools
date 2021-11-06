@@ -32,7 +32,6 @@ import org.geotools.ows.ServiceException;
 import org.opengis.feature.simple.SimpleFeature;
 
 /** An abstract WFS response parser factory for GetFeature requests in GML output formats. */
-@SuppressWarnings("nls")
 public abstract class AbstractGetFeatureResponseParserFactory extends AbstractWFSResponseFactory {
 
     /** @see WFSResponseFactory#isAvailable() */

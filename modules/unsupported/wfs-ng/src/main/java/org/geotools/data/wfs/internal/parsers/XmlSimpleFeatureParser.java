@@ -55,7 +55,6 @@ import org.opengis.referencing.FactoryException;
  * @since 2.5.x
  *     <p>
  */
-@SuppressWarnings("nls")
 public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
 
     private static final Logger LOGGER = Loggers.RESPONSES;

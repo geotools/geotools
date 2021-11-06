@@ -134,7 +134,6 @@ public class CycleSchemaGenerator extends SchemaGenerator {
                 }
             }
 
-            @SuppressWarnings("unchecked")
             @Override
             public Collection<PropertyDescriptor> buildDescriptors() {
                 if (!followComplexTypes) {

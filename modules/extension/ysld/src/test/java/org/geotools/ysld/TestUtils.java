@@ -71,7 +71,6 @@ public enum TestUtils {
     }
 
     /** Matches a Literal expression with a value matching m */
-    @SuppressWarnings({"unchecked", "rawtypes"})
     public static Matcher<Expression> literal(Matcher m) {
         return allOf(instanceOf(Literal.class), hasProperty("value", m));
     }
@@ -82,7 +81,7 @@ public enum TestUtils {
     }
 
     /** Matches a nil expression or null. */
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings("unchecked")
     public static Matcher<Expression> nilExpression() {
         return (Matcher) Matchers.anyOf(nullValue(), instanceOf(NilExpression.class));
     }
@@ -101,7 +100,6 @@ public enum TestUtils {
     }
 
     /** Matches a function with the given name and a parameter list matching the given matcher. */
-    @SuppressWarnings({"unchecked", "rawtypes"})
     public static Matcher<Expression> function(
             String name, Matcher<? extends Iterable<Expression>> parameters) {
         return allOf(
@@ -214,7 +212,7 @@ public enum TestUtils {
         };
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings("unchecked")
     public static Matcher<Object> isColor(Color c) {
         String hex = String.format("#%06x", c.getRGB() & 0x00FFFFFF);
         return Matchers.describedAs(
@@ -234,7 +232,7 @@ public enum TestUtils {
     }
 
     /** Matches a YamlSeq where the specified entry matching the given matcher */
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings("unchecked")
     public static Matcher<Object> yHasItem(final int i, final Matcher<? extends Object> m) {
         return new BaseMatcher() {
 
@@ -267,7 +265,7 @@ public enum TestUtils {
     }
 
     /** Matches a YamlMap with an entry as named that has a value which matches the given matcher */
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings("unchecked")
     public static Matcher<Object> yHasEntry(final String key, final Matcher<? extends Object> m) {
         return new BaseMatcher() {
 
@@ -311,7 +309,7 @@ public enum TestUtils {
 
     /** Matches a YamlSeq */
     @SafeVarargs
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings("unchecked")
     public static Matcher<? extends Object> yContains(final Matcher<? extends Object>... matchers) {
         return new BaseMatcher() {
 
@@ -351,7 +349,7 @@ public enum TestUtils {
     }
 
     /** Matches a YSLD Tuple with n values */
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings("unchecked")
     public static Matcher<Object> yTuple(int n) {
         Matcher[] matchers = new Matcher[n];
         Arrays.fill(matchers, anything());
@@ -359,7 +357,7 @@ public enum TestUtils {
     }
 
     /** For apparent consistency to the user, some values are wrapped in fake YAML strings. */
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings("unchecked")
     public static Matcher<? extends Object> fakeString(final Matcher<? extends Object> m) {
         return new BaseMatcher() {
 

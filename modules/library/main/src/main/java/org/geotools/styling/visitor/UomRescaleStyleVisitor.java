@@ -208,7 +208,6 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void visit(TextSymbolizer text) {
         super.visit(text);

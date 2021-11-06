@@ -690,7 +690,6 @@ public class FeatureTypeRegistry {
         }
     }
 
-    @SuppressWarnings("unchecked")
     protected void importSchema(Schema schema) {
         for (Entry<Name, AttributeType> nameAttributeTypeEntry : schema.entrySet()) {
             Entry entry = (Entry) nameAttributeTypeEntry;

@@ -99,7 +99,6 @@ public final class RangedClassifier extends Classifier {
         return classify((Comparable) value);
     }
 
-    @SuppressWarnings("rawtypes")
     private int classify(Comparable<?> val) {
         Comparable<?> value = val;
         if (val instanceof Integer) { // convert to double as java is stupid

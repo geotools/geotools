@@ -155,7 +155,6 @@ public final class Units {
      * equivalent if the {@link Units#equals(Unit, Unit)} method returns true. If no equivalent
      * reference unit is defined, it returns the provided unit.
      */
-    @SuppressWarnings("unchecked")
     public static <Q extends Quantity<Q>> Unit<Q> autoCorrect(Unit<Q> unit) {
         return ((WktUnitFormat.WktUnitFormatterImpl) WktUnitFormat.getInstance())
                 .getEquivalentUnit(unit);

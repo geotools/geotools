@@ -35,7 +35,6 @@ import org.geotools.util.logging.Logging;
  * @author Andrea Aime, GeoSolution
  * @version $Id$
  */
-@SuppressWarnings("rawtypes")
 public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
 
     protected static Logger LOGGER = Logging.getLogger(OGRDataStoreFactory.class);

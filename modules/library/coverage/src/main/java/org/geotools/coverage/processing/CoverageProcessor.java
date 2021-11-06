@@ -519,7 +519,6 @@ public class CoverageProcessor {
      * @return The result as a coverage.
      * @throws OperationNotFoundException if there is no operation for the parameter group name.
      */
-    @SuppressWarnings("unchecked")
     public Coverage doOperation(final ParameterValueGroup parameters, final Hints hints) {
         Coverage source = getPrimarySource(parameters);
         final String operationName = getOperationName(parameters);

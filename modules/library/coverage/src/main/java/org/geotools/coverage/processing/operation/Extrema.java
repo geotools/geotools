@@ -115,7 +115,6 @@ public class Extrema extends BaseStatisticsOperationJAI {
      *     org.geotools.coverage.processing.OperationJAI.Parameters),
      */
     @Override
-    @SuppressWarnings("unchecked")
     protected Map<String, ?> getProperties(
             RenderedImage data,
             CoordinateReferenceSystem crs,

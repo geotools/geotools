@@ -44,7 +44,6 @@ public class MultiSurfaceTypeBinding extends org.geotools.gml3.bindings.MultiSur
         @SuppressWarnings("unchecked")
         List<MultiPolygon> surfaceMemberList = node.getChildValues("surfaceMember");
         // &lt;element minOccurs="0" ref="gml:surfaceMembers"/&gt;
-        @SuppressWarnings("unchecked")
         MultiPolygon surfaceMembers = (MultiPolygon) node.getChildValue("surfaceMembers");
 
         List<Polygon> polygons = new ArrayList<>();

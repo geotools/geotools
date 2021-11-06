@@ -424,7 +424,6 @@ public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
              *       is not a big deal if the same object is searched twice; it is "just" a
              *       waste of CPU.
              */
-            @SuppressWarnings("unchecked")
             IdentifiedObject candidate = (IdentifiedObject) findCache.get(object);
 
             if (candidate == null) {

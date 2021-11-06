@@ -884,19 +884,16 @@ public class SimpleFeatureTypeBuilder {
 
     // Internal api available for subclasses to override
     /** Creates a new set instance, this default implementation returns {@link HashSet}. */
-    @SuppressWarnings("rawtypes")
     protected Set newSet() {
         return new HashSet();
     }
 
     /** Creates a new list instance, this default impelementation returns {@link ArrayList}. */
-    @SuppressWarnings("rawtypes")
     protected List newList() {
         return new ArrayList();
     }
 
     /** Creates a new map instance, this default implementation returns {@link HashMap} */
-    @SuppressWarnings("rawtypes")
     protected Map newMap() {
         return new HashMap();
     }
@@ -906,7 +903,6 @@ public class SimpleFeatureTypeBuilder {
      *
      * <p>If the new copy can not be created reflectively.. {@link #newList()} is returned.
      */
-    @SuppressWarnings("rawtypes")
     protected List newList(List origional) {
         if (origional == null) {
             return newList();

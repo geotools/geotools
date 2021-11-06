@@ -66,7 +66,6 @@ public class StyleTest {
         assertEquals(ff.literal(1.0), displacement.getDisplacementX());
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void font() throws Exception {
         List<Expression> family = new ArrayList<>();

@@ -612,7 +612,6 @@ public class GMLEncodingUtils {
         setMetadata(g, "gml:description", description);
     }
 
-    @SuppressWarnings("rawtypes")
     String getMetadata(Geometry g, String metadata) {
         if (g.getUserData() instanceof Map) {
             Map userData = (Map) g.getUserData();
@@ -621,7 +620,7 @@ public class GMLEncodingUtils {
         return null;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings("unchecked")
     void setMetadata(Geometry g, String metadata, String value) {
         if (g.getUserData() == null) {
             g.setUserData(new HashMap());

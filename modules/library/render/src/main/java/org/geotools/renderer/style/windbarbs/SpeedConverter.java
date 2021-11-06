@@ -66,7 +66,7 @@ class SpeedConverter {
 
     private static final String KN = USCustomary.KNOT.toString();
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings("unchecked")
     static double toKnots(double speed, String uom) {
         Utilities.ensureNonNull("uom", uom);
         if (LOGGER.isLoggable(Level.FINE)) {

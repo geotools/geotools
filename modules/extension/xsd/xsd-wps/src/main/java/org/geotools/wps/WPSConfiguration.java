@@ -54,7 +54,6 @@ public class WPSConfiguration extends Configuration {
         addDependency(new OWSConfiguration());
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     protected void registerBindings(Map<QName, Object> bindings) {
         bindings.put(WPS.InputReferenceType, InputReferenceTypeBinding.class);

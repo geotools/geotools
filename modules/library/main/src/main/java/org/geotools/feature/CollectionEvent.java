@@ -92,7 +92,6 @@ public class CollectionEvent extends EventObject {
      *
      * @return The SimpleFeatureCollection which was the event's source.
      */
-    @SuppressWarnings("unchecked")
     public FeatureCollection<? extends FeatureType, ? extends Feature> getCollection() {
         return (FeatureCollection<? extends FeatureType, ? extends Feature>) source;
     }

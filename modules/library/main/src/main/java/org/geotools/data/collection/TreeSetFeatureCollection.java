@@ -221,7 +221,6 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public boolean addAll(FeatureCollection<?, ?> collection) {
         // TODO check inheritance with FeatureType here!!!
         boolean changed = false;

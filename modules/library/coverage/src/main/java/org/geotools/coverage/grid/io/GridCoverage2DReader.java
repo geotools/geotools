@@ -52,7 +52,6 @@ import org.opengis.referencing.operation.MathTransform;
  * @author Andrea Aime, GeoSolutions SAS
  * @author Simone Giannecchini, GeoSolutions SAS
  */
-@SuppressWarnings("rawtypes")
 public interface GridCoverage2DReader extends GridCoverageReader {
 
     /** The time domain (comma separated list of values) */

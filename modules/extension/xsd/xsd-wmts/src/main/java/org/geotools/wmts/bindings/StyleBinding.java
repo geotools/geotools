@@ -107,7 +107,6 @@ public class StyleBinding extends DescriptionTypeBinding {
      * @generated modifiable
      */
     @Override
-    @SuppressWarnings("unchecked")
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         if (!(value instanceof StyleType)) {

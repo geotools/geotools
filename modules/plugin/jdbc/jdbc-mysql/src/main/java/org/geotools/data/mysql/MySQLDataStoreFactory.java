@@ -32,8 +32,6 @@ import org.geotools.jdbc.SQLDialect;
  * @author David Winslow, The Open Planning Project
  * @author Nikolaos Pringouris <nprigour@gmail.com> added support for MySQL versions 5.6 (and above)
  */
-// temporary work around, the factory parameters map will be fixed separately
-@SuppressWarnings("unchecked")
 public class MySQLDataStoreFactory extends JDBCDataStoreFactory {
     /** parameter for database type */
     public static final Param DBTYPE =

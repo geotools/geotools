@@ -36,8 +36,6 @@ import org.geotools.util.KVP;
 import org.geotools.util.logging.Logging;
 import org.postgresql.jdbc.SslMode;
 
-// temporary work around, the factory parameters map will be fixed separately
-@SuppressWarnings("unchecked")
 public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
 
     static final Logger LOGGER = Logging.getLogger(PostgisNGDataStoreFactory.class);

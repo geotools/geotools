@@ -94,7 +94,6 @@ import org.opengis.referencing.operation.TransformException;
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for
  *     jar:file:foo.jar/bar.properties URLs
  */
-@SuppressWarnings("rawtypes")
 class NetCDFResponse extends CoverageResponse {
 
     private static final double EPS = 1E-6;

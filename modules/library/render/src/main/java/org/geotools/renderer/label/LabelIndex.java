@@ -37,7 +37,6 @@ public class LabelIndex {
      * bounds. For speed reasons the bounds will be simply expanded by the distance, no curved
      * buffer will be generated
      */
-    @SuppressWarnings("unchecked")
     public boolean labelsWithinDistance(Rectangle2D bounds, double distance) {
         if (distance < 0) return false;
 

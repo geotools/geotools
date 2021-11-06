@@ -89,7 +89,6 @@ public class AbstractFeatureCollectionTypeBinding extends AbstractComplexBinding
         }
 
         // &lt;element maxOccurs="unbounded" minOccurs="0" ref="gml:featureMember"/&gt;
-        @SuppressWarnings("unchecked")
         List<SimpleFeature> childValues = node.getChildValues(SimpleFeature.class);
 
         // example ListFeatureCollection

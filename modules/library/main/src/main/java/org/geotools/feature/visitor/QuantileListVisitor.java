@@ -115,7 +115,6 @@ public class QuantileListVisitor implements FeatureCalc {
         }
 
         count++;
-        @SuppressWarnings("unchecked")
         Comparable cast = (Comparable) value;
         items.add(cast);
     }

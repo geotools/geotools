@@ -128,7 +128,6 @@ public final class FeatureUtilities {
      * @return a feature with the grid coverage envelope as the geometry and the grid coverage
      *     itself in the "grid" attribute.
      */
-    @SuppressWarnings("unchecked")
     public static SimpleFeatureCollection wrapGridCoverage(final GridCoverage2D coverage)
             throws TransformException, SchemaException {
         final Polygon bounds = getPolygon(coverage.getEnvelope2D());
@@ -175,7 +174,6 @@ public final class FeatureUtilities {
      * @return a feature with the grid coverage envelope as the geometry and the grid coverage
      *     itself in the "grid" attribute.
      */
-    @SuppressWarnings("unchecked")
     public static SimpleFeatureCollection wrapGridCoverageReader(
             final GridCoverage2DReader gridCoverageReader, GeneralParameterValue[] params)
             throws TransformException, FactoryRegistryException, SchemaException {

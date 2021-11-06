@@ -34,7 +34,6 @@ public class GMLConfigurationTest {
      * have a Java type.
      */
     @Test
-    @SuppressWarnings("unchecked")
     public void testBindingTypes() throws Exception {
         GMLConfiguration configuration = new GMLConfiguration();
         Assert.assertEquals(GML.NAMESPACE, configuration.getNamespaceURI());

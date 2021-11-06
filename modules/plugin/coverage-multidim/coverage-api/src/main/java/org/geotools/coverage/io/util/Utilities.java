@@ -189,7 +189,6 @@ public class Utilities {
      * Simple utility method which allows to build a Mercator2SP Projected CRS given the set of
      * required parameters. It will be used by several Terascan products.
      */
-    @SuppressWarnings("deprecation")
     public static CoordinateReferenceSystem getMercator2SPProjectedCRS(
             final double standardParallel,
             final double centralMeridian,

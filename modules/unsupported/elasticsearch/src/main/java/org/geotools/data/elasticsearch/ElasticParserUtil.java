@@ -161,7 +161,7 @@ class ElasticParserUtil {
      * @param properties Properties
      * @return Geometry
      */
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings("unchecked")
     public Geometry createGeometry(final Map<String, Object> properties) {
         final Geometry geometry;
         switch (String.valueOf(properties.get("type")).toUpperCase()) {
@@ -357,7 +357,6 @@ class ElasticParserUtil {
         }
     }
 
-    @SuppressWarnings("rawtypes")
     public static boolean isGeoPointFeature(Map<String, Object> map) {
         boolean result = false;
         if (map.size() == 2 && map.containsKey("coordinates")) {

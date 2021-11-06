@@ -99,7 +99,6 @@ public abstract class AbstractContentTest {
     }
 
     /** {@link ContentFeatureSource} that returns the test features. */
-    @SuppressWarnings("unchecked")
     protected class MockContentFeatureStore extends ContentFeatureStore {
 
         public MockContentFeatureStore(ContentEntry entry, Query query) {

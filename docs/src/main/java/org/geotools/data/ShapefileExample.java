@@ -63,7 +63,6 @@ public class ShapefileExample {
         // end use
     }
 
-    @SuppressWarnings("rawtypes")
     public void create() throws Exception {
         // start create
         FileDataStoreFactorySpi factory = new ShapefileDataStoreFactory();
@@ -79,7 +78,6 @@ public class ShapefileExample {
         // end create
     }
 
-    @SuppressWarnings("rawtypes")
     public void read() throws Exception {
         // start read
         File file = new File("my.shp");

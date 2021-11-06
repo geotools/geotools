@@ -36,7 +36,6 @@ import org.geotools.util.factory.FactoryNotFoundException;
  * @author Gabriel Roldan (OpenGeo)
  * @since 2.6
  */
-@SuppressWarnings("nls")
 public class WFSExtensions {
     /** The service registry for this manager. Will be initialized only when first needed. */
     private static volatile Set<WFSResponseFactory> registry;

@@ -38,7 +38,6 @@ public class MultiCurveTypeBinding extends org.geotools.gml3.bindings.MultiCurve
         @SuppressWarnings("unchecked")
         List<Geometry> curveMemberList = node.getChildValues("curveMember");
         // &lt;element minOccurs="0" ref="gml:curveMembers"/&gt;
-        @SuppressWarnings("unchecked")
         Geometry curveMembers = (Geometry) node.getChildValue("curveMembers");
 
         List<LineString> lineStrings = new ArrayList<>();

@@ -200,7 +200,6 @@ public class LogicSAXParser {
      * @return The created logic filter.
      * @throws IllegalFilterException if the filter is not complete.
      */
-    @SuppressWarnings("deprecation")
     public Filter create() throws IllegalFilterException {
         Filter filter = null;
 

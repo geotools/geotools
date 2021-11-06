@@ -436,7 +436,6 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
      *
      * @return copy of map
      */
-    @SuppressWarnings("unchecked")
     protected <K, V> Map<K, V> copy(Map<K, V> customProperties) {
         if (customProperties == null) return null;
         return new HashMap<>(customProperties);

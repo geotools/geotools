@@ -409,7 +409,6 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
             String xpathExpression = "/@gml:id";
             Expression propNameExpression = ff.property(xpathExpression);
 
-            @SuppressWarnings("unchecked")
             List unrolled = (List) propNameExpression.accept(visitor, null);
             assertNotNull(unrolled);
             assertEquals(1, unrolled.size());

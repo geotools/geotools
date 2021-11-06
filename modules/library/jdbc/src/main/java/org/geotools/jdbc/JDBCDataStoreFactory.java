@@ -44,8 +44,6 @@ import org.locationtech.jts.geom.GeometryFactory;
  *
  * @author Justin Deoliveira, The Open Planning Project
  */
-// temporary work around, the factory parameters map will be fixed separately
-@SuppressWarnings("unchecked")
 public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
 
     /** parameter for database type */

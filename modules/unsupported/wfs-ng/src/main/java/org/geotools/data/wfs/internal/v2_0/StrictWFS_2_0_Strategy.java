@@ -158,7 +158,6 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
         typeInfos.clear();
         FeatureTypeListType featureTypeList = this.capabilities.getFeatureTypeList();
 
-        @SuppressWarnings("unchecked")
         List<FeatureTypeType> featureTypes = featureTypeList.getFeatureType();
 
         for (FeatureTypeType typeInfo : featureTypes) {
@@ -308,7 +307,6 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
         }
 
         QName typeName = request.getTypeName();
-        @SuppressWarnings("unchecked")
         List<QName> typeNames = dft.getTypeName();
         typeNames.add(typeName);
 
@@ -468,7 +466,6 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
             return tx;
         }
 
-        @SuppressWarnings("unchecked")
         List<AbstractTransactionActionType> actions = tx.getAbstractTransactionAction();
 
         try {
@@ -742,7 +739,6 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
         Filter filter = elem.getFilter();
         update.setFilter(filter);
 
-        @SuppressWarnings("unchecked")
         List<PropertyType> properties = update.getProperty();
 
         for (int i = 0; i < propertyNames.size(); i++) {

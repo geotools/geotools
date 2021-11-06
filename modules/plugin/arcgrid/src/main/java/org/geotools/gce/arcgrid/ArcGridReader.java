@@ -333,7 +333,6 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
      *     org.opengis.coverage.grid.GridCoverageReader#read(org.opengis.parameter.GeneralParameterValue[])
      */
     @Override
-    @SuppressWarnings("unchecked")
     public GridCoverage2D read(GeneralParameterValue[] params)
             throws IllegalArgumentException, IOException {
         GeneralEnvelope readEnvelope = null;

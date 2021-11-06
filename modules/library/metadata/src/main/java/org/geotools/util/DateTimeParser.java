@@ -255,7 +255,7 @@ public class DateTimeParser {
      * @return A list of dates, or an empty list of the {@code value} string is null or empty.
      * @throws ParseException if the string can not be parsed.
      */
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings("unchecked")
     public Collection parse(String value) throws ParseException {
         if (value == null) {
             return Collections.emptyList();

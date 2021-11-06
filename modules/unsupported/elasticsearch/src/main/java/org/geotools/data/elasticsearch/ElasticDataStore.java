@@ -280,7 +280,7 @@ public class ElasticDataStore extends ContentDataStore {
         return docType;
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings("unchecked")
     private void walk(
             List<ElasticAttribute> elasticAttributes,
             Map<String, Object> map,

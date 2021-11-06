@@ -283,7 +283,6 @@ public class MarkImpl implements Mark, Cloneable {
         this.external = ExternalMarkImpl.cast(external);
     }
 
-    @SuppressWarnings("deprecation")
     static MarkImpl cast(GraphicalSymbol item) {
         if (item == null) {
             return null;

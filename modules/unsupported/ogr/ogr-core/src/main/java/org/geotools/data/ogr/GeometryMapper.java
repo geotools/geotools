@@ -30,7 +30,6 @@ import org.locationtech.jts.io.WKTWriter;
  *
  * @author Andrea Aime - GeoSolutions
  */
-@SuppressWarnings("rawtypes")
 abstract class GeometryMapper {
 
     protected OGR ogr;

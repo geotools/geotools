@@ -246,7 +246,7 @@ public interface DataAccessFactory extends Factory {
      *
      * <p>Subclasses may provide specific setAsText()/getAsText() requirements
      */
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings("unchecked")
     public static class Param extends Parameter {
 
         /**

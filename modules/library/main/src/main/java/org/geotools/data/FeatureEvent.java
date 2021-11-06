@@ -174,7 +174,6 @@ public class FeatureEvent extends EventObject {
      * <p>Please note when several FeatureSources are operating on different Transactions this value
      * will not always line up with original FeatureSource represented by Event.getSource().
      */
-    @SuppressWarnings({"rawtypes"})
     protected FeatureSource featureSource;
 
     /**
@@ -200,7 +199,6 @@ public class FeatureEvent extends EventObject {
      * @param type One of FEATURE_CHANGED, FEATURE_REMOVED or FEATURE_ADDED
      * @param bounds The area modified by this change
      */
-    @SuppressWarnings("rawtypes")
     public FeatureEvent(Object source, Type type, ReferencedEnvelope bounds) {
         this(source, type, bounds, Filter.INCLUDE);
     }
@@ -212,7 +210,6 @@ public class FeatureEvent extends EventObject {
      * @param type One of FEATURE_CHANGED, FEATURE_REMOVED or FEATURE_ADDED
      * @param bounds The area modified by this change
      */
-    @SuppressWarnings("rawtypes")
     public FeatureEvent(Object source, Type type, ReferencedEnvelope bounds, Filter filter) {
         super(source);
         this.type = type;
@@ -228,12 +225,10 @@ public class FeatureEvent extends EventObject {
      *
      * @return The SimpleFeatureSource which was the event's source.
      */
-    @SuppressWarnings("unchecked")
     public FeatureSource<? extends FeatureType, ? extends Feature> getFeatureSource() {
         return (FeatureSource<? extends FeatureType, ? extends Feature>) source;
     }
 
-    @SuppressWarnings("rawtypes")
     public void setFeatureSource(FeatureSource featureSource) {
         source = featureSource;
     }

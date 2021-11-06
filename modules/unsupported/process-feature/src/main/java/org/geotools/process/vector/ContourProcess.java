@@ -32,11 +32,7 @@ public class ContourProcess implements VectorProcess {
 
     @DescribeResult(name = "contours", description = "The contours of the input features")
     public SimpleFeatureCollection execute(
-            @SuppressWarnings("rawtypes")
-                    @DescribeParameter(
-                        name = "features",
-                        description = "Input point feature collection"
-                    )
+            @DescribeParameter(name = "features", description = "Input point feature collection")
                     FeatureCollection features,
             @DescribeParameter(name = "propertyName", description = "PropertyName to be contoured")
                     String propertyName,

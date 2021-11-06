@@ -535,7 +535,6 @@ public class VPFFile {
      * @return the constructed object
      * @throws IOException on any file IO errors
      */
-    @SuppressWarnings("unchecked")
     protected synchronized Object readGeometry(
             int instancesCount, int dimensionality, boolean readDoubles) throws IOException {
         Object result = null;

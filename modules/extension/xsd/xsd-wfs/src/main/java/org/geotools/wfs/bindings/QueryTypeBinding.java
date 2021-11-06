@@ -156,7 +156,6 @@ import org.geotools.xsd.AbstractComplexEMFBinding;
  *
  * @generated
  */
-@SuppressWarnings({"nls", "unchecked"})
 public class QueryTypeBinding extends AbstractComplexEMFBinding {
     public QueryTypeBinding(WfsFactory factory) {
         super(factory);

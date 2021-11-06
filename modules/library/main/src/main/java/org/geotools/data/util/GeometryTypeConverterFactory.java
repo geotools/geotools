@@ -108,7 +108,6 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
          *
          * @param <T>
          */
-        @SuppressWarnings("unchecked")
         public <T> List<T> convertAll(GeometryCollection gc, Class<T> target) throws Exception {
             List<T> result = new ArrayList<>();
             for (int count = 0; count < gc.getNumGeometries(); count++) {

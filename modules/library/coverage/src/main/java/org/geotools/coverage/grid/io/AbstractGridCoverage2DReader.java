@@ -1098,7 +1098,6 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      * Default implementation returns an empty set of parameters
      */
     @Override
-    @SuppressWarnings("rawtypes")
     public Set<ParameterDescriptor<List>> getDynamicParameters() throws IOException {
         return getDynamicParameters(coverageName);
     }
@@ -1108,7 +1107,6 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      * Default implementation returns an empty set of parameters
      */
     @Override
-    @SuppressWarnings("rawtypes")
     public Set<ParameterDescriptor<List>> getDynamicParameters(String coverageName)
             throws IOException {
         return Collections.emptySet();

@@ -398,7 +398,6 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      * unrolling the <code>org.geotools.filter.Filter</code> contained in the passed <code>query
      * </code>, and replacing the list of required attributes by the ones of the mapped FeatureType.
      */
-    @SuppressWarnings("unchecked")
     public Query unrollQuery(Query query, FeatureTypeMapping mapping) {
         Query unrolledQuery = Query.ALL;
         FeatureSource source = mapping.getSource();

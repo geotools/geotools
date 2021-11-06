@@ -53,7 +53,6 @@ public class NamedLayerBuilder extends AbstractSLDBuilder<NamedLayer> {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public NamedLayer build() {
         if (unset) {
             return null;

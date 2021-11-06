@@ -219,7 +219,7 @@ public class YsldParseTest {
                                 rtParam("levels", literal(1000), literal(1100), literal(1200)))));
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings("unchecked")
     Matcher<Function> rtParam(final String name, final Matcher<?>... values) {
         return new BaseMatcher() {
 
@@ -1031,7 +1031,6 @@ public class YsldParseTest {
         doTestForGoogleMercator(sld);
     }
 
-    @SuppressWarnings("unchecked")
     private void doTestForGoogleMercator(StyledLayerDescriptor sld) throws IOException {
         double[] scaleDenominators = new double[GOOGLE_MERCATOR_PIXEL_SIZES.length];
         for (int i = 0; i < GOOGLE_MERCATOR_PIXEL_SIZES.length; i++) {
@@ -1099,7 +1098,6 @@ public class YsldParseTest {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private void doTestForWGS84(StyledLayerDescriptor sld) throws IOException {
         FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
 
@@ -1366,7 +1364,6 @@ public class YsldParseTest {
         assertThat(colour3, is(Color.BLUE));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testLabelLiteral() throws Exception {
         String yaml = "text: \n" + "  label: test literal\n" + "";
@@ -1410,7 +1407,6 @@ public class YsldParseTest {
         assertThat(label, attribute("testAttribute"));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testExpressionLiteral() throws Exception {
         String yaml = "text: \n" + "  geometry: test literal\n" + "";
@@ -1742,7 +1738,7 @@ public class YsldParseTest {
                 equalTo(ContrastMethod.NORMALIZE));
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings("unchecked")
     static Matcher<ContrastEnhancement> nullContrast() {
         return (Matcher)
                 describedAs(
@@ -1846,7 +1842,6 @@ public class YsldParseTest {
         // SLD/SE 1.1 feature that may not be supported by renderer
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testPointDisplacement() throws Exception {
         String yaml =
@@ -1869,7 +1864,6 @@ public class YsldParseTest {
         // SLD/SE 1.1 feature that may not be supported by renderer
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testPointAnchor() throws Exception {
         String yaml =
@@ -1892,7 +1886,6 @@ public class YsldParseTest {
         // SLD/SE 1.1 feature that may not be supported by renderer
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testTextDisplacement() throws Exception {
         String yaml = "text: \n" + "  displacement: " + tuple(10, 42) + "\n";
@@ -1907,7 +1900,6 @@ public class YsldParseTest {
                         hasProperty("displacementY", literal(42))));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testTextAnchor() throws Exception {
         String yaml = "text: \n" + "  anchor: " + tuple(0.75, 0.25) + "\n";
@@ -1933,7 +1925,6 @@ public class YsldParseTest {
         assertThat(((LinePlacement) t.getLabelPlacement()).getPerpendicularOffset(), literal(4));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testTextGraphicDisplacement() throws Exception {
         String yaml =
@@ -1967,7 +1958,6 @@ public class YsldParseTest {
                         hasProperty("displacementY", literal(64))));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testRelativeExternalGraphicNoResolver() throws Exception {
         String yaml =
@@ -2129,7 +2119,6 @@ public class YsldParseTest {
         assertThat(p, hasProperty("options", hasEntry("composite-base", "true")));
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     @Test
     public void testStrokeGraphic() throws Exception {
 
@@ -2161,7 +2150,6 @@ public class YsldParseTest {
                                         hasProperty("color", literal(isColor("995555")))))));
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     @Test
     public void testStrokeGraphicFill() throws Exception {
 

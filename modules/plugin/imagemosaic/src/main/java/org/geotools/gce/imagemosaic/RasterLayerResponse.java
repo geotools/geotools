@@ -125,7 +125,6 @@ import org.opengis.util.InternationalString;
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for
  *     jar:file:foo.jar/bar.properties URLs
  */
-@SuppressWarnings("rawtypes")
 public class RasterLayerResponse {
 
     private final SubmosaicProducerFactory submosaicProducerFactory;

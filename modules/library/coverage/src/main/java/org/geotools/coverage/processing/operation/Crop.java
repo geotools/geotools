@@ -279,7 +279,6 @@ public class Crop extends Operation2D {
      *     org.geotools.util.factory.Hints)
      */
     @Override
-    @SuppressWarnings("unchecked")
     public Coverage doOperation(ParameterValueGroup parameters, Hints hints) {
 
         final Geometry cropRoi; // extracted from parameters

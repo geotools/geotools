@@ -58,7 +58,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Gabriel Roldan
  * @author Niels Charlier
  */
-@SuppressWarnings("nls")
 public class DataStoreTest {
 
     private QName qTypeName =

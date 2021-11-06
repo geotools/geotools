@@ -33,7 +33,6 @@ import org.geotools.gce.grassraster.GrassBinaryImageWriter;
  * @see GrassBinaryImageWriter
  * @see GrassBinaryImageReaderSpi
  */
-@SuppressWarnings("nls")
 public class GrassBinaryImageReaderSpi extends ImageReaderSpi {
 
     private static final String vendorName = "www.hydrologis.com";

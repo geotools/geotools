@@ -438,7 +438,6 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
     }
 
     /** Complex test for SQLServer store wrapping. */
-    @SuppressWarnings({"unchecked", "rawtypes"})
     @Test
     public void testSQLServerWrapping() throws Exception {
         ImageMosaicReader reader = null;

@@ -36,7 +36,6 @@ public class RequestComponents {
         this.serverRequest = serverRequest;
     }
 
-    @SuppressWarnings("unchecked")
     public Map<String, String> getKvpParameters() {
         return kvpParameters == null ? Collections.emptyMap() : kvpParameters;
     }

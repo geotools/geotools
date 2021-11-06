@@ -82,7 +82,6 @@ public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
     public void visit(org.opengis.feature.Feature feature) {
         Object attribValue = expr.evaluate(feature);
 
@@ -97,7 +96,7 @@ public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
         }
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings("unchecked")
     private boolean compare(Comparable curvalue) {
         if (minvalue == null) {
             throw new IllegalStateException("minvalue shouldn't be null when visiting = true.");

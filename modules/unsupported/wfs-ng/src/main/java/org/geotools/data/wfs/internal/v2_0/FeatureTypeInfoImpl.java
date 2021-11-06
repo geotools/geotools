@@ -60,7 +60,6 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
 
     @Override
     public Set<String> getKeywords() {
-        @SuppressWarnings("unchecked")
         List<KeywordsType> keywords = eType.getKeywords();
         Set<String> ret;
         if (keywords == null) {

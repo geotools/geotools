@@ -240,7 +240,7 @@ public abstract class CoordinateVariable<T> {
         return null;
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings("unchecked")
     public static CoordinateVariable<?> create(CoordinateAxis coordinateAxis) {
         Utilities.ensureNonNull("coordinateAxis", coordinateAxis);
 

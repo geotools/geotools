@@ -182,7 +182,6 @@ public class MatrixParameterDescriptors extends DefaultParameterDescriptorGroup 
      * @throws ParameterNotFoundException if there is no parameter for the given name.
      */
     @Override
-    @SuppressWarnings("unchecked")
     public final GeneralParameterDescriptor descriptor(final String name)
             throws ParameterNotFoundException {
         return descriptor(
@@ -244,7 +243,6 @@ public class MatrixParameterDescriptors extends DefaultParameterDescriptorGroup 
      * @return The parameter descriptor for the specified matrix element.
      * @throws IndexOutOfBoundsException if {@code row} or {@code column} is out of bounds.
      */
-    @SuppressWarnings("unchecked")
     public final ParameterDescriptor<Double> descriptor(final int row, final int column)
             throws IndexOutOfBoundsException {
         return descriptor(

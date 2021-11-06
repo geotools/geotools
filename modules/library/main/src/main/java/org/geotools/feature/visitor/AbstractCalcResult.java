@@ -139,7 +139,6 @@ public class AbstractCalcResult implements CalcResult {
         }
 
         if (value.getClass().isArray()) {
-            @SuppressWarnings("unchecked")
             Object[] cast = (Object[]) value;
             Set set = new HashSet<>(Arrays.asList(cast));
 

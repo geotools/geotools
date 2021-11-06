@@ -380,7 +380,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
      *
      * <p><b>INFO:</b> this is a reader method.
      */
-    @SuppressWarnings({"nls", "PMD.CloseResource"})
+    @SuppressWarnings("PMD.CloseResource")
     public void parseHeaderAndAccessoryFiles() throws IOException {
         try {
             LinkedHashMap<String, String> readerFileHeaderMap = new LinkedHashMap<>();

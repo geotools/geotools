@@ -122,12 +122,6 @@ public class ProjectionHandler {
                         : null;
         this.validArea = null;
         this.validaAreaTester = null;
-        // query across dateline only in case of reprojection, Oracle won't use the spatial index
-        // with two or-ed bboxes and fixing the issue at the store level requires more
-        // time/resources than we presently have
-        this.queryAcrossDateline =
-                !CRS.equalsIgnoreMetadata(
-                        sourceCRS, renderingEnvelope.getCoordinateReferenceSystem());
         checkReprojection();
     }
 
@@ -143,7 +137,25 @@ public class ProjectionHandler {
             Geometry validArea,
             ReferencedEnvelope renderingEnvelope)
             throws FactoryException {
-        if (validArea.isRectangle()) {
+        this(sourceCRS, validArea, renderingEnvelope, false);
+    }
+
+    /**
+     * Initializes a projection handler
+     *
+     * @param sourceCRS The source CRS
+     * @param validArea The valid area (used to cut geometries that go beyond it)
+     * @param renderingEnvelope The target rendering area and target CRS
+     * @param keepGeometry Can be used to force the valid area to be treated as a polygon, even when
+     *     it's a rectangle
+     */
+    public ProjectionHandler(
+            CoordinateReferenceSystem sourceCRS,
+            Geometry validArea,
+            ReferencedEnvelope renderingEnvelope,
+            boolean keepGeometry)
+            throws FactoryException {
+        if (validArea.isRectangle() && !keepGeometry) {
             this.renderingEnvelope = renderingEnvelope;
             this.sourceCRS = sourceCRS;
             this.targetCRS = renderingEnvelope.getCoordinateReferenceSystem();
@@ -188,6 +200,12 @@ public class ProjectionHandler {
                     e);
             noReprojection = false;
         }
+        // query across dateline only in case of reprojection, Oracle won't use the spatial index
+        // with two or-ed bboxes and fixing the issue at the store level requires more
+        // time/resources than we presently have
+        this.queryAcrossDateline =
+                !CRS.equalsIgnoreMetadata(
+                        sourceCRS, renderingEnvelope.getCoordinateReferenceSystem());
     }
 
     /** Returns the current rendering envelope */
@@ -628,7 +646,7 @@ public class ProjectionHandler {
      */
     public Geometry preProcess(Geometry geometry) throws TransformException, FactoryException {
         // if there is no valid area, no cutting is required either
-        if (validAreaBounds == null) return densify(geometry, true);
+        if (validAreaBounds == null && validArea == null) return densify(geometry, true);
 
         // if not reprojection is going on, we don't need to cut
         if (noReprojection) {
@@ -636,8 +654,7 @@ public class ProjectionHandler {
         }
 
         Geometry mask;
-        // fast path for the rectangular case, more complex one for the
-        // non rectangular one
+        // fast path for the rectangular case, more complex one for the non-rectangular one
         ReferencedEnvelope ge = new ReferencedEnvelope(geometry.getEnvelopeInternal(), geometryCRS);
         ReferencedEnvelope geWGS84 = ge.transform(WGS84, true);
         // if the size of the envelope is less than 1 meter (1e-6 in degrees) expand it a bit
@@ -934,6 +951,16 @@ public class ProjectionHandler {
      */
     public ReferencedEnvelope getValidAreaBounds() {
         return validAreaBounds;
+    }
+
+    /**
+     * Returns the valid area as a JTS geometry, if it's a complex area (otherwise use {@link
+     * #getValidAreaBounds()})
+     *
+     * @return
+     */
+    public Geometry getValidArea() {
+        return validArea;
     }
 
     protected void setCentralMeridian(double centralMeridian) {

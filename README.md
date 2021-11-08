@@ -1,4 +1,5 @@
-![GeoTools logo](/geotools-logo.png)
+This is a fork of [GeoTools](https://github.com/geotools/geotools).  The Geobuf and GeoJson modules are unsupported and conflict with PHC tech.  PHC will maintain these tools for internal use.
+[Change List](/changelist.md)
 
 [GeoTools](http://geotools.org) is an open source Java library that provides
  tools for geospatial data. Our Users guide provides an [overview](http://docs.geotools.org/latest/userguide/geotools.html) of the core features, supported formats and standards support.

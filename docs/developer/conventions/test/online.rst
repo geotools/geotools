@@ -132,30 +132,34 @@ _________
 Oracle Database Express Edition (XE) is an unsupported version
 of Oracle Database and can be used for free (`FAQ / details <https://www.oracle.com/database/technologies/appdev/xe/faq.html>`_).
 You can use the following to start a dockerized instance of Oracle Express (unfortunately Oracle does not provide an
-official docker image so we are using one from the community). ::
+official docker image so we are using one from the `community <https://hub.docker.com/r/gvenzl/oracle-xe>`_). ::
 
-    docker pull pvargacl/oracle-xe-18.4.0:latest
-    docker run --rm -p 1521:1521 --name geotools -h geotools -d pvargacl/oracle-xe-18.4.0:latest
+    docker pull gvenzl/oracle-xe:21.3.0
+    docker run --rm -p 1521:1521 --name geotools -h geotools -d gvenzl/oracle-xe:21.3.0
 
 It will take up to a few minutes for the database to start up. In case you need to change the portmappings eg.
-to have Oracle listen on port ``15211`` instead of the default ``1521`` use ``-p 15211:1521`` instead of ``-p 15211:1521``.
+to have Oracle listen on port ``15211`` instead of the default ``1521`` use ``-p 15211:1521`` instead of ``-p 1521:1521``.
 
 Note that the ``--rm`` option will delete the container after stopping it, the image is preserved so you won't need
 to pull it next time, but you may want to preserve the container so you don't have to build a new one. In that case see below::
 
-    docker run -p 1521:1521 --name geotools -h geotools -d pvargacl/oracle-xe-18.4.0:latest
+    docker run -p 1521:1521 --name geotools -h geotools -d gvenzl/oracle-xe:21.3.0
     # stopping
     docker stop geotools
     # starting
     docker start geotools
 
-Also note that the Oracle docker image and container will take quite a few gigabytes of disk space on your computer.
+Also note that:
+  * the Oracle docker image and container will take quite a few gigabytes of disk space on your computer.
+  * this docker image does not have Java installed, which means you can not use Java stored procedures such
+    as ``SDO_GEOMETRY('POINT (1.0 2.0)', 4326))``. You could use the docker tag ``21.3.0-full`` for that.
 
 To create a user and schema for testing you can use the following command::
 
     docker exec -i geotools sqlplus -l system/oracle@//localhost:1521/XE < build/ci/oracle/setup-oracle.sql
 
-The ``setup-oracle.sql`` can be found in `.travis/ <https://github.com/geotools/geotools/tree/master/.travis>`_ it consists of::
+
+The ``setup-oracle.sql`` can be found in `build/ci/oracle/ <https://github.com/ghttps://github.com/geotools/geotools/tree/main/build/ci/oracle>`_ it consists of::
 
     ALTER SESSION SET "_ORACLE_SCRIPT"=true;
     CREATE USER "GEOTOOLS" IDENTIFIED BY "geotools"  DEFAULT TABLESPACE "USERS" TEMPORARY TABLESPACE "TEMP";

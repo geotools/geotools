@@ -21,7 +21,9 @@ import static org.geotools.tile.impl.ScaleZoomLevelMatcher.getProjectedEnvelope;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,6 +34,7 @@ import org.geotools.ows.wms.CRSEnvelope;
 import org.geotools.ows.wmts.WMTSHelper;
 import org.geotools.ows.wmts.WMTSSpecification;
 import org.geotools.ows.wmts.model.TileMatrix;
+import org.geotools.ows.wmts.model.TileMatrixLimits;
 import org.geotools.ows.wmts.model.TileMatrixSet;
 import org.geotools.ows.wmts.model.TileMatrixSetLink;
 import org.geotools.ows.wmts.model.WMTSLayer;
@@ -183,7 +186,8 @@ public class WMTSTileService extends TileService {
     public WMTSTileService(
             String templateURL, WMTSLayer layer, TileMatrixSet tileMatrixSet, HTTPClient client) {
         super("wmts", templateURL, client);
-
+        Objects.requireNonNull(layer, "Layer must be non-null.");
+        Objects.requireNonNull(layer.getLatLonBoundingBox(), "Layer must have a BoundingBox.");
         this.layer = layer;
         this.tileMatrixSetName = tileMatrixSet.getIdentifier();
         this.envelope = new ReferencedEnvelope(layer.getLatLonBoundingBox());
@@ -408,10 +412,13 @@ public class WMTSTileService extends TileService {
                 return ret;
         }
 
-        // The first tile which covers the upper-left corner
-        Tile firstTile = tileFactory.findUpperLeftTile(ulLon, ulLat, zoomLevel, this);
+        final TileMatrixLimits limits = getLimits(getMatrixSetLink(), getMatrixSet(), zl);
 
-        if (firstTile == null) {
+        // The first tile which covers the upper-left corner
+        // constrained to limits
+        TileIdentifier upperLeft = identifyUpperLeftTile(ulLon, ulLat, zoomLevel);
+
+        if (upperLeft == null) {
             if (LOGGER.isLoggable(Level.INFO)) {
                 LOGGER.log(
                         Level.INFO,
@@ -426,6 +433,8 @@ public class WMTSTileService extends TileService {
             return ret;
         }
 
+        Tile firstTile = obtainTile(upperLeft);
+
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.log(
                     Level.FINE,
@@ -437,7 +446,6 @@ public class WMTSTileService extends TileService {
                             + firstTile.getExtent().getCoordinateReferenceSystem().getName()
                             + ")");
         }
-
         tileList.add(firstTile);
 
         Tile firstTileOfRow = firstTile;
@@ -449,7 +457,9 @@ public class WMTSTileService extends TileService {
                 // get the next tile right of this one
                 TileIdentifier rightIdentifier = movingTile.getTileIdentifier().getRightNeighbour();
 
-                if (rightIdentifier == null) { // no more tiles to the right
+                if (rightIdentifier == null
+                        || rightIdentifier.getX()
+                                > limits.getMaxcol()) { // no more tiles to the right
                     if (LOGGER.isLoggable(Level.FINE)) {
                         LOGGER.log(Level.FINE, "No tiles on the right of " + movingTile.getId());
                     }
@@ -459,6 +469,12 @@ public class WMTSTileService extends TileService {
                 Tile rightNeighbour = obtainTile(rightIdentifier);
 
                 // Check if the new tile is still part of the extent
+                // TODO! This check doesn't make sense. The tiles are rectangular according to
+                // reqExtentInTileCrs, and everyone will intersect.
+                // The check should've been against requestedExtent, especially if that one is in a
+                // different crs.
+                // Then we might end up with tiles that doesn't really fit into the requestedExtent.
+                // But then we should also have a transformation.
                 boolean intersects =
                         reqExtentInTileCrs.intersects((Envelope) rightNeighbour.getExtent());
                 if (intersects) {
@@ -490,7 +506,8 @@ public class WMTSTileService extends TileService {
             // get the next tile under the first one of the row
 
             TileIdentifier lowerIdentifier = firstTileOfRow.getTileIdentifier().getLowerNeighbour();
-            if (lowerIdentifier == null) { // no more tiles to the right
+            if (lowerIdentifier == null
+                    || lowerIdentifier.getY() > limits.getMaxrow()) { // no more tiles below
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.log(Level.FINE, "No more tiles below " + firstTileOfRow.getId());
                 }
@@ -500,6 +517,9 @@ public class WMTSTileService extends TileService {
 
             Tile lowerNeighbour = obtainTile(lowerIdentifier);
             // Check if the new tile is still part of the extent
+            // TODO Same as above. Should've been a check against requestExtent
+            // It should also take measure for that the left side could be scewed according to
+            // reqExtentInTileCrs
             boolean intersects =
                     reqExtentInTileCrs.intersects((Envelope) lowerNeighbour.getExtent());
 
@@ -520,6 +540,67 @@ public class WMTSTileService extends TileService {
         } while (tileList.size() < maxNumberOfTilesForZoomLevel);
 
         return tileList;
+    }
+
+    private TileIdentifier identifyUpperLeftTile(double lon, double lat, WMTSZoomLevel zoomLevel) {
+        // get the tile in the tilematrix
+        TileIdentifier coordTile = identifyTileAtCoordinate(lon, lat, zoomLevel);
+        return constrainToUpperLeftTile(coordTile, zoomLevel);
+    }
+
+    TileIdentifier constrainToUpperLeftTile(TileIdentifier coordTile, WMTSZoomLevel zl) {
+
+        TileMatrixLimits limits = getLimits(getMatrixSetLink(), getMatrixSet(), zl.getZoomLevel());
+
+        long origxTile = coordTile.getX();
+        long origyTile = coordTile.getY();
+        long xTile = origxTile;
+        long yTile = origyTile;
+
+        if (xTile >= limits.getMaxcol()) xTile = limits.getMaxcol() - 1;
+        if (yTile >= limits.getMaxrow()) yTile = limits.getMaxrow() - 1;
+
+        if (xTile < limits.getMincol()) xTile = limits.getMincol();
+        if (yTile < limits.getMinrow()) yTile = limits.getMinrow();
+
+        if (origxTile != xTile || origyTile != yTile) {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine(
+                        "findUpperLeftTile: constraining tile within limits: ("
+                                + origxTile
+                                + ","
+                                + origyTile
+                                + ") -> ("
+                                + xTile
+                                + ","
+                                + yTile
+                                + ")");
+            }
+        }
+
+        return new WMTSTileIdentifier((int) xTile, (int) yTile, zl, getName());
+    }
+
+    private TileMatrixLimits getLimits(TileMatrixSetLink tmsl, TileMatrixSet tms, int z) {
+
+        List<TileMatrixLimits> limitsList = tmsl.getLimits();
+        TileMatrixLimits limits;
+
+        if (limitsList != null && z < limitsList.size()) {
+            limits = limitsList.get(z);
+        } else {
+            // no limits defined in layer; let's take all the defined tiles
+            TileMatrix tileMatrix = tms.getMatrices().get(z);
+
+            limits = new TileMatrixLimits();
+            limits.setMinCol(0L);
+            limits.setMinRow(0L);
+            limits.setMaxCol(tileMatrix.getMatrixWidth() - 1);
+            limits.setMaxRow(tileMatrix.getMatrixHeight() - 1);
+            limits.setTileMatix(tms.getIdentifier());
+        }
+
+        return limits;
     }
 
     @Override

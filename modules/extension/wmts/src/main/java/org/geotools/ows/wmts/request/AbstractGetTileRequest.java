@@ -20,9 +20,7 @@ package org.geotools.ows.wmts.request;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
@@ -39,7 +37,6 @@ import org.geotools.ows.wms.StyleImpl;
 import org.geotools.ows.wmts.WMTSHelper;
 import org.geotools.ows.wmts.client.WMTSTileFactory;
 import org.geotools.ows.wmts.client.WMTSTileService;
-import org.geotools.ows.wmts.model.TileMatrixLimits;
 import org.geotools.ows.wmts.model.TileMatrixSet;
 import org.geotools.ows.wmts.model.TileMatrixSetLink;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
@@ -237,54 +234,7 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
                 Math.round(
                         RendererUtilities.calculateOGCScale(requestedBBox, requestedWidth, null));
 
-        // these are all the tiles available in the tilematrix within the requested bbox
-        Set<Tile> tiles =
-                wmtsService.findTilesInExtent(requestedBBox, (int) scale, false, MAXTILES);
-        if (LOGGER.isLoggable(Level.FINE))
-            LOGGER.fine("found " + tiles.size() + " tiles in " + requestedBBox);
-        if (tiles.isEmpty()) {
-            return tiles;
-        }
-        Tile first = tiles.iterator().next();
-        int z = first.getTileIdentifier().getZ();
-
-        TileMatrixSetLink tmsl = layer.getTileMatrixLinks().get(matrixSet.getIdentifier());
-        TileMatrixLimits limit = WMTSTileFactory.getLimits(tmsl, matrixSet, z);
-
-        // remove tiles outside layer's limits
-        List<Tile> tilesOutsideLimits = new ArrayList<>();
-        for (Tile tile : tiles) {
-
-            int x = tile.getTileIdentifier().getX();
-            int y = tile.getTileIdentifier().getY();
-            if (x < limit.getMincol() || x > limit.getMaxcol()) {
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.fine(
-                            "col "
-                                    + x
-                                    + " outside limits "
-                                    + limit.getMincol()
-                                    + " "
-                                    + limit.getMaxcol());
-                tilesOutsideLimits.add(tile);
-                continue;
-            }
-
-            if (y < limit.getMinrow() || y > limit.getMaxrow()) {
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.fine(
-                            "row "
-                                    + y
-                                    + " outside limits "
-                                    + limit.getMinrow()
-                                    + " "
-                                    + limit.getMaxrow());
-                tilesOutsideLimits.add(tile);
-            }
-        }
-        tiles.removeAll(tilesOutsideLimits);
-
-        return tiles;
+        return wmtsService.findTilesInExtent(requestedBBox, (int) scale, false, MAXTILES);
     }
 
     /**

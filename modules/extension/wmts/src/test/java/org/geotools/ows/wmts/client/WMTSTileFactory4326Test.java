@@ -135,9 +135,8 @@ public class WMTSTileFactory4326Test {
             int offset = 0;
 
             WMTSZoomLevel zoomLevel = service.getZoomLevel(tp.zoomlevel + offset);
-            TileIdentifier identifier = service.identifyTileAtCoordinate(tp.lon, tp.lat, zoomLevel);
-            Tile mtile = service.obtainTile(identifier);
-            Tile ltile = factory.constrainToUpperLeftTile(mtile, zoomLevel, service);
+            TileIdentifier mtile = service.identifyTileAtCoordinate(tp.lon, tp.lat, zoomLevel);
+            TileIdentifier ltile = service.constrainToUpperLeftTile(mtile, zoomLevel);
 
             /*System.out.println(
             tp.lat
@@ -166,10 +165,10 @@ public class WMTSTileFactory4326Test {
                     + tp.expectedLRow
                     + "]");*/
 
-            Assert.assertEquals("Bad mX", tp.expectedMCol, mtile.getTileIdentifier().getX());
-            Assert.assertEquals("Bad mY", tp.expectedMRow, mtile.getTileIdentifier().getY());
-            Assert.assertEquals("Bad lX", tp.expectedLCol, ltile.getTileIdentifier().getX());
-            Assert.assertEquals("Bad lY", tp.expectedLRow, ltile.getTileIdentifier().getY());
+            Assert.assertEquals("Bad mX", tp.expectedMCol, mtile.getX());
+            Assert.assertEquals("Bad mY", tp.expectedMRow, mtile.getY());
+            Assert.assertEquals("Bad lX", tp.expectedLCol, ltile.getX());
+            Assert.assertEquals("Bad lY", tp.expectedLRow, ltile.getY());
         }
     }
 

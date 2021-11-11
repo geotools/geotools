@@ -69,6 +69,7 @@ public class WMTSTileFactory extends TileFactory {
     }
 
     /** Find the first valid Upper Left tile for the current layer. */
+    @Deprecated
     public Tile findUpperLeftTile(
             double lon, double lat, WMTSZoomLevel zoomLevel, WMTSTileService service) {
         // get the tile in the tilematrix
@@ -76,6 +77,7 @@ public class WMTSTileFactory extends TileFactory {
         return constrainToUpperLeftTile(matrixTile, zoomLevel, service);
     }
 
+    @Deprecated
     public static TileMatrixLimits getLimits(TileMatrixSetLink tmsl, TileMatrixSet tms, int z) {
 
         List<TileMatrixLimits> limitsList = tmsl.getLimits();
@@ -99,6 +101,7 @@ public class WMTSTileFactory extends TileFactory {
     }
 
     /** If the tile is outside the limits, take a valid one which can be used to start a loop on. */
+    @Deprecated
     public WMTSTile constrainToUpperLeftTile(
             Tile matrixTile, WMTSZoomLevel zl, WMTSTileService service) {
 

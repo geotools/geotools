@@ -57,7 +57,7 @@ public class TileMatrixSet {
 
     private CRSEnvelope bbox;
 
-    private ArrayList<TileMatrix> matrices = new ArrayList<>();
+    private List<TileMatrix> matrices = new ArrayList<>();
 
     public void setIdentifier(String id) {
         this.identifier = id;
@@ -116,7 +116,7 @@ public class TileMatrixSet {
     }
 
     /** @param matrices the matrices to set */
-    public void setMatrices(ArrayList<TileMatrix> matrices) {
+    public void setMatrices(List<TileMatrix> matrices) {
         this.matrices = matrices;
     }
 

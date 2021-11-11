@@ -315,10 +315,10 @@ ____________________
 
 Db2 images are provided by `ibmcom on dockerhub <https://hub.docker.com/r/ibmcom/db2/>`_.
 
-Use the following to create and start a Db2 11.5.5.0 container listening on port 50000:::
+Use the following to create and start a Db2 db2:11.5.6.0a container listening on port 50000:::
 
-    docker pull ibmcom/db2:11.5.5.0
-    docker run -e 'LICENSE=accept' -e 'DB2INST1_PASSWORD=db2inst1' -e 'DBNAME=geotools' -e 'ARCHIVE_LOGS=false' --rm -p 50000:50000 --name geotools --privileged=true -d ibmcom/db2:11.5.5.0
+    docker pull ibmcom/db2:db2:11.5.6.0a
+    docker run -e 'LICENSE=accept' -e 'DB2INST1_PASSWORD=db2inst1' -e 'DBNAME=geotools' -e 'ARCHIVE_LOGS=false' --rm -p 50000:50000 --name geotools --privileged=true -d ibmcom/db2:11.5.6.0a
 
 Note that the ``--rm`` option will delete the container after stopping it, the image is preserved so you won't need
 to pull it next time, but you may want to preserve the container or map some volumes so you don't have to setup a new one.

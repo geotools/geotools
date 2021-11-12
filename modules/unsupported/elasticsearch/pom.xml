@@ -38,10 +38,12 @@
     </developer>
   </developers>
   <properties>
-    <!-- apparently the ES docker image that Testcontainers looks for does not exist with the current version,
-         7.10.2 is the latest "OSS" version: https://www.docker.elastic.co/r/elasticsearch/elasticsearch-oss -->
-    <!-- <elastic.test.version>${elasticsearch.version}</elastic.test.version> -->
+    <!-- To run the OOS version use the following (7.10.2 is the latest OSS)
+         Also check https://www.docker.elastic.co/r/elasticsearch/elasticsearch-oss for updates
+    -->
+    <elastic.test.image>docker.elastic.co/elasticsearch/elasticsearch-oss</elastic.test.image>
     <elastic.test.version>7.10.2</elastic.test.version>
+    <!-- To run the latest check out https://www.docker.elastic.co/r/elasticsearch/elasticsearch -->
   </properties>
   <dependencies>
     <dependency>
@@ -157,7 +159,7 @@
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>elasticsearch</artifactId>
-      <version>1.16.0</version>
+      <version>1.16.2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -245,6 +247,7 @@
               <argLine>-Djava.util.logging.config.file=${project.build.directory}/test-classes/test-classes/logging.properties</argLine>
               <skipTests>${skipOnlineTests}</skipTests>
               <systemPropertyVariables>
+                <elastic.test.image>${elastic.test.image}</elastic.test.image>
                 <elastic.test.version>${elastic.test.version}</elastic.test.version>
               </systemPropertyVariables>
             </configuration>

@@ -29,8 +29,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-import org.elasticsearch.common.joda.Joda;
 import org.geotools.data.Query;
+import org.geotools.data.elasticsearch.date.DateFormat;
+import org.geotools.data.elasticsearch.date.ElasticsearchDateConverter;
 import org.geotools.data.geojson.GeoJSONWriter;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.Capabilities;
@@ -38,7 +39,6 @@ import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.joda.time.format.DateTimeFormatter;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -126,8 +126,8 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
     private static final ObjectReader mapReader =
             mapper.readerWithView(Map.class).forType(HashMap.class);
 
-    private static final DateTimeFormatter DEFAULT_DATE_FORMATTER =
-            Joda.forPattern("date_optional_time").printer();
+    private static final ElasticsearchDateConverter DEFAULT_DATE_FORMATTER =
+            ElasticsearchDateConverter.of(DateFormat.date_optional_time);
 
     /** The filter types that this class can encode */
     private Capabilities capabilities = null;
@@ -165,7 +165,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
 
     private Object end;
 
-    private DateTimeFormatter dateFormatter;
+    private ElasticsearchDateConverter dateFormatter;
 
     public FilterToElastic() {
         queryBuilder = ElasticConstants.MATCH_ALL;
@@ -1095,7 +1095,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
         field = literal;
 
         if (Date.class.isAssignableFrom(literal.getClass())) {
-            field = dateFormatter.print(((Date) literal).getTime());
+            field = dateFormatter.format((Date) literal);
         }
     }
 
@@ -1247,7 +1247,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
             if (validFormats != null) {
                 for (String format : validFormats) {
                     try {
-                        dateFormatter = Joda.forPattern(format).printer();
+                        dateFormatter = ElasticsearchDateConverter.forFormat(format);
                         break;
                     } catch (Exception e) {
                         LOGGER.fine(

@@ -29,10 +29,10 @@ import org.apache.http.HttpHost;
 import org.elasticsearch.client.Request;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
-import org.elasticsearch.common.joda.Joda;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.elasticsearch.ElasticAttribute.ElasticGeometryType;
+import org.geotools.data.elasticsearch.date.ElasticsearchDateConverter;
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
@@ -372,7 +372,7 @@ public class ElasticDataStore extends ContentDataStore {
                     } else {
                         if (!availableFormat.contains("\\|\\|")) {
                             try {
-                                Joda.forPattern(availableFormat);
+                                ElasticsearchDateConverter.forFormat(availableFormat);
                                 validFormats.add(availableFormat);
                             } catch (Exception e) {
                                 LOGGER.fine(
@@ -385,7 +385,7 @@ public class ElasticDataStore extends ContentDataStore {
                             String[] formats = availableFormat.split("\\|\\|");
                             for (String format : formats) {
                                 try {
-                                    Joda.forPattern(format);
+                                    ElasticsearchDateConverter.forFormat(availableFormat);
                                     validFormats.add(format);
                                 } catch (Exception e) {
                                     LOGGER.fine(

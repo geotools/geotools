@@ -24,12 +24,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-import org.elasticsearch.common.joda.Joda;
 import org.geotools.data.FeatureReader;
+import org.geotools.data.elasticsearch.date.ElasticsearchDateConverter;
 import org.geotools.data.store.ContentState;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.util.logging.Logging;
-import org.joda.time.format.DateTimeFormatter;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -173,13 +172,13 @@ class ElasticFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFea
                     final List<String> validFormats =
                             (List<String>)
                                     descriptor.getUserData().get(ElasticConstants.DATE_FORMAT);
-                    DateTimeFormatter dateFormatter = null;
+                    ElasticsearchDateConverter dateFormatter = null;
                     Date date = null;
                     if (!(validFormats == null) && !(validFormats.isEmpty())) {
                         for (String format : validFormats) {
                             try {
-                                dateFormatter = Joda.forPattern(format).parser();
-                                date = dateFormatter.parseDateTime((String) dataVal).toDate();
+                                dateFormatter = ElasticsearchDateConverter.forFormat(format);
+                                date = dateFormatter.parse((String) dataVal);
                                 break;
                             } catch (Exception e) {
                                 LOGGER.fine(
@@ -192,11 +191,11 @@ class ElasticFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFea
                     }
                     if (dateFormatter == null) {
                         LOGGER.fine("Unable to find any valid date format for " + descriptor);
-                        dateFormatter = Joda.forPattern("date_optional_time").parser();
+                        dateFormatter = ElasticsearchDateConverter.forFormat("date_optional_time");
                     }
                     if (date == null) {
                         LOGGER.fine("Unable to find any valid date format for " + dataVal);
-                        date = dateFormatter.parseDateTime((String) dataVal).toDate();
+                        date = dateFormatter.parse((String) dataVal);
                     }
                     builder.set(name, date);
                 }

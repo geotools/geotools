@@ -83,10 +83,6 @@
       <artifactId>guava</artifactId>
     </dependency>
     <dependency>
-      <groupId>joda-time</groupId>
-      <artifactId>joda-time</artifactId>
-    </dependency>
-    <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
     </dependency>
@@ -170,34 +166,6 @@
   </dependencies>
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>unpack</id>
-            <phase>process-sources</phase>
-            <goals>
-              <goal>unpack</goal>
-            </goals>
-            <configuration>
-              <overWriteReleases>true</overWriteReleases>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>org.elasticsearch</groupId>
-                  <artifactId>elasticsearch</artifactId>
-                  <!-- Use Elasticsearch Joda time parser and formatter to enable support for time formats found in mappings.
-                  Use v6.4.3 to avoid extra dependencies added in later versions to keep ElasticGeo jar small. -->
-                  <version>6.4.3</version>
-                  <includes>**/Joda.java,**/FormatDateTimeFormatter.java,**/StrictISODateTimeFormat.java</includes>
-                  <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
-                  <classifier>sources</classifier>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>

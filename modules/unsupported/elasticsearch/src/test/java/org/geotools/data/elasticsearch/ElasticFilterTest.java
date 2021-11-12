@@ -1131,8 +1131,7 @@ public class ElasticFilterTest {
         Map<String, Object> expected =
                 ImmutableMap.of(
                         "range",
-                        ImmutableMap.of(
-                                "dateAttr", ImmutableMap.of("gt", "1970-01-01T00:00:00.000Z")));
+                        ImmutableMap.of("dateAttr", ImmutableMap.of("gt", "1970-01-01T00:00:00Z")));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -1142,13 +1141,13 @@ public class ElasticFilterTest {
     @Test
     public void testNestedTemporalStringLiteral() {
         After filter =
-                ff.after(ff.property("nested.datehej"), ff.literal("1970-01-01T00:00:00.000Z"));
+                ff.after(ff.property("nested.datehej"), ff.literal("1970-01-01T00:00:00.123Z"));
         Map<String, Object> expectedFilter =
                 ImmutableMap.of(
                         "range",
                         ImmutableMap.of(
                                 "nested.datehej",
-                                ImmutableMap.of("gt", "1970-01-01T00:00:00.000Z")));
+                                ImmutableMap.of("gt", "1970-01-01T00:00:00.123Z")));
         Map<String, Object> expected =
                 ImmutableMap.of(
                         "nested", ImmutableMap.of("path", "nested", "query", expectedFilter));
@@ -1168,8 +1167,7 @@ public class ElasticFilterTest {
         Map<String, Object> expected =
                 ImmutableMap.of(
                         "range",
-                        ImmutableMap.of(
-                                "dateAttr", ImmutableMap.of("gt", "1970-07-19T00:00:00.000Z")));
+                        ImmutableMap.of("dateAttr", ImmutableMap.of("gt", "1970-07-19T00:00:00Z")));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));

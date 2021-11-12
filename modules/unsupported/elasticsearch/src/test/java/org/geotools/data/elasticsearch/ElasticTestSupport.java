@@ -50,15 +50,22 @@ import org.testcontainers.elasticsearch.ElasticsearchContainer;
 
 public class ElasticTestSupport {
 
-    private static final String IMAGE = "docker.elastic.co/elasticsearch/elasticsearch-oss";
+    private static final String IMAGE_PROPERTY_NAME = "elastic.test.image";
+
+    /** The pure Apache licensed version */
+    private static final String DEFAULT_IMAGE = "docker.elastic.co/elasticsearch/elasticsearch-oss";
 
     private static final String VERSION_PROPERTY_NAME = "elastic.test.version";
+
+    /** Last version provided on the OSS build */
+    private static final String DEFAULT_VERSION = "7.10.2";
 
     private static ElasticsearchContainer elasticsearch;
 
     static {
-        elasticsearch =
-                new ElasticsearchContainer(IMAGE + ":" + System.getProperty(VERSION_PROPERTY_NAME));
+        String image = System.getProperty(IMAGE_PROPERTY_NAME, DEFAULT_IMAGE);
+        String version = System.getProperty(VERSION_PROPERTY_NAME, DEFAULT_VERSION);
+        elasticsearch = new ElasticsearchContainer(image + ":" + version);
         elasticsearch.start();
     }
 

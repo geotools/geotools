@@ -1595,6 +1595,7 @@
           <compilerArgs>
             <arg>-Xlint:${lint}</arg>
           </compilerArgs>
+            	<useIncrementalCompilation>true</useIncrementalCompilation>
         </configuration>
       </plugin>
 
@@ -2307,6 +2308,7 @@
                   <version>${errorProne.version}</version>
                 </path>
               </annotationProcessorPaths>
+            	<useIncrementalCompilation>true</useIncrementalCompilation>
             </configuration>
           </plugin>
         </plugins>
@@ -2346,6 +2348,7 @@
                   <version>${errorProne.version}</version>
                 </path>
               </annotationProcessorPaths>
+            	<useIncrementalCompilation>true</useIncrementalCompilation>
             </configuration>
           </plugin>
         </plugins>

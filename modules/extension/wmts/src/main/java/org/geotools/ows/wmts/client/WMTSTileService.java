@@ -21,7 +21,6 @@ import static org.geotools.tile.impl.ScaleZoomLevelMatcher.getProjectedEnvelope;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -412,7 +411,8 @@ public class WMTSTileService extends TileService {
                 return ret;
         }
 
-        final TileMatrixLimits limits = getLimits(getMatrixSetLink(), getMatrixSet(), zl);
+        final TileMatrixLimits limits =
+                WMTSTileFactory.getLimits(getMatrixSetLink(), getMatrixSet(), zl);
 
         // The first tile which covers the upper-left corner
         // constrained to limits
@@ -542,15 +542,21 @@ public class WMTSTileService extends TileService {
         return tileList;
     }
 
-    private TileIdentifier identifyUpperLeftTile(double lon, double lat, WMTSZoomLevel zoomLevel) {
+    /**
+     * Use the given longitude, latitude to find the appropriate tile in the upper left corner given
+     * the zoomlevel, and constrained to the limits.
+     */
+    TileIdentifier identifyUpperLeftTile(double lon, double lat, WMTSZoomLevel zoomLevel) {
         // get the tile in the tilematrix
         TileIdentifier coordTile = identifyTileAtCoordinate(lon, lat, zoomLevel);
         return constrainToUpperLeftTile(coordTile, zoomLevel);
     }
 
+    /** Consider the limits of the WMTSLayer before returning the upperleft tile. */
     TileIdentifier constrainToUpperLeftTile(TileIdentifier coordTile, WMTSZoomLevel zl) {
 
-        TileMatrixLimits limits = getLimits(getMatrixSetLink(), getMatrixSet(), zl.getZoomLevel());
+        TileMatrixLimits limits =
+                WMTSTileFactory.getLimits(getMatrixSetLink(), getMatrixSet(), zl.getZoomLevel());
 
         long origxTile = coordTile.getX();
         long origyTile = coordTile.getY();
@@ -579,28 +585,6 @@ public class WMTSTileService extends TileService {
         }
 
         return new WMTSTileIdentifier((int) xTile, (int) yTile, zl, getName());
-    }
-
-    private TileMatrixLimits getLimits(TileMatrixSetLink tmsl, TileMatrixSet tms, int z) {
-
-        List<TileMatrixLimits> limitsList = tmsl.getLimits();
-        TileMatrixLimits limits;
-
-        if (limitsList != null && z < limitsList.size()) {
-            limits = limitsList.get(z);
-        } else {
-            // no limits defined in layer; let's take all the defined tiles
-            TileMatrix tileMatrix = tms.getMatrices().get(z);
-
-            limits = new TileMatrixLimits();
-            limits.setMinCol(0L);
-            limits.setMinRow(0L);
-            limits.setMaxCol(tileMatrix.getMatrixWidth() - 1);
-            limits.setMaxRow(tileMatrix.getMatrixHeight() - 1);
-            limits.setTileMatix(tms.getIdentifier());
-        }
-
-        return limits;
     }
 
     @Override

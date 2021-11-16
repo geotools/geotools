@@ -366,7 +366,11 @@ public class ThreadedEpsgFactory extends DeferredAuthorityFactory
      *     code.
      */
     private AbstractAuthorityFactory createBackingStore0() throws FactoryException, SQLException {
-        assert Thread.holdsLock(this);
+        /*
+         * We are locking on ReferencingFactoryFinder to avoid deadlocks.
+         * @see DeferredAuthorityFactory#getBackingStore()
+         */
+        assert Thread.holdsLock(ReferencingFactoryFinder.class);
         final Hints sourceHints = new Hints(hints);
         sourceHints.putAll(factories.getImplementationHints());
         if (datasource != null) {

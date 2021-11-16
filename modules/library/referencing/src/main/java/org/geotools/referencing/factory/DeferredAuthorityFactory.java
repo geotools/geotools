@@ -27,13 +27,14 @@ import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
+import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.factory.OptionalFactory;
 import org.opengis.referencing.FactoryException;
 
 /**
  * A buffered authority factory which will defer the {@linkplain #createBackingStore creation of a
- * backing store} until when first needed. This approach allow to etablish a connection to a
+ * backing store} until when first needed. This approach allow to establish a connection to a
  * database (for example) only when first needed. In addition, the backing store can be
  * automatically disposed after a timeout and recreated when needed again.
  *
@@ -109,7 +110,12 @@ public abstract class DeferredAuthorityFactory extends BufferedAuthorityFactory
     @Override
     protected final AbstractAuthorityFactory getBackingStore() throws FactoryException {
         if (backingStore == null) {
-            synchronized (this) {
+            // [GEOT-7022]
+            // Concurrent accesses to Authority Factories may result in one factory locking
+            // on "this" whilst the other factory goes through ReferencingFactoryFinder
+            // which may result into trying to lock on "this" too.
+            // So we are locking on ReferencingFactoryFinder to avoid deadlocks.
+            synchronized (ReferencingFactoryFinder.class) {
                 if (backingStore == null) {
                     backingStore = createBackingStore();
                     if (backingStore == null) {

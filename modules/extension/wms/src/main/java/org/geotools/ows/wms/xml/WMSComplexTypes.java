@@ -23,10 +23,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 import javax.naming.OperationNotSupportedException;
 import org.geotools.data.ows.Service;
 import org.geotools.metadata.iso.citation.AddressImpl;
@@ -2837,8 +2838,8 @@ public class WMSComplexTypes {
 
             Layer layer = new Layer();
 
-            Set<String> crs = new TreeSet<>();
-            Map<String, CRSEnvelope> boundingBoxes = new HashMap<>();
+            Set<String> crs = new LinkedHashSet<>();
+            Map<String, CRSEnvelope> boundingBoxes = new LinkedHashMap<>();
             Map<String, Dimension> dimensions = new HashMap<>();
             Map<String, Extent> extents = new HashMap<>();
             List<StyleImpl> styles = new ArrayList<>();

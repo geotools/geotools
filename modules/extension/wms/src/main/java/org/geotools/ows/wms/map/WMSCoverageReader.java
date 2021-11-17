@@ -25,12 +25,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -41,6 +42,7 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.ows.ServiceException;
+import org.geotools.ows.wms.CRSEnvelope;
 import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wms.WebMapServer;
 import org.geotools.ows.wms.request.GetFeatureInfoRequest;
@@ -152,15 +154,23 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
         this.layers.add(new LayerStyle(layer, style));
 
         if (srsName == null) {
-            // initialize from first layer
-            for (String srs : layer.getBoundingBoxes().keySet()) {
-                try {
-                    // check it's valid, if not we crap out and move to the next
-                    CRS.decode(srs);
-                    srsName = srs;
-                    break;
-                } catch (Exception e) {
-                    // it's fine, we could not decode that code
+            // check first srs available on srs set and
+            String priorityCRS = getCRSWithBoundingBoxes(layer);
+            if (priorityCRS != null) {
+                srsName = priorityCRS;
+            }
+
+            if (srsName == null) {
+                // initialize from first layer
+                for (String srs : layer.getBoundingBoxes().keySet()) {
+                    try {
+                        // check it's valid, if not we crap out and move to the next
+                        CRS.decode(srs);
+                        srsName = srs;
+                        break;
+                    } catch (Exception e) {
+                        // it's fine, we could not decode that code
+                    }
                 }
             }
 
@@ -173,9 +183,9 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
                     srsName = layer.getSrs().iterator().next();
                 }
             }
-            validSRS = layer.getSrs();
+            validSRS = new LinkedHashSet<>(layer.getSrs());
         } else {
-            Set<String> intersection = new HashSet<>(validSRS);
+            Set<String> intersection = new LinkedHashSet<>(validSRS);
             intersection.retainAll(layer.getSrs());
 
             // can we reuse what we have?
@@ -205,6 +215,30 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
 
         // update the cached bounds and the reader original envelope
         updateBounds();
+    }
+
+    /** Returns the first CRS from layer srs list that matches with bounding boxes map keys. */
+    private String getCRSWithBoundingBoxes(Layer layer) {
+        // return the first valid CRS with bounding box
+        for (String srs : getCRSWithBoundingBoxesList(layer)) {
+            try {
+                // check it's valid, if not we crap out and move to the next
+                CRS.decode(srs);
+                return srs;
+            } catch (Exception e) {
+                LOGGER.log(Level.FINE, "Error decoding CRS code.", e);
+            }
+        }
+        return null;
+    }
+
+    private List<String> getCRSWithBoundingBoxesList(Layer layer) {
+        Set<String> layerSrsSet = new LinkedHashSet<>(layer.getSrs());
+        Map<String, CRSEnvelope> boundingBoxes = layer.getBoundingBoxes();
+        return layerSrsSet
+                .stream()
+                .filter(crs -> boundingBoxes.containsKey(crs))
+                .collect(Collectors.toList());
     }
 
     /** Issues GetFeatureInfo against a point using the params of the last GetMap request */

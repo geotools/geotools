@@ -21,7 +21,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -72,7 +73,7 @@ public class Layer implements Comparable<Layer> {
      * A set of Strings representing SRSs. These are the SRSs contributed by this layer. For the
      * complete list you need to consider these values and those defined by its parent.
      */
-    protected Set<String> srs = new HashSet<>();
+    protected Set<String> srs = new LinkedHashSet<>();
 
     /**
      * The bounding boxes on each layer; usually this matches the actual data coordinate reference
@@ -201,7 +202,7 @@ public class Layer implements Comparable<Layer> {
      */
     public synchronized Map<String, CRSEnvelope> getBoundingBoxes() {
         if (allBoundingBoxesCache == null) {
-            allBoundingBoxesCache = new HashMap<>();
+            allBoundingBoxesCache = new LinkedHashMap<>();
 
             for (CRSEnvelope bbox : getLayerBoundingBoxes()) {
                 allBoundingBoxesCache.put(bbox.getSRSName(), bbox);
@@ -210,7 +211,9 @@ public class Layer implements Comparable<Layer> {
             Layer parent = this.getParent();
             while (parent != null && allBoundingBoxesCache.isEmpty()) {
                 for (CRSEnvelope bbox : parent.getLayerBoundingBoxes()) {
-                    allBoundingBoxesCache.put(bbox.getSRSName(), bbox);
+                    if (!allBoundingBoxesCache.containsKey(bbox.getSRSName())) {
+                        allBoundingBoxesCache.put(bbox.getSRSName(), bbox);
+                    }
                 }
                 parent = parent.getParent();
             }
@@ -232,7 +235,18 @@ public class Layer implements Comparable<Layer> {
      */
     public void setBoundingBoxes(Map<String, CRSEnvelope> boundingBoxes) {
         this.boundingBoxes.clear();
-        this.boundingBoxes.addAll(boundingBoxes.values());
+        // prioritize CRS order available already on SRS set
+        LinkedHashMap<String, CRSEnvelope> bboxesInternal = new LinkedHashMap<>(boundingBoxes);
+        List<CRSEnvelope> prioritizedBboxes = new ArrayList<>();
+        for (String esrs : srs) {
+            if (bboxesInternal.containsKey(esrs)) {
+                prioritizedBboxes.add(bboxesInternal.get(esrs));
+                bboxesInternal.remove(esrs);
+            }
+        }
+        // add all remaining bboxes
+        prioritizedBboxes.addAll(bboxesInternal.values());
+        this.boundingBoxes.addAll(prioritizedBboxes);
     }
 
     /**
@@ -402,7 +416,7 @@ public class Layer implements Comparable<Layer> {
     public Set<String> getSrs() {
         synchronized (this) {
             if (allSRSCache == null) {
-                allSRSCache = new HashSet<>(srs);
+                allSRSCache = new LinkedHashSet<>(srs);
                 // Get my ancestor's srs/crs
                 Layer parent = this.getParent();
                 if (parent != null) {

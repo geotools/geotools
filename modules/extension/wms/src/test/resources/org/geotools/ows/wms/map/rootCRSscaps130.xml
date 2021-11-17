@@ -1,0 +1,371 @@
+<?xml version="1.0"?>
+<WMS_Capabilities xmlns="http://www.opengis.net/wms" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.3.0" updateSequence="1159" xsi:schemaLocation="http://www.opengis.net/wms http://schemas.opengis.net/wms/1.3.0/capabilities_1_3_0.xsd">
+  <Service>
+    <Name>WMS</Name>
+    <Title>WMS</Title>
+    <Abstract>Minimal test caps document for a WMS 1.3 server</Abstract>
+    <KeywordList>
+      <Keyword>GEOSERVER</Keyword>
+    </KeywordList>
+    <OnlineResource xlink:type="simple" xlink:href="http://www.geoserver.org"/>
+  </Service>
+  <Capability>
+    <Request>
+      <GetCapabilities>
+        <Format>text/xml</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xlink:type="simple" xlink:href="http://geoserver.org/geoserver/ows?SERVICE=WMS&amp;"/>
+            </Get>
+          </HTTP>
+        </DCPType>
+      </GetCapabilities>
+      <GetMap>
+        <Format>image/png</Format>
+        <Format>image/jpg</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xlink:type="simple" xlink:href="http://geoserver.org/geoserver/ows?SERVICE=WMS&amp;"/>
+            </Get>
+          </HTTP>
+        </DCPType>
+      </GetMap>
+      <GetFeatureInfo>
+        <Format>text/plain</Format>
+        <Format>application/vnd.ogc.gml</Format>
+        <Format>application/vnd.ogc.gml/3.1.1</Format>
+        <Format>text/html</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xlink:type="simple" xlink:href="http://geoserver.org/geoserver/ows?SERVICE=WMS&amp;"/>
+            </Get>
+          </HTTP>
+        </DCPType>
+      </GetFeatureInfo>
+    </Request>
+    <Exception>
+      <Format>XML</Format>
+      <Format>INIMAGE</Format>
+      <Format>BLANK</Format>
+    </Exception>
+    <Layer>
+      <Title>Root</Title>
+      <!--Limited list of EPSG projections: -->
+      <CRS>EPSG:3395</CRS>
+      <CRS>EPSG:5041</CRS>
+      <CRS>EPSG:5042</CRS>
+      <CRS>EPSG:4326</CRS>
+      <CRS>EPSG:32601</CRS>
+      <CRS>EPSG:32602</CRS>
+      <CRS>EPSG:32603</CRS>
+      <CRS>EPSG:32604</CRS>
+      <CRS>EPSG:32605</CRS>
+      <CRS>EPSG:32606</CRS>
+      <CRS>EPSG:32607</CRS>
+      <CRS>EPSG:32608</CRS>
+      <CRS>EPSG:32609</CRS>
+      <CRS>EPSG:32610</CRS>
+      <CRS>EPSG:32611</CRS>
+      <CRS>EPSG:32612</CRS>
+      <CRS>EPSG:32613</CRS>
+      <CRS>EPSG:32614</CRS>
+      <CRS>EPSG:32615</CRS>
+      <CRS>EPSG:32616</CRS>
+      <CRS>EPSG:32617</CRS>
+      <CRS>EPSG:32618</CRS>
+      <CRS>EPSG:32619</CRS>
+      <CRS>EPSG:32620</CRS>
+      <CRS>EPSG:32621</CRS>
+      <CRS>EPSG:32622</CRS>
+      <CRS>EPSG:32623</CRS>
+      <CRS>EPSG:32624</CRS>
+      <CRS>EPSG:32625</CRS>
+      <CRS>EPSG:32626</CRS>
+      <CRS>EPSG:32627</CRS>
+      <CRS>EPSG:32628</CRS>
+      <CRS>EPSG:32629</CRS>
+      <CRS>EPSG:32630</CRS>
+      <CRS>EPSG:32631</CRS>
+      <CRS>EPSG:32632</CRS>
+      <CRS>EPSG:32633</CRS>
+      <CRS>EPSG:32634</CRS>
+      <CRS>EPSG:32635</CRS>
+      <CRS>EPSG:32636</CRS>
+      <CRS>EPSG:32637</CRS>
+      <CRS>EPSG:32638</CRS>
+      <CRS>EPSG:32639</CRS>
+      <CRS>EPSG:32640</CRS>
+      <CRS>EPSG:32641</CRS>
+      <CRS>EPSG:32642</CRS>
+      <CRS>EPSG:32643</CRS>
+      <CRS>EPSG:32644</CRS>
+      <CRS>EPSG:32645</CRS>
+      <CRS>EPSG:32646</CRS>
+      <CRS>EPSG:32647</CRS>
+      <CRS>EPSG:32648</CRS>
+      <CRS>EPSG:32649</CRS>
+      <CRS>EPSG:32650</CRS>
+      <CRS>EPSG:32651</CRS>
+      <CRS>EPSG:32652</CRS>
+      <CRS>EPSG:32653</CRS>
+      <CRS>EPSG:32654</CRS>
+      <CRS>EPSG:32655</CRS>
+      <CRS>EPSG:32656</CRS>
+      <CRS>EPSG:32657</CRS>
+      <CRS>EPSG:32658</CRS>
+      <CRS>EPSG:32659</CRS>
+      <CRS>EPSG:32660</CRS>
+      <CRS>EPSG:32701</CRS>
+      <CRS>EPSG:32702</CRS>
+      <CRS>EPSG:32703</CRS>
+      <CRS>EPSG:32704</CRS>
+      <CRS>EPSG:32705</CRS>
+      <CRS>EPSG:32706</CRS>
+      <CRS>EPSG:32707</CRS>
+      <CRS>EPSG:32708</CRS>
+      <CRS>EPSG:32709</CRS>
+      <CRS>EPSG:32710</CRS>
+      <CRS>EPSG:32711</CRS>
+      <CRS>EPSG:32712</CRS>
+      <CRS>EPSG:32713</CRS>
+      <CRS>EPSG:32714</CRS>
+      <CRS>EPSG:32715</CRS>
+      <CRS>EPSG:32716</CRS>
+      <CRS>EPSG:32717</CRS>
+      <CRS>EPSG:32718</CRS>
+      <CRS>EPSG:32719</CRS>
+      <CRS>EPSG:32720</CRS>
+      <CRS>EPSG:32721</CRS>
+      <CRS>EPSG:32722</CRS>
+      <CRS>EPSG:32723</CRS>
+      <CRS>EPSG:32724</CRS>
+      <CRS>EPSG:32725</CRS>
+      <CRS>EPSG:32726</CRS>
+      <CRS>EPSG:32727</CRS>
+      <CRS>EPSG:32728</CRS>
+      <CRS>EPSG:32729</CRS>
+      <CRS>EPSG:32730</CRS>
+      <CRS>EPSG:32731</CRS>
+      <CRS>EPSG:32732</CRS>
+      <CRS>EPSG:32733</CRS>
+      <CRS>EPSG:32734</CRS>
+      <CRS>EPSG:32735</CRS>
+      <CRS>EPSG:32736</CRS>
+      <CRS>EPSG:32737</CRS>
+      <CRS>EPSG:32738</CRS>
+      <CRS>EPSG:32739</CRS>
+      <CRS>EPSG:32740</CRS>
+      <CRS>EPSG:32741</CRS>
+      <CRS>EPSG:32742</CRS>
+      <CRS>EPSG:32743</CRS>
+      <CRS>EPSG:32744</CRS>
+      <CRS>EPSG:32745</CRS>
+      <CRS>EPSG:32746</CRS>
+      <CRS>EPSG:32747</CRS>
+      <CRS>EPSG:32748</CRS>
+      <CRS>EPSG:32749</CRS>
+      <CRS>EPSG:32750</CRS>
+      <CRS>EPSG:32751</CRS>
+      <CRS>EPSG:32752</CRS>
+      <CRS>EPSG:32753</CRS>
+      <CRS>EPSG:32754</CRS>
+      <CRS>EPSG:32755</CRS>
+      <CRS>EPSG:32756</CRS>
+      <CRS>EPSG:32757</CRS>
+      <CRS>EPSG:32758</CRS>
+      <CRS>EPSG:32759</CRS>
+      <CRS>EPSG:32760</CRS>
+      <CRS>CRS:84</CRS>
+      <EX_GeographicBoundingBox>
+        <westBoundLongitude>-180</westBoundLongitude>
+        <eastBoundLongitude>180</eastBoundLongitude>
+        <southBoundLatitude>-90</southBoundLatitude>
+        <northBoundLatitude>90</northBoundLatitude>
+      </EX_GeographicBoundingBox>
+      <BoundingBox CRS="CRS:84" minx="-180.00000000000003" miny="-90.0" maxx="180.0000000000002" maxy="90.0"/>
+      <BoundingBox CRS="EPSG:4326" minx="-90.0" miny="-180.00000000000003" maxx="90.0" maxy="180.0000000000002"/>
+      <BoundingBox CRS="EPSG:3395" minx="-2.0037508342789244E7" miny="-1.5496570739723722E7" maxx="2.0037508342789244E7" maxy="1.876465623138057E7"/>
+      <BoundingBox CRS="EPSG:32715" minx="-3.340782931237003E8" miny="-3.8923699179035425E7" maxx="9.084170763910568E7" maxy="5.8923699179035425E7"/>
+      <BoundingBox CRS="EPSG:32601" minx="-8.984170763910644E7" miny="-4.892369917903618E7" maxx="3.350782931237026E8" maxy="4.892369917903618E7"/>
+      <Layer queryable="1">
+        <Name>world4326</Name>
+        <Title>world4326</Title>
+        <CRS>EPSG:3395</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-180</westBoundLongitude>
+          <eastBoundLongitude>180</eastBoundLongitude>
+          <southBoundLatitude>-90</southBoundLatitude>
+          <northBoundLatitude>90</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-180.00000000000003" miny="-79.99999999999945" maxx="180.00000000000003" maxy="83.99999999999999"/>
+        <BoundingBox CRS="EPSG:3395" minx="-2.0037508342789244E7" miny="-1.5496570739723722E7" maxx="2.0037508342789244E7" maxy="1.876465623138057E7"/>
+        <BoundingBox CRS="EPSG:5041" minx="-1.4149400752969503E8" miny="-1.4149400752969503E8" maxx="1.4549400752969503E8" maxy="1.4549400752969503E8"/>
+        <BoundingBox CRS="EPSG:5042" minx="-2.3753079787141195E8" miny="-2.3753079787141195E8" maxx="2.4153079787141195E8" maxy="2.4153079787141195E8"/>
+        <BoundingBox CRS="EPSG:4326" minx="-79.99999999999945" miny="-180.00000000000003" maxx="83.99999999999999" maxy="180.00000000000003"/>
+        <BoundingBox CRS="EPSG:32601" minx="-4.418305675819731E7" miny="-1.2425938688468952E7" maxx="1.7392357091978702E8" maxy="4.4245692892007065E8"/>
+        <BoundingBox CRS="EPSG:32602" minx="-3.4632574717617646E7" miny="-1.2050099126201635E7" maxx="1.4600097218489215E8" maxy="3.4579765564092916E8"/>
+        <BoundingBox CRS="EPSG:32603" minx="-2.664601284536301E7" miny="-1.1753780899024552E7" maxx="1.2248074908394954E8" maxy="2.686435945534434E8"/>
+        <BoundingBox CRS="EPSG:32604" minx="-2.5766016094511732E7" miny="-1.1516890290959207E7" maxx="1.0272875614478281E8" maxy="2.0745631708746573E8"/>
+        <BoundingBox CRS="EPSG:32605" minx="-3.030244527318196E7" miny="-1.1323296420284266E7" maxx="8.61890915498358E7" maxy="1.592575494759665E8"/>
+        <BoundingBox CRS="EPSG:32606" minx="-3.5767410061915606E7" miny="-1.1323296420284266E7" maxx="7.237637013396345E7" maxy="1.2155489274879314E8"/>
+        <BoundingBox CRS="EPSG:32607" minx="-4.2356520054783694E7" miny="-1.1516890290959207E7" maxx="6.086853880204611E7" maxy="9.2275286114602E7"/>
+        <BoundingBox CRS="EPSG:32608" minx="-5.0300213897752896E7" miny="-1.1753780899024554E7" maxx="5.130021389775294E7" maxy="6.970564856754312E7"/>
+        <BoundingBox CRS="EPSG:32609" minx="-5.986853880204605E7" miny="-1.2050099126201635E7" maxx="4.335652005478373E7" maxy="9.227528611460188E7"/>
+        <BoundingBox CRS="EPSG:32610" minx="-7.13763701339634E7" miny="-1.2425938688468952E7" maxx="3.676741006191563E7" maxy="1.2155489274879304E8"/>
+        <BoundingBox CRS="EPSG:32611" minx="-8.518909154983576E7" miny="-1.2425938688468952E7" maxx="3.1302445273182005E7" maxy="1.5925754947596633E8"/>
+        <BoundingBox CRS="EPSG:32612" minx="-1.0172875614478281E8" miny="-1.2050099126201635E7" maxx="2.676601609451172E7" maxy="2.0745631708746573E8"/>
+        <BoundingBox CRS="EPSG:32613" minx="-1.2148074908394946E8" miny="-1.1753780899024554E7" maxx="2.7646012845362976E7" maxy="2.686435945534432E8"/>
+        <BoundingBox CRS="EPSG:32614" minx="-1.4500097218489194E8" miny="-1.2050099126201632E7" maxx="3.5632574717617586E7" maxy="3.4579765564092827E8"/>
+        <BoundingBox CRS="EPSG:32615" minx="-1.7292357091978702E8" miny="-1.2425938688468952E7" maxx="4.518305675819731E7" maxy="4.4245692892007065E8"/>
+        <BoundingBox CRS="EPSG:32616" minx="-4.4183056758197404E7" miny="-1.2425938688468952E7" maxx="1.7392357091978732E8" maxy="4.4245692892007154E8"/>
+        <BoundingBox CRS="EPSG:32617" minx="-3.463257471761768E7" miny="-1.3503299409720782E7" maxx="1.4600097218489236E8" maxy="3.457976556409297E8"/>
+        <BoundingBox CRS="EPSG:32618" minx="-2.6646012845363032E7" miny="-1.5743250072761768E7" maxx="1.2248074908394966E8" maxy="2.686435945534437E8"/>
+        <BoundingBox CRS="EPSG:32619" minx="-2.5766016094511755E7" miny="-1.844771386638121E7" maxx="1.0272875614478292E8" maxy="2.0745631708746615E8"/>
+        <BoundingBox CRS="EPSG:32620" minx="-3.0302445273182046E7" miny="-2.1704359398342453E7" maxx="8.618909154983588E7" maxy="1.5925754947596672E8"/>
+        <BoundingBox CRS="EPSG:32621" minx="-3.576741006191568E7" miny="-2.5614825082705487E7" maxx="7.237637013396353E7" maxy="1.215548927487933E8"/>
+        <BoundingBox CRS="EPSG:32622" minx="-4.235652005478382E7" miny="-3.0296418796719614E7" maxx="6.086853880204616E7" maxy="9.227528611460213E7"/>
+        <BoundingBox CRS="EPSG:32623" minx="-5.0300213897753015E7" miny="-3.588396596444094E7" maxx="5.130021389775298E7" maxy="6.970564856754328E7"/>
+        <BoundingBox CRS="EPSG:32624" minx="-5.986853880204616E7" miny="-4.2531815139551505E7" maxx="4.335652005478376E7" maxy="9.227528611460213E7"/>
+        <BoundingBox CRS="EPSG:32625" minx="-7.137637013396363E7" miny="-5.04160106134806E7" maxx="3.6767410061915666E7" maxy="1.215548927487936E8"/>
+        <BoundingBox CRS="EPSG:32626" minx="-8.518909154983592E7" miny="-5.973664202855217E7" maxx="3.1302445273182023E7" maxy="1.5925754947596684E8"/>
+        <BoundingBox CRS="EPSG:32627" minx="-1.01728756144783E8" miny="-7.072038142950824E7" maxx="4.23011151019042E7" maxy="2.0745631708746648E8"/>
+        <BoundingBox CRS="EPSG:32628" minx="-1.2148074908394971E8" miny="-8.362321864037779E7" maxx="5.861518178638413E7" maxy="2.686435945534441E8"/>
+        <BoundingBox CRS="EPSG:32629" minx="-1.450009721848924E8" miny="-9.873340630729008E7" maxx="7.897464453091641E7" maxy="3.4579765564093E8"/>
+        <BoundingBox CRS="EPSG:32630" minx="-1.7292357091978738E8" miny="-1.1637462640144902E8" maxx="1.0415003759093736E8" maxy="4.4245692892007184E8"/>
+        <BoundingBox CRS="EPSG:32631" minx="-1.0315003759093763E8" miny="-1.1637462640144873E8" maxx="1.7392357091978762E8" maxy="4.4245692892007184E8"/>
+        <BoundingBox CRS="EPSG:32632" minx="-7.797464453091647E7" miny="-9.873340630728981E7" maxx="1.4600097218489262E8" maxy="3.4579765564093E8"/>
+        <BoundingBox CRS="EPSG:32633" minx="-5.76151817863843E7" miny="-8.362321864037757E7" maxx="1.2248074908394992E8" maxy="2.686435945534441E8"/>
+        <BoundingBox CRS="EPSG:32634" minx="-4.1301115101904266E7" miny="-7.072038142950802E7" maxx="1.0272875614478312E8" maxy="2.0745631708746648E8"/>
+        <BoundingBox CRS="EPSG:32635" minx="-3.0302445273182023E7" miny="-5.9736642028552E7" maxx="8.618909154983601E7" maxy="1.5925754947596684E8"/>
+        <BoundingBox CRS="EPSG:32636" minx="-3.5767410061915666E7" miny="-5.041601061348041E7" maxx="7.237637013396369E7" maxy="1.215548927487936E8"/>
+        <BoundingBox CRS="EPSG:32637" minx="-4.235652005478376E7" miny="-4.25318151395514E7" maxx="6.08685388020462E7" maxy="9.227528611460213E7"/>
+        <BoundingBox CRS="EPSG:32638" minx="-5.030021389775298E7" miny="-3.588396596444086E7" maxx="5.1300213897753045E7" maxy="6.970564856754328E7"/>
+        <BoundingBox CRS="EPSG:32639" minx="-5.986853880204616E7" miny="-3.029641879671956E7" maxx="4.335652005478385E7" maxy="9.227528611460213E7"/>
+        <BoundingBox CRS="EPSG:32640" minx="-7.137637013396353E7" miny="-2.5614825082705446E7" maxx="3.67674100619157E7" maxy="1.215548927487933E8"/>
+        <BoundingBox CRS="EPSG:32641" minx="-8.518909154983588E7" miny="-2.1704359398342427E7" maxx="3.1302445273182064E7" maxy="1.5925754947596672E8"/>
+        <BoundingBox CRS="EPSG:32642" minx="-1.0172875614478292E8" miny="-1.844771386638119E7" maxx="2.6766016094511762E7" maxy="2.0745631708746615E8"/>
+        <BoundingBox CRS="EPSG:32643" minx="-1.2148074908394966E8" miny="-1.5743250072761763E7" maxx="2.7646012845363032E7" maxy="2.686435945534437E8"/>
+        <BoundingBox CRS="EPSG:32644" minx="-1.4500097218489236E8" miny="-1.3503299409720775E7" maxx="3.563257471761768E7" maxy="3.457976556409297E8"/>
+        <BoundingBox CRS="EPSG:32645" minx="-1.7292357091978732E8" miny="-1.2425938688468952E7" maxx="4.5183056758197404E7" maxy="4.4245692892007154E8"/>
+        <BoundingBox CRS="EPSG:32646" minx="-4.418305675819731E7" miny="-1.2425938688468952E7" maxx="1.7392357091978702E8" maxy="4.4245692892007065E8"/>
+        <BoundingBox CRS="EPSG:32647" minx="-3.4632574717617586E7" miny="-1.2050099126201632E7" maxx="1.4600097218489194E8" maxy="3.4579765564092827E8"/>
+        <BoundingBox CRS="EPSG:32648" minx="-2.6646012845362976E7" miny="-1.1753780899024554E7" maxx="1.2248074908394946E8" maxy="2.686435945534432E8"/>
+        <BoundingBox CRS="EPSG:32649" minx="-2.576601609451172E7" miny="-1.2050099126201635E7" maxx="1.0272875614478281E8" maxy="2.0745631708746573E8"/>
+        <BoundingBox CRS="EPSG:32650" minx="-3.0302445273182005E7" miny="-1.2425938688468952E7" maxx="8.618909154983576E7" maxy="1.5925754947596633E8"/>
+        <BoundingBox CRS="EPSG:32651" minx="-3.576741006191563E7" miny="-1.2425938688468952E7" maxx="7.23763701339634E7" maxy="1.2155489274879304E8"/>
+        <BoundingBox CRS="EPSG:32652" minx="-4.235652005478373E7" miny="-1.2050099126201635E7" maxx="6.086853880204605E7" maxy="9.227528611460188E7"/>
+        <BoundingBox CRS="EPSG:32653" minx="-5.030021389775294E7" miny="-1.175378089902455E7" maxx="5.1300213897752896E7" maxy="6.970564856754312E7"/>
+        <BoundingBox CRS="EPSG:32654" minx="-5.986853880204611E7" miny="-1.1516890290959207E7" maxx="4.3356520054783694E7" maxy="9.2275286114602E7"/>
+        <BoundingBox CRS="EPSG:32655" minx="-7.137637013396345E7" miny="-1.1323296420284266E7" maxx="3.6767410061915606E7" maxy="1.2155489274879314E8"/>
+        <BoundingBox CRS="EPSG:32656" minx="-8.51890915498358E7" miny="-1.1323296420284266E7" maxx="3.130244527318196E7" maxy="1.592575494759665E8"/>
+        <BoundingBox CRS="EPSG:32657" minx="-1.0172875614478281E8" miny="-1.1516890290959207E7" maxx="2.6766016094511732E7" maxy="2.0745631708746573E8"/>
+        <BoundingBox CRS="EPSG:32658" minx="-1.2148074908394954E8" miny="-1.1753780899024552E7" maxx="2.764601284536301E7" maxy="2.686435945534434E8"/>
+        <BoundingBox CRS="EPSG:32659" minx="-1.4500097218489215E8" miny="-1.2050099126201635E7" maxx="3.5632574717617646E7" maxy="3.4579765564092916E8"/>
+        <BoundingBox CRS="EPSG:32660" minx="-1.7292357091978702E8" miny="-1.2425938688468952E7" maxx="4.518305675819731E7" maxy="4.4245692892007065E8"/>
+        <BoundingBox CRS="EPSG:32701" minx="-4.41830567581973E7" miny="-2425938.6884689494" maxx="1.73923570919787E8" maxy="4.524569289200705E8"/>
+        <BoundingBox CRS="EPSG:32702" minx="-3.463257471761764E7" miny="-2050099.126201633" maxx="1.4600097218489212E8" maxy="3.557976556409291E8"/>
+        <BoundingBox CRS="EPSG:32703" minx="-2.6646012845363002E7" miny="-1753780.8990245494" maxx="1.224807490839495E8" maxy="2.786435945534433E8"/>
+        <BoundingBox CRS="EPSG:32704" minx="-2.5766016094511725E7" miny="-1516890.2909592052" maxx="1.0272875614478278E8" maxy="2.1745631708746567E8"/>
+        <BoundingBox CRS="EPSG:32705" minx="-3.0302445273181953E7" miny="-1323296.4202842636" maxx="8.618909154983579E7" maxy="1.6925754947596648E8"/>
+        <BoundingBox CRS="EPSG:32706" minx="-3.57674100619156E7" miny="-1323296.4202842636" maxx="7.237637013396344E7" maxy="1.3155489274879311E8"/>
+        <BoundingBox CRS="EPSG:32707" minx="-4.235652005478369E7" miny="-1516890.2909592052" maxx="6.08685388020461E7" maxy="1.0227528611460197E8"/>
+        <BoundingBox CRS="EPSG:32708" minx="-5.030021389775289E7" miny="-1753780.8990245513" maxx="5.1300213897752926E7" maxy="7.97056485675431E7"/>
+        <BoundingBox CRS="EPSG:32709" minx="-5.986853880204604E7" miny="-2050099.126201633" maxx="4.3356520054783724E7" maxy="1.0227528611460185E8"/>
+        <BoundingBox CRS="EPSG:32710" minx="-7.137637013396339E7" miny="-2425938.6884689494" maxx="3.676741006191562E7" maxy="1.31554892748793E8"/>
+        <BoundingBox CRS="EPSG:32711" minx="-8.518909154983574E7" miny="-2425938.6884689494" maxx="3.1302445273181997E7" maxy="1.692575494759663E8"/>
+        <BoundingBox CRS="EPSG:32712" minx="-1.0172875614478278E8" miny="-2050099.126201633" maxx="2.6766016094511714E7" maxy="2.1745631708746567E8"/>
+        <BoundingBox CRS="EPSG:32713" minx="-1.2148074908394943E8" miny="-1753780.8990245513" maxx="2.764601284536297E7" maxy="2.7864359455344313E8"/>
+        <BoundingBox CRS="EPSG:32714" minx="-1.450009721848919E8" miny="-2050099.1262016292" maxx="3.563257471761758E7" maxy="3.557976556409282E8"/>
+        <BoundingBox CRS="EPSG:32715" minx="-1.72923570919787E8" miny="-2425938.6884689494" maxx="4.51830567581973E7" maxy="4.524569289200705E8"/>
+        <BoundingBox CRS="EPSG:32716" minx="-4.41830567581974E7" miny="-2425938.6884689494" maxx="1.739235709197873E8" maxy="4.524569289200714E8"/>
+        <BoundingBox CRS="EPSG:32717" minx="-3.4632574717617676E7" miny="-3503299.4097207794" maxx="1.4600097218489233E8" maxy="3.5579765564092964E8"/>
+        <BoundingBox CRS="EPSG:32718" minx="-2.6646012845363025E7" miny="-5743250.072761766" maxx="1.2248074908394963E8" maxy="2.786435945534436E8"/>
+        <BoundingBox CRS="EPSG:32719" minx="-2.5766016094511747E7" miny="-8447713.866381206" maxx="1.0272875614478289E8" maxy="2.174563170874661E8"/>
+        <BoundingBox CRS="EPSG:32720" minx="-3.030244527318204E7" miny="-1.170435939834245E7" maxx="8.618909154983586E7" maxy="1.692575494759667E8"/>
+        <BoundingBox CRS="EPSG:32721" minx="-3.576741006191567E7" miny="-1.5614825082705481E7" maxx="7.237637013396351E7" maxy="1.3155489274879327E8"/>
+        <BoundingBox CRS="EPSG:32722" minx="-4.235652005478381E7" miny="-2.0296418796719607E7" maxx="6.086853880204614E7" maxy="1.022752861146021E8"/>
+        <BoundingBox CRS="EPSG:32723" minx="-5.030021389775301E7" miny="-2.5883965964440934E7" maxx="5.130021389775296E7" maxy="7.970564856754327E7"/>
+        <BoundingBox CRS="EPSG:32724" minx="-5.986853880204614E7" miny="-3.2531815139551498E7" maxx="4.3356520054783754E7" maxy="1.022752861146021E8"/>
+        <BoundingBox CRS="EPSG:32725" minx="-7.137637013396361E7" miny="-4.041601061348059E7" maxx="3.676741006191566E7" maxy="1.3155489274879357E8"/>
+        <BoundingBox CRS="EPSG:32726" minx="-8.51890915498359E7" miny="-4.973664202855216E7" maxx="3.1302445273182016E7" maxy="1.692575494759668E8"/>
+        <BoundingBox CRS="EPSG:32727" minx="-1.0172875614478298E8" miny="-6.0720381429508224E7" maxx="4.230111510190419E7" maxy="2.1745631708746642E8"/>
+        <BoundingBox CRS="EPSG:32728" minx="-1.2148074908394969E8" miny="-7.362321864037777E7" maxx="5.861518178638411E7" maxy="2.78643594553444E8"/>
+        <BoundingBox CRS="EPSG:32729" minx="-1.4500097218489236E8" miny="-8.873340630729006E7" maxx="7.89746445309164E7" maxy="3.5579765564092994E8"/>
+        <BoundingBox CRS="EPSG:32730" minx="-1.7292357091978735E8" miny="-1.06374626401449E8" maxx="1.0415003759093733E8" maxy="4.524569289200717E8"/>
+        <BoundingBox CRS="EPSG:32731" minx="-1.031500375909376E8" miny="-1.063746264014487E8" maxx="1.739235709197876E8" maxy="4.524569289200717E8"/>
+        <BoundingBox CRS="EPSG:32732" minx="-7.797464453091645E7" miny="-8.87334063072898E7" maxx="1.460009721848926E8" maxy="3.5579765564092994E8"/>
+        <BoundingBox CRS="EPSG:32733" minx="-5.7615181786384284E7" miny="-7.362321864037755E7" maxx="1.224807490839499E8" maxy="2.78643594553444E8"/>
+        <BoundingBox CRS="EPSG:32734" minx="-4.130111510190426E7" miny="-6.0720381429508E7" maxx="1.027287561447831E8" maxy="2.1745631708746642E8"/>
+        <BoundingBox CRS="EPSG:32735" minx="-3.0302445273182016E7" miny="-4.9736642028551996E7" maxx="8.6189091549836E7" maxy="1.692575494759668E8"/>
+        <BoundingBox CRS="EPSG:32736" minx="-3.576741006191566E7" miny="-4.0416010613480404E7" maxx="7.237637013396367E7" maxy="1.3155489274879357E8"/>
+        <BoundingBox CRS="EPSG:32737" minx="-4.2356520054783754E7" miny="-3.2531815139551394E7" maxx="6.086853880204619E7" maxy="1.022752861146021E8"/>
+        <BoundingBox CRS="EPSG:32738" minx="-5.030021389775297E7" miny="-2.5883965964440852E7" maxx="5.130021389775303E7" maxy="7.970564856754327E7"/>
+        <BoundingBox CRS="EPSG:32739" minx="-5.986853880204614E7" miny="-2.0296418796719555E7" maxx="4.335652005478384E7" maxy="1.022752861146021E8"/>
+        <BoundingBox CRS="EPSG:32740" minx="-7.137637013396351E7" miny="-1.561482508270544E7" maxx="3.6767410061915696E7" maxy="1.3155489274879327E8"/>
+        <BoundingBox CRS="EPSG:32741" minx="-8.518909154983586E7" miny="-1.1704359398342423E7" maxx="3.1302445273182057E7" maxy="1.692575494759667E8"/>
+        <BoundingBox CRS="EPSG:32742" minx="-1.0172875614478289E8" miny="-8447713.866381187" maxx="2.6766016094511755E7" maxy="2.174563170874661E8"/>
+        <BoundingBox CRS="EPSG:32743" minx="-1.2148074908394963E8" miny="-5743250.07276176" maxx="2.7646012845363025E7" maxy="2.786435945534436E8"/>
+        <BoundingBox CRS="EPSG:32744" minx="-1.4500097218489233E8" miny="-3503299.409720772" maxx="3.5632574717617676E7" maxy="3.5579765564092964E8"/>
+        <BoundingBox CRS="EPSG:32745" minx="-1.729235709197873E8" miny="-2425938.6884689494" maxx="4.51830567581974E7" maxy="4.524569289200714E8"/>
+        <BoundingBox CRS="EPSG:32746" minx="-4.41830567581973E7" miny="-2425938.6884689494" maxx="1.73923570919787E8" maxy="4.524569289200705E8"/>
+        <BoundingBox CRS="EPSG:32747" minx="-3.463257471761758E7" miny="-2050099.1262016292" maxx="1.460009721848919E8" maxy="3.557976556409282E8"/>
+        <BoundingBox CRS="EPSG:32748" minx="-2.664601284536297E7" miny="-1753780.8990245513" maxx="1.2248074908394943E8" maxy="2.7864359455344313E8"/>
+        <BoundingBox CRS="EPSG:32749" minx="-2.5766016094511714E7" miny="-2050099.126201633" maxx="1.0272875614478278E8" maxy="2.1745631708746567E8"/>
+        <BoundingBox CRS="EPSG:32750" minx="-3.0302445273181997E7" miny="-2425938.6884689494" maxx="8.618909154983574E7" maxy="1.692575494759663E8"/>
+        <BoundingBox CRS="EPSG:32751" minx="-3.576741006191562E7" miny="-2425938.6884689494" maxx="7.237637013396339E7" maxy="1.31554892748793E8"/>
+        <BoundingBox CRS="EPSG:32752" minx="-4.2356520054783724E7" miny="-2050099.126201633" maxx="6.086853880204604E7" maxy="1.0227528611460185E8"/>
+        <BoundingBox CRS="EPSG:32753" minx="-5.030021389775293E7" miny="-1753780.8990245475" maxx="5.130021389775288E7" maxy="7.97056485675431E7"/>
+        <BoundingBox CRS="EPSG:32754" minx="-5.98685388020461E7" miny="-1516890.2909592052" maxx="4.335652005478369E7" maxy="1.0227528611460197E8"/>
+        <BoundingBox CRS="EPSG:32755" minx="-7.137637013396344E7" miny="-1323296.4202842636" maxx="3.67674100619156E7" maxy="1.3155489274879311E8"/>
+        <BoundingBox CRS="EPSG:32756" minx="-8.518909154983579E7" miny="-1323296.4202842636" maxx="3.1302445273181953E7" maxy="1.6925754947596648E8"/>
+        <BoundingBox CRS="EPSG:32757" minx="-1.0172875614478278E8" miny="-1516890.2909592052" maxx="2.6766016094511725E7" maxy="2.1745631708746567E8"/>
+        <BoundingBox CRS="EPSG:32758" minx="-1.214807490839495E8" miny="-1753780.8990245494" maxx="2.7646012845363002E7" maxy="2.786435945534433E8"/>
+        <BoundingBox CRS="EPSG:32759" minx="-1.4500097218489212E8" miny="-2050099.126201633" maxx="3.563257471761764E7" maxy="3.557976556409291E8"/>
+        <BoundingBox CRS="EPSG:32760" minx="-1.72923570919787E8" miny="-2425938.6884689494" maxx="4.51830567581973E7" maxy="4.524569289200705E8"/>
+        <Style>
+          <Name>population</Name>
+          <Title>Population in the United States</Title>
+          <Abstract>
+            A sample filter that filters the United States into three categories of population, drawn in different colors
+          </Abstract>
+          <LegendURL width="81" height="80">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://localhost:8080/geoserver/ows?service=WMS&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=topp%3Astates"/>
+          </LegendURL>
+        </Style>
+        <Style>
+          <Name>polygon</Name>
+          <Title>Default Polygon</Title>
+          <Abstract>A sample style that draws a polygon</Abstract>
+          <LegendURL width="20" height="20">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://localhost:8080/geoserver/ows?service=WMS&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=topp%3Astates&amp;style=polygon"/>
+          </LegendURL>
+        </Style>
+        <Style>
+          <Name>pophatch</Name>
+          <Title>Population in the United States</Title>
+          <Abstract>
+            A sample filter that filters the United States into three categories of population, drawn in different colors
+          </Abstract>
+          <LegendURL width="81" height="80">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://localhost:8080/geoserver/ows?service=WMS&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=topp%3Astates&amp;style=pophatch"/>
+          </LegendURL>
+        </Style>
+        <Style>
+          <Name>pop-places</Name>
+          <Title>pop-places</Title>
+          <LegendURL width="162" height="200">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://localhost:8080/geoserver/ows?service=WMS&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=topp%3Astates&amp;style=pop-places"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+    </Layer>
+  </Capability>
+</WMS_Capabilities>

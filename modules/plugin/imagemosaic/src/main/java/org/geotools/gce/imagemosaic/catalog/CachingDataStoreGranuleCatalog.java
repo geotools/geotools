@@ -197,7 +197,7 @@ public class CachingDataStoreGranuleCatalog extends GranuleCatalog {
         for (Future<GranuleDescriptor> future : futures) {
             try {
                 GranuleDescriptor granule = future.get();
-                visitGranule(visitor, intersectionGeometry, granule.getOriginator(), granule);
+                visitGranule(visitor, intersectionGeometry, granule);
             } catch (ExecutionException | InterruptedException e) {
                 // the sequential one does not catch exceptions either
                 throw new RuntimeException("Unexpected exception occurred loading granules", e);
@@ -213,14 +213,13 @@ public class CachingDataStoreGranuleCatalog extends GranuleCatalog {
             final SimpleFeature sf = fi.next();
 
             GranuleDescriptor granule = getGranuleDescriptor(sf);
-            visitGranule(visitor, intersectionGeometry, sf, granule);
+            visitGranule(visitor, intersectionGeometry, granule);
         }
     }
 
     private void visitGranule(
             GranuleCatalogVisitor visitor,
             Geometry intersectionGeometry,
-            SimpleFeature sf,
             GranuleDescriptor granule) {
         if (granule != null) {
             // check ROI inclusion
@@ -228,7 +227,7 @@ public class CachingDataStoreGranuleCatalog extends GranuleCatalog {
             if (intersectionGeometry == null
                     || footprint == null
                     || polygonOverlap(footprint, intersectionGeometry)) {
-                visitor.visit(granule, sf);
+                visitor.visit(granule, granule.getOriginator());
             } else {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine(

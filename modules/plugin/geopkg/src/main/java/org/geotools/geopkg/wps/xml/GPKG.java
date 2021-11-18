@@ -90,6 +90,9 @@ public final class GPKG extends XSD {
 
     public static final QName overview = new QName("http://www.opengis.net/gpkg", "overview");
 
+    public static final QName parametertype =
+            new QName("http://www.opengis.net/gpkg", "parametertype");
+
     /* Attributes */
 
 }

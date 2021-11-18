@@ -221,6 +221,27 @@ public class GeoPackageProcessRequest {
         }
     }
 
+    public static class Parameter {
+        String name;
+        String value;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+    }
+
     public static class TilesLayer extends Layer {
 
         public static class TilesCoverage {
@@ -290,6 +311,7 @@ public class GeoPackageProcessRequest {
         protected String gridSetName = null;
         protected List<TileMatrix> grids = null;
         protected TilesCoverage coverage = null;
+        protected List<Parameter> parameters;
 
         @Override
         public LayerType getType() {
@@ -374,6 +396,14 @@ public class GeoPackageProcessRequest {
 
         public void setLayers(List<QName> layers) {
             this.layers = layers;
+        }
+
+        public List<Parameter> getParameters() {
+            return parameters;
+        }
+
+        public void setParameters(List<Parameter> parameters) {
+            this.parameters = parameters;
         }
     }
 

@@ -133,8 +133,10 @@ import org.geotools.data.FileResourceInfo;
 import org.geotools.data.Query;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.Transaction;
+import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.text.ecql.ECQL;
@@ -5810,16 +5812,60 @@ public class ImageMosaicReaderTest {
     public void testConcurrentMosaic() throws Exception {
         // instantiate image mosaic reader
         AbstractGridFormat format = TestUtils.getFormat(rgbURL);
+        compareSequentialParallel(rgbURL, format);
+    }
+
+    @Test
+    public void testConcurrentMosaicDanglingReference() throws Exception {
+        // prepare a copy of RGB
+        File containerDir = new File("./target", "testConcurrentDangling");
+        containerDir.mkdir();
+        assertTrue(containerDir.isDirectory());
+        File workDir = new File(containerDir, "rgb");
+        if (workDir.isDirectory()) {
+            FileUtils.deleteQuietly(workDir);
+        }
+        workDir.mkdir();
+        assertTrue(workDir.isDirectory());
+
+        final File source = TestData.file(this, "rgb");
+        FileUtils.copyDirectory(source, workDir);
+
+        // instantiate image mosaic reader, let it create the shapefile
+        ImageMosaicFormat format = new ImageMosaicFormat();
+        format.getReader(workDir).dispose();
+
+        // alter the mosaic, send some locations to non-existing places
+        File shp = new File(workDir, "rgb.shp");
+        ShapefileDataStore shpStore = new ShapefileDataStore(fileToUrl(shp));
+        SimpleFeatureStore shpFeatures = (SimpleFeatureStore) shpStore.getFeatureSource();
+        Filter f2f = FF.equal(FF.property("location"), FF.literal("global_mosaic_2.png"), true);
+        Filter f9f = FF.equal(FF.property("location"), FF.literal("global_mosaic_9.png"), true);
+        shpFeatures.modifyFeatures("location", "rgb_not_there.png", FF.or(f2f, f9f));
+        shpStore.dispose();
+
+        compareSequentialParallel(workDir, format);
+    }
+
+    private void compareSequentialParallel(Object source, AbstractGridFormat format)
+            throws IOException {
         ExecutorService es =
                 Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         ImageMosaicReader mtReader = null, reader = null;
         try {
-            reader = getReader(rgbURL, format);
+            // sequential read
+            reader = (ImageMosaicReader) format.getReader(source);
             GridCoverage2D coverage = TestUtils.checkCoverage(reader, null, null);
 
+            // mt read
             Hints hints = new Hints(Hints.EXECUTOR_SERVICE, es);
-            mtReader = getReader(rgbURL, format, hints);
-            GridCoverage2D mtCoverage = TestUtils.checkCoverage(mtReader, null, null);
+            mtReader = (ImageMosaicReader) format.getReader(source, hints);
+            ParameterValue<Boolean> mtParam = ImageMosaicFormat.ALLOW_MULTITHREADING.createValue();
+            mtParam.setValue(true);
+            ParameterValue<Boolean> ioParam = ImageMosaicFormat.USE_JAI_IMAGEREAD.createValue();
+            ioParam.setValue(false);
+            GeneralParameterValue[] params = {mtParam, ioParam};
+            GridCoverage2D mtCoverage = TestUtils.checkCoverage(mtReader, params, null);
 
             assertEquals(coverage.getEnvelope2D(), mtCoverage.getEnvelope2D());
             ImageAssert.assertEquals(coverage.getRenderedImage(), mtCoverage.getRenderedImage(), 0);

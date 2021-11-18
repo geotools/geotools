@@ -87,6 +87,22 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="parametertype">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="name" type="xs:string"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  
+  <xs:element name="parameter" type="gpkg:parametertype"/>
+
+  <xs:complexType name="parameterstype">
+    <xs:sequence>
+      <xs:element ref="gpkg:parameter" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType name="geopkgtype">
     <xs:sequence>
       <xs:element name="features" minOccurs="0" maxOccurs="unbounded">
@@ -123,6 +139,7 @@
                 <xs:element name="transparent" type="xs:boolean" minOccurs="0" />
                 <xs:element name="coverage" type="gpkg:coveragetype" minOccurs="0" />
                 <xs:element name="gridset" type="gpkg:gridsettype" minOccurs="0"  />
+                <xs:element name="parameters" type="gpkg:parameterstype" minOccurs="0"  />
               </xs:sequence>
             </xs:extension>
           </xs:complexContent>

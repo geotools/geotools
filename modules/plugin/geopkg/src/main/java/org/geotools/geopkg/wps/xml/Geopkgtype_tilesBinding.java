@@ -21,11 +21,13 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import org.geotools.geopkg.TileMatrix;
 import org.geotools.geopkg.wps.GeoPackageProcessRequest;
 import org.geotools.geopkg.wps.GeoPackageProcessRequest.Layer;
+import org.geotools.geopkg.wps.GeoPackageProcessRequest.Parameter;
 import org.geotools.xs.bindings.XSQNameBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
@@ -115,6 +117,17 @@ public class Geopkgtype_tilesBinding extends LayertypeBinding {
             List<TileMatrix> list = (List<TileMatrix>) gridSet;
             layer.setGrids(list);
         }
+
+        Object parameters = node.getChildValue("parameters");
+        if (parameters instanceof Parameter) {
+            layer.setParameters(Arrays.asList((Parameter) parameters));
+        } else if (parameters instanceof Map) {
+            @SuppressWarnings("unchecked")
+            List<Parameter> parametersList =
+                    (List<Parameter>) ((Map<?, ?>) parameters).get("parameters");
+            layer.setParameters(parametersList);
+        }
+
         return layer;
     }
 }

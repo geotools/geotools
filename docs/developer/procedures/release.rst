@@ -187,23 +187,36 @@ Download and try out some of the artifacts from the above location and do a
 quick smoke test that there are no issues. Engage other developers to help 
 test on the developer list.
 
-Check the artifacts by:
+1. Source download: The Jenkins job will perform a build of the source artifacts on an empty Maven
+   repository to make sure any random user out there can do the same. If you want
+   you can still manually test the artifacts by:
 
-*  Unpacking the sources
-*  Checking the README.html links go to the correct stable or maintenance user guide
+   * Unpacking the sources
+   * Temporarily moving the ``$HOME/.m2/repository`` to a different location, so that Maven will be forced to build from an empty repo. 
+   * Do a full build using ``mvn install -Dall -T1C``
+   * On a successful build, delete ``$HOME/.m2/repository`` and restore the old maven repository backed up at the beginning
+   
+   If you don't want to fiddle with your main repo just use ``mvn -Dmaven.repo.local=/tmp/m2 install -Dall -T1C`` where it points to any empty directory.
 
-The Jenkins job will perform a build of the source artifacts on an empty Maven
-repository to make sure any random user out there can do the same. If you want
-you can still manually test the artifacts by:
+3. Userguide: check the eclipse quickstart section on `geotools.version`, should reference the correct release tag and snapshot tag.
 
-*  Temporarily moving the ``$HOME/.m2/repository`` to a different location, so that Maven will be forced to build from an empty repo. 
-*  Do a full build using ``mvn install -Dall -T1C``
-*  On a successful build, delete ``$HOME/.m2/repository`` and restore the old maven repository backed up at the beginning
-* If you don't want to fiddle with your main repo just use ``mvn -Dmaven.repo.local=/tmp/m2 install -Dall -T1C`` where it points to any empty directory.
-
-Download the user guide:
-
-* Check the eclipse quickstart section on `geotools.version`, should reference the correct release tag and snapshot tag.
+4. Binary download:
+   
+   * Checking the README.html links go to the correct stable or maintenance user guide
+   
+   * Check library loads:
+     
+     .. code-block:: bash
+        
+        java -cp "lib/*" org.geotools.util.factory.GeoTools
+   
+   * Run quickstart:
+     
+     .. code-block:: bash
+     
+        mkdir bin
+        javac -cp "lib/*" -d bin src/org/geotools/tutorial/quickstart/Quickstart.java 
+        java -cp "lib/*:bin" org.geotools.tutorial.quickstart.Quickstart
  
 Publish the Release
 -------------------

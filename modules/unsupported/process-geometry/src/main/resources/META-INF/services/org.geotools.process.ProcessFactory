@@ -1,4 +1,4 @@
 org.geotools.process.geometry.GeometryProcessFactory
 org.geotools.process.geometry.PolygonLabelProcess
-org.geotools.process.geometry.CentreLineProcess
+org.geotools.process.geometry.CenterLineProcess
 org.geotools.process.geometry.SkeletonizeProcess

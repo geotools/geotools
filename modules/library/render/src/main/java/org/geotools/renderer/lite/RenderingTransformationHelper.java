@@ -29,6 +29,8 @@ import javax.media.jai.JAI;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.coverage.grid.io.CoverageReadingTransformation;
+import org.geotools.coverage.grid.io.CoverageReadingTransformation.ReaderAndParams;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.util.FeatureUtilities;
@@ -36,6 +38,7 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.SchemaException;
@@ -91,172 +94,24 @@ public abstract class RenderingTransformationHelper {
 
         // check if it's a wrapper coverage or a wrapped reader
         FeatureType schema = featureSource.getSchema();
-        boolean isRasterData = false;
-        if (schema instanceof SimpleFeatureType) {
+        boolean isRasterSource = false;
+        if (featureSource instanceof SimpleFeatureSource) {
             SimpleFeatureType simpleSchema = (SimpleFeatureType) schema;
-            GridCoverage2D coverage = null;
             if (FeatureUtilities.isWrappedCoverage(simpleSchema)
                     || FeatureUtilities.isWrappedCoverageReader(simpleSchema)) {
-                isRasterData = true;
-
-                // get the desired grid geometry
-                GridGeometry2D readGG = gridGeometry;
-                if (transformation instanceof RenderingTransformation) {
-                    RenderingTransformation tx = (RenderingTransformation) transformation;
-                    readGG = (GridGeometry2D) tx.invertGridGeometry(renderingQuery, gridGeometry);
-                }
-
-                FeatureCollection<?, ?> sample = featureSource.getFeatures();
-                Feature gridWrapper = DataUtilities.first(sample);
-
-                if (FeatureUtilities.isWrappedCoverageReader(simpleSchema)) {
-                    GeneralParameterValue[] params =
-                            PARAMS_PROPERTY_NAME.evaluate(
-                                    gridWrapper, GeneralParameterValue[].class);
-                    final GridCoverage2DReader reader =
-                            (GridCoverage2DReader) GRID_PROPERTY_NAME.evaluate(gridWrapper);
-                    // don't read more than the native resolution (in case we are oversampling)
-                    if (CRS.equalsIgnoreMetadata(
-                            reader.getCoordinateReferenceSystem(),
-                            gridGeometry.getCoordinateReferenceSystem())) {
-                        // GEOS-8070, changed the pixel anchor to corner. CENTER can cause issues
-                        // with
-                        // the BBOX calculation and cause it to be incorrect
-                        MathTransform g2w = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
-                        if (g2w instanceof AffineTransform2D
-                                && readGG.getGridToCRS2D() instanceof AffineTransform2D) {
-                            AffineTransform2D atOriginal = (AffineTransform2D) g2w;
-                            AffineTransform2D atMap = (AffineTransform2D) readGG.getGridToCRS2D();
-                            if (XAffineTransform.getScale(atMap)
-                                    < XAffineTransform.getScale(atOriginal)) {
-                                // we need to go trough some convoluted code to make sure the new
-                                // grid geometry
-                                // has at least one pixel
-
-                                org.opengis.geometry.Envelope worldEnvelope =
-                                        gridGeometry.getEnvelope();
-                                GeneralEnvelope transformed =
-                                        org.geotools.referencing.CRS.transform(
-                                                atOriginal.inverse(), worldEnvelope);
-                                int minx = (int) Math.floor(transformed.getMinimum(0));
-                                int miny = (int) Math.floor(transformed.getMinimum(1));
-                                int maxx = (int) Math.ceil(transformed.getMaximum(0));
-                                int maxy = (int) Math.ceil(transformed.getMaximum(1));
-                                Rectangle rect =
-                                        new Rectangle(
-                                                minx - TRANSFORM_READ_BUFFER_PIXELS,
-                                                miny - TRANSFORM_READ_BUFFER_PIXELS,
-                                                (maxx - minx) + TRANSFORM_READ_BUFFER_PIXELS * 2,
-                                                (maxy - miny) + TRANSFORM_READ_BUFFER_PIXELS * 2);
-                                GridEnvelope2D gridEnvelope = new GridEnvelope2D(rect);
-                                readGG =
-                                        new GridGeometry2D(
-                                                gridEnvelope,
-                                                PixelInCell.CELL_CORNER,
-                                                atOriginal,
-                                                worldEnvelope.getCoordinateReferenceSystem(),
-                                                null);
-                            }
-                        }
-                    }
-                    if (transformation instanceof RenderingTransformation) {
-                        RenderingTransformation tx = (RenderingTransformation) transformation;
-                        params = tx.customizeReadParams(reader, params);
-                    }
-                    coverage = readCoverage(reader, params, readGG);
-                } else {
-                    coverage = (GridCoverage2D) GRID_PROPERTY_NAME.evaluate(gridWrapper);
-                }
-
-                // readers will return null if there is no coverage in the area
-                if (coverage != null) {
-                    if (readGG != null) {
-                        // Crop will fail if we try to crop outside of the coverage area
-                        ReferencedEnvelope renderingEnvelope =
-                                new ReferencedEnvelope(readGG.getEnvelope());
-                        CoordinateReferenceSystem coverageCRS =
-                                coverage.getCoordinateReferenceSystem2D();
-                        if (!CRS.equalsIgnoreMetadata(
-                                renderingEnvelope.getCoordinateReferenceSystem(), coverageCRS)) {
-                            renderingEnvelope = renderingEnvelope.transform(coverageCRS, true);
-                        }
-
-                        // Check if this is a world-spanning projection - if so, we need to consider
-                        // dateline wrapping
-                        GeographicBoundingBox crsLatLonBoundingBox =
-                                CRS.getGeographicBoundingBox(coverageCRS);
-                        if (null == crsLatLonBoundingBox
-                                || crsLatLonBoundingBox.getEastBoundLongitude()
-                                                - crsLatLonBoundingBox.getWestBoundLongitude()
-                                        >= 360) {
-                            // in this case, only crop if the rendering envelope is entirely inside
-                            // the coverage
-                            if (coverage.getEnvelope2D().contains(renderingEnvelope)) {
-                                final ParameterValueGroup param =
-                                        PROCESSOR.getOperation("CoverageCrop").getParameters();
-                                param.parameter("Source").setValue(coverage);
-                                param.parameter("Envelope").setValue(renderingEnvelope);
-                                coverage = (GridCoverage2D) PROCESSOR.doOperation(param);
-                            }
-                        } else {
-                            if (coverage.getEnvelope2D().intersects(renderingEnvelope)) {
-                                // the resulting coverage might be larger than the readGG envelope,
-                                // shall we crop it?
-                                final ParameterValueGroup param =
-                                        PROCESSOR.getOperation("CoverageCrop").getParameters();
-                                param.parameter("Source").setValue(coverage);
-                                param.parameter("Envelope").setValue(renderingEnvelope);
-                                coverage = (GridCoverage2D) PROCESSOR.doOperation(param);
-                            } else {
-                                coverage = null;
-                            }
-                        }
-
-                        if (coverage != null) {
-                            // we might also need to scale the coverage to the desired resolution
-                            MathTransform2D coverageTx = readGG.getGridToCRS2D();
-                            if (coverageTx instanceof AffineTransform) {
-                                AffineTransform coverageAt = (AffineTransform) coverageTx;
-                                AffineTransform renderingAt =
-                                        (AffineTransform) gridGeometry.getGridToCRS2D();
-                                // we adjust the scale only if we have many more pixels than
-                                // required (30% or more)
-                                final double ratioX =
-                                        coverageAt.getScaleX() / renderingAt.getScaleX();
-                                final double ratioY =
-                                        coverageAt.getScaleY() / renderingAt.getScaleY();
-                                if (ratioX < 0.7 && ratioY < 0.7) {
-                                    // resolution is too different
-                                    final ParameterValueGroup param =
-                                            PROCESSOR.getOperation("Scale").getParameters();
-                                    param.parameter("Source").setValue(coverage);
-                                    param.parameter("xScale").setValue(ratioX);
-                                    param.parameter("yScale").setValue(ratioY);
-                                    final Interpolation interpolation =
-                                            (Interpolation) hints.get(JAI.KEY_INTERPOLATION);
-                                    if (interpolation != null) {
-                                        param.parameter("Interpolation").setValue(interpolation);
-                                    }
-
-                                    coverage = (GridCoverage2D) PROCESSOR.doOperation(param);
-                                }
-                            }
-                        }
-                    }
-
-                    if (coverage != null) {
-                        // apply the transformation
-                        result = transformation.evaluate(coverage);
-                    } else {
-                        result = null;
-                    }
-                }
+                isRasterSource = true;
+                result =
+                        readFromRaster(
+                                transformation,
+                                (SimpleFeatureSource) featureSource,
+                                renderingQuery,
+                                gridGeometry,
+                                hints);
             }
         }
 
-        if (result == null && !isRasterData) {
-            // it's a transformation starting from vector data, let's see if we can optimize the
-            // query
+        if (result == null && !isRasterSource) {
+            // it's a transformation starting from vector data, see if we can optimize the query
             Query optimizedQuery = null;
             if (transformation instanceof RenderingTransformation) {
                 RenderingTransformation tx = (RenderingTransformation) transformation;
@@ -291,6 +146,166 @@ public abstract class RenderingTransformationHelper {
         }
 
         return result;
+    }
+
+    private Object readFromRaster(
+            Expression transformation,
+            SimpleFeatureSource featureSource,
+            Query renderingQuery,
+            GridGeometry2D gridGeometry,
+            RenderingHints hints)
+            throws IOException, TransformException, FactoryException {
+        // get the desired grid geometry
+        GridGeometry2D readGG = gridGeometry;
+        if (transformation instanceof RenderingTransformation) {
+            RenderingTransformation tx = (RenderingTransformation) transformation;
+            readGG = (GridGeometry2D) tx.invertGridGeometry(renderingQuery, gridGeometry);
+        }
+
+        SimpleFeatureCollection sample = featureSource.getFeatures();
+        Feature gridWrapper = DataUtilities.first(sample);
+
+        GridCoverage2D coverage = null;
+        if (FeatureUtilities.isWrappedCoverageReader(featureSource.getSchema())) {
+            GeneralParameterValue[] params =
+                    PARAMS_PROPERTY_NAME.evaluate(gridWrapper, GeneralParameterValue[].class);
+            final GridCoverage2DReader reader =
+                    (GridCoverage2DReader) GRID_PROPERTY_NAME.evaluate(gridWrapper);
+
+            // is the transformation going to do its own internal read?
+            // then let it got and do its own thing
+            if (transformation instanceof CoverageReadingTransformation) {
+                ReaderAndParams context = new ReaderAndParams(reader, params);
+                return transformation.evaluate(context);
+            }
+
+            // don't read more than the native resolution (in case we are oversampling)
+            if (CRS.equalsIgnoreMetadata(
+                    reader.getCoordinateReferenceSystem(),
+                    gridGeometry.getCoordinateReferenceSystem())) {
+                // GEOS-8070, changed the pixel anchor to corner. CENTER can cause issues
+                // with the BBOX calculation and cause it to be incorrect
+                MathTransform g2w = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
+                if (g2w instanceof AffineTransform2D
+                        && readGG.getGridToCRS2D() instanceof AffineTransform2D) {
+                    AffineTransform2D atOriginal = (AffineTransform2D) g2w;
+                    AffineTransform2D atMap = (AffineTransform2D) readGG.getGridToCRS2D();
+                    if (XAffineTransform.getScale(atMap) < XAffineTransform.getScale(atOriginal)) {
+                        // we need to go trough some convoluted code to make sure the new
+                        // grid geometry
+                        // has at least one pixel
+
+                        org.opengis.geometry.Envelope worldEnvelope = gridGeometry.getEnvelope();
+                        GeneralEnvelope transformed =
+                                CRS.transform(atOriginal.inverse(), worldEnvelope);
+                        int minx = (int) Math.floor(transformed.getMinimum(0));
+                        int miny = (int) Math.floor(transformed.getMinimum(1));
+                        int maxx = (int) Math.ceil(transformed.getMaximum(0));
+                        int maxy = (int) Math.ceil(transformed.getMaximum(1));
+                        Rectangle rect =
+                                new Rectangle(
+                                        minx - TRANSFORM_READ_BUFFER_PIXELS,
+                                        miny - TRANSFORM_READ_BUFFER_PIXELS,
+                                        (maxx - minx) + TRANSFORM_READ_BUFFER_PIXELS * 2,
+                                        (maxy - miny) + TRANSFORM_READ_BUFFER_PIXELS * 2);
+                        GridEnvelope2D gridEnvelope = new GridEnvelope2D(rect);
+                        readGG =
+                                new GridGeometry2D(
+                                        gridEnvelope,
+                                        PixelInCell.CELL_CORNER,
+                                        atOriginal,
+                                        worldEnvelope.getCoordinateReferenceSystem(),
+                                        null);
+                    }
+                }
+            }
+            if (transformation instanceof RenderingTransformation) {
+                RenderingTransformation tx = (RenderingTransformation) transformation;
+                params = tx.customizeReadParams(reader, params);
+            }
+            coverage = readCoverage(reader, params, readGG);
+        } else {
+            coverage = (GridCoverage2D) GRID_PROPERTY_NAME.evaluate(gridWrapper);
+        }
+
+        // readers will return null if there is no coverage in the area
+        if (coverage != null) {
+            if (readGG != null) {
+                // Crop will fail if we try to crop outside of the coverage area
+                ReferencedEnvelope renderingEnvelope = new ReferencedEnvelope(readGG.getEnvelope());
+                CoordinateReferenceSystem coverageCRS = coverage.getCoordinateReferenceSystem2D();
+                if (!CRS.equalsIgnoreMetadata(
+                        renderingEnvelope.getCoordinateReferenceSystem(), coverageCRS)) {
+                    renderingEnvelope = renderingEnvelope.transform(coverageCRS, true);
+                }
+
+                // Check if this is a world-spanning projection - if so, we need to consider
+                // dateline wrapping
+                GeographicBoundingBox crsLatLonBoundingBox =
+                        CRS.getGeographicBoundingBox(coverageCRS);
+                if (null == crsLatLonBoundingBox
+                        || crsLatLonBoundingBox.getEastBoundLongitude()
+                                        - crsLatLonBoundingBox.getWestBoundLongitude()
+                                >= 360) {
+                    // in this case, only crop if the rendering envelope is entirely inside
+                    // the coverage
+                    if (coverage.getEnvelope2D().contains(renderingEnvelope)) {
+                        final ParameterValueGroup param =
+                                PROCESSOR.getOperation("CoverageCrop").getParameters();
+                        param.parameter("Source").setValue(coverage);
+                        param.parameter("Envelope").setValue(renderingEnvelope);
+                        coverage = (GridCoverage2D) PROCESSOR.doOperation(param);
+                    }
+                } else {
+                    if (coverage.getEnvelope2D().intersects(renderingEnvelope)) {
+                        // the resulting coverage might be larger than the readGG envelope,
+                        // shall we crop it?
+                        final ParameterValueGroup param =
+                                PROCESSOR.getOperation("CoverageCrop").getParameters();
+                        param.parameter("Source").setValue(coverage);
+                        param.parameter("Envelope").setValue(renderingEnvelope);
+                        coverage = (GridCoverage2D) PROCESSOR.doOperation(param);
+                    } else {
+                        coverage = null;
+                    }
+                }
+
+                if (coverage != null) {
+                    // we might also need to scale the coverage to the desired resolution
+                    MathTransform2D coverageTx = readGG.getGridToCRS2D();
+                    if (coverageTx instanceof AffineTransform) {
+                        AffineTransform coverageAt = (AffineTransform) coverageTx;
+                        AffineTransform renderingAt =
+                                (AffineTransform) gridGeometry.getGridToCRS2D();
+                        // we adjust the scale only if we have many more pixels than
+                        // required (30% or more)
+                        final double ratioX = coverageAt.getScaleX() / renderingAt.getScaleX();
+                        final double ratioY = coverageAt.getScaleY() / renderingAt.getScaleY();
+                        if (ratioX < 0.7 && ratioY < 0.7) {
+                            // resolution is too different
+                            final ParameterValueGroup param =
+                                    PROCESSOR.getOperation("Scale").getParameters();
+                            param.parameter("Source").setValue(coverage);
+                            param.parameter("xScale").setValue(ratioX);
+                            param.parameter("yScale").setValue(ratioY);
+                            final Interpolation interpolation =
+                                    (Interpolation) hints.get(JAI.KEY_INTERPOLATION);
+                            if (interpolation != null) {
+                                param.parameter("Interpolation").setValue(interpolation);
+                            }
+
+                            coverage = (GridCoverage2D) PROCESSOR.doOperation(param);
+                        }
+                    }
+                }
+            }
+
+            if (coverage != null) {
+                // apply the transformation
+                return transformation.evaluate(coverage);
+            }
+        }
+        return null;
     }
 
     /** Subclasses will override and provide means to read the coverage */

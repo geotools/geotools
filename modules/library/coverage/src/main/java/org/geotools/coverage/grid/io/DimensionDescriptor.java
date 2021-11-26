@@ -26,6 +26,7 @@ package org.geotools.coverage.grid.io;
 public interface DimensionDescriptor {
 
     public static final String TIME = "time";
+    public static final String ELEVATION = "elevation";
     public static final String CRS = "crs";
     public static final String RESOLUTION = "resolution";
     public static final String RESOLUTION_X = "resolution_x";

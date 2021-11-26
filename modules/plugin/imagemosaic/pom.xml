@@ -250,4 +250,21 @@
     </dependency>
   </dependencies>
 
+  <build>
+    <plugins>
+      <!-- build test jar so that other modules can share the same test data -->
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
 </project>

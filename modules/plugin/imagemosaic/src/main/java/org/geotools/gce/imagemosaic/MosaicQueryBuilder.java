@@ -204,54 +204,11 @@ class MosaicQueryBuilder {
         final String sortByClause = request.getSortClause();
         final GranuleCatalog catalog = rasterManager.getGranuleCatalog();
         if (sortByClause != null && sortByClause.length() > 0) {
-            final String[] elements = sortByClause.split(",");
-            if (elements != null && elements.length > 0) {
-                final List<SortBy> clauses = new ArrayList<>(elements.length);
-                for (String element : elements) {
-                    // check
-                    if (element == null || element.length() <= 0) {
-                        continue; // next, please!
-                    }
-                    try {
-                        // which clause?
-                        // ASCENDING
-                        element = element.trim();
-                        if (element.endsWith(Utils.ASCENDING_ORDER_IDENTIFIER)) {
-                            String attribute = element.substring(0, element.length() - 2);
-                            clauses.add(
-                                    new SortByImpl(
-                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.property(
-                                                    attribute),
-                                            SortOrder.ASCENDING));
-                            LOGGER.fine("Added clause ASCENDING on attribute:" + attribute);
-                        } else
-                        // DESCENDING
-                        if (element.contains(Utils.DESCENDING_ORDER_IDENTIFIER)) {
-                            String attribute = element.substring(0, element.length() - 2);
-                            clauses.add(
-                                    new SortByImpl(
-                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.property(
-                                                    attribute),
-                                            SortOrder.DESCENDING));
-                            LOGGER.fine("Added clause DESCENDING on attribute:" + attribute);
-                        } else {
-                            LOGGER.fine("Ignoring sort clause :" + element);
-                        }
-                    } catch (Exception e) {
-                        if (LOGGER.isLoggable(Level.INFO)) {
-                            LOGGER.log(Level.INFO, e.getLocalizedMessage(), e);
-                        }
-                    }
-                }
-
-                // assign to query if sorting is supported!
-                SortBy[] sortBy = clauses.toArray(new SortBy[] {});
-                if (catalog.getQueryCapabilities(rasterManager.getTypeName())
-                        .supportsSorting(sortBy)) {
-                    query.setSortBy(sortBy);
-                }
-            } else {
-                LOGGER.fine("No SortBy Clause");
+            SortBy[] sortBy = parseSortBy(sortByClause);
+            if (sortBy == null) LOGGER.fine("No SortBy Clause");
+            else if (catalog.getQueryCapabilities(rasterManager.getTypeName())
+                    .supportsSorting(sortBy)) {
+                query.setSortBy(sortBy);
             }
         } else {
             // no specified sorting, is this a heterogeneous CRS mosaic?
@@ -272,5 +229,54 @@ class MosaicQueryBuilder {
                 }
             }
         }
+    }
+
+    /**
+     * Parses a sort by definition, in the same syntax as WFS sortBy, into an array of {@link
+     * SortBy}
+     */
+    static SortBy[] parseSortBy(String sortByClause) {
+        final String[] elements = sortByClause.split(",");
+        if (elements != null && elements.length > 0) {
+            final List<SortBy> clauses = new ArrayList<>(elements.length);
+            for (String element : elements) {
+                // check
+                if (element == null || element.length() <= 0) {
+                    continue; // next, please!
+                }
+                try {
+                    // which clause?
+                    // ASCENDING
+                    element = element.trim();
+                    if (element.endsWith(Utils.ASCENDING_ORDER_IDENTIFIER)) {
+                        String attribute = element.substring(0, element.length() - 2);
+                        clauses.add(
+                                new SortByImpl(
+                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.property(attribute),
+                                        SortOrder.ASCENDING));
+                        LOGGER.fine("Added clause ASCENDING on attribute:" + attribute);
+                    } else
+                    // DESCENDING
+                    if (element.contains(Utils.DESCENDING_ORDER_IDENTIFIER)) {
+                        String attribute = element.substring(0, element.length() - 2);
+                        clauses.add(
+                                new SortByImpl(
+                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.property(attribute),
+                                        SortOrder.DESCENDING));
+                        LOGGER.fine("Added clause DESCENDING on attribute:" + attribute);
+                    } else {
+                        LOGGER.fine("Ignoring sort clause :" + element);
+                    }
+                } catch (Exception e) {
+                    if (LOGGER.isLoggable(Level.INFO)) {
+                        LOGGER.log(Level.INFO, e.getLocalizedMessage(), e);
+                    }
+                }
+            }
+
+            // assign to query if sorting is supported!
+            return clauses.toArray(new SortBy[] {});
+        }
+        return null;
     }
 }

@@ -415,6 +415,11 @@ public class TestData implements Runnable {
             throws FileNotFoundException, IOException {
         final File file = file(caller, name);
         final File parent = file.getParentFile().getAbsoluteFile();
+        unzip(file, parent);
+    }
+
+    /** Unzips the give source file in the target directory */
+    public static void unzip(File file, File target) throws IOException {
         try (final ZipFile zipFile = new ZipFile(file)) {
             final Enumeration entries = zipFile.entries();
             final byte[] buffer = new byte[4096];
@@ -423,7 +428,7 @@ public class TestData implements Runnable {
                 if (entry.isDirectory()) {
                     continue;
                 }
-                final File path = new File(parent, entry.getName());
+                final File path = new File(target, entry.getName());
                 if (path.exists()) {
                     continue;
                 }

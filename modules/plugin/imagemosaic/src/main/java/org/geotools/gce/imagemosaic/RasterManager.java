@@ -97,7 +97,6 @@ import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.renderer.crs.ProjectionHandler;
 import org.geotools.renderer.crs.ProjectionHandlerFinder;
-import org.geotools.util.Range;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
@@ -477,70 +476,8 @@ public class RasterManager implements Cloneable {
          *     {@link DomainManager}.
          */
         private Filter createFilter(List values) {
-
-            // === create the filter
-            // loop values and AND them
-            final List<Filter> filters = new ArrayList<>();
-            FilterFactory2 ff = FeatureUtilities.DEFAULT_FILTER_FACTORY;
-            for (Object value : values) {
-                // checks
-                if (value == null) {
-                    if (LOGGER.isLoggable(Level.INFO)) {
-                        LOGGER.info("Ignoring null date for the filter:" + this.identifier);
-                    }
-                    continue;
-                }
-                if (domainType == DomainType.SINGLE_VALUE) {
-                    // Domain made of single values
-                    if (value instanceof Range) {
-                        // RANGE
-                        final Range range = (Range) value;
-                        filters.add(
-                                ff.and(
-                                        ff.lessOrEqual(
-                                                ff.property(propertyName),
-                                                ff.literal(range.getMaxValue())),
-                                        ff.greaterOrEqual(
-                                                ff.property(propertyName),
-                                                ff.literal(range.getMinValue()))));
-                    } else {
-                        // SINGLE value
-                        filters.add(ff.equal(ff.property(propertyName), ff.literal(value), true));
-                    }
-                } else { // domainType == DomainType.RANGE
-                    // Domain made of ranges such as (beginTime,endTime) ,
-                    // (beginElevation,endElevation) , ...
-                    if (value instanceof Range) {
-                        // RANGE
-                        final Range range = (Range) value;
-                        final Comparable maxValue = range.getMaxValue();
-                        final Comparable minValue = range.getMinValue();
-                        if (maxValue.compareTo(minValue) != 0) {
-                            // logic comes from Range.intersectsNC(Range)
-                            // in summary, requestedMax > min && requestedMin < max
-                            Filter maxCondition =
-                                    ff.greaterOrEqual(
-                                            ff.literal(maxValue), ff.property(propertyName));
-                            Filter minCondition =
-                                    ff.lessOrEqual(
-                                            ff.literal(minValue),
-                                            ff.property(additionalPropertyName));
-
-                            filters.add(ff.and(Arrays.asList(maxCondition, minCondition)));
-                            continue;
-                        } else {
-                            value = maxValue;
-                        }
-                    }
-                    filters.add(
-                            ff.and(
-                                    ff.lessOrEqual(ff.property(propertyName), ff.literal(value)),
-                                    ff.greaterOrEqual(
-                                            ff.property(additionalPropertyName),
-                                            ff.literal(value))));
-                }
-            }
-            return ff.or(filters);
+            return new DomainFilterBuilder(identifier, propertyName, additionalPropertyName)
+                    .createFilter(values);
         }
     }
 

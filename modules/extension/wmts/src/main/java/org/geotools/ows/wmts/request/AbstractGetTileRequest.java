@@ -61,11 +61,11 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
 
     static WMTSTileFactory factory = new WMTSTileFactory();
 
-    public static final String LAYER = "layer";
+    public static final String LAYER = "Layer";
 
-    public static final String STYLE = "style";
+    public static final String STYLE = "Style";
 
-    public static final String FORMAT = "format";
+    public static final String FORMAT = "Format";
 
     public static final String TILECOL = "TileCol";
 

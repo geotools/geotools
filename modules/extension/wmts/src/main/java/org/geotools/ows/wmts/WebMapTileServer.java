@@ -145,7 +145,7 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
     }
 
     /**
-     * Set up the WebMapTileServer with the given capabilities. Using the default http client.
+     * Set up the WebMapTileServer with the given capabilities, using a custom http client.
      *
      * @param capabilities
      * @throws ServiceException

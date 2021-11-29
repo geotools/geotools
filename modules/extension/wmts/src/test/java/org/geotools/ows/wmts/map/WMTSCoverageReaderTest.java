@@ -103,7 +103,7 @@ public class WMTSCoverageReaderTest {
         assertThat(
                 "Expect format=image/jpeg in the request url",
                 url.toString(),
-                containsString("format=image%2Fjpeg"));
+                containsString("Format=image%2Fjpeg"));
     }
 
     @Test

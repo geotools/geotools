@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2006-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006-2021, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -2451,5 +2451,14 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         Histogram histogram = iw.getHistogram(new int[] {1}, minimums, maximums);
         Histogram histogram2 = iw.getHistogram(new int[] {1}, minimums, maximums);
         assertEquals(histogram.getBins(0)[0], histogram2.getBins(0)[0]);
+    }
+
+    @Test(expected = Test.None.class /* No IllegalArgumentException */)
+    public void testReattachScaledAlphaChannel() {
+        BufferedImage bi = new BufferedImage(1, 1, BufferedImage.TYPE_BYTE_GRAY);
+        ImageWorker iw = new ImageWorker(bi);
+        RenderingHints hints = new RenderingHints(null);
+        hints.put(JAI.KEY_IMAGE_LAYOUT, new ImageLayout(0, 0, 1, 1));
+        iw.prepareForScaledAlphaChannel(bi, hints, bi.getColorModel(), bi.getSampleModel());
     }
 }

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2006-2016, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006-2021, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -4444,12 +4444,20 @@ public class ImageWorker {
             pb2.set(roi, 5);
             pb2.set(nodata, 7);
             alphaChannel = JAI.create(SCALE_OP_NAME, pb2, hints);
-
             // Now, re-attach the scaled alpha to the scaled image
-            ImageWorker merged = new ImageWorker(scaledImage);
-            Object candidate = hints.get(JAI.KEY_IMAGE_LAYOUT);
-            if (candidate instanceof ImageLayout) {
-                ImageLayout layout = (ImageLayout) candidate;
+            ImageWorker merged = prepareForScaledAlphaChannel(scaledImage, hints, cm, sm);
+            image = merged.addBand(alphaChannel, false, true, null).getRenderedImage();
+        }
+    }
+
+    /** Reattach scaled alpha channel with separate layout. */
+    ImageWorker prepareForScaledAlphaChannel(
+            RenderedImage scaledImage, RenderingHints hints, ColorModel cm, SampleModel sm) {
+        ImageWorker merged = new ImageWorker(scaledImage);
+        Object candidate = hints.get(JAI.KEY_IMAGE_LAYOUT);
+        if (candidate instanceof ImageLayout) {
+            ImageLayout layout = (ImageLayout) candidate;
+            if (layout.getTileWidth(null) > 0 && layout.getTileHeight(null) > 0) {
                 ImageLayout layout2 =
                         new ImageLayout2(
                                 layout.getTileGridXOffset(null),
@@ -4460,8 +4468,8 @@ public class ImageWorker {
                                 cm);
                 merged.setRenderingHints(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout2));
             }
-            image = merged.addBand(alphaChannel, false, true, null).getRenderedImage();
         }
+        return merged;
     }
 
     /**

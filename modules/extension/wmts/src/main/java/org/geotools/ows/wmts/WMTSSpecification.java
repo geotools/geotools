@@ -110,6 +110,7 @@ public class WMTSSpecification extends Specification {
             this.capabilities = capabilities;
         }
 
+        /** Returns a GetTileResponse which in most cases represents an Image. */
         @Override
         public Response createResponse(HTTPResponse response) throws ServiceException, IOException {
             return new GetTileResponse(response, getType());

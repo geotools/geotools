@@ -22,9 +22,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Map;
 import java.util.Set;
 import org.geotools.TestData;
@@ -32,11 +34,14 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.http.AbstractHttpClient;
 import org.geotools.http.HTTPResponse;
+import org.geotools.http.MockHttpClient;
 import org.geotools.http.MockHttpResponse;
 import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
 import org.geotools.ows.wmts.model.WMTSLayer;
+import org.geotools.ows.wmts.request.AbstractGetTileRequest;
 import org.geotools.ows.wmts.request.GetTileRequest;
+import org.geotools.ows.wmts.response.GetTileResponse;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.tile.Tile;
@@ -257,5 +262,32 @@ public class WebMapTileServerTest {
 
         WMTSCapabilities capa = createCapabilities(resourceName);
         return new WebMapTileServer(capa);
+    }
+
+    @Test
+    public void testIssueRequestGivesTileResponseWithImageFetch() throws Exception {
+        WMTSCapabilities capabilities = createCapabilities("getcapa_kvp.xml");
+        MockHttpClient httpClient = new MockHttpClient();
+        httpClient.expectGet(
+                new URL(
+                        "http://localhost:8080/geoserver/gwc/service/wmts?REQUEST=GetTile&VERSION=1.0.0&SERVICE=WMTS&type=KVP&LAYER=spearfish&STYLE=default&FORMAT=image%2Fpng&TILEMATRIXSET=EPSG%3A4326&TILEMATRIX=EPSG%3A4326%3A0&TILEROW=0&TILECOL=0"),
+                new MockHttpResponse(TestData.file(null, "world.png"), "image/png"));
+
+        WebMapTileServer server = new WebMapTileServer(capabilities, httpClient);
+        GetTileRequest request = server.createGetTileRequest();
+        request.setLayer(server.getCapabilities().getLayer("spearfish"));
+        request.setStyle("default");
+        request.setFormat("image/png");
+
+        request.setProperty(
+                AbstractGetTileRequest.TILEMATRIXSET, URLEncoder.encode("EPSG:4326", "UTF-8"));
+        request.setProperty(
+                AbstractGetTileRequest.TILEMATRIX, URLEncoder.encode("EPSG:4326:0", "UTF-8"));
+        request.setProperty(AbstractGetTileRequest.TILEROW, "0");
+        request.setProperty(AbstractGetTileRequest.TILECOL, "0");
+
+        GetTileResponse response = server.issueRequestForTileResponse(request);
+        BufferedImage tileImage = response.getTileImage();
+        Assert.assertNotNull(tileImage);
     }
 }

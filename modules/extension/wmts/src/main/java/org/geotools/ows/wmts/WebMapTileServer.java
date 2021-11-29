@@ -36,6 +36,7 @@ import org.geotools.ows.wms.response.GetFeatureInfoResponse;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
 import org.geotools.ows.wmts.model.WMTSServiceType;
 import org.geotools.ows.wmts.request.GetTileRequest;
+import org.geotools.ows.wmts.response.GetTileResponse;
 import org.geotools.referencing.CRS;
 import org.geotools.tile.Tile;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -140,10 +141,19 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
      * @throws IOException
      */
     public WebMapTileServer(WMTSCapabilities capabilities) throws ServiceException, IOException {
-        super(
-                capabilities.getRequest().getGetCapabilities().getGet(),
-                HTTPClientFinder.createClient(),
-                capabilities);
+        this(capabilities, HTTPClientFinder.createClient());
+    }
+
+    /**
+     * Set up the WebMapTileServer with the given capabilities. Using the default http client.
+     *
+     * @param capabilities
+     * @throws ServiceException
+     * @throws IOException
+     */
+    public WebMapTileServer(WMTSCapabilities capabilities, HTTPClient httpClient)
+            throws ServiceException, IOException {
+        super(capabilities.getRequest().getGetCapabilities().getGet(), httpClient, capabilities);
         setupType();
     }
 
@@ -183,6 +193,12 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
     /** */
     public Set<Tile> issueRequest(GetTileRequest tileRequest) throws ServiceException {
         return tileRequest.getTiles();
+    }
+
+    /** The new issueRequest, which gives a GetTileResponse in response for a GetTileRequest. */
+    public GetTileResponse issueRequestForTileResponse(GetTileRequest tileRequest)
+            throws IOException, ServiceException {
+        return (GetTileResponse) internalIssueRequest(tileRequest);
     }
 
     /** @return */

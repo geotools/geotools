@@ -17,9 +17,10 @@
 
 package org.geotools.ows.wmts.request;
 
-import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -27,11 +28,9 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.data.ows.Response;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPClientFinder;
-import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wms.StyleImpl;
 import org.geotools.ows.wmts.WMTSHelper;
@@ -62,9 +61,11 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
 
     static WMTSTileFactory factory = new WMTSTileFactory();
 
-    public static final String LAYER = "Layer";
+    public static final String LAYER = "layer";
 
-    public static final String STYLE = "Style";
+    public static final String STYLE = "style";
+
+    public static final String FORMAT = "format";
 
     public static final String TILECOL = "TileCol";
 
@@ -100,7 +101,7 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
 
     private final Map<String, String> headers = new HashMap<>();
 
-    private String format;
+    private String format = null;
 
     /**
      * Constructs a GetMapRequest. The data passed in represents valid values that can be used.
@@ -124,12 +125,6 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
     @Override
     protected void initRequest() {
         setProperty(REQUEST, "GetTile");
-    }
-
-    @Override
-    public Response createResponse(HTTPResponse response) throws ServiceException, IOException {
-        // TODO Auto-generated method stub
-        return null;
     }
 
     @Override
@@ -263,7 +258,20 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
                 }
             }
         } else {
-            return super.getFinalURL();
+            try {
+                if (layer != null) {
+                    setProperty(LAYER, URLEncoder.encode(layer.getName(), "UTF-8"));
+                }
+                if (styleName != null) {
+                    setProperty(STYLE, URLEncoder.encode(styleName, "UTF-8"));
+                }
+                if (format != null) {
+                    setProperty(FORMAT, URLEncoder.encode(format, "UTF-8"));
+                }
+                return super.getFinalURL();
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException("Missing encoding for UTF-8.", e);
+            }
         }
     }
 

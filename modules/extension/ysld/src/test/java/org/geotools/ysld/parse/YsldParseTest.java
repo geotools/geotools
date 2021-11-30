@@ -2302,4 +2302,12 @@ public class YsldParseTest {
             assertThat(e.getMessage(), containsString("could not determine a constructor"));
         }
     }
+
+    @Test
+    public void testRuleVendorOption() throws Exception {
+        String yaml = "feature-styles:\n" + "- rules:\n" + "  - x-foo: bar";
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        Rule rule = SLD.rules(SLD.defaultStyle(sld))[0];
+        assertThat(rule.getOptions(), hasEntry("foo", "bar"));
+    }
 }

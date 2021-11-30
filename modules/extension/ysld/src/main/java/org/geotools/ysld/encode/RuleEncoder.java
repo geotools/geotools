@@ -82,6 +82,7 @@ public class RuleEncoder extends YsldEncodeHandler<Rule> {
         }
 
         put("symbolizers", new SymbolizersEncoder(rule));
+        vendorOptions(rule.getOptions());
     }
 
     String toStringOrNull(double d, String nullKeyword) {

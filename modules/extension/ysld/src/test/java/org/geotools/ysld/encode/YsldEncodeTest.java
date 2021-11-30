@@ -1814,4 +1814,19 @@ public class YsldEncodeTest {
         Tuple map = iterator.next();
         assertEquals("('#E20374',1.0,1,Lorem Ipsum (magenta = covered))", map.toString());
     }
+
+    @Test
+    public void testRuleVendorOption() throws Exception {
+        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        FeatureTypeStyle fts = fts(p);
+        fts.rules().get(0).getOptions().put("foo", "bar");
+
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld(fts), out);
+
+        YamlMap obj = new YamlMap(YamlUtil.getSafeYaml().load(out.toString()));
+        YamlMap result = obj.seq("feature-styles").map(0).seq("rules").map(0);
+
+        assertEquals("bar", result.str("x-foo"));
+    }
 }

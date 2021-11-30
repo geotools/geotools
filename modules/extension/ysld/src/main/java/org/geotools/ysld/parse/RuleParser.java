@@ -85,6 +85,7 @@ public class RuleParser extends YsldParseHandler {
             }
 
             context.push(r, "symbolizers", new SymbolizersParser(rule, factory));
+            rule.getOptions().putAll(Util.vendorOptions(r));
         }
     }
 

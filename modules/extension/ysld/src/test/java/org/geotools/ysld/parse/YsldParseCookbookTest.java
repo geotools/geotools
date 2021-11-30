@@ -19,12 +19,14 @@ package org.geotools.ysld.parse;
 
 import static org.geotools.ysld.Ysld.transform;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasEntry;
 import static org.junit.Assert.assertEquals;
 
 import java.awt.Color;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.List;
 import java.util.Map;
 import org.geotools.filter.Filters;
 import org.geotools.filter.text.ecql.ECQL;
@@ -602,6 +604,45 @@ public class YsldParseCookbookTest {
         assertEquals(0, Filters.asInt(placement.getDisplacement().getDisplacementX()));
         assertEquals(25, Filters.asInt(placement.getDisplacement().getDisplacementY()));
         assertEquals(-45, Filters.asInt(placement.getRotation()));
+    }
+
+    @Test
+    public void testPointWithRuleVendorOption() throws Exception {
+        // <UserStyle>
+        //   <Title>Simple Point With Rule Vendor Option</Title>
+        //   <FeatureTypeStyle>
+        //     <Rule>
+        //       <PointSymbolizer>
+        //         <Graphic>
+        //           <Mark>
+        //             <WellKnownName>circle</WellKnownName>
+        //             <Fill>
+        //               <CssParameter name="fill">#FF0000</CssParameter>
+        //             </Fill>
+        //           </Mark>
+        //           <Size>6</Size>
+        //         </Graphic>
+        //       </PointSymbolizer>
+        //       <VendorOption name="inclusion">mapOnly</VendorOption>
+        //     </Rule>
+        //     <Rule>
+        //       <PointSymbolizer>
+        //         <Graphic>
+        //           <ExternalGraphic>
+        //              <OnlineResource xlink:type="simple" xlink:href="smileyface.png" />
+        //             <Format>image/png</Format>
+        //           </ExternalGraphic>
+        //           <Size>20</Size>
+        //         </Graphic>
+        //       </PointSymbolizer>
+        //       <VendorOption name="inclusion">legendOnly</VendorOption>
+        //     </Rule>
+        //   </FeatureTypeStyle>
+        // </UserStyle>
+        Style style = parse("point", "rule-option.sld");
+        List<Rule> rules = style.featureTypeStyles().get(0).rules();
+        assertThat(rules.get(0).getOptions(), hasEntry("inclusion", "mapOnly"));
+        assertThat(rules.get(1).getOptions(), hasEntry("inclusion", "legendOnly"));
     }
 
     @Test

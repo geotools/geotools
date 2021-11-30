@@ -254,6 +254,7 @@ Rule definition:
       zoom: [<min>,<max>]
       symbolizers:
       - <symbolizers>
+      x-inclusion: <text>
 
 Line symbolizer definition:
 

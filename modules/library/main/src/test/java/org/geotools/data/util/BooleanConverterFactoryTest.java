@@ -16,6 +16,7 @@
  */
 package org.geotools.data.util;
 
+import java.math.BigDecimal;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,6 +42,12 @@ public class BooleanConverterFactoryTest {
     public void testFromInteger() throws Exception {
         Assert.assertEquals(Boolean.TRUE, convert(Integer.valueOf(1)));
         Assert.assertEquals(Boolean.FALSE, convert(Integer.valueOf(0)));
+    }
+
+    @Test
+    public void testFromBigDecimal() throws Exception {
+        Assert.assertEquals(Boolean.TRUE, convert(BigDecimal.valueOf(1)));
+        Assert.assertEquals(Boolean.FALSE, convert(BigDecimal.valueOf(0)));
     }
 
     Boolean convert(Object value) throws Exception {

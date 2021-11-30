@@ -16,6 +16,7 @@
  */
 package org.geotools.data.util;
 
+import java.math.BigDecimal;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.factory.Hints;
@@ -32,6 +33,13 @@ import org.geotools.util.factory.Hints;
  *   <li>"0" -> Boolean.FALSE
  *   <li>1 -> Boolean.TRUE
  *   <li>0 -> Boolean.FALSE
+ * </ul>
+ *
+ * <p>Supported numeric types:
+ *
+ * <ul>
+ *   <li>Integer
+ *   <li>BigDecimal
  * </ul>
  *
  * @author Justin Deoliveira, The Open Planning Project
@@ -71,6 +79,24 @@ public class BooleanConverterFactory implements ConverterFactory {
                             return target.cast(Boolean.TRUE);
                         }
                         if (Integer.valueOf(0).equals(source)) {
+                            return target.cast(Boolean.FALSE);
+                        }
+
+                        return null;
+                    }
+                };
+            }
+
+            // big decimal to boolean
+            if (source.equals(BigDecimal.class)) {
+                return new Converter() {
+
+                    @Override
+                    public <T> T convert(Object source, Class<T> target) throws Exception {
+                        if (BigDecimal.ONE.equals(source)) {
+                            return target.cast(Boolean.TRUE);
+                        }
+                        if (BigDecimal.ZERO.equals(source)) {
                             return target.cast(Boolean.FALSE);
                         }
 

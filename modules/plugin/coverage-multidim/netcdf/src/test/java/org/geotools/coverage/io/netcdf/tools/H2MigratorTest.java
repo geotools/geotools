@@ -365,9 +365,7 @@ public class H2MigratorTest {
         assertTrue(indexerFile.exists());
         final Indexer indexer = Utils.unmarshal(indexerFile);
         final Optional<String> auxDataStore =
-                indexer.getParameters()
-                        .getParameter()
-                        .stream()
+                indexer.getParameters().getParameter().stream()
                         .filter(p -> Utils.Prop.AUXILIARY_DATASTORE_FILE.equals(p.getName()))
                         .map(p -> p.getValue())
                         .findFirst();
@@ -439,8 +437,7 @@ public class H2MigratorTest {
         final Indexer indexer = Utils.unmarshal(indexerFile);
         final List<ParametersType.Parameter> parameters = indexer.getParameters().getParameter();
         final List<ParametersType.Parameter> filteredParameters =
-                parameters
-                        .stream()
+                parameters.stream()
                         .filter(p -> !p.getName().equals(Utils.Prop.AUXILIARY_DATASTORE_FILE))
                         .collect(Collectors.toList());
         parameters.addAll(filteredParameters);

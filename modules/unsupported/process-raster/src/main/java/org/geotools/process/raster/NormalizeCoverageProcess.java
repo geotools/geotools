@@ -27,9 +27,8 @@ import org.geotools.util.Converters;
 import org.opengis.parameter.ParameterValueGroup;
 
 @DescribeProcess(
-    title = "Normalize Coverage",
-    description = "Normalizes a coverage by dividing values by the max value"
-)
+        title = "Normalize Coverage",
+        description = "Normalizes a coverage by dividing values by the max value")
 public class NormalizeCoverageProcess implements RasterProcess {
 
     private final CoverageProcessor PROCESSOR = new CoverageProcessor();

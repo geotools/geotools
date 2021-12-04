@@ -210,8 +210,7 @@ public class FootprintsTransformation extends FunctionImpl
     }
 
     private DimensionDescriptor getDimension(List<DimensionDescriptor> dimensions, String name) {
-        return dimensions
-                .stream()
+        return dimensions.stream()
                 .filter(dd -> name.equalsIgnoreCase(dd.getName()))
                 .findFirst()
                 .orElse(null);

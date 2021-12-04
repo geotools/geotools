@@ -37,25 +37,23 @@ public class CenterLineProcess extends StaticMethodsProcessFactory<CenterLinePro
 
     @DescribeProcess(title = "Center Line", description = "Extract Center Line of a Polygon")
     @DescribeResult(
-        description = "A geometry that is the longest center line (skeleton) of the input polygon"
-    )
+            description =
+                    "A geometry that is the longest center line (skeleton) of the input polygon")
     public static Geometry centerLine(
             @DescribeParameter(
-                        name = "geometry",
-                        description = "The Geometry to extract the center line from",
-                        min = 1,
-                        max = 1
-                    )
+                            name = "geometry",
+                            description = "The Geometry to extract the center line from",
+                            min = 1,
+                            max = 1)
                     Geometry geometry,
             @DescribeParameter(
-                        name = "tolerance",
-                        description =
-                                "%age of perimeter to use for densification/simplification of input/output. Optional, default is 5.0",
-                        min = 0,
-                        max = 1,
-                        minValue = 1.0,
-                        maxValue = 100.0
-                    )
+                            name = "tolerance",
+                            description =
+                                    "%age of perimeter to use for densification/simplification of input/output. Optional, default is 5.0",
+                            min = 0,
+                            max = 1,
+                            minValue = 1.0,
+                            maxValue = 100.0)
                     Double tolerance) {
         LOG.fine("got " + geometry.getClass());
         double tol;

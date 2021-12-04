@@ -90,9 +90,8 @@ public interface Operation {
      * @return The parameter informations.
      */
     @UML(
-        identifier = "getParameterInfo, numParameters",
-        obligation = MANDATORY,
-        specification = OGC_01004
-    )
+            identifier = "getParameterInfo, numParameters",
+            obligation = MANDATORY,
+            specification = OGC_01004)
     ParameterValueGroup getParameters();
 }

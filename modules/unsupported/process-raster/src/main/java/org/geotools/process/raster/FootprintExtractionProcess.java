@@ -98,52 +98,46 @@ public class FootprintExtractionProcess implements RasterProcess {
             @DescribeParameter(name = "data", description = "Source raster")
                     GridCoverage2D coverage,
             @DescribeParameter(
-                        name = "exclusionRanges",
-                        description =
-                                "the ranges of luminance values to be excluded by the computation.",
-                        min = 0
-                    )
+                            name = "exclusionRanges",
+                            description =
+                                    "the ranges of luminance values to be excluded by the computation.",
+                            min = 0)
                     List<Range<Integer>> exclusionRanges,
             @DescribeParameter(
-                        name = "thresholdArea",
-                        description =
-                                "Indicates the minimum area of a polygon to be included in the final result",
-                        min = 0
-                    )
+                            name = "thresholdArea",
+                            description =
+                                    "Indicates the minimum area of a polygon to be included in the final result",
+                            min = 0)
                     Double thresholdArea,
             @DescribeParameter(
-                        name = "computeSimplifiedFootprint",
-                        description =
-                                "Indicates whether the simplified footprint should be computed",
-                        min = 0
-                    )
+                            name = "computeSimplifiedFootprint",
+                            description =
+                                    "Indicates whether the simplified footprint should be computed",
+                            min = 0)
                     Boolean computeSimplifiedFootprint,
             @DescribeParameter(
-                        name = "simplifierFactor",
-                        description =
-                                "Indicates the simplifier factor to be applied when computing the simplified footprint",
-                        min = 0
-                    )
+                            name = "simplifierFactor",
+                            description =
+                                    "Indicates the simplifier factor to be applied when computing the simplified footprint",
+                            min = 0)
                     Double simplifierFactor,
             @DescribeParameter(
-                        name = "removeCollinear",
-                        description = "Indicates whether remove collinear point should be applied",
-                        min = 0
-                    )
+                            name = "removeCollinear",
+                            description =
+                                    "Indicates whether remove collinear point should be applied",
+                            min = 0)
                     Boolean removeCollinear,
             @DescribeParameter(
-                        name = "forceValid",
-                        description =
-                                "Indicates whether polygon should be forced to be valid, also removing holes",
-                        min = 0
-                    )
+                            name = "forceValid",
+                            description =
+                                    "Indicates whether polygon should be forced to be valid, also removing holes",
+                            min = 0)
                     Boolean forceValid,
             @DescribeParameter(
-                        name = "loadingType",
-                        description =
-                                "Indicates which type of imageLoading should be performed (DEFERRED vs IMMEDIATE)",
-                        min = 0
-                    )
+                            name = "loadingType",
+                            description =
+                                    "Indicates which type of imageLoading should be performed (DEFERRED vs IMMEDIATE)",
+                            min = 0)
                     ImageLoadingType imageLoadingType,
             ProgressListener progressListener)
             throws ProcessException {

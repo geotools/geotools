@@ -68,10 +68,9 @@ public interface Element {
      * @return Description of the evaluation method, or {@code null}.
      */
     @UML(
-        identifier = "evaluationMethodDescription",
-        obligation = OPTIONAL,
-        specification = ISO_19115
-    )
+            identifier = "evaluationMethodDescription",
+            obligation = OPTIONAL,
+            specification = ISO_19115)
     InternationalString getEvaluationMethodDescription();
 
     /**

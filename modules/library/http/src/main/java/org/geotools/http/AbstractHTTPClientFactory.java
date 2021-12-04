@@ -42,13 +42,11 @@ public abstract class AbstractHTTPClientFactory implements HTTPClientFactory {
     public final boolean canProcess(Hints hints, List<Class<? extends HTTPBehavior>> behaviors) {
 
         Object val = hints.get(Hints.HTTP_CLIENT);
-        return clientClasses()
-                .stream()
+        return clientClasses().stream()
                 .filter(cls -> matchClientHint(cls, val))
                 .anyMatch(
                         cls ->
-                                behaviors
-                                        .stream()
+                                behaviors.stream()
                                         .allMatch(behavior -> behavior.isAssignableFrom(cls)));
     }
 
@@ -85,8 +83,7 @@ public abstract class AbstractHTTPClientFactory implements HTTPClientFactory {
             Hints hints, List<Class<? extends HTTPBehavior>> behaviors) {
         HTTPClient client = createClient(behaviors);
         Set<Class<? extends HTTPBehavior>> missingBehaviors =
-                behaviors
-                        .stream()
+                behaviors.stream()
                         .filter(behavior -> !behavior.isInstance(client))
                         .collect(Collectors.toSet());
         if (!missingBehaviors.isEmpty()) {
@@ -94,8 +91,7 @@ public abstract class AbstractHTTPClientFactory implements HTTPClientFactory {
                     String.format(
                             "HTTP client %s doesn't support behaviors: %s",
                             client.getClass().getName(),
-                            missingBehaviors
-                                    .stream()
+                            missingBehaviors.stream()
                                     .map(behavior -> behavior.getSimpleName())
                                     .collect(Collectors.joining(", "))));
         }

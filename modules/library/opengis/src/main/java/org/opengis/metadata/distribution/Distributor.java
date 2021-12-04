@@ -58,9 +58,8 @@ public interface Distributor {
      * @return Information about the technical means and media used by the distributor.
      */
     @UML(
-        identifier = "distributorTransferOptions",
-        obligation = OPTIONAL,
-        specification = ISO_19115
-    )
+            identifier = "distributorTransferOptions",
+            obligation = OPTIONAL,
+            specification = ISO_19115)
     Collection<? extends DigitalTransferOptions> getDistributorTransferOptions();
 }

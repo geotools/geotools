@@ -1500,8 +1500,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * various {@link Expression} it's using
      */
     private boolean isSupportedGroupBy(SimpleFeatureType featureType, GroupByVisitor visitor) {
-        return visitor.getGroupByAttributes()
-                .stream()
+        return visitor.getGroupByAttributes().stream()
                 .allMatch(
                         xp -> {
                             if (!fullySupports(xp)) return false;

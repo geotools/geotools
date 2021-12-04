@@ -53,10 +53,9 @@ import org.opengis.filter.sort.SortOrder;
 import org.xml.sax.helpers.NamespaceSupport;
 
 @DescribeProcess(
-    title = "Group candidate selection",
-    description =
-            "Given a collection of features for each group defined only the feature having the MIN or MAX value for the chosen attribute will be included in the final output"
-)
+        title = "Group candidate selection",
+        description =
+                "Given a collection of features for each group defined only the feature having the MIN or MAX value for the chosen attribute will be included in the final output")
 public class GroupCandidateSelectionProcess implements VectorProcess {
 
     protected FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
@@ -65,26 +64,23 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
             @DescribeParameter(name = "data", description = "Input feature collection")
                     FeatureCollection<? extends FeatureType, ? extends Feature> features,
             @DescribeParameter(
-                        name = "aggregation",
-                        description =
-                                "The aggregate operation to be computed, it can be MAX or MIN",
-                        min = 1
-                    )
+                            name = "aggregation",
+                            description =
+                                    "The aggregate operation to be computed, it can be MAX or MIN",
+                            min = 1)
                     String aggregation,
             @DescribeParameter(
-                        name = "operationAttribute",
-                        description =
-                                "The feature's attribute to be used to compute the aggregation",
-                        min = 1
-                    )
+                            name = "operationAttribute",
+                            description =
+                                    "The feature's attribute to be used to compute the aggregation",
+                            min = 1)
                     String operationAttribute,
             @DescribeParameter(
-                        name = "groupingAttributes",
-                        description =
-                                "The feature's attributes defining groups for which perform the filtering based on the aggregation operation and the operation attribute."
-                                        + "Consistent results are guaranteed only if the vector process is fed with features already sorted  by these attributes",
-                        min = 1
-                    )
+                            name = "groupingAttributes",
+                            description =
+                                    "The feature's attributes defining groups for which perform the filtering based on the aggregation operation and the operation attribute."
+                                            + "Consistent results are guaranteed only if the vector process is fed with features already sorted  by these attributes",
+                            min = 1)
                     List<String> groupingAttributes) {
         try {
             if (features == null) {
@@ -106,8 +102,7 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
             FeatureType schema = features.getSchema();
             NamespaceSupport ns = declareNamespaces(schema);
             List<PropertyName> groupingPn =
-                    groupingAttributes
-                            .stream()
+                    groupingAttributes.stream()
                             .map(
                                     g ->
                                             validatePropertyName(
@@ -125,19 +120,17 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
 
     public Query invertQuery(
             @DescribeParameter(
-                        name = "operationAttribute",
-                        description =
-                                "The feature's attribute to be used to compute the aggregation",
-                        min = 1
-                    )
+                            name = "operationAttribute",
+                            description =
+                                    "The feature's attribute to be used to compute the aggregation",
+                            min = 1)
                     String operationAttribute,
             @DescribeParameter(
-                        name = "groupingAttributes",
-                        description =
-                                "The feature's attributes defining groups for which perform the filtering based on the aggregation operation and the operation attribute."
-                                        + "Consistent results are guaranteed only if the vector process is fed with features already sorted  by these attributes",
-                        min = 1
-                    )
+                            name = "groupingAttributes",
+                            description =
+                                    "The feature's attributes defining groups for which perform the filtering based on the aggregation operation and the operation attribute."
+                                            + "Consistent results are guaranteed only if the vector process is fed with features already sorted  by these attributes",
+                            min = 1)
                     List<String> groupingAttributes,
             Query targetQuery,
             GridGeometry gridGeometry) {

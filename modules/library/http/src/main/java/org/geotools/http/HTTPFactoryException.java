@@ -47,8 +47,7 @@ public class HTTPFactoryException extends RuntimeException {
                     String.format(
                             "%s\nBehaviors:%s",
                             message,
-                            behaviors
-                                    .stream()
+                            behaviors.stream()
                                     .map(behavior -> behavior.getSimpleName())
                                     .collect(Collectors.joining(",")));
         }

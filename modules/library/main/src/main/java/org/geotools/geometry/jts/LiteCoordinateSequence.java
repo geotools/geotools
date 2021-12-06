@@ -148,17 +148,21 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
     }
 
     public LiteCoordinateSequence(CoordinateSequence cs, int dimension) {
-        super(dimension, cs.getMeasures());
+        this(cs, dimension, 0);
+    }
+
+    public LiteCoordinateSequence(CoordinateSequence cs, int dimension, int measures) {
+        super(dimension, measures);
         this.size = cs.size();
         this.dimension = dimension;
 
-        if (cs instanceof LiteCoordinateSequence) {
-            double[] orig = ((LiteCoordinateSequence) cs).getOrdinateArray(dimension);
+        if (cs instanceof LiteCoordinateSequence && cs.getMeasures() == measures) {
+            double[] orig = ((LiteCoordinateSequence) cs).getOrdinateArray(dimension, measures);
             this.coords = new double[orig.length];
             System.arraycopy(orig, 0, coords, 0, coords.length);
         } else {
             this.coords = new double[size * dimension];
-            int minDimension = Math.min(dimension, cs.getDimension());
+            final int minDimension = Math.min(dimension, cs.getDimension());
             for (int i = 0; i < size; i++) {
                 for (int j = 0; j < minDimension; j++) {
                     coords[i * dimension + j] = cs.getOrdinate(i, j);
@@ -277,8 +281,28 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
         return result;
     }
 
+    public double[] getOrdinateArray(int dimensions, int measures) {
+        if (dimensions == this.dimension && measures == this.measures) {
+            return coords;
+        }
+
+        int n = size();
+        double[] result = new double[n * dimensions];
+        int minDimensions = Math.min(dimensions, this.dimension);
+        int minMeasures = Math.min(measures, this.measures);
+        for (int t = 0; t < n; t++) {
+            for (int d = 0; d < minDimensions; d++) {
+                result[t * 2 + d] = getOrdinate(t, d);
+            }
+            for (int m = 0; m < minMeasures; m++) {
+                result[t * 2 + minDimensions + m] = getOrdinate(t, minDimensions + m);
+            }
+        }
+        return result;
+    }
+
     public double[] getOrdinateArray(int dimensions) {
-        if (dimensions == this.dimension) {
+        if (dimensions == this.dimension && this.measures == 0) {
             return coords;
         }
 

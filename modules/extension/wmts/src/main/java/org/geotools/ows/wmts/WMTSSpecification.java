@@ -97,16 +97,6 @@ public class WMTSSpecification extends Specification {
         return new GetMultiTileRequest(server, props, caps, client);
     }
 
-    /** Create either a GetKVPTileRequest or GetRestTileRequest */
-    GetSingleTileRequest createGetTileRequest(URL url, WMTSServiceType type, HTTPClient client) {
-        Properties props = new Properties();
-        props.put("type", type.name());
-
-        return (type == WMTSServiceType.KVP
-                ? new GetKVPTileRequest(url, props, client)
-                : new GetRestTileRequest(url, props, client));
-    }
-
     /** @deprecated Avoid usage of this - change to GetMultiTileRequest */
     @Deprecated
     public static class GetTileRequest extends GetMultiTileRequest {
@@ -278,6 +268,7 @@ public class WMTSSpecification extends Specification {
 
         GetKVPTileRequest(URL onlineResource, Properties properties, HTTPClient client) {
             super(onlineResource, properties, client);
+            properties.setProperty("type", "KVP");
         }
 
         @Override

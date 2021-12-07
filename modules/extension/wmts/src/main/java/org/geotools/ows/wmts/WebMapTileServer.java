@@ -205,7 +205,7 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
         return (GetTileResponse) internalIssueRequest(tileRequest);
     }
 
-    /** Creates a GetMultiTileRequest */
+    /** Creates a GetMultiTileRequest, signature kept for now. */
     public GetTileRequest createGetTileRequest() {
 
         URL url;
@@ -224,32 +224,6 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
         GetTileRequest request =
                 ((WMTSSpecification) specification)
                         .createGetMultiTileRequest(url, props, capabilities, this.getHTTPClient());
-
-        if (headers != null) {
-            request.getHeaders().putAll(headers);
-        }
-        return request;
-    }
-
-    /** Creates a GetSingleTileRequest */
-    public GetTileRequest createGetTileRequest(WMTSServiceType type) {
-
-        OperationType getTile = capabilities.getRequest().getGetTile();
-        if (getTile == null) {
-            type = WMTSServiceType.REST;
-        }
-
-        URL url;
-        if (WMTSServiceType.KVP.equals(type)) {
-            url = findURL(getTile);
-        } else {
-            type = WMTSServiceType.REST;
-            url = serverURL;
-        }
-
-        GetSingleTileRequest request =
-                ((WMTSSpecification) specification)
-                        .createGetTileRequest(url, type, this.getHTTPClient());
 
         if (headers != null) {
             request.getHeaders().putAll(headers);

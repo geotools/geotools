@@ -33,12 +33,16 @@ public class WMTSHelper {
     public static String replaceToken(String baseUrl, String dimName, String dimValue) {
         String token = "{" + dimName.toLowerCase() + "}";
         int index = baseUrl.toLowerCase().indexOf(token);
-        if (index != -1) {
-            return baseUrl.substring(0, index)
-                    + (dimValue == null ? "" : dimValue)
-                    + baseUrl.substring(index + dimName.length() + 2);
-        } else {
-            return baseUrl;
+        try {
+            if (index != -1) {
+                return baseUrl.substring(0, index)
+                        + (dimValue == null ? "" : URLEncoder.encode(dimValue, "UTF-8"))
+                        + baseUrl.substring(index + dimName.length() + 2);
+            } else {
+                return baseUrl;
+            }
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("Doesn't support UTF-8", e);
         }
     }
 

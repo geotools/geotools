@@ -79,9 +79,8 @@ public class WMTSCapabilitiesTest {
 
             Assert.assertEquals("OML_Foreshore", l0.getTitle());
             Assert.assertNull(l0.getParent());
-            Assert.assertTrue(
-                    l0.getSrs().contains("urn:ogc:def:crs:EPSG::4326")); // case should not matter
-            Assert.assertEquals(4, l0.getBoundingBoxes().size());
+            // case should not matter
+            Assert.assertEquals(3, l0.getBoundingBoxes().size());
 
             Assert.assertEquals(2, l0.getTileMatrixLinks().size());
             TileMatrixSetLink tmsl0 = l0.getTileMatrixLinks().get("EPSG:4326");
@@ -140,10 +139,6 @@ public class WMTSCapabilitiesTest {
 
             Assert.assertEquals("ch.are.agglomerationen_isolierte_staedte", l0.getName());
             Assert.assertNull(l0.getParent());
-            Assert.assertTrue(l0.getSrs().contains("urn:ogc:def:crs:EPSG::2056")); // case
-            // should
-            // not
-            // matter
             Assert.assertTrue(l0.getSrs().contains("EPSG:2056")); // case should not
             // matter
 
@@ -168,9 +163,6 @@ public class WMTSCapabilitiesTest {
                     14285750.5715,
                     capabilities.getMatrixSets().get(0).getMatrices().get(0).getDenominator(),
                     0d);
-
-            CRSEnvelope bbox = layers.get(1).getBoundingBoxes().get("EPSG:4326");
-            Assert.assertNotNull(bbox);
 
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -221,7 +213,7 @@ public class WMTSCapabilitiesTest {
             Assert.assertTrue(
                     "Bad dimension name (Time!=" + dimName + ")", "Time".equalsIgnoreCase(dimName));
 
-            CRSEnvelope bbox = layers.get(1).getBoundingBoxes().get("EPSG:4326");
+            CRSEnvelope bbox = layers.get(1).getBoundingBoxes().get("CRS:84");
             Assert.assertNotNull(bbox);
 
         } catch (Exception e) {
@@ -284,7 +276,7 @@ public class WMTSCapabilitiesTest {
             WMTSLayer l0 = layers.get(0);
 
             Assert.assertEquals("brtachtergrondkaart", l0.getName());
-            Assert.assertTrue(l0.getSrs().contains("urn:ogc:def:crs:EPSG::28992")); // case
+            Assert.assertTrue(l0.getSrs().contains("EPSG:28992")); // case
 
         } catch (Exception e) {
             // a standard catch block shared with the other tests

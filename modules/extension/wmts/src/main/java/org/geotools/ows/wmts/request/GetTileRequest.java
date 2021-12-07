@@ -42,6 +42,14 @@ public interface GetTileRequest extends Request {
 
     void setFormat(String format);
 
+    void setTileMatrixSet(String tileMatrixSet);
+
+    void setTileMatrix(String tileMatrix);
+
+    void setTileRow(Integer tileRow);
+
+    void setTileCol(Integer tileCol);
+
     Set<Tile> getTiles() throws ServiceException;
 
     void setRequestedHeight(int height);

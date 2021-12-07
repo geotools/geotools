@@ -33,6 +33,7 @@ import org.geotools.ows.wms.CRSEnvelope;
 import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wms.request.GetFeatureInfoRequest;
 import org.geotools.ows.wms.response.GetFeatureInfoResponse;
+import org.geotools.ows.wmts.WMTSSpecification.GetSingleTileRequest;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
 import org.geotools.ows.wmts.model.WMTSServiceType;
 import org.geotools.ows.wmts.request.GetTileRequest;
@@ -190,18 +191,21 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
         specs[0] = new WMTSSpecification();
     }
 
-    /** */
+    /** @deprecated - change to tileRequest.getTiles() */
+    @Deprecated
     public Set<Tile> issueRequest(GetTileRequest tileRequest) throws ServiceException {
         return tileRequest.getTiles();
     }
 
-    /** The new issueRequest, which gives a GetTileResponse in response for a GetTileRequest. */
-    public GetTileResponse issueRequestForTileResponse(GetTileRequest tileRequest)
+    /**
+     * The new issueRequest, which gives a GetTileResponse in response for a GetSingleTileRequest.
+     */
+    public GetTileResponse issueRequest(GetSingleTileRequest tileRequest)
             throws IOException, ServiceException {
         return (GetTileResponse) internalIssueRequest(tileRequest);
     }
 
-    /** @return */
+    /** Creates a GetMultiTileRequest */
     public GetTileRequest createGetTileRequest() {
 
         URL url;
@@ -219,7 +223,33 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
         props.put("type", type.name());
         GetTileRequest request =
                 ((WMTSSpecification) specification)
-                        .createGetTileRequest(url, props, capabilities, this.getHTTPClient());
+                        .createGetMultiTileRequest(url, props, capabilities, this.getHTTPClient());
+
+        if (headers != null) {
+            request.getHeaders().putAll(headers);
+        }
+        return request;
+    }
+
+    /** Creates a GetSingleTileRequest */
+    public GetTileRequest createGetTileRequest(WMTSServiceType type) {
+
+        OperationType getTile = capabilities.getRequest().getGetTile();
+        if (getTile == null) {
+            type = WMTSServiceType.REST;
+        }
+
+        URL url;
+        if (WMTSServiceType.KVP.equals(type)) {
+            url = findURL(getTile);
+        } else {
+            type = WMTSServiceType.REST;
+            url = serverURL;
+        }
+
+        GetSingleTileRequest request =
+                ((WMTSSpecification) specification)
+                        .createGetTileRequest(url, type, this.getHTTPClient());
 
         if (headers != null) {
             request.getHeaders().putAll(headers);

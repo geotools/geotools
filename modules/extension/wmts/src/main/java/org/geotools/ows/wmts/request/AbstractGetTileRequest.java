@@ -67,14 +67,6 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
 
     public static final String FORMAT = "Format";
 
-    public static final String TILECOL = "TileCol";
-
-    public static final String TILEROW = "TileRow";
-
-    public static final String TILEMATRIX = "TileMatrix";
-
-    public static final String TILEMATRIXSET = "TileMatrixSet";
-
     private final HTTPClient client;
 
     protected WMTSLayer layer = null;
@@ -102,6 +94,14 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
     private final Map<String, String> headers = new HashMap<>();
 
     private String format = null;
+
+    private String tileMatrixSet = null;
+
+    private String tileMatrix = null;
+
+    private Integer tileRow = null;
+
+    private Integer tileCol = null;
 
     /**
      * Constructs a GetMapRequest. The data passed in represents valid values that can be used.
@@ -153,6 +153,42 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
     @Override
     public void setFormat(String format) {
         this.format = format;
+    }
+
+    @Override
+    public void setTileMatrixSet(String tileMatrixSet) {
+        this.tileMatrixSet = tileMatrixSet;
+    }
+
+    protected String getTileMatrixSet() {
+        return tileMatrixSet;
+    }
+
+    @Override
+    public void setTileMatrix(String tileMatrix) {
+        this.tileMatrix = tileMatrix;
+    }
+
+    public String getTileMatrix() {
+        return tileMatrix;
+    }
+
+    @Override
+    public void setTileRow(Integer tileRow) {
+        this.tileRow = tileRow;
+    }
+
+    protected Integer getTileRow() {
+        return tileRow;
+    }
+
+    @Override
+    public void setTileCol(Integer tileCol) {
+        this.tileCol = tileCol;
+    }
+
+    protected Integer getTileCol() {
+        return tileCol;
     }
 
     @Override
@@ -312,7 +348,7 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
                     if (LOGGER.isLoggable(Level.FINE)) {
                         LOGGER.fine("selected matrix set:" + matrixSet.getIdentifier());
                     }
-                    setProperty(TILEMATRIXSET, matrixSet.getIdentifier());
+                    setTileMatrixSet(matrixSet.getIdentifier());
                     retMatrixSet = matrixSet;
 
                     break;
@@ -333,7 +369,7 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
                     if (LOGGER.isLoggable(Level.FINE)) {
                         LOGGER.fine("defaulting matrix set:" + matrix.getIdentifier());
                     }
-                    setProperty(TILEMATRIXSET, matrix.getIdentifier());
+                    setTileMatrixSet(matrix.getIdentifier());
                     retMatrixSet = matrix;
 
                     break;

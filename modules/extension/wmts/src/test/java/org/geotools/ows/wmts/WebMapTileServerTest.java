@@ -26,7 +26,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.Map;
 import java.util.Set;
 import org.geotools.TestData;
@@ -37,9 +36,10 @@ import org.geotools.http.HTTPResponse;
 import org.geotools.http.MockHttpClient;
 import org.geotools.http.MockHttpResponse;
 import org.geotools.ows.wms.Layer;
+import org.geotools.ows.wmts.WMTSSpecification.GetSingleTileRequest;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
 import org.geotools.ows.wmts.model.WMTSLayer;
-import org.geotools.ows.wmts.request.AbstractGetTileRequest;
+import org.geotools.ows.wmts.model.WMTSServiceType;
 import org.geotools.ows.wmts.request.GetTileRequest;
 import org.geotools.ows.wmts.response.GetTileResponse;
 import org.geotools.referencing.CRS;
@@ -274,19 +274,17 @@ public class WebMapTileServerTest {
                 new MockHttpResponse(TestData.file(null, "world.png"), "image/png"));
 
         WebMapTileServer server = new WebMapTileServer(capabilities, httpClient);
-        GetTileRequest request = server.createGetTileRequest();
+        GetSingleTileRequest request =
+                (GetSingleTileRequest) server.createGetTileRequest(WMTSServiceType.KVP);
         request.setLayer(server.getCapabilities().getLayer("spearfish"));
         request.setStyle("default");
         request.setFormat("image/png");
+        request.setTileMatrixSet("EPSG:4326");
+        request.setTileMatrix("EPSG:4326:0");
+        request.setTileRow(0);
+        request.setTileCol(0);
 
-        request.setProperty(
-                AbstractGetTileRequest.TILEMATRIXSET, URLEncoder.encode("EPSG:4326", "UTF-8"));
-        request.setProperty(
-                AbstractGetTileRequest.TILEMATRIX, URLEncoder.encode("EPSG:4326:0", "UTF-8"));
-        request.setProperty(AbstractGetTileRequest.TILEROW, "0");
-        request.setProperty(AbstractGetTileRequest.TILECOL, "0");
-
-        GetTileResponse response = server.issueRequestForTileResponse(request);
+        GetTileResponse response = server.issueRequest(request);
         BufferedImage tileImage = response.getTileImage();
         Assert.assertNotNull(tileImage);
     }

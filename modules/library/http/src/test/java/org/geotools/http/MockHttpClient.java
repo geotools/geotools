@@ -140,7 +140,9 @@ public class MockHttpClient extends AbstractHttpClient {
             }
             return Arrays.stream(url.getQuery().split("&"))
                     .map(s -> s.split("="))
-                    .collect(Collectors.toMap(o -> decode(o[0]), o -> decode(o[1])));
+                    .collect(
+                            Collectors.toMap(
+                                    o -> decode(o[0]), o -> (o.length == 2 ? decode(o[1]) : "")));
         }
 
         private static String decode(final String encoded) {

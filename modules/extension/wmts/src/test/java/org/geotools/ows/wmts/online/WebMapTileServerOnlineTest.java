@@ -124,7 +124,7 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
         request.setRequestedBBox(re);
 
         // System.out.println(request.getFinalURL());
-        Set<Tile> responses = wmts.issueRequest(request);
+        Set<Tile> responses = request.getTiles();
         assertFalse(responses.isEmpty());
         for (Tile response : responses) {
             // System.out.println("Content Type: " + response.getContentType());

@@ -293,7 +293,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
             }
 
             getTileRequest().setCRS(gridEnvelope.getCoordinateReferenceSystem());
-            Set<Tile> responses = wmts.issueRequest(getTileRequest());
+            Set<Tile> responses = getTileRequest().getTiles();
             if (responses.isEmpty()) {
                 if (LOGGER.isLoggable(Level.FINE))
                     LOGGER.fine("Found 0 tiles in " + requestedEnvelope);

@@ -43,6 +43,8 @@
     <pmd.skip>true</pmd.skip>
     <spotbugs.skip>true</spotbugs.skip>
     <checkstyle.skip>true</checkstyle.skip>
+    <spotless.apply.skip>true</spotless.apply.skip>
+    <spotless.check.skip>true</spotless.check.skip>
     <lint>none</lint>
   </properties>
 
@@ -75,13 +77,6 @@
           <additionalProjectnatures>
             <projectnature>org.eclipse.pde.PluginNature</projectnature>
           </additionalProjectnatures>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>com.coveo</groupId>
-        <artifactId>fmt-maven-plugin</artifactId>
-        <configuration>
-          <skip>true</skip>
         </configuration>
       </plugin>
     </plugins>

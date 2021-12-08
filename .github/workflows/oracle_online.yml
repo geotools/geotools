@@ -37,7 +37,7 @@ jobs:
     - name: Build GeoTools dependent modules (no tests)
       run: mvn -B clean install -T2 -Dall -pl :gt-jdbc-oracle -DskipTests -am
     - name: Test Oracle data store
-      run: mvn -B clean install -pl :gt-jdbc-oracle -Pci-oracle-build -Ponline -Dfmt.skip=true
+      run: mvn -B clean install -pl :gt-jdbc-oracle -Pci-oracle-build -Ponline -Dspotless.apply.skip=true
     - name: Remove SNAPSHOT jars from repository
       run: |
         find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {}

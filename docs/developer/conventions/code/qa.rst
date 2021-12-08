@@ -26,7 +26,7 @@ to avoid running tests and code formatting.
 Formatting
 ^^^^^^^^^^
 
-Source code is automatically formatted during a Maven build using the `fmt-maven-plugin <https://github.com/coveooss/fmt-maven-plugin>`_
+Source code is automatically formatted during a Maven build using the `Spotless <https://github.com/diffplug/spotless/tree/main/plugin-maven>`_
 Maven plugin. In particular, the `Google Java style guidelines <https://google.github.io/styleguide/javaguide.html>`_
 are automatically enforced, in their AOSP variant (using 4 spaces for indent, instead of 2).
 Plugins that enforce the same formatting are available for the major IDEs.

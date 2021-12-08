@@ -33,7 +33,7 @@ jobs:
       run: sudo ethtool -K eth0 tx off rx off
     - name: Build with Maven
       run: |
-        mvn -B clean install -Dfmt.skip=true -Dall -T2  -Plinux-github-build --file pom.xml
+        mvn -B clean install -Dspotless.apply.skip=true -Dall -T2  -Plinux-github-build --file pom.xml
     - name: Remove SNAPSHOT jars from repository
       run: |
         find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {} 

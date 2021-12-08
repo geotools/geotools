@@ -26,3 +26,6 @@ _build
 
 # https://bugs.openjdk.java.net/browse/JDK-8214300
 .attach_pid*
+
+# spotless up to date checks
+.spotless-index

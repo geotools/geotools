@@ -26,7 +26,7 @@ jobs:
           sudo sysctl -w net.link.generic.system.hwcksum_tx=0
           sudo sysctl -w net.link.generic.system.hwcksum_rx=0
     - name: Build with Maven
-      run: mvn -B clean install -T2 -Dall --file pom.xml 
+      run: mvn -B clean install -T2 -Dall --file pom.xml -Dspotless.apply.skip=true
     - name: Remove SNAPSHOT jars from repository
       run: |
         find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {}

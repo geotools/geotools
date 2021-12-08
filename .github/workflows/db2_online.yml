@@ -28,9 +28,9 @@ jobs:
           ./build/ci/db2/start-db2.sh
           ./build/ci/db2/setup-db2.sh
       - name: Build GeoTools dependent modules (no tests)
-        run: mvn -B clean install -T2 -Dall -pl :gt-jdbc-db2 -DskipTests -am
+        run: mvn -B clean install -T2 -Dall -pl :gt-jdbc-db2 -DskipTests -am -Dspotless.apply.skip=true
       - name: Test Db2 data store
-        run: mvn -B verify -pl :gt-jdbc-db2 -Ponline -Dfmt.skip=true
+        run: mvn -B verify -pl :gt-jdbc-db2 -Ponline -Dspotless.apply.skip=true
       - name: Remove SNAPSHOT jars from repository
         run: |
           find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {}

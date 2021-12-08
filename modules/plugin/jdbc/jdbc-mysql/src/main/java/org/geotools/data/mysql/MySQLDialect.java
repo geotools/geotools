@@ -375,6 +375,7 @@ public class MySQLDialect extends SQLDialect {
     @Override
     public void registerSqlTypeToSqlTypeNameOverrides(Map<Integer, String> overrides) {
         overrides.put(Types.BOOLEAN, "BOOL");
+        overrides.put(Types.CLOB, "TEXT");
     }
 
     @Override

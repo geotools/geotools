@@ -265,6 +265,9 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         // but will allow GeoTools to handle some usual java.sql.Types
         // not mapped to raw SQL types by org.sqlite.jdbc3.JDBC3DatabaseMetaData.getTypeInfo()
 
+        // Strings
+        overrides.put(Types.CLOB, "TEXT");
+
         // Numbers
         overrides.put(Types.BOOLEAN, "BOOLEAN");
         overrides.put(Types.TINYINT, "TINYINT");

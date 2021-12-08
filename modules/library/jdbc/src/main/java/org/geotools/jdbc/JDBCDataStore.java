@@ -3249,8 +3249,20 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
         for (int i = 0; i < descriptors.size(); i++) {
             AttributeDescriptor ad = descriptors.get(i);
+            Object nativeTypeName = ad.getUserData().get(JDBC_NATIVE_TYPENAME);
+            if (nativeTypeName instanceof String) {
+                sqlTypeNames[i] = (String) nativeTypeName;
+                continue;
+            }
+
             Class clazz = ad.getType().getBinding();
-            Integer sqlType = dialect.getSQLType(ad);
+            Integer sqlType;
+            Object nativeType = ad.getUserData().get(JDBC_NATIVE_TYPE);
+            if (nativeType instanceof Integer) {
+                sqlType = (Integer) nativeType;
+            } else {
+                sqlType = dialect.getSQLType(ad);
+            }
 
             if (sqlType == null) {
                 sqlType = getMapping(clazz);

@@ -25,4 +25,9 @@ public class PostgisDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
     protected JDBCTestSetup createTestSetup() {
         return new PostGISPSTestSetup();
     }
+
+    @Override
+    protected String getCLOBTypeName() {
+        return "TEXT";
+    }
 }

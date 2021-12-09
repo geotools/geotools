@@ -22,10 +22,14 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
@@ -162,6 +166,59 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
             } catch (Exception e) {
             }
         }
+    }
+
+    public void testCreateSchemaWithNativeTypename() throws Exception {
+        assertLargeText(b -> b.userData(JDBCDataStore.JDBC_NATIVE_TYPENAME, getCLOBTypeName()));
+    }
+
+    /**
+     * Used by testCreateSchemaWithNativeTypename. Allows database specific overrides, defaults to
+     * <code>CLOB</code>
+     */
+    protected String getCLOBTypeName() {
+        return "CLOB";
+    }
+
+    public void testCreateSchemaWithNativeType() throws Exception {
+        assertLargeText(b -> b.userData(JDBCDataStore.JDBC_NATIVE_TYPE, Types.CLOB));
+    }
+
+    private void assertLargeText(Consumer<SimpleFeatureTypeBuilder> stringCustomizer)
+            throws FactoryException, IOException {
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        String typeName = tname("ft2");
+        builder.setName(typeName);
+        builder.setNamespaceURI(dataStore.getNamespaceURI());
+        builder.setCRS(CRS.decode("EPSG:4326"));
+        builder.add(aname("geometry"), Geometry.class);
+        builder.nillable(false).add(aname("intProperty"), Integer.class);
+        // database can process this name (also tried going from Type.CLOB to a name,
+        // but for example postgresql does have a mapping for it
+        String stringProperty = aname("stringProperty");
+        stringCustomizer.accept(builder);
+        builder.add(stringProperty, String.class);
+
+        SimpleFeatureType featureType = builder.buildFeatureType();
+        dataStore.createSchema(featureType);
+
+        // cannot get a consistent type response from different databases, but it should be able
+        // to hold a very large string without cutting it
+        String largeString = RandomStringUtils.random(Short.MAX_VALUE + 1, true, false);
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> w =
+                dataStore.getFeatureWriter(typeName, Transaction.AUTO_COMMIT)) {
+            w.hasNext();
+
+            SimpleFeature f = w.next();
+            f.setAttribute(1, 123);
+            f.setAttribute(2, largeString);
+            w.write();
+        }
+
+        // table was just created, it only has one feature inside, no need for a filter
+        SimpleFeatureCollection fc = dataStore.getFeatureSource(typeName).getFeatures();
+        SimpleFeature test = DataUtilities.first(fc);
+        assertEquals(largeString, test.getAttribute(stringProperty));
     }
 
     public void testRemoveSchema() throws Exception {

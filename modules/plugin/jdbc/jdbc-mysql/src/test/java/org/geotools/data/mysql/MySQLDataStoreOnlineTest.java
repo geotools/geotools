@@ -34,4 +34,10 @@ public class MySQLDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
     public void testCreateSchemaWithConstraints() throws Exception {
         // MySql does not complain if the string is too long, so we cannot run this test
     }
+
+    @Override
+    protected String getCLOBTypeName() {
+        // CLOB is supported in MySQL 8 but not in 5
+        return "TEXT";
+    }
 }

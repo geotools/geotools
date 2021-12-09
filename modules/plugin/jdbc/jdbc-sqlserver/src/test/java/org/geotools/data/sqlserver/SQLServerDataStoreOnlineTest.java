@@ -25,4 +25,9 @@ public class SQLServerDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
     protected JDBCTestSetup createTestSetup() {
         return new SQLServerTestSetup();
     }
+
+    @Override
+    protected String getCLOBTypeName() {
+        return "TEXT";
+    }
 }

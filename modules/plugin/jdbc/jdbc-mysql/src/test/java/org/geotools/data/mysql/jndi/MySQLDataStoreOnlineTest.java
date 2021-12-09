@@ -11,4 +11,10 @@ public class MySQLDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
     protected JDBCTestSetup createTestSetup() {
         return new JDBCJNDITestSetup(new MySQLTestSetup());
     }
+
+    @Override
+    protected String getCLOBTypeName() {
+        // CLOB is supported in MySQL 8 but not in 5
+        return "TEXT";
+    }
 }

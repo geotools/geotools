@@ -117,32 +117,36 @@ class WFSRemoteTransactionState implements State {
         }
 
         TransactionResponse transactionResponse = wfs.issueTransaction(transactionRequest);
-        List<FeatureId> insertedFids = transactionResponse.getInsertedFids();
-        int deleteCount = transactionResponse.getDeleteCount();
-        int updatedCount = transactionResponse.getUpdatedCount();
-        trace(
-                getClass().getSimpleName(),
-                "::commit(): Updated: ",
-                updatedCount,
-                ", Deleted: ",
-                deleteCount,
-                ", Inserted: ",
-                insertedFids);
+        try {
+            List<FeatureId> insertedFids = transactionResponse.getInsertedFids();
+            int deleteCount = transactionResponse.getDeleteCount();
+            int updatedCount = transactionResponse.getUpdatedCount();
+            trace(
+                    getClass().getSimpleName(),
+                    "::commit(): Updated: ",
+                    updatedCount,
+                    ", Deleted: ",
+                    deleteCount,
+                    ", Inserted: ",
+                    insertedFids);
 
-        if (requestedInsertFids.size() != insertedFids.size()) {
-            throw new IllegalStateException(
-                    "Asked to add "
-                            + requestedInsertFids.size()
-                            + " Features but got "
-                            + insertedFids.size()
-                            + " insert results");
-        }
+            if (requestedInsertFids.size() != insertedFids.size()) {
+                throw new IllegalStateException(
+                        "Asked to add "
+                                + requestedInsertFids.size()
+                                + " Features but got "
+                                + insertedFids.size()
+                                + " insert results");
+            }
 
-        for (int i = 0; i < requestedInsertFids.size(); i++) {
-            MutableFeatureId local = requestedInsertFids.get(i);
-            FeatureId inserted = insertedFids.get(i);
-            local.setID(inserted.getID());
-            local.setFeatureVersion(inserted.getFeatureVersion());
+            for (int i = 0; i < requestedInsertFids.size(); i++) {
+                MutableFeatureId local = requestedInsertFids.get(i);
+                FeatureId inserted = insertedFids.get(i);
+                local.setID(inserted.getID());
+                local.setFeatureVersion(inserted.getFeatureVersion());
+            }
+        } finally {
+            transactionResponse.dispose();
         }
     }
 

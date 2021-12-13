@@ -40,6 +40,8 @@ class WMTSReadParameters {
 
     private CoordinateReferenceSystem sourceCRS;
 
+    private static final int DEF_WIDTH = 640;
+
     WMTSReadParameters(GeneralParameterValue[] parameters, GeneralEnvelope originalEnvelope) {
         if (parameters != null) initFromGeneralParams(parameters);
         this.originalEnvelope = originalEnvelope;
@@ -82,7 +84,7 @@ class WMTSReadParameters {
 
     /** Get the image width. */
     int getWidth() {
-        int result = 640;
+        int result = DEF_WIDTH;
         if (gridGeom.getEnvelope() != null)
             // the range high value is the highest pixel included in the
             // raster, the actual width is one more than that
@@ -95,7 +97,7 @@ class WMTSReadParameters {
         int height;
         if (gridGeom.getEnvelope() == null) {
             double ySpanRatio = originalEnvelope.getSpan(1) / originalEnvelope.getSpan(0);
-            height = (int) Math.round(ySpanRatio * 640);
+            height = (int) Math.round(ySpanRatio * DEF_WIDTH);
         } else {
             // the range high value is the highest pixel included in the
             // raster, the actual height is one more than that
@@ -104,6 +106,7 @@ class WMTSReadParameters {
         return height;
     }
 
+    /** Get source CRS */
     CoordinateReferenceSystem getSourceCRS() {
         return sourceCRS;
     }

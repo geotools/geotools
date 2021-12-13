@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Set;
-import javax.imageio.ImageIO;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.ows.ServiceException;
@@ -175,9 +174,6 @@ public class LantmaterietWMTSServerOnlineTest extends WMTSOnlineTestCase {
         // envelope to request tiles for 5th zoom level
         ReferencedEnvelope re1 = new ReferencedEnvelope(977650, 1913530, 5838030, 6281290, crs);
         RenderedImage ri = getRenderImageResult(wmts, capabilities, re1, re1, "geolandbasemap");
-        File file = new File("C://marco_workspace/resulttopoweb.png");
-        file.createNewFile();
-        ImageIO.write(ri, "PNG", file);
         File img = new File(getClass().getResource("stylePlaceHolderResult.png").getFile());
         ImageAssert.assertEquals(img, ri, 100);
     }

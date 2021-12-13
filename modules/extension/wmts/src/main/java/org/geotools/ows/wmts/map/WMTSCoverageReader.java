@@ -257,7 +257,8 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
             throws IOException {
 
         GridCoverage2D result;
-        if (delegateToRemote(requestedEnvelope.getCoordinateReferenceSystem())) {
+        if (isNativelySupported(requestedEnvelope.getCoordinateReferenceSystem())) {
+            // we can simply perform the tile request and build the final image.
             ReferencedEnvelope gridEnvelope =
                     initTileRequest(
                             requestedEnvelope,
@@ -333,7 +334,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
      * EAST_NORTH axis order.
      *
      * @param envelope The referenced envelope.
-     * @return The referenced envelope eith EAST_NORTH axis order.
+     * @return The referenced envelope with EAST_NORTH axis order.
      * @throws FactoryException
      * @throws TransformException
      */
@@ -565,11 +566,24 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
         this.requestedTime = requestedTime;
     }
 
-    boolean delegateToRemote(CoordinateReferenceSystem crs) {
+    boolean isNativelySupported(CoordinateReferenceSystem crs) {
         String srs = CRS.toSRS(crs);
         return srs != null && validSRS.contains(srs);
     }
 
+    /**
+     * Switch the CRS definition and checks if the switched definition is contained in natively
+     * supported crs. If true the switched CRS is returned, otherwise null. By switching its meant
+     * the passage from an EPSG to an urn:ogc:def:crs:EPSG:: srs definition or the reverse. In case
+     * the crs to switch is a Pseudo-Mercator based crs, the code will try to switch to all the
+     * possible definition. Eg. assuming that the passed CRS is EPSG:3857:
+     * urn:ogc:def:crs:EPSG::3857, EPSG:900913, urn:ogc:def:crs:EPSG::900913 will be tried to se if
+     * they are among the natively supported srs.
+     *
+     * @param crs the CRS to switch.
+     * @return the switched srs if any conversion result was found in the valid srs list. Null
+     *     otherwise.
+     */
     private String switchDefinition(CoordinateReferenceSystem crs) {
         String srs = CRS.toSRS(crs);
         String result;
@@ -601,7 +615,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
         return switched;
     }
 
-    private GridCoverage2D reprojectManually(
+    private GridCoverage2D reproject(
             GridCoverage2D coverage2D,
             GeneralEnvelope destEnvelope,
             WMTSReadParameters readParameters) {
@@ -638,13 +652,16 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
         return msg.toString();
     }
 
+    // execute the get tiles request taking care of performing the reprojection if needed.
     private GridCoverage2D getMapReproject(
             ReferencedEnvelope requestedEnvelope, String time, WMTSReadParameters readParameters)
             throws IOException {
         try {
+
             CoordinateReferenceSystem targetCRS = requestedEnvelope.getCoordinateReferenceSystem();
-            ReferencedEnvelope nativeEnvelope =
-                    requestedEnvelope.transform(getBestSourceCRS(targetCRS, readParameters), false);
+            CoordinateReferenceSystem sourceCRS = getBestSourceCRS(targetCRS, readParameters);
+
+            ReferencedEnvelope nativeEnvelope = requestedEnvelope.transform(sourceCRS, false);
             ReferencedEnvelope gridEnvelope =
                     initTileRequest(
                             nativeEnvelope,
@@ -652,10 +669,12 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
                             readParameters.getHeight(),
                             time);
             GridCoverage2D result = getMap(nativeEnvelope, gridEnvelope);
+
+            // in case the reprojection is concerning two crs differing only by axis order
+            // it should not be needed because already happened to make sure
+            // map to raster space conversion doesn't fails due north east axis order.
             if (!CRS.equalsIgnoreMetadata(result.getCoordinateReferenceSystem(), targetCRS))
-                result =
-                        reprojectManually(
-                                result, new GeneralEnvelope(requestedEnvelope), readParameters);
+                result = reproject(result, new GeneralEnvelope(requestedEnvelope), readParameters);
             return result;
         } catch (FactoryException | TransformException e) {
             if (LOGGER.isLoggable(Level.SEVERE))
@@ -668,6 +687,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
     }
 
     // get the CRS to be used to reproject to a CRS that the server doesn't support.
+    // call this method if the targetCRS is not among the natively supported ones.
     CoordinateReferenceSystem getBestSourceCRS(
             CoordinateReferenceSystem targetCRS, WMTSReadParameters readParameters)
             throws IOException {
@@ -683,9 +703,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
             } else if (!validSRS.isEmpty()) {
                 // last attempt is to retrieve the firs valid srs available
                 LOGGER.fine(() -> "Retrieving random srs to perform reprojection");
-                String srs = validSRS.iterator().next();
-                LOGGER.fine(() -> "trying to reproject from " + srs);
-                result = CRS.decode(srs);
+                result = randomSupportedCRS();
             }
             if (result == null) {
                 throw new RuntimeException(
@@ -700,5 +718,19 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
                         e);
             throw new IOException(e);
         }
+    }
+
+    private CoordinateReferenceSystem randomSupportedCRS() {
+        CoordinateReferenceSystem result = null;
+        for (String srs : validSRS) {
+            LOGGER.fine(() -> "trying to decode " + srs);
+            try {
+                result = CRS.decode(srs);
+                break;
+            } catch (FactoryException e) {
+                LOGGER.fine(() -> "failed to decode from " + srs);
+            }
+        }
+        return result;
     }
 }

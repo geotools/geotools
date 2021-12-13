@@ -120,7 +120,7 @@ public class WMTSMapLayer extends GridReaderLayer {
      * reprojection is necessary, the tiles coming from the WMTS server will be used as-is
      */
     public boolean isNativelySupported(CoordinateReferenceSystem crs) {
-        return getReader().delegateToRemote(crs);
+        return getReader().isNativelySupported(crs);
     }
 
     public String getRawTime() {

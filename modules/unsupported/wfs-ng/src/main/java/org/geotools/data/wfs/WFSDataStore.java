@@ -178,7 +178,11 @@ public class WFSDataStore extends ContentDataStore {
 
                 ListStoredQueriesResponse response = client.issueRequest(request);
 
-                remoteStoredQueries = response.getListStoredQueriesResponse();
+                try {
+                    remoteStoredQueries = response.getListStoredQueriesResponse();
+                } finally {
+                    response.dispose();
+                }
             }
         }
 
@@ -204,9 +208,15 @@ public class WFSDataStore extends ContentDataStore {
 
                 DescribeFeatureTypeResponse response = client.issueRequest(request);
 
-                remoteFeatureType = response.getFeatureType();
+                try {
 
-                remoteFeatureTypes.put(remoteTypeName, remoteFeatureType);
+                    remoteFeatureType = response.getFeatureType();
+
+                    remoteFeatureTypes.put(remoteTypeName, remoteFeatureType);
+
+                } finally {
+                    response.dispose();
+                }
             }
         }
 
@@ -243,8 +253,12 @@ public class WFSDataStore extends ContentDataStore {
 
                     DescribeStoredQueriesResponse response = client.issueRequest(request);
 
-                    desc = response.getStoredQueryDescriptions().get(0);
-                    storedQueryDescriptionTypes.put(storedQueryId, desc);
+                    try {
+                        desc = response.getStoredQueryDescriptions().get(0);
+                        storedQueryDescriptionTypes.put(storedQueryId, desc);
+                    } finally {
+                        response.dispose();
+                    }
                 }
             } finally {
                 storedQueryDescriptionTypesLock.writeLock().unlock();

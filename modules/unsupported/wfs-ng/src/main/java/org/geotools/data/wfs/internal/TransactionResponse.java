@@ -28,4 +28,6 @@ public interface TransactionResponse {
     public int getDeleteCount();
 
     public int getInsertCount();
+
+    public void dispose();
 }

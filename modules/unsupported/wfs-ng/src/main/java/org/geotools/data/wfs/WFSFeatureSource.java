@@ -200,9 +200,13 @@ class WFSFeatureSource extends ContentFeatureSource {
         GetFeatureRequest request = createGetFeature(query, ResultType.HITS);
 
         GetFeatureResponse response = client.issueRequest(request);
-        GetParser<SimpleFeature> featureParser = response.getFeatures(null);
-        int resultCount = featureParser.getNumberOfFeatures();
-        return resultCount;
+        try {
+            GetParser<SimpleFeature> featureParser = response.getFeatures(null);
+            int resultCount = featureParser.getNumberOfFeatures();
+            return resultCount;
+        } finally {
+            response.dispose();
+        }
     }
 
     /** Invert axis order in the given query filter, if needed. */
@@ -283,7 +287,8 @@ class WFSFeatureSource extends ContentFeatureSource {
         GeometryFactory geometryFactory = findGeometryFactory(localQuery.getHints());
         GetParser<SimpleFeature> features = response.getSimpleFeatures(geometryFactory);
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = new WFSFeatureReader(features);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                new WFSFeatureReader(features, response);
 
         if (request.getUnsupportedFilter() != null
                 && request.getUnsupportedFilter() != Filter.INCLUDE) {

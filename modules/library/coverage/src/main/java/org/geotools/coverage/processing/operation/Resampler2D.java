@@ -745,10 +745,8 @@ final class Resampler2D extends GridCoverage2D {
                                                 background);
                                     } else {
                                         // If we were already using nearest-neighbor interpolation,
-                                        // force
-                                        // usage of WarpAdapter2D instead of WarpAffine. The price
-                                        // will be
-                                        // a slower reprojection.
+                                        // force usage of WarpAdapter2D instead of WarpAffine.
+                                        // The price will be a slower reprojection.
                                         forceAdapter = true;
                                     }
                                 }
@@ -1068,7 +1066,7 @@ final class Resampler2D extends GridCoverage2D {
             tolerance = (Double) Hints.getSystemDefault(Hints.RESAMPLE_TOLERANCE);
         }
         if (tolerance == null) {
-            tolerance = 0.333;
+            tolerance = Hints.DEFAULT_RESAMPLE_TOLERANCE;
         }
         WarpBuilder wb = new WarpBuilder(tolerance);
 

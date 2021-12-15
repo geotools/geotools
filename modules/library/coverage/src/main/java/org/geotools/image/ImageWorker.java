@@ -4205,7 +4205,7 @@ public class ImageWorker {
                         tolerance = (Double) Hints.getSystemDefault(Hints.RESAMPLE_TOLERANCE);
                     }
                     if (tolerance == null) {
-                        tolerance = 0.333;
+                        tolerance = Hints.DEFAULT_RESAMPLE_TOLERANCE;
                     }
 
                     // in case of oversampling, reduce the tolerance by the oversampling factor

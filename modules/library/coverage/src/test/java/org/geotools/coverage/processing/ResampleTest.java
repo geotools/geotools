@@ -143,7 +143,7 @@ public final class ResampleTest extends GridProcessingTestBase {
         indexedCoverageWithTransparency = EXAMPLES.get(3);
         floatCoverage = EXAMPLES.get(4);
         ushortCoverage = EXAMPLES.get(5);
-        Hints.putSystemDefault(Hints.RESAMPLE_TOLERANCE, 0.333);
+        Hints.putSystemDefault(Hints.RESAMPLE_TOLERANCE, Hints.DEFAULT_RESAMPLE_TOLERANCE);
     }
 
     /** Returns a projected CRS for test purpose. */
@@ -364,7 +364,7 @@ public final class ResampleTest extends GridProcessingTestBase {
                 (GridCoverage2D) Operations.DEFAULT.crop(gcFullWorld, cropEnvelope);
 
         // resample with approximation
-        Hints.putSystemDefault(Hints.RESAMPLE_TOLERANCE, 0.333d);
+        Hints.putSystemDefault(Hints.RESAMPLE_TOLERANCE, Hints.DEFAULT_RESAMPLE_TOLERANCE);
         GridCoverage2D gcResampledApprox =
                 (GridCoverage2D)
                         Operations.DEFAULT.resample(

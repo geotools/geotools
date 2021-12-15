@@ -774,7 +774,12 @@ public class Hints extends RenderingHints {
             new ClassKey("java.util.concurrent.ExecutorService");
 
     /**
-     * Resample tolerance (defaults to 0.333)
+     * Default resample tolerance value, if not specified via the {@link #RESAMPLE_TOLERANCE} hint
+     */
+    public static double DEFAULT_RESAMPLE_TOLERANCE = 0.333;
+
+    /**
+     * Resample tolerance (defaults to {@link #DEFAULT_RESAMPLE_TOLERANCE})
      *
      * <p>To set on the command line:
      *

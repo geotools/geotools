@@ -14,6 +14,9 @@ jobs:
       with:
         java-version: 8
         distribution: 'temurin'
+    - name: Set up GDAL
+      run: |
+        brew install gdal
     - name: Maven repository caching
       uses: actions/cache@v1
       with:
@@ -31,4 +34,3 @@ jobs:
     - name: Remove SNAPSHOT jars from repository
       run: |
         find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {}
-

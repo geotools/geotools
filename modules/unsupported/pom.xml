@@ -43,6 +43,7 @@
     <module>ogcapi-client</module>
     <module>tpk</module>
     <module>cql-json</module>
+    <module>vsi</module>
   </modules>
   <profiles>
     <!-- ================================================== -->
@@ -202,12 +203,19 @@
         <module>geojson-store</module>
         <module>s3-geotiff</module>
         <module>vpf</module>
+        <module>vsi</module>
       </modules>
     </profile>
     <profile>
       <id>arcgis-rest</id>
       <modules>
         <module>arcgis-rest</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>vsi</id>
+      <modules>
+        <module>vsi</module>
       </modules>
     </profile>
   </profiles>

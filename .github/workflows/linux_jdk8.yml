@@ -15,6 +15,9 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: 8
+    - name: Set up GDAL
+      run: |
+        apt install --no-install-recommends -y gdal-bin libgdal-dev libgdal-java
     - name: Maven repository caching
       uses: actions/cache@v2
       with:

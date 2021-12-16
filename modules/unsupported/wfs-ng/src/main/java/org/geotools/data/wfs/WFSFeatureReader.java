@@ -19,6 +19,7 @@ package org.geotools.data.wfs;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import org.geotools.data.FeatureReader;
+import org.geotools.data.wfs.internal.GetFeatureResponse;
 import org.geotools.data.wfs.internal.GetParser;
 import org.geotools.data.wfs.internal.parsers.EmfAppSchemaParser;
 import org.opengis.feature.simple.SimpleFeature;
@@ -37,7 +38,18 @@ class WFSFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature
 
     private SimpleFeatureType featureType;
 
+    private GetFeatureResponse response;
+
+    /** @Deprecated (pass on response so it can be disposed.) */
+    @Deprecated
     public WFSFeatureReader(final GetParser<SimpleFeature> parser) throws IOException {
+        this(parser, null);
+    }
+
+    public WFSFeatureReader(
+            final GetParser<SimpleFeature> parser, final GetFeatureResponse response)
+            throws IOException {
+        this.response = response;
         this.parser = parser;
         this.next = parser.parse();
         if (this.next != null) {
@@ -55,10 +67,15 @@ class WFSFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature
     @Override
     public void close() throws IOException {
         final GetParser<SimpleFeature> parser = this.parser;
+        final GetFeatureResponse response = this.response;
         this.parser = null;
         this.next = null;
+        this.response = null;
         if (parser != null) {
             parser.close();
+        }
+        if (response != null) {
+            response.dispose();
         }
     }
 

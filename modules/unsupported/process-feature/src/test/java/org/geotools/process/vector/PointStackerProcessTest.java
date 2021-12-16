@@ -18,6 +18,7 @@ package org.geotools.process.vector;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -51,6 +52,8 @@ import org.opengis.util.ProgressListener;
  * @author Cosmin Cioranu, Private
  */
 public class PointStackerProcessTest {
+    private SimpleFeatureType type;
+
     @Test
     public void testSimple() throws ProcessException, TransformException {
         ReferencedEnvelope bounds =
@@ -192,6 +195,53 @@ public class PointStackerProcessTest {
         checkStackedPoint(
                 new Coordinate(6.5, 6.5), 2, 1, getResultPoint(result, new Coordinate(6.5, 6.5)));
         checkStackedPoint(null, 2, 2, getResultPoint(result, new Coordinate(8, 8)));
+    }
+
+    @Test
+    /**
+     * check that values are returned for single points.
+     *
+     * @throws ProcessException
+     * @throws TransformException
+     */
+    public void testGEOT_7039() throws ProcessException, TransformException {
+        ReferencedEnvelope bounds =
+                new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
+
+        // Simple dataset with some coincident points
+        Coordinate[] data = {
+            new Coordinate(4, 4, 13),
+            new Coordinate(6.5, 6.5, 23),
+            new Coordinate(6.5, 6.5, 33),
+            new Coordinate(8, 8, 43),
+            new Coordinate(8.3, 8.3, 53)
+        };
+
+        SimpleFeatureCollection fc = createPoints(data, bounds);
+        ProgressListener monitor = null;
+
+        PointStackerProcess psp = new PointStackerProcess();
+        SimpleFeatureCollection result =
+                psp.execute(
+                        fc,
+                        100, // cellSize
+                        false, // weightClusterPosition
+                        true, // normalize
+                        PreserveLocation.Superimposed, // preserve location
+                        bounds, // outputBBOX
+                        1000, // outputWidth
+                        1000, // outputHeight
+                        monitor);
+
+        checkSchemaCorrect(result.getSchema(), true);
+        assertEquals(3, result.size());
+        SimpleFeature res = getResultPoint(result, new Coordinate(4, 4));
+        assertNotNull(res.getAttribute("value"));
+        // single points contain the value (the Z of the coordinate in this test)
+        assertEquals(13.0, (double) res.getAttribute("value"), 0.000001);
+        // stacked points have the attribute but no value
+        res = getResultPoint(result, new Coordinate(6.5, 6.5));
+        assertNull(res.getAttribute("value"));
     }
 
     private void checkStackedPoint(
@@ -360,13 +410,15 @@ public class PointStackerProcessTest {
     }
 
     private void checkSchemaCorrect(SimpleFeatureType ft, boolean includeProportionColumns) {
+        int expected = type.getAttributeCount() + 5;
+
         if (includeProportionColumns) {
-            // assertEquals(5, ft.getAttributeCount()); old version before adding envelope
-            assertEquals(7, ft.getAttributeCount());
+            expected = type.getAttributeCount() + 7;
+            assertEquals(expected, ft.getAttributeCount());
         } else {
-            // assertEquals(3, ft.getAttributeCount()); old version before adding envelope.
-            assertEquals(5, ft.getAttributeCount());
+            assertEquals(expected, ft.getAttributeCount());
         }
+
         assertEquals(Point.class, ft.getGeometryDescriptor().getType().getBinding());
         assertEquals(
                 Integer.class,
@@ -394,7 +446,7 @@ public class PointStackerProcessTest {
         tb.add("shape", MultiPoint.class);
         tb.add("value", Double.class);
 
-        SimpleFeatureType type = tb.buildFeatureType();
+        type = tb.buildFeatureType();
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(type);
         DefaultFeatureCollection fc = new DefaultFeatureCollection();
 

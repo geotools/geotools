@@ -22,17 +22,21 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.filter.text.cql2.CQLException;
+import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.referencing.CRS;
+import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -42,6 +46,8 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.filter.Filter;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
@@ -80,6 +86,7 @@ import org.opengis.util.ProgressListener;
     description = "Aggregates a collection of points over a grid into one point per grid cell."
 )
 public class PointStackerProcess implements VectorProcess {
+    private static final Logger LOGGER = Logging.getLogger(PointStackerProcess.class);
 
     public enum PreserveLocation {
         /** Preserves the original point location in case there is a single point in the cell */
@@ -177,6 +184,12 @@ public class PointStackerProcess implements VectorProcess {
                         minValue = 1
                     )
                     Integer outputHeight,
+            @DescribeParameter(
+                        name = "filter",
+                        description = "Optional CQL filter to restrict the points to be clustered",
+                        minValue = 0
+                    )
+                    String cql,
             ProgressListener monitor)
             throws ProcessException, TransformException {
 
@@ -201,6 +214,15 @@ public class PointStackerProcess implements VectorProcess {
             weightClusterPosition = argWeightClusterPosition;
         }
 
+        if (cql != null && !cql.isEmpty()) {
+            try {
+                Filter filter = ECQL.toFilter(cql);
+                data = data.subCollection(filter);
+            } catch (CQLException e) {
+                LOGGER.warning("ignoring cql string " + cql + " due to " + e);
+            }
+        }
+
         // TODO: allow output CRS to be different to data CRS
         // assume same CRS for now...
         double cellSizeSrc = cellSize * outputEnv.getWidth() / outputWidth;
@@ -215,7 +237,7 @@ public class PointStackerProcess implements VectorProcess {
                         outputEnv.getMinX(),
                         outputEnv.getMinY());
 
-        SimpleFeatureType schema = createType(srcCRS, normalize);
+        SimpleFeatureType schema = createType(srcCRS, normalize, data.getSchema());
         ListFeatureCollection result = new ListFeatureCollection(schema);
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(schema);
 
@@ -248,9 +270,9 @@ public class PointStackerProcess implements VectorProcess {
             Coordinate psrc = new Coordinate(dstPt[0], dstPt[1]);
 
             Geometry point = factory.createPoint(psrc);
-            fb.add(point);
-            fb.add(sp.getCount());
-            fb.add(sp.getCountUnique());
+            fb.set(ATTR_GEOM, point);
+            fb.set(ATTR_COUNT, sp.getCount());
+            fb.set(ATTR_COUNT_UNIQUE, sp.getCountUnique());
             // adding bounding box of the points staked, as geometry
             // envelope transformation
             Envelope boundingBox = sp.getBoundingBox();
@@ -258,19 +280,26 @@ public class PointStackerProcess implements VectorProcess {
             srcPt[1] = boundingBox.getMinY();
             srcPt2[0] = boundingBox.getMaxX();
             srcPt2[1] = boundingBox.getMaxY();
-
+            // should probably use a ReferencedEnvelope here
             invTransform.transform(srcPt, 0, dstPt, 0, 1);
             invTransform.transform(srcPt2, 0, dstPt2, 0, 1);
             Envelope boundingBoxTransformed =
                     new Envelope(dstPt[0], dstPt[1], dstPt2[0], dstPt2[1]);
-            fb.add(boundingBoxTransformed);
+            fb.set(ATTR_BOUNDING_BOX_GEOM, boundingBoxTransformed);
             // adding bounding box of the points staked, as string
-            fb.add(boundingBoxTransformed.toString());
+            fb.set(ATTR_BOUNDING_BOX, boundingBoxTransformed.toString());
             if (normalize) {
-                fb.add(((double) sp.getCount()) / maxCount);
-                fb.add(((double) sp.getCountUnique()) / maxCountUnique);
+                fb.set(ATTR_NORM_COUNT, ((double) sp.getCount()) / maxCount);
+                fb.set(ATTR_NORM_COUNT_UNIQUE, ((double) sp.getCountUnique()) / maxCountUnique);
             }
-
+            if (sp.getCount() == 1) {
+                // Here when count is we add the attribute value to the
+                // transformed featured
+                SimpleFeature ref = sp.getFeature();
+                for (AttributeDescriptor ad : ref.getType().getAttributeDescriptors()) {
+                    fb.set(ad.getType().getName(), ref.getAttribute(ad.getType().getName()));
+                }
+            }
             result.add(fb.buildFeature(null));
         }
         return result;
@@ -339,6 +368,7 @@ public class PointStackerProcess implements VectorProcess {
 
                     stkPt = new StackedPoint(indexPt, new Coordinate(centreX, centreY));
                     stackedPts.put(stkPt.getKey(), stkPt);
+                    stkPt.setFeature(feature);
                 }
                 stkPt.add(pout, weightClusterPosition);
             }
@@ -386,7 +416,8 @@ public class PointStackerProcess implements VectorProcess {
         griddedPt.y = iy;
     }
 
-    private SimpleFeatureType createType(CoordinateReferenceSystem crs, boolean stretch) {
+    private SimpleFeatureType createType(
+            CoordinateReferenceSystem crs, boolean stretch, SimpleFeatureType original) {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.add(ATTR_GEOM, Point.class, crs);
         tb.add(ATTR_COUNT, Integer.class);
@@ -396,6 +427,11 @@ public class PointStackerProcess implements VectorProcess {
         if (stretch) {
             tb.add(ATTR_NORM_COUNT, Double.class);
             tb.add(ATTR_NORM_COUNT_UNIQUE, Double.class);
+        }
+        if (original != null) {
+            for (AttributeDescriptor ad : original.getAttributeDescriptors()) {
+                tb.add(ad);
+            }
         }
         tb.setName("stackedPoint");
         SimpleFeatureType sfType = tb.buildFeatureType();
@@ -414,6 +450,8 @@ public class PointStackerProcess implements VectorProcess {
         private Set<Coordinate> uniquePts;
 
         private Envelope boundingBox = null;
+
+        private SimpleFeature feature;
         /**
          * Creates a new stacked point grid cell. The center point of the cell is supplied so that
          * it may be used as or influence the location of the final display point
@@ -424,6 +462,14 @@ public class PointStackerProcess implements VectorProcess {
         public StackedPoint(Coordinate key, Coordinate centerPt) {
             this.key = new Coordinate(key);
             this.centerPt = centerPt;
+        }
+
+        public SimpleFeature getFeature() {
+            return feature;
+        }
+
+        public void setFeature(SimpleFeature feature) {
+            this.feature = feature;
         }
 
         public Coordinate getKey() {

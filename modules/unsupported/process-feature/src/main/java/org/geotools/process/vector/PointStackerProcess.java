@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -269,16 +268,16 @@ public class PointStackerProcess implements VectorProcess {
             // adding bounding box of the points staked, as string
             fb.set(ATTR_BOUNDING_BOX, boundingBoxTransformed.toString());
             if (normalize) {
-              fb.set(ATTR_NORM_COUNT, ((double) sp.getCount()) / maxCount);
-              fb.set(ATTR_NORM_COUNT_UNIQUE, ((double) sp.getCountUnique()) / maxCountUnique);
+                fb.set(ATTR_NORM_COUNT, ((double) sp.getCount()) / maxCount);
+                fb.set(ATTR_NORM_COUNT_UNIQUE, ((double) sp.getCountUnique()) / maxCountUnique);
             }
             if (sp.getCount() == 1) {
-              // Here when count is we add the attribute value to the
-              // transformed featured
-              SimpleFeature ref = sp.getFeature();
-              for (AttributeDescriptor ad : ref.getType().getAttributeDescriptors()) {
-                fb.set(ad.getType().getName(), ref.getAttribute(ad.getType().getName()));
-              }
+                // Here when count is we add the attribute value to the
+                // transformed featured
+                SimpleFeature ref = sp.getFeature();
+                for (AttributeDescriptor ad : ref.getType().getAttributeDescriptors()) {
+                    fb.set(ad.getType().getName(), ref.getAttribute(ad.getType().getName()));
+                }
             }
             result.add(fb.buildFeature(null));
         }
@@ -396,7 +395,8 @@ public class PointStackerProcess implements VectorProcess {
         griddedPt.y = iy;
     }
 
-    private SimpleFeatureType createType(CoordinateReferenceSystem crs, boolean stretch, SimpleFeatureType original) {
+    private SimpleFeatureType createType(
+            CoordinateReferenceSystem crs, boolean stretch, SimpleFeatureType original) {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.add(ATTR_GEOM, Point.class, crs);
         tb.add(ATTR_COUNT, Integer.class);
@@ -407,10 +407,10 @@ public class PointStackerProcess implements VectorProcess {
             tb.add(ATTR_NORM_COUNT, Double.class);
             tb.add(ATTR_NORM_COUNT_UNIQUE, Double.class);
         }
-        if(original != null) {
-          for (AttributeDescriptor ad : original.getAttributeDescriptors()) {
-            tb.add(ad);
-          }
+        if (original != null) {
+            for (AttributeDescriptor ad : original.getAttributeDescriptors()) {
+                tb.add(ad);
+            }
         }
         tb.setName("stackedPoint");
         SimpleFeatureType sfType = tb.buildFeatureType();
@@ -444,11 +444,11 @@ public class PointStackerProcess implements VectorProcess {
         }
 
         public SimpleFeature getFeature() {
-          return feature;
+            return feature;
         }
 
         public void setFeature(SimpleFeature feature) {
-          this.feature = feature;
+            this.feature = feature;
         }
 
         public Coordinate getKey() {

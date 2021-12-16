@@ -248,6 +248,7 @@ public class PointStackerProcessTest {
         assertNull(res.getAttribute("value"));
     }
 
+
     @Test
     /**
      * check that values to be clustered can be filtered

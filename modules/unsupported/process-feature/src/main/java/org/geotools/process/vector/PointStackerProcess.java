@@ -187,7 +187,8 @@ public class PointStackerProcess implements VectorProcess {
             @DescribeParameter(
                         name = "filter",
                         description = "Optional CQL filter to restrict the points to be clustered",
-                        minValue = 0
+                        min = 0,
+                        max = 1
                     )
                     String cql,
             ProgressListener monitor)

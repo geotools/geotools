@@ -109,6 +109,10 @@ public class GeoJSONReader implements AutoCloseable {
         parser = factory.createParser(is);
     }
 
+    public GeoJSONReader(String json) throws IOException {
+        parser = factory.createParser(json);
+    }
+
     /**
      * Returns true if the parser is trying to convert string formatted as dates into
      * java.util.Date, false otherwise. Defaults to true.

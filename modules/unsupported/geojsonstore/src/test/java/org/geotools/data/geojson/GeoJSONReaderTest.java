@@ -108,9 +108,14 @@ public class GeoJSONReaderTest {
                         + "}";
 
         try (GeoJSONReader reader = new GeoJSONReader(new ByteArrayInputStream(input.getBytes()))) {
-            FeatureCollection features = reader.getFeatures();
+            SimpleFeatureCollection features = reader.getFeatures();
             assertNotNull(features);
             assertEquals("wrong number of features read", 9, features.size());
+            List<SimpleFeature> list = DataUtilities.list(features);
+            // order preserving, since a GeoJSON collection is ordered
+            assertEquals("Trento", list.get(0).getAttribute("CITY"));
+            assertEquals("St Paul", list.get(1).getAttribute("CITY"));
+            assertEquals("Bangkok", list.get(2).getAttribute("CITY"));
         }
     }
 

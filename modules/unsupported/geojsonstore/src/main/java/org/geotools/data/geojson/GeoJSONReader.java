@@ -47,6 +47,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -227,9 +228,12 @@ public class GeoJSONReader implements AutoCloseable {
                     nFeatures.add(feature);
                 }
             }
-            return DataUtilities.collection(nFeatures);
+            features = nFeatures;
         }
-        return DataUtilities.collection(features);
+        // a GeoJSON feature collection has an array of features -> it's an ordered entity
+        // so we should return the features in the same order we got them, cannot use
+        // DefaultFeatureCollectin, but an order preserving collection instead
+        return new ListFeatureCollection(schema, features);
     }
 
     /** */

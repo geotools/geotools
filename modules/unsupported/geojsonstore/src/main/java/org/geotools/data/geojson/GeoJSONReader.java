@@ -69,7 +69,7 @@ import org.opengis.feature.type.FeatureType;
  */
 public class GeoJSONReader implements AutoCloseable {
     /** GEOMETRY_NAME */
-    public static final String GEOMETRY_NAME = "the_geom";
+    public static final String GEOMETRY_NAME = "geometry";
 
     private static final Logger LOGGER = Logging.getLogger(GeoJSONReader.class);
 
@@ -91,6 +91,8 @@ public class GeoJSONReader implements AutoCloseable {
 
     private URL url;
 
+    private InputStream is;
+
     private boolean guessingDates = true;
 
     /** For reading be a bit more lenient regarding what we parse */
@@ -98,6 +100,7 @@ public class GeoJSONReader implements AutoCloseable {
 
     public GeoJSONReader(URL url) throws IOException {
         this.url = url;
+        this.is = url.openStream();
         parser = factory.createParser(url);
         baseName = FilenameUtils.getBaseName(url.getPath());
     }
@@ -434,8 +437,13 @@ public class GeoJSONReader implements AutoCloseable {
 
     @Override
     public void close() throws IOException {
-        parser.close();
-        parser = null;
+        if (parser != null) {
+            parser.close();
+            parser = null;
+        }
+        if (is != null) {
+            is.close();
+        }
     }
 
     private class GeoJsonIterator implements FeatureIterator<SimpleFeature>, AutoCloseable {
@@ -501,7 +509,17 @@ public class GeoJSONReader implements AutoCloseable {
         }
 
         @Override
+        @SuppressWarnings("PMD.UseTryWithResources")
         public void close() {
+            try {
+                try {
+                    if (parser != null) parser.close();
+                } finally {
+                    if (is != null) is.close();
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("Unexpected failure closing iterator", e);
+            }
             parser = null;
         }
     }

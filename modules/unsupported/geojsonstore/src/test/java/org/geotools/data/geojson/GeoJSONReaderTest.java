@@ -81,7 +81,7 @@ public class GeoJSONReaderTest {
             expected.put("CITY", "Trento");
             expected.put("NUMBER", null);
             expected.put("YEAR", null);
-            expected.put("the_geom", gf.createPoint(new Coordinate(11.117, 46.067)));
+            expected.put("geometry", gf.createPoint(new Coordinate(11.117, 46.067)));
             SimpleFeature first = DataUtilities.first(features);
             for (Property prop : first.getProperties()) {
                 assertEquals(expected.get(prop.getName().getLocalPart()), prop.getValue());

@@ -22,17 +22,21 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.filter.text.cql2.CQLException;
+import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.referencing.CRS;
+import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -43,6 +47,7 @@ import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.filter.Filter;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
@@ -81,6 +86,7 @@ import org.opengis.util.ProgressListener;
     description = "Aggregates a collection of points over a grid into one point per grid cell."
 )
 public class PointStackerProcess implements VectorProcess {
+    private static final Logger LOGGER = Logging.getLogger(PointStackerProcess.class);
 
     public enum PreserveLocation {
         /** Preserves the original point location in case there is a single point in the cell */
@@ -178,6 +184,13 @@ public class PointStackerProcess implements VectorProcess {
                         minValue = 1
                     )
                     Integer outputHeight,
+            @DescribeParameter(
+                        name = "filter",
+                        description = "Optional CQL filter to restrict the points to be clustered",
+                        min = 0,
+                        max = 1
+                    )
+                    String cql,
             ProgressListener monitor)
             throws ProcessException, TransformException {
 
@@ -200,6 +213,15 @@ public class PointStackerProcess implements VectorProcess {
         boolean weightClusterPosition = false;
         if (argWeightClusterPosition != null) {
             weightClusterPosition = argWeightClusterPosition;
+        }
+
+        if (cql != null && !cql.isEmpty()) {
+            try {
+                Filter filter = ECQL.toFilter(cql);
+                data = data.subCollection(filter);
+            } catch (CQLException e) {
+                LOGGER.warning("ignoring cql string " + cql + " due to " + e);
+            }
         }
 
         // TODO: allow output CRS to be different to data CRS

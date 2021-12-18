@@ -53,15 +53,17 @@ public class GeometrySerializer extends JsonSerializer<Geometry> {
 
     private RoundingMode roundingMode = RoundingMode.HALF_UP;
     NumberFormat format = NumberFormat.getNumberInstance(Locale.ENGLISH);
-    /** Maximum number of decimal places (see https://xkcd.com/2170/ before changing it) */
-    int maximumFractionDigits = 4;
 
-    int minimumFractionDigits = 1;
+    int maximumFractionDigits;
+
+    int minimumFractionDigits;
 
     public GeometrySerializer(int minDecimals, int maxDecimals, RoundingMode rounding) {
-        format.setMinimumFractionDigits(minimumFractionDigits);
-        format.setMaximumFractionDigits(maximumFractionDigits);
-        format.setRoundingMode(roundingMode);
+        this.maximumFractionDigits = maxDecimals;
+        this.minimumFractionDigits = minDecimals;
+        format.setMinimumFractionDigits(minDecimals);
+        format.setMaximumFractionDigits(maxDecimals);
+        format.setRoundingMode(rounding);
     }
 
     @Override

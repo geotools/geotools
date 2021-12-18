@@ -50,7 +50,7 @@ public class JtsModule extends SimpleModule {
     private GeometrySerializer geometrySerializer;
 
     public JtsModule(int maxDecimals) {
-        this(new GeometryFactory(), maxDecimals, 1, RoundingMode.HALF_UP);
+        this(new GeometryFactory(), maxDecimals, 0, RoundingMode.HALF_UP);
     }
 
     public JtsModule() {

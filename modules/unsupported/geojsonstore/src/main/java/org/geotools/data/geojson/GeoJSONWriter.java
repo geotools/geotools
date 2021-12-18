@@ -77,6 +77,7 @@ public class GeoJSONWriter implements AutoCloseable {
     public static final FastDateFormat DEFAULT_DATE_FORMATTER =
             FastDateFormat.getInstance(DEFAULT_DATE_FORMAT, DEFAULT_TIME_ZONE);
 
+    /** Maximum number of decimal places (see https://xkcd.com/2170/ before changing it) */
     private int maxDecimals = 4;
 
     private OutputStream out;

@@ -27,7 +27,7 @@ Participation
 
 * Bug Tracker
   
-  GeoTools uses an `JIRA <https://osgeo-org.atlassian.net/projects/GEOT>`_ issue tracker to manage
+  GeoTools uses a `JIRA <https://osgeo-org.atlassian.net/projects/GEOT>`_ issue tracker to manage
   bugs, issues, and new features. If you have found a bug, or if there is a feature that you would
   like to see implemented in GeoTools, please report it in JIRA.
 

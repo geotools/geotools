@@ -11,7 +11,7 @@
        ant release -Drelease='27.0'
        
     Update main to a new snapshot version:
-       ant latest -Drelease='28-SNAPSHOT
+       ant latest -Drelease='28-SNAPSHOT'
        
     Change branch from latest to stable:
        ant stable

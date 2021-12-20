@@ -42,10 +42,10 @@
 	</target>
 
 	<target name="index" depends="init">
-		<antcall target="sphinx-ignore-warnings">
+		<antcall target="sphinx">
 			<param name="id" value="index"/>
 			<param name="build" value="html"/>
-		</antcall>	
+		</antcall>
 	</target>
 
 	<target name="user" depends="init">

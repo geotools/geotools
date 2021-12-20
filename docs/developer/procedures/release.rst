@@ -128,21 +128,21 @@ When creating the first release candidate of a series, there are some extra step
   
   For the new `stable` branch::
   
-    git checkout 26.x
+    git checkout 27.x
     git pull
-    ant -f build/build.xml latest
+    ant -f build/build.xml stable
     git add .
-    git commit -m "Change 26.x to stable branch"
-    git push geotools 26.x
+    git commit -m "Change 27.x to stable branch"
+    git push geotools 27.x
 
   For the new `maintenance` branch::
   
-    git checkout 25.x
+    git checkout 26.x
     git pull
     ant -f build/build.xml maintenance
     git add .
-    git commit -m "Change 25.x to stable branch"
-    git push geotools 25.x
+    git commit -m "Change 26.x to stable branch"
+    git push geotools 26.x
   
   This change will update the `pom.xml` series used to determine where documentation from the branch is published.
 

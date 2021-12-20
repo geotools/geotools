@@ -3,6 +3,21 @@
   xmlns:if="ant:if" xmlns:unless="ant:unless">
   <description>
     Perform common search an replace tasks to support the release process.
+    
+    Information on the current build environment:
+       ant info
+    
+    Update code references during release:
+       ant release -Drelease='27.0'
+       
+    Update main to a new snapshot version:
+       ant latest -Drelease='28-SNAPSHOT'
+       
+    Change branch from latest to stable:
+       ant stable
+       
+    Change branch from stable to maintenance:
+       ant maintenance
   </description>
   
   <macrodef name="pom-version">
@@ -46,18 +61,45 @@
       </loadfile>
     </sequential>
   </macrodef>
+
+  <macrodef name="sphinx-property">
+    <attribute name="property"/>
+    <attribute name="definition"/>
+    <attribute name="conf.file" default="../docs/common.py"/>
+    <sequential>
+      <loadfile
+        encoding="UTF-8"
+        property="@{property}"
+        srcFile="@{conf.file}" >
+        <filterchain>
+          <tokenfilter>
+            <containsregex pattern="@{definition} = '(\S*)'" replace="\1" />
+          </tokenfilter>
+          <striplinebreaks/>
+        </filterchain>
+      </loadfile>
+    </sequential>
+  </macrodef>
   
   <!-- extract build environment details -->
   <tstamp/>
   <pom-version property="version"/>
   <property name="date" value="${TODAY}"/>
   <pom-property property="series"/>
+  <!-- master_doc = 'index' -->
+  <sphinx-property property="sphinx.release" definition="release"/>
   
   <!-- review enviornment -->
   <target name="info" description="Review details of build environment.">
+     <echo>pom.xml:</echo>
      <echo>version: '${version}'</echo>
-     <echo>date: '${date}'</echo>
      <echo>series: '${series}' (used for url references)</echo>
+     <echo/>
+     <echo>sphinx-build:</echo>
+     <echo>release: '${sphinx.release}' (used as default when building docs)</echo>
+     <echo/>
+     <echo>environment:</echo>
+     <echo>date: '${date}'</echo>
      
      <echo if:set="release">release: '${release}'</echo>
      <echo unless:set="release"/>
@@ -71,6 +113,9 @@
   <!-- update environment -->
   <target name="latest"
           description="Update version when changing main to latest (requires `release` parameter for new version).">
+    <description>
+    </description>
+    <fail unless:set="release">Property 'release' required to update pom.xml</fail>
     <replace dir="..">
       <include name="**/pom.xml"/>
       <include name="**/GeoTools.java"/>
@@ -131,18 +176,23 @@
   
   <!-- update release version -->
   <target name="release"
-          description="Release updating ${release} references in code and readme for release (requires `release` and `series` parameters).">
+          description="Release updating ${release} references in code and readme for release (requires `release` parameter).">
+    <antcall target="update"/>
+    <replace file="../release/src/markdown/README.md">
+      <replacefilter token="@RELEASE@" value="${release}"/>
+      <replacefilter token="@DATE@" value="${date}"/>
+      <replacefilter token="@LINK@" value="${series}"/>
+    </replace>
+  </target>
+
+  <target name="update"
+          description="Update version references in code and documentation (requires `release` parameter)">
     <fail unless:set="release">Property 'release' required to update pom.xml</fail>
     <replace dir="..">
       <include name="**/pom.xml"/>
       <include name="**/GeoTools.java"/>
       <include name="**/common.py"/>
       <replacefilter token="${version}" value="${release}"/>
-    </replace>
-    <replace file="../release/src/markdown/README.md">
-      <replacefilter token="@RELEASE@" value="${release}"/>
-      <replacefilter token="@DATE@" value="${date}"/>
-      <replacefilter token="@LINK@" value="${series}"/>
     </replace>
   </target>
 

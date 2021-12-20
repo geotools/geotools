@@ -17,6 +17,7 @@
 package org.geotools.ows.wmts;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -46,6 +47,15 @@ import org.geotools.util.logging.Logging;
  *
  * <p>Used to create GetCapabilities and GetTile requests.
  *
+ * <p>GetTile request are separated into three different objects:
+ *
+ * <ul>
+ *   <li>GetMultiTileRequest - Used to get a set of tiles within an extent
+ *   <li>GetKVPTileRequest - Used to get a tile request with query string parameteres
+ *   <li>GetRestTileRequest - Used to get a tile request with url based on resourceurl in
+ *       capabilities
+ * </ul>
+ *
  * @author ian
  * @author Emanuele Tajariol (etj at geo-solutions dot it)
  */
@@ -67,31 +77,61 @@ public class WMTSSpecification extends Specification {
         return new GetCapsRequest(server);
     }
 
+    /** @deprecated Use createGetMultiTileRequest */
+    @Deprecated
     public GetTileRequest createGetTileRequest(
             URL server, Properties props, WMTSCapabilities caps) {
         return this.createGetTileRequest(server, props, caps, HTTPClientFinder.createClient());
     }
 
+    /** @deprecated Use createGetMultiTileRequest */
+    @Deprecated
     public GetTileRequest createGetTileRequest(
             URL server, Properties props, WMTSCapabilities caps, HTTPClient client) {
         return new GetTileRequest(server, props, caps, client);
     }
 
-    public static class GetTileRequest extends AbstractGetTileRequest {
+    /** Create a GetMultiTileRequest */
+    GetMultiTileRequest createGetMultiTileRequest(
+            URL server, Properties props, WMTSCapabilities caps, HTTPClient client) {
+        return new GetMultiTileRequest(server, props, caps, client);
+    }
 
-        private static Logger LOGGER = Logging.getLogger(GetTileRequest.class);
+    /** @deprecated Avoid usage of this - change to GetMultiTileRequest */
+    @Deprecated
+    public static class GetTileRequest extends GetMultiTileRequest {
+
+        public GetTileRequest(
+                URL onlineResource,
+                Properties properties,
+                WMTSCapabilities capabilities,
+                HTTPClient client) {
+            super(onlineResource, properties, capabilities, client);
+        }
+
+        /** Returns a GetTileResponse which in most cases represents an Image. */
+        @Override
+        public Response createResponse(HTTPResponse response) throws ServiceException, IOException {
+            return new GetTileResponse(response, getType());
+        }
+    }
+
+    /** GetMultiTileRequest - used for getting a Set of tiles */
+    public static class GetMultiTileRequest extends AbstractGetTileRequest {
+
+        private static Logger LOGGER = Logging.getLogger(GetMultiTileRequest.class);
 
         public static final String DIMENSION_TIME = "time";
 
         public static final String DIMENSION_ELEVATION = "elevation";
 
         /** */
-        public GetTileRequest(
+        public GetMultiTileRequest(
                 URL onlineResource, Properties properties, WMTSCapabilities capabilities) {
             this(onlineResource, properties, capabilities, HTTPClientFinder.createClient());
         }
 
-        public GetTileRequest(
+        public GetMultiTileRequest(
                 URL onlineResource,
                 Properties properties,
                 WMTSCapabilities capabilities,
@@ -108,11 +148,6 @@ public class WMTSSpecification extends Specification {
                 this.type = capabilities.getType();
             }
             this.capabilities = capabilities;
-        }
-
-        @Override
-        public Response createResponse(HTTPResponse response) throws ServiceException, IOException {
-            return new GetTileResponse(response, getType());
         }
 
         @Override
@@ -206,6 +241,114 @@ public class WMTSSpecification extends Specification {
             params.put("TileRow", "{TileRow}");
 
             return params;
+        }
+    }
+
+    /** Represents a GetTile request for a single tile. */
+    abstract static class GetSingleTileRequest extends AbstractGetTileRequest {
+
+        GetSingleTileRequest(URL onlineResource, Properties properties, HTTPClient client) {
+            super(onlineResource, properties, client);
+        }
+
+        @Override
+        protected void initVersion() {
+            setProperty(VERSION, WMTS_VERSION);
+        }
+
+        @Override
+        protected String createTemplateUrl(String tileMatrixSetName) {
+            throw new UnsupportedOperationException(
+                    "Single tile request's shouldn't use a template url.");
+        }
+    }
+
+    /** GetTile request base on query string parameters */
+    public static class GetKVPTileRequest extends GetSingleTileRequest {
+
+        GetKVPTileRequest(URL onlineResource, Properties properties, HTTPClient client) {
+            super(onlineResource, properties, client);
+            properties.setProperty("type", "KVP");
+        }
+
+        @Override
+        public URL getFinalURL() {
+            if (this.layer == null
+                    || this.styleName == null
+                    || this.getFormat() == null
+                    || this.getTileMatrixSet() == null
+                    || this.getTileMatrix() == null
+                    || this.getTileCol() == null
+                    || this.getTileRow() == null) {
+                throw new IllegalStateException(
+                        "Missing some properties for a proper GetTile-request.");
+            }
+
+            this.setProperty("layer", this.layer.getName());
+            this.setProperty("style", this.styleName);
+            this.setProperty("format", this.getFormat());
+            this.setProperty("tilematrixset", this.getTileMatrixSet());
+            this.setProperty("TileMatrix", this.getTileMatrix());
+            this.setProperty("TileCol", this.getTileCol().toString());
+            this.setProperty("TileRow", this.getTileRow().toString());
+
+            return super.getFinalURL();
+        }
+
+        /** Creating a GetTileResponse */
+        @Override
+        public GetTileResponse createResponse(HTTPResponse httpResponse)
+                throws ServiceException, IOException {
+            return new GetTileResponse(httpResponse, WMTSServiceType.KVP);
+        }
+    }
+
+    /** GetTile request based on a resourceUrl specified in Capabilities */
+    public static class GetRestTileRequest extends GetSingleTileRequest {
+
+        GetRestTileRequest(URL onlineResource, Properties properties, HTTPClient client) {
+            super(onlineResource, properties, client);
+        }
+
+        /*
+         * Uses the resourceurl specified in capabilites to create a url for one single tile
+         */
+        @Override
+        public URL getFinalURL() {
+            if (this.layer == null
+                    || this.styleName == null
+                    || this.getFormat() == null
+                    || this.getTileMatrixSet() == null
+                    || this.getTileMatrix() == null
+                    || this.getTileCol() == null
+                    || this.getTileRow() == null) {
+                throw new IllegalStateException(
+                        "Missing some properties for a proper GetTile-request.");
+            }
+            String baseUrl = onlineResource.toExternalForm();
+
+            String layerString = WMTSHelper.usePercentEncodingForSpace(layer.getName());
+            String styleString = WMTSHelper.usePercentEncodingForSpace(styleName);
+
+            baseUrl = WMTSHelper.replaceToken(baseUrl, "layer", layerString);
+            baseUrl = WMTSHelper.replaceToken(baseUrl, "style", styleString);
+            baseUrl = WMTSHelper.replaceToken(baseUrl, "tilematrixset", this.getTileMatrixSet());
+            baseUrl = WMTSHelper.replaceToken(baseUrl, "tilematrix", this.getTileMatrix());
+            baseUrl = WMTSHelper.replaceToken(baseUrl, "tilerow", this.getTileRow().toString());
+            baseUrl = WMTSHelper.replaceToken(baseUrl, "tilecol", this.getTileCol().toString());
+
+            try {
+                return new URL(baseUrl);
+            } catch (MalformedURLException e) {
+                throw new RuntimeException("Error creating URL for GetTile request", e);
+            }
+        }
+
+        /** Creating a GetTileResponse */
+        @Override
+        public GetTileResponse createResponse(HTTPResponse httpResponse)
+                throws ServiceException, IOException {
+            return new GetTileResponse(httpResponse, WMTSServiceType.REST);
         }
     }
 

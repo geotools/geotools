@@ -150,7 +150,7 @@ public class WMTSTileService extends TileService {
             case KVP:
                 return WMTSHelper.appendQueryString(
                         templateURL,
-                        WMTSSpecification.GetTileRequest.getKVPparams(
+                        WMTSSpecification.GetMultiTileRequest.getKVPparams(
                                 layerName, styleName, tileMatrixSet, "image/png"));
             case REST:
                 templateURL = WMTSHelper.replaceToken(templateURL, "layer", layerName);

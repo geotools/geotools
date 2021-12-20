@@ -213,7 +213,7 @@ public class LantmaterietWMTSServerOnlineTest extends OnlineTestCase {
         request.setCRS(crs);
         request.setRequestedBBox(requested);
 
-        return wmts.issueRequest(request);
+        return request.getTiles();
     }
 
     private RenderedImage getRenderImageResult(

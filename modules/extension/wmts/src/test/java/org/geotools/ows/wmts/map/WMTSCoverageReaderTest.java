@@ -103,7 +103,7 @@ public class WMTSCoverageReaderTest {
         assertThat(
                 "Expect format=image/jpeg in the request url",
                 url.toString(),
-                containsString("format=image%2Fjpeg"));
+                containsString("Format=image%2Fjpeg"));
     }
 
     @Test
@@ -250,7 +250,7 @@ public class WMTSCoverageReaderTest {
         assertNotNull(grid);
         GetTileRequest mapRequest = wcr.getTileRequest();
         mapRequest.setCRS(grid.getCoordinateReferenceSystem());
-        Set<Tile> responses = wcr.wmts.issueRequest(mapRequest);
+        Set<Tile> responses = mapRequest.getTiles();
         for (Tile t : responses) {
             /*System.out.println(t);
             // System.out.println(t.getTileIdentifier() + " " + t.getExtent());*/

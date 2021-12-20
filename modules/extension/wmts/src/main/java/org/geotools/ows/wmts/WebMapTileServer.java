@@ -33,9 +33,11 @@ import org.geotools.ows.wms.CRSEnvelope;
 import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wms.request.GetFeatureInfoRequest;
 import org.geotools.ows.wms.response.GetFeatureInfoResponse;
+import org.geotools.ows.wmts.WMTSSpecification.GetSingleTileRequest;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
 import org.geotools.ows.wmts.model.WMTSServiceType;
 import org.geotools.ows.wmts.request.GetTileRequest;
+import org.geotools.ows.wmts.response.GetTileResponse;
 import org.geotools.referencing.CRS;
 import org.geotools.tile.Tile;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -140,10 +142,19 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
      * @throws IOException
      */
     public WebMapTileServer(WMTSCapabilities capabilities) throws ServiceException, IOException {
-        super(
-                capabilities.getRequest().getGetCapabilities().getGet(),
-                HTTPClientFinder.createClient(),
-                capabilities);
+        this(capabilities, HTTPClientFinder.createClient());
+    }
+
+    /**
+     * Set up the WebMapTileServer with the given capabilities, using a custom http client.
+     *
+     * @param capabilities
+     * @throws ServiceException
+     * @throws IOException
+     */
+    public WebMapTileServer(WMTSCapabilities capabilities, HTTPClient httpClient)
+            throws ServiceException, IOException {
+        super(capabilities.getRequest().getGetCapabilities().getGet(), httpClient, capabilities);
         setupType();
     }
 
@@ -180,12 +191,21 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
         specs[0] = new WMTSSpecification();
     }
 
-    /** */
+    /** @deprecated - change to tileRequest.getTiles() */
+    @Deprecated
     public Set<Tile> issueRequest(GetTileRequest tileRequest) throws ServiceException {
         return tileRequest.getTiles();
     }
 
-    /** @return */
+    /**
+     * The new issueRequest, which gives a GetTileResponse in response for a GetSingleTileRequest.
+     */
+    public GetTileResponse issueRequest(GetSingleTileRequest tileRequest)
+            throws IOException, ServiceException {
+        return (GetTileResponse) internalIssueRequest(tileRequest);
+    }
+
+    /** Creates a GetMultiTileRequest, signature kept for now. */
     public GetTileRequest createGetTileRequest() {
 
         URL url;
@@ -203,7 +223,7 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
         props.put("type", type.name());
         GetTileRequest request =
                 ((WMTSSpecification) specification)
-                        .createGetTileRequest(url, props, capabilities, this.getHTTPClient());
+                        .createGetMultiTileRequest(url, props, capabilities, this.getHTTPClient());
 
         if (headers != null) {
             request.getHeaders().putAll(headers);

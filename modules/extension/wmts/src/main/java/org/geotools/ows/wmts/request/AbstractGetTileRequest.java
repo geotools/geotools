@@ -17,9 +17,10 @@
 
 package org.geotools.ows.wmts.request;
 
-import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -27,11 +28,9 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.data.ows.Response;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPClientFinder;
-import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wms.StyleImpl;
 import org.geotools.ows.wmts.WMTSHelper;
@@ -66,13 +65,7 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
 
     public static final String STYLE = "Style";
 
-    public static final String TILECOL = "TileCol";
-
-    public static final String TILEROW = "TileRow";
-
-    public static final String TILEMATRIX = "TileMatrix";
-
-    public static final String TILEMATRIXSET = "TileMatrixSet";
+    public static final String FORMAT = "Format";
 
     private final HTTPClient client;
 
@@ -100,7 +93,15 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
 
     private final Map<String, String> headers = new HashMap<>();
 
-    private String format;
+    private String format = null;
+
+    private String tileMatrixSet = null;
+
+    private String tileMatrix = null;
+
+    private Integer tileRow = null;
+
+    private Integer tileCol = null;
 
     /**
      * Constructs a GetMapRequest. The data passed in represents valid values that can be used.
@@ -124,12 +125,6 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
     @Override
     protected void initRequest() {
         setProperty(REQUEST, "GetTile");
-    }
-
-    @Override
-    public Response createResponse(HTTPResponse response) throws ServiceException, IOException {
-        // TODO Auto-generated method stub
-        return null;
     }
 
     @Override
@@ -158,6 +153,42 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
     @Override
     public void setFormat(String format) {
         this.format = format;
+    }
+
+    @Override
+    public void setTileMatrixSet(String tileMatrixSet) {
+        this.tileMatrixSet = tileMatrixSet;
+    }
+
+    protected String getTileMatrixSet() {
+        return tileMatrixSet;
+    }
+
+    @Override
+    public void setTileMatrix(String tileMatrix) {
+        this.tileMatrix = tileMatrix;
+    }
+
+    public String getTileMatrix() {
+        return tileMatrix;
+    }
+
+    @Override
+    public void setTileRow(Integer tileRow) {
+        this.tileRow = tileRow;
+    }
+
+    protected Integer getTileRow() {
+        return tileRow;
+    }
+
+    @Override
+    public void setTileCol(Integer tileCol) {
+        this.tileCol = tileCol;
+    }
+
+    protected Integer getTileCol() {
+        return tileCol;
     }
 
     @Override
@@ -263,7 +294,20 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
                 }
             }
         } else {
-            return super.getFinalURL();
+            try {
+                if (layer != null) {
+                    setProperty(LAYER, URLEncoder.encode(layer.getName(), "UTF-8"));
+                }
+                if (styleName != null) {
+                    setProperty(STYLE, URLEncoder.encode(styleName, "UTF-8"));
+                }
+                if (format != null) {
+                    setProperty(FORMAT, URLEncoder.encode(format, "UTF-8"));
+                }
+                return super.getFinalURL();
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException("Missing encoding for UTF-8.", e);
+            }
         }
     }
 
@@ -304,7 +348,7 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
                     if (LOGGER.isLoggable(Level.FINE)) {
                         LOGGER.fine("selected matrix set:" + matrixSet.getIdentifier());
                     }
-                    setProperty(TILEMATRIXSET, matrixSet.getIdentifier());
+                    setTileMatrixSet(matrixSet.getIdentifier());
                     retMatrixSet = matrixSet;
 
                     break;
@@ -325,7 +369,7 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
                     if (LOGGER.isLoggable(Level.FINE)) {
                         LOGGER.fine("defaulting matrix set:" + matrix.getIdentifier());
                     }
-                    setProperty(TILEMATRIXSET, matrix.getIdentifier());
+                    setTileMatrixSet(matrix.getIdentifier());
                     retMatrixSet = matrix;
 
                     break;

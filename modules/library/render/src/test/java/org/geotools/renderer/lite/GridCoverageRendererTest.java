@@ -53,6 +53,7 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.media.jai.Interpolation;
 import javax.media.jai.ROI;
+import javax.media.jai.RenderedOp;
 import javax.media.jai.TiledImage;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.RegexFileFilter;
@@ -578,6 +579,13 @@ public class GridCoverageRendererTest {
 
         // always set ROI on reprojection
         assertThat(image.getProperty("roi"), instanceOf(ROI.class));
+
+        // the reprojection happened while oversampling, make sure the warp was not linearized,
+        // and it's use the WarpAdapter class wrapping a MathTransform
+        RenderedOp op = (RenderedOp) image;
+        assertEquals(
+                "WarpAdapter",
+                op.getParameterBlock().getObjectParameter(0).getClass().getSimpleName());
 
         File reference =
                 new File(

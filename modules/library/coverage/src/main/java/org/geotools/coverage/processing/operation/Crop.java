@@ -637,10 +637,11 @@ public class Crop extends Operation2D {
             // //
             ImageWorker worker = new ImageWorker();
             java.awt.Polygon rasterSpaceROI = null;
-            double[] background =
-                    destnodata != null
-                            ? destnodata
-                            : CoverageUtilities.getBackgroundValues(sourceCoverage);
+
+            double[] background = destnodata;
+            if (background == null)
+                background = CoverageUtilities.getBackgroundValues(sourceCoverage);
+
             String operatioName = null;
             if (!isSimpleTransform || cropROI != null) {
                 // /////////////////////////////////////////////////////////////////////
@@ -758,7 +759,12 @@ public class Crop extends Operation2D {
             if (sourceProperties != null && !sourceProperties.isEmpty()) {
                 properties = new HashMap<>(sourceProperties);
             }
-            if (rasterSpaceROI != null || internalROI != null) {
+            if (worker.getROI() != null && !worker.getROI().contains(croppedImage.getBounds())) {
+                if (properties == null) {
+                    properties = new HashMap<>();
+                }
+                CoverageUtilities.setROIProperty(properties, worker.getROI());
+            } else if (rasterSpaceROI != null || internalROI != null) {
                 ROI finalROI = null;
                 if (rasterSpaceROI != null) {
                     finalROI = getAsROI(JTS.toPolygon(rasterSpaceROI));

@@ -19,6 +19,7 @@ package org.geotools.coverage.processing;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -51,12 +52,14 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.ImageWorker;
 import org.geotools.image.jai.Registry;
 import org.geotools.referencing.crs.DefaultDerivedCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.CoordinateSequence;
@@ -534,6 +537,28 @@ public final class CropTest extends GridProcessingTestBase {
     @Test
     public void testCropWithROIForceMosaic()
             throws TransformException, InterruptedException, FactoryException {
+        runROIForceMosaic(null);
+    }
+
+    @Test
+    public void testPreserveROI() {
+        // hint to force ImageWorker to preserve the ROI in output
+        Hints hints = new Hints(ImageWorker.FORCE_MOSAIC_ROI_PROPERTY, true);
+        GridCoverage2D cropped = runROIForceMosaic(hints);
+
+        // and the ROI property is preserved
+        ROI imageROI = (ROI) cropped.getRenderedImage().getProperty("ROI");
+        assertNotNull(imageROI);
+        assertFalse(imageROI.contains(0, 0));
+        assertFalse(imageROI.contains(5, 0));
+        assertFalse(imageROI.contains(0, 5));
+        assertFalse(imageROI.contains(5, 5));
+        assertTrue(imageROI.contains(100, 100));
+        ROI coverageROI = CoverageUtilities.getROIProperty(cropped);
+        assertEquals(imageROI, coverageROI);
+    }
+
+    private GridCoverage2D runROIForceMosaic(Hints hints) {
         final CoverageProcessor processor = CoverageProcessor.getInstance();
 
         /*
@@ -606,13 +631,13 @@ public final class CropTest extends GridProcessingTestBase {
         param.parameter("Envelope").setValue(cropEnvelope);
         param.parameter("ROI").setValue(mask);
 
-        GridCoverage2D cropped = (GridCoverage2D) processor.doOperation(param);
-        cropped = (GridCoverage2D) processor.doOperation(param);
+        GridCoverage2D cropped = (GridCoverage2D) processor.doOperation(param, hints);
         RenderedImage raster = cropped.getRenderedImage();
 
         // The value should be zero since we have cut away the corner
         assertEquals(0, raster.getTile(0, 0).getSample(0, 0, 0));
         assertEquals(cropEnvelope, cropped.getEnvelope());
+        return cropped;
     }
 
     /** Tests the intersection of the ROI and the cropEnvelope in the "Crop" operation. */

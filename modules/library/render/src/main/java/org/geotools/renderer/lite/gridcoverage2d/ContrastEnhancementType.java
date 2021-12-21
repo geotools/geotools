@@ -593,7 +593,7 @@ public enum ContrastEnhancementType {
     private static NoDataContainer getDestinationNoData(ImageWorker inputWorker) {
         Range nodata = inputWorker.extractNoDataProperty(inputWorker.getRenderedImage());
         NoDataContainer imposedNoData = null;
-        if (nodata != null && !nodata.contains(0)) {
+        if (nodata != null) {
             imposedNoData = new NoDataContainer(0);
         }
         return imposedNoData;

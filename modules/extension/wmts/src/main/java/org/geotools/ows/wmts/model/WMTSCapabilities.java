@@ -237,84 +237,71 @@ public class WMTSCapabilities extends Capabilities {
     private void fillTileMatrixSet(
             WMTSLayer wmtsLayer, Map<String, CoordinateReferenceSystem> crsLookup) {
         Map<String, TileMatrixSetLink> tileMatrixLinks = wmtsLayer.getTileMatrixLinks();
-
-        if (wmtsLayer.getLatLonBoundingBox() != null) {
-            ReferencedEnvelope wgs84Env = new ReferencedEnvelope(wmtsLayer.getLatLonBoundingBox());
-            wmtsLayer.getBoundingBoxes().put("EPSG:4326", new CRSEnvelope(wgs84Env));
-        } else {
-            // if the layer does not provide wgs84bbox, let's assume a bbox
-            // from the tilematrixset
-            for (TileMatrixSetLink tmsLink : tileMatrixLinks.values()) {
-                TileMatrixSet tms = matrixSetMap.get(tmsLink.getIdentifier());
-                if (tms.getBbox() != null) {
-                    // Take the first good bbox
-                    // TODO: refer a bbox which is natively wgs84
-                    ReferencedEnvelope re = new ReferencedEnvelope(tms.getBbox());
-                    try {
-                        ReferencedEnvelope wgs84re = re.transform(DefaultGeographicCRS.WGS84, true);
-                        wmtsLayer.setLatLonBoundingBox(new CRSEnvelope(wgs84re));
-                        break;
-                    } catch (Exception ex) {
-                        // the RE can't be projected on WGS84,
-                        // so let's try another one
-                        if (LOGGER.isLoggable(Level.FINE))
-                            LOGGER.fine(
-                                    "Can't use "
-                                            + tms.getIdentifier()
-                                            + " for bbox: "
-                                            + ex.getMessage());
-                        continue;
-                    }
-                }
-            }
-
-            if (wmtsLayer.getLatLonBoundingBox() == null) {
-                // We did not find any good bbox
-                LOGGER.warning("No good Bbox found for layer " + wmtsLayer.getName());
-                // throw new ServiceException("No good Bbox found for layer " + l.getName());
-                CRSEnvelope latLonBoundingBox = new CRSEnvelope("CRS:84", -180, -90, 180, 90);
-                wmtsLayer.setLatLonBoundingBox(latLonBoundingBox);
-                wmtsLayer.setBoundingBoxes(latLonBoundingBox);
-            }
-        }
+        if (wmtsLayer.getLatLonBoundingBox() == null) setLatLonBBox(wmtsLayer);
 
         ReferencedEnvelope wgs84Env = new ReferencedEnvelope(wmtsLayer.getLatLonBoundingBox());
 
         // add a bbox for every CRS
         for (TileMatrixSetLink tmsLink : tileMatrixLinks.values()) {
             CoordinateReferenceSystem tmsCRS = crsLookup.get(tmsLink.getIdentifier());
-            wmtsLayer.setPreferredCRS(tmsCRS); // the preferred crs is just
-            // an arbitrary one?
-            String crsCode = tmsCRS.getName().getCode();
-
-            if (wmtsLayer.getBoundingBoxes().containsKey(crsCode)) {
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.fine(
-                            "Bbox for "
-                                    + crsCode
-                                    + " already exists for layer "
-                                    + wmtsLayer.getName());
-                continue;
-            }
-
+            wmtsLayer.addSRS(tmsCRS);
+            String srs = CRS.toSRS(tmsCRS);
             TileMatrixSet tms = matrixSetMap.get(tmsLink.getIdentifier());
             if (tms.getBbox() != null) {
-                wmtsLayer.getBoundingBoxes().put(crsCode, tms.getBbox());
-            }
+                wmtsLayer.getBoundingBoxes().put(srs, tms.getBbox());
+            } else {
+                try {
+                    // tileMatrix did not provide bounds, reproject the LatLon ones.
+                    wmtsLayer
+                            .getBoundingBoxes()
+                            .put(srs, new CRSEnvelope(wgs84Env.transform(tmsCRS, true)));
 
-            // add bboxes
-            try {
-                // make safe to CRS bounds
-                // making bbox safe may restrict it too much: let's trust in
-                // the declaration
-                wmtsLayer
-                        .getBoundingBoxes()
-                        .put(crsCode, new CRSEnvelope(wgs84Env.transform(tmsCRS, true)));
-                wmtsLayer.addSRS(tmsCRS);
-            } catch (TransformException | FactoryException e) {
-                if (LOGGER.isLoggable(Level.INFO))
-                    LOGGER.info("Not adding CRS " + crsCode + " for layer " + wmtsLayer.getName());
+                } catch (TransformException | FactoryException e) {
+                    if (LOGGER.isLoggable(Level.INFO))
+                        LOGGER.log(
+                                Level.INFO,
+                                "Not adding CRS " + srs + " for layer " + wmtsLayer.getName(),
+                                e);
+                }
             }
+        }
+    }
+
+    // use this if capabilities does not provide LatLon bbox
+    // try to reproject one of the TileMatrix CRS or use the CRS bounds
+    // to give a LatLonBBox to the layer.
+    private void setLatLonBBox(WMTSLayer wmtsLayer) {
+        for (TileMatrixSetLink tmsLink : wmtsLayer.getTileMatrixLinks().values()) {
+            TileMatrixSet tms = matrixSetMap.get(tmsLink.getIdentifier());
+            if (tms.getBbox() != null) {
+                // Take the first good bbox
+                // TODO: refer a bbox which is natively wgs84
+                ReferencedEnvelope re = new ReferencedEnvelope(tms.getBbox());
+                try {
+                    ReferencedEnvelope wgs84re = re.transform(DefaultGeographicCRS.WGS84, true);
+                    wmtsLayer.setLatLonBoundingBox(new CRSEnvelope(wgs84re));
+                    break;
+                } catch (Exception ex) {
+                    // the RE can't be projected on WGS84,
+                    // so let's try another one
+                    if (LOGGER.isLoggable(Level.FINE))
+                        LOGGER.fine(
+                                "Can't use "
+                                        + tms.getIdentifier()
+                                        + " for bbox: "
+                                        + ex.getMessage());
+                    continue;
+                }
+            }
+        }
+
+        if (wmtsLayer.getLatLonBoundingBox() == null) {
+            // We did not find any good bbox
+            LOGGER.warning("No good Bbox found for layer " + wmtsLayer.getName());
+            // throw new ServiceException("No good Bbox found for layer " + l.getName());
+            CRSEnvelope latLonBoundingBox = new CRSEnvelope("CRS:84", -180, -90, 180, 90);
+            wmtsLayer.setLatLonBoundingBox(latLonBoundingBox);
+            wmtsLayer.setBoundingBoxes(latLonBoundingBox);
         }
     }
 

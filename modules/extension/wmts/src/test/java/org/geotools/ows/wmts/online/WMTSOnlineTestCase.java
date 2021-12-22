@@ -22,7 +22,6 @@ import org.geotools.parameter.Parameter;
 import org.geotools.test.OnlineTestCase;
 import org.geotools.tile.Tile;
 import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public abstract class WMTSOnlineTestCase extends OnlineTestCase {
@@ -56,8 +55,7 @@ public abstract class WMTSOnlineTestCase extends OnlineTestCase {
         request.setRequestedHeight(400);
         request.setCRS(crs);
         request.setRequestedBBox(requested);
-
-        return wmts.issueRequest(request);
+        return request.getTiles();
     }
 
     protected RenderedImage getRenderImageResult(
@@ -66,24 +64,43 @@ public abstract class WMTSOnlineTestCase extends OnlineTestCase {
             ReferencedEnvelope bboxes,
             ReferencedEnvelope requested,
             String layerName)
-            throws IOException, FactoryException {
+            throws IOException {
 
+        WMTSCoverageReader wmtsReader = wmtsCoverageReader(wmts, capabilities, bboxes, layerName);
+        Rectangle rectangle = new Rectangle(0, 0, 768, 589);
+        GridGeometry2D grid = new GridGeometry2D(new GridEnvelope2D(rectangle), requested);
+
+        return wmtsReader.read(getGeneralParameterValues(grid)).getRenderedImage();
+    }
+
+    protected RenderedImage getRenderImageResult(
+            WMTSCoverageReader wmtsReader, ReferencedEnvelope requested) throws IOException {
+
+        Rectangle rectangle = new Rectangle(0, 0, 768, 589);
+        GridGeometry2D grid = new GridGeometry2D(new GridEnvelope2D(rectangle), requested);
+
+        return wmtsReader.read(getGeneralParameterValues(grid)).getRenderedImage();
+    }
+
+    protected WMTSCoverageReader wmtsCoverageReader(
+            WebMapTileServer wmts,
+            WMTSCapabilities capabilities,
+            ReferencedEnvelope bboxes,
+            String layerName) {
         WMTSLayer layer = capabilities.getLayer(layerName);
         assertNotNull(layer);
         layer.setBoundingBoxes(new CRSEnvelope(bboxes));
         WMTSMapLayer mapLayer = new WMTSMapLayer(wmts, layer);
-        WMTSCoverageReader wmtsReader = mapLayer.getReader();
-        Rectangle rectangle = new Rectangle(0, 0, 768, 589);
-        GridGeometry2D grid = new GridGeometry2D(new GridEnvelope2D(rectangle), requested);
+        return mapLayer.getReader();
+    }
+
+    protected GeneralParameterValue[] getGeneralParameterValues(GridGeometry2D grid) {
         final Parameter<Interpolation> readInterpolation =
                 (Parameter<Interpolation>) AbstractGridFormat.INTERPOLATION.createValue();
         readInterpolation.setValue(Interpolation.getInstance(Interpolation.INTERP_NEAREST));
         Parameter<GridGeometry2D> readGG =
                 (Parameter<GridGeometry2D>) AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         readGG.setValue(grid);
-
-        return wmtsReader
-                .read(new GeneralParameterValue[] {readGG, readInterpolation})
-                .getRenderedImage();
+        return new GeneralParameterValue[] {readGG, readInterpolation};
     }
 }

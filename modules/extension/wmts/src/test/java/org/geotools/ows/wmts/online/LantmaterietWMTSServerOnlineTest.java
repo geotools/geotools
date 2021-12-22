@@ -26,11 +26,11 @@ import java.util.Set;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.ows.ServiceException;
-import org.geotools.ows.wms.CRSEnvelope;
+import org.geotools.ows.wmts.WMTSSpecification;
 import org.geotools.ows.wmts.WebMapTileServer;
+import org.geotools.ows.wmts.map.WMTSCoverageReader;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
 import org.geotools.ows.wmts.model.WMTSLayer;
-import org.geotools.ows.wmts.request.GetTileRequest;
 import org.geotools.referencing.CRS;
 import org.geotools.tile.Tile;
 import org.junit.Test;
@@ -178,29 +178,6 @@ public class LantmaterietWMTSServerOnlineTest extends WMTSOnlineTestCase {
         ImageAssert.assertEquals(img, ri, 100);
     }
 
-    public Set<Tile> issueTileRequest(
-            WebMapTileServer wmts,
-            WMTSCapabilities capabilities,
-            ReferencedEnvelope bboxes,
-            ReferencedEnvelope requested,
-            CoordinateReferenceSystem crs,
-            String layerName)
-            throws ServiceException {
-        WMTSLayer layer = capabilities.getLayer(layerName);
-        assertNotNull(layer);
-        GetTileRequest request = wmts.createGetTileRequest();
-        layer.setBoundingBoxes(new CRSEnvelope(bboxes));
-        layer.setSrs(layer.getBoundingBoxes().keySet());
-        request.setLayer(layer);
-
-        request.setRequestedWidth(800);
-        request.setRequestedHeight(400);
-        request.setCRS(crs);
-        request.setRequestedBBox(requested);
-
-        return request.getTiles();
-    }
-
     @Test
     public void testReproject()
             throws IOException, ServiceException, FactoryException, URISyntaxException {
@@ -278,5 +255,54 @@ public class LantmaterietWMTSServerOnlineTest extends WMTSOnlineTestCase {
                     response.getExtent().transform(requested1.getCoordinateReferenceSystem(), true);
             requested1.contains(env.toBounds(requested1.getCoordinateReferenceSystem()));
         }
+    }
+
+    @Test
+    public void testRenderImageWithDifferentCRSDefinition()
+            throws IOException, ServiceException, FactoryException, URISyntaxException {
+        // tests that the server supported srs is selected when requesting tiles with
+        // same CRS but different srs definition eg. using EPSG instead of urn:ogc:def:crs:EPSG::
+        try {
+            System.setProperty("org.geotools.referencing.forceXY", "true");
+            CRS.reset("all");
+            WebMapTileServer wmts = new WebMapTileServer(server);
+
+            WMTSCapabilities capabilities = wmts.getCapabilities();
+            // server supports urn:ogc:def:crs:EPSG::3006
+            CoordinateReferenceSystem crs = CRS.decode("EPSG:3006");
+            // layer bboxes
+            ReferencedEnvelope envelope =
+                    new ReferencedEnvelope(
+                            1200000.0000000005,
+                            2994304.0000000005,
+                            4305696.000000001,
+                            8500000.000000002,
+                            crs);
+
+            ReferencedEnvelope requested =
+                    new ReferencedEnvelope(
+                            662730.6807799754,
+                            1131834.056668474,
+                            6168587.230596287,
+                            6637690.606484786,
+                            crs);
+            WMTSCoverageReader reader =
+                    wmtsCoverageReader(wmts, capabilities, envelope, "topowebb_nedtonad");
+            RenderedImage ri = getRenderImageResult(reader, requested);
+            WMTSSpecification.GetMultiTileRequest request =
+                    (WMTSSpecification.GetMultiTileRequest) reader.getTileRequest();
+            String requestSRS = CRS.toSRS(request.getCrs());
+            assertEquals("urn:ogc:def:crs:EPSG::3006", requestSRS);
+            WMTSLayer layer = capabilities.getLayer("topowebb_nedtonad");
+            assertTrue(layer.getSrs().contains(requestSRS));
+            URL url = getClass().getResource("different_srs_def.png");
+            ImageAssert.assertEquals(new File(url.toURI()), ri, 100);
+        } finally {
+            System.clearProperty("org.geotools.referencing.forceXY");
+        }
+    }
+
+    public void cleanUp() {
+        System.clearProperty("org.geotools.referencing.forceXY");
     }
 }

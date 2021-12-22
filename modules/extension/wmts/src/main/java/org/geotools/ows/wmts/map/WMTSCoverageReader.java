@@ -285,7 +285,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
             getTileRequest().setCRS(gridEnvelope.getCoordinateReferenceSystem());
             Set<Tile> responses = getTileRequest().getTiles();
             if (responses.isEmpty()) {
-                if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("Found 0 tiles in " + envelope);
+                LOGGER.fine(() -> "Found 0 tiles in " + envelope);
                 throw new RuntimeException("No tiles were found in requested extent");
             }
             AffineTransform at = null;
@@ -697,6 +697,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
             if (switched != null) {
                 // check first by changing the srs definition
                 result = CRS.decode(switched);
+                LOGGER.fine(() -> "Will request tiles with server supported crs " + switched);
             } else if (readParameters.getSourceCRS() != null) {
                 // otherwise get the preferred one
                 result = readParameters.getSourceCRS();

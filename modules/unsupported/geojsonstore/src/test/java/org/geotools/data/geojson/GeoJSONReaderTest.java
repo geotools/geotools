@@ -40,6 +40,7 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.Property;
@@ -110,6 +111,9 @@ public class GeoJSONReaderTest {
         try (GeoJSONReader reader = new GeoJSONReader(new ByteArrayInputStream(input.getBytes()))) {
             SimpleFeatureCollection features = reader.getFeatures();
             assertNotNull(features);
+            assertEquals(
+                    Point.class,
+                    features.getSchema().getGeometryDescriptor().getType().getBinding());
             assertEquals("wrong number of features read", 9, features.size());
             List<SimpleFeature> list = DataUtilities.list(features);
             // order preserving, since a GeoJSON collection is ordered
@@ -287,6 +291,7 @@ public class GeoJSONReaderTest {
         WKTReader wkt = new WKTReader();
         assertEquals(wkt.read("POINT (0.1 0.1)"), f.getDefaultGeometry());
         assertEquals(wkt.read("LINESTRING (1.1 1.2, 1.3 1.4)"), f.getAttribute("otherGeometry"));
+        assertEquals(Point.class, f.getType().getGeometryDescriptor().getType().getBinding());
     }
 
     @Test
@@ -321,6 +326,7 @@ public class GeoJSONReaderTest {
         SimpleFeature feature = GeoJSONReader.parseFeature(geojson);
         assertEquals(true, feature.getAttribute("boolTrue"));
         assertEquals(false, feature.getAttribute("boolFalse"));
+        assertEquals(Point.class, feature.getType().getGeometryDescriptor().getType().getBinding());
     }
 
     @Test

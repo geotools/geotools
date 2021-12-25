@@ -31,20 +31,7 @@ import com.fasterxml.jackson.databind.node.DoubleNode;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.collection.ListFeatureCollection;
@@ -62,6 +49,22 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
+import org.opengis.feature.type.GeometryDescriptor;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Utility class to provide a reader for GeoJSON streams
@@ -76,7 +79,8 @@ public class GeoJSONReader implements AutoCloseable {
 
     private JsonParser parser;
 
-    private static JsonFactory factory = new JsonFactory();;
+    private static JsonFactory factory = new JsonFactory();
+    ;
 
     private SimpleFeatureType schema;
 
@@ -249,9 +253,18 @@ public class GeoJSONReader implements AutoCloseable {
                             + type.asText()
                             + "'");
         }
+        JsonNode geom = node.get("geometry");
+        GeometryParser<Geometry> gParser = new GenericGeometryParser(gFac);
+        Geometry g = gParser.geometryFromJson(geom);
+
         JsonNode props = node.get("properties");
-        if (builder == null) {
-            builder = getBuilder(props);
+        if (builder == null
+                || !builder.getFeatureType()
+                        .getGeometryDescriptor()
+                        .getType()
+                        .getBinding()
+                        .isInstance(g)) {
+            builder = getBuilder(props, g);
         }
         boolean restart = true;
         ObjectMapper mapper = new ObjectMapper();
@@ -269,7 +282,7 @@ public class GeoJSONReader implements AutoCloseable {
                     restart = true;
                     builder = null;
                     // rebuild the schema
-                    builder = getBuilder(props);
+                    builder = getBuilder(props, g);
                     setSchemaChanged(true);
                     descriptor = schema.getDescriptor(n.getKey());
                 }
@@ -312,9 +325,9 @@ public class GeoJSONReader implements AutoCloseable {
                     }
                     builder.set(n.getKey(), list);
                 } else if (Geometry.class.isAssignableFrom(binding)) {
-                    GeometryParser<Geometry> gParser = new GenericGeometryParser(gFac);
-                    Geometry g = gParser.geometryFromJson(n.getValue());
-                    builder.set(n.getKey(), g);
+                    GeometryParser<Geometry> parser = new GenericGeometryParser(gFac);
+                    Geometry geomAtt = parser.geometryFromJson(n.getValue());
+                    builder.set(n.getKey(), geomAtt);
                 } else if (Date.class.isAssignableFrom(binding)) {
                     String text = n.getValue().asText();
                     Date date = dateParser.parse(text);
@@ -332,9 +345,6 @@ public class GeoJSONReader implements AutoCloseable {
                     builder.set(n.getKey(), n.getValue().asText());
                 }
             }
-            JsonNode geom = node.get("geometry");
-            GeometryParser<Geometry> gParser = new GenericGeometryParser(gFac);
-            Geometry g = gParser.geometryFromJson(geom);
             builder.set(GEOMETRY_NAME, g);
 
             String newId = baseName + "." + nextID++;
@@ -344,7 +354,7 @@ public class GeoJSONReader implements AutoCloseable {
     }
 
     /** Create a simpleFeatureBuilder for the current schema + these new properties. */
-    private SimpleFeatureBuilder getBuilder(JsonNode props) {
+    private SimpleFeatureBuilder getBuilder(JsonNode props, Geometry g) {
 
         SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
         // GeoJSON is always WGS84
@@ -354,15 +364,30 @@ public class GeoJSONReader implements AutoCloseable {
         if (schema != null) {
             // copy the existing types to the new schema
             for (AttributeDescriptor att : schema.getAttributeDescriptors()) {
-                typeBuilder.add(att);
+                // in case of Geometry, see if we have mixed geometry types
+                if (att instanceof GeometryDescriptor
+                        && schema.getGeometryDescriptor() == att
+                        && g != null) {
+                    GeometryDescriptor gd = (GeometryDescriptor) att;
+                    Class<?> currClass = g.getClass();
+                    Class<?> prevClass = gd.getType().getBinding();
+                    if (!prevClass.isAssignableFrom(currClass)) {
+                        typeBuilder.add(GEOMETRY_NAME, Geometry.class, DefaultGeographicCRS.WGS84);
+                    } else {
+                        typeBuilder.add(att);
+                    }
+                } else {
+                    typeBuilder.add(att);
+                }
                 existing.add(att.getLocalName());
             }
         }
 
-        if (typeBuilder.getDefaultGeometry() == null) {
+        if (typeBuilder.getDefaultGeometry() == null && g != null) {
             typeBuilder.setDefaultGeometry(GEOMETRY_NAME);
             if (!existing.contains(GEOMETRY_NAME)) {
-                typeBuilder.add(GEOMETRY_NAME, Geometry.class, DefaultGeographicCRS.WGS84);
+                Class<?> geomType = g.getClass();
+                typeBuilder.add(GEOMETRY_NAME, geomType, DefaultGeographicCRS.WGS84);
             }
         }
         Iterator<Entry<String, JsonNode>> fields = props.fields();

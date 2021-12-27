@@ -31,7 +31,20 @@ import com.fasterxml.jackson.databind.node.DoubleNode;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
-
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.collection.ListFeatureCollection;
@@ -51,21 +64,6 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  * Utility class to provide a reader for GeoJSON streams
  *
@@ -79,8 +77,7 @@ public class GeoJSONReader implements AutoCloseable {
 
     private JsonParser parser;
 
-    private static JsonFactory factory = new JsonFactory();
-    ;
+    private static JsonFactory factory = new JsonFactory();;
 
     private SimpleFeatureType schema;
 
@@ -103,6 +100,12 @@ public class GeoJSONReader implements AutoCloseable {
     /** For reading be a bit more lenient regarding what we parse */
     private DateParser dateParser = new DateParser();
 
+    /**
+     * Builds a GeoJSON parser from a GeoJSON source, located at the specified URL.
+     *
+     * @param url
+     * @throws IOException
+     */
     public GeoJSONReader(URL url) throws IOException {
         this.url = url;
         this.is = url.openStream();
@@ -110,10 +113,12 @@ public class GeoJSONReader implements AutoCloseable {
         baseName = FilenameUtils.getBaseName(url.getPath());
     }
 
+    /** Builds a GeoJSON parser from a GeoJSON document, provided as an {@link InputStream} */
     public GeoJSONReader(InputStream is) throws IOException {
         parser = factory.createParser(is);
     }
 
+    /** Builds a GeoJSON parser from a GeoJSON document, provided as a string */
     public GeoJSONReader(String json) throws IOException {
         parser = factory.createParser(json);
     }
@@ -131,6 +136,11 @@ public class GeoJSONReader implements AutoCloseable {
         this.guessingDates = guessingDates;
     }
 
+    /**
+     * Returns true if the source is still connected, false otherwise.
+     *
+     * @return
+     */
     public boolean isConnected() {
         if (url != null) {
             try (InputStream inputStream = url.openStream()) {
@@ -150,6 +160,7 @@ public class GeoJSONReader implements AutoCloseable {
         return true;
     }
 
+    /** Pares and returns a single feature out of a GeoJSON document */
     public static SimpleFeature parseFeature(String json) throws JsonParseException, IOException {
         try (JsonParser lParser = factory.createParser(new ByteArrayInputStream(json.getBytes()))) {
             ObjectMapper mapper = new ObjectMapper();
@@ -162,10 +173,7 @@ public class GeoJSONReader implements AutoCloseable {
         }
     }
 
-    /**
-     * @param jsonString
-     * @return
-     */
+    /** Parses and returns a feature collection from a GeoJSON */
     public static SimpleFeatureCollection parseFeatureCollection(String jsonString) {
         try (GeoJSONReader reader =
                 new GeoJSONReader(new ByteArrayInputStream(jsonString.getBytes()))) {
@@ -176,10 +184,7 @@ public class GeoJSONReader implements AutoCloseable {
         }
     }
 
-    /**
-     * @param input
-     * @return
-     */
+    /** Parses and returns a single geometry */
     public static Geometry parseGeometry(String input) {
         try (JsonParser lParser =
                 factory.createParser(new ByteArrayInputStream(input.getBytes()))) {
@@ -194,6 +199,13 @@ public class GeoJSONReader implements AutoCloseable {
         }
     }
 
+    /**
+     * Parses all features in the source and returns them as an in-memory feature collection with a
+     * stable {@link FeatureType}. In order to stream use {@link #getIterator()} instead.
+     *
+     * @return
+     * @throws IOException
+     */
     public SimpleFeatureCollection getFeatures() throws IOException {
         if (!isConnected()) {
             throw new IOException("not connected to " + url.toExternalForm());
@@ -438,6 +450,13 @@ public class GeoJSONReader implements AutoCloseable {
         return new SimpleFeatureBuilder(schema);
     }
 
+    /**
+     * Returns a {@link FeatureIterator} streaming over the provided source. The feature type may
+     * evolve feature by feature, discovering new attributes that were not previosly encountered.
+     *
+     * @return
+     * @throws IOException
+     */
     public FeatureIterator<SimpleFeature> getIterator() throws IOException {
         if (!isConnected()) {
             LOGGER.fine("trying to read an unconnected data stream");
@@ -446,6 +465,13 @@ public class GeoJSONReader implements AutoCloseable {
         return new GeoJsonIterator(parser);
     }
 
+    /**
+     * Returns the current feature type, with the structure discovered so far while parsing features
+     * (parse them all in order to get a final, stable feature type):
+     *
+     * @return
+     * @throws IOException
+     */
     public FeatureType getSchema() throws IOException {
         if (!isConnected()) {
             throw new IOException("not connected to " + url.toExternalForm());

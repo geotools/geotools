@@ -107,6 +107,12 @@ public class GeoJSONWriter implements AutoCloseable {
     private boolean singleFeature = false;
     private FastDateFormat dateFormatter = DEFAULT_DATE_FORMATTER;
 
+    /**
+     * Prepares a writer over the target output stream.
+     *
+     * @param outputStream
+     * @throws IOException
+     */
     public GeoJSONWriter(OutputStream outputStream) throws IOException {
         // force the output CRS to be long, lat as required by spec
         CRSAuthorityFactory cFactory = CRS.getAuthorityFactory(true);
@@ -166,6 +172,12 @@ public class GeoJSONWriter implements AutoCloseable {
         generator.writeEndArray();
     }
 
+    /**
+     * Writes a single feature onto the output.
+     *
+     * @param currentFeature
+     * @throws IOException
+     */
     public void write(SimpleFeature currentFeature) throws IOException {
         if (!initalised) {
             initialise();
@@ -352,6 +364,7 @@ public class GeoJSONWriter implements AutoCloseable {
         this.encodeFeatureBounds = encodeFeatureCollectionBounds;
     }
 
+    /** Utility encoding a single JTS geometry in GeoJSON, and returning it as a string */
     public static String toGeoJSON(Geometry geometry) {
         ObjectMapper lMapper = new ObjectMapper();
         lMapper.registerModule(new JtsModule());
@@ -363,10 +376,7 @@ public class GeoJSONWriter implements AutoCloseable {
         return "";
     }
 
-    /**
-     * @param f
-     * @return
-     */
+    /** Utility encoding a single {@link SimpleFeature}, and returning it as a string */
     public static String toGeoJSON(SimpleFeature f) {
         JsonFactory factory = new JsonFactory();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -379,10 +389,7 @@ public class GeoJSONWriter implements AutoCloseable {
         return new String(out.toByteArray());
     }
 
-    /**
-     * @param fc
-     * @return
-     */
+    /** Utility encoding a @link {@link SimpleFeatureCollection}}, and returning it as a string */
     public static String toGeoJSON(SimpleFeatureCollection fc) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try (GeoJSONWriter writer = new GeoJSONWriter(out);
@@ -402,7 +409,7 @@ public class GeoJSONWriter implements AutoCloseable {
         return new String(out.toByteArray());
     }
 
-    /** @param b */
+    /** Set to true to encode the feature collection CRS field. Defaults to false. */
     public void setEncodeFeatureCollectionCRS(boolean b) {
         encodeFeatureCollectionCRS = b;
     }
@@ -412,6 +419,11 @@ public class GeoJSONWriter implements AutoCloseable {
         return encodeFeatureCollectionCRS;
     }
 
+    /**
+     * Returns the max number of decimals used for encoding
+     *
+     * @return
+     */
     public int getMaxDecimals() {
         return maxDecimals;
     }
@@ -427,10 +439,8 @@ public class GeoJSONWriter implements AutoCloseable {
         maxDecimals = number;
         module.setMaxDecimals(number);
     }
-    /**
-     * @param features
-     * @throws IOException
-     */
+
+    /** Encodes the whole feature collection onto the output */
     public void writeFeatureCollection(SimpleFeatureCollection features) throws IOException {
         // the collection might be empty, but we still need the wrapper JSON
         // for a collection to be generated
@@ -449,7 +459,10 @@ public class GeoJSONWriter implements AutoCloseable {
         bounds = bbox;
     }
 
-    /** Returns true if the JSON is going to be pretty-printed, false otherwise */
+    /**
+     * Returns true if the generated JSON is for a single feature, without a feature collection
+     * wrapper around it.
+     */
     public boolean isSingleFeature() {
         return singleFeature;
     }

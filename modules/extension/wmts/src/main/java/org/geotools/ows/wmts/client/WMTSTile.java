@@ -18,7 +18,6 @@ package org.geotools.ows.wmts.client;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 import java.util.logging.Level;
@@ -69,6 +68,8 @@ class WMTSTile extends Tile {
         tileImages = ObjectCaches.create("soft", cacheSize);
     }
 
+    private URL url = null;
+
     public WMTSTile(int x, int y, ZoomLevel zoomLevel, TileService service) {
         this(new WMTSTileIdentifier(x, y, zoomLevel, service.getName()), service);
     }
@@ -77,51 +78,31 @@ class WMTSTile extends Tile {
         this((WMTSTileIdentifier) tileIdentifier, service);
     }
 
-    /** */
     public WMTSTile(WMTSTileIdentifier tileIdentifier, TileService service) {
         super(
                 tileIdentifier,
                 WMTSTileFactory.getExtentFromTileName(tileIdentifier, service),
                 ((WMTSTileService) service)
                         .getTileMatrix(tileIdentifier.getZoomLevel().getZoomLevel())
-                        .getTileWidth());
-
-        this.service = (WMTSTileService) service;
+                        .getTileWidth(),
+                service);
     }
 
     private WMTSTileService getService() {
         return (WMTSTileService) service;
     }
 
+    /** The url should be unique for this tile. Keeps the url as an instance variable. */
     @Override
     public URL getUrl() {
-
-        TileIdentifier tileIdentifier = getTileIdentifier();
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("Requesting tile " + tileIdentifier.getCode());
+        if (url == null) {
+            url = getService().createURL(this);
         }
-
-        String tileMatrix = getService().getTileMatrix(tileIdentifier.getZ()).getIdentifier();
-        int tileCol = tileIdentifier.getX();
-        int tileRow = tileIdentifier.getY();
-
-        String baseUrl = getService().getURLBuilder().createURL(tileMatrix, tileCol, tileRow);
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("TileURLBuilder gives url:" + baseUrl);
-        }
-
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("Final url is :" + baseUrl);
-        }
-        try {
-            return new URL(baseUrl);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(
-                    "WMTS Tile URL was wrong baseUrl:" + getService().getBaseUrl(), e);
-        }
+        return url;
     }
 
-    /** Load and cache locally the WMTS tiles */
+    /** @deprecated Loading is handled by WMTSTileService.loadImageTileImage */
+    @Deprecated
     @Override
     public BufferedImage loadImageTileImage(Tile tile) throws IOException {
         final URL url = getUrl();
@@ -142,6 +123,8 @@ class WMTSTile extends Tile {
         }
     }
 
+    /** @deprecated Loading is handled by WMTSTileService */
+    @Deprecated
     @SuppressWarnings("unchecked")
     public BufferedImage doLoadImageTileImage(Tile tile) throws IOException {
         final WMTSTileService service = getService();

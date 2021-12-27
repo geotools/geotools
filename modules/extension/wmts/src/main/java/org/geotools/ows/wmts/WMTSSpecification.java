@@ -168,12 +168,6 @@ public class WMTSSpecification extends Specification {
         @Override
         protected String createTemplateUrl(String tileMatrixSetName) {
 
-            String baseUrl = getFinalURL().toExternalForm();
-
-            String layerString = WMTSHelper.usePercentEncodingForSpace(layer.getName());
-            String styleString =
-                    WMTSHelper.usePercentEncodingForSpace(styleName == null ? "" : styleName);
-
             String format = getFormat();
 
             if (StringUtils.isEmpty(format)) {
@@ -196,13 +190,18 @@ public class WMTSSpecification extends Specification {
             }
             setFormat(format);
 
+            String layerString = WMTSHelper.usePercentEncodingForSpace(layer.getName());
+            String styleString =
+                    WMTSHelper.usePercentEncodingForSpace(styleName == null ? "" : styleName);
+
             switch (type) {
                 case KVP:
                     return WMTSHelper.appendQueryString(
-                            baseUrl,
+                            getFinalURL().toExternalForm(),
                             getKVPparams(layerString, styleString, tileMatrixSetName, format));
                 case REST:
-                    return getRESTurl(baseUrl, layerString, styleString, tileMatrixSetName);
+                    return getRESTurl(
+                            getTemplateUrl(), layerString, styleString, tileMatrixSetName);
                 default:
                     throw new IllegalArgumentException("Unexpected WMTS Service type " + type);
             }
@@ -245,7 +244,7 @@ public class WMTSSpecification extends Specification {
     }
 
     /** Represents a GetTile request for a single tile. */
-    abstract static class GetSingleTileRequest extends AbstractGetTileRequest {
+    public abstract static class GetSingleTileRequest extends AbstractGetTileRequest {
 
         GetSingleTileRequest(URL onlineResource, Properties properties, HTTPClient client) {
             super(onlineResource, properties, client);
@@ -303,9 +302,10 @@ public class WMTSSpecification extends Specification {
         }
     }
 
-    /** GetTile request based on a resourceUrl specified in Capabilities */
+    /** GetTile request based on a resourceUrl specified in Capabilities. */
     public static class GetRestTileRequest extends GetSingleTileRequest {
 
+        /** onlineResource should be specified, but isn't used. */
         GetRestTileRequest(URL onlineResource, Properties properties, HTTPClient client) {
             super(onlineResource, properties, client);
         }
@@ -325,7 +325,13 @@ public class WMTSSpecification extends Specification {
                 throw new IllegalStateException(
                         "Missing some properties for a proper GetTile-request.");
             }
-            String baseUrl = onlineResource.toExternalForm();
+            String baseUrl = getTemplateUrl();
+            if (baseUrl == null) {
+                throw new IllegalStateException(
+                        String.format(
+                                "ResourceUrl wasn't given for layer {%s} and format {%s}",
+                                layer, getFormat()));
+            }
 
             String layerString = WMTSHelper.usePercentEncodingForSpace(layer.getName());
             String styleString = WMTSHelper.usePercentEncodingForSpace(styleName);

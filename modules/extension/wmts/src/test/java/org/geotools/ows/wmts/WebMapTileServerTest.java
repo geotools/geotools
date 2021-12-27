@@ -40,6 +40,7 @@ import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wmts.WMTSSpecification.GetSingleTileRequest;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
 import org.geotools.ows.wmts.model.WMTSLayer;
+import org.geotools.ows.wmts.request.AbstractGetTileRequest;
 import org.geotools.ows.wmts.request.GetTileRequest;
 import org.geotools.ows.wmts.response.GetTileResponse;
 import org.geotools.referencing.CRS;
@@ -193,7 +194,9 @@ public class WebMapTileServerTest {
         GetTileRequest tileRequest = server.createGetTileRequest();
         WMTSLayer layer = server.getCapabilities().getLayer("layer-50767");
         tileRequest.setLayer(layer);
-        String url = tileRequest.getFinalURL().toString();
+        tileRequest.setFormat("image/png");
+
+        String url = ((AbstractGetTileRequest) tileRequest).getTemplateUrl();
         assertFalse(url.contains("REQUEST=GetTile"));
     }
 
@@ -220,7 +223,6 @@ public class WebMapTileServerTest {
             Assert.assertNotNull(headers);
             String auth = headers.get("Authorization");
             Assert.assertEquals("dummy", auth);
-
             try {
                 return new MockHttpResponse(TestData.file(null, "world.png"), "image/png");
             } catch (IOException e) {
@@ -299,17 +301,13 @@ public class WebMapTileServerTest {
         WMTSCapabilities capabilities = createCapabilities("basemapGetCapa.xml");
         MockHttpClient httpClient = new MockHttpClient();
         httpClient.expectGet(
-                new URL(
-                        "https://maps1.wien.gv.at/basemap/bmapoverlay/normal/EPSG%3A4326/2/1/2.png"),
+                new URL("https://maps.wien.gv.at/basemap/bmapoverlay/normal/EPSG%3A4326/2/1/2.png"),
                 new MockHttpResponse(TestData.file(null, "world.png"), "image/png"));
 
         Properties props = new Properties();
         GetSingleTileRequest request =
                 new WMTSSpecification.GetRestTileRequest(
-                        new URL(
-                                "https://maps1.wien.gv.at/basemap/bmapoverlay/{Style}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png"),
-                        props,
-                        httpClient);
+                        capabilities.getService().getOnlineResource(), props, httpClient);
 
         WebMapTileServer server = new WebMapTileServer(capabilities, httpClient);
         request.setLayer(server.getCapabilities().getLayer("bmapoverlay"));

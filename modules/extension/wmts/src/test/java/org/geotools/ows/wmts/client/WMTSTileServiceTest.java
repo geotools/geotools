@@ -16,20 +16,28 @@
  */
 package org.geotools.ows.wmts.client;
 
+import java.awt.image.BufferedImage;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Set;
+import org.geotools.TestData;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.http.MockHttpClient;
+import org.geotools.http.MockHttpResponse;
 import org.geotools.ows.wms.CRSEnvelope;
+import org.geotools.ows.wmts.WMTSTestUtils;
+import org.geotools.ows.wmts.WebMapTileServer;
 import org.geotools.ows.wmts.model.TileMatrix;
 import org.geotools.ows.wmts.model.TileMatrixLimits;
 import org.geotools.ows.wmts.model.TileMatrixSet;
 import org.geotools.ows.wmts.model.TileMatrixSetLink;
+import org.geotools.ows.wmts.model.WMTSCapabilities;
 import org.geotools.ows.wmts.model.WMTSLayer;
 import org.geotools.ows.wmts.model.WMTSServiceType;
 import org.geotools.referencing.CRS;
 import org.geotools.tile.Tile;
+import org.geotools.tile.Tile.RenderState;
 import org.junit.Assert;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
@@ -37,6 +45,51 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 
 public class WMTSTileServiceTest {
+
+    /**
+     * Test's the usage of WebMapTileServer for downloading the images. Will use the MockHttpClient
+     * served to WebMapTileServer for all http calls.
+     */
+    @Test
+    public void loadImagesUsingWebMapTileServerKVP() throws Exception {
+
+        WMTSCapabilities caps = WMTSTestUtils.createCapabilities("getcapa_kvp.xml");
+        MockHttpClient client = new MockHttpClient();
+        client.expectGet(
+                new URL(
+                        "http://localhost:8080/geoserver/gwc/service/wmts?tilematrixset=EPSG:4326&REQUEST=GetTile&TileRow=2&VERSION=1.0.0&format=image/png&SERVICE=WMTS&style=&TileCol=2&type=KVP&layer=spearfish&TileMatrix=EPSG:4326:3"),
+                new MockHttpResponse(TestData.file(null, "world.png"), "image/png"));
+
+        WebMapTileServer tileServer = new WebMapTileServer(caps, client);
+        WMTSLayer layer = caps.getLayer("spearfish");
+        TileMatrixSet matrixSet = tileServer.selectMatrixSet(layer, CRS.decode("EPSG:4326"));
+
+        WMTSTileService tileService = new WMTSTileService(tileServer, layer, matrixSet);
+        WMTSTile testTile = new WMTSTile(2, 2, new WMTSZoomLevel(3, tileService), tileService);
+        BufferedImage image = tileService.loadImageTileImage(testTile);
+        Assert.assertNotNull(image);
+    }
+
+    @Test
+    public void getBufferedImageUsingWebMapTileServerRestful() throws Exception {
+        WMTSCapabilities caps = WMTSTestUtils.createCapabilities("noaa-tileserver.xml");
+        MockHttpClient client = new MockHttpClient();
+        client.expectGet(
+                new URL(
+                        "http://tileservice.charts.noaa.gov/tiles/wmts/11006_1/GoogleMapsCompatible/2/3/0.png"),
+                new MockHttpResponse(TestData.file(null, "world.png"), "image/png"));
+
+        WebMapTileServer tileServer = new WebMapTileServer(caps, client);
+
+        WMTSLayer layer = caps.getLayer("11006_1");
+        TileMatrixSet matrixSet = tileServer.selectMatrixSet(layer, CRS.decode("EPSG:3857"));
+
+        WMTSTileService tileService = new WMTSTileService(tileServer, layer, matrixSet);
+        WMTSTile testTile = new WMTSTile(3, 0, new WMTSZoomLevel(2, tileService), tileService);
+        BufferedImage image = testTile.getBufferedImage();
+        Assert.assertEquals(RenderState.RENDERED, testTile.getRenderState());
+        Assert.assertNotNull(image);
+    }
 
     /**
      * What's differentiates WMTS tile service from other is the usage of limits. Some of the global

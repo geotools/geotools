@@ -200,6 +200,17 @@ public class GeoJSONReader implements AutoCloseable {
     }
 
     /**
+     * Parses and returns a single feature from the source
+     */
+    public SimpleFeature getFeature() throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JtsModule());
+        ObjectNode node = mapper.readTree(parser);
+        return getNextFeature(node);
+    }
+
+
+    /**
      * Parses all features in the source and returns them as an in-memory feature collection with a
      * stable {@link FeatureType}. In order to stream use {@link #getIterator()} instead.
      *

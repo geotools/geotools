@@ -17,10 +17,7 @@
 
 package org.geotools.ows.wmts.request;
 
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -135,7 +132,7 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
         this.layer = layer;
         if (styleName.isEmpty()) {
             StyleImpl defaultStyle = layer.getDefaultStyle();
-            if (defaultStyle != null) {
+            if (defaultStyle != null && defaultStyle.getName() != null) {
                 styleName = defaultStyle.getName();
             }
         }
@@ -269,45 +266,27 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
     }
 
     /**
-     * The templateUrl should contain {TileMatrix}, {TileRow} and {TileCol}.
+     * Used when creating WMTSTileService's based on a templateUrl.
      *
-     * <p>The rest of the url should constitute a sufficient url to request a tile.
+     * <p>If the server supports RESTful calls. It will use that. Otherwise it will create a similar
+     * template for KVP requests.
      *
      * @param tileMatrixSetName
      * @return
      */
     protected abstract String createTemplateUrl(String tileMatrixSetName);
 
-    @Override
-    public URL getFinalURL() {
-        if (WMTSServiceType.REST.equals(type)) {
-            if (layer.getTemplate(format) == null) {
-                LOGGER.info("Template URL not available for format  " + format);
-                type = WMTSServiceType.KVP;
-                return onlineResource;
-            } else {
-                try {
-                    return new URL(layer.getTemplate(format));
-                } catch (MalformedURLException e) {
-                    throw new RuntimeException(
-                            "URL for GetTile specified within capabilities is wrong.", e);
-                }
-            }
+    /**
+     * Returns the resourceUrl specified in capabilities for a RESTful GetTile request.
+     *
+     * <p>Connected to a separate layer and format
+     */
+    public String getTemplateUrl() {
+        if (layer.getTemplate(format) == null) {
+            throw new IllegalStateException(
+                    "Template URL not available for GetTile request with format  " + format);
         } else {
-            try {
-                if (layer != null) {
-                    setProperty(LAYER, URLEncoder.encode(layer.getName(), "UTF-8"));
-                }
-                if (styleName != null) {
-                    setProperty(STYLE, URLEncoder.encode(styleName, "UTF-8"));
-                }
-                if (format != null) {
-                    setProperty(FORMAT, URLEncoder.encode(format, "UTF-8"));
-                }
-                return super.getFinalURL();
-            } catch (UnsupportedEncodingException e) {
-                throw new RuntimeException("Missing encoding for UTF-8.", e);
-            }
+            return layer.getTemplate(format);
         }
     }
 

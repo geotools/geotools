@@ -123,9 +123,7 @@ public abstract class Tile implements ImageLoader {
         this.imageLoader = imageLoader;
     }
 
-    /** for locking on the SWT image to prevent creating it multiple times */
-    // private Object SWTLock = new Object();
-
+    /** Creates a tile for the identity given by tileId. Will use this instance as imageLoader. */
     public Tile(TileIdentifier tileId, ReferencedEnvelope env, int tileSize) {
 
         if (env == null) {
@@ -140,6 +138,7 @@ public abstract class Tile implements ImageLoader {
         this.tileIdentifier = tileId;
     }
 
+    /** Creates a new tile. This constructor will use the service as imageLoader. */
     public Tile(TileIdentifier tileId, ReferencedEnvelope env, int tileSize, TileService service) {
         this(tileId, env, tileSize);
         imageLoader = service;
@@ -399,5 +398,6 @@ public abstract class Tile implements ImageLoader {
         return this.getId(); // this.getUrl().toString();
     }
 
+    /** A unique url for every tile */
     public abstract URL getUrl();
 }

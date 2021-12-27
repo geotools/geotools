@@ -18,26 +18,35 @@ package org.geotools.ows.wmts.client;
 
 import static org.geotools.tile.impl.ScaleZoomLevelMatcher.getProjectedEnvelope;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPClientFinder;
+import org.geotools.http.HTTPResponse;
+import org.geotools.image.io.ImageIOExt;
+import org.geotools.ows.ServiceException;
 import org.geotools.ows.wms.CRSEnvelope;
 import org.geotools.ows.wmts.WMTSHelper;
 import org.geotools.ows.wmts.WMTSSpecification;
+import org.geotools.ows.wmts.WMTSSpecification.GetSingleTileRequest;
+import org.geotools.ows.wmts.WebMapTileServer;
 import org.geotools.ows.wmts.model.TileMatrix;
 import org.geotools.ows.wmts.model.TileMatrixLimits;
 import org.geotools.ows.wmts.model.TileMatrixSet;
 import org.geotools.ows.wmts.model.TileMatrixSetLink;
 import org.geotools.ows.wmts.model.WMTSLayer;
 import org.geotools.ows.wmts.model.WMTSServiceType;
+import org.geotools.ows.wmts.response.GetTileResponse;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.tile.Tile;
@@ -60,7 +69,10 @@ import org.opengis.referencing.operation.TransformException;
  *
  * <p>An instance of this class is tied to a single layer, style and matrixset.
  *
- * <p>Use WebMapTileServer to negotiate capabilities, or specifying other properties
+ * <p>It can be constructed either by a templateUrl and use the inherited ImageLoader,
+ *
+ * <p>Or it can use a WebMapTileServer to construct the GetTileRequest's and issueRequest for
+ * loading images.
  *
  * @author ian
  * @author Emanuele Tajariol (etj at geo-solutions dot it)
@@ -73,7 +85,30 @@ public class WMTSTileService extends TileService {
 
     private static final TileFactory tileFactory = new WMTSTileFactory();
 
-    private String tileMatrixSetName = "";
+    /*
+     * Sets the initial size of TileService.tiles
+     */
+    static {
+        String size = System.getProperty(WMTSTile.WMTS_TILE_CACHE_SIZE_PROPERTY_NAME);
+        if (size != null) {
+            try {
+                cacheSize = Integer.parseUnsignedInt(size);
+            } catch (NumberFormatException ex) {
+                LOGGER.info(
+                        "Bad "
+                                + WMTSTile.WMTS_TILE_CACHE_SIZE_PROPERTY_NAME
+                                + " property '"
+                                + size
+                                + "'");
+            }
+        } else {
+            cacheSize = 150;
+        }
+    }
+
+    private final TileURLBuilder urlBuilder;
+
+    private final WebMapTileServer tileServer;
 
     private double[] scaleList;
 
@@ -83,15 +118,15 @@ public class WMTSTileService extends TileService {
 
     private ReferencedEnvelope envelope;
 
-    private final TileURLBuilder urlBuilder;
+    private final String format;
 
     private Map<String, Object> extrainfo = new HashMap<>();
 
     /**
-     * create a service directly with out parsing the capabilities again.
+     * Create a service with templateURL for loading images directly.
      *
-     * <p>This constructor should not be used. A proper formatted templateURL should be used
-     * instead.
+     * <p>This constructor, with type as argument, should not be used. A proper formatted
+     * templateURL should be used instead.
      *
      * @param templateURL - where to ask for tiles
      * @param type - KVP or REST
@@ -109,10 +144,10 @@ public class WMTSTileService extends TileService {
     }
 
     /**
-     * create a service directly with out parsing the capabilities again.
+     * Create a service with templateURL for loading images directly.
      *
-     * <p>This constructor should not be used. A proper formatted templateURL should be used
-     * instead.
+     * <p>This constructor, with type, should not be used. A proper formatted templateURL should be
+     * used instead.
      *
      * @param templateURL - where to ask for tiles
      * @param type - KVP or REST
@@ -163,8 +198,8 @@ public class WMTSTileService extends TileService {
     }
 
     /**
-     * Creates a WMTSTileService based on the templateURL. Using extent given by layer and
-     * tileMatrixSet.
+     * Creates a WMTSTileService based on the templateURL for loading images. Using extent given by
+     * layer and tileMatrixSet.
      *
      * @param templateURL
      * @param layer
@@ -175,7 +210,7 @@ public class WMTSTileService extends TileService {
     }
 
     /**
-     * create a service directly with out parsing the capabilties again.
+     * Create a service that uses the templateURL to load images.
      *
      * @param templateURL - where to ask for tiles
      * @param layer - layer to request
@@ -185,25 +220,57 @@ public class WMTSTileService extends TileService {
     public WMTSTileService(
             String templateURL, WMTSLayer layer, TileMatrixSet tileMatrixSet, HTTPClient client) {
         super("wmts", templateURL, client);
-        Objects.requireNonNull(layer, "Layer must be non-null.");
-        Objects.requireNonNull(layer.getLatLonBoundingBox(), "Layer must have a BoundingBox.");
+        if (layer == null) {
+            throw new IllegalArgumentException("Layer must be non-null.");
+        }
         this.layer = layer;
-        this.tileMatrixSetName = tileMatrixSet.getIdentifier();
+        if (layer.getLatLonBoundingBox() == null) {
+            throw new IllegalArgumentException("Layer must have a BoundingBox.");
+        }
         this.envelope = new ReferencedEnvelope(layer.getLatLonBoundingBox());
-        this.scaleList = buildScaleList(tileMatrixSet);
         this.urlBuilder = new TileURLBuilder(templateURL);
+        this.tileServer = null;
+        this.format = null;
         setMatrixSet(tileMatrixSet);
     }
 
-    private static double[] buildScaleList(TileMatrixSet tileMatrixSet) {
+    /**
+     * Create a WMTSTileservice using a WebMapTileServer to load the tile images. Using the format
+     * given by the capabilities.
+     */
+    public WMTSTileService(
+            WebMapTileServer wmtsServer, WMTSLayer layer, TileMatrixSet tileMatrixSet) {
+        this(wmtsServer, layer, tileMatrixSet, null);
+    }
 
-        double[] scaleList = new double[tileMatrixSet.size()];
-        int j = 0;
-        for (TileMatrix tm : tileMatrixSet.getMatrices()) {
-            scaleList[j++] = tm.getDenominator();
+    /**
+     * Create a WMTSTileService using an WebMapTileServer to load the tile images. Specifying a
+     * format.
+     */
+    public WMTSTileService(
+            WebMapTileServer wmtsServer,
+            WMTSLayer layer,
+            TileMatrixSet tileMatrixSet,
+            String format) {
+        super("wmts");
+        this.tileServer = wmtsServer;
+
+        if (layer == null) {
+            throw new IllegalArgumentException("Layer must be non-null.");
+        }
+        this.layer = layer;
+        if (layer.getLatLonBoundingBox() == null) {
+            throw new IllegalArgumentException("Layer must have a non-null boundingBox");
         }
 
-        return scaleList;
+        if (format == null && layer.getFormats().size() > 0) {
+            this.format = layer.getFormats().get(0);
+        } else {
+            this.format = format;
+        }
+        this.envelope = new ReferencedEnvelope(layer.getLatLonBoundingBox());
+        this.urlBuilder = null;
+        setMatrixSet(tileMatrixSet);
     }
 
     protected ReferencedEnvelope getReqExtentInTileCrs(ReferencedEnvelope requestedExtent) {
@@ -587,6 +654,42 @@ public class WMTSTileService extends TileService {
         return new WMTSTileIdentifier((int) xTile, (int) yTile, zl, getName());
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public BufferedImage loadImageTileImage(Tile tile) throws IOException {
+        if (tileServer == null) {
+            if (!getExtrainfo().containsKey(WMTSTileService.EXTRA_HEADERS)) {
+                return super.loadImageTileImage(tile);
+            }
+            Map<String, String> headers =
+                    (Map<String, String>) getExtrainfo().get(WMTSTileService.EXTRA_HEADERS);
+            HTTPResponse http = getHttpClient().get(tile.getUrl(), headers);
+            try {
+                return ImageIOExt.readBufferedImage(http.getResponseStream());
+            } finally {
+                http.dispose();
+            }
+        }
+
+        TileIdentifier tileIdentifier = tile.getTileIdentifier();
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine("Requesting tile " + tileIdentifier.getCode());
+        }
+
+        final String tileMatrix = getTileMatrix(tileIdentifier.getZ()).getIdentifier();
+        final int tileCol = tileIdentifier.getX();
+        final int tileRow = tileIdentifier.getY();
+
+        GetSingleTileRequest request = createGetTileRequest(tileMatrix, tileCol, tileRow);
+        try {
+            GetTileResponse response = tileServer.issueRequest(request);
+            return response.getTileImage();
+        } catch (ServiceException e) {
+            LOGGER.log(Level.SEVERE, "WMTS server returned exception", e);
+            throw new IOException("WMTS server returned exception", e);
+        }
+    }
+
     @Override
     public double[] getScaleList() {
         return scaleList;
@@ -608,11 +711,42 @@ public class WMTSTileService extends TileService {
     }
 
     public TileMatrixSetLink getMatrixSetLink() {
+        String tileMatrixSetName = getMatrixSet().getIdentifier();
         return layer.getTileMatrixLinks().get(tileMatrixSetName);
     }
 
-    TileURLBuilder getURLBuilder() {
-        return urlBuilder;
+    private GetSingleTileRequest createGetTileRequest(String tileMatrix, int tileCol, int tileRow) {
+        GetSingleTileRequest request =
+                (GetSingleTileRequest) tileServer.createGetTileRequest(false);
+        request.setLayer(layer);
+        request.setFormat(format);
+        request.setTileMatrixSet(getMatrixSet().getIdentifier());
+        request.setTileMatrix(tileMatrix);
+        request.setTileCol(tileCol);
+        request.setTileRow(tileRow);
+        return request;
+    }
+
+    /**
+     * Creates a url for the given tile. Called once for each tile. Uses either the urlBuilder or
+     * the tileServer.
+     */
+    URL createURL(WMTSTile tile) {
+        final TileIdentifier tileIdentifier = tile.getTileIdentifier();
+        final String tileMatrix = getTileMatrix(tileIdentifier.getZ()).getIdentifier();
+        final int tileCol = tileIdentifier.getX();
+        final int tileRow = tileIdentifier.getY();
+
+        if (tileServer == null) {
+            try {
+                return new URL(urlBuilder.createURL(tileMatrix, tileCol, tileRow));
+            } catch (MalformedURLException e) {
+                throw new RuntimeException("Couldn't creat url from templateUrl");
+            }
+        }
+
+        GetSingleTileRequest request = createGetTileRequest(tileMatrix, tileCol, tileRow);
+        return request.getFinalURL();
     }
 
     /** */
@@ -630,12 +764,22 @@ public class WMTSTileService extends TileService {
 
     /** @param matrixSet the matrixSet to set */
     public void setMatrixSet(TileMatrixSet matrixSet) {
+        if (matrixSet == null) {
+            throw new IllegalArgumentException("MatrixSet cannot be null");
+        }
         this.matrixSet = matrixSet;
-        scaleList = new double[matrixSet.size()];
+        this.scaleList = buildScaleList(matrixSet);
+    }
+
+    private double[] buildScaleList(TileMatrixSet tileMatrixSet) {
+
+        double[] scaleList = new double[tileMatrixSet.size()];
         int j = 0;
-        for (TileMatrix tm : matrixSet.getMatrices()) {
+        for (TileMatrix tm : tileMatrixSet.getMatrices()) {
             scaleList[j++] = tm.getDenominator();
         }
+
+        return scaleList;
     }
 
     public WMTSZoomLevel getZoomLevel(int zoom) {

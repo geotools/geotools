@@ -16,9 +16,7 @@
  */
 package org.geotools.data.geojson;
 
-import com.bedatadriven.jackson.datatype.jts.JtsModule;
 import com.bedatadriven.jackson.datatype.jts.parsers.GenericGeometryParser;
-import com.bedatadriven.jackson.datatype.jts.parsers.GeometryParser;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
@@ -90,7 +88,9 @@ public class GeoJSONReader implements AutoCloseable {
 
     private boolean schemaChanged = false;
 
-    private static GeometryFactory gFac = new GeometryFactory();
+    private static GeometryFactory GEOM_FACTORY = new GeometryFactory();
+
+    private static GenericGeometryParser GEOM_PARSER = new GenericGeometryParser(GEOM_FACTORY);
 
     private URL url;
 
@@ -164,8 +164,7 @@ public class GeoJSONReader implements AutoCloseable {
     /** Pares and returns a single feature out of a GeoJSON document */
     public static SimpleFeature parseFeature(String json) throws JsonParseException, IOException {
         try (JsonParser lParser = factory.createParser(new ByteArrayInputStream(json.getBytes()))) {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.registerModule(new JtsModule());
+            ObjectMapper mapper = ObjectMapperFactory.getDefaultMapper();
             ObjectNode node = mapper.readTree(lParser);
             try (GeoJSONReader reader = new GeoJSONReader((InputStream) null)) {
                 SimpleFeature feature = reader.getNextFeature(node);
@@ -189,11 +188,9 @@ public class GeoJSONReader implements AutoCloseable {
     public static Geometry parseGeometry(String input) {
         try (JsonParser lParser =
                 factory.createParser(new ByteArrayInputStream(input.getBytes()))) {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.registerModule(new JtsModule());
+            ObjectMapper mapper = ObjectMapperFactory.getDefaultMapper();
             ObjectNode node = mapper.readTree(lParser);
-            GeometryParser<Geometry> gParser = new GenericGeometryParser(gFac);
-            Geometry g = gParser.geometryFromJson(node);
+            Geometry g = GEOM_PARSER.geometryFromJson(node);
             return g;
         } catch (IOException e) {
             throw new RuntimeException("problem parsing Geometry", e);
@@ -202,8 +199,7 @@ public class GeoJSONReader implements AutoCloseable {
 
     /** Parses and returns a single feature from the source */
     public SimpleFeature getFeature() throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JtsModule());
+        ObjectMapper mapper = ObjectMapperFactory.getDefaultMapper();
         ObjectNode node = mapper.readTree(parser);
         return getNextFeature(node);
     }
@@ -219,8 +215,7 @@ public class GeoJSONReader implements AutoCloseable {
         if (!isConnected()) {
             throw new IOException("not connected to " + url.toExternalForm());
         }
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JtsModule());
+        ObjectMapper mapper = ObjectMapperFactory.getDefaultMapper();
         List<SimpleFeature> features = new ArrayList<>();
         builder = null;
         while (!parser.isClosed()) {
@@ -275,8 +270,8 @@ public class GeoJSONReader implements AutoCloseable {
                             + "'");
         }
         JsonNode geom = node.get("geometry");
-        GeometryParser<Geometry> gParser = new GenericGeometryParser(gFac);
-        Geometry g = gParser.geometryFromJson(geom);
+
+        Geometry g = GEOM_PARSER.geometryFromJson(geom);
 
         JsonNode props = node.get("properties");
         if (builder == null
@@ -288,8 +283,6 @@ public class GeoJSONReader implements AutoCloseable {
             builder = getBuilder(props, g);
         }
         boolean restart = true;
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JtsModule());
         SimpleFeature feature = null;
         while (restart) {
             restart = false;
@@ -346,8 +339,7 @@ public class GeoJSONReader implements AutoCloseable {
                     }
                     builder.set(n.getKey(), list);
                 } else if (Geometry.class.isAssignableFrom(binding)) {
-                    GeometryParser<Geometry> parser = new GenericGeometryParser(gFac);
-                    Geometry geomAtt = parser.geometryFromJson(n.getValue());
+                    Geometry geomAtt = GEOM_PARSER.geometryFromJson(n.getValue());
                     builder.set(n.getKey(), geomAtt);
                 } else if (Date.class.isAssignableFrom(binding)) {
                     String text = n.getValue().asText();

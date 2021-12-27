@@ -16,8 +16,6 @@
  */
 package org.geotools.data.geojson;
 
-import org.geotools.util.logging.Logging;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -27,13 +25,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.util.logging.Logging;
 
 /** Not a test class, but a load test that can be used to profile the module */
 public class GeoJSONReaderRunner {
 
     static final Logger LOGGER = Logging.getLogger(GeoJSONReaderRunner.class);
-    
-    
+
     File source;
     int threads = Runtime.getRuntime().availableProcessors() * 2;
     int count = threads * 10;
@@ -64,7 +62,7 @@ public class GeoJSONReaderRunner {
             try (FileInputStream fos = new FileInputStream(source);
                     GeoJSONReader reader = new GeoJSONReader(fos)) {
                 reader.getFeatures();
-                
+
             } catch (Exception e) {
                 LOGGER.log(Level.WARNING, "Failed to read GeoJSON", e);
             }
@@ -72,10 +70,14 @@ public class GeoJSONReaderRunner {
         }
     }
 
+    @SuppressWarnings("PMD.SystemPrintln")
     public static void main(String[] args) throws Exception {
-        File source =
-                new File(
-                        "/home/aaime/devel/gisData/Natural_Earth_quick_start/10m_cultural/ne_10m_admin_1_states_provinces_lines.json");
+        if (args.length != 1) {
+            System.out.println(GeoJSONReaderRunner.class.getSimpleName() + " <file>");
+            System.exit(-1);
+        }
+
+        File source = new File(args[0]);
         long start = System.currentTimeMillis();
         GeoJSONReaderRunner runner = new GeoJSONReaderRunner(source);
         runner.execute();

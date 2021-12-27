@@ -49,6 +49,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -199,16 +200,13 @@ public class GeoJSONReader implements AutoCloseable {
         }
     }
 
-    /**
-     * Parses and returns a single feature from the source
-     */
+    /** Parses and returns a single feature from the source */
     public SimpleFeature getFeature() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JtsModule());
         ObjectNode node = mapper.readTree(parser);
         return getNextFeature(node);
     }
-
 
     /**
      * Parses all features in the source and returns them as an in-memory feature collection with a
@@ -468,7 +466,7 @@ public class GeoJSONReader implements AutoCloseable {
      * @return
      * @throws IOException
      */
-    public FeatureIterator<SimpleFeature> getIterator() throws IOException {
+    public SimpleFeatureIterator getIterator() throws IOException {
         if (!isConnected()) {
             LOGGER.fine("trying to read an unconnected data stream");
             return new DefaultFeatureCollection(null, null).features();
@@ -516,7 +514,7 @@ public class GeoJSONReader implements AutoCloseable {
         }
     }
 
-    private class GeoJsonIterator implements FeatureIterator<SimpleFeature>, AutoCloseable {
+    private class GeoJsonIterator implements SimpleFeatureIterator, AutoCloseable {
         /** @throws IOException */
         ObjectMapper mapper = new ObjectMapper();
 

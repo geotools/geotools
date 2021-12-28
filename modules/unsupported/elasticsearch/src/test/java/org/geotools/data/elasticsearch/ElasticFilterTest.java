@@ -648,15 +648,15 @@ public class ElasticFilterTest {
 
     @Test
     public void testGeoShapeBboxFilter() {
-        BBOX filter = ff.bbox("geom", 0., 0., 1.1, 1.1, "EPSG:4326");
-        List<List<Double>> coords = new ArrayList<>();
-        coords.add(ImmutableList.of(0., 0.));
-        coords.add(ImmutableList.of(0., 1.1));
+        BBOX filter = ff.bbox("geom", 0, 0, 1.1, 1.1, "EPSG:4326");
+        List<List<Number>> coords = new ArrayList<>();
+        coords.add(ImmutableList.of(0, 0));
+        coords.add(ImmutableList.of(0, 1.1));
         coords.add(ImmutableList.of(1.1, 1.1));
-        coords.add(ImmutableList.of(1.1, 0.));
-        coords.add(ImmutableList.of(0., 0.));
+        coords.add(ImmutableList.of(1.1, 0));
+        coords.add(ImmutableList.of(0, 0));
         // vertices in reverse order
-        final List<List<Double>> reverseCoords =
+        final List<List<Number>> reverseCoords =
                 ImmutableList.of(
                         coords.get(0), coords.get(3), coords.get(2), coords.get(1), coords.get(4));
         Map<String, Object> expected =
@@ -693,8 +693,8 @@ public class ElasticFilterTest {
     public void testGeoShapeIntersectsFilter() throws CQLException {
         Intersects filter =
                 (Intersects) ECQL.toFilter("INTERSECTS(\"geom\", LINESTRING(0 0,1.1 1.1))");
-        List<List<Double>> coords = new ArrayList<>();
-        coords.add(ImmutableList.of(0., 0.));
+        List<List<Number>> coords = new ArrayList<>();
+        coords.add(ImmutableList.of(0, 0));
         coords.add(ImmutableList.of(1.1, 1.1));
         Map<String, Object> expected =
                 ImmutableMap.of(
@@ -750,8 +750,8 @@ public class ElasticFilterTest {
     public void testGeoShapeIntersectsFilterReversed() throws CQLException {
         Intersects filter =
                 (Intersects) ECQL.toFilter("INTERSECTS(LINESTRING(0 0,1.1 1.1), \"geom\")");
-        List<List<Double>> coords = new ArrayList<>();
-        coords.add(ImmutableList.of(0., 0.));
+        List<List<Number>> coords = new ArrayList<>();
+        coords.add(ImmutableList.of(0, 0));
         coords.add(ImmutableList.of(1.1, 1.1));
         Map<String, Object> expected =
                 ImmutableMap.of(
@@ -782,15 +782,15 @@ public class ElasticFilterTest {
     @Test
     public void testAndWithBbox() {
         And filter =
-                ff.and(ff.id(ff.featureId("id1")), ff.bbox("geom", 0., 0., 1.1, 1.1, "EPSG:4326"));
-        List<List<Double>> coords = new ArrayList<>();
-        coords.add(ImmutableList.of(0., 0.));
-        coords.add(ImmutableList.of(0., 1.1));
+                ff.and(ff.id(ff.featureId("id1")), ff.bbox("geom", 0, 0, 1.1, 1.1, "EPSG:4326"));
+        List<List<Number>> coords = new ArrayList<>();
+        coords.add(ImmutableList.of(0, 0));
+        coords.add(ImmutableList.of(0, 1.1));
         coords.add(ImmutableList.of(1.1, 1.1));
-        coords.add(ImmutableList.of(1.1, 0.));
-        coords.add(ImmutableList.of(0., 0.));
+        coords.add(ImmutableList.of(1.1, 0));
+        coords.add(ImmutableList.of(0, 0));
         // vertices in reverse order
-        List<List<Double>> reverseCoords =
+        List<List<Number>> reverseCoords =
                 ImmutableList.of(
                         coords.get(0), coords.get(3), coords.get(2), coords.get(1), coords.get(4));
         Map<String, Object> expected =
@@ -985,8 +985,8 @@ public class ElasticFilterTest {
         Filter filter =
                 ECQL.toFilter(
                         "time > \"1970-01-01\" and INTERSECTS(\"geom\", LINESTRING(0 0,1.1 1.1))");
-        List<List<Double>> coords = new ArrayList<>();
-        coords.add(ImmutableList.of(0., 0.));
+        List<List<Number>> coords = new ArrayList<>();
+        coords.add(ImmutableList.of(0, 0));
         coords.add(ImmutableList.of(1.1, 1.1));
         Map<String, Object> expected =
                 ImmutableMap.of(

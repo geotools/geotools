@@ -39,15 +39,6 @@ Please just check out the code and have fun. If you are interested in getting co
 #. Our Git Install page contains detailed instructions for setting up git
    on different platforms.
    
-#. Ensure your git configuration is a friendly one to cross platform projects::
-
-     git config --global core.autocrlf input
-   
-   This option may also be set on a repository by repository basis if for some reason 
-   you require a different global default. You can verify your git configuration with::
-   
-     git config --list
-   
 #. Navigate to where you want the checkout with the command line::
      
      C:\java>

@@ -50,7 +50,11 @@ public class JtsModule3D extends SimpleModule {
     }
 
     public JtsModule3D(GeometryFactory geometryFactory) {
-        this(geometryFactory, 4, 1, RoundingMode.HALF_UP);
+        this(
+                geometryFactory,
+                JtsModule.DEFAULT_MAX_DECIMALS,
+                JtsModule.DEFAULT_MIN_DECIMALS,
+                JtsModule.DEFAULT_ROUND_MODE);
     }
 
     public JtsModule3D(
@@ -64,28 +68,25 @@ public class JtsModule3D extends SimpleModule {
 
         addSerializer(Geometry.class, new GeometrySerializer(minDecimals, maxDecimals, rounding));
         GenericGeometryParser genericGeometryParser = new GenericGeometryParser(geometryFactory);
-        addDeserializer(Geometry.class, new GeometryDeserializer<Geometry>(genericGeometryParser));
-        addDeserializer(
-                Point.class, new GeometryDeserializer<Point>(new PointParser(geometryFactory)));
+        addDeserializer(Geometry.class, new GeometryDeserializer<>(genericGeometryParser));
+        addDeserializer(Point.class, new GeometryDeserializer<>(new PointParser(geometryFactory)));
         addDeserializer(
                 MultiPoint.class,
-                new GeometryDeserializer<MultiPoint>(new MultiPointParser(geometryFactory)));
+                new GeometryDeserializer<>(new MultiPointParser(geometryFactory)));
         addDeserializer(
                 LineString.class,
-                new GeometryDeserializer<LineString>(new LineStringParser(geometryFactory)));
+                new GeometryDeserializer<>(new LineStringParser(geometryFactory)));
         addDeserializer(
                 MultiLineString.class,
-                new GeometryDeserializer<MultiLineString>(
-                        new MultiLineStringParser(geometryFactory)));
+                new GeometryDeserializer<>(new MultiLineStringParser(geometryFactory)));
         addDeserializer(
-                Polygon.class,
-                new GeometryDeserializer<Polygon>(new PolygonParser(geometryFactory)));
+                Polygon.class, new GeometryDeserializer<>(new PolygonParser(geometryFactory)));
         addDeserializer(
                 MultiPolygon.class,
-                new GeometryDeserializer<MultiPolygon>(new MultiPolygonParser(geometryFactory)));
+                new GeometryDeserializer<>(new MultiPolygonParser(geometryFactory)));
         addDeserializer(
                 GeometryCollection.class,
-                new GeometryDeserializer<GeometryCollection>(
+                new GeometryDeserializer<>(
                         new GeometryCollectionParser(geometryFactory, genericGeometryParser)));
     }
 

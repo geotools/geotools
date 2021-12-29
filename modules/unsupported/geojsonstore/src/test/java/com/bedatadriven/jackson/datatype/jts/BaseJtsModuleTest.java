@@ -27,6 +27,7 @@ import static org.hamcrest.core.Is.is;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import java.io.IOException;
+import java.math.RoundingMode;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
@@ -45,10 +46,23 @@ public abstract class BaseJtsModuleTest<T extends Geometry> {
     @Before
     public void setup() {
         mapper = new ObjectMapper();
-        mapper.registerModule(new JtsModule());
+        mapper.registerModule(
+                new JtsModule(
+                        new GeometryFactory(),
+                        getMaxDecimals(),
+                        getMinDecimals(),
+                        RoundingMode.HALF_UP));
         writer = mapper.writer();
         geometry = createGeometry();
         geometryAsGeoJson = createGeometryAsGeoJson();
+    }
+
+    protected int getMaxDecimals() {
+        return 4;
+    }
+
+    protected int getMinDecimals() {
+        return 1;
     }
 
     protected abstract Class<T> getType();
@@ -77,6 +91,6 @@ public abstract class BaseJtsModuleTest<T extends Geometry> {
         String json = writer.writeValueAsString(geom);
 
         Geometry regeom = mapper.readerFor(Geometry.class).readValue(json);
-        assertThat(geom.equalsExact(regeom, 0.0001), is(true));
+        assertThat(geom.equalsExact(regeom, Math.pow(10, -getMaxDecimals())), is(true));
     }
 }

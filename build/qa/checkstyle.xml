@@ -16,10 +16,21 @@
       <property name="allowMissingReturnTag" value="true"/>
     </module>
     <module name="ArrayTypeStyle"/>
+    <module name="SuppressionCommentFilter">
+      <property name="offCommentFormat" value="\s*CHECKSTYLE:OFF\s*"/>
+      <property name="onCommentFormat" value="\s*CHECKSTYLE:ON\s*"/>
+    </module>
   </module>
   <module name="RegexpHeader">
     <!-- This checks the beginning of the header as we have multiple header styles with a common start -->
     <property name="header" value="^/\*\s*$\n^ \*\s+GeoTools - The Open Source Java GIS Toolkit$\n^ \*\s+http://geotools.org$\n^ \*\s*$\n^ \*\s+\(C\) (\d{4}|\d{4}\s*-\s*\d{4}),? Open Source Geospatial Foundation \(OSGeo\)$"/>
+    <property name="fileExtensions" value="java"/>
+  </module>
+  <module name="RegexpSingleline">
+    <property name="format" value="^\s{60}"/>
+    <property name="message" value="Excessive nesting found. Please try to factor out the deeply nested code in a separate method or class"/>
+    <property name="minimum" value="0"/>
+    <property name="maximum" value="1"/>
     <property name="fileExtensions" value="java"/>
   </module>
 </module>

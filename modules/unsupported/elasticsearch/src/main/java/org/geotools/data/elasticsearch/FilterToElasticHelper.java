@@ -32,7 +32,6 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateFilter;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryComponentFilter;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.spatial4j.shape.SpatialRelation;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -245,6 +244,8 @@ class FilterToElasticHelper {
         }
 
         if (shapeRelation != null && shapeBuilder != null) {
+            ImmutableMap<String, Object> geo =
+                    ImmutableMap.of("shape", shapeBuilder, "relation", shapeRelation);
             delegate.queryBuilder =
                     ImmutableMap.of(
                             "bool",
@@ -252,15 +253,7 @@ class FilterToElasticHelper {
                                     "must",
                                     MATCH_ALL,
                                     "filter",
-                                    ImmutableMap.of(
-                                            "geo_shape",
-                                            ImmutableMap.of(
-                                                    key,
-                                                    ImmutableMap.of(
-                                                            "shape",
-                                                            shapeBuilder,
-                                                            "relation",
-                                                            shapeRelation)))));
+                                    ImmutableMap.of("geo_shape", ImmutableMap.of(key, geo))));
         } else {
             delegate.queryBuilder = MATCH_ALL;
         }
@@ -311,6 +304,12 @@ class FilterToElasticHelper {
                 minX = -180;
                 maxX = 180;
             }
+            ImmutableMap<String, ImmutableList<Double>> geo =
+                    ImmutableMap.of(
+                            "top_left",
+                            ImmutableList.of(minX, maxY),
+                            "bottom_right",
+                            ImmutableList.of(maxX, minY));
             delegate.queryBuilder =
                     ImmutableMap.of(
                             "bool",
@@ -319,14 +318,7 @@ class FilterToElasticHelper {
                                     MATCH_ALL,
                                     "filter",
                                     ImmutableMap.of(
-                                            "geo_bounding_box",
-                                            ImmutableMap.of(
-                                                    key,
-                                                    ImmutableMap.of(
-                                                            "top_left",
-                                                            ImmutableList.of(minX, maxY),
-                                                            "bottom_right",
-                                                            ImmutableList.of(maxX, minY))))));
+                                            "geo_bounding_box", ImmutableMap.of(key, geo))));
         } else {
             FilterToElastic.LOGGER.fine(
                     filter.getClass().getSimpleName() + " is unsupported for geo_point types");
@@ -340,16 +332,11 @@ class FilterToElasticHelper {
             Geometry g = geometry.evaluate(null, Geometry.class);
             if (g != null) {
                 g.apply(
-                        (GeometryComponentFilter)
-                                geom ->
-                                        geom.apply(
-                                                (CoordinateFilter)
-                                                        coord -> {
-                                                            coord.setCoordinate(
-                                                                    new Coordinate(
-                                                                            clipLon(coord.x),
-                                                                            clipLat(coord.y)));
-                                                        }));
+                        (CoordinateFilter)
+                                coord ->
+                                        coord.setCoordinate(
+                                                new Coordinate(
+                                                        clipLon(coord.x), clipLat(coord.y))));
                 geometry = CommonFactoryFinder.getFilterFactory(null).literal(g);
             }
         }

@@ -11,6 +11,10 @@
   <packaging>jar</packaging>
   <name>Geobuf DataStore</name>
   <description>A geobuf DataStore</description>
+  <properties>
+    <!-- auto-generated class -->
+    <checkstyle.excludes>**/Geobuf.java</checkstyle.excludes>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>org.geotools</groupId>

@@ -171,54 +171,14 @@ public class TransverseMercator extends MapProjection {
         double n = esp * cosphi * cosphi;
 
         /* NOTE: meridinal distance at latitudeOfOrigin is always 0 */
-        y =
-                (mlfn(y, sinphi, cosphi)
-                        - ml0
-                        + sinphi
-                                * al
-                                * x
-                                * FC2
-                                * (1.0
-                                        + FC4
-                                                * als
-                                                * (5.0
-                                                        - t
-                                                        + n * (9.0 + 4.0 * n)
-                                                        + FC6
-                                                                * als
-                                                                * (61.0
-                                                                        + t * (t - 58.0)
-                                                                        + n * (270.0 - 330.0 * t)
-                                                                        + FC8
-                                                                                * als
-                                                                                * (1385.0
-                                                                                        + t
-                                                                                                * (t
-                                                                                                                * (543.0
-                                                                                                                        - t)
-                                                                                                        - 3111.0))))));
+        final double ys1 = 1385.0 + t * (t * (543.0 - t) - 3111.0);
+        final double ys2 = 61.0 + t * (t - 58.0) + n * (270.0 - 330.0 * t) + FC8 * als * ys1;
+        final double ys3 = 5.0 - t + n * (9.0 + 4.0 * n) + FC6 * als * ys2;
+        y = mlfn(y, sinphi, cosphi) - ml0 + sinphi * al * x * FC2 * (1.0 + FC4 * als * ys3);
 
-        x =
-                al
-                        * (FC1
-                                + FC3
-                                        * als
-                                        * (1.0
-                                                - t
-                                                + n
-                                                + FC5
-                                                        * als
-                                                        * (5.0
-                                                                + t * (t - 18.0)
-                                                                + n * (14.0 - 58.0 * t)
-                                                                + FC7
-                                                                        * als
-                                                                        * (61.0
-                                                                                + t
-                                                                                        * (t
-                                                                                                        * (179.0
-                                                                                                                - t)
-                                                                                                - 479.0)))));
+        double xs1 = 61.0 + t * (t * (179.0 - t) - 479.0);
+        final double xs2 = 5.0 + t * (t - 18.0) + n * (14.0 - 58.0 * t) + FC7 * als * xs1;
+        x = al * (FC1 + FC3 * als * (1.0 - t + n + FC5 * als * xs2));
 
         if (ptDst != null) {
             ptDst.setLocation(x, y);
@@ -250,59 +210,14 @@ public class TransverseMercator extends MapProjection {
             t *= t;
             double ds = d * d;
 
-            y =
-                    phi
-                            - (con * ds / (1.0 - excentricitySquared))
-                                    * FC2
-                                    * (1.0
-                                            - ds
-                                                    * FC4
-                                                    * (5.0
-                                                            + t * (3.0 - 9.0 * n)
-                                                            + n * (1.0 - 4 * n)
-                                                            - ds
-                                                                    * FC6
-                                                                    * (61.0
-                                                                            + t
-                                                                                    * (90.0
-                                                                                            - 252.0
-                                                                                                    * n
-                                                                                            + 45.0
-                                                                                                    * t)
-                                                                            + 46.0 * n
-                                                                            - ds
-                                                                                    * FC8
-                                                                                    * (1385.0
-                                                                                            + t
-                                                                                                    * (3633.0
-                                                                                                            + t
-                                                                                                                    * (4095.0
-                                                                                                                            + 1575.0
-                                                                                                                                    * t))))));
+            final double ys1 = 1385.0 + t * (3633.0 + t * (4095.0 + 1575.0 * t));
+            final double ys2 = 61.0 + t * (90.0 - 252.0 * n + 45.0 * t) + 46.0 * n - ds * FC8 * ys1;
+            final double ys3 = 5.0 + t * (3.0 - 9.0 * n) + n * (1.0 - 4 * n) - ds * FC6 * ys2;
+            y = phi - (con * ds / (1.0 - excentricitySquared)) * FC2 * (1.0 - ds * FC4 * ys3);
 
-            x =
-                    d
-                            * (FC1
-                                    - ds
-                                            * FC3
-                                            * (1.0
-                                                    + 2.0 * t
-                                                    + n
-                                                    - ds
-                                                            * FC5
-                                                            * (5.0
-                                                                    + t * (28.0 + 24 * t + 8.0 * n)
-                                                                    + 6.0 * n
-                                                                    - ds
-                                                                            * FC7
-                                                                            * (61.0
-                                                                                    + t
-                                                                                            * (662.0
-                                                                                                    + t
-                                                                                                            * (1320.0
-                                                                                                                    + 720.0
-                                                                                                                            * t))))))
-                            / cosphi;
+            double xs1 = 61.0 + t * (662.0 + t * (1320.0 + 720.0 * t));
+            double xs2 = 5.0 + t * (28.0 + 24 * t + 8.0 * n) + 6.0 * n - ds * FC7 * xs1;
+            x = d * (FC1 - ds * FC3 * (1.0 + 2.0 * t + n - ds * FC5 * xs2)) / cosphi;
         }
 
         if (ptDst != null) {

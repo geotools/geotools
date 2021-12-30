@@ -314,28 +314,12 @@ public abstract class MapProjection extends AbstractMathTransform
 
         //  Compute constants for the mlfn
         double t;
-        en0 =
-                C00
-                        - excentricitySquared
-                                * (C02
-                                        + excentricitySquared
-                                                * (C04
-                                                        + excentricitySquared
-                                                                * (C06
-                                                                        + excentricitySquared
-                                                                                * C08)));
-        en1 =
-                excentricitySquared
-                        * (C22
-                                - excentricitySquared
-                                        * (C04
-                                                + excentricitySquared
-                                                        * (C06 + excentricitySquared * C08)));
-        en2 =
-                (t = excentricitySquared * excentricitySquared)
-                        * (C44 - excentricitySquared * (C46 + excentricitySquared * C48));
-        en3 = (t *= excentricitySquared) * (C66 - excentricitySquared * C68);
-        en4 = t * excentricitySquared * C88;
+        final double es = excentricitySquared;
+        en0 = C00 - es * (C02 + es * (C04 + es * (C06 + es * C08)));
+        en1 = es * (C22 - es * (C04 + es * (C06 + es * C08)));
+        en2 = (t = es * es) * (C44 - es * (C46 + es * C48));
+        en3 = (t *= es) * (C66 - es * C68);
+        en4 = t * es * C88;
     }
 
     /**

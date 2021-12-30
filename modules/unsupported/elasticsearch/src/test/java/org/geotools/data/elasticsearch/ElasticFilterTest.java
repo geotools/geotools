@@ -27,6 +27,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -659,6 +660,8 @@ public class ElasticFilterTest {
         final List<List<Number>> reverseCoords =
                 ImmutableList.of(
                         coords.get(0), coords.get(3), coords.get(2), coords.get(1), coords.get(4));
+        ImmutableMap<String, Serializable> geo =
+                ImmutableMap.of("coordinates", ImmutableList.of(coords), "type", "Polygon");
         Map<String, Object> expected =
                 ImmutableMap.of(
                         "bool",
@@ -671,14 +674,7 @@ public class ElasticFilterTest {
                                         ImmutableMap.of(
                                                 "geom",
                                                 ImmutableMap.of(
-                                                        "shape",
-                                                        ImmutableMap.of(
-                                                                "coordinates",
-                                                                ImmutableList.of(coords),
-                                                                "type",
-                                                                "Polygon"),
-                                                        "relation",
-                                                        "INTERSECTS")))));
+                                                        "shape", geo, "relation", "INTERSECTS")))));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -696,6 +692,8 @@ public class ElasticFilterTest {
         List<List<Number>> coords = new ArrayList<>();
         coords.add(ImmutableList.of(0, 0));
         coords.add(ImmutableList.of(1.1, 1.1));
+        ImmutableMap<String, Object> shape =
+                ImmutableMap.of("coordinates", coords, "type", "LineString");
         Map<String, Object> expected =
                 ImmutableMap.of(
                         "bool",
@@ -709,11 +707,7 @@ public class ElasticFilterTest {
                                                 "geom",
                                                 ImmutableMap.of(
                                                         "shape",
-                                                        ImmutableMap.of(
-                                                                "coordinates",
-                                                                coords,
-                                                                "type",
-                                                                "LineString"),
+                                                        shape,
                                                         "relation",
                                                         "INTERSECTS")))));
 
@@ -753,6 +747,8 @@ public class ElasticFilterTest {
         List<List<Number>> coords = new ArrayList<>();
         coords.add(ImmutableList.of(0, 0));
         coords.add(ImmutableList.of(1.1, 1.1));
+        ImmutableMap<String, Object> shape =
+                ImmutableMap.of("coordinates", coords, "type", "LineString");
         Map<String, Object> expected =
                 ImmutableMap.of(
                         "bool",
@@ -766,11 +762,7 @@ public class ElasticFilterTest {
                                                 "geom",
                                                 ImmutableMap.of(
                                                         "shape",
-                                                        ImmutableMap.of(
-                                                                "coordinates",
-                                                                coords,
-                                                                "type",
-                                                                "LineString"),
+                                                        shape,
                                                         "relation",
                                                         "INTERSECTS")))));
 
@@ -793,6 +785,20 @@ public class ElasticFilterTest {
         List<List<Number>> reverseCoords =
                 ImmutableList.of(
                         coords.get(0), coords.get(3), coords.get(2), coords.get(1), coords.get(4));
+        Map<String, Object> geoShape =
+                ImmutableMap.of(
+                        "geo_shape",
+                        ImmutableMap.of(
+                                "geom",
+                                ImmutableMap.of(
+                                        "shape",
+                                        ImmutableMap.of(
+                                                "coordinates",
+                                                ImmutableList.of(coords),
+                                                "type",
+                                                "Polygon"),
+                                        "relation",
+                                        "INTERSECTS")));
         Map<String, Object> expected =
                 ImmutableMap.of(
                         "bool",
@@ -808,21 +814,7 @@ public class ElasticFilterTest {
                                                         "must",
                                                         ElasticConstants.MATCH_ALL,
                                                         "filter",
-                                                        ImmutableMap.of(
-                                                                "geo_shape",
-                                                                ImmutableMap.of(
-                                                                        "geom",
-                                                                        ImmutableMap.of(
-                                                                                "shape",
-                                                                                ImmutableMap.of(
-                                                                                        "coordinates",
-                                                                                        ImmutableList
-                                                                                                .of(
-                                                                                                        coords),
-                                                                                        "type",
-                                                                                        "Polygon"),
-                                                                                "relation",
-                                                                                "INTERSECTS"))))))));
+                                                        geoShape)))));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -941,6 +933,11 @@ public class ElasticFilterTest {
     @Test
     public void testDBeyondFilter() throws CQLException {
         Beyond filter = (Beyond) ECQL.toFilter("BEYOND(\"geo_point\", POINT(0 1.1), 1.0, meters)");
+        Map<String, Object> filterBit =
+                ImmutableMap.of(
+                        "geo_distance",
+                        ImmutableMap.of(
+                                "distance", "1.0m", "geo_point", ImmutableList.of(0., 1.1)));
         Map<String, Object> expected =
                 ImmutableMap.of(
                         "bool",
@@ -952,13 +949,7 @@ public class ElasticFilterTest {
                                                 "must",
                                                 ElasticConstants.MATCH_ALL,
                                                 "filter",
-                                                ImmutableMap.of(
-                                                        "geo_distance",
-                                                        ImmutableMap.of(
-                                                                "distance",
-                                                                "1.0m",
-                                                                "geo_point",
-                                                                ImmutableList.of(0., 1.1)))))));
+                                                filterBit))));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -988,6 +979,17 @@ public class ElasticFilterTest {
         List<List<Number>> coords = new ArrayList<>();
         coords.add(ImmutableList.of(0, 0));
         coords.add(ImmutableList.of(1.1, 1.1));
+        Map<String, Object> geoShape =
+                ImmutableMap.of(
+                        "geo_shape",
+                        ImmutableMap.of(
+                                "geom",
+                                ImmutableMap.of(
+                                        "shape",
+                                        ImmutableMap.of(
+                                                "coordinates", coords, "type", "LineString"),
+                                        "relation",
+                                        "INTERSECTS")));
         Map<String, Object> expected =
                 ImmutableMap.of(
                         "bool",
@@ -1005,19 +1007,7 @@ public class ElasticFilterTest {
                                                         "must",
                                                         ElasticConstants.MATCH_ALL,
                                                         "filter",
-                                                        ImmutableMap.of(
-                                                                "geo_shape",
-                                                                ImmutableMap.of(
-                                                                        "geom",
-                                                                        ImmutableMap.of(
-                                                                                "shape",
-                                                                                ImmutableMap.of(
-                                                                                        "coordinates",
-                                                                                        coords,
-                                                                                        "type",
-                                                                                        "LineString"),
-                                                                                "relation",
-                                                                                "INTERSECTS"))))))));
+                                                        geoShape)))));
 
         builder.encode(filter);
         assertTrue(builder.createCapabilities().fullySupports(filter));

@@ -370,17 +370,10 @@ public final class SeaWater {
     public static double salinity(double C, final double T, final double P) {
         C /= STANDARD_CONDUCTIVITY;
         if (!(C < 5E-4)) { // use '!' in order to accept NaN
+            double xr1 =
+                    (PSS78_D[1] * T + PSS78_D[0]) * T + 1.0 + (PSS78_D[3] * T + PSS78_D[2]) * C;
             final double XR =
-                    Math.sqrt(
-                            C
-                                    / (polynome(T, PSS78_C)
-                                            * (1.0
-                                                    + polynome(P, PSS78_E)
-                                                            * P
-                                                            / ((PSS78_D[1] * T + PSS78_D[0]) * T
-                                                                    + 1.0
-                                                                    + (PSS78_D[3] * T + PSS78_D[2])
-                                                                            * C))));
+                    Math.sqrt(C / (polynome(T, PSS78_C) * (1.0 + polynome(P, PSS78_E) * P / xr1)));
             final double S = sal(XR, T - 15.0); // Do not use an 'assert' statement invoking 'cond'.
             if (!(S >= 42)) return S; // use '!' to accept NaN
             /*
@@ -389,16 +382,9 @@ public final class SeaWater {
              * doit être utilisé lorsque l'on s'attend à une salinité
              * entre 42 et 50.
              */
+            double r1 = PSS78_CR[0] + PSS78_CR[1] * C + PSS78_CR[2] * T;
             return 35 * C
-                    + C
-                            * (C - 1)
-                            * (polynome(C, PSS78_AR)
-                                    + T
-                                            * (polynome(T, PSS78_AT)
-                                                    + C
-                                                            * (PSS78_CR[0]
-                                                                    + PSS78_CR[1] * C
-                                                                    + PSS78_CR[2] * T)));
+                    + C * (C - 1) * (polynome(C, PSS78_AR) + T * (polynome(T, PSS78_AT) + C * r1));
             // TODO: VERIFIER CE QUE DEVIENT LA PRESSION ET IMPLEMENTER L'EQUATION D'ETAT.
         } else {
             return 0; // Zero conductivity trap

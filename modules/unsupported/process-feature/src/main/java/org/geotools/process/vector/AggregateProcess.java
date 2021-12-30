@@ -24,6 +24,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.util.NullProgressListener;
@@ -48,6 +49,7 @@ import org.geotools.process.factory.DescribeResult;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.util.ProgressListener;
 
 /**
@@ -243,32 +245,19 @@ public class AggregateProcess implements VectorProcess {
 
         FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
 
+        Function<AggregationFunction, GroupByVisitor> builder =
+                function ->
+                        new GroupByVisitorBuilder()
+                                .withAggregateAttribute(
+                                        function == AggregationFunction.SumArea
+                                                ? getArea2(features, aggAttribute, factory)
+                                                : getProperty(features, aggAttribute, factory))
+                                .withAggregateVisitor(function.name())
+                                .withGroupByAttributes(rawGroupByAttributes, features.getSchema())
+                                .withProgressListener(progressListener)
+                                .build();
         List<GroupByVisitor> groupByVisitors =
-                functions
-                        .stream()
-                        .map(
-                                function ->
-                                        new GroupByVisitorBuilder()
-                                                .withAggregateAttribute(
-                                                        function == AggregationFunction.SumArea
-                                                                ? factory.function(
-                                                                        "area2",
-                                                                        factory.property(
-                                                                                features.getSchema()
-                                                                                        .getDescriptor(
-                                                                                                aggAttribute)
-                                                                                        .getLocalName()))
-                                                                : factory.property(
-                                                                        features.getSchema()
-                                                                                .getDescriptor(
-                                                                                        aggAttribute)
-                                                                                .getLocalName()))
-                                                .withAggregateVisitor(function.name())
-                                                .withGroupByAttributes(
-                                                        rawGroupByAttributes, features.getSchema())
-                                                .withProgressListener(progressListener)
-                                                .build())
-                        .collect(Collectors.toList());
+                functions.stream().map(builder).collect(Collectors.toList());
         // visiting the features collection with each visitor
         for (GroupByVisitor visitor : groupByVisitors) {
             features.accepts(visitor, progressListener);
@@ -284,6 +273,18 @@ public class AggregateProcess implements VectorProcess {
                 functions,
                 rawGroupByAttributes,
                 mergeResults(results, rawGroupByAttributes.size()));
+    }
+
+    private PropertyName getProperty(
+            SimpleFeatureCollection features, String aggAttribute, FilterFactory factory) {
+        return factory.property(features.getSchema().getDescriptor(aggAttribute).getLocalName());
+    }
+
+    private org.opengis.filter.expression.Function getArea2(
+            SimpleFeatureCollection features, String attribute, FilterFactory factory) {
+        PropertyName property =
+                factory.property(features.getSchema().getDescriptor(attribute).getLocalName());
+        return factory.function("area2", property);
     }
 
     @SuppressWarnings("unchecked")

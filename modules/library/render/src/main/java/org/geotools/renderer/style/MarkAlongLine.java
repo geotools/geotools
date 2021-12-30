@@ -252,14 +252,9 @@ public class MarkAlongLine implements Stroke {
                                         // update left over of previous
                                         // draw line on to next segment to avoid sloppy connections
                                         newshape.lineTo(pointOnLine.x, pointOnLine.y);
+                                        Coordinate c = new Coordinate(prevcoords[0], prevcoords[1]);
                                         LOGGER.finer(
-                                                "Draw line "
-                                                        + new LineSegment(
-                                                                        new Coordinate(
-                                                                                prevcoords[0],
-                                                                                prevcoords[1]),
-                                                                        pointOnLine)
-                                                                .toString());
+                                                "Draw line " + new LineSegment(c, pointOnLine));
                                     }
 
                                     // update prev coordinates

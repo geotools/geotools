@@ -209,35 +209,33 @@ public class CQLJsonCompiler implements ICompiler {
                 case "And":
                     And and = (And) processedNotNull;
                     List<Filter> filters =
-                            (List<org.opengis.filter.Filter>)
-                                    and.stream()
-                                            .map(
-                                                    a -> {
-                                                        try {
-                                                            return convertToFilter(a);
-                                                        } catch (ParseException e) {
-                                                            LOGGER.log(Level.SEVERE, "", e);
-                                                        }
-                                                        return (Filter) a;
-                                                    })
-                                            .collect(Collectors.toList());
+                            and.stream()
+                                    .map(
+                                            a -> {
+                                                try {
+                                                    return convertToFilter(a);
+                                                } catch (ParseException e) {
+                                                    LOGGER.log(Level.SEVERE, "", e);
+                                                }
+                                                return (Filter) a;
+                                            })
+                                    .collect(Collectors.toList());
                     out = builder.convertAnd(filters);
                     break;
                 case "Or":
                     Or or = (Or) processedNotNull;
                     List<Filter> filtersOr =
-                            (List<org.opengis.filter.Filter>)
-                                    or.stream()
-                                            .map(
-                                                    a -> {
-                                                        try {
-                                                            return convertToFilter(a);
-                                                        } catch (ParseException e) {
-                                                            LOGGER.log(Level.SEVERE, "", e);
-                                                        }
-                                                        return (Filter) a;
-                                                    })
-                                            .collect(Collectors.toList());
+                            or.stream()
+                                    .map(
+                                            a -> {
+                                                try {
+                                                    return convertToFilter(a);
+                                                } catch (ParseException e) {
+                                                    LOGGER.log(Level.SEVERE, "", e);
+                                                }
+                                                return (Filter) a;
+                                            })
+                                    .collect(Collectors.toList());
                     out = builder.convertOr(filtersOr);
                     break;
                 case "Predicates": // This is Not, which can apply to any predicates

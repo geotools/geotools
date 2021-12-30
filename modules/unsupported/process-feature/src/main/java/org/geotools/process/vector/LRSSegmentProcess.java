@@ -114,103 +114,14 @@ public class LRSSegmentProcess implements VectorProcess {
                     while (featureIterator.hasNext()) {
                         Feature feature = featureIterator.next();
                         if (firstFeature == null) firstFeature = feature;
-                        Double featureFromMeasure =
-                                (Double) feature.getProperty(fromMeasureAttb).getValue();
-                        Double featureToMeasure =
-                                (Double) feature.getProperty(toMeasureAttb).getValue();
-
-                        if (fromMeasure < featureToMeasure && toMeasure > featureFromMeasure) {
-                            try {
-                                if (fromMeasure <= featureFromMeasure
-                                        && toMeasure >= featureToMeasure) {
-                                    lineMerger.add(
-                                            (Geometry)
-                                                    feature.getDefaultGeometryProperty()
-                                                            .getValue());
-                                } else if (fromMeasure > featureFromMeasure
-                                        && toMeasure < featureToMeasure) {
-                                    LengthIndexedLine lengthIndexedLine =
-                                            new LengthIndexedLine(
-                                                    (Geometry)
-                                                            feature.getDefaultGeometryProperty()
-                                                                    .getValue());
-                                    double featureLength = featureToMeasure - featureFromMeasure;
-                                    double startOffset = fromMeasure - featureFromMeasure;
-                                    double stopOffset = toMeasure - featureFromMeasure;
-                                    double calcLength =
-                                            ((Geometry)
-                                                            feature.getDefaultGeometryProperty()
-                                                                    .getValue())
-                                                    .getLength();
-                                    if (calcLength == 0 || featureLength == 0) continue;
-                                    Geometry extracted =
-                                            lengthIndexedLine.extractLine(
-                                                    startOffset * calcLength / featureLength,
-                                                    stopOffset * calcLength / featureLength);
-                                    if (!extracted.isEmpty()) lineMerger.add(extracted);
-                                } else if (fromMeasure > featureFromMeasure) {
-                                    LengthIndexedLine lengthIndexedLine =
-                                            new LengthIndexedLine(
-                                                    (Geometry)
-                                                            feature.getDefaultGeometryProperty()
-                                                                    .getValue());
-                                    double featureLength = featureToMeasure - featureFromMeasure;
-                                    double startOffset = fromMeasure - featureFromMeasure;
-                                    double calcLength =
-                                            ((Geometry)
-                                                            feature.getDefaultGeometryProperty()
-                                                                    .getValue())
-                                                    .getLength();
-                                    if (calcLength == 0 || featureLength == 0) continue;
-                                    Geometry extracted =
-                                            lengthIndexedLine.extractLine(
-                                                    startOffset * calcLength / featureLength,
-                                                    calcLength);
-                                    if (!extracted.isEmpty()) lineMerger.add(extracted);
-                                } else {
-                                    LengthIndexedLine lengthIndexedLine =
-                                            new LengthIndexedLine(
-                                                    (Geometry)
-                                                            feature.getDefaultGeometryProperty()
-                                                                    .getValue());
-                                    double featureLength = featureToMeasure - featureFromMeasure;
-                                    double stopOffset = toMeasure - featureFromMeasure;
-                                    double calcLength =
-                                            ((Geometry)
-                                                            feature.getDefaultGeometryProperty()
-                                                                    .getValue())
-                                                    .getLength();
-                                    if (calcLength == 0 || featureLength == 0) continue;
-                                    Geometry extracted =
-                                            lengthIndexedLine.extractLine(
-                                                    0, stopOffset * calcLength / featureLength);
-                                    if (extracted.isEmpty() || extracted.getLength() == 0.0) {
-                                        LOGGER.info(
-                                                "Empty segment: featureFromMeasure="
-                                                        + featureFromMeasure
-                                                        + " featureToMeasure:"
-                                                        + featureToMeasure
-                                                        + " toMeasure:"
-                                                        + toMeasure
-                                                        + " fromMeasure:"
-                                                        + fromMeasure);
-                                    } else {
-                                        lineMerger.add(extracted);
-                                    }
-                                }
-                            } catch (Exception e) {
-                                LOGGER.warning(
-                                        "Error merging line strings: "
-                                                + e
-                                                + " featureFromMeasure="
-                                                + featureFromMeasure
-                                                + " featureToMeasure:"
-                                                + featureToMeasure
-                                                + " toMeasure:"
-                                                + toMeasure
-                                                + " fromMeasure:"
-                                                + fromMeasure);
-                            }
+                        if (processFeature(
+                                fromMeasureAttb,
+                                toMeasureAttb,
+                                fromMeasure,
+                                toMeasure,
+                                lineMerger,
+                                feature)) {
+                            continue;
                         }
                     }
                 }
@@ -232,6 +143,94 @@ public class LRSSegmentProcess implements VectorProcess {
             LOGGER.warning("Error executing method: " + e);
             throw new ProcessException("Error executing method: " + e, e);
         }
+    }
+
+    private boolean processFeature(
+            String fromMeasureAttb,
+            String toMeasureAttb,
+            Double fromMeasure,
+            Double toMeasure,
+            LineMerger lineMerger,
+            Feature feature) {
+        Double featureFromMeasure = (Double) feature.getProperty(fromMeasureAttb).getValue();
+        Double featureToMeasure = (Double) feature.getProperty(toMeasureAttb).getValue();
+
+        if (fromMeasure < featureToMeasure && toMeasure > featureFromMeasure) {
+            try {
+                if (fromMeasure <= featureFromMeasure && toMeasure >= featureToMeasure) {
+                    lineMerger.add((Geometry) feature.getDefaultGeometryProperty().getValue());
+                } else if (fromMeasure > featureFromMeasure && toMeasure < featureToMeasure) {
+                    LengthIndexedLine lengthIndexedLine =
+                            new LengthIndexedLine(
+                                    (Geometry) feature.getDefaultGeometryProperty().getValue());
+                    double featureLength = featureToMeasure - featureFromMeasure;
+                    double startOffset = fromMeasure - featureFromMeasure;
+                    double stopOffset = toMeasure - featureFromMeasure;
+                    double calcLength =
+                            ((Geometry) feature.getDefaultGeometryProperty().getValue())
+                                    .getLength();
+                    if (calcLength == 0 || featureLength == 0) return true;
+                    Geometry extracted =
+                            lengthIndexedLine.extractLine(
+                                    startOffset * calcLength / featureLength,
+                                    stopOffset * calcLength / featureLength);
+                    if (!extracted.isEmpty()) lineMerger.add(extracted);
+                } else if (fromMeasure > featureFromMeasure) {
+                    LengthIndexedLine lengthIndexedLine =
+                            new LengthIndexedLine(
+                                    (Geometry) feature.getDefaultGeometryProperty().getValue());
+                    double featureLength = featureToMeasure - featureFromMeasure;
+                    double startOffset = fromMeasure - featureFromMeasure;
+                    double calcLength =
+                            ((Geometry) feature.getDefaultGeometryProperty().getValue())
+                                    .getLength();
+                    if (calcLength == 0 || featureLength == 0) return true;
+                    Geometry extracted =
+                            lengthIndexedLine.extractLine(
+                                    startOffset * calcLength / featureLength, calcLength);
+                    if (!extracted.isEmpty()) lineMerger.add(extracted);
+                } else {
+                    LengthIndexedLine lengthIndexedLine =
+                            new LengthIndexedLine(
+                                    (Geometry) feature.getDefaultGeometryProperty().getValue());
+                    double featureLength = featureToMeasure - featureFromMeasure;
+                    double stopOffset = toMeasure - featureFromMeasure;
+                    double calcLength =
+                            ((Geometry) feature.getDefaultGeometryProperty().getValue())
+                                    .getLength();
+                    if (calcLength == 0 || featureLength == 0) return true;
+                    Geometry extracted =
+                            lengthIndexedLine.extractLine(
+                                    0, stopOffset * calcLength / featureLength);
+                    if (extracted.isEmpty() || extracted.getLength() == 0.0) {
+                        LOGGER.info(
+                                "Empty segment: featureFromMeasure="
+                                        + featureFromMeasure
+                                        + " featureToMeasure:"
+                                        + featureToMeasure
+                                        + " toMeasure:"
+                                        + toMeasure
+                                        + " fromMeasure:"
+                                        + fromMeasure);
+                    } else {
+                        lineMerger.add(extracted);
+                    }
+                }
+            } catch (Exception e) {
+                LOGGER.warning(
+                        "Error merging line strings: "
+                                + e
+                                + " featureFromMeasure="
+                                + featureFromMeasure
+                                + " featureToMeasure:"
+                                + featureToMeasure
+                                + " toMeasure:"
+                                + toMeasure
+                                + " fromMeasure:"
+                                + fromMeasure);
+            }
+        }
+        return false;
     }
 
     /**

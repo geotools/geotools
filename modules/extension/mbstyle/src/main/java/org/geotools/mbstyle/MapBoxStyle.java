@@ -130,27 +130,7 @@ public class MapBoxStyle {
                 } else {
                     for (StyledLayer layer : sld.getStyledLayers()) {
                         if (layer instanceof NamedLayer) {
-                            NamedLayer named = (NamedLayer) layer;
-                            if (named.styles().isEmpty()) {
-                                problems.add(
-                                        new MBFormatException(
-                                                "Generated named layer for "
-                                                        + named.getName()
-                                                        + " is empty."));
-                            } else {
-                                for (Style layerStyle : named.styles()) {
-                                    if (layerStyle instanceof FeatureTypeStyle) {
-                                        FeatureTypeStyle fts = (FeatureTypeStyle) layerStyle;
-                                        if (fts.rules().isEmpty()) {
-                                            problems.add(
-                                                    new MBFormatException(
-                                                            "Generated feature type style "
-                                                                    + fts.getName()
-                                                                    + " is empty."));
-                                        }
-                                    }
-                                }
-                            }
+                            validateLayer(problems, (NamedLayer) layer);
                         }
                     }
                 }
@@ -165,5 +145,27 @@ public class MapBoxStyle {
             }
         }
         return problems;
+    }
+
+    private static void validateLayer(List<Exception> problems, NamedLayer layer) {
+        NamedLayer named = layer;
+        if (named.styles().isEmpty()) {
+            problems.add(
+                    new MBFormatException(
+                            "Generated named layer for " + named.getName() + " is empty."));
+        } else {
+            for (Style layerStyle : named.styles()) {
+                if (layerStyle instanceof FeatureTypeStyle) {
+                    FeatureTypeStyle fts = (FeatureTypeStyle) layerStyle;
+                    if (fts.rules().isEmpty()) {
+                        problems.add(
+                                new MBFormatException(
+                                        "Generated feature type style "
+                                                + fts.getName()
+                                                + " is empty."));
+                    }
+                }
+            }
+        }
     }
 }

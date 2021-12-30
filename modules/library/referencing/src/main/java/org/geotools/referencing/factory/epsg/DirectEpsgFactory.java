@@ -43,6 +43,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -2488,20 +2489,14 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                     // see if we have any alias for this operation, if so add them
                     GenericName[] aliases = null;
                     try {
-                        ParameterValueGroup pvg =
+                        ParameterValueGroup pgv =
                                 factories.getMathTransformFactory().getDefaultParameters(name);
-                        if (pvg != null
-                                && pvg.getDescriptor() != null
-                                && pvg.getDescriptor().getAlias() != null) {
-                            aliases =
-                                    pvg.getDescriptor()
-                                            .getAlias()
-                                            .toArray(
-                                                    new GenericName
-                                                            [pvg.getDescriptor()
-                                                                    .getAlias()
-                                                                    .size()]);
-                        }
+                        aliases =
+                                Optional.ofNullable(pgv)
+                                        .map(pvg -> pvg.getDescriptor())
+                                        .map(d -> d.getAlias())
+                                        .map(a -> a.toArray(new GenericName[a.size()]))
+                                        .orElse(null);
                     } catch (NoSuchIdentifierException e) {
                         // lookup for aliases failed, no problem
                     }

@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Collections;
+import java.util.Objects;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
 import javax.measure.quantity.Length;
@@ -441,46 +442,24 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
         return inverse;
     }
 
-    /** Returns a hash value for this transform. */
     @Override
-    public int hashCode() {
-        final long code =
-                Double.doubleToLongBits(a)
-                        + 37
-                                * (Double.doubleToLongBits(b)
-                                        + 37
-                                                * (Double.doubleToLongBits(a2)
-                                                        + 37
-                                                                * (Double.doubleToLongBits(b2)
-                                                                        + 37
-                                                                                * (Double
-                                                                                                .doubleToLongBits(
-                                                                                                        e2)
-                                                                                        + 37
-                                                                                                * (Double
-                                                                                                        .doubleToLongBits(
-                                                                                                                ep2))))));
-        return (int) code ^ (int) (code >>> 32) ^ (int) serialVersionUID;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        GeocentricTransform that = (GeocentricTransform) o;
+        return Double.compare(that.a, a) == 0
+                && Double.compare(that.b, b) == 0
+                && Double.compare(that.a2, a2) == 0
+                && Double.compare(that.b2, b2) == 0
+                && Double.compare(that.e2, e2) == 0
+                && Double.compare(that.ep2, ep2) == 0
+                && hasHeight == that.hasHeight;
     }
 
-    /** Compares the specified object with this math transform for equality. */
     @Override
-    public boolean equals(final Object object) {
-        if (object == this) {
-            // Slight optimization
-            return true;
-        }
-        if (super.equals(object)) {
-            final GeocentricTransform that = (GeocentricTransform) object;
-            return Double.doubleToLongBits(this.a) == Double.doubleToLongBits(that.a)
-                    && Double.doubleToLongBits(this.b) == Double.doubleToLongBits(that.b)
-                    && Double.doubleToLongBits(this.a2) == Double.doubleToLongBits(that.a2)
-                    && Double.doubleToLongBits(this.b2) == Double.doubleToLongBits(that.b2)
-                    && Double.doubleToLongBits(this.e2) == Double.doubleToLongBits(that.e2)
-                    && Double.doubleToLongBits(this.ep2) == Double.doubleToLongBits(that.ep2)
-                    && this.hasHeight == that.hasHeight;
-        }
-        return false;
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), a, b, a2, b2, e2, ep2, hasHeight);
     }
 
     /**

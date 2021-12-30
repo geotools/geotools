@@ -36,6 +36,7 @@ import java.awt.image.SampleModel;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
@@ -177,6 +178,15 @@ public class Utils {
     public static final String PROPERTIES_SEPARATOR = ";";
 
     public static final Set<String> LOG_EXCLUDES = new HashSet<>();
+
+    static final FileFilter MOSAIC_PROPERTY_FILTER =
+            f -> {
+                String name = f.getName();
+                return f.isFile()
+                        && name.endsWith(".properties")
+                        && !"indexer.properties".equals(name)
+                        && !Utils.DATASTORE_PROPERTIES.equals(name);
+            };
 
     static {
         LOG_EXCLUDES.add("xml");

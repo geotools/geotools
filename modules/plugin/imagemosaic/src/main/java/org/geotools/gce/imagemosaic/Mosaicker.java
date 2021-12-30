@@ -198,84 +198,75 @@ public class Mosaicker {
             ROI roi = in.roi;
             if (roi != null) {
                 Rectangle bounds = Utils.toRectangle(roi.getAsShape());
-                if (bounds != null) {
-                    RenderedImage mosaic = in.source;
-                    Rectangle imageBounds = PlanarImage.wrapRenderedImage(mosaic).getBounds();
+                RenderedImage mosaic = in.source;
+                Rectangle imageBounds = PlanarImage.wrapRenderedImage(mosaic).getBounds();
+                // the roi is exactly equal to the image
+                if (bounds != null && bounds.equals(imageBounds) && rasterMask == null) {
+                    // do we need to crop? (image is bigger than requested?)
+                    if (!rasterLayerResponse.getRasterBounds().contains(imageBounds)) {
+                        // we have to crop
+                        XRectangle2D.intersect(
+                                imageBounds, rasterLayerResponse.getRasterBounds(), imageBounds);
 
-                    // the roi is exactly equal to the image
-                    if (imageBounds.equals(bounds) && rasterMask == null) {
-
-                        // do we need to crop? (image is bigger than requested?)
-                        if (!rasterLayerResponse.getRasterBounds().contains(imageBounds)) {
-                            // we have to crop
-                            XRectangle2D.intersect(
-                                    imageBounds,
-                                    rasterLayerResponse.getRasterBounds(),
-                                    imageBounds);
-
-                            if (imageBounds.isEmpty()) {
-                                // return back a constant image
-                                return null;
-                            }
-                            // crop
-                            ImageWorker iw = new ImageWorker(mosaic);
-                            iw.setRenderingHints(localHints);
-                            iw.crop(
-                                    imageBounds.x,
-                                    imageBounds.y,
-                                    imageBounds.width,
-                                    imageBounds.height);
-                            mosaic = iw.getRenderedImage();
-                            // Propagate NoData
-                            PlanarImage t = PlanarImage.wrapRenderedImage(mosaic);
-                            if (iw.getNoData() != null) {
-                                t.setProperty(
-                                        NoDataContainer.GC_NODATA,
-                                        new NoDataContainer(iw.getNoData()));
-                                mosaic = t;
-                            }
-                            imageBounds = t.getBounds();
+                        if (imageBounds.isEmpty()) {
+                            // return back a constant image
+                            return null;
                         }
-
-                        // and, do we need to add a BORDER around the image?
-                        if (!imageBounds.contains(rasterLayerResponse.getRasterBounds())) {
-                            mosaic =
-                                    MergeBehavior.FLAT.process(
-                                            new RenderedImage[] {mosaic},
-                                            rasterLayerResponse.getBackgroundValues(),
-                                            sourceThreshold,
-                                            (hasAlpha || doInputTransparency)
-                                                    ? new PlanarImage[] {in.alphaChannel}
-                                                    : new PlanarImage[] {null},
-                                            new ROI[] {in.roi},
-                                            rasterLayerResponse.getRequest().isBlend()
-                                                    ? MosaicDescriptor.MOSAIC_TYPE_BLEND
-                                                    : MosaicDescriptor.MOSAIC_TYPE_OVERLAY,
-                                            localHints);
-                            roi =
-                                    roi.add(
-                                            new ROIGeometry(
-                                                    JTS.toGeometry(
-                                                            new ReferencedEnvelope(
-                                                                    rasterLayerResponse
-                                                                            .getRasterBounds(),
-                                                                    null))));
-                            if (rasterLayerResponse.getFootprintBehavior()
-                                    != FootprintBehavior.None) {
-                                // Adding globalRoi to the output
-                                RenderedOp rop = (RenderedOp) mosaic;
-                                rop.setProperty("ROI", in.roi);
-
-                                mosaic =
-                                        rasterLayerResponse
-                                                .getFootprintBehavior()
-                                                .postProcessMosaic(mosaic, in.roi, localHints);
-                            }
+                        // crop
+                        ImageWorker iw = new ImageWorker(mosaic);
+                        iw.setRenderingHints(localHints);
+                        iw.crop(
+                                imageBounds.x,
+                                imageBounds.y,
+                                imageBounds.width,
+                                imageBounds.height);
+                        mosaic = iw.getRenderedImage();
+                        // Propagate NoData
+                        PlanarImage t = PlanarImage.wrapRenderedImage(mosaic);
+                        if (iw.getNoData() != null) {
+                            t.setProperty(
+                                    NoDataContainer.GC_NODATA, new NoDataContainer(iw.getNoData()));
+                            mosaic = t;
                         }
-
-                        // add to final list
-                        return new MosaicElement(in.alphaChannel, roi, mosaic, pamDataset);
+                        imageBounds = t.getBounds();
                     }
+
+                    // and, do we need to add a BORDER around the image?
+                    if (!imageBounds.contains(rasterLayerResponse.getRasterBounds())) {
+                        mosaic =
+                                MergeBehavior.FLAT.process(
+                                        new RenderedImage[] {mosaic},
+                                        rasterLayerResponse.getBackgroundValues(),
+                                        sourceThreshold,
+                                        (hasAlpha || doInputTransparency)
+                                                ? new PlanarImage[] {in.alphaChannel}
+                                                : new PlanarImage[] {null},
+                                        new ROI[] {in.roi},
+                                        rasterLayerResponse.getRequest().isBlend()
+                                                ? MosaicDescriptor.MOSAIC_TYPE_BLEND
+                                                : MosaicDescriptor.MOSAIC_TYPE_OVERLAY,
+                                        localHints);
+                        ROIGeometry envelopeROI =
+                                new ROIGeometry(
+                                        JTS.toGeometry(
+                                                new ReferencedEnvelope(
+                                                        rasterLayerResponse.getRasterBounds(),
+                                                        null)));
+                        roi = roi.add(envelopeROI);
+                        if (rasterLayerResponse.getFootprintBehavior() != FootprintBehavior.None) {
+                            // Adding globalRoi to the output
+                            RenderedOp rop = (RenderedOp) mosaic;
+                            rop.setProperty("ROI", in.roi);
+
+                            mosaic =
+                                    rasterLayerResponse
+                                            .getFootprintBehavior()
+                                            .postProcessMosaic(mosaic, in.roi, localHints);
+                        }
+                    }
+
+                    // add to final list
+                    return new MosaicElement(in.alphaChannel, roi, mosaic, pamDataset);
                 }
             }
         }

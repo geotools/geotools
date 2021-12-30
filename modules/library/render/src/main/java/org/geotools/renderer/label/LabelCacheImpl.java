@@ -1080,21 +1080,20 @@ public class LabelCacheImpl implements LabelCache {
                         if (labelItem.isFollowLineEnabled()) {
                             // for curved labels we never paint in case of
                             // overrun
-                            if ((startOrdinate > 0
-                                    && endOrdinate <= cursor.getLineStringLength())) {
-                                if (maxAngleChange < maxAngleDelta) {
-                                    // if straight segment connecting the start and end ordinate is
-                                    // really close, paint as a straight label
-                                    if (maxAngleChange == 0
-                                            || cursor.getMaxDistanceFromStraightLine(
-                                                            startOrdinate, endOrdinate)
-                                                    < painter.getLineHeight() / 2) {
-                                        painter.paintStraightLabel(tx);
-                                    } else {
-                                        painter.paintCurvedLabel(cursor);
-                                    }
-                                    painted = true;
+                            if (startOrdinate > 0
+                                    && endOrdinate <= cursor.getLineStringLength()
+                                    && maxAngleChange < maxAngleDelta) {
+                                // if straight segment connecting the start and end ordinate is
+                                // really close, paint as a straight label
+                                if (maxAngleChange == 0
+                                        || cursor.getMaxDistanceFromStraightLine(
+                                                        startOrdinate, endOrdinate)
+                                                < painter.getLineHeight() / 2) {
+                                    painter.paintStraightLabel(tx);
+                                } else {
+                                    painter.paintCurvedLabel(cursor);
                                 }
+                                painted = true;
                             }
                         } else {
                             // for straight labels, check overrun only if

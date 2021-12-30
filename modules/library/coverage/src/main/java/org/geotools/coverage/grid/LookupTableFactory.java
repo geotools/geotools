@@ -172,13 +172,8 @@ public final class LookupTableFactory {
                             final MathTransform1D tr = transforms[i];
                             final int[] array = new int[length];
                             for (int j = length; --j >= 0; ) {
-                                array[j] =
-                                        (int)
-                                                min(
-                                                        max(
-                                                                round(tr.transform(j + offset)),
-                                                                Integer.MIN_VALUE),
-                                                        Integer.MAX_VALUE);
+                                long v = round(tr.transform(j + offset));
+                                array[j] = (int) min(max(v, Integer.MIN_VALUE), Integer.MAX_VALUE);
                             }
                             data[i] = array;
                         }
@@ -201,13 +196,8 @@ public final class LookupTableFactory {
                             final MathTransform1D tr = transforms[i];
                             final short[] array = new short[length];
                             for (int j = length; --j >= 0; ) {
-                                array[j] =
-                                        (short)
-                                                min(
-                                                        max(
-                                                                round(tr.transform(j + offset)),
-                                                                minimum),
-                                                        maximum);
+                                long v = round(tr.transform(j + offset));
+                                array[j] = (short) min(max(v, minimum), maximum);
                             }
                             data[i] = array;
                         }

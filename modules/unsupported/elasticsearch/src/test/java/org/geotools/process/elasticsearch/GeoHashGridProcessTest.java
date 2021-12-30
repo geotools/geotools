@@ -53,36 +53,33 @@ public class GeoHashGridProcessTest {
     @Before
     public void setup() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
+        byte[] aggregation1 =
+                mapper.writeValueAsBytes(
+                        ImmutableMap.of(
+                                "key",
+                                GeoHash.encodeHash(new LatLong(-89.9, -179.9), 1),
+                                "doc_count",
+                                10));
+        byte[] aggregation2 =
+                mapper.writeValueAsBytes(
+                        ImmutableMap.of(
+                                "key",
+                                GeoHash.encodeHash(new LatLong(0.1, 0.1), 1),
+                                "doc_count",
+                                10));
+        byte[] aggregation3 =
+                mapper.writeValueAsBytes(
+                        ImmutableMap.of(
+                                "key",
+                                GeoHash.encodeHash(new LatLong(89.9, 179.9), 1),
+                                "doc_count",
+                                10));
         features =
                 TestUtil.createAggregationFeatures(
                         ImmutableList.of(
-                                ImmutableMap.of(
-                                        "_aggregation",
-                                        mapper.writeValueAsBytes(
-                                                ImmutableMap.of(
-                                                        "key",
-                                                        GeoHash.encodeHash(
-                                                                new LatLong(-89.9, -179.9), 1),
-                                                        "doc_count",
-                                                        10))),
-                                ImmutableMap.of(
-                                        "_aggregation",
-                                        mapper.writeValueAsBytes(
-                                                ImmutableMap.of(
-                                                        "key",
-                                                        GeoHash.encodeHash(
-                                                                new LatLong(0.1, 0.1), 1),
-                                                        "doc_count",
-                                                        10))),
-                                ImmutableMap.of(
-                                        "_aggregation",
-                                        mapper.writeValueAsBytes(
-                                                ImmutableMap.of(
-                                                        "key",
-                                                        GeoHash.encodeHash(
-                                                                new LatLong(89.9, 179.9), 1),
-                                                        "doc_count",
-                                                        10)))));
+                                ImmutableMap.of("_aggregation", aggregation1),
+                                ImmutableMap.of("_aggregation", aggregation2),
+                                ImmutableMap.of("_aggregation", aggregation3)));
         fineDelta = 0.45;
         ff = CommonFactoryFinder.getFilterFactory(null);
         process = new GeoHashGridProcess();

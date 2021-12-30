@@ -391,16 +391,13 @@ public class ColorConverterFactory implements ConverterFactory {
                             String[] rgba = colorString.split("\\s*,\\s*");
                             float opacity = Float.parseFloat(rgba[3]);
 
+                            int alpha = (int) (Math.floor(opacity == 1.0f ? 255 : opacity * 256f));
                             Color c =
                                     new Color(
                                             Integer.parseInt(rgba[0]),
                                             Integer.parseInt(rgba[1]),
                                             Integer.parseInt(rgba[2]),
-                                            (int)
-                                                    (Math.floor(
-                                                            opacity == 1.0f
-                                                                    ? 255
-                                                                    : opacity * 256f)));
+                                            alpha);
                             return target.cast(c);
                         } else if (text.startsWith("hsl(")) {
                             String colorString = text.substring(4, text.length() - 1);

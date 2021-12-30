@@ -232,22 +232,7 @@ public class GMLEncodingUtils {
                                 (Set<Name>)
                                         particles
                                                 .stream()
-                                                .map(
-                                                        p -> {
-                                                            XSDElementDeclaration attr =
-                                                                    (XSDElementDeclaration)
-                                                                            ((XSDParticle) p)
-                                                                                    .getContent();
-                                                            if (attr
-                                                                    .isElementDeclarationReference()) {
-                                                                attr =
-                                                                        attr
-                                                                                .getResolvedElementDeclaration();
-                                                            }
-                                                            return new NameImpl(
-                                                                    attr.getTargetNamespace(),
-                                                                    attr.getName());
-                                                        })
+                                                .map(GMLEncodingUtils::resolvedName)
                                                 .collect(Collectors.toSet());
                     }
                     for (XSDElementDeclaration xsdElementDeclaration :
@@ -304,6 +289,14 @@ public class GMLEncodingUtils {
         }
 
         return properties;
+    }
+
+    private static Object resolvedName(Object p) {
+        XSDElementDeclaration attr = (XSDElementDeclaration) ((XSDParticle) p).getContent();
+        if (attr.isElementDeclarationReference()) {
+            attr = attr.getResolvedElementDeclaration();
+        }
+        return new NameImpl(attr.getTargetNamespace(), attr.getName());
     }
 
     public XSDTypeDefinition createXmlTypeFromFeatureType(

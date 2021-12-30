@@ -393,29 +393,8 @@ public class IndexerUtils {
                                             }
                                         }
                                     } else {
-                                        StringBuilder additionalDomainAttributes =
-                                                new StringBuilder();
-                                        for (DomainType domain : domainList) {
-                                            DomainType currentDomain =
-                                                    getDomain(domain, refDomains);
-                                            String domName = currentDomain.getName();
-                                            if (!domName.equalsIgnoreCase(Utils.TIME_DOMAIN)
-                                                    && !domName.equalsIgnoreCase(
-                                                            Utils.ELEVATION_DOMAIN)) {
-                                                additionalDomainAttributes.append(
-                                                        getAttributesAsString(currentDomain, true));
-                                                additionalDomainAttributes.append(",");
-                                            }
-                                        }
-                                        String attribs = additionalDomainAttributes.toString();
-                                        if (attribs != null && attribs.length() > 0) {
-                                            // remove the last ","
-                                            attribs = attribs.substring(0, attribs.length() - 1);
-                                        }
-                                        if (attribs.length() > 0) {
-                                            return attribs;
-                                        }
-                                        return null;
+                                        return getAdditionalDomainAttributes(
+                                                refDomains, domainList);
                                     }
                                 }
                             }
@@ -423,6 +402,29 @@ public class IndexerUtils {
                     }
                 }
             }
+        }
+        return null;
+    }
+
+    private static String getAdditionalDomainAttributes(
+            DomainsType refDomains, List<DomainType> domainList) {
+        StringBuilder additionalDomainAttributes = new StringBuilder();
+        for (DomainType domain : domainList) {
+            DomainType currentDomain = getDomain(domain, refDomains);
+            String domName = currentDomain.getName();
+            if (!domName.equalsIgnoreCase(Utils.TIME_DOMAIN)
+                    && !domName.equalsIgnoreCase(Utils.ELEVATION_DOMAIN)) {
+                additionalDomainAttributes.append(getAttributesAsString(currentDomain, true));
+                additionalDomainAttributes.append(",");
+            }
+        }
+        String attribs = additionalDomainAttributes.toString();
+        if (attribs != null && attribs.length() > 0) {
+            // remove the last ","
+            attribs = attribs.substring(0, attribs.length() - 1);
+        }
+        if (attribs.length() > 0) {
+            return attribs;
         }
         return null;
     }

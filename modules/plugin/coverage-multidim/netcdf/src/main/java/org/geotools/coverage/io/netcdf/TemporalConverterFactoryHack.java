@@ -19,6 +19,7 @@ package org.geotools.coverage.io.netcdf;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.TimeZone;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -47,76 +48,69 @@ import org.geotools.util.factory.Hints;
  */
 class TemporalConverterFactoryHack implements ConverterFactory {
 
+    /**
+     * Not thread safe, maybe switch to DateTimeFormatter, but also check
+     * https://martin-grigorov.medium.com/compare-performance-of-javas-simpledateformat-against-datetimeformatter-31be58cadf1d
+     */
+    private static SimpleDateFormat getDateFormat() {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        df.setTimeZone(TimeZone.getTimeZone("UTC")); // we DO work only with UTC times
+        return df;
+    }
+
+    private static final Converter DATE_STRING =
+            new Converter() {
+                @Override
+                @SuppressWarnings("unchecked")
+                public <T> T convert(Object source, Class<T> target) throws Exception {
+                    if (source instanceof Date) {
+                        return (T) getDateFormat().format((Date) source);
+                    }
+                    return null;
+                }
+            };
+
+    private static final Converter CALENDAR_STRING =
+            new Converter() {
+                @Override
+                @SuppressWarnings("unchecked")
+                public <T> T convert(Object source, Class<T> target) throws Exception {
+                    if (source instanceof Calendar) {
+                        return (T) getDateFormat().format(((Calendar) source).getTime());
+                    }
+                    return null;
+                }
+            };
+
+    private static final Converter XML_CALENDAR_STRING =
+            new Converter() {
+                @Override
+                @SuppressWarnings("unchecked")
+                public <T> T convert(Object source, Class<T> target) throws Exception {
+                    if (source instanceof XMLGregorianCalendar) {
+                        GregorianCalendar date =
+                                ((XMLGregorianCalendar) source)
+                                        .toGregorianCalendar(
+                                                TimeZone.getTimeZone("GMT"),
+                                                Locale.getDefault(),
+                                                null);
+                        return (T) getDateFormat().format(date.getTime());
+                    }
+                    return null;
+                }
+            };
+
     @Override
     public Converter createConverter(Class source, Class target, Hints hints) {
 
-        if (Date.class.isAssignableFrom(source)) {
+        if (Date.class.isAssignableFrom(source) && String.class.equals(target)) return DATE_STRING;
 
-            // target is string
-            if (String.class.equals(target)) {
-                final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-                df.setTimeZone(TimeZone.getTimeZone("UTC")); // we DO work only with UTC times
+        if (Calendar.class.isAssignableFrom(source) && String.class.equals(target))
+            return CALENDAR_STRING;
 
-                return new Converter() {
-                    @Override
-                    @SuppressWarnings("unchecked")
-                    public <T> T convert(Object source, Class<T> target) throws Exception {
-                        if (source instanceof Date) {
-                            return (T) df.format((Date) source);
-                        }
-                        return null;
-                    }
-                };
-            }
-        }
+        if (XMLGregorianCalendar.class.isAssignableFrom(source) && String.class.equals(target))
+            return XML_CALENDAR_STRING;
 
-        // this should handle java.util.Calendar to
-        // String
-        if (Calendar.class.isAssignableFrom(source)) {
-
-            // target is string
-            if (String.class.equals(target)) {
-                final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-                df.setTimeZone(TimeZone.getTimeZone("UTC")); // we DO work only with UTC times
-
-                return new Converter() {
-                    @Override
-                    @SuppressWarnings("unchecked")
-                    public <T> T convert(Object source, Class<T> target) throws Exception {
-                        if (source instanceof Calendar) {
-                            return (T) df.format(((Calendar) source).getTime());
-                        }
-                        return null;
-                    }
-                };
-            }
-        }
-
-        if (XMLGregorianCalendar.class.isAssignableFrom(source)) {
-            // target is string
-            if (String.class.equals(target)) {
-                final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-                df.setTimeZone(TimeZone.getTimeZone("UTC")); // we DO work only with UTC times
-
-                return new Converter() {
-                    @Override
-                    @SuppressWarnings("unchecked")
-                    public <T> T convert(Object source, Class<T> target) throws Exception {
-                        if (source instanceof XMLGregorianCalendar) {
-                            return (T)
-                                    df.format(
-                                            ((XMLGregorianCalendar) source)
-                                                    .toGregorianCalendar(
-                                                            TimeZone.getTimeZone("GMT"),
-                                                            Locale.getDefault(),
-                                                            null)
-                                                    .getTime());
-                        }
-                        return null;
-                    }
-                };
-            }
-        }
         return null;
     }
 }

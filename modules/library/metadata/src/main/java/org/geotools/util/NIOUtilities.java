@@ -191,33 +191,29 @@ public final class NIOUtilities {
             return true;
         }
 
-        Boolean b =
-                AccessController.doPrivileged(
-                        (PrivilegedAction<Boolean>)
-                                () -> {
-                                    Boolean success = Boolean.FALSE;
-                                    try {
-                                        Method getCleanerMethod = getCleanerMethod(buffer);
-                                        if (getCleanerMethod != null) {
-                                            Object cleaner =
-                                                    getCleanerMethod.invoke(
-                                                            buffer, (Object[]) null);
-                                            if (cleaner != null) {
-                                                Method clean =
-                                                        cleaner.getClass()
-                                                                .getMethod("clean", (Class[]) null);
-                                                clean.invoke(cleaner, (Object[]) null);
-                                                success = Boolean.TRUE;
-                                            }
-                                        }
-                                    } catch (Exception e) {
-                                        // This really is a show stopper on windows
-                                        if (isLoggable()) {
-                                            log(e, buffer);
-                                        }
-                                    }
-                                    return success;
-                                });
+        PrivilegedAction<Boolean> action =
+                () -> {
+                    Boolean success = Boolean.FALSE;
+                    try {
+                        Method getCleanerMethod = getCleanerMethod(buffer);
+                        if (getCleanerMethod != null) {
+                            Object cleaner = getCleanerMethod.invoke(buffer, (Object[]) null);
+                            if (cleaner != null) {
+                                Method clean =
+                                        cleaner.getClass().getMethod("clean", (Class[]) null);
+                                clean.invoke(cleaner, (Object[]) null);
+                                success = Boolean.TRUE;
+                            }
+                        }
+                    } catch (Exception e) {
+                        // This really is a show stopper on windows
+                        if (isLoggable()) {
+                            log(e, buffer);
+                        }
+                    }
+                    return success;
+                };
+        Boolean b = AccessController.doPrivileged(action);
         return b.booleanValue();
     }
 

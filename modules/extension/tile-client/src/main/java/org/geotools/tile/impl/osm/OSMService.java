@@ -89,22 +89,11 @@ public class OSMService extends WebMercatorTileService {
                         WebMercatorTileService.MIN_LATITUDE,
                         WebMercatorTileService.MAX_LATITUDE);
 
-        int xTile = (int) Math.floor((lon + 180) / 360 * (1 << zoomLevel.getZoomLevel()));
-        int yTile =
-                (int)
-                        Math.floor(
-                                (1
-                                                - Math.log(
-                                                                Math.tan(lat * Math.PI / 180)
-                                                                        + 1
-                                                                                / Math.cos(
-                                                                                        lat
-                                                                                                * Math
-                                                                                                        .PI
-                                                                                                / 180))
-                                                        / Math.PI)
-                                        / 2
-                                        * (1 << zoomLevel.getZoomLevel()));
+        int zoomPower = 1 << zoomLevel.getZoomLevel();
+        int xTile = (int) Math.floor((lon + 180) / 360 * zoomPower);
+        double latr = lat * Math.PI / 180;
+        double yd = (1 - Math.log(Math.tan(latr) + 1 / Math.cos(latr)) / Math.PI) / 2 * zoomPower;
+        int yTile = (int) Math.floor(yd);
         if (yTile < 0) yTile = 0;
         return new OSMTileIdentifier(xTile, yTile, zoomLevel, getName());
     }

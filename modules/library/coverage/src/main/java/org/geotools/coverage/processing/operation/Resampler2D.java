@@ -824,6 +824,14 @@ final class Resampler2D extends GridCoverage2D {
         assert targetCoverage.getGridGeometry().getGridRange2D().equals(targetImage.getBounds())
                 : targetGG;
         if (CoverageProcessor.LOGGER.isLoggable(LOGGING_LEVEL)) {
+            Object bgParameter =
+                    (background != null)
+                            ? background.length == 1
+                                    ? (Double.isNaN(background[0])
+                                            ? "NaN"
+                                            : Double.valueOf(background[0]))
+                                    : XArray.toString(background, locale)
+                            : "No background used";
             log(
                     Loggings.getResources(locale)
                             .getLogRecord(
@@ -847,13 +855,7 @@ final class Resampler2D extends GridCoverage2D {
                                         /*  {8} */ Integer.valueOf(1),
                                         /*  {9} */ ImageUtilities.getInterpolationName(
                                                 interpolation),
-                                        /* {10} */ (background != null)
-                                                ? background.length == 1
-                                                        ? (Double.isNaN(background[0])
-                                                                ? "NaN"
-                                                                : Double.valueOf(background[0]))
-                                                        : XArray.toString(background, locale)
-                                                : "No background used"
+                                        /* {10} */ bgParameter
                                     }));
         }
 

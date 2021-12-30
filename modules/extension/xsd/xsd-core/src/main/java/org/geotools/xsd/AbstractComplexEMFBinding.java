@@ -226,13 +226,11 @@ public abstract class AbstractComplexEMFBinding extends AbstractComplexBinding {
                         // try to convert based on method return type
                         // JD: this is a hack
                         try {
-                            Method g =
-                                    eObject.getClass()
-                                            .getMethod(
-                                                    "get"
-                                                            + property.substring(0, 1).toUpperCase()
-                                                            + property.substring(1),
-                                                    null);
+                            String methodName =
+                                    "get"
+                                            + property.substring(0, 1).toUpperCase()
+                                            + property.substring(1);
+                            Method g = eObject.getClass().getMethod(methodName, null);
                             if (g == null) {
                                 throw e;
                             }

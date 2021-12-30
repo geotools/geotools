@@ -90,12 +90,7 @@ final class Spheroid extends DefaultEllipsoid {
          */
         try {
             double delta;
-            assert (delta =
-                                    Math.abs(
-                                            super.orthodromicDistance(
-                                                            x1, Math.toDegrees(y1),
-                                                            x2, Math.toDegrees(y2))
-                                                    - distance))
+            assert (delta = Math.abs(getElliposoidalDistance(x1, y1, x2, y2) - distance))
                             < getSemiMajorAxis() / 1E+9
                     : delta;
         } catch (ArithmeticException exception) {
@@ -104,5 +99,11 @@ final class Spheroid extends DefaultEllipsoid {
             //       or abs(y2)>90°).
         }
         return distance;
+    }
+
+    private double getElliposoidalDistance(double x1, double y1, double x2, double y2) {
+        return super.orthodromicDistance(
+                x1, Math.toDegrees(y1),
+                x2, Math.toDegrees(y2));
     }
 }

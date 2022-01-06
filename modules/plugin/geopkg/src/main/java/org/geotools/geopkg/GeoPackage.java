@@ -56,6 +56,7 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureReader;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureWriter;
+import org.geotools.data.store.ReprojectingFeatureCollection;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.Geometries;
@@ -82,6 +83,7 @@ import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.identity.Identifier;
 import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.sqlite.Function;
 import org.sqlite.SQLiteConfig;
@@ -796,6 +798,38 @@ public class GeoPackage implements Closeable {
     }
 
     /**
+     * According to GeoPKG spec, the coordinates MUST be in XY order. If this FC is in YX format, we
+     * reproject to the equivalent XY project.
+     *
+     * <p>If already XY, return the input FC.
+     *
+     * @param fc underlying feature collection
+     * @return feature collection which is has axis order in XY (NORTH_EAST)
+     */
+    public static SimpleFeatureCollection forceXY(SimpleFeatureCollection fc) {
+        CoordinateReferenceSystem sourceCRS = fc.getSchema().getCoordinateReferenceSystem();
+        if ((CRS.getAxisOrder(sourceCRS) == CRS.AxisOrder.EAST_NORTH)
+                || (CRS.getAxisOrder(sourceCRS) == CRS.AxisOrder.INAPPLICABLE)) {
+            return fc;
+        }
+
+        for (ReferenceIdentifier identifier : sourceCRS.getIdentifiers()) {
+            try {
+                String _identifier = identifier.toString();
+                CoordinateReferenceSystem flippedCRS = CRS.decode(_identifier, true);
+                if (CRS.getAxisOrder(flippedCRS) == CRS.AxisOrder.EAST_NORTH) {
+                    ReprojectingFeatureCollection result =
+                            new ReprojectingFeatureCollection(fc, flippedCRS);
+                    return result;
+                }
+            } catch (Exception e) {
+                // couldn't flip - try again
+            }
+        }
+        return fc;
+    }
+
+    /**
      * Adds a new feature dataset to the geopackage.
      *
      * @param entry Contains metadata about the feature entry.
@@ -806,6 +840,8 @@ public class GeoPackage implements Closeable {
     public void add(FeatureEntry entry, SimpleFeatureCollection collection) throws IOException {
         FeatureEntry e = new FeatureEntry();
         e.init(entry);
+
+        collection = forceXY(collection);
 
         if (e.getBounds() == null) {
             e.setBounds(collection.getBounds());

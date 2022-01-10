@@ -27,7 +27,7 @@ public class MultiSurfacePropertyTypeBindingTest extends GML3TestSupport {
 
     @Test
     public void testEncode() throws Exception {
-        Document dom = encode(GML3MockData.multiPolygon(), GML.multiSurfaceProperty);
+        Document dom = encode(GML3MockData.multiSurface(), GML.multiSurfaceProperty);
         assertEquals(
                 1,
                 dom.getElementsByTagNameNS(GML.NAMESPACE, GML.MultiSurface.getLocalPart())

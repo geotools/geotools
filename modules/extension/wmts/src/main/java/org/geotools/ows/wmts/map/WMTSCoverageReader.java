@@ -29,11 +29,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.media.jai.Interpolation;
+import javax.media.jai.JAI;
+import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
-import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
-import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.ServiceException;
@@ -44,13 +45,13 @@ import org.geotools.ows.wmts.model.WMTSLayer;
 import org.geotools.ows.wmts.request.GetTileRequest;
 import org.geotools.referencing.CRS;
 import org.geotools.renderer.lite.RendererUtilities;
+import org.geotools.renderer.lite.gridcoverage2d.GridCoverageRendererUtilities;
 import org.geotools.tile.Tile;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.Format;
 import org.opengis.geometry.Envelope;
 import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 
@@ -219,10 +220,6 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
     @Override
     public GridCoverage2D read(GeneralParameterValue[] parameters)
             throws IllegalArgumentException, IOException {
-        // try to get request params from the request
-        Envelope requestedEnvelope = null;
-        int width = -1;
-        int height = -1;
 
         // check out if time coordinate is needed, and provide a valid default
         String time = null;
@@ -239,32 +236,10 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
                 LOGGER.fine("TIME dimension requested: " + requestedTime);
             time = requestedTime;
         }
-
-        if (parameters != null) {
-            for (GeneralParameterValue param : parameters) {
-                final ReferenceIdentifier name = param.getDescriptor().getName();
-                if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName())) {
-                    final GridGeometry2D gg = (GridGeometry2D) ((ParameterValue) param).getValue();
-                    requestedEnvelope = gg.getEnvelope();
-                    // the range high value is the highest pixel included in the
-                    // raster, the actual width and height is one more than that
-                    width = gg.getGridRange().getHigh(0) + 1;
-                    height = gg.getGridRange().getHigh(1) + 1;
-                }
-            }
-        }
-
-        // fill in a reasonable default if we did not manage to get the params
-        if (requestedEnvelope == null) {
-            requestedEnvelope = getOriginalEnvelope();
-            width = 640;
-            height =
-                    (int)
-                            Math.round(
-                                    requestedEnvelope.getSpan(1)
-                                            / requestedEnvelope.getSpan(0)
-                                            * 640);
-        }
+        Envelope requestedEnvelope = null;
+        WMTSReadParameters readParameters =
+                new WMTSReadParameters(parameters, getOriginalEnvelope());
+        requestedEnvelope = readParameters.getRequestedEnvelope();
 
         // if the structure did not change reuse the same response
         if (grid != null
@@ -272,18 +247,33 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
                 && grid.getGridGeometry().getGridRange2D().getHeight() == height
                 && grid.getEnvelope().equals(requestedEnvelope)) return grid;
 
-        grid = getMap(reference(requestedEnvelope), width, height, time);
+        grid = getMap(reference(requestedEnvelope), time, readParameters);
         return grid;
     }
 
     /** Execute the GetMap request */
-    GridCoverage2D getMap(ReferencedEnvelope requestedEnvelope, int width, int height, String time)
+    GridCoverage2D getMap(
+            ReferencedEnvelope requestedEnvelope, String time, WMTSReadParameters readParameters)
             throws IOException {
 
-        // build the request
-        ReferencedEnvelope gridEnvelope = initTileRequest(requestedEnvelope, width, height, time);
+        GridCoverage2D result;
+        if (isNativelySupported(requestedEnvelope.getCoordinateReferenceSystem())) {
+            // we can simply perform the tile request and build the final image.
+            ReferencedEnvelope gridEnvelope =
+                    initTileRequest(
+                            requestedEnvelope,
+                            readParameters.getWidth(),
+                            readParameters.getHeight(),
+                            time);
+            result = getMap(requestedEnvelope, gridEnvelope);
+        } else {
+            result = getMapReproject(requestedEnvelope, time, readParameters);
+        }
+        return result;
+    }
 
-        // issue the request and wrap response in a grid coverage
+    private GridCoverage2D getMap(ReferencedEnvelope envelope, ReferencedEnvelope gridEnvelope)
+            throws IOException {
         try {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.log(
@@ -295,8 +285,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
             getTileRequest().setCRS(gridEnvelope.getCoordinateReferenceSystem());
             Set<Tile> responses = wmts.issueRequest(getTileRequest());
             if (responses.isEmpty()) {
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.fine("Found 0 tiles in " + requestedEnvelope);
+                LOGGER.fine(() -> "Found 0 tiles in " + envelope);
                 throw new RuntimeException("No tiles were found in requested extent");
             }
             AffineTransform at = null;
@@ -328,10 +317,14 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
             AffineTransform targetTransform =
                     RendererUtilities.worldToScreenTransform(
                             global, new Rectangle(0, 0, imageWidth, imageHeight));
-            renderTiles(responses, image.createGraphics(), requestedEnvelope, targetTransform);
+            renderTiles(
+                    responses,
+                    image.createGraphics(),
+                    toEastNorthAxisOrder(envelope),
+                    targetTransform);
 
             return gcf.create(layer.getTitle(), image, global);
-        } catch (ServiceException | FactoryException | TransformException e) {
+        } catch (ServiceException | FactoryException e) {
             throw new IOException("GetMap failed", e);
         }
     }
@@ -341,19 +334,28 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
      * EAST_NORTH axis order.
      *
      * @param envelope The referenced envelope.
-     * @return The referenced envelope eith EAST_NORTH axis order.
+     * @return The referenced envelope with EAST_NORTH axis order.
      * @throws FactoryException
      * @throws TransformException
      */
     private ReferencedEnvelope toEastNorthAxisOrder(ReferencedEnvelope envelope)
-            throws FactoryException, TransformException {
-        CoordinateReferenceSystem crsExtent = envelope.getCoordinateReferenceSystem();
-        if (CRS.getAxisOrder(crsExtent) == CRS.AxisOrder.NORTH_EAST) {
-            String srsExtent = CRS.toSRS(crsExtent);
-            crsExtent = CRS.decode(srsExtent, true);
-            envelope = envelope.transform(crsExtent, false);
+            throws FactoryException {
+        CoordinateReferenceSystem crs = envelope.getCoordinateReferenceSystem();
+        if (CRS.getAxisOrder(crs) != CRS.AxisOrder.NORTH_EAST) {
+            return envelope;
         }
-        return envelope;
+        Integer epsg = CRS.lookupEpsgCode(crs, false);
+        if (epsg == null) {
+            return envelope;
+        } else {
+            CoordinateReferenceSystem eastNorthCrs = CRS.decode("EPSG:" + epsg, true);
+            return new ReferencedEnvelope(
+                    envelope.getMinY(),
+                    envelope.getMaxY(),
+                    envelope.getMinX(),
+                    envelope.getMaxX(),
+                    eastNorthCrs);
+        }
     }
 
     protected void renderTiles(
@@ -562,5 +564,174 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
 
     public void setRequestedTime(String requestedTime) {
         this.requestedTime = requestedTime;
+    }
+
+    boolean isNativelySupported(CoordinateReferenceSystem crs) {
+        String srs = CRS.toSRS(crs);
+        return srs != null && validSRS.contains(srs);
+    }
+
+    /**
+     * Switch the CRS definition and checks if the switched definition is contained in natively
+     * supported crs. If true the switched CRS is returned, otherwise null. By switching its meant
+     * the passage from an EPSG to an urn:ogc:def:crs:EPSG:: srs definition or the reverse. In case
+     * the crs to switch is a Pseudo-Mercator based crs, the code will try to switch to all the
+     * possible definition. Eg. assuming that the passed CRS is EPSG:3857:
+     * urn:ogc:def:crs:EPSG::3857, EPSG:900913, urn:ogc:def:crs:EPSG::900913 will be tried to se if
+     * they are among the natively supported srs.
+     *
+     * @param crs the CRS to switch.
+     * @return the switched srs if any conversion result was found in the valid srs list. Null
+     *     otherwise.
+     */
+    private String switchDefinition(CoordinateReferenceSystem crs) {
+        String srs = CRS.toSRS(crs);
+        String result;
+        if (!srs.startsWith("urn:ogc:def:crs:EPSG::"))
+            result = srs.replace("EPSG:", "urn:ogc:def:crs:EPSG::");
+        else result = srs.replace("urn:ogc:def:crs:EPSG::", "EPSG");
+        if (!validSRS.contains(result)) result = switchPseudoMercatorDefinition(srs);
+        if (result != null && validSRS.contains(result)) return result;
+        else return null;
+    }
+
+    private String switchPseudoMercatorDefinition(String srs) {
+        String switched = null;
+        if (srs.equals("EPSG:3857") || srs.equals("urn:ogc:def:crs:EPSG::3857")) {
+            if (validSRS.contains("EPSG:900913")) {
+                switched = "EPSG:900913";
+            } else if (validSRS.contains("urn:ogc:def:crs:EPSG::900913")) {
+                switched = "urn:ogc:def:crs:EPSG::900913";
+            }
+        }
+
+        if (srs.equals("EPSG:90013") || srs.equals("urn:ogc:def:crs:EPSG::900913")) {
+            if (validSRS.contains("EPSG:3857")) {
+                switched = "EPSG:3857";
+            } else if (validSRS.contains("urn:ogc:def:crs:EPSG::3857")) {
+                switched = "urn:ogc:def:crs:EPSG::3857";
+            }
+        }
+        return switched;
+    }
+
+    private GridCoverage2D reproject(
+            GridCoverage2D coverage2D,
+            GeneralEnvelope destEnvelope,
+            WMTSReadParameters readParameters) {
+        try {
+            Hints newHints = hints.clone();
+            Interpolation interpolation = readParameters.getInterpolation();
+            newHints.add(new RenderingHints(JAI.KEY_INTERPOLATION, interpolation));
+            GridCoverageFactory factory = CoverageFactoryFinder.getGridCoverageFactory(hints);
+            return GridCoverageRendererUtilities.reproject(
+                    coverage2D,
+                    destEnvelope.getCoordinateReferenceSystem(),
+                    interpolation,
+                    destEnvelope,
+                    readParameters.getBKGArray(),
+                    factory,
+                    newHints);
+        } catch (FactoryException factoryException) {
+            if (LOGGER.isLoggable(Level.SEVERE))
+                LOGGER.log(
+                        Level.SEVERE,
+                        errorMessage(destEnvelope.getCoordinateReferenceSystem()),
+                        factoryException);
+            throw new RuntimeException(factoryException);
+        }
+    }
+
+    private String errorMessage(CoordinateReferenceSystem targetCrs) {
+        StringBuilder msg =
+                new StringBuilder("Something wrong happended while trying to reproject ");
+        if (coverageName != null) msg.append(coverageName).append(" ");
+        msg.append("WMTS coverage to ");
+        if (crs != null) msg.append(CRS.toSRS(targetCrs));
+        else msg.append(" null srs.");
+        return msg.toString();
+    }
+
+    // execute the get tiles request taking care of performing the reprojection if needed.
+    private GridCoverage2D getMapReproject(
+            ReferencedEnvelope requestedEnvelope, String time, WMTSReadParameters readParameters)
+            throws IOException {
+        try {
+
+            CoordinateReferenceSystem targetCRS = requestedEnvelope.getCoordinateReferenceSystem();
+            CoordinateReferenceSystem sourceCRS = getBestSourceCRS(targetCRS, readParameters);
+
+            ReferencedEnvelope nativeEnvelope = requestedEnvelope.transform(sourceCRS, false);
+            ReferencedEnvelope gridEnvelope =
+                    initTileRequest(
+                            nativeEnvelope,
+                            readParameters.getWidth(),
+                            readParameters.getHeight(),
+                            time);
+            GridCoverage2D result = getMap(nativeEnvelope, gridEnvelope);
+
+            // in case the reprojection is concerning two crs differing only by axis order
+            // it should not be needed because already happened to make sure
+            // map to raster space conversion doesn't fails due north east axis order.
+            if (!CRS.equalsIgnoreMetadata(result.getCoordinateReferenceSystem(), targetCRS))
+                result = reproject(result, new GeneralEnvelope(requestedEnvelope), readParameters);
+            return result;
+        } catch (FactoryException | TransformException e) {
+            if (LOGGER.isLoggable(Level.SEVERE))
+                LOGGER.log(
+                        Level.SEVERE,
+                        "Error while reprojecting the requested envelope to the selected native crs.",
+                        e);
+            throw new IOException(e);
+        }
+    }
+
+    // get the CRS to be used to reproject to a CRS that the server doesn't support.
+    // call this method if the targetCRS is not among the natively supported ones.
+    CoordinateReferenceSystem getBestSourceCRS(
+            CoordinateReferenceSystem targetCRS, WMTSReadParameters readParameters)
+            throws IOException {
+        try {
+            CoordinateReferenceSystem result = null;
+            String switched = switchDefinition(targetCRS);
+            if (switched != null) {
+                // check first by changing the srs definition
+                result = CRS.decode(switched);
+                LOGGER.fine(() -> "Will request tiles with server supported crs " + switched);
+            } else if (readParameters.getSourceCRS() != null) {
+                // otherwise get the preferred one
+                result = readParameters.getSourceCRS();
+            } else if (!validSRS.isEmpty()) {
+                // last attempt is to retrieve the firs valid srs available
+                LOGGER.fine(() -> "Retrieving random srs to perform reprojection");
+                result = randomSupportedCRS();
+            }
+            if (result == null) {
+                throw new RuntimeException(
+                        "Unable to retrieve a CRS to be used as the source in order to perform reprojection.");
+            }
+            return result;
+        } catch (FactoryException e) {
+            if (LOGGER.isLoggable(Level.SEVERE))
+                LOGGER.log(
+                        Level.SEVERE,
+                        "Error while retrieving the source CRS to perform reprojection. ",
+                        e);
+            throw new IOException(e);
+        }
+    }
+
+    private CoordinateReferenceSystem randomSupportedCRS() {
+        CoordinateReferenceSystem result = null;
+        for (String srs : validSRS) {
+            LOGGER.fine(() -> "trying to decode " + srs);
+            try {
+                result = CRS.decode(srs);
+                break;
+            } catch (FactoryException e) {
+                LOGGER.fine(() -> "failed to decode from " + srs);
+            }
+        }
+        return result;
     }
 }

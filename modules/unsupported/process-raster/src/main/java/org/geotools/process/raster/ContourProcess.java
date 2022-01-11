@@ -17,6 +17,7 @@
  */
 package org.geotools.process.raster;
 
+import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.util.ArrayList;
@@ -190,6 +191,11 @@ public class ContourProcess implements RasterProcess {
 
         // get the list of nodata, if any
         List<Object> noDataList = new ArrayList<>();
+        NoDataContainer noDataProperty =
+                org.geotools.coverage.util.CoverageUtilities.getNoDataProperty(gc2d);
+        if (noDataProperty != null) {
+            noDataList.add(noDataProperty.getAsSingleValue());
+        }
         for (GridSampleDimension sd : gc2d.getSampleDimensions()) {
             // grab all the explicit nodata
             final double[] sdNoData = sd.getNoDataValues();

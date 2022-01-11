@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -310,5 +311,29 @@ public class ContourProcessTest {
         // bug would be significantly higher.
         double area = width * height;
         assertEquals(0.0025, whiteSamples / area, 0.0005);
+    }
+
+    @Test
+    public void testContourWithNoDataProperty() {
+        // Create a coverage with a NoData value only in the properties.
+        ReferencedEnvelope envelope = new ReferencedEnvelope(0, 3, 0, 3, null);
+        float[][] matrix = {{0, 0, 0}, {0, 9999, 0}, {0, 0, 0}};
+        GridCoverage2D cov = covFactory.create("coverage", matrix, envelope);
+        Map<Object, Object> properties = new HashMap<>();
+        properties.put(NoDataContainer.GC_NODATA, new NoDataContainer(9999));
+        cov =
+                covFactory.create(
+                        cov.getName(),
+                        cov.getRenderedImage(),
+                        cov.getEnvelope(),
+                        cov.getSampleDimensions(),
+                        null,
+                        properties);
+        SimpleFeatureCollection fc =
+                process.execute(cov, 0, new double[] {20}, null, null, null, null, null);
+        // Before fix, the NoData value will be interpolated and create a contour.
+        // After fix, the NoData value will be ignored so there will be no contours.
+        assertNotNull(fc);
+        assertTrue(fc.isEmpty());
     }
 }

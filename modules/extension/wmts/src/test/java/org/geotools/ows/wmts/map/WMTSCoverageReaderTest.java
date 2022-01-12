@@ -72,7 +72,10 @@ public class WMTSCoverageReaderTest {
 
     @Test
     public void testRESTInitMapRequest() throws Exception {
-        WebMapTileServer server = createServer(REST_CAPA_RESOURCENAME);
+        WebMapTileServer server =
+                createServer(
+                        new URL("http://wmts.geo.admin.ch/1.0.0/WMTSCapabilities.xml"),
+                        REST_CAPA_RESOURCENAME);
         WMTSLayer layer =
                 server.getCapabilities().getLayer("ch.are.agglomerationen_isolierte_staedte");
         WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
@@ -82,7 +85,10 @@ public class WMTSCoverageReaderTest {
 
     @Test
     public void testKVPInitMapRequest() throws Exception {
-        WebMapTileServer server = createServer(KVP_CAPA_RESOURCENAME);
+        WebMapTileServer server =
+                createServer(
+                        new URL("http://localhost:8080/geoserver/gwc/service/wmts"),
+                        KVP_CAPA_RESOURCENAME);
         WMTSLayer layer = server.getCapabilities().getLayer("topp:states");
         WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
         ReferencedEnvelope bbox =
@@ -92,7 +98,10 @@ public class WMTSCoverageReaderTest {
 
     @Test
     public void testKVPInitMapRequestJpegOnly() throws Exception {
-        WebMapTileServer server = createServer(KVP_CAPA_RESOURCENAME);
+        WebMapTileServer server =
+                createServer(
+                        new URL("http://localhost:8080/geoserver/gwc/service/wmts"),
+                        KVP_CAPA_RESOURCENAME);
         WMTSLayer layer = server.getCapabilities().getLayer("topp:states_jpeg");
         WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
         ReferencedEnvelope bbox =
@@ -226,7 +235,10 @@ public class WMTSCoverageReaderTest {
 
     @Test
     public void testRESTInitMapRequestWithJpegTemplatesOnly() throws Exception {
-        WebMapTileServer server = createServer("test-data/GetCapaJPEGOnly.xml");
+        WebMapTileServer server =
+                createServer(
+                        new URL("https://maps.wien.gv.at/basemap"),
+                        "test-data/GetCapaJPEGOnly.xml");
         WMTSLayer layer = server.getCapabilities().getLayer("bmaphidpi");
         WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
         ReferencedEnvelope bbox = new ReferencedEnvelope(5, 12, 45, 49, CRS.decode("EPSG:4326"));
@@ -259,11 +271,11 @@ public class WMTSCoverageReaderTest {
         return responses;
     }
 
-    private WebMapTileServer createServer(String resourceName) throws Exception {
+    private WebMapTileServer createServer(URL serverUrl, String resourceName) throws Exception {
 
         File capaFile = getResourceFile(resourceName);
         WMTSCapabilities capa = createCapabilities(capaFile);
-        return new WebMapTileServer(capa);
+        return new WebMapTileServer(serverUrl, capa);
     }
 
     private WMTSCapabilities createCapabilities(File capa) throws ServiceException {

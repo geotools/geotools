@@ -91,7 +91,6 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
      * default httpClient.
      *
      * @param serverURL
-     * @param httpClient
      * @param capabilities
      * @throws ServiceException
      * @throws IOException

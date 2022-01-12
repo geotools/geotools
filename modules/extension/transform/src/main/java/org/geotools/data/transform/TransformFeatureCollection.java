@@ -39,7 +39,6 @@ import org.geotools.util.logging.Logging;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
@@ -282,11 +281,7 @@ class TransformFeatureCollection extends AbstractFeatureCollection {
 
     protected void delegateVisitor(FeatureVisitor visitor, ProgressListener progress)
             throws IOException {
-        Name typeName = transformer.getSource().getName();
         Query txQuery = transformer.transformQuery(query);
-        source.getDataStore()
-                .getFeatureSource(typeName)
-                .getFeatures(txQuery)
-                .accepts(visitor, progress);
+        transformer.getSource().getFeatures(txQuery).accepts(visitor, progress);
     }
 }

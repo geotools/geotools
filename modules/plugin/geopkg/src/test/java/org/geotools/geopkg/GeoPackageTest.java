@@ -1123,8 +1123,9 @@ public class GeoPackageTest {
 
     // if the FC already is XY, then forceXY does nothing (should return same FC)
     @Test
-    public void testForceXY_alreadyXY() throws Exception {
+    public void testForceXYAlreadyXY() throws Exception {
 
+        // standard EPSG:4326 in EAST_NORTH format (XY)
         String wkt_xy =
                 "GEOGCS[\"WGS 84\", \n"
                         + "  DATUM[\"World Geodetic System 1984\", \n"
@@ -1158,8 +1159,9 @@ public class GeoPackageTest {
 
     // if underlying data is YX, result should be XY
     @Test
-    public void testForceXY_simpleFlip() throws Exception {
+    public void testForceXYSimpleFlip() throws Exception {
         // create a FeatureCollection that is advertised as YX
+        // standard EPSG:4326 in NORTH_EAST format (YX)
         String wkt_yx =
                 "GEOGCS[\"WGS 84\", \n"
                         + "  DATUM[\"World Geodetic System 1984\", \n"

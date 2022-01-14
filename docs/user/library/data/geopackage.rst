@@ -16,7 +16,7 @@ References:
 
 **Maven**
 
-::
+.. code-block:: xml
 
    <dependency>
       <groupId>org.geotools</groupId>
@@ -25,31 +25,54 @@ References:
     </dependency>
 
 
-DataStore Connection Parameters
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+DataStore API
+^^^^^^^^^^^^^
 
-============== ============================================
-Parameter      Description
-============== ============================================
-``dbtype``     Must be the string ``geopkg``
-``database``   The database to connect to
-``user``       User name (optional)
-============== ============================================
+GeoTools provides direct access to JDBCDataStore implementation for accessing feature contents as expressed in the specification:
 
-Access
-^^^^^^
+> A GeoPackage with a ``gpkg_contents`` table row with a "features" data_type SHALL contain a ``gpkg_geometry_columns`` table per Table 5 and ``gpkg_geometry_columns`` Table Definition SQL.
 
-Example use::
+Spatial index is supported with the use of ``gpkg_rtree_index``.
+
+The ``JDBCDataStore.createVirtualTable`` functionality is not supported (as the ``gpkg_geometry_columns`` information is not available for ad-hoc SQL queries).
+
+Connection Parameters
+'''''''''''''''''''''
+
+.. list-table:: Connection Parameters
+   :widths: 30 79
+   :header-rows: 1
+
+   * - Parameter
+     - Quantity
+   * - ``dbtype``
+     - Must be the string ``geopkg``
+   * - ``database``
+     - The database to connect to
+   * - ``read_only``
+     - Use Boolean.TRUE to open in read-only mode (optional)
+   * - ``user``
+     - User name (optional)
+   * - ``memory map size``
+     - SQLite memory map size in MB
+
+Feature Access
+''''''''''''''
+
+Example use:
+
+.. code-block:: java
   
-  Map params = new HashMap();
-  params.put("dbtype", "geopkg");
-  params.put("database", "test.gkpg");
+   Map params = new HashMap();
+   params.put("dbtype", "geopkg");
+   params.put("database", "test.gkpg");
   
-  DataStore datastore = DataStoreFinder.getDataStore(params);
+   DataStore datastore = DataStoreFinder.getDataStore(params);
 
+Care should be taken when using `DataStore.create( schema )` as the GeoPackage specification requires features to be stored in XYZM order.
 
-High level coverage reader
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+GridCoverage API
+^^^^^^^^^^^^^^^^
 
 The high level coverage reader can access all tile entries found in the package, exposing each one as
 a separate coverage.
@@ -63,8 +86,13 @@ a separate coverage.
         parameters[0] = new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
         GridCoverage2D gc = reader.read("World_Lakes", parameters);  
 
-Adding a feature entry using the low level API
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+GeoPackage API
+^^^^^^^^^^^^^^
+
+In addition to the GeoTools DataStore and GridCoverage access a low-level API is provided to directly manage the contents of a GeoPackage.
+
+Adding a feature entry
+^^^^^^^^^^^^^^^^^^^^^^
 
 A GeoPackage with a feature entry can be created using the following low level code:
 
@@ -73,10 +101,15 @@ A GeoPackage with a feature entry can be created using the following low level c
         GeoPackage geopkg = new GeoPackage(File.createTempFile("geopkg", "db", new File("target")));
         geopkg.init();
         
-        ShapefileDataStore shp = ...
-
         FeatureEntry entry = new FeatureEntry();
-        geopkg.add(entry, shp.getFeatureSource(), null);
+        entry.setDescription("Cities of the world");
+        geopkg.add(entry, featureCollection);
+        geopkg.createSpatialIndex(entry);
+
+Note:
+
+* Direct access to additional features and extensions, such as ``createSpatialIndex(entry)`` above
+* GeoPackage requires that features are stored in XYZM order, the featureCollection used as the initial contents will be written to disk in this order.
 
 Once created, the features in the entry can be read using a SimpleFeatureReader:
         
@@ -90,8 +123,8 @@ Once created, the features in the entry can be read using a SimpleFeatureReader:
 
 The parallel ``writer`` method can be used to grab a SimpleFeatureWriter to modify existing features.
 
-Adding a tile entry using the low level API
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Adding a tile entry
+^^^^^^^^^^^^^^^^^^^
 
 A GeoPackage with a tile entry can be created using the following low level code:
 
@@ -107,7 +140,6 @@ A GeoPackage with a tile entry can be created using the following low level code
         e.getTileMatricies().add(new TileMatrix(1, 2, 2, 256, 256, 0.1, 0.1));
 
         geopkg.create(e);
-        assertTileEntry(e);
 
         List<Tile> tiles = new ArrayList();
         tiles.add(new Tile(0,0,0,new byte[]{...}));
@@ -131,3 +163,25 @@ Tile can then be read back using a ``TileReader``, as follows (the zoom and row/
             }
         }
 
+Using GeoPackage Extensions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The GeoPackage specification is modular using the concepts of extensions to support additional functionality.
+
+* ``GeoPkgExtension`` - base class for geopackage extensions
+* ``GeoPkgExtensionFactory`` - used to advertise additional extensions provided by client code
+
+The GeoPackage module supports the following extensions:
+
+* ``GeoPkgMetadataExtension`` - Use ``geopkg_metadata`` and and ``geopkg_metadata_reference`` to store metadata.
+* ``GeoPkgSchemaExtension`` - Allows additional description of table columns.
+
+GeoPackageProcessRequest
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+This java bean (and xml bindings) is used to support the GeoServer WPS GeoPackage process which supports the creation of GeoPackages with additional extensions.
+
+* ``GeoPackageProcessRequest.FeatureLayer``
+* ``GeoPackageProcessRequest.TileLayer``
+
+These classes cannot directly be used by GeoTools code.

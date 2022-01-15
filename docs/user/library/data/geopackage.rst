@@ -44,7 +44,7 @@ Connection Parameters
    :header-rows: 1
 
    * - Parameter
-     - Quantity
+     - Description
    * - ``dbtype``
      - Must be the string ``geopkg``
    * - ``database``

@@ -133,9 +133,7 @@ public final class MongoComplexDataSource implements CustomSourceDataStore {
         FilterAttributeExtractor propertiesExtractor = new FilterAttributeExtractor();
         expression.accept(propertiesExtractor, null);
         // convert all properties \ attributes to a property name
-        return propertiesExtractor
-                .getAttributeNameSet()
-                .stream()
+        return propertiesExtractor.getAttributeNameSet().stream()
                 .map(attributeName -> filterFactory.property(attributeName))
                 .collect(Collectors.toList());
     }

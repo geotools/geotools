@@ -230,8 +230,7 @@ public class GMLEncodingUtils {
                         // will be obtained without considering substitution groups
                         unsubstPropertyNames =
                                 (Set<Name>)
-                                        particles
-                                                .stream()
+                                        particles.stream()
                                                 .map(GMLEncodingUtils::resolvedName)
                                                 .collect(Collectors.toSet());
                     }

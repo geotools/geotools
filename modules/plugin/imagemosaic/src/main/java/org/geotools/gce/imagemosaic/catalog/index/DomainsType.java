@@ -41,9 +41,8 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(
-    name = "domainsType",
-    propOrder = {"domain"}
-)
+        name = "domainsType",
+        propOrder = {"domain"})
 public class DomainsType {
 
     protected List<DomainType> domain;

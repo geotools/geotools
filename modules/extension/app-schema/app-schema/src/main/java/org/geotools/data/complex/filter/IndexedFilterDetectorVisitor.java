@@ -69,8 +69,7 @@ public class IndexedFilterDetectorVisitor extends DefaultFilterVisitor {
             parentLogicOperator = filter;
             // get the full indexed subfilter(s)
             indexedFilters =
-                    filter.getChildren()
-                            .stream()
+                    filter.getChildren().stream()
                             .filter(c -> isFullyIndexed(c))
                             .collect(Collectors.toList());
         }

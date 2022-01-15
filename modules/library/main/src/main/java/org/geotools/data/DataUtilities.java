@@ -2983,9 +2983,7 @@ public class DataUtilities {
      * String} keys, and may contain any kind of object as values.
      */
     public static Map<String, Object> toConnectionParameters(Properties properties) {
-        return properties
-                .entrySet()
-                .stream()
+        return properties.entrySet().stream()
                 .collect(Collectors.toMap(e -> (String) e.getKey(), e -> e.getValue()));
     }
 }

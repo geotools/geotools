@@ -30,21 +30,19 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 
 @DescribeProcess(
-    title = "Query",
-    description =
-            "Queries a feature collection using an optional filter and an optional list of attributes to include.  Can also be used to convert feature collection format."
-)
+        title = "Query",
+        description =
+                "Queries a feature collection using an optional filter and an optional list of attributes to include.  Can also be used to convert feature collection format.")
 public class QueryProcess implements VectorProcess {
     @DescribeResult(name = "result", description = "The filtered feature collection")
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "features", description = "Input feature collection")
                     SimpleFeatureCollection features,
             @DescribeParameter(
-                        name = "attribute",
-                        description = "Attribute to include in output",
-                        collectionType = String.class,
-                        min = 0
-                    )
+                            name = "attribute",
+                            description = "Attribute to include in output",
+                            collectionType = String.class,
+                            min = 0)
                     List<String> attributes,
             @DescribeParameter(name = "filter", min = 0, description = "The filter to apply")
                     Filter filter)

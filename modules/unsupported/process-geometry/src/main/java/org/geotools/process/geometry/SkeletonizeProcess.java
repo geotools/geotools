@@ -36,29 +36,25 @@ public class SkeletonizeProcess extends StaticMethodsProcessFactory<SkeletonizeP
     }
 
     @DescribeProcess(
-        title = "Skeletonize",
-        description = "Create the full skeleton line of a Polygon"
-    )
+            title = "Skeletonize",
+            description = "Create the full skeleton line of a Polygon")
     @DescribeResult(
-        description = "A geometry that is the center line (skeleton) of the input polygon"
-    )
+            description = "A geometry that is the center line (skeleton) of the input polygon")
     public static Geometry centerLine(
             @DescribeParameter(
-                        name = "geometry",
-                        description = "The Geometry to extract the center line from",
-                        min = 1,
-                        max = 1
-                    )
+                            name = "geometry",
+                            description = "The Geometry to extract the center line from",
+                            min = 1,
+                            max = 1)
                     Geometry geometry,
             @DescribeParameter(
-                        name = "tolerance",
-                        description =
-                                "%age of perimeter to use for densification/simplification of input/output. Optional, default is 5.0",
-                        min = 0,
-                        max = 1,
-                        minValue = 1.0,
-                        maxValue = 100.0
-                    )
+                            name = "tolerance",
+                            description =
+                                    "%age of perimeter to use for densification/simplification of input/output. Optional, default is 5.0",
+                            min = 0,
+                            max = 1,
+                            minValue = 1.0,
+                            maxValue = 100.0)
                     Double tolerance) {
         LOG.fine("got " + geometry.getClass());
         double tol;

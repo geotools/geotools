@@ -173,7 +173,7 @@ The GeoPackage specification is modular using the concepts of extensions to supp
 
 The GeoPackage module supports the following extensions:
 
-* ``GeoPkgMetadataExtension`` - Use ``geopkg_metadata`` and and ``geopkg_metadata_reference`` to store metadata.
+* ``GeoPkgMetadataExtension`` - Uses ``geopkg_metadata`` and and ``geopkg_metadata_reference`` to store metadata.
 * ``GeoPkgSchemaExtension`` - Allows additional description of table columns.
 
 GeoPackageProcessRequest

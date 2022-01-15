@@ -1,14 +1,13 @@
-
 {
-"title":"GeoTools",
+ "title":"GeoTools",
  "description":"GeoTools is an open source Java library that provides tools for geospatial data.",
- "licence":"LGPL2",
+ "license": {"id":"LGPL-2.0-or-later"},
+ "keywords": ["gis","toolkit", "cartography", "java"],
  "creators": [{
     "name":"Andrea Aime",
     "affiliation":"GeoSolutions IT"
   },
   {"name":"Adam Brown"},
-  ,
   {
     "name":"Alessio Fabiani",
     "affiliation":"GeoSolutions IT"
@@ -23,12 +22,10 @@
   },
   {"name":"Devon Tucker"},
   {"name":"David Winslow"},
-  ,
   {
     "name":"Emanuele Tajariol",
     "affiliation":"GeoSolutions IT"
   },
-  ,
   {
     "name":"Fernando Miño",
     "affiliation":"GeoSolutions IT"

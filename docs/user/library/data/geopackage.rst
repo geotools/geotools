@@ -108,7 +108,7 @@ A GeoPackage with a feature entry can be created using the following low level c
 
 Note:
 
-* Direct access to additional features and extensions, such as ``createSpatialIndex(entry)`` above
+* This example shows direct access to additional features and extensions, such as the ``createSpatialIndex(entry)`` discussed above.
 * GeoPackage requires that features are stored in XYZM order, the featureCollection used as the initial contents will be written to disk in this order.
 
 Once created, the features in the entry can be read using a SimpleFeatureReader:

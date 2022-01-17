@@ -48,13 +48,25 @@ Connection Parameters
    * - ``dbtype``
      - Must be the string ``geopkg``
    * - ``database``
-     - The database to connect to
+     - The database filename to connect to (either complete path or relative path).
    * - ``read_only``
      - Use Boolean.TRUE to open in read-only mode (optional)
-   * - ``user``
-     - User name (optional)
    * - ``memory map size``
      - SQLite memory map size in MB
+
+Use ``read-only`` for best performance, allowing SQLite to ignore the complexity of transactions.
+
+The ``database`` parameter above is specified as a path to the GeoPackage database. If using a relative path a base directory can be provided to the ``GeoPkgDataStoreFactory`` instance prior to use:
+
+.. code-block:: java
+   
+   for( DataStoreFactorySPI factory : DataStoreFinder.getAvailableDataStores() ){
+      if( factory instanceof GeoPkgDataStoreFactory){
+          GeoPkgDataStoreFactory geopkgFactory = (GeoPkgDataStoreFactory) factory;
+          geopkgFactory.setBaseDirectory( directory );
+      }
+   }
+
 
 Feature Access
 ''''''''''''''
@@ -66,6 +78,7 @@ Example use:
    Map params = new HashMap();
    params.put("dbtype", "geopkg");
    params.put("database", "test.gkpg");
+   params.put("read-only", true);
   
    DataStore datastore = DataStoreFinder.getDataStore(params);
 
@@ -80,6 +93,7 @@ a separate coverage.
 .. code-block:: java
 
         GeoPackageReader reader = new GeoPackageReader(getClass().getResource("world_lakes.gpkg"), null);
+        
         System.out.println(Arrays.asList(reader.getGridCoverageNames()));
         GeneralParameterValue[] parameters = new GeneralParameterValue[1];
         GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(new Rectangle(500,500)), new ReferencedEnvelope(0,180.0,-85.0,0,WGS_84));
@@ -108,7 +122,7 @@ A GeoPackage with a feature entry can be created using the following low level c
 
 Note:
 
-* This example shows direct access to additional features and extensions, such as the ``createSpatialIndex(entry)`` discussed above.
+* This example shows direct access to additional features and extensions, such as the ``createSpatialIndex(entry)`` above.
 * GeoPackage requires that features are stored in XYZM order, the featureCollection used as the initial contents will be written to disk in this order.
 
 Once created, the features in the entry can be read using a SimpleFeatureReader:
@@ -121,7 +135,7 @@ Once created, the features in the entry can be read using a SimpleFeatureReader:
           }
         }
 
-The parallel ``writer`` method can be used to grab a SimpleFeatureWriter to modify existing features.
+The parallel ``writer`` method can be used to acquire a SimpleFeatureWriter to modify existing features.
 
 Adding a tile entry
 ^^^^^^^^^^^^^^^^^^^
@@ -166,7 +180,7 @@ Tile can then be read back using a ``TileReader``, as follows (the zoom and row/
 Using GeoPackage Extensions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The GeoPackage specification is modular using the concepts of extensions to support additional functionality.
+The GeoPackage specification is modular using the concepts of extensions to support additional functionality:
 
 * ``GeoPkgExtension`` - base class for geopackage extensions
 * ``GeoPkgExtensionFactory`` - used to advertise additional extensions provided by client code

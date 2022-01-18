@@ -3,6 +3,8 @@
 [GeoTools](http://geotools.org) is an open source Java library that provides
  tools for geospatial data. Our Users guide provides an [overview](http://docs.geotools.org/latest/userguide/geotools.html) of the core features, supported formats and standards support.
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5854676.svg)](https://doi.org/10.5281/zenodo.5854676)
+
 ## License
 
 GeoTools is licensed under the [LGPL](http://www.gnu.org/licenses/lgpl.html). The user guide [license](http://docs.geotools.org/latest/userguide/welcome/license.html) page describes the less restrictive license for documentation and source code examples.

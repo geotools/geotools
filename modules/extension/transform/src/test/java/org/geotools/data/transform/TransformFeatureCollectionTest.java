@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import org.geotools.data.DataAccess;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
@@ -34,8 +33,6 @@ import org.geotools.util.logging.Logging;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.feature.FeatureVisitor;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.util.ProgressListener;
@@ -47,7 +44,6 @@ public class TransformFeatureCollectionTest {
 
     static class TransformFeatureStoreWrapper extends TransformFeatureStore {
 
-        private DataStore datastore;
         private boolean passedDown = false;
 
         class TransformFeatureCollectionWrapper extends TransformFeatureCollection {
@@ -72,12 +68,6 @@ public class TransformFeatureCollectionTest {
                 DataStore datastore)
                 throws IOException {
             super(store, name, definitions);
-            this.datastore = datastore;
-        }
-
-        @Override
-        public DataAccess<SimpleFeatureType, SimpleFeature> getDataStore() {
-            return datastore;
         }
 
         @Override

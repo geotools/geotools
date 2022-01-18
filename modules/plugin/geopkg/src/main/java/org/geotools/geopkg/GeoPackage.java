@@ -806,7 +806,7 @@ public class GeoPackage implements Closeable {
      * @param fc underlying feature collection
      * @return feature collection which is has axis order in XY (NORTH_EAST)
      */
-    public static SimpleFeatureCollection forceXY(SimpleFeatureCollection fc) {
+    static SimpleFeatureCollection forceXY(SimpleFeatureCollection fc) {
         CoordinateReferenceSystem sourceCRS = fc.getSchema().getCoordinateReferenceSystem();
         if ((CRS.getAxisOrder(sourceCRS) == CRS.AxisOrder.EAST_NORTH)
                 || (CRS.getAxisOrder(sourceCRS) == CRS.AxisOrder.INAPPLICABLE)) {

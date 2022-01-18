@@ -9,4 +9,4 @@ Collections. It supports Forecast Model Run Collection Aggregations
 (FMRC) either through the NCML or Feature Collection syntax. It supports
 an unlimited amount of custom dimensions, including runtime.
 
-Further documentation is available in `the GeoServer project <https://docs.geoserver.org/latest/en/user/extensions/netcdf/netcdf.html#notes-on-supported-netcdfs>`_
+Further documentation is available in :geoserver:`the GeoServer project <extensions/netcdf/netcdf.html#notes-on-supported-netcdfs>`.

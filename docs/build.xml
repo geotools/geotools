@@ -73,16 +73,16 @@
 	</target>
 
 	<target name="sphinx-ignore-warnings" if="sphinx.available">
-        <echo message="Running sphinx-build -D release=${project.version} -q -j 2 -b ${build} -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
+        <echo message="Running sphinx-build -D release=${project.version} -q -j auto -b ${build} -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
 		<exec executable="sphinx-build" failonerror="true" dir="${basedir}/${id}">
-			<arg line="-D release=${project.version} -q -j 2 -b ${build} -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
+			<arg line="-D release=${project.version} -q -j auto -b ${build} -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
 		</exec>
 	</target>
     
     <target name="sphinx" if="sphinx.available">
-        <echo message="Running sphinx-build -D release=${project.version} -q -W -j 2 -b ${build} -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
+        <echo message="Running sphinx-build -D release=${project.version} -q -W --keep-going -j auto -b ${build} -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
 		<exec executable="sphinx-build" failonerror="true" dir="${basedir}/${id}">
-			<arg line="-D release=${project.version} -q -W -j 2 -b ${build} -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
+			<arg line="-D release=${project.version} -q -W --keep-going -j auto -b ${build} -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
 		</exec>
 	</target>
 

@@ -8,16 +8,15 @@ compliant methods for the manipulation of geospatial data, for example to
 implement Geographic Information Systems (GIS). The GeoTools library implements
 Open Geospatial Consortium (OGC) specifications as they are developed.
 
-For an overview of the capabilities of GeoTools please check the User Guide 
-`feature list <http://docs.geotools.org/latest/userguide/geotools.html>`_.
+For an overview of the capabilities of GeoTools please check the User Guide :user:`feature list <geotools.html>`.
 
-Current `version <http://docs.geotools.org/latest/developer/conventions/version.html>`_ information:
+Current :developer:`version <conventions/version.html>` information:
 
-* `13.x <http://sourceforge.net/projects/geotools/files/GeoTools%2013%20Releases/>`_: Development
-* `12.x <http://sourceforge.net/projects/geotools/files/GeoTools%2012%20Releases/>`_: Stable
-* `11.x <http://sourceforge.net/projects/geotools/files/GeoTools%2011%20Releases/>`_: Maintenance
+* `27.x <http://sourceforge.net/projects/geotools/files/GeoTools%2027%20Releases/>`__: Development
+* `26.x <http://sourceforge.net/projects/geotools/files/GeoTools%2026%20Releases/>`__: Stable
+* `25.x <http://sourceforge.net/projects/geotools/files/GeoTools%2025%20Releases/>`__: Maintenance
 
-GeoTools is used by a `number of projects <https://github.com/geotools/geotools/wiki/screenshots>`_
+GeoTools is used by a :wiki:`number of projects <screenshots>`
 including Web Feature Servers, Web Map Servers, and desktop applications.
 
 Open Source

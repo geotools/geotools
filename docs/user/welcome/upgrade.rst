@@ -772,7 +772,7 @@ GeoTools 10.0
 
 .. sidebar:: Wiki
 
-   * `GeoTools 10.0 <https://github.com/geotools/geotools/wiki/10.x>`_
+   * :wiki:`10.x`
 
    For background details on any API changes review the change proposals above.
 
@@ -792,7 +792,7 @@ GeoTools 9.0
 
 .. sidebar:: Wiki
 
-   * `GeoTools 9.0 <https://github.com/geotools/geotools/wiki/9.x>`_
+   * :wiki:`9.x`
 
    For background details on any API changes review the change proposals above.
 
@@ -969,7 +969,7 @@ GeoTools 8.0
 
 .. sidebar:: Wiki
 
-   * `GeoTools 8.0 <https://github.com/geotools/geotools/wiki/8.x>`_
+   * :wiki:`8.x`
 
    You are encouraged to review the change proposals for GeoTools 8.0 for background information
    on the following changes.
@@ -1109,7 +1109,7 @@ GeoTools 2.7
 
 .. sidebar:: Wiki
 
-   * `GeoTools 2.7.0 <https://github.com/geotools/geotools/wiki/2.7.x>`_
+   * :wiki:`2.7.x`
 
    You are encouraged to review the change proposals for GeoTools 2.7.0 for background information
    on the following changes.
@@ -1307,7 +1307,7 @@ GeoTools 2.6
 
 .. sidebar:: Wiki
 
-   * `GeoTools 2.6.0 <https://github.com/geotools/geotools/wiki/2.6.x>`_
+   * :wiki:`2.6.x`
 
    You are encouraged to review the change proposals for GeoTools 2.6.0 for background information
    on the following changes.
@@ -1523,7 +1523,7 @@ GeoTools 2.5
 
 .. sidebar:: Wiki
 
-   * `GeoTools 2.5.0 <https://github.com/geotools/geotools/wiki/2.5.x>`_
+   * :wiki:`2.5.x`
 
    You are encouraged to review the change proposals for GeoTools 2.5.0 for background information
    on the following changes.
@@ -1846,7 +1846,7 @@ GeoTools 2.4
 
 .. sidebar:: Wiki
 
-   * `GeoTools 2.4.0 <https://github.com/geotools/geotools/wiki/2.4.x>`_
+   * :wiki:`2.4.x`
 
    You are encouraged to review the change proposals for GeoTools 2.4.0 for background information
    on the following changes.

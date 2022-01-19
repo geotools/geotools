@@ -32,6 +32,7 @@ extlinks = {
     'geoserver': ('https://docs.geoserver.org/maintain/en/user/%s',''),
     'developer': ('https://docs.geotools.org/latest/developer/%s',''),
     'user': ('https://docs.geotools.org/maintenance/userguide/%s',''),
+    'api': ('https://docs.geotools.org/maintenance/javadocs',''),
     'geot': ('https://osgeo-org.atlassian.net/browse/GEOT-%s','GEOT-')
 }
 

@@ -19,6 +19,7 @@ package org.geotools.geopkg;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -97,6 +98,7 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.identity.Identifier;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.sqlite.SQLiteConfig;
 
 public class GeoPackageTest {
@@ -1122,5 +1124,85 @@ public class GeoPackageTest {
         FeatureEntry entry = new FeatureEntry();
         geopkg.add(entry, shp.getFeatureSource(), null);
         assertTableExists("bugsites");
+    }
+
+    // if the FC already is XY, then forceXY does nothing (should return same FC)
+    @Test
+    public void testForceXYAlreadyXY() throws Exception {
+
+        // standard EPSG:4326 in EAST_NORTH format (XY)
+        String wkt_xy =
+                "GEOGCS[\"WGS 84\", \n"
+                        + "  DATUM[\"World Geodetic System 1984\", \n"
+                        + "    SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]], \n"
+                        + "    AUTHORITY[\"EPSG\",\"6326\"]], \n"
+                        + "  PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], \n"
+                        + "  UNIT[\"degree\", 0.017453292519943295], \n"
+                        + "  AXIS[\"Geodetic latitude\", EAST], \n"
+                        + "  AXIS[\"Geodetic longitude\", NORTH], \n"
+                        + "  AUTHORITY[\"EPSG\",\"4326\"]]";
+
+        CoordinateReferenceSystem crs_yx = CRS.parseWKT(wkt_xy);
+        assertEquals(CRS.getAxisOrder(crs_yx), CRS.AxisOrder.EAST_NORTH);
+
+        SimpleFeatureType simpleFeatureTypeXY =
+                DataUtilities.createType("testcase", "id:String,pointProperty:Point:srid=4326");
+        simpleFeatureTypeXY =
+                DataUtilities.createSubType(simpleFeatureTypeXY, null, crs_yx); // set CRS
+
+        SimpleFeature sfXY =
+                DataUtilities.createFeature(simpleFeatureTypeXY, "fid1=test|POINT(0 1)");
+        SimpleFeatureCollection fcXY = DataUtilities.collection(sfXY);
+
+        SimpleFeatureCollection fcXY2 = GeoPackage.forceXY(fcXY);
+
+        assertEquals(
+                CRS.getAxisOrder(fcXY2.getSchema().getCoordinateReferenceSystem()),
+                CRS.AxisOrder.EAST_NORTH);
+        assertSame(fcXY2, fcXY);
+    }
+
+    // if underlying data is YX, result should be XY
+    @Test
+    public void testForceXYSimpleFlip() throws Exception {
+        // create a FeatureCollection that is advertised as YX
+        // standard EPSG:4326 in NORTH_EAST format (YX)
+        String wkt_yx =
+                "GEOGCS[\"WGS 84\", \n"
+                        + "  DATUM[\"World Geodetic System 1984\", \n"
+                        + "    SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]], \n"
+                        + "    AUTHORITY[\"EPSG\",\"6326\"]], \n"
+                        + "  PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], \n"
+                        + "  UNIT[\"degree\", 0.017453292519943295], \n"
+                        + "  AXIS[\"Geodetic longitude\", NORTH], \n"
+                        + "  AXIS[\"Geodetic latitude\", EAST], \n"
+                        + "  AUTHORITY[\"EPSG\",\"4326\"]]";
+        CoordinateReferenceSystem crs_yx = CRS.parseWKT(wkt_yx);
+        assertEquals(CRS.getAxisOrder(crs_yx), CRS.AxisOrder.NORTH_EAST);
+
+        SimpleFeatureType simpleFeatureTypeYX =
+                DataUtilities.createType("testcase", "id:String,pointProperty:Point:srid=4326");
+        simpleFeatureTypeYX =
+                DataUtilities.createSubType(simpleFeatureTypeYX, null, crs_yx); // set CRS
+
+        SimpleFeature sfYX =
+                DataUtilities.createFeature(simpleFeatureTypeYX, "fid1=test|POINT(0 1)");
+        SimpleFeatureCollection fcYX = DataUtilities.collection(sfYX);
+
+        // xform
+        SimpleFeatureCollection fcXY = GeoPackage.forceXY(fcYX);
+
+        assertEquals(
+                CRS.getAxisOrder(fcXY.getSchema().getCoordinateReferenceSystem()),
+                CRS.AxisOrder.EAST_NORTH);
+
+        SimpleFeature sfXY = fcXY.features().next();
+
+        // verify geometry is actually XY
+        Coordinate coordinate = ((Geometry) sfYX.getDefaultGeometry()).getCoordinate();
+        Coordinate coordinateYX = ((Geometry) sfXY.getDefaultGeometry()).getCoordinate();
+
+        assertEquals(coordinate.x, coordinateYX.y, 0);
+        assertEquals(coordinate.y, coordinateYX.x, 0);
     }
 }

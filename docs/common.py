@@ -29,9 +29,10 @@ extensions = ['sphinx.ext.todo','sphinx.ext.extlinks']
 extlinks = { 
     'wiki': ('https://github.com/geotools/geotools/wiki/%s',''),
     'website': ('http://geotools.org/%s',''),
-    'geoserver': ('http://docs.geoserver.org/stable/en/user/%s',''),
-    'developer': ('http://docs.geotools.org/maintenance/developer/%s',''),
-    'user': ('http://docs.geotools.org/latest/userguide/%s',''),
+    'geoserver': ('https://docs.geoserver.org/latest/en/user/%s',''),
+    'developer': ('https://docs.geotools.org/latest/developer/%s',''),
+    'user': ('http://docs.geotools.org/maintenance/userguide/%s',''),
+    'api': ('https://docs.geotools.org/maintenance/javadocs',''),
     'geot': ('https://osgeo-org.atlassian.net/browse/GEOT-%s','GEOT-')
 }
 

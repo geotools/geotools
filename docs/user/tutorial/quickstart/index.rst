@@ -15,7 +15,7 @@ This tutorial is available for:
    maven
    java11
 
-If you are interested in porting this tutorial to an additional IDE please `contact us <http://geotools.org/getinvolved.html>`_ on the
+If you are interested in porting this tutorial to an additional IDE please :website:`contact us <getinvolved.html>` on the
 users list.
 
 Notes and Errata

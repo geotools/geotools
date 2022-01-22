@@ -32,7 +32,8 @@
     <module>process-geometry</module>
     <module>process-raster</module>
     <module>process-feature</module>
-    <module>geojsonstore</module>
+    <module>geojson-core</module>
+    <module>geojson-store</module>
     <module>geojson</module>
     <module>mbtiles</module>
     <module>gml-geometry-streaming</module>
@@ -164,8 +165,8 @@
         </property>
       </activation>
       <modules>
-        <module>geojsonstore</module>
-        <module>geojson</module>
+        <module>geojson-core</module>
+        <module>geojson-store</module>
       </modules>
     </profile>
     <profile>
@@ -197,7 +198,8 @@
         <module>solr</module>
         <module>elasticsearch</module>
         <module>css</module>
-        <module>geojsonstore</module>
+        <module>geojson-core</module>
+        <module>geojson-store</module>
         <module>s3-geotiff</module>
         <module>vpf</module>
       </modules>

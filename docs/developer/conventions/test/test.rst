@@ -53,11 +53,11 @@ Code Coverage vs Regression Testing
 
 1. Code Coverage reports are available via::
    
-     mvn clean cobertura:cobertura
+     mvn clean install -Pjacoco
 
 2. The result is available for each module:
 
-     target/site/cobertura/index.html
+     target/site/jacoco/index.html
 
 The percentage reported is based on the lines of code your test cases manage to test, please limit
 this to "real" tests - although we ask for 40% test coverage for supported modules we would much

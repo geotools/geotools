@@ -527,6 +527,9 @@
     <jackson2.version>2.10.5</jackson2.version>
     <jackson2.databind.version>2.10.5.1</jackson2.databind.version>
     <lint>deprecation,unchecked</lint>
+    <jacoco.version>0.8.7</jacoco.version>
+    <!-- allows for jacoco params injection in surefire-->
+    <argLine></argLine>
   </properties>
 
   <!-- =========================================================== -->
@@ -1642,7 +1645,7 @@
             <exclude>${test.exclude.pattern}</exclude>
             <exclude>${jdk11test.skip.pattern}</exclude>
           </excludes>
-          <argLine>-Xmx${test.maxHeapSize} ${jvm.opts} -Dfile.encoding=UTF-8 -Dorg.geotools.test.extensive=${extensive.tests} -Dorg.geotools.test.interactive=${interactive.tests} -Dorg.geotools.image.test.skip=${skip.image.tests} -Dorg.geotools.image.test.interactive=${interactive.image} -Djava.awt.headless=${java.awt.headless} -Dsun.java2d.d3d=${sun.java2d.d3d} -Djava.io.tmpdir="${java.io.tmpdir}" -Djava.library.path="${java.library.path}" ${test.args}  -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -XX:+IgnoreUnrecognizedVMOptions -Djava.util.logging.config.file="${geotoolsBaseDir}"/${logging-profile}.properties --add-exports=java.desktop/sun.awt.image=ALL-UNNAMED ${test.otherJVMParams}</argLine>
+          <argLine>@{argLine} -Xmx${test.maxHeapSize} ${jvm.opts} -Dfile.encoding=UTF-8 -Dorg.geotools.test.extensive=${extensive.tests} -Dorg.geotools.test.interactive=${interactive.tests} -Dorg.geotools.image.test.skip=${skip.image.tests} -Dorg.geotools.image.test.interactive=${interactive.image} -Djava.awt.headless=${java.awt.headless} -Dsun.java2d.d3d=${sun.java2d.d3d} -Djava.io.tmpdir="${java.io.tmpdir}" -Djava.library.path="${java.library.path}" ${test.args}  -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -XX:+IgnoreUnrecognizedVMOptions -Djava.util.logging.config.file="${geotoolsBaseDir}"/${logging-profile}.properties --add-exports=java.desktop/sun.awt.image=ALL-UNNAMED ${test.otherJVMParams}</argLine>
           <!-- Ignores test failure only if we are generating a       -->
           <!-- report for publication on the web site. See the        -->
           <!-- profiles section at the beginning of this pom.xml file. -->
@@ -2100,7 +2103,23 @@
         <artifactId>findbugs-maven-plugin</artifactId>
         <version>3.0.5</version>
       </plugin>
+
+      <!-- ======================================================= -->
+      <!-- Test coverage report                                    -->
+      <!-- ======================================================= -->
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${jacoco.version}</version>
+        <configuration>
+          <formats>
+            <format>html</format>
+            <format>xml</format>
+          </formats>
+        </configuration>
+      </plugin>
     </plugins>
+
   </reporting>
 
   <!-- Profiles set on the command-line overwrite default properties. -->
@@ -2472,6 +2491,33 @@
         </plugins>
       </build>
     </profile>
-
+    <!-- code coverage -->
+    <profile>
+      <id>jacoco</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>${jacoco.version}</version>
+            <executions>
+              <execution>
+                <id>pre-unit-test</id>
+                <goals>
+                  <goal>prepare-agent</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>post-unit-test</id>
+                <phase>test</phase>
+                <goals>
+                  <goal>report</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 </project>

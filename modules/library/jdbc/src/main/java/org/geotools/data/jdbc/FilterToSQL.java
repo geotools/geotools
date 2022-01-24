@@ -393,6 +393,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         capabilities.addAll(FilterCapabilities.SIMPLE_COMPARISONS_OPENGIS);
         capabilities.addType(PropertyIsNull.class);
         capabilities.addType(PropertyIsBetween.class);
+        capabilities.addType(PropertyIsLike.class);
         capabilities.addType(Id.class);
         capabilities.addType(IncludeFilter.class);
         capabilities.addType(ExcludeFilter.class);

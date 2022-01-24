@@ -17,6 +17,7 @@
 package org.geotools.ows.wmts;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 import java.util.Properties;
@@ -87,6 +88,20 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
 
     /**
      * Set up the WebMapTileServer by the given capabilities, with the given serverURL. Using the
+     * default httpClient.
+     *
+     * @param serverURL
+     * @param capabilities
+     * @throws ServiceException
+     * @throws IOException
+     */
+    public WebMapTileServer(URL serverURL, WMTSCapabilities capabilities)
+            throws ServiceException, IOException {
+        this(serverURL, HTTPClientFinder.createClient(), capabilities, null);
+    }
+
+    /**
+     * Set up the WebMapTileServer by the given capabilities, with the given serverURL. Using the
      * given httpClient.
      *
      * @param serverURL
@@ -97,8 +112,7 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
      */
     public WebMapTileServer(URL serverURL, HTTPClient httpClient, WMTSCapabilities capabilities)
             throws ServiceException, IOException {
-        super(serverURL, httpClient, capabilities);
-        setupType();
+        this(serverURL, httpClient, capabilities, null);
     }
 
     /**
@@ -140,7 +154,9 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
      * @param capabilities
      * @throws ServiceException
      * @throws IOException
+     * @deprecated Use constructor with serverUrl and capabilities
      */
+    @Deprecated
     public WebMapTileServer(WMTSCapabilities capabilities) throws ServiceException, IOException {
         this(capabilities, HTTPClientFinder.createClient());
     }
@@ -151,22 +167,37 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
      * @param capabilities
      * @throws ServiceException
      * @throws IOException
+     * @deprecated Use constructor with serverUrl, capabilities and httpClient.
      */
+    @Deprecated
     public WebMapTileServer(WMTSCapabilities capabilities, HTTPClient httpClient)
             throws ServiceException, IOException {
-        super(capabilities.getRequest().getGetCapabilities().getGet(), httpClient, capabilities);
+        super(extractServerURL(capabilities), httpClient, capabilities);
         setupType();
     }
 
+    private static URL extractServerURL(WMTSCapabilities capabilities) {
+        URL url = capabilities.getRequest().getGetCapabilities().getGet();
+        if (url == null) {
+            try {
+                url = new URL("http://missing.url/");
+            } catch (MalformedURLException e) {
+                //
+            }
+        }
+        return url;
+    }
+
     /**
-     * Set up a WebMapTileServer by the same serverURL as delegate
+     * Set up a WebMapTileServer by the same serverURL, httpClient, capabilities and hints as
+     * delegate
      *
      * @param delegate
      * @throws ServiceException
      * @throws IOException
      */
     public WebMapTileServer(WebMapTileServer delegate) throws ServiceException, IOException {
-        this(delegate.serverURL);
+        this(delegate.serverURL, delegate.getHTTPClient(), delegate.capabilities, delegate.hints);
     }
 
     @Override

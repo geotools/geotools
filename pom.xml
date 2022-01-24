@@ -1295,6 +1295,14 @@
         <groupId>com.googlecode.json-simple</groupId>
         <artifactId>json-simple</artifactId>
         <version>1.1.1</version>
+        <exclusions>
+          <!-- junit is carried over as a compile scope dependency, exclude it -->
+          <!-- see https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple/1.1.1 -->
+          <exclusion>
+            <artifactId>junit</artifactId>
+            <groupId>junit</groupId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.xerial</groupId>

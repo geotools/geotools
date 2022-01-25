@@ -3,6 +3,7 @@
 
 package org.geotools.data.geobuf;
 
+@SuppressWarnings("PMD") // generated code, suppress all
 public final class Geobuf {
     private Geobuf() {}
 

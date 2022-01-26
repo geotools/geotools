@@ -47,6 +47,7 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.ColorModel;
+import java.awt.image.DataBuffer;
 import java.awt.image.SampleModel;
 import java.awt.image.renderable.ParameterBlock;
 import java.io.File;
@@ -307,6 +308,8 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
     }
 
     /** Collect georeferencing information about this geotiff. */
+    // stream is reset, not closed. The self assignment has a cast, may change the value
+    @SuppressWarnings({"PMD.UseTryWithResources", "SelfAssignment"})
     private void getHRInfo(Hints hints) throws DataSourceException {
         ImageReader reader = null;
         ImageReader ovrReader = null;
@@ -362,6 +365,14 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             //
             if (metadata.hasNoData()) {
                 noData = metadata.getNoData();
+                SampleModel sampleModel = reader.getImageTypes(0).next().getSampleModel();
+
+                // nodata is stored as double, but pixels are float? need to cast the
+                // nodata though float to get a representation that would succesfully compare
+                // against the pixels
+                if (sampleModel.getDataType() == DataBuffer.TYPE_FLOAT) {
+                    noData = (float) noData;
+                }
             }
 
             // collect scales and offsets is present

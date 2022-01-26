@@ -3,6 +3,9 @@
 
 package org.geotools.data.geobuf;
 
+import org.geotools.util.SuppressFBWarnings;
+
+@SuppressFBWarnings
 @SuppressWarnings("PMD") // generated code, suppress all
 public final class Geobuf {
     private Geobuf() {}

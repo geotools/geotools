@@ -1264,6 +1264,35 @@ public class GeoTiffReaderTest extends org.junit.Assert {
     }
 
     @Test
+    public void testNodataFloatCast() throws IOException {
+        // has a very large nodata value with different values in float and double
+        final File scaleOffset =
+                TestData.file(GeoTiffReaderTest.class, "float32_nodata_negmax.tif");
+        GeoTiffReader reader = new GeoTiffReader(scaleOffset);
+
+        // read with explicit request not to rescale
+        GridCoverage2D coverage = null;
+        try {
+            coverage = reader.read(null);
+            ImageWorker iw = new ImageWorker(coverage.getRenderedImage());
+
+            Range noDataRange = iw.getNoData();
+            double noData = noDataRange.getMin().doubleValue();
+            assertEquals(-3.40282306073709653E38, noData, 0d);
+
+            // The pixel in the top right corner should be nodata, check that the range contains it
+            Raster data = iw.getRenderedImage().getData();
+            double sample = data.getSampleDouble(data.getWidth() - 1, 0, 0);
+            assertTrue(noDataRange.contains(sample));
+        } finally {
+            if (coverage != null) {
+                ImageUtilities.disposeImage(coverage.getRenderedImage());
+                coverage.dispose(true);
+            }
+        }
+    }
+
+    @Test
     public void testRescaleWithNodataFloat() throws IOException {
         GridCoverage2DReader reader =
                 new GeoTiffReader(TestData.file(GeoTiffReaderTest.class, "float32_nodata.tif"));

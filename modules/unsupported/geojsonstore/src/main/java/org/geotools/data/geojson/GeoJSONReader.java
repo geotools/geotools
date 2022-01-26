@@ -76,7 +76,7 @@ public class GeoJSONReader implements AutoCloseable {
 
     private JsonParser parser;
 
-    private static JsonFactory factory = new JsonFactory();;
+    private static JsonFactory factory = new JsonFactory();
 
     private SimpleFeatureType schema;
 

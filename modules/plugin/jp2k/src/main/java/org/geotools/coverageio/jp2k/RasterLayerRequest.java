@@ -108,7 +108,7 @@ class RasterLayerRequest {
      */
     private boolean empty;
 
-    private Color inputTransparentColor = JP2KFormat.INPUT_TRANSPARENT_COLOR.getDefaultValue();;
+    private Color inputTransparentColor = JP2KFormat.INPUT_TRANSPARENT_COLOR.getDefaultValue();
 
     private AffineTransform requestedGridToWorld;
 

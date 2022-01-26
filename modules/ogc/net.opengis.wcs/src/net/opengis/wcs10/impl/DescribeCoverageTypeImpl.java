@@ -149,7 +149,7 @@ public class DescribeCoverageTypeImpl extends EObjectImpl implements DescribeCov
 	 * @generated NOT
 	 * @ordered
 	 */
-	protected Map extendedProperties = new HashMap();;
+	protected Map extendedProperties = new HashMap();
 
 				/**
 	 * <!-- begin-user-doc -->

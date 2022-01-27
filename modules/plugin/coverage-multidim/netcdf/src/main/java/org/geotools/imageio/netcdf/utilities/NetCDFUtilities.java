@@ -778,6 +778,7 @@ public class NetCDFUtilities {
             try {
                 streamSource = new StreamSource(input);
                 XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+                inputFactory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
                 reader = inputFactory.createXMLStreamReader(streamSource);
                 reader.nextTag();
                 if ("netcdf".equals(reader.getName().getLocalPart())) {
@@ -787,7 +788,8 @@ public class NetCDFUtilities {
                     return FileFormat.FC;
                 }
             } catch (XMLStreamException | FactoryConfigurationError e) {
-
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
             } finally {
                 if (input != null) {
                     input.close();

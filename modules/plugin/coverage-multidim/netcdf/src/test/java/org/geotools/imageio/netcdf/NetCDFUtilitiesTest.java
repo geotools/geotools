@@ -58,4 +58,11 @@ public final class NetCDFUtilitiesTest {
         NetCDFUtilities.FileFormat format2 = NetCDFUtilities.getFormat(uri);
         Assert.assertSame(format1, format2);
     }
+
+    @Test
+    public void testGetFormatXXE() throws Exception {
+        // Run this unit test with FINE logging enabled to confirm that the
+        // XML parser did not attempt to read the file in the DTD.
+        NetCDFUtilities.getFormat(TestData.url(this, "xxe.nc").toURI());
+    }
 }

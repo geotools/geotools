@@ -41,6 +41,8 @@ import org.opengis.util.InternationalString;
  * added}, but existing strings can't be removed or modified. This behavior is a compromise between
  * making constructionss easier, and being suitable for use in immutable objects.
  *
+ * <p>This class is mutable and not thread-safe.
+ *
  * @since 2.1
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
@@ -61,12 +63,6 @@ public class GrowableInternationalString extends AbstractInternationalString
      * and values are {@link String}s.
      */
     private Map<Locale, String> localMap;
-
-    /**
-     * An unmodifiable view of the entry set in {@link #localMap}. This is the set of locales
-     * defined in this international string. Will be constructed only when first requested.
-     */
-    private transient Set<Locale> localSet;
 
     /**
      * Constructs an initially empty international string. Localized strings can been added using
@@ -262,13 +258,15 @@ public class GrowableInternationalString extends AbstractInternationalString
     /**
      * Returns the set of locales defined in this international string.
      *
+     * <p>The returned set may contain a {@code null} object, signifying there's a "default" value
+     * (as created wither through the {@link
+     * GrowableInternationalString#GrowableInternationalString(String) single-string} constructor,
+     * or with a {@code null} "locale" parameter to {@link #add(Locale, String)}
+     *
      * @return The set of locales.
      */
-    public synchronized Set<Locale> getLocales() {
-        if (localSet == null) {
-            localSet = Collections.unmodifiableSet(localMap.keySet());
-        }
-        return localSet;
+    public Set<Locale> getLocales() {
+        return Collections.unmodifiableSet(localMap.keySet());
     }
 
     /**

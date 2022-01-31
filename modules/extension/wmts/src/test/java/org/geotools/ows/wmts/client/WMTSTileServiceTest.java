@@ -60,7 +60,9 @@ public class WMTSTileServiceTest {
                         "http://localhost:8080/geoserver/gwc/service/wmts?tilematrixset=EPSG:4326&REQUEST=GetTile&TileRow=2&VERSION=1.0.0&format=image/png&SERVICE=WMTS&style=&TileCol=2&type=KVP&layer=spearfish&TileMatrix=EPSG:4326:3"),
                 new MockHttpResponse(TestData.file(null, "world.png"), "image/png"));
 
-        WebMapTileServer tileServer = new WebMapTileServer(caps, client);
+        WebMapTileServer tileServer =
+                new WebMapTileServer(
+                        new URL("http://localhost:8080/geoserver/gwc/service/wmts"), client, caps);
         WMTSLayer layer = caps.getLayer("spearfish");
         TileMatrixSet matrixSet = tileServer.selectMatrixSet(layer, CRS.decode("EPSG:4326"));
 
@@ -79,7 +81,12 @@ public class WMTSTileServiceTest {
                         "http://tileservice.charts.noaa.gov/tiles/wmts/11006_1/GoogleMapsCompatible/2/3/0.png"),
                 new MockHttpResponse(TestData.file(null, "world.png"), "image/png"));
 
-        WebMapTileServer tileServer = new WebMapTileServer(caps, client);
+        WebMapTileServer tileServer =
+                new WebMapTileServer(
+                        new URL(
+                                "http://tileservice.charts.noaa.gov/tiles/wmts/1.0.0/WMTSCapabilities.xml"),
+                        client,
+                        caps);
 
         WMTSLayer layer = caps.getLayer("11006_1");
         TileMatrixSet matrixSet = tileServer.selectMatrixSet(layer, CRS.decode("EPSG:3857"));

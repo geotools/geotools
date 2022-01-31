@@ -4,16 +4,8 @@
  *
  *    (C) 2022, Open Source Geospatial Foundation (OSGeo)
  *
- *    This library is free software; you can redistribute it and/or
- *    modify it under the terms of the GNU Lesser General Public
- *    License as published by the Free Software Foundation;
- *    version 2.1 of the License.
- *
- *    This library is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *    Lesser General Public License for more details.
- *
+ *    This file is hereby placed into the Public Domain. This means anyone is
+ *    free to do whatever they wish with this file. Use it well and enjoy!
  */
 
 package org.geotools.wmts;
@@ -48,7 +40,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  */
 public class WMTSCoverage {
 
-    private static final double[] LOMFJORDBOTNEN_EXTENT = {17.0697, 18.1937, 79.3052, 79.4667};
     private static final String WMTS_ORTOFOTO_URL =
             "https://geodata.npolar.no/arcgis/rest/services/Basisdata/NP_Ortofoto_Svalbard_WMTS_25833/MapServer/WMTS/1.0.0/WMTSCapabilities.xml";
 
@@ -59,18 +50,14 @@ public class WMTSCoverage {
         }
 
         File resultFile = new File(args[0]);
-
+        // start wmtsCoverage example
         WebMapTileServer wmts = new WebMapTileServer(new URL(WMTS_ORTOFOTO_URL));
         WMTSLayer layer = wmts.getCapabilities().getLayerList().get(0);
         WMTSCoverageReader reader = new WMTSCoverageReader(wmts, layer);
 
         ReferencedEnvelope envelope =
                 new ReferencedEnvelope(
-                        LOMFJORDBOTNEN_EXTENT[0],
-                        LOMFJORDBOTNEN_EXTENT[1],
-                        LOMFJORDBOTNEN_EXTENT[2],
-                        LOMFJORDBOTNEN_EXTENT[3],
-                        DefaultGeographicCRS.WGS84);
+                        17.0697, 18.1937, 79.3052, 79.4667, DefaultGeographicCRS.WGS84);
 
         CoordinateReferenceSystem upsCrs = CRS.decode("EPSG:32661");
         ReferencedEnvelope upsExtent =
@@ -93,5 +80,6 @@ public class WMTSCoverage {
         GeneralParameterValue[] parameters = new GeneralParameterValue[] {readGG};
         GridCoverage2D coverage = reader.read(parameters);
         ImageIO.write(coverage.getRenderedImage(), "png", resultFile);
+        // end wmtsCoverage example
     }
 }

@@ -93,108 +93,56 @@ public abstract class DefaultTemporalGeometricPrimitive extends DefaultTemporalP
             if (this instanceof Instant && other instanceof Instant) {
                 diff =
                         Math.min(
+                                Math.abs(iTime((Instant) other) - iTime((Instant) this)),
+                                Math.abs(iTime((Instant) this) - iTime((Instant) other)));
+            } else if (this instanceof Instant && other instanceof Period) {
+                diff =
+                        Math.min(
+                                Math.abs(pbTime((Period) other) - iTime((Instant) this)),
                                 Math.abs(
-                                        ((Instant) other).getPosition().getDate().getTime()
-                                                - ((Instant) this)
-                                                        .getPosition()
-                                                        .getDate()
-                                                        .getTime()),
+                                        iTime(((Period) other).getEnding())
+                                                - iTime((Instant) this)));
+            } else if (this instanceof Period && other instanceof Instant) {
+                diff =
+                        Math.min(
                                 Math.abs(
-                                        ((Instant) this).getPosition().getDate().getTime()
-                                                - ((Instant) other)
-                                                        .getPosition()
-                                                        .getDate()
-                                                        .getTime()));
-            } else {
-                if (this instanceof Instant && other instanceof Period) {
-                    diff =
-                            Math.min(
-                                    Math.abs(
-                                            ((Period) other)
-                                                            .getBeginning()
-                                                            .getPosition()
-                                                            .getDate()
-                                                            .getTime()
-                                                    - ((Instant) this)
-                                                            .getPosition()
-                                                            .getDate()
-                                                            .getTime()),
-                                    Math.abs(
-                                            ((Period) other)
-                                                            .getEnding()
-                                                            .getPosition()
-                                                            .getDate()
-                                                            .getTime()
-                                                    - ((Instant) this)
-                                                            .getPosition()
-                                                            .getDate()
-                                                            .getTime()));
-                } else {
-                    if (this instanceof Period && other instanceof Instant) {
-                        diff =
-                                Math.min(
-                                        Math.abs(
-                                                ((Instant) other).getPosition().getDate().getTime()
-                                                        - ((Period) this)
-                                                                .getEnding()
-                                                                .getPosition()
-                                                                .getDate()
-                                                                .getTime()),
-                                        Math.abs(
-                                                ((Instant) other).getPosition().getDate().getTime()
-                                                        - ((Period) this)
-                                                                .getBeginning()
-                                                                .getPosition()
-                                                                .getDate()
-                                                                .getTime()));
-                    } else {
-                        if (this instanceof Period && other instanceof Period) {
-                            diff =
-                                    Math.min(
-                                            Math.abs(
-                                                    ((Period) other)
-                                                                    .getEnding()
-                                                                    .getPosition()
-                                                                    .getDate()
-                                                                    .getTime()
-                                                            - ((Period) this)
-                                                                    .getBeginning()
-                                                                    .getPosition()
-                                                                    .getDate()
-                                                                    .getTime()),
-                                            Math.abs(
-                                                    ((Period) other)
-                                                                    .getBeginning()
-                                                                    .getPosition()
-                                                                    .getDate()
-                                                                    .getTime()
-                                                            - ((Period) this)
-                                                                    .getEnding()
-                                                                    .getPosition()
-                                                                    .getDate()
-                                                                    .getTime()));
-                        }
-                    }
-                }
+                                        iTime((Instant) other)
+                                                - iTime(((Period) this).getEnding())),
+                                Math.abs(iTime((Instant) other) - pbTime((Period) this)));
+            } else if (this instanceof Period && other instanceof Period) {
+                diff =
+                        Math.min(
+                                Math.abs(peTime((Period) other) - pbTime((Period) this)),
+                                Math.abs(pbTime((Period) other) - peTime((Period) this)));
             }
-        } else {
-            if (this.relativePosition(other).equals(RelativePosition.BEGINS)
-                    || this.relativePosition(other).equals(RelativePosition.BEGUN_BY)
-                    || this.relativePosition(other).equals(RelativePosition.CONTAINS)
-                    || this.relativePosition(other).equals(RelativePosition.DURING)
-                    || this.relativePosition(other).equals(RelativePosition.ENDED_BY)
-                    || this.relativePosition(other).equals(RelativePosition.ENDS)
-                    || this.relativePosition(other).equals(RelativePosition.EQUALS)
-                    || this.relativePosition(other).equals(RelativePosition.MEETS)
-                    || this.relativePosition(other).equals(RelativePosition.MET_BY)
-                    || this.relativePosition(other).equals(RelativePosition.OVERLAPPED_BY)
-                    || this.relativePosition(other).equals(RelativePosition.OVERLAPS)) {
-                diff = 0L;
-            }
+        } else if (this.relativePosition(other).equals(RelativePosition.BEGINS)
+                || this.relativePosition(other).equals(RelativePosition.BEGUN_BY)
+                || this.relativePosition(other).equals(RelativePosition.CONTAINS)
+                || this.relativePosition(other).equals(RelativePosition.DURING)
+                || this.relativePosition(other).equals(RelativePosition.ENDED_BY)
+                || this.relativePosition(other).equals(RelativePosition.ENDS)
+                || this.relativePosition(other).equals(RelativePosition.EQUALS)
+                || this.relativePosition(other).equals(RelativePosition.MEETS)
+                || this.relativePosition(other).equals(RelativePosition.MET_BY)
+                || this.relativePosition(other).equals(RelativePosition.OVERLAPPED_BY)
+                || this.relativePosition(other).equals(RelativePosition.OVERLAPS)) {
+            diff = 0L;
         }
 
         Duration response = new DefaultPeriodDuration(Math.abs(diff));
         return response;
+    }
+
+    private long iTime(Instant instant) {
+        return instant.getPosition().getDate().getTime();
+    }
+
+    private long peTime(Period other) {
+        return iTime(other.getEnding());
+    }
+
+    private long pbTime(Period other) {
+        return iTime(other.getBeginning());
     }
 
     /** Returns the length of this TM_GeometricPrimitive */

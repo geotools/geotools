@@ -214,38 +214,36 @@ public enum ContrastEnhancementType {
             double minimum = (double) params.get(KEY_MIN);
             double maximum = (double) params.get(KEY_MAX);
 
-            final double normalizationFactor = maximum;
+            final double normFactor = maximum;
             final double correctionFactor = 100.0;
 
+            MathTransformationAdapter mt =
+                    new MathTransformationAdapter() {
+
+                        @Override
+                        public double derivative(double value) {
+                            throw new UnsupportedOperationException(
+                                    Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1));
+                        }
+
+                        @Override
+                        public boolean isIdentity() {
+                            return false;
+                        }
+
+                        @Override
+                        public double transform(double value) {
+                            value =
+                                    normFactor
+                                            * Math.log(1 + (value * correctionFactor / normFactor));
+                            return value;
+                        }
+                    };
             final DefaultPiecewiseTransform1DElement mainElement =
                     DefaultPiecewiseTransform1DElement.create(
                             "logarithmic-contrast-enhancement-transform",
                             RangeFactory.create(minimum, maximum),
-                            new MathTransformationAdapter() {
-
-                                @Override
-                                public double derivative(double value) throws TransformException {
-                                    throw new UnsupportedOperationException(
-                                            Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1));
-                                }
-
-                                @Override
-                                public boolean isIdentity() {
-                                    return false;
-                                }
-
-                                @Override
-                                public double transform(double value) {
-                                    value =
-                                            normalizationFactor
-                                                    * Math.log(
-                                                            1
-                                                                    + (value
-                                                                            * correctionFactor
-                                                                            / normalizationFactor));
-                                    return value;
-                                }
-                            });
+                            mt);
 
             return new DefaultPiecewiseTransform1D<>(
                     new DefaultPiecewiseTransform1DElement[] {mainElement}, 0);

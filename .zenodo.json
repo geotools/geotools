@@ -1,0 +1,96 @@
+{
+ "title":"GeoTools",
+ "description":"GeoTools is an open source Java library that provides tools for geospatial data.",
+ "license": {"id":"LGPL-2.0-or-later"},
+ "keywords": ["gis","toolkit", "cartography", "java"],
+ "creators": [{
+    "name":"Andrea Aime",
+    "affiliation":"GeoSolutions IT"
+  },
+  {"name":"Adam Brown"},
+  {
+    "name":"Alessio Fabiani",
+    "affiliation":"GeoSolutions IT"
+  },
+  {"name":"Alexander Wöstmann"},
+  {"name":"Ben Caradoc-Davies"},
+  {"name":"Brad Hards"},
+  {"name":"Brett Walker"},
+  {
+    "name":"Daniele Romagnoli",
+    "affiliation":"GeoSolutions IT"
+  },
+  {"name":"Devon Tucker"},
+  {"name":"David Winslow"},
+  {
+    "name":"Emanuele Tajariol",
+    "affiliation":"GeoSolutions IT"
+  },
+  {
+    "name":"Fernando Miño",
+    "affiliation":"GeoSolutions IT"
+  },
+  {"name":"Frank Gasdorf"},
+  {"name":"Gabriel Roldan"},
+  {"name":"Ian Mayo"},
+  {
+    "name":"Ian Turton",
+    "affiliation":"Astun Technology",
+    "orcid":"0000-0001-5631-6491"
+  },
+  {"name":"Ian Schneider"},
+  {"name":"Justin Deoliveira"},
+  {"name":"Jared Erickson"},
+  {"name":"Jesse Eichar"},
+  {"name":"James Hughes"},
+  {
+    "name":"Jody Garnett",
+    "affiliation":"GeoCat NL"
+  },
+  {"name":"jrbeckwith"},
+  {"name":"jwood106"},
+  {"name":"Luca Morandini"},
+  {"name":"Mark Leslie"},
+  {"name":"mbarto"},
+  {"name":"mcrmcr"},
+  {"name":"Andrea Antonello"},
+  {"name":"Mauricio Pazos"},
+  {
+    "name":"Mark Prins",
+    "affiliation":"B3Partners"
+  },
+  {"name":"n-lagomarsini"},
+  {"name":"NielsCharlier"},
+  {
+    "name":"Nuno Oliveira",
+    "affiliation":"GeoSolutions IT"
+  },
+  {"name":"Alessandro Parma"},
+  {"name":"Stefano Costa"},
+  {
+    "name":"Rini Angreani",
+    "affiliation":"CSIRO"
+  },
+  {
+    "name":"Simone Giannecchini",
+    "affiliation":"GeoSolutions IT"
+  },
+  {
+    "name":"Kevin Smith",
+    "affiliation":"Planet Federal"
+  },
+  {"name":"Stefan Uhrig"},
+  {"name":"Davide Savazzi"},
+  {"name":"Martin Kalén"},
+  {
+    "name":"taba90",
+    "affiliation":"GeoSolutions IT"
+  },
+  {
+    "name":"Torben Barsballe",
+    "affiliation":"Planet Federal"
+  },
+  {"name":"Joe"},
+  {"name":"David Vick"},
+  {"name":"Victor"}]
+}

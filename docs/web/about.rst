@@ -16,7 +16,7 @@ Current :developer:`version <conventions/version.html>` information:
 * `26.x <http://sourceforge.net/projects/geotools/files/GeoTools%2026%20Releases/>`__: Stable
 * `25.x <http://sourceforge.net/projects/geotools/files/GeoTools%2025%20Releases/>`__: Maintenance
 
-GeoTools is used by a `number of projects <https://github.com/geotools/geotools/wiki/screenshots>`__
+GeoTools is used by a :wiki:`number of projects <screenshots>`
 including Web Feature Servers, Web Map Servers, and desktop applications.
 
 Open Source

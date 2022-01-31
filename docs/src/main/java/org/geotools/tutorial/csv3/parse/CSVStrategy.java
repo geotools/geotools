@@ -114,9 +114,8 @@ public abstract class CSVStrategy {
         }
         // Read through the whole file in case the type changes in later rows
         while (csvReader.readRecord()) {
-            String[] record = csvReader.getValues();
-            List<String> values = Arrays.asList(record);
-            if (record.length >= headers.length) {
+            List<String> values = Arrays.asList(csvReader.getValues());
+            if (values.size() >= headers.length) {
                 values = values.subList(0, headers.length);
             }
             int i = 0;

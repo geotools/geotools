@@ -206,36 +206,18 @@ public class TPKReader extends AbstractGridCoverage2DReader {
         long topTile = file.getMaxRow(zoomLevel);
 
         if (requestedEnvelope != null) { // crop tiles to requested envelope
-            leftTile =
-                    Math.max(
-                            leftTile,
-                            Math.round(
-                                    Math.floor(
-                                            (requestedEnvelope.getMinimum(0) - offsetX) / resX)));
-            bottomTile =
-                    Math.max(
-                            bottomTile,
-                            Math.round(
-                                    Math.floor(
-                                            (requestedEnvelope.getMinimum(1) - offsetY) / resY)));
+            leftTile = boundMax(leftTile, (requestedEnvelope.getMinimum(0) - offsetX) / resX);
+            bottomTile = boundMax(bottomTile, (requestedEnvelope.getMinimum(1) - offsetY) / resY);
             rightTile =
-                    Math.max(
+                    boundMinMax(
                             leftTile,
-                            Math.min(
-                                    rightTile,
-                                    Math.round(
-                                            Math.floor(
-                                                    (requestedEnvelope.getMaximum(0) - offsetX)
-                                                            / resX))));
+                            rightTile,
+                            (requestedEnvelope.getMaximum(0) - offsetX) / resX);
             topTile =
-                    Math.max(
+                    boundMinMax(
                             bottomTile,
-                            Math.min(
-                                    topTile,
-                                    Math.round(
-                                            Math.floor(
-                                                    (requestedEnvelope.getMaximum(1) - offsetY)
-                                                            / resY))));
+                            topTile,
+                            (requestedEnvelope.getMaximum(1) - offsetY) / resY);
         }
 
         int width = (int) (rightTile - leftTile + 1) * DEFAULT_TILE_SIZE;
@@ -288,6 +270,14 @@ public class TPKReader extends AbstractGridCoverage2DReader {
         LOGGER.fine(msg);
 
         return coverageFactory.create("unnamed", image, resultEnvelope);
+    }
+
+    private long boundMinMax(long max, long min, double value) {
+        return Math.max(max, Math.min(min, Math.round(Math.floor(value))));
+    }
+
+    private long boundMax(long bound, double value) {
+        return Math.max(bound, Math.round(Math.floor(value)));
     }
 
     public enum ImageFormats {

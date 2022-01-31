@@ -17,6 +17,7 @@
 package org.geotools.referencing.factory.gridshift;
 
 import java.io.Serializable;
+import java.util.Objects;
 import org.geotools.referencing.operation.builder.LocalizationGrid;
 
 /**
@@ -63,59 +64,22 @@ public class NADConGridShift extends LocalizationGrid implements Serializable {
         this.dy = dy;
     }
 
-    /**
-     * Returns a hash value for this transform. To make this faster it does not check the grid
-     * values.
-     *
-     * @return a hash value for this transform.
-     */
     @Override
-    public final int hashCode() {
-        final long code =
-                Double.doubleToLongBits(minX)
-                        + (37
-                                * (Double.doubleToLongBits(minY)
-                                        + (37
-                                                * (Double.doubleToLongBits(maxX)
-                                                        + (37
-                                                                * (Double.doubleToLongBits(maxY)
-                                                                        + (37
-                                                                                * (Double
-                                                                                                .doubleToLongBits(
-                                                                                                        dx)
-                                                                                        + (37
-                                                                                                * (Double
-                                                                                                        .doubleToLongBits(
-                                                                                                                dy)))))))))));
-
-        return (int) code ^ (int) (code >>> 32);
+    public int hashCode() {
+        return Objects.hash(minX, minY, maxX, maxY, dx, dy);
     }
 
-    /**
-     * Compares the specified object with this math transform for equality.
-     *
-     * @param object the object to compare to
-     * @return {@code true} if the objects are equal.
-     */
     @Override
-    public final boolean equals(final Object object) {
-        if (object == this) {
-            // Slight optimization
-            return true;
-        }
-
-        if (super.equals(object)) {
-            final NADConGridShift that = (NADConGridShift) object;
-
-            return (Double.doubleToLongBits(this.minX) == Double.doubleToLongBits(that.minX))
-                    && (Double.doubleToLongBits(this.minY) == Double.doubleToLongBits(that.minY))
-                    && (Double.doubleToLongBits(this.maxX) == Double.doubleToLongBits(that.maxX))
-                    && (Double.doubleToLongBits(this.maxY) == Double.doubleToLongBits(that.maxY))
-                    && (Double.doubleToLongBits(this.dx) == Double.doubleToLongBits(that.dx))
-                    && (Double.doubleToLongBits(this.dy) == Double.doubleToLongBits(that.dy));
-        }
-
-        return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NADConGridShift that = (NADConGridShift) o;
+        return Double.compare(that.minX, minX) == 0
+                && Double.compare(that.minY, minY) == 0
+                && Double.compare(that.maxX, maxX) == 0
+                && Double.compare(that.maxY, maxY) == 0
+                && Double.compare(that.dx, dx) == 0
+                && Double.compare(that.dy, dy) == 0;
     }
 
     /** The minimum longitude value covered by this grid (decimal degrees) */

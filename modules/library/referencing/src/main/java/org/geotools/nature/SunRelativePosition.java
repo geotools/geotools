@@ -319,21 +319,16 @@ public class SunRelativePosition {
                     58.1 / te - 0.07 / (te * te * te) + 0.000086 / (te * te * te * te * te);
         } else {
             if (exoatmElevation > -0.575) {
-                refractionCorrection =
-                        1735.0
-                                + exoatmElevation
-                                        * (-518.2
-                                                + exoatmElevation
-                                                        * (103.4
-                                                                + exoatmElevation
-                                                                        * (-12.79
-                                                                                + exoatmElevation
-                                                                                        * 0.711)));
+                refractionCorrection = getRefractionCorrectedElevation(exoatmElevation);
             } else {
                 refractionCorrection = -20.774 / te;
             }
         }
         return refractionCorrection / 3600;
+    }
+
+    private static double getRefractionCorrectedElevation(double e) {
+        return 1735.0 + e * (-518.2 + e * (103.4 + e * (-12.79 + e * 0.711)));
     }
 
     /** Constructs a sun relative position calculator. */

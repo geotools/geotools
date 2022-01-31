@@ -16,16 +16,9 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import static org.apache.commons.io.filefilter.FileFilterUtils.and;
-import static org.apache.commons.io.filefilter.FileFilterUtils.makeFileOnly;
-import static org.apache.commons.io.filefilter.FileFilterUtils.nameFileFilter;
-import static org.apache.commons.io.filefilter.FileFilterUtils.notFileFilter;
-import static org.apache.commons.io.filefilter.FileFilterUtils.suffixFileFilter;
-
 import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.MalformedURLException;
@@ -480,20 +473,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                     final File parent = URLs.urlToFile(sourceURL).getParentFile();
 
                     // this can be used to look for properties files that do NOT define a datastore
-                    final File[] properties =
-                            parent.listFiles(
-                                    (FilenameFilter)
-                                            and(
-                                                    notFileFilter(
-                                                            nameFileFilter("indexer.properties")),
-                                                    and(
-                                                            notFileFilter(
-                                                                    nameFileFilter(
-                                                                            Utils
-                                                                                    .DATASTORE_PROPERTIES)),
-                                                            makeFileOnly(
-                                                                    suffixFileFilter(
-                                                                            ".properties")))));
+                    final File[] properties = parent.listFiles(Utils.MOSAIC_PROPERTY_FILTER);
 
                     // do we have a valid datastore + mosaic properties pair?
                     if (properties != null) {

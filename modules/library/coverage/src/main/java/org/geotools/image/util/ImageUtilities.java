@@ -128,28 +128,23 @@ public final class ImageUtilities {
                 // native libs installed
                 if (mediaLib) {
                     final Class<?> mImage = mediaLibImage;
-                    mediaLib =
-                            AccessController.doPrivileged(
-                                    (PrivilegedAction<Boolean>)
-                                            () -> {
-                                                try {
-                                                    // get the method
-                                                    final Class<?>[] params = {};
-                                                    Method method =
-                                                            mImage.getDeclaredMethod(
-                                                                    "isAvailable", params);
+                    PrivilegedAction<Boolean> action =
+                            () -> {
+                                try {
+                                    // get the method
+                                    final Class<?>[] params = {};
+                                    Method method = mImage.getDeclaredMethod("isAvailable", params);
 
-                                                    // invoke
-                                                    final Object[] paramsObj = {};
+                                    // invoke
+                                    final Object[] paramsObj = {};
 
-                                                    final Object o =
-                                                            mImage.getDeclaredConstructor()
-                                                                    .newInstance();
-                                                    return (Boolean) method.invoke(o, paramsObj);
-                                                } catch (Throwable e) {
-                                                    return false;
-                                                }
-                                            });
+                                    final Object o = mImage.getDeclaredConstructor().newInstance();
+                                    return (Boolean) method.invoke(o, paramsObj);
+                                } catch (Throwable e) {
+                                    return false;
+                                }
+                            };
+                    mediaLib = AccessController.doPrivileged(action);
                 }
             } catch (Throwable e) {
                 // Because the property com.sun.media.jai.disableMediaLib isn't

@@ -47,10 +47,14 @@ public class JtsModule extends SimpleModule {
     /** serialVersionUID */
     private static final long serialVersionUID = 3387512874441967803L;
 
+    public static int DEFAULT_MAX_DECIMALS = 4;
+    public static int DEFAULT_MIN_DECIMALS = 0;
+    public static RoundingMode DEFAULT_ROUND_MODE = RoundingMode.HALF_UP;
+
     private GeometrySerializer geometrySerializer;
 
     public JtsModule(int maxDecimals) {
-        this(new GeometryFactory(), maxDecimals, 1, RoundingMode.HALF_UP);
+        this(new GeometryFactory(), maxDecimals, DEFAULT_MIN_DECIMALS, DEFAULT_ROUND_MODE);
     }
 
     public JtsModule() {
@@ -58,7 +62,7 @@ public class JtsModule extends SimpleModule {
     }
 
     public JtsModule(GeometryFactory geometryFactory) {
-        this(geometryFactory, 4, 1, RoundingMode.HALF_UP);
+        this(geometryFactory, DEFAULT_MAX_DECIMALS, DEFAULT_MIN_DECIMALS, DEFAULT_ROUND_MODE);
     }
 
     public JtsModule(
@@ -71,28 +75,25 @@ public class JtsModule extends SimpleModule {
         geometrySerializer = new GeometrySerializer(minDecimals, maxDecimals, rounding);
         addSerializer(Geometry.class, geometrySerializer);
         GenericGeometryParser genericGeometryParser = new GenericGeometryParser(geometryFactory);
-        addDeserializer(Geometry.class, new GeometryDeserializer<Geometry>(genericGeometryParser));
-        addDeserializer(
-                Point.class, new GeometryDeserializer<Point>(new PointParser(geometryFactory)));
+        addDeserializer(Geometry.class, new GeometryDeserializer<>(genericGeometryParser));
+        addDeserializer(Point.class, new GeometryDeserializer<>(new PointParser(geometryFactory)));
         addDeserializer(
                 MultiPoint.class,
-                new GeometryDeserializer<MultiPoint>(new MultiPointParser(geometryFactory)));
+                new GeometryDeserializer<>(new MultiPointParser(geometryFactory)));
         addDeserializer(
                 LineString.class,
-                new GeometryDeserializer<LineString>(new LineStringParser(geometryFactory)));
+                new GeometryDeserializer<>(new LineStringParser(geometryFactory)));
         addDeserializer(
                 MultiLineString.class,
-                new GeometryDeserializer<MultiLineString>(
-                        new MultiLineStringParser(geometryFactory)));
+                new GeometryDeserializer<>(new MultiLineStringParser(geometryFactory)));
         addDeserializer(
-                Polygon.class,
-                new GeometryDeserializer<Polygon>(new PolygonParser(geometryFactory)));
+                Polygon.class, new GeometryDeserializer<>(new PolygonParser(geometryFactory)));
         addDeserializer(
                 MultiPolygon.class,
-                new GeometryDeserializer<MultiPolygon>(new MultiPolygonParser(geometryFactory)));
+                new GeometryDeserializer<>(new MultiPolygonParser(geometryFactory)));
         addDeserializer(
                 GeometryCollection.class,
-                new GeometryDeserializer<GeometryCollection>(
+                new GeometryDeserializer<>(
                         new GeometryCollectionParser(geometryFactory, genericGeometryParser)));
     }
 

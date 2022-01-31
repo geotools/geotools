@@ -300,6 +300,20 @@ public class WMTSCapabilitiesTest {
         Assert.assertNotNull(address.getElectronicMailAddresses());
     }
 
+    /**
+     * The section OperationsMetadata of GetCapabilities is optional. WMTSCapabilities used as
+     * argument for WebMapTileServer shouldn't make a NullPointerException.
+     */
+    @Test
+    public void testMissingOperationsMetadata() throws Exception {
+        WMTSCapabilities capabilities = createCapabilities("linz_basemaps_capabilities.xml");
+        WebMapTileServer tileServer =
+                new WebMapTileServer(
+                        new URL("https://basemaps.linz.govt.nz/v1/tiles/WMTSCapabilities.xml"),
+                        capabilities);
+        Assert.assertNotNull(tileServer);
+    }
+
     protected WebMapTileServer getCustomWMS(URL featureURL)
             throws SAXException, URISyntaxException, IOException {
         return new WebMapTileServer(featureURL);

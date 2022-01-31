@@ -65,7 +65,7 @@ public class JFileImageChooserTest extends GraphicsTestBase<DialogFixture, Dialo
 
     private static final Class<? extends Component> DIALOG_CLASS = JFileImageChooser.class;
 
-    private static final ExecutorService executor = Executors.newSingleThreadExecutor();;
+    private static final ExecutorService executor = Executors.newSingleThreadExecutor();
     private static List<String> readerFileSuffixes;
     private static List<String> writerFileSuffixes;
 

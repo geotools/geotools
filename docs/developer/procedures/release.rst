@@ -11,7 +11,7 @@ Before you start
 Notify developer list
 ^^^^^^^^^^^^^^^^^^^^^
 
-It is good practice to notify the `GeoTools developer list <https://lists.sourceforge.net/lists/listinfo/geotools-devel>`_ of the intention to make the release a few days in advance, even though the release date has been agreed upon before hand. 
+It is good practice to notify the `GeoTools developer list <https://lists.sourceforge.net/lists/listinfo/geotools-devel>`__ of the intention to make the release a few days in advance, even though the release date has been agreed upon before hand. 
 
 Prerequisites
 -------------
@@ -66,7 +66,7 @@ Release in JIRA
 
 1. Navigate to the `GeoTools project page <https://osgeo-org.atlassian.net/projects/GEOT?selectedItem=com.atlassian.jira.jira-projects-plugin:release-page&status=released-unreleased>`_ in JIRA.
 
-2. Add a new version for the next version to be released after the current release. For example, if you are releasing GeoTools 17.5, create version 17.6.
+2. Add a new version for the next version to be released after the current release. For example, if you are releasing GeoTools 27.1, create version 27.2.
 
 3. Click in the Actions column for the version you are releasing and select Release. Enter the release date when prompted. If there are still unsolved issues remaining in this release, you will be prompted to move them to an unreleased version. If so, choose the new version you created in step 
 
@@ -187,28 +187,39 @@ Download and try out some of the artifacts from the above location and do a
 quick smoke test that there are no issues. Engage other developers to help 
 test on the developer list.
 
-Check the artifacts by:
+1. Source download: The Jenkins job will perform a build of the source artifacts on an empty Maven
+   repository to make sure any random user out there can do the same. If you want
+   you can still manually test the artifacts by:
 
-*  Unpacking the sources
-*  Checking the README.html links go to the correct stable or maintenance user guide
+   * Unpacking the sources
+   * Temporarily moving the ``$HOME/.m2/repository`` to a different location, so that Maven will be forced to build from an empty repo. 
+   * Do a full build using ``mvn install -Dall -T1C``
+   * On a successful build, delete ``$HOME/.m2/repository`` and restore the old maven repository backed up at the beginning
+   
+   If you don't want to fiddle with your main repo just use ``mvn -Dmaven.repo.local=/tmp/m2 install -Dall -T1C`` where it points to any empty directory.
 
-The Jenkins job will perform a build of the source artifacts on an empty Maven
-repository to make sure any random user out there can do the same. If you want
-you can still manually test the artifacts by:
+3. Userguide: check the eclipse quickstart section on `geotools.version`, should reference the correct release tag and snapshot tag.
 
-*  Temporarily moving the ``$HOME/.m2/repository`` to a different location, so that Maven will be forced to build from an empty repo. 
-*  Do a full build using ``mvn install -Dall -T1C``
-*  On a successful build, delete ``$HOME/.m2/repository`` and restore the old maven repository backed up at the beginning
-* If you don't want to fiddle with your main repo just use ``mvn -Dmaven.repo.local=/tmp/m2 install -Dall -T1C`` where it points to any empty directory.
-
-Download the user guide:
-
-* Check the eclipse quickstart section on `geotools.version`, should reference the correct release tag and snapshot tag.
+4. Binary download:
+   
+   * Checking the README.html links go to the correct stable or maintenance user guide
+   
+   * Check library loads:
+     
+     .. code-block:: bash
+        
+        java -cp "lib/*" org.geotools.util.factory.GeoTools
+   
+   * Run quickstart:
+     
+     .. code-block:: bash
+     
+        mkdir bin
+        javac -cp "lib/*" -d bin src/org/geotools/tutorial/quickstart/Quickstart.java 
+        java -cp "lib/*:bin" org.geotools.tutorial.quickstart.Quickstart
  
 Publish the Release
 -------------------
-
-
 
 Run the `geotools-release-publish <https://build.geoserver.org/view/geotools/job/geotools-release-publish/>`_ in Jenkins. The job takes the following parameters:
 
@@ -238,6 +249,48 @@ to the SourceForge FRS server, and also deploy the artifacts to the public geoto
 #. Navigate to `Sourceforge <http://sourceforge.net/projects/geotools/>`__ and verify that the artifacts have been uploaded properly.
 #. If this is the latest stable release, make its ``-bin.zip`` the default download for all platforms (use the "i" button).
 
+Release notes
+-------------
+
+Publish release notes to github tag:
+
+#. Select the correct release from `JIRA Releases <https://osgeo-org.atlassian.net/projects/GEOT?orderField=RANK&selectedItem=com.atlassian.jira.jira-projects-plugin%3Arelease-page&status=released>`__ page.
+
+#. From the release page, locate the :guilabel:`Release notes` button at the top of the page to open the release notes edit
+  
+#. Generate release notes as markdown:
+   
+   * Select format `Markdown`
+   * Layout: Issue key with link
+   * Issue types: `Bug` and `Improvement`
+   
+   Change the heading from :kbd:`Release notes - GeoTools - Version 26.1` to :kbd:`Release notes`, and apply the change with :guilabel:`Done`.
+
+   Use :guilabel:`Copy to clipboard` to obtain the markdown, similar to the following:
+   
+   .. code-block:: text
+   
+      # Release notes
+
+      ### Bug
+
+      [GEOT-7001](https://osgeo-org.atlassian.net/browse/GEOT-7001) XmlComplexFeatureParser gives wrong name for ComplexAttribute
+
+      ### Improvement
+
+      [GEOT-7020](https://osgeo-org.atlassian.net/browse/GEOT-7020) Add ProjectionHandler for orthographic
+
+      [GEOT-7007](https://osgeo-org.atlassian.net/browse/GEOT-7007) Shapefile set files search may take very long on big shapefile directories
+
+#. Navigate to github tags https://github.com/geotools/geotools/tags
+   
+   Locate the new tag from the list, and use :menuselection:`... --> Create release`
+   
+   * Release title: `GeoTools 26.1`
+   * Write: Paste the markdown from Jira release notes editor
+   
+   Use :guilabel:`Publish release` button to publish the release notes.
+   
 Announce the Release
 --------------------
 
@@ -250,7 +303,7 @@ Announce on GeoTools Blog
 #. You will need to correct the following information: 
 
    * Update the Sourceforge links above to reflect the release
-   * Update the Release Notes by choosing the the correct version from `JIRA changelogs <https://osgeo-org.atlassian.net/projects/GEOT?selectedItem=com.atlassian.jira.jira-projects-plugin:release-page>`_
+   * Update the Release Notes with link to GitHub release URL: https://github.com/geotools/geotools/releases/tag/26.1
    * For a new stable series, be sure to thank those involved with the release (testing, completed proposals, docs, and so on)
 
 #. The public entry point will be here: http://geotoolsnews.blogspot.com/
@@ -265,14 +318,14 @@ Cut and paste from the blog post to the following:
 1. geotools-devel@lists.sourceforge.net
    
    * To: geotools-devel@lists.sourceforge.net
-   * Subject: 8.0-RC1 Released
+   * Subject: 26.1 Released
    
 2. geotools-gt2-users@lists.sourceforge.net
    
    Let the user list know:
    
    * To: geotools-gt2-users@lists.sourceforge.net
-   * Subject: GeoTools 8.0-RC1 Released
+   * Subject: GeoTools 26.1 Released
 
 3. Open Source Geospatial Foundation
    
@@ -284,4 +337,4 @@ Cut and paste from the blog post to the following:
 4. Post a message to the osgeo news email list (you are subscribed right?)
    
    * To: news_item@osgeo.org
-   * Subject: GeoTools 8.0-RC1 Released
+   * Subject: GeoTools 26.1 Released

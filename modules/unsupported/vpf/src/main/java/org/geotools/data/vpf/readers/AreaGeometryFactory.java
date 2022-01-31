@@ -181,16 +181,8 @@ public class AreaGeometryFactory extends VPFGeometryFactory implements FileConst
                             // at the left and right edges to see which has a start node
                             // that's the same as this edge's end node.  Hopefully someone
                             // smarter can come up with a better solution.
-                            int leftEdgeStartNode =
-                                    ((Integer)
-                                                    edgeFile.getRowFromId("id", leftEdge)
-                                                            .getAttribute("start_node"))
-                                            .intValue();
-                            int rightEdgeStartNode =
-                                    ((Integer)
-                                                    edgeFile.getRowFromId("id", rightEdge)
-                                                            .getAttribute("start_node"))
-                                            .intValue();
+                            int leftEdgeStartNode = getNode(edgeFile, leftEdge, "start_node");
+                            int rightEdgeStartNode = getNode(edgeFile, rightEdge, "start_node");
 
                             if (leftEdgeStartNode == endNode) {
                                 isLeft = true;
@@ -304,5 +296,9 @@ public class AreaGeometryFactory extends VPFGeometryFactory implements FileConst
         }
 
         return result;
+    }
+
+    private int getNode(VPFFile edgeFile, int id, String node) {
+        return ((Integer) edgeFile.getRowFromId("id", id).getAttribute(node)).intValue();
     }
 }

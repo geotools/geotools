@@ -555,6 +555,10 @@ public class GML3MockData {
         return gf.createMultiPolygon(new Polygon[] {polygon(), polygon()});
     }
 
+    public static MultiPolygon multiSurface() {
+        return gf.createMultiSurface(Arrays.asList(polygon(), polygon()));
+    }
+
     public static Polygon curvePolygon() {
         LineString curve1 = gf.createCurvedGeometry(2, 0, 0, 2, 0, 2, 1, 2, 3, 4, 3);
         LineString line1 = gf.createLineString(new LiteCoordinateSequence(4, 3, 4, 5, 1, 4, 0, 0));

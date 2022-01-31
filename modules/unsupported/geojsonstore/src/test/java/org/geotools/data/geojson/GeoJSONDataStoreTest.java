@@ -18,7 +18,6 @@ package org.geotools.data.geojson;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.URL;
@@ -31,6 +30,7 @@ import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -86,21 +86,22 @@ public class GeoJSONDataStoreTest {
         GeoJSONDataStore fds = new GeoJSONDataStore(url);
         String type = fds.getNames().get(0).getLocalPart();
         Query query = new Query(type);
+        Class<?> lastGeometryBinding = null;
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                 fds.getFeatureReader(query, null)) {
             SimpleFeatureType schema = reader.getFeatureType();
-            assertTrue(
-                    Geometry.class.isAssignableFrom(
-                            schema.getGeometryDescriptor().getType().getBinding()));
             assertNotNull(schema);
             int count = 0;
             while (reader.hasNext()) {
-                reader.next();
+                SimpleFeature sf = reader.next();
+                lastGeometryBinding =
+                        sf.getFeatureType().getGeometryDescriptor().getType().getBinding();
                 count++;
             }
 
             assertEquals(7, count);
         }
+        assertEquals(Geometry.class, lastGeometryBinding);
     }
 
     // An ogr written file
@@ -116,9 +117,7 @@ public class GeoJSONDataStoreTest {
                 fds.getFeatureReader(query, null)) {
             SimpleFeatureType schema = reader.getFeatureType();
             // System.out.println(schema);
-            assertTrue(
-                    Geometry.class.isAssignableFrom(
-                            schema.getGeometryDescriptor().getType().getBinding()));
+            assertEquals(Point.class, schema.getGeometryDescriptor().getType().getBinding());
             assertNotNull(schema);
             int count = 0;
             while (reader.hasNext()) {

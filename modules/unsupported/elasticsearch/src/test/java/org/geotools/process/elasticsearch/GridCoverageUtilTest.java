@@ -20,7 +20,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.awt.geom.Point2D;
 import java.awt.image.RenderedImage;
-import java.util.stream.IntStream;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoordinates2D;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -45,19 +44,12 @@ public class GridCoverageUtilTest {
         assertEquals(4, renderedImage.getWidth());
         assertEquals(4, renderedImage.getHeight());
         float[][] expected = {{1, 1, 2, 2}, {1, 1, 2, 2}, {3, 3, 4, 4}, {3, 3, 4, 4}};
-        IntStream.range(0, 4)
-                .forEach(
-                        i ->
-                                IntStream.range(0, 4)
-                                        .forEach(
-                                                j -> {
-                                                    float actual =
-                                                            scaled.evaluate(
-                                                                            new GridCoordinates2D(
-                                                                                    j, i),
-                                                                            new float[1])[0];
-                                                    assertEquals(expected[i][j], actual, 1e-10);
-                                                }));
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                float actual = scaled.evaluate(new GridCoordinates2D(j, i), new float[1])[0];
+                assertEquals(expected[i][j], actual, 1e-10);
+            }
+        }
     }
 
     @Test
@@ -73,19 +65,12 @@ public class GridCoverageUtilTest {
         assertEquals(2, renderedImage.getWidth());
         assertEquals(2, renderedImage.getHeight());
         float[][] expected = {{1, 2}, {3, 4}};
-        IntStream.range(0, 2)
-                .forEach(
-                        i ->
-                                IntStream.range(0, 2)
-                                        .forEach(
-                                                j -> {
-                                                    float actual =
-                                                            scaled.evaluate(
-                                                                            new GridCoordinates2D(
-                                                                                    j, i),
-                                                                            new float[1])[0];
-                                                    assertEquals(expected[i][j], actual, 1e-10);
-                                                }));
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                float actual = scaled.evaluate(new GridCoordinates2D(j, i), new float[1])[0];
+                assertEquals(expected[i][j], actual, 1e-10);
+            }
+        }
     }
 
     @Test

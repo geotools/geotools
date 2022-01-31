@@ -318,25 +318,7 @@ public class BindingPropertyExtractor implements PropertyExtractor {
                         childAux = childAux.getResolvedElementDeclaration();
                     final XSDElementDeclaration child = childAux;
                     final Optional<Attribute> attributeOpt =
-                            tuple.stream()
-                                    .filter(
-                                            x ->
-                                                    Optional.ofNullable(x)
-                                                                    .map(a -> a.getDescriptor())
-                                                                    .map(a -> a.getName())
-                                                                    .map(a -> a.getLocalPart())
-                                                                    .isPresent()
-                                                            && Objects.equals(
-                                                                    child.getName(),
-                                                                    x.getDescriptor()
-                                                                            .getName()
-                                                                            .getLocalPart())
-                                                            && Objects.equals(
-                                                                    child.getTargetNamespace(),
-                                                                    x.getDescriptor()
-                                                                            .getName()
-                                                                            .getNamespaceURI()))
-                                    .findFirst();
+                            tuple.stream().filter(x -> attributeMatches(x, child)).findFirst();
                     if (attributeOpt.isPresent()) {
                         final Attribute attribute = attributeOpt.get();
                         properties.add(new Object[] {particle, attribute.getValue()});
@@ -344,6 +326,19 @@ public class BindingPropertyExtractor implements PropertyExtractor {
                 }
             }
         }
+    }
+
+    private boolean attributeMatches(Attribute att, XSDElementDeclaration declaration) {
+        return Optional.ofNullable(att)
+                        .map(a -> a.getDescriptor())
+                        .map(a -> a.getName())
+                        .map(a -> a.getLocalPart())
+                        .isPresent()
+                && Objects.equals(
+                        declaration.getName(), att.getDescriptor().getName().getLocalPart())
+                && Objects.equals(
+                        declaration.getTargetNamespace(),
+                        att.getDescriptor().getName().getNamespaceURI());
     }
 
     private boolean isUnboundedSequence(Object object, XSDElementDeclaration element) {

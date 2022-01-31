@@ -57,7 +57,10 @@ public class WebMapTileServerTest {
     public void nasaGetEnvelopeTest() throws Exception {
 
         WMTSCapabilities caps = createCapabilities("nasa.getcapa.xml");
-        WebMapTileServer wmts = new WebMapTileServer(caps);
+        WebMapTileServer wmts =
+                new WebMapTileServer(
+                        new URL("https://gibs.earthdata.nasa.gov/wmts/epsg4326/best/wmts.cgi"),
+                        caps);
 
         Layer layer = caps.getLayer("AMSRE_Surface_Rain_Rate_Night");
         // urn:ogc:def:crs:OGC:1.3:CRS84
@@ -85,7 +88,9 @@ public class WebMapTileServerTest {
     @Test
     public void chGetEnvelopeTest() throws Exception {
         WMTSCapabilities caps = createCapabilities("admin_ch.getcapa.xml");
-        WebMapTileServer wmts = new WebMapTileServer(caps);
+        WebMapTileServer wmts =
+                new WebMapTileServer(
+                        new URL("http://wmts.geo.admin.ch/1.0.0/WMTSCapabilities.xml"), caps);
 
         Layer layer = caps.getLayer("ch.are.alpenkonvention");
         // <ows:SupportedCRS>urn:ogc:def:crs:EPSG:2056</ows:SupportedCRS>
@@ -114,7 +119,10 @@ public class WebMapTileServerTest {
     @Test
     public void testMapRequestCRS() throws Exception {
 
-        WebMapTileServer server = createServer("geodata.nationaalgeoregister.nl.xml");
+        WebMapTileServer server =
+                createServer(
+                        new URL("https://geodata.nationaalgeoregister.nl/tiles/service/wmts"),
+                        "geodata.nationaalgeoregister.nl.xml");
         WMTSLayer layer = server.getCapabilities().getLayer("brtachtergrondkaartwater");
         ReferencedEnvelope bbox = new ReferencedEnvelope(51, 53, 4, 6, CRS.decode("EPSG:4326"));
 
@@ -189,7 +197,11 @@ public class WebMapTileServerTest {
      */
     @Test
     public void testGEOT6741() throws Exception {
-        WebMapTileServer server = createServer("linz.xml");
+        WebMapTileServer server =
+                createServer(
+                        new URL(
+                                "https://data.linz.govt.nz/services%3Bkey%3De501b3b9aa96472a85fe188cc8919487/wmts/1.0.0/layer/50767/WMTSCapabilities.xml"),
+                        "linz.xml");
 
         GetTileRequest tileRequest = server.createGetTileRequest();
         WMTSLayer layer = server.getCapabilities().getLayer("layer-50767");
@@ -203,7 +215,10 @@ public class WebMapTileServerTest {
     /** Add ability to parse "broken" URN from WMTS Spec urn:ogc:def:crs:EPSG:6.18:3:3857 */
     @Test
     public void testGEOT6742() throws Exception {
-        WebMapTileServer server = createServer("noaa-tileserver.xml");
+        WebMapTileServer server =
+                createServer(
+                        new URL("http://tileservice.charts.noaa.gov/tiles/wmts"),
+                        "noaa-tileserver.xml");
         GetTileRequest tileRequest = server.createGetTileRequest();
         WMTSLayer layer = server.getCapabilities().getLayer("83637_2");
         tileRequest.setLayer(layer);
@@ -260,10 +275,10 @@ public class WebMapTileServerTest {
         tiles.iterator().next().getBufferedImage();
     }
 
-    private WebMapTileServer createServer(String resourceName) throws Exception {
+    private WebMapTileServer createServer(URL serverUrl, String resourceName) throws Exception {
 
         WMTSCapabilities capa = createCapabilities(resourceName);
-        return new WebMapTileServer(capa);
+        return new WebMapTileServer(serverUrl, capa);
     }
 
     @Test
@@ -276,13 +291,11 @@ public class WebMapTileServerTest {
                 new MockHttpResponse(TestData.file(null, "world.png"), "image/png"));
 
         Properties props = new Properties();
+        final URL serverUrl = new URL("http://localhost:8080/geoserver/gwc/service/wmts");
         GetSingleTileRequest request =
-                new WMTSSpecification.GetKVPTileRequest(
-                        new URL("http://localhost:8080/geoserver/gwc/service/wmts"),
-                        props,
-                        httpClient);
+                new WMTSSpecification.GetKVPTileRequest(serverUrl, props, httpClient);
 
-        WebMapTileServer server = new WebMapTileServer(capabilities, httpClient);
+        WebMapTileServer server = new WebMapTileServer(serverUrl, httpClient, capabilities);
         request.setLayer(server.getCapabilities().getLayer("spearfish"));
         request.setStyle("default");
         request.setFormat("image/png");
@@ -309,7 +322,9 @@ public class WebMapTileServerTest {
                 new WMTSSpecification.GetRestTileRequest(
                         capabilities.getService().getOnlineResource(), props, httpClient);
 
-        WebMapTileServer server = new WebMapTileServer(capabilities, httpClient);
+        WebMapTileServer server =
+                new WebMapTileServer(
+                        new URL("https://maps1.wien.gv.at/basemap"), httpClient, capabilities);
         request.setLayer(server.getCapabilities().getLayer("bmapoverlay"));
         request.setStyle("normal");
         request.setFormat("image/png");

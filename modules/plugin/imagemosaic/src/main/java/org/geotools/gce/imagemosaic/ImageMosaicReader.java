@@ -19,7 +19,6 @@ package org.geotools.gce.imagemosaic;
 import it.geosolutions.imageio.maskband.DatasetLayout;
 import java.awt.Rectangle;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
@@ -43,7 +42,6 @@ import javax.imageio.spi.ImageReaderSpi;
 import javax.media.jai.ImageLayout;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -329,21 +327,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                 if (configuration == null) {
                     // this can be used to look for properties files that do NOT define a datastore
                     final File[] properties =
-                            parentDirectory.listFiles(
-                                    (FilenameFilter)
-                                            FileFilterUtils.and(
-                                                    FileFilterUtils.notFileFilter(
-                                                            FileFilterUtils.nameFileFilter(
-                                                                    "indexer.properties")),
-                                                    FileFilterUtils.and(
-                                                            FileFilterUtils.notFileFilter(
-                                                                    FileFilterUtils.nameFileFilter(
-                                                                            Utils
-                                                                                    .DATASTORE_PROPERTIES)),
-                                                            FileFilterUtils.makeFileOnly(
-                                                                    FileFilterUtils
-                                                                            .suffixFileFilter(
-                                                                                    ".properties")))));
+                            parentDirectory.listFiles(Utils.MOSAIC_PROPERTY_FILTER);
 
                     // Scan for MosaicConfigurationBeans from properties files
                     if (properties != null) {

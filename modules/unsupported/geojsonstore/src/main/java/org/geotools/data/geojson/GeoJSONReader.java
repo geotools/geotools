@@ -16,9 +16,7 @@
  */
 package org.geotools.data.geojson;
 
-import com.bedatadriven.jackson.datatype.jts.JtsModule;
 import com.bedatadriven.jackson.datatype.jts.parsers.GenericGeometryParser;
-import com.bedatadriven.jackson.datatype.jts.parsers.GeometryParser;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
@@ -47,7 +45,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -61,6 +61,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
+import org.opengis.feature.type.GeometryDescriptor;
 
 /**
  * Utility class to provide a reader for GeoJSON streams
@@ -69,13 +70,13 @@ import org.opengis.feature.type.FeatureType;
  */
 public class GeoJSONReader implements AutoCloseable {
     /** GEOMETRY_NAME */
-    public static final String GEOMETRY_NAME = "the_geom";
+    public static final String GEOMETRY_NAME = "geometry";
 
     private static final Logger LOGGER = Logging.getLogger(GeoJSONReader.class);
 
     private JsonParser parser;
 
-    private static JsonFactory factory = new JsonFactory();;
+    private static JsonFactory factory = new JsonFactory();
 
     private SimpleFeatureType schema;
 
@@ -87,23 +88,40 @@ public class GeoJSONReader implements AutoCloseable {
 
     private boolean schemaChanged = false;
 
-    private static GeometryFactory gFac = new GeometryFactory();
+    private static GeometryFactory GEOM_FACTORY = new GeometryFactory();
+
+    private static GenericGeometryParser GEOM_PARSER = new GenericGeometryParser(GEOM_FACTORY);
 
     private URL url;
+
+    private InputStream is;
 
     private boolean guessingDates = true;
 
     /** For reading be a bit more lenient regarding what we parse */
     private DateParser dateParser = new DateParser();
 
+    /**
+     * Builds a GeoJSON parser from a GeoJSON source, located at the specified URL.
+     *
+     * @param url
+     * @throws IOException
+     */
     public GeoJSONReader(URL url) throws IOException {
         this.url = url;
+        this.is = url.openStream();
         parser = factory.createParser(url);
         baseName = FilenameUtils.getBaseName(url.getPath());
     }
 
+    /** Builds a GeoJSON parser from a GeoJSON document, provided as an {@link InputStream} */
     public GeoJSONReader(InputStream is) throws IOException {
         parser = factory.createParser(is);
+    }
+
+    /** Builds a GeoJSON parser from a GeoJSON document, provided as a string */
+    public GeoJSONReader(String json) throws IOException {
+        parser = factory.createParser(json);
     }
 
     /**
@@ -119,6 +137,11 @@ public class GeoJSONReader implements AutoCloseable {
         this.guessingDates = guessingDates;
     }
 
+    /**
+     * Returns true if the source is still connected, false otherwise.
+     *
+     * @return
+     */
     public boolean isConnected() {
         if (url != null) {
             try (InputStream inputStream = url.openStream()) {
@@ -138,10 +161,10 @@ public class GeoJSONReader implements AutoCloseable {
         return true;
     }
 
+    /** Pares and returns a single feature out of a GeoJSON document */
     public static SimpleFeature parseFeature(String json) throws JsonParseException, IOException {
         try (JsonParser lParser = factory.createParser(new ByteArrayInputStream(json.getBytes()))) {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.registerModule(new JtsModule());
+            ObjectMapper mapper = ObjectMapperFactory.getDefaultMapper();
             ObjectNode node = mapper.readTree(lParser);
             try (GeoJSONReader reader = new GeoJSONReader((InputStream) null)) {
                 SimpleFeature feature = reader.getNextFeature(node);
@@ -150,10 +173,7 @@ public class GeoJSONReader implements AutoCloseable {
         }
     }
 
-    /**
-     * @param jsonString
-     * @return
-     */
+    /** Parses and returns a feature collection from a GeoJSON */
     public static SimpleFeatureCollection parseFeatureCollection(String jsonString) {
         try (GeoJSONReader reader =
                 new GeoJSONReader(new ByteArrayInputStream(jsonString.getBytes()))) {
@@ -164,30 +184,38 @@ public class GeoJSONReader implements AutoCloseable {
         }
     }
 
-    /**
-     * @param input
-     * @return
-     */
+    /** Parses and returns a single geometry */
     public static Geometry parseGeometry(String input) {
         try (JsonParser lParser =
                 factory.createParser(new ByteArrayInputStream(input.getBytes()))) {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.registerModule(new JtsModule());
+            ObjectMapper mapper = ObjectMapperFactory.getDefaultMapper();
             ObjectNode node = mapper.readTree(lParser);
-            GeometryParser<Geometry> gParser = new GenericGeometryParser(gFac);
-            Geometry g = gParser.geometryFromJson(node);
+            Geometry g = GEOM_PARSER.geometryFromJson(node);
             return g;
         } catch (IOException e) {
             throw new RuntimeException("problem parsing Geometry", e);
         }
     }
 
+    /** Parses and returns a single feature from the source */
+    public SimpleFeature getFeature() throws IOException {
+        ObjectMapper mapper = ObjectMapperFactory.getDefaultMapper();
+        ObjectNode node = mapper.readTree(parser);
+        return getNextFeature(node);
+    }
+
+    /**
+     * Parses all features in the source and returns them as an in-memory feature collection with a
+     * stable {@link FeatureType}. In order to stream use {@link #getIterator()} instead.
+     *
+     * @return
+     * @throws IOException
+     */
     public SimpleFeatureCollection getFeatures() throws IOException {
         if (!isConnected()) {
             throw new IOException("not connected to " + url.toExternalForm());
         }
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JtsModule());
+        ObjectMapper mapper = ObjectMapperFactory.getDefaultMapper();
         List<SimpleFeature> features = new ArrayList<>();
         builder = null;
         while (!parser.isClosed()) {
@@ -220,9 +248,12 @@ public class GeoJSONReader implements AutoCloseable {
                     nFeatures.add(feature);
                 }
             }
-            return DataUtilities.collection(nFeatures);
+            features = nFeatures;
         }
-        return DataUtilities.collection(features);
+        // a GeoJSON feature collection has an array of features -> it's an ordered entity
+        // so we should return the features in the same order we got them, cannot use
+        // DefaultFeatureCollectin, but an order preserving collection instead
+        return new ListFeatureCollection(schema, features);
     }
 
     /** */
@@ -238,13 +269,20 @@ public class GeoJSONReader implements AutoCloseable {
                             + type.asText()
                             + "'");
         }
+        JsonNode geom = node.get("geometry");
+
+        Geometry g = GEOM_PARSER.geometryFromJson(geom);
+
         JsonNode props = node.get("properties");
-        if (builder == null) {
-            builder = getBuilder(props);
+        if (builder == null
+                || !builder.getFeatureType()
+                        .getGeometryDescriptor()
+                        .getType()
+                        .getBinding()
+                        .isInstance(g)) {
+            builder = getBuilder(props, g);
         }
         boolean restart = true;
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JtsModule());
         SimpleFeature feature = null;
         while (restart) {
             restart = false;
@@ -258,7 +296,7 @@ public class GeoJSONReader implements AutoCloseable {
                     restart = true;
                     builder = null;
                     // rebuild the schema
-                    builder = getBuilder(props);
+                    builder = getBuilder(props, g);
                     setSchemaChanged(true);
                     descriptor = schema.getDescriptor(n.getKey());
                 }
@@ -301,9 +339,8 @@ public class GeoJSONReader implements AutoCloseable {
                     }
                     builder.set(n.getKey(), list);
                 } else if (Geometry.class.isAssignableFrom(binding)) {
-                    GeometryParser<Geometry> gParser = new GenericGeometryParser(gFac);
-                    Geometry g = gParser.geometryFromJson(n.getValue());
-                    builder.set(n.getKey(), g);
+                    Geometry geomAtt = GEOM_PARSER.geometryFromJson(n.getValue());
+                    builder.set(n.getKey(), geomAtt);
                 } else if (Date.class.isAssignableFrom(binding)) {
                     String text = n.getValue().asText();
                     Date date = dateParser.parse(text);
@@ -321,9 +358,6 @@ public class GeoJSONReader implements AutoCloseable {
                     builder.set(n.getKey(), n.getValue().asText());
                 }
             }
-            JsonNode geom = node.get("geometry");
-            GeometryParser<Geometry> gParser = new GenericGeometryParser(gFac);
-            Geometry g = gParser.geometryFromJson(geom);
             builder.set(GEOMETRY_NAME, g);
 
             String newId = baseName + "." + nextID++;
@@ -333,7 +367,7 @@ public class GeoJSONReader implements AutoCloseable {
     }
 
     /** Create a simpleFeatureBuilder for the current schema + these new properties. */
-    private SimpleFeatureBuilder getBuilder(JsonNode props) {
+    private SimpleFeatureBuilder getBuilder(JsonNode props, Geometry g) {
 
         SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
         // GeoJSON is always WGS84
@@ -343,15 +377,30 @@ public class GeoJSONReader implements AutoCloseable {
         if (schema != null) {
             // copy the existing types to the new schema
             for (AttributeDescriptor att : schema.getAttributeDescriptors()) {
-                typeBuilder.add(att);
+                // in case of Geometry, see if we have mixed geometry types
+                if (att instanceof GeometryDescriptor
+                        && schema.getGeometryDescriptor() == att
+                        && g != null) {
+                    GeometryDescriptor gd = (GeometryDescriptor) att;
+                    Class<?> currClass = g.getClass();
+                    Class<?> prevClass = gd.getType().getBinding();
+                    if (!prevClass.isAssignableFrom(currClass)) {
+                        typeBuilder.add(GEOMETRY_NAME, Geometry.class, DefaultGeographicCRS.WGS84);
+                    } else {
+                        typeBuilder.add(att);
+                    }
+                } else {
+                    typeBuilder.add(att);
+                }
                 existing.add(att.getLocalName());
             }
         }
 
-        if (typeBuilder.getDefaultGeometry() == null) {
+        if (typeBuilder.getDefaultGeometry() == null && g != null) {
             typeBuilder.setDefaultGeometry(GEOMETRY_NAME);
             if (!existing.contains(GEOMETRY_NAME)) {
-                typeBuilder.add(GEOMETRY_NAME, Geometry.class, DefaultGeographicCRS.WGS84);
+                Class<?> geomType = g.getClass();
+                typeBuilder.add(GEOMETRY_NAME, geomType, DefaultGeographicCRS.WGS84);
             }
         }
         Iterator<Entry<String, JsonNode>> fields = props.fields();
@@ -402,7 +451,14 @@ public class GeoJSONReader implements AutoCloseable {
         return new SimpleFeatureBuilder(schema);
     }
 
-    public FeatureIterator<SimpleFeature> getIterator() throws IOException {
+    /**
+     * Returns a {@link FeatureIterator} streaming over the provided source. The feature type may
+     * evolve feature by feature, discovering new attributes that were not previosly encountered.
+     *
+     * @return
+     * @throws IOException
+     */
+    public SimpleFeatureIterator getIterator() throws IOException {
         if (!isConnected()) {
             LOGGER.fine("trying to read an unconnected data stream");
             return new DefaultFeatureCollection(null, null).features();
@@ -410,6 +466,13 @@ public class GeoJSONReader implements AutoCloseable {
         return new GeoJsonIterator(parser);
     }
 
+    /**
+     * Returns the current feature type, with the structure discovered so far while parsing features
+     * (parse them all in order to get a final, stable feature type):
+     *
+     * @return
+     * @throws IOException
+     */
     public FeatureType getSchema() throws IOException {
         if (!isConnected()) {
             throw new IOException("not connected to " + url.toExternalForm());
@@ -434,11 +497,16 @@ public class GeoJSONReader implements AutoCloseable {
 
     @Override
     public void close() throws IOException {
-        parser.close();
-        parser = null;
+        if (parser != null) {
+            parser.close();
+            parser = null;
+        }
+        if (is != null) {
+            is.close();
+        }
     }
 
-    private class GeoJsonIterator implements FeatureIterator<SimpleFeature>, AutoCloseable {
+    private class GeoJsonIterator implements SimpleFeatureIterator, AutoCloseable {
         /** @throws IOException */
         ObjectMapper mapper = new ObjectMapper();
 
@@ -501,7 +569,17 @@ public class GeoJSONReader implements AutoCloseable {
         }
 
         @Override
+        @SuppressWarnings("PMD.UseTryWithResources")
         public void close() {
+            try {
+                try {
+                    if (parser != null) parser.close();
+                } finally {
+                    if (is != null) is.close();
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("Unexpected failure closing iterator", e);
+            }
             parser = null;
         }
     }

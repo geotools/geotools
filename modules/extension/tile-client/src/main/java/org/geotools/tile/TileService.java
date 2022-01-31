@@ -72,7 +72,7 @@ public abstract class TileService implements ImageLoader {
      *
      * <p>Client isn't set so you should override loadImageTileImage.
      *
-     * @param name
+     * @param name the name. Cannot be null.
      */
     protected TileService(String name) {
         if (name == null || name.isEmpty()) {

@@ -60,6 +60,9 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
 
     public static final Param READ_ONLY = new Param("read_only", Boolean.class, "Read only", false);
 
+    public static final Param CONTENTS_ONLY =
+            new Param("contents_only", Boolean.class, "Contents only", false, Boolean.TRUE);
+
     /** Maximum mapped memory, defaults to null */
     public static final Param MEMORY_MAP_SIZE =
             new Param(
@@ -104,6 +107,20 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
     @Override
     protected String getDriverClassName() {
         return "org.sqlite.JDBC";
+    }
+
+    @Override
+    protected SQLDialect createSQLDialect(JDBCDataStore dataStore, Map<String, ?> params) {
+        try {
+            Boolean contentsOnly = (Boolean) CONTENTS_ONLY.lookUp(params);
+            GeoPkgDialect dialect = (GeoPkgDialect) createSQLDialect(dataStore);
+            if (contentsOnly != null) {
+                dialect.setContentsOnly(contentsOnly);
+            }
+            return dialect;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

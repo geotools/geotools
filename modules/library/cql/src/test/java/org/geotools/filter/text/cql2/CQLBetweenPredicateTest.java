@@ -81,7 +81,7 @@ public class CQLBetweenPredicateTest {
         // test compound attribute gmd:aa:bb.gmd:cc.gmd:dd
         final String prop = "gmd:aa:bb.gmd:cc.gmd:dd";
         final String propExpected = "gmd:aa:bb/gmd:cc/gmd:dd";
-        Filter resultFilter = CQL.toFilter(prop + " BETWEEN 100 AND 200 ");
+        Filter resultFilter = parseFilter(prop + " BETWEEN 100 AND 200 ");
 
         Assert.assertTrue(
                 "PropertyIsBetween filter was expected", resultFilter instanceof PropertyIsBetween);
@@ -96,10 +96,14 @@ public class CQLBetweenPredicateTest {
     protected void testBetweenPredicate(final String samplePredicate, Filter expected)
             throws Exception {
 
-        Filter actual = CompilerUtil.parseFilter(this.language, samplePredicate);
+        Filter actual = parseFilter(samplePredicate);
 
         Assert.assertNotNull("expects a not null filter", actual);
 
         Assert.assertEquals("between filter error", expected, actual);
+    }
+
+    protected Filter parseFilter(String samplePredicate) throws CQLException {
+        return CompilerUtil.parseFilter(this.language, samplePredicate);
     }
 }

@@ -21,6 +21,7 @@ import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.commons.Language;
 import org.junit.Assert;
 import org.junit.Test;
+import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Divide;
 import org.opengis.filter.expression.Expression;
@@ -52,11 +53,14 @@ public class CQLExpressionTest {
 
     @Test
     public void attributeName() throws CQLException {
-
-        Expression expression = CompilerUtil.parseExpression(this.language, "attName");
+        Expression expression = parseExpression("attName");
         Assert.assertNotNull(expression);
         Assert.assertTrue(expression instanceof PropertyName);
         Assert.assertEquals("attName", ((PropertyName) expression).getPropertyName());
+    }
+
+    protected Expression parseExpression(String cql) throws CQLException {
+        return CompilerUtil.parseExpression(language, cql);
     }
 
     /** Bad identifier */
@@ -64,12 +68,16 @@ public class CQLExpressionTest {
     public void badPropertyName() throws CQLException {
 
         String cqlExpression = "1A=2";
-        CompilerUtil.parseFilter(language, cqlExpression);
+        parseFilter(cqlExpression);
+    }
+
+    protected Filter parseFilter(String cql) throws CQLException {
+        return CompilerUtil.parseFilter(language, cql);
     }
 
     @Test
     public void add() throws CQLException {
-        Expression expression = CompilerUtil.parseExpression(language, "a + b + x.y.z");
+        Expression expression = parseExpression("a + b + x.y.z");
         Assert.assertNotNull(expression);
         Assert.assertTrue(expression instanceof Add);
 
@@ -85,13 +93,13 @@ public class CQLExpressionTest {
     @Test(expected = CQLException.class)
     public final void testGetSyntaxError() throws CQLException {
         final String malformedExp = "12 / ] + 4";
-        CompilerUtil.parseExpression(language, malformedExp);
+        parseExpression(malformedExp);
     }
 
     @Test
     public void testCombinedOperations() throws Exception {
         final String combinedOperations = "4 / (1 + 3) + 5 * (10 - 8)";
-        Expression exp = CompilerUtil.parseExpression(language, combinedOperations);
+        Expression exp = parseExpression(combinedOperations);
         assertExpectedExpressionsStructure(exp);
 
         // Get the Expression as CQL text
@@ -101,7 +109,7 @@ public class CQLExpressionTest {
         // Without the visitWithbrackets fix, the operators precedences get
         // screwed up so that the result was
         // 4 / 1 + 3 + 5 * 10 - 8
-        exp = CompilerUtil.parseExpression(language, cql);
+        exp = parseExpression(cql);
         assertExpectedExpressionsStructure(exp);
     }
 

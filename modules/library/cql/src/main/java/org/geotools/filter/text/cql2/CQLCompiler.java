@@ -381,7 +381,7 @@ public class CQLCompiler extends CQLParser implements ICompiler {
                 return this.builder.buildGeometry(TokenAdapter.newAdapterFor(cqlNode.getToken()));
 
             case JJTENVELOPETAGGEDTEXT_NODE:
-                return this.builder.buildEnvelop(TokenAdapter.newAdapterFor(cqlNode.getToken()));
+                return this.builder.buildEnvelope(TokenAdapter.newAdapterFor(cqlNode.getToken()));
 
             case JJTINCLUDE_NODE:
                 return Filter.INCLUDE;

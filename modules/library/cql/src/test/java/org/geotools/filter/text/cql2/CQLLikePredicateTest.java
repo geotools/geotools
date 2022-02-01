@@ -78,13 +78,17 @@ public class CQLLikePredicateTest {
     public void likePredicate() throws Exception {
 
         // Like
-        Filter resultFilter = CompilerUtil.parseFilter(this.language, FilterCQLSample.LIKE_FILTER);
+        Filter resultFilter = parseFilter(FilterCQLSample.LIKE_FILTER);
 
         Assert.assertNotNull("Filter expected", resultFilter);
 
         Filter expected = FilterCQLSample.getSample(FilterCQLSample.LIKE_FILTER);
 
         Assert.assertEquals("like filter was expected", expected, resultFilter);
+    }
+
+    protected Filter parseFilter(String likeFilter) throws CQLException {
+        return CompilerUtil.parseFilter(this.language, likeFilter);
     }
 
     /**
@@ -104,8 +108,7 @@ public class CQLLikePredicateTest {
     @Test
     public void notLikePredicate() throws Exception {
         // not Like
-        Filter resultFilter =
-                CompilerUtil.parseFilter(this.language, FilterCQLSample.NOT_LIKE_FILTER);
+        Filter resultFilter = parseFilter(FilterCQLSample.NOT_LIKE_FILTER);
 
         Assert.assertNotNull("Filter expected", resultFilter);
 

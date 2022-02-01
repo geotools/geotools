@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>unsupported</artifactId>
+    <version>27-SNAPSHOT</version>
+  </parent>
+  <artifactId>gt-cql2-text</artifactId>
+  <name>OGC CQL2 support</name>
+
+  <properties>
+    <checkstyle.excludes>**/cql_2/parsers/**</checkstyle.excludes>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-cql</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-epsg-hsql</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-cql</artifactId>
+      <version>${project.version}</version>
+      <classifier>tests</classifier>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <!-- ==================================================== -->
+  <!--     Compilation (including non-standard plugins)     -->
+  <!-- ==================================================== -->
+  <build>
+    <plugins>
+
+      <plugin>
+        <groupId>org.geotools.maven</groupId>
+        <artifactId>jjtree-javacc</artifactId>
+        <version>${project.version}</version>
+
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+
+          </execution>
+
+        </executions>
+
+        <configuration>
+          <nodePackage>org.geotools.filter.text.cql_2.parsers</nodePackage>
+          <nodeDirectory>${basedir}/modified-src</nodeDirectory>
+          <sourceDirectory>${basedir}/src/main/jjtree</sourceDirectory>
+        </configuration>
+
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>add-source</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${project.build.directory}/generated-sources/jjtree-javacc</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+
+  </build>
+
+  <profiles>
+    <profile>
+      <id>lint-off</id>
+      <activation>
+        <property>
+          <name>qa</name>
+        </property>
+      </activation>
+      <properties>
+        <!-- 
+                  tried hard to have exclude generated sources based on the following but could not succeed.
+                  https://stackoverflow.com/questions/39994647/maven-3-how-to-exclude-generated-sources-from-xlint-check
+                  Disabling linting for java 11 in this module instead
+                -->
+        <lint>none</lint>
+      </properties>
+    </profile>
+  </profiles>
+
+</project>

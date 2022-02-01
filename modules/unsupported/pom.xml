@@ -44,6 +44,7 @@
     <module>tpk</module>
     <module>cql-json</module>
     <module>vsi</module>
+    <module>cql2</module>
   </modules>
   <profiles>
     <!-- ================================================== -->

@@ -53,11 +53,15 @@ public class CQLNullPredicateTest {
     protected void testNullPredicate(final String samplePredicate, Filter expected)
             throws Exception {
 
-        Filter actual = CompilerUtil.parseFilter(this.language, samplePredicate);
+        Filter actual = parseFilter(samplePredicate);
 
         Assert.assertNotNull("expects a not null filter", actual);
 
         Assert.assertEquals("Filter error", expected, actual);
+    }
+
+    protected Filter parseFilter(String samplePredicate) throws CQLException {
+        return CompilerUtil.parseFilter(this.language, samplePredicate);
     }
 
     /** Sample: ATTR1 IS NULL */

@@ -25,7 +25,6 @@ import java.util.Date;
 import java.util.TimeZone;
 import org.geotools.filter.AndImpl;
 import org.geotools.filter.NotImpl;
-import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.commons.Language;
 import org.geotools.filter.text.cql2.CQLComparisonPredicateTest;
 import org.geotools.filter.text.cql2.CQLException;
@@ -169,54 +168,54 @@ public class ECQLComparisonPredicateTest extends CQLComparisonPredicateTest {
 
     @Test
     public void dateLiteral() throws Exception {
-        Filter f = CompilerUtil.parseFilter(this.language, "X = 2012-02-01");
+        Filter f = parseFilter("X = 2012-02-01");
         testPropertyIsEqualDate(f, date(2012, FEBRUARY, 1, 0, 0, 0, 0, TimeZone.getDefault()));
     }
 
     @Test
     public void dateLiteralTimeZoneUTC() throws Exception {
-        Filter f = CompilerUtil.parseFilter(this.language, "X = 2012-02-01Z");
+        Filter f = parseFilter("X = 2012-02-01Z");
         testPropertyIsEqualDate(
                 f, date(2012, FEBRUARY, 1, 0, 0, 0, 0, TimeZone.getTimeZone("GMT")));
     }
 
     @Test
     public void dateLiteralTimeZonePlusMinus() throws Exception {
-        Filter f = CompilerUtil.parseFilter(this.language, "X = 2012-02-01-0800");
+        Filter f = parseFilter("X = 2012-02-01-0800");
         testPropertyIsEqualDate(
                 f, date(2012, FEBRUARY, 1, 0, 0, 0, 0, TimeZone.getTimeZone("GMT-8:00")));
 
-        f = CompilerUtil.parseFilter(this.language, "X = 2012-02-01+08:00");
+        f = parseFilter("X = 2012-02-01+08:00");
         testPropertyIsEqualDate(
                 f, date(2012, FEBRUARY, 1, 0, 0, 0, 0, TimeZone.getTimeZone("GMT+8:00")));
     }
 
     @Test
     public void dateTimeLiteral() throws Exception {
-        Filter f = CompilerUtil.parseFilter(this.language, "X = 2012-02-01T12:10:13");
+        Filter f = parseFilter("X = 2012-02-01T12:10:13");
         testPropertyIsEqualDate(f, date(2012, FEBRUARY, 1, 12, 10, 13, 0, TimeZone.getDefault()));
     }
 
     @Test
     public void dateTimeLiteralMilliseconds() throws Exception {
-        Filter f = CompilerUtil.parseFilter(this.language, "X = 2012-02-01T12:10:13.123");
+        Filter f = parseFilter("X = 2012-02-01T12:10:13.123");
         testPropertyIsEqualDate(f, date(2012, FEBRUARY, 1, 12, 10, 13, 123, TimeZone.getDefault()));
     }
 
     @Test
     public void dateTimeLiteralTimeZoneUTC() throws Exception {
-        Filter f = CompilerUtil.parseFilter(this.language, "X = 2012-02-01T12:10:13.123Z");
+        Filter f = parseFilter("X = 2012-02-01T12:10:13.123Z");
         testPropertyIsEqualDate(
                 f, date(2012, FEBRUARY, 1, 12, 10, 13, 123, TimeZone.getTimeZone("GMT")));
     }
 
     @Test
     public void dateTimeLiteralTimeZonePlusMinus() throws Exception {
-        Filter f = CompilerUtil.parseFilter(this.language, "X = 2012-02-01T12:10:13.123-0800");
+        Filter f = parseFilter("X = 2012-02-01T12:10:13.123-0800");
         testPropertyIsEqualDate(
                 f, date(2012, FEBRUARY, 1, 12, 10, 13, 123, TimeZone.getTimeZone("GMT-8:00")));
 
-        f = CompilerUtil.parseFilter(this.language, "X = 2012-02-01T12:10:13+08:00");
+        f = parseFilter("X = 2012-02-01T12:10:13+08:00");
         testPropertyIsEqualDate(
                 f, date(2012, FEBRUARY, 1, 12, 10, 13, 0, TimeZone.getTimeZone("GMT+8:00")));
     }
@@ -224,29 +223,25 @@ public class ECQLComparisonPredicateTest extends CQLComparisonPredicateTest {
     /** Checks that both positive and negative numbers are parsed to numbers, not strings */
     @Test
     public void testPositiveNegativeConsistent() throws Exception {
-        BinaryComparisonOperator f =
-                (BinaryComparisonOperator) CompilerUtil.parseFilter(this.language, "foo > -1");
+        BinaryComparisonOperator f = (BinaryComparisonOperator) parseFilter("foo > -1");
         assertEquals(Long.valueOf(-1), f.getExpression2().evaluate(null));
-        f = (BinaryComparisonOperator) CompilerUtil.parseFilter(this.language, "foo > 1");
+        f = (BinaryComparisonOperator) parseFilter("foo > 1");
         assertEquals(Long.valueOf(1), f.getExpression2().evaluate(null));
 
-        f = (BinaryComparisonOperator) CompilerUtil.parseFilter(this.language, "-1 > foo");
+        f = (BinaryComparisonOperator) parseFilter("-1 > foo");
         assertEquals(Long.valueOf(-1), f.getExpression1().evaluate(null));
-        f = (BinaryComparisonOperator) CompilerUtil.parseFilter(this.language, "1 > foo");
+        f = (BinaryComparisonOperator) parseFilter("1 > foo");
         assertEquals(Long.valueOf(1), f.getExpression1().evaluate(null));
 
-        PropertyIsBetween between =
-                (PropertyIsBetween) CompilerUtil.parseFilter(this.language, "foo between -1 and 1");
+        PropertyIsBetween between = (PropertyIsBetween) parseFilter("foo between -1 and 1");
         assertEquals(Long.valueOf(-1), between.getLowerBoundary().evaluate(null));
         assertEquals(Long.valueOf(1), between.getUpperBoundary().evaluate(null));
 
-        between =
-                (PropertyIsBetween)
-                        CompilerUtil.parseFilter(this.language, "-1 between foo and bar");
+        between = (PropertyIsBetween) parseFilter("-1 between foo and bar");
         assertEquals(Long.valueOf(-1), between.getExpression().evaluate(null));
     }
 
-    private Date date(
+    protected Date date(
             int year,
             int month,
             int dayOfMonth,
@@ -267,7 +262,7 @@ public class ECQLComparisonPredicateTest extends CQLComparisonPredicateTest {
         return c.getTime();
     }
 
-    private void testPropertyIsEqualDate(Filter f, Date expected) {
+    protected void testPropertyIsEqualDate(Filter f, Date expected) {
         Assert.assertTrue(f instanceof PropertyIsEqualTo);
 
         PropertyIsEqualTo eq = (PropertyIsEqualTo) f;
@@ -290,7 +285,7 @@ public class ECQLComparisonPredicateTest extends CQLComparisonPredicateTest {
 
         Filter expected = FilterECQLSample.getSample(testPredicate);
 
-        Filter actual = CompilerUtil.parseFilter(this.language, testPredicate);
+        Filter actual = parseFilter(testPredicate);
 
         Assert.assertNotNull("expects filter not null", actual);
 

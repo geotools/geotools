@@ -91,7 +91,7 @@ public abstract class AbstractFilterBuilder {
     /** Pattern for matching if a time zone specified as offset. */
     static Pattern TZOFFSET_PATTERN = Pattern.compile("[+-]\\d{2}(?:\\d{2})");
 
-    private final FilterFactory filterFactory;
+    protected final FilterFactory filterFactory;
 
     private final BuildResultStack resultStack;
 
@@ -350,7 +350,7 @@ public abstract class AbstractFilterBuilder {
         return asLiteralDateTime(token.toString());
     }
 
-    private Literal asLiteralDate(final String cqlDate) throws CQLException {
+    protected Literal asLiteralDate(final String cqlDate) throws CQLException {
         try {
             String strDate = extractDate(cqlDate);
             String strTimeZone = extractTimeZone(cqlDate);
@@ -367,7 +367,7 @@ public abstract class AbstractFilterBuilder {
      * @param cqlDateTime a string with the format yyyy-MM-ddTHH:mm:ss.s[(+|-)HH:mm]
      * @return a literal Date
      */
-    private Literal asLiteralDateTime(final String cqlDateTime) throws CQLException {
+    protected Literal asLiteralDateTime(final String cqlDateTime) throws CQLException {
 
         try {
             final String strDate = extractDate(cqlDateTime);
@@ -412,6 +412,9 @@ public abstract class AbstractFilterBuilder {
             date = formatter.parse(strDate + " " + strTime);
         } else {
             date = formatter.parse(strDate);
+        }
+        if (strTime == null) {
+            date = new java.sql.Date(date.getTime());
         }
         Literal literalDate = filterFactory.literal(date);
 
@@ -1121,11 +1124,11 @@ public abstract class AbstractFilterBuilder {
     }
 
     /**
-     * Returns the Envelop
+     * Returns the Envelope
      *
      * @return Literal
      */
-    public Literal buildEnvelop(IToken token) {
+    public Literal buildEnvelope(IToken token) {
         String source = scanExpression(token);
 
         final String ENVELOPE_TYPE = "ENVELOPE";

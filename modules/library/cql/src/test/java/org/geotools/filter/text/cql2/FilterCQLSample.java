@@ -60,8 +60,9 @@ public class FilterCQLSample {
 
     private static final FilterFactory FACTORY = CommonFactoryFinder.getFilterFactory(null);
 
-    private static final String DATE_TIME_FORMATTER = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-    private static final String DATE_TIME_FORMATTER_MILLIS = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+    public static final String DATE_FORMATTER = "yyyy-MM-dd";
+    public static final String DATE_TIME_FORMATTER = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+    public static final String DATE_TIME_FORMATTER_MILLIS = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
     private static final Calendar CALENDAR = Calendar.getInstance();
     public static final String LESS_FILTER_SAMPLE = "ATTR1 < 1";
@@ -74,10 +75,10 @@ public class FilterCQLSample {
     public static final String FILTER_WITH_BRACKET_ROUNDTRIP_EXPR = "ATTR1 > [[1 + 2] / 3]";
     public static final String PROPERTY_IS_NULL = "ATTR1 IS NULL";
     public static final String PROPERTY_IS_NOT_NULL = "ATTR1 IS NOT NULL";
-    private static final String FIRST_DATE = "2006-11-30T01:30:00Z";
-    private static final String LAST_DATE = "2006-12-31T01:30:00Z";
-    private static final String FIRST_DATE_MILLIS = "2006-11-30T01:30:00.123Z";
-    private static final String LAST_DATE_MILLIS = "2006-12-31T01:30:00.456Z";
+    public static final String FIRST_DATE = "2006-11-30T01:30:00Z";
+    public static final String LAST_DATE = "2006-12-31T01:30:00Z";
+    public static final String FIRST_DATE_MILLIS = "2006-11-30T01:30:00.123Z";
+    public static final String LAST_DATE_MILLIS = "2006-12-31T01:30:00.456Z";
     public static final String FILTER_EQUAL_DATETIME = "ATTR1 TEQUALS " + FIRST_DATE;
     public static final String FILTER_BEFORE_DATE = "ATTR1 BEFORE " + FIRST_DATE;
     public static final String FILTER_BEFORE_DATE_MILLIS = "ATTR1 BEFORE " + FIRST_DATE_MILLIS;

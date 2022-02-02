@@ -67,7 +67,7 @@ To compile and run Quickstart.java:
 ```
 mkdir bin
 javac -cp "lib/*" -d bin src/org/geotools/tutorial/quickstart/Quickstart.java 
-java -cp "lib/*:bin" org.geotools.tutorial.quickstart.Quickstart
+java -cp "lib/*;bin" org.geotools.tutorial.quickstart.Quickstart
 ```
 
 For more information see user Guide [Quickstart](http://docs.geotools.org/@LINK@/userguide/tutorial/quickstart/index.html).

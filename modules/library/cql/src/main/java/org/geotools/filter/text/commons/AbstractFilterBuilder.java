@@ -1128,7 +1128,7 @@ public abstract class AbstractFilterBuilder {
      *
      * @return Literal
      */
-    public Literal buildEnvelope(IToken token) {
+    public Literal buildEnvelope(IToken token) throws CQLException {
         String source = scanExpression(token);
 
         final String ENVELOPE_TYPE = "ENVELOPE";

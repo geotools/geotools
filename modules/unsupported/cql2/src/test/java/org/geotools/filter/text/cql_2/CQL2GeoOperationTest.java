@@ -16,12 +16,17 @@
  */
 package org.geotools.filter.text.cql_2;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.geootols.filter.text.cql_2.CQL2;
 import org.geotools.filter.text.cql2.CQLException;
 import org.junit.Test;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.filter.Filter;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.Contains;
 import org.opengis.filter.spatial.Crosses;
 import org.opengis.filter.spatial.Disjoint;
@@ -158,5 +163,19 @@ public class CQL2GeoOperationTest {
     @Test(expected = CQLException.class)
     public void intersectsWithReferencedGeometry() throws CQLException, FactoryException {
         CQL2.toFilter("S_INTERSECTS(the_geom, SRID=4326;POINT(1 2))");
+    }
+
+    @Test
+    public void testIntersectsEnvelope() throws CQLException {
+        Filter filter = CQL2.toFilter("S_INTERSECTS(geom, ENVELOPE(10, 10, 40, 40))");
+
+        Intersects intersects = (Intersects) filter;
+        PropertyName pn = (PropertyName) intersects.getExpression1();
+        assertEquals("geom", pn.getPropertyName());
+
+        Polygon polygon = intersects.getExpression2().evaluate(null, Polygon.class);
+        assertNotNull(polygon);
+        assertTrue(polygon.isRectangle());
+        assertEquals(new Envelope(10, 40, 10, 40), polygon.getEnvelopeInternal());
     }
 }

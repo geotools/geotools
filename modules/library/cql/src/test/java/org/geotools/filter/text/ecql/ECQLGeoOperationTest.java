@@ -18,6 +18,7 @@
 package org.geotools.filter.text.ecql;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.geotools.filter.text.commons.CompilerUtil;
@@ -26,9 +27,12 @@ import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.cql2.CQLGeoOperationTest;
 import org.geotools.referencing.CRS;
 import org.junit.Test;
+import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.Contains;
 import org.opengis.filter.spatial.Crosses;
 import org.opengis.filter.spatial.Disjoint;
@@ -198,5 +202,20 @@ public final class ECQLGeoOperationTest extends CQLGeoOperationTest {
         assertEquals(
                 CRS.decode("EPSG:4326", true),
                 geomLiteral.evaluate(null, Geometry.class).getUserData());
+    }
+
+    @Test
+    public void testIntersectsEnvelope() throws CQLException {
+        Filter filter =
+                CompilerUtil.parseFilter(language, "INTERSECTS(geom, ENVELOPE(10, 40, 40, 10))");
+
+        Intersects intersects = (Intersects) filter;
+        PropertyName pn = (PropertyName) intersects.getExpression1();
+        assertEquals("geom", pn.getPropertyName());
+
+        Polygon polygon = intersects.getExpression2().evaluate(null, Polygon.class);
+        assertNotNull(polygon);
+        assertTrue(polygon.isRectangle());
+        assertEquals(new Envelope(10, 40, 10, 40), polygon.getEnvelopeInternal());
     }
 }

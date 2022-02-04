@@ -38,14 +38,12 @@ import org.opengis.filter.temporal.Before;
 import org.opengis.filter.temporal.During;
 
 /**
- * ECQLCompiler
+ * CQL2 compiler
  *
  * <p>Builds the filter, expression or arguments related with the visited node of syntax tree
  *
  * @author Jody Garnett
  * @author Mauricio Pazos (Axios Engineering)
- * @version Revision: 1.9
- * @since 2.6
  */
 public class CQL2Compiler extends CQL2Parser implements org.geotools.filter.text.commons.ICompiler {
 
@@ -108,7 +106,7 @@ public class CQL2Compiler extends CQL2Parser implements org.geotools.filter.text
         }
     }
 
-    /** @return the ECQLsource */
+    /** @return the CQL2 source */
     @Override
     public final String getSource() {
         return this.source;

@@ -26,13 +26,6 @@ import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.filter.IsNullImpl;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
-import org.geotools.filter.text.ecql.ECQLBetweenPredicateTest;
-import org.geotools.filter.text.ecql.ECQLBooleanValueExpressionTest;
-import org.geotools.filter.text.ecql.ECQLComparisonPredicateTest;
-import org.geotools.filter.text.ecql.ECQLGeoOperationTest;
-import org.geotools.filter.text.ecql.ECQLINPredicateTest;
-import org.geotools.filter.text.ecql.ECQLLikePredicateTest;
-import org.geotools.filter.text.ecql.ECQLNullPredicateTest;
 import org.geotools.filter.text.ecql.FilterECQLSample;
 import org.junit.Assert;
 import org.junit.Test;
@@ -43,7 +36,6 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Not;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
-import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsGreaterThan;
 import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.PropertyIsLike;
@@ -72,7 +64,7 @@ public class CQL2Test {
     /**
      * Between predicate sample
      *
-     * @see ECQLBetweenPredicateTest
+     * @see CQL2BetweenPredicateTest
      */
     @Test
     public void betweenPredicate() throws CQLException {
@@ -82,7 +74,7 @@ public class CQL2Test {
     /**
      * Equals predicate sample
      *
-     * @see ECQLComparisonPredicateTest
+     * @see CQL2ComparisonPredicateTest
      */
     @Test
     public void comparisonPredicate() throws Exception {
@@ -93,7 +85,7 @@ public class CQL2Test {
     /**
      * GeoOperation predicate sample
      *
-     * @see ECQLGeoOperationTest
+     * @see CQL2GeoOperationTest
      */
     @Test
     public void geoOperationPredicate() throws CQLException {
@@ -122,7 +114,7 @@ public class CQL2Test {
     /**
      * And / Or / Not predicate
      *
-     * @see ECQLBooleanValueExpressionTest
+     * @see CQL2BooleanValueExpressionTest
      */
     @Test
     public void booleanPredicate() throws Exception {
@@ -142,27 +134,27 @@ public class CQL2Test {
         assertFilter("(A = 1 OR B = 2) AND NOT (C = 3)", And.class);
     }
 
-    private <F extends Expression> F assertExpression(String ecql, Class<F> expected)
+    private <F extends Expression> F assertExpression(String cql, Class<F> expected)
             throws CQLException {
-        Expression expression = CQL2.toExpression(ecql);
+        Expression expression = CQL2.toExpression(cql);
         Assert.assertTrue(expected.getSimpleName(), expected.isInstance(expression));
-        Assert.assertEquals(ecql, ecql, CQL2.toCQL(expression));
+        Assert.assertEquals(cql, cql, CQL2.toCQL2(expression));
 
         return expected.cast(expression);
     }
 
-    private <F extends Filter> F assertFilter(String ecql, Class<F> type) throws CQLException {
-        Filter filter = CQL2.toFilter(ecql);
+    private <F extends Filter> F assertFilter(String cql, Class<F> type) throws CQLException {
+        Filter filter = CQL2.toFilter(cql);
         Assert.assertTrue(type.getSimpleName(), type.isInstance(filter));
-        Assert.assertEquals(ecql, ecql, CQL2.toCQL(filter));
+        Assert.assertEquals(cql, cql, CQL2.toCQL2(filter));
 
         return type.cast(filter);
     }
 
-    private <F extends Filter> F assertFilter(String ecql, String expected, Class<F> type)
+    private <F extends Filter> F assertFilter(String cql, String expected, Class<F> type)
             throws CQLException {
-        Filter filter = CQL2.toFilter(ecql);
-        Assert.assertEquals(ecql, expected, CQL2.toCQL(filter));
+        Filter filter = CQL2.toFilter(cql);
+        Assert.assertEquals(cql, expected, CQL2.toCQL2(filter));
 
         return type.cast(filter);
     }
@@ -170,7 +162,7 @@ public class CQL2Test {
     /**
      * in predicate sample
      *
-     * @see ECQLINPredicateTest
+     * @see CQL2INPredicateTest
      */
     @Test
     public void inPredicate() throws CQLException {
@@ -194,7 +186,7 @@ public class CQL2Test {
     /**
      * Like predicate sample
      *
-     * @see ECQLLikePredicateTest
+     * @see CQL2LikePredicateTest
      */
     @Test
     public void likePredicate() throws Exception {
@@ -212,7 +204,7 @@ public class CQL2Test {
     /**
      * Null predicate sample
      *
-     * @see ECQLNullPredicateTest
+     * @see CQL2NullPredicateTest
      */
     @Test
     public void isNullPredicate() throws Exception {
@@ -225,26 +217,14 @@ public class CQL2Test {
     }
 
     @Test
-    public void listOfPredicates() throws Exception {
-
-        List<Filter> list = CQL2.toFilterList("A=1; B<4");
-
-        assertEquals(2, list.size());
-
-        Assert.assertTrue(list.get(0) instanceof PropertyIsEqualTo);
-
-        Assert.assertTrue(list.get(1) instanceof PropertyIsLessThan);
-    }
-
-    @Test
     public void greaterFilterToCQL() throws Exception {
 
-        String expectedECQL = FilterECQLSample.PROPERTY_GREATER_MINUS_INGEGER;
-        Filter filter = FilterECQLSample.getSample(expectedECQL);
+        String expectedCQL2 = FilterECQLSample.PROPERTY_GREATER_MINUS_INGEGER;
+        Filter filter = FilterECQLSample.getSample(expectedCQL2);
 
-        String resultECQL = CQL2.toCQL(filter);
+        String resultCQL2 = CQL2.toCQL2(filter);
 
-        Assert.assertEquals(expectedECQL, resultECQL);
+        Assert.assertEquals(expectedCQL2, resultCQL2);
     }
 
     @Test
@@ -253,9 +233,9 @@ public class CQL2Test {
         String expectedECQL = FilterECQLSample.LITERAL_LIKE_ECQL_PATTERN;
         Filter filter = FilterECQLSample.getSample(expectedECQL);
 
-        String resultECQL = CQL2.toCQL(filter);
+        String resultCQL2 = CQL2.toCQL2(filter);
 
-        Assert.assertEquals(expectedECQL, resultECQL);
+        Assert.assertEquals(expectedECQL, resultCQL2);
     }
 
     @Test
@@ -266,7 +246,7 @@ public class CQL2Test {
         absArgs[0] = ff.literal(10);
         Function abs = ff.function("abs", absArgs);
 
-        String resultECQL = CQL2.toCQL(abs);
+        String resultECQL = CQL2.toCQL2(abs);
 
         Assert.assertEquals("abs(10)", resultECQL);
     }
@@ -291,24 +271,11 @@ public class CQL2Test {
     }
 
     @Test
-    public void filterListToECQL() throws Exception {
-
-        String expectedECQL = "QUANTITY = 1; YEAR < 1963";
-        List<Filter> list = CQL2.toFilterList(expectedECQL);
-
-        assertEquals(2, list.size());
-
-        String cqlResult = CQL2.toCQL(list);
-
-        Assert.assertEquals(expectedECQL, cqlResult);
-    }
-
-    @Test
     public void filterToECQL() throws Exception {
 
         String expectedECQL = "QUANTITY = 1";
         Filter list = CQL2.toFilter(expectedECQL);
-        String cqlResult = CQL2.toCQL(list);
+        String cqlResult = CQL2.toCQL2(list);
 
         Assert.assertEquals(expectedECQL, cqlResult);
     }
@@ -353,7 +320,7 @@ public class CQL2Test {
                                 filterFactory2.property("population"), filterFactory2.literal(2)),
                         filterFactory2.divide(
                                 filterFactory2.property("pop2000"), filterFactory2.literal(2)));
-        Assert.assertEquals("population/2<pop2000/2", CQL2.toCQL(javaFilter).replace(" ", ""));
+        Assert.assertEquals("population/2<pop2000/2", CQL2.toCQL2(javaFilter).replace(" ", ""));
     }
 
     @Test
@@ -368,7 +335,7 @@ public class CQL2Test {
     public void colorLiterals() throws CQLException {
         String expected = "Interpolate(population,0,'#FF0000',10,'#0000FF')";
         Expression expr = CQL2.toExpression(expected);
-        String actual = CQL2.toCQL(expr);
+        String actual = CQL2.toCQL2(expr);
         assertEquals("color literals", expected, actual);
 
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
@@ -382,7 +349,7 @@ public class CQL2Test {
                         ff.literal(10),
                         ff.literal(Color.BLUE));
 
-        actual = CQL2.toCQL(function);
+        actual = CQL2.toCQL2(function);
         assertEquals("color literals", expected, actual);
     }
 }

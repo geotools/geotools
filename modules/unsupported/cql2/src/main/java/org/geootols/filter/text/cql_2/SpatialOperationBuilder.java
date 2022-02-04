@@ -34,7 +34,8 @@ import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
 
 /**
- * Builds an instance of one {@link BinarySpatialOperator} subclass.
+ * Builds an instance of one {@link BinarySpatialOperator} subclass. Copied from gt-cql, should be
+ * removed once the modules * are merged.
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6

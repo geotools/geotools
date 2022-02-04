@@ -23,7 +23,8 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Function;
 
 /**
- * Abstract class for function builder
+ * Abstract class for function builder. Copied from gt-cql, should be removed once the modules are
+ * merged.
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6

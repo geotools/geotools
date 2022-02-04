@@ -25,7 +25,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
 
 /**
- * Builds a LineString
+ * Builds a LineString. Copied from gt-cql, should be removed once the modules * are merged.
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6

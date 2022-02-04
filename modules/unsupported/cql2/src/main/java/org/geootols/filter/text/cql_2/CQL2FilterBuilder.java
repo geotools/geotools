@@ -42,11 +42,9 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
-import org.opengis.filter.Not;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
@@ -60,8 +58,8 @@ import org.opengis.temporal.Position;
 /** Similar to ECQLFilterBuilder, but needs to handle the date literals differently */
 final class CQL2FilterBuilder extends AbstractFilterBuilder {
 
-    public CQL2FilterBuilder(String ecqlSource, FilterFactory filterFactory) {
-        super(ecqlSource, filterFactory);
+    public CQL2FilterBuilder(String cql2Source, FilterFactory filterFactory) {
+        super(cql2Source, filterFactory);
     }
 
     /**
@@ -318,38 +316,6 @@ final class CQL2FilterBuilder extends AbstractFilterBuilder {
     }
 
     /**
-     * Makes an equals to true filter with the relatePattern function
-     *
-     * @return relatePattern is equal to true
-     */
-    public PropertyIsEqualTo buildRelatePattern() throws CQLException {
-
-        RelatePatternBuilder builder =
-                new RelatePatternBuilder(getResultStack(), getFilterFactory());
-
-        Function relatePattern = builder.build();
-
-        PropertyIsEqualTo eq =
-                getFilterFactory().equals(relatePattern, getFilterFactory().literal(true));
-
-        return eq;
-    }
-
-    /**
-     * Builds a not equal filter with that evaluate the relate pattern function
-     *
-     * @return Not filter
-     */
-    public Not buildNotRelatePattern() throws CQLException {
-
-        PropertyIsEqualTo eq = buildRelatePattern();
-
-        Not notFilter = getFilterFactory().not(eq);
-
-        return notFilter;
-    }
-
-    /**
      * Checks the correctness of pattern and makes a literal with this pattern;
      *
      * @return a Literal with the pattern
@@ -428,22 +394,6 @@ final class CQL2FilterBuilder extends AbstractFilterBuilder {
         BinarySpatialOperator filter = builder.buildOverlaps();
 
         return filter;
-    }
-
-    /**
-     * An equals filter with to test the relate function
-     *
-     * @return Relate equals true
-     */
-    public PropertyIsEqualTo buildRelate() throws CQLException {
-
-        RelateBuilder builder = new RelateBuilder(getResultStack(), getFilterFactory());
-
-        Function f = builder.build();
-
-        PropertyIsEqualTo eq = getFilterFactory().equals(f, getFilterFactory().literal(true));
-
-        return eq;
     }
 
     @Override
@@ -560,6 +510,7 @@ final class CQL2FilterBuilder extends AbstractFilterBuilder {
      *
      * @return Literal
      */
+    @Override
     public Literal buildEnvelope(IToken token) {
         String source = scanExpression(token);
 

@@ -18,10 +18,8 @@ package org.geootols.filter.text.cql_2;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.regex.Pattern;
 import org.geotools.filter.text.commons.ExpressionToText;
 import org.geotools.filter.text.commons.FilterToTextUtil;
-import org.geotools.util.factory.Hints;
 import org.opengis.filter.And;
 import org.opengis.filter.ExcludeFilter;
 import org.opengis.filter.Filter;
@@ -43,7 +41,6 @@ import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
-import org.opengis.filter.identity.Identifier;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.Beyond;
 import org.opengis.filter.spatial.Contains;
@@ -78,21 +75,10 @@ import org.opengis.filter.temporal.TOverlaps;
  */
 final class FilterToCQL2 implements FilterVisitor {
 
-    /** Pattern used to match Id filters for output as plain number. */
-    private static Pattern NUMBER = Pattern.compile("[0-9]+");
-
     ExpressionToText expressionVisitor;
 
-    /**
-     * Default constructor. The behavior of EWKT encoding is controlled by the {@link
-     * Hints#ENCODE_EWKT} hint
-     */
     public FilterToCQL2() {
-        this(CQL2.isEwktEncodingEnabled());
-    }
-
-    public FilterToCQL2(boolean encodeEwkt) {
-        expressionVisitor = new CQL2ExpressionToText(encodeEwkt);
+        expressionVisitor = new CQL2ExpressionToText();
     }
 
     @Override
@@ -116,34 +102,9 @@ final class FilterToCQL2 implements FilterVisitor {
         return FilterToTextUtil.buildBinaryLogicalOperator("AND", this, filter, extraData);
     }
 
-    /** builds a ecql id expression: in (id1, id2, ...) */
     @Override
     public Object visit(Id filter, Object extraData) {
-
-        StringBuilder ecql = FilterToTextUtil.asStringBuilder(extraData);
-        ecql.append("IN (");
-
-        Iterator<Identifier> iter = filter.getIdentifiers().iterator();
-        while (iter.hasNext()) {
-            Identifier identifier = iter.next();
-            String id = identifier.toString();
-
-            boolean needsQuotes = !NUMBER.matcher(id).matches();
-
-            if (needsQuotes) {
-                ecql.append('\'');
-            }
-            ecql.append(identifier);
-            if (needsQuotes) {
-                ecql.append('\'');
-            }
-
-            if (iter.hasNext()) {
-                ecql.append(",");
-            }
-        }
-        ecql.append(")");
-        return ecql;
+        throw unsupported("ID");
     }
 
     /** builds the Not logical operator */
@@ -155,7 +116,7 @@ final class FilterToCQL2 implements FilterVisitor {
     /**
      * Builds the OR logical operator.
      *
-     * <p>This visitor checks for {@link #isInFilter(Or)} and is willing to output ECQL of the form
+     * <p>This visitor checks for {@link #isInFilter(Or)} and is willing to output CQL2 of the form
      * <code>left IN (right, right, right)</code>.
      */
     @Override
@@ -167,7 +128,7 @@ final class FilterToCQL2 implements FilterVisitor {
         return FilterToTextUtil.buildBinaryLogicalOperator("OR", this, filter, extraData);
     }
 
-    /** Check if this is an encoding of ECQL IN */
+    /** Check if this is an encoding of CQL2 IN */
     private boolean isInFilter(Or filter) {
         if (filter.getChildren() == null) {
             return false;
@@ -213,7 +174,7 @@ final class FilterToCQL2 implements FilterVisitor {
         return FilterToTextUtil.buildBetween(filter, extraData);
     }
 
-    /** Output EQUAL filter (will checks for ECQL geospatial operations). */
+    /** Output EQUAL filter (will checks for CQL2 geospatial operations). */
     @Override
     public Object visit(PropertyIsEqualTo filter, Object extraData) {
         StringBuilder output = FilterToTextUtil.asStringBuilder(extraData);
@@ -225,7 +186,7 @@ final class FilterToCQL2 implements FilterVisitor {
         return FilterToTextUtil.buildComparison(filter, output, "=");
     }
 
-    /** Check if this is an encoding of ECQL geospatial operation */
+    /** Check if this is an encoding of CQL2 geospatial operation */
     private boolean isFunctionTrue(
             PropertyIsEqualTo filter, String operation, int numberOfArguments) {
         if (filter.getExpression1() instanceof Function) {
@@ -263,7 +224,7 @@ final class FilterToCQL2 implements FilterVisitor {
         return output;
     }
 
-    /** Check if this is an encoding of ECQL geospatial operation */
+    /** Check if this is an encoding of CQL2 geospatial operation */
     private boolean isRelateOperation(PropertyIsEqualTo filter) {
         if (isFunctionTrue(filter, "relatePattern", 3)) {
             Function function = (Function) filter.getExpression1();

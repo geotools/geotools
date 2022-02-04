@@ -240,4 +240,55 @@ public class WKTReader2Test {
         assertTrue(ms.getGeometryN(1) instanceof CurvePolygon);
         assertFalse(ms.getGeometryN(2) instanceof CurvePolygon);
     }
+
+    @Test
+    public void testEmptyPoint() throws Exception {
+        WKTReader2 wktReader2 = new WKTReader2();
+        String wkt = "POINT EMPTY";
+        Geometry geom = wktReader2.read(wkt);
+        assertNotNull(geom);
+        assertTrue(geom.isEmpty());
+        wkt = "MULTIPOINT EMPTY";
+        geom = wktReader2.read(wkt);
+        assertNotNull(geom);
+        assertTrue(geom.isEmpty());
+        wkt = "MULTIPOINT (EMPTY)";
+        geom = wktReader2.read(wkt);
+        assertNotNull(geom);
+        assertTrue(geom.isEmpty());
+    }
+
+    @Test
+    public void testEmptyLineString() throws Exception {
+        WKTReader2 wktReader2 = new WKTReader2();
+        String wkt = "LINESTRING EMPTY";
+        Geometry geom = wktReader2.read(wkt);
+        assertNotNull(geom);
+        assertTrue(geom.isEmpty());
+        wkt = "MULTILINESTRING EMPTY";
+        geom = wktReader2.read(wkt);
+        assertNotNull(geom);
+        assertTrue(geom.isEmpty());
+        wkt = "MULTILINESTRING (EMPTY)";
+        geom = wktReader2.read(wkt);
+        assertNotNull(geom);
+        assertTrue(geom.isEmpty());
+    }
+
+    @Test
+    public void testEmptyPolygon() throws Exception {
+        WKTReader2 wktReader2 = new WKTReader2();
+        String wkt = "POLYGON EMPTY";
+        Geometry geom = wktReader2.read(wkt);
+        assertNotNull(geom);
+        assertTrue(geom.isEmpty());
+        wkt = "MULTIPOLYGON EMPTY";
+        geom = wktReader2.read(wkt);
+        assertNotNull(geom);
+        assertTrue(geom.isEmpty());
+        wkt = "MULTIPOLYGON (EMPTY)";
+        geom = wktReader2.read(wkt);
+        assertNotNull(geom);
+        assertTrue(geom.isEmpty());
+    }
 }

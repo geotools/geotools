@@ -12,7 +12,7 @@ options {
    SANITY_CHECK=true;
    VISITOR=false;
    
-   FORCE_LA_CHECK=false; // force lookahead ambiguity checking in such instances. This option don't take into account the locak lookagead
+   FORCE_LA_CHECK=false; // force lookahead ambiguity checking in such instances. This option don't take into account the local lookahead
 
    UNICODE_INPUT = true;
    JAVA_UNICODE_ESCAPE = true;
@@ -411,14 +411,14 @@ void GeoRoutineArgumentList() #void:
 
 /*
  * <geometry literal> ::= 
- *	  <Point Tagged Text>
- * 	| <LineString Tagged Text>
- * 	| <Polygon Tagged Text>
- *	| <MultiPoint Tagged Text>
- *  | <MultiLineString Tagged Text>
- * 	| <MultiPolygon Tagged Text>
- * 	| <GeometryCollection Tagged Text>
- *	| <Envelope Tagged Text>
+ *   <Point Tagged Text>
+ * | <LineString Tagged Text>
+ * | <Polygon Tagged Text>
+ * | <MultiPoint Tagged Text>
+ * | <MultiLineString Tagged Text>
+ * | <MultiPolygon Tagged Text>
+ * | <GeometryCollection Tagged Text>
+ * | <Envelope Tagged Text>
  */
 void GeometryLiteral() #GeometryLiteral:
 {}
@@ -468,7 +468,7 @@ void RoutineInvocationGeneric() #void:
 void ComparisonPredicate() :
 {}
 {
-   	 <EQ> 	Expression() #ComparisonPredicate_EQ_Node
+     <EQ> 	Expression() #ComparisonPredicate_EQ_Node
    | <GT> 	Expression() #ComparisonPredicate_GT_Node
    | <LT> 	Expression() #ComparisonPredicate_LT_Node
    | <GTE> 	Expression() #ComparisonPredicate_GTE_Node

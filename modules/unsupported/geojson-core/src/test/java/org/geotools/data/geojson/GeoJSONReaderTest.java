@@ -244,9 +244,14 @@ public class GeoJSONReaderTest {
         expected = "LINESTRING EMPTY";
         testGeometry(input, expected);
 
+        input = "{\"type\":\"MultiLineString\",\"coordinates\":[[]]}";
+        expected = "MULTILINESTRING (EMPTY)";
+        testGeometry(input, expected);
+
         input = "{\"type\":\"Polygon\",\"coordinates\":[]}";
         expected = "POLYGON EMPTY";
         testGeometry(input, expected);
+
         input = "{\"type\":\"MultiPolygon\",\"coordinates\":[[]]}";
         expected = "MULTIPOLYGON (EMPTY)";
         testGeometry(input, expected);

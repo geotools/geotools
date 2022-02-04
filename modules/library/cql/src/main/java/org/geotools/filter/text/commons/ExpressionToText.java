@@ -223,13 +223,7 @@ public class ExpressionToText implements ExpressionVisitor {
             }
         } else if (literal instanceof Period) {
 
-            Period period = (Period) literal;
-
-            output = dateToText(period.getBeginning().getPosition().getDate(), output);
-            output.append("/");
-            output = dateToText(period.getEnding().getPosition().getDate(), output);
-
-            return output;
+            return periodToText((Period) literal, output);
         } else if (literal instanceof Color) {
             Color color = (Color) literal;
 
@@ -263,6 +257,14 @@ public class ExpressionToText implements ExpressionVisitor {
                 output.append("'" + escaped + "'");
             }
         }
+        return output;
+    }
+
+    protected StringBuilder periodToText(Period period, StringBuilder output) {
+        output = dateToText(period.getBeginning().getPosition().getDate(), output);
+        output.append("/");
+        output = dateToText(period.getEnding().getPosition().getDate(), output);
+
         return output;
     }
 

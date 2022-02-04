@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -34,6 +35,9 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.WKTReader2;
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.CRS.AxisOrder;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
 import org.geotools.util.logging.Logging;
 import org.junit.Test;
@@ -46,6 +50,7 @@ import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /** @author ian */
 public class GeoJSONReaderTest {
@@ -120,6 +125,18 @@ public class GeoJSONReaderTest {
             assertEquals("Trento", list.get(0).getAttribute("CITY"));
             assertEquals("St Paul", list.get(1).getAttribute("CITY"));
             assertEquals("Bangkok", list.get(2).getAttribute("CITY"));
+            SimpleFeature f = list.get(0);
+            Point geom = (Point) f.getDefaultGeometry();
+            CoordinateReferenceSystem crs = features.getSchema().getCoordinateReferenceSystem();
+            AxisOrder order = CRS.getAxisOrder(crs);
+            assertTrue(CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84, crs));
+            if (order.equals(AxisOrder.EAST_NORTH)) {
+                assertEquals(11.117, geom.getX(), 0.0001);
+                assertEquals(46.067, geom.getY(), 0.0001);
+            } else {
+                assertEquals(11.117, geom.getY(), 0.0001);
+                assertEquals(46.067, geom.getX(), 0.0001);
+            }
         }
     }
 

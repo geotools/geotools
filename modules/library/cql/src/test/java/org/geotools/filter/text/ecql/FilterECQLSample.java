@@ -37,7 +37,7 @@ import org.opengis.filter.expression.Subtract;
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6
  */
-final class FilterECQLSample {
+public final class FilterECQLSample {
     protected static final FilterFactory FACTORY = CommonFactoryFinder.getFilterFactory(null);
 
     // ECQL Samples

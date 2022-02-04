@@ -435,7 +435,7 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
                 return this.builder.buildGeometry();
 
             case JJTENVELOPETAGGEDTEXT_NODE:
-                return this.builder.buildEnvelop(TokenAdapter.newAdapterFor(n.getToken()));
+                return this.builder.buildEnvelope(TokenAdapter.newAdapterFor(n.getToken()));
 
             case JJTINCLUDE_NODE:
                 return Filter.INCLUDE;

@@ -140,8 +140,20 @@
           </execution>
         </executions>
       </plugin>
-    </plugins>
 
+      <!-- build test jar so that tests can be shared -->
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
 
   <profiles>

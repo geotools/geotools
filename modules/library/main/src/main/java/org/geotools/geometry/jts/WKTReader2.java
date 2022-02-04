@@ -199,11 +199,26 @@ public class WKTReader2 extends WKTReader {
 
     private Coordinate getPreciseCoordinate(boolean measures) throws IOException, ParseException {
         Coordinate coord = measures ? new CoordinateXYZM() : new Coordinate();
+        if (isEmptyNext()) {
+            // eat the EMPTY
+            tokenizer.nextToken();
+            return null;
+        }
         for (int i = 0; isNumberNext(); i++) {
             coord.setOrdinate(i, getNextNumber());
         }
         precisionModel.makePrecise(coord);
         return coord;
+    }
+
+    private boolean isEmptyNext() throws IOException {
+        tokenizer.nextToken();
+        boolean ret = false;
+        if (tokenizer.sval.equalsIgnoreCase("EMPTY")) {
+            ret = true;
+        }
+        tokenizer.pushBack();
+        return ret;
     }
 
     private boolean isNumberNext() throws IOException {
@@ -619,6 +634,7 @@ public class WKTReader2 extends WKTReader {
             Coordinate[] array = new Coordinate[coordinates.size()];
             return coordinates.toArray(array);
         } else {
+
             ArrayList<Coordinate> coordinates = new ArrayList<>();
             coordinates.add(getPreciseCoordinate());
             nextToken = getNextCloserOrComma();
@@ -641,7 +657,11 @@ public class WKTReader2 extends WKTReader {
     private Point[] toPoints(Coordinate... coordinates) {
         ArrayList<Point> points = new ArrayList<>();
         for (Coordinate coordinate : coordinates) {
-            points.add(geometryFactory.createPoint(coordinate));
+            if (coordinate == null) {
+                points.add((Point) geometryFactory.createEmpty(0));
+            } else {
+                points.add(geometryFactory.createPoint(coordinate));
+            }
         }
         return points.toArray(new Point[points.size()]);
     }

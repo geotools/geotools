@@ -15,7 +15,7 @@ public class MiscTests {
 
     @Test
     public void testGEOT7027() throws SchemaException, IOException {
-        double[] coord = new double[] {1000000, 1000000};
+        double[] coord = {1000000, 1000000};
         String featureDef = "1=POINT(" + coord[0] + " " + coord[1] + ")";
         SimpleFeatureType schema = DataUtilities.createType("test", "p:Point:srid=27700");
         SimpleFeature feature = DataUtilities.createFeature(schema, featureDef);

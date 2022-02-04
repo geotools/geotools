@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2021, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -21,13 +21,8 @@ import org.geotools.filter.text.commons.AbstractCompilerFactory;
 import org.geotools.filter.text.commons.ICompiler;
 import org.opengis.filter.FilterFactory;
 
-/**
- * Provides the implementation of {@link CQL2Compiler}
- *
- * @author Mauricio Pazos (Axios Engineering)
- * @since 2.6
- */
-final class ECQLCompilerFactory extends AbstractCompilerFactory {
+/** Provides the implementation of {@link CQL2Compiler} */
+final class CQL2CompilerFactory extends AbstractCompilerFactory {
 
     /** Creates an instance of {@link CQL2Compiler} */
     @Override

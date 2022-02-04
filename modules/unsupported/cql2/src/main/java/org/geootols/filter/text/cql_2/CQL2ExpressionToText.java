@@ -26,10 +26,8 @@ import org.opengis.temporal.Period;
 /** Subclassed to handle the encoding of date literals */
 public class CQL2ExpressionToText extends ExpressionToText {
 
-    public CQL2ExpressionToText() {}
-
-    public CQL2ExpressionToText(boolean encodeEWKT) {
-        super(encodeEWKT);
+    public CQL2ExpressionToText() {
+        super(false);
     }
 
     @Override

@@ -26,6 +26,7 @@ import org.locationtech.jts.geom.MultiLineString;
 
 /**
  * Builds a {@link #MultiLineString} using the {@link LineString} made in the parsing process.
+ * Copied from gt-cql, should be removed once the modules * are merged.
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since

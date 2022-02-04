@@ -26,7 +26,7 @@ import org.locationtech.jts.geom.Polygon;
 
 /**
  * Builds the a {@link MultiPolygon} using the {@link Polygon} made in previous steps of parsing
- * process.
+ * process. Copied from gt-cql, should be removed once the modules * are merged.
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since

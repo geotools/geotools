@@ -128,7 +128,7 @@ public class GeoJSONReaderTest {
             SimpleFeature f = list.get(0);
             Point geom = (Point) f.getDefaultGeometry();
             CoordinateReferenceSystem crs = features.getSchema().getCoordinateReferenceSystem();
-			AxisOrder order = CRS.getAxisOrder(crs);
+            AxisOrder order = CRS.getAxisOrder(crs);
             assertTrue(CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84, crs));
             if (order.equals(AxisOrder.EAST_NORTH)) {
                 assertEquals(11.117, geom.getX(), 0.0001);

@@ -528,4 +528,19 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
 
         return filter;
     }
+
+    @Override
+    public Literal buildEnvelope(IToken token) throws CQLException {
+        Literal result = super.buildEnvelope(token);
+
+        // unlike CQL, in ECQL the numbers are tokens loaded on the stack, they need to be
+        // removed
+        BuildResultStack stack = getResultStack();
+        stack.popResult();
+        stack.popResult();
+        stack.popResult();
+        stack.popResult();
+
+        return result;
+    }
 }

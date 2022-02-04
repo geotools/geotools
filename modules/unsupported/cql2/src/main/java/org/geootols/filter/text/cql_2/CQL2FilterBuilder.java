@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import org.geotools.filter.text.commons.AbstractFilterBuilder;
+import org.geotools.filter.text.commons.BuildResultStack;
 import org.geotools.filter.text.commons.IToken;
 import org.geotools.filter.text.commons.PeriodNode;
 import org.geotools.filter.text.commons.Result;
@@ -511,7 +512,7 @@ final class CQL2FilterBuilder extends AbstractFilterBuilder {
      * @return Literal
      */
     @Override
-    public Literal buildEnvelope(IToken token) {
+    public Literal buildEnvelope(IToken token) throws CQLException {
         String source = scanExpression(token);
 
         final String ENVELOPE_TYPE = "ENVELOPE";
@@ -566,6 +567,13 @@ final class CQL2FilterBuilder extends AbstractFilterBuilder {
         bbox.setUserData(DefaultGeographicCRS.WGS84);
 
         Literal literal = filterFactory.literal(bbox);
+
+        // the four numbers are also on the parse stack, remove them
+        BuildResultStack stack = getResultStack();
+        stack.popResult();
+        stack.popResult();
+        stack.popResult();
+        stack.popResult();
 
         return literal;
     }

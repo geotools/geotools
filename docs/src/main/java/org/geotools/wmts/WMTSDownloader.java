@@ -4,16 +4,8 @@
  *
  *    (C) 2022, Open Source Geospatial Foundation (OSGeo)
  *
- *    This library is free software; you can redistribute it and/or
- *    modify it under the terms of the GNU Lesser General Public
- *    License as published by the Free Software Foundation;
- *    version 2.1 of the License.
- *
- *    This library is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *    Lesser General Public License for more details.
- *
+ *    This file is hereby placed into the Public Domain. This means anyone is
+ *    free to do whatever they wish with this file. Use it well and enjoy!
  */
 package org.geotools.wmts;
 
@@ -60,7 +52,7 @@ public class WMTSDownloader {
             throw new IllegalArgumentException("You must provide the path to a root folder.");
         }
         rootFolder = new File(args[0]);
-
+        // start wmtsTileService example
         WebMapTileServer server = new WebMapTileServer(new URL(serverUrl));
         System.out.println("Layers:");
         server.getCapabilities()
@@ -85,5 +77,6 @@ public class WMTSDownloader {
             BufferedImage image = tile.getBufferedImage();
             ImageIO.write(image, "png", new File(rootFolder, tile.getId() + ".png"));
         }
+        // end wmtsTileService example
     }
 }

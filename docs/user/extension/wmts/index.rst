@@ -20,9 +20,6 @@ WebMapTileServer
 
 The client code takes care of version negotiation, and even a few server specific wrinkles for you. It is based on the functionality of AbstractOpenWebService, and handles the requests: GetCapabilities and GetTile.
 
-The client code is fairly slick in that it takes care of version negotiation (inheriting functionalities from AbstractOpenWebService),
-and even a few server specific wrinkles for you.
-
 This page contains examples how how to connect and use the GeoTools WebMapTileServer class. WebMapTileServer acts as a proxy
 for a remote "Web Map Tile Server" and can be used to examine and retrieve published information in the forms of descriptive Java beans, and raw images.
 
@@ -204,24 +201,10 @@ WMTSTileService
 This class builds on the functionality of TileService. The main difference between a WMTS and a TileService is that a given WMTS layer might not cover all of the matrix set.
 This is handled through matrix set links given by the configuration of each layer.
 
-.. code-block:: java
-
-  String serverUrl = "https://opencache.statkart.no/gatekeeper/gk/gk.open_wmts";
-  WebMapTileServer server = new WebMapTileServer(new URL(serverUrl));
-  WMTSLayer layer = server.getCapabilities().getLayer("norges_grunnkart");
-  TileMatrixSet matrixSet = server.getCapabilities().getMatrixSet("EPSG:32632");
-
-  ReferencedEnvelope = new ReferencedEnvelope(595042, 611310, 6645322, 6661883, 
-              matrixSet.getCoordinateReferenceSystem());
-  double scaleFactor = 100000.0;
-
-  WMTSTileService service = new WMTSTileService(serverUrl, WMTSServiceType.KVP, 
-              layer, null, matrixSet);
-  Set<Tile> tiles = service.findTilesInExtent(extent, zoomLevel, true, 100);
-  for (Tile tile : tiles) {
-    BufferedImage image = tile.getBufferedImage();
-    ImageIO.write(image, "png", new File(tile.getId() + ".png"))
-  }
+.. literalinclude:: /../src/main/java/org/geotools/wmts/WMTSDownloader.java
+  :language: java
+  :start-after: // start wmtsTileService example
+  :end-before: // end wmtsTileService example
 
 
 WMTSCoverageReader
@@ -230,48 +213,20 @@ WMTSCoverageReader
 These classes is based on a WebMapTileServer and is useful for exporting or displaying maps from a WMTS server. 
 For export we treat the tiles as a coverage with the WMTSCoverageReader, and use ImageIO to write the rendered image.
 
-.. code-block:: java
-
-  String serverUrl = "https://geodata.npolar.no/arcgis/rest/services/Basisdata/NP_Ortofoto_Svalbard_WMTS_25833/MapServer/WMTS/1.0.0/WMTSCapabilities.xml";
-
-  WebMapTileServer server = new WebMapTileServer(new URL(serverUrl));
-  WMTSLayer layer = server.getCapabilities().getLayerList().get(0);
-
-  WMTSCoverageReader reader = new WMTSCoverageReader(server, layer);
-
-  ReferencedEnvelope envelope = new ReferencedEnvelope(..., ...., ...., ...., CRS.decode("EPSG:....");
-  int width = ...;
-  int height = ...;
-
-  Parameter<GridGeometry2D> readGG =
-                (Parameter<GridGeometry2D>)
-                        AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        readGG.setValue(new GridGeometry2D(new GridEnvelope2D(new Rectangle(width, height)), envelope));
-
-  GridCoverage2D coverage = reader.read(new GeneralParameterValue [] { readGG });
-  ImageIO.write(coverage.getRenderedImage(), "png", new File(....));
-		
+.. literalinclude:: /../src/main/java/org/geotools/wmts/WMTSCoverage.java
+  :language: java
+  :start-after: // start wmtsCoverage example
+  :end-before: // end wmtsCoverage example	
 
 WMTSMapLayer
 ------------
 
 To display the WMTS within a map we would use WMTSMapLayer in a similar way.
 
-
-.. code-block:: java
-
-  String serverUrl = "https://geodata.npolar.no/arcgis/rest/services/Basisdata/NP_Ortofoto_Svalbard_WMTS_25833/MapServer/WMTS/1.0.0/WMTSCapabilities.xml";
-
-  WebMapTileServer server = new WebMapTileServer(new URL(serverUrl));
-  WMTSLayer layer = server.getCapabilities().getLayerList().get(0);
-
-  MapContent map = new MapContent();
-  map.setTitle(server.getCapabilities().getService().getTitle());
-
-  WMTSMapLayer mapLayer = new WMTSMapLayer(server, layer);
-  map.addLayer(mapLayer);
-
-  JMapFrame.showMap(map);
+.. literalinclude:: /../src/main/java/org/geotools/wmts/WMTSMapViewer.java
+  :language: java
+  :start-after: // start wmtsMapViewer example
+  :end-before: // end wmtsMapViewer example
 
 
 In addition it's possible to use the TileLayer class of gt-tile-client with a WMTSTileService as input.

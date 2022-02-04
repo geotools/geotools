@@ -36,10 +36,10 @@ public class PointParser extends BaseParser implements GeometryParser<Point> {
     }
 
     public static Coordinate coordinateFromJson(JsonNode array) {
-        assert array.isArray() && (array.size() == 0||array.size() == 2 || array.size() == 3)
+        assert array.isArray() && (array.size() == 0 || array.size() == 2 || array.size() == 3)
                 : "expecting coordinate array with single point [ x, y, |z| ]";
         if (array.size() == 0) {
-        	return null;
+            return null;
         }
         if (array.size() == 2) {
             return new Coordinate(array.get(0).asDouble(), array.get(1).asDouble());

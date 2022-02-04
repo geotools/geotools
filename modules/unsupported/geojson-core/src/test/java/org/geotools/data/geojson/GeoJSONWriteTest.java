@@ -20,6 +20,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeType;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -31,14 +35,12 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
 import org.geotools.TestData;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.store.EmptyFeatureCollection;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.geometry.jts.WKTWriter2;
 import org.geotools.util.URLs;
 import org.junit.After;
 import org.junit.Before;
@@ -50,11 +52,6 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeType;
 
 /**
  * Informal test used to document expected functionality for workshop.
@@ -181,18 +178,20 @@ public class GeoJSONWriteTest {
         String json = new String(out.toByteArray(), StandardCharsets.UTF_8);
         assertEquals("{\"type\":\"FeatureCollection\",\"features\":[]}", json);
     }
-    
+
     @Test
     public void testWriteEmptyGeometery() throws Exception {
-    	ByteArrayOutputStream out = new ByteArrayOutputStream();
-    	String featureDef = "1=POINT EMPTY";
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        String featureDef = "1=POINT EMPTY";
         SimpleFeatureType schema = DataUtilities.createType("test", "p:Point:srid=27700");
         SimpleFeature feature = DataUtilities.createFeature(schema, featureDef);
         try (GeoJSONWriter writer = new GeoJSONWriter(out)) {
             writer.write(feature);
         }
         String json = new String(out.toByteArray(), StandardCharsets.UTF_8);
-        assertEquals("{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\":{},\"geometry\":{\"type\":\"Point\",\"coordinates\":[]},\"id\":\"1\"}]}", json);
+        assertEquals(
+                "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\":{},\"geometry\":{\"type\":\"Point\",\"coordinates\":[]},\"id\":\"1\"}]}",
+                json);
 
         out = new ByteArrayOutputStream();
         featureDef = "1=LINESTRING EMPTY";
@@ -202,7 +201,9 @@ public class GeoJSONWriteTest {
             writer.write(feature);
         }
         json = new String(out.toByteArray(), StandardCharsets.UTF_8);
-        assertEquals("{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\":{},\"geometry\":{\"type\":\"LineString\",\"coordinates\":[]},\"id\":\"1\"}]}", json);
+        assertEquals(
+                "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\":{},\"geometry\":{\"type\":\"LineString\",\"coordinates\":[]},\"id\":\"1\"}]}",
+                json);
     }
 
     @Test

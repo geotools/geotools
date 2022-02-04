@@ -24,6 +24,8 @@ import static com.bedatadriven.jackson.datatype.jts.GeoJson.COORDINATES;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
+
+import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Polygon;
@@ -41,6 +43,9 @@ public class PolygonParser extends BaseParser implements GeometryParser<Polygon>
     }
 
     public Polygon polygonFromJsonArrayOfRings(JsonNode arrayOfRings) {
+    	if(arrayOfRings == null || arrayOfRings.isEmpty()) {
+    		return (Polygon) geometryFactory.createEmpty(2);
+    	}
         LinearRing shell = linearRingsFromJson(arrayOfRings.get(0));
         int size = arrayOfRings.size();
         LinearRing[] holes = new LinearRing[size - 1];
@@ -51,7 +56,9 @@ public class PolygonParser extends BaseParser implements GeometryParser<Polygon>
     }
 
     private LinearRing linearRingsFromJson(JsonNode coordinates) {
-        assert coordinates.isArray() : "expected coordinates array";
+        if(coordinates==null) {
+        	return geometryFactory.createLinearRing((Coordinate[])null); //(LinearString) geometryFactory.createEmpty(1);
+        }
         return geometryFactory.createLinearRing(PointParser.coordinatesFromJson(coordinates));
     }
 

@@ -64,6 +64,7 @@ public class GeometrySerializer extends JsonSerializer<Geometry> {
         format.setMinimumFractionDigits(minDecimals);
         format.setMaximumFractionDigits(maxDecimals);
         format.setRoundingMode(rounding);
+        format.setGroupingUsed(false);
     }
 
     @Override

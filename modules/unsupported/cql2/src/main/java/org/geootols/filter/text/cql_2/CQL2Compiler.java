@@ -472,7 +472,6 @@ public class CQL2Compiler extends CQL2Parser implements org.geotools.filter.text
             case JJTROUTINEINVOCATION_GEOOP_TOUCH_NODE:
                 filter = this.builder.buildSpatialTouchesFilter();
                 break;
-
             case JJTROUTINEINVOCATION_GEOOP_CROSS_NODE:
                 filter = this.builder.buildSpatialCrossesFilter();
                 break;
@@ -491,51 +490,6 @@ public class CQL2Compiler extends CQL2Parser implements org.geotools.filter.text
 
         return filter;
     }
-
-    //    private Filter buildBeforeOrDuring() throws CQLException {
-    //        Filter filter = null;
-    //
-    //        Result node = this.builder.peekResult();
-    //
-    //        switch (node.getNodeType()) {
-    //            case JJTPERIOD_BETWEEN_DATES_NODE:
-    //            case JJTPERIOD_WITH_DATE_DURATION_NODE:
-    //            case JJTPERIOD_WITH_DURATION_DATE_NODE:
-    //                filter = this.builder.buildBeforeOrDuring();
-    //                break;
-    //
-    //            default:
-    //                throw new CQLException(
-    //                        "unexpeted date time expression in temporal predicate.",
-    //                        node.getToken(),
-    //                        this.source);
-    //        }
-    //
-    //        return filter;
-    //    }
-    //
-    //    private Or buildDuringOrAfter() throws CQLException {
-    //        Or filter = null;
-    //
-    //        Result node = this.builder.peekResult();
-    //
-    //        switch (node.getNodeType()) {
-    //            case JJTPERIOD_BETWEEN_DATES_NODE:
-    //            case JJTPERIOD_WITH_DATE_DURATION_NODE:
-    //            case JJTPERIOD_WITH_DURATION_DATE_NODE:
-    //                filter = this.builder.buildDuringOrAfter();
-    //
-    //                break;
-    //
-    //            default:
-    //                throw new CQLException(
-    //                        "unexpeted date time expression in temporal predicate.",
-    //                        node.getToken(),
-    //                        this.source);
-    //        }
-    //
-    //        return filter;
-    //    }
 
     /**
      * Build the convenient filter for before date and before period filters

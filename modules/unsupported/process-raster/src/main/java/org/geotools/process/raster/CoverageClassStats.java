@@ -55,9 +55,9 @@ import org.opengis.util.ProgressListener;
  * </ul>
  */
 @DescribeProcess(
-    title = "coverageClassStats",
-    description = "Calculates statistics from coverage" + " values classified into bins/classes."
-)
+        title = "coverageClassStats",
+        description =
+                "Calculates statistics from coverage" + " values classified into bins/classes.")
 public class CoverageClassStats implements RasterProcess {
 
     @DescribeResult(name = "results", description = "The classified results")
@@ -65,31 +65,27 @@ public class CoverageClassStats implements RasterProcess {
             @DescribeParameter(name = "coverage", description = "The coverage to analyze")
                     GridCoverage2D coverage,
             @DescribeParameter(
-                        name = "stats",
-                        description = "The statistics to calculate for each class",
-                        collectionType = Statistic.class,
-                        min = 0
-                    )
+                            name = "stats",
+                            description = "The statistics to calculate for each class",
+                            collectionType = Statistic.class,
+                            min = 0)
                     Set<Statistic> stats,
             @DescribeParameter(
-                        name = "band",
-                        description = "The band to calculate breaks/statistics for",
-                        min = 0
-                    )
+                            name = "band",
+                            description = "The band to calculate breaks/statistics for",
+                            min = 0)
                     Integer band,
             @DescribeParameter(
-                        name = "classes",
-                        description = "The number of breaks/classes",
-                        min = 0
-                    )
+                            name = "classes",
+                            description = "The number of breaks/classes",
+                            min = 0)
                     Integer classes,
             @DescribeParameter(name = "method", description = "The classification method", min = 0)
                     ClassificationMethod method,
             @DescribeParameter(
-                        name = "noData",
-                        description = "The pixel value to be ommitted from any calculation",
-                        min = 0
-                    )
+                            name = "noData",
+                            description = "The pixel value to be ommitted from any calculation",
+                            min = 0)
                     Double noData,
             ProgressListener progressListener)
             throws ProcessException, IOException {

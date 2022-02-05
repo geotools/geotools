@@ -49,11 +49,10 @@ public class TransparencyFillProcess implements RasterProcess {
             @DescribeParameter(name = "data", description = "Input coverage")
                     GridCoverage2D coverage,
             @DescribeParameter(
-                        name = "width",
-                        description = "Width inside which searching for nearest pixel value",
-                        min = 0,
-                        max = 1
-                    )
+                            name = "width",
+                            description = "Width inside which searching for nearest pixel value",
+                            min = 0,
+                            max = 1)
                     Integer width,
             //            @DescribeParameter(name = "type", description = "Type of filling
             // algorithm", min = 0) FillType type,

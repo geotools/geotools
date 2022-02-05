@@ -55,9 +55,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(
-    name = "PurchaseOrderType",
-    propOrder = {"shipTo", "billTo", "comment", "items"}
-)
+        name = "PurchaseOrderType",
+        propOrder = {"shipTo", "billTo", "comment", "items"})
 public class PurchaseOrderType {
 
     @XmlElement(required = true)

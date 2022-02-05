@@ -59,9 +59,8 @@ public interface GeneralParameterDescriptor extends IdentifiedObject {
      * @see #getMinimumOccurs
      */
     @UML(
-        identifier = "CC_OperationParameterGroup.maximumOccurs",
-        obligation = OPTIONAL,
-        specification = ISO_19111
-    )
+            identifier = "CC_OperationParameterGroup.maximumOccurs",
+            obligation = OPTIONAL,
+            specification = ISO_19111)
     int getMaximumOccurs();
 }

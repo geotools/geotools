@@ -575,8 +575,7 @@ public class Encoder {
         }
         // let's see if all the properties have the same type, and that the type is equal to the
         // current element type
-        if (!nestedProperties
-                .stream()
+        if (!nestedProperties.stream()
                 .allMatch(
                         property ->
                                 property == null

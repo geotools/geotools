@@ -250,9 +250,7 @@ public class SolrFeatureSource extends ContentFeatureSource {
             SolrQuery q = store.selectUniqueValues(getSchema(), preQuery, visitor);
             QueryResponse rsp = solrServer.query(q);
             values =
-                    rsp.getGroupResponse()
-                            .getValues()
-                            .stream()
+                    rsp.getGroupResponse().getValues().stream()
                             .filter(g -> g.getName().equals(visitor.getExpression().toString()))
                             .flatMap(gr -> gr.getValues().stream())
                             .map(g -> g.getGroupValue())

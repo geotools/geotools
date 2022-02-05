@@ -125,8 +125,7 @@ public class MBTilesDataStore extends ContentDataStore {
 
     @Override
     protected List<Name> createTypeNames() throws IOException {
-        return schemas.keySet()
-                .stream()
+        return schemas.keySet().stream()
                 .map(id -> new NameImpl(getNamespaceURI(), id))
                 .collect(Collectors.toList());
     }

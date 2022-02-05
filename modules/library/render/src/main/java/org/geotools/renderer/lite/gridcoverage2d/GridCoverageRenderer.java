@@ -859,8 +859,7 @@ public final class GridCoverageRenderer {
             String message =
                     "GridCoverageRenderer coverages: " + name + "\n" + coverages == null
                             ? "none"
-                            : coverages
-                                    .stream()
+                            : coverages.stream()
                                     .map(c -> c.toString())
                                     .collect(Collectors.joining(","));
             LOGGER.log(Level.FINE, message);

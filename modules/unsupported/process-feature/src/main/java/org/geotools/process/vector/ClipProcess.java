@@ -47,16 +47,15 @@ public class ClipProcess implements VectorProcess {
             @DescribeParameter(name = "features", description = "Input feature collection")
                     SimpleFeatureCollection features,
             @DescribeParameter(
-                        name = "clip",
-                        description = "Geometry to use for clipping (in same CRS as input features)"
-                    )
+                            name = "clip",
+                            description =
+                                    "Geometry to use for clipping (in same CRS as input features)")
                     Geometry clip,
             @DescribeParameter(
-                        name = "preserveZ",
-                        min = 0,
-                        description =
-                                "Attempt to preserve Z values from the original geometry (interpolate value for new points)"
-                    )
+                            name = "preserveZ",
+                            min = 0,
+                            description =
+                                    "Attempt to preserve Z values from the original geometry (interpolate value for new points)")
                     Boolean preserveZ)
             throws ProcessException {
         // only get the geometries in the bbox of the clip

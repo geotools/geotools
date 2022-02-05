@@ -348,14 +348,14 @@ public class RestElasticClient implements ElasticClient {
             } else if (entry.getValue() instanceof List) {
                 ((List<Object>) entry.getValue())
                         .stream()
-                        .filter(item -> item instanceof Map)
-                        .forEach(
-                                item ->
-                                        removeMapping(
-                                                parent,
-                                                key,
-                                                (Map<String, Object>) item,
-                                                currentParent));
+                                .filter(item -> item instanceof Map)
+                                .forEach(
+                                        item ->
+                                                removeMapping(
+                                                        parent,
+                                                        key,
+                                                        (Map<String, Object>) item,
+                                                        currentParent));
             }
         }
     }

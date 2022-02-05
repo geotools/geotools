@@ -83,10 +83,9 @@ public interface Georectified extends GridSpatialRepresentation {
      * @return Description of the information about grid dimensions, or {@code null}.
      */
     @UML(
-        identifier = "transformationDimensionDescription",
-        obligation = OPTIONAL,
-        specification = ISO_19115
-    )
+            identifier = "transformationDimensionDescription",
+            obligation = OPTIONAL,
+            specification = ISO_19115)
     InternationalString getTransformationDimensionDescription();
 
     /**
@@ -95,9 +94,8 @@ public interface Georectified extends GridSpatialRepresentation {
      * @return Information about which grid dimensions are the spatial dimensions, or {@code null}.
      */
     @UML(
-        identifier = "transformationDimensionMapping",
-        obligation = OPTIONAL,
-        specification = ISO_19115
-    )
+            identifier = "transformationDimensionMapping",
+            obligation = OPTIONAL,
+            specification = ISO_19115)
     Collection<? extends InternationalString> getTransformationDimensionMapping();
 }

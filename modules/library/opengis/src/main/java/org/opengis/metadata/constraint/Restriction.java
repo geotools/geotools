@@ -67,10 +67,9 @@ public final class Restriction extends CodeList<Restriction> {
      * a result of creativity.
      */
     @UML(
-        identifier = "intellectualPropertyRights",
-        obligation = CONDITIONAL,
-        specification = ISO_19115
-    )
+            identifier = "intellectualPropertyRights",
+            obligation = CONDITIONAL,
+            specification = ISO_19115)
     public static final Restriction INTELLECTUAL_PROPERTY_RIGHTS =
             new Restriction("INTELLECTUAL_PROPERTY_RIGHTS");
 

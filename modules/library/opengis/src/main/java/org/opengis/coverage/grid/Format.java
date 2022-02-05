@@ -49,19 +49,17 @@ public interface Format {
 
     /** Retrieve the parameter information for a {@link GridCoverageReader#read read} operation. */
     @UML(
-        identifier = "getParameterInfo, numParameters",
-        obligation = MANDATORY,
-        specification = OGC_01004
-    )
+            identifier = "getParameterInfo, numParameters",
+            obligation = MANDATORY,
+            specification = OGC_01004)
     ParameterValueGroup getReadParameters();
 
     /**
      * Retrieve the parameter information for a {@link GridCoverageWriter#write write} operation.
      */
     @UML(
-        identifier = "getParameterInfo, numParameters",
-        obligation = MANDATORY,
-        specification = OGC_01004
-    )
+            identifier = "getParameterInfo, numParameters",
+            obligation = MANDATORY,
+            specification = OGC_01004)
     ParameterValueGroup getWriteParameters();
 }

@@ -40,10 +40,9 @@ import org.opengis.util.ProgressListener;
 
 @SuppressWarnings("unused")
 @DescribeProcess(
-    title = "geoHashGridAgg",
-    description =
-            "Computes a grid from GeoHash grid aggregation buckets with values corresponding to doc_count values."
-)
+        title = "geoHashGridAgg",
+        description =
+                "Computes a grid from GeoHash grid aggregation buckets with values corresponding to doc_count values.")
 public class GeoHashGridProcess implements VectorProcess {
 
     private static final FilterFactory FILTER_FACTORY = CommonFactoryFinder.getFilterFactory(null);
@@ -73,24 +72,21 @@ public class GeoHashGridProcess implements VectorProcess {
 
             // process parameters
             @DescribeParameter(
-                        name = "pixelsPerCell",
-                        description = "Resolution used for upsampling (in pixels)",
-                        defaultValue = "1",
-                        min = 1
-                    )
+                            name = "pixelsPerCell",
+                            description = "Resolution used for upsampling (in pixels)",
+                            defaultValue = "1",
+                            min = 1)
                     Integer argPixelsPerCell,
             @DescribeParameter(
-                        name = "gridStrategy",
-                        description = "GeoHash grid strategy",
-                        defaultValue = "Basic",
-                        min = 1
-                    )
+                            name = "gridStrategy",
+                            description = "GeoHash grid strategy",
+                            defaultValue = "Basic",
+                            min = 1)
                     String gridStrategy,
             @DescribeParameter(
-                        name = "gridStrategyArgs",
-                        description = "Grid strategy arguments",
-                        min = 0
-                    )
+                            name = "gridStrategyArgs",
+                            description = "Grid strategy arguments",
+                            min = 0)
                     List<String> gridStrategyArgs,
             @DescribeParameter(name = "emptyCellValue", description = "Default cell value", min = 0)
                     Float emptyCellValue,
@@ -99,24 +95,21 @@ public class GeoHashGridProcess implements VectorProcess {
             @DescribeParameter(name = "scaleMax", description = "Scale maximum", min = 0)
                     Float scaleMax,
             @DescribeParameter(
-                        name = "useLog",
-                        description = "Whether to use log values (default=false)",
-                        defaultValue = "false"
-                    )
+                            name = "useLog",
+                            description = "Whether to use log values (default=false)",
+                            defaultValue = "false")
                     Boolean useLog,
 
             // output image parameters
             @DescribeParameter(name = "outputBBOX", description = "Bounding box of the output")
                     ReferencedEnvelope argOutputEnv,
             @DescribeParameter(
-                        name = "outputWidth",
-                        description = "Width of output raster in pixels"
-                    )
+                            name = "outputWidth",
+                            description = "Width of output raster in pixels")
                     Integer argOutputWidth,
             @DescribeParameter(
-                        name = "outputHeight",
-                        description = "Height of output raster in pixels"
-                    )
+                            name = "outputHeight",
+                            description = "Height of output raster in pixels")
                     Integer argOutputHeight,
             ProgressListener monitor)
             throws ProcessException {
@@ -154,9 +147,8 @@ public class GeoHashGridProcess implements VectorProcess {
 
     public Query invertQuery(
             @DescribeParameter(
-                        name = "outputBBOX",
-                        description = "Georeferenced bounding box of the output"
-                    )
+                            name = "outputBBOX",
+                            description = "Georeferenced bounding box of the output")
                     ReferencedEnvelope envelope,
             Query targetQuery,
             GridGeometry targetGridGeometry)

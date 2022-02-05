@@ -47,10 +47,9 @@ public interface DirectPosition extends Position {
      * @return The coordinate reference system, or {@code null}.
      */
     @UML(
-        identifier = "coordinateReferenceSystem",
-        obligation = MANDATORY,
-        specification = ISO_19107
-    )
+            identifier = "coordinateReferenceSystem",
+            obligation = MANDATORY,
+            specification = ISO_19107)
     CoordinateReferenceSystem getCoordinateReferenceSystem();
 
     /**

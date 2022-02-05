@@ -140,10 +140,9 @@ import si.uom.SI;
  * @author Martin Davis - OpenGeo
  */
 @DescribeProcess(
-    title = "BarnesSurface",
-    description =
-            "Uses Barnes Analysis to compute an interpolated surface over a set of irregular data points."
-)
+        title = "BarnesSurface",
+        description =
+                "Uses Barnes Analysis to compute an interpolated surface over a set of irregular data points.")
 public class BarnesSurfaceProcess implements VectorProcess {
 
     // no process state is defined, since RenderingTransformation processes must be stateless
@@ -155,102 +154,90 @@ public class BarnesSurfaceProcess implements VectorProcess {
             @DescribeParameter(name = "data", description = "Input features")
                     SimpleFeatureCollection obsFeatures,
             @DescribeParameter(
-                        name = "valueAttr",
-                        description =
-                                "Name of attribute containing the data value to be interpolated"
-                    )
+                            name = "valueAttr",
+                            description =
+                                    "Name of attribute containing the data value to be interpolated")
                     String valueAttr,
             @DescribeParameter(
-                        name = "dataLimit",
-                        description = "Limit for the number of input features processed",
-                        min = 0,
-                        max = 1
-                    )
+                            name = "dataLimit",
+                            description = "Limit for the number of input features processed",
+                            min = 0,
+                            max = 1)
                     Integer argDataLimit,
 
             // process parameters
             @DescribeParameter(
-                        name = "scale",
-                        description =
-                                "Length scale for the interpolation, in units of the source data CRS",
-                        min = 1,
-                        max = 1
-                    )
+                            name = "scale",
+                            description =
+                                    "Length scale for the interpolation, in units of the source data CRS",
+                            min = 1,
+                            max = 1)
                     Double argScale,
             @DescribeParameter(
-                        name = "convergence",
-                        description =
-                                "Convergence factor for refinement (between 0 and 1, default 0.3)",
-                        min = 0,
-                        max = 1,
-                        defaultValue = "0.3"
-                    )
+                            name = "convergence",
+                            description =
+                                    "Convergence factor for refinement (between 0 and 1, default 0.3)",
+                            min = 0,
+                            max = 1,
+                            defaultValue = "0.3")
                     Double argConvergence,
             @DescribeParameter(
-                        name = "passes",
-                        description = "Number of passes to compute (default = 2)",
-                        min = 0,
-                        max = 1
-                    )
+                            name = "passes",
+                            description = "Number of passes to compute (default = 2)",
+                            min = 0,
+                            max = 1)
                     Integer argPasses,
             @DescribeParameter(
-                        name = "minObservations",
-                        description =
-                                "Minimum number of observations required to support a grid cell (default = 2)",
-                        min = 0,
-                        max = 1,
-                        defaultValue = "2"
-                    )
+                            name = "minObservations",
+                            description =
+                                    "Minimum number of observations required to support a grid cell (default = 2)",
+                            min = 0,
+                            max = 1,
+                            defaultValue = "2")
                     Integer argMinObsCount,
             @DescribeParameter(
-                        name = "maxObservationDistance",
-                        description =
-                                "Maximum distance to an observation for it to support a grid cell, in units of the source CRS (default = 0, meaning all observations used)",
-                        defaultValue = "0",
-                        min = 0,
-                        max = 1
-                    )
+                            name = "maxObservationDistance",
+                            description =
+                                    "Maximum distance to an observation for it to support a grid cell, in units of the source CRS (default = 0, meaning all observations used)",
+                            defaultValue = "0",
+                            min = 0,
+                            max = 1)
                     Double argMaxObsDistance,
             @DescribeParameter(
-                        name = "noDataValue",
-                        description = "Value to use for NO_DATA cells (default = -999)",
-                        defaultValue = "-999",
-                        min = 0,
-                        max = 1
-                    )
+                            name = "noDataValue",
+                            description = "Value to use for NO_DATA cells (default = -999)",
+                            defaultValue = "-999",
+                            min = 0,
+                            max = 1)
                     Double argNoDataValue,
             @DescribeParameter(
-                        name = "pixelsPerCell",
-                        description =
-                                "Resolution of the computed grid in pixels per grid cell (default = 1)",
-                        defaultValue = "1",
-                        min = 0,
-                        max = 1
-                    )
+                            name = "pixelsPerCell",
+                            description =
+                                    "Resolution of the computed grid in pixels per grid cell (default = 1)",
+                            defaultValue = "1",
+                            min = 0,
+                            max = 1)
                     Integer argPixelsPerCell,
 
             // query modification parameters
             @DescribeParameter(
-                        name = "queryBuffer",
-                        description =
-                                "Distance to expand the query envelope by, in units of the source CRS (larger values provide a more stable surface)",
-                        min = 0,
-                        max = 1
-                    )
+                            name = "queryBuffer",
+                            description =
+                                    "Distance to expand the query envelope by, in units of the source CRS (larger values provide a more stable surface)",
+                            min = 0,
+                            max = 1)
                     Double argQueryBuffer,
 
             // output image parameters
             @DescribeParameter(name = "outputBBOX", description = "Bounding box for output")
                     ReferencedEnvelope outputEnv,
             @DescribeParameter(
-                        name = "outputWidth",
-                        description = "Width of the output raster in pixels"
-                    )
+                            name = "outputWidth",
+                            description = "Width of the output raster in pixels")
                     Integer outputWidth,
             @DescribeParameter(
-                        name = "outputHeight",
-                        description = "Height of the output raster in pixels"
-                    )
+                            name = "outputHeight",
+                            description = "Height of the output raster in pixels")
                     Integer outputHeight,
             ProgressListener monitor)
             throws ProcessException {
@@ -446,11 +433,10 @@ public class BarnesSurfaceProcess implements VectorProcess {
      */
     public Query invertQuery(
             @DescribeParameter(
-                        name = "queryBuffer",
-                        description = "The distance by which to expand the query window",
-                        min = 0,
-                        max = 1
-                    )
+                            name = "queryBuffer",
+                            description = "The distance by which to expand the query window",
+                            min = 0,
+                            max = 1)
                     Double argQueryBuffer,
             Query targetQuery,
             GridGeometry targetGridGeometry)

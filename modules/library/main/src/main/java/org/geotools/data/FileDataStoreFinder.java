@@ -137,8 +137,7 @@ public class FileDataStoreFinder {
      * @see FileDataStore
      */
     public static Iterator<FileDataStoreFactorySpi> getAvailableDataStores() {
-        return CommonFactoryFinder.getFileDataStoreFactories(null)
-                .stream()
+        return CommonFactoryFinder.getFileDataStoreFactories(null).stream()
                 .filter(dsf -> dsf.isAvailable())
                 .iterator();
     }

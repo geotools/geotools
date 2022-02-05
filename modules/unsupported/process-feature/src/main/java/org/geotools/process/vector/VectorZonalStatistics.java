@@ -48,29 +48,25 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * data layer must be a point layer, the reference layer must be a polygonal one
  */
 @DescribeProcess(
-    title = "Vector Zonal Statistics",
-    description =
-            "Computes statistics for the distribution of a given attribute in a set of polygonal zones.  Input must be points."
-)
+        title = "Vector Zonal Statistics",
+        description =
+                "Computes statistics for the distribution of a given attribute in a set of polygonal zones.  Input must be points.")
 public class VectorZonalStatistics implements VectorProcess {
 
     @DescribeResult(
-        name = "statistics",
-        description =
-                "A feature collection with the attributes of the zone layer (prefixed by 'z_') and the statistics fields count,min,max,sum,avg,stddev"
-    )
+            name = "statistics",
+            description =
+                    "A feature collection with the attributes of the zone layer (prefixed by 'z_') and the statistics fields count,min,max,sum,avg,stddev")
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "data", description = "Input collection of point features")
                     SimpleFeatureCollection data,
             @DescribeParameter(
-                        name = "dataAttribute",
-                        description = "Attribute to use for computing statistics"
-                    )
+                            name = "dataAttribute",
+                            description = "Attribute to use for computing statistics")
                     String dataAttribute,
             @DescribeParameter(
-                        name = "zones",
-                        description = "Zone polygon features for which to compute statistics"
-                    )
+                            name = "zones",
+                            description = "Zone polygon features for which to compute statistics")
                     SimpleFeatureCollection zones) {
 
         AttributeDescriptor dataDescriptor = data.getSchema().getDescriptor(dataAttribute);

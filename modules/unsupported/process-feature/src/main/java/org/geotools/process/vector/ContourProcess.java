@@ -37,32 +37,28 @@ public class ContourProcess implements VectorProcess {
             @DescribeParameter(name = "propertyName", description = "PropertyName to be contoured")
                     String propertyName,
             @DescribeParameter(
-                        name = "levels",
-                        description = "Values of levels at which to generate contours"
-                    )
+                            name = "levels",
+                            description = "Values of levels at which to generate contours")
                     double[] levels,
             @DescribeParameter(
-                        name = "interval",
-                        description =
-                                "Interval between contour values (ignored if levels parameter is supplied)",
-                        min = 0,
-                        minValue = 0
-                    )
+                            name = "interval",
+                            description =
+                                    "Interval between contour values (ignored if levels parameter is supplied)",
+                            min = 0,
+                            minValue = 0)
                     Double interval,
             // @DescribeParameter(name = "nice", description = "Should the contours start and end at
             // nice values", min = 0) Boolean nice,
             @DescribeParameter(
-                        name = "simplify",
-                        description = "Indicates whether contour lines are simplified",
-                        min = 0
-                    )
+                            name = "simplify",
+                            description = "Indicates whether contour lines are simplified",
+                            min = 0)
                     Boolean simplify,
             @DescribeParameter(
-                        name = "smooth",
-                        description =
-                                "Indicates whether contour lines are smoothed using Bezier smoothing",
-                        min = 0
-                    )
+                            name = "smooth",
+                            description =
+                                    "Indicates whether contour lines are smoothed using Bezier smoothing",
+                            min = 0)
                     Boolean smooth,
             // @DescribeParameter(name = "roi", description = "Geometry delineating the region of
             // interest (in raster coordinate system)", min = 0) Geometry roi,

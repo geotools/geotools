@@ -50,16 +50,14 @@ public final class SchemaStoreDirectoryProvider {
     }
 
     public static SchemaStoreDirectory getHighestPriority() {
-        return directoriies
-                .stream()
+        return directoriies.stream()
                 .sorted((o1, o2) -> o2.getPriority() - o1.getPriority())
                 .findFirst()
                 .get();
     }
 
     public static SchemaStoreDirectory getLowestPriority() {
-        return directoriies
-                .stream()
+        return directoriies.stream()
                 .sorted((o1, o2) -> o1.getPriority() - o2.getPriority())
                 .findFirst()
                 .get();

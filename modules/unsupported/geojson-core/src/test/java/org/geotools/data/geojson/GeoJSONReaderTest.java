@@ -230,6 +230,33 @@ public class GeoJSONReaderTest {
         testGeometry(line, expected);
     }
 
+    @Test
+    public void testEmptyGeometries() throws Exception {
+        String input = "{\"type\":\"Point\",\"coordinates\":[]}";
+        String expected = "POINT EMPTY";
+        testGeometry(input, expected);
+
+        input = "{\"type\":\"MultiPoint\",\"coordinates\":[[]]}";
+        expected = "MULTIPOINT (EMPTY)";
+        testGeometry(input, expected);
+
+        input = "{\"type\":\"LineString\",\"coordinates\":[]}";
+        expected = "LINESTRING EMPTY";
+        testGeometry(input, expected);
+
+        input = "{\"type\":\"MultiLineString\",\"coordinates\":[[]]}";
+        expected = "MULTILINESTRING (EMPTY)";
+        testGeometry(input, expected);
+
+        input = "{\"type\":\"Polygon\",\"coordinates\":[]}";
+        expected = "POLYGON EMPTY";
+        testGeometry(input, expected);
+
+        input = "{\"type\":\"MultiPolygon\",\"coordinates\":[[]]}";
+        expected = "MULTIPOLYGON (EMPTY)";
+        testGeometry(input, expected);
+    }
+
     private void testGeometry(String json, String wkt) throws ParseException {
         Geometry p = GeoJSONReader.parseGeometry(json);
 

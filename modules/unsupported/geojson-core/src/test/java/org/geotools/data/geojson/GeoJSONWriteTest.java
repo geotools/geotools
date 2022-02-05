@@ -180,6 +180,33 @@ public class GeoJSONWriteTest {
     }
 
     @Test
+    public void testWriteEmptyGeometery() throws Exception {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        String featureDef = "1=POINT EMPTY";
+        SimpleFeatureType schema = DataUtilities.createType("test", "p:Point:srid=27700");
+        SimpleFeature feature = DataUtilities.createFeature(schema, featureDef);
+        try (GeoJSONWriter writer = new GeoJSONWriter(out)) {
+            writer.write(feature);
+        }
+        String json = new String(out.toByteArray(), StandardCharsets.UTF_8);
+        assertEquals(
+                "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\":{},\"geometry\":{\"type\":\"Point\",\"coordinates\":[]},\"id\":\"1\"}]}",
+                json);
+
+        out = new ByteArrayOutputStream();
+        featureDef = "1=LINESTRING EMPTY";
+        schema = DataUtilities.createType("test", "p:LineString:srid=27700");
+        feature = DataUtilities.createFeature(schema, featureDef);
+        try (GeoJSONWriter writer = new GeoJSONWriter(out)) {
+            writer.write(feature);
+        }
+        json = new String(out.toByteArray(), StandardCharsets.UTF_8);
+        assertEquals(
+                "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\":{},\"geometry\":{\"type\":\"LineString\",\"coordinates\":[]},\"id\":\"1\"}]}",
+                json);
+    }
+
+    @Test
     public void testPrettyPrint() throws Exception {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try (GeoJSONWriter writer = new GeoJSONWriter(out)) {

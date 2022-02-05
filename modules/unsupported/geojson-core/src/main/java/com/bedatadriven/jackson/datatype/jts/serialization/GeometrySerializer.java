@@ -49,6 +49,10 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 
+/**
+ * When an EMPTY geometery is passed in we will write out an empty coordinates array (see
+ * https://datatracker.ietf.org/doc/html/rfc7946#section-3.1)
+ */
 public class GeometrySerializer extends JsonSerializer<Geometry> {
 
     private RoundingMode roundingMode = RoundingMode.HALF_UP;
@@ -195,9 +199,11 @@ public class GeometrySerializer extends JsonSerializer<Geometry> {
 
     private void writeLineStringCoords(JsonGenerator jgen, LineString ring) throws IOException {
         jgen.writeStartArray();
-        for (int i = 0; i != ring.getNumPoints(); ++i) {
-            Point p = ring.getPointN(i);
-            writePointCoords(jgen, p);
+        if (!ring.isEmpty()) {
+            for (int i = 0; i != ring.getNumPoints(); ++i) {
+                Point p = ring.getPointN(i);
+                writePointCoords(jgen, p);
+            }
         }
         jgen.writeEndArray();
     }
@@ -219,13 +225,15 @@ public class GeometrySerializer extends JsonSerializer<Geometry> {
     }
 
     private void writePointCoords(JsonGenerator jgen, Point p) throws IOException {
+
         jgen.writeStartArray();
+        if (!p.isEmpty()) {
+            writeNumber(jgen, p.getCoordinate().x);
+            writeNumber(jgen, p.getCoordinate().y);
 
-        writeNumber(jgen, p.getCoordinate().x);
-        writeNumber(jgen, p.getCoordinate().y);
-
-        if (!Double.isNaN(p.getCoordinate().getZ())) {
-            writeNumber(jgen, p.getCoordinate().getZ());
+            if (!Double.isNaN(p.getCoordinate().getZ())) {
+                writeNumber(jgen, p.getCoordinate().getZ());
+            }
         }
         jgen.writeEndArray();
     }

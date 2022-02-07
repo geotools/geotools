@@ -112,7 +112,6 @@ TOKEN [IGNORE_CASE]:  /* keywords */
    < UNKNOWN: "unknown"> |
    < LIKE: "like" > |
    < BETWEEN: "between"> |
-   < ID: "id" > |
    < IN: "in" > |
    < IS: "is" > |
    < NULL: "null" > |

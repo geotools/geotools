@@ -16,6 +16,7 @@
  */
 package org.geotools.filter.text.cql_2;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 
 import java.awt.Color;
@@ -27,6 +28,7 @@ import org.geotools.filter.IsNullImpl;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.FilterECQLSample;
+import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.filter.And;
@@ -36,6 +38,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Not;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
+import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsGreaterThan;
 import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.PropertyIsLike;
@@ -351,5 +354,29 @@ public class CQL2Test {
 
         actual = CQL2.toCQL2(function);
         assertEquals("color literals", expected, actual);
+    }
+
+    @Test
+    public void idEquality() throws CQLException {
+        Filter filter = CQL2.toFilter("id = 'abcd'");
+        assertThat(filter, CoreMatchers.instanceOf(PropertyIsEqualTo.class));
+        PropertyIsEqualTo pet = (PropertyIsEqualTo) filter;
+        assertThat(pet.getExpression1(), CoreMatchers.instanceOf(PropertyName.class));
+        PropertyName pn = (PropertyName) pet.getExpression1();
+        assertEquals("id", pn.getPropertyName());
+    }
+
+    @Test
+    public void idInChoices() throws CQLException {
+        Filter filter = CQL2.toFilter("id in ('abcd', 'efg')");
+        assertThat(filter, CoreMatchers.instanceOf(Or.class));
+        Or or = (Or) filter;
+        assertEquals(2, or.getChildren().size());
+        assertThat(or.getChildren().get(0), CoreMatchers.instanceOf(PropertyIsEqualTo.class));
+        assertThat(or.getChildren().get(1), CoreMatchers.instanceOf(PropertyIsEqualTo.class));
+        PropertyIsEqualTo pet = (PropertyIsEqualTo) or.getChildren().get(0);
+        assertThat(pet.getExpression1(), CoreMatchers.instanceOf(PropertyName.class));
+        PropertyName pn = (PropertyName) pet.getExpression1();
+        assertEquals("id", pn.getPropertyName());
     }
 }

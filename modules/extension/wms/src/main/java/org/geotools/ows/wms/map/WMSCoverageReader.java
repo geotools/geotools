@@ -325,6 +325,14 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
         return grid;
     }
 
+    public CoordinateReferenceSystem getRequestdEnvelopeCRS() {
+        return this.requestedEnvelope.getCoordinateReferenceSystem();
+    }
+
+    public CoordinateReferenceSystem getRequestCRS() {
+        return this.requestCRS;
+    }
+
     /** Execute the GetMap request */
     GridCoverage2D getMap(
             ReferencedEnvelope requestedEnvelope, int width, int height, Color backgroundColor)
@@ -357,7 +365,7 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
      * Sets up a max request with the provided parameters, making sure it is compatible with the
      * layers own native SRS list
      */
-    ReferencedEnvelope initMapRequest(
+    public ReferencedEnvelope initMapRequest(
             ReferencedEnvelope bbox, int width, int height, Color backgroundColor)
             throws IOException {
         ReferencedEnvelope gridEnvelope = bbox;

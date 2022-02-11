@@ -237,7 +237,7 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
         Map<String, CRSEnvelope> boundingBoxes = layer.getBoundingBoxes();
         return layerSrsSet
                 .stream()
-                .filter(crs -> boundingBoxes.containsKey(crs))
+                .filter(boundingBoxes::containsKey)
                 .collect(Collectors.toList());
     }
 
@@ -263,7 +263,7 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
             tx.transform(src, dest);
             request.setQueryPoint((int) dest.getX(), (int) dest.getY());
         } catch (Exception e) {
-            throw (IOException) new IOException("Failed to grab feature info").initCause(e);
+            throw (IOException) new IOException("Failed to grab feature info", e);
         }
 
         try {
@@ -275,7 +275,7 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
         } catch (IOException e) {
             throw e;
         } catch (Throwable t) {
-            throw (IOException) new IOException("Failed to grab feature info").initCause(t);
+            throw (IOException) new IOException("Failed to grab feature info", t);
         }
     }
 
@@ -357,7 +357,7 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
                 response.dispose();
             }
         } catch (ServiceException e) {
-            throw (IOException) new IOException("GetMap failed").initCause(e);
+            throw (IOException) new IOException("GetMap failed", e);
         }
     }
 

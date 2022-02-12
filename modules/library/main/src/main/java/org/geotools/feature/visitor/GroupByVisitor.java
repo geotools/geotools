@@ -156,8 +156,7 @@ public class GroupByVisitor implements FeatureCalc, FeatureAttributeVisitor {
         void index(SimpleFeature feature) {
             // list of group by attributes values
             List<Object> groupByValues =
-                    groupByAttributes
-                            .stream()
+                    groupByAttributes.stream()
                             .map(expression -> expression.evaluate(feature))
                             .collect(Collectors.toList());
             // check if a feature collection already for the group by values (using a list

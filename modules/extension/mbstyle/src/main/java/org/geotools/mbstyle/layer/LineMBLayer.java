@@ -631,8 +631,7 @@ public class LineMBLayer extends MBLayer {
             return dasharray;
         }
 
-        return dasharray
-                .stream()
+        return dasharray.stream()
                 .map(dash -> ff.multiply(dash, lineWidth))
                 .collect(Collectors.toList());
     }

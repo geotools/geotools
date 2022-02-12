@@ -70,10 +70,9 @@ public final class TopicCategory extends CodeList<TopicCategory> {
      * precipitation.
      */
     @UML(
-        identifier = "climatologyMeteorologyAtmosphere",
-        obligation = CONDITIONAL,
-        specification = ISO_19115
-    )
+            identifier = "climatologyMeteorologyAtmosphere",
+            obligation = CONDITIONAL,
+            specification = ISO_19115)
     public static final TopicCategory CLIMATOLOGY_METEOROLOGY_ATMOSPHERE =
             new TopicCategory("CLIMATOLOGY_METEOROLOGY_ATMOSPHERE");
 
@@ -112,10 +111,9 @@ public final class TopicCategory extends CodeList<TopicCategory> {
      * activity, landslides, gravity information, soils, permafrost, hydrogeology, erosion.
      */
     @UML(
-        identifier = "geoscientificInformation",
-        obligation = CONDITIONAL,
-        specification = ISO_19115
-    )
+            identifier = "geoscientificInformation",
+            obligation = CONDITIONAL,
+            specification = ISO_19115)
     public static final TopicCategory GEOSCIENTIFIC_INFORMATION =
             new TopicCategory("GEOSCIENTIFIC_INFORMATION");
 
@@ -136,10 +134,9 @@ public final class TopicCategory extends CodeList<TopicCategory> {
      * <p>Examples: land cover, topographic maps, imagery, unclassified images, annotations.
      */
     @UML(
-        identifier = "imageryBaseMapsEarthCover",
-        obligation = CONDITIONAL,
-        specification = ISO_19115
-    )
+            identifier = "imageryBaseMapsEarthCover",
+            obligation = CONDITIONAL,
+            specification = ISO_19115)
     public static final TopicCategory IMAGERY_BASE_MAPS_EARTH_COVER =
             new TopicCategory("IMAGERY_BASE_MAPS_EARTH_COVER");
 

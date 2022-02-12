@@ -84,9 +84,8 @@ public interface ApplicationSchemaInformation {
      * @return Format used for the application schema software file.
      */
     @UML(
-        identifier = "softwareDevelopmentFileFormat",
-        obligation = OPTIONAL,
-        specification = ISO_19115
-    )
+            identifier = "softwareDevelopmentFileFormat",
+            obligation = OPTIONAL,
+            specification = ISO_19115)
     String getSoftwareDevelopmentFileFormat();
 }

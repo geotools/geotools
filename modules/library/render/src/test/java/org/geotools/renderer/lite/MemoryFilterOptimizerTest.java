@@ -184,9 +184,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         PropertyName propname = (PropertyName) inFunction.getParameters().get(0);
         assertEquals(name, propname.getPropertyName());
         List<String> inLiterals =
-                inFunction
-                        .getParameters()
-                        .stream()
+                inFunction.getParameters().stream()
                         .filter(ex -> ex instanceof Literal)
                         .map(ex -> ((Literal) ex).evaluate(null, String.class))
                         .collect(Collectors.toList());
@@ -253,9 +251,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         assertEquals(4, inFunction.getParameters().size());
         assertTrue(inFunction.getParameters().get(0) instanceof FilterFunction_strConcat);
         List<String> inLiterals =
-                inFunction
-                        .getParameters()
-                        .stream()
+                inFunction.getParameters().stream()
                         .filter(ex -> ex instanceof Literal)
                         .map(ex -> ((Literal) ex).evaluate(null, String.class))
                         .collect(Collectors.toList());

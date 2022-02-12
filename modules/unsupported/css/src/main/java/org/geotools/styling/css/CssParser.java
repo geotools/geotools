@@ -178,15 +178,11 @@ public class CssParser extends BaseParser<Object> {
                                 stream.collect(
                                         Collectors.partitioningBy(x -> x instanceof CssRule));
                         List<Property> properties =
-                                splitContents
-                                        .get(Boolean.FALSE)
-                                        .stream()
+                                splitContents.get(Boolean.FALSE).stream()
                                         .map(o -> (Property) o)
                                         .collect(Collectors.toList());
                         List<CssRule> subRules =
-                                splitContents
-                                        .get(Boolean.TRUE)
-                                        .stream()
+                                splitContents.get(Boolean.TRUE).stream()
                                         .map(o -> (CssRule) o)
                                         .collect(Collectors.toList());
 
@@ -432,8 +428,7 @@ public class CssParser extends BaseParser<Object> {
                     @Override
                     public boolean run(Context context) {
                         List<Value> values =
-                                popAll(Value.class)
-                                        .stream()
+                                popAll(Value.class).stream()
                                         .map(o -> (Value) o)
                                         .collect(Collectors.toList());
                         Literal id = (Literal) values.get(0);

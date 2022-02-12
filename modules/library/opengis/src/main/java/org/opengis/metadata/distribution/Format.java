@@ -72,10 +72,9 @@ public interface Format {
      *     been applied, or {@code null}.
      */
     @UML(
-        identifier = "fileDecompressionTechnique",
-        obligation = OPTIONAL,
-        specification = ISO_19115
-    )
+            identifier = "fileDecompressionTechnique",
+            obligation = OPTIONAL,
+            specification = ISO_19115)
     InternationalString getFileDecompressionTechnique();
 
     /**

@@ -37,10 +37,9 @@ public class PolygonLabelProcess extends StaticMethodsProcessFactory<PolygonLabe
     }
 
     @DescribeProcess(
-        title = "Polygon label process",
-        description =
-                "Calculate the Pole of accessibility, the most distant interior point in a polygon."
-    )
+            title = "Polygon label process",
+            description =
+                    "Calculate the Pole of accessibility, the most distant interior point in a polygon.")
     @DescribeResult(description = "Pole of accessibility")
     public static Geometry PolyLabeller(
             @DescribeParameter(name = "polygon", description = "Input polygon") Geometry polygon,

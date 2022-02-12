@@ -20,7 +20,6 @@ package org.geotools.xml.styling;
  * This code generated using Refractions SchemaCodeGenerator For more information, view the attached
  * licensing information. CopyRight 105
  */
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;

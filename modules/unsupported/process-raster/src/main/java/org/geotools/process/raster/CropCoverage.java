@@ -40,9 +40,8 @@ import org.opengis.util.ProgressListener;
  * @author ETj <etj at geo-solutions.it>
  */
 @DescribeProcess(
-    title = "Crop Coverage",
-    description = "Returns the portion of a raster bounded by a given geometry."
-)
+        title = "Crop Coverage",
+        description = "Returns the portion of a raster bounded by a given geometry.")
 public class CropCoverage implements RasterProcess {
 
     private static final CoverageProcessor PROCESSOR = CoverageProcessor.getInstance();

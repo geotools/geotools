@@ -68,10 +68,9 @@ import org.opengis.util.ProgressListener;
  * @version $Id$
  */
 @DescribeProcess(
-    title = "Contour",
-    description =
-            "Computes contour lines at specified intervals or levels for the values in a raster."
-)
+        title = "Contour",
+        description =
+                "Computes contour lines at specified intervals or levels for the values in a raster.")
 public class ContourProcess implements RasterProcess {
 
     private static final InternationalString NO_DATA =
@@ -121,50 +120,44 @@ public class ContourProcess implements RasterProcess {
     }
 
     @DescribeResult(
-        name = "result",
-        description = "Contour line features.  Contour level is in value attribute."
-    )
+            name = "result",
+            description = "Contour line features.  Contour level is in value attribute.")
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "data", description = "Input raster") GridCoverage2D gc2d,
             @DescribeParameter(
-                        name = "band",
-                        description = "Band number (zero base) to use for values to be contoured",
-                        min = 0,
-                        max = 1
-                    )
+                            name = "band",
+                            description =
+                                    "Band number (zero base) to use for values to be contoured",
+                            min = 0,
+                            max = 1)
                     Integer band,
             @DescribeParameter(
-                        name = "levels",
-                        description = "Values of levels at which to generate contours"
-                    )
+                            name = "levels",
+                            description = "Values of levels at which to generate contours")
                     double[] levels,
             @DescribeParameter(
-                        name = "interval",
-                        description =
-                                "Interval between contour values (ignored if levels parameter is supplied)",
-                        min = 0,
-                        minValue = 0
-                    )
+                            name = "interval",
+                            description =
+                                    "Interval between contour values (ignored if levels parameter is supplied)",
+                            min = 0,
+                            minValue = 0)
                     Double interval,
             @DescribeParameter(
-                        name = "simplify",
-                        description = "Indicates whether contour lines are simplified",
-                        min = 0
-                    )
+                            name = "simplify",
+                            description = "Indicates whether contour lines are simplified",
+                            min = 0)
                     Boolean simplify,
             @DescribeParameter(
-                        name = "smooth",
-                        description =
-                                "Indicates whether contour lines are smoothed using Bezier smoothing",
-                        min = 0
-                    )
+                            name = "smooth",
+                            description =
+                                    "Indicates whether contour lines are smoothed using Bezier smoothing",
+                            min = 0)
                     Boolean smooth,
             @DescribeParameter(
-                        name = "roi",
-                        description =
-                                "Geometry delineating the region of interest (in raster coordinate system)",
-                        min = 0
-                    )
+                            name = "roi",
+                            description =
+                                    "Geometry delineating the region of interest (in raster coordinate system)",
+                            min = 0)
                     Geometry roi,
             ProgressListener progressListener)
             throws ProcessException {

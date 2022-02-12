@@ -327,8 +327,7 @@ abstract class Value {
         public org.opengis.filter.expression.Expression toExpression() {
             // turn function call if possible
             org.opengis.filter.expression.Expression[] params =
-                    this.parameters
-                            .stream()
+                    this.parameters.stream()
                             .map(v -> v.toExpression())
                             .toArray(s -> new org.opengis.filter.expression.Expression[s]);
             return FF.function(this.name, params);

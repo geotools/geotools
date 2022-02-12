@@ -95,9 +95,7 @@ class MBtilesCache {
     public Map<String, CollectionProvider> mapToProviders(
             MBTilesTileLocation location,
             Map<String, List<VectorTileDecoder.Feature>> mvtFeaturesMap) {
-        return mvtFeaturesMap
-                .entrySet()
-                .stream()
+        return mvtFeaturesMap.entrySet().stream()
                 .collect(
                         toMap(
                                 e -> e.getKey(),

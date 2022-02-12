@@ -135,9 +135,7 @@ public class DuplicateFilterVisitorTest {
         And andFilter = (And) duplicated;
         assertThat(andFilter.getChildren().size(), is(2));
         List<Filter> found =
-                andFilter
-                        .getChildren()
-                        .stream()
+                andFilter.getChildren().stream()
                         .filter(child -> child instanceof NativeFilter)
                         .collect(Collectors.toList());
         assertThat(found.size(), is(1));

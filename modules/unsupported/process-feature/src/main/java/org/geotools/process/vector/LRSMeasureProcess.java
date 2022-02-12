@@ -48,10 +48,9 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
 @DescribeProcess(
-    title = "Measure point in LRS",
-    description =
-            "Computes the measure of a point along a feature (as feature with attribute lrs_measure). The point is measured along the nearest feature."
-)
+        title = "Measure point in LRS",
+        description =
+                "Computes the measure of a point along a feature (as feature with attribute lrs_measure). The point is measured along the nearest feature.")
 public class LRSMeasureProcess implements VectorProcess {
     private static final Logger LOGGER = Logging.getLogger(LRSMeasureProcess.class);
 
@@ -71,23 +70,20 @@ public class LRSMeasureProcess implements VectorProcess {
             @DescribeParameter(name = "features", description = "Input feature collection")
                     FeatureCollection<? extends FeatureType, ? extends Feature> featureCollection,
             @DescribeParameter(
-                        name = "from_measure_attb",
-                        description = "Attribute providing start measure of feature"
-                    )
+                            name = "from_measure_attb",
+                            description = "Attribute providing start measure of feature")
                     String fromMeasureAttb,
             @DescribeParameter(
-                        name = "to_measure_attb",
-                        description = "Attribute providing end measure of feature"
-                    )
+                            name = "to_measure_attb",
+                            description = "Attribute providing end measure of feature")
                     String toMeasureAttb,
             @DescribeParameter(name = "point", description = "Point whose location to measure")
                     Point point,
             @DescribeParameter(
-                        name = "crs",
-                        min = 0,
-                        description =
-                                "Coordinate reference system to use for input (default is the input collection CRS)"
-                    )
+                            name = "crs",
+                            min = 0,
+                            description =
+                                    "Coordinate reference system to use for input (default is the input collection CRS)")
                     CoordinateReferenceSystem crs)
             throws ProcessException {
         DefaultFeatureCollection results = new DefaultFeatureCollection();

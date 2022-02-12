@@ -91,9 +91,7 @@ class RepeatedFilterVisitor extends DefaultFilterVisitor {
     }
 
     public Set<Object> getRepeatedObjects() {
-        return objectCounter
-                .entrySet()
-                .stream()
+        return objectCounter.entrySet().stream()
                 .filter(e -> e.getValue().get() > 1)
                 .map(e -> e.getKey())
                 .collect(Collectors.toSet());

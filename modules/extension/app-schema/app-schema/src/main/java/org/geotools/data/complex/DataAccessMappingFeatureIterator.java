@@ -850,9 +850,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     }
 
     private Map<Name, Expression> cleanFromAnonymousAttribute(Map<Name, Expression> clientProps) {
-        return clientProps
-                .entrySet()
-                .stream()
+        return clientProps.entrySet().stream()
                 .filter(e -> !(e.getKey() instanceof ComplexNameImpl))
                 .collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()));
     }
@@ -870,9 +868,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                 xpathAttributeBuilder.set(target, xpath, null, null, targetNodeType, false, null);
         // add a metadata for unbounded sequences
         final boolean allComplexNames =
-                clientPropsMappings
-                        .entrySet()
-                        .stream()
+                clientPropsMappings.entrySet().stream()
                         .allMatch(e -> e.getKey() instanceof ComplexNameImpl);
         if (!multiValues.isEmpty() && !clientPropsMappings.isEmpty() && allComplexNames) {
             parentAttribute.getUserData().put(MULTI_VALUE_TYPE, UNBOUNDED_MULTI_VALUE);
@@ -921,8 +917,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                 || !collection.stream().allMatch(o -> o instanceof MultiValueContainer))
             return false;
         final List<Entry<Name, Expression>> expressionEntryList =
-                collection
-                        .stream()
+                collection.stream()
                         .map(o -> (MultiValueContainer) o)
                         .flatMap(
                                 m -> {

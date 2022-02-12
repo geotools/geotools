@@ -342,8 +342,7 @@ public abstract class Configuration {
         @SuppressWarnings("unchecked")
         C cast =
                 (C)
-                        dependencies
-                                .stream()
+                        dependencies.stream()
                                 .filter(dep -> clazz.isInstance(dep))
                                 .findFirst()
                                 .orElse(null);

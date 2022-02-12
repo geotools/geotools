@@ -43,10 +43,9 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Andrea Aime - GeoSolutions
  */
 @DescribeProcess(
-    title = "Grid",
-    description =
-            "Generates a georeferenced regular grid of cells.  Output contains the attributes: cell - the cell polygon; id - a unique identifier; centerX and centerY - the ordinates of the cell center."
-)
+        title = "Grid",
+        description =
+                "Generates a georeferenced regular grid of cells.  Output contains the attributes: cell - the cell polygon; id - a unique identifier; centerX and centerY - the ordinates of the cell center.")
 public class GridProcess implements VectorProcess {
 
     public enum GridMode {
@@ -60,30 +59,26 @@ public class GridProcess implements VectorProcess {
             @DescribeParameter(name = "bounds", description = "Bounds of the grid")
                     ReferencedEnvelope bounds,
             @DescribeParameter(
-                        name = "width",
-                        description = "Width of a cell (in units of the grid CRS)"
-                    )
+                            name = "width",
+                            description = "Width of a cell (in units of the grid CRS)")
                     double width,
             @DescribeParameter(
-                        name = "height",
-                        description =
-                                "Height of a cell (in units of the grid CRS).  Only for rectangular grid, defaults to equal width.",
-                        min = 0
-                    )
+                            name = "height",
+                            description =
+                                    "Height of a cell (in units of the grid CRS).  Only for rectangular grid, defaults to equal width.",
+                            min = 0)
                     Double height,
             @DescribeParameter(
-                        name = "vertexSpacing",
-                        description =
-                                "Distance between vertices along cell sides (in units of the grid CRS)",
-                        min = 0
-                    )
+                            name = "vertexSpacing",
+                            description =
+                                    "Distance between vertices along cell sides (in units of the grid CRS)",
+                            min = 0)
                     Double vertexSpacing,
             @DescribeParameter(
-                        name = "mode",
-                        description =
-                                "Type of grid to be generated.  Specifies shape of cells in grid.",
-                        defaultValue = "Rectangular"
-                    )
+                            name = "mode",
+                            description =
+                                    "Type of grid to be generated.  Specifies shape of cells in grid.",
+                            defaultValue = "Rectangular")
                     GridMode mode)
             throws ProcessException {
         final GridFeatureBuilder builder =

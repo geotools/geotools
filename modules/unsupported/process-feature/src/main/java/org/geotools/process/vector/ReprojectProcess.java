@@ -32,31 +32,28 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Andrea Aime
  */
 @DescribeProcess(
-    title = "Reproject Features",
-    description =
-            "Reprojects features into a supplied coordinate reference system.  Can also force a feature collection to have a given CRS."
-)
+        title = "Reproject Features",
+        description =
+                "Reprojects features into a supplied coordinate reference system.  Can also force a feature collection to have a given CRS.")
 public class ReprojectProcess implements VectorProcess {
 
     @DescribeResult(name = "result", description = "Input feature collection")
     public SimpleFeatureCollection execute(
             @DescribeParameter(
-                        name = "features",
-                        description = "The feature collection that will be reprojected"
-                    )
+                            name = "features",
+                            description = "The feature collection that will be reprojected")
                     SimpleFeatureCollection features,
             @DescribeParameter(
-                        name = "forcedCRS",
-                        min = 0,
-                        description =
-                                "Coordinate reference system to use for input feature collection (overrides native one)"
-                    )
+                            name = "forcedCRS",
+                            min = 0,
+                            description =
+                                    "Coordinate reference system to use for input feature collection (overrides native one)")
                     CoordinateReferenceSystem forcedCRS,
             @DescribeParameter(
-                        name = "targetCRS",
-                        min = 0,
-                        description = "Target coordinate reference system to use for reprojection"
-                    )
+                            name = "targetCRS",
+                            min = 0,
+                            description =
+                                    "Target coordinate reference system to use for reprojection")
                     CoordinateReferenceSystem targetCRS)
             throws Exception {
 

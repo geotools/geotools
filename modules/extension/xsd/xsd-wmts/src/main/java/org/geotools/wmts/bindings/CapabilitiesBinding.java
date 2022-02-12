@@ -151,8 +151,7 @@ public class CapabilitiesBinding extends AbstractComplexEMFBinding {
         capabilities
                 .getWSDL()
                 .addAll(
-                        node.getChildren("WSDL")
-                                .stream()
+                        node.getChildren("WSDL").stream()
                                 .map(n -> (OnlineResourceType) n.getValue())
                                 .collect(Collectors.toList()));
         return capabilities;

@@ -273,8 +273,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         }
 
         List<Symbolizer> symsCopy =
-                rule.symbolizers()
-                        .stream()
+                rule.symbolizers().stream()
                         .map(s -> copy(s))
                         .filter(s -> s != null)
                         .collect(Collectors.toList());
@@ -313,8 +312,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         //                fts.getName());
 
         List<Rule> rulesCopy =
-                fts.rules()
-                        .stream()
+                fts.rules().stream()
                         .filter(r -> r != null)
                         .map(
                                 r -> {

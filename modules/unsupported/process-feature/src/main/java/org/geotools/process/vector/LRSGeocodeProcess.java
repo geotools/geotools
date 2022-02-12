@@ -41,9 +41,8 @@ import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.PropertyDescriptor;
 
 @DescribeProcess(
-    title = "Geocode point in LRS",
-    description = "Extracts points at a given measure from LRS features"
-)
+        title = "Geocode point in LRS",
+        description = "Extracts points at a given measure from LRS features")
 public class LRSGeocodeProcess implements VectorProcess {
     private static final Logger LOGGER = Logging.getLogger(LRSGeocodeProcess.class);
 
@@ -60,19 +59,16 @@ public class LRSGeocodeProcess implements VectorProcess {
             @DescribeParameter(name = "features", description = "Input feature collection")
                     FeatureCollection<? extends FeatureType, ? extends Feature> featureCollection,
             @DescribeParameter(
-                        name = "from_measure_attb",
-                        description = "Attribute providing start measure of feature"
-                    )
+                            name = "from_measure_attb",
+                            description = "Attribute providing start measure of feature")
                     String fromMeasureAttb,
             @DescribeParameter(
-                        name = "to_measure_attb",
-                        description = "Attribute providing end measure of feature"
-                    )
+                            name = "to_measure_attb",
+                            description = "Attribute providing end measure of feature")
                     String toMeasureAttb,
             @DescribeParameter(
-                        name = "measure",
-                        description = "Measure of the point along the feature to be computed"
-                    )
+                            name = "measure",
+                            description = "Measure of the point along the feature to be computed")
                     Double measure)
             throws ProcessException {
         DefaultFeatureCollection results = new DefaultFeatureCollection();

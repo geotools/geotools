@@ -323,8 +323,7 @@ public class CssRule {
         List<CssRule> nestedByZIndex = Collections.emptyList();
         if (nestedRules != null) {
             nestedByZIndex =
-                    nestedRules
-                            .stream()
+                    nestedRules.stream()
                             .map(r -> r.getSubRuleByZIndex(zIndex, zIndexMode))
                             .filter(r -> r != null)
                             .collect(Collectors.toList());

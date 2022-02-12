@@ -250,8 +250,7 @@ public class GeoSciMLTest extends AppSchemaTestSupport {
             final Map<String, String> namespacesMap = mapOpt.get();
             assertEquals(3, namespacesMap.keySet().size());
             assertTrue(
-                    getExpectedNamespaces()
-                            .stream()
+                    getExpectedNamespaces().stream()
                             .allMatch(ns -> namespacesMap.containsValue(ns)));
         }
     }

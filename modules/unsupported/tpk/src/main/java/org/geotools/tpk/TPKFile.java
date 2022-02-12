@@ -114,9 +114,7 @@ public class TPKFile {
 
         // find the "conf.xml" file
         String xmlConf =
-                zipEntryMap
-                        .keySet()
-                        .stream()
+                zipEntryMap.keySet().stream()
                         .filter(s -> s.endsWith(CONFIGURATION_FILE))
                         .findFirst()
                         .orElse(null);
@@ -430,9 +428,7 @@ public class TPKFile {
 
             // find names of all bundles for level
             List<String> bundles =
-                    zipEntryMap
-                            .keySet()
-                            .stream()
+                    zipEntryMap.keySet().stream()
                             .filter(s -> s.contains(levelFolder))
                             .filter(s -> s.endsWith(BUNDLE_DATA_EXTENSION))
                             .collect(Collectors.toList());
@@ -440,9 +436,7 @@ public class TPKFile {
             // find names of all bundle indexes for level
             if (cacheType == CacheType.V1) { // V2 caches don't have independent indexes
                 indexes =
-                        zipEntryMap
-                                .keySet()
-                                .stream()
+                        zipEntryMap.keySet().stream()
                                 .filter(s -> s.contains(levelFolder))
                                 .filter(s -> s.endsWith(BUNDLE_INDEX_EXTENSION))
                                 .collect(Collectors.toList());

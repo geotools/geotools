@@ -72,10 +72,9 @@ public final class CurveInterpolation extends CodeList<CurveInterpolation> {
      * restricted nature of the definition technique.
      */
     @UML(
-        identifier = "circularArc2PointWithBulge",
-        obligation = CONDITIONAL,
-        specification = ISO_19107
-    )
+            identifier = "circularArc2PointWithBulge",
+            obligation = CONDITIONAL,
+            specification = ISO_19107)
     public static final CurveInterpolation CIRCULAR_ARC_2_POINTS_WITH_BULGE =
             new CurveInterpolation(
                     "CIRCULAR_ARC_2_POINTS_WITH_BULGE"); // Circular arc by 2 points and bulge

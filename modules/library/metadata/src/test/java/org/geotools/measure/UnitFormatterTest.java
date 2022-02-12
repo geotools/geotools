@@ -49,8 +49,7 @@ public class UnitFormatterTest {
                 toSortedList1(formatter.getUnitToSymbolMap());
 
         List<Map.Entry<Unit<?>, String>> unitsOnlyInOld =
-                unitToName
-                        .stream()
+                unitToName.stream()
                         .filter(entry -> !unitToSymbol.contains(entry))
                         .collect(Collectors.toList());
         // only one kind of µ is added for those special-cased units in indriya:
@@ -81,8 +80,7 @@ public class UnitFormatterTest {
                 toSortedList1(formatter.getUnitToSymbolMap());
 
         List<Map.Entry<Unit<?>, String>> unitsOnlyInNew =
-                unitToSymbol
-                        .stream()
+                unitToSymbol.stream()
                         .filter(entry -> !unitToNameMap.contains(entry))
                         .collect(Collectors.toList());
         // only one kind of µ is added for those special-cased units in indriya:
@@ -113,8 +111,7 @@ public class UnitFormatterTest {
                 toSortedList2(formatter.getSymbolToUnitMap());
 
         List<Map.Entry<String, Unit<?>>> unitsOnlyInOld =
-                nameToUnitMap
-                        .stream()
+                nameToUnitMap.stream()
                         .filter(entry -> !symbolToUnit.contains(entry))
                         .collect(Collectors.toList());
         assertEquals(
@@ -133,8 +130,7 @@ public class UnitFormatterTest {
                 toSortedList2(formatter.getSymbolToUnitMap());
 
         List<Map.Entry<String, Unit<?>>> unitsOnlyInNew =
-                symbolToUnit
-                        .stream()
+                symbolToUnit.stream()
                         .filter(entry -> !nameToUnitMap.contains(entry))
                         .collect(Collectors.toList());
         // only one kind of µ is added for those special-cased units in indriya:
@@ -175,15 +171,13 @@ public class UnitFormatterTest {
     }
 
     private static List<Map.Entry<Unit<?>, String>> toSortedList1(Map<Unit<?>, String> map) {
-        return map.entrySet()
-                .stream()
+        return map.entrySet().stream()
                 .sorted(Comparator.nullsFirst(Comparator.comparing(x -> x.getKey().toString())))
                 .collect(Collectors.toList());
     }
 
     private static List<Map.Entry<String, Unit<?>>> toSortedList2(Map<String, Unit<?>> map) {
-        return map.entrySet()
-                .stream()
+        return map.entrySet().stream()
                 .sorted(Comparator.nullsFirst(Comparator.comparing(x -> x.getValue().toString())))
                 .collect(Collectors.toList());
     }

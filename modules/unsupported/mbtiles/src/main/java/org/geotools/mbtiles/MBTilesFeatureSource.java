@@ -114,8 +114,7 @@ class MBTilesFeatureSource extends ContentFeatureSource {
             long z = getTargetZLevel(query);
             List<RectangleLong> tileBounds = getTileBoundsFor(query, z);
             List<ReaderSupplier> suppliers =
-                    tileBounds
-                            .stream()
+                    tileBounds.stream()
                             .flatMap(tb -> getReaderSuppliersFor(z, tb).stream())
                             .collect(Collectors.toList());
 

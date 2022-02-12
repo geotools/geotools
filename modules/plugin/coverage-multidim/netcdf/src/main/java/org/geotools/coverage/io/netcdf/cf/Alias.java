@@ -56,9 +56,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(
-    name = "",
-    propOrder = {"entryId"}
-)
+        name = "",
+        propOrder = {"entryId"})
 @XmlRootElement(name = "alias")
 public class Alias {
 

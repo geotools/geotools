@@ -41,10 +41,9 @@ import org.opengis.filter.FilterFactory2;
  * @author Pietro Arena - Sinergis
  */
 @DescribeProcess(
-    title = "Inclusion of Feature Collections",
-    description =
-            "Returns a feature collection consisting of the features from the first collection which are spatially contained in at least one feature of the second collection."
-)
+        title = "Inclusion of Feature Collections",
+        description =
+                "Returns a feature collection consisting of the features from the first collection which are spatially contained in at least one feature of the second collection.")
 public class InclusionFeatureCollection implements VectorProcess {
     @DescribeResult(description = "Output feature collection")
     public SimpleFeatureCollection execute(

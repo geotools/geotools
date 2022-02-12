@@ -85,10 +85,9 @@ public interface Ellipsoid extends IdentifiedObject {
      * @unitof Length
      */
     @UML(
-        identifier = "secondDefiningParameter.semiMinorAxis",
-        obligation = CONDITIONAL,
-        specification = ISO_19111
-    )
+            identifier = "secondDefiningParameter.semiMinorAxis",
+            obligation = CONDITIONAL,
+            specification = ISO_19111)
     double getSemiMinorAxis();
 
     /**
@@ -104,10 +103,9 @@ public interface Ellipsoid extends IdentifiedObject {
      * @unitof Scale
      */
     @UML(
-        identifier = "secondDefiningParameter.inverseFlattening",
-        obligation = CONDITIONAL,
-        specification = ISO_19111
-    )
+            identifier = "secondDefiningParameter.inverseFlattening",
+            obligation = CONDITIONAL,
+            specification = ISO_19111)
     double getInverseFlattening();
 
     /**
@@ -121,10 +119,9 @@ public interface Ellipsoid extends IdentifiedObject {
      *     definitive.
      */
     @UML(
-        identifier = "CS_Ellipsoid.isIvfDefinitive",
-        obligation = CONDITIONAL,
-        specification = OGC_01009
-    )
+            identifier = "CS_Ellipsoid.isIvfDefinitive",
+            obligation = CONDITIONAL,
+            specification = OGC_01009)
     boolean isIvfDefinitive();
 
     /**
@@ -135,9 +132,8 @@ public interface Ellipsoid extends IdentifiedObject {
      * @return {@code true} if the ellipsoid is degenerate and is actually a sphere.
      */
     @UML(
-        identifier = "secondDefiningParameter.isSphere",
-        obligation = CONDITIONAL,
-        specification = ISO_19111
-    )
+            identifier = "secondDefiningParameter.isSphere",
+            obligation = CONDITIONAL,
+            specification = ISO_19111)
     boolean isSphere();
 }

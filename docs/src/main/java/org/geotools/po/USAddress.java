@@ -58,9 +58,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(
-    name = "USAddress",
-    propOrder = {"name", "street", "city", "state", "zip"}
-)
+        name = "USAddress",
+        propOrder = {"name", "street", "city", "state", "zip"})
 public class USAddress {
 
     @XmlElement(required = true)

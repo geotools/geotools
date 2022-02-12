@@ -68,9 +68,7 @@ class FileViewCollection extends DecoratingSimpleFeatureCollection {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.init(delegate.getSchema());
         tb.remove(locationAttribute);
-        if (delegate.getSchema()
-                .getAttributeDescriptors()
-                .stream()
+        if (delegate.getSchema().getAttributeDescriptors().stream()
                 .anyMatch(d -> IMAGEINDEX.equals(d.getLocalName()))) {
             // used by multidim files, in output we return info only about first slice
             tb.remove(IMAGEINDEX);
@@ -91,8 +89,7 @@ class FileViewCollection extends DecoratingSimpleFeatureCollection {
         String locationAttribute = manager.getLocationAttribute();
         sorts.add(FF.sort(locationAttribute, SortOrder.ASCENDING));
         // sort on anything else
-        manager.getDimensionDescriptors()
-                .stream()
+        manager.getDimensionDescriptors().stream()
                 .map(dd -> FF.sort(dd.getStartAttribute(), SortOrder.ASCENDING))
                 .forEach(sorts::add);
 
@@ -139,8 +136,7 @@ class FileViewCollection extends DecoratingSimpleFeatureCollection {
         String location = (String) feature.getAttribute(locationAttribute);
         URL path = pathType.resolvePath(parentLocation, location);
 
-        schema.getAttributeDescriptors()
-                .stream()
+        schema.getAttributeDescriptors().stream()
                 .filter(d -> !location.equals(d.getLocalName()))
                 .forEach(
                         d ->

@@ -19,6 +19,7 @@ package org.geotools.xs.bindings;
 import java.sql.Date;
 import java.util.Calendar;
 import javax.xml.namespace.QName;
+import org.apache.commons.lang3.StringUtils;
 import org.geotools.xml.impl.DatatypeConverterImpl;
 import org.geotools.xs.XS;
 import org.geotools.xs.XSUtils;
@@ -101,6 +102,7 @@ public class XSDateBinding implements SimpleBinding {
      */
     @Override
     public java.sql.Date parse(InstanceComponent instance, Object value) throws Exception {
+        if (StringUtils.isBlank((String) value)) return null;
         Calendar calendar = DatatypeConverterImpl.getInstance().parseDate((String) value);
         return new java.sql.Date(calendar.getTimeInMillis());
     }

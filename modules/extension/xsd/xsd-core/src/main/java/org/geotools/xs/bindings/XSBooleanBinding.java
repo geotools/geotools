@@ -17,6 +17,7 @@
 package org.geotools.xs.bindings;
 
 import javax.xml.namespace.QName;
+import org.apache.commons.lang3.StringUtils;
 import org.geotools.xs.XS;
 import org.geotools.xsd.InstanceComponent;
 import org.geotools.xsd.SimpleBinding;
@@ -96,8 +97,9 @@ public class XSBooleanBinding implements SimpleBinding {
             return Boolean.TRUE;
         } else if ("0".equals(value) || "false".equals(value)) {
             return Boolean.FALSE;
+        } else if (StringUtils.isBlank((String) value)) {
+            return null;
         }
-
         throw new IllegalArgumentException("boolean indeterminate from  '" + value + "'");
     }
 

@@ -188,6 +188,26 @@ public class XSDateTimeStrategyTest extends TestSchema {
         assertEquals("2011-10-24T10:53:31.999Z", encoded);
     }
 
+    /**
+     * GEOT-7072: Non-comformant WFS implementations tend to send empty elements (e.g. {@code
+     * <value></value>})
+     */
+    @Test
+    public void testParseEmptyStringAsNull() throws Exception {
+        validateValues(XS.DATE, "", null);
+        validateValues(XS.DATE, "\t", null);
+        validateValues(XS.TIME, "", null);
+        validateValues(XS.TIME, "\t", null);
+        validateValues(XS.DATETIME, "", null);
+        validateValues(XS.DATETIME, "\t", null);
+    }
+
+    public void validateValues(QName qname, String given, Object expected) throws Exception {
+        SimpleBinding strategy = (SimpleBinding) stratagy(qname);
+        Object result = strategy.parse(element(given, qname), given);
+        super.validateValues(result, expected);
+    }
+
     private void testEncodeCalendar(Calendar cal, QName qname, String expected) throws Exception {
         Encoder encoder = new Encoder(new TestConfiguration());
         ByteArrayOutputStream out = new ByteArrayOutputStream();

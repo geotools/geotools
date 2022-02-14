@@ -17,6 +17,7 @@
 package org.geotools.xs.bindings;
 
 import javax.xml.namespace.QName;
+import org.apache.commons.lang3.StringUtils;
 import org.geotools.xs.XS;
 import org.geotools.xsd.InstanceComponent;
 import org.geotools.xsd.SimpleBinding;
@@ -91,7 +92,7 @@ public class XSLongBinding implements SimpleBinding {
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         String text = (String) value;
 
-        if (text == null || text.length() == 0) {
+        if (StringUtils.isBlank(text)) {
             return null;
         }
 

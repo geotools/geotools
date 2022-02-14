@@ -17,6 +17,7 @@
 package org.geotools.xs.bindings;
 
 import java.math.BigDecimal;
+import javax.xml.namespace.QName;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDMaxExclusiveFacet;
 import org.eclipse.xsd.XSDMaxInclusiveFacet;
@@ -31,12 +32,20 @@ import org.eclipse.xsd.impl.XSDMinExclusiveFacetImpl;
 import org.eclipse.xsd.impl.XSDMinInclusiveFacetImpl;
 import org.eclipse.xsd.impl.XSDSimpleTypeDefinitionImpl;
 import org.eclipse.xsd.impl.XSDTotalDigitsFacetImpl;
+import org.geotools.xs.TestSchema;
+import org.geotools.xs.XS;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.impl.ElementImpl;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class XSDecimalStrategyTest {
+public class XSDecimalStrategyTest extends TestSchema {
+
+    @Override
+    protected QName getQName() {
+        return XS.DECIMAL;
+    }
+
     /*
      * Test method for 'org.geotools.xml.strategies.xs.XSDecimalStrategy.parse(Element, Node[], Object)'
      */
@@ -86,6 +95,16 @@ public class XSDecimalStrategyTest {
         //		} catch (ValidationException e) {
         //
         //		}
+    }
+
+    /**
+     * GEOT-7072: Non-comformant WFS implementations tend to send empty elements (e.g. {@code
+     * <value></value>})
+     */
+    @Test
+    public void testParseEmptyStringAsNull() throws Exception {
+        validateValues("", null);
+        validateValues("\t", null);
     }
 
     public void validateValues(

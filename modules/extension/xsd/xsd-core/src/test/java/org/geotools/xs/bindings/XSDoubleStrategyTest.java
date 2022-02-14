@@ -56,4 +56,14 @@ public class XSDoubleStrategyTest extends TestSchema {
     protected QName getQName() {
         return XS.DOUBLE;
     }
+
+    /**
+     * GEOT-7072: Non-comformant WFS implementations tend to send empty elements (e.g. {@code
+     * <value></value>})
+     */
+    @Test
+    public void testParseEmptyStringAsNull() throws Exception {
+        validateValues("", null);
+        validateValues("\t", null);
+    }
 }

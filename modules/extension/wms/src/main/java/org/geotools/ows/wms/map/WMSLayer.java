@@ -86,10 +86,6 @@ public class WMSLayer extends GridReaderLayer {
         return (WMSCoverageReader) this.reader;
     }
 
-    public void setReader(WMSCoverageReader reader) {
-        this.reader = reader;
-    }
-
     @Override
     public synchronized ReferencedEnvelope getBounds() {
         WMSCoverageReader wmsReader = getReader();
@@ -169,7 +165,7 @@ public class WMSLayer extends GridReaderLayer {
                             getReader().getRequestdEnvelopeCRS(),
                             true);
             mt.transform(fromPos, toPos);
-            GetMapRequest mapRequest = getReader().mapRequest;
+            GetMapRequest mapRequest = getLastGetMap();
             return getReader().getFeatureInfo(toPos, infoFormat, featureCount, mapRequest);
         } catch (IOException e) {
             throw e;

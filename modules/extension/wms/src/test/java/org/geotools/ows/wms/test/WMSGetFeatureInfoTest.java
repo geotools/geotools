@@ -1,8 +1,5 @@
 package org.geotools.ows.wms.test;
 
-import static org.mockito.Mockito.*;
-
-import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -55,8 +52,8 @@ public class WMSGetFeatureInfoTest {
                             Map<String, String> params = parseParams(url.getQuery());
 
                             // Expected position request
-                            if (!Double.valueOf(params.get("I")).equals(new Double(107))
-                                    || !Double.valueOf(params.get("J")).equals(new Double(2))) {
+                            if (!Double.valueOf(params.get("I")).equals(Double.valueOf(107))
+                                    || !Double.valueOf(params.get("J")).equals(Double.valueOf(2))) {
                                 // this will cause the test to fail
                                 throw new IllegalArgumentException();
                             } else {
@@ -106,8 +103,8 @@ public class WMSGetFeatureInfoTest {
                     requestBBox,
                     512,
                     512,
-                    Double.valueOf(pointInImage.x).intValue(),
-                    Double.valueOf(pointInImage.y).intValue(),
+                    (int) pointInImage.x,
+                    (int) pointInImage.y,
                     "application/vnd.ogc.gml",
                     1);
         } catch (Exception e) {

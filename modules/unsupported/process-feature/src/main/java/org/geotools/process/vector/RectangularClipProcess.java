@@ -35,9 +35,8 @@ import org.opengis.referencing.operation.TransformException;
  * @author Andrea Aime - OpenGeo
  */
 @DescribeProcess(
-    title = "Rectangular Clip",
-    description = "Clips (crops) features to the specified rectangular extent"
-)
+        title = "Rectangular Clip",
+        description = "Clips (crops) features to the specified rectangular extent")
 public class RectangularClipProcess implements VectorProcess {
 
     @DescribeResult(name = "result", description = "Clipped feature collection")
@@ -47,11 +46,10 @@ public class RectangularClipProcess implements VectorProcess {
             @DescribeParameter(name = "clip", description = "Bounds of clipping rectangle")
                     ReferencedEnvelope clip,
             @DescribeParameter(
-                        name = "preserveZ",
-                        min = 0,
-                        description =
-                                "Attempt to preserve Z values from the original geometry (interpolate value for new points)"
-                    )
+                            name = "preserveZ",
+                            min = 0,
+                            description =
+                                    "Attempt to preserve Z values from the original geometry (interpolate value for new points)")
                     Boolean preserveZ)
             throws ProcessException {
         CoordinateReferenceSystem featuresCRS = features.getSchema().getCoordinateReferenceSystem();

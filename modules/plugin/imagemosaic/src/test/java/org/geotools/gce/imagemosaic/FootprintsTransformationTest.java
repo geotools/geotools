@@ -257,8 +257,7 @@ public class FootprintsTransformationTest {
 
             // add a custom dimension filter
             ParameterDescriptor<List> wavelengthDescriptor =
-                    reader.getDynamicParameters()
-                            .stream()
+                    reader.getDynamicParameters().stream()
                             .filter(p -> p.getName().getCode().equalsIgnoreCase("wavelength"))
                             .findFirst()
                             .get();
@@ -340,8 +339,7 @@ public class FootprintsTransformationTest {
 
     private Set<String> collectLocations(SimpleFeatureCollection fc) {
         Set<String> locations =
-                DataUtilities.list(fc)
-                        .stream()
+                DataUtilities.list(fc).stream()
                         .map(f -> (String) f.getAttribute("location"))
                         .collect(Collectors.toSet());
         return locations;

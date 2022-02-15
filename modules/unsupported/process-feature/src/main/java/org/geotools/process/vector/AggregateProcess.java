@@ -58,10 +58,9 @@ import org.opengis.util.ProgressListener;
  * @author Andrea Aime
  */
 @DescribeProcess(
-    title = "Aggregate",
-    description =
-            "Computes one or more aggregation functions on a feature attribute. Functions include Count, Average, Max, Median, Min, StdDev, and Sum."
-)
+        title = "Aggregate",
+        description =
+                "Computes one or more aggregation functions on a feature attribute. Functions include Count, Average, Max, Median, Min, StdDev, and Sum.")
 public class AggregateProcess implements VectorProcess {
     // the functions this process can handle
     public enum AggregationFunction {
@@ -115,38 +114,33 @@ public class AggregateProcess implements VectorProcess {
     }
 
     @DescribeResult(
-        name = "result",
-        description = "Aggregation results (one value for each function computed)"
-    )
+            name = "result",
+            description = "Aggregation results (one value for each function computed)")
     public Results execute(
             @DescribeParameter(name = "features", description = "Input feature collection")
                     SimpleFeatureCollection features,
             @DescribeParameter(
-                        name = "aggregationAttribute",
-                        min = 0,
-                        description = "Attribute on which to perform aggregation"
-                    )
+                            name = "aggregationAttribute",
+                            min = 0,
+                            description = "Attribute on which to perform aggregation")
                     String aggAttribute,
             @DescribeParameter(
-                        name = "function",
-                        description =
-                                "An aggregate function to compute. Functions include Count, Average, Max, Median, Min, StdDev, Sum and SumArea.",
-                        collectionType = AggregationFunction.class
-                    )
+                            name = "function",
+                            description =
+                                    "An aggregate function to compute. Functions include Count, Average, Max, Median, Min, StdDev, Sum and SumArea.",
+                            collectionType = AggregationFunction.class)
                     Set<AggregationFunction> functions,
             @DescribeParameter(
-                        name = "singlePass",
-                        description =
-                                "If True computes all aggregation values in a single pass (this will defeat DBMS-specific optimizations)",
-                        defaultValue = "false"
-                    )
+                            name = "singlePass",
+                            description =
+                                    "If True computes all aggregation values in a single pass (this will defeat DBMS-specific optimizations)",
+                            defaultValue = "false")
                     boolean singlePass,
             @DescribeParameter(
-                        name = "groupByAttributes",
-                        min = 0,
-                        description = "List of group by attributes",
-                        collectionType = String.class
-                    )
+                            name = "groupByAttributes",
+                            min = 0,
+                            description = "List of group by attributes",
+                            collectionType = String.class)
                     List<String> groupByAttributes,
             ProgressListener progressListener)
             throws ProcessException, IOException {
@@ -264,8 +258,7 @@ public class AggregateProcess implements VectorProcess {
         }
         // extracting the results from each group by visitor
         List<Map<List<Object>, Object>> results =
-                groupByVisitors
-                        .stream()
+                groupByVisitors.stream()
                         .map(visitor -> getListObjectMap(visitor))
                         .collect(Collectors.toList());
         return new Results(

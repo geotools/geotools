@@ -120,10 +120,9 @@ public interface CoordinateOperation extends IdentifiedObject {
      * @since GeoAPI 2.1
      */
     @UML(
-        identifier = "coordinateOperationAccuracy",
-        obligation = OPTIONAL,
-        specification = ISO_19111
-    )
+            identifier = "coordinateOperationAccuracy",
+            obligation = OPTIONAL,
+            specification = ISO_19111)
     Collection<PositionalAccuracy> getCoordinateOperationAccuracy();
 
     /**

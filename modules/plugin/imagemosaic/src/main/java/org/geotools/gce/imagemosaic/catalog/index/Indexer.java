@@ -112,17 +112,16 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(
-    name = "",
-    propOrder = {
-        "schemas",
-        "domains",
-        "coverages",
-        "multipleBandsDimensions",
-        "datastore",
-        "collectors",
-        "parameters"
-    }
-)
+        name = "",
+        propOrder = {
+            "schemas",
+            "domains",
+            "coverages",
+            "multipleBandsDimensions",
+            "datastore",
+            "collectors",
+            "parameters"
+        })
 @XmlRootElement(name = "Indexer")
 public class Indexer {
 
@@ -302,9 +301,8 @@ public class Indexer {
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(
-        name = "",
-        propOrder = {"collector"}
-    )
+            name = "",
+            propOrder = {"collector"})
     public static class Collectors {
 
         protected List<Indexer.Collectors.Collector> collector;
@@ -356,9 +354,8 @@ public class Indexer {
          */
         @XmlAccessorType(XmlAccessType.FIELD)
         @XmlType(
-            name = "",
-            propOrder = {"spi", "type", "value", "mapped"}
-        )
+                name = "",
+                propOrder = {"spi", "type", "value", "mapped"})
         public static class Collector {
 
             @XmlElement(required = true)
@@ -503,9 +500,8 @@ public class Indexer {
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(
-        name = "",
-        propOrder = {"coverage"}
-    )
+            name = "",
+            propOrder = {"coverage"})
     public static class Coverages {
 
         @XmlElement(required = true)
@@ -560,9 +556,8 @@ public class Indexer {
          */
         @XmlAccessorType(XmlAccessType.FIELD)
         @XmlType(
-            name = "",
-            propOrder = {"schema", "origName", "domains", "name", "nameCollector"}
-        )
+                name = "",
+                propOrder = {"schema", "origName", "domains", "name", "nameCollector"})
         public static class Coverage {
 
             @XmlElement(required = true)
@@ -690,9 +685,8 @@ public class Indexer {
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(
-        name = "",
-        propOrder = {"database", "parameters"}
-    )
+            name = "",
+            propOrder = {"database", "parameters"})
     public static class Datastore {
 
         protected String database;
@@ -774,9 +768,8 @@ public class Indexer {
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(
-        name = "",
-        propOrder = {"multipleBandsDimension"}
-    )
+            name = "",
+            propOrder = {"multipleBandsDimension"})
     public static class MultipleBandsDimensions {
 
         @XmlElement(required = true)
@@ -829,9 +822,8 @@ public class Indexer {
          */
         @XmlAccessorType(XmlAccessType.FIELD)
         @XmlType(
-            name = "",
-            propOrder = {"name", "bandsNames"}
-        )
+                name = "",
+                propOrder = {"name", "bandsNames"})
         public static class MultipleBandsDimension {
 
             @XmlElement(required = true)

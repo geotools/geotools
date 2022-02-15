@@ -1890,8 +1890,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             // otherwise null context will be used
             List<Expression> parameters = function.getParameters();
             Class context =
-                    function.getParameters()
-                            .stream()
+                    function.getParameters().stream()
                             .filter(p -> p instanceof PropertyName)
                             .map(p -> p.evaluate(featureType))
                             .filter(o -> o instanceof AttributeDescriptor)

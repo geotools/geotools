@@ -27,7 +27,7 @@ jobs:
       run: sudo ethtool -K eth0 tx off rx off
     - name: Build with Maven
       run: |
-        mvn -B -fae clean install -Dall -Dfmt.action=check -Dpom.fmt.action=verify -Dqa=true -DskipTests=true --file pom.xml
+        mvn -B -fae clean install -Dall -Dspotless.action=check -Dpom.fmt.action=verify -Dqa=true -DskipTests=true --file pom.xml
     - name: Remove SNAPSHOT jars from repository
       run: |
         find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {} 

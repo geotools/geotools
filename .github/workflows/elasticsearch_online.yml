@@ -22,13 +22,13 @@ jobs:
         restore-keys: |
           gt-maven-
     - name: Build GeoTools dependent modules (no tests, prepare fresh artifacts)
-      run: mvn -B clean install -T2 -Dall --file pom.xml -DskipTests -pl modules/unsupported/elasticsearch -am
+      run: mvn -B clean install -T2 -Dall --file pom.xml -DskipTests -pl modules/unsupported/elasticsearch -am -Dspotless.apply.skip=true
     - name: Build ElasticSearch module with online tests, using the OSS version 
       run: | 
-        mvn -B clean install --file modules/unsupported/elasticsearch/pom.xml -Ponline -nsu
+        mvn -B clean install --file modules/unsupported/elasticsearch/pom.xml -Ponline -nsu -Dspotless.apply.skip=true
     - name: Build ElasticSearch module with online tests, using the non OSS version
       run: | 
-        mvn -B clean install --file modules/unsupported/elasticsearch/pom.xml -Ponline -nsu -Delastic.test.image=docker.elastic.co/elasticsearch/elasticsearch -Delastic.test.version=7.15.2
+        mvn -B clean install --file modules/unsupported/elasticsearch/pom.xml -Ponline -nsu -Delastic.test.image=docker.elastic.co/elasticsearch/elasticsearch -Delastic.test.version=7.15.2 -Dspotless.apply.skip=true
     - name: Remove SNAPSHOT jars from repository
       run: |
         find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {} 

@@ -76,41 +76,36 @@ import org.opengis.referencing.operation.MathTransform2D;
  * @author Simone Giannecchini, GeoSolutions
  */
 @DescribeProcess(
-    title = "Raster As Point Collection",
-    description =
-            "Returns a collection of point features for the pixels of a raster.  The band values are provided as attributes."
-)
+        title = "Raster As Point Collection",
+        description =
+                "Returns a collection of point features for the pixels of a raster.  The band values are provided as attributes.")
 public class RasterAsPointCollectionProcess implements RasterProcess {
 
     @DescribeResult(name = "result", description = "Point features")
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "data", description = "Input raster") GridCoverage2D gc2d,
             @DescribeParameter(
-                        name = "targetCRS",
-                        description = "CRS in which the points will be displayed",
-                        min = 0
-                    )
+                            name = "targetCRS",
+                            description = "CRS in which the points will be displayed",
+                            min = 0)
                     CoordinateReferenceSystem targetCRS,
             @DescribeParameter(
-                        name = "scale",
-                        description = "scale",
-                        min = 0,
-                        defaultValue = "1.0f"
-                    )
+                            name = "scale",
+                            description = "scale",
+                            min = 0,
+                            defaultValue = "1.0f")
                     Float scaleFactor,
             @DescribeParameter(
-                        name = "interpolation",
-                        description = "interpolation",
-                        min = 0,
-                        defaultValue = "InterpolationNearest"
-                    )
+                            name = "interpolation",
+                            description = "interpolation",
+                            min = 0,
+                            defaultValue = "InterpolationNearest")
                     Interpolation interpolation,
             @DescribeParameter(
-                        name = "emisphere",
-                        description = "Add Emishpere",
-                        min = 0,
-                        defaultValue = "False"
-                    )
+                            name = "emisphere",
+                            description = "Add Emishpere",
+                            min = 0,
+                            defaultValue = "False")
                     Boolean emisphere)
             throws ProcessException {
         if (gc2d == null) {

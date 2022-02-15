@@ -61,10 +61,9 @@ import org.opengis.util.ProgressListener;
  * @version $Id$
  */
 @DescribeProcess(
-    title = "Polygon Extraction",
-    description =
-            "Extracts vector polygons from a raster, based on regions which are equal or in given ranges"
-)
+        title = "Polygon Extraction",
+        description =
+                "Extracts vector polygons from a raster, based on regions which are equal or in given ranges")
 public class PolygonExtractionProcess implements RasterProcess {
 
     static {
@@ -101,40 +100,35 @@ public class PolygonExtractionProcess implements RasterProcess {
             @DescribeParameter(name = "data", description = "Source raster")
                     GridCoverage2D coverage,
             @DescribeParameter(
-                        name = "band",
-                        description = "Source band to use (default = 0)",
-                        min = 0,
-                        defaultValue = "0"
-                    )
+                            name = "band",
+                            description = "Source band to use (default = 0)",
+                            min = 0,
+                            defaultValue = "0")
                     Integer band,
             @DescribeParameter(
-                        name = "insideEdges",
-                        description =
-                                "Indicates whether to vectorize boundaries between adjacent regions with non-outside values",
-                        min = 0
-                    )
+                            name = "insideEdges",
+                            description =
+                                    "Indicates whether to vectorize boundaries between adjacent regions with non-outside values",
+                            min = 0)
                     Boolean insideEdges,
             @DescribeParameter(
-                        name = "roi",
-                        description =
-                                "Geometry delineating the region of interest (in raster coordinate system)",
-                        min = 0
-                    )
+                            name = "roi",
+                            description =
+                                    "Geometry delineating the region of interest (in raster coordinate system)",
+                            min = 0)
                     Geometry roi,
             @DescribeParameter(
-                        name = "nodata",
-                        description = "Value to treat as NODATA (default is 0)",
-                        collectionType = Number.class,
-                        min = 0
-                    )
+                            name = "nodata",
+                            description = "Value to treat as NODATA (default is 0)",
+                            collectionType = Number.class,
+                            min = 0)
                     Collection<Number> noDataValues,
             @DescribeParameter(
-                        name = "ranges",
-                        description =
-                                "Specifier for a value range in the format ( START ; END ).  START and END values are optional. [ and ] can also be used as brackets, to indicate inclusion of the relevant range endpoint.",
-                        collectionType = Range.class,
-                        min = 0
-                    )
+                            name = "ranges",
+                            description =
+                                    "Specifier for a value range in the format ( START ; END ).  START and END values are optional. [ and ] can also be used as brackets, to indicate inclusion of the relevant range endpoint.",
+                            collectionType = Range.class,
+                            min = 0)
                     List<Range> classificationRanges,
             ProgressListener progressListener)
             throws ProcessException {

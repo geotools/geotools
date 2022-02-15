@@ -654,8 +654,7 @@ public class SLDStyleFactoryTest {
                 IteratorUtils.toList(DynamicSymbolFactoryFinder.getMarkFactories(hints));
         assertEquals(2, factories.size());
         List<String> result =
-                factories
-                        .stream()
+                factories.stream()
                         .map(mf -> mf.getClass().getSimpleName())
                         .collect(Collectors.toList());
         assertEquals(list, result);

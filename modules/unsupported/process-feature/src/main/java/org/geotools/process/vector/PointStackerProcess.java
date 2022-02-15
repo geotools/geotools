@@ -82,9 +82,8 @@ import org.opengis.util.ProgressListener;
  * @author Cosmin Cioranu (CozC)
  */
 @DescribeProcess(
-    title = "Point Stacker",
-    description = "Aggregates a collection of points over a grid into one point per grid cell."
-)
+        title = "Point Stacker",
+        description = "Aggregates a collection of points over a grid into one point per grid cell.")
 public class PointStackerProcess implements VectorProcess {
     private static final Logger LOGGER = Logging.getLogger(PointStackerProcess.class);
 
@@ -140,56 +139,49 @@ public class PointStackerProcess implements VectorProcess {
 
             // process parameters
             @DescribeParameter(
-                        name = "cellSize",
-                        description = "Grid cell size to aggregate to, in pixels"
-                    )
+                            name = "cellSize",
+                            description = "Grid cell size to aggregate to, in pixels")
                     Integer cellSize,
             @DescribeParameter(
-                        name = "weightClusterPosition",
-                        description = "Weight cluster position based on points added",
-                        defaultValue = "false"
-                    )
+                            name = "weightClusterPosition",
+                            description = "Weight cluster position based on points added",
+                            defaultValue = "false")
                     Boolean argWeightClusterPosition,
             @DescribeParameter(
-                        name = "normalize",
-                        description =
-                                "Indicates whether to add fields normalized to the range 0-1.",
-                        defaultValue = "false"
-                    )
+                            name = "normalize",
+                            description =
+                                    "Indicates whether to add fields normalized to the range 0-1.",
+                            defaultValue = "false")
                     Boolean argNormalize,
             @DescribeParameter(
-                        name = "preserveLocation",
-                        description =
-                                "Indicates wheter to preserve the original location of points for single/superimposed points",
-                        defaultValue = "Never",
-                        min = 0
-                    )
+                            name = "preserveLocation",
+                            description =
+                                    "Indicates wheter to preserve the original location of points for single/superimposed points",
+                            defaultValue = "Never",
+                            min = 0)
                     PreserveLocation preserveLocation,
 
             // output image parameters
             @DescribeParameter(
-                        name = "outputBBOX",
-                        description = "Bounding box for target image extent"
-                    )
+                            name = "outputBBOX",
+                            description = "Bounding box for target image extent")
                     ReferencedEnvelope outputEnv,
             @DescribeParameter(
-                        name = "outputWidth",
-                        description = "Target image width in pixels",
-                        minValue = 1
-                    )
+                            name = "outputWidth",
+                            description = "Target image width in pixels",
+                            minValue = 1)
                     Integer outputWidth,
             @DescribeParameter(
-                        name = "outputHeight",
-                        description = "Target image height in pixels",
-                        minValue = 1
-                    )
+                            name = "outputHeight",
+                            description = "Target image height in pixels",
+                            minValue = 1)
                     Integer outputHeight,
             @DescribeParameter(
-                        name = "filter",
-                        description = "Optional CQL filter to restrict the points to be clustered",
-                        min = 0,
-                        max = 1
-                    )
+                            name = "filter",
+                            description =
+                                    "Optional CQL filter to restrict the points to be clustered",
+                            min = 0,
+                            max = 1)
                     String cql,
             ProgressListener monitor)
             throws ProcessException, TransformException {

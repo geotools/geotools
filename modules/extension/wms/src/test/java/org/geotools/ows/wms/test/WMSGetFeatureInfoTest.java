@@ -40,12 +40,12 @@ public class WMSGetFeatureInfoTest {
     @Test
     public void testProperTransformationsToGetXYinImageCoordinates()
             throws FactoryException, ServiceException, IOException {
+        URL brunar130 = WMSCoverageReaderTest.class.getResource("brunar130.xml");
         MockHttpClient client =
                 new MockHttpClient() {
 
                     @Override
                     public HTTPResponse get(URL url) throws IOException {
-                        URL brunar130 = WMSCoverageReaderTest.class.getResource("brunar130.xml");
                         if (url.getQuery().contains("GetCapabilities")) {
                             return new MockHttpResponse(brunar130, "text/xml");
                         } else if (url.getQuery().contains("GetFeatureInfo")) {
@@ -69,9 +69,6 @@ public class WMSGetFeatureInfoTest {
                 new WebMapServer(new URL("http://geoserver.org/geoserver/wms"), client);
         HashMap<String, CRSEnvelope> BBOXES = new HashMap<>();
         // given the bbox, and i, j params
-        URL testURL =
-                new URL(
-                        "http://carto.icv.gva.es/arcgis/services/mapabase_topografico/cv100_mapabase/MapServer/WMSServer?service=wms&request=getcapabilities");
 
         CRSEnvelope generalEnvelope =
                 new CRSEnvelope("EPSG:4326", -180, -90, 180, 90); // $NON-NLS-1$
@@ -91,7 +88,7 @@ public class WMSGetFeatureInfoTest {
         // a random layer to perform the getFeatureInfoRequest
         WMSLayer wmsCopy =
                 new WMSLayerTest(
-                        new WebMapServer(testURL),
+                        new WebMapServer(brunar130),
                         layer,
                         new WMSCoverageReader(
                                 serverWithMockedClient,

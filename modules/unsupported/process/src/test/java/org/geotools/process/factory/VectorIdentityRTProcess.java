@@ -27,9 +27,8 @@ import org.opengis.coverage.grid.GridGeometry;
  * @author Martin Davis - OpenGeo
  */
 @DescribeProcess(
-    title = "SimpleVectorRTProcess",
-    description = "Simple test RT process taking a vector dataset as input."
-)
+        title = "SimpleVectorRTProcess",
+        description = "Simple test RT process taking a vector dataset as input.")
 public class VectorIdentityRTProcess {
     /** Note: for testing purposes only. A real Rendering Transformation must never store state. */
     int invertQueryValue;

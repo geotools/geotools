@@ -41,10 +41,9 @@ public interface AggregateInformation {
      * @return Identification information about aggregate dataset, or {@code null}.
      */
     @UML(
-        identifier = "aggregateDataSetIdentifier",
-        obligation = CONDITIONAL,
-        specification = ISO_19115
-    )
+            identifier = "aggregateDataSetIdentifier",
+            obligation = CONDITIONAL,
+            specification = ISO_19115)
     Identifier getAggregateDataSetIdentifier();
 
     /**

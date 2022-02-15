@@ -645,8 +645,7 @@ public class HeterogenousCRSTest {
         String coverageName = reader.getGridCoverageNames()[0];
 
         Map<String, DimensionDescriptor> descriptors =
-                reader.getDimensionDescriptors(coverageName)
-                        .stream()
+                reader.getDimensionDescriptors(coverageName).stream()
                         .collect(Collectors.toMap(dd -> dd.getName(), dd -> dd));
         assertEquals(4, descriptors.size());
         DimensionDescriptor crsDescriptor = descriptors.get(DimensionDescriptor.CRS);

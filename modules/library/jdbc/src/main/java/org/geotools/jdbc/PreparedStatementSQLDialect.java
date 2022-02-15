@@ -222,8 +222,7 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
         Map<String, Class<?>> mappings = dataStore.getSqlTypeNameToClassMappings();
         Class<?> componentType = att.getType().getBinding().getComponentType();
         List<String> sqlTypeNames =
-                mappings.entrySet()
-                        .stream()
+                mappings.entrySet().stream()
                         .filter(e -> e.getValue().equals(componentType))
                         .map(e -> e.getKey())
                         .collect(Collectors.toList());

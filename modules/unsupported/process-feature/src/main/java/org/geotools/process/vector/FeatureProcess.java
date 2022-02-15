@@ -30,9 +30,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 @DescribeProcess(
-    title = "Feature from Geometry",
-    description = "Converts a geometry into a feature collection."
-)
+        title = "Feature from Geometry",
+        description = "Converts a geometry into a feature collection.")
 public class FeatureProcess implements VectorProcess {
 
     @DescribeResult(name = "result", description = "Output feature collection")
@@ -40,16 +39,14 @@ public class FeatureProcess implements VectorProcess {
             @DescribeParameter(name = "geometry", description = "Input geometry", min = 1)
                     Geometry geometry,
             @DescribeParameter(
-                        name = "crs",
-                        description =
-                                "Coordinate reference system of the input geometry (if not provided in the geometry)"
-                    )
+                            name = "crs",
+                            description =
+                                    "Coordinate reference system of the input geometry (if not provided in the geometry)")
                     CoordinateReferenceSystem crs,
             @DescribeParameter(
-                        name = "typeName",
-                        description = "Feauturetype name for the feature collection",
-                        min = 1
-                    )
+                            name = "typeName",
+                            description = "Feauturetype name for the feature collection",
+                            min = 1)
                     String name) {
         // get the crs
         if (crs == null) {

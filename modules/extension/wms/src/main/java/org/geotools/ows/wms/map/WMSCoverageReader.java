@@ -235,10 +235,7 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
     private List<String> getCRSWithBoundingBoxesList(Layer layer) {
         Set<String> layerSrsSet = new LinkedHashSet<>(layer.getSrs());
         Map<String, CRSEnvelope> boundingBoxes = layer.getBoundingBoxes();
-        return layerSrsSet
-                .stream()
-                .filter(boundingBoxes::containsKey)
-                .collect(Collectors.toList());
+        return layerSrsSet.stream().filter(boundingBoxes::containsKey).collect(Collectors.toList());
     }
 
     /** Issues GetFeatureInfo against a point using the params of the last GetMap request */

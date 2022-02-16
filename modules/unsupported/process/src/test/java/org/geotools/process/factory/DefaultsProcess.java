@@ -44,11 +44,10 @@ public class DefaultsProcess {
             @DescribeParameter(name = "int", defaultValue = "1", minValue = -1d, maxValue = 2d)
                     int i,
             @DescribeParameter(
-                        name = "double",
-                        defaultValue = "0.65e-10",
-                        minValue = -1.5,
-                        maxValue = 2.5
-                    )
+                            name = "double",
+                            defaultValue = "0.65e-10",
+                            minValue = -1.5,
+                            maxValue = 2.5)
                     double d,
             // checking out enum conversion
             @DescribeParameter(name = "axisOrder", defaultValue = "EAST_NORTH") AxisOrder axisOrder,
@@ -58,10 +57,9 @@ public class DefaultsProcess {
             @DescribeParameter(name = "greet", defaultValue = "GREET_DEFAULT") String greet,
             // absolute reference to constant
             @DescribeParameter(
-                        name = "rect",
-                        defaultValue =
-                                "org.geotools.process.factory.BeanProcessFactoryTest#DEFAULT_RECTANGLE"
-                    )
+                            name = "rect",
+                            defaultValue =
+                                    "org.geotools.process.factory.BeanProcessFactoryTest#DEFAULT_RECTANGLE")
                     Rectangle rect) {
         Map<String, Object> results = new HashMap<>();
         results.put("string", string);

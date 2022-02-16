@@ -41,6 +41,8 @@
   <!-- disable pmd -->
   <properties>
     <pmd.skip>true</pmd.skip>
+    <spotless.apply.skip>true</spotless.apply.skip>
+    <spotless.check.skip>true</spotless.check.skip>
   </properties>
 
   <dependencies>
@@ -56,17 +58,5 @@
     </dependency>
 
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>com.coveo</groupId>
-        <artifactId>fmt-maven-plugin</artifactId>
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 
 </project>

@@ -31,9 +31,8 @@ public interface PortrayalCatalogueReference {
      * @return References to the portrayal catalogue cited.
      */
     @UML(
-        identifier = "portrayalCatalogueCitation",
-        obligation = MANDATORY,
-        specification = ISO_19115
-    )
+            identifier = "portrayalCatalogueCitation",
+            obligation = MANDATORY,
+            specification = ISO_19115)
     Collection<? extends Citation> getPortrayalCatalogueCitations();
 }

@@ -134,8 +134,7 @@ public abstract class MathExpressionImpl extends DefaultExpression implements Bi
             scalar = Filters.number(value1);
         }
 
-        return numericList
-                .stream()
+        return numericList.stream()
                 .map(n -> doArithmeticOperation(n.doubleValue(), scalar.doubleValue()))
                 .collect(Collectors.toList());
     }

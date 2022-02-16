@@ -29,9 +29,9 @@ jobs:
         ./build/ci/mssql/start-mssql.sh ${{ matrix.mssql }}
         ./build/ci/mssql/setup-mssql.sh
     - name: Build GeoTools dependent modules (no tests)
-      run: mvn -B clean install -T2 -Dall -pl :gt-jdbc-sqlserver -DskipTests -Dfmt.skip=true -am
+      run: mvn -B clean install -T2 -Dall -pl :gt-jdbc-sqlserver -DskipTests -Dspotless.apply.skip=true -am
     - name: Test MS SQL Server data store
-      run: mvn -B clean install -T2 -Dall -pl :gt-jdbc-sqlserver -Ponline -Dfmt.skip=true
+      run: mvn -B clean install -T2 -Dall -pl :gt-jdbc-sqlserver -Ponline -Dspotless.apply.skip=true
     - name: Remove SNAPSHOT jars from repository
       run: |
         find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {}

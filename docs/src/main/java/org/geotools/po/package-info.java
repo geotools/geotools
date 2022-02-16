@@ -23,7 +23,6 @@
 //
 
 @javax.xml.bind.annotation.XmlSchema(
-    namespace = "http://www.geotools.org/po",
-    elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED
-)
+        namespace = "http://www.geotools.org/po",
+        elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package org.geotools.po;

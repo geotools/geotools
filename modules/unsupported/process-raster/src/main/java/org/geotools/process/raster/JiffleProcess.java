@@ -98,45 +98,40 @@ public class JiffleProcess implements RasterProcess {
             @DescribeParameter(name = IN_COVERAGE, description = "Source raster(s)")
                     GridCoverage2D[] coverages,
             @DescribeParameter(
-                        name = IN_SCRIPT,
-                        description = "The script performing the map algebra, in Jiffle language"
-                    )
+                            name = IN_SCRIPT,
+                            description =
+                                    "The script performing the map algebra, in Jiffle language")
                     String script,
             @DescribeParameter(
-                        name = IN_DEST_NAME,
-                        description =
-                                "Name of the output, as used in the script (defaults to 'dest' if not specified)",
-                        min = 0
-                    )
+                            name = IN_DEST_NAME,
+                            description =
+                                    "Name of the output, as used in the script (defaults to 'dest' if not specified)",
+                            min = 0)
                     String destName,
             @DescribeParameter(
-                        name = IN_SOURCE_NAME,
-                        description =
-                                "Name of the inputs, as used in the script (default to src, src1, src2, ... if not specified)",
-                        min = 0
-                    )
+                            name = IN_SOURCE_NAME,
+                            description =
+                                    "Name of the inputs, as used in the script (default to src, src1, src2, ... if not specified)",
+                            min = 0)
                     String[] sourceNames,
             @DescribeParameter(
-                        name = IN_OUTPUT_TYPE,
-                        description =
-                                "Output data type, BYTE, USHORT, SHORT, INT, FLOAT, DOUBLE. Defaults to DOUBLE if not specified",
-                        min = 0
-                    )
+                            name = IN_OUTPUT_TYPE,
+                            description =
+                                    "Output data type, BYTE, USHORT, SHORT, INT, FLOAT, DOUBLE. Defaults to DOUBLE if not specified",
+                            min = 0)
                     DataType dataType,
             @DescribeParameter(
-                        name = OUTPUT_BAND_COUNT,
-                        description =
-                                "Number of output bands. If not specified, will try to infer from the script, which will be possible only if the output band indices are literals.",
-                        min = 0,
-                        minValue = 1
-                    )
+                            name = OUTPUT_BAND_COUNT,
+                            description =
+                                    "Number of output bands. If not specified, will try to infer from the script, which will be possible only if the output band indices are literals.",
+                            min = 0,
+                            minValue = 1)
                     Integer outputBandCount,
             @DescribeParameter(
-                        name = OUTPUT_BAND_NAMES,
-                        description =
-                                "Comma separate list of output band names. If not specified, will use 'jiffle' for single banded output, 'jiffle1', 'jiffle2', and so on for multi-band outputs",
-                        min = 0
-                    )
+                            name = OUTPUT_BAND_NAMES,
+                            description =
+                                    "Comma separate list of output band names. If not specified, will use 'jiffle' for single banded output, 'jiffle1', 'jiffle2', and so on for multi-band outputs",
+                            min = 0)
                     String outputBandNames,
             ProgressListener progressListener)
             throws ProcessException, JiffleException {
@@ -267,29 +262,26 @@ public class JiffleProcess implements RasterProcess {
      */
     public GeneralParameterValue[] customizeReadParams(
             @DescribeParameter(
-                        name = IN_SCRIPT,
-                        description = "The script performing the map algebra, in Jiffle language"
-                    )
+                            name = IN_SCRIPT,
+                            description =
+                                    "The script performing the map algebra, in Jiffle language")
                     String script,
             @DescribeParameter(
-                        name = IN_DEST_NAME,
-                        description =
-                                "Name of the output, as used in the script (defaults to 'dest' if not specified)",
-                        min = 0
-                    )
+                            name = IN_DEST_NAME,
+                            description =
+                                    "Name of the output, as used in the script (defaults to 'dest' if not specified)",
+                            min = 0)
                     String destName,
             @DescribeParameter(
-                        name = IN_SOURCE_NAME,
-                        description =
-                                "Name of the inputs, as used in the script (default to src, src1, src2, ... if not specified)",
-                        min = 0
-                    )
+                            name = IN_SOURCE_NAME,
+                            description =
+                                    "Name of the inputs, as used in the script (default to src, src1, src2, ... if not specified)",
+                            min = 0)
                     String[] sourceNames,
             @DescribeParameter(
-                        name = TX_BANDS,
-                        description = "Bands read by the transformation",
-                        min = 0
-                    )
+                            name = TX_BANDS,
+                            description = "Bands read by the transformation",
+                            min = 0)
                     int[] usedBands,
             GridCoverageReader reader,
             GeneralParameterValue[] params) {

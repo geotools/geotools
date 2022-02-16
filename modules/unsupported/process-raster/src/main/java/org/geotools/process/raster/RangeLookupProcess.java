@@ -54,9 +54,9 @@ import org.opengis.util.ProgressListener;
  * @author Daniele Romagnoli - GeoSolutions
  */
 @DescribeProcess(
-    title = "Reclassify",
-    description = "Reclassifies a continous raster into integer values defined by a set of ranges"
-)
+        title = "Reclassify",
+        description =
+                "Reclassifies a continous raster into integer values defined by a set of ranges")
 public class RangeLookupProcess implements RasterProcess {
 
     private static final double DEFAULT_NODATA = 0d;
@@ -66,32 +66,28 @@ public class RangeLookupProcess implements RasterProcess {
             @DescribeParameter(name = "coverage", description = "Input raster")
                     GridCoverage2D coverage,
             @DescribeParameter(
-                        name = "band",
-                        description = "Source band to use for classification (default is 0)",
-                        min = 0,
-                        defaultValue = "0"
-                    )
+                            name = "band",
+                            description = "Source band to use for classification (default is 0)",
+                            min = 0,
+                            defaultValue = "0")
                     Integer classificationBand,
             @DescribeParameter(
-                        name = "ranges",
-                        description =
-                                "Specifier for a value range in the format ( START ; END ).  START and END values are optional. [ and ] can also be used as brackets, to indicate inclusion of the relevant range endpoint.",
-                        collectionType = Range.class
-                    )
+                            name = "ranges",
+                            description =
+                                    "Specifier for a value range in the format ( START ; END ).  START and END values are optional. [ and ] can also be used as brackets, to indicate inclusion of the relevant range endpoint.",
+                            collectionType = Range.class)
                     List<Range> classificationRanges,
             @DescribeParameter(
-                        name = "outputPixelValues",
-                        description = "Value to be assigned to corresponding range",
-                        min = 0
-                    )
+                            name = "outputPixelValues",
+                            description = "Value to be assigned to corresponding range",
+                            min = 0)
                     int[] outputPixelValues,
             @DescribeParameter(
-                        name = "noData",
-                        description =
-                                "Value to be assigned to pixels outside any range (defaults to 0)",
-                        min = 0,
-                        defaultValue = "0"
-                    )
+                            name = "noData",
+                            description =
+                                    "Value to be assigned to pixels outside any range (defaults to 0)",
+                            min = 0,
+                            defaultValue = "0")
                     Double noData,
             ProgressListener listener)
             throws ProcessException {

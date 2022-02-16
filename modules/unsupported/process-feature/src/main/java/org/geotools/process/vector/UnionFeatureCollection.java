@@ -41,10 +41,9 @@ import org.opengis.feature.type.PropertyDescriptor;
  * @author Pietro Arena - Sinergis
  */
 @DescribeProcess(
-    title = "Union Feature Collections",
-    description =
-            "Returns single feature collection containing all features from two input feature collections.  The output attribute schema is a combination of the attributes from the inputs.  Attributes with same name but different types will be converted to strings."
-)
+        title = "Union Feature Collections",
+        description =
+                "Returns single feature collection containing all features from two input feature collections.  The output attribute schema is a combination of the attributes from the inputs.  Attributes with same name but different types will be converted to strings.")
 public class UnionFeatureCollection implements VectorProcess {
 
     static final String SCHEMA_NAME = "Union_Layer";

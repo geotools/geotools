@@ -830,7 +830,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                                 envelope.getMaxX(),
                                 envelope.getMaxY(),
                                 null);
-                split[0] = ff.and(split[0], bbox);
+                split[0] = Filter.INCLUDE.equals(split[0]) ? bbox : ff.and(split[0], bbox);
 
                 return split;
             }
@@ -857,7 +857,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             }
             // check if geometris
             if (ad instanceof GeometryDescriptor) {
-                if (geometryAttribute != null) {
+                if (geometryAttribute != null && !geometryAttribute.equals(ad)) {
                     // two different attributes found
                     return null;
                 }

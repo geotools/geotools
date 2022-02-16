@@ -261,7 +261,16 @@ public class ComplexTypeHandler extends XSIElementHandler {
         if ((abstracT1 == null) || "".equals(abstracT1)) {
             this.abstracT = false;
         } else {
-            this.abstracT = Boolean.parseBoolean(abstracT1);
+            if ("true".equals(abstracT1)) {
+                this.abstracT = true;
+            } else if ("false".equals(abstracT1)) {
+                this.abstracT = false;
+            } else {
+                throw new SAXException(
+                        String.format(
+                                "Schema element declaration supports 'abstract' \"true\" or \"false\" only (abstract=\"%s\")",
+                                abstracT1));
+            }
         }
 
         String block1 = atts.getValue("", "block");
@@ -289,7 +298,16 @@ public class ComplexTypeHandler extends XSIElementHandler {
         if ((mixed1 == null) || "".equalsIgnoreCase(mixed1)) {
             this.mixed = false;
         } else {
-            this.mixed = Boolean.getBoolean(mixed1);
+            if ("true".equals(mixed1)) {
+                this.mixed = true;
+            } else if ("false".equals(mixed1)) {
+                this.mixed = false;
+            } else {
+                throw new SAXException(
+                        String.format(
+                                "Schema element declaration supports 'mixed' \"true\" or \"false\" only (mixed=\"%s\")",
+                                abstracT1));
+            }
         }
 
         this.block = findBlock(block1);

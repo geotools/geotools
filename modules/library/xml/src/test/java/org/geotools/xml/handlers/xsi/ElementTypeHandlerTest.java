@@ -31,6 +31,22 @@ public class ElementTypeHandlerTest {
 
     private AttributesImpl attributes = new AttributesImpl();
 
+    /** Test abstracT true */
+    @Test
+    public void abstracT() throws SAXException {
+        attributes.addAttribute("", "name", "name", "string", "Generic");
+        attributes.addAttribute("", "abstract", "abstract", "boolean", "cat");
+        try {
+            handler.startElement(NAMESPACE_URI, "name", attributes);
+            handler.endElement(NAMESPACE_URI, "name");
+            Assert.fail("Schrodinger: I am not a cat");
+        } catch (SAXException e) {
+            Assert.assertEquals(
+                    "Schema element declaration supports 'abstract' \"true\" or \"false\" only (abstract=\"cat\")",
+                    e.getMessage());
+        }
+    }
+
     /** Test that a {@code ref} attribute is set as the {@code name}. */
     @Test
     public void ref() throws SAXException {
@@ -49,7 +65,7 @@ public class ElementTypeHandlerTest {
         attributes.addAttribute("", "name", "name", "string", "some-name");
         try {
             handler.startElement(NAMESPACE_URI, "element", attributes);
-            Assert.fail();
+            Assert.fail("Schema element declaration cannot have both 'ref' and 'name' attributes");
         } catch (SAXException e) {
             Assert.assertEquals(
                     "Schema element declaration cannot have both 'ref' and 'name' "

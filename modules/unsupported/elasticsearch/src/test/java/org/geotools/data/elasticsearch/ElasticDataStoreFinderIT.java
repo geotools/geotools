@@ -174,9 +174,7 @@ public class ElasticDataStoreFinderIT extends ElasticTestSupport {
         Map<String, Serializable> params = createConnectionParams();
         params.put(ElasticDataStoreFactory.HOSTNAME.key, hosts);
         ElasticDataStoreFactory factory = new ElasticDataStoreFactory();
-        return factory.createRestClient(params)
-                .getNodes()
-                .stream()
+        return factory.createRestClient(params).getNodes().stream()
                 .map(Node::getHost)
                 .collect(Collectors.toList());
     }

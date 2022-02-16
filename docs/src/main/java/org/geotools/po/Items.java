@@ -75,9 +75,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(
-    name = "Items",
-    propOrder = {"item"}
-)
+        name = "Items",
+        propOrder = {"item"})
 public class Items {
 
     protected List<Items.Item> item;
@@ -134,9 +133,8 @@ public class Items {
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(
-        name = "",
-        propOrder = {"productName", "quantity", "usPrice", "comment", "shipDate"}
-    )
+            name = "",
+            propOrder = {"productName", "quantity", "usPrice", "comment", "shipDate"})
     public static class Item {
 
         @XmlElement(required = true)

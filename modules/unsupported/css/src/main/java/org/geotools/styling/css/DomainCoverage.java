@@ -236,8 +236,7 @@ class DomainCoverage {
 
         // turns the rule in a set of domain coverage expressions (simplified selectors)
         List<SLDSelector> ruleCoverage =
-                toSLDSelectors(selector, targetFeatureType)
-                        .stream()
+                toSLDSelectors(selector, targetFeatureType).stream()
                         .filter(s -> !generatedSelectors.contains(s))
                         .collect(Collectors.toList());
         if (ruleCoverage.isEmpty()) {

@@ -49,6 +49,9 @@ class TileURLBuilder {
     private int urlLength = 50;
 
     TileURLBuilder(String templateURL) {
+        if (templateURL == null) {
+            throw new IllegalArgumentException("templateURL cannot be null");
+        }
         final String lowerTemplate = templateURL.toLowerCase();
         indexes[MATRIX] = lowerTemplate.indexOf(TILEMATRIX);
         indexes[COL] = lowerTemplate.indexOf(TILECOL);

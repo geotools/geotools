@@ -35,10 +35,9 @@ import org.opengis.util.ProgressListener;
  * @author Andrea Aime - GeoSolutions
  */
 @DescribeProcess(
-    title = "Collect Geometries",
-    description =
-            "Collects the default geometries of the input features and combines them into a single geometry collection"
-)
+        title = "Collect Geometries",
+        description =
+                "Collects the default geometries of the input features and combines them into a single geometry collection")
 public class CollectGeometries implements VectorProcess {
 
     @DescribeResult(name = "result", description = "Geometry collection of all input geometries")

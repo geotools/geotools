@@ -55,10 +55,9 @@ import org.opengis.parameter.ParameterValueGroup;
  * @author geosolutions
  */
 @DescribeProcess(
-    title = "Raster Zonal Statistics",
-    description =
-            "Computes statistics for the distribution of a certain quantity in a set of polygonal zones."
-)
+        title = "Raster Zonal Statistics",
+        description =
+                "Computes statistics for the distribution of a certain quantity in a set of polygonal zones.")
 public class RasterZonalStatistics2 implements RasterProcess {
 
     /** Default processor used for executing the operations. */
@@ -75,87 +74,74 @@ public class RasterZonalStatistics2 implements RasterProcess {
     };
 
     @DescribeResult(
-        name = "zonal statistics",
-        description =
-                "A feature collection with the attributes of the zone layer (prefixed by 'z_') and the statistics fields min,max,sum,avg,stddev"
-    )
+            name = "zonal statistics",
+            description =
+                    "A feature collection with the attributes of the zone layer (prefixed by 'z_') and the statistics fields min,max,sum,avg,stddev")
     public List<ZoneGeometry> execute(
             @DescribeParameter(
-                        name = "source",
-                        description = "Input raster to compute statistics for"
-                    )
+                            name = "source",
+                            description = "Input raster to compute statistics for")
                     GridCoverage2D coverage,
             @DescribeParameter(
-                        name = "bands",
-                        description = "Source band used to compute statistics (default is 0)"
-                    )
+                            name = "bands",
+                            description = "Source band used to compute statistics (default is 0)")
                     int[] bands,
             @DescribeParameter(
-                        name = "zones",
-                        description = "Zone polygon features for which to compute statistics"
-                    )
+                            name = "zones",
+                            description = "Zone polygon features for which to compute statistics")
                     List<SimpleFeature> zones,
             @DescribeParameter(
-                        name = "classifier",
-                        description =
-                                "Raster whose values will be used as classes for the statistical analysis. Each zone reports statistics partitioned "
-                                        + "by classes according to the values of the raster. Must be a single band raster with integer values.",
-                        min = 0
-                    )
+                            name = "classifier",
+                            description =
+                                    "Raster whose values will be used as classes for the statistical analysis. Each zone reports statistics partitioned "
+                                            + "by classes according to the values of the raster. Must be a single band raster with integer values.",
+                            min = 0)
                     GridCoverage2D classifier,
             @DescribeParameter(name = "nodata", description = "Input Range for NoData")
                     Range nodata,
             @DescribeParameter(
-                        name = "mask",
-                        description = "Optional mask for the statistic calculations"
-                    )
+                            name = "mask",
+                            description = "Optional mask for the statistic calculations")
                     Geometry mask,
             @DescribeParameter(
-                        name = "useROIAccessor",
-                        description =
-                                "Boolean indicating if a RasterAccessor associated to the Mask should be used for calculating statistics. (Only with Mask field present)",
-                        defaultValue = "false"
-                    )
+                            name = "useROIAccessor",
+                            description =
+                                    "Boolean indicating if a RasterAccessor associated to the Mask should be used for calculating statistics. (Only with Mask field present)",
+                            defaultValue = "false")
                     boolean useROIAccessor,
             @DescribeParameter(
-                        name = "roi",
-                        description = "Optional roi object, if the zones parameter is not used"
-                    )
+                            name = "roi",
+                            description = "Optional roi object, if the zones parameter is not used")
                     Polygon roi,
             @DescribeParameter(
-                        name = "statistics",
-                        description = "Statistics to calculate (default are min,max,sum,avg,stddev)"
-                    )
+                            name = "statistics",
+                            description =
+                                    "Statistics to calculate (default are min,max,sum,avg,stddev)")
                     StatsType[] stats,
             @DescribeParameter(
-                        name = "minbounds",
-                        description =
-                                "Minimum bounds used for calculating Histogram, median and mode operations (for each band)"
-                    )
+                            name = "minbounds",
+                            description =
+                                    "Minimum bounds used for calculating Histogram, median and mode operations (for each band)")
                     double[] minbounds,
             @DescribeParameter(
-                        name = "maxbounds",
-                        description =
-                                "Maximum bounds used for calculating Histogram, median and mode operations (for each band)"
-                    )
+                            name = "maxbounds",
+                            description =
+                                    "Maximum bounds used for calculating Histogram, median and mode operations (for each band)")
                     double[] maxbounds,
             @DescribeParameter(
-                        name = "numbins",
-                        description =
-                                "Number of Bins used for calculating Histogram, median and mode operations (for each band)"
-                    )
+                            name = "numbins",
+                            description =
+                                    "Number of Bins used for calculating Histogram, median and mode operations (for each band)")
                     int[] numbins,
             @DescribeParameter(
-                        name = "rangeData",
-                        description =
-                                "Maximum bounds used for calculating Histogram, median and mode operations (for each band)"
-                    )
+                            name = "rangeData",
+                            description =
+                                    "Maximum bounds used for calculating Histogram, median and mode operations (for each band)")
                     List<Range> rangeData,
             @DescribeParameter(
-                        name = "localStats",
-                        description =
-                                "Number of Bins used for calculating Histogram, median and mode operations (for each band)"
-                    )
+                            name = "localStats",
+                            description =
+                                    "Number of Bins used for calculating Histogram, median and mode operations (for each band)")
                     boolean localStats) {
 
         // If no band is indicated, then the first band is taken

@@ -2099,8 +2099,7 @@ public class StreamingRenderer implements GTRenderer {
         return fts.featureTypeNames().isEmpty()
                 || ((ftype.getName().getLocalPart() != null)
                         && (fts.featureTypeNames().isEmpty()
-                                || fts.featureTypeNames()
-                                        .stream()
+                                || fts.featureTypeNames().stream()
                                         .anyMatch(tn -> FeatureTypes.matches(ftype, tn))));
     }
 
@@ -2257,8 +2256,7 @@ public class StreamingRenderer implements GTRenderer {
             // optimize filters for in memory sequential execution
             // step one, collect duplicated filters and expressions
             RepeatedFilterVisitor repeatedVisitor = new RepeatedFilterVisitor();
-            uniformLfts
-                    .stream()
+            uniformLfts.stream()
                     .flatMap(fts -> Arrays.stream(fts.ruleList))
                     .filter(r -> !r.isElseFilter() && r.getFilter() != null)
                     .forEach(r -> r.getFilter().accept(repeatedVisitor, null));
@@ -2849,9 +2847,7 @@ public class StreamingRenderer implements GTRenderer {
             }
         }
         Set<String> filterAndSymbolizerProperties =
-                extractorOther
-                        .getAttributes()
-                        .stream()
+                extractorOther.getAttributes().stream()
                         .map(pn -> pn.getPropertyName())
                         .collect(Collectors.toSet());
         if (extractorOther.getDefaultGeometryUsed()

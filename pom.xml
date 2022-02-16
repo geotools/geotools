@@ -496,7 +496,7 @@
     <fork.javac>false</fork.javac>
     <javac.maxHeapSize>256M</javac.maxHeapSize>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <postgresql.jdbc.version>42.2.25</postgresql.jdbc.version>
+    <postgresql.jdbc.version>42.3.3</postgresql.jdbc.version>
     <ojdbc8.version>19.12.0.0</ojdbc8.version>
     <mssql-jdbc.version>9.4.0.jre8</mssql-jdbc.version>
     <mysql-connector-java.version>8.0.26</mysql-connector-java.version>
@@ -509,10 +509,10 @@
     <maven.pmd.plugin.version>3.14.0</maven.pmd.plugin.version>
     <git.commit.useNative>false</git.commit.useNative>
     <git.commit.runOnlyOnce>true</git.commit.runOnlyOnce>
-    <fmt.action>format</fmt.action>
-    <fmt.skip>false</fmt.skip>
+    <spotless.action>apply</spotless.action>
+    <spotless.apply.skip>false</spotless.apply.skip>
     <pom.fmt.action>sort</pom.fmt.action>
-    <pom.fmt.skip>${fmt.skip}</pom.fmt.skip>
+    <pom.fmt.skip>${spotless.apply.skip}</pom.fmt.skip>
     <batik.version>1.14</batik.version>
     <logging-profile>quiet-logging</logging-profile>
     <errorProneFlags></errorProneFlags>
@@ -1477,11 +1477,6 @@
           <version>3.6.0</version>
         </plugin>
         <plugin>
-          <groupId>com.coveo</groupId>
-          <artifactId>fmt-maven-plugin</artifactId>
-          <version>2.4.0</version>
-        </plugin>
-        <plugin>
           <artifactId>maven-checkstyle-plugin</artifactId>
           <version>3.1.1</version>
         </plugin>
@@ -1897,20 +1892,28 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>com.coveo</groupId>
-        <artifactId>fmt-maven-plugin</artifactId>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>2.20.0</version>
         <executions>
           <execution>
+            <phase>validate</phase>
             <goals>
-              <goal>${fmt.action}</goal>
+              <goal>${spotless.action}</goal>
             </goals>
           </execution>
         </executions>
         <configuration>
-          <verbose>false</verbose>
-          <filesNamePattern>.*\.java</filesNamePattern>
-          <skip>${fmt.skip}</skip>
-          <style>aosp</style>
+          <java>
+            <googleJavaFormat>
+              <version>1.7</version>
+              <style>AOSP</style>
+            </googleJavaFormat>
+          </java>
+          <upToDateChecking>
+            <enabled>true</enabled>
+            <indexFile>${project.basedir}/.spotless-index</indexFile>
+          </upToDateChecking>
         </configuration>
       </plugin>
 

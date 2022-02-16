@@ -55,9 +55,8 @@ public interface GridSpatialRepresentation extends SpatialRepresentation {
      * @return Whether or not parameters for transformation exists.
      */
     @UML(
-        identifier = "transformationParameterAvailability",
-        obligation = MANDATORY,
-        specification = ISO_19115
-    )
+            identifier = "transformationParameterAvailability",
+            obligation = MANDATORY,
+            specification = ISO_19115)
     boolean isTransformationParameterAvailable();
 }

@@ -161,9 +161,11 @@ public class WMSLayer extends GridReaderLayer {
             DirectPosition2D toPos = new DirectPosition2D();
             MathTransform mt =
                     CRS.findMathTransform(
-                            bbox.getCoordinateReferenceSystem(), getReader().requestCRS, true);
+                            bbox.getCoordinateReferenceSystem(),
+                            getReader().requestedEnvelope.getCoordinateReferenceSystem(),
+                            true);
             mt.transform(fromPos, toPos);
-            GetMapRequest mapRequest = getReader().mapRequest;
+            GetMapRequest mapRequest = getLastGetMap();
             return getReader().getFeatureInfo(toPos, infoFormat, featureCount, mapRequest);
         } catch (IOException e) {
             throw e;

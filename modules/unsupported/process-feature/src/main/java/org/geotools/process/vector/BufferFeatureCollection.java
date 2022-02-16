@@ -45,25 +45,22 @@ import org.opengis.feature.type.AttributeDescriptor;
  * @author Andrea Aime - GeoSolutions
  */
 @DescribeProcess(
-    title = "Buffer",
-    description =
-            "Buffers features by a distance value supplied either as a parameter or by a feature attribute. Calculates buffers based on Cartesian distances."
-)
+        title = "Buffer",
+        description =
+                "Buffers features by a distance value supplied either as a parameter or by a feature attribute. Calculates buffers based on Cartesian distances.")
 public class BufferFeatureCollection implements VectorProcess {
     @DescribeResult(description = "Buffered feature collection")
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "features", description = "Input feature collection")
                     SimpleFeatureCollection features,
             @DescribeParameter(
-                        name = "distance",
-                        description = "Fixed value to use for the buffer distance"
-                    )
+                            name = "distance",
+                            description = "Fixed value to use for the buffer distance")
                     Double distance,
             @DescribeParameter(
-                        name = "attributeName",
-                        description = "Attribute containing the buffer distance value",
-                        min = 0
-                    )
+                            name = "attributeName",
+                            description = "Attribute containing the buffer distance value",
+                            min = 0)
                     String attribute) {
 
         if (distance == null && (attribute == null || attribute == "")) {

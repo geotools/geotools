@@ -39,10 +39,9 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @author Andrea Aime - OpenGeo
  */
 @DescribeProcess(
-    title = "Simplify",
-    description =
-            "Simplifies feature geometry by reducing vertices using Douglas-Peucker simplification."
-)
+        title = "Simplify",
+        description =
+                "Simplifies feature geometry by reducing vertices using Douglas-Peucker simplification.")
 public class SimplifyProcess implements VectorProcess {
 
     @DescribeResult(name = "result", description = "The simplified feature collection")
@@ -52,11 +51,10 @@ public class SimplifyProcess implements VectorProcess {
             @DescribeParameter(name = "distance", description = "Simplification distance tolerance")
                     double distance,
             @DescribeParameter(
-                        name = "preserveTopology",
-                        description =
-                                "If True, ensures that simplified features are topologically valid",
-                        defaultValue = "false"
-                    )
+                            name = "preserveTopology",
+                            description =
+                                    "If True, ensures that simplified features are topologically valid",
+                            defaultValue = "false")
                     boolean preserveTopology)
             throws ProcessException {
         if (distance < 0) {

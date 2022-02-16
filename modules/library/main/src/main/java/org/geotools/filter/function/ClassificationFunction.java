@@ -276,8 +276,7 @@ public abstract class ClassificationFunction extends DefaultExpression
         @SuppressWarnings("unchecked")
         Map<List<Integer>, Integer> result = groupBy.getResult().toMap();
         Map<Integer, Integer> resultIntKeys =
-                result.entrySet()
-                        .stream()
+                result.entrySet().stream()
                         .collect(Collectors.toMap(e -> e.getKey().get(0), e -> e.getValue()));
         // getting a tree set from the keys to get them asc ordered and
         // collect percentages in the right order

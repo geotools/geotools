@@ -39,9 +39,7 @@ class GeohashUtil {
 
     public static void updateGridAggregationPrecision(
             Map<String, Map<String, Map<String, Object>>> aggregations, int precision) {
-        aggregations
-                .values()
-                .stream()
+        aggregations.values().stream()
                 .filter(a -> a.containsKey("geohash_grid"))
                 .forEach(a -> a.get("geohash_grid").put("precision", precision));
     }

@@ -101,10 +101,9 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Jody Garnett (LISAsoft)
  */
 @DescribeProcess(
-    title = "Transform",
-    description =
-            "Computes a new feature collection from the input one by renaming, deleting, and computing new attributes.  Attribute values are specified as ECQL expressions in the form name=expression."
-)
+        title = "Transform",
+        description =
+                "Computes a new feature collection from the input one by renaming, deleting, and computing new attributes.  Attribute values are specified as ECQL expressions in the form name=expression.")
 public class TransformProcess implements VectorProcess {
     /**
      * Definition of an attribute used during transform
@@ -130,10 +129,9 @@ public class TransformProcess implements VectorProcess {
             @DescribeParameter(name = "features", description = "Input feature collection")
                     SimpleFeatureCollection features,
             @DescribeParameter(
-                        name = "transform",
-                        description =
-                                "The transform specification, as a list of specifiers of the form name=expression, delimited by newlines or semicolons."
-                    )
+                            name = "transform",
+                            description =
+                                    "The transform specification, as a list of specifiers of the form name=expression, delimited by newlines or semicolons.")
                     String transform)
             throws ProcessException {
         if (transform == null) {
@@ -148,9 +146,8 @@ public class TransformProcess implements VectorProcess {
             @DescribeParameter(name = "features", description = "Input feature collection")
                     SimpleFeatureCollection features,
             @DescribeParameter(
-                        name = "transform",
-                        description = "List of Definitions for the output feature attributes"
-                    )
+                            name = "transform",
+                            description = "List of Definitions for the output feature attributes")
                     List<Definition> transform)
             throws ProcessException {
         if (transform == null) {

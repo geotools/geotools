@@ -37,10 +37,9 @@ public interface MaintenanceInformation {
      * @return Frequency with which changes and additions are made to the resource.
      */
     @UML(
-        identifier = "maintenanceAndUpdateFrequency",
-        obligation = MANDATORY,
-        specification = ISO_19115
-    )
+            identifier = "maintenanceAndUpdateFrequency",
+            obligation = MANDATORY,
+            specification = ISO_19115)
     MaintenanceFrequency getMaintenanceAndUpdateFrequency();
 
     /**
@@ -57,10 +56,9 @@ public interface MaintenanceInformation {
      * @return The Maintenance period, or {@code null}.
      */
     @UML(
-        identifier = "userDefinedMaintenanceFrequency",
-        obligation = OPTIONAL,
-        specification = ISO_19115
-    )
+            identifier = "userDefinedMaintenanceFrequency",
+            obligation = OPTIONAL,
+            specification = ISO_19115)
     PeriodDuration getUserDefinedMaintenanceFrequency();
 
     /**

@@ -135,16 +135,14 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
         GeoPackage geoPackage = new GeoPackage(dataStore);
         GeoPkgSchemaExtension schemas = geoPackage.getExtension(GeoPkgSchemaExtension.class);
         Map<String, DataColumn> ft2Columns =
-                schemas.getDataColumns("ft2")
-                        .stream()
+                schemas.getDataColumns("ft2").stream()
                         .collect(Collectors.toMap(dc -> dc.getColumnName(), dc -> dc));
         DataColumn ft2Enum = ft2Columns.get("enumProperty");
         assertThat(ft2Enum.getConstraint(), instanceOf(DataColumnConstraint.Enum.class));
         assertEquals("enumProperty", ft2Enum.getColumnName());
 
         Map<String, DataColumn> ft3Columns =
-                schemas.getDataColumns("ft3")
-                        .stream()
+                schemas.getDataColumns("ft3").stream()
                         .collect(Collectors.toMap(dc -> dc.getColumnName(), dc -> dc));
         DataColumn ft3Enum = ft3Columns.get("enumProperty");
         assertThat(ft3Enum.getConstraint(), instanceOf(DataColumnConstraint.Enum.class));

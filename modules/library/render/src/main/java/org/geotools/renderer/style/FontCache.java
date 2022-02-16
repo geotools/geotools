@@ -255,9 +255,7 @@ public class FontCache {
         List<String> result = alternatives.get(name);
         if (result == null) {
             result =
-                    FontCache.getDefaultInstance()
-                            .getAvailableFonts()
-                            .stream()
+                    FontCache.getDefaultInstance().getAvailableFonts().stream()
                             .filter(f -> f.startsWith(name))
                             .filter(
                                     f -> { // leave out alterations, use base fonts

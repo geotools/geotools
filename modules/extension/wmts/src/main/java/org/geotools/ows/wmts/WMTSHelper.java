@@ -56,6 +56,9 @@ public class WMTSHelper {
      * <p>If a value starts with {, it will avoid url-encoding
      */
     public static String appendQueryString(String baseUrl, Map<String, String> params) {
+        if (baseUrl == null) {
+            throw new IllegalArgumentException("baseUrl cannot be null");
+        }
         StringBuilder arguments = new StringBuilder();
         String separator = (!baseUrl.contains("?") ? "?" : "&");
 

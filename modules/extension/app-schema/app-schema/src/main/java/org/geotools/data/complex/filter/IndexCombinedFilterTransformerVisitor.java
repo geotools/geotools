@@ -70,9 +70,7 @@ public class IndexCombinedFilterTransformerVisitor extends DuplicatingFilterVisi
             // add ID IN () filter
             gfilters.add(idInFilter);
             // add non-indexed filters (duplicates):
-            indexedParentLogicOperator
-                    .getChildren()
-                    .stream()
+            indexedParentLogicOperator.getChildren().stream()
                     .filter(f -> indexedFilters.stream().noneMatch(i -> i.equals(f)))
                     .forEach(f -> gfilters.add(duplicateFilter(f)));
             // build replace operator filter

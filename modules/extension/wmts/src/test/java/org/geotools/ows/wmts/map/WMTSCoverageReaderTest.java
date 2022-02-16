@@ -52,6 +52,7 @@ import org.geotools.ows.ServiceException;
 import org.geotools.ows.wmts.WebMapTileServer;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
 import org.geotools.ows.wmts.model.WMTSLayer;
+import org.geotools.ows.wmts.request.AbstractGetTileRequest;
 import org.geotools.ows.wmts.request.GetTileRequest;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
@@ -112,7 +113,7 @@ public class WMTSCoverageReaderTest {
         assertThat(
                 "Expect format=image/jpeg in the request url",
                 url.toString(),
-                containsString("Format=image%2Fjpeg"));
+                containsString("format=image%2Fjpeg"));
     }
 
     @Test
@@ -247,7 +248,7 @@ public class WMTSCoverageReaderTest {
         ReferencedEnvelope grid = wcr.initTileRequest(bbox, width, height, null);
         assertNotNull(grid);
         GetTileRequest mapRequest = wcr.getTileRequest();
-        String templateURL = mapRequest.getFinalURL().toExternalForm();
+        String templateURL = ((AbstractGetTileRequest) mapRequest).getTemplateUrl();
         assertEquals(
                 "https://maps.wien.gv.at/basemap/bmaphidpi/{Style}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpeg",
                 templateURL);

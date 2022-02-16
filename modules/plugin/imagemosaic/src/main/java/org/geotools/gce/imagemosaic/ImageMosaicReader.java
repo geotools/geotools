@@ -1048,8 +1048,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
             @SuppressWarnings("unchecked")
             Collection<Object> collection = ((Collection<Object>) source);
             source =
-                    collection
-                            .stream()
+                    collection.stream()
                             .map(o -> Converters.convert(o, resource.getElementType()))
                             .collect(Collectors.toList());
         } else {

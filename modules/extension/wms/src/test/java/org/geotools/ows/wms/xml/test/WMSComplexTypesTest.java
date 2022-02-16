@@ -111,4 +111,30 @@ public class WMSComplexTypesTest {
         // invalid xlink URL will cause most online resources to be null
         Assert.assertNull(legendURL);
     }
+
+    @Test
+    public void testEmptyOnlineResourceServiceDef() throws Exception {
+
+        File getCaps = TestData.file(this, "1.3.0Capabilities_EmptyOnlineResource.xml");
+        URL getCapsURL = getCaps.toURI().toURL();
+        Map<String, Object> hints = new HashMap<>();
+        hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WMSSchema.getInstance());
+        Object object = null;
+
+        try {
+            object = DocumentFactory.getInstance(getCapsURL.openStream(), hints, Level.WARNING);
+        } catch (NullPointerException e) {
+            Assert.fail("Parsing document with empty xlink URL should not cause NPE");
+        }
+
+        Assert.assertTrue("Capabilities failed to parse", object instanceof WMSCapabilities);
+
+        WMSCapabilities capabilities = (WMSCapabilities) object;
+
+        Assert.assertEquals(capabilities.getVersion(), "1.3.0");
+        Assert.assertEquals(capabilities.getService().getName(), "WMS");
+        Assert.assertEquals(capabilities.getService().getTitle(), "World Map");
+        // empty Service OnlineResource element should be null, preventing npe
+        Assert.assertNull(capabilities.getService().getOnlineResource());
+    }
 }

@@ -5243,14 +5243,19 @@ public class WMSComplexTypes {
                 throws SAXException, OperationNotSupportedException {
 
             if (value != null && value.length >= 1) {
-                try {
-                    return new URL((String) value[value.length - 1].getValue());
-                } catch (MalformedURLException e1) {
+                if (value[value.length - 1].getValue() != null) {
+                    try {
+                        return new URL((String) value[value.length - 1].getValue());
+                    } catch (MalformedURLException e1) {
+                    }
                 }
             }
 
             String href = attrs.getValue("", "href");
             href = href != null ? href : attrs.getValue(XLinkSchema.NAMESPACE.toString(), "href");
+            if (href == null) {
+                return null;
+            }
             try {
                 return new URL(href);
             } catch (MalformedURLException e) {

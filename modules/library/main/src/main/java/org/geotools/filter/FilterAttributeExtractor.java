@@ -113,7 +113,7 @@ public class FilterAttributeExtractor extends DefaultFilterVisitor {
             // evaluate against the feature type instead of using straight name
             // since the path from the property name may be an XPath or a
             // namespace prefixed string
-            AttributeDescriptor type = (AttributeDescriptor) expression.evaluate(featureType);
+            AttributeDescriptor type = expression.evaluate(featureType, AttributeDescriptor.class);
             if (type != null) {
                 attributeNames.add(type.getLocalName());
             } else {

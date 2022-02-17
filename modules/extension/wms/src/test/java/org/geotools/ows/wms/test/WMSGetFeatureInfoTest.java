@@ -6,9 +6,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URLEncodedUtils;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.http.HTTPResponse;
@@ -22,15 +19,14 @@ import org.geotools.ows.wms.map.WMSCoverageReader;
 import org.geotools.ows.wms.map.WMSCoverageReaderTest;
 import org.geotools.ows.wms.map.WMSLayer;
 import org.geotools.referencing.CRS;
-import org.geotools.util.logging.Logging;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.internal.util.collections.Sets;
 import org.opengis.referencing.FactoryException;
+import wiremock.org.apache.http.NameValuePair;
+import wiremock.org.apache.http.client.utils.URLEncodedUtils;
 
 public class WMSGetFeatureInfoTest {
-
-    protected static final Logger LOGGER = Logging.getLogger(WMS1_3_0_Test.class);
 
     public WMSGetFeatureInfoTest() {}
     // this tests checks the GEOS-9770 bug, WMS cascaded layer does the proper transformations to i,

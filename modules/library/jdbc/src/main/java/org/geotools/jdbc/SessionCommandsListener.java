@@ -159,36 +159,37 @@ public class SessionCommandsListener implements ConnectionLifecycleListener {
                 inEnvVariable = true;
                 i++;
             } else if (curr == '}') {
-                if (!inEnvVariable)
-                    throw new IllegalArgumentException(
-                            "Already found a ${ sequence before the one at " + (i + 1));
+                if (inEnvVariable) {
 
-                if (sb.length() == 0)
-                    throw new IllegalArgumentException(
-                            "Invalid empty environment variable reference ${} at " + (i - 1));
-
-                String name = sb.toString();
-                String defaultValue = null;
-                int idx = name.indexOf(',');
-                if (idx >= 0) {
-                    if (idx == 0) {
+                    if (sb.length() == 0)
                         throw new IllegalArgumentException(
-                                "There is no variable name before "
-                                        + "the comma, the valid format is '${name,defaultValue}'");
-                    } else if (idx < name.length() - 1) {
-                        defaultValue = name.substring(idx + 1);
-                        name = name.substring(0, idx);
+                                "Invalid empty environment variable reference ${} at " + (i - 1));
+
+                    String name = sb.toString();
+                    String defaultValue = null;
+                    int idx = name.indexOf(',');
+                    if (idx >= 0) {
+                        if (idx == 0) {
+                            throw new IllegalArgumentException(
+                                    "There is no variable name before "
+                                            + "the comma, the valid format is '${name,defaultValue}'");
+                        } else if (idx < name.length() - 1) {
+                            defaultValue = name.substring(idx + 1);
+                            name = name.substring(0, idx);
+                        }
                     }
-                }
-                Expression env;
-                if (defaultValue != null) {
-                    env = ff.function("env", ff.literal(name), ff.literal(defaultValue));
+                    Expression env;
+                    if (defaultValue != null) {
+                        env = ff.function("env", ff.literal(name), ff.literal(defaultValue));
+                    } else {
+                        env = ff.function("env", ff.literal(name));
+                    }
+                    expressions.add(env);
+                    sb.setLength(0);
+                    inEnvVariable = false;
                 } else {
-                    env = ff.function("env", ff.literal(name));
+                    sb.append(curr);
                 }
-                expressions.add(env);
-                sb.setLength(0);
-                inEnvVariable = false;
             } else {
                 sb.append(curr);
             }

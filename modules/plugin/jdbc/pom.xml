@@ -55,7 +55,6 @@
     <module>jdbc-db2</module>
     <module>jdbc-mysql</module>
     <module>jdbc-sqlserver</module>
-    <module>jdbc-teradata</module>
     <module>jdbc-hana</module>
   </modules>
 

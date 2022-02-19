@@ -1,6 +1,8 @@
 Teradata Plugin
 -----------------
 
+.. warning:: This unsupported plugin has not been maintained for a long time, and it's about to be removed from the codebase.
+
 Supports direct access to a Teradata database.
 
 **References**

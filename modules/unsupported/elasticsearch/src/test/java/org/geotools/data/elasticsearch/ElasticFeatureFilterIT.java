@@ -19,6 +19,7 @@ package org.geotools.data.elasticsearch;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -193,7 +194,7 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
         try (SimpleFeatureIterator iterator = features.features()) {
             while (iterator.hasNext()) {
                 SimpleFeature f = iterator.next();
-                assertFalse(f.getAttribute("vendor_s").equals("D-Link"));
+                assertNotEquals("D-Link", f.getAttribute("vendor_s"));
             }
         }
     }

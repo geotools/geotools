@@ -40,6 +40,7 @@ public class BufferFeatureCollectionTest {
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     @Test
+    @SuppressWarnings("PMD.SimplifiableTestAssertion") // geometry equality
     public void testExecutePoint() throws Exception {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("featureType");
@@ -74,6 +75,7 @@ public class BufferFeatureCollectionTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.SimplifiableTestAssertion") // geometry equality
     public void testExecuteLineString() throws Exception {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("featureType");
@@ -119,6 +121,7 @@ public class BufferFeatureCollectionTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.SimplifiableTestAssertion") // geometry equality
     public void testExecutePolygon() throws Exception {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("featureType");
@@ -169,6 +172,7 @@ public class BufferFeatureCollectionTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.SimplifiableTestAssertion") // geometry equality
     public void testExecuteBufferAttribute() throws Exception {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("featureType");

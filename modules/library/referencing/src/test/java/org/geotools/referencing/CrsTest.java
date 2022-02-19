@@ -147,7 +147,7 @@ public final class CrsTest {
     /** Tests the transformations of an envelope. */
     @Test
     // code is using equals with extra parameters and semantics compared to the built-in equals
-    @SuppressWarnings("PMD.UseAssertEqualsInsteadOfAssertTrue")
+    @SuppressWarnings("PMD.SimplifiableTestAssertion")
     public void testEnvelopeTransformation() throws FactoryException, TransformException {
         final CoordinateReferenceSystem mapCRS = CRS.parseWKT(WKT.UTM_10N);
         final CoordinateReferenceSystem WGS84 = DefaultGeographicCRS.WGS84;

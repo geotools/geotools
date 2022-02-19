@@ -16,6 +16,9 @@
  */
 package org.geotools.feature;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.junit.Assert;
@@ -48,39 +51,39 @@ public class FeatureFlatTest {
                 "geometry retrieval and match",
                 ((Point) testFeature.getAttribute("testGeometry"))
                         .equalsExact(gf.createPoint(new Coordinate(1, 2))));
-        Assert.assertEquals(
+        assertEquals(
                 "boolean retrieval and match",
                 testFeature.getAttribute("testBoolean"),
                 Boolean.TRUE);
-        Assert.assertEquals(
+        assertEquals(
                 "character retrieval and match",
                 testFeature.getAttribute("testCharacter"),
                 Character.valueOf('t'));
-        Assert.assertEquals(
+        assertEquals(
                 "byte retrieval and match",
                 testFeature.getAttribute("testByte"),
                 Byte.valueOf("10"));
-        Assert.assertEquals(
+        assertEquals(
                 "short retrieval and match",
                 testFeature.getAttribute("testShort"),
                 Short.valueOf("101"));
-        Assert.assertEquals(
+        assertEquals(
                 "integer retrieval and match",
                 testFeature.getAttribute("testInteger"),
                 Integer.valueOf(1002));
-        Assert.assertEquals(
+        assertEquals(
                 "long retrieval and match",
                 testFeature.getAttribute("testLong"),
                 Long.valueOf(10003));
-        Assert.assertEquals(
+        assertEquals(
                 "float retrieval and match",
                 testFeature.getAttribute("testFloat"),
                 Float.valueOf(10000.4f));
-        Assert.assertEquals(
+        assertEquals(
                 "double retrieval and match",
                 testFeature.getAttribute("testDouble"),
                 Double.valueOf(100000.5));
-        Assert.assertEquals(
+        assertEquals(
                 "string retrieval and match",
                 "test string data",
                 testFeature.getAttribute("testString"));
@@ -127,14 +130,14 @@ public class FeatureFlatTest {
         SimpleFeatureType t = tb.buildFeatureType();
 
         SimpleFeature f = SimpleFeatureBuilder.build(t, g, null);
-        Assert.assertEquals(gc.getEnvelopeInternal(), f.getBounds());
+        assertEquals(gc.getEnvelopeInternal(), f.getBounds());
 
         g[1].getCoordinate().y = 20;
         g[2].getCoordinate().x = 20;
         f.setAttribute(1, g[1]);
         f.setAttribute(2, g[2]);
         gc = gf.createGeometryCollection(g);
-        Assert.assertEquals(gc.getEnvelopeInternal(), f.getBounds());
+        assertEquals(gc.getEnvelopeInternal(), f.getBounds());
     }
 
     @Test
@@ -142,7 +145,7 @@ public class FeatureFlatTest {
         SimpleFeature f = SampleFeatureFixtures.createFeature();
         SimpleFeature c = SimpleFeatureBuilder.copy(f);
         for (int i = 0, ii = c.getAttributeCount(); i < ii; i++) {
-            Assert.assertEquals(c.getAttribute(i), f.getAttribute(i));
+            assertEquals(c.getAttribute(i), f.getAttribute(i));
         }
     }
 
@@ -152,7 +155,7 @@ public class FeatureFlatTest {
         Object[] attributes = SampleFeatureFixtures.createAttributes();
         SimpleFeature feature = SimpleFeatureBuilder.build(type, attributes, "fid");
         SimpleFeature clone = SimpleFeatureBuilder.deep(feature);
-        Assert.assertEquals("Clone was not equal", feature, clone);
+        assertEquals("Clone was not equal", feature, clone);
     }
 
     @Test
@@ -180,7 +183,7 @@ public class FeatureFlatTest {
     public void testModify() throws IllegalAttributeException {
         String newData = "new test string data";
         testFeature.setAttribute("testString", newData);
-        Assert.assertEquals(
+        assertEquals(
                 "match modified (string) attribute",
                 testFeature.getAttribute("testString"),
                 newData);
@@ -188,13 +191,13 @@ public class FeatureFlatTest {
         GeometryFactory gf = new GeometryFactory();
         Point newGeom = gf.createPoint(new Coordinate(3, 4));
         testFeature.setAttribute("testGeometry", newGeom);
-        Assert.assertEquals(
+        assertEquals(
                 "match modified (geometry) attribute",
                 testFeature.getAttribute("testGeometry"),
                 newGeom);
 
         testFeature.setDefaultGeometry(newGeom);
-        Assert.assertEquals(
+        assertEquals(
                 "match modified (geometry) attribute",
                 testFeature.getAttribute("testGeometry"),
                 newGeom);
@@ -261,17 +264,17 @@ public class FeatureFlatTest {
     public void testEquals() throws Exception {
         SimpleFeature f1 = SampleFeatureFixtures.createFeature();
         SimpleFeature f2 = SampleFeatureFixtures.createFeature();
-        Assert.assertEquals(f1, f1);
-        Assert.assertEquals(f2, f2);
-        Assert.assertFalse(f1.equals(f2));
-        Assert.assertFalse(f1.equals(null));
+        assertEquals(f1, f1);
+        assertEquals(f2, f2);
+        assertNotEquals(f1, f2);
+        assertNotEquals(null, f1);
 
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("different");
         tb.add("name", String.class);
         SimpleFeatureType type = tb.buildFeatureType();
 
-        Assert.assertFalse(f1.equals(SimpleFeatureBuilder.build(type, new Object[1], null)));
+        assertNotEquals(f1, SimpleFeatureBuilder.build(type, new Object[1], null));
     }
 
     /*

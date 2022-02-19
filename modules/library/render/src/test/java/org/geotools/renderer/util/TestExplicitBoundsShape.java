@@ -218,7 +218,7 @@ public class TestExplicitBoundsShape {
 
             Rectangle bounds = new Rectangle(1, 1, 4, 4);
             target.setBounds(bounds);
-            Assert.assertFalse(shape.hashCode() == target.hashCode());
+            assertNotEquals(shape.hashCode(), target.hashCode());
 
         } catch (Throwable e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);

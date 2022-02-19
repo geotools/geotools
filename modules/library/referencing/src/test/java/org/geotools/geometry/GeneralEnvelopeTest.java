@@ -33,7 +33,7 @@ import org.opengis.geometry.Envelope;
  * @author Martin Desruisseaux
  */
 // code is using equals with extra parameters and semantics compared to the built-in equals
-@SuppressWarnings("PMD.UseAssertEqualsInsteadOfAssertTrue")
+@SuppressWarnings("PMD.SimplifiableTestAssertion")
 public final class GeneralEnvelopeTest {
 
     @Test

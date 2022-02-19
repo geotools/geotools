@@ -41,9 +41,9 @@ public class AbstractGetMapRequestTest {
         URL finalURL = request.getFinalURL();
         // System.out.println(finalURL);
         String processedURL = finalURL.toExternalForm();
-        Assert.assertTrue(processedURL.indexOf("LAYERS=Layer2,Provincial%20Boundary") != -1);
-        Assert.assertTrue(processedURL.indexOf("STYLES=,Two%20words") != -1);
-        Assert.assertTrue(processedURL.indexOf("SERVICE=WMS") != -1);
+        Assert.assertNotEquals(-1, processedURL.indexOf("LAYERS=Layer2,Provincial%20Boundary"));
+        Assert.assertNotEquals(-1, processedURL.indexOf("STYLES=,Two%20words"));
+        Assert.assertNotEquals(-1, processedURL.indexOf("SERVICE=WMS"));
     }
 
     private class RequestTestHelp extends AbstractGetMapRequest {

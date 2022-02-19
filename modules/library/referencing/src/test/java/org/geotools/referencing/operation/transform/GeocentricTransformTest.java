@@ -17,7 +17,7 @@
 package org.geotools.referencing.operation.transform;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -105,7 +105,7 @@ public final class GeocentricTransformTest extends TransformTestBase {
         final double circumference = (radius * 1.00000001) * (2 * Math.PI);
         final DefaultEllipsoid s =
                 DefaultEllipsoid.createEllipsoid("Sphere", radius, radius, e.getAxisUnit());
-        assertFalse("Spheroid class", DefaultEllipsoid.class.equals(s.getClass()));
+        assertNotEquals("Spheroid class", DefaultEllipsoid.class, s.getClass());
         for (double i = 0; i <= 180; i += 1) {
             final double base = 360 * random.nextDouble() - 180;
             assertEquals(

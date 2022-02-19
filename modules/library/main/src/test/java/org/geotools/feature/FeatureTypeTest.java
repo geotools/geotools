@@ -20,6 +20,7 @@ package org.geotools.feature;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -111,13 +112,13 @@ public class FeatureTypeTest extends DataTestCase {
         assertEquals(ft, ft2);
 
         tb.setName("Thingee");
-        assertFalse(ft.equals(tb.buildFeatureType()));
+        assertNotEquals(ft, tb.buildFeatureType());
 
         tb.init(ft);
         tb.setNamespaceURI("http://www.somewhereelse.net");
 
-        assertFalse(ft.equals(tb.buildFeatureType()));
-        assertFalse(ft.equals(null));
+        assertNotEquals(ft, tb.buildFeatureType());
+        assertNotEquals(ft, null);
     }
 
     @Test

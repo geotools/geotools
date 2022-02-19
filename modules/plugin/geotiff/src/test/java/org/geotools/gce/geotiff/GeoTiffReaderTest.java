@@ -357,6 +357,7 @@ public class GeoTiffReaderTest {
         }
     }
 
+    @SuppressWarnings("PMD.SimplifiableTestAssertion") // envelope comparison with tolerance
     private void writeAndReadBackCheck(
             GridCoverage2D coverage, AbstractGridFormat format, File writeDirectory, Object o)
             throws IOException, FactoryException {

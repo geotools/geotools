@@ -26,6 +26,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -38,8 +39,10 @@ import org.geotools.http.MockHttpClient;
 import org.geotools.http.MockHttpResponse;
 import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wmts.WMTSSpecification.GetSingleTileRequest;
+import org.geotools.ows.wmts.model.TileMatrixSet;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
 import org.geotools.ows.wmts.model.WMTSLayer;
+import org.geotools.ows.wmts.model.WMTSServiceType;
 import org.geotools.ows.wmts.request.AbstractGetTileRequest;
 import org.geotools.ows.wmts.request.GetTileRequest;
 import org.geotools.ows.wmts.response.GetTileResponse;
@@ -273,6 +276,49 @@ public class WebMapTileServerTest {
         Assert.assertFalse(tiles.isEmpty());
 
         tiles.iterator().next().getBufferedImage();
+    }
+
+    /**
+     * Testing that the template url is chosen with style = "default". Based on the issue GEOS-10395
+     */
+    @Test
+    public void testLayerWithoutDefaultStyle() throws Exception {
+        URL capUrl =
+                new URL(
+                        "https://sgx.geodatenzentrum.de/wmts_topplus_open/1.0.0/WMTSCapabilities.xml");
+        WebMapTileServer tileServer = createServer(capUrl, "sgx_geodatenzentrum_de.getcapa.xml");
+        Assert.assertEquals(WMTSServiceType.REST, tileServer.getType());
+
+        WMTSLayer layer = tileServer.getCapabilities().getLayer("web_light");
+        TileMatrixSet matrixSet =
+                tileServer.getCapabilities().getMatrixSet("EU_EPSG_25832_TOPPLUS");
+
+        GetTileRequest tileRequest = tileServer.createGetTileRequest();
+        tileRequest.setLayer(layer);
+        tileRequest.setRequestedHeight(256);
+        tileRequest.setRequestedWidth(256);
+
+        CoordinateReferenceSystem requestCrs = matrixSet.getCoordinateReferenceSystem();
+        tileRequest.setCRS(requestCrs);
+
+        double tileMinX = 540903.2072301595;
+        double tileMaxX = 580038.9657121699;
+
+        double tileMinY = 5714183.162769842;
+        double tileMaxY = 5753318.921251852;
+
+        ReferencedEnvelope requestBbox =
+                new ReferencedEnvelope(tileMinX, tileMaxX, tileMinY, tileMaxY, requestCrs);
+        tileRequest.setRequestedBBox(requestBbox);
+
+        Iterator<Tile> tiles = tileRequest.getTiles().iterator();
+        Assert.assertTrue(tiles.hasNext());
+
+        Tile tile = tiles.next();
+
+        Assert.assertEquals(
+                "https://sgx.geodatenzentrum.de/wmts_topplus_open/tile/1.0.0/web_light/default/EU_EPSG_25832_TOPPLUS/05/79/111.png",
+                tile.getUrl().toExternalForm());
     }
 
     private WebMapTileServer createServer(URL serverUrl, String resourceName) throws Exception {

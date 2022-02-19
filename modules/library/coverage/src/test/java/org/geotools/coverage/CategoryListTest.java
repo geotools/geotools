@@ -17,6 +17,7 @@
 package org.geotools.coverage;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -132,8 +133,8 @@ public final class CategoryListTest {
             final Range range = list.getRange();
             assertEquals("min", 0, ((Number) range.getMinValue()).doubleValue(), 0);
             assertEquals("max", 120, ((Number) range.getMaxValue()).doubleValue(), 0);
-            assertEquals("min included", true, range.isMinIncluded());
-            assertEquals("max included", false, range.isMaxIncluded());
+            assertTrue("min included", range.isMinIncluded());
+            assertFalse("max included", range.isMaxIncluded());
             /*
              * Checks category search.
              */

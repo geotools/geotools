@@ -38,6 +38,7 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
+@SuppressWarnings("PMD.SimplifiableTestAssertion") // lots of geometry equalities
 public class GeometryJSONTest extends GeoJSONTestSupport {
 
     GeometryFactory gf = new GeometryFactory();

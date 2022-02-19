@@ -86,7 +86,7 @@ public class ParserTest {
         parser.setValidating(true);
         parser.parse(MLSchemaLocationResolver.class.getResourceAsStream("mails-invalid.xml"));
 
-        Assert.assertFalse(0 == parser.getValidationErrors().size());
+        Assert.assertNotEquals(0, parser.getValidationErrors().size());
 
         // test immeediate failure case
         parser.setFailOnValidationError(true);
@@ -102,7 +102,7 @@ public class ParserTest {
         Parser parser = new Parser(new MLConfiguration());
         parser.validate(MLSchemaLocationResolver.class.getResourceAsStream("mails-invalid.xml"));
 
-        Assert.assertFalse(0 == parser.getValidationErrors().size());
+        Assert.assertNotEquals(0, parser.getValidationErrors().size());
 
         // test immeediate failure case
         parser.setFailOnValidationError(true);

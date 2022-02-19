@@ -20,7 +20,7 @@ import static org.geotools.data.wfs.WFSTestData.url;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.net.URL;
@@ -72,7 +72,7 @@ public class EmfAppSchemaParserTest {
                         .resolveElementDeclaration(GML._Feature.getLocalPart())
                         .getSubstitutionGroup()) {
             if ("states".equals(dec.getName())) {
-                assertTrue(false);
+                fail();
             }
         }
     }

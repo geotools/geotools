@@ -141,7 +141,7 @@ public class StyleObjectTest {
         symb1 = styleFactory.createLineSymbolizer(styleFactory.getDefaultStroke(), "geometry");
         clone.symbolizers().clear();
         clone.symbolizers().add(symb1);
-        Assert.assertFalse(rule.equals(clone));
+        Assert.assertNotEquals(rule, clone);
     }
 
     @Test
@@ -360,17 +360,17 @@ public class StyleObjectTest {
         // check symmetric
         Assert.assertEquals("Symmetry test failed", controlEqual, test);
         Assert.assertEquals("Symmetry test failed", test, controlEqual);
-        Assert.assertFalse("Symmetry test failed", test.equals(controlNe));
-        Assert.assertFalse("Symmetry test failed", controlNe.equals(test));
+        Assert.assertNotEquals("Symmetry test failed", test, controlNe);
+        Assert.assertNotEquals("Symmetry test failed", controlNe, test);
 
         // check transitivity
-        Assert.assertFalse("Transitivity test failed", controlEqual.equals(controlNe));
-        Assert.assertFalse("Transitivity test failed", test.equals(controlNe));
-        Assert.assertFalse("Transitivity test failed", controlNe.equals(controlEqual));
-        Assert.assertFalse("Transitivity test failed", controlNe.equals(test));
+        Assert.assertNotEquals("Transitivity test failed", controlEqual, controlNe);
+        Assert.assertNotEquals("Transitivity test failed", test, controlNe);
+        Assert.assertNotEquals("Transitivity test failed", controlNe, controlEqual);
+        Assert.assertNotEquals("Transitivity test failed", controlNe, test);
 
         // check non-null
-        Assert.assertFalse("Non-null test failed", test.equals(null));
+        Assert.assertNotEquals("Non-null test failed", null, test);
 
         // assertHashcode equality
         int controlEqHash = controlEqual.hashCode();
@@ -390,7 +390,7 @@ public class StyleObjectTest {
         Assert.assertEquals("Symmetry test failed", test, controlEqual);
 
         // check non-null
-        Assert.assertFalse("Non-null test failed", test.equals(null));
+        Assert.assertNotEquals("Non-null test failed", null, test);
 
         // assertHashcode equality
         int controlEqHash = controlEqual.hashCode();

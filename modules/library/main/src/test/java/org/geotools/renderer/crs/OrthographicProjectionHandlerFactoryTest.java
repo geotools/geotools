@@ -41,7 +41,7 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-@SuppressWarnings("PMD.UseAssertEqualsInsteadOfAssertTrue") // need equals with tolerance
+@SuppressWarnings("PMD.SimplifiableTestAssertion") // need equals with tolerance
 public class OrthographicProjectionHandlerFactoryTest {
 
     private static final GeometryFactory GFACTORY = new GeometryFactory();

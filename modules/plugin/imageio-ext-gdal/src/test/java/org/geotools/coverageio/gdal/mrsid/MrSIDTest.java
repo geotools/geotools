@@ -69,6 +69,7 @@ public final class MrSIDTest extends GDALTestCase {
 
     /** Test for reading a grid coverage from a MrSID source */
     @org.junit.Test
+    @SuppressWarnings("PMD.SimplifiableTestAssertion") // envelope test with tolerance
     public void test() throws Exception {
         if (!testingEnabled()) {
             return;

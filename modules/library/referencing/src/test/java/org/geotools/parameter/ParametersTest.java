@@ -743,7 +743,7 @@ public final class ParametersTest {
     /** Tests the storage of matrix parameters. */
     @Test
     // code is using equals with extra parameters and semantics compared to the built-in equals
-    @SuppressWarnings("PMD.UseAssertEqualsInsteadOfAssertTrue")
+    @SuppressWarnings("PMD.SimplifiableTestAssertion")
     public void testMatrixEdit() {
         final int size = 8;
         final Random random = new Random(47821365);

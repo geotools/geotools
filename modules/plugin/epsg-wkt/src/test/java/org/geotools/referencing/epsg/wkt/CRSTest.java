@@ -148,7 +148,8 @@ public class CRSTest {
         };
         double[] tst = new double[pts.length];
         math.transform(pts, 0, new double[pts.length], 0, pts.length / 2);
-        for (int i = 0; i < pts.length; i++) Assert.assertTrue("pts[" + i + "]", pts[i] != tst[i]);
+        for (int i = 0; i < pts.length; i++)
+            Assert.assertNotEquals("pts[" + i + "]", pts[i], tst[i]);
     }
     /** Taken from empty udig map calculation of scale. */
     @Test

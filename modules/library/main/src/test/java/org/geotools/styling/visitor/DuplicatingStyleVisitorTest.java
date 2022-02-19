@@ -62,7 +62,6 @@ import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 import org.geotools.styling.UomOgcMapping;
-import org.geotools.util.Utilities;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -223,7 +222,7 @@ public class DuplicatingStyleVisitorTest {
 
         symb1 = sf.createLineSymbolizer(sf.getDefaultStroke(), "geometry");
         clone.symbolizers().add(symb1);
-        Assert.assertFalse(rule.equals(clone));
+        Assert.assertNotEquals(rule, clone);
     }
 
     @Test
@@ -255,8 +254,7 @@ public class DuplicatingStyleVisitorTest {
 
         RasterSymbolizer notEq = sf.createRasterSymbolizer();
 
-        Assert.assertFalse(
-                Utilities.equals(notEq.getUnitOfMeasure(), rasterSymb.getUnitOfMeasure()));
+        Assert.assertNotEquals(notEq.getUnitOfMeasure(), rasterSymb.getUnitOfMeasure());
     }
 
     @Test
@@ -265,7 +263,6 @@ public class DuplicatingStyleVisitorTest {
         rasterSymb1.setOverlapBehavior(OverlapBehavior.AVERAGE);
         rasterSymb1.accept(visitor);
         RasterSymbolizer clone1 = (RasterSymbolizer) visitor.getCopy();
-
         assertEquals(clone1.getOverlapBehavior(), rasterSymb1.getOverlapBehavior());
 
         // Try literal expression
@@ -289,8 +286,7 @@ public class DuplicatingStyleVisitorTest {
 
         // Compare rastersymbolizer overlap behaviour
         RasterSymbolizer notEq = sf.createRasterSymbolizer();
-        Assert.assertFalse(
-                Utilities.equals(notEq.getOverlapBehavior(), rasterSymb1.getOverlapBehavior()));
+        Assert.assertNotEquals(notEq.getOverlapBehavior(), rasterSymb1.getOverlapBehavior());
     }
 
     @Test
@@ -641,17 +637,17 @@ public class DuplicatingStyleVisitorTest {
         // check symmetric
         assertEquals("Symmetry test failed", controlEqual, test);
         assertEquals("Symmetry test failed", test, controlEqual);
-        Assert.assertFalse("Symmetry test failed", test.equals(controlNe));
-        Assert.assertFalse("Symmetry test failed", controlNe.equals(test));
+        Assert.assertNotEquals("Symmetry test failed", test, controlNe);
+        Assert.assertNotEquals("Symmetry test failed", controlNe, test);
 
         // check transitivity
-        Assert.assertFalse("Transitivity test failed", controlEqual.equals(controlNe));
-        Assert.assertFalse("Transitivity test failed", test.equals(controlNe));
-        Assert.assertFalse("Transitivity test failed", controlNe.equals(controlEqual));
-        Assert.assertFalse("Transitivity test failed", controlNe.equals(test));
+        Assert.assertNotEquals("Transitivity test failed", controlEqual, controlNe);
+        Assert.assertNotEquals("Transitivity test failed", test, controlNe);
+        Assert.assertNotEquals("Transitivity test failed", controlNe, controlEqual);
+        Assert.assertNotEquals("Transitivity test failed", controlNe, test);
 
         // check non-null
-        Assert.assertFalse("Non-null test failed", test.equals(null));
+        Assert.assertNotEquals("Non-null test failed", null, test);
     }
 
     private static void assertEqualsContract(Object controlEqual, Object test) {
@@ -666,7 +662,7 @@ public class DuplicatingStyleVisitorTest {
         assertEquals("Symmetry test failed", test, controlEqual);
 
         // check non-null
-        Assert.assertFalse("Non-null test failed", test.equals(null));
+        Assert.assertNotEquals("Non-null test failed", null, test);
 
         // assertHashcode equality
         int controlEqHash = controlEqual.hashCode();

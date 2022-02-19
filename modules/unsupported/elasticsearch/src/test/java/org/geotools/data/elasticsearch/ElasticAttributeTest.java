@@ -17,7 +17,6 @@
 package org.geotools.data.elasticsearch;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -124,7 +123,7 @@ public class ElasticAttributeTest {
     @Test
     public void testEquals() {
         assertEquals(attr, new ElasticAttribute("theName"));
-        assertFalse(attr.equals(new ElasticAttribute("name")));
+        assertNotEquals(attr, new ElasticAttribute("name"));
     }
 
     @Test

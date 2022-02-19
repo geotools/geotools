@@ -34,6 +34,7 @@ import org.opengis.filter.spatial.Intersects;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+@SuppressWarnings("PMD.SimplifiableTestAssertion") // using equals with tolerance for bboxes
 public class ReprojectingFilterVisitorTest {
 
     SimpleFeatureType ft;

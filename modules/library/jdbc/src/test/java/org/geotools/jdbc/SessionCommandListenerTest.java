@@ -118,18 +118,22 @@ public class SessionCommandListenerTest {
     @Test
     public void testOneExpandVariablesIsReplaced() throws Exception {
         SessionCommandsListener listener =
-                new SessionCommandsListener(
-                        "call startSession('${user}')", "call endSession('${user,joe}')");
+                new SessionCommandsListener("call startSession('${user}')", null);
 
         // check borrow
         EnvFunction.setLocalValue("user", "abcde");
         listener.onBorrow(store, conn);
         assertEquals(1, conn.commands.size());
         assertEquals("call startSession('abcde')", conn.commands.get(0));
-        conn.commands.clear();
+    }
+
+    // this tests checks the same of previos but for the release connection sql script
+    @Test
+    public void testReleaseConnectionsScript() throws Exception {
+        SessionCommandsListener listener =
+                new SessionCommandsListener(null, "call endSession('${user,joe}')");
 
         // check release
-        EnvFunction.clearLocalValues();
         listener.onRelease(store, conn);
         assertEquals(1, conn.commands.size());
         assertEquals("call endSession('joe')", conn.commands.get(0));
@@ -143,7 +147,8 @@ public class SessionCommandListenerTest {
     }
 
     @After
-    public void clearCommands() {
+    public void clearResources() {
+        EnvFunction.clearLocalValues();
         conn.commands.clear();
     }
 }

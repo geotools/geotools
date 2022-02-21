@@ -158,11 +158,7 @@ public class SessionCommandsListener implements ConnectionLifecycleListener {
                 // mark the beginning and skip the next character
                 inEnvVariable = true;
                 i++;
-            } else if (curr == '}') {
-                if (!inEnvVariable)
-                    throw new IllegalArgumentException(
-                            "Already found a ${ sequence before the one at " + (i + 1));
-
+            } else if (curr == '}' && inEnvVariable) {
                 if (sb.length() == 0)
                     throw new IllegalArgumentException(
                             "Invalid empty environment variable reference ${} at " + (i - 1));
@@ -189,6 +185,7 @@ public class SessionCommandsListener implements ConnectionLifecycleListener {
                 expressions.add(env);
                 sb.setLength(0);
                 inEnvVariable = false;
+
             } else {
                 sb.append(curr);
             }

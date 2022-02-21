@@ -7,6 +7,7 @@ import com.mockrunner.mock.jdbc.MockStatement;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.filter.function.EnvFunction;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -89,7 +90,6 @@ public class SessionCommandListenerTest {
         listener.onBorrow(store, conn);
         assertEquals(1, conn.commands.size());
         assertEquals("call startSession('select user1, x.x from 1')", conn.commands.get(0));
-        conn.commands.clear();
     }
 
     @Test
@@ -98,8 +98,6 @@ public class SessionCommandListenerTest {
         listener.onBorrow(store, conn);
         assertEquals(1, conn.commands.size());
         assertEquals("select true from 1", conn.commands.get(0));
-
-        conn.commands.clear();
     }
 
     @Test
@@ -115,7 +113,6 @@ public class SessionCommandListenerTest {
         assertEquals(
                 "select set_config('my.userString', substring('user11111', 'user#\"[0-9]{5}#\"%', '#'), false) ",
                 conn.commands.get(0));
-        conn.commands.clear();
     }
 
     @Test
@@ -136,7 +133,6 @@ public class SessionCommandListenerTest {
         listener.onRelease(store, conn);
         assertEquals(1, conn.commands.size());
         assertEquals("call endSession('joe')", conn.commands.get(0));
-        conn.commands.clear();
     }
 
     @Test
@@ -144,6 +140,10 @@ public class SessionCommandListenerTest {
         Assert.assertThrows(
                 IllegalArgumentException.class,
                 () -> new SessionCommandsListener("select ${user from 1)", null));
+    }
+
+    @After
+    public void clearCommands() {
         conn.commands.clear();
     }
 }

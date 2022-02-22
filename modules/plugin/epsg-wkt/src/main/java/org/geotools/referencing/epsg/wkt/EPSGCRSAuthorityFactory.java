@@ -28,7 +28,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.util.Version;
 import org.geotools.util.factory.AbstractFactory;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.FactoryException;
@@ -92,6 +94,9 @@ public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAutho
     protected EPSGCRSAuthorityFactory(final CRSFactory factory) {
         super(MINIMUM_PRIORITY); // Select EPSG-HSQL factory first.
         this.crsFactory = factory;
+        // Add hints that EPSG-HSQL set's, to avoid this being chosen when those are asked for.
+        hints.put(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE);
+        hints.put(Hints.VERSION, new Version(""));
         try {
             loadDefault();
         } catch (IOException oops) {

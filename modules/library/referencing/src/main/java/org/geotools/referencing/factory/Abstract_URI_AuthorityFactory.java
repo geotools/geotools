@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.logging.Level;
 import org.geotools.util.Version;
 import org.geotools.util.factory.Hints;
 import org.opengis.metadata.citation.Citation;
@@ -260,6 +261,9 @@ public abstract class Abstract_URI_AuthorityFactory extends AuthorityFactoryAdap
             if (factory == null) {
                 factory = createVersionedFactory(version);
                 if (factory != null) {
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.fine("Cache versionedFactory for version:" + version.toString());
+                    }
                     byVersions.put(version, factory);
                 }
             }
@@ -282,7 +286,7 @@ public abstract class Abstract_URI_AuthorityFactory extends AuthorityFactoryAdap
         final Hints hints = new Hints(factory.getImplementationHints());
         hints.put(Hints.VERSION, version);
         final List<AuthorityFactory> factories =
-                Arrays.asList(new AuthorityFactory[] {new AllAuthoritiesFactory(hints), factory});
+                Arrays.asList(new AllAuthoritiesFactory(hints), factory);
         return FallbackAuthorityFactory.create(factories);
     }
 

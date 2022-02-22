@@ -806,9 +806,12 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
     @Override
     public CoordinateReferenceSystem createCoordinateReferenceSystem(final String code)
             throws FactoryException {
-        return replace(
-                getCRSAuthorityFactory(code)
-                        .createCoordinateReferenceSystem(toBackingFactoryCode(code)));
+        final CRSAuthorityFactory factory = getCRSAuthorityFactory(code);
+        final CoordinateReferenceSystem crs =
+                replace(factory.createCoordinateReferenceSystem(toBackingFactoryCode(code)));
+        notifySuccess("createCoordinateReferenceSystem", code, factory, crs);
+
+        return crs;
     }
 
     /**
@@ -999,6 +1002,23 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
     public IdentifiedObjectFinder getIdentifiedObjectFinder(Class<? extends IdentifiedObject> type)
             throws FactoryException {
         return new Finder(type);
+    }
+
+    /**
+     * Log a message when a CRS is found. Child objects that doesn't create their own CRS-objects
+     * should not report.
+     */
+    protected void notifySuccess(
+            final String method,
+            final String code,
+            final CRSAuthorityFactory factory,
+            final CoordinateReferenceSystem crs) {
+        if (crs != null && LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine(
+                    String.format(
+                            "CRS for code:%s found by factory:%s",
+                            code, factory.getClass().getName()));
+        }
     }
 
     /**

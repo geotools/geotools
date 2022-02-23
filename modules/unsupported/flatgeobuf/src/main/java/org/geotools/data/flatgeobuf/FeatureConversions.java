@@ -202,14 +202,21 @@ public class FeatureConversions {
                     isoDateTime = ((OffsetDateTime) value).toString();
                 } else if (value instanceof OffsetTime) {
                     isoDateTime = ((OffsetTime) value).toString();
+                } else if (value instanceof java.sql.Date) {
+                    isoDateTime = ((java.sql.Date) value).toString();
+                } else if (value instanceof java.sql.Time) {
+                    isoDateTime = ((java.sql.Time) value).toString();
+                } else if (value instanceof java.sql.Timestamp) {
+                    isoDateTime = ((java.sql.Timestamp) value).toString();
                 } else {
-                    throw new RuntimeException("Unknown date/time type " + type);
+                    throw new RuntimeException(
+                            "Cannot handle datetime type " + value.getClass().getName());
                 }
                 writeString(target, isoDateTime);
             } else if (type == ColumnType.String) {
                 writeString(target, (String) value);
             } else {
-                throw new RuntimeException("Unknown type " + type);
+                throw new RuntimeException("Cannot handle type " + value.getClass().getName());
             }
         }
     }

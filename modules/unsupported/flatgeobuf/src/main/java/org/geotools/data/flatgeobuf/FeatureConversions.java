@@ -209,7 +209,8 @@ public class FeatureConversions {
                 } else if (value instanceof java.sql.Timestamp) {
                     isoDateTime = ((java.sql.Timestamp) value).toString();
                 } else {
-                    throw new RuntimeException("Cannot handle datetime type " + value.getClass().getName());
+                    throw new RuntimeException(
+                            "Cannot handle datetime type " + value.getClass().getName());
                 }
                 writeString(target, isoDateTime);
             } else if (type == ColumnType.String) {

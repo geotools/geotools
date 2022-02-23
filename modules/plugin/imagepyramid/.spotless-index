@@ -1,0 +1,10 @@
+awR1M2OL0tTeHOolk6aXba3IFwB1eWMwq9trsk2TaE8=
+src/main/java/org/geotools/gce/imagepyramid/ImageLevelsMapper.java 2022-01-22T22:11:38.430816Z
+src/main/java/org/geotools/gce/imagepyramid/ImagePyramidFormat.java 2022-02-19T10:29:53.545035Z
+src/main/java/org/geotools/gce/imagepyramid/ImagePyramidFormatFactory.java 2022-02-19T10:29:53.569035Z
+src/main/java/org/geotools/gce/imagepyramid/ImagePyramidReader.java 2022-02-19T10:29:53.569035Z
+src/main/java/org/geotools/gce/imagepyramid/Utils.java 2022-02-19T10:29:53.569035Z
+src/test/java/org/geotools/gce/imagepyramid/ImageLevelsMapperTest.java 2022-02-19T10:29:53.569035Z
+src/test/java/org/geotools/gce/imagepyramid/ImagePyramidReaderTest.java 2022-02-19T10:29:53.573035Z
+src/test/java/org/geotools/gce/imagepyramid/ImagePyramidServiceTest.java 2022-01-22T22:11:38.430816Z
+src/test/java/org/geotools/gce/imagepyramid/TestUtils.java 2022-01-22T22:11:38.430816Z

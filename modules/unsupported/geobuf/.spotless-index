@@ -1,0 +1,19 @@
+elFjGVWHVR89xVs9heDfLivdco2nxIZLCjINAYiRy18=
+src/main/java/org/geotools/data/geobuf/Geobuf.java 2022-02-19T10:29:54.041035Z
+src/main/java/org/geotools/data/geobuf/GeobufDataStore.java 2022-01-22T22:11:39.846816Z
+src/main/java/org/geotools/data/geobuf/GeobufDataStoreFactory.java 2022-01-22T22:11:39.846816Z
+src/main/java/org/geotools/data/geobuf/GeobufDirectoryDataStore.java 2022-02-19T10:29:54.041035Z
+src/main/java/org/geotools/data/geobuf/GeobufFeature.java 2022-02-19T10:29:54.041035Z
+src/main/java/org/geotools/data/geobuf/GeobufFeatureCollection.java 2022-01-22T22:11:39.846816Z
+src/main/java/org/geotools/data/geobuf/GeobufFeatureReader.java 2022-01-22T22:11:39.846816Z
+src/main/java/org/geotools/data/geobuf/GeobufFeatureSource.java 2022-01-22T22:11:39.846816Z
+src/main/java/org/geotools/data/geobuf/GeobufFeatureStore.java 2022-02-19T10:29:54.041035Z
+src/main/java/org/geotools/data/geobuf/GeobufFeatureType.java 2022-02-19T10:29:54.041035Z
+src/main/java/org/geotools/data/geobuf/GeobufFeatureWriter.java 2022-02-19T10:29:54.041035Z
+src/main/java/org/geotools/data/geobuf/GeobufGeometry.java 2022-01-22T22:11:39.846816Z
+src/test/java/org/geotools/data/geobuf/GeobufDataStoreTest.java 2022-02-19T10:29:54.041035Z
+src/test/java/org/geotools/data/geobuf/GeobufDirectoryDataStoreTest.java 2022-01-22T22:11:39.850816Z
+src/test/java/org/geotools/data/geobuf/GeobufFeatureCollectionTest.java 2022-02-19T10:29:54.041035Z
+src/test/java/org/geotools/data/geobuf/GeobufFeatureTest.java 2022-01-22T22:11:39.850816Z
+src/test/java/org/geotools/data/geobuf/GeobufFeatureTypeTest.java 2022-01-22T22:11:39.850816Z
+src/test/java/org/geotools/data/geobuf/GeobufGeometryTest.java 2022-01-22T22:11:39.850816Z

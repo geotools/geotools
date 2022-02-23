@@ -1,0 +1,15 @@
+hEom/+h9ul6M61gjmIkPB0FusAyUh1vb0xTaSAlvtio=
+src/main/java/org/geotools/s3/S3Connector.java 2022-02-19T10:29:54.333035Z
+src/main/java/org/geotools/s3/S3ImageInputStreamImpl.java 2022-02-19T10:29:54.333035Z
+src/main/java/org/geotools/s3/S3ImageInputStreamImplSpi.java 2022-02-19T10:29:54.333035Z
+src/main/java/org/geotools/s3/S3Utils.java 2022-01-22T22:11:40.522816Z
+src/main/java/org/geotools/s3/cache/CacheConfig.java 2022-01-22T22:11:40.526816Z
+src/main/java/org/geotools/s3/cache/CacheEntryKey.java 2022-01-22T22:11:40.526816Z
+src/main/java/org/geotools/s3/cache/CacheManagement.java 2022-01-22T22:11:40.526816Z
+src/main/java/org/geotools/s3/cache/S3ChunkEntryFactory.java 2022-01-22T22:11:40.526816Z
+src/main/java/org/geotools/s3/geotiff/S3FormatFactorySPI.java 2022-01-22T22:11:40.526816Z
+src/main/java/org/geotools/s3/geotiff/S3GeoTiffFormat.java 2022-01-22T22:11:41.622816Z
+src/main/java/org/geotools/s3/geotiff/S3GeoTiffReader.java 2022-01-22T22:11:41.622816Z
+src/test/java/org/geotools/s3/cache/CacheManagementTest.java 2022-01-22T22:11:41.622816Z
+src/test/java/org/geotools/s3/geotiff/S3GenericGeoTiffReaderTest.java 2022-01-22T22:11:41.622816Z
+src/test/java/org/geotools/s3/geotiff/S3GeoTiffReaderTest.java 2022-01-22T22:11:41.622816Z

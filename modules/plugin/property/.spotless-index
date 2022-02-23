@@ -1,0 +1,12 @@
+6yKfL1Gr/0CfoFy2E6EpPJiyc/rLveT3XXgWwOvX1aU=
+src/main/java/org/geotools/data/property/PropertyDataStore.java 2022-02-19T10:29:53.885035Z
+src/main/java/org/geotools/data/property/PropertyDataStoreFactory.java 2022-02-19T10:29:53.885035Z
+src/main/java/org/geotools/data/property/PropertyFeatureReader.java 2022-02-19T10:29:53.885035Z
+src/main/java/org/geotools/data/property/PropertyFeatureSource.java 2022-02-19T10:29:53.885035Z
+src/main/java/org/geotools/data/property/PropertyFeatureStore.java 2022-02-19T10:29:53.885035Z
+src/main/java/org/geotools/data/property/PropertyFeatureWriter.java 2022-02-19T10:29:53.885035Z
+src/test/java/org/geotools/data/property/PropertyDataStore2Test.java 2022-02-19T10:29:53.885035Z
+src/test/java/org/geotools/data/property/PropertyDataStore3DTest.java 2022-02-19T10:29:53.885035Z
+src/test/java/org/geotools/data/property/PropertyDataStoreCurveTest.java 2022-02-19T10:29:53.885035Z
+src/test/java/org/geotools/data/property/PropertyDataStoreTest.java 2022-02-19T10:29:53.885035Z
+src/test/java/org/geotools/data/property/PropertyExamples.java 2022-02-19T10:29:53.885035Z

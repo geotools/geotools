@@ -1,0 +1,22 @@
+3+x7yQQHb5R8t7RTLaZ8iiBdfhBAdGSoGHcliChxc98=
+src/main/java/org/geotools/http/AbstractHTTPClientFactory.java 2022-02-18T09:58:03.447318Z
+src/main/java/org/geotools/http/AbstractHttpClient.java 2022-02-19T10:29:44.585034Z
+src/main/java/org/geotools/http/DefaultHTTPClientFactory.java 2022-01-22T22:11:24.446816Z
+src/main/java/org/geotools/http/DelegateHTTPClient.java 2022-01-22T22:11:24.446816Z
+src/main/java/org/geotools/http/DelegateHTTPResponse.java 2022-01-22T22:11:24.446816Z
+src/main/java/org/geotools/http/HTTPBehavior.java 2022-01-22T22:11:24.446816Z
+src/main/java/org/geotools/http/HTTPClient.java 2022-01-22T22:11:24.446816Z
+src/main/java/org/geotools/http/HTTPClientFactory.java 2022-01-22T22:11:24.446816Z
+src/main/java/org/geotools/http/HTTPClientFinder.java 2022-01-22T22:11:24.446816Z
+src/main/java/org/geotools/http/HTTPConnectionPooling.java 2022-01-22T22:11:24.446816Z
+src/main/java/org/geotools/http/HTTPFactoryException.java 2022-02-18T09:58:03.447318Z
+src/main/java/org/geotools/http/HTTPProxy.java 2022-01-22T22:11:24.446816Z
+src/main/java/org/geotools/http/HTTPResponse.java 2022-01-22T22:11:24.446816Z
+src/main/java/org/geotools/http/LoggingHTTPClient.java 2022-01-22T22:11:24.446816Z
+src/main/java/org/geotools/http/SimpleHttpClient.java 2022-02-19T10:29:44.585034Z
+src/test/java/org/geotools/http/CustomHTTPClientFactory.java 2022-01-22T22:11:24.450816Z
+src/test/java/org/geotools/http/DefaultHTTPClientFactoryTest.java 2022-01-22T22:11:24.450816Z
+src/test/java/org/geotools/http/HTTPClientFinderTest.java 2022-01-22T22:11:24.450816Z
+src/test/java/org/geotools/http/MockHttpClient.java 2022-02-19T10:29:44.585034Z
+src/test/java/org/geotools/http/MockHttpResponse.java 2022-02-19T10:29:44.585034Z
+src/test/java/org/geotools/http/SimpleHttpClientTest.java 2022-01-22T22:11:24.450816Z

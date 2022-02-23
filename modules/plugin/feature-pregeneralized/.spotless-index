@@ -1,0 +1,27 @@
+ZuA5oe4Wa237e6M6QB64uuFX9SDhAEZ/WjFq948deWM=
+src/main/java/org/geotools/data/gen/DSFinderRepository.java 2022-02-19T10:29:53.085035Z
+src/main/java/org/geotools/data/gen/PreGeneralizedDataStore.java 2022-02-19T10:29:53.085035Z
+src/main/java/org/geotools/data/gen/PreGeneralizedDataStoreFactory.java 2022-02-19T10:29:53.085035Z
+src/main/java/org/geotools/data/gen/PreGeneralizedFeatureCollection.java 2022-02-19T10:29:53.097035Z
+src/main/java/org/geotools/data/gen/PreGeneralizedFeatureIterator.java 2022-02-19T10:29:53.133035Z
+src/main/java/org/geotools/data/gen/PreGeneralizedFeatureReader.java 2022-02-19T10:29:53.133035Z
+src/main/java/org/geotools/data/gen/PreGeneralizedFeatureSource.java 2022-02-19T10:29:53.133035Z
+src/main/java/org/geotools/data/gen/PreGeneralizedSimpleFeature.java 2022-02-19T10:29:53.133035Z
+src/main/java/org/geotools/data/gen/info/Generalization.java 2022-02-19T10:29:53.133035Z
+src/main/java/org/geotools/data/gen/info/GeneralizationInfo.java 2022-01-22T22:11:36.658816Z
+src/main/java/org/geotools/data/gen/info/GeneralizationInfos.java 2022-01-22T22:11:36.658816Z
+src/main/java/org/geotools/data/gen/info/GeneralizationInfosProvider.java 2022-01-22T22:11:36.658816Z
+src/main/java/org/geotools/data/gen/info/GeneralizationInfosProviderImpl.java 2022-02-19T10:29:53.133035Z
+src/main/java/org/geotools/data/gen/tool/Toolbox.java 2022-02-19T10:29:53.137035Z
+src/test/java/org/geotools/data/gen/AbstractPreGeneralizedFeatureSourceTest.java 2022-02-19T10:29:53.137035Z
+src/test/java/org/geotools/data/gen/HorizontalPreGeneralizedFeatureSourceTest.java 2022-01-22T22:11:36.658816Z
+src/test/java/org/geotools/data/gen/MixedPreGeneralizedFeatureSourceTest.java 2022-01-22T22:11:36.658816Z
+src/test/java/org/geotools/data/gen/PreGeneralizedDataStoreFactoryTest.java 2022-01-22T22:11:36.658816Z
+src/test/java/org/geotools/data/gen/PreGeneralizedDataStoreTest.java 2022-01-22T22:11:36.658816Z
+src/test/java/org/geotools/data/gen/PreGeneralizedFeatureCollectionTest.java 2022-01-22T22:11:36.658816Z
+src/test/java/org/geotools/data/gen/PreGeneralizedSimpleFeatureTest.java 2022-02-19T10:29:53.137035Z
+src/test/java/org/geotools/data/gen/ShapeFilePreGeneralizedFeatureSourceTest.java 2022-02-19T10:29:53.153035Z
+src/test/java/org/geotools/data/gen/TestSetup.java 2022-01-22T22:11:36.670816Z
+src/test/java/org/geotools/data/gen/VerticalPreGeneralizedFeatureSourceTest.java 2022-01-22T22:11:36.670816Z
+src/test/java/org/geotools/data/gen/info/GeneralizationInfosTest.java 2022-01-22T22:11:36.670816Z
+src/test/java/org/geotools/data/gen/tool/ToolboxTest.java 2022-01-22T22:11:36.670816Z

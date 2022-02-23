@@ -1,0 +1,26 @@
+A+VhUkCIA1N7rXiRhpTnk6nG4UX9zSmAzbKA8K9DT04=
+src/main/java/org/geotools/data/wps/AbstractWPS.java 2022-01-22T22:11:46.666816Z
+src/main/java/org/geotools/data/wps/AbstractWPSGetCapabilitiesResponse.java 2022-01-22T22:11:46.666816Z
+src/main/java/org/geotools/data/wps/ProcessDescription.java 2022-01-22T22:11:46.666816Z
+src/main/java/org/geotools/data/wps/WPS1_0_0.java 2022-02-19T10:29:54.569035Z
+src/main/java/org/geotools/data/wps/WPSCapabilities.java 2022-01-22T22:11:46.666816Z
+src/main/java/org/geotools/data/wps/WPSFactory.java 2022-02-19T10:29:54.573035Z
+src/main/java/org/geotools/data/wps/WPSProcess.java 2022-02-19T10:29:54.573035Z
+src/main/java/org/geotools/data/wps/WPSRequest.java 2022-01-22T22:11:46.666816Z
+src/main/java/org/geotools/data/wps/WPSSpecification.java 2022-01-22T22:11:46.666816Z
+src/main/java/org/geotools/data/wps/WPSUtils.java 2022-01-22T22:11:46.770816Z
+src/main/java/org/geotools/data/wps/WebProcessingService.java 2022-02-19T10:29:54.573035Z
+src/main/java/org/geotools/data/wps/package-info.java 2022-01-22T22:11:46.770816Z
+src/main/java/org/geotools/data/wps/request/AbstractDescribeProcessRequest.java 2022-02-19T10:29:54.573035Z
+src/main/java/org/geotools/data/wps/request/AbstractExecuteProcessRequest.java 2022-02-19T10:29:54.573035Z
+src/main/java/org/geotools/data/wps/request/AbstractWPSRequest.java 2022-02-19T10:29:54.573035Z
+src/main/java/org/geotools/data/wps/request/DescribeProcessRequest.java 2022-01-22T22:11:47.922816Z
+src/main/java/org/geotools/data/wps/request/ExecuteProcessRequest.java 2022-01-22T22:11:47.922816Z
+src/main/java/org/geotools/data/wps/request/package-info.java 2022-01-22T22:11:47.922816Z
+src/main/java/org/geotools/data/wps/response/DescribeProcessResponse.java 2022-01-22T22:11:47.922816Z
+src/main/java/org/geotools/data/wps/response/ExecuteProcessResponse.java 2022-02-19T10:29:54.573035Z
+src/main/java/org/geotools/data/wps/response/WPSGetCapabilitiesResponse.java 2022-01-22T22:11:47.922816Z
+src/main/java/org/geotools/data/wps/response/package-info.java 2022-01-22T22:11:47.922816Z
+src/test/java/org/geotools/data/wps/ParsingTest.java 2022-02-19T10:29:54.573035Z
+src/test/java/org/geotools/data/wps/WPSFactoryOnlineTest.java 2022-01-22T22:11:47.922816Z
+src/test/java/org/geotools/data/wps/WPSManualRequestOnlineTest.java 2022-02-19T10:29:54.573035Z

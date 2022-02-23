@@ -1,0 +1,11 @@
+eTzYKOkQZIvDO2R48fS8oJeX4QMEbZRN2cRjzJQt5V8=
+src/main/java/org/geotools/gce/arcgrid/ArcGridFormat.java 2022-01-22T22:11:32.298816Z
+src/main/java/org/geotools/gce/arcgrid/ArcGridFormatFactory.java 2022-02-19T10:29:52.965035Z
+src/main/java/org/geotools/gce/arcgrid/ArcGridReader.java 2022-02-19T10:29:52.965035Z
+src/main/java/org/geotools/gce/arcgrid/ArcGridWriteParams.java 2022-01-22T22:11:32.298816Z
+src/main/java/org/geotools/gce/arcgrid/ArcGridWriter.java 2022-02-19T10:29:52.965035Z
+src/test/java/org/geotools/gce/arcgrid/ArcGridBaseTestCase.java 2022-02-19T10:29:52.965035Z
+src/test/java/org/geotools/gce/arcgrid/ArcGridReadWriteTest.java 2022-02-19T10:29:52.965035Z
+src/test/java/org/geotools/gce/arcgrid/ArcGridTestCaseAdapter.java 2022-02-19T10:29:52.965035Z
+src/test/java/org/geotools/gce/arcgrid/ArcGridVisualizationTest.java 2022-02-19T10:29:52.969035Z
+src/test/java/org/geotools/gce/arcgrid/ServiceTest.java 2022-01-22T22:11:32.298816Z

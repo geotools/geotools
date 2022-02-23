@@ -1,0 +1,7 @@
+HKstx3rDcDcIGJi/gL535nusC2yoOiIGF02iX/NkQWA=
+src/main/java/org/geotools/data/ogr/jni/JniOGR.java 2022-01-22T22:11:40.382816Z
+src/main/java/org/geotools/data/ogr/jni/JniOGRDataStoreFactory.java 2022-01-22T22:11:40.382816Z
+src/test/java/org/geotools/data/ogr/jni/JniGeometryMapperTest.java 2022-01-22T22:11:40.382816Z
+src/test/java/org/geotools/data/ogr/jni/JniOGRDataSToreFactoryTest.java 2022-01-22T22:11:40.382816Z
+src/test/java/org/geotools/data/ogr/jni/JniOGRDataStoreTest.java 2022-01-22T22:11:40.382816Z
+src/test/java/org/geotools/data/ogr/jni/JniOGRPerformanceTest.java 2022-01-22T22:11:40.382816Z

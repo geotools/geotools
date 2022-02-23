@@ -1,0 +1,24 @@
+YSKMw+8N5agaystwklKKFw3ynM6/E9n+ioyCK1xw98o=
+src/main/java/org/geotools/data/csv/CSVDataStore.java 2022-01-22T22:11:32.722816Z
+src/main/java/org/geotools/data/csv/CSVDataStoreFactory.java 2022-02-19T10:29:53.029035Z
+src/main/java/org/geotools/data/csv/CSVFeatureReader.java 2022-01-22T22:11:32.722816Z
+src/main/java/org/geotools/data/csv/CSVFeatureSource.java 2022-02-19T10:29:53.029035Z
+src/main/java/org/geotools/data/csv/CSVFeatureStore.java 2022-02-19T10:29:53.029035Z
+src/main/java/org/geotools/data/csv/CSVFeatureWriter.java 2022-02-19T10:29:53.029035Z
+src/main/java/org/geotools/data/csv/CSVFileState.java 2022-02-19T10:29:53.029035Z
+src/main/java/org/geotools/data/csv/parse/CSVAttributesOnlyStrategy.java 2022-01-22T22:11:32.722816Z
+src/main/java/org/geotools/data/csv/parse/CSVIterator.java 2022-02-19T10:29:53.029035Z
+src/main/java/org/geotools/data/csv/parse/CSVLatLonStrategy.java 2022-01-22T22:11:32.722816Z
+src/main/java/org/geotools/data/csv/parse/CSVSpecifiedWKTStrategy.java 2022-01-22T22:11:32.722816Z
+src/main/java/org/geotools/data/csv/parse/CSVStrategy.java 2022-02-19T10:29:53.029035Z
+src/test/java/org/geotools/data/csv/CRSHandlingTest.java 2022-01-22T22:11:32.722816Z
+src/test/java/org/geotools/data/csv/CSVDataStoreFactoryTest.java 2022-01-22T22:11:32.722816Z
+src/test/java/org/geotools/data/csv/CSVDataStoreTest.java 2022-01-22T22:11:32.722816Z
+src/test/java/org/geotools/data/csv/CSVWriteOptionsTest.java 2022-02-19T10:29:53.029035Z
+src/test/java/org/geotools/data/csv/CSVWriteTest.java 2022-02-19T10:29:53.029035Z
+src/test/java/org/geotools/data/csv/WKTReadTest.java 2022-01-22T22:11:32.722816Z
+src/test/java/org/geotools/data/csv/parse/CSVAttributesOnlyStrategyTest.java 2022-01-22T22:11:32.722816Z
+src/test/java/org/geotools/data/csv/parse/CSVLatLonStrategyTest.java 2022-02-19T10:29:53.029035Z
+src/test/java/org/geotools/data/csv/parse/CSVSpecifiedWKTStrategyTest.java 2022-01-22T22:11:32.722816Z
+src/test/java/org/geotools/data/csv/parse/CSVTestStrategySupport.java 2022-01-22T22:11:32.722816Z
+src/test/java/org/geotools/data/csv/parse/CSVWriteStrategyTest.java 2022-02-19T10:29:53.029035Z

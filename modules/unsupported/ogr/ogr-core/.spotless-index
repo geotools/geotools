@@ -1,0 +1,20 @@
+WPxctvQJgKBXrXeIyD5fEpCwjRiG09spjL5FF8biPiY=
+src/main/java/org/geotools/data/ogr/FeatureMapper.java 2022-01-22T22:11:40.378816Z
+src/main/java/org/geotools/data/ogr/FeatureTypeMapper.java 2022-01-22T22:11:40.378816Z
+src/main/java/org/geotools/data/ogr/FilterToRestrictedWhere.java 2022-02-19T10:29:54.273035Z
+src/main/java/org/geotools/data/ogr/GeometryMapper.java 2022-02-19T10:29:54.281035Z
+src/main/java/org/geotools/data/ogr/OGR.java 2022-01-22T22:11:40.378816Z
+src/main/java/org/geotools/data/ogr/OGRDataSource.java 2022-01-22T22:11:40.378816Z
+src/main/java/org/geotools/data/ogr/OGRDataSourcePool.java 2022-02-19T10:29:54.281035Z
+src/main/java/org/geotools/data/ogr/OGRDataStore.java 2022-02-19T10:29:54.281035Z
+src/main/java/org/geotools/data/ogr/OGRDataStoreFactory.java 2022-02-19T10:29:54.281035Z
+src/main/java/org/geotools/data/ogr/OGRDirectFeatureWriter.java 2022-02-19T10:29:54.281035Z
+src/main/java/org/geotools/data/ogr/OGRFeatureReader.java 2022-02-19T10:29:54.281035Z
+src/main/java/org/geotools/data/ogr/OGRFeatureSource.java 2022-02-19T10:29:54.281035Z
+src/main/java/org/geotools/data/ogr/OGRFeatureStore.java 2022-02-19T10:29:54.281035Z
+src/main/java/org/geotools/data/ogr/OGRFilterTranslator.java 2022-01-22T22:11:40.378816Z
+src/test/java/org/geotools/data/ogr/GeometryMapperTest.java 2022-01-22T22:11:40.378816Z
+src/test/java/org/geotools/data/ogr/OGRDataStoreFactoryTest.java 2022-01-22T22:11:40.378816Z
+src/test/java/org/geotools/data/ogr/OGRDataStoreTest.java 2022-02-19T10:29:54.281035Z
+src/test/java/org/geotools/data/ogr/OGRPeformanceTest.java 2022-02-19T10:29:54.281035Z
+src/test/java/org/geotools/data/ogr/TestCaseSupport.java 2022-01-22T22:11:40.382816Z

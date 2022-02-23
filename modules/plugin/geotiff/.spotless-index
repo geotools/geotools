@@ -1,0 +1,13 @@
+kj94n2Hl47qk+CHcO2z3WBVCSQkQlt0wdeUL94DjDu0=
+src/main/java/org/geotools/gce/geotiff/GeoTiffFormat.java 2022-02-19T10:29:53.229035Z
+src/main/java/org/geotools/gce/geotiff/GeoTiffFormatFactorySpi.java 2022-02-19T10:29:53.229035Z
+src/main/java/org/geotools/gce/geotiff/GeoTiffReader.java 2022-02-19T10:29:53.229035Z
+src/main/java/org/geotools/gce/geotiff/GeoTiffWriteParams.java 2022-02-19T10:29:53.229035Z
+src/main/java/org/geotools/gce/geotiff/GeoTiffWriter.java 2022-02-19T10:29:53.229035Z
+src/test/java/org/geotools/gce/geotiff/GeoTiffCRSFactoryDeadlockTest.java 2022-01-22T22:12:33.814817Z
+src/test/java/org/geotools/gce/geotiff/GeoTiffDeadlockTest.java 2022-02-19T10:29:53.237035Z
+src/test/java/org/geotools/gce/geotiff/GeoTiffReaderCogOnlineTest.java 2022-01-22T22:11:37.690816Z
+src/test/java/org/geotools/gce/geotiff/GeoTiffReaderTest.java 2022-02-19T10:29:53.237035Z
+src/test/java/org/geotools/gce/geotiff/GeoTiffServiceTest.java 2022-01-22T22:11:37.690816Z
+src/test/java/org/geotools/gce/geotiff/GeoTiffSkipExternalTest.java 2022-01-22T22:11:37.690816Z
+src/test/java/org/geotools/gce/geotiff/GeoTiffWriterTest.java 2022-02-19T10:29:53.237035Z

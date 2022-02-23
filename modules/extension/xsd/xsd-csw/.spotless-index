@@ -1,0 +1,17 @@
+dKDvU2pCUX90tBez7QhSflMmEZCdcFKGpThI14ud4js=
+src/main/java/org/geotools/csw/CSW.java 2022-02-19T10:29:43.413034Z
+src/main/java/org/geotools/csw/CSWConfiguration.java 2022-02-19T10:29:43.413034Z
+src/main/java/org/geotools/csw/DC.java 2022-02-19T10:29:43.413034Z
+src/main/java/org/geotools/csw/DCConfiguration.java 2022-02-19T10:29:43.413034Z
+src/main/java/org/geotools/csw/DCT.java 2022-02-19T10:29:43.413034Z
+src/main/java/org/geotools/csw/DCTConfiguration.java 2022-02-19T10:29:43.413034Z
+src/main/java/org/geotools/csw/bindings/ElementSetNameTypeBinding.java 2022-02-19T10:29:43.413034Z
+src/main/java/org/geotools/csw/bindings/RecordBinding.java 2022-01-22T22:11:18.034816Z
+src/main/java/org/geotools/csw/bindings/SimpleLiteralBinding.java 2022-01-22T22:11:18.034816Z
+src/main/java/org/geotools/csw/bindings/TypeNameListTypeBinding.java 2022-02-19T10:29:43.413034Z
+src/test/java/org/geotools/csw/CSWCapabilitiesTest.java 2022-02-19T10:29:43.413034Z
+src/test/java/org/geotools/csw/CSWDescribeRecordTest.java 2022-01-22T22:11:18.154816Z
+src/test/java/org/geotools/csw/CSWGetRecordsTest.java 2022-01-22T22:11:18.154816Z
+src/test/java/org/geotools/csw/CSWRecordTest.java 2022-01-22T22:11:18.154816Z
+src/test/java/org/geotools/csw/EMFUtils.java 2022-01-22T22:11:18.154816Z
+src/test/java/org/geotools/csw/GetDomainTest.java 2022-01-22T22:11:18.154816Z

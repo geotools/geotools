@@ -1,0 +1,10 @@
+B8nSYQouf2LsMU8DZqxeCF95hfoZG3tsqt2GyhXCDn0=
+src/main/java/org/geotools/appschema/resolver/data/SampleDataAccess.java 2022-02-19T10:29:42.145034Z
+src/main/java/org/geotools/appschema/resolver/data/SampleDataAccessData.java 2022-01-22T22:11:06.226815Z
+src/main/java/org/geotools/appschema/resolver/data/SampleDataAccessFactory.java 2022-02-19T10:29:42.197034Z
+src/main/java/org/geotools/appschema/resolver/data/SampleDataAccessFeatureCollection.java 2022-02-19T10:29:42.197034Z
+src/main/java/org/geotools/appschema/resolver/data/SampleDataAccessFeatureIterator.java 2022-02-19T10:29:42.197034Z
+src/main/java/org/geotools/appschema/resolver/data/SampleDataAccessFeatureSource.java 2022-02-19T10:29:42.269034Z
+src/test/java/org/geotools/appschema/resolver/data/SampleDataAccessDataTest.java 2022-01-22T22:11:06.226815Z
+src/test/java/org/geotools/appschema/resolver/data/SampleDataAccessFactoryTest.java 2022-01-22T22:11:06.226815Z
+src/test/java/org/geotools/appschema/resolver/data/SampleDataAccessTest.java 2022-01-22T22:11:06.226815Z

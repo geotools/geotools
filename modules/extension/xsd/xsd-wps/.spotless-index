@@ -1,0 +1,13 @@
+xzurcRYvF3wKr+B0lDIZNPcmbUVgjhiDH/1S/72lIkI=
+src/main/java/org/geotools/wps/WPS.java 2022-02-19T10:29:44.165034Z
+src/main/java/org/geotools/wps/WPSConfiguration.java 2022-02-19T10:29:44.229034Z
+src/main/java/org/geotools/wps/bindings/ComplexDataTypeBinding.java 2022-02-19T10:29:44.229034Z
+src/main/java/org/geotools/wps/bindings/InputReferenceTypeBinding.java 2022-01-22T22:11:21.158816Z
+src/main/java/org/geotools/wps/bindings/LanguagesBinding.java 2022-02-19T10:29:44.229034Z
+src/test/java/org/geotools/wps/ExecuteOnlineTest.java 2022-01-22T22:11:21.166816Z
+src/test/java/org/geotools/wps/ExecuteTest.java 2022-01-22T22:11:21.166816Z
+src/test/java/org/geotools/wps/GetCapabilitiesTest.java 2022-01-22T22:11:21.166816Z
+src/test/java/org/geotools/wps/WPSTestSupport.java 2022-02-19T10:29:44.229034Z
+src/test/java/org/geotools/wps/bindings/ComplexDataTypeBindingTest.java 2022-02-19T10:29:44.229034Z
+src/test/java/org/geotools/wps/bindings/ExecuteBindingTest.java 2022-01-22T22:11:21.166816Z
+src/test/java/org/geotools/wps/bindings/LanguagesBindingTest.java 2022-01-22T22:11:21.166816Z

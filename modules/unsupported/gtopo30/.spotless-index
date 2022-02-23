@@ -1,0 +1,14 @@
+rjoFU6NLVdinpprAA7aDah/3Y2VBWA6mWOJMiCCW3hs=
+src/main/java/org/geotools/gce/gtopo30/GT30Header.java 2022-02-19T10:29:54.129035Z
+src/main/java/org/geotools/gce/gtopo30/GT30Stats.java 2022-02-19T10:29:54.129035Z
+src/main/java/org/geotools/gce/gtopo30/GTopo30Format.java 2022-02-19T10:29:54.129035Z
+src/main/java/org/geotools/gce/gtopo30/GTopo30FormatFactory.java 2022-02-19T10:29:54.129035Z
+src/main/java/org/geotools/gce/gtopo30/GTopo30Reader.java 2022-02-19T10:29:54.129035Z
+src/main/java/org/geotools/gce/gtopo30/GTopo30WriteParams.java 2022-02-19T10:29:54.129035Z
+src/main/java/org/geotools/gce/gtopo30/GTopo30Writer.java 2022-02-19T10:29:54.129035Z
+src/main/java/org/geotools/gce/gtopo30/NoDataReplacerOpImage.java 2022-02-19T10:29:54.129035Z
+src/test/java/org/geotools/gce/gtopo30/GT30DecimationTest.java 2022-02-19T10:29:54.133035Z
+src/test/java/org/geotools/gce/gtopo30/GT30ReaderWriterTest.java 2022-02-19T10:29:54.133035Z
+src/test/java/org/geotools/gce/gtopo30/GT30ServiceTest.java 2022-02-19T10:29:54.133035Z
+src/test/java/org/geotools/gce/gtopo30/GT30TestBase.java 2022-02-19T10:29:54.133035Z
+src/test/java/org/geotools/gce/gtopo30/GT30ZipWriterTest.java 2022-02-19T10:29:54.133035Z

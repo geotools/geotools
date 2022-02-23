@@ -1,0 +1,11 @@
+9UGhabICLoNgxc3WB5dZM8HhZG35frZu4fhg2MRvWaA=
+src/main/java/org/geotools/renderer/style/svg/RenderableSVG.java 2022-01-22T22:11:39.110816Z
+src/main/java/org/geotools/renderer/style/svg/RenderableSVGCache.java 2022-01-22T22:11:39.110816Z
+src/main/java/org/geotools/renderer/style/svg/SVGGraphicFactory.java 2022-02-19T10:29:53.957035Z
+src/main/java/org/geotools/renderer/style/svg/SVGMarkFactory.java 2022-01-22T22:11:39.110816Z
+src/test/java/org/geotools/renderer/lite/DrawSVGTest.java 2022-02-19T10:29:53.957035Z
+src/test/java/org/geotools/renderer/lite/DrawTest.java 2022-01-22T22:11:39.110816Z
+src/test/java/org/geotools/renderer/lite/MetaBufferOrderTest.java 2022-01-22T22:11:39.110816Z
+src/test/java/org/geotools/renderer/style/svg/SVGFactoryFinderTest.java 2022-01-22T22:11:39.110816Z
+src/test/java/org/geotools/renderer/style/svg/SVGGraphicFactoryTest.java 2022-01-22T22:11:39.110816Z
+src/test/java/org/geotools/renderer/style/svg/SVGMarkFactoryTest.java 2022-01-22T22:11:39.110816Z

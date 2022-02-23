@@ -1,0 +1,13 @@
+SBYnTAvl8to9xfMZ/x0JimWydI8R0hhrT4xU6qlxNWA=
+src/main/java/org/geotools/data/flatgeobuf/FlatgeobufDataStore.java 2022-02-19T10:29:54.029035Z
+src/main/java/org/geotools/data/flatgeobuf/FlatgeobufDataStoreFactory.java 2022-02-19T10:29:54.029035Z
+src/main/java/org/geotools/data/flatgeobuf/FlatgeobufDirectoryDataStore.java 2022-02-19T10:29:54.029035Z
+src/main/java/org/geotools/data/flatgeobuf/FlatgeobufFeatureReader.java 2022-02-19T10:29:54.029035Z
+src/main/java/org/geotools/data/flatgeobuf/FlatgeobufFeatureSource.java 2022-02-19T10:29:54.029035Z
+src/main/java/org/geotools/data/flatgeobuf/FlatgeobufFeatureStore.java 2022-02-19T10:29:54.029035Z
+src/main/java/org/geotools/data/flatgeobuf/FlatgeobufFeatureWriter.java 2022-02-19T10:29:54.029035Z
+src/main/java/org/geotools/data/flatgeobuf/FlatgeobufReader.java 2022-02-19T10:29:54.029035Z
+src/main/java/org/geotools/data/flatgeobuf/FlatgeobufWriter.java 2022-02-19T10:29:54.029035Z
+src/test/java/org/geotools/data/flatgeobuf/FlatgeobufDataStoreFactoryTest.java 2022-02-19T10:29:54.029035Z
+src/test/java/org/geotools/data/flatgeobuf/FlatgeobufDataStoreTest.java 2022-02-19T10:29:54.029035Z
+src/test/java/org/geotools/data/flatgeobuf/FlatgeobufDirectoryDataStoreTest.java 2022-02-19T10:29:54.029035Z

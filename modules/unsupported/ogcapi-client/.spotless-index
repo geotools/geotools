@@ -1,0 +1,11 @@
+qPoc7VX6uO+wFY7MqkfCaYrQff6PKPKKGqi18suHUOQ=
+src/main/java/org/geotools/ogcapi/CollectionType.java 2022-02-19T10:29:54.253035Z
+src/main/java/org/geotools/ogcapi/CollectionsType.java 2022-01-22T22:11:40.370816Z
+src/main/java/org/geotools/ogcapi/FeaturesType.java 2022-01-22T22:11:40.370816Z
+src/main/java/org/geotools/ogcapi/Link.java 2022-01-22T22:11:40.370816Z
+src/main/java/org/geotools/ogcapi/OgcApiUtils.java 2022-01-22T22:11:40.370816Z
+src/main/java/org/geotools/ogcapi/StyleType.java 2022-01-22T22:11:40.370816Z
+src/main/java/org/geotools/ogcapi/TileMatrix.java 2022-01-22T22:11:40.370816Z
+src/main/java/org/geotools/ogcapi/TileMatrixSet.java 2022-01-22T22:11:40.370816Z
+src/test/java/org/geotools/ogcapi/LayerDialog.java 2022-02-19T10:29:54.273035Z
+src/test/java/org/geotools/ogcapi/QuickTileViewer.java 2022-02-19T10:29:54.273035Z

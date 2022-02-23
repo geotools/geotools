@@ -1,0 +1,10 @@
+q7fKHpEcTU74rujRAvoNeqMiFzB2rJuftOBdKAoAwUg=
+src/main/java/org/geotools/gce/image/WorldImageFormat.java 2022-01-22T22:11:37.710816Z
+src/main/java/org/geotools/gce/image/WorldImageFormatFactory.java 2022-02-19T10:29:53.297035Z
+src/main/java/org/geotools/gce/image/WorldImageReader.java 2022-02-19T10:29:53.297035Z
+src/main/java/org/geotools/gce/image/WorldImageWriter.java 2022-02-19T10:29:53.297035Z
+src/test/java/org/geotools/gce/image/ServiceTest.java 2022-01-22T22:11:37.710816Z
+src/test/java/org/geotools/gce/image/WorldImageBaseTestCase.java 2022-02-19T10:29:53.297035Z
+src/test/java/org/geotools/gce/image/WorldImageFormatTest.java 2022-01-22T22:11:37.710816Z
+src/test/java/org/geotools/gce/image/WorldImageReaderTest.java 2022-01-22T22:11:37.710816Z
+src/test/java/org/geotools/gce/image/WorldImageWriterTest.java 2022-02-19T10:29:53.297035Z

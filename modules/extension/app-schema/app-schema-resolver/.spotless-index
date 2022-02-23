@@ -1,0 +1,9 @@
+hKZ7xiZ8SaqUZ4uKp4IYHCJjaMqyE6M1fNaWW64sl0M=
+src/main/java/org/geotools/appschema/resolver/xml/AppSchemaConfiguration.java 2022-01-22T22:11:06.106815Z
+src/main/java/org/geotools/appschema/resolver/xml/AppSchemaLocationResolver.java 2022-01-22T22:11:06.106815Z
+src/main/java/org/geotools/appschema/resolver/xml/AppSchemaValidator.java 2022-02-19T10:29:41.861034Z
+src/main/java/org/geotools/appschema/resolver/xml/AppSchemaXSD.java 2022-02-19T10:29:41.861034Z
+src/main/java/org/geotools/appschema/resolver/xml/AppSchemaXSDRegistry.java 2022-02-19T10:29:41.861034Z
+src/test/java/org/geotools/appschema/resolver/xml/AppSchemaConfigurationTest.java 2022-01-22T22:11:06.106815Z
+src/test/java/org/geotools/appschema/resolver/xml/AppSchemaValidatorDemo.java 2022-01-22T22:11:06.106815Z
+src/test/java/org/geotools/appschema/resolver/xml/AppSchemaValidatorTest.java 2022-01-22T22:11:06.106815Z

@@ -16,17 +16,17 @@
  */
 package org.geotools.wfs.bindings;
 
+import java.util.Map;
 import javax.xml.namespace.QName;
 import net.opengis.wfs.PropertyType;
 import net.opengis.wfs.WfsFactory;
+import org.eclipse.emf.ecore.EObject;
 import org.geotools.gml2.GML;
 import org.geotools.gml2.GMLConfiguration;
 import org.geotools.wfs.WFS;
 import org.geotools.xsd.AbstractComplexEMFBinding;
-import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Encoder;
 import org.geotools.xsd.EncoderDelegate;
-import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.Geometry;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -92,9 +92,12 @@ public class PropertyTypeBinding extends AbstractComplexEMFBinding {
      * @generated modifiable
      */
     @Override
-    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        // TODO: implement and remove call to super
-        return super.parse(instance, node, value);
+    protected void setProperty(EObject eObject, String property, Object value, boolean lax) {
+        if ("Value".equals(property) && Map.class.isAssignableFrom(value.getClass())) {
+            super.setProperty(eObject, property, null, lax);
+        } else {
+            super.setProperty(eObject, property, value, lax);
+        }
     }
 
     @Override
@@ -110,7 +113,7 @@ public class PropertyTypeBinding extends AbstractComplexEMFBinding {
                             Encoder encoder = new Encoder(new GMLConfiguration());
                             encoder.setInline(true);
                             encoder.encode(value, GML._Geometry, output);
-                        } else {
+                        } else if (value != null) {
                             String s = value.toString();
                             output.characters(s.toCharArray(), 0, s.length());
                         }

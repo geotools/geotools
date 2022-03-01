@@ -2,22 +2,24 @@ ImageIO-EXT GDAL Plugin
 -----------------------
 
 The ImageIO-EXT plug-in allows GeoTools to make use of the additional formats provided via the
-Java Extension ImageIO-EXT.
+ImageIO-EXT project.
 
 The Java ImageIO library comes with a few formats out of the box (such as PNG, etc...) the
 ImageIO-EXT project provides support for additional geospatial formats.
 
 **References**
 
-* http://java.net/projects/imageio-ext/
+* https://github.com/geosolutions-it/imageio-ext
 
-**Maven**::
-   
-    <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>gt-imageio-ext-gdal</artifactId>
-      <version>${geotools.version}</version>
-    </dependency>
+**Maven**:
+
+.. code-block:: xml
+  
+   <dependency>
+     <groupId>org.geotools</groupId>
+     <artifactId>gt-imageio-ext-gdal</artifactId>
+     <version>${geotools.version}</version>
+   </dependency>
 
 Formats
 ^^^^^^^
@@ -52,8 +54,73 @@ file formats:
 * RPF TOC
 * SRP (ASRP/USRP) formats
 
-The ImageIO-EXT website includes ready to use ImageIO-Ext binaries including GDAL libraries. See
-"Release Information" for more info about the list of supported formats and available drivers.
+To make use of gdal-bridge functionality:
+
+* gdal must be installed
+* linux: Include gdal libraries in LD_LIBRARY_PATH environmental variable
+* windows: Include gdal libraries in PATH environmental variable
+* GDAL_DATA environmental variable set to the location of gdal, ogr and proj libraries
+* Environmental variable GDAL_PATH set to the location of your gdal installation
+* Environmental variable PROJ_LIB set the the location of PROJ 
+
+See ImageIO-EXT page on `GDAL-framework-and-plugins <https://github.com/geosolutions-it/imageio-ext/wiki/GDAL-framework-and-plugins>`__ for more info about the list of supported formats and available drivers.
+
+This functionality makes use of gdal SWIG bindings, with gdal 3.2 bindings included at the time of writing via transitive dependency:
+
+.. code-block:: xml
+
+   <dependency>
+     <groupId>org.geotools</groupId>
+     <artifactId>gt-imageio-ext-gdal</artifactId>
+     <version>${geotools.version}</version>
+   </dependency>
+
+To match the specific gdal bindings available in your environment, use dependency exclusions:
+
+.. code-block:: xml
+
+   <dependency>
+     <groupId>org.geotools</groupId>
+     <artifactId>gt-imageio-ext-gdal</artifactId>
+     <version>${geotools.version}</version>
+     <exclusions>
+       <exclusion>
+         <groupId>org.gdal</groupId>
+         <artifactId>gdal</artifactId>
+       </exclusion>
+     </exclusions>
+   </dependency>
+   <!-- Ubuntu 21.10 includes gdal 3.4.1 -->
+   <dependency>
+     <groupId>org.gdal</groupId>
+     <artifactId>gdal</artifactId>
+     <version>3.4.1</version>
+   </dependency>
+
+The ImageIO-EXT class ``GDALUtilities`` class is responsible for ensuring gdal available:
+
+.. code-block::
+   
+   GDALUtilities.loadGDAL();
+
+The load ``loadGDAL()`` method checks compatibility for:
+
+* GDAL 3 and later rely on swig bindings ``gdal.jar`` to load the library
+* GDAL 2.3 and later use the ``gdalalljni`` library
+* GDAL 2.3 and earlier use the ``gdaljni`` library.
+
+If the library is unavailable you will see a warning:
+
+  Failed to load the GDAL native libs. This is not a problem
+  unless you need to use the GDAL plugins: they won't be enabled.
+
+You can confirm if GDAL is loaded correctly, and GDAL formats are registered, using:
+
+.. code-block:: java
+   
+   if (GDALUtilities.isGDALAvailable()) {
+       // gdal bridge is active
+   }
 
 Example Use
 ^^^^^^^^^^^
@@ -61,7 +128,9 @@ Example Use
 You can use the additional file formats with FormatFinder.
 
 The following example of direct uses goes to great lengths to show some of the available
-parameters::
+parameters:
+
+.. code-block:: java
   
   final File file = new File ("C:/testdata/sampledata.sid");
   final MrSIDReader reader = new MrSIDReader(file);

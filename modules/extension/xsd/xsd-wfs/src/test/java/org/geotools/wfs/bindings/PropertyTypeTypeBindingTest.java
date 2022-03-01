@@ -34,6 +34,7 @@ public class PropertyTypeTypeBindingTest extends WFSTestSupport {
         assertNull(gc.getValue());
     }
 
+    @Override
     @Test
     public void testParse() throws Exception {
         String xml =
@@ -47,6 +48,7 @@ public class PropertyTypeTypeBindingTest extends WFSTestSupport {
     }
 
     @Override
+    @Test
     public void testEncode() throws Exception {
         PropertyType property = factory.createPropertyType();
         property.setValue("test");

@@ -502,6 +502,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
                     crs = prj.getCoordinateReferenceSystem();
                 }
             } catch (FactoryException fe) {
+                LOGGER.log(Level.FINE, "Error reading prj file", fe);
                 crs = null;
             }
 

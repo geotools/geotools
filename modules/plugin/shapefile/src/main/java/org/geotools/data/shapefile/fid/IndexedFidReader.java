@@ -65,9 +65,25 @@ public class IndexedFidReader implements FIDReader, FileReader, AutoCloseable {
     }
 
     private void init(ShpFiles shpFiles, ReadableByteChannel in) throws IOException {
+        this.readChannel = in;
+        boolean initialized = false;
+        try {
+            init(shpFiles);
+            initialized = true;
+        } finally {
+            if (!initialized) {
+                try {
+                    close();
+                } catch (IOException e) {
+                    // do nothing
+                }
+            }
+        }
+    }
+
+    private void init(ShpFiles shpFiles) throws IOException {
         this.typeName = shpFiles.getTypeName() + ".";
         this.fidBuilder = new StringBuilder(typeName);
-        this.readChannel = in;
         streamLogger.open();
         getHeader(shpFiles);
 

@@ -264,6 +264,24 @@ public class ShapefileReader implements FileReader, Closeable {
         this.useMemoryMappedBuffer = useMemoryMapped;
         streamLogger.open();
         randomAccessEnabled = channel instanceof FileChannel;
+        boolean initialized = false;
+        try {
+            init(shapefileFiles, strict, gf, onlyRandomAccess);
+            initialized = true;
+        } finally {
+            if (!initialized) {
+                try {
+                    close();
+                } catch (IOException e) {
+                    // do nothing
+                }
+            }
+        }
+    }
+
+    private void init(
+            ShpFiles shapefileFiles, boolean strict, GeometryFactory gf, boolean onlyRandomAccess)
+            throws IOException, ShapefileException {
         if (!onlyRandomAccess) {
             try {
                 shxReader = new IndexFile(shapefileFiles, this.useMemoryMappedBuffer);

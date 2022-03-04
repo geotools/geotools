@@ -115,6 +115,7 @@ class ShapefileSetManager implements FileReader {
                 }
             } catch (IOException e) {
                 // could happen if cpg file does not exist remotely
+                LOGGER.log(Level.FINE, "Error reading cpg file", e);
             }
         }
 
@@ -128,6 +129,7 @@ class ShapefileSetManager implements FileReader {
             }
         } catch (IOException e) {
             // could happen if dbf file does not exist
+            LOGGER.log(Level.FINE, "Error reading dbf file", e);
             return null;
         }
     }
@@ -152,6 +154,7 @@ class ShapefileSetManager implements FileReader {
             return new PrjFileReader(shpFiles.getReadChannel(PRJ, this));
         } catch (IOException e) {
             // could happen if prj file does not exist remotely
+            LOGGER.log(Level.FINE, "Error reading prj file", e);
             return null;
         }
     }
@@ -174,6 +177,7 @@ class ShapefileSetManager implements FileReader {
             return new IndexFile(shpFiles, store.isMemoryMapped());
         } catch (IOException e) {
             // could happen if shx file does not exist remotely
+            LOGGER.log(Level.FINE, "Error reading shx file", e);
             return null;
         }
     }

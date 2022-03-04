@@ -40,8 +40,6 @@ public class FilterFunction_numberFormat extends FunctionExpressionImpl {
 
     static HashSet<String> languages = new HashSet<>();
 
-    Locale locale = Locale.ENGLISH;
-
     static {
         for (Locale loc : Locale.getAvailableLocales()) {
             languages.add(loc.getLanguage());
@@ -96,6 +94,7 @@ public class FilterFunction_numberFormat extends FunctionExpressionImpl {
             throw new IllegalArgumentException(
                     "Filter Function problem for function NumberFormat argument #2 - expected type String");
         }
+        Locale locale = null;
         if (languages.contains(localeString)) {
             if (localeString != null && !localeString.isEmpty()) {
                 locale = Locale.forLanguageTag(localeString);
@@ -105,7 +104,9 @@ public class FilterFunction_numberFormat extends FunctionExpressionImpl {
             throw new IllegalArgumentException(
                     "Unknown language code '" + localeString + "' in numberFormat function");
         }
-
+        if (locale == null) {
+            locale = Locale.getDefault();
+        }
         DecimalFormatSymbols decimalFormatSymbols = DecimalFormatSymbols.getInstance(locale);
 
         DecimalFormat numberFormat = new DecimalFormat(format, decimalFormatSymbols);

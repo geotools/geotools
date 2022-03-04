@@ -32,7 +32,7 @@ public class NumberFormatTest {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Literal pattern = ff.literal("#.##");
         Literal number = ff.literal("10.56789");
-        Literal lang = ff.literal("fr");
+        
         Function f = ff.function("numberFormat", new Expression[] {pattern, number});
         char ds = DecimalFormatSymbols.getInstance(Locale.FRANCE).getDecimalSeparator();
         Assert.assertEquals("10" + ds + "57", f.evaluate(null, String.class));

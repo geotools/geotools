@@ -165,6 +165,7 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
     }
 
     @Test
+    @SuppressWarnings("PMD.SimplifiableTestAssertion")
     public void testFeatureWithGeometryCollectionRead() throws Exception {
         String json =
                 strip(
@@ -204,6 +205,7 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
     }
 
     @Test
+    @SuppressWarnings("PMD.SimplifiableTestAssertion")
     public void testFeatureWithGeometryCollectionRead2() throws Exception {
         String json =
                 strip(
@@ -253,6 +255,7 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
     }
 
     @Test
+    @SuppressWarnings("PMD.SimplifiableTestAssertion")
     public void testFeatureWithRegularGeometryAttributeRead() throws Exception {
         SimpleFeature f =
                 fjson.readFeature(
@@ -323,6 +326,7 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
     }
 
     @Test
+    @SuppressWarnings("PMD.SimplifiableTestAssertion")
     public void testFeatureWithRegularGeometryAttributeNoDefaultGeometryRead() throws Exception {
         SimpleFeature f =
                 fjson.readFeature(
@@ -816,6 +820,7 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
     }
 
     @Test
+    @SuppressWarnings("PMD.SimplifiableTestAssertion")
     public void testFeatureCollectionWithTypePostFeaturesRead() throws Exception {
         String json =
                 strip(

@@ -1,6 +1,8 @@
 GeoJSON Plugin
 --------------
 
+.. warning:: This module has not been maintained for a long time, please use the gt-geojson-core module instead.
+
 Unsupported module illustrating how to encode and decode GeoJSON
 files into GeoTools Feature Collections.
 

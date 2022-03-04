@@ -120,6 +120,7 @@ public class CoverageTestBase {
      * @param expected The coverage having the expected envelope.
      * @param actual The coverage having the actual envelope.
      */
+    @SuppressWarnings("PMD.SimplifiableTestAssertion") // equality with tolerance
     protected static void assertEnvelopeEquals(Coverage expected, Coverage actual) {
         final double scaleA = getScale(expected);
         final double scaleB = getScale(actual);

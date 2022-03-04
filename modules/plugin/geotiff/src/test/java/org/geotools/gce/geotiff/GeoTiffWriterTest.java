@@ -114,7 +114,7 @@ public class GeoTiffWriterTest extends Assert {
 
     /** Testing {@link GeoTiffWriter} capabilities to write a cropped coverage. */
     @Test
-    @SuppressWarnings("PMD.UseAssertEqualsInsteadOfAssertTrue")
+    @SuppressWarnings("PMD.SimplifiableTestAssertion")
     public void testWriteCroppedCoverage()
             throws IllegalArgumentException, IOException, UnsupportedOperationException,
                     ParseException, FactoryException, TransformException {

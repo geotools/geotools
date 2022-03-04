@@ -44,6 +44,7 @@ public abstract class GeoJSONTestSupport {
         return sb.toString();
     }
 
+    @SuppressWarnings("PMD.SimplifiableTestAssertion")
     protected void assertEqualsLax(SimpleFeature f1, SimpleFeature f2) {
         Assert.assertEquals(f1.getID(), f1.getID());
         Assert.assertEquals(f1.getAttributeCount(), f2.getAttributeCount());

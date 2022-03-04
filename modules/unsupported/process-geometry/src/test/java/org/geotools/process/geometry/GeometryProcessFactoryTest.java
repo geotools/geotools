@@ -68,6 +68,7 @@ public class GeometryProcessFactoryTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.SimplifiableTestAssertion")
     public void testExecuteBuffer() throws Exception {
         org.geotools.process.Process buffer = factory.create(new NameImpl("geo", "Buffer"));
 
@@ -130,6 +131,7 @@ public class GeometryProcessFactoryTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.SimplifiableTestAssertion")
     public void testExecuteUnion() throws Exception {
         org.geotools.process.Process union = factory.create(new NameImpl("geo", "union"));
 
@@ -166,6 +168,7 @@ public class GeometryProcessFactoryTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.SimplifiableTestAssertion")
     public void testExecuteHull() throws Exception {
         NameImpl hullName = new NameImpl("geo", "convexHull");
         org.geotools.process.Process hull = factory.create(hullName);

@@ -45,6 +45,7 @@
     <module>cql-json</module>
     <module>vsi</module>
     <module>cql2</module>
+    <module>jdbc-teradata</module>
   </modules>
   <profiles>
     <!-- ================================================== -->
@@ -205,6 +206,7 @@
         <module>s3-geotiff</module>
         <module>vpf</module>
         <module>vsi</module>
+        <module>jdbc-teradata</module>
       </modules>
     </profile>
     <profile>
@@ -217,6 +219,12 @@
       <id>vsi</id>
       <modules>
         <module>vsi</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>teradata</id>
+      <modules>
+        <module>jdbc-teradata</module>
       </modules>
     </profile>
   </profiles>

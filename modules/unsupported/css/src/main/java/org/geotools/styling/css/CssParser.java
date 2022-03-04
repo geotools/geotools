@@ -479,7 +479,7 @@ public class CssParser extends BaseParser<Object> {
                             value = pop();
                         }
 
-                        if (expressions.size() == 0) {
+                        if (expressions.isEmpty()) {
                             return false;
                         } else if (expressions.size() == 1) {
                             push(firstValue);

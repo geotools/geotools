@@ -520,7 +520,7 @@
     <javac.version>9+181-r4173-1</javac.version>
     <pmd.skip>false</pmd.skip>
     <spotbugs.skip>false</spotbugs.skip>
-    <pmd.version>6.35.0</pmd.version>
+    <pmd.version>6.42.0</pmd.version>
     <checkstyle.skip>false</checkstyle.skip>
     <checkstyle.excludes>**/generated/**/*</checkstyle.excludes>
     <qa>false</qa>

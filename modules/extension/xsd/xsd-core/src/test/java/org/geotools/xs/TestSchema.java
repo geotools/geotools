@@ -161,7 +161,15 @@ public abstract class TestSchema {
      */
     public void validateValues(String given, Object expected) throws Exception {
         Object result = strategy.parse(element(given, qname), given);
-        Assert.assertEquals(expected, result);
+        validateValues(result, expected);
+    }
+
+    protected void validateValues(Object result, Object expected) throws Exception {
+        if (null == expected) {
+            Assert.assertNull(result);
+        } else {
+            Assert.assertEquals(expected, result);
+        }
     }
 
     /** Each subclass must indicate which kind of QName they wish to operate against. */

@@ -173,7 +173,7 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest {
 
             ReferencedEnvelope env = null;
             ReferencedEnvelope envOrig = fs.getBounds();
-            Assert.assertEquals(false, envOrig.isEmpty());
+            Assert.assertFalse(envOrig.isEmpty());
 
             for (Query q : queries) {
 

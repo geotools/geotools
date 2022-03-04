@@ -17,6 +17,7 @@
 package org.geotools.xs.bindings;
 
 import javax.xml.namespace.QName;
+import org.apache.commons.lang3.StringUtils;
 import org.geotools.xs.XS;
 import org.geotools.xsd.InstanceComponent;
 import org.geotools.xsd.SimpleBinding;
@@ -103,7 +104,7 @@ public class XSFloatBinding implements SimpleBinding {
             return Float.valueOf(Float.POSITIVE_INFINITY);
         }
 
-        return Float.valueOf(text);
+        return StringUtils.isBlank(text) ? null : Float.valueOf(text);
     }
 
     /**

@@ -240,6 +240,7 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
         }
     }
 
+    @SuppressWarnings("PMD.SimplifiableTestAssertion")
     protected void assertAttributeValuesEqual(Object expected, Object actual) {
         if (expected == null) {
             assertNull(actual);

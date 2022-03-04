@@ -85,10 +85,13 @@ public class HeaderMetaUtil {
                     || binding.isAssignableFrom(LocalDate.class)
                     || binding.isAssignableFrom(LocalTime.class)
                     || binding.isAssignableFrom(OffsetDateTime.class)
-                    || binding.isAssignableFrom(OffsetTime.class))
+                    || binding.isAssignableFrom(OffsetTime.class)
+                    || binding.isAssignableFrom(java.sql.Date.class)
+                    || binding.isAssignableFrom(java.sql.Time.class)
+                    || binding.isAssignableFrom(java.sql.Timestamp.class))
                 column.type = ColumnType.DateTime;
             else if (binding.isAssignableFrom(String.class)) column.type = ColumnType.String;
-            else throw new RuntimeException("Unknown type");
+            else throw new RuntimeException("Cannot handle type " + binding.getName());
             columns.add(column);
         }
 

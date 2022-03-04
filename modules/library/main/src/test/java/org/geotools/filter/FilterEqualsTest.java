@@ -87,10 +87,10 @@ public class FilterEqualsTest {
         FidFilterImpl ff2 = new FidFilterImpl(Collections.singleton(new FeatureIdImpl("1")));
         Assert.assertNotNull(ff2);
         Assert.assertEquals(ff, ff2);
-        Assert.assertFalse(ff.equals(null));
-        Assert.assertFalse(ff.equals("a string not even a filter"));
+        assertNotEquals(null, ff);
+        assertNotEquals("a string not even a filter", ff);
         ff2.addFid("2");
-        Assert.assertFalse(ff.equals(ff2));
+        assertNotEquals(ff, ff2);
 
         ff.addFid("2");
         Assert.assertEquals(ff, ff2);
@@ -111,14 +111,14 @@ public class FilterEqualsTest {
             testExp3 = new LiteralExpressionImpl(Integer.valueOf(4));
             testExp4 = new LiteralExpressionImpl(Integer.valueOf(4));
             testMath2.setExpression1(testExp3);
-            Assert.assertFalse(testMath1.equals(testMath2));
+            assertNotEquals(testMath1, testMath2);
             testMath1.setExpression1(testExp4);
             Assert.assertEquals(testMath1, testMath2);
             testMath1 = new SubtractImpl(null, null);
             testMath1.setExpression1(testExp4);
             testMath1.setExpression1(testExp2);
-            Assert.assertFalse(testMath1.equals(testMath2));
-            Assert.assertFalse(testMath1.equals("Random Object that happens to be a string"));
+            assertNotEquals(testMath1, testMath2);
+            assertNotEquals("Random Object that happens to be a string", testMath1);
         } catch (IllegalFilterException e) {
             LOGGER.warning("bad filter: " + e.getMessage());
         }
@@ -137,10 +137,10 @@ public class FilterEqualsTest {
         testExp2 = new AttributeExpressionImpl(testSchema, "testBoolean");
         Assert.assertEquals(testExp1, testExp2);
         testExp3 = new AttributeExpressionImpl(testSchema, "testString");
-        Assert.assertFalse(testExp1.equals(testExp3));
+        assertNotEquals(testExp1, testExp3);
 
         testExp4 = new AttributeExpressionImpl(testSchema2, "testBoolean");
-        Assert.assertFalse(testExp1.equals(testExp4));
+        assertNotEquals(testExp1, testExp4);
 
         testExp1 = new AttributeExpressionImpl(testSchema2, "testBoolean");
         Assert.assertEquals(testExp1, testExp4);
@@ -161,7 +161,7 @@ public class FilterEqualsTest {
         cFilter2 = ff.equals(ff.literal(Double.valueOf(45.0)), testExp3);
         Assert.assertEquals(cFilter1, cFilter2);
         tFilter1 = ff.between(testExp1, testExp2, testExp3);
-        Assert.assertFalse(cFilter1.equals(tFilter1));
+        assertNotEquals(cFilter1, tFilter1);
     }
 
     @Test
@@ -185,9 +185,9 @@ public class FilterEqualsTest {
                 ff.equals(
                         org.opengis.filter.expression.Expression.NIL,
                         org.opengis.filter.expression.Expression.NIL);
-        Assert.assertFalse(bFilter2.equals(tFilter1));
+        assertNotEquals(bFilter2, tFilter1);
         bFilter2.setExpression2(new LiteralExpressionImpl(Integer.valueOf(65)));
-        Assert.assertFalse(bFilter2.equals(bFilter1));
+        assertNotEquals(bFilter2, bFilter1);
     }
 
     @Test
@@ -219,14 +219,14 @@ public class FilterEqualsTest {
         lFilter2.setWildCard(wcMulti);
         lFilter2.setSingleChar(wcSingle);
         lFilter2.setEscape(escape);
-        Assert.assertFalse(lFilter1.equals(lFilter2));
+        assertNotEquals(lFilter1, lFilter2);
 
         lFilter2.setLiteral(pattern);
         lFilter2.setWildCard(wcMulti);
         lFilter2.setSingleChar(wcSingle);
         lFilter2.setEscape(escape);
         lFilter2.setExpression(testExp2);
-        Assert.assertFalse(lFilter1.equals(lFilter2));
+        assertNotEquals(lFilter1, lFilter2);
     }
 
     @Test
@@ -243,11 +243,11 @@ public class FilterEqualsTest {
         Assert.assertEquals(logFilter1, logFilter2);
 
         logFilter1 = ff.not(cFilter2);
-        Assert.assertFalse(logFilter1.equals(logFilter2));
+        assertNotEquals(logFilter1, logFilter2);
         cFilter1 = ff.equals(testExp1, testExp3);
         logFilter2 = ff.not(cFilter1);
         Assert.assertEquals(logFilter1, logFilter2);
-        Assert.assertFalse(logFilter1.equals(ff.between(testExp1, testExp2, testExp3)));
+        assertNotEquals(logFilter1, ff.between(testExp1, testExp2, testExp3));
         Or logFilter3 = ff.or(logFilter1, logFilter2);
         Or logFilter4 = ff.or(logFilter1, logFilter2);
         Assert.assertEquals(logFilter3, logFilter4);
@@ -272,8 +272,8 @@ public class FilterEqualsTest {
         nullFilter2.setExpression(testExp2);
         Assert.assertEquals(nullFilter1, nullFilter2);
         nullFilter1.setExpression(testExp3);
-        Assert.assertFalse(nullFilter1.equals(nullFilter2));
-        Assert.assertFalse(nullFilter1.equals(new IsBetweenImpl(null, null, null)));
+        assertNotEquals(nullFilter1, nullFilter2);
+        assertNotEquals(nullFilter1, new IsBetweenImpl(null, null, null));
     }
 
     @Test
@@ -282,8 +282,8 @@ public class FilterEqualsTest {
         Disjoint geomFilter2 = ff.disjoint(testExp2, testExp4);
         Assert.assertEquals(geomFilter1, geomFilter2);
         geomFilter2 = ff.disjoint(testExp2, new LiteralExpressionImpl(Double.valueOf(45)));
-        Assert.assertFalse(geomFilter1.equals(geomFilter2));
+        assertNotEquals(geomFilter1, geomFilter2);
         tFilter1 = ff.between(ff.literal(1), ff.literal(-1), ff.literal(3));
-        Assert.assertFalse(geomFilter1.equals(tFilter1));
+        assertNotEquals(geomFilter1, tFilter1);
     }
 }

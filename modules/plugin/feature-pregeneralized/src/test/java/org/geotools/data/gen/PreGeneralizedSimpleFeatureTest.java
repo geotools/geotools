@@ -140,7 +140,7 @@ public class PreGeneralizedSimpleFeatureTest {
 
             assertNotEquals(feature1, feature2);
             Assert.assertEquals(feature1, feature1);
-            Assert.assertFalse(feature1.hashCode() == feature2.hashCode());
+            assertNotEquals(feature1.hashCode(), feature2.hashCode());
             Assert.assertEquals(feature1.hashCode(), feature1.hashCode());
 
             assertNotEquals(feature1.getID(), feature2.getID());

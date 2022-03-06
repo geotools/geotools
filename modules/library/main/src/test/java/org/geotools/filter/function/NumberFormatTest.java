@@ -24,6 +24,23 @@ public class NumberFormatTest {
     }
 
     @Test
+    /** Test that we honour the locale of the machine if (it is set) */
+    public void testFormatLocaleFrenchDouble() {
+        Locale originalFormat = Locale.getDefault(Locale.Category.FORMAT);
+        Locale originalDisplay = Locale.getDefault(Locale.Category.DISPLAY);
+        Locale.setDefault(Locale.FRANCE);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        Literal pattern = ff.literal("#.##");
+        Literal number = ff.literal("10.56789");
+
+        Function f = ff.function("numberFormat", new Expression[] {pattern, number});
+        char ds = DecimalFormatSymbols.getInstance(Locale.FRANCE).getDecimalSeparator();
+        Assert.assertEquals("10" + ds + "57", f.evaluate(null, String.class));
+        Locale.setDefault(Locale.Category.DISPLAY, originalDisplay);
+        Locale.setDefault(Locale.Category.FORMAT, originalFormat);
+    }
+
+    @Test
     public void testFormatFrenchDouble() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Literal pattern = ff.literal("#.##");

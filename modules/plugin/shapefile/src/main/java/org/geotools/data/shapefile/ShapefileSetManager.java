@@ -115,7 +115,11 @@ class ShapefileSetManager implements FileReader {
                 }
             } catch (IOException e) {
                 // could happen if cpg file does not exist remotely
-                LOGGER.log(Level.FINE, "Error reading cpg file", e);
+                if (LOGGER.isLoggable(Level.FINER)) {
+                    LOGGER.log(
+                            Level.FINER,
+                            "Ignoring invalid cpg file and moving on: " + e.getMessage());
+                }
             }
         }
 
@@ -129,7 +133,10 @@ class ShapefileSetManager implements FileReader {
             }
         } catch (IOException e) {
             // could happen if dbf file does not exist
-            LOGGER.log(Level.FINE, "Error reading dbf file", e);
+            if (LOGGER.isLoggable(Level.FINER)) {
+                LOGGER.log(
+                        Level.FINER, "Ignoring invalid dbf file and moving on: " + e.getMessage());
+            }
             return null;
         }
     }
@@ -154,7 +161,10 @@ class ShapefileSetManager implements FileReader {
             return new PrjFileReader(shpFiles.getReadChannel(PRJ, this));
         } catch (IOException e) {
             // could happen if prj file does not exist remotely
-            LOGGER.log(Level.FINE, "Error reading prj file", e);
+            if (LOGGER.isLoggable(Level.FINER)) {
+                LOGGER.log(
+                        Level.FINER, "Ignoring invalid prj file and moving on: " + e.getMessage());
+            }
             return null;
         }
     }
@@ -177,7 +187,10 @@ class ShapefileSetManager implements FileReader {
             return new IndexFile(shpFiles, store.isMemoryMapped());
         } catch (IOException e) {
             // could happen if shx file does not exist remotely
-            LOGGER.log(Level.FINE, "Error reading shx file", e);
+            if (LOGGER.isLoggable(Level.FINER)) {
+                LOGGER.log(
+                        Level.FINER, "Ignoring invalid shx file and moving on: " + e.getMessage());
+            }
             return null;
         }
     }

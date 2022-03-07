@@ -68,7 +68,7 @@ public class IndexedFidReader implements FIDReader, FileReader, AutoCloseable {
         this.readChannel = in;
         boolean initialized = false;
         try {
-            init(shpFiles);
+            doInit(shpFiles);
             initialized = true;
         } finally {
             if (!initialized) {
@@ -81,7 +81,7 @@ public class IndexedFidReader implements FIDReader, FileReader, AutoCloseable {
         }
     }
 
-    private void init(ShpFiles shpFiles) throws IOException {
+    private void doInit(ShpFiles shpFiles) throws IOException {
         this.typeName = shpFiles.getTypeName() + ".";
         this.fidBuilder = new StringBuilder(typeName);
         streamLogger.open();

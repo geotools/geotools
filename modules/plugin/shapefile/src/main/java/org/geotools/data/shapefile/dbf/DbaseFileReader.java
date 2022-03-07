@@ -183,7 +183,7 @@ public class DbaseFileReader implements FileReader, Closeable {
         this.channel = dbfChannel;
         boolean initialized = false;
         try {
-            init(useMemoryMappedBuffer, charset, timeZone);
+            doInit(useMemoryMappedBuffer, charset, timeZone);
             initialized = true;
         } finally {
             if (!initialized) {
@@ -196,7 +196,7 @@ public class DbaseFileReader implements FileReader, Closeable {
         }
     }
 
-    private void init(boolean useMemoryMappedBuffer, Charset charset, TimeZone timeZone)
+    private void doInit(boolean useMemoryMappedBuffer, Charset charset, TimeZone timeZone)
             throws IOException {
         this.stringCharset = charset == null ? Charset.defaultCharset() : charset;
         TimeZone calTimeZone = timeZone == null ? TimeZone.getDefault() : timeZone;

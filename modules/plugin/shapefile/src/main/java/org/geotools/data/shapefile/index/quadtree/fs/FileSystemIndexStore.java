@@ -182,7 +182,7 @@ public class FileSystemIndexStore implements FileReader, IndexStore {
                 fis = new FileInputStream(file);
                 channel = fis.getChannel();
             }
-            QuadTree tree = load(fis, channel, indexfile, useMemoryMapping);
+            QuadTree tree = doLoad(fis, channel, indexfile, useMemoryMapping);
             initialized = true;
             return tree;
         } catch (IOException e) {
@@ -212,7 +212,7 @@ public class FileSystemIndexStore implements FileReader, IndexStore {
         }
     }
 
-    private QuadTree load(
+    private QuadTree doLoad(
             FileInputStream fis, FileChannel channel, IndexFile indexfile, boolean useMemoryMapping)
             throws IOException {
         IndexHeader header = new IndexHeader(channel);

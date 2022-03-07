@@ -55,7 +55,7 @@ public class PropertyTypeBinding extends AbstractComplexEMFBinding {
 
     @Override
     protected void setProperty(EObject eObject, String property, Object value, boolean lax) {
-        if ("Value".equals(property) && Map.class.isAssignableFrom(value.getClass())) {
+        if ("Value".equals(property) && value instanceof Map) {
             super.setProperty(eObject, property, null, lax);
         } else {
             super.setProperty(eObject, property, value, lax);

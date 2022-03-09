@@ -1645,9 +1645,9 @@ public class GeoPackage implements Closeable {
         try {
             return decodeSRID(srid);
         } catch (Exception ex) {
-            // try parsing srtext directly
+            // try parsing definition directly
             try {
-                return CRS.parseWKT(rs.getString("srtext"));
+                return CRS.parseWKT(rs.getString("definition"));
             } catch (Exception e2) {
                 throw new IOException(ex);
             }

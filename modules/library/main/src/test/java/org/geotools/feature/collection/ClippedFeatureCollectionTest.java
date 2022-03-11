@@ -1,9 +1,11 @@
 package org.geotools.feature.collection;
 
+import static java.lang.Double.NaN;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -31,6 +33,8 @@ public class ClippedFeatureCollectionTest {
 
     DefaultFeatureCollection delegateLineZ;
 
+    DefaultFeatureCollection delegateGeom;
+
     @Before
     public void setUp() throws Exception {
 
@@ -44,14 +48,15 @@ public class ClippedFeatureCollectionTest {
         SimpleFeatureType featureType = tb.buildFeatureType();
         delegatePolygonZ = new DefaultFeatureCollection(null, featureType);
         SimpleFeatureBuilder bPoly = new SimpleFeatureBuilder(featureType);
-        Geometry geom = reader.read("POLYGON((0 0 0, 0 10000 2, 10000 10000 2, 10000 0 0, 0 0 0))");
-        bPoly.add(geom);
+        Geometry poly1 =
+                reader.read("POLYGON((0 0 0, 0 10000 2, 10000 10000 2, 10000 0 0, 0 0 0))");
+        bPoly.add(poly1);
         bPoly.add("one");
         delegatePolygonZ.add(bPoly.buildFeature("fid.1"));
         bPoly.reset();
 
-        Geometry geom2 = reader.read("POLYGON((0 0, 0 5000, 5000 5000, 5000 0, 0 0))");
-        bPoly.add(geom2);
+        Geometry poly2 = reader.read("POLYGON((0 0, 0 5000, 5000 5000, 5000 0, 0 0))");
+        bPoly.add(poly2);
         bPoly.add("two");
         delegatePolygonZ.add(bPoly.buildFeature("fid.2"));
 
@@ -63,15 +68,14 @@ public class ClippedFeatureCollectionTest {
         SimpleFeatureType featureTypeML = tbML.buildFeatureType();
         delegateMultiLineZ = new DefaultFeatureCollection(null, featureTypeML);
         SimpleFeatureBuilder bML = new SimpleFeatureBuilder(featureTypeML);
-        Geometry geomML =
+        Geometry multiline =
                 reader.read(
                         "MULTILINESTRING((1000 0 0, 1000 1000 1, 2000 1000 2, 2000 0 3), (1000 3000 0, 1000 2000 1, 2000 2000 2, 2000 3000 3))");
-        bML.add(geomML);
+        bML.add(multiline);
         bML.add("one");
         delegateMultiLineZ.add(bML.buildFeature("fid.1"));
 
         // lines
-
         SimpleFeatureTypeBuilder tbL = new SimpleFeatureTypeBuilder();
         tbL.setName("Lines");
         tbL.add("geom", LineString.class);
@@ -79,10 +83,28 @@ public class ClippedFeatureCollectionTest {
         SimpleFeatureType featureTypeL = tbL.buildFeatureType();
         delegateLineZ = new DefaultFeatureCollection(null, featureTypeL);
         SimpleFeatureBuilder bL = new SimpleFeatureBuilder(featureTypeL);
-        Geometry geomL = reader.read("LINESTRING(0 0 0, 10000 0 1, 10000 10000 2)");
-        bL.add(geomL);
+        Geometry line = reader.read("LINESTRING(0 0 0, 10000 0 1, 10000 10000 2)");
+        bL.add(line);
         bL.add("one");
         delegateLineZ.add(bL.buildFeature("fid.1"));
+
+        // generic geometry
+        SimpleFeatureTypeBuilder tbG = new SimpleFeatureTypeBuilder();
+        tbG.setName("Geometries");
+        tbG.add("geom", Geometry.class);
+        tbG.add("name", String.class);
+        SimpleFeatureType featureTypeG = tbG.buildFeatureType();
+        delegateGeom = new DefaultFeatureCollection(null, featureTypeG);
+        SimpleFeatureBuilder bG = new SimpleFeatureBuilder(featureTypeG);
+        bG.add(poly1);
+        bG.add("one");
+        delegateGeom.add(bG.buildFeature("fid.1"));
+        bG.add(multiline);
+        bG.add("two");
+        delegateGeom.add(bG.buildFeature("fid.2"));
+        bG.add(line);
+        bG.add("three");
+        delegateGeom.add(bG.buildFeature("fid.3"));
     }
 
     @Test
@@ -321,13 +343,44 @@ public class ClippedFeatureCollectionTest {
             assertEquals(0, p.getNumInteriorRing());
             shell = p.getExteriorRing();
             cs = shell.getCoordinateSequence();
+
             assertEquals(5, cs.size());
-            assertOrdinates(0, 0, Double.NaN, cs, 0);
-            assertOrdinates(0, 5000, Double.NaN, cs, 1);
-            assertOrdinates(5000, 5000, Double.NaN, cs, 2);
-            assertOrdinates(5000, 0, Double.NaN, cs, 3);
-            assertOrdinates(0, 0, Double.NaN, cs, 4);
+            assertOrdinates(0, 0, NaN, cs, 0);
+            assertOrdinates(0, 5000, NaN, cs, 1);
+            assertOrdinates(5000, 5000, NaN, cs, 2);
+            assertOrdinates(5000, 0, NaN, cs, 3);
+            assertOrdinates(0, 0, NaN, cs, 4);
         }
+    }
+
+    @Test
+    public void testClipGeometry() throws Exception {
+        WKTReader reader = new WKTReader();
+        Geometry clip = reader.read("POLYGON((0 0, 0 2500, 2500 2500, 2500 0, 0 0))");
+        ClippedFeatureCollection collection =
+                new ClippedFeatureCollection(delegateGeom, clip, false);
+        assertEquals(3, collection.size());
+        List<SimpleFeature> features = DataUtilities.list(collection);
+
+        // first, completely covers the clip
+        SimpleFeature f0 = features.get(0);
+        assertEquals("one", f0.getAttribute("name"));
+        assertEquals(clip, f0.getDefaultGeometry());
+
+        // second, cut by clip partially
+        SimpleFeature f1 = features.get(1);
+        assertEquals("two", f1.getAttribute("name"));
+        Geometry expectedMultiLine =
+                reader.read(
+                        "MULTILINESTRING((1000 0, 1000 1000, 2000 1000, 2000 0), (1000 2500, 1000 2000, "
+                                + "2000 2000, 2000 2500))");
+        assertEquals(expectedMultiLine, f1.getDefaultGeometry());
+
+        // third, also cut
+        SimpleFeature f2 = features.get(2);
+        assertEquals("three", f2.getAttribute("name"));
+        Geometry expectedLine = reader.read("LINESTRING(0 0, 2500 0)");
+        assertEquals(expectedLine, f2.getDefaultGeometry());
     }
 
     private void assertOrdinates(double x, double y, double z, CoordinateSequence cs, int index) {

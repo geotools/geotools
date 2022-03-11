@@ -16,7 +16,7 @@ Quickstart to get up and running with GeoTools in minutes:
 GeoTools API
 ------------
 
-GeoTools javadocs are :api:`available online <>` ( `stable <https://docs.geotools.org/stable/javadocs/>`__ ) zip file `download <https://sourceforge.net/projects/geotools/files/>`_ download.
+GeoTools javadocs are :api:`available online <index.html>` ( `stable <https://docs.geotools.org/stable/javadocs/>`__ ) zip file `download <https://sourceforge.net/projects/geotools/files/>`_ download.
 
 User Guide
 ----------

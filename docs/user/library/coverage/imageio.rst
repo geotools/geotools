@@ -54,18 +54,19 @@ file formats:
 * RPF TOC
 * SRP (ASRP/USRP) formats
 
-To make use of gdal-bridge functionality:
+To make use of the GDAL based coverage readers:
 
-* gdal must be installed
-* linux: Include gdal libraries in LD_LIBRARY_PATH environmental variable
-* windows: Include gdal libraries in PATH environmental variable
-* GDAL_DATA environmental variable set to the location of gdal, ogr and proj libraries
-* Environmental variable GDAL_PATH set to the location of your gdal installation
-* Environmental variable PROJ_LIB set the the location of PROJ 
+* GDAL must be installed
+* linux: Include GDAL libraries in ``LD_LIBRARY_PATH`` environmental variable
+* windows: Include GDAL libraries in ``PATH`` environmental variable
+* macos: Include GDAL libraries in ``java.library.path`` system property
+* ``GDAL_DATA`` environmental variable set to the location of GDAL, OGR and PROJ libraries
+* Environmental variable ``GDAL_PATH`` set to the location of your GDAL installation
+* Environmental variable ``PROJ_LIB`` set the the location of PROJ 
 
-See ImageIO-EXT page on `GDAL-framework-and-plugins <https://github.com/geosolutions-it/imageio-ext/wiki/GDAL-framework-and-plugins>`__ for more info about the list of supported formats and available drivers.
+See the ImageIO-EXT page on `GDAL-framework-and-plugins <https://github.com/geosolutions-it/imageio-ext/wiki/GDAL-framework-and-plugins>`__ for more info about the list of supported formats and available drivers.
 
-This functionality makes use of gdal SWIG bindings, with gdal 3.2 bindings included at the time of writing via transitive dependency:
+This functionality makes use of GDAL SWIG bindings, with GDAL 3.2 bindings included at the time of writing via transitive dependency:
 
 .. code-block:: xml
 
@@ -75,7 +76,7 @@ This functionality makes use of gdal SWIG bindings, with gdal 3.2 bindings inclu
      <version>${geotools.version}</version>
    </dependency>
 
-To match the specific gdal bindings available in your environment, use dependency exclusions:
+To match the specific GDAL bindings available in your environment, use dependency exclusions:
 
 .. code-block:: xml
 
@@ -97,7 +98,7 @@ To match the specific gdal bindings available in your environment, use dependenc
      <version>3.4.1</version>
    </dependency>
 
-The ImageIO-EXT class ``GDALUtilities`` class is responsible for ensuring gdal available:
+The ImageIO-EXT class ``GDALUtilities`` class is responsible for ensuring GDAL available:
 
 .. code-block::
    
@@ -105,7 +106,7 @@ The ImageIO-EXT class ``GDALUtilities`` class is responsible for ensuring gdal a
 
 The load ``loadGDAL()`` method checks compatibility for:
 
-* GDAL 3 and later rely on swig bindings ``gdal.jar`` to load the library
+* GDAL 3 and later rely on SWIG bindings ``gdal.jar`` to load the library
 * GDAL 2.3 and later use the ``gdalalljni`` library
 * GDAL 2.3 and earlier use the ``gdaljni`` library.
 

@@ -76,9 +76,7 @@ public class ClippedFeatureCollection extends DecoratingSimpleFeatureCollection 
                     } else if (Polygon.class.isAssignableFrom(binding)) {
                         target = MultiPolygon.class;
                     } else {
-                        throw new RuntimeException(
-                                "Don't know how to handle geometries of type "
-                                        + binding.getCanonicalName());
+                        target = Geometry.class;
                     }
                     tb.minOccurs(ad.getMinOccurs());
                     tb.maxOccurs(ad.getMaxOccurs());

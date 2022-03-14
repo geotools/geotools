@@ -181,6 +181,23 @@ public class DbaseFileReader implements FileReader, Closeable {
             final TimeZone timeZone)
             throws IOException {
         this.channel = dbfChannel;
+        boolean initialized = false;
+        try {
+            doInit(useMemoryMappedBuffer, charset, timeZone);
+            initialized = true;
+        } finally {
+            if (!initialized) {
+                try {
+                    close();
+                } catch (IOException e) {
+                    // do nothing
+                }
+            }
+        }
+    }
+
+    private void doInit(boolean useMemoryMappedBuffer, Charset charset, TimeZone timeZone)
+            throws IOException {
         this.stringCharset = charset == null ? Charset.defaultCharset() : charset;
         TimeZone calTimeZone = timeZone == null ? TimeZone.getDefault() : timeZone;
         this.calendar = Calendar.getInstance(calTimeZone, Locale.US);

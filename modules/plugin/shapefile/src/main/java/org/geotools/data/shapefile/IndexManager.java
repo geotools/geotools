@@ -372,6 +372,7 @@ class IndexManager {
         if (!shpFiles.isLocal()) {
             return null;
         }
+        FileSystemIndexStore idxStore = null;
         URL treeURL = shpFiles.acquireRead(QIX, writer);
         try {
             File treeFile = URLs.urlToFile(treeURL);
@@ -380,14 +381,14 @@ class IndexManager {
                 return null;
             }
 
-            try {
-                FileSystemIndexStore idxStore = new FileSystemIndexStore(treeFile);
-                return idxStore.load(store.shpManager.openIndexFile(), store.isMemoryMapped());
-            } catch (IOException e) {
-                throw new StoreException(e);
-            }
+            idxStore = new FileSystemIndexStore(treeFile, shpFiles);
         } finally {
             shpFiles.unlockRead(treeURL, writer);
+        }
+        try {
+            return idxStore.load(store.shpManager.openIndexFile(), store.isMemoryMapped());
+        } catch (IOException e) {
+            throw new StoreException(e);
         }
     }
 

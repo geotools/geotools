@@ -502,6 +502,11 @@ class ShapefileFeatureSource extends ContentFeatureSource {
                     crs = prj.getCoordinateReferenceSystem();
                 }
             } catch (FactoryException fe) {
+                if (LOGGER.isLoggable(Level.FINER)) {
+                    LOGGER.log(
+                            Level.FINER,
+                            "Ignoring invalid prj file and moving on: " + fe.getMessage());
+                }
                 crs = null;
             }
 

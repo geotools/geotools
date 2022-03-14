@@ -1640,7 +1640,7 @@
             <exclude>${test.exclude.pattern}</exclude>
             <exclude>${jdk11test.skip.pattern}</exclude>
           </excludes>
-          <argLine>@{argLine} -Xmx${test.maxHeapSize} ${jvm.opts} -Dfile.encoding=UTF-8 -Dorg.geotools.test.extensive=${extensive.tests} -Dorg.geotools.test.interactive=${interactive.tests} -Dorg.geotools.image.test.skip=${skip.image.tests} -Dorg.geotools.image.test.interactive=${interactive.image} -Djava.awt.headless=${java.awt.headless} -Dsun.java2d.d3d=${sun.java2d.d3d} -Djava.io.tmpdir="${java.io.tmpdir}" -Djava.library.path="${java.library.path}" ${test.args}  -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -XX:+IgnoreUnrecognizedVMOptions -Djava.util.logging.config.file="${geotoolsBaseDir}"/${logging-profile}.properties --add-exports=java.desktop/sun.awt.image=ALL-UNNAMED ${test.otherJVMParams}</argLine>
+          <argLine>@{argLine} -Xmx${test.maxHeapSize} ${jvm.opts} -Dfile.encoding=UTF-8 -Dorg.geotools.test.extensive=${extensive.tests} -Dorg.geotools.test.interactive=${interactive.tests} -Dorg.geotools.image.test.skip=${skip.image.tests} -Dorg.geotools.image.test.interactive=${interactive.image} -Djava.awt.headless=${java.awt.headless} -Dsun.java2d.d3d=${sun.java2d.d3d} -Djava.io.tmpdir="${java.io.tmpdir}" -Djava.library.path="${java.library.path}" ${test.args}  -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -XX:+IgnoreUnrecognizedVMOptions -XX:-OmitStackTraceInFastThrow -Djava.util.logging.config.file="${geotoolsBaseDir}"/${logging-profile}.properties --add-exports=java.desktop/sun.awt.image=ALL-UNNAMED ${test.otherJVMParams}</argLine>
           <!-- Ignores test failure only if we are generating a       -->
           <!-- report for publication on the web site. See the        -->
           <!-- profiles section at the beginning of this pom.xml file. -->
@@ -1655,6 +1655,7 @@
           <!-- Redirect the unit test standard output to a file. -->
           <redirectTestOutputToFile>false</redirectTestOutputToFile>
           <forkMode>${test.forkMode}</forkMode>
+          <trimStackTrace>false</trimStackTrace>
         </configuration>
       </plugin>
 

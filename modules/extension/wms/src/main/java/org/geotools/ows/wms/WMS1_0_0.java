@@ -17,9 +17,7 @@
 package org.geotools.ows.wms;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 import org.geotools.data.ows.AbstractGetCapabilitiesRequest;
@@ -270,16 +268,6 @@ public class WMS1_0_0 extends WMSSpecification {
             }
 
             super.setProperty(name, value);
-        }
-
-        @Override
-        public void setFormat(String value) {
-            try {
-                value = URLEncoder.encode(value, "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                throw new RuntimeException("Could not url encode the format", e);
-            }
-            super.setFormat(value);
         }
 
         @Override

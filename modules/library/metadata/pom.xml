@@ -129,8 +129,10 @@
     </dependency>
     <!-- Third-party logging libraries not required for default execution. -->
     <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
+      <groupId>ch.qos.reload4j</groupId>
+      <!-- replaces log4j -->
+      <artifactId>reload4j</artifactId>
+      <!-- replaces log4j -->
       <optional>true</optional>
     </dependency>
     <dependency>

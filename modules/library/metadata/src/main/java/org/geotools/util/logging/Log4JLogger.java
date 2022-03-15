@@ -33,6 +33,27 @@ final class Log4JLogger extends LoggerAdapter {
     /** The Log4J logger to use. */
     final org.apache.log4j.Logger logger;
 
+    /** Used to define additional Log4J levels. */
+    static class Log4JLevel extends org.apache.log4j.Level {
+        Log4JLevel(int level, String levelStr, int syslogEquivalent) {
+            super(level, levelStr, syslogEquivalent);
+        }
+    }
+
+    private static final int CONFIG_INT = 15000;
+    /**
+     * Maps to Java Utility Logging {@link Level#CONFIG}, showing up below INFO messages when used
+     * in Log4J setup.
+     */
+    public static final org.apache.log4j.Level CONFIG = new Log4JLevel(CONFIG_INT, "CONFIG", 6);
+
+    private static final int FINEST_INT = 4000;
+    /**
+     * Maps to Java Utility Logging {@link Level#FINEST}, showing up below TRACE messages when used
+     * in Log4J setup
+     */
+    public static final org.apache.log4j.Level FINEST = new Log4JLevel(FINEST_INT, "FINEST", 7);
+
     /**
      * Creates a new logger.
      *
@@ -49,37 +70,37 @@ final class Log4JLogger extends LoggerAdapter {
     private static org.apache.log4j.Level toLog4JLevel(final Level level) {
         final int n = level.intValue();
         switch (n / 100) {
-            default:
-                {
-                    // MAX_VALUE is a special value for Level.OFF. Otherwise and
-                    // if positive, log to fatal since we are greater than SEVERE.
-                    switch (n) {
-                        default:
-                            if (n >= 0)
-                                return org.apache.log4j.Level.FATAL; // fallthrough ALL otherwise.
-                        case Integer.MIN_VALUE:
-                            return org.apache.log4j.Level.ALL;
-                        case Integer.MAX_VALUE:
-                            return org.apache.log4j.Level.OFF;
-                    }
-                }
-            case 10:
-                return org.apache.log4j.Level.ERROR; // SEVERE
-            case 9:
-                return org.apache.log4j.Level.WARN; // WARNING
+            case 10: // SEVERE
+                return org.apache.log4j.Level.ERROR;
+            case 9: // WARNING
+                return org.apache.log4j.Level.WARN;
             case 8: // INFO
-            case 7:
-                return org.apache.log4j.Level.INFO; // CONFIG
+                return org.apache.log4j.Level.INFO;
+            case 7: // CONFIG
+                return CONFIG;
             case 6: // (not allocated)
-            case 5:
-                return org.apache.log4j.Level.DEBUG; // FINE
-            case 4:
-                return org.apache.log4j.Level.TRACE; // FINER
+            case 5: // FINE
+                return org.apache.log4j.Level.DEBUG;
+            case 4: // FINER
+                return org.apache.log4j.Level.TRACE;
             case 3: // FINEST
+                return FINEST;
             case 2: // (not allocated)
             case 1: // (not allocated)
-            case 0:
-                return org.apache.log4j.Level.ALL; // ALL
+            case 0: // ALL
+                return org.apache.log4j.Level.ALL;
+            default:
+                // MAX_VALUE is a special value for Level.OFF. Otherwise and
+                // if positive, log to fatal since we are greater than SEVERE.
+                switch (n) {
+                    case Integer.MIN_VALUE:
+                        return org.apache.log4j.Level.ALL;
+                    case Integer.MAX_VALUE:
+                        return org.apache.log4j.Level.OFF;
+                    default:
+                        if (n >= 0) return org.apache.log4j.Level.FATAL;
+                        else return org.apache.log4j.Level.ALL;
+                }
         }
     }
 
@@ -89,9 +110,11 @@ final class Log4JLogger extends LoggerAdapter {
         if (n == org.apache.log4j.Level.OFF_INT) return Level.OFF;
         if (n >= org.apache.log4j.Level.ERROR_INT) return Level.SEVERE;
         if (n >= org.apache.log4j.Level.WARN_INT) return Level.WARNING;
-        if (n >= org.apache.log4j.Level.INFO_INT) return Level.CONFIG;
+        if (n >= org.apache.log4j.Level.INFO_INT) return Level.INFO;
+        if (n >= CONFIG_INT) return Level.CONFIG;
         if (n >= org.apache.log4j.Level.DEBUG_INT) return Level.FINE;
         if (n >= org.apache.log4j.Level.TRACE_INT) return Level.FINER;
+        if (n >= FINEST_INT) return Level.FINEST;
         return Level.ALL;
     }
 
@@ -158,5 +181,18 @@ final class Log4JLogger extends LoggerAdapter {
     @Override
     public void finest(String message) {
         logger.trace(message);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("Log4jLogger: ");
+        sb.append(getName() == null ? "anonymous" : getName());
+        sb.append(" : ");
+        sb.append(getLevel());
+        sb.append(" (");
+        sb.append(logger.getLevel());
+        sb.append(")");
+
+        return sb.toString();
     }
 }

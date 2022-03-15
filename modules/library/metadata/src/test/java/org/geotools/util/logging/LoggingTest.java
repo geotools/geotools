@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2022, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -73,8 +73,7 @@ public class LoggingTest {
                     log4j, org.apache.logging.log4j.Level.WARN);
 
             // logger.setLevel(Level.WARNING);
-
-            assertEquals(Level.WARNING, logger.getLevel());
+            assertSame("java level mapped", Level.WARNING, logger.getLevel());
             assertTrue(logger.isLoggable(Level.WARNING));
             assertTrue(logger.isLoggable(Level.SEVERE));
             assertFalse(logger.isLoggable(Level.CONFIG));
@@ -88,7 +87,7 @@ public class LoggingTest {
 
             org.apache.logging.log4j.core.config.Configurator.setLevel(
                     log4j, org.apache.logging.log4j.Level.OFF);
-            assertEquals(Level.OFF, logger.getLevel());
+            assertSame("java level mapped", Level.OFF, logger.getLevel());
 
             logger.finest("Message to Commons-logging at FINEST level.");
             logger.finer("Message to Commons-logging at FINER level.");
@@ -104,13 +103,14 @@ public class LoggingTest {
         }
     }
 
-    /** Tests the redirection to Log4J. */
+    /** Tests the redirection to Log4J classes (provided by reload4j) */
     @Test
-    public void testLog4J2() throws ClassNotFoundException {
+    public void testLog4J() throws ClassNotFoundException {
         try {
             Logging.GEOTOOLS.setLoggerFactory("org.geotools.util.logging.Log4JLoggerFactory");
             Logger logger = Logging.getLogger("org.geotools");
             assertTrue(logger instanceof Log4JLogger);
+            Log4JLogger logger4j = (Log4JLogger) logger;
             /*
              * Tests level setting, ending with OFF in order to avoid
              * polluting the standard output stream with this test.
@@ -118,18 +118,30 @@ public class LoggingTest {
             final Level oldLevel = logger.getLevel();
 
             logger.setLevel(Level.WARNING);
-            assertEquals(Level.WARNING, logger.getLevel());
+            assertSame("java level mapped", Level.WARNING, logger.getLevel());
+            assertSame(
+                    "log4j level mapped", org.apache.log4j.Level.WARN, logger4j.logger.getLevel());
             assertTrue(logger.isLoggable(Level.WARNING));
-            assertTrue(logger.isLoggable(Level.SEVERE));
-            assertFalse(logger.isLoggable(Level.CONFIG));
+            assertFalse(logger.isLoggable(Level.INFO));
+
+            logger.setLevel(Level.CONFIG);
+            assertSame("java level mapped", Level.CONFIG, logger.getLevel());
+            assertSame("log4j level mapped", Log4JLogger.CONFIG, logger4j.logger.getLevel());
+            assertTrue(logger.isLoggable(Level.CONFIG));
+            assertFalse(logger.isLoggable(Level.FINE));
 
             logger.setLevel(Level.FINER);
-            assertEquals(Level.FINER, logger.getLevel());
+            assertSame("java level mapped", Level.FINER, logger.getLevel());
+            assertSame(
+                    "log4j level mapped", org.apache.log4j.Level.TRACE, logger4j.logger.getLevel());
             assertTrue(logger.isLoggable(Level.FINER));
             assertTrue(logger.isLoggable(Level.SEVERE));
 
             logger.setLevel(Level.OFF);
-            assertEquals(Level.OFF, logger.getLevel());
+            assertSame("java level mapped", Level.OFF, logger.getLevel());
+            assertSame(
+                    "log4j level mapped", org.apache.log4j.Level.OFF, logger4j.logger.getLevel());
+
             logger.finer("Message to Log4J at FINER level.");
             logger.fine("Message to Log4J at FINE level.");
             logger.config("Message to Log4J at CONFIG level.");
@@ -149,7 +161,8 @@ public class LoggingTest {
         try {
             Logging.GEOTOOLS.setLoggerFactory("org.geotools.util.logging.Log4J2LoggerFactory");
             Logger logger = Logging.getLogger("org.geotools");
-            assertTrue(logger instanceof Log4JLogger);
+            assertTrue(logger instanceof Log4J2Logger);
+            Log4J2Logger logger4j = (Log4J2Logger) logger;
             /*
              * Tests level setting, ending with OFF in order to avoid
              * polluting the standard output stream with this test.
@@ -157,18 +170,38 @@ public class LoggingTest {
             final Level oldLevel = logger.getLevel();
 
             logger.setLevel(Level.WARNING);
-            assertEquals(Level.WARNING, logger.getLevel());
+            assertSame("java level mapped", Level.WARNING, logger.getLevel());
+            assertSame(
+                    "log4j level mapped",
+                    org.apache.logging.log4j.Level.WARN,
+                    logger4j.logger.getLevel());
             assertTrue(logger.isLoggable(Level.WARNING));
             assertTrue(logger.isLoggable(Level.SEVERE));
             assertFalse(logger.isLoggable(Level.CONFIG));
 
+            logger.setLevel(Level.CONFIG);
+            assertSame("java level mapped", Level.CONFIG, logger.getLevel());
+            assertSame("log4j level mapped", Log4J2Logger.CONFIG, logger4j.logger.getLevel());
+            assertTrue(logger.isLoggable(Level.INFO));
+            assertTrue(logger.isLoggable(Level.CONFIG));
+            assertFalse(logger.isLoggable(Level.FINE));
+
             logger.setLevel(Level.FINER);
-            assertEquals(Level.FINER, logger.getLevel());
+            assertSame(Level.FINER, logger.getLevel());
+            assertSame(
+                    "log4j level mapped",
+                    org.apache.logging.log4j.Level.TRACE,
+                    logger4j.logger.getLevel());
             assertTrue(logger.isLoggable(Level.FINER));
             assertTrue(logger.isLoggable(Level.SEVERE));
 
             logger.setLevel(Level.OFF);
-            assertEquals(Level.OFF, logger.getLevel());
+            assertSame("java level mapped", Level.OFF, logger.getLevel());
+            assertSame(
+                    "log4j level mapped",
+                    org.apache.logging.log4j.Level.OFF,
+                    logger4j.logger.getLevel());
+
             logger.finer("Message to Log4J at FINER level.");
             logger.fine("Message to Log4J at FINE level.");
             logger.config("Message to Log4J at CONFIG level.");

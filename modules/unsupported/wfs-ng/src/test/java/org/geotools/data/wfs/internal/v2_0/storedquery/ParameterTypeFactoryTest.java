@@ -18,6 +18,7 @@ package org.geotools.data.wfs.internal.v2_0.storedquery;
 
 import static org.junit.Assert.assertEquals;
 
+import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +41,8 @@ public class ParameterTypeFactoryTest {
     FeatureTypeInfoImpl featureType;
     StoredQueryConfiguration config;
     StoredQueryDescriptionType desc;
+
+    private final char DC = DecimalFormatSymbols.getInstance().getDecimalSeparator();
 
     @Before
     public void setup() {
@@ -190,7 +193,7 @@ public class ParameterTypeFactoryTest {
 
         ParameterType tmp = params.get(0);
         assertEquals("foo", tmp.getName());
-        assertEquals("3.0", tmp.getValue());
+        assertEquals("3" + DC + "0", tmp.getValue());
     }
 
     // Test that bbox parameters from the context are mapped appropriately
@@ -225,19 +228,19 @@ public class ParameterTypeFactoryTest {
         // the order is not paramount, though
         ParameterType tmp = params.get(0);
         assertEquals("param1", tmp.getName());
-        assertEquals("-10.0", tmp.getValue());
+        assertEquals("-10" + DC + "0", tmp.getValue());
 
         tmp = params.get(1);
         assertEquals("param2", tmp.getName());
-        assertEquals("-5.0", tmp.getValue());
+        assertEquals("-5" + DC + "0", tmp.getValue());
 
         tmp = params.get(2);
         assertEquals("param3", tmp.getName());
-        assertEquals("10.0", tmp.getValue());
+        assertEquals("10" + DC + "0", tmp.getValue());
 
         tmp = params.get(3);
         assertEquals("param4", tmp.getName());
-        assertEquals("5.0", tmp.getValue());
+        assertEquals("5" + DC + "0", tmp.getValue());
     }
 
     private ParameterExpressionType createParam(String name) {
@@ -337,6 +340,6 @@ public class ParameterTypeFactoryTest {
 
         ParameterType tmp = params.get(0);
         assertEquals("foo", tmp.getName());
-        assertEquals("3.0,10", tmp.getValue());
+        assertEquals("3" + DC + "0,10", tmp.getValue());
     }
 }

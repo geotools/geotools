@@ -208,7 +208,7 @@ final class Log4J2Logger extends LoggerAdapter {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("Log4jLogger: ");
+        StringBuilder sb = new StringBuilder("Log4j2Logger: ");
         sb.append(getName() == null ? "anonymous" : getName());
         sb.append(" : ");
         sb.append(getLevel());

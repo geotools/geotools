@@ -313,7 +313,7 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("request CRS " + (requestCRS == null ? "NULL" : requestCRS.getName()));
         }
-        if (requestCRS == null) {
+        if (requestCRS == null && srs != null) {
             try {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine("request CRS decoding" + srs);
@@ -326,6 +326,13 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
                 }
                 throw new RuntimeException(e);
             }
+        }
+        if (requestCRS == null && requestedBBox != null) {
+            requestCRS = requestedBBox.getCoordinateReferenceSystem();
+        }
+
+        if (requestCRS == null) {
+            throw new ServiceException("CRS or SRS wasn't set for this GetTileRequest.");
         }
 
         // See if the layer supports the requested SRS. Matching against the SRS rather than the

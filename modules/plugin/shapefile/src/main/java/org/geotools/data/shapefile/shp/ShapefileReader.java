@@ -209,7 +209,7 @@ public class ShapefileReader implements FileReader, Closeable {
 
     private final Record record = new Record();
 
-    private final boolean randomAccessEnabled;
+    private boolean randomAccessEnabled;
 
     private boolean useMemoryMappedBuffer;
 
@@ -261,6 +261,28 @@ public class ShapefileReader implements FileReader, Closeable {
             boolean onlyRandomAccess)
             throws IOException, ShapefileException {
         this.channel = shapefileFiles.getReadChannel(ShpFileType.SHP, this);
+        boolean initialized = false;
+        try {
+            doInit(shapefileFiles, strict, useMemoryMapped, gf, onlyRandomAccess);
+            initialized = true;
+        } finally {
+            if (!initialized) {
+                try {
+                    close();
+                } catch (IOException e) {
+                    // do nothing
+                }
+            }
+        }
+    }
+
+    private void doInit(
+            ShpFiles shapefileFiles,
+            boolean strict,
+            boolean useMemoryMapped,
+            GeometryFactory gf,
+            boolean onlyRandomAccess)
+            throws IOException, ShapefileException {
         this.useMemoryMappedBuffer = useMemoryMapped;
         streamLogger.open();
         randomAccessEnabled = channel instanceof FileChannel;

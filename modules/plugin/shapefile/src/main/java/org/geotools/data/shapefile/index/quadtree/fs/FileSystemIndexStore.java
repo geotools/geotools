@@ -16,6 +16,8 @@
  */
 package org.geotools.data.shapefile.index.quadtree.fs;
 
+import static org.geotools.data.shapefile.files.ShpFileType.QIX;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -26,6 +28,8 @@ import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.data.shapefile.files.FileReader;
+import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.shapefile.index.quadtree.IndexStore;
 import org.geotools.data.shapefile.index.quadtree.Node;
 import org.geotools.data.shapefile.index.quadtree.QuadTree;
@@ -34,16 +38,24 @@ import org.geotools.data.shapefile.shp.IndexFile;
 import org.locationtech.jts.geom.Envelope;
 
 /** @author Tommaso Nolli */
-public class FileSystemIndexStore implements IndexStore {
+public class FileSystemIndexStore implements FileReader, IndexStore {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(FileSystemIndexStore.class);
     private File file;
     private byte byteOrder;
+    private ShpFiles shpFiles;
 
     /** Constructor. The byte order defaults to NEW_MSB_ORDER */
     public FileSystemIndexStore(File file) {
         this.file = file;
         this.byteOrder = IndexHeader.NEW_MSB_ORDER;
+    }
+
+    /** Constructor. The byte order defaults to NEW_MSB_ORDER */
+    public FileSystemIndexStore(File file, ShpFiles shpFiles) {
+        this.file = file;
+        this.byteOrder = IndexHeader.NEW_MSB_ORDER;
+        this.shpFiles = shpFiles;
     }
 
     /** Constructor */
@@ -155,54 +167,91 @@ public class FileSystemIndexStore implements IndexStore {
     @Override
     @SuppressWarnings("PMD.CloseResource") // channel is managed in the returned value
     public QuadTree load(IndexFile indexfile, boolean useMemoryMapping) throws StoreException {
-        QuadTree tree = null;
-
+        boolean initialized = false;
+        FileInputStream fis = null;
+        FileChannel channel = null;
         try {
             if (LOGGER.isLoggable(Level.FINEST)) {
                 LOGGER.finest("Opening QuadTree " + this.file.getCanonicalPath());
             }
-
-            final FileInputStream fis = new FileInputStream(file);
-            final FileChannel channel = fis.getChannel();
-
-            IndexHeader header = new IndexHeader(channel);
-
-            ByteOrder order = byteToOrder(header.getByteOrder());
-            ByteBuffer buf = ByteBuffer.allocate(8);
-            buf.order(order);
-            channel.read(buf);
-            ((Buffer) buf).flip();
-
-            tree =
-                    new QuadTree(buf.getInt(), buf.getInt(), indexfile) {
-                        @Override
-                        public void insert(int recno, Envelope bounds) {
-                            throw new UnsupportedOperationException("File quadtrees are immutable");
-                        }
-
-                        @Override
-                        public boolean trim() {
-                            return false;
-                        }
-
-                        @Override
-                        public void close() throws StoreException {
-                            super.close();
-                            try {
-                                channel.close();
-                                fis.close();
-                            } catch (IOException e) {
-                                throw new StoreException(e);
-                            }
-                        }
-                    };
-
-            tree.setRoot(FileSystemNode.readNode(0, null, channel, order, useMemoryMapping));
-
-            LOGGER.finest("QuadTree opened");
+            if (shpFiles != null) {
+                // the QIX file must be a local file for this class to be used so cast is safe
+                channel = (FileChannel) shpFiles.getReadChannel(QIX, this);
+            } else {
+                // just for backwards compatibility
+                fis = new FileInputStream(file);
+                channel = fis.getChannel();
+            }
+            QuadTree tree = doLoad(fis, channel, indexfile, useMemoryMapping);
+            initialized = true;
+            return tree;
         } catch (IOException e) {
             throw new StoreException(e);
+        } finally {
+            if (!initialized) {
+                try {
+                    indexfile.close();
+                } catch (IOException e) {
+                    // do nothing
+                }
+                try {
+                    if (channel != null) {
+                        channel.close();
+                    }
+                } catch (IOException e) {
+                    // do nothing
+                }
+                try {
+                    if (fis != null) {
+                        fis.close();
+                    }
+                } catch (IOException e) {
+                    // do nothing
+                }
+            }
         }
+    }
+
+    private QuadTree doLoad(
+            FileInputStream fis, FileChannel channel, IndexFile indexfile, boolean useMemoryMapping)
+            throws IOException {
+        IndexHeader header = new IndexHeader(channel);
+
+        ByteOrder order = byteToOrder(header.getByteOrder());
+        ByteBuffer buf = ByteBuffer.allocate(8);
+        buf.order(order);
+        channel.read(buf);
+        ((Buffer) buf).flip();
+
+        QuadTree tree =
+                new QuadTree(buf.getInt(), buf.getInt(), indexfile) {
+                    @Override
+                    public void insert(int recno, Envelope bounds) {
+                        throw new UnsupportedOperationException("File quadtrees are immutable");
+                    }
+
+                    @Override
+                    public boolean trim() {
+                        return false;
+                    }
+
+                    @Override
+                    public void close() throws StoreException {
+                        super.close();
+                        try {
+                            channel.close();
+                            if (fis != null) {
+                                fis.close();
+                            }
+                        } catch (IOException e) {
+                            throw new StoreException(e);
+                        }
+                    }
+                };
+
+        tree.setRoot(FileSystemNode.readNode(0, null, channel, order, useMemoryMapping));
+
+        LOGGER.finest("QuadTree opened");
 
         return tree;
     }
@@ -241,5 +290,10 @@ public class FileSystemIndexStore implements IndexStore {
     /** @param byteOrder The byteOrder to set. */
     public void setByteOrder(byte byteOrder) {
         this.byteOrder = byteOrder;
+    }
+
+    @Override
+    public String id() {
+        return getClass().getName();
     }
 }

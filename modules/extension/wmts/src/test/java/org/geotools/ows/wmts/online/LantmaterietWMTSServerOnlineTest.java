@@ -22,17 +22,22 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.http.DelegateHTTPClient;
+import org.geotools.http.HTTPClientFinder;
+import org.geotools.http.HTTPResponse;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.ows.ServiceException;
-import org.geotools.ows.wmts.WMTSSpecification;
 import org.geotools.ows.wmts.WebMapTileServer;
 import org.geotools.ows.wmts.map.WMTSCoverageReader;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
-import org.geotools.ows.wmts.model.WMTSLayer;
 import org.geotools.referencing.CRS;
 import org.geotools.tile.Tile;
+import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -265,7 +270,9 @@ public class LantmaterietWMTSServerOnlineTest extends WMTSOnlineTestCase {
         try {
             System.setProperty("org.geotools.referencing.forceXY", "true");
             CRS.reset("all");
-            WebMapTileServer wmts = new WebMapTileServer(server);
+
+            GetUrlHttpClient client = new GetUrlHttpClient();
+            WebMapTileServer wmts = new WebMapTileServer(server, client);
 
             WMTSCapabilities capabilities = wmts.getCapabilities();
             // server supports urn:ogc:def:crs:EPSG::3006
@@ -289,12 +296,12 @@ public class LantmaterietWMTSServerOnlineTest extends WMTSOnlineTestCase {
             WMTSCoverageReader reader =
                     wmtsCoverageReader(wmts, capabilities, envelope, "topowebb_nedtonad");
             RenderedImage ri = getRenderImageResult(reader, requested);
-            WMTSSpecification.GetMultiTileRequest request =
-                    (WMTSSpecification.GetMultiTileRequest) reader.getTileRequest();
-            String requestSRS = CRS.toSRS(request.getCrs());
-            assertEquals("urn:ogc:def:crs:EPSG::3006", requestSRS);
-            WMTSLayer layer = capabilities.getLayer("topowebb_nedtonad");
-            assertTrue(layer.getSrs().contains(requestSRS));
+
+            Assert.assertTrue(
+                    "Url's for getTile should contain matrixTileSet=3006",
+                    client.paths.stream()
+                            .anyMatch(path -> path.contains("/topowebb_nedtonad/default/3006/")));
+
             URL url = getClass().getResource("different_srs_def.png");
             ImageAssert.assertEquals(new File(url.toURI()), ri, 100);
         } finally {
@@ -304,5 +311,26 @@ public class LantmaterietWMTSServerOnlineTest extends WMTSOnlineTestCase {
 
     public void cleanUp() {
         System.clearProperty("org.geotools.referencing.forceXY");
+    }
+
+    private static class GetUrlHttpClient extends DelegateHTTPClient {
+
+        private List<String> paths = new ArrayList<>();
+
+        GetUrlHttpClient() {
+            super(HTTPClientFinder.createClient());
+        }
+
+        @Override
+        public HTTPResponse get(URL url) throws IOException {
+            paths.add(url.getPath());
+            return delegate.get(url);
+        }
+
+        @Override
+        public HTTPResponse get(URL url, Map<String, String> headers) throws IOException {
+            paths.add(url.getPath());
+            return delegate.get(url, headers);
+        }
     }
 }

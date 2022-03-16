@@ -131,7 +131,7 @@ public class TileMatrixLimitsBinding extends AbstractComplexEMFBinding {
     }
 
     private static BigInteger toBigInt(Object o) {
-        return BigInteger.valueOf(((Integer) o).longValue());
+        return BigInteger.valueOf(((Number) o).longValue());
     }
 
     @Override

@@ -99,6 +99,7 @@ public class WMTSMapLayer extends GridReaderLayer {
     }
 
     /** Returns the {@link WebMapTileServer} used by this layer */
+    @Deprecated
     public WebMapTileServer getWebMapServer() {
         return getReader().wmts;
     }
@@ -109,6 +110,7 @@ public class WMTSMapLayer extends GridReaderLayer {
     }
 
     /** Returns last GetMap request performed by this layer */
+    @Deprecated
     public GetTileRequest getLastGetMap() {
         return getReader().getTileRequest();
     }
@@ -127,6 +129,7 @@ public class WMTSMapLayer extends GridReaderLayer {
         return rawTime;
     }
 
+    /** Set request Time the way the server wants it */
     public void setRawTime(String rawTime) {
         this.rawTime = rawTime;
         getReader().setRequestedTime(rawTime);

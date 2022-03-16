@@ -50,6 +50,7 @@ import org.geotools.http.MockHttpClient;
 import org.geotools.http.MockHttpResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wmts.WebMapTileServer;
+import org.geotools.ows.wmts.map.WMTSCoverageReader.TileRequest;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
 import org.geotools.ows.wmts.model.WMTSLayer;
 import org.geotools.ows.wmts.request.AbstractGetTileRequest;
@@ -245,9 +246,9 @@ public class WMTSCoverageReaderTest {
         ReferencedEnvelope bbox = new ReferencedEnvelope(5, 12, 45, 49, CRS.decode("EPSG:4326"));
         int width = 400;
         int height = 200;
-        ReferencedEnvelope grid = wcr.initTileRequest(bbox, width, height, null);
-        assertNotNull(grid);
-        GetTileRequest mapRequest = wcr.getTileRequest();
+        TileRequest request = wcr.initTileRequest(bbox, width, height, null);
+        assertNotNull(request);
+        GetTileRequest mapRequest = request.createTileRequest();
         String templateURL = ((AbstractGetTileRequest) mapRequest).getTemplateUrl();
         assertEquals(
                 "https://maps.wien.gv.at/basemap/bmaphidpi/{Style}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpeg",
@@ -259,14 +260,11 @@ public class WMTSCoverageReaderTest {
 
         int width = 400;
         int height = 200;
-        ReferencedEnvelope grid = wcr.initTileRequest(bbox, width, height, null);
-        assertNotNull(grid);
-        GetTileRequest mapRequest = wcr.getTileRequest();
-        mapRequest.setCRS(grid.getCoordinateReferenceSystem());
+        TileRequest request = wcr.initTileRequest(bbox, width, height, null);
+        assertNotNull(request);
+        GetTileRequest mapRequest = request.createTileRequest();
         Set<Tile> responses = mapRequest.getTiles();
         for (Tile t : responses) {
-            /*System.out.println(t);
-            // System.out.println(t.getTileIdentifier() + " " + t.getExtent());*/
             assertNotNull(t);
         }
         return responses;

@@ -19,8 +19,13 @@ package org.geotools.ows.wmts.online;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.http.DelegateHTTPClient;
+import org.geotools.http.HTTPClientFinder;
+import org.geotools.http.HTTPResponse;
 import org.geotools.map.MapContent;
 import org.geotools.ows.wmts.WebMapTileServer;
 import org.geotools.ows.wmts.map.WMTSMapLayer;
@@ -30,6 +35,7 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.lite.RendererUtilities;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.test.OnlineTestCase;
+import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
@@ -37,6 +43,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /** @author ian */
 public class WMTSMapLayerOnlineTest extends OnlineTestCase {
+
+    private CountHttpGetClient httpClient;
 
     private URL serverURL;
 
@@ -50,7 +58,8 @@ public class WMTSMapLayerOnlineTest extends OnlineTestCase {
     @Override
     protected void setUpInternal() throws Exception {
         serverURL = new URL(fixture.getProperty("kvp_server"));
-        WebMapTileServer server = new WebMapTileServer(serverURL);
+        httpClient = new CountHttpGetClient();
+        WebMapTileServer server = new WebMapTileServer(serverURL, httpClient);
         WMTSLayer wlayer = server.getCapabilities().getLayer("topp:states");
         assertNotNull(wlayer);
         kvpMapLayer = new WMTSMapLayer(server, wlayer);
@@ -85,9 +94,9 @@ public class WMTSMapLayerOnlineTest extends OnlineTestCase {
                 CRS.lookupIdentifier(kvpMapLayer.getCoordinateReferenceSystem(), true));
     }
 
-    /** Test method for {@link WMTSMapLayer#getLastGetMap()}. */
+    /** Test if our http client is used, and how many calls. */
     @Test
-    public void testGetLastGetMap() {
+    public void testCountHttpGetCount() {
         StreamingRenderer renderer = new StreamingRenderer();
         MapContent mapContent = new MapContent();
         mapContent.addLayer(kvpMapLayer);
@@ -98,7 +107,7 @@ public class WMTSMapLayerOnlineTest extends OnlineTestCase {
         AffineTransform transform =
                 RendererUtilities.worldToScreenTransform(kvpMapLayer.getBounds(), paintArea);
         renderer.paint(image.createGraphics(), paintArea, kvpMapLayer.getBounds(), transform);
-        assertNotNull(kvpMapLayer.getLastGetMap());
+        Assert.assertEquals(2, httpClient.count);
     }
 
     /**
@@ -116,5 +125,26 @@ public class WMTSMapLayerOnlineTest extends OnlineTestCase {
         crs = CRS.decode("epsg:27700");
         // assertFalse(restMapLayer.isNativelySupported(crs));
         assertFalse(kvpMapLayer.isNativelySupported(crs));
+    }
+
+    private static class CountHttpGetClient extends DelegateHTTPClient {
+
+        int count;
+
+        public CountHttpGetClient() {
+            super(HTTPClientFinder.createClient());
+        }
+
+        @Override
+        public HTTPResponse get(URL url) throws IOException {
+            count++;
+            return delegate.get(url);
+        }
+
+        @Override
+        public HTTPResponse get(URL url, Map<String, String> headers) throws IOException {
+            count++;
+            return delegate.get(url, headers);
+        }
     }
 }

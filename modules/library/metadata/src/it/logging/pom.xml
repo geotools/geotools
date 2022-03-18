@@ -7,9 +7,10 @@
   <artifactId>logging</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
-  <name>GeoTools Logging Integration Demo</name>
+  <name>GeoTools Logging Integration Example</name>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.deploy.skip>true</maven.deploy.skip>
     <geotools.version>27-SNAPSHOT</geotools.version>
   </properties>
   <dependencies>
@@ -18,21 +19,26 @@
       <artifactId>gt-metadata</artifactId>
       <version>${geotools.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.geotools.ogc</groupId>
+      <artifactId>net.opengis.ows</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
   </dependencies>
   <repositories>
     <repository>
-    <id>osgeo</id>
-    <name>OSGeo Release Repository</name>
-    <url>https://repo.osgeo.org/repository/release/</url>
-    <snapshots><enabled>false</enabled></snapshots>
-    <releases><enabled>true</enabled></releases>
+      <id>osgeo</id>
+      <name>OSGeo Release Repository</name>
+      <url>https://repo.osgeo.org/repository/release/</url>
+      <snapshots><enabled>false</enabled></snapshots>
+      <releases><enabled>true</enabled></releases>
     </repository>
     <repository>
-    <id>osgeo-snapshot</id>
-    <name>OSGeo Snapshot Repository</name>
-    <url>https://repo.osgeo.org/repository/snapshot/</url>
-    <snapshots><enabled>true</enabled></snapshots>
-    <releases><enabled>false</enabled></releases>
+      <id>osgeo-snapshot</id>
+      <name>OSGeo Snapshot Repository</name>
+      <url>https://repo.osgeo.org/repository/snapshot/</url>
+      <snapshots><enabled>true</enabled></snapshots>
+      <releases><enabled>false</enabled></releases>
     </repository>
   </repositories>
 
@@ -52,17 +58,6 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.0.0</version>
-        <!--
-        <configuration>
-          <systemProperties>
-            <systemProperty>
-              <key>java.util.logging.config.file</key>
-              <value>${basedir}/src/main/resources/logging.properties</value>
-            </systemProperty>
-          </systemProperties>
-          <mainClass>org.geotools.tutorial.reload.Reload4JIntegration</mainClass>
-        </configuration>
-        -->
         <configuration>
           <executable>java</executable>
           <arguments>
@@ -70,6 +65,7 @@
             <!-- uses dependencies and build directory -->
             <classpath/>
             <argument>-Djava.util.logging.config.file=logging.properties</argument>
+            <argument>-Djava.awt.headless=true</argument>
             <argument>org.geotools.tutorial.logging.LoggingIntegration</argument>
           </arguments>
         </configuration>
@@ -82,15 +78,6 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
-      <plugin>
-        <!-- do not deploy tutorial examples -->
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <version>3.0.0-M2</version>
-        <configuration>
-          <skip>true</skip>
-        </configuration>
       </plugin>
     </plugins>
   </build>

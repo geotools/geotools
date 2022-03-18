@@ -22,12 +22,24 @@ import java.util.logging.Logger;
 import javax.media.jai.OperationRegistry;
 import javax.media.jai.util.ImagingListener;
 
+/**
+ * Listens to JAI events, redirecting logging to javax.media.jai loggers.
+ *
+ * <p>Logger is determined from {@code where} parameter allowing fine-grain control of
+ * javax.media.jai logging.
+ */
 final class LoggingImagingListener implements ImagingListener {
     @Override
     public boolean errorOccurred(
             String message, Throwable thrown, Object where, boolean isRetryable)
             throws RuntimeException {
-        Logger log = Logging.getLogger(LoggingImagingListener.class);
+        Logger log;
+        if (where == null) {
+            log = Logging.getLogger("javax.media.jai");
+        } else {
+            Class classe = where instanceof Class ? (Class) where : where.getClass();
+            log = Logging.getLogger(classe);
+        }
         if (message.contains("Continuing in pure Java mode")) {
             log.log(Level.FINER, message, thrown);
             return false; // we are not trying to recover

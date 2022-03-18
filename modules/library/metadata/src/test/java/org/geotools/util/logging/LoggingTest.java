@@ -38,15 +38,19 @@ public class LoggingTest {
         assertEquals("", Logging.ALL.name);
         assertEquals("org.geotools", Logging.GEOTOOLS.name);
         assertEquals(0, Logging.GEOTOOLS.getChildren().length);
+
         Logging[] children = Logging.ALL.getChildren();
-        assertEquals(1, children.length);
-        assertEquals("org", children[0].name);
-        assertSame(children[0], Logging.getLogging("org"));
-        children = children[0].getChildren();
+        assertEquals(2, children.length);
+        assertEquals("javax", children[0].name);
+        assertEquals("org", children[1].name);
+
+        children = children[1].getChildren();
         assertEquals(1, children.length);
         assertSame(Logging.GEOTOOLS, children[0]);
+
         assertSame(Logging.ALL, Logging.getLogging(""));
         assertSame(Logging.GEOTOOLS, Logging.getLogging("org.geotools"));
+        assertSame(Logging.JAI, Logging.getLogging("javax.media.jai"));
     }
 
     /** Tests the redirection to Commons-logging. */

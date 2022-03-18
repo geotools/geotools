@@ -16,6 +16,9 @@
  */
 package org.geotools.util.logging;
 
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.core.joran.spi.ConfigurationWatchList;
+import ch.qos.logback.core.joran.util.ConfigurationWatchListUtil;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -82,5 +85,17 @@ public class LogbackLoggerFactory extends LoggerFactory<org.slf4j.Logger> {
             return ((LogbackLogger) logger).logger;
         }
         return null;
+    }
+
+    @Override
+    public String lookupConfiguration() {
+        try {
+            LoggerContext context = (LoggerContext) org.slf4j.LoggerFactory.getILoggerFactory();
+            ConfigurationWatchList configurationWatchList =
+                    ConfigurationWatchListUtil.getConfigurationWatchList(context);
+            return configurationWatchList.getMainURL().toString();
+        } catch (Exception unknown) {
+            return "unknown";
+        }
     }
 }

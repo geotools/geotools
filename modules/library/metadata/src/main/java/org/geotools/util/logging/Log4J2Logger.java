@@ -23,6 +23,28 @@ import org.apache.logging.log4j.spi.StandardLevel;
  * An adapter that redirect all Java logging events to the Apache's <A
  * HREF="http://logging.apache.org/log4j">Log4J</A> framework.
  *
+ * <p>Level conversions agree with <a
+ * href="https://logging.apache.org/log4j/2.x/log4j-jul/index.html">Log4j JDK Logging Adapter</a>:
+ *
+ * <ul>
+ *   <li>{@link java.util.logging.Level#OFF}: {@link org.apache.logging.log4j.Level#OFF}
+ *   <li>{@link java.util.logging.Level#SEVERE}: {@link org.apache.logging.log4j.Level#ERROR}
+ *   <li>{@link java.util.logging.Level#WARNING}: {@link org.apache.logging.log4j.Level#WARN}
+ *   <li>{@link java.util.logging.Level#INFO}: {@link org.apache.logging.log4j.Level#INFO}
+ *   <li>{@link java.util.logging.Level#CONFIG}: {@link #CONFIG}
+ *   <li>{@link java.util.logging.Level#FINE}: {@link org.apache.logging.log4j.Level#DEBUG}
+ *   <li>{@link java.util.logging.Level#FINER}: {@link org.apache.logging.log4j.Level#TRACE}
+ *   <li>{@link java.util.logging.Level#FINEST}: {@link #FINEST}
+ *   <li>{@link java.util.logging.Level#ALL}: {@link org.apache.logging.log4j.Level#ALL}
+ * </ul>
+ *
+ * To configure these additional levels use:
+ *
+ * <pre>&gt;code>    &gt;CustomLevels>
+ *      &gt;CustomLevel name="CONFIG" intLevel="450" /&lt
+ *     &gt;CustomLevel name="FINEST" intLevel="700" /&lt
+ *   &gt;/CustomLevels&lt</code></pre>
+ *
  * @since 27
  * @version $Id$
  * @author Jody Garnett (GeoCat)
@@ -38,20 +60,20 @@ final class Log4J2Logger extends LoggerAdapter {
      * value 450).
      *
      * <p>Note: {@link StandardLevel#getStandardLevel(int)} will map to {@link StandardLevel#INFO}
-     * if using a log4j adapter.
+     * if using a log4j adapter (StandardLevel value 550 between Level.INFO and Level.DEBUG).
      */
     public static final org.apache.logging.log4j.Level CONFIG =
             org.apache.logging.log4j.Level.forName("CONFIG", StandardLevel.INFO.intLevel() + 50);
 
     /**
      * Define a Log4j Level mapping to java util logging {@link Level#FINEST} Level (using
-     * StandardLevel value 700).
+     * StandardLevel value 700 which is higher the DEBUG).
      *
      * <p>Note: {@link StandardLevel#getStandardLevel(int)} will map to {@link StandardLevel#DEBUG}
      * if using a log4j adapter.
      */
     public static final org.apache.logging.log4j.Level FINEST =
-            org.apache.logging.log4j.Level.forName("FINEST", StandardLevel.DEBUG.intLevel() + 100);
+            org.apache.logging.log4j.Level.forName("FINEST", StandardLevel.TRACE.intLevel() + 100);
 
     /**
      * Creates a new logger adapter mapping from Log4J to java util logging.
@@ -74,19 +96,19 @@ final class Log4J2Logger extends LoggerAdapter {
     private static org.apache.logging.log4j.Level toLog4JLevel(final Level level) {
         final int n = level.intValue();
         switch (n / 100) {
-            case 10:
-                return org.apache.logging.log4j.Level.ERROR; // SEVERE
-            case 9:
-                return org.apache.logging.log4j.Level.WARN; // WARNING
+            case 10: // SEVERE
+                return org.apache.logging.log4j.Level.ERROR;
+            case 9: // WARNING
+                return org.apache.logging.log4j.Level.WARN;
             case 8: // INFO
-                return org.apache.logging.log4j.Level.INFO; // INFO
+                return org.apache.logging.log4j.Level.INFO;
             case 7:
                 return CONFIG; // CONFIG
             case 6: // (not allocated)
-            case 5:
-                return org.apache.logging.log4j.Level.DEBUG; // FINE
-            case 4:
-                return org.apache.logging.log4j.Level.TRACE; // FINER
+            case 5: // FINE
+                return org.apache.logging.log4j.Level.DEBUG;
+            case 4: // FINER
+                return org.apache.logging.log4j.Level.TRACE;
             case 3: // FINEST
                 return FINEST;
             case 2: // (not allocated)
@@ -187,7 +209,7 @@ final class Log4J2Logger extends LoggerAdapter {
 
     @Override
     public void config(String message) {
-        logger.info(message);
+        logger.log(CONFIG, message);
     }
 
     @Override
@@ -197,12 +219,12 @@ final class Log4J2Logger extends LoggerAdapter {
 
     @Override
     public void finer(String message) {
-        logger.debug(message);
+        logger.trace(message);
     }
 
     @Override
     public void finest(String message) {
-        logger.trace(message);
+        logger.log(FINEST, message);
     }
 
     @Override

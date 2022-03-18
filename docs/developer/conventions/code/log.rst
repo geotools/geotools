@@ -8,33 +8,41 @@ GeoTools typically (but not always) uses one logger per package and is named aft
 Getting a Logger
 ^^^^^^^^^^^^^^^^
 
-The Java way to get a logger is to invoke Logger.getLogger(String). However in the GeoTools library, this call is replaced by a call to Logging.setLogger(String) where Logging is a class in the org.geotools.util.logging package.
+Java provides a factory method Logger.getLogger(String), however in the GeoTools library we use org.geotools.util.logging.Logging.getLogger(String) to take advantage of our own LoggerFactory system:
 
-Example::
+.. code-block:: java
    
-   import org.geotools.util.logging.Logging;
+   package org.geotools.mypackage;
    
-   class MyClass {
-      void method() {
-        Logger logger = Logging.getLogger("org.geotools.mypackage");
-        logger.config("There is some configuration information.");
+   import java.util.logging.Logger;
+   import org.geotools.util.logging.Logging:
+
+   public class Example {
+     void method() {
+        final Logger LOGGER = Logging.getLogger("org.geotools.mypackage");
+        LOGGER.config("There is some configuration information.");
      }
    }
 
 Logger Declaration
 ^^^^^^^^^^^^^^^^^^
 
-The logger may be declared in the class's static fields or returned by a class's static method. This is not mandatory but suggested if it is going to be used in many places.
+The logger may be declared in the class's static fields or returned by a class's static method. This is not mandatory but suggested if it is going to be used is several methods:
 
-Example::
+.. code-block:: java
+   
+   package org.geotools.image;
    
    import java.util.logging.Logger;
    import org.geotools.util.logging.Logging:
    
-   public class GMLDataStore {
-       /** The logger for the GML Data Store */
-       private static final Logger LOGGER = Logging.getLogger("org.geotools.data.gml.GMLDataStore");
+   public class ImageWorker {
+   
+       /** The logger ImageWorker.class used is "org.geotools.image" */
+       private static final Logger LOGGER = Logging.getLogger(ImageWorker.class);
    }
+
+Abstract classes may define a protected logger for their subclasses to use:
 
 Logging Messages
 ^^^^^^^^^^^^^^^^
@@ -53,26 +61,64 @@ Finer      no unless configured             common when entering, returning, or 
 Finest     no unless configured             most verbose output
 ========== ================================ ====================================================
 
-A convenience method exists in Logger for each of those levels::
+A convenience method exists in Logger for each of those levels:
+
+.. code-block:: java
    
    LOGGER.info("There is a message of interest for ordinary user");
    
-
 Do not use the logging info level as a replacement of System.out.println for displaying debug information to the console.
    
-The info level is for end users. Use the fine, finer or finest levels for debug information, and setup yours $JAVA_HOME/jre/lib/logging.properties file accordingly (see Logging Configuration below).
+The INFO level is for end users. Use the FINE, FINER or FINEST levels for debug information.
+
+Logging configuration
+^^^^^^^^^^^^^^^^^^^^^
+
+There are :file:`logging.properties`` files available in the project directory:
+
+* :file:`quiet-logging.properties` - default for maven builds
+* :file:`info-logging.properties` - use ``-Dlogging-profile=info-logging`` to enable
+
+To provide custom logging when testing:
+
+1. Add `src/test/resources/logging.properties`
+2. In your project :file:`pom.xml` update ``maven-surefire-plugin`` configuration:
+
+   .. code-block:: xml
+   
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <systemPropertyVariables>
+            <java.util.logging.config.file>src/test/resources/logging.properties</java.util.logging.config.file>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+      
+See the :user:`user guide for details <library/metadata/logging/java_logging.html>` for examples of configuration, and bridging to other logging systems.
 
 Entering/Existing Logger
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-There are three more convenience methods: entering, exiting and throwing when entering and exiting a method, or when we are about to terminate a method with an exception.::
+These buil-in tracing methods log details at FINER level.
+
+There are three more convenience methods: entering, exiting and throwing when entering and exiting a method:
+
+.. code-block:: java
    
    public Object myMethod(String myArgument) {
        LOGGER.entering("MyClass", "MyMethod", myArgument);
-       // ... do some process here
-       LOGGER.exiting("MyClass", "MyMethod", myReturnValue);
-       return myReturnValue;
+       try {
+          // ... do some process here
+          LOGGER.exiting("MyClass", "MyMethod", myReturnValue);
+          return myReturnValue;
+       }
+       catch (Throwable myThrowable){
+          LOGGER.throwing("MyClass", "MyMethod", myThrowable);
+       }
    }
+
 
 Minimising Logger output
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -101,60 +147,3 @@ If the log message is expensive to construct, then consider enclosing it in an i
       LOGGER.finer("Current state = "+someVeryExpensiveMethodCall());
    }
 
-Logging Configuration
-^^^^^^^^^^^^^^^^^^^^^^
-
-To change the default logging setting, edit the following file:
-
-* $JAVA_HOME/jre/lib/logging.properties
-
-To define a default configuration level provide a the **.level** property to the minimal level of interest for you::
-   
-   .level= FINER
-
-You can specify a different level to be shown to the console (than is saved out to xml). To define the java.util.logging.ConsoleHandler.level property to the minimal level you want to see on the console::
-   
-   # Limit the message that are printed on the console to FINE and above.
-   java.util.logging.ConsoleHandler.level = FINE
-   java.util.logging.ConsoleHandler.formatter = java.util.logging.SimpleFormatter
-   java.util.logging.ConsoleHandler.encoding = Cp850
-
-Note the **encoding** property. For Windows user, it should be set to the value displayed by chcp on the command line. Linux and Unix users may ignore this line since Unix systems do a more intelligent work with page codes.
-
-To list detailed messages for a specific module you can define a different logging level may be specified for each module.::
-   
-   org.geotools.gml.level = FINE
-   org.geotools.referencing.level = INFO
-
-Provides fairly detailed logging message from the GML module, but not from the referencing module.
-
-Log4J interoperability
-^^^^^^^^^^^^^^^^^^^^^^
-
-GeoTools can produces a console output similar to the Log4J one (single-line instead of multi-line log message) if the following code is invoked once at application starting time::
-   
-   Logging.ALL.forceMonolineConsoleOutput();
-   
-
-Alternatively, this formatter can also be configured in the logging.properties without the need for the above-cited method call. See the **MonolineFormatter** javadoc for details.
-
-The logging output can also be redirected to the real Log4J framework (or any other framework supported by Apache's Common Logging) if the following code is invoked once at application starting time:
-
-Logging.ALL.setLoggerFactory("org.geotools.util.logging.Log4JLoggerFactory");
-
-Why not common-logging?
-^^^^^^^^^^^^^^^^^^^^^^^
-
-The common-logging API is basically a set of println functions with name (info, trace, debug, etc.). Java logging API provides the same convenience methods, but is also richer. We use some of its extra capabilities in GeoTools code base:
-
-* ResourceBundle support for localization.
-* Logging of stack traces.
-* Information on source class and method names.
-* Information about which thread produced the logging.
-* Can be used through Java Monitoring and Management system.
-
-Log4J offers similar functionalities with a wider range of handler implementations. On the other hand, Java logging is more closely tied to the JVM, which avoid some ClassLoader problems that prevent usage of Log4J in some environments.
-
-We are not claiming that Java logging in superior to Log4J, neither we are forcing peoples to use Java logging. We push for usage of Java logging API, which may very well redirect to Log4J under the hood through java.util.logging.Log4JLoggerFactory implementations.
-
-Commons-logging is widely used in server containers, but other communities like scientists face a different picture. For example the NetCDF library developed by the University Corporation for Atmospheric Research (UCAR) uses SLF4J, yet another logging framework that aims to be a replacement for commons-logging.

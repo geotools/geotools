@@ -23,6 +23,18 @@ import org.apache.commons.logging.Log;
  * An adapter that redirect all Java logging events to the Apache's <A
  * HREF="http://jakarta.apache.org/commons/logging/">Commons-logging</A> framework.
  *
+ * <ul>
+ *   <li>{@link java.util.logging.Level#OFF}: nothing is enabled
+ *   <li>{@link java.util.logging.Level#SEVERE}: {@link Log#isFatalEnabled()}
+ *   <li>{@link java.util.logging.Level#SEVERE}: {@link Log#isErrorEnabled()}
+ *   <li>{@link java.util.logging.Level#WARNING}: {@link Log#isWarnEnabled()}
+ *   <li>{@link java.util.logging.Level#INFO}: {@link Log#isInfoEnabled()}
+ *   <li>{@link java.util.logging.Level#CONFIG}: {@link Log#isInfoEnabled()}
+ *   <li>{@link java.util.logging.Level#FINE}: {@link Log#isDebugEnabled()}
+ *   <li>{@link java.util.logging.Level#FINER}: {@link Log#isTraceEnabled()}
+ *   <li>{@link java.util.logging.Level#FINEST}: {@link Log#isTraceEnabled()}
+ * </ul>
+ *
  * @since 2.4
  * @version $Id$
  * @author Martin Desruisseaux
@@ -77,16 +89,16 @@ final class CommonsLogger extends LoggerAdapter {
                             return n >= 0 && logger.isFatalEnabled();
                     }
                 }
-            case 10:
-                return logger.isErrorEnabled(); // SEVERE
-            case 9:
-                return logger.isWarnEnabled(); // WARNING
+            case 10: // SEVERE
+                return logger.isErrorEnabled();
+            case 9: // WARNING
+                return logger.isWarnEnabled();
             case 8: // INFO
-            case 7:
-                return logger.isInfoEnabled(); // CONFIG
+            case 7: // CONFIG
+                return logger.isInfoEnabled();
             case 6: // (not allocated)
-            case 5:
-                return logger.isDebugEnabled(); // FINE
+            case 5: // FINE
+                return logger.isDebugEnabled();
             case 4: // FINER
             case 3: // FINEST
             case 2: // (not allocated)

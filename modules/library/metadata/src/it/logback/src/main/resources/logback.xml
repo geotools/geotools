@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %-6level %logger{36} %marker: %msg%n</pattern>
+        </encoder>
+    </appender>
+    
+    <logger name="org.geotools.tutorial.logging" level="ALL"/>
+    <root level="error">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

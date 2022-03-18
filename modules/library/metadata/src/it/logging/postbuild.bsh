@@ -1,0 +1,26 @@
+import java.io.*;
+ 
+File buildLog = new File( basedir, "build.log" );
+if (!buildLog.isFile()) {
+    throw new FileNotFoundException( "Could locate build.log: " + buildLog );
+}
+String log = org.apache.commons.io.FileUtils.readFileToString(buildLog);
+
+if (!log.contains("INFO      LoggingIntegration")) {
+    throw new IllegalStateException("INFO expected");
+}
+if (!log.contains("java.util.logging.config.file=logging.properties")) {
+    throw new IllegalStateException("java.util.logging.config.file use expected");
+}
+if (!log.contains("CONFIG    LoggingIntegration")) {
+    throw new IllegalStateException("CONFIG expected");
+}
+if (!log.contains("FINE      LoggingIntegration")) {
+    throw new IllegalStateException("FINE expected");
+}
+if (!log.contains("FINER     LoggingIntegration")) {
+    throw new IllegalStateException("FINER expected");
+}
+if (!log.contains("FINEST    LoggingIntegration")) {
+    throw new IllegalStateException("FINEST expected");
+}

@@ -49,14 +49,13 @@ RedHat OpenJDK            GPL                 x                            2023 
 Adopt OpenJDK             GPL                 x     x              x       2023 September
 ========================= =================== ===== ====== ======= ======= ==============
 
-Although the closed source Oracle Technology Network Oracle JDK 8 reached end-of-life in January 2019 `free Java 8 updates <https://medium.com/@javachampions/java-is-still-free-c02aef8c9e04>`__ are provided by Linux distributions, AdoptOpenJDK, Azul, IBM, Red Hat, and others.
+Although the closed source Oracle Technology Network Oracle JDK 8 reached end-of-life in January 2019 `free Java 8 updates <https://medium.com/@javachampions/java-is-still-free-c02aef8c9e04>`__ are provided by Linux distributions, Adoptium, Azul, IBM, Red Hat, and others.
 
 .. note:: Windows users, when installing a JDK do not forget to install matching JRE:
 
    1. Download a JDK
    2. Use the one click installer
    3. When it asks if you want to install a JRE you can say yes
-
 
 Building GeoTools with Java 11
 ''''''''''''''''''''''''''''''

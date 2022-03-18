@@ -60,10 +60,6 @@
           <artifactId>h2</artifactId>
           <groupId>com.h2database</groupId>
         </exclusion>
-        <exclusion>
-          <artifactId>jts-core</artifactId>
-          <groupId>org.locationtech.jts</groupId>
-        </exclusion>
       </exclusions>
     </dependency>
     <dependency>

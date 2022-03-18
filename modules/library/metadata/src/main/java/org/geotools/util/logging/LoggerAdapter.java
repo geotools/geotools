@@ -65,8 +65,8 @@ import java.util.regex.Pattern;
  *
  * <p><b>Localization</b><br>
  * This logger is always created without resource bundles. Localizations must be performed through
- * explicit calls to {@code logrb} or {@link #log(LogRecord)} methods. This is suffisient for
- * GeoTools needs, which performs all localizations through the later. Note that those methods will
+ * explicit calls to {@code logrb} or {@link #log(LogRecord)} methods. This is sufficient for
+ * GeoTools needs, which performs all localizations through the latter. Note that these methods will
  * be slower in this {@code LoggerAdapter} than the default {@link Logger} because this adapter
  * localizes and formats records immediately instead of letting the {@linkplain Handler} performs
  * this work only if needed.
@@ -76,6 +76,16 @@ import java.util.regex.Pattern;
  * to the first level below the specified one. For example if a log record has some level between
  * {@link Level#FINE FINE} and {@link Level#FINER FINER}, then the {@link #finer finer} method will
  * be invoked. See {@link #isLoggable} for implementation tips taking advantage of this rule.
+ *
+ * <p><b>Subclasses</b><br>
+ * The abstract methods required for subclassing handle redirect message logging to target
+ * framework.
+ *
+ * <p>Throwable: When adapting to a logging framework that supports logging of Throwables implement
+ * {@link #log(Level, String, Throwable)} if you wish to support this functionality.
+ *
+ * <p>Throwable: When adapting to a logging framework that supports logging of Throwables *
+ * implement {@link #log(Level, String, Throwable)} if you wish to support this functionality.
  *
  * @since 2.4
  * @version $Id$

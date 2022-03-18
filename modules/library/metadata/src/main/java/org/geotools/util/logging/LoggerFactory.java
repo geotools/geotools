@@ -122,4 +122,16 @@ public abstract class LoggerFactory<L> {
      * @return The implementation wrapped by the specified logger, or {@code null} if none.
      */
     protected abstract L unwrap(Logger logger);
+
+    /**
+     * Look up configuration information, or {@code null} unknown.
+     *
+     * <p>Report back details on how logging configuration is setup. Ideally including configuration
+     * filename along with any system properties used.
+     *
+     * @return configuration information, or {@code null} unknown.
+     */
+    public String lookupConfiguration() {
+        return null;
+    }
 }

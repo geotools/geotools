@@ -180,25 +180,25 @@
             <id>integration-test</id>
             <goals>
               <goal>install</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>exec</id>
-            <goals>
               <goal>run</goal>
+              <goal>verify</goal>
             </goals>
             <configuration>
               <goals>
                 <goal>exec:exec</goal>
               </goals>
+              <verifyHookScript>verify.bsh</verifyHookScript>
             </configuration>
           </execution>
         </executions>
         <configuration>
+          <ignoreFailures>true</ignoreFailures>
+          <!-- never fail the build -->
           <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
           <settingsFile>src/it/settings.xml</settingsFile>
           <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
-          <!-- no extension required -->
+          <showErrors>false</showErrors>
+          <streamLogsOnFailures>true</streamLogsOnFailures>
         </configuration>
       </plugin>
     </plugins>

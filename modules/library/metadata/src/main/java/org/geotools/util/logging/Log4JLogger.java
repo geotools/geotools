@@ -22,6 +22,18 @@ import java.util.logging.Level;
  * An adapter that redirect all Java logging events to the Apache's <A
  * HREF="http://logging.apache.org/log4j">Log4J</A> framework.
  *
+ * <ul>
+ *   <li>{@link java.util.logging.Level#OFF}: {@link org.apache.log4j.Level#ALL}
+ *   <li>{@link java.util.logging.Level#SEVERE}: {@link org.apache.log4j.Level#ERROR}
+ *   <li>{@link java.util.logging.Level#WARNING} {@link org.apache.log4j.Level#WARN}
+ *   <li>{@link java.util.logging.Level#INFO}: {@link org.apache.log4j.Level#INFO}
+ *   <li>{@link java.util.logging.Level#CONFIG}: {@link #CONFIG}
+ *   <li>{@link java.util.logging.Level#FINE}: {@link org.apache.log4j.Level#DEBUG}
+ *   <li>{@link java.util.logging.Level#FINER}: {@link org.apache.log4j.Level#TRACE}
+ *   <li>{@link java.util.logging.Level#FINEST}: {@link #FINEST}
+ *   <li>{@link java.util.logging.Level#OFF}: {@link org.apache.log4j.Level#ALL}
+ * </ul>
+ *
  * @since 2.4
  * @version $Id$
  * @author Martin Desruisseaux
@@ -165,7 +177,7 @@ final class Log4JLogger extends LoggerAdapter {
 
     @Override
     public void config(String message) {
-        logger.info(message);
+        logger.log(CONFIG, message);
     }
 
     @Override
@@ -175,12 +187,12 @@ final class Log4JLogger extends LoggerAdapter {
 
     @Override
     public void finer(String message) {
-        logger.debug(message);
+        logger.trace(message);
     }
 
     @Override
     public void finest(String message) {
-        logger.trace(message);
+        logger.log(FINEST, message);
     }
 
     @Override

@@ -131,12 +131,6 @@
       <artifactId>jt-utils</artifactId>
       <version>${jt.version}</version>
       <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>jts</artifactId>
-          <groupId>org.locationtech.jts</groupId>
-        </exclusion>
-      </exclusions>
     </dependency>
   </dependencies>
 </project>

@@ -5781,11 +5781,12 @@ public class ImageMosaicReaderTest {
         File workDir = new File(TestData.file(this, "."), "testWrong");
         if (!workDir.mkdir()) {
             FileUtils.deleteDirectory(workDir);
-            workDir = new File(workDir, "rgba");
-            if (!workDir.mkdir()) {
-                FileUtils.deleteDirectory(workDir);
-            }
-            assertTrue("Unable to create workdir:" + workDir, workDir.mkdir());
+            assertTrue("Unable to create workdir:" + workDir, workDir.mkdirs());
+        }
+        workDir = new File(workDir, "rgba");
+        if (!workDir.mkdir()) {
+            FileUtils.deleteDirectory(workDir);
+            assertTrue("Unable to create workdir:" + workDir, workDir.mkdirs());
         }
         final File source = TestData.file(this, "rgba");
         FileUtils.copyDirectory(source, workDir);

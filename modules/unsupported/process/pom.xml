@@ -70,12 +70,6 @@
       <groupId>org.jaitools</groupId>
       <artifactId>jt-utils</artifactId>
       <version>${jt.version}</version>
-      <exclusions>
-        <exclusion>
-          <artifactId>jts</artifactId>
-          <groupId>org.locationtech.jts</groupId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>

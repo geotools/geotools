@@ -16,6 +16,7 @@
  */
 package org.geotools.util.logging;
 
+import java.net.URL;
 import java.util.logging.Logger;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -86,5 +87,15 @@ public class CommonsLoggerFactory extends LoggerFactory<Log> {
             return ((CommonsLogger) logger).logger;
         }
         return null;
+    }
+
+    @Override
+    public String lookupConfiguration() {
+        URL url = getClass().getClassLoader().getResource("commons-logging.properties");
+        if (url != null) {
+            return url.getFile();
+        } else {
+            return "(undetermined)";
+        }
     }
 }

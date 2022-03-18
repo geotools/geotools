@@ -99,7 +99,7 @@ When downloading jars Maven makes use of a "local repository" to store copies if
   
 Maven downloads jars from public repositories on the internet where projects such as GeoTools publish their work.
 
-#. Open up the `pom.xml` file at the root of the project. You can see some of the information we entered through the wizard
+#. Open up the :file:`pom.xml` file at the root of the project. You can see some of the information we entered through the wizard
    earlier.
    
 #. We're going to add three things to this file. First, at the top of the file after ``moduleVersion`` we want to add a 
@@ -108,22 +108,17 @@ Maven downloads jars from public repositories on the internet where projects suc
    
    For production a stable release of |branch| should be used for `geotools.version`:
     
-   .. literalinclude:: artifacts/pom.xml
+   .. literalinclude:: /../../tutorials/quickstart/pom.xml
         :language: xml
         :start-after: <url>http://maven.apache.org</url>
         :end-before: <dependencies>
    
    To make use of a nightly build set the `geotools.version` property to |branch|-SNAPSHOT .
-    
-   .. literalinclude:: artifacts/pom2.xml
-        :language: xml
-        :start-after: <url>http://maven.apache.org</url>
-        :end-before: <dependencies>
         
 #. We are going to add a dependence to GeoTools :file:`gt-main` and :file:`gt-swing` jars. Note we
    are making use of the ``geotools.version`` defined above.
    
-   .. literalinclude:: artifacts/pom.xml
+   .. literalinclude:: /../../tutorials/quickstart/pom.xml
         :language: xml
         :start-after: </properties>
         :end-before: <repositories>
@@ -131,25 +126,29 @@ Maven downloads jars from public repositories on the internet where projects suc
 #. Finally we need to list the external *repositories* where maven can download GeoTools and
    other required jars from.
 
-   .. literalinclude:: artifacts/pom.xml
+   .. literalinclude:: /../../tutorials/quickstart/pom.xml
         :language: xml
         :start-after: </dependencies>
         :end-before: <build>
 
    .. note:: Note the snapshot repository above is only required if you are using a nightly build (such as |branch|-SNAPSHOT)
 
-#. If you'd like to use Java 8 language level features (e.g. lambdas), you need to tell Maven to use the 1.8 source level
+#. GeoTools requires Java 8 language level features (e.g. lambdas), you need to tell Maven to use the 1.8 source level
 
-   .. literalinclude:: artifacts/pom2.xml
+   .. literalinclude::  /../../tutorials/quickstart/pom.xml
       :language: xml
       :start-after: </repositories>
       :end-before: </project>
 
-8. For comparison here is the completed :download:`pom.xml <artifacts/pom.xml>` file for download.
+#. Here is what the completed :file:`pom.xml` looks like:
 
-   You may find cutting and pasting to be easier than typing, you can choose :menuselection:`Code -> Reformat Code` to
-   fix indentation
+   .. literalinclude:: /../../tutorials/quickstart/pom.xml
+        :language: xml
    
+   * Recommend cutting and pasting the above to avoid mistakes when typing, using choose :menuselection:`Code -> Reformat Code` to help fix indentation
+   
+   * You may also download :download:`pom.xml </../../tutorials/quickstart/pom.xml>`, if this opens in your browser use :command:`Save As` to save to disk.
+
 Tips:
 
 * If Maven isn't downloading dependencies automatically for some reason (maybe *Auto-Import* is turned off)
@@ -172,10 +171,14 @@ shapefile on the screen.
    .. image:: images/intellij/new_class_dialog.png
       :align: center
       
-#. Fill in the following code:
-
-.. literalinclude:: /../src/main/java/org/geotools/tutorial/quickstart/Quickstart.java
+#. Fill in the following code :file:`Quickstart.java`:
+  
+   .. literalinclude:: /../../tutorials/quickstart/src/main/java/org/geotools/tutorial/quickstart/Quickstart.java
       :language: java
+      
+   * You may find cutting and pasting from the documentation to be easier then typing.
+   
+   * You may also download :download:`Quickstart.java </../../tutorials/quickstart/src/main/java/org/geotools/tutorial/quickstart/Quickstart.java>`
       
 #. We need to download some sample data to work with. The http://www.naturalearthdata.com/ project
    is a great project supported by the North American Cartographic Information Society.  Head to the link below and download some cultural vectors. You can use the 'Download all 50m cultural themes' at top.
@@ -204,71 +207,8 @@ shapefile on the screen.
 Things to Try
 -------------
 
-Each tutorial consists of very detailed steps followed by a series of extra questions. If you get
-stuck at any point please ask your instructor; or sign up to the geotools-users_ email list.
+.. include:: try.txt
 
-.. _geotools-users: http://docs.geotools.org/latest/developer/communication.html
+* When cutting and pasting GeoTools examples often the code compile due to missing imports.
 
-Here are some additional challenges for you to try:
-
-* Try out the different sample data sets
-
-* You can zoom in, zoom out and show the full extents and Use the select tool to examine individual
-  countries in the sample ``countries.shp`` file
-
-* Download the largest shapefile you can find and see how quickly it can be rendered. You should
-  find that the very first time it will take a while as a spatial index is generated. After that
-  performance should be very good when zoomed in.
-
-* Performance: We know that one of the ways people select a spatial library is based on speed.
-  By design GeoTools does not load the above shapefile into memory (instead it streams it off
-  of disk each time it is drawn using a spatial index to only bring the content required for
-  display).
-
-If you would like to ask GeoTools to cache the shapefile in memory try the following code:
-
-    .. literalinclude:: /../src/main/java/org/geotools/tutorial/quickstart/QuickstartCache.java
-       :language: java
-       :start-after: // docs start cache
-       :end-before:  // docs end cache
-
-This code won't compile initially because we're missing an import. IntelliJ should prompt to import
-the missing class immediately. Press Alt-Enter (^-Enter on OS X) to bring up a dialog to import the missing class.
-
-
-..  The ability to grab figure out what classes to import is a key skill; we are
-  starting off here with a simple example with a single import.
-
-* Try and sort out what all the different "side car" files are - and what they are for. The sample
-  data set includes ``shp``, ``dbf`` and ``shx``. How many other side car files are there?
-
-.. This exercise asks users to locate the geotools user guide or wikipedia
-
-* Advanced: The use of ``FileDataStoreFinder`` allows us to work easily with files. The other way to do
-  things is with a map of connection parameters. This techniques gives us a little more control over
-  how we work with a shapefile and also allows us to connect to databases and web feature servers.
-
-    .. literalinclude:: /../src/main/java/org/geotools/tutorial/quickstart/QuickstartNotes.java
-     :language: java
-     :start-after: // start datastore
-     :end-before:  // end datastore
-
-
-* Important: GeoTools is an active open source project - you can quickly use maven to try out the
-  latest nightly build by changing your ``pom.xml`` file to use a "SNAPSHOT" release.
-
-At the time of writing |branch|-SNAPSHOT is under active development.
-
-    .. literalinclude:: artifacts/pom2.xml
-     :language: xml
-     :start-after: <url>http://maven.apache.org</url>
-     :end-before: <dependencies>
-
-You will also need to change your ``pom.xml`` file to include the following snapshot repository:
-
-    .. literalinclude:: artifacts/pom2.xml
-     :language: xml
-     :start-after: </dependencies>
-     :end-before: </project>
-
-
+  IntelliJ should prompt to import the missing class immediately. Press Alt-Enter (^-Enter on OS X) to bring up a dialog to import any missing classes.

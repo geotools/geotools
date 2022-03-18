@@ -1,29 +1,25 @@
 /*
- *    GeoTools - The Open Source Java GIS Toolkit
- *    http://geotools.org
+ *    GeoTools Sample code and Tutorials by Open Source Geospatial Foundation, and others
+ *    https://docs.geotools.org
  *
- *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
- *
- *    This library is free software; you can redistribute it and/or
- *    modify it under the terms of the GNU Lesser General Public
- *    License as published by the Free Software Foundation;
- *    version 2.1 of the License.
- *
- *    This library is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *    Lesser General Public License for more details.
- *
+ *    To the extent possible under law, the author(s) have dedicated all copyright
+ *    and related and neighboring rights to this software to the public domain worldwide.
+ *    This software is distributed without any warranty.
+ * 
+ *    You should have received a copy of the CC0 Public Domain Dedication along with this
+ *    software. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
  */
-
-package org.geotools.tutorial.quickstart;
+ package org.geotools.tutorial.quickstart;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
+
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.util.logging.Logging;
 import org.geotools.swing.data.JFileDataStoreChooser;
 
 /**
@@ -31,7 +27,9 @@ import org.geotools.swing.data.JFileDataStoreChooser;
  * the end.
  */
 class QuickstartNotes {
-
+    
+    private static Logger LOG = Logging.getLogger(QuickstartNotes.class);
+    
     public void snipetDataStoreFinder() throws Exception {
         // start datastore
         File file = JFileDataStoreChooser.showOpenFile("shp", null);
@@ -45,5 +43,7 @@ class QuickstartNotes {
         DataStore store = DataStoreFinder.getDataStore(params);
         SimpleFeatureSource featureSource = store.getFeatureSource(store.getTypeNames()[0]);
         // end datastore
+        
+        LOG.info("Connected to:"+featureSource);
     }
 }

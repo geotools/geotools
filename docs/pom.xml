@@ -271,6 +271,14 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <!-- do not deploy tutorial examples -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 

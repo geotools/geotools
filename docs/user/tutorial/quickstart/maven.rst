@@ -119,7 +119,6 @@ Installing Maven
    .. image:: images/maven-version.png
       :scale: 60
 
-
 Creating a new project
 ----------------------
 
@@ -169,38 +168,51 @@ Creating a new project
    
    For production a stable release of |branch| should be used for `geotools.version`:
     
-   .. literalinclude:: artifacts/pom.xml
-        :language: xml
-        :start-after: <url>http://maven.apache.org</url>
-        :end-before: <dependencies>
+   .. literalinclude:: /../../tutorials/quickstart/pom.xml
+      :language: xml
+      :start-after: <url>http://maven.apache.org</url>
+      :end-before: <dependencies>
    
    To make use of a nightly build set the `geotools.version` property to |branch|-SNAPSHOT .
-    
-   .. literalinclude:: artifacts/pom2.xml
-        :language: xml
-        :start-after: <url>http://maven.apache.org</url>
-        :end-before: <dependencies>
    
 #. We specify the following dependencies (GeoTools modules which your application will need):
 
-   .. literalinclude:: artifacts/pom.xml
-        :language: xml
-        :start-after: </properties>
-        :end-before: <repositories>
-
+   .. literalinclude:: /../../tutorials/quickstart/pom.xml
+      :language: xml
+      :start-after: </properties>
+      :end-before: <repositories>
+        
 #. We tell maven which repositories to download jars from:
    
-   .. literalinclude:: artifacts/pom.xml
-        :language: xml
-        :start-after: </dependencies>
-        :end-before: <build>
+   .. literalinclude:: /../../tutorials/quickstart/pom.xml
+      :language: xml
+      :start-after: </dependencies>
+      :end-before: <build>
 
    .. note:: Note the snapshot repository above is only required if you are using a nightly build (such as |branch|-SNAPSHOT)
 
+#. GeoTools requires Java 8 language level features (e.g. lambdas), you need to tell Maven to use the 1.8 source level
+
+   .. literalinclude:: /../../tutorials/quickstart/pom.xml
+      :language: xml
+      :start-after: </repositories>
+      :end-before: </project>
+
+#. Here is what the completed :file:`pom.xml` looks like:
+
+   .. literalinclude:: /../../tutorials/quickstart/pom.xml
+      :language: xml
+   
+   * Recommend cutting and pasting the above to avoid mistakes when typing.
+   
+   * You may also download :download:`pom.xml </../../tutorials/quickstart/pom.xml>`, if this opens in your browser use :command:`Save As` to save to disk.
+
 #. Return to the command line and get maven to download the required jars for your project with this
-   command::
+   command:
+   
+   .. code-block:: bash
     
-      C:\java\example> mvn install
+      mvn install
       
 #. If maven has trouble downloading any jar, you can always try again. A national mirror is often faster than the default maven central.
    
@@ -214,13 +226,19 @@ Now we are ready to create the application.
 
 #. In the new sub-directory, create a new file ``Quickstart.java`` using your text editor.
 
-#. Fill in the following code:
+#. Fill in the following code :file:`Quickstart.java`:
   
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/quickstart/Quickstart.java
+   .. literalinclude:: /../../tutorials/quickstart/src/main/java/org/geotools/tutorial/quickstart/Quickstart.java
       :language: java
+      
+   * You may find cutting and pasting from the documentation to be easier then typing.
+   
+   * You may also download :download:`Quickstart.java </../../tutorials/quickstart/src/main/java/org/geotools/tutorial/quickstart/Quickstart.java>`
 
-#. Go back to the top project directory (the one that contains your ``pom.xml`` file) and build the
-   application with the command::
+#. Go back to the top project directory (the one that contains your :file:`pom.xml` file) and build the
+   application with the command:
+   
+   .. code-block:: bash
 
      mvn clean install
 
@@ -236,66 +254,45 @@ Running the application
    
    Unzip the above data into a location you can find easily such as the desktop.
 
-#. You can run the application using Maven on the command line::
+#. You can run the application using Maven on the command line:
+
+   .. code-block:: bash
    
-     mvn exec:java -Dexec.mainClass=org.geotools.tutorial.quickstart.Quickstart
+      mvn exec:java -Dexec.mainClass=org.geotools.tutorial.quickstart.Quickstart
    
 #. The application will connect to your shapefile, produce a map context, and display the shapefile.
 
    .. image:: images/QuickstartMap.png
       :scale: 60
-   
+         
 #. A couple of things to note about the code example:
    
 * The shapefile is not loaded into memory. Instead it is read from disk each and every time it is needed.
   This approach allows you to work with data sets larger than available memory.
       
-* We are using a very basic display style here that just shows feature outlines. In the examples
+* The example uses very simple display style here that just shows feature outlines. In the tutorials
   that follow we will see how to specify more sophisticated styles.
-
 
 Things to Try
 =============
 
-* Try out the different sample data sets.
+* When working in a text editor instead of an IDE use the `GeoTools javadocs 
+  <http://docs.geotools.org/latest/javadocs/>`__ to work out what import statements are required
+  in your source. The javadocs also list the GeoTools module in which each class is found.
 
-* You can zoom in, zoom out and show the full extent and use the info tool to examine individual
-  countries in the sample ``countries.shp`` file.
+.. include:: try.txt
 
-* Download the largest shapefile you can find and see how quickly it can be rendered. You should
-  find that the very first time it will take a while as a spatial index is generated. After that
-  rendering will become much faster.
+* To force maven to download new snapshots:
   
-* Fast: We know that one of the ways people select a spatial library is based on speed. By design
-  GeoTools does not load the above shapefile into memory (instead it streams it off of disk
-  each time it is drawn using a spatial index to only bring the content required for display).
-
-  .. Hint::
-     When working in a text editor instead of an IDE use the `GeoTools javadocs 
-     <http://docs.geotools.org/latest/javadocs/>`_ to work out what import statements are required
-     in your source. The javadocs also list the GeoTools module in which each class is found.
-
-  .. Note::
-
-     When building you may see a message that ``CachingFeatureSource`` is deprecated. It's OK to ignore
-     it, it's just a warning. The class is still under test but usable.
-
-..  The ability to figure out what classes to import is a key skill; we are
-    starting off here with a simple example with a single import.
+  .. code-block:: bash
   
-* Try and sort out what all the different "side car" files are - and what they are for. The sample
-  data set includes ``shp``, ``dbf`` and ``shx``. How many other side car files are there?
-
-.. This exercise asks users to locate the geotools user guide or wikipedia
+     mvn clean install -U
   
-* Advanced: The use of ``FileDataStoreFinder`` allows us to work easily with files. The other way to do
-  things is with a map of connection parameters. This techniques gives us a little more control over
-  how we work with a shapefile and also allows us to connect to databases and web feature servers.
-
-.. literalinclude:: /../src/main/java/org/geotools/tutorial/quickstart/QuickstartNotes.java
-   :language: java
-   :start-after: // start datastore
-   :end-before:  // end datastore
+  To avoid downloading any new snapshots (when offline) use:
+  
+  .. code-block:: bash
+  
+     mvn clean install -nsu
 
 * So what jars did maven actually use for the Quickstart application? Try the following on the
   command line::

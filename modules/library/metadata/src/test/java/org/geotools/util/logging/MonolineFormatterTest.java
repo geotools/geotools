@@ -17,7 +17,6 @@
 package org.geotools.util.logging;
 
 import java.util.logging.Logger;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -32,8 +31,8 @@ public final class MonolineFormatterTest {
      * polluting the output stream with logs during Maven builds.
      */
     @Test
-    @Ignore
     public void testInitialization() {
+        Logging.ALL.forceMonolineConsoleOutput();
         final String[] namespaces = {
             "org.geotools.core",
             "org.geotools.resources",

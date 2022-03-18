@@ -18,7 +18,6 @@ workspace
 *.db
 .metadata
 .gradle
-settings.xml
 
 # Microsoft Visual Studio Code
 .vscode/

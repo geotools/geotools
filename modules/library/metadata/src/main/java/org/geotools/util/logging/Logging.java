@@ -37,7 +37,7 @@ import org.geotools.util.XArray;
  * HREF="https://logging.apache.org/log4j/2.x/">LOG4J</A>, or </A><A
  * HREF="https://commons.apache.org/proper/commons-logging/">commons-logging</A>.
  *
- * <p><b>Example:</b> In order to redirect every GeoTools log events to Commons-logging, invoke the
+ * <p><b>Example:</b> In order to redirect every GeoTools log events to commons-logging, invoke the
  * following once at application startup:
  *
  * <pre><code>Logging.setLoggerFactory}("org.geotools.util.logging.CommonsLoggerFactory");</code>
@@ -635,5 +635,21 @@ public final class Logging {
     public static boolean recoverableException(
             final Class<?> classe, final String method, final Throwable error) {
         return recoverableException(null, classe, method, error);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Logging: ");
+        if (this == ALL) {
+            sb.append("ALL");
+        } else {
+            sb.append('\'').append(name).append('\'');
+        }
+        if (this.factory != null) {
+            sb.append('(');
+            sb.append(factory);
+            sb.append(')');
+        }
+        return sb.toString();
     }
 }

@@ -128,11 +128,10 @@
       <scope>compile</scope>
     </dependency>
     <!-- Third-party logging libraries not required for default execution. -->
+    <!-- replaces log4j -->
     <dependency>
       <groupId>ch.qos.reload4j</groupId>
-      <!-- replaces log4j -->
       <artifactId>reload4j</artifactId>
-      <!-- replaces log4j -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -150,6 +149,16 @@
       <artifactId>log4j-jcl</artifactId>
       <optional>true</optional>
     </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
+      <optional>true</optional>
+    </dependency>
   </dependencies>
 
   <build>
@@ -162,6 +171,37 @@
         <directory>${basedir}/src/main/properties</directory>
       </resource>
     </resources>
+    <plugins>
+      <plugin>
+        <artifactId>maven-invoker-plugin</artifactId>
+        <version>3.2.2</version>
+        <executions>
+          <execution>
+            <id>integration-test</id>
+            <goals>
+              <goal>install</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>exec</id>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <goals>
+                <goal>exec:exec</goal>
+              </goals>
+            </configuration>
+          </execution>
+        </executions>
+        <configuration>
+          <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+          <settingsFile>src/it/settings.xml</settingsFile>
+          <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+          <!-- no extension required -->
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 
 </project>

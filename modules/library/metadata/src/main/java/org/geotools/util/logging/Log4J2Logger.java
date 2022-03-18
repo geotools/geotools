@@ -23,11 +23,10 @@ import org.apache.logging.log4j.spi.StandardLevel;
  * An adapter that redirect all Java logging events to the Apache's <A
  * HREF="http://logging.apache.org/log4j">Log4J</A> framework.
  *
- * @since 2.4
+ * @since 27
  * @version $Id$
- * @author Martin Desruisseaux
- * @author Saul Farber (MassGIS)
- * @see Log4JLoggerFactory
+ * @author Jody Garnett (GeoCat)
+ * @see Log4J2LoggerFactory
  * @see Logging
  */
 final class Log4J2Logger extends LoggerAdapter {

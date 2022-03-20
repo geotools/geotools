@@ -87,4 +87,22 @@ public class StringTemplateFunctionTest extends SEFunctionTestBase {
                         type, new Object[] {"abc12_67", "(.*)_(.*)", "${1}|${2}"}, null);
         assertEquals("abc12|67", fn.evaluate(f3));
     }
+
+    @Test
+    public void testReDOS1() throws SchemaException {
+        parameters.add(
+                ff2.literal(
+                        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab'"));
+        parameters.add(ff2.literal("(a+)+"));
+        parameters.add(ff2.literal(""));
+        Function fn = finder.findFunction("stringTemplate", parameters, fallback);
+        SimpleFeatureType type =
+                DataUtilities.createType("test", "input:string,pattern:string,template:string");
+        SimpleFeature f1 =
+                SimpleFeatureBuilder.build(
+                        type,
+                        new Object[] {"abc123_567", ".*(\\d{3})_(\\d{3})", "${1}|${2}"},
+                        null);
+        fn.evaluate(f1);
+    }
 }

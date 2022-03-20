@@ -16,10 +16,10 @@
  */
 package org.geotools.filter;
 
+import com.google.re2j.Matcher;
+import com.google.re2j.Pattern;
 import java.util.Collection;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.PropertyIsLike;
 
@@ -130,16 +130,28 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
     }
 
     public void setWildCard(String wildCard) {
+        if (wildCard.isEmpty() || wildCard.length() > 1) {
+            throw new IllegalArgumentException(
+                    "Like Pattern --> wildcardMulti char should be of length exactly 1");
+        }
         this.wildcardMulti = wildCard;
         compPattern = null;
     }
 
     public void setSingleChar(String singleChar) {
+        if (singleChar.length() != 1) {
+            throw new IllegalArgumentException(
+                    "Like Pattern --> wildcardSingle char should be of length exactly 1");
+        }
         this.wildcardSingle = singleChar;
         compPattern = null;
     }
 
     public void setEscape(String escape) {
+        if (escape.length() != 1) {
+            throw new IllegalArgumentException(
+                    "Like Pattern --> escape char should be of length exactly 1");
+        }
         this.escape = escape;
         compPattern = null;
     }
@@ -170,7 +182,7 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
                     isMatchingCase()
                             ? Pattern.compile(pattern)
                             : Pattern.compile(
-                                    pattern, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+                                    pattern, Pattern.CASE_INSENSITIVE /* | Pattern.UNICODE_CASE */);
         }
         return compPattern.matcher(string);
     }

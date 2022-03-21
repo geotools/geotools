@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.awt.Color;
@@ -194,7 +193,7 @@ public class FiltersTest {
     public void testEmptyEscape() {
         try {
             PropertyIsLike like = ff.like(ff.literal("abc def"), "*de*", "*", "_", "");
-            assertTrue(like.evaluate(null));
+            like.evaluate(null);
             fail();
         } catch (IllegalArgumentException e) {
             // as expected, no OOM anylonger

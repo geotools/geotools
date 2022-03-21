@@ -478,7 +478,9 @@ public class StaticGeometry {
     }
 
     public static boolean strMatches(String s1, String s2) {
-        if (s1 == null || s1.isEmpty() || s2 == null || s2.isEmpty()) return false;
+        if (s1 == null || s2 == null) return false;
+        if (s1.isEmpty() && s2.isEmpty()) return true;
+        if (s1.isEmpty() || s2.isEmpty()) return false;
 
         return Pattern.matches(s2, s1);
     }

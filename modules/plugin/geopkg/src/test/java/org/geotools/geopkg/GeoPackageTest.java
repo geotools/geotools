@@ -72,6 +72,7 @@ import org.geotools.geopkg.mosaic.GeoPackageFormat;
 import org.geotools.geopkg.mosaic.GeoPackageReader;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.jdbc.JDBCDataStore;
+import org.geotools.jdbc.SQLDialect;
 import org.geotools.jdbc.util.SqlUtil;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
@@ -250,6 +251,29 @@ public class GeoPackageTest {
             }
         } catch (Exception e) {
             fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void canReadGeoPackageWithNonEpsgSrids() throws Exception {
+        // this geopackage uses srs_id = 84 with an authority of WEB MAP SERVICE CRS
+        // when the contents are create code gets down into decodeCRSFromResultset() to get the CRS.
+        File citiesSrs84 = new File("./src/test/resources/org/geotools/geopkg/cities_srs_84.gpkg");
+        try (GeoPackage citiesGpkg = new GeoPackage(citiesSrs84)) {
+            List<FeatureEntry> contents = citiesGpkg.features();
+            assertEquals(2, contents.size());
+            Integer expectedSrid = 84;
+            for (Entry content : contents) {
+                assertEquals(expectedSrid, content.getSrid());
+            }
+
+            // Now lets ensure we can access SRID:84 from the SQLDialect
+            SQLDialect dialect = citiesGpkg.dataStore().dialect;
+            try (Connection conn = citiesGpkg.connPool.getConnection()) {
+                assertTrue(
+                        CRS.equalsIgnoreMetadata(
+                                dialect.createCRS(84, conn), CRS.decode("EPSG:4326", true)));
+            }
         }
     }
 

@@ -564,7 +564,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             // try looking up in spatial ref sys
             String sql =
                     String.format(
-                            "SELECT definition FROM %s WHERE auth_srid = %d",
+                            "SELECT definition FROM %s WHERE organization_coordsys_id = %d",
                             SPATIAL_REF_SYS, srid);
             LOGGER.fine(sql);
 

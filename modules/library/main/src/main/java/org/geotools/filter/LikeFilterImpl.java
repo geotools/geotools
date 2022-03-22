@@ -130,7 +130,7 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
     }
 
     public void setWildCard(String wildCard) {
-        if (wildCard.isEmpty() || wildCard.length() > 1) {
+        if (wildCard == null || wildCard.isEmpty() || wildCard.length() > 1) {
             throw new IllegalArgumentException(
                     "Like Pattern --> wildcardMulti char should be of length exactly 1");
         }
@@ -139,7 +139,7 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
     }
 
     public void setSingleChar(String singleChar) {
-        if (singleChar.length() != 1) {
+        if (singleChar == null || singleChar.length() != 1) {
             throw new IllegalArgumentException(
                     "Like Pattern --> wildcardSingle char should be of length exactly 1");
         }
@@ -148,7 +148,7 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
     }
 
     public void setEscape(String escape) {
-        if (escape.length() != 1) {
+        if (escape == null || escape.length() != 1) {
             throw new IllegalArgumentException(
                     "Like Pattern --> escape char should be of length exactly 1");
         }

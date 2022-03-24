@@ -399,12 +399,15 @@
   <!-- =========================================================== -->
   <!--   Properties and Profiles                                   -->
   <!--       modify the build process in certain conditions.       -->
+  <!--                                                             -->
   <!--   Available properties are:                                 -->
   <!--                                                             -->
   <!--    -Dall               build all the usual suspects the     -->
   <!--                        core library with any unsupported    -->
   <!--                        modules or example code used by the  -->
   <!--                        build box.                           -->
+  <!--                                                             -->
+  <!--    -Dqa                Enable all quality control profiles  -->
   <!--                                                             -->
   <!--   Available profiles are:                                   -->
   <!--                                                             -->
@@ -1552,8 +1555,8 @@
           <version>3.1.0</version>
         </plugin>
         <plugin>
-           <artifactId>maven-enforcer-plugin</artifactId>
-           <version>3.0.0-M3</version>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>3.0.0-M3</version>
         </plugin>
         <plugin>
           <artifactId>maven-install-plugin</artifactId>

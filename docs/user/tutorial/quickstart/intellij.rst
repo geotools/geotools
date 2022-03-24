@@ -138,16 +138,20 @@ Maven downloads jars from public repositories on the internet where projects suc
    .. literalinclude::  /../../tutorials/quickstart/pom.xml
       :language: xml
       :start-after: </repositories>
-      :end-before: </project>
+      :end-before: <profiles>
 
 #. Here is what the completed :file:`pom.xml` looks like:
 
    .. literalinclude:: /../../tutorials/quickstart/pom.xml
         :language: xml
+        :end-before: <profiles>
+        :append: </project>
    
    * Recommend cutting and pasting the above to avoid mistakes when typing, using choose :menuselection:`Code -> Reformat Code` to help fix indentation
-   
+
    * You may also download :download:`pom.xml </../../tutorials/quickstart/pom.xml>`, if this opens in your browser use :command:`Save As` to save to disk.
+   
+     The download has an optional quality assurance profile you can safely ignore. 
 
 Tips:
 

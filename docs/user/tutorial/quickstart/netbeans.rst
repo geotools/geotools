@@ -218,7 +218,7 @@ such as GeoTools publish their work.
    .. literalinclude:: /../../tutorials/quickstart/pom.xml
       :language: xml
       :start-after: </repositories>
-      :end-before: </project>
+      :end-before: <profiles>
     
 6. You can now right click on Libraries in the Projects window, then Download missing Dependencies
    from the pop-up menu. When downloading it will check the repositories we have listed
@@ -226,14 +226,18 @@ such as GeoTools publish their work.
 
 7. We will continue to add dependencies on different parts of the GeoTools library as we work through these exercises; this fine grain control and the ability to download exactly what is needed is one of the advantages of using Maven.
 
-#. Here is what the completed :file:`pom.xml` looks like:
+8. Here is what the completed :file:`pom.xml` looks like:
 
    .. literalinclude:: /../../tutorials/quickstart/pom.xml
         :language: xml
+        :end-before: <profiles>
+        :append: </project>
    
-   * Recommend cutting and pasting the above to avoid mistakes when typing.
+   * Recommend cutting and pasting the above to avoid mistakes when typing
    
    * You may also download :download:`pom.xml </../../tutorials/quickstart/pom.xml>`, if this opens in your browser use :command:`Save As` to save to disk.
+   
+     The download has an optional quality assurance profile you can safely ignore. 
 
 Quickstart Application
 -----------------------

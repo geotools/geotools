@@ -62,8 +62,6 @@
       </plugin>
     </plugins>
   </build>
-
-  <!-- QA profiles -->
   <profiles>
     <profile>
       <id>qa</id>

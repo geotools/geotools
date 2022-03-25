@@ -242,6 +242,12 @@
       <version>${imageio.ext.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>it.geosolutions.imageio-ext</groupId>
+      <artifactId>imageio-ext-cog-rangereader-gs</artifactId>
+      <version>${imageio.ext.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
 </project>

@@ -208,8 +208,9 @@ class PurgingGranuleStore extends GranuleStoreDecorator {
 
         @Override
         public void visit(GranuleDescriptor granule, SimpleFeature feature) {
-            AbstractGridCoverage2DReader reader = granule.getReader();
+            AbstractGridCoverage2DReader reader = null;
             try {
+                reader = granule.getReader();
                 File granuleFile = URLs.urlToFile(granule.getGranuleUrl());
                 // check common sidecars not handled by the readers
                 if (granuleFile != null) {

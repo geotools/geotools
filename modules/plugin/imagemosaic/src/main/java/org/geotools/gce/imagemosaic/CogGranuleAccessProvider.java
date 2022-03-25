@@ -24,7 +24,6 @@ import it.geosolutions.imageioimpl.plugins.cog.CogImageInputStreamSpi;
 import it.geosolutions.imageioimpl.plugins.cog.CogImageReaderSpi;
 import it.geosolutions.imageioimpl.plugins.cog.CogSourceSPIProvider;
 import java.io.IOException;
-import java.net.URL;
 import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
@@ -38,7 +37,7 @@ import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
 
 /** GranuleAccessProvider for COG Granules. */
-class CogGranuleAccessProvider extends DefaultGranuleAccessProvider
+public class CogGranuleAccessProvider extends DefaultGranuleAccessProvider
         implements GranuleAccessProvider {
 
     private static final ImageReaderSpi DEFAULT_COG_IMAGE_READER_SPI = new CogImageReaderSpi();
@@ -100,14 +99,15 @@ class CogGranuleAccessProvider extends DefaultGranuleAccessProvider
 
     @Override
     public void setGranuleInput(Object input) throws IOException {
-        this.inputUrl = (URL) input;
-        BasicAuthURI cogUri = cogConfig.createUri(inputUrl.toString());
+        BasicAuthURI cogUri = cogConfig.createUri(input.toString());
         String rangeReader = cogConfig.getRangeReader();
         if (rangeReader == null) {
             rangeReader = DEFAULT_RANGE_READER;
         }
-        this.input =
+        CogSourceSPIProvider sourceSPIProvider =
                 new CogSourceSPIProvider(cogUri, imageReaderSpi, imageInputStreamSpi, rangeReader);
+        this.input = sourceSPIProvider;
+        this.inputURL = sourceSPIProvider.getSourceUrl();
     }
 
     @Override

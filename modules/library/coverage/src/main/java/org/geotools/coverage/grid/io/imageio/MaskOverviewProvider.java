@@ -263,10 +263,12 @@ public class MaskOverviewProvider {
                 ovrProvider.setReaderSpi(overviewReaderSpi);
             }
         } catch (Exception e) {
-            if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.log(Level.WARNING, "Unable to create a Reader for: " + ovrURL, e);
+            // COG readers might throw an exception while creating the stream, as they do I/O
+            // to fill header. So tolerate the exception and return no overview file found.
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.log(Level.FINE, "Unable to create a reader for overview: " + ovrURL, e);
             }
-            throw new IllegalArgumentException(e);
+            return null;
         }
         return ovrProvider;
     }

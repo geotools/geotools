@@ -38,7 +38,6 @@ import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
@@ -893,27 +892,34 @@ public class GranuleDescriptor {
             String granuleLocation,
             PathResolver pathResolver,
             boolean exceptionOnNullGranule) {
-        boolean hasCustomGranuleProvider =
-                hints != null && hints.containsKey(GranuleAccessProvider.GRANULE_ACCESS_PROVIDER);
+        GranuleAccessProvider accessProvider =
+                (GranuleAccessProvider)
+                        Utils.getHintIfAvailable(
+                                hints, GranuleAccessProvider.GRANULE_ACCESS_PROVIDER);
+
         URL rasterGranule = null;
-        if (!hasCustomGranuleProvider) {
+        if (accessProvider instanceof CogGranuleAccessProvider) {
+            try {
+                CogGranuleAccessProvider cap = (CogGranuleAccessProvider) accessProvider;
+                CogGranuleAccessProvider copy = (CogGranuleAccessProvider) cap.copyProviders();
+                copy.setGranuleInput(granuleLocation);
+                rasterGranule = copy.getInputURL();
+            } catch (Exception e) {
+                if (LOGGER.isLoggable(Level.WARNING)) {
+                    LOGGER.log(
+                            Level.WARNING,
+                            "Unable to set an URL from the provided granuleLocation: "
+                                    + granuleLocation,
+                            e);
+                }
+                rasterGranule = null;
+            }
+        } else {
             // If the granuleDescriptor is not there, dump a message and continue
             if (pathResolver != null) {
                 rasterGranule = pathResolver.resolve(granuleLocation);
             } else {
                 rasterGranule = URLs.fileToUrl(new File(granuleLocation));
-            }
-
-        } else {
-            try {
-                rasterGranule = new URL(granuleLocation);
-            } catch (MalformedURLException e) {
-                if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.warning(
-                            "Unable to set an URL from the provided granuleLocation: "
-                                    + granuleLocation);
-                }
-                rasterGranule = null;
             }
         }
         if (rasterGranule == null && exceptionOnNullGranule) {
@@ -963,11 +969,7 @@ public class GranuleDescriptor {
 
         if (LOGGER.isLoggable(java.util.logging.Level.FINER)) {
             final String name = Thread.currentThread().getName();
-            LOGGER.finer(
-                    "Thread:"
-                            + name
-                            + " Loading raster data for granuleDescriptor "
-                            + this.toString());
+            LOGGER.finer("Thread:" + name + " Loading raster data for granuleDescriptor " + this);
         }
         ImageReadParam readParameters = null;
         int imageIndex;

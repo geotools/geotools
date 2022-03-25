@@ -52,7 +52,7 @@ import org.opengis.geometry.BoundingBox;
  *     jar:file:foo.jar/bar.properties URLs
  * @since 2.5
  */
-class CachingDataStoreGranuleCatalog extends GranuleCatalog {
+public class CachingDataStoreGranuleCatalog extends GranuleCatalog {
 
     /** Logger. */
     private static final Logger LOGGER =
@@ -226,7 +226,7 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
         return granule;
     }
 
-    private boolean polygonOverlap(Geometry g1, Geometry g2) {
+    protected boolean polygonOverlap(Geometry g1, Geometry g2) {
         // TODO: try to use relate instead
         Geometry intersection = g1.intersection(g2);
         return intersection != null && intersection.getDimension() == 2;

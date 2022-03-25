@@ -81,7 +81,7 @@ public class ImageMosaicCogOnlineTest {
 
     @Test
     public void testCogMosaic() throws Exception {
-        File workDir = prepareWorkingDir("cogtest.zip", "cogtest", "");
+        File workDir = prepareWorkingDir("s3cogtest.zip", "s3cogtest", "");
         ImageMosaicReader reader = IMAGE_MOSAIC_FORMAT.getReader(workDir);
         GridCoverage2D coverage = reader.read(null);
         Assert.assertNotNull(coverage);
@@ -140,7 +140,7 @@ public class ImageMosaicCogOnlineTest {
 
     @Test
     public void testCogMosaicDefaultConfig() throws Exception {
-        File workDir = prepareWorkingDir("cogtest.zip", "default", "cogtest");
+        File workDir = prepareWorkingDir("s3cogtest.zip", "default", "s3cogtest");
         File file = new File(workDir, "cogtest.properties");
         Properties properties = new Properties();
         try (FileInputStream fin = new FileInputStream(file)) {
@@ -168,7 +168,7 @@ public class ImageMosaicCogOnlineTest {
 
     @Test
     public void testHarvestSingleURL() throws Exception {
-        File workDir = prepareWorkingDir("cogtest.zip", "harvest", "cogtest");
+        File workDir = prepareWorkingDir("s3cogtest.zip", "harvest", "s3cogtest");
         File file = new File(workDir, "indexer.properties");
         Properties properties = new Properties();
         try (FileInputStream fin = new FileInputStream(file)) {
@@ -338,5 +338,79 @@ public class ImageMosaicCogOnlineTest {
         TestData.unzipFile(this, destinationPath);
         FileUtils.deleteQuietly(zipFile);
         return workDir;
+    }
+
+    /** Harvests single Google Storage file using public URLs */
+    @Test
+    public void testHarvestGSPublicURL() throws Exception {
+        final File workDir = prepareWorkingDir("emptycog.zip", "emptyGSCogMosaic", "");
+        try (FileWriter out =
+                new FileWriter(
+                        new File(
+                                TestData.file(this, "."),
+                                "/emptyGSCogMosaic/datastore.properties"))) {
+            out.write("database=cogmosaic\n");
+            out.write(ImageMosaicReaderTest.H2_SAMPLE_PROPERTIES);
+            out.flush();
+        }
+        ImageMosaicReader reader = IMAGE_MOSAIC_FORMAT.getReader(workDir);
+        GranuleCatalog originalCatalog = reader.granuleCatalog;
+
+        try {
+            // now go and harvest a granule
+            String granuleUrl =
+                    "https://storage.googleapis.com/gcp-public-data-landsat/LC08/01/044/034"
+                            + "/LC08_L1GT_044034_20130330_20170310_01_T2"
+                            + "/LC08_L1GT_044034_20130330_20170310_01_T2_B11.TIF";
+            URL source = new URL(granuleUrl);
+            List<HarvestedSource> summary = reader.harvest(null, source, null);
+            Assert.assertSame(originalCatalog, reader.granuleCatalog);
+            Assert.assertEquals(1, summary.size());
+
+            // check the granule catalog
+            String coverageName = reader.getGridCoverageNames()[0];
+            GranuleSource granules = reader.getGranules(coverageName, true);
+            Assert.assertEquals(1, granules.getCount(Query.ALL));
+            Query q = new Query(Query.ALL);
+            try (SimpleFeatureIterator fi = granules.getGranules(q).features()) {
+                Assert.assertTrue(fi.hasNext());
+                SimpleFeature f = fi.next();
+                Assert.assertEquals(granuleUrl, f.getAttribute("location"));
+            }
+        } finally {
+            reader.dispose();
+        }
+    }
+
+    @Test
+    public void testGSCogMosaic() throws Exception {
+        File workDir = prepareWorkingDir("gscogtest.zip", "gscogtest", "");
+        ImageMosaicReader reader = IMAGE_MOSAIC_FORMAT.getReader(workDir);
+        GridCoverage2D coverage = reader.read(null);
+        Assert.assertNotNull(coverage);
+        RenderedImage image = coverage.getRenderedImage();
+        int numTileX = image.getNumXTiles();
+        int numTileY = image.getNumYTiles();
+        Raster raster = image.getTile(numTileX / 2, numTileY / 2);
+        Assert.assertEquals(512, raster.getWidth());
+        Assert.assertEquals(512, raster.getHeight());
+        Assert.assertEquals(1, raster.getNumBands());
+        reader.dispose();
+    }
+
+    @Test
+    public void testGSURICogMosaic() throws Exception {
+        File workDir = prepareWorkingDir("gsuricogtest.zip", "gsuricogtest", "");
+        ImageMosaicReader reader = IMAGE_MOSAIC_FORMAT.getReader(workDir);
+        GridCoverage2D coverage = reader.read(null);
+        Assert.assertNotNull(coverage);
+        RenderedImage image = coverage.getRenderedImage();
+        int numTileX = image.getNumXTiles();
+        int numTileY = image.getNumYTiles();
+        Raster raster = image.getTile(numTileX / 2, numTileY / 2);
+        Assert.assertEquals(512, raster.getWidth());
+        Assert.assertEquals(512, raster.getHeight());
+        Assert.assertEquals(1, raster.getNumBands());
+        reader.dispose();
     }
 }

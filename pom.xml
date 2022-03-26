@@ -524,8 +524,8 @@
     <checkstyle.skip>false</checkstyle.skip>
     <checkstyle.excludes>**/generated/**/*</checkstyle.excludes>
     <qa>false</qa>
-    <jackson2.version>2.10.5</jackson2.version>
-    <jackson2.databind.version>2.10.5.1</jackson2.databind.version>
+    <jackson2.version>2.13.2</jackson2.version>
+    <jackson2.databind.version>2.13.2.1</jackson2.databind.version>
     <lint>deprecation,unchecked</lint>
     <jacoco.version>0.8.7</jacoco.version>
     <!-- allows for jacoco params injection in surefire-->

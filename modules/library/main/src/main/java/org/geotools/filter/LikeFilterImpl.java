@@ -148,17 +148,14 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
     }
 
     public void setEscape(String escape) {
-        if (escape == null) {
-            throw new IllegalArgumentException(
-                    "Like Pattern --> escape char should be of length exactly 1");
-        }
+
         if (escape.startsWith("\\")) {
             if (escape.length() < 1 || escape.length() > 3) {
                 throw new IllegalArgumentException(
                         "Like Pattern --> escape char should be of length exactly 1, not "
                                 + escape.length());
             }
-        } else if (escape.length() != 1) {
+        } else if (!escape.isEmpty() && escape.length() > 1) {
             throw new IllegalArgumentException(
                     "Like Pattern --> escape char should be of length exactly 1, not "
                             + escape.length());

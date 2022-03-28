@@ -33,24 +33,6 @@ public class LikeFilterImplTest {
     }
 
     @Test
-    public void testEmptyEscape() {
-        try {
-            PropertyIsLike l =
-                    ff.like(
-                            ff.literal(
-                                    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab"),
-                            "(a+)+",
-                            "*",
-                            "x",
-                            "");
-            l.evaluate(null);
-            fail();
-        } catch (IllegalArgumentException e) {
-            // as expected, no OOM anylonger
-        }
-    }
-
-    @Test
     public void testReDOS1() {
         try {
             PropertyIsLike l =

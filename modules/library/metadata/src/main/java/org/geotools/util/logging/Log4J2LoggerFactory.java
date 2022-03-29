@@ -17,31 +17,26 @@
 package org.geotools.util.logging;
 
 import java.util.logging.Logger;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * A factory for loggers that redirect all Java logging events to the Apache's <A
- * HREF="https://commons.apache.org/proper/commons-logging/">Commons-logging</A> framework.
- *
- * <p>Out of the box commons logging delegates to the java util logging framework (using the class
- * org.apache.commons.logging.impl.Jdk14Logger). If this factory detects Commons logging
+ * HREF="http://logging.apache.org/log4j">Log4J</A> framework.
  *
  * @since 2.4
  * @version $Id$
  * @author Martin Desruisseaux
  */
-public class CommonsLoggerFactory extends LoggerFactory<Log> {
+public class Log4J2LoggerFactory extends LoggerFactory<org.apache.logging.log4j.Logger> {
     /** The unique instance of this factory. */
-    private static CommonsLoggerFactory factory;
+    private static Log4J2LoggerFactory factory;
 
     /**
      * Constructs a default factory.
      *
      * @throws NoClassDefFoundError if Apache's {@code Log} class was not found on the classpath.
      */
-    protected CommonsLoggerFactory() throws NoClassDefFoundError {
-        super(Log.class);
+    protected Log4J2LoggerFactory() throws NoClassDefFoundError {
+        super(org.apache.logging.log4j.Logger.class);
     }
 
     /**
@@ -49,31 +44,26 @@ public class CommonsLoggerFactory extends LoggerFactory<Log> {
      *
      * @throws NoClassDefFoundError if Apache's {@code Log} class was not found on the classpath.
      */
-    public static synchronized CommonsLoggerFactory getInstance() throws NoClassDefFoundError {
+    public static synchronized Log4J2LoggerFactory getInstance() throws NoClassDefFoundError {
         if (factory == null) {
-            factory = new CommonsLoggerFactory();
+            factory = new Log4J2LoggerFactory();
         }
         return factory;
     }
 
     /**
      * Returns the implementation to use for the logger of the specified name, or {@code null} if
-     * the logger would delegate to Java logging anyway.
+     * the logger would delegates to Java logging anyway.
      */
     @Override
-    protected Log getImplementation(final String name) {
-        final Log log = LogFactory.getLog(name);
-        if (log != null
-                && log.getClass().getName().equals("org.apache.commons.logging.impl.Jdk14Logger")) {
-            return null;
-        }
-        return log;
+    protected org.apache.logging.log4j.Logger getImplementation(final String name) {
+        return org.apache.logging.log4j.LogManager.getLogger(name);
     }
 
     /** Wraps the specified {@linkplain #getImplementation implementation} in a Java logger. */
     @Override
-    protected Logger wrap(String name, Log implementation) {
-        return new CommonsLogger(name, implementation);
+    protected Logger wrap(String name, org.apache.logging.log4j.Logger implementation) {
+        return new Log4J2Logger(name, implementation);
     }
 
     /**
@@ -81,9 +71,9 @@ public class CommonsLoggerFactory extends LoggerFactory<Log> {
      * or {@code null} if none.
      */
     @Override
-    protected Log unwrap(final Logger logger) {
-        if (logger instanceof CommonsLogger) {
-            return ((CommonsLogger) logger).logger;
+    protected org.apache.logging.log4j.Logger unwrap(final Logger logger) {
+        if (logger instanceof Log4JLogger) {
+            return ((Log4J2Logger) logger).logger;
         }
         return null;
     }

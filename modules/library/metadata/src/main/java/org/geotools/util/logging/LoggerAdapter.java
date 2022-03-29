@@ -646,4 +646,16 @@ public abstract class LoggerAdapter extends Logger {
             }
         return message;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(":");
+        sb.append(getName() == null ? "anonymous" : getName());
+        sb.append(" : ");
+        sb.append(getLevel());
+
+        return sb.toString();
+    }
 }

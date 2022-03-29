@@ -159,4 +159,20 @@ public class StaticGeometryTest {
         assertFalse(StaticGeometry.greaterEqualThan(arg2, arg1));
         assertTrue(StaticGeometry.greaterEqualThan(arg2, arg2));
     }
+
+    @Test
+    public void testIsLikeREDOS1() {
+        String arg1 =
+                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab";
+        String arg2 = "(a+)+";
+        StaticGeometry.isLike(arg1, arg2);
+    }
+
+    @Test
+    public void testStrMatchesREDOS1() {
+        String arg1 =
+                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab";
+        String arg2 = "(a+)+";
+        StaticGeometry.strMatches(arg1, arg2);
+    }
 }

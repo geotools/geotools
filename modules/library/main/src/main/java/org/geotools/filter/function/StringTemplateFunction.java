@@ -16,12 +16,12 @@
  */
 package org.geotools.filter.function;
 
+import com.google.re2j.Matcher;
+import com.google.re2j.Pattern;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.util.Converters;
 import org.opengis.filter.capability.FunctionName;

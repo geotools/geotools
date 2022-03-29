@@ -69,6 +69,16 @@ Fixing this required changes to multiple classes:
 * ``org.geotools.referencing.wkt.DefaultUnitParser`` has been moved and renamed to
   ``org.geotools.measure.WktUnitFormat``.
 
+Improvements to Regex Parsing in `IsLike` and similar filters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Processing of regular expressions in the ``IsLike`` & ``StrMatches`` functions, and in the ``isPropertyLike`` 
+filter to make use of the faster and more robust `Google regular expression's library 
+<https://github.com/google/re2j>`_. As part of this work we have improved the handling of some "permissible" 
+but inadvisable patterns, such as those with multi character escapes or wild cards. If you had patterns that 
+relied on long escape or wild card patterns you may now get an ``IllegalArgumentException`` for a pattern that 
+happened to work in the past.
+
 GeoTools 25.x
 -------------
 

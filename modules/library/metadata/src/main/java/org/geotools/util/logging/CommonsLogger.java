@@ -54,7 +54,7 @@ final class CommonsLogger extends LoggerAdapter {
     public Level getLevel() {
         if (logger.isTraceEnabled()) return Level.FINEST;
         if (logger.isDebugEnabled()) return Level.FINE;
-        if (logger.isInfoEnabled()) return Level.CONFIG;
+        if (logger.isInfoEnabled()) return Level.INFO;
         if (logger.isWarnEnabled()) return Level.WARNING;
         if (logger.isErrorEnabled()) return Level.SEVERE;
         if (logger.isFatalEnabled()) return Level.SEVERE;
@@ -167,5 +167,24 @@ final class CommonsLogger extends LoggerAdapter {
     @Override
     public void finest(String message) {
         logger.trace(message);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("CommonsLogger: ");
+        sb.append(getName() == null ? "anonymous" : getName());
+        sb.append(" : ");
+        sb.append(getLevel());
+        sb.append(" (");
+        if (logger.isTraceEnabled()) sb.append("Trace");
+        else if (logger.isDebugEnabled()) sb.append("Debug");
+        else if (logger.isInfoEnabled()) sb.append("Info");
+        else if (logger.isWarnEnabled()) sb.append("Warn");
+        else if (logger.isErrorEnabled()) sb.append("Error");
+        else if (logger.isFatalEnabled()) sb.append("Fatal");
+        else sb.append("Off");
+        sb.append(")");
+
+        return sb.toString();
     }
 }

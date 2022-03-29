@@ -30,23 +30,18 @@ import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.XArray;
 
 /**
- * A set of utilities method for configuring loggings in GeoTools. <strong>All GeoTools code should
- * fetch their logger through a call to {@link #getLogger(String)}</strong>, not {@link
+ * Utility class for configuring loggings in GeoTools. <strong>All GeoTools code should fetch their
+ * logger through a call to {@link #getLogger(String)}</strong>, not java util logging {@link
  * Logger#getLogger(String)}. This is necessary in order to give GeoTools a chance to redirect log
- * events to an other logging framework, for example <A
- * HREF="http://jakarta.apache.org/commons/logging/">commons-logging</A>.
+ * events to other logging frameworks, for example <A
+ * HREF="https://logging.apache.org/log4j/2.x/">LOG4J</A>, or </A><A
+ * HREF="https://commons.apache.org/proper/commons-logging/">commons-logging</A>.
  *
  * <p><b>Example:</b> In order to redirect every GeoTools log events to Commons-logging, invoke the
  * following once at application startup:
  *
- * <blockquote>
- *
- * <code>
- * Logging.{@linkplain #GEOTOOLS}.{@linkplain #setLoggerFactory
- * setLoggerFactory}("org.geotools.util.logging.CommonsLoggerFactory");
- * </code>
- *
- * </blockquote>
+ * <pre><code>Logging.setLoggerFactory}("org.geotools.util.logging.CommonsLoggerFactory");</code>
+ * </pre>
  *
  * @since 2.4
  * @version $Id$
@@ -54,6 +49,7 @@ import org.geotools.util.XArray;
  */
 @SuppressWarnings("PMD.SystemPrintln")
 public final class Logging {
+
     /** Compares {@link Logging} or {@link String} objects for alphabetical order. */
     private static final Comparator<Object> COMPARATOR =
             (o1, o2) -> {

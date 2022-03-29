@@ -16,7 +16,10 @@
  */
 package org.geotools.data.elasticsearch;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -28,8 +31,10 @@ import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.process.elasticsearch.ElasticBucketVisitor;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
+import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.sort.SortBy;
@@ -40,7 +45,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Provides access to a specific type within the Elasticsearch index described by the associated
  * data store.
  */
-class ElasticFeatureSource extends ContentFeatureSource {
+public class ElasticFeatureSource extends ContentFeatureSource {
 
     private static final Logger LOGGER = Logging.getLogger(ElasticFeatureSource.class);
 
@@ -146,6 +151,60 @@ class ElasticFeatureSource extends ContentFeatureSource {
             throw new IOException("Error executing query search", e);
         }
         return reader;
+    }
+
+    @Override
+    protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
+        if (visitor instanceof ElasticBucketVisitor) {
+            ElasticBucketVisitor elasticBucketVisitor = (ElasticBucketVisitor) visitor;
+            final ObjectMapper mapper = new ObjectMapper();
+            Map<String, String> hints = new HashMap<>();
+            if (elasticBucketVisitor.getAggregationDefinition() != null
+                    && elasticBucketVisitor.getAggregationDefinition().length() > 0) {
+                hints.put("a", elasticBucketVisitor.getAggregationDefinition());
+            }
+            if (elasticBucketVisitor.getQueryDefinition() != null
+                    && elasticBucketVisitor.getQueryDefinition().length() > 0) {
+                hints.put("q", elasticBucketVisitor.getQueryDefinition());
+            }
+            if (elasticBucketVisitor.getNativeOnly() != null) {
+                hints.put("native-only", elasticBucketVisitor.getNativeOnly().toString());
+            }
+            query.getHints().put(ElasticBucketVisitor.ES_AGGREGATE_BUCKET, hints);
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(query)) {
+
+                while (reader.hasNext()) {
+                    SimpleFeature feature = null;
+                    try {
+                        feature = reader.next();
+                        if (feature.getAttribute("_aggregation") != null) {
+                            final byte[] data = (byte[]) feature.getAttribute("_aggregation");
+                            final Map<String, Object> aggregation =
+                                    mapper.readValue(
+                                            data, new TypeReference<Map<String, Object>>() {});
+                            elasticBucketVisitor.getBuckets().add(aggregation);
+                        }
+                    } catch (IOException erp) {
+                        LOGGER.fine("Failed to parse aggregation value: " + erp);
+                        throw erp;
+                    } catch (Exception unexpected) {
+                        String fid =
+                                feature == null ? "feature" : feature.getIdentifier().toString();
+                        throw new IOException(
+                                "Problem visiting "
+                                        + query.getTypeName()
+                                        + " visiting "
+                                        + fid
+                                        + ":"
+                                        + unexpected,
+                                unexpected);
+                    }
+                }
+            }
+
+            return true;
+        }
+        return false;
     }
 
     private ElasticRequest prepareSearchRequest(Query query, boolean scroll) throws IOException {

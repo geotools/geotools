@@ -16,6 +16,7 @@
  */
 package org.geotools.process.elasticsearch;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.davidmoten.geo.GeoHash;
@@ -25,12 +26,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
+import org.geotools.data.crs.ForceCoordinateSystemFeatureResults;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.store.ContentFeatureCollection;
+import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.collection.DecoratingSimpleFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.factory.GeoTools;
@@ -75,17 +81,26 @@ abstract class GeoHashGrid {
         this.scale = new RasterScale();
     }
 
-    public void initalize(ReferencedEnvelope srcEnvelope, SimpleFeatureCollection features)
-            throws TransformException, FactoryException {
-        final List<Map<String, Object>> buckets = readFeatures(features);
+    public void initalize(
+            ReferencedEnvelope srcEnvelope,
+            SimpleFeatureCollection features,
+            String aggregationDefinition,
+            String queryDefinition,
+            Boolean nativeOnly)
+            throws TransformException, FactoryException, IOException {
+        final List<Map<String, Object>> buckets =
+                readFeatures(features, aggregationDefinition, queryDefinition, nativeOnly);
 
         final String firstGeohash = buckets.isEmpty() ? null : (String) buckets.get(0).get("key");
-        final int precision;
-        if (!isValid(firstGeohash)) {
-            LOGGER.fine("No aggregations found or missing/invalid geohash key");
-            precision = DEFAULT_PRECISION;
-        } else {
-            precision = ((String) buckets.get(0).get("key")).length();
+        Integer precision = getPrecision(aggregationDefinition);
+
+        if (precision == null) {
+            if (!isValid(firstGeohash)) {
+                LOGGER.fine("No aggregations found or missing/invalid geohash key");
+                precision = DEFAULT_PRECISION;
+            } else {
+                precision = ((String) buckets.get(0).get("key")).length();
+            }
         }
 
         cellWidth = GeoHash.widthDegrees(precision);
@@ -126,6 +141,35 @@ abstract class GeoHashGrid {
         LOGGER.fine("Read " + cells.size() + " aggregation buckets");
     }
 
+    private Integer getPrecision(String aggregationDefinition) {
+        Integer precision = null;
+        final ObjectMapper mapper = new ObjectMapper();
+        final TypeReference<Map<String, Map<String, Map<String, Object>>>> type =
+                new TypeReference<Map<String, Map<String, Map<String, Object>>>>() {};
+        try {
+            Map<String, Map<String, Map<String, Object>>> map =
+                    mapper.readValue(aggregationDefinition, type);
+            Map<String, Map<String, Object>> aggMap = map.get("agg");
+            if (aggMap != null) {
+                Map<String, Object> geohashMap = aggMap.get("geohash_grid");
+                if (geohashMap != null) {
+                    if (geohashMap.get("precision") != null) {
+                        if (geohashMap.get("precision") instanceof Integer) {
+                            precision = (Integer) geohashMap.get("precision");
+                        }
+                    }
+                }
+            }
+        } catch (JsonProcessingException e) {
+            LOGGER.log(
+                    Level.WARNING,
+                    "Failure when trying to read precision from aggregation definition: "
+                            + aggregationDefinition,
+                    e);
+        }
+        return precision;
+    }
+
     protected abstract Number computeCellValue(Map<String, Object> bucket);
 
     private void updateGrid(String geohash, Number value) {
@@ -154,26 +198,45 @@ abstract class GeoHashGrid {
         return coverageFactory.create("geohashGridAgg", grid, boundingBox);
     }
 
-    private List<Map<String, Object>> readFeatures(SimpleFeatureCollection features) {
-        final ObjectMapper mapper = new ObjectMapper();
-
+    private List<Map<String, Object>> readFeatures(
+            SimpleFeatureCollection features,
+            String aggregationDefinition,
+            String queryDefinition,
+            Boolean nativeOnly)
+            throws IOException {
         final List<Map<String, Object>> buckets = new ArrayList<>();
-        try (SimpleFeatureIterator iterator = features.features()) {
-            while (iterator.hasNext()) {
-                final SimpleFeature feature = iterator.next();
-                if (feature.getAttribute("_aggregation") != null) {
-                    final byte[] data = (byte[]) feature.getAttribute("_aggregation");
-                    try {
-                        final Map<String, Object> aggregation =
-                                mapper.readValue(data, new TypeReference<Map<String, Object>>() {});
-                        buckets.add(aggregation);
-                    } catch (IOException e) {
-                        LOGGER.fine("Failed to parse aggregation value: " + e);
+        FeatureCollection featureCollection = features;
+        if (features instanceof ForceCoordinateSystemFeatureResults) {
+            ForceCoordinateSystemFeatureResults forceCoordinateSystemFeatureResults =
+                    (ForceCoordinateSystemFeatureResults) features;
+            featureCollection = forceCoordinateSystemFeatureResults.getOrigin();
+        }
+        ElasticBucketVisitor visitor =
+                new ElasticBucketVisitor(aggregationDefinition, queryDefinition, nativeOnly);
+        if (featureCollection instanceof ContentFeatureCollection
+                || featureCollection instanceof DecoratingSimpleFeatureCollection) {
+            featureCollection.accepts(visitor, null);
+            return visitor.getBuckets();
+        } else {
+            ObjectMapper mapper = new ObjectMapper();
+            try (SimpleFeatureIterator iterator = features.features()) {
+                while (iterator.hasNext()) {
+                    final SimpleFeature feature = iterator.next();
+                    if (feature.getAttribute("_aggregation") != null) {
+                        final byte[] data = (byte[]) feature.getAttribute("_aggregation");
+                        try {
+                            final Map<String, Object> aggregation =
+                                    mapper.readValue(
+                                            data, new TypeReference<Map<String, Object>>() {});
+                            buckets.add(aggregation);
+                        } catch (IOException e) {
+                            LOGGER.fine("Failed to parse aggregation value: " + e);
+                        }
                     }
                 }
             }
+            return buckets;
         }
-        return buckets;
     }
 
     private Envelope computeEnvelope(ReferencedEnvelope outEnvelope, int precision) {

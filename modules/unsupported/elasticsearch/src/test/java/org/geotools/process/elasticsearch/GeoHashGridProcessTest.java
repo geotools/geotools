@@ -111,6 +111,9 @@ public class GeoHashGridProcessTest {
                         envelope,
                         width,
                         height,
+                        "",
+                        "",
+                        false,
                         null);
         checkInternal(coverage, fineDelta);
         checkEdge(coverage, envelope, fineDelta);
@@ -139,6 +142,9 @@ public class GeoHashGridProcessTest {
                         envelope,
                         width,
                         height,
+                        "",
+                        "",
+                        false,
                         null);
         checkInternal(coverage, fineDelta);
         checkEdge(coverage, envelope, fineDelta);
@@ -167,6 +173,9 @@ public class GeoHashGridProcessTest {
                         envelope,
                         width,
                         height,
+                        "",
+                        "",
+                        false,
                         null);
         checkInternal(coverage, fineDelta);
         checkEdge(coverage, envelope, fineDelta);
@@ -195,6 +204,9 @@ public class GeoHashGridProcessTest {
                         envelope,
                         width,
                         height,
+                        "",
+                        "",
+                        false,
                         null);
         checkInternal(coverage, fineDelta);
     }

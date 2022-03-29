@@ -111,6 +111,20 @@ public class GeoHashGridProcess implements VectorProcess {
                             name = "outputHeight",
                             description = "Height of output raster in pixels")
                     Integer argOutputHeight,
+            @DescribeParameter(
+                            name = "aggregationDefinition",
+                            description = "Native Elasticsearch Aggregation definition")
+                    String aggregationDefinition,
+            @DescribeParameter(
+                            name = "queryDefinition",
+                            description = "Native Elasticsearch Query definition",
+                            min = 0)
+                    String queryDefinition,
+            @DescribeParameter(
+                            name = "nativeOnly",
+                            description = "Use native Elasticsearch query and ignore other filters",
+                            min = 0)
+                    Boolean nativeOnly,
             ProgressListener monitor)
             throws ProcessException {
 
@@ -121,7 +135,8 @@ public class GeoHashGridProcess implements VectorProcess {
             geoHashGrid.setParams(gridStrategyArgs);
             geoHashGrid.setEmptyCellValue(emptyCellValue);
             geoHashGrid.setScale(new RasterScale(scaleMin, scaleMax, useLog));
-            geoHashGrid.initalize(argOutputEnv, obsFeatures);
+            geoHashGrid.initalize(
+                    argOutputEnv, obsFeatures, aggregationDefinition, queryDefinition, nativeOnly);
             // convert to grid coverage
             final GridCoverage2D nativeCoverage = geoHashGrid.toGridCoverage2D();
 

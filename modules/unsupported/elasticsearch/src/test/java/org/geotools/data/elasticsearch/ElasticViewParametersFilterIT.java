@@ -18,18 +18,18 @@
 package org.geotools.data.elasticsearch;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureCollection;
+import org.geotools.process.elasticsearch.ElasticBucketVisitor;
 import org.geotools.util.factory.Hints;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory;
@@ -45,7 +45,7 @@ public class ElasticViewParametersFilterIT extends ElasticTestSupport {
         Map<String, String> vparams = new HashMap<>();
         Map<String, Object> query = ImmutableMap.of("term", ImmutableMap.of("security_ss", "WPA"));
         vparams.put("q", mapper.writeValueAsString(query));
-        Hints hints = new Hints(Hints.VIRTUAL_TABLE_PARAMETERS, vparams);
+        Hints hints = new Hints(ElasticBucketVisitor.ES_AGGREGATE_BUCKET, vparams);
         Query q = new Query(featureSource.getSchema().getTypeName());
         q.setHints(hints);
         FilterFactory ff = dataStore.getFilterFactory();
@@ -65,7 +65,7 @@ public class ElasticViewParametersFilterIT extends ElasticTestSupport {
         Map<String, String> vparams = new HashMap<>();
         Map<String, Object> query = ImmutableMap.of("term", ImmutableMap.of("security_ss", "WPA"));
         vparams.put("q", URLEncoder.encode(mapper.writeValueAsString(query), "UTF-8"));
-        Hints hints = new Hints(Hints.VIRTUAL_TABLE_PARAMETERS, vparams);
+        Hints hints = new Hints(ElasticBucketVisitor.ES_AGGREGATE_BUCKET, vparams);
         Query q = new Query(featureSource.getSchema().getTypeName());
         q.setHints(hints);
         FilterFactory ff = dataStore.getFilterFactory();
@@ -92,7 +92,7 @@ public class ElasticViewParametersFilterIT extends ElasticTestSupport {
                                 "must_not",
                                 ImmutableMap.of("term", ImmutableMap.of("modem_b", true))));
         vparams.put("q", mapper.writeValueAsString(query));
-        Hints hints = new Hints(Hints.VIRTUAL_TABLE_PARAMETERS, vparams);
+        Hints hints = new Hints(ElasticBucketVisitor.ES_AGGREGATE_BUCKET, vparams);
         Query q = new Query(featureSource.getSchema().getTypeName());
         q.setHints(hints);
         FilterFactory ff = dataStore.getFilterFactory();
@@ -111,21 +111,14 @@ public class ElasticViewParametersFilterIT extends ElasticTestSupport {
     @Test
     public void testNativeAggregation() throws Exception {
         init();
-        Map<String, String> vparams = new HashMap<>();
-        Map<String, Object> query =
-                ImmutableMap.of(
-                        "agg",
-                        ImmutableMap.of(
-                                "geohash_grid", ImmutableMap.of("field", "geo", "precision", 3)));
-        vparams.put("a", mapper.writeValueAsString(query));
-        Hints hints = new Hints(Hints.VIRTUAL_TABLE_PARAMETERS, vparams);
         Query q = new Query(featureSource.getSchema().getTypeName());
-        q.setHints(hints);
-        ContentFeatureCollection features = featureSource.getFeatures(q);
-        assertFalse(features.isEmpty());
-        try (SimpleFeatureIterator fsi = features.features()) {
-            assertTrue(fsi.hasNext());
-            assertNotNull(fsi.next().getAttribute("_aggregation"));
-        }
+        ElasticBucketVisitor elasticBucketVisitor =
+                new ElasticBucketVisitor(
+                        "{\"agg\": {\"geohash_grid\": {\"field\": \"geo\", \"precision\": 3}}}",
+                        null,
+                        false);
+        featureSource.accepts(q, elasticBucketVisitor, null);
+        List<Map<String, Object>> buckets = elasticBucketVisitor.getBuckets();
+        assertEquals(9, buckets.size());
     }
 }

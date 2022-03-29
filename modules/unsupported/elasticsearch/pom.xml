@@ -159,6 +159,10 @@
       <artifactId>gt-geojsondatastore</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.easymock</groupId>
+      <artifactId>easymock</artifactId>
+    </dependency>
   </dependencies>
   <build>
     <plugins>

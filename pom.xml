@@ -480,8 +480,8 @@
     <eclipse.emf.version>2.15.0</eclipse.emf.version>
     <elasticsearch.version>7.14.0</elasticsearch.version>
     <imageio.ext.version>1.4.1</imageio.ext.version>
-    <jackson2.version>2.13.2</jackson2.version>
     <jackson2.databind.version>2.13.2.1</jackson2.databind.version>
+    <jackson2.version>2.13.2</jackson2.version>
     <jaiext.version>1.1.21</jaiext.version>
     <javax.activation-api.version>1.2.0</javax.activation-api.version>
     <jaxb.api.version>2.4.0-b180830.0359</jaxb.api.version>
@@ -507,7 +507,6 @@
     <allow.test.failure.ignore>false</allow.test.failure.ignore>
     <allow.test.skip>true</allow.test.skip>
     <argLine></argLine>
-    <!-- allows for jacoco params injection in surefire-->
     <extensive.tests>false</extensive.tests>
     <interactive.image>false</interactive.image>
     <interactive.tests>false</interactive.tests>
@@ -528,16 +527,25 @@
     <test.otherJVMParams></test.otherJVMParams>
     <!-- qa configuration -->
     <checkstyle.excludes>**/generated/**/*</checkstyle.excludes>
+    <checkstyle.excludes>**/generated/**/*</checkstyle.excludes>
+    <checkstyle.file>checkstyle.xml</checkstyle.file>
+    <checkstyle.skip>false</checkstyle.skip>
     <checkstyle.skip>false</checkstyle.skip>
     <errorProne.version>2.10.0</errorProne.version>
     <errorProneFlags></errorProneFlags>
+    <jackson2.databind.version>2.13.2.1</jackson2.databind.version>
+    <jackson2.version>2.13.2</jackson2.version>
     <jacoco.version>0.8.7</jacoco.version>
+    <jacoco.version>0.8.7</jacoco.version>
+    <lint>deprecation,unchecked</lint>
     <maven.jacoco.plugin.version>0.8.2</maven.jacoco.plugin.version>
     <maven.pmd.plugin.version>3.14.0</maven.pmd.plugin.version>
     <pmd.skip>false</pmd.skip>
     <pmd.version>6.42.0</pmd.version>
+    <pmd.version>6.42.0</pmd.version>
     <pom.fmt.action>sort</pom.fmt.action>
     <pom.fmt.skip>${spotless.apply.skip}</pom.fmt.skip>
+    <qa>false</qa>
     <qa>false</qa>
     <spotbugs.skip>false</spotbugs.skip>
     <spotless.action>apply</spotless.action>
@@ -1548,7 +1556,7 @@
         </plugin>
         <plugin>
           <artifactId>maven-checkstyle-plugin</artifactId>
-          <version>3.1.1</version>
+          <version>3.1.2</version>
         </plugin>
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>
@@ -1728,6 +1736,7 @@
             <java.util.logging.config.file>${geotoolsBaseDir}/${logging-profile}.properties</java.util.logging.config.file>
             <java.util.logging.SimpleFormatter.format>%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS %4$-7s [%3$s] %5$s%6$s%n</java.util.logging.SimpleFormatter.format>
           </systemPropertyVariables>
+          <!-- Use systemPropertyVariables @{argLine} late subtitution for jacoco params injection in surefire-->
           <argLine>@{argLine} -Xmx${test.maxHeapSize} ${jvm.opts} -Dfile.encoding=UTF-8 -Djava.library.path="${java.library.path}" ${test.args} -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -XX:+IgnoreUnrecognizedVMOptions -XX:-OmitStackTraceInFastThrow --add-exports=java.desktop/sun.awt.image=ALL-UNNAMED ${test.otherJVMParams}</argLine>
           <!-- Ignores test failure only if we are generating a       -->
           <!-- report for publication on the web site. See the        -->
@@ -2516,7 +2525,7 @@
               <dependency>
                 <groupId>com.puppycrawl.tools</groupId>
                 <artifactId>checkstyle</artifactId>
-                <version>8.29</version>
+                <version>9.3</version>
               </dependency>
             </dependencies>
             <configuration>
@@ -2524,7 +2533,7 @@
               <!-- ignore generated classes, e.g., javacc ones -->
               <excludes>${checkstyle.excludes}</excludes>
               <skip>${checkstyle.skip}</skip>
-              <configLocation>${geotoolsBaseDir}/build/qa/checkstyle.xml</configLocation>
+              <configLocation>${geotoolsBaseDir}/build/qa/${checkstyle.file}</configLocation>
             </configuration>
           </plugin>
         </plugins>

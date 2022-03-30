@@ -49,6 +49,7 @@
 
   <properties>
     <target>full</target>
+    <checkstyle.file>checkstyle-cc0.xml</checkstyle.file>
   </properties>
 
   <!-- =========================================================== -->
@@ -306,6 +307,14 @@
       <properties>
         <target>developer</target>
       </properties>
+    </profile>
+    <profile>
+      <id>checkstyle</id>
+      <activation>
+        <property>
+          <name>qa</name>
+        </property>
+      </activation>
     </profile>
   </profiles>
 

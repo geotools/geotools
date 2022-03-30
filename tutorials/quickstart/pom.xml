@@ -65,9 +65,15 @@
   <profiles>
     <profile>
       <id>qa</id>
+      <activation>
+        <property>
+          <name>qa</name>
+        </property>
+      </activation>
       <properties>
         <maven.pmd.plugin.version>3.14.0</maven.pmd.plugin.version>
         <pmd.version>6.42.0</pmd.version>
+        <pom.fmt.action>sort</pom.fmt.action>
       </properties>
       <build>
         <plugins>
@@ -94,7 +100,6 @@
               </dependency>
             </dependencies>
             <configuration>
-              <skip>${pmd.skip}</skip>
               <linkXRef>false</linkXRef>
               <rulesets>
                 <ruleset>${project.basedir}/../../build/qa/pmd-ruleset.xml</ruleset>
@@ -123,12 +128,49 @@
               <!-- threshold>High</threshold -->
               <xmlOutput>true</xmlOutput>
               <maxRank>15</maxRank>
-              <skip>${spotbugs.skip}</skip>
               <excludeFilterFile>${project.basedir}/../../build/qa/spotbugs-exclude.xml</excludeFilterFile>
               <jvmArgs>-XX:+TieredCompilation -XX:TieredStopAtLevel=1</jvmArgs>
               <compilerArgs combine.children="append">
                 <arg>-Xlint:${lint}</arg>
               </compilerArgs>
+            </configuration>
+          </plugin>
+          <plugin>
+            <artifactId>maven-checkstyle-plugin</artifactId>
+            <version>3.1.2</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+              </execution>
+            </executions>
+            <dependencies>
+              <dependency>
+                <groupId>com.puppycrawl.tools</groupId>
+                <artifactId>checkstyle</artifactId>
+                <version>9.3</version>
+              </dependency>
+            </dependencies>
+            <configuration>
+              <logViolationsToConsole>true</logViolationsToConsole>
+              <configLocation>${project.basedir}/../..//build/qa/checkstyle-cc0.xml</configLocation>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>com.github.ekryd.sortpom</groupId>
+            <artifactId>sortpom-maven-plugin</artifactId>
+            <version>2.15.0</version>
+            <executions>
+              <execution>
+                <phase>verify</phase>
+                <goals>
+                  <goal>${pom.fmt.action}</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <skip>true</skip>
             </configuration>
           </plugin>
         </plugins>

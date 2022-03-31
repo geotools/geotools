@@ -42,7 +42,7 @@ public class OpenShapefileAction extends MapAction implements ISelectionChangedL
 
     public OpenShapefileAction() {
         super(
-                "Open Shapefile",
+                "Open Shapefile@O",
                 "Load a shapefile into the viewer.",
                 ImageCache.getInstance().getImage(ImageCache.OPEN));
     }

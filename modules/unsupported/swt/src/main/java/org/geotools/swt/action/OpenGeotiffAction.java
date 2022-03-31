@@ -43,7 +43,7 @@ public class OpenGeotiffAction extends MapAction implements ISelectionChangedLis
 
     public OpenGeotiffAction() {
         super(
-                "Open Image",
+                "Open Image@Shift+O",
                 "Load an image file into the viewer.",
                 ImageCache.getInstance().getImage(ImageCache.OPEN));
     }

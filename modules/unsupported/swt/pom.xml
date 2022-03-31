@@ -97,7 +97,12 @@
         <artifactId>gt-coverage</artifactId>
         <version>${project.version}</version>
     </dependency>
-            
+    <dependency>
+        <groupId>org.geotools</groupId>
+        <artifactId>gt-xml</artifactId>
+        <version>${project.version}</version>
+    </dependency>
+    
 	<!-- ECLIPSE JARS -->
     <dependency>
                 <groupId>org.eclipse</groupId>

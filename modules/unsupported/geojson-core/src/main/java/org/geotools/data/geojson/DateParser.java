@@ -93,7 +93,7 @@ class DateParser {
         for (FastDateFormat format : formats) {
             try {
                 return format.parse(text);
-            } catch (ParseException e) {
+            } catch (ParseException | NumberFormatException e) {
                 if (LOGGER.isLoggable(Level.FINEST))
                     LOGGER.log(
                             Level.FINEST,

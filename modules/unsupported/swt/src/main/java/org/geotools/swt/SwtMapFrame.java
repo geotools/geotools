@@ -21,6 +21,7 @@ import java.util.HashSet;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.StatusLineLayoutData;
 import org.eclipse.jface.action.StatusLineManager;
 import org.eclipse.jface.action.ToolBarManager;
@@ -34,6 +35,7 @@ import org.eclipse.swt.widgets.Label;
 import org.geotools.map.MapContent;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.lite.StreamingRenderer;
+import org.geotools.swt.action.ExitAction;
 import org.geotools.swt.action.InfoAction;
 import org.geotools.swt.action.OpenGeotiffAction;
 import org.geotools.swt.action.OpenShapefileAction;
@@ -87,6 +89,7 @@ public class SwtMapFrame extends ApplicationWindow {
 
     private OpenShapefileAction openShapeAction;
     private OpenGeotiffAction openCoverageAction;
+    private ExitAction exitAction;
 
     /*
      * to see how overlay of shapes works, uncomment all the lines that
@@ -161,6 +164,7 @@ public class SwtMapFrame extends ApplicationWindow {
         zoomoutAction = new ZoomOutAction();
         openShapeAction = new OpenShapefileAction();
         openCoverageAction = new OpenGeotiffAction();
+        exitAction = new ExitAction(this);
 
         toolSet = new HashSet<>();
         toolSet.addAll(EnumSet.allOf(Tool.class));
@@ -266,6 +270,8 @@ public class SwtMapFrame extends ApplicationWindow {
         MenuManager file_menu = new MenuManager("&File");
         file_menu.add(openShapeAction);
         file_menu.add(openCoverageAction);
+        file_menu.add(new Separator());
+        file_menu.add(exitAction);
 
         MenuManager navigation_menu = new MenuManager("&Navigation");
         bar_menu.add(file_menu);

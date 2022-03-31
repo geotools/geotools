@@ -553,8 +553,7 @@ public class CRSChooser {
                             return found;
                         }
 
-                        Set<Identifier> identifiers =
-                                new HashSet<>(createdCRS.getIdentifiers());
+                        Set<Identifier> identifiers = new HashSet<>(createdCRS.getIdentifiers());
                         for (Identifier identifier : identifiers) {
                             found = createCRS(identifier.toString());
                             if (found != null

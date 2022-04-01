@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.geotools.map.MapContent;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.lite.StreamingRenderer;
@@ -106,9 +107,14 @@ public class SwtMapFrame extends ApplicationWindow {
      */
     public static void showMap(MapContent content) {
         final SwtMapFrame frame = new SwtMapFrame(true, true, true, true, content);
-        // frame.getShell().setSize(500, 500);
         frame.setBlockOnOpen(true);
         frame.open();
+    }
+    
+    @Override
+    protected void configureShell( Shell newShell ) {
+        super.configureShell(newShell);
+        newShell.setMinimumSize(1200, 800);
     }
 
     /** Default constructor. Creates a {@code JMapFrame} with no context or renderer set */

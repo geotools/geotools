@@ -38,6 +38,5 @@ public class ExitAction extends MapAction implements ISelectionChangedListener {
         window.close();
     }
 
-    public void selectionChanged( SelectionChangedEvent arg0 ) {
-    }
+    public void selectionChanged(SelectionChangedEvent arg0) {}
 }

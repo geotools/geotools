@@ -107,9 +107,8 @@ public class JJTreeJavaCC extends AbstractMojo {
 
     /** Directory where the output Java files will be located. */
     @Parameter(
-        required = true,
-        defaultValue = "${project.build.directory}/generated-sources/jjtree-javacc"
-    )
+            required = true,
+            defaultValue = "${project.build.directory}/generated-sources/jjtree-javacc")
     private String outputDirectory;
 
     /**

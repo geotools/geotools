@@ -57,7 +57,7 @@ public class MaplayerTableViewer extends TableViewer implements ISelectionChange
     private List<Layer> layersList = new ArrayList<>();
     private Layer selectedMapLayer;
 
-    private String[] titles = { "", "Layer name", "", ""};
+    private String[] titles = {"", "Layer name", "", ""};
     private SwtMapPane pane;
 
     /**
@@ -69,7 +69,7 @@ public class MaplayerTableViewer extends TableViewer implements ISelectionChange
      * @param parent the parent {@link Composite}.
      * @param style the style for the {@link Composite}.
      */
-    public MaplayerTableViewer(Composite parent, int style) {
+    public MaplayerTableViewer( Composite parent, int style ) {
         super(parent, style);
 
         this.setContentProvider(new ArrayContentProvider());
@@ -88,7 +88,7 @@ public class MaplayerTableViewer extends TableViewer implements ISelectionChange
      *
      * @param pane the map pane to use.
      */
-    public void setPane(SwtMapPane pane) {
+    public void setPane( SwtMapPane pane ) {
         this.pane = pane;
     }
 
@@ -110,94 +110,88 @@ public class MaplayerTableViewer extends TableViewer implements ISelectionChange
         return selectedMapLayer;
     }
 
-    private void createColumns(final Composite parent, final TableViewer viewer) {
+    private void createColumns( final Composite parent, final TableViewer viewer ) {
 
         int[] bounds = {40, 200, 40, 40};
 
         TableViewerColumn col;
         col = createTableViewerColumn(titles[0], bounds[0], 0);
-        col.setLabelProvider(
-                new ColumnLabelProvider() {
-                    @Override
-                    public Image getImage(Object element) {
-                        if (element instanceof Layer) {
-                            Layer p = (Layer) element;
-                            if (p.isVisible()) {
-                                return ImageCache.getInstance().getImage(ImageCache.CHECKED);
-                            }
-                            return ImageCache.getInstance().getImage(ImageCache.UNCHECKED);
-                        }
-                        return null;
+        col.setLabelProvider(new ColumnLabelProvider(){
+            @Override
+            public Image getImage( Object element ) {
+                if (element instanceof Layer) {
+                    Layer p = (Layer) element;
+                    if (p.isVisible()) {
+                        return ImageCache.getInstance().getImage(ImageCache.CHECKED);
                     }
-                    
-                    @Override
-                    public String getText(Object element) {
-                        return null;
-                    }
-                });
-        
+                    return ImageCache.getInstance().getImage(ImageCache.UNCHECKED);
+                }
+                return null;
+            }
+
+            @Override
+            public String getText( Object element ) {
+                return null;
+            }
+        });
+
         col = createTableViewerColumn(titles[1], bounds[1], 1);
-        col.setLabelProvider(
-                new ColumnLabelProvider() {
-                    @Override
-                    public Image getImage(Object element) {
-                        if (element instanceof Layer) {
-                            Layer p = (Layer) element;
-                            if (Utils.isGridLayer(p)) {
-                                return ImageCache.getInstance().getImage(ImageCache.GRID);
-                            }
-                            return ImageCache.getInstance().getImage(ImageCache.FEATURE);
-                        }
-                        return null;
+        col.setLabelProvider(new ColumnLabelProvider(){
+            @Override
+            public Image getImage( Object element ) {
+                if (element instanceof Layer) {
+                    Layer p = (Layer) element;
+                    if (Utils.isGridLayer(p)) {
+                        return ImageCache.getInstance().getImage(ImageCache.GRID);
                     }
+                    return ImageCache.getInstance().getImage(ImageCache.FEATURE);
+                }
+                return null;
+            }
 
-                    @Override
-                    public String getText(Object element) {
-                        if (element instanceof Layer) {
-                            Layer p = (Layer) element;
-                            String title = p.getTitle();
-                            if (title == null || title.length() == 0) {
-                                FeatureSource< ? , ? > featureSource = p.getFeatureSource();
-                                if (featureSource != null) {
-                                    title = featureSource.getName().getLocalPart().toString();
-                                }
-                            }
-                            return title;
+            @Override
+            public String getText( Object element ) {
+                if (element instanceof Layer) {
+                    Layer p = (Layer) element;
+                    String title = p.getTitle();
+                    if (title == null || title.length() == 0) {
+                        FeatureSource< ? , ? > featureSource = p.getFeatureSource();
+                        if (featureSource != null) {
+                            title = featureSource.getName().getLocalPart().toString();
                         }
-                        return null;
                     }
-                });
-
+                    return title;
+                }
+                return null;
+            }
+        });
 
         col = createTableViewerColumn(titles[2], bounds[2], 2);
-        col.setLabelProvider(
-                new ColumnLabelProvider() {
-                    public Image getImage(Object element) {
-                        return ImageCache.getInstance().getImage(ImageCache.STYLE);
-                    }
-                    
-                    @Override
-                    public String getText(Object element) {
-                        return null;
-                    }
-                });
+        col.setLabelProvider(new ColumnLabelProvider(){
+            public Image getImage( Object element ) {
+                return ImageCache.getInstance().getImage(ImageCache.STYLE);
+            }
+
+            @Override
+            public String getText( Object element ) {
+                return null;
+            }
+        });
 
         col = createTableViewerColumn(titles[3], bounds[3], 3);
-        col.setLabelProvider(
-                new ColumnLabelProvider() {
-                    public Image getImage(Object element) {
-                        return ImageCache.getInstance().getImage(ImageCache.IMAGE_FULLEXTENT);
-                    }
+        col.setLabelProvider(new ColumnLabelProvider(){
+            public Image getImage( Object element ) {
+                return ImageCache.getInstance().getImage(ImageCache.IMAGE_FULLEXTENT);
+            }
 
-                    @Override
-                    public String getText(Object element) {
-                        return null;
-                    }
-                });
+            @Override
+            public String getText( Object element ) {
+                return null;
+            }
+        });
     }
 
-    private TableViewerColumn createTableViewerColumn(
-            String title, int bound, final int colNumber) {
+    private TableViewerColumn createTableViewerColumn( String title, int bound, final int colNumber ) {
         final TableViewerColumn viewerColumn = new TableViewerColumn(this, SWT.NONE);
         final TableColumn column = viewerColumn.getColumn();
         column.setText(title);
@@ -207,7 +201,7 @@ public class MaplayerTableViewer extends TableViewer implements ISelectionChange
         return viewerColumn;
     }
 
-    public void selectionChanged(SelectionChangedEvent arg0) {
+    public void selectionChanged( SelectionChangedEvent arg0 ) {
         if (arg0 == null) {
             selectedMapLayer = null;
             return;
@@ -220,7 +214,7 @@ public class MaplayerTableViewer extends TableViewer implements ISelectionChange
     }
 
     @Override
-    protected void triggerEditorActivationEvent(ColumnViewerEditorActivationEvent event) {
+    protected void triggerEditorActivationEvent( ColumnViewerEditorActivationEvent event ) {
         super.triggerEditorActivationEvent(event);
         ViewerCell source = (ViewerCell) event.getSource();
         int columnIndex = source.getColumnIndex();
@@ -240,13 +234,14 @@ public class MaplayerTableViewer extends TableViewer implements ISelectionChange
         } else if (columnIndex == 3) {
             Layer element = (Layer) source.getElement();
             ReferencedEnvelope bounds = element.getBounds();
-            
-            CoordinateReferenceSystem mapCrs = pane.getMapContent().getCoordinateReferenceSystem();
-            try {
-                bounds = bounds.transform(mapCrs, true);
-            } catch (TransformException | FactoryException e) {
+            if (bounds.getCoordinateReferenceSystem() != null) {
+                CoordinateReferenceSystem mapCrs = pane.getMapContent().getCoordinateReferenceSystem();
+                try {
+                    bounds = bounds.transform(mapCrs, true);
+                } catch (TransformException | FactoryException e) {
+                }
             }
-            
+
             pane.setDisplayArea(bounds);
         }
     }
@@ -256,7 +251,7 @@ public class MaplayerTableViewer extends TableViewer implements ISelectionChange
      *
      * @param layer the layer to be styled
      */
-    private void doSetStyle(Layer layer) throws IOException {
+    private void doSetStyle( Layer layer ) throws IOException {
         if (layer instanceof StyleLayer) {
             StyleLayer styleLayer = (StyleLayer) layer;
             Style style = SimpleStyleConfigurator.showDialog(this.getTable().getShell(), layer);
@@ -271,7 +266,7 @@ public class MaplayerTableViewer extends TableViewer implements ISelectionChange
      *
      * @param layer the layer to add.
      */
-    public void addLayer(Layer layer) {
+    public void addLayer( Layer layer ) {
         layersList.add(0, layer);
         refresh();
     }
@@ -281,7 +276,7 @@ public class MaplayerTableViewer extends TableViewer implements ISelectionChange
      *
      * @param layer the layer to remove.
      */
-    public void removeLayer(Layer layer) {
+    public void removeLayer( Layer layer ) {
         layersList.remove(layer);
         refresh();
     }

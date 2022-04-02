@@ -528,25 +528,18 @@
     <test.otherJVMParams></test.otherJVMParams>
     <!-- qa configuration -->
     <checkstyle.excludes>**/generated/**/*</checkstyle.excludes>
-    <checkstyle.excludes>**/generated/**/*</checkstyle.excludes>
     <checkstyle.file>checkstyle.xml</checkstyle.file>
-    <checkstyle.skip>false</checkstyle.skip>
     <checkstyle.skip>false</checkstyle.skip>
     <errorProne.version>2.10.0</errorProne.version>
     <errorProneFlags></errorProneFlags>
-    <jackson2.databind.version>2.13.2.1</jackson2.databind.version>
-    <jackson2.version>2.13.2</jackson2.version>
-    <jacoco.version>0.8.7</jacoco.version>
     <jacoco.version>0.8.7</jacoco.version>
     <lint>deprecation,unchecked</lint>
     <maven.jacoco.plugin.version>0.8.2</maven.jacoco.plugin.version>
     <maven.pmd.plugin.version>3.14.0</maven.pmd.plugin.version>
     <pmd.skip>false</pmd.skip>
     <pmd.version>6.42.0</pmd.version>
-    <pmd.version>6.42.0</pmd.version>
     <pom.fmt.action>sort</pom.fmt.action>
     <pom.fmt.skip>${spotless.apply.skip}</pom.fmt.skip>
-    <qa>false</qa>
     <qa>false</qa>
     <spotbugs.skip>false</spotbugs.skip>
     <spotless.action>apply</spotless.action>

@@ -128,7 +128,7 @@ public class WKBAttributeIO {
             if (value == null) {
                 ps.setNull(position, Types.OTHER);
             } else {
-                ps.setBytes(position, new WKBWriter().write((Geometry) value));
+                ps.setBytes(position, new WKBWriter(3).write((Geometry) value));
             }
         } catch (SQLException e) {
             throw new DataSourceException("SQL exception occurred while reading the geometry.", e);

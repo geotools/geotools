@@ -360,7 +360,8 @@ public class WebMapTileServerTest {
         WMTSCapabilities capabilities = createCapabilities("basemapGetCapa.xml");
         MockHttpClient httpClient = new MockHttpClient();
         httpClient.expectGet(
-                new URL("https://maps.wien.gv.at/basemap/bmapoverlay/normal/EPSG%3A4326/2/1/2.png"),
+                new URL(
+                        "https://maps.wien.gv.at/basemap/bmapoverlay/style%3D%20auto/EPSG:4326/2/1/2.png"),
                 new MockHttpResponse(TestData.file(null, "world.png"), "image/png"));
 
         Properties props = new Properties();
@@ -372,7 +373,7 @@ public class WebMapTileServerTest {
                 new WebMapTileServer(
                         new URL("https://maps1.wien.gv.at/basemap"), httpClient, capabilities);
         request.setLayer(server.getCapabilities().getLayer("bmapoverlay"));
-        request.setStyle("normal");
+        request.setStyle("style= auto");
         request.setFormat("image/png");
         request.setTileMatrixSet("EPSG:4326");
         request.setTileMatrix("2");

@@ -17,6 +17,7 @@
 package org.geotools.ows.wmts;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URLEncoder;
 import java.util.Map;
 
@@ -29,20 +30,16 @@ import java.util.Map;
  */
 public class WMTSHelper {
 
-    /** Replaces first occurence of {dimName} with dimValue within the baseUrl */
+    /** Replaces first occurrence of {dimName} with dimValue within the baseUrl */
     public static String replaceToken(String baseUrl, String dimName, String dimValue) {
         String token = "{" + dimName.toLowerCase() + "}";
         int index = baseUrl.toLowerCase().indexOf(token);
-        try {
-            if (index != -1) {
-                return baseUrl.substring(0, index)
-                        + (dimValue == null ? "" : URLEncoder.encode(dimValue, "UTF-8"))
-                        + baseUrl.substring(index + dimName.length() + 2);
-            } else {
-                return baseUrl;
-            }
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("Doesn't support UTF-8", e);
+        if (index != -1) {
+            return baseUrl.substring(0, index)
+                    + (dimValue == null ? "" : URI.create(dimValue).toASCIIString())
+                    + baseUrl.substring(index + dimName.length() + 2);
+        } else {
+            return baseUrl;
         }
     }
 

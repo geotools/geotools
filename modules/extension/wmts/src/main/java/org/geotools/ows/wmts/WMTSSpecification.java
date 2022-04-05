@@ -51,7 +51,7 @@ import org.geotools.util.logging.Logging;
  *
  * <ul>
  *   <li>GetMultiTileRequest - Used to get a set of tiles within an extent
- *   <li>GetKVPTileRequest - Used to get a tile request with query string parameteres
+ *   <li>GetKVPTileRequest - Used to get a tile request with query string parameters
  *   <li>GetRestTileRequest - Used to get a tile request with url based on resourceurl in
  *       capabilities
  * </ul>
@@ -311,7 +311,7 @@ public class WMTSSpecification extends Specification {
         }
 
         /*
-         * Uses the resourceurl specified in capabilites to create a url for one single tile
+         * Uses the resourceurl specified in capabilities to create a url for one single tile
          */
         @Override
         public URL getFinalURL() {

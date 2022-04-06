@@ -57,4 +57,21 @@
         <packageUrl regex="true">^pkg:maven/org\.geotools\.jdbc/gt\-jdbc\-mysql@.*$</packageUrl>
         <cpe>cpe:/a:mysql:mysql</cpe>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+                   file name: reload4j-1.2.x.x.jar
+                   Reload4j has solved all log4j 1.x problems/vulnerabilities.
+                   including:
+                        - CVE-2019-17571 (Socket Server)
+                        - CVE-2020-9488 (SMTP appender)
+                        - CVE-2020-9493 (Chainsaw)
+                        - CVE-2021-4104 (JMSAppender)
+                        - CVE-2022-23302 (JMSSink)
+                        - CVE-2022-23305 (JDBCAppender)
+                        - CVE-2022-23307 (Chainsaw)
+           ]]>
+        </notes>
+        <packageUrl regex="true">^pkg:maven/ch\.qos\.reload4j/reload4j@.*$</packageUrl>
+        <cpe>cpe:/a:apache:log4j</cpe>
+    </suppress>
 </suppressions>

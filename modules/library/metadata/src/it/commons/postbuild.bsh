@@ -1,0 +1,32 @@
+import java.io.*;
+ 
+File buildLog = new File( basedir, "build.log" );
+if (!buildLog.isFile()) {
+    throw new FileNotFoundException( "Could locate build.log: " + buildLog );
+}
+String log = org.apache.commons.io.FileUtils.readFileToString(buildLog);
+
+if (!log.contains("[INFO]")) {
+    throw new IllegalStateException("INFO expected");
+}
+if (!log.contains("commons-logging.properties")) {
+    throw new IllegalStateException("commons-logging.properties");
+}
+if (!log.contains("[ERROR] logging - Everything is terrible!")) {
+    throw new IllegalStateException("ERROR expected");
+}
+if (!log.contains("[WARN] logging - Everything is alarming!")) {
+    throw new IllegalStateException("WARN expected");
+}
+if (!log.contains("[INFO] logging - Everything is configured...")) {
+    throw new IllegalStateException("INFO for CONFIG content expected");
+}
+if (!log.contains("[DEBUG] logging - Everything is fine")) {
+    throw new IllegalStateException("DEBUG expected");
+}
+if (!log.contains("[DEBUG] logging - Everything is finer")) {
+    throw new IllegalStateException("DEBUG expected");
+}
+if (!log.contains("TRACE] logging - Everything is finest")) {
+    throw new IllegalStateException("TRACE with FINEST");
+}

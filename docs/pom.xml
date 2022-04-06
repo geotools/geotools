@@ -49,6 +49,7 @@
 
   <properties>
     <target>full</target>
+    <checkstyle.file>checkstyle-cc0.xml</checkstyle.file>
   </properties>
 
   <!-- =========================================================== -->
@@ -249,9 +250,9 @@
         </executions>
         <dependencies>
           <dependency>
-            <groupId>ant</groupId>
+            <groupId>org.apache.ant</groupId>
             <artifactId>ant</artifactId>
-            <version>1.6.5</version>
+            <version>1.10.12</version>
           </dependency>
           <dependency>
             <groupId>ant-contrib</groupId>
@@ -270,6 +271,14 @@
             <phase>none</phase>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <!-- do not deploy tutorial examples -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
       </plugin>
     </plugins>
   </build>
@@ -298,6 +307,14 @@
       <properties>
         <target>developer</target>
       </properties>
+    </profile>
+    <profile>
+      <id>checkstyle</id>
+      <activation>
+        <property>
+          <name>qa</name>
+        </property>
+      </activation>
     </profile>
   </profiles>
 

@@ -154,7 +154,7 @@
     </file>
     <!-- tutorials -->
     <file>
-      <source>../docs/src/main/java/org/geotools/tutorial/quickstart/Quickstart.java</source>
+      <source>../tutorials/quickstart/src/main/java/org/geotools/tutorial/quickstart/Quickstart.java</source>
       <destName>src/org/geotools/tutorial/quickstart/Quickstart.java</destName>
     </file>
   </files>

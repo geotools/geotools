@@ -95,7 +95,7 @@ Second the dependency version is supplied in the “root” :file:`pom.xml` file
 We make use of properties to update multi-module dependencies at the same time:
 
 .. literalinclude:: /../../pom.xml
-   :start-after: <src.output>${basedir}/target</src.output>
-   :end-before: <java.awt.headless>true</java.awt.headless>
+   :start-after: <!-- dependency management -->
+   :end-before: <!-- javadoc configuration -->
    :prepend: <properties>
    :append: </properties>

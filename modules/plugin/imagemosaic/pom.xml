@@ -173,22 +173,10 @@
     <dependency>
       <groupId>org.jaitools</groupId>
       <artifactId>jt-utils</artifactId>
-      <exclusions>
-        <exclusion>
-          <artifactId>jts</artifactId>
-          <groupId>org.locationtech.jts</groupId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.jaitools</groupId>
       <artifactId>jt-vectorbinarize</artifactId>
-      <exclusions>
-        <exclusion>
-          <artifactId>jts</artifactId>
-          <groupId>org.locationtech.jts</groupId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>javax.xml.bind</groupId>

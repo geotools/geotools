@@ -29,6 +29,87 @@ The first step to upgrade: change the ``geotools.version`` of your dependencies 
         ....
     </dependencies>
 
+GeoTools 27.x
+-------------
+
+Log4JLoggingFactory migrated to Reload4J
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+We have changed to testing ``Log4JLoggingFactory`` against `reload4j project <https://reload4j.qos.ch/>`__.
+
+The Log4J 1.2 API has been `retired from Apache<https://logging.apache.org/log4j/1.2/>`__`, and the API is now maintained by the Reload4J project:
+
+.. code-block:: xml
+
+   <dependency>
+     <groupId>ch.qos.reload4j</groupId>
+     <artifactId>reload4j</artifactId>
+     <version>1.2.19</version>
+   </dependency>
+
+We encourage applications to use Reload4J, or migrated to a supported logging library.
+
+Logging and GeoTools.init()
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Previously ``GeoTools.init()`` would prefer which prefer ``CommonsLoggerFactory`` if the commons-logging API was available on the CLASSPATH.
+
+The ``GeoTools.init()`` changed to determine appropriate logger using the following precedence:
+
+* ``org.geotools.util.logging.LogbackLoggerFactory`` - SLF4J API
+* ``org.geotools.util.logging.Log4j2LoggerFactory`` - Log4J 2 API
+* ``org.geotools.util.logging.Log4j1LoggerFactory`` - Log4J 1.2 API (maintained by Reload4J project)
+* ``org.geotools.util.logging.CommonsLoggerFactory`` - Apache's Common Logging framework (JCL API)
+* No factory selected, makes direct use of Java Util Logging API (configured with )
+
+The method confirms the required API is available on the CLASSPATH before selecting a ``LoggerFactory``. If the required API is not-available the next ``LoggerFactory`` is tried.
+
+To use ``GeoTools.init()``:
+
+.. code-block:: java
+   
+   package net.fun.example;
+   
+   import java.util.logging.Logger;
+   
+   import org.geotools.util.factory.GeoTools;
+   import org.geotools.util.logging.Logging;
+   
+   class Example {
+      
+      public static void main(String args[]){
+         GeoTools.init();
+         Logger LOGGER = Logging.getLogger("org.geotools.tutorial");
+         LOGGER.fine("Application started - first post!")
+      }
+   }
+
+In a production environment several logging libraries from different components may be available. To select a specific LoggingFactory use ``GeoTools.setLoggingFactory(LoggingFactory)``:
+
+.. code-block:: java
+   
+   package net.fun.example;
+   
+   import java.util.logging.Logger;
+   
+   import org.geotools.util.factory.GeoTools;
+   import org.geotools.util.logging.Logging;
+   
+   class Example {
+      
+      public static Logger LOG = defaultLogger();
+      
+       public static void main(String args[]){
+            LOGGER.fine("Application started - first post!")
+       }
+      
+      private static final Logger defaultLogger(){
+         GeoTools.setLoggerFactory(Log4JLoggerFactory.getInstance());
+         return Logging.getLogger(Example.class);
+      }
+   }
+
+For more information see :doc:`/library/metadata/logging/factory`.
 
 GeoTools 26.x
 -------------
@@ -68,6 +149,16 @@ Fixing this required changes to multiple classes:
   ``org.geotools.util.GeoToolsUnitFormat.getInstance()``).
 * ``org.geotools.referencing.wkt.DefaultUnitParser`` has been moved and renamed to
   ``org.geotools.measure.WktUnitFormat``.
+
+Improvements to Regex Parsing in `IsLike` and similar filters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Processing of regular expressions in the ``IsLike`` & ``StrMatches`` functions, and in the ``isPropertyLike`` 
+filter to make use of the faster and more robust `Google regular expression's library 
+<https://github.com/google/re2j>`_. As part of this work we have improved the handling of some "permissible" 
+but inadvisable patterns, such as those with multi character escapes or wild cards. If you had patterns that 
+relied on long escape or wild card patterns you may now get an ``IllegalArgumentException`` for a pattern that 
+happened to work in the past.
 
 GeoTools 25.x
 -------------

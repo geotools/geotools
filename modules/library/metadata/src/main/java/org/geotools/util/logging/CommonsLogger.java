@@ -23,6 +23,18 @@ import org.apache.commons.logging.Log;
  * An adapter that redirect all Java logging events to the Apache's <A
  * HREF="http://jakarta.apache.org/commons/logging/">Commons-logging</A> framework.
  *
+ * <ul>
+ *   <li>{@link java.util.logging.Level#OFF}: nothing is enabled
+ *   <li>{@link java.util.logging.Level#SEVERE}: {@link Log#isFatalEnabled()}
+ *   <li>{@link java.util.logging.Level#SEVERE}: {@link Log#isErrorEnabled()}
+ *   <li>{@link java.util.logging.Level#WARNING}: {@link Log#isWarnEnabled()}
+ *   <li>{@link java.util.logging.Level#INFO}: {@link Log#isInfoEnabled()}
+ *   <li>{@link java.util.logging.Level#CONFIG}: {@link Log#isInfoEnabled()}
+ *   <li>{@link java.util.logging.Level#FINE}: {@link Log#isDebugEnabled()}
+ *   <li>{@link java.util.logging.Level#FINER}: {@link Log#isTraceEnabled()}
+ *   <li>{@link java.util.logging.Level#FINEST}: {@link Log#isTraceEnabled()}
+ * </ul>
+ *
  * @since 2.4
  * @version $Id$
  * @author Martin Desruisseaux
@@ -54,7 +66,7 @@ final class CommonsLogger extends LoggerAdapter {
     public Level getLevel() {
         if (logger.isTraceEnabled()) return Level.FINEST;
         if (logger.isDebugEnabled()) return Level.FINE;
-        if (logger.isInfoEnabled()) return Level.CONFIG;
+        if (logger.isInfoEnabled()) return Level.INFO;
         if (logger.isWarnEnabled()) return Level.WARNING;
         if (logger.isErrorEnabled()) return Level.SEVERE;
         if (logger.isFatalEnabled()) return Level.SEVERE;
@@ -77,16 +89,16 @@ final class CommonsLogger extends LoggerAdapter {
                             return n >= 0 && logger.isFatalEnabled();
                     }
                 }
-            case 10:
-                return logger.isErrorEnabled(); // SEVERE
-            case 9:
-                return logger.isWarnEnabled(); // WARNING
+            case 10: // SEVERE
+                return logger.isErrorEnabled();
+            case 9: // WARNING
+                return logger.isWarnEnabled();
             case 8: // INFO
-            case 7:
-                return logger.isInfoEnabled(); // CONFIG
+            case 7: // CONFIG
+                return logger.isInfoEnabled();
             case 6: // (not allocated)
-            case 5:
-                return logger.isDebugEnabled(); // FINE
+            case 5: // FINE
+                return logger.isDebugEnabled();
             case 4: // FINER
             case 3: // FINEST
             case 2: // (not allocated)
@@ -167,5 +179,24 @@ final class CommonsLogger extends LoggerAdapter {
     @Override
     public void finest(String message) {
         logger.trace(message);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("CommonsLogger: ");
+        sb.append(getName() == null ? "anonymous" : getName());
+        sb.append(" : ");
+        sb.append(getLevel());
+        sb.append(" (");
+        if (logger.isTraceEnabled()) sb.append("Trace");
+        else if (logger.isDebugEnabled()) sb.append("Debug");
+        else if (logger.isInfoEnabled()) sb.append("Info");
+        else if (logger.isWarnEnabled()) sb.append("Warn");
+        else if (logger.isErrorEnabled()) sb.append("Error");
+        else if (logger.isFatalEnabled()) sb.append("Fatal");
+        else sb.append("Off");
+        sb.append(")");
+
+        return sb.toString();
     }
 }

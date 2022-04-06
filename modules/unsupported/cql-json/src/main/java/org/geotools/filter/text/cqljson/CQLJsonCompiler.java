@@ -17,53 +17,18 @@
 
 package org.geotools.filter.text.cqljson;
 
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.AbstractList;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeType;
+import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import org.geotools.filter.text.commons.ICompiler;
 import org.geotools.filter.text.commons.IToken;
 import org.geotools.filter.text.cql2.CQLException;
-import org.geotools.filter.text.cqljson.model.After;
-import org.geotools.filter.text.cqljson.model.And;
-import org.geotools.filter.text.cqljson.model.Before;
-import org.geotools.filter.text.cqljson.model.Begins;
-import org.geotools.filter.text.cqljson.model.Begunby;
-import org.geotools.filter.text.cqljson.model.Between;
-import org.geotools.filter.text.cqljson.model.Contains;
-import org.geotools.filter.text.cqljson.model.Crosses;
-import org.geotools.filter.text.cqljson.model.Disjoint;
-import org.geotools.filter.text.cqljson.model.During;
-import org.geotools.filter.text.cqljson.model.Endedby;
-import org.geotools.filter.text.cqljson.model.Ends;
-import org.geotools.filter.text.cqljson.model.Eq;
-import org.geotools.filter.text.cqljson.model.Equals;
-import org.geotools.filter.text.cqljson.model.Gt;
-import org.geotools.filter.text.cqljson.model.Gte;
-import org.geotools.filter.text.cqljson.model.In;
-import org.geotools.filter.text.cqljson.model.Intersects;
-import org.geotools.filter.text.cqljson.model.Like;
-import org.geotools.filter.text.cqljson.model.Lt;
-import org.geotools.filter.text.cqljson.model.Lte;
-import org.geotools.filter.text.cqljson.model.Meets;
-import org.geotools.filter.text.cqljson.model.Metby;
-import org.geotools.filter.text.cqljson.model.Or;
-import org.geotools.filter.text.cqljson.model.Overlappedby;
-import org.geotools.filter.text.cqljson.model.Overlaps;
-import org.geotools.filter.text.cqljson.model.Predicates;
-import org.geotools.filter.text.cqljson.model.TContains;
-import org.geotools.filter.text.cqljson.model.Tequals;
-import org.geotools.filter.text.cqljson.model.Touches;
-import org.geotools.filter.text.cqljson.model.Toverlaps;
-import org.geotools.filter.text.cqljson.model.Within;
-import org.geotools.filter.text.generated.parsers.ParseException;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.io.ParseException;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
@@ -74,6 +39,8 @@ public class CQLJsonCompiler implements ICompiler {
 
     /** cql expression to compile */
     private final String source;
+
+    private final ObjectMapper mapper = new ObjectMapper();
 
     private CQLJsonFilterBuilder builder;
 
@@ -94,46 +61,16 @@ public class CQLJsonCompiler implements ICompiler {
     }
 
     /**
-     * Goes through the Predicate beans to find non-null properties
-     *
-     * @param predicates CQL Predicates
-     * @return CQL Predicate Properties that are non-null
-     * @throws IntrospectionException
-     * @throws InvocationTargetException
-     * @throws IllegalAccessException
-     */
-    public Object getNonNull(Object predicates)
-            throws IntrospectionException, InvocationTargetException, IllegalAccessException {
-        if (predicates instanceof Predicates) {
-            for (PropertyDescriptor propertyDescriptor :
-                    Introspector.getBeanInfo(Predicates.class).getPropertyDescriptors()) {
-                Method method = propertyDescriptor.getReadMethod();
-                if (method.invoke(predicates) != null) {
-                    if (method.invoke(predicates) instanceof Predicates)
-                        return method.invoke(predicates);
-                    else if (method.invoke(predicates) instanceof AbstractList) {
-                        return method.invoke(predicates);
-                    }
-                }
-            }
-        } else if (predicates instanceof AbstractList) {
-            return predicates;
-        }
-        return null;
-    }
-
-    /**
      * Compiles Filter from predicates source json
      *
      * @throws CQLException If there is an issue Parsing the predicates
      */
     @Override
     public void compileFilter() throws CQLException {
-
-        Predicates predicates = CQLJson.jsonToPredicates(source);
         try {
-            filter = convertToFilter(predicates);
-        } catch (ParseException e) {
+            JsonNode cql2Expression = mapper.readTree(source);
+            filter = convertToFilter(cql2Expression);
+        } catch (IOException | ParseException e) {
             throw new CQLException(e.getMessage());
         }
     }
@@ -195,174 +132,152 @@ public class CQLJsonCompiler implements ICompiler {
         return null;
     }
 
-    // --------------Internal-----------------------------------------------
-    private Filter convertToFilter(Object predicates) throws ParseException {
+    /**
+     * Converts JSON Node into GT Filter
+     *
+     * @param cql2Expression JSON Node parsed from source text
+     * @return GeoTools Filter
+     * @throws CQLException Typically messages about unsupported CQL-JSON features
+     * @throws IOException IO Issues
+     * @throws ParseException JSON Parsing Issues
+     */
+    public Filter convertToFilter(JsonNode cql2Expression)
+            throws CQLException, IOException, ParseException {
         Filter out = null;
-        Object processedNotNull = null;
-        try {
-            processedNotNull = getNonNull(predicates);
-        } catch (IntrospectionException | IllegalAccessException | InvocationTargetException e) {
-            throw new CQLException(e.getMessage());
-        }
-        if (processedNotNull != null) {
-            switch (processedNotNull.getClass().getSimpleName()) {
-                case "And":
-                    And and = (And) processedNotNull;
-                    List<Filter> filters =
-                            and.stream()
-                                    .map(
-                                            a -> {
-                                                try {
-                                                    return convertToFilter(a);
-                                                } catch (ParseException e) {
-                                                    LOGGER.log(Level.SEVERE, "", e);
-                                                }
-                                                return (Filter) a;
-                                            })
-                                    .collect(Collectors.toList());
-                    out = builder.convertAnd(filters);
+        if (isCql2Expression(cql2Expression)) {
+            String op = cql2Expression.get("op").textValue();
+            switch (op) {
+                case "like":
+                    out = builder.convertLike((ArrayNode) cql2Expression.get("args"));
                     break;
-                case "Or":
-                    Or or = (Or) processedNotNull;
-                    List<Filter> filtersOr =
-                            or.stream()
-                                    .map(
-                                            a -> {
-                                                try {
-                                                    return convertToFilter(a);
-                                                } catch (ParseException e) {
-                                                    LOGGER.log(Level.SEVERE, "", e);
-                                                }
-                                                return (Filter) a;
-                                            })
-                                    .collect(Collectors.toList());
-                    out = builder.convertOr(filtersOr);
+                case "=":
+                    out = builder.convertEquals((ArrayNode) cql2Expression.get("args"));
                     break;
-                case "Predicates": // This is Not, which can apply to any predicates
-                    Filter notFilter = convertToFilter(processedNotNull);
-                    out = builder.convertNot(notFilter);
+                case "<>":
+                    out = builder.convertNotEquals((ArrayNode) cql2Expression.get("args"));
                     break;
-                case "Lte":
-                    out = builder.convertLte((Lte) processedNotNull);
+                case ">":
+                    out = builder.convertGreaterThan((ArrayNode) cql2Expression.get("args"));
                     break;
-                default:
-                case "Eq":
-                    out = builder.convertEq((Eq) processedNotNull);
+                case "<":
+                    out = builder.convertLessThan((ArrayNode) cql2Expression.get("args"));
                     break;
-                case "Lt":
-                    out = builder.convertLt((Lt) processedNotNull);
+                case ">=":
+                    out = builder.convertGreaterThanOrEq((ArrayNode) cql2Expression.get("args"));
                     break;
-                case "Gte":
-                    out = builder.convertGte((Gte) processedNotNull);
+                case "<=":
+                    out = builder.convertLessThanOrEq((ArrayNode) cql2Expression.get("args"));
                     break;
-                case "Gt":
-                    out = builder.convertGt((Gt) processedNotNull);
+                case "between":
+                    out = builder.convertBetween((ArrayNode) cql2Expression.get("args"));
                     break;
-                case "Between":
-                    out = builder.convertBetween((Between) processedNotNull);
+                case "in":
+                    out = builder.convertIn((ArrayNode) cql2Expression.get("args"));
                     break;
-                case "Like":
-                    out = builder.convertLike((Like) processedNotNull);
+                case "isNull":
+                    out = builder.convertIsNull((ArrayNode) cql2Expression.get("args"));
                     break;
-                case "In":
-                    out = builder.convertIn((In) processedNotNull);
+                case "or":
+                    out = builder.convertOr(this, (ArrayNode) cql2Expression.get("args"));
                     break;
-                case "Equals":
-                    try {
-                        out = builder.convertEquals((Equals) processedNotNull);
-                    } catch (ParseException e) {
-                        throw new CQLException(e.getMessage());
-                    }
+                case "and":
+                    out = builder.convertAnd(this, (ArrayNode) cql2Expression.get("args"));
                     break;
-                case "Disjoint":
-                    try {
-                        out = builder.convertDisjoint((Disjoint) processedNotNull);
-                    } catch (ParseException e) {
-                        throw new CQLException(e.getMessage());
-                    }
+                case "s_contains":
+                    out = builder.convertContains((ArrayNode) cql2Expression.get("args"));
                     break;
-                case "Touches":
-                    try {
-                        out = builder.convertTouches((Touches) processedNotNull);
-                    } catch (ParseException e) {
-                        throw new CQLException(e.getMessage());
-                    }
+                case "s_crosses":
+                    out = builder.convertCrosses((ArrayNode) cql2Expression.get("args"));
                     break;
-                case "Within":
-                    try {
-                        out = builder.convertWithin((Within) processedNotNull);
-                    } catch (ParseException e) {
-                        throw new CQLException(e.getMessage());
-                    }
+                case "s_disjoint":
+                    out = builder.convertDisjoint((ArrayNode) cql2Expression.get("args"));
                     break;
-                case "Overlaps":
-                    try {
-                        out = builder.convertOverlaps((Overlaps) processedNotNull);
-                    } catch (ParseException e) {
-                        throw new CQLException(e.getMessage());
-                    }
+                case "s_equals":
+                    out = builder.convertSEquals((ArrayNode) cql2Expression.get("args"));
                     break;
-                case "Crosses":
-                    try {
-                        out = builder.convertCrosses((Crosses) processedNotNull);
-                    } catch (ParseException e) {
-                        throw new CQLException(e.getMessage());
-                    }
+                case "s_intersects":
+                    out = builder.convertIntersects((ArrayNode) cql2Expression.get("args"));
                     break;
-                case "Intersects":
-                    try {
-                        out = builder.convertIntersects((Intersects) processedNotNull);
-                    } catch (ParseException e) {
-                        throw new CQLException(e.getMessage());
-                    }
+                case "s_overlaps":
+                    out = builder.convertOverlaps((ArrayNode) cql2Expression.get("args"));
                     break;
-                case "Contains":
-                    try {
-                        out = builder.convertContains((Contains) processedNotNull);
-                    } catch (ParseException e) {
-                        throw new CQLException(e.getMessage());
-                    }
+                case "s_touches":
+                    out = builder.convertTouches((ArrayNode) cql2Expression.get("args"));
                     break;
-                case "After":
-                    out = builder.convertAfter((After) processedNotNull);
+                case "s_within":
+                    out = builder.convertWithin((ArrayNode) cql2Expression.get("args"));
                     break;
-                case "Before":
-                    out = builder.convertBefore((Before) processedNotNull);
+                case "not":
+                    out = builder.convertNot(this, (ArrayNode) cql2Expression.get("args"));
                     break;
-                case "Begins":
-                    out = builder.convertBegins((Begins) processedNotNull);
+                case "t_after":
+                    out = builder.convertAfter((ArrayNode) cql2Expression.get("args"));
                     break;
-                case "Begunby":
-                    out = builder.convertBegunby((Begunby) processedNotNull);
+                case "t_before":
+                    out = builder.convertBefore((ArrayNode) cql2Expression.get("args"));
                     break;
-                case "Tcontains":
-                    out = builder.convertTContains((TContains) processedNotNull);
+                case "t_disjoint":
+                    out = builder.convertTDisjoint((ArrayNode) cql2Expression.get("args"));
                     break;
-                case "During":
-                    out = builder.convertDuring((During) processedNotNull);
+                case "t_during":
+                    out = builder.convertDuring((ArrayNode) cql2Expression.get("args"));
                     break;
-                case "Endedby":
-                    out = builder.convertEndedBy((Endedby) processedNotNull);
+                case "t_equals":
+                    out = builder.convertEquals((ArrayNode) cql2Expression.get("args"));
                     break;
-                case "Ends":
-                    out = builder.convertEnds((Ends) processedNotNull);
+                case "t_finishedBy":
+                    out = builder.convertFinishedBy((ArrayNode) cql2Expression.get("args"));
                     break;
-                case "Tequals":
-                    out = builder.convertTEquals((Tequals) processedNotNull);
+                case "t_finishing":
+                    out = builder.convertFinishing((ArrayNode) cql2Expression.get("args"));
                     break;
-                case "Meets":
-                    out = builder.convertMeets((Meets) processedNotNull);
+                case "t_intersects":
+                    out = builder.convertTIntersects((ArrayNode) cql2Expression.get("args"));
                     break;
-                case "Metby":
-                    out = builder.convertMetBy((Metby) processedNotNull);
+                case "t_meets":
+                    out = builder.convertMeets((ArrayNode) cql2Expression.get("args"));
                     break;
-                case "Toverlaps":
-                    out = builder.convertTOverlaps((Toverlaps) processedNotNull);
+                case "t_metBy":
+                    out = builder.convertMetBy((ArrayNode) cql2Expression.get("args"));
                     break;
-                case "Overlappedby":
-                    out = builder.convertOverlappedBy((Overlappedby) processedNotNull);
+                case "t_overlappedBy":
+                    out = builder.convertOverlappedBy((ArrayNode) cql2Expression.get("args"));
+                    break;
+                case "t_overlaps":
+                    out = builder.convertTOverlaps((ArrayNode) cql2Expression.get("args"));
+                    break;
+                case "t_startedBy":
+                    out = builder.convertStartedBy((ArrayNode) cql2Expression.get("args"));
+                    break;
+                case "t_starts":
+                    out = builder.convertStarts((ArrayNode) cql2Expression.get("args"));
+                    break;
+                case "a_containedBy":
+                    out = builder.convertAContainedBy((ArrayNode) cql2Expression.get("args"));
+                    break;
+                case "a_contains":
+                    out = builder.convertAContaining((ArrayNode) cql2Expression.get("args"));
+                    break;
+                case "a_equals":
+                    out = builder.convertArrayEquals((ArrayNode) cql2Expression.get("args"));
+                    break;
+                case "a_overlaps":
+                    out = builder.convertAOverlaps((ArrayNode) cql2Expression.get("args"));
                     break;
             }
+        }
+
+        return out;
+    }
+
+    private boolean isCql2Expression(JsonNode node) {
+        boolean out = false;
+        if (node.getNodeType() == JsonNodeType.OBJECT
+                && node.get("op") != null
+                && node.get("op").getNodeType() == JsonNodeType.STRING
+                && node.get("args") != null
+                && node.get("args").getNodeType() == JsonNodeType.ARRAY) {
+            return true;
         }
         return out;
     }

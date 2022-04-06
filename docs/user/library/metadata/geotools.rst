@@ -1,5 +1,5 @@
-``GeoTools``
-------------
+GeoTools
+--------
 
 The first utility class we have is helpfully called ``GeoTools``. This class is used to configure the library for your application.
 
@@ -90,74 +90,19 @@ The library uses ``PreventLocalEntityResolver`` by default, if you wish to work 
 Logging
 ^^^^^^^
 
-If you are working in your own application, you can teach GeoTools to use your application logging facilities (rather than Java logging which it uses by internal default).::
+If you are working in your own application, you can teach GeoTools to use your application logging facilities (rather than Java logging which it uses by internal default).
+
+The ``GeoTools.init()`` method will do its best to determine which logging implementation your library is using:
+
+  .. code-block:: java
   
-  GeoTools.setLoggerFactory( loggerFactory );
+     GeoTools.init();
 
-GeoTools provides out of the box implementations for:
+This method tries the following:
 
-* ``CommonsLoggerFactory`` - Apache's Common Logging framework
-* ``Log4jLoggerFactory`` - Log4J
+* logback
+* log4j
+* reload4j
+* commons-logging
 
-Here are a couple of examples of setting things up:
-
-* Do nothing
-  
-  Out of the box GeoTools will use Java logging
-
-* Setup for the Paranoid
-  
-  The example below tries to setup Commons-Logging first, and
-  fallback on Log4J if the former is not present on the
-  CLASSPATH.::
-    
-    try {
-        GeoTools.setLoggerFactory("org.geotools.util.logging.CommonsLoggerFactory");
-    } catch (ClassNotFoundException commonsException) {
-        try {
-                GeoTools.setLoggerFactory("org.geotools.util.logging.Log4JLoggerFactory");
-        } catch (ClassNotFoundException log4jException) {
-            // Nothing to do, we already tried our best.
-        }
-    }
-
-  In the above code ``ClassNotFoundException`` is a checked
-  exception thrown if Commons-Logging or Log4J is not available
-  on the CLASSPATH, so GeoTools continue to rely on the Java
-  logging system instead.
-
-* Log4J
-  
-  The following is a good approach only if the Log4J framework
-  is certain to be present on the CLASSPATH.::
-    
-    GeoTools.setLoggerFactory(Log4JLoggerFactory.getInstance());
- 
-  Be warned that if Log4J is not available this method call has
-  unpredictable behavior.
-  
-  It will typically throws a ``NoClassDefFoundError`` (the unchecked
-  error, not the checked exception) at some future point. The
-  error may not be thrown at the moment ``setLoggerFactory`` is
-  invoked, but rather be delayed until a message is first logged,
-  which may surprise the user.
-
-* Custom
-  
-  You can create your own ``LoggerFactory`` if you need to track
-  messages using your own facilities.
-  
-  This is a good approach if you are making use of Eclipse
-  and would like to check bundle "trace" settings.
-  
-JAI
-^^^
-
-GeoTools Logging will listen to ``JAI`` errors and log them appropriately. It does this by first checking if your application has registered an ``ImagingListener``, and if not it will register a ``LoggingImagingListener`` to redirect JAI warnings. Common ``JAI`` errors (such as "Continuing in pure Java mode") are logged as ``Level.TRACE`` messages, all other errors are logged as ``Level.INFO``.
-
-If you would like to check this bootstrapping process use the system property `-DLOGGING_TRACE=true`.
-
-To completely filter JAI messages from your application set `javax.media.jai` group to ``Level.WARNING``::
-   
-   Logging.getLogger("javax.media.jai").setLevel(Level.WARNING);
-
+For more information see :doc:`logging/factory`.

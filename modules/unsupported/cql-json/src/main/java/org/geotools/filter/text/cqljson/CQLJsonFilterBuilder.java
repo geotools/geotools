@@ -17,49 +17,26 @@
 
 package org.geotools.filter.text.cqljson;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeType;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import org.geotools.filter.text.cqljson.model.After;
-import org.geotools.filter.text.cqljson.model.Anyinteracts;
-import org.geotools.filter.text.cqljson.model.Before;
-import org.geotools.filter.text.cqljson.model.Begins;
-import org.geotools.filter.text.cqljson.model.Begunby;
-import org.geotools.filter.text.cqljson.model.Between;
-import org.geotools.filter.text.cqljson.model.Contains;
-import org.geotools.filter.text.cqljson.model.Crosses;
-import org.geotools.filter.text.cqljson.model.Disjoint;
-import org.geotools.filter.text.cqljson.model.During;
-import org.geotools.filter.text.cqljson.model.Endedby;
-import org.geotools.filter.text.cqljson.model.Ends;
-import org.geotools.filter.text.cqljson.model.Eq;
-import org.geotools.filter.text.cqljson.model.Equals;
-import org.geotools.filter.text.cqljson.model.FunctionObjectArgument;
-import org.geotools.filter.text.cqljson.model.Gt;
-import org.geotools.filter.text.cqljson.model.Gte;
-import org.geotools.filter.text.cqljson.model.In;
-import org.geotools.filter.text.cqljson.model.Intersects;
-import org.geotools.filter.text.cqljson.model.Like;
-import org.geotools.filter.text.cqljson.model.Lt;
-import org.geotools.filter.text.cqljson.model.Lte;
-import org.geotools.filter.text.cqljson.model.Meets;
-import org.geotools.filter.text.cqljson.model.Metby;
-import org.geotools.filter.text.cqljson.model.Overlappedby;
-import org.geotools.filter.text.cqljson.model.Overlaps;
-import org.geotools.filter.text.cqljson.model.TContains;
-import org.geotools.filter.text.cqljson.model.Tequals;
-import org.geotools.filter.text.cqljson.model.Tintersects;
-import org.geotools.filter.text.cqljson.model.Touches;
-import org.geotools.filter.text.cqljson.model.Toverlaps;
-import org.geotools.filter.text.cqljson.model.Within;
-import org.geotools.filter.text.generated.parsers.ParseException;
+import org.geotools.data.geojson.GeoJSONReader;
+import org.geotools.filter.text.cql2.CQLException;
+import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKTReader;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 
 final class CQLJsonFilterBuilder {
@@ -71,565 +48,842 @@ final class CQLJsonFilterBuilder {
 
     private final FilterFactory2 filterFactory;
 
-    /**
-     * Convert CQL AND to Geotools Filter
-     *
-     * @param filters CQL
-     * @return GeoTools Filter
-     */
-    public Filter convertAnd(List<Filter> filters) {
-        return filterFactory.and(filters);
+    private static final List<String> ARITHMETIC_OPERATORS;
+
+    static {
+        ARITHMETIC_OPERATORS = Arrays.asList("+", "-", "*", "/");
     }
+
+    private String toCompareString(JsonNode jsonNode) throws CQLException {
+        if (jsonNode != null && jsonNode.getNodeType() == JsonNodeType.STRING) {
+            return jsonNode.textValue();
+        } else {
+            throw new CQLException("Expected string but got null or other type.");
+        }
+    }
+
+    private Expression toCharacterExpression(JsonNode jsonNode)
+            throws CQLException, IOException, ParseException {
+        if (jsonNode != null && jsonNode.getNodeType() == JsonNodeType.STRING) {
+            String stringExpression = jsonNode.textValue();
+            return filterFactory.literal(stringExpression);
+        } else if (jsonNode != null && jsonNode.getNodeType() == JsonNodeType.OBJECT) {
+            if (isProperty(jsonNode)) {
+                return getPropertyName(jsonNode);
+            } else if (isFunction(jsonNode)) {
+                return getFunction(jsonNode);
+            } else {
+                throw new CQLException("Expected character expression but got null or other type.");
+            }
+        } else {
+            throw new CQLException("Expected character expression but got null or other type.");
+        }
+    }
+
+    private Function getFunction(JsonNode node) throws CQLException, IOException, ParseException {
+        if (isFunction(node)) {
+            ObjectNode function = (ObjectNode) node.get("function");
+            String functionName = function.get("name").textValue();
+            List<Expression> expressions = new ArrayList<>();
+            ArrayNode args = (ArrayNode) function.get("args");
+            for (final JsonNode argNode : args) {
+                expressions.add(getExpression(argNode));
+            }
+            return filterFactory.function(functionName, expressions.toArray(new Expression[0]));
+        } else {
+            throw new CQLException("Expected function but got null or other type.");
+        }
+    }
+
+    private Expression getExpression(JsonNode node)
+            throws CQLException, IOException, ParseException {
+        Expression expression = null;
+        ObjectMapper mapper = new ObjectMapper();
+        if (node.getNodeType() != JsonNodeType.OBJECT) {
+            expression = filterFactory.literal(mapper.convertValue(node, Object.class));
+        } else if (node.getNodeType() == JsonNodeType.ARRAY) {
+            throw new CQLException("Geotools filters do not have an array type");
+        } else {
+            if (isFunction(node)) {
+                expression = getFunction(node);
+            } else if (isProperty(node)) {
+                expression = getPropertyName(node);
+            } else if (isGeometry(node)) {
+                expression = getGeometry(node);
+            } else if (isTime(node)) {
+                expression = getTime(node);
+            } else if (isArithmetic(node)) {
+                expression = getArithmetic(node);
+            } else if (isInterval(node)) {
+                expression = filterFactory.literal(getInterval(node));
+            }
+        }
+        return expression;
+    }
+
+    private List<Expression> getInterval(JsonNode node)
+            throws CQLException, IOException, ParseException {
+        List<Expression> out = new ArrayList<>();
+        Expression expression1 = getExpression(node.get("interval").get(0));
+        Expression expression2 = getExpression(node.get("interval").get(0));
+        out.add(expression1);
+        out.add(expression2);
+        return out;
+    }
+
+    private Expression getArithmetic(JsonNode argNode) throws CQLException {
+        throw new CQLException("arithmetic operators are not supported by Geotools filters");
+    }
+
+    private Expression getGeometry(JsonNode node) throws ParseException {
+        Geometry geom = null;
+        if (node.get("bbox") != null) {
+            ArrayNode bbox = (ArrayNode) node.get("bbox");
+            StringBuilder stringBuffer = new StringBuilder("POLYGON((");
+            stringBuffer.append(bbox.get(0).doubleValue());
+            stringBuffer.append(" ");
+            stringBuffer.append(bbox.get(1).doubleValue());
+            stringBuffer.append(", ");
+            stringBuffer.append(bbox.get(0).doubleValue());
+            stringBuffer.append(" ");
+            stringBuffer.append(bbox.get(3).doubleValue());
+            stringBuffer.append(", ");
+            stringBuffer.append(bbox.get(2).doubleValue());
+            stringBuffer.append(" ");
+            stringBuffer.append(bbox.get(3).doubleValue());
+            stringBuffer.append(", ");
+            stringBuffer.append(bbox.get(2).doubleValue());
+            stringBuffer.append(" ");
+            stringBuffer.append(bbox.get(1).doubleValue());
+            stringBuffer.append(", ");
+            stringBuffer.append(bbox.get(0).doubleValue());
+            stringBuffer.append(" ");
+            stringBuffer.append(bbox.get(1).doubleValue());
+            stringBuffer.append("))");
+            GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory(null);
+
+            WKTReader reader = new WKTReader(geometryFactory);
+            geom = reader.read(stringBuffer.toString());
+        } else {
+            geom = GeoJSONReader.parseGeometry(node.toString());
+        }
+        return filterFactory.literal(geom);
+    }
+
+    private boolean isArithmetic(JsonNode node) {
+        boolean out = false;
+        if (node != null && node.getNodeType() == JsonNodeType.OBJECT) {
+            if (node.get("op") != null) {
+                if (ARITHMETIC_OPERATORS.contains(node.get("op").textValue())) {
+                    return true;
+                }
+            }
+        }
+        return out;
+    }
+
+    private boolean isInterval(JsonNode node) {
+        boolean out = false;
+        if (node != null && node.getNodeType() == JsonNodeType.OBJECT) {
+            if (node.get("interval") != null) {
+                return true;
+            }
+        }
+        return out;
+    }
+
+    private boolean isTime(JsonNode node) {
+        boolean out = false;
+        if (node.get("date") != null) {
+            return true;
+        }
+        if (node.get("timestamp") != null) {
+            return true;
+        }
+        return out;
+    }
+
+    private Expression getTime(JsonNode node) throws CQLException {
+        if (node != null && node.getNodeType() == JsonNodeType.OBJECT) {
+            if (node.get("date") != null) {
+                return filterFactory.literal(node.get("date").textValue());
+            }
+            if (node.get("timestamp") != null) {
+                return filterFactory.literal(node.get("timestamp").textValue());
+            }
+        }
+        throw new CQLException("date, or time type not found");
+    }
+
+    private boolean isGeometry(JsonNode node) {
+        boolean out = false;
+        if (node != null && node.getNodeType() == JsonNodeType.OBJECT) {
+            if (node.get("bbox") != null) {
+                return true;
+            }
+            if (node.get("coordinates") != null) {
+                return true;
+            }
+        }
+        return out;
+    }
+
+    private boolean isFunction(JsonNode node) {
+        boolean out = false;
+        if (node != null
+                && node.getNodeType() == JsonNodeType.OBJECT
+                && node.get("function") != null) {
+            return true;
+        }
+        return out;
+    }
+
+    private boolean isProperty(JsonNode node) {
+        boolean out = false;
+        if (node != null && node.get("property") != null) {
+            return true;
+        }
+        return out;
+    }
+
+    private PropertyName getPropertyName(JsonNode node) throws CQLException {
+        if (node != null && node.get("property") != null) {
+            return filterFactory.property(node.get("property").textValue());
+        } else {
+            throw new CQLException("Expected property but got null or other type.");
+        }
+    }
+
     /**
-     * Convert CQL OR to Geotools Filter
+     * Convert to LIKE FIlter
      *
-     * @param filters CQL
-     * @return GeoTools Filter
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertLike(ArrayNode args) throws CQLException, IOException, ParseException {
+        Expression characterExpression = toCharacterExpression(args.get(0));
+        String stringLiteral = toCompareString(args.get(1));
+        return filterFactory.like(characterExpression, stringLiteral);
+    }
+
+    /**
+     * Convert to EQUALS Filter
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertEquals(ArrayNode args) throws CQLException, IOException, ParseException {
+        Expression expression1 = getExpression(args.get(0));
+        Expression expression2 = getExpression(args.get(1));
+        return filterFactory.equals(expression1, expression2);
+    }
+
+    /**
+     * Convert to EQUALS Filter
+     *
+     * @param expression1
+     * @param expression2
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertEquals(Expression expression1, Expression expression2) {
+        return filterFactory.equals(expression1, expression2);
+    }
+
+    /**
+     * Convert to NOT EQUALS Filter
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertNotEquals(ArrayNode args)
+            throws CQLException, IOException, ParseException {
+        Expression expression1 = getExpression(args.get(0));
+        Expression expression2 = getExpression(args.get(1));
+        return filterFactory.notEqual(expression1, expression2);
+    }
+
+    /**
+     * Convert to Greater Than Filter
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertGreaterThan(ArrayNode args)
+            throws CQLException, IOException, ParseException {
+        Expression expression1 = getExpression(args.get(0));
+        Expression expression2 = getExpression(args.get(1));
+        return filterFactory.greater(expression1, expression2);
+    }
+
+    /**
+     * Convert to Less Than Filter
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertLessThan(ArrayNode args) throws CQLException, IOException, ParseException {
+        Expression expression1 = getExpression(args.get(0));
+        Expression expression2 = getExpression(args.get(1));
+        return filterFactory.less(expression1, expression2);
+    }
+
+    /**
+     * Convert to Greater Than or Equals To Filter
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertGreaterThanOrEq(ArrayNode args)
+            throws CQLException, IOException, ParseException {
+        Expression expression1 = getExpression(args.get(0));
+        Expression expression2 = getExpression(args.get(1));
+        return filterFactory.greaterOrEqual(expression1, expression2);
+    }
+
+    /**
+     * Convert to Less Than or Equals To Filter
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertLessThanOrEq(ArrayNode args)
+            throws CQLException, IOException, ParseException {
+        Expression expression1 = getExpression(args.get(0));
+        Expression expression2 = getExpression(args.get(1));
+        return filterFactory.lessOrEqual(expression1, expression2);
+    }
+
+    /**
+     * Convert to BETWEEN Filter
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertBetween(ArrayNode args) throws CQLException, IOException, ParseException {
+        Expression expression1 = getExpression(args.get(0));
+        Expression expression2 = getExpression(args.get(1));
+        Expression expression3 = getExpression(args.get(2));
+        return filterFactory.between(expression1, expression2, expression3);
+    }
+
+    /**
+     * Converto IS NULL Filter
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertIsNull(ArrayNode args) throws CQLException, IOException, ParseException {
+        Expression expression1 = getExpression(args.get(0));
+        return filterFactory.isNull(expression1);
+    }
+
+    /**
+     * Convert to OR Filter
+     *
+     * @param cqlJsonCompiler
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertOr(CQLJsonCompiler cqlJsonCompiler, ArrayNode args)
+            throws CQLException, IOException, ParseException {
+        List<Filter> filters = new ArrayList<>();
+        for (JsonNode arg : args) {
+            filters.add(cqlJsonCompiler.convertToFilter(arg));
+        }
+        return filterFactory.or(filters);
+    }
+
+    /**
+     * Convert to OR Filter
+     *
+     * @param filters
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
      */
     public Filter convertOr(List<Filter> filters) {
         return filterFactory.or(filters);
     }
+
     /**
-     * Convert CQL NOT to Geotools Filter
+     * Convert to AND Filter
      *
-     * @param filter CQL
-     * @return GeoTools Filter
+     * @param cqlJsonCompiler
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
      */
-    public Filter convertNot(Filter filter) {
+    public Filter convertAnd(CQLJsonCompiler cqlJsonCompiler, ArrayNode args)
+            throws CQLException, IOException, ParseException {
+        List<Filter> filters = new ArrayList<>();
+        for (JsonNode arg : args) {
+            filters.add(cqlJsonCompiler.convertToFilter(arg));
+        }
+        return filterFactory.and(filters);
+    }
+
+    /**
+     * Convert to AND Filter
+     *
+     * @param filter1
+     * @param filter2
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertAnd(Filter filter1, Filter filter2) {
+        return filterFactory.and(filter1, filter2);
+    }
+
+    /**
+     * Convert to IN Literal Array Filter
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertIn(ArrayNode args) throws CQLException, IOException, ParseException {
+        List<Filter> filters = new ArrayList<>();
+        Expression expression1 = getExpression(args.get(0));
+        ArrayNode inArray = (ArrayNode) args.get(1);
+        for (JsonNode inElement : inArray) {
+            Expression expression2 = getExpression(inElement);
+            filters.add(convertEquals(expression1, expression2));
+        }
+        return convertOr(filters);
+    }
+
+    /**
+     * Convert to CONTAINS Geometry Filter
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertContains(ArrayNode args) throws CQLException, IOException, ParseException {
+        Expression expression1 = getExpression(args.get(0));
+        Expression expression2 = getExpression(args.get(1));
+        return filterFactory.contains(expression1, expression2);
+    }
+
+    /**
+     * Convert to CROSSES Geometry Filter
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertCrosses(ArrayNode args) throws CQLException, IOException, ParseException {
+        Expression expression1 = getExpression(args.get(0));
+        Expression expression2 = getExpression(args.get(1));
+        return filterFactory.crosses(expression1, expression2);
+    }
+
+    /**
+     * Convert to DISJOINT Geometry Filter
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertDisjoint(ArrayNode args) throws CQLException, IOException, ParseException {
+        Expression expression1 = getExpression(args.get(0));
+        Expression expression2 = getExpression(args.get(1));
+        return filterFactory.disjoint(expression1, expression2);
+    }
+
+    /**
+     * Convert to EQUALS Geometry Filter
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertSEquals(ArrayNode args) throws CQLException, IOException, ParseException {
+        Expression expression1 = getExpression(args.get(0));
+        Expression expression2 = getExpression(args.get(1));
+        return filterFactory.equal(expression1, expression2);
+    }
+
+    /**
+     * Convert to INTERSECTS Geometry Filter
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertIntersects(ArrayNode args)
+            throws CQLException, IOException, ParseException {
+        Expression expression1 = getExpression(args.get(0));
+        Expression expression2 = getExpression(args.get(1));
+        return filterFactory.intersects(expression1, expression2);
+    }
+
+    /**
+     * Convert to Overlaps Geometry Filter
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertOverlaps(ArrayNode args) throws CQLException, IOException, ParseException {
+        Expression expression1 = getExpression(args.get(0));
+        Expression expression2 = getExpression(args.get(1));
+        return filterFactory.overlaps(expression1, expression2);
+    }
+
+    /**
+     * Convert to Touches Geometry Filter
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertTouches(ArrayNode args) throws CQLException, IOException, ParseException {
+        Expression expression1 = getExpression(args.get(0));
+        Expression expression2 = getExpression(args.get(1));
+        return filterFactory.touches(expression1, expression2);
+    }
+
+    /**
+     * Convert to WITHIN Geometry Filter
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertWithin(ArrayNode args) throws CQLException, IOException, ParseException {
+        Expression expression1 = getExpression(args.get(0));
+        Expression expression2 = getExpression(args.get(1));
+        return filterFactory.within(expression1, expression2);
+    }
+
+    /**
+     * Convert to NOT Filter
+     *
+     * @param cqlJsonCompiler
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertNot(CQLJsonCompiler cqlJsonCompiler, ArrayNode args)
+            throws CQLException, IOException, ParseException {
+        Filter filter = cqlJsonCompiler.convertToFilter(args.get(0));
         return filterFactory.not(filter);
     }
-    /**
-     * Convert CQL AFTER to Geotools Filter
-     *
-     * @param after CQL
-     * @return GeoTools Filter
-     */
-    public Filter convertAfter(After after) throws ParseException {
-        Expression value = null;
-        if (after.getFunction() != null) {
-            value = convertFunction(after.getFunction());
-        } else {
-            value = filterFactory.literal(after.getValue());
-        }
-        return filterFactory.after(filterFactory.property(after.getProperty()), value);
-    }
-    /**
-     * Convert CQL ANY to Geotools Filter
-     *
-     * @param anyinteracts CQL
-     * @return GeoTools Filter
-     */
-    public Filter convertAnyInteracts(Anyinteracts anyinteracts) throws ParseException {
-        Expression value = null;
-        if (anyinteracts.getFunction() != null) {
-            value = convertFunction(anyinteracts.getFunction());
-        } else {
-            value = filterFactory.literal(anyinteracts.getValue());
-        }
-        return filterFactory.anyInteracts(
-                filterFactory.property(anyinteracts.getProperty()), value);
-    }
-    /**
-     * Convert CQL BEFORE to Geotools Filter
-     *
-     * @param before CQL
-     * @return GeoTools Filter
-     */
-    public Filter convertBefore(Before before) throws ParseException {
-        Expression value = null;
-        if (before.getFunction() != null) {
-            value = convertFunction(before.getFunction());
-        } else {
-            value = filterFactory.literal(before.getValue());
-        }
-        return filterFactory.before(filterFactory.property(before.getProperty()), value);
-    }
-    /**
-     * Convert CQL BEGINS to Geotools Filter
-     *
-     * @param begins CQL
-     * @return GeoTools Filter
-     */
-    public Filter convertBegins(Begins begins) throws ParseException {
-        Expression value = null;
-        if (begins.getFunction() != null) {
-            value = convertFunction(begins.getFunction());
-        } else {
-            value = filterFactory.literal(begins.getValue());
-        }
-        return filterFactory.begins(filterFactory.property(begins.getProperty()), value);
-    }
-    /**
-     * Convert CQL BEGUNBY to Geotools Filter
-     *
-     * @param begunby CQL
-     * @return GeoTools Filter
-     */
-    public Filter convertBegunby(Begunby begunby) throws ParseException {
-        Expression value = null;
-        if (begunby.getFunction() != null) {
-            value = convertFunction(begunby.getFunction());
-        } else {
-            value = filterFactory.literal(begunby.getValue());
-        }
-        return filterFactory.begunBy(filterFactory.property(begunby.getProperty()), value);
-    }
-    /**
-     * Convert CQL BETWEEN to Geotools Filter
-     *
-     * @param between CQL
-     * @return GeoTools Filter
-     */
-    public Filter convertBetween(Between between) {
-        return filterFactory.between(
-                filterFactory.property(between.getProperty()),
-                filterFactory.literal(between.getUpper()),
-                filterFactory.literal(between.getLower()));
-    }
-    /**
-     * Convert CQL CONTAINS to Geotools Filter
-     *
-     * @param contains CQL
-     * @return GeoTools Filter
-     */
-    public Filter convertContains(Contains contains) throws ParseException {
-        assert contains.getFunction() == null
-                : "GeoTools Geometry filters do not support functions as arguments";
 
-        return filterFactory.contains(
-                filterFactory.property(contains.getProperty()),
-                toGeometry(convertToMap(contains.getValue())));
-    }
-
-    private Map<String, Object> convertToMap(Object value) {
-        assert value instanceof Map
-                : "Object passed to Geometry function must be a Map<String,Object>";
-        Map<?, ?> valueMap = (Map<?, ?>) value;
-        Map<String, Object> myInput = new HashMap<>(valueMap.size());
-        for (Map.Entry<?, ?> entry : valueMap.entrySet()) {
-            myInput.put((String) entry.getKey(), entry.getValue());
-        }
-        return myInput;
-    }
-
-    private Literal toGeometry(Map<String, Object> value) throws ParseException {
-        return filterFactory.literal(MapToOpenGISGeomUtil.parseMapToGeometry(value));
+    /**
+     * Convert to AFTER Temporal Filter
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertAfter(ArrayNode args) throws CQLException, IOException, ParseException {
+        Expression expression1 = getExpression(args.get(0));
+        Expression expression2 = getExpression(args.get(1));
+        return filterFactory.after(expression1, expression2);
     }
 
     /**
-     * Convert CQL DURING to Geotools Filter
+     * Convert to AFTER Temporal Filter
      *
-     * @param during CQL
-     * @return GeoTools Filter
+     * @param expression1
+     * @param expression2
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
      */
-    public Filter convertDuring(During during) throws ParseException {
-        Expression value = null;
-        if (during.getFunction() != null) {
-            value = convertFunction(during.getFunction());
-        } else {
-            value = filterFactory.literal(during.getValue());
-        }
-        return filterFactory.during(filterFactory.property(during.getProperty()), value);
-    }
-    /**
-     * Convert CQL ENDEDBY to Geotools Filter
-     *
-     * @param endedby CQL
-     * @return GeoTools Filter
-     */
-    public Filter convertEndedBy(Endedby endedby) throws ParseException {
-        Expression value = null;
-        if (endedby.getFunction() != null) {
-            value = convertFunction(endedby.getFunction());
-        } else {
-            value = filterFactory.literal(endedby.getValue());
-        }
-        return filterFactory.endedBy(filterFactory.property(endedby.getProperty()), value);
-    }
-    /**
-     * Convert CQL ENDS to Geotools Filter
-     *
-     * @param ends CQL
-     * @return GeoTools Filter
-     */
-    public Filter convertEnds(Ends ends) throws ParseException {
-        Expression value = null;
-        if (ends.getFunction() != null) {
-            value = convertFunction(ends.getFunction());
-        } else {
-            value = filterFactory.literal(ends.getValue());
-        }
-        return filterFactory.ends(filterFactory.property(ends.getProperty()), value);
-    }
-    /**
-     * Convert CQL EQ to Geotools Filter
-     *
-     * @param eq CQL
-     * @return GeoTools Filter
-     */
-    public Filter convertEq(Eq eq) {
-        return filterFactory.equals(
-                filterFactory.property(eq.getProperty()), filterFactory.literal(eq.getValue()));
-    }
-    /**
-     * Convert CQL EQUALS to Geotools Filter
-     *
-     * @param equals CQL
-     * @return GeoTools Filter
-     */
-    public Filter convertEquals(Equals equals) throws ParseException {
-        assert equals.getFunction() == null
-                : "GeoTools Geometry filters do not support functions as arguments";
-        return filterFactory.equals(
-                filterFactory.property(equals.getProperty()),
-                (toGeometry(convertToMap(equals.getValue()))));
-    }
-    /**
-     * Convert CQL GT to Geotools Filter
-     *
-     * @param gt CQL
-     * @return GeoTools Filter
-     */
-    public Filter convertGt(Gt gt) {
-        return filterFactory.greater(
-                filterFactory.property(gt.getProperty()), filterFactory.literal(gt.getValue()));
-    }
-    /**
-     * Convert CQL GTE to Geotools Filter
-     *
-     * @param gte CQL
-     * @return GeoTools Filter
-     */
-    public Filter convertGte(Gte gte) {
-        return filterFactory.greaterOrEqual(
-                filterFactory.property(gte.getProperty()), filterFactory.literal(gte.getValue()));
-    }
-    /**
-     * Convert CQL In to Geotools Filter
-     *
-     * @param in CQL
-     * @return GeoTools Filter
-     */
-    public Filter convertIn(In in) {
-        PropertyName property = filterFactory.property(in.getProperty());
-
-        org.opengis.filter.expression.Expression[] args =
-                new org.opengis.filter.expression.Expression[1];
-        args[0] = filterFactory.literal(property);
-
-        Function function = filterFactory.function("PropertyExists", args);
-        Literal literalTrue = filterFactory.literal(Boolean.TRUE);
-
-        return filterFactory.equals(function, literalTrue);
-    }
-    /**
-     * Convert CQL INTERSECTS to Geotools Filter
-     *
-     * @param intersects CQL
-     * @return GeoTools Filter
-     */
-    public Filter convertIntersects(Intersects intersects) throws ParseException {
-        assert intersects.getFunction() == null
-                : "GeoTools Geometry filters do not support functions as arguments";
-        return filterFactory.intersects(
-                filterFactory.property(intersects.getProperty()),
-                (toGeometry(convertToMap(intersects.getValue()))));
-    }
-    /**
-     * Convert CQL LIKE to Geotools Filter
-     *
-     * @param like CQL
-     * @return GeoTools Filter
-     */
-    public Filter convertLike(Like like) {
-        return filterFactory.like(
-                filterFactory.property(like.getProperty()),
-                like.getValue().toString(),
-                like.getWildcard(),
-                like.getSingleChar(),
-                like.getEscape());
-    }
-    /**
-     * Convert CQL LT to Geotools Filter
-     *
-     * @param lt CQL
-     * @return GeoTools Filter
-     */
-    public Filter convertLt(Lt lt) {
-        return filterFactory.less(
-                filterFactory.property(lt.getProperty()), filterFactory.literal(lt.getValue()));
+    public Filter convertAfter(Expression expression1, Expression expression2) {
+        return filterFactory.after(expression1, expression2);
     }
 
     /**
-     * Convert CQL LTE to Geotools Filter
+     * Convert to BEFORE Temporal Filter
      *
-     * @param lte CQL
-     * @return GeoTools Filter
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
      */
-    public Filter convertLte(Lte lte) {
-        return filterFactory.lessOrEqual(
-                filterFactory.property(lte.getProperty()), filterFactory.literal(lte.getValue()));
-    }
-    /**
-     * Convert CQL MEETS to Geotools Filter
-     *
-     * @param meets CQL
-     * @return GeoTools Filter
-     */
-    public Filter convertMeets(Meets meets) throws ParseException {
-        Expression value = null;
-        if (meets.getFunction() != null) {
-            value = convertFunction(meets.getFunction());
-        } else {
-            value = filterFactory.literal(meets.getValue());
-        }
-        return filterFactory.meets(filterFactory.property(meets.getProperty()), value);
-    }
-    /**
-     * Convert CQL METBY to Geotools Filter
-     *
-     * @param metby CQL
-     * @return GeoTools Filter
-     */
-    public Filter convertMetBy(Metby metby) throws ParseException {
-        Expression value = null;
-        if (metby.getFunction() != null) {
-            value = convertFunction(metby.getFunction());
-        } else {
-            value = filterFactory.literal(metby.getValue());
-        }
-        return filterFactory.metBy(filterFactory.property(metby.getProperty()), value);
-    }
-    /**
-     * Convert CQL OVERLAPPEDBY to Geotools Filter
-     *
-     * @param overlappedby CQL
-     * @return GeoTools Filter
-     */
-    public Filter convertOverlappedBy(Overlappedby overlappedby) throws ParseException {
-        Expression value = null;
-        if (overlappedby.getFunction() != null) {
-            value = convertFunction(overlappedby.getFunction());
-        } else {
-            value = filterFactory.literal(overlappedby.getValue());
-        }
-        return filterFactory.overlappedBy(
-                filterFactory.property(overlappedby.getProperty()), value);
-    }
-    /**
-     * Convert CQL OVERLAPS to Geotools Filter
-     *
-     * @param overlaps CQL
-     * @return GeoTools Filter
-     */
-    public Filter convertOverlaps(Overlaps overlaps) throws ParseException {
-        assert overlaps.getFunction() == null
-                : "GeoTools Geometry filters do not support functions as arguments";
-        return filterFactory.overlaps(
-                filterFactory.property(overlaps.getProperty()),
-                (toGeometry(convertToMap(overlaps.getValue()))));
-    }
-    /**
-     * Convert CQL TCONTAINS to Geotools Filter
-     *
-     * @param tContains CQL
-     * @return GeoTools Filter
-     */
-    public Filter convertTContains(TContains tContains) throws ParseException {
-        Expression value = null;
-        if (tContains.getFunction() != null) {
-            value = convertFunction(tContains.getFunction());
-        } else {
-            value = filterFactory.literal(tContains.getValue());
-        }
-        return filterFactory.tcontains(filterFactory.property(tContains.getProperty()), value);
-    }
-    /**
-     * Convert CQL TEQUALS to Geotools Filter
-     *
-     * @param tequals CQL
-     * @return GeoTools Filter
-     */
-    public Filter convertTEquals(Tequals tequals) throws ParseException {
-        Expression value = null;
-        if (tequals.getFunction() != null) {
-            value = convertFunction(tequals.getFunction());
-        } else {
-            value = filterFactory.literal(tequals.getValue());
-        }
-        return filterFactory.tequals(filterFactory.property(tequals.getProperty()), value);
-    }
-    /**
-     * Convert CQL TINTERSECTS to Geotools Filter
-     *
-     * @param tintersects CQL
-     * @return GeoTools Filter
-     */
-    public Filter convertTIntersects(Tintersects tintersects) throws ParseException {
-        Expression value = null;
-        if (tintersects.getFunction() != null) {
-            value = convertFunction(tintersects.getFunction());
-        } else {
-            value = filterFactory.literal(tintersects.getValue());
-        }
-        return filterFactory.anyInteracts(filterFactory.property(tintersects.getProperty()), value);
-    }
-    /**
-     * Convert CQL TOUCHES to Geotools Filter
-     *
-     * @param touches CQL
-     * @return GeoTools Filter
-     */
-    public Filter convertTouches(Touches touches) throws ParseException {
-        assert touches.getFunction() == null
-                : "GeoTools Geometry filters do not support functions as arguments";
-        return filterFactory.touches(
-                filterFactory.property(touches.getProperty()),
-                (toGeometry(convertToMap(touches.getValue()))));
-    }
-    /**
-     * Convert CQL TOVERLAPS to Geotools Filter
-     *
-     * @param toverlaps CQL
-     * @return GeoTools Filter
-     */
-    public Filter convertTOverlaps(Toverlaps toverlaps) throws ParseException {
-        Expression value = null;
-        if (toverlaps.getFunction() != null) {
-            value = convertFunction(toverlaps.getFunction());
-        } else {
-            value = filterFactory.literal(toverlaps.getValue());
-        }
-        return filterFactory.toverlaps(filterFactory.property(toverlaps.getProperty()), value);
-    }
-    /**
-     * Convert CQL WITHIN to Geotools Filter
-     *
-     * @param within CQL
-     * @return GeoTools Filter
-     */
-    public Filter convertWithin(Within within) throws ParseException {
-        assert within.getFunction() == null
-                : "GeoTools Geometry filters do not support functions as arguments";
-        return filterFactory.within(
-                filterFactory.property(within.getProperty()),
-                (toGeometry(convertToMap(within.getValue()))));
-    }
-    /**
-     * Convert CQL DISJOINT to Geotools Filter
-     *
-     * @param disjoint CQL
-     * @return GeoTools Filter
-     */
-    public Filter convertDisjoint(Disjoint disjoint) throws ParseException {
-        assert disjoint.getFunction() == null
-                : "GeoTools Geometry filters do not support functions as arguments";
-        return filterFactory.disjoint(
-                filterFactory.property(disjoint.getProperty()),
-                (toGeometry(convertToMap(disjoint.getValue()))));
-    }
-    /**
-     * Convert CQL CROSSES to Geotools Filter
-     *
-     * @param crosses CQL
-     * @return GeoTools Filter
-     */
-    public Filter convertCrosses(Crosses crosses) throws ParseException {
-        assert crosses.getFunction() == null
-                : "GeoTools Geometry filters do not support functions as arguments";
-        return filterFactory.disjoint(
-                filterFactory.property(crosses.getProperty()),
-                (toGeometry(convertToMap(crosses.getValue()))));
+    public Filter convertBefore(ArrayNode args) throws CQLException, IOException, ParseException {
+        Expression expression1 = getExpression(args.get(0));
+        Expression expression2 = getExpression(args.get(1));
+        return filterFactory.before(expression1, expression2);
     }
 
-    private Expression convertFunction(org.geotools.filter.text.cqljson.model.Function function)
-            throws ParseException {
-        List<Expression> functionArgs = functionArgsToExpressions(function.getArguments());
-        return filterFactory.function(function.getName(), functionArgs.toArray(new Expression[0]));
+    /**
+     * Convert to BEFORE Temporal Filter
+     *
+     * @param expression1
+     * @param expression2
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertBefore(Expression expression1, Expression expression2) {
+        return filterFactory.before(expression1, expression2);
     }
 
-    private List<Expression> functionArgsToExpressions(List<FunctionObjectArgument> arguments)
-            throws ParseException {
-        List<Expression> expressions = new ArrayList<>();
-        for (FunctionObjectArgument functionObjectArgument : arguments) {
-            if (functionObjectArgument.getAdd() != null) {
-                expressions.add(
-                        filterFactory.add(
-                                filterFactory.literal(
-                                        functionObjectArgument.getAdd().getProperty()),
-                                filterFactory.literal(functionObjectArgument.getAdd().getValue())));
-            }
-            if (functionObjectArgument.getSub() != null) {
-                expressions.add(
-                        filterFactory.subtract(
-                                filterFactory.literal(
-                                        functionObjectArgument.getAdd().getProperty()),
-                                filterFactory.literal(functionObjectArgument.getAdd().getValue())));
-            }
-            if (functionObjectArgument.getMul() != null) {
-                expressions.add(
-                        filterFactory.multiply(
-                                filterFactory.literal(
-                                        functionObjectArgument.getAdd().getProperty()),
-                                filterFactory.literal(functionObjectArgument.getAdd().getValue())));
-            }
-            if (functionObjectArgument.getDiv() != null) {
-                expressions.add(
-                        filterFactory.divide(
-                                filterFactory.literal(
-                                        functionObjectArgument.getAdd().getProperty()),
-                                filterFactory.literal(functionObjectArgument.getAdd().getValue())));
-            }
-            if (functionObjectArgument.getBbox() != null) {
-                Geometry geo =
-                        MapToOpenGISGeomUtil.parseMapToGeometry(
-                                convertToMap(functionObjectArgument.getBbox()));
-                double minx = geo.getEnvelope().getCoordinates()[0].x;
-                double miny = geo.getEnvelope().getCoordinates()[0].y;
-                double maxx = geo.getEnvelope().getCoordinates()[2].x;
-                double maxy = geo.getEnvelope().getCoordinates()[2].y;
-                expressions.add(
-                        filterFactory
-                                .bbox(
-                                        functionObjectArgument.getProperty(),
-                                        minx,
-                                        miny,
-                                        maxx,
-                                        maxy,
-                                        "EPSG:" + geo.getSRID())
-                                .getExpression1());
-            }
-            if (functionObjectArgument.getGeometry() != null) {
-                Geometry geo =
-                        MapToOpenGISGeomUtil.parseMapToGeometry(
-                                convertToMap(functionObjectArgument.getGeometry()));
-                double minx = geo.getEnvelope().getCoordinates()[0].x;
-                double miny = geo.getEnvelope().getCoordinates()[0].y;
-                double maxx = geo.getEnvelope().getCoordinates()[2].x;
-                double maxy = geo.getEnvelope().getCoordinates()[2].y;
-                expressions.add(
-                        filterFactory
-                                .bbox(
-                                        functionObjectArgument.getProperty(),
-                                        minx,
-                                        miny,
-                                        maxx,
-                                        maxy,
-                                        "EPSG:" + geo.getSRID())
-                                .getExpression1());
-            }
+    /**
+     * Convert to DISJOINT Temporal Filter
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertTDisjoint(ArrayNode args)
+            throws CQLException, IOException, ParseException {
+        Expression expression1 = getExpression(args.get(0));
+        Expression expression2 = getExpression(args.get(1));
+        Filter before = convertBefore(expression1, expression2);
+        Filter after = convertAfter(expression1, expression2);
+        return convertAnd(before, after);
+    }
 
-            if (functionObjectArgument.getTemporalValue() != null) {
-                expressions.add(filterFactory.literal(functionObjectArgument.getTemporalValue()));
-            }
+    /**
+     * Convert to DURING Temporal Filter
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertDuring(ArrayNode args) throws CQLException, IOException, ParseException {
+        Expression expression1 = getExpression(args.get(0));
+        Expression expression2 = getExpression(args.get(1));
+        return filterFactory.during(expression1, expression2);
+    }
 
-            if (functionObjectArgument.getFunction() != null) {
-                expressions.add(convertFunction(functionObjectArgument.getFunction()));
-            }
-            if (functionObjectArgument.getProperty() != null) {
-                expressions.add(filterFactory.property(functionObjectArgument.getProperty()));
-            }
-        }
-        return expressions;
+    /**
+     * FINISHED BY Temporal Filter Not Supported
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertFinishedBy(ArrayNode args)
+            throws CQLException, IOException, ParseException {
+        throw new CQLException("Finished by not supported by GeoTools filters");
+    }
+    /**
+     * FINISHING Temporal Filter Not Supported
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertFinishing(ArrayNode args)
+            throws CQLException, IOException, ParseException {
+        throw new CQLException("Finishing not supported by GeoTools filters");
+    }
+    /**
+     * INTERSECTS Temporal Filter Not Supported
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertTIntersects(ArrayNode args)
+            throws CQLException, IOException, ParseException {
+        throw new CQLException("TIntersects not supported by GeoTools filters");
+    }
+    /**
+     * MEETS Temporal Filter Not Supported
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertMeets(ArrayNode args) throws CQLException, IOException, ParseException {
+        throw new CQLException("Meets not supported by GeoTools filters");
+    }
+    /**
+     * MET BY Temporal Filter Not Supported
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertMetBy(ArrayNode args) throws CQLException, IOException, ParseException {
+        throw new CQLException("Met by not supported by GeoTools filters");
+    }
+    /**
+     * OVERLAPPED BY Temporal Filter Not Supported
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertOverlappedBy(ArrayNode args)
+            throws CQLException, IOException, ParseException {
+        throw new CQLException("Overlapped by not supported by GeoTools filters");
+    }
+    /**
+     * OVERLAPS Temporal Filter Not Supported
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertTOverlaps(ArrayNode args)
+            throws CQLException, IOException, ParseException {
+        throw new CQLException("Time Overlaps not supported by GeoTools filters");
+    }
+    /**
+     * STARTED BY Temporal Filter Not Supported
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertStartedBy(ArrayNode args)
+            throws CQLException, IOException, ParseException {
+        throw new CQLException("Started by not supported by GeoTools filters");
+    }
+    /**
+     * STARTS Temporal Filter Not Supported
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertStarts(ArrayNode args) throws CQLException, IOException, ParseException {
+        throw new CQLException("Starts not supported by GeoTools filters");
+    }
+    /**
+     * CONTAINED BY Array Filter Not Supported
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertAContainedBy(ArrayNode args)
+            throws CQLException, IOException, ParseException {
+        throw new CQLException("Array Contained By not supported by GeoTools filters");
+    }
+    /**
+     * CONTAINING Array Filter Not Supported
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertAContaining(ArrayNode args)
+            throws CQLException, IOException, ParseException {
+        throw new CQLException("Array Containing not supported by GeoTools filters");
+    }
+    /**
+     * EQUALS Array Filter Not Supported
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertArrayEquals(ArrayNode args)
+            throws CQLException, IOException, ParseException {
+        throw new CQLException("Array Equals not supported by GeoTools filters");
+    }
+    /**
+     * OVERLAPS Array Filter Not Supported
+     *
+     * @param args
+     * @return
+     * @throws CQLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public Filter convertAOverlaps(ArrayNode args)
+            throws CQLException, IOException, ParseException {
+        throw new CQLException("Array Overlaps not supported by GeoTools filters");
     }
 }

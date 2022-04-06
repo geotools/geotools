@@ -16,7 +16,10 @@
  */
 package org.geotools.util.logging;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.logging.Logger;
+import org.apache.log4j.helpers.Loader;
 
 /**
  * A factory for loggers that redirect all Java logging events to the Apache's <A
@@ -76,5 +79,39 @@ public class Log4JLoggerFactory extends LoggerFactory<org.apache.log4j.Logger> {
             return ((Log4JLogger) logger).logger;
         }
         return null;
+    }
+
+    @Override
+    public String lookupConfiguration() {
+        String override = System.getProperty("log4j.defaultInitOverride");
+        if (override == null || "false".equalsIgnoreCase(override)) {
+            String configFile = System.getProperty("log4j.configuration");
+            URL url = null;
+
+            if (configFile != null) {
+                try {
+                    url = new URL(configFile);
+                } catch (MalformedURLException ignore) {
+                    url = Loader.getResource(configFile);
+                }
+                if (url != null) {
+                    return url.toString();
+                } else {
+                    return configFile + " (not found)";
+                }
+            } else {
+                url = Loader.getResource("log4j.xml");
+                if (url == null) {
+                    url = Loader.getResource("log4j.properties");
+                }
+                if (url != null) {
+                    return url.toString();
+                } else {
+                    return "(not found)";
+                }
+            }
+        } else {
+            return "Override log4j.defaultInitOverride '" + override + "'";
+        }
     }
 }

@@ -17,6 +17,7 @@
  */
 package org.geotools.filter.function;
 
+import com.google.re2j.Pattern;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 import org.geotools.factory.CommonFactoryFinder;
@@ -478,7 +479,10 @@ public class StaticGeometry {
 
     public static boolean strMatches(String s1, String s2) {
         if (s1 == null || s2 == null) return false;
-        return s1.matches(s2);
+        if (s1.isEmpty() && s2.isEmpty()) return true;
+        if (s1.isEmpty() || s2.isEmpty()) return false;
+
+        return Pattern.matches(s2, s1);
     }
 
     public static String strReplace(String s1, String s2, String s3, Boolean bAll) {
@@ -616,7 +620,7 @@ public class StaticGeometry {
 
     public static boolean isLike(String s1, String s2) {
         if (s1 == null || s2 == null) return false;
-        return s1.matches(s2); // this sucks, but hay...
+        return strMatches(s1, s2);
     }
 
     public static boolean isNull(Object o) {

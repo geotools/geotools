@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Concise Syntax -->
+<Configuration status="info" dest="out">
+    <CustomLevels>
+      <CustomLevel name="CONFIG" intLevel="450" />
+      <CustomLevel name="FINEST" intLevel="700" />
+    </CustomLevels>>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%date{HH:mm:ss.SSS} %-6level [%logger{2}] - %msg%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Logger name="org.geotools.tutorial.logging" level="all" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="org.geotools" level="debug" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Root level="error">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>

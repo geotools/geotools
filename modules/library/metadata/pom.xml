@@ -118,13 +118,6 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <scope>provided</scope>
-      <!-- Not required for default execution. -->
-      <optional>true</optional>
-    </dependency>
-    <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
     </dependency>
@@ -133,6 +126,38 @@
       <artifactId>net.opengis.ows</artifactId>
       <version>${project.version}</version>
       <scope>compile</scope>
+    </dependency>
+    <!-- Third-party logging libraries not required for default execution. -->
+    <!-- replaces log4j -->
+    <dependency>
+      <groupId>ch.qos.reload4j</groupId>
+      <artifactId>reload4j</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-jcl</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
+      <optional>true</optional>
     </dependency>
   </dependencies>
 
@@ -146,6 +171,37 @@
         <directory>${basedir}/src/main/properties</directory>
       </resource>
     </resources>
+    <plugins>
+      <plugin>
+        <artifactId>maven-invoker-plugin</artifactId>
+        <version>3.2.2</version>
+        <executions>
+          <execution>
+            <id>integration-test</id>
+            <goals>
+              <goal>install</goal>
+              <goal>run</goal>
+              <goal>verify</goal>
+            </goals>
+            <configuration>
+              <goals>
+                <goal>exec:exec</goal>
+              </goals>
+              <verifyHookScript>verify.bsh</verifyHookScript>
+            </configuration>
+          </execution>
+        </executions>
+        <configuration>
+          <ignoreFailures>true</ignoreFailures>
+          <!-- never fail the build -->
+          <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+          <settingsFile>src/it/settings.xml</settingsFile>
+          <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+          <showErrors>false</showErrors>
+          <streamLogsOnFailures>true</streamLogsOnFailures>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 
 </project>

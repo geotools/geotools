@@ -10,6 +10,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+import javax.media.jai.JAI;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +23,7 @@ public class LoggingImagingListenerTest {
 
     @Before
     public void setupTest() {
-        logger = Logging.getLogger(LoggingImagingListener.class);
+        logger = Logging.getLogger("javax.media.jai");
         logger.setLevel(Level.ALL);
         logHandler = new TestLogHandler();
         logger.addHandler(logHandler);
@@ -30,6 +31,7 @@ public class LoggingImagingListenerTest {
 
     @After
     public void teardownTest() {
+        logger.setLevel(Level.INFO);
         logger.removeHandler(logHandler);
     }
 
@@ -40,7 +42,7 @@ public class LoggingImagingListenerTest {
         Throwable thrown = new Throwable("Continuing in pure Java mode");
         try {
             boolean recoverySuccess =
-                    listener.errorOccurred(thrown.getMessage(), thrown, getClass(), false);
+                    listener.errorOccurred(thrown.getMessage(), thrown, JAI.class, false);
             assertFalse(recoverySuccess);
         } catch (Throwable ignore) {
             // expected
@@ -57,7 +59,7 @@ public class LoggingImagingListenerTest {
         LoggingImagingListener listener = new LoggingImagingListener();
         Throwable thrown = new IllegalStateException("Special test exception");
         try {
-            listener.errorOccurred(thrown.getMessage(), thrown, getClass(), false);
+            listener.errorOccurred(thrown.getMessage(), thrown, JAI.class, false);
         } catch (IllegalStateException expected) {
         } catch (Throwable t) {
             fail(String.format("Exception '%s' not expected", t.getClass().getSimpleName()));
@@ -80,6 +82,8 @@ public class LoggingImagingListenerTest {
         public void flush() {}
 
         @Override
-        public void close() throws SecurityException {}
+        public void close() throws SecurityException {
+            logged.clear();
+        }
     }
 }

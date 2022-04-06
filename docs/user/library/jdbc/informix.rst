@@ -44,3 +44,11 @@ Here is a quick example::
   params.put(InformixDataStoreFactory.JDBC_URL.key, "jdbc:informix-sqli://localhost:9088/geotools");
   
   DataStore dataStore=DataStoreFinder.getDataStore(params);
+
+Licence
+^^^^^^^
+
+This plugin depends on the IBM Informix JDBC driver, which is sourced through Maven. Please read the
+`licence agreement`_ before using it.
+
+.. _licence agreement: https://www-40.ibm.com/software/sla/sladb.nsf/doclookup/CA4476C0AF8346EC852579290012D218?OpenDocument

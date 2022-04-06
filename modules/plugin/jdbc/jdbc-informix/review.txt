@@ -1,3 +1,1 @@
 IP review performed by George Dewar on 25/03/2022.
-Note that the Informix JDBC driver is not open source and should not be distributed with GeoTools - hence it is marked
-"provided" in pom.xml.

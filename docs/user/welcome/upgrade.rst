@@ -44,6 +44,30 @@ by setting ``org.geotools.shapefile.enableCPG`` system property to "true". The n
 * if the store fails to read CPG, it uses the default charset specified by ``ShapefileDataStoreFactory.DBFCHARSET`` constant, 
   which is usual behavior.
 
+In case of trouble there is an ability to bring old behavior back by setting ``org.geotools.shapefile.enableCPG`` system property
+to "false". This turns autodetection off. The name of the property stored in ``ShapefileDataStoreFactory.ENABLE_CPG_SWITCH`` constant.
+
+GeoTools
+^^^^^^^^
+
+In GeoTools 25.7 ``GeoTools.getInitialContext().look(name)`` and related methods have been deprecated, with ``GeoTools.jndiLookup(name)``. We have also taken an opportunity to remove ``GeoTools.fixName( context, name )`` 
+
+The use of ``GeoTools.jndiLookup(name)`` is subject to validation with the default ``GeoTools.DEFAULT_JNDI_VALIDATOR`` validator used limit name lookup.
+
+BEFORE
+
+.. code-block:: java
+
+   context = GeoTools.getInitialContext();
+   String fixedName = GeoTools.fixName( context, name );
+   return (DataSource) context.lookup(fixedName);
+
+AFTER
+
+.. code-block:: java
+
+   return (DataSource) GeoTools.jndiLookup(name);
+
 More variable arguments support in core classes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

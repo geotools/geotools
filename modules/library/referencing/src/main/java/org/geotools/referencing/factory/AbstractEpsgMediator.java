@@ -20,7 +20,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.naming.InitialContext;
 import javax.sql.DataSource;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.util.SimpleInternationalString;
@@ -73,11 +72,8 @@ public abstract class AbstractEpsgMediator extends AbstractAuthorityMediator {
             return (DataSource) hint;
         } else if (hint instanceof String) {
             String name = (String) hint;
-            InitialContext context;
             try {
-                context = GeoTools.getInitialContext(hints);
-                // name = GeoTools.fixName( context, name );
-                return (DataSource) context.lookup(name);
+                return (DataSource) GeoTools.jndiLookup(name);
             } catch (Exception e) {
                 throw new FactoryException("EPSG_DATA_SOURCE '" + name + "' not found:" + e, e);
             }

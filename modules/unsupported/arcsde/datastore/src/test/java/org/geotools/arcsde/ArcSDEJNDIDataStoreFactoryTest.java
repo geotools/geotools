@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Logger;
-import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import org.geotools.arcsde.data.ArcSDEDataStore;
@@ -79,8 +78,7 @@ public class ArcSDEJNDIDataStoreFactoryTest {
     public static void cleanupAfterClass() throws Exception {
         // clean up the context, otherwise other tests in other JNDI tests might fail
         // as a consequence
-        Context ctx = GeoTools.getInitialContext(GeoTools.getDefaultHints());
-        ctx.close();
+        GeoTools.clearInitialContext();
 
         // clean up system properties too
         System.clearProperty(IC_FACTORY_PROPERTY);
@@ -126,7 +124,8 @@ public class ArcSDEJNDIDataStoreFactoryTest {
 
         Map<String, Serializable> config = testData.getConProps();
         try {
-            InitialContext initialContext = GeoTools.getInitialContext(GeoTools.getDefaultHints());
+            InitialContext initialContext = new InitialContext();
+            GeoTools.init(initialContext);
             initialContext.bind(jndiRef, config);
             assertNotNull(initialContext.lookup(jndiRef));
         } catch (NamingException e) {
@@ -155,7 +154,8 @@ public class ArcSDEJNDIDataStoreFactoryTest {
 
         ISessionPool pool = testData.getConnectionPool();
         try {
-            InitialContext initialContext = GeoTools.getInitialContext(GeoTools.getDefaultHints());
+            InitialContext initialContext = new InitialContext();
+            GeoTools.init(initialContext);
             initialContext.bind(jndiRef, pool);
             assertNotNull(initialContext.lookup(jndiRef));
         } catch (NamingException e) {

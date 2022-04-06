@@ -26,7 +26,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-import javax.naming.Context;
 import javax.naming.NamingException;
 import org.geotools.arcsde.jndi.ArcSDEConnectionFactory;
 import org.geotools.arcsde.session.ArcSDEConnectionConfig;
@@ -175,23 +174,15 @@ public class ArcSDEJNDIDataStoreFactory implements DataStoreFactorySpi {
             throw new IOException("Missing " + JNDI_REFNAME.description);
         }
 
-        final Context ctx;
-
-        try {
-            ctx = GeoTools.getInitialContext(GeoTools.getDefaultHints());
-        } catch (NamingException e) {
-            throw new RuntimeException(e);
-        }
-
         Object lookup = null;
         try {
-            lookup = ctx.lookup(jndiName);
+            lookup = GeoTools.jndiLookup(jndiName);
         } catch (NamingException e1) {
             // check if the user did not specify "java:comp/env"
             // and this code is running in a J2EE environment
             try {
                 if (jndiName.startsWith(J2EE_ROOT_CONTEXT) == false) {
-                    lookup = ctx.lookup(J2EE_ROOT_CONTEXT + jndiName);
+                    lookup = GeoTools.jndiLookup(J2EE_ROOT_CONTEXT + jndiName);
                     // success --> issue a waring
                     LOGGER.warning(
                             "Using "
@@ -279,12 +270,7 @@ public class ArcSDEJNDIDataStoreFactory implements DataStoreFactorySpi {
      * @see org.geotools.data.DataAccessFactory#isAvailable()
      */
     public boolean isAvailable() {
-        try {
-            GeoTools.getInitialContext(GeoTools.getDefaultHints());
-        } catch (NamingException e) {
-            return false;
-        }
-        return delegateFactory.isAvailable();
+        return GeoTools.isJNDIAvailable();
     }
 
     /** @see org.geotools.util.factory.Factory#getImplementationHints() */

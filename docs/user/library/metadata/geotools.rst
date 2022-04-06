@@ -55,13 +55,19 @@ In rare cases, such as OSGi plug-in system, adding additional jars to the ``CLAS
 JNDI
 ^^^^
 
-If you are working in a Java Enterprise Edition environment, and would like to configure GeoTools to look up services in a specific context use the following::
+To configure GeoTools to look up services in a specific context use the following:
+
+.. code-block:: java
   
-  GeoTools.init( applicationContext ); // JNDI configuration
+   GeoTools.init( context ); // JNDI configuration
 
-GeoTools uses names of the format ``jdbc:EPSG`` internally these are adapted for use with your ``applicationContext`` using the ``GeoTools.fixName`` method::
+For JNDI lookup GeooTools uses:
 
-  String name = GeoTools.fixName("jdbc.EPSG");
+.. code-block:: java
+
+   DataSource dataSource = (DataSource) GeoTools.jndiLookup(name);
+   
+The ``jndiLookup(String)`` is to safe lookups by default. The default use of ``GeoTools.DEFAULT_JNDI_VALIDATOR`` ensures only no-schema and java schema lookups are allowed. To relax this policy you may supply your own approach using ``GeoTools.setJNDINameValidator(Predicate<String>)``.
 
 XML
 ^^^

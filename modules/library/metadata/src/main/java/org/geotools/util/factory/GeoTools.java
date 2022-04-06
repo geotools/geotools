@@ -25,6 +25,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,6 +37,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.function.Predicate;
 import java.util.jar.Manifest;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -84,6 +87,7 @@ import org.xml.sax.EntityResolver;
  * @author Martin Desruisseaux
  */
 public final class GeoTools {
+
     /** Properties about this geotools build */
     private static final Properties PROPS;
 
@@ -270,6 +274,29 @@ public final class GeoTools {
         bind(DATE_TIME_FORMAT_HANDLING, Hints.DATE_TIME_FORMAT_HANDLING, bindings);
         BINDINGS = Collections.unmodifiableMap(bindings);
     }
+
+    /**
+     * Default JNDI name validator, allows lookups only on names without a scheme, or using the
+     * <code>java</code> scheme.
+     */
+    public static final Predicate<String> DEFAULT_JNDI_VALIDATOR =
+            name -> {
+                Logger LOGGER = Logging.getLogger(GeoTools.class);
+                try {
+                    URI uri = new URI(name);
+                    boolean result = uri.getScheme() == null || uri.getScheme().equals("java");
+                    if (!result)
+                        LOGGER.warning(
+                                "JNDI lookup allowed only on java scheme, or no scheme. Found instead: "
+                                        + name);
+                    return result;
+                } catch (URISyntaxException e) {
+                    LOGGER.log(Level.WARNING, "Invalid JNDI name provided", e);
+                    return false;
+                }
+            };
+
+    private static Predicate<String> jndiValidator = DEFAULT_JNDI_VALIDATOR;
 
     /**
      * Binds the specified {@linkplain System#getProperty(String) system property} to the specified
@@ -705,13 +732,13 @@ public final class GeoTools {
     /**
      * Provides GeoTools with the JNDI context for resource lookup.
      *
-     * @param applicationContext The initial context to use.
-     * @see #getInitialContext
+     * @param initialContext The initial context to use for JNDI lookup
+     * @see #jndiLookup(String)
      * @since 2.4
      */
-    public static void init(final InitialContext applicationContext) {
+    public static void init(final InitialContext initialContext) {
         synchronized (GeoTools.class) {
-            context = applicationContext;
+            context = initialContext;
         }
         fireConfigurationChanged();
     }
@@ -904,21 +931,67 @@ public final class GeoTools {
         }
         return defaultValue;
     }
+
     /**
      * Returns the default initial context.
      *
-     * @param hints An optional set of hints, or {@code null} if none.
      * @return The initial context (never {@code null}).
      * @throws NamingException if the initial context can't be created.
-     * @see #init(InitialContext)
-     * @since 2.4
+     * @deprecated Please use {@link #jndiLookup(String)} instead, or provide an {@link
+     *     InitialContext} to the {@link #init(InitialContext)} method and use it directly.
      */
-    public static synchronized InitialContext getInitialContext(final Hints hints)
-            throws NamingException {
+    @Deprecated
+    public static synchronized InitialContext getInitialContext() throws NamingException {
+        Logging.getLogger(GeoTools.class)
+                .severe(
+                        "Please don't use GeoTools.getInitialContext(), perform lookups using GeoTools.jndiLookup(s) instead.");
+        return getJNDIContext();
+    }
+
+    private static synchronized InitialContext getJNDIContext() throws NamingException {
         if (context == null) {
             context = new InitialContext();
         }
         return context;
+    }
+
+    /**
+     * Checks if JNDI is available, either because it was initialized, or because it was possible to
+     * create one.
+     */
+    public static boolean isJNDIAvailable() {
+        try {
+            // see if we have a context, or can create one
+            return getJNDIContext() != null;
+        } catch (NamingException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Sets up a function that will be called to validate the JNDI lookups. If not set, the
+     * DEFAULT_JNDI_VALIDATOR is used. The function may want to log the reason why a given name was
+     * denied lookup.
+     *
+     * @param validator A function returning true if the lookups are meant to be performed, false
+     *     otherwise.
+     */
+    public static void setJNDINameValidator(Predicate<String> validator) {
+        jndiValidator = validator;
+    }
+
+    /**
+     * Looks up an object from the JNDI {@link InitialContext}. By default, it only allows lookups
+     * with no scheme, or inside the <code>java</code> scheme. One can set up a custom name
+     * validation routine using
+     *
+     * @param name
+     * @return
+     * @throws NamingException
+     */
+    public static Object jndiLookup(String name) throws NamingException {
+        if (!jndiValidator.test(name)) return null;
+        return getJNDIContext().lookup(name);
     }
 
     /**
@@ -944,7 +1017,11 @@ public final class GeoTools {
      * @return Name fixed up with {@link Context#composeName(String,String)}, or {@code null} if the
      *     given name was null.
      * @since 2.4
+     * @deprecated With no replacement, GeoTools now uses JNDI lookups as instructed in {@link
+     *     #jndiLookup(String)}, but does not put any object in the contex, the downstream
+     *     application should do it if necessary instead.
      */
+    @Deprecated
     public static String fixName(final String name) {
         return fixName(null, name, null);
     }
@@ -959,7 +1036,11 @@ public final class GeoTools {
      * @return Name fixed up with {@link Context#composeName(String,String)}, or {@code null} if the
      *     given name was null.
      * @since 2.4
+     * @deprecated With no replacement, GeoTools now uses JNDI lookups as instructed in {@link *
+     *     #jndiLookup(String)}, but does not put any object in the contex, the downstream *
+     *     application should do it if necessary instead.
      */
+    @Deprecated
     public static String fixName(final Context context, final String name) {
         return (context != null) ? fixName(context, name, null) : name;
     }
@@ -968,7 +1049,12 @@ public final class GeoTools {
      * Implementation of {@code fixName} method. If the context is {@code null}, then the
      * {@linkplain #getInitialContext GeoTools initial context} will be fetch only when first
      * needed.
+     *
+     * @deprecated With no replacement, GeoTools now uses JNDI lookups as instructed in {@link *
+     *     #jndiLookup(String)}, but does not put any object in the contex, the downstream *
+     *     application should do it if necessary instead.
      */
+    @Deprecated
     private static String fixName(Context context, final String name, final Hints hints) {
         String fixed = null;
         if (name != null) {
@@ -980,7 +1066,7 @@ public final class GeoTools {
                 } else
                     try {
                         if (context == null) {
-                            context = getInitialContext(hints);
+                            context = getInitialContext();
                         }
                         fixed = context.composeName(fixed, part);
                     } catch (NamingException e) {

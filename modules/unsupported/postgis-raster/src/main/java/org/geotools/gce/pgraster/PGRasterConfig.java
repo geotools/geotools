@@ -117,7 +117,7 @@ class PGRasterConfig implements Closeable {
         String jndi = first(db, "jndi").map(this::nodeValue).orElse(null);
         if (jndi != null) {
             try {
-                dataSource = (DataSource) GeoTools.getInitialContext().lookup(jndi);
+                dataSource = (DataSource) GeoTools.jndiLookup(jndi);
             } catch (NamingException e) {
                 throw new IllegalArgumentException("Error performing JNDI lookup for: " + jndi, e);
             }

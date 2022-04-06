@@ -70,6 +70,28 @@ Fixing this required changes to multiple classes:
 GeoTools 25.x
 -------------
 
+GeoTools
+^^^^^^^^
+
+In GeoTools 25.7 ``GeoTools.getInitialContext().look(name)`` and related methods have been deprecated, with ``GeoTools.jndiLookup(name)``. We have also taken an opportunity to remove ``GeoTools.fixName( context, name )`` 
+
+The use of ``GeoTools.jndiLookup(name)`` is subject to validation with the default ``GeoTools.DEFAULT_JNDI_VALIDATOR`` validator used limit name lookup.
+
+BEFORE
+
+.. code-block:: java
+
+   context = GeoTools.getInitialContext();
+   String fixedName = GeoTools.fixName( context, name );
+   return (DataSource) context.lookup(fixedName);
+
+AFTER
+
+.. code-block:: java
+
+   return (DataSource) GeoTools.jndiLookup(name);
+
+
 More variable arguments support in core classes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

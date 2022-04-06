@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import org.geotools.data.DataStore;
@@ -90,23 +89,16 @@ public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {
         String jndiName = (String) JNDI_REFNAME.lookUp(params);
         if (jndiName == null) throw new IOException("Missing " + JNDI_REFNAME.description);
 
-        Context ctx = null;
         DataSource ds = null;
 
         try {
-            ctx = GeoTools.getInitialContext();
-        } catch (NamingException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-            ds = (DataSource) ctx.lookup(jndiName);
+            ds = (DataSource) GeoTools.jndiLookup(jndiName);
         } catch (NamingException e1) {
             // check if the user did not specify "java:comp/env"
             // and this code is running in a J2EE environment
             try {
                 if (jndiName.startsWith(J2EERootContext) == false) {
-                    ds = (DataSource) ctx.lookup(J2EERootContext + jndiName);
+                    ds = (DataSource) GeoTools.jndiLookup(J2EERootContext + jndiName);
                     // success --> issue a waring
                     Logger.getLogger(this.getClass().getName())
                             .log(
@@ -135,12 +127,7 @@ public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {
      */
     @Override
     public boolean isAvailable() {
-        try {
-            GeoTools.getInitialContext();
-            return true;
-        } catch (NamingException e) {
-            return false;
-        }
+        return GeoTools.isJNDIAvailable();
     }
 
     /** Override to omit all those parameters which define the creation of the connection. */

@@ -21,8 +21,10 @@ import static org.opengis.filter.sort.SortOrder.ASCENDING;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 import org.geotools.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.visitor.AverageVisitor;
@@ -659,5 +661,105 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         int result = v.getResult().toInt();
         assertEquals(0, v.getUnique().size());
         assertEquals(2, result);
+    }
+
+    @SuppressWarnings("unchecked")
+    public void testUniqueMultipleAttributes() throws Exception {
+        UniqueVisitor v = new UniqueVisitor("stringProperty", "doubleProperty");
+        dataStore.getFeatureSource(tname("ft4")).accepts(Query.ALL, v, null);
+        Set result = v.getResult().toSet();
+        assertEquals(6, result.size());
+        List<String> names = v.getAttrNames();
+        assertEquals("stringProperty", names.get(0));
+        assertEquals("doubleProperty", names.get(1));
+
+        LinkedList<Object> shouldContainOne = new LinkedList<>();
+        shouldContainOne.add("one_2");
+        shouldContainOne.add(1.1);
+
+        // check string and double separately due different number type returned by different DB.
+        Predicate<List> compareDoubleValues =
+                l -> Double.valueOf(l.get(1).toString()).equals(shouldContainOne.get(1));
+
+        Predicate<List> compareValues =
+                l -> l.get(0).equals(shouldContainOne.get(0)) && compareDoubleValues.test(l);
+
+        long count = result.stream().filter(o -> compareValues.test((List) o)).count();
+        assertEquals(1l, count);
+    }
+
+    @SuppressWarnings("unchecked")
+    public void testUniqueMultipleAttributes2() throws Exception {
+        UniqueVisitor v = new UniqueVisitor("intProperty", "doubleProperty");
+        dataStore.getFeatureSource(tname("ft4")).accepts(Query.ALL, v, null);
+        Set result = v.getResult().toSet();
+        assertEquals(4, result.size());
+        List<String> names = v.getAttrNames();
+        assertEquals("intProperty", names.get(0));
+        assertEquals("doubleProperty", names.get(1));
+
+        LinkedList<Object> shouldContainOne = new LinkedList<>();
+        shouldContainOne.add(1);
+        shouldContainOne.add(1.1);
+        LinkedList<Object> shouldContainOne2 = new LinkedList<>();
+        shouldContainOne2.add(2);
+        shouldContainOne2.add(2.2);
+
+        // check string and double separately due different number type returned by different DB.
+        Predicate<List> compareIntegerValues =
+                l -> Integer.valueOf(l.get(0).toString()).equals(shouldContainOne.get(0));
+        Predicate<List> compareDoubleValues =
+                l -> Double.valueOf(l.get(1).toString()).equals(shouldContainOne.get(1));
+
+        Predicate<List> compareIntegerValues2 =
+                l -> Integer.valueOf(l.get(0).toString()).equals(shouldContainOne2.get(0));
+        Predicate<List> compareDoubleValues2 =
+                l -> Double.valueOf(l.get(1).toString()).equals(shouldContainOne2.get(1));
+
+        Predicate<List> compareValues =
+                l -> compareIntegerValues.test(l) && compareDoubleValues.test(l);
+
+        Predicate<List> compareValues2 =
+                l -> compareIntegerValues2.test(l) && compareDoubleValues2.test(l);
+
+        long count1 = result.stream().filter(o -> compareValues.test((List) o)).count();
+        long count2 = result.stream().filter(o -> compareValues2.test((List) o)).count();
+        assertEquals(1l, count1);
+        assertEquals(1l, count2);
+    }
+
+    @SuppressWarnings("unchecked")
+    public void testUniqueMultipleAttributes3() throws Exception {
+        UniqueVisitor v = new UniqueVisitor("intProperty", "doubleProperty", "stringProperty");
+        dataStore.getFeatureSource(tname("ft4")).accepts(Query.ALL, v, null);
+        Set result = v.getResult().toSet();
+        assertEquals(6, result.size());
+        List<String> names = v.getAttrNames();
+        assertEquals("intProperty", names.get(0));
+        assertEquals("doubleProperty", names.get(1));
+        assertEquals("stringProperty", names.get(2));
+
+        LinkedList<Object> shouldContainOne = new LinkedList<>();
+        shouldContainOne.add(1);
+        shouldContainOne.add(1.1);
+        shouldContainOne.add("one_2");
+
+        // check int, double and string separately due different number type returned by different
+        // DB.
+
+        Predicate<List> compareIntValues =
+                l -> Integer.valueOf(l.get(0).toString()).equals(shouldContainOne.get(0));
+
+        Predicate<List> compareDoubleValues =
+                l -> Double.valueOf(l.get(1).toString()).equals(shouldContainOne.get(1));
+
+        Predicate<List> compareValues =
+                l ->
+                        l.get(2).equals(shouldContainOne.get(2))
+                                && compareDoubleValues.test(l)
+                                && compareIntValues.test(l);
+
+        long count = result.stream().filter(o -> compareValues.test((List) o)).count();
+        assertEquals(1l, count);
     }
 }

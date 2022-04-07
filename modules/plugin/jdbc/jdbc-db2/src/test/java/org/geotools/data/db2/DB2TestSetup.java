@@ -63,6 +63,9 @@ public class DB2TestSetup extends JDBCTestSetup {
             DB2Util.executeUnRegister(DB2TestUtil.SCHEMA, "ft2", "geometry", con);
             DB2TestUtil.dropTable(DB2TestUtil.SCHEMA, "ft2", con);
 
+            DB2Util.executeUnRegister(DB2TestUtil.SCHEMA, "ft4", "geometry", con);
+            DB2TestUtil.dropTable(DB2TestUtil.SCHEMA, "ft4", con);
+
             // create some data
             StringBuffer sb = new StringBuffer();
             sb.append("CREATE TABLE " + DB2TestUtil.SCHEMA_QUOTED + ".\"ft1\" ")
@@ -96,6 +99,72 @@ public class DB2TestSetup extends JDBCTestSetup {
                             "2,db2gse.st_PointFromText('POINT(2 2)',"
                                     + DB2TestUtil.SRID
                                     + "), 2, 2.2,'two')");
+            con.prepareStatement(sb.toString()).execute();
+
+            sb = new StringBuffer();
+            sb.append("CREATE TABLE " + DB2TestUtil.SCHEMA_QUOTED + ".\"ft4\" ")
+                    .append("(\"id\" int  PRIMARY KEY not null , ")
+                    .append("\"geometry\" db2gse.ST_POINT, \"intProperty\" int, ")
+                    .append("\"doubleProperty\" double, \"stringProperty\" varchar(255))");
+            con.prepareStatement(sb.toString()).execute();
+
+            DB2Util.executeRegister(
+                    DB2TestUtil.SCHEMA, "ft4", "geometry", DB2TestUtil.SRSNAME, con);
+
+            sb = new StringBuffer();
+            sb.append("INSERT INTO " + DB2TestUtil.SCHEMA_QUOTED + ".\"ft4\" VALUES (")
+                    .append(
+                            "0,db2gse.st_PointFromText('POINT(0 0)',"
+                                    + DB2TestUtil.SRID
+                                    + "), 0, 0.0,'zero')");
+            con.prepareStatement(sb.toString()).execute();
+
+            sb = new StringBuffer();
+            sb.append("INSERT INTO " + DB2TestUtil.SCHEMA_QUOTED + ".\"ft4\" VALUES (")
+                    .append(
+                            "1,db2gse.st_PointFromText('POINT(1 1)',"
+                                    + DB2TestUtil.SRID
+                                    + "), 1, 1.1,'one')");
+            con.prepareStatement(sb.toString()).execute();
+
+            sb = new StringBuffer();
+            sb.append("INSERT INTO " + DB2TestUtil.SCHEMA_QUOTED + ".\"ft4\" VALUES (")
+                    .append(
+                            "2,db2gse.st_PointFromText('POINT(2 2)',"
+                                    + DB2TestUtil.SRID
+                                    + "), 1, 1.1,'one_2')");
+            con.prepareStatement(sb.toString()).execute();
+
+            sb = new StringBuffer();
+            sb.append("INSERT INTO " + DB2TestUtil.SCHEMA_QUOTED + ".\"ft4\" VALUES (")
+                    .append(
+                            "3,db2gse.st_PointFromText('POINT(3 3)',"
+                                    + DB2TestUtil.SRID
+                                    + "), 1, 1.1,'one_2')");
+            con.prepareStatement(sb.toString()).execute();
+
+            sb = new StringBuffer();
+            sb.append("INSERT INTO " + DB2TestUtil.SCHEMA_QUOTED + ".\"ft4\" VALUES (")
+                    .append(
+                            "4,db2gse.st_PointFromText('POINT(4 4)',"
+                                    + DB2TestUtil.SRID
+                                    + "), 2, 2.2,'two')");
+            con.prepareStatement(sb.toString()).execute();
+
+            sb = new StringBuffer();
+            sb.append("INSERT INTO " + DB2TestUtil.SCHEMA_QUOTED + ".\"ft4\" VALUES (")
+                    .append(
+                            "5,db2gse.st_PointFromText('POINT(5 5)',"
+                                    + DB2TestUtil.SRID
+                                    + "), 2, 2.2,'two_2')");
+            con.prepareStatement(sb.toString()).execute();
+
+            sb = new StringBuffer();
+            sb.append("INSERT INTO " + DB2TestUtil.SCHEMA_QUOTED + ".\"ft4\" VALUES (")
+                    .append(
+                            "6,db2gse.st_PointFromText('POINT(6 6)',"
+                                    + DB2TestUtil.SRID
+                                    + "), 3, 3.3,'three')");
             con.prepareStatement(sb.toString()).execute();
         }
     }

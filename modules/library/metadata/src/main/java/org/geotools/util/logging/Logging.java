@@ -323,7 +323,7 @@ public final class Logging {
             throws ClassNotFoundException, IllegalArgumentException {
         final LoggerFactory<?> factory;
         if (className == null) {
-            factory = null;
+            factory = DefaultLoggerFactory.getInstance();
         } else {
             final Class<?> factoryClass;
             try {
@@ -429,18 +429,7 @@ public final class Logging {
         if (factory != null) {
             return factory.lookupConfiguration();
         } else {
-            String configClass = System.getProperty("java.util.logging.config.class");
-            String configFile = System.getProperty("java.util.logging.config.file");
-            String javaHome = System.getProperty("java.home");
-            if (configClass != null) {
-                return configClass;
-            } else if (configFile != null) {
-                return configFile;
-            } else if (javaHome != null) {
-                return javaHome + "/lib/logging.properties";
-            } else {
-                return "java.util.logging";
-            }
+            return DefaultLoggerFactory.getInstance().lookupConfiguration();
         }
     }
 
@@ -536,8 +525,8 @@ public final class Logging {
         }
         if (logger == null && classe != null) {
             final int separator = classe.lastIndexOf('.');
-            final String paquet = (separator >= 1) ? classe.substring(0, separator - 1) : "";
-            logger = getLogger(paquet);
+            final String packageName = (separator >= 1) ? classe.substring(0, separator - 1) : "";
+            logger = getLogger(packageName);
         }
         if (logger != null && !logger.isLoggable(level)) {
             return false;
@@ -546,7 +535,7 @@ public final class Logging {
          * Loggeable, so complete the null argument from the stack trace if we can.
          */
         if (logger == null || classe == null || method == null) {
-            String paquet = (logger != null) ? logger.getName() : null;
+            String packageName = (logger != null) ? logger.getName() : null;
             final StackTraceElement[] elements = error.getStackTrace();
             for (final StackTraceElement element : elements) {
                 /*
@@ -559,11 +548,11 @@ public final class Logging {
                     if (!classname.equals(classe)) {
                         continue;
                     }
-                } else if (paquet != null) {
-                    if (!classname.startsWith(paquet)) {
+                } else if (packageName != null) {
+                    if (!classname.startsWith(packageName)) {
                         continue;
                     }
-                    final int length = paquet.length();
+                    final int length = packageName.length();
                     if (classname.length() > length) {
                         // We expect '.' but we accept also '$' or end of string.
                         final char separator = classname.charAt(length);
@@ -583,10 +572,10 @@ public final class Logging {
                 /*
                  * Now computes every values that are null, and stop the loop.
                  */
-                if (paquet == null) {
+                if (packageName == null) {
                     final int separator = classname.lastIndexOf('.');
-                    paquet = (separator >= 1) ? classname.substring(0, separator - 1) : "";
-                    logger = getLogger(paquet);
+                    packageName = (separator >= 1) ? classname.substring(0, separator - 1) : "";
+                    logger = getLogger(packageName);
                     if (!logger.isLoggable(level)) {
                         return false;
                     }
@@ -602,11 +591,9 @@ public final class Logging {
             /*
              * The logger may stay null if we have been unable to find a suitable
              * stack trace. Fallback on the global logger.
-             *
-             * TODO: Use GLOBAL_LOGGER_NAME constant when we will be allowed to target Java 6.
              */
             if (logger == null) {
-                logger = getLogger("global");
+                logger = getLogger(Logger.GLOBAL_LOGGER_NAME);
                 if (!logger.isLoggable(level)) {
                     return false;
                 }

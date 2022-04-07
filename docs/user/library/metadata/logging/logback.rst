@@ -105,11 +105,9 @@ in play so ``GeoTools.init()` is able to unambiguously determine ``Log4JLoggerFa
    
    Of interest above is the mapping of CONFIG and FINEST to logback, something not offered by ``jul-to-slf4j`` bridge.
    
-3. During startup log4j will search for :file:`logback.xml` on the CLASSPATH, or to search for a different file use the system property:
-   
-   .. code-block:: bash
-      
-      -Dlog4j.configuration=log4-debug.xml
+3. During startup logback will search for :file:`logback.xml` on the CLASSPATH (or :file:`logback-test.xml` for testing).
+
+   To use a different file ``-Dlogback.configurationFile=logback-custom.xml``.
 
 4. Application :download:`LogbackJIntegration.java </../../modules/library/metadata/src/it/logback/src/main/java/org/geotools/tutorial/logging/LogbackIntegration.java>` startup example for :file:`src/min/java`.
 
@@ -128,6 +126,22 @@ in play so ``GeoTools.init()` is able to unambiguously determine ``Log4JLoggerFa
    
 Logback Guidance
 ''''''''''''''''
+
+* Include ``<shutdownHook/>`` in your configuration, or register a shutdown hook yourself:
+
+  .. code-block:: java
+  
+     Runtime.getRuntime().addShutdownHook(new Thread(() -> stopLogging()));
+  
+  .. code-block:: java
+  
+     /**
+      * Allow logback to finish 
+      */
+     private static void stopLogging(){
+         LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
+         loggerContext.stop();
+     }
 
 In a more complicated setup using multiple libraries you may also end up including:
 

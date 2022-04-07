@@ -62,22 +62,12 @@
           <executable>java</executable>
           <arguments>
             <argument>-classpath</argument>
-            <!-- uses dependencies and build directory -->
             <classpath/>
             <argument>-Djava.util.logging.config.file=logging.properties</argument>
             <argument>-Djava.awt.headless=true</argument>
             <argument>org.geotools.tutorial.logging.LoggingIntegration</argument>
           </arguments>
         </configuration>
-        <executions>
-          <execution>
-            <id>integration-test</id>
-            <phase>integration-test</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>

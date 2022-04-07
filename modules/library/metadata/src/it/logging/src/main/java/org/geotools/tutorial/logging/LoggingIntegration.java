@@ -13,7 +13,6 @@ import java.io.File;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 import org.geotools.util.factory.GeoTools;
-import org.geotools.util.logging.Log4J2LoggerFactory;
 import org.geotools.util.logging.Logging;
 /**
  * Logging integration demonstration illustrating use of logging.properties to configure GeoTools.

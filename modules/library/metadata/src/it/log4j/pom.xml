@@ -107,13 +107,6 @@
             <goals>
               <goal>exec</goal>
             </goals>
-          </execution>
-          <execution>
-            <id>integration-test2</id>
-            <phase>integration-test</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
             <configuration>
               <executable>java</executable>
               <arguments>

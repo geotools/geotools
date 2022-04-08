@@ -68,7 +68,7 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
 
     protected WMTSLayer layer = null;
 
-    protected String styleName = "";
+    private String styleName = "";
 
     private String srs;
 
@@ -146,9 +146,23 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
         }
     }
 
+    /**
+     * Sets the style name for the request. The value passed in will be encoded before storing it
+     * so that it can be used in requests
+     */
     @Override
     public void setStyle(String styleName) {
-        this.styleName = styleName;
+        this.styleName = WMTSHelper.encodeParameter(styleName);
+    }
+
+    /**
+     * Returns the style name for the request. This is a UTF-8 encoded value so that it can be used
+     * in requests
+     *
+     * @return the style name in UTF-8 format
+     */
+    public String getStyle() {
+        return this.styleName;
     }
 
     public String getFormat() {
@@ -160,11 +174,19 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
         this.format = format;
     }
 
+    /**
+     * Sets the tileMatrixSet for the request. This will encode the value passed in before storing
+     * it so that it can be used in URLs
+     */
     @Override
     public void setTileMatrixSet(String tileMatrixSet) {
-        this.tileMatrixSet = tileMatrixSet;
+        this.tileMatrixSet = WMTSHelper.encodeParameter(tileMatrixSet);
     }
 
+    /**
+     * Returns the tileMatrixSet for the request. This is a UTF-8 encoded value so that it can be
+     * used in requests
+     */
     protected String getTileMatrixSet() {
         return tileMatrixSet;
     }
@@ -279,7 +301,7 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
      * <p>If the server supports RESTful calls. It will use that. Otherwise it will create a similar
      * template for KVP requests.
      *
-     * @param tileMatrixSetName
+     * @param tileMatrixSetName the name of the tileMatrixSet. This is expected to be
      * @return
      */
     protected abstract String createTemplateUrl(String tileMatrixSetName);

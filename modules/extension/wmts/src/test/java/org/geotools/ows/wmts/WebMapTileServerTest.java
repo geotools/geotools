@@ -360,8 +360,37 @@ public class WebMapTileServerTest {
         WMTSCapabilities capabilities = createCapabilities("basemapGetCapa.xml");
         MockHttpClient httpClient = new MockHttpClient();
         httpClient.expectGet(
+                new URL("https://maps.wien.gv.at/basemap/bmapoverlay/normal/EPSG%3A4326/2/1/2.png"),
+                new MockHttpResponse(TestData.file(null, "world.png"), "image/png"));
+
+        Properties props = new Properties();
+        GetSingleTileRequest request =
+                new WMTSSpecification.GetRestTileRequest(
+                        capabilities.getService().getOnlineResource(), props, httpClient);
+
+        WebMapTileServer server =
+                new WebMapTileServer(
+                        new URL("https://maps1.wien.gv.at/basemap"), httpClient, capabilities);
+        request.setLayer(server.getCapabilities().getLayer("bmapoverlay"));
+        request.setStyle("normal");
+        request.setFormat("image/png");
+        request.setTileMatrixSet("EPSG:4326");
+        request.setTileMatrix("2");
+        request.setTileRow(1);
+        request.setTileCol(2);
+
+        GetTileResponse response = server.issueRequest(request);
+        BufferedImage tileImage = response.getTileImage();
+        Assert.assertNotNull(tileImage);
+    }
+
+    @Test
+    public void testIssueRequestWithSpecialChars() throws Exception {
+        WMTSCapabilities capabilities = createCapabilities("basemapGetCapa.xml");
+        MockHttpClient httpClient = new MockHttpClient();
+        httpClient.expectGet(
                 new URL(
-                        "https://maps.wien.gv.at/basemap/bmapoverlay/style%3D%20auto/EPSG:4326/2/1/2.png"),
+                        "https://maps.wien.gv.at/basemap/bmapoverlay/style%3D%20auto/%20%22%3C%3E%23%25%7C/2/1/2.png"),
                 new MockHttpResponse(TestData.file(null, "world.png"), "image/png"));
 
         Properties props = new Properties();
@@ -375,10 +404,40 @@ public class WebMapTileServerTest {
         request.setLayer(server.getCapabilities().getLayer("bmapoverlay"));
         request.setStyle("style= auto");
         request.setFormat("image/png");
-        request.setTileMatrixSet("EPSG:4326");
+        request.setTileMatrixSet(" \"<>#%|");
         request.setTileMatrix("2");
         request.setTileRow(1);
         request.setTileCol(2);
+
+        GetTileResponse response = server.issueRequest(request);
+        BufferedImage tileImage = response.getTileImage();
+        Assert.assertNotNull(tileImage);
+
+    }
+
+    @Test
+    public void testKvpRequestWithSpecialCharacters() throws Exception {
+        WMTSCapabilities capabilities = createCapabilities("getcapa_specialchars_kvp.xml");
+        MockHttpClient httpClient = new MockHttpClient();
+        httpClient.expectGet(
+                new URL(
+                        "http://localhost:8080/geoserver/gwc/service/wmts?REQUEST=GetTile&VERSION=1.0.0&SERVICE=WMTS&type=KVP&LAYER=spear%25fish%2099&STYLE=style%3D%20auto&FORMAT=image%2Fpng&TILEMATRIXSET=%20%22%3C%3E%23%25%7C&TILEMATRIX=EPSG%3A4326%3A0&TILEROW=0&TILECOL=0"),
+                new MockHttpResponse(TestData.file(null, "world.png"), "image/png"));
+
+        Properties props = new Properties();
+        final URL serverUrl = new URL("http://localhost:8080/geoserver/gwc/service/wmts");
+        GetSingleTileRequest request =
+                new WMTSSpecification.GetKVPTileRequest(serverUrl, props, httpClient);
+
+        WebMapTileServer server = new WebMapTileServer(serverUrl, httpClient, capabilities);
+        // Set up the request so that there are special characters in every field
+        request.setLayer(server.getCapabilities().getLayer("spear%fish 99"));
+        request.setStyle("style= auto");
+        request.setFormat("image/png");
+        request.setTileMatrixSet(" \"<>#%|");
+        request.setTileMatrix("EPSG:4326:0");
+        request.setTileRow(0);
+        request.setTileCol(0);
 
         GetTileResponse response = server.issueRequest(request);
         BufferedImage tileImage = response.getTileImage();

@@ -190,28 +190,42 @@ public class WMTSSpecification extends Specification {
             }
             setFormat(format);
 
-            String layerString = WMTSHelper.usePercentEncodingForSpace(layer.getName());
-            String styleString =
-                    WMTSHelper.usePercentEncodingForSpace(styleName == null ? "" : styleName);
+            String layerString = layer.getName(true);
 
             switch (type) {
                 case KVP:
                     return WMTSHelper.appendQueryString(
                             getFinalURL().toExternalForm(),
-                            getKVPparams(layerString, styleString, tileMatrixSetName, format));
+                            getKVPparams(layerString, getStyle(), tileMatrixSetName, format));
                 case REST:
-                    return getRESTurl(
-                            getTemplateUrl(), layerString, styleString, tileMatrixSetName);
+                    return getRESTurl(getTemplateUrl(), layerString, getStyle(), tileMatrixSetName);
                 default:
                     throw new IllegalArgumentException("Unexpected WMTS Service type " + type);
             }
         }
 
+        /**
+         * Creates a URL from the baseURL. The baseURL is expected to contain the {layer}, {style}
+         * and {tilematrixset} placeholders and these will be replaced with the values passed in. If
+         * a null value is passed in then a blank string will replace the placeholder. Values need
+         * to be UTF-8 encoded.
+         *
+         * @param baseUrl the template URL that contains the placeholders
+         * @param layerString the value that will replace {layer} in UTF-8 encoded format
+         * @param styleString the value that will replace {style} in UTF-8 encoded format
+         * @param tileMatrixSetNameString the value that will replace {tilematrixset} in UTF-8
+         *     encoded format
+         * @return the resulting url
+         * @see WMTSHelper#encodeParameter(String)
+         */
         private String getRESTurl(
-                String baseUrl, String layerString, String styleString, String tileMatrixSetName) {
+                String baseUrl,
+                String layerString,
+                String styleString,
+                String tileMatrixSetNameString) {
             baseUrl = WMTSHelper.replaceToken(baseUrl, "layer", layerString);
             baseUrl = WMTSHelper.replaceToken(baseUrl, "style", styleString);
-            baseUrl = WMTSHelper.replaceToken(baseUrl, "tilematrixset", tileMatrixSetName);
+            baseUrl = WMTSHelper.replaceToken(baseUrl, "tilematrixset", tileMatrixSetNameString);
             return baseUrl;
         }
 
@@ -273,7 +287,7 @@ public class WMTSSpecification extends Specification {
         @Override
         public URL getFinalURL() {
             if (this.layer == null
-                    || this.styleName == null
+                    || this.getStyle() == null
                     || this.getFormat() == null
                     || this.getTileMatrixSet() == null
                     || this.getTileMatrix() == null
@@ -283,8 +297,8 @@ public class WMTSSpecification extends Specification {
                         "Missing some properties for a proper GetTile-request.");
             }
 
-            this.setProperty("layer", this.layer.getName());
-            this.setProperty("style", this.styleName);
+            this.setProperty("layer", this.layer.getName(true));
+            this.setProperty("style", this.getStyle());
             this.setProperty("format", this.getFormat());
             this.setProperty("tilematrixset", this.getTileMatrixSet());
             this.setProperty("TileMatrix", this.getTileMatrix());
@@ -316,7 +330,7 @@ public class WMTSSpecification extends Specification {
         @Override
         public URL getFinalURL() {
             if (this.layer == null
-                    || this.styleName == null
+                    || this.getStyle() == null
                     || this.getFormat() == null
                     || this.getTileMatrixSet() == null
                     || this.getTileMatrix() == null
@@ -333,11 +347,10 @@ public class WMTSSpecification extends Specification {
                                 layer, getFormat()));
             }
 
-            String layerString = WMTSHelper.usePercentEncodingForSpace(layer.getName());
-            String styleString = WMTSHelper.usePercentEncodingForSpace(styleName);
+            String layerString = WMTSHelper.encodeParameter(layer.getName(true));
 
             baseUrl = WMTSHelper.replaceToken(baseUrl, "layer", layerString);
-            baseUrl = WMTSHelper.replaceToken(baseUrl, "style", styleString);
+            baseUrl = WMTSHelper.replaceToken(baseUrl, "style", this.getStyle());
             baseUrl = WMTSHelper.replaceToken(baseUrl, "tilematrixset", this.getTileMatrixSet());
             baseUrl = WMTSHelper.replaceToken(baseUrl, "tilematrix", this.getTileMatrix());
             baseUrl = WMTSHelper.replaceToken(baseUrl, "tilerow", this.getTileRow().toString());

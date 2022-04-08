@@ -147,8 +147,8 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
     }
 
     /**
-     * Sets the style name for the request. The value passed in will be encoded before storing it
-     * so that it can be used in requests
+     * Sets the style name for the request. The value passed in will be encoded before storing it so
+     * that it can be used in requests
      */
     @Override
     public void setStyle(String styleName) {

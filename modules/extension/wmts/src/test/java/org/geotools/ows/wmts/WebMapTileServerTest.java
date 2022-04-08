@@ -412,7 +412,6 @@ public class WebMapTileServerTest {
         GetTileResponse response = server.issueRequest(request);
         BufferedImage tileImage = response.getTileImage();
         Assert.assertNotNull(tileImage);
-
     }
 
     @Test

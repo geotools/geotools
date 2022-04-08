@@ -38,8 +38,8 @@ public class WMTSHelper {
      * @param baseUrl the string which contains {dimName}
      * @param dimName the value in baseurl that needs to be replaced. Should NOT have the curly
      *     braces around it
-     * @param dimValue the encoded value to replace {dimName} with. If this is null then a blank string is
-     *     used
+     * @param dimValue the encoded value to replace {dimName} with. If this is null then a blank
+     *     string is used
      * @return baseUrl with {dimName} substituted with dimValue
      */
     public static String replaceToken(String baseUrl, String dimName, String dimValue) {

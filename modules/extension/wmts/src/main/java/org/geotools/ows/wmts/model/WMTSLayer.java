@@ -58,6 +58,7 @@ public class WMTSLayer extends Layer {
 
     /**
      * Returns the layer identifier with an option to encode it for use in URLs
+     *
      * @param UTF8encoded if true then the layer identifier will be UTF-8 encoded so it can be used
      *     in URLs
      * @return the layer identifier

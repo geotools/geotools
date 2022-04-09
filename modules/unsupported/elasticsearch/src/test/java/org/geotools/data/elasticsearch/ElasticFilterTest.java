@@ -42,6 +42,7 @@ import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
+import org.geotools.process.elasticsearch.ElasticBucketVisitor;
 import org.geotools.temporal.object.DefaultInstant;
 import org.geotools.temporal.object.DefaultPeriod;
 import org.geotools.temporal.object.DefaultPosition;
@@ -174,7 +175,7 @@ public class ElasticFilterTest {
 
         parameters = new HashMap<>();
         final Hints hints = new Hints();
-        hints.put(Hints.VIRTUAL_TABLE_PARAMETERS, parameters);
+        hints.put(ElasticBucketVisitor.ES_AGGREGATE_BUCKET, parameters);
         query = new Query();
         query.setHints(hints);
 

@@ -34,6 +34,7 @@ import org.geotools.data.Query;
 import org.geotools.data.geojson.GeoJSONWriter;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.Capabilities;
+import org.geotools.process.elasticsearch.ElasticBucketVisitor;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
 import org.geotools.util.factory.Hints;
@@ -1275,9 +1276,15 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
     void addViewParams(Query query) {
         if (query.getHints() != null
                 && query.getHints().get(Hints.VIRTUAL_TABLE_PARAMETERS) != null) {
+            throw new UnsupportedOperationException(
+                    "Viewparams not supported with Elasticsearch queries.");
+        }
+        if (query.getHints() != null
+                && query.getHints().get(ElasticBucketVisitor.ES_AGGREGATE_BUCKET) != null) {
             @SuppressWarnings("unchecked")
             Map<String, String> parameters =
-                    (Map<String, String>) query.getHints().get(Hints.VIRTUAL_TABLE_PARAMETERS);
+                    (Map<String, String>)
+                            query.getHints().get(ElasticBucketVisitor.ES_AGGREGATE_BUCKET);
 
             boolean nativeOnly = false;
             for (final Map.Entry<String, String> entry : parameters.entrySet()) {

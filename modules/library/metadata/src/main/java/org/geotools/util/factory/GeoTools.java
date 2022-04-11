@@ -58,6 +58,8 @@ import org.geotools.util.NullEntityResolver;
 import org.geotools.util.PreventLocalEntityResolver;
 import org.geotools.util.Utilities;
 import org.geotools.util.Version;
+import org.geotools.util.logging.DefaultLoggerFactory;
+import org.geotools.util.logging.LoggerAdapter;
 import org.geotools.util.logging.LoggerFactory;
 import org.geotools.util.logging.Logging;
 import org.xml.sax.EntityResolver;
@@ -635,31 +637,10 @@ public final class GeoTools {
      * @since 2.4
      */
     public static void setLoggerFactory(final LoggerFactory<?> factory) {
-        if (factory != null) {
-            if (Logging.ALL.getLoggerFactory() != factory) {
-                Logging.ALL.setLoggerFactory(factory);
-            }
-            if (Logging.GEOTOOLS.getLoggerFactory() != factory) {
-                Logging.GEOTOOLS.setLoggerFactory(factory);
-            }
-            if (Logging.JAI.getLoggerFactory() != factory) {
-                Logging.JAI.setLoggerFactory(factory);
-            }
-        } else {
-            if (Logging.ALL.getLoggerFactory() != null) {
-                Logging.ALL.setLoggerFactory((LoggerFactory) null);
-            }
-            if (Logging.GEOTOOLS.getLoggerFactory() != null) {
-                Logging.GEOTOOLS.setLoggerFactory((LoggerFactory) null);
-            }
-            if (Logging.GEOTOOLS.getLoggerFactory() != null) {
-                Logging.JAI.setLoggerFactory((LoggerFactory) null);
-            }
-
-            // Otherwise if java logging is used, force monoline console output.
+        Logging.ALL.setLoggerFactory(factory);
+        if (factory == null || factory == DefaultLoggerFactory.getInstance()) {
+            // if java logging is used, force monoline console output.
             Logging.ALL.forceMonolineConsoleOutput();
-            Logging.GEOTOOLS.forceMonolineConsoleOutput();
-            Logging.JAI.forceMonolineConsoleOutput();
         }
     }
 
@@ -772,13 +753,28 @@ public final class GeoTools {
             for (String factoryName : CANDIDATES) {
                 try {
                     Logging.ALL.setLoggerFactory(factoryName);
+                    if (factoryName == "org.geotools.util.logging.CommonsLoggerFactory") {
+                        // check if delegating to jdk14logger
+                        LoggerFactory factory = Logging.ALL.getLoggerFactory();
+                        if (factory != null) {
+                            Logger logger =
+                                    Logging.ALL.getLoggerFactory().getLogger("org.geotools");
+                            if (!(logger instanceof LoggerAdapter)) {
+                                continue; // configured to delegate to jdk14logger
+                            }
+                        }
+                    }
                     break;
                 } catch (ClassNotFoundException classNotFound) {
                     continue;
                 }
             }
         }
-        setLoggerFactory(Logging.ALL.getLoggerFactory());
+        if (Logging.ALL.getLoggerFactory() == null
+                || Logging.ALL.getLoggerFactory() == DefaultLoggerFactory.getInstance()) {
+            // if java logging is used, force monoline console output.
+            Logging.ALL.forceMonolineConsoleOutput();
+        }
     }
     /**
      * Provides GeoTools with the JNDI context for resource lookup.

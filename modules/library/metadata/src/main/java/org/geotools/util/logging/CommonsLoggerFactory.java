@@ -26,7 +26,8 @@ import org.apache.commons.logging.LogFactory;
  * HREF="https://commons.apache.org/proper/commons-logging/">Commons-logging</A> framework.
  *
  * <p>Out of the box commons logging delegates to the java util logging framework (using the class
- * org.apache.commons.logging.impl.Jdk14Logger). If this factory detects Commons logging
+ * org.apache.commons.logging.impl.Jdk14Logger). If this factory detects Commons logging is already
+ * delegating to Jdk14Logger it will return {@code null} allowing java util logging directly.
  *
  * @since 2.4
  * @version $Id$

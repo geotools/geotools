@@ -190,15 +190,18 @@ public class WMTSSpecification extends Specification {
             }
             setFormat(format);
 
-            String layerString = layer.getName(true);
+            String layerString = WMTSHelper.encodeParameter(layer.getName());
+            String styleString = WMTSHelper.encodeParameter(this.styleName);
+            String tileMatrixSetString = WMTSHelper.encodeParameter(this.getTileMatrixSet());
 
             switch (type) {
                 case KVP:
                     return WMTSHelper.appendQueryString(
                             getFinalURL().toExternalForm(),
-                            getKVPparams(layerString, getStyle(), tileMatrixSetName, format));
+                            getKVPparams(layerString, styleString, tileMatrixSetString, format));
                 case REST:
-                    return getRESTurl(getTemplateUrl(), layerString, getStyle(), tileMatrixSetName);
+                    return getRESTurl(
+                            getTemplateUrl(), layerString, styleString, tileMatrixSetString);
                 default:
                     throw new IllegalArgumentException("Unexpected WMTS Service type " + type);
             }
@@ -231,13 +234,16 @@ public class WMTSSpecification extends Specification {
 
         /**
          * Returns the properties for KVP WMTS, as well as placeholder's for the specific parameters
-         * of GetTile
+         * of GetTile. Values passed in are expected to be already encoded appropriately for use in
+         * URLs. See {@link WMTSHelper#encodeParameter(String)}
          *
-         * @param layerString
-         * @param styleString
-         * @param tileMatrixSetName
-         * @param format
-         * @return
+         * @param layerString layer
+         * @param styleString style
+         * @param tileMatrixSetName tilematrixSet name
+         * @param format format
+         * @return a hashmap containing the properties for the KVP WMTS including placeholders for
+         *     specific parameters of GetTile
+         * @see WMTSHelper#encodeParameter(String)
          */
         public static HashMap<String, String> getKVPparams(
                 String layerString, String styleString, String tileMatrixSetName, String format) {
@@ -287,7 +293,7 @@ public class WMTSSpecification extends Specification {
         @Override
         public URL getFinalURL() {
             if (this.layer == null
-                    || this.getStyle() == null
+                    || this.styleName == null
                     || this.getFormat() == null
                     || this.getTileMatrixSet() == null
                     || this.getTileMatrix() == null
@@ -297,10 +303,14 @@ public class WMTSSpecification extends Specification {
                         "Missing some properties for a proper GetTile-request.");
             }
 
-            this.setProperty("layer", this.layer.getName(true));
-            this.setProperty("style", this.getStyle());
+            String layerString = WMTSHelper.encodeParameter(layer.getName());
+            String styleString = WMTSHelper.encodeParameter(this.styleName);
+            String tileMatrixSetString = WMTSHelper.encodeParameter(this.getTileMatrixSet());
+
+            this.setProperty("layer", layerString);
+            this.setProperty("style", styleString);
             this.setProperty("format", this.getFormat());
-            this.setProperty("tilematrixset", this.getTileMatrixSet());
+            this.setProperty("tilematrixset", tileMatrixSetString);
             this.setProperty("TileMatrix", this.getTileMatrix());
             this.setProperty("TileCol", this.getTileCol().toString());
             this.setProperty("TileRow", this.getTileRow().toString());
@@ -330,7 +340,7 @@ public class WMTSSpecification extends Specification {
         @Override
         public URL getFinalURL() {
             if (this.layer == null
-                    || this.getStyle() == null
+                    || this.styleName == null
                     || this.getFormat() == null
                     || this.getTileMatrixSet() == null
                     || this.getTileMatrix() == null
@@ -347,11 +357,13 @@ public class WMTSSpecification extends Specification {
                                 layer, getFormat()));
             }
 
-            String layerString = WMTSHelper.encodeParameter(layer.getName(true));
+            String layerString = WMTSHelper.encodeParameter(layer.getName());
+            String styleString = WMTSHelper.encodeParameter(this.styleName);
+            String tileMatrixSetString = WMTSHelper.encodeParameter(this.getTileMatrixSet());
 
             baseUrl = WMTSHelper.replaceToken(baseUrl, "layer", layerString);
-            baseUrl = WMTSHelper.replaceToken(baseUrl, "style", this.getStyle());
-            baseUrl = WMTSHelper.replaceToken(baseUrl, "tilematrixset", this.getTileMatrixSet());
+            baseUrl = WMTSHelper.replaceToken(baseUrl, "style", styleString);
+            baseUrl = WMTSHelper.replaceToken(baseUrl, "tilematrixset", tileMatrixSetString);
             baseUrl = WMTSHelper.replaceToken(baseUrl, "tilematrix", this.getTileMatrix());
             baseUrl = WMTSHelper.replaceToken(baseUrl, "tilerow", this.getTileRow().toString());
             baseUrl = WMTSHelper.replaceToken(baseUrl, "tilecol", this.getTileCol().toString());

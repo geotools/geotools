@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wms.StyleImpl;
-import org.geotools.ows.wmts.WMTSHelper;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -57,15 +56,12 @@ public class WMTSLayer extends Layer {
     }
 
     /**
-     * Returns the layer identifier with an option to encode it for use in URLs
+     * Returns the layer identifier
      *
-     * @param UTF8encoded if true then the layer identifier will be UTF-8 encoded so it can be used
-     *     in URLs
      * @return the layer identifier
-     * @see WMTSHelper#encodeParameter(String)
      */
-    public String getName(boolean UTF8encoded) {
-        return UTF8encoded ? WMTSHelper.encodeParameter(super.getName()) : super.getName();
+    public String getName() {
+        return super.getName();
     }
 
     /** @return the limits */

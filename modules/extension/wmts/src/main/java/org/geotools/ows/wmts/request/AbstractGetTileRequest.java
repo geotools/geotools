@@ -68,7 +68,7 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
 
     protected WMTSLayer layer = null;
 
-    private String styleName = "";
+    protected String styleName = "";
 
     private String srs;
 
@@ -146,23 +146,10 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
         }
     }
 
-    /**
-     * Sets the style name for the request. The value passed in will be encoded before storing it so
-     * that it can be used in requests
-     */
+    /** Sets the style name for the request */
     @Override
     public void setStyle(String styleName) {
-        this.styleName = WMTSHelper.encodeParameter(styleName);
-    }
-
-    /**
-     * Returns the style name for the request. This is a UTF-8 encoded value so that it can be used
-     * in requests
-     *
-     * @return the style name in UTF-8 format
-     */
-    public String getStyle() {
-        return this.styleName;
+        this.styleName = styleName;
     }
 
     public String getFormat() {
@@ -174,19 +161,13 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
         this.format = format;
     }
 
-    /**
-     * Sets the tileMatrixSet for the request. This will encode the value passed in before storing
-     * it so that it can be used in URLs
-     */
+    /** Sets the tileMatrixSet for the request. */
     @Override
     public void setTileMatrixSet(String tileMatrixSet) {
-        this.tileMatrixSet = WMTSHelper.encodeParameter(tileMatrixSet);
+        this.tileMatrixSet = tileMatrixSet;
     }
 
-    /**
-     * Returns the tileMatrixSet for the request. This is a UTF-8 encoded value so that it can be
-     * used in requests
-     */
+    /** Returns the tileMatrixSet for the request */
     protected String getTileMatrixSet() {
         return tileMatrixSet;
     }
@@ -302,7 +283,7 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
      * template for KVP requests.
      *
      * @param tileMatrixSetName the name of the tileMatrixSet. This is expected to be
-     * @return
+     * @return template URL used containing placeholders for request parameters
      */
     protected abstract String createTemplateUrl(String tileMatrixSetName);
 

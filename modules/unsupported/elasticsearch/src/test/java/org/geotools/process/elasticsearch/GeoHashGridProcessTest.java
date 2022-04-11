@@ -25,8 +25,11 @@ import com.github.davidmoten.geo.LatLong;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.awt.geom.Point2D;
+import java.util.List;
+import java.util.Map;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.Query;
+import org.geotools.data.elasticsearch.GeohashUtil;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -35,10 +38,13 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
+import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.TransformException;
 
 public class GeoHashGridProcessTest {
 
@@ -111,7 +117,7 @@ public class GeoHashGridProcessTest {
                         envelope,
                         width,
                         height,
-                        "",
+                        null,
                         "",
                         false,
                         null);
@@ -142,7 +148,7 @@ public class GeoHashGridProcessTest {
                         envelope,
                         width,
                         height,
-                        "",
+                        null,
                         "",
                         false,
                         null);
@@ -173,7 +179,7 @@ public class GeoHashGridProcessTest {
                         envelope,
                         width,
                         height,
-                        "",
+                        null,
                         "",
                         false,
                         null);
@@ -204,11 +210,48 @@ public class GeoHashGridProcessTest {
                         envelope,
                         width,
                         height,
-                        "",
+                        null,
                         "",
                         false,
                         null);
         checkInternal(coverage, fineDelta);
+    }
+
+    @Test
+    public void testAutomaticDefinition() throws FactoryException, TransformException {
+        ReferencedEnvelope envelope =
+                new ReferencedEnvelope(-180, 180, -90, 90, DefaultGeographicCRS.WGS84);
+
+        assertEquals(1, getPrecision(process.defaultAggregation(envelope, 8, 4, features)));
+        assertEquals(1, getPrecision(process.defaultAggregation(envelope, 16, 8, features)));
+        assertEquals(2, getPrecision(process.defaultAggregation(envelope, 32, 32, features)));
+        assertEquals(2, getPrecision(process.defaultAggregation(envelope, 128, 128, features)));
+        assertEquals(3, getPrecision(process.defaultAggregation(envelope, 256, 128, features)));
+        assertEquals(3, getPrecision(process.defaultAggregation(envelope, 720, 360, features)));
+    }
+
+    private int getPrecision(String definition) throws FactoryException, TransformException {
+        Map<String, Map<String, Map<String, Object>>> aggregation =
+                GeohashUtil.parseAggregation(definition);
+        Map<String, Map<String, Object>> aggMap = aggregation.get("agg");
+        if (aggMap != null) {
+            Map<String, Object> geohashMap = aggMap.get("geohash_grid");
+            if (geohashMap != null) {
+                if (geohashMap.get("precision") != null) {
+                    if (geohashMap.get("precision") instanceof Integer) {
+                        return (Integer) geohashMap.get("precision");
+                    }
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    private GridCoverage2D unwrapToNative(GridCoverage2D coverage) {
+        List<GridCoverage> source = coverage.getSources();
+        if (source != null & source.size() == 1) return (GridCoverage2D) source.get(0);
+        return coverage;
     }
 
     /**

@@ -133,6 +133,9 @@ public class ElasticFeatureSource extends ContentFeatureSource {
             final String docType = dataStore.getDocType(entry.getName());
             final boolean scroll = !useSortOrPagination(query) && dataStore.getScrollEnabled();
             final ElasticRequest searchRequest = prepareSearchRequest(query, scroll);
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("Search request: " + searchRequest);
+            }
             final ElasticResponse sr =
                     dataStore.getClient().search(dataStore.getIndexName(), docType, searchRequest);
             if (LOGGER.isLoggable(Level.FINE)) {
@@ -291,7 +294,6 @@ public class ElasticFeatureSource extends ContentFeatureSource {
                 gridThreshold = (Double) ElasticDataStoreFactory.GRID_THRESHOLD.getDefaultValue();
             }
             final int precision = GeohashUtil.computePrecision(envelope, gridSize, gridThreshold);
-            LOGGER.fine("Updating GeoHash grid aggregation precision to " + precision);
             GeohashUtil.updateGridAggregationPrecision(aggregations, precision);
             searchRequest.setAggregations(aggregations);
             searchRequest.setSize(0);

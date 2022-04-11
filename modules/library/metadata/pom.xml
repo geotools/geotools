@@ -173,6 +173,30 @@
     </resources>
     <plugins>
       <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>src/it/commons/target</directory>
+            </fileset>
+            <fileset>
+              <directory>src/it/log4j/target</directory>
+            </fileset>
+            <fileset>
+              <directory>src/it/logback/target</directory>
+            </fileset>
+            <fileset>
+              <directory>src/it/logging/target</directory>
+            </fileset>
+            <fileset>
+              <directory>src/it/reload4j/target</directory>
+            </fileset>
+          </filesets>
+          <followSymlinks>true</followSymlinks>
+          <failOnError>false</failOnError>
+        </configuration>
+      </plugin>
+      <plugin>
         <artifactId>maven-invoker-plugin</artifactId>
         <executions>
           <execution>

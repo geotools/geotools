@@ -37,43 +37,6 @@ Reference:
 * https://logging.apache.org/log4j/1.2/
 * :api:`org/geotools/util/logging/Log4JLoggerFactory.html`
 
-Reload4J Integration
-''''''''''''''''''''
-
-The following example is taken from our integration testing, this test *only* has the reload4j
-in play so ``GeoTools.init()` is able to unambiguously determine ``Log4JLoggerFactory`` can be used.
-
-1. Setup :file:`pom.xml` with dependencies on geotools and reload4j:
-
-   .. literalinclude:: /../../modules/library/metadata/src/it/reload4j/pom.xml
-      :language: xml
-      
-2. Configure reload4j wtih :download:`log4j.properties </../../modules/library/metadata/src/it/reload4j/src/main/resources/log4j.properties>` added to :file:`src/main/resources`:
-   
-   .. literalinclude:: /../../modules/library/metadata/src/it/reload4j/src/main/resources/log4j.properties
-      :language: ini
-      
-3. During startup log4j will search for :file:`log4j.properties` on the CLASSPATH, or to search for a different file use the system property:
-   
-   .. code-block:: bash
-      
-      -Dlog4j.configuration=log4-debug.properties
-
-4. Application :download:`Reload4Integration.java </../../modules/library/metadata/src/it/reload4j/src/main/java/org/geotools/tutorial/reload/Reload4JIntegration.java>` startup example for :file:`src/min/java`.
-
-   Example is taking care to call ``GeoTools.init()`` prior to logger use:
-   
-   .. literalinclude:: /../../modules/library/metadata/src/it/reload4j/src/main/java/org/geotools/tutorial/reload/Reload4JIntegration.java
-      :language: java
-
-4. An ``exec:exec`` target is provided to make this easier to test:
-
-   .. code-block::
-      
-      mvn exec:exec
-      
-   .. note:: Avoid testing with ``exec:java`` which uses maven java runtime environment (already pre-configured for logging).
-
 Reload4J Guidance
 '''''''''''''''''
 
@@ -113,3 +76,40 @@ In a more complicated setup using multiple libraries you may also end up includi
   .. code-block:: java
 
      Logging.ALL.setLoggerFactory("org.geotools.util.logging.Log4JLoggerFactory");
+     
+Reload4J Integration
+''''''''''''''''''''
+
+The following example is taken from our integration testing, this test *only* has the reload4j
+in play so ``GeoTools.init()` is able to unambiguously determine ``Log4JLoggerFactory`` can be used.
+
+1. Setup :file:`pom.xml` with dependencies on geotools and reload4j:
+
+   .. literalinclude:: /../../modules/library/metadata/src/it/reload4j/pom.xml
+      :language: xml
+      
+2. Configure reload4j wtih :download:`log4j.properties </../../modules/library/metadata/src/it/reload4j/src/main/resources/log4j.properties>` added to :file:`src/main/resources`:
+   
+   .. literalinclude:: /../../modules/library/metadata/src/it/reload4j/src/main/resources/log4j.properties
+      :language: ini
+      
+3. During startup log4j will search for :file:`log4j.properties` on the CLASSPATH, or to search for a different file use the system property:
+   
+   .. code-block:: bash
+      
+      -Dlog4j.configuration=log4-debug.properties
+
+4. Application :download:`Reload4Integration.java </../../modules/library/metadata/src/it/reload4j/src/main/java/org/geotools/tutorial/reload/Reload4JIntegration.java>` startup example for :file:`src/min/java`.
+
+   Example is taking care to call ``GeoTools.init()`` prior to logger use:
+   
+   .. literalinclude:: /../../modules/library/metadata/src/it/reload4j/src/main/java/org/geotools/tutorial/reload/Reload4JIntegration.java
+      :language: java
+
+4. An ``exec:exec`` target is provided to make this easier to test:
+
+   .. code-block::
+      
+      mvn exec:exec
+      
+   .. note:: Avoid testing with ``exec:java`` which uses maven java runtime environment (already pre-configured for logging).

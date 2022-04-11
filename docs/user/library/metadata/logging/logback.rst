@@ -51,8 +51,6 @@ GeoTools logback.xml example:
    <?xml version="1.0" encoding="UTF-8"?>
    <configuration>
        <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-           <!-- encoders are assigned the type
-                ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
            <encoder>
                <pattern>%d{HH:mm:ss.SSS} %-6level %logger{36} - %msg%n</pattern>
            </encoder>
@@ -70,13 +68,14 @@ GeoTools logback.xml example:
            <appender-ref ref="STDOUT" />
        </root>
    </configuration>
+   
+The above example shows how to "DENY" messages that have the ``CONFIG`` marker applied; this provides a way to filter the Java CONFIG level messages that are published to SLF4J as INFO messages, with a ``CONFIG`` marker.
 
 Reference:
 
 * http://logback.qos.ch
 * http://slf4j.org
 * :api:`org/geotools/util/logging/LogbackLoggerFactory.html`
-
 
 Use with SLF4J Enviornment
 ''''''''''''''''''''''''''
@@ -87,43 +86,6 @@ Logback natively uses the SLF4J API, allowing LogbackLoggerFactory to be used wi
 
 * When using logback-classic the ``Logger.setLelvel( Level )`` works as expected.
 
-Logback Integration
-'''''''''''''''''''
-
-The following example is taken from our integration testing, this test *only* has the reload4j
-in play so ``GeoTools.init()` is able to unambiguously determine ``Log4JLoggerFactory`` can be used.
-
-1. Setup :file:`pom.xml` with dependencies on geotools and Logback:
-
-   .. literalinclude:: /../../modules/library/metadata/src/it/logback/pom.xml
-      :language: xml
-      
-2. Configure reload4j wtih :download:`logback.xml </../../modules/library/metadata/src/it/logback/src/main/resources/logback.xml>` added to :file:`src/main/resources`:
-   
-   .. literalinclude:: /../../modules/library/metadata/src/it/logback/src/main/resources/logback.xml
-      :language: xml
-   
-   Of interest above is the mapping of CONFIG and FINEST to logback, something not offered by ``jul-to-slf4j`` bridge.
-   
-3. During startup logback will search for :file:`logback.xml` on the CLASSPATH (or :file:`logback-test.xml` for testing).
-
-   To use a different file ``-Dlogback.configurationFile=logback-custom.xml``.
-
-4. Application :download:`LogbackJIntegration.java </../../modules/library/metadata/src/it/logback/src/main/java/org/geotools/tutorial/logging/LogbackIntegration.java>` startup example for :file:`src/min/java`.
-
-   Example is taking care to call ``GeoTools.init()`` prior to logger use:
-   
-   .. literalinclude:: /../../modules/library/metadata/src/it/logback/src/main/java/org/geotools/tutorial/logging/LogbackIntegration.java
-      :language: java
-
-4. An ``exec:exec`` target is provided to make this easier to test:
-
-   .. code-block::
-      
-      mvn exec:exec
-      
-   .. note:: Avoid testing with ``exec:java`` which uses maven java runtime environment (already pre-configured for logging).
-   
 Logback Guidance
 ''''''''''''''''
 
@@ -196,3 +158,46 @@ In a more complicated setup using multiple libraries you may also end up includi
   .. code-block:: java
 
      Logging.ALL.setLoggerFactory("org.geotools.util.logging.LogbackLoggerFactory");
+
+Logback Integration
+'''''''''''''''''''
+
+The following example is taken from our integration testing, this test *only* has slf4j api available so ``GeoTools.init()` is able to unambiguously determine ``LogbackLoggerFactory`` can be used.
+
+1. Setup :file:`pom.xml` with dependencies on geotools and Logback:
+
+   .. literalinclude:: /../../modules/library/metadata/src/it/logback/pom.xml
+      :language: xml
+      
+2. Configure logback wtih :download:`logback.xml </../../modules/library/metadata/src/it/logback/src/main/resources/logback.xml>` added to :file:`src/main/resources`:
+   
+   .. literalinclude:: /../../modules/library/metadata/src/it/logback/src/main/resources/logback.xml
+      :language: xml
+   
+   Of interest above is the mapping of CONFIG and FINEST to logback markers, something not offered by ``jul-to-slf4j`` bridge.
+   
+3. During startup logback will search for :file:`logback.xml` on the CLASSPATH (or :file:`logback-test.xml` for testing).
+
+   To use a different file ``-Dlogback.configurationFile=logback-custom.xml``.
+
+4. Application :download:`LogbackJIntegration.java </../../modules/library/metadata/src/it/logback/src/main/java/org/geotools/tutorial/logging/LogbackIntegration.java>` startup example for :file:`src/min/java`.
+
+   Example is taking care to call ``GeoTools.init()`` prior to logger use:
+   
+   .. literalinclude:: /../../modules/library/metadata/src/it/logback/src/main/java/org/geotools/tutorial/logging/LogbackIntegration.java
+      :language: java
+
+4. An ``exec:exec`` target is provided to make this easier to test:
+
+   .. code-block::
+      
+      mvn exec:exec
+
+   Is the equivalent of: 
+   
+   .. code-block::
+       
+      java -Djava.awt.headless=true \\
+           org.geotools.tutorial.logging.LogbackIntegration
+           
+   .. note:: Avoid testing with ``exec:java`` which uses maven java runtime environment (already pre-configured for logging).

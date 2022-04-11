@@ -33,7 +33,7 @@ The logger may be declared in the class's static fields or returned by a class's
    import org.geotools.util.logging.Logging:
    
    public class ImageWorker {
-       /** The logger ImageWorker.class used is "org.geotools.image" */
+       /** ImageWorker.class package name "org.geotools.image" used for Logger */
        private static final Logger LOGGER = Logging.getLogger(ImageWorker.class);
    }
 
@@ -93,7 +93,7 @@ Convenience method exists in Logger for each of these levels.
 .. code-block:: java
    
    if( LOGGER.isLoggableLevel(Level.FINEST)){
-       LOGGER.finest("percent processed:"+progress);   
+       LOGGER.finest("percent processed:"+progress);
    }
 
 There are three more FINER convenience methods for tracing program execution:
@@ -111,12 +111,3 @@ There are three more FINER convenience methods for tracing program execution:
           LOGGER.throwing("MyClass", "MyMethod", myThrowable);
        }
    }
-
-Commons Logging Interoperability
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The logging output can also be redirected to commons-logging:
-
-.. code-block:: java
-
-   Logging.ALL.setLoggerFactory("org.geotools.util.logging.CommonsLoggerFactory");

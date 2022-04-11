@@ -282,7 +282,7 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
      * <p>If the server supports RESTful calls. It will use that. Otherwise it will create a similar
      * template for KVP requests.
      *
-     * @param tileMatrixSetName the name of the tileMatrixSet. This is expected to be
+     * @param tileMatrixSetName the name of the tileMatrixSet. This is expected to be UTF-8 encoded
      * @return template URL used containing placeholders for request parameters
      */
     protected abstract String createTemplateUrl(String tileMatrixSetName);

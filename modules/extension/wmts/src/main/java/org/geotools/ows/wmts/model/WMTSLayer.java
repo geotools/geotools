@@ -55,15 +55,6 @@ public class WMTSLayer extends Layer {
         super(title);
     }
 
-    /**
-     * Returns the layer identifier
-     *
-     * @return the layer identifier
-     */
-    public String getName() {
-        return super.getName();
-    }
-
     /** @return the limits */
     public Map<String, TileMatrixSetLink> getTileMatrixLinks() {
         return limits;

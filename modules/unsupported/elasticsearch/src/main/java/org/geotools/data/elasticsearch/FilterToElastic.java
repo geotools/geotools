@@ -16,7 +16,6 @@
  */
 package org.geotools.data.elasticsearch;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.google.common.collect.ImmutableList;
@@ -28,6 +27,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Logger;
 import org.geotools.data.Query;
 import org.geotools.data.elasticsearch.date.DateFormat;
@@ -1314,20 +1314,24 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
                     }
                 }
                 if (entry.getKey().equalsIgnoreCase("a")) {
-                    final ObjectMapper mapper = new ObjectMapper();
-                    final TypeReference<Map<String, Map<String, Map<String, Object>>>> type =
-                            new TypeReference<Map<String, Map<String, Map<String, Object>>>>() {};
-                    final String value = entry.getValue();
-                    try {
-                        this.aggregations = mapper.readValue(value, type);
-                    } catch (Exception e) {
-                        try {
-                            this.aggregations =
-                                    mapper.readValue(ElasticParserUtil.urlDecode(value), type);
-                        } catch (Exception e2) {
-                            throw new FilterToElasticException("Unable to parse aggregation", e);
-                        }
-                    }
+                    this.aggregations = GeohashUtil.parseAggregation(entry.getValue());
+
+                    // map default geometry to actual underlying field name, if it was left empty
+                    // (e.g, automatic grid definition in GeoHashProcess, it does not have
+                    // access to the geometry name in general)
+                    Optional.ofNullable(aggregations)
+                            .map(a -> a.get("agg"))
+                            .map(a -> a.get("geohash_grid"))
+                            .ifPresent(
+                                    m -> {
+                                        if ("".equals(m.get("field"))) {
+                                            m.put(
+                                                    "field",
+                                                    featureType
+                                                            .getGeometryDescriptor()
+                                                            .getLocalName());
+                                        }
+                                    });
                 }
             }
         }

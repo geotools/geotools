@@ -16,7 +16,6 @@
  */
 package org.geotools.process.elasticsearch;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.davidmoten.geo.GeoHash;
@@ -26,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -91,16 +89,16 @@ abstract class GeoHashGrid {
         final List<Map<String, Object>> buckets =
                 readFeatures(features, aggregationDefinition, queryDefinition, nativeOnly);
 
+        // cannot trust the definition, as the store might update it to enforce safety limits
+        // check from the first returned geohash instead
         final String firstGeohash = buckets.isEmpty() ? null : (String) buckets.get(0).get("key");
-        Integer precision = getPrecision(aggregationDefinition);
+        Integer precision;
+        if (!isValid(firstGeohash)) {
+            LOGGER.fine("No aggregations found or missing/invalid GeoHash key");
+            precision = DEFAULT_PRECISION;
 
-        if (precision == null) {
-            if (!isValid(firstGeohash)) {
-                LOGGER.fine("No aggregations found or missing/invalid geohash key");
-                precision = DEFAULT_PRECISION;
-            } else {
-                precision = ((String) buckets.get(0).get("key")).length();
-            }
+        } else {
+            precision = ((String) buckets.get(0).get("key")).length();
         }
 
         cellWidth = GeoHash.widthDegrees(precision);
@@ -141,35 +139,6 @@ abstract class GeoHashGrid {
         LOGGER.fine("Read " + cells.size() + " aggregation buckets");
     }
 
-    private Integer getPrecision(String aggregationDefinition) {
-        Integer precision = null;
-        final ObjectMapper mapper = new ObjectMapper();
-        final TypeReference<Map<String, Map<String, Map<String, Object>>>> type =
-                new TypeReference<Map<String, Map<String, Map<String, Object>>>>() {};
-        try {
-            Map<String, Map<String, Map<String, Object>>> map =
-                    mapper.readValue(aggregationDefinition, type);
-            Map<String, Map<String, Object>> aggMap = map.get("agg");
-            if (aggMap != null) {
-                Map<String, Object> geohashMap = aggMap.get("geohash_grid");
-                if (geohashMap != null) {
-                    if (geohashMap.get("precision") != null) {
-                        if (geohashMap.get("precision") instanceof Integer) {
-                            precision = (Integer) geohashMap.get("precision");
-                        }
-                    }
-                }
-            }
-        } catch (JsonProcessingException e) {
-            LOGGER.log(
-                    Level.WARNING,
-                    "Failure when trying to read precision from aggregation definition: "
-                            + aggregationDefinition,
-                    e);
-        }
-        return precision;
-    }
-
     protected abstract Number computeCellValue(Map<String, Object> bucket);
 
     private void updateGrid(String geohash, Number value) {
@@ -188,6 +157,7 @@ abstract class GeoHashGrid {
     private void updateGrid(double lat, double lon, Number value) {
         final int row = grid.length - (int) Math.round((lat - envelope.getMinY()) / cellHeight) - 1;
         final int col = (int) Math.round((lon - envelope.getMinX()) / cellWidth);
+
         grid[Math.min(row, grid.length - 1)][Math.min(col, grid[0].length - 1)] =
                 scale.scaleValue(value.floatValue());
     }
@@ -205,12 +175,7 @@ abstract class GeoHashGrid {
             Boolean nativeOnly)
             throws IOException {
         final List<Map<String, Object>> buckets = new ArrayList<>();
-        FeatureCollection featureCollection = features;
-        if (features instanceof ForceCoordinateSystemFeatureResults) {
-            ForceCoordinateSystemFeatureResults forceCoordinateSystemFeatureResults =
-                    (ForceCoordinateSystemFeatureResults) features;
-            featureCollection = forceCoordinateSystemFeatureResults.getOrigin();
-        }
+        FeatureCollection featureCollection = unwrap(features);
         ElasticBucketVisitor visitor =
                 new ElasticBucketVisitor(aggregationDefinition, queryDefinition, nativeOnly);
         if (featureCollection instanceof ContentFeatureCollection
@@ -237,6 +202,15 @@ abstract class GeoHashGrid {
             }
             return buckets;
         }
+    }
+
+    FeatureCollection unwrap(SimpleFeatureCollection features) {
+        if (features instanceof ForceCoordinateSystemFeatureResults) {
+            ForceCoordinateSystemFeatureResults forceCoordinateSystemFeatureResults =
+                    (ForceCoordinateSystemFeatureResults) features;
+            return forceCoordinateSystemFeatureResults.getOrigin();
+        }
+        return features;
     }
 
     private Envelope computeEnvelope(ReferencedEnvelope outEnvelope, int precision) {

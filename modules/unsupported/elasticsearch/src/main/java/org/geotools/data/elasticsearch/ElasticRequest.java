@@ -108,4 +108,26 @@ class ElasticRequest {
     public void addField(String field) {
         this.fields.add(field);
     }
+
+    @Override
+    public String toString() {
+        return "ElasticRequest{"
+                + "query="
+                + query
+                + ", aggregations="
+                + aggregations
+                + ", size="
+                + size
+                + ", from="
+                + from
+                + ", scroll="
+                + scroll
+                + ", sorts="
+                + sorts
+                + ", sourceIncludes="
+                + sourceIncludes
+                + ", fields="
+                + fields
+                + '}';
+    }
 }

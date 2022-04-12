@@ -20,7 +20,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>unsupported</artifactId>
-    <version>26-SNAPSHOT</version>
+    <version>26.4</version>
   </parent>
 
   <artifactId>gt-s3-geotiff</artifactId>

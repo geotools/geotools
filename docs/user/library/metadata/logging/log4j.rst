@@ -45,7 +45,7 @@ To bridge slf4j to Log4J:
        <version>${log4j2.version}</version>
      </dependency>
    
-* This routes sl4j api calls to ``log4j-core``.
+* This routes slf4j api calls to ``log4j-core``.
 
 To bridge java util logging to Log4J:
 

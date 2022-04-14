@@ -40,7 +40,7 @@ This method configures:
 * ``Logging.GEOTOOLS``
 * ``Logging.JAI``
 
-This is the kindest way to set up logging, allowing users of your application to choose
+This is the the most flexible way to set up logging, allowing users of your application to choose
 the logging system based on configuration files and jars supplied at runtime.
 
 GeoTools.setLoggerFactory()

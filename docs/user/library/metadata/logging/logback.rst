@@ -169,7 +169,7 @@ The following example is taken from our integration testing, this test *only* ha
    .. literalinclude:: /../../modules/library/metadata/src/it/logback/pom.xml
       :language: xml
       
-2. Configure logback wtih :download:`logback.xml </../../modules/library/metadata/src/it/logback/src/main/resources/logback.xml>` added to :file:`src/main/resources`:
+2. Configure logback with :download:`logback.xml </../../modules/library/metadata/src/it/logback/src/main/resources/logback.xml>` added to :file:`src/main/resources`:
    
    .. literalinclude:: /../../modules/library/metadata/src/it/logback/src/main/resources/logback.xml
       :language: xml

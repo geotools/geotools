@@ -50,30 +50,19 @@
     </developer>
   </developers>
 
-  <profiles>
-    <!-- If you have access to the HANA JDBC driver you can build  -->
-    <!-- this geotools plugin with that driver:                    -->
-    <!-- Install into maven:
-            mvn install:install-file -Dfile=ngdbc.jar \
-                -DgroupId=com.sap.db.jdbc -DartifactId=ngdbc \
-                -Dversion={version} -Dpackaging=jar -DgeneratePom=true
-                                                                   -->
-    <!-- You can then supply -Dhana=true on the command line       -->
-    <profile>
-      <id>hanaDriver</id>
-      <activation>
-        <property>
-          <name>hana</name>
-        </property>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>com.sap.db.jdbc</groupId>
-          <artifactId>ngdbc</artifactId>
-          <version>[2.0.0,)</version>
-        </dependency>
-      </dependencies>
-    </profile>
-  </profiles>
+  <dependencies>
+    <dependency>
+      <groupId>com.sap.cloud.db.jdbc</groupId>
+      <artifactId>ngdbc</artifactId>
+      <version>[2.0.0,)</version>
+      <!--
+      The SAP DEVELOPER LICENSE AGREEMENT does not permit redistribution
+      of the JDBC driver, but it permits the installation on devices you
+      own or control. Hence, downloading it for running the tests should
+      be fine.
+      -->
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
 </project>

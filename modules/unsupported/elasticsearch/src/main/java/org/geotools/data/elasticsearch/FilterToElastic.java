@@ -1322,18 +1322,15 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
                     Optional.ofNullable(aggregations)
                             .map(a -> a.get("agg"))
                             .map(a -> a.get("geohash_grid"))
-                            .ifPresent(
-                                    m -> {
-                                        if ("".equals(m.get("field"))) {
-                                            m.put(
-                                                    "field",
-                                                    featureType
-                                                            .getGeometryDescriptor()
-                                                            .getLocalName());
-                                        }
-                                    });
+                            .ifPresent(this::setGeometryField);
                 }
             }
+        }
+    }
+
+    private void setGeometryField(Map<String, Object> m) {
+        if ("".equals(m.get("field"))) {
+            m.put("field", featureType.getGeometryDescriptor().getLocalName());
         }
     }
 

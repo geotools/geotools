@@ -14,7 +14,7 @@ GeoTools provides LoggerFactories for:
 GeoTools.init()
 '''''''''''''''
 
-As mentioned in :doc:`../geotools`, the ``GeoTools.init()`` set's up the library for use, and will  do its best to determine which logging library your application is using.
+As mentioned in :doc:`../geotools`, the ``GeoTools.init()`` call sets up the library for use, and will do its best to determine which logging library your application is using.
 
 Keep in mind that ``GeoTools.init()`` must be called prior to Logger creation:
 

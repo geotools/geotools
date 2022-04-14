@@ -81,7 +81,7 @@ To bridge java util logging to Log4J:
   ============= ================
 
 
-* Lots of ways to enable java util logging bridge to Log4J:
+* There are several ways to enable ``java.util.logging`` bridge to Log4J:
 
   * System property:
   

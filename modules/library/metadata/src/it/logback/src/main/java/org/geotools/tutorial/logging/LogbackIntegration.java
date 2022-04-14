@@ -54,6 +54,7 @@ public class LogbackIntegration {
         if( Logging.ALL.getLoggerFactory() == LogbackLoggerFactory.getInstance() ){
             System.err.println("Expected GeoTools.init() to configure LogbackLoggerFactory, was "+Logging.ALL.getLoggerFactory());
         }
+        
         return Logging.getLogger(LogbackIntegration.class);
     }
 

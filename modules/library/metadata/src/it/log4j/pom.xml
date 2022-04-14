@@ -102,14 +102,7 @@
         </configuration>
         <executions>
           <execution>
-            <id>integration-test</id>
-            <phase>integration-test</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>integration-test2</id>
+            <id>jul</id>
             <phase>integration-test</phase>
             <goals>
               <goal>exec</goal>

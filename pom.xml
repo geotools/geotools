@@ -1571,6 +1571,10 @@
           <version>3.0.0-M1</version>
         </plugin>
         <plugin>
+          <artifactId>maven-invoker-plugin</artifactId>
+          <version>3.2.2</version>
+        </plugin>
+        <plugin>
           <artifactId>maven-deploy-plugin</artifactId>
           <version>3.0.0-M2</version>
         </plugin>

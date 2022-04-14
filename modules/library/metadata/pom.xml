@@ -178,32 +178,59 @@
     </resources>
     <plugins>
       <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>src/it/commons/target</directory>
+            </fileset>
+            <fileset>
+              <directory>src/it/log4j/target</directory>
+            </fileset>
+            <fileset>
+              <directory>src/it/logback/target</directory>
+            </fileset>
+            <fileset>
+              <directory>src/it/logging/target</directory>
+            </fileset>
+            <fileset>
+              <directory>src/it/reload4j/target</directory>
+            </fileset>
+          </filesets>
+          <followSymlinks>true</followSymlinks>
+          <failOnError>false</failOnError>
+        </configuration>
+      </plugin>
+      <plugin>
         <artifactId>maven-invoker-plugin</artifactId>
-        <version>3.2.2</version>
         <executions>
           <execution>
             <id>integration-test</id>
             <goals>
-              <goal>install</goal>
-              <goal>run</goal>
+              <!-- run exec:exec to generate output -->
+              <goal>integration-test</goal>
+              <!-- run postbuild.sh to check output -->
               <goal>verify</goal>
             </goals>
             <configuration>
               <goals>
+                <goal>clean</goal>
+                <goal>compile</goal>
                 <goal>exec:exec</goal>
+                <goal>integration-test</goal>
               </goals>
-              <verifyHookScript>verify.bsh</verifyHookScript>
+              <verifyHookScript>postbuild.bsh</verifyHookScript>
             </configuration>
           </execution>
         </executions>
         <configuration>
-          <ignoreFailures>true</ignoreFailures>
-          <!-- never fail the build -->
+          <parallelThreads>1C</parallelThreads>
+          <ignoreFailures>false</ignoreFailures>
           <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
           <settingsFile>src/it/settings.xml</settingsFile>
           <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
-          <showErrors>false</showErrors>
-          <streamLogsOnFailures>true</streamLogsOnFailures>
+          <showErrors>true</showErrors>
+          <streamLogs>false</streamLogs>
         </configuration>
       </plugin>
     </plugins>

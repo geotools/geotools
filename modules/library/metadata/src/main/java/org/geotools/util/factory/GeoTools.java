@@ -61,6 +61,8 @@ import org.geotools.util.NullEntityResolver;
 import org.geotools.util.PreventLocalEntityResolver;
 import org.geotools.util.Utilities;
 import org.geotools.util.Version;
+import org.geotools.util.logging.DefaultLoggerFactory;
+import org.geotools.util.logging.LoggerAdapter;
 import org.geotools.util.logging.LoggerFactory;
 import org.geotools.util.logging.Logging;
 import org.xml.sax.EntityResolver;
@@ -662,17 +664,10 @@ public final class GeoTools {
      * @since 2.4
      */
     public static void setLoggerFactory(final LoggerFactory<?> factory) {
-        if (factory != null) {
-            if (Logging.ALL.getLoggerFactory() == factory) {
-                Logging.ALL.setLoggerFactory(factory);
-            }
-        } else {
-            Logging.ALL.setLoggerFactory((LoggerFactory) null);
-
-            // Otherwise if java logging is used, force monoline console output.
+        Logging.ALL.setLoggerFactory(factory);
+        if (factory == null || factory == DefaultLoggerFactory.getInstance()) {
+            // if java logging is used, force monoline console output.
             Logging.ALL.forceMonolineConsoleOutput();
-            Logging.GEOTOOLS.forceMonolineConsoleOutput();
-            Logging.JAI.forceMonolineConsoleOutput();
         }
     }
 
@@ -735,12 +730,15 @@ public final class GeoTools {
     }
     /**
      * Initializes GeoTools for use. This convenience method performs various tasks (more may be
-     * added in the future), including setting up the {@linkplain java.util.logging Java logging
-     * framework} with a logging factory.
+     * added in the future)
+     *
+     * <p>Primary task is setting up the {@linkplain java.util.logging Java logging framework} with
+     * a logging factory (if it has not been done already):
      *
      * <ul>
-     *   <li>If <A HREF="https://logback.qos.ch/">Logback</A> is available, then messages in {@code
-     *       org.geotools} and {@code javax.media.jai} namespace sent to {@linkplain
+     *   <li>If Logging.ALL has already been configured no further work is required.
+     *   <li>Otherwise if <A HREF="https://logback.qos.ch/">Logback</A> is available, then messages
+     *       in {@code org.geotools} and {@code javax.media.jai} namespace sent to {@linkplain
      *       java.util.logging.Logger logger} are redirected to SL4J API used by logback.
      *   <li>Otherwise if <A HREF="http://logging.apache.org/log4j">Log4J</A> is available, then
      *       messages in {@code org.geotools} and {@code javax.media.jai} namespace sent to Java
@@ -749,10 +747,10 @@ public final class GeoTools {
      *       messages in {@code org.geotools} and {@code javax.media.jai} namespace sent to Java
      *       {@linkplain java.util.logging.Logger logger} are redirected to Log4J 1 API used by
      *       Reload4J.
-     *   <li>finally if <A HREF="http://jakarta.apache.org/commons/logging/">Commons-logging</A> is
-     *       available, then messages in {@code org.geotools} and {@code javax.media.jai} namespaces
-     *       sent to the Java {@linkplain java.util.logging.Logger logger} are redirected to
-     *       Commons-logging.
+     *   <li>Otherwise if <A HREF="http://jakarta.apache.org/commons/logging/">Commons-logging</A>
+     *       is available, then messages in {@code org.geotools} and {@code javax.media.jai}
+     *       namespaces sent to the Java {@linkplain java.util.logging.Logger logger} are redirected
+     *       to Commons-logging.
      *   <li>Otherwise, the Java logging {@linkplain java.util.logging.Formatter formatter} for
      *       console output is replaced by a {@linkplain org.geotools.util.logging.MonolineFormatter
      *       monoline formatter}.
@@ -760,8 +758,8 @@ public final class GeoTools {
      *
      * <p>Invoking this method is <strong>not</strong> required fpr the GeoTools library to
      * function. It is just a convenience method for overwriting select Java and GeoTools default
-     * settings. Supplying these defaults is not desirable in all settings, such as writing test
-     * cases.
+     * settings. Supplying these defaults is not always desirable, for example when quickly writing
+     * test cases.
      *
      * <p>
      *
@@ -771,24 +769,38 @@ public final class GeoTools {
      * @see #getDefaultHints
      */
     public static void init() {
-        final String[] CANDIDATES = {
-            "org.geotools.util.logging.LogbackLoggerFactory",
-            "org.geotools.util.logging.Log4J2LoggerFactory", // sl4j
-            "org.geotools.util.logging.Log4JLoggerFactory", // reload4j
-            "org.geotools.util.logging.CommonsLoggerFactory"
-        };
-        for (String factoryName : CANDIDATES) {
-            try {
-                Logging.ALL.setLoggerFactory(factoryName);
-                break;
-            } catch (ClassNotFoundException classNotFound) {
-                continue;
+        if (Logging.ALL.getLoggerFactory() == null) {
+            final String[] CANDIDATES = {
+                "org.geotools.util.logging.LogbackLoggerFactory",
+                "org.geotools.util.logging.Log4J2LoggerFactory", // sl4j
+                "org.geotools.util.logging.Log4JLoggerFactory", // reload4j
+                "org.geotools.util.logging.CommonsLoggerFactory",
+                "org.geotools.util.logging.DefaultLoggerFactory"
+            };
+            for (String factoryName : CANDIDATES) {
+                try {
+                    Logging.ALL.setLoggerFactory(factoryName);
+                    if (factoryName == "org.geotools.util.logging.CommonsLoggerFactory") {
+                        // check if delegating to jdk14logger
+                        LoggerFactory factory = Logging.ALL.getLoggerFactory();
+                        if (factory != null) {
+                            Logger logger =
+                                    Logging.ALL.getLoggerFactory().getLogger("org.geotools");
+                            if (!(logger instanceof LoggerAdapter)) {
+                                continue; // configured to delegate to jdk14logger
+                            }
+                        }
+                    }
+                    break;
+                } catch (ClassNotFoundException classNotFound) {
+                    continue;
+                }
             }
         }
-        if (Logging.ALL.getLoggerFactory() == null) {
-            // Otherwise if java logging is used, force monoline console output.
-            Logging.GEOTOOLS.forceMonolineConsoleOutput();
-            Logging.JAI.forceMonolineConsoleOutput();
+        if (Logging.ALL.getLoggerFactory() == null
+                || Logging.ALL.getLoggerFactory() == DefaultLoggerFactory.getInstance()) {
+            // if java logging is used, force monoline console output.
+            Logging.ALL.forceMonolineConsoleOutput();
         }
     }
     /**

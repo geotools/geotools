@@ -90,7 +90,7 @@ See the **MonolineFormatter** javadoc for details.
 Java Util Logging Guidance
 ''''''''''''''''''''''''''
 
-Logging frameworks mechanism to delegate to java util logging as a backend.
+Logging frameworks mechanism to delegate to ``java.util.logging`` as a backend.
 
 * SL4J: Add :file:`slf4j-jdk14.jar` to classpath:
 

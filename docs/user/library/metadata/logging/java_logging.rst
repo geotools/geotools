@@ -130,7 +130,7 @@ The following example is taken from our integration testing, this test has no ad
    .. literalinclude:: /../../modules/library/metadata/src/it/logging/pom.xml
       :language: xml
       
-2. Configure java util logging wtih :download:`logging.properties </../../modules/library/metadata/src/it/logging/logging.properties>`:
+2. Configure ``java.util.logging`` with :download:`logging.properties </../../modules/library/metadata/src/it/logging/logging.properties>`:
    
    .. literalinclude:: /../../modules/library/metadata/src/it/logging/logging.properties
       :language: xml

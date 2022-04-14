@@ -25,7 +25,6 @@ import com.github.davidmoten.geo.LatLong;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.awt.geom.Point2D;
-import java.util.List;
 import java.util.Map;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.Query;
@@ -38,7 +37,6 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
-import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.referencing.FactoryException;
@@ -100,27 +98,13 @@ public class GeoHashGridProcessTest {
                 new ReferencedEnvelope(-180, 180, -90, 90, DefaultGeographicCRS.WGS84);
         int width = 8;
         int height = 4;
-        int pixelsPerCell = 1;
         String strategy = "Basic";
         Float scaleMin = 0f;
 
         GridCoverage2D coverage =
                 process.execute(
-                        features,
-                        pixelsPerCell,
-                        strategy,
-                        null,
-                        null,
-                        scaleMin,
-                        null,
-                        false,
-                        envelope,
-                        width,
-                        height,
-                        null,
-                        "",
-                        false,
-                        null);
+                        features, strategy, null, null, scaleMin, null, false, envelope, width,
+                        height, null, "", null);
         checkInternal(coverage, fineDelta);
         checkEdge(coverage, envelope, fineDelta);
     }
@@ -131,27 +115,13 @@ public class GeoHashGridProcessTest {
                 new ReferencedEnvelope(-180, 180, -90, 90, DefaultGeographicCRS.WGS84);
         int width = 16;
         int height = 8;
-        int pixelsPerCell = 1;
         String strategy = "Basic";
         Float scaleMin = 0f;
 
         GridCoverage2D coverage =
                 process.execute(
-                        features,
-                        pixelsPerCell,
-                        strategy,
-                        null,
-                        null,
-                        scaleMin,
-                        null,
-                        false,
-                        envelope,
-                        width,
-                        height,
-                        null,
-                        "",
-                        false,
-                        null);
+                        features, strategy, null, null, scaleMin, null, false, envelope, width,
+                        height, null, "", null);
         checkInternal(coverage, fineDelta);
         checkEdge(coverage, envelope, fineDelta);
     }
@@ -162,27 +132,13 @@ public class GeoHashGridProcessTest {
                 new ReferencedEnvelope(-168.75, 168.75, -78.75, 78.75, DefaultGeographicCRS.WGS84);
         int width = 16;
         int height = 8;
-        int pixelsPerCell = 1;
         String strategy = "Basic";
         Float scaleMin = 0f;
 
         GridCoverage2D coverage =
                 process.execute(
-                        features,
-                        pixelsPerCell,
-                        strategy,
-                        null,
-                        null,
-                        scaleMin,
-                        null,
-                        false,
-                        envelope,
-                        width,
-                        height,
-                        null,
-                        "",
-                        false,
-                        null);
+                        features, strategy, null, null, scaleMin, null, false, envelope, width,
+                        height, null, "", null);
         checkInternal(coverage, fineDelta);
         checkEdge(coverage, envelope, fineDelta);
     }
@@ -193,27 +149,13 @@ public class GeoHashGridProcessTest {
                 new ReferencedEnvelope(-168.75, 168.75, -78.75, 78.75, DefaultGeographicCRS.WGS84);
         int width = 900;
         int height = 600;
-        int pixelsPerCell = 1;
         String strategy = "Basic";
         Float scaleMin = 0f;
 
         GridCoverage2D coverage =
                 process.execute(
-                        features,
-                        pixelsPerCell,
-                        strategy,
-                        null,
-                        null,
-                        scaleMin,
-                        null,
-                        false,
-                        envelope,
-                        width,
-                        height,
-                        null,
-                        "",
-                        false,
-                        null);
+                        features, strategy, null, null, scaleMin, null, false, envelope, width,
+                        height, null, "", null);
         checkInternal(coverage, fineDelta);
     }
 
@@ -246,12 +188,6 @@ public class GeoHashGridProcessTest {
         }
 
         return -1;
-    }
-
-    private GridCoverage2D unwrapToNative(GridCoverage2D coverage) {
-        List<GridCoverage> source = coverage.getSources();
-        if (source != null & source.size() == 1) return (GridCoverage2D) source.get(0);
-        return coverage;
     }
 
     /**

@@ -16,13 +16,10 @@
  */
 package org.geotools.process.elasticsearch;
 
-import static com.github.davidmoten.geo.GeoHash.widthDegrees;
-
 import com.github.davidmoten.geo.GeoHash;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.coverage.processing.Operations;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
@@ -77,12 +74,6 @@ public class GeoHashGridProcess implements VectorProcess {
 
             // process parameters
             @DescribeParameter(
-                            name = "pixelsPerCell",
-                            description = "Resolution used for upsampling (in pixels)",
-                            defaultValue = "1",
-                            min = 1)
-                    Integer argPixelsPerCell,
-            @DescribeParameter(
                             name = "gridStrategy",
                             description = "GeoHash grid strategy",
                             defaultValue = "Basic",
@@ -126,11 +117,6 @@ public class GeoHashGridProcess implements VectorProcess {
                             description = "Native Elasticsearch Query definition",
                             min = 0)
                     String queryDefinition,
-            @DescribeParameter(
-                            name = "nativeOnly",
-                            description = "Use native Elasticsearch query and ignore other filters",
-                            min = 0)
-                    Boolean nativeOnly,
             ProgressListener monitor)
             throws ProcessException {
 
@@ -148,25 +134,9 @@ public class GeoHashGridProcess implements VectorProcess {
             geoHashGrid.setEmptyCellValue(emptyCellValue);
             geoHashGrid.setScale(new RasterScale(scaleMin, scaleMax, useLog));
             geoHashGrid.initalize(
-                    argOutputEnv, obsFeatures, aggregationDefinition, queryDefinition, nativeOnly);
+                    argOutputEnv, obsFeatures, aggregationDefinition, queryDefinition);
             // convert to grid coverage
-            final GridCoverage2D nativeCoverage = geoHashGrid.toGridCoverage2D();
-
-            // reproject
-            final GridCoverage2D transformedCoverage =
-                    (GridCoverage2D)
-                            Operations.DEFAULT.resample(
-                                    nativeCoverage, argOutputEnv.getCoordinateReferenceSystem());
-            // upscale to approximate output resolution
-            final GridCoverage2D scaledCoverage =
-                    GridCoverageUtil.scale(
-                            transformedCoverage,
-                            argOutputWidth * argPixelsPerCell,
-                            argOutputHeight * argPixelsPerCell);
-            // crop (geohash grid envelope will always contain output bbox)
-            final GridCoverage2D croppedCoverage =
-                    GridCoverageUtil.crop(scaledCoverage, argOutputEnv);
-            return GridCoverageUtil.scale(croppedCoverage, argOutputWidth, argOutputHeight);
+            return geoHashGrid.toGridCoverage2D();
         } catch (Exception e) {
             throw new ProcessException("Error executing GeoHashGridProcess", e);
         }
@@ -187,7 +157,7 @@ public class GeoHashGridProcess implements VectorProcess {
         int precision = 0;
         double ghw = 0, ghh = 0;
         for (; precision <= GeoHash.MAX_HASH_LENGTH; precision++) {
-            ghw = widthDegrees(precision);
+            ghw = GeoHash.widthDegrees(precision);
             ghh = GeoHash.heightDegrees(precision);
             if (ghw <= cellw && ghh <= cellh) break;
         }

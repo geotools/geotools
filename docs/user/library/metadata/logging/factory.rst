@@ -28,7 +28,7 @@ A reliable way to do this is using static initializer (before ``main()`` method 
    :language: java
    :start-at: package
    
-You may find it more readable to do this using a static method defining class LOGGER:
+You may find it more readable to do this using a static method defining a LOGGER:
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/logging/Example3.java 
    :language: java

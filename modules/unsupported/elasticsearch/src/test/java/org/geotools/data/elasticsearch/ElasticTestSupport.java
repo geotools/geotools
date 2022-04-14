@@ -96,19 +96,19 @@ public class ElasticTestSupport {
 
     static final int SOURCE_SRID = 4326;
 
-    String host;
+    protected String host;
 
-    int port;
+    protected int port;
 
-    String indexName;
+    protected String indexName;
 
-    ElasticDataStore dataStore;
+    protected ElasticDataStore dataStore;
 
-    ElasticFeatureSource featureSource;
+    protected ElasticFeatureSource featureSource;
 
-    ElasticLayerConfiguration config;
+    protected ElasticLayerConfiguration config;
 
-    ElasticClient client;
+    protected ElasticClient client;
 
     @Before
     public void beforeTest() throws Exception {
@@ -217,7 +217,7 @@ public class ElasticTestSupport {
         return params;
     }
 
-    void init() throws Exception {
+    protected void init() throws Exception {
         DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
         init("active");
     }

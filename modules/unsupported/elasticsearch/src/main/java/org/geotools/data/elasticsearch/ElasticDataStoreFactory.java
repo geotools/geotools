@@ -183,7 +183,7 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
                     Long.class,
                     "Hint for Geohash grid size (nrow*ncol)",
                     false,
-                    10000L);
+                    65536L); // number of pixels in a 256*256 tile
 
     public static final Param GRID_THRESHOLD =
             new Param(

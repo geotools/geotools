@@ -55,7 +55,6 @@ public class GeoHashGridTest {
             TestUtil.createAggBucket(AGG_KEY, AGG_RESULTS);
     private static final String aggregationDefinition = "";
     private static final String queryDefinition = "";
-    private static final Boolean nativeOnly = false;
 
     private SimpleFeatureCollection features;
 
@@ -85,8 +84,7 @@ public class GeoHashGridTest {
                                                         10)))));
         ReferencedEnvelope envelope =
                 new ReferencedEnvelope(-360, 180, -90, 90, DefaultGeographicCRS.WGS84);
-        geohashGrid.initalize(
-                envelope, features, aggregationDefinition, queryDefinition, nativeOnly);
+        geohashGrid.initalize(envelope, features, aggregationDefinition, queryDefinition);
         assertEquals(GeoHash.widthDegrees(1), geohashGrid.getCellWidth(), 1e-10);
         assertEquals(GeoHash.heightDegrees(1), geohashGrid.getCellHeight(), 1e-10);
         assertEquals(
@@ -116,8 +114,7 @@ public class GeoHashGridTest {
                         ImmutableList.of(ImmutableMap.of("_aggregation", aggregation)));
         ReferencedEnvelope envelope =
                 new ReferencedEnvelope(360, 540, -90, 90, DefaultGeographicCRS.WGS84);
-        geohashGrid.initalize(
-                envelope, features, aggregationDefinition, queryDefinition, nativeOnly);
+        geohashGrid.initalize(envelope, features, aggregationDefinition, queryDefinition);
         assertEquals(GeoHash.widthDegrees(1), geohashGrid.getCellWidth(), 1e-10);
         assertEquals(GeoHash.heightDegrees(1), geohashGrid.getCellHeight(), 1e-10);
         assertEquals(
@@ -147,8 +144,7 @@ public class GeoHashGridTest {
                         ImmutableList.of(ImmutableMap.of("_aggregation", aggregation)));
         ReferencedEnvelope envelope =
                 new ReferencedEnvelope(-180, 180, -90, 90, DefaultGeographicCRS.WGS84);
-        geohashGrid.initalize(
-                envelope, features, aggregationDefinition, queryDefinition, nativeOnly);
+        geohashGrid.initalize(envelope, features, aggregationDefinition, queryDefinition);
         assertEquals(GeoHash.widthDegrees(1), geohashGrid.getCellWidth(), 1e-10);
         assertEquals(GeoHash.heightDegrees(1), geohashGrid.getCellHeight(), 1e-10);
         assertEquals(
@@ -192,8 +188,7 @@ public class GeoHashGridTest {
         ReferencedEnvelope envelope =
                 new ReferencedEnvelope(-180, 180, -90, 90, DefaultGeographicCRS.WGS84);
         geohashGrid.setScale(new RasterScale(5f, 10f));
-        geohashGrid.initalize(
-                envelope, features, aggregationDefinition, queryDefinition, nativeOnly);
+        geohashGrid.initalize(envelope, features, aggregationDefinition, queryDefinition);
         assertEquals(GeoHash.widthDegrees(1), geohashGrid.getCellWidth(), 1e-10);
         assertEquals(GeoHash.heightDegrees(1), geohashGrid.getCellHeight(), 1e-10);
         assertEquals(
@@ -233,8 +228,7 @@ public class GeoHashGridTest {
                         -30240971.96,
                         30240971.96,
                         CRS.decode("EPSG:3857"));
-        geohashGrid.initalize(
-                envelope, features, aggregationDefinition, queryDefinition, nativeOnly);
+        geohashGrid.initalize(envelope, features, aggregationDefinition, queryDefinition);
 
         assertEquals(
                 new ReferencedEnvelope(-180, 180, -90, 90, DefaultGeographicCRS.WGS84),
@@ -246,8 +240,7 @@ public class GeoHashGridTest {
         features = new DefaultFeatureCollection();
         ReferencedEnvelope envelope =
                 new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326"));
-        geohashGrid.initalize(
-                envelope, features, aggregationDefinition, queryDefinition, nativeOnly);
+        geohashGrid.initalize(envelope, features, aggregationDefinition, queryDefinition);
         IntStream.range(0, geohashGrid.getGrid().length)
                 .forEach(
                         i ->
@@ -264,8 +257,7 @@ public class GeoHashGridTest {
         ReferencedEnvelope envelope =
                 new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326"));
         geohashGrid.setEmptyCellValue(emptyCellValue);
-        geohashGrid.initalize(
-                envelope, features, aggregationDefinition, queryDefinition, nativeOnly);
+        geohashGrid.initalize(envelope, features, aggregationDefinition, queryDefinition);
         int bound = geohashGrid.getGrid().length;
         for (int i = 0; i < bound; i++) {
             int bound1 = geohashGrid.getGrid()[i].length;
@@ -281,8 +273,7 @@ public class GeoHashGridTest {
         ReferencedEnvelope envelope =
                 new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326"));
         geohashGrid.setEmptyCellValue(null);
-        geohashGrid.initalize(
-                envelope, features, aggregationDefinition, queryDefinition, nativeOnly);
+        geohashGrid.initalize(envelope, features, aggregationDefinition, queryDefinition);
         int bound = geohashGrid.getGrid().length;
         for (int row = 0; row < bound; row++) {
             int bound1 = geohashGrid.getGrid()[row].length;
@@ -299,8 +290,7 @@ public class GeoHashGridTest {
                         ImmutableList.of(ImmutableMap.of("aString", UUID.randomUUID().toString())));
         ReferencedEnvelope envelope =
                 new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326"));
-        geohashGrid.initalize(
-                envelope, features, aggregationDefinition, queryDefinition, nativeOnly);
+        geohashGrid.initalize(envelope, features, aggregationDefinition, queryDefinition);
         IntStream.range(0, geohashGrid.getGrid().length)
                 .forEach(
                         i ->
@@ -320,8 +310,7 @@ public class GeoHashGridTest {
                         ImmutableList.of(ImmutableMap.of("_aggregation", aggregation)));
         ReferencedEnvelope envelope =
                 new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326"));
-        geohashGrid.initalize(
-                envelope, features, aggregationDefinition, queryDefinition, nativeOnly);
+        geohashGrid.initalize(envelope, features, aggregationDefinition, queryDefinition);
         IntStream.range(0, geohashGrid.getGrid().length)
                 .forEach(
                         i ->
@@ -343,8 +332,7 @@ public class GeoHashGridTest {
                                                         "key", "invalid", "doc_count", 10)))));
         ReferencedEnvelope envelope =
                 new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326"));
-        geohashGrid.initalize(
-                envelope, features, aggregationDefinition, queryDefinition, nativeOnly);
+        geohashGrid.initalize(envelope, features, aggregationDefinition, queryDefinition);
         IntStream.range(0, geohashGrid.getGrid().length)
                 .forEach(
                         i ->

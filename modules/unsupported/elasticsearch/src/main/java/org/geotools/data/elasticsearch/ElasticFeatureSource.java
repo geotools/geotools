@@ -16,6 +16,8 @@
  */
 package org.geotools.data.elasticsearch;
 
+import static org.geotools.filter.visitor.ExtractBoundsFilterVisitor.BOUNDS_VISITOR;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -29,9 +31,9 @@ import org.geotools.data.FilteringFeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
-import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.process.elasticsearch.ElasticBucketVisitor;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.FeatureVisitor;
@@ -170,9 +172,9 @@ public class ElasticFeatureSource extends ContentFeatureSource {
                     && elasticBucketVisitor.getQueryDefinition().length() > 0) {
                 hints.put("q", elasticBucketVisitor.getQueryDefinition());
             }
-            if (elasticBucketVisitor.getNativeOnly() != null) {
-                hints.put("native-only", elasticBucketVisitor.getNativeOnly().toString());
-            }
+
+            // if it's Query.ALL passing hints won't work, need to make a modifiable copy
+            query = new Query(query);
             query.getHints().put(ElasticBucketVisitor.ES_AGGREGATE_BUCKET, hints);
             try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(query)) {
 
@@ -277,10 +279,7 @@ public class ElasticFeatureSource extends ContentFeatureSource {
         if (filterToElastic.getAggregations() != null) {
             final Map<String, Map<String, Map<String, Object>>> aggregations =
                     filterToElastic.getAggregations();
-            final Envelope envelope =
-                    (Envelope)
-                            query.getFilter()
-                                    .accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, null);
+            Envelope envelope = getQueryEnvelope(query);
             final long gridSize;
             if (dataStore.getGridSize() != null) {
                 gridSize = dataStore.getGridSize();
@@ -300,6 +299,14 @@ public class ElasticFeatureSource extends ContentFeatureSource {
         }
 
         return searchRequest;
+    }
+
+    private Envelope getQueryEnvelope(Query query) {
+        Envelope envelope = (Envelope) query.getFilter().accept(BOUNDS_VISITOR, null);
+        // in case of query not having a spatial filter, assume whole world
+        if (Double.isInfinite(envelope.getWidth()))
+            envelope = new ReferencedEnvelope(-180, 180, -90, 90, DefaultGeographicCRS.WGS84);
+        return envelope;
     }
 
     private void setSourceIncludes(final ElasticRequest searchRequest) throws IOException {

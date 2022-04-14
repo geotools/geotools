@@ -115,10 +115,11 @@ public class ElasticViewParametersFilterIT extends ElasticTestSupport {
         ElasticBucketVisitor elasticBucketVisitor =
                 new ElasticBucketVisitor(
                         "{\"agg\": {\"geohash_grid\": {\"field\": \"geo\", \"precision\": 3}}}",
-                        null,
-                        false);
+                        null);
         featureSource.accepts(q, elasticBucketVisitor, null);
         List<Map<String, Object>> buckets = elasticBucketVisitor.getBuckets();
-        assertEquals(9, buckets.size());
+        // all 11 features in the store accounted for
+        assertEquals(10, buckets.size());
+        assertEquals(11, buckets.stream().mapToInt(b -> (int) b.get("doc_count")).sum());
     }
 }

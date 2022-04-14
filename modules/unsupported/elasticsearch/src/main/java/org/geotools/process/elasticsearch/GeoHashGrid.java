@@ -36,6 +36,7 @@ import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.collection.DecoratingSimpleFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
@@ -83,11 +84,10 @@ abstract class GeoHashGrid {
             ReferencedEnvelope srcEnvelope,
             SimpleFeatureCollection features,
             String aggregationDefinition,
-            String queryDefinition,
-            Boolean nativeOnly)
+            String queryDefinition)
             throws TransformException, FactoryException, IOException {
         final List<Map<String, Object>> buckets =
-                readFeatures(features, aggregationDefinition, queryDefinition, nativeOnly);
+                readFeatures(features, aggregationDefinition, queryDefinition);
 
         // cannot trust the definition, as the store might update it to enforce safety limits
         // check from the first returned geohash instead
@@ -104,12 +104,20 @@ abstract class GeoHashGrid {
         cellWidth = GeoHash.widthDegrees(precision);
         cellHeight = GeoHash.heightDegrees(precision);
 
-        if (srcEnvelope.getCoordinateReferenceSystem() != null) {
-            srcEnvelope = srcEnvelope.transform(DefaultGeographicCRS.WGS84, false);
+        boolean reproject =
+                !CRS.equalsIgnoreMetadata(
+                        srcEnvelope.getCoordinateReferenceSystem(), DefaultGeographicCRS.WGS84);
+        if (reproject) {
+            srcEnvelope = srcEnvelope.transform(DefaultGeographicCRS.WGS84, true);
         }
         computeMinLonOffset(srcEnvelope);
         envelope = computeEnvelope(srcEnvelope, precision);
+        if (reproject) {
+            envelope = pad(envelope);
+        }
 
+        // the envelope is expressed on the geohash cell centers, boundingbox is the full
+        // coverage of the raster instead
         boundingBox =
                 new ReferencedEnvelope(
                         envelope.getMinX() - cellWidth / 2.0,
@@ -137,6 +145,19 @@ abstract class GeoHashGrid {
                 });
         cells.forEach(cell -> updateGrid(cell.getGeohash(), cell.getValue()));
         LOGGER.fine("Read " + cells.size() + " aggregation buckets");
+    }
+
+    /**
+     * Adds a buffer of one row and column around the envelope, respecting the latitude max values.
+     * Since it's called only with reprojection enabled, assuming the original envelope is in the
+     * norma range of lat and lon
+     */
+    private Envelope pad(Envelope envelope) {
+        double minLon = Math.max(-180 + cellWidth / 2, envelope.getMinX() - cellWidth);
+        double maxLon = Math.min(180 - cellWidth / 2, envelope.getMaxX() + cellWidth);
+        double minLat = Math.max(-90 + cellHeight / 2, envelope.getMinY() - cellHeight);
+        double maxLat = Math.min(90 - cellHeight / 2, envelope.getMaxY() + cellHeight);
+        return new ReferencedEnvelope(minLon, maxLon, minLat, maxLat, DefaultGeographicCRS.WGS84);
     }
 
     protected abstract Number computeCellValue(Map<String, Object> bucket);
@@ -169,15 +190,12 @@ abstract class GeoHashGrid {
     }
 
     private List<Map<String, Object>> readFeatures(
-            SimpleFeatureCollection features,
-            String aggregationDefinition,
-            String queryDefinition,
-            Boolean nativeOnly)
+            SimpleFeatureCollection features, String aggregationDefinition, String queryDefinition)
             throws IOException {
         final List<Map<String, Object>> buckets = new ArrayList<>();
         FeatureCollection featureCollection = unwrap(features);
         ElasticBucketVisitor visitor =
-                new ElasticBucketVisitor(aggregationDefinition, queryDefinition, nativeOnly);
+                new ElasticBucketVisitor(aggregationDefinition, queryDefinition);
         if (featureCollection instanceof ContentFeatureCollection
                 || featureCollection instanceof DecoratingSimpleFeatureCollection) {
             featureCollection.accepts(visitor, null);

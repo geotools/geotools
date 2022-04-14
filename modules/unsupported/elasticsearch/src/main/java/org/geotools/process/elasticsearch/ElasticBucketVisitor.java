@@ -33,15 +33,12 @@ public class ElasticBucketVisitor implements FeatureAttributeVisitor {
     private List<Map<String, Object>> buckets;
     private String aggregationDefinition;
     private String queryDefinition;
-    private Boolean nativeOnly;
     private Expression expr;
 
-    public ElasticBucketVisitor(
-            String aggregationDefinition, String queryDefinition, Boolean nativeOnly) {
+    public ElasticBucketVisitor(String aggregationDefinition, String queryDefinition) {
         this.buckets = new ArrayList<>();
         this.aggregationDefinition = aggregationDefinition;
         this.queryDefinition = queryDefinition;
-        this.nativeOnly = nativeOnly;
         FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         expr = factory.property("_aggregation");
     }
@@ -75,14 +72,6 @@ public class ElasticBucketVisitor implements FeatureAttributeVisitor {
 
     public void setQueryDefinition(String queryDefinition) {
         this.queryDefinition = queryDefinition;
-    }
-
-    public Boolean getNativeOnly() {
-        return nativeOnly;
-    }
-
-    public void setNativeOnly(Boolean nativeOnly) {
-        this.nativeOnly = nativeOnly;
     }
 
     @Override

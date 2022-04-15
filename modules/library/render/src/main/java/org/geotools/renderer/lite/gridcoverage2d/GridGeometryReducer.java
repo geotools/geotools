@@ -95,61 +95,70 @@ class GridGeometryReducer {
 
     private GridGeometry2D reduceGridGeometrySide(GridGeometry2D gg, Side side) {
         Side curr = side;
+
         for (int i = 0; i <= 4; i++) {
-            GridEnvelope2D gridRange = gg.getGridRange2D();
-            Rectangle bounds = gridRange.getBounds();
-            GridEnvelope2D reducedRange = new GridEnvelope2D(gridRange);
-            switch (curr) {
-                case TOP:
-                    reducedRange.setBounds(bounds.x, bounds.y + 1, bounds.width, bounds.height - 1);
-                    break;
-                case RIGHT:
-                    reducedRange.setBounds(bounds.x, bounds.y, bounds.width - 1, bounds.height);
-                    break;
-                case BOTTOM:
-                    reducedRange.setBounds(bounds.x, bounds.y, bounds.width, bounds.height - 1);
-                    break;
-                case LEFT:
-                    reducedRange.setBounds(bounds.x + 1, bounds.y, bounds.width - 1, bounds.height);
-                    break;
-                default:
-                    throw new RuntimeException("Unexpected side " + side);
+            for (int step = 1; step < 10; step++) {
+                GridEnvelope2D gridRange = gg.getGridRange2D();
+                Rectangle bounds = gridRange.getBounds();
+                GridEnvelope2D reducedRange = new GridEnvelope2D(gridRange);
+                switch (curr) {
+                    case TOP:
+                        reducedRange.setBounds(
+                                bounds.x, bounds.y + step, bounds.width, bounds.height - step);
+                        break;
+                    case RIGHT:
+                        reducedRange.setBounds(
+                                bounds.x, bounds.y, bounds.width - step, bounds.height);
+                        break;
+                    case BOTTOM:
+                        reducedRange.setBounds(
+                                bounds.x, bounds.y, bounds.width, bounds.height - step);
+                        break;
+                    case LEFT:
+                        reducedRange.setBounds(
+                                bounds.x + step, bounds.y, bounds.width - step, bounds.height);
+                        break;
+                    default:
+                        throw new RuntimeException("Unexpected side " + side);
+                }
+
+                GridGeometry2D reducedGeometry =
+                        new GridGeometry2D(
+                                reducedRange, gg.getGridToCRS(), gg.getCoordinateReferenceSystem());
+
+                // see if we actually reduced the grid geometry on the side we needed it to
+                Envelope reducedEnvelope = reducedGeometry.getEnvelope();
+                if (!reducedGeometry.getGridRange2D().isEmpty()) {
+                    switch (side) {
+                        case TOP:
+                            if (reducedEnvelope.getMaximum(1) <= validArea.getMaximum(1)) {
+                                return reducedGeometry;
+                            }
+                            break;
+                        case RIGHT:
+                            if (reducedEnvelope.getMaximum(0) <= validArea.getMaximum(0)) {
+                                return reducedGeometry;
+                            }
+                            break;
+                        case BOTTOM:
+                            if (reducedEnvelope.getMinimum(1) >= validArea.getMinimum(1)) {
+                                return reducedGeometry;
+                            }
+                            break;
+                        case LEFT:
+                            if (reducedEnvelope.getMinimum(0) >= validArea.getMinimum(0)) {
+                                return reducedGeometry;
+                            }
+                            break;
+                        default:
+                            throw new RuntimeException("Unexpected side " + side);
+                    }
+                }
+
+                // we did not... oh well, the grid to world might contain a rotation, try the other
+                // sides
+                curr = curr.next();
             }
-
-            GridGeometry2D reducedGeometry =
-                    new GridGeometry2D(
-                            reducedRange, gg.getGridToCRS(), gg.getCoordinateReferenceSystem());
-
-            // see if we actually reduced the grid geometry on the side we needed it to
-            Envelope reducedEnvelope = reducedGeometry.getEnvelope();
-            switch (side) {
-                case TOP:
-                    if (reducedEnvelope.getMaximum(1) <= validArea.getMaximum(1)) {
-                        return reducedGeometry;
-                    }
-                    break;
-                case RIGHT:
-                    if (reducedEnvelope.getMaximum(0) <= validArea.getMaximum(0)) {
-                        return reducedGeometry;
-                    }
-                    break;
-                case BOTTOM:
-                    if (reducedEnvelope.getMinimum(1) >= validArea.getMinimum(1)) {
-                        return reducedGeometry;
-                    }
-                    break;
-                case LEFT:
-                    if (reducedEnvelope.getMinimum(0) >= validArea.getMinimum(0)) {
-                        return reducedGeometry;
-                    }
-                    break;
-                default:
-                    throw new RuntimeException("Unexpected side " + side);
-            }
-
-            // we did not... oh well, the grid to world might contain a rotation, try the other
-            // sides
-            curr = curr.next();
         }
 
         // if we got here, we could not perform the reduction, might not be fatal, so let's just log

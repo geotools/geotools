@@ -16,12 +16,15 @@
  */
 package org.geotools.process.elasticsearch;
 
+import com.github.davidmoten.geo.GeoHash;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.Operations;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.geometry.Envelope;
 import org.opengis.parameter.ParameterValueGroup;
 
@@ -47,5 +50,21 @@ class GridCoverageUtil {
         param.parameter("Envelope").setValue(crop);
 
         return (GridCoverage2D) processor.doOperation(param);
+    }
+
+    /**
+     * Adds a buffer of one row and column around the envelope, respecting the latitude max values.
+     * Since it's called only with reprojection enabled, assuming the original envelope is in the
+     * normal range of lat and lon
+     */
+    public static ReferencedEnvelope pad(
+            org.locationtech.jts.geom.Envelope envelope, int precision) {
+        double cellWidth = GeoHash.widthDegrees(precision);
+        double cellHeight = GeoHash.widthDegrees(precision);
+        double minLon = Math.max(-180 + cellWidth / 2, envelope.getMinX() - cellWidth);
+        double maxLon = Math.min(180 - cellWidth / 2, envelope.getMaxX() + cellWidth);
+        double minLat = Math.max(-90 + cellHeight / 2, envelope.getMinY() - cellHeight);
+        double maxLat = Math.min(90 - cellHeight / 2, envelope.getMaxY() + cellHeight);
+        return new ReferencedEnvelope(minLon, maxLon, minLat, maxLat, DefaultGeographicCRS.WGS84);
     }
 }

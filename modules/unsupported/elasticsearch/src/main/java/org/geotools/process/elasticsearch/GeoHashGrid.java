@@ -16,6 +16,8 @@
  */
 package org.geotools.process.elasticsearch;
 
+import static org.geotools.process.elasticsearch.GridCoverageUtil.pad;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.davidmoten.geo.GeoHash;
@@ -112,9 +114,7 @@ abstract class GeoHashGrid {
         }
         computeMinLonOffset(srcEnvelope);
         envelope = computeEnvelope(srcEnvelope, precision);
-        if (reproject) {
-            envelope = pad(envelope);
-        }
+        if (reproject) envelope = pad(envelope, precision);
 
         // the envelope is expressed on the geohash cell centers, boundingbox is the full
         // coverage of the raster instead
@@ -145,19 +145,6 @@ abstract class GeoHashGrid {
                 });
         cells.forEach(cell -> updateGrid(cell.getGeohash(), cell.getValue()));
         LOGGER.fine("Read " + cells.size() + " aggregation buckets");
-    }
-
-    /**
-     * Adds a buffer of one row and column around the envelope, respecting the latitude max values.
-     * Since it's called only with reprojection enabled, assuming the original envelope is in the
-     * norma range of lat and lon
-     */
-    private Envelope pad(Envelope envelope) {
-        double minLon = Math.max(-180 + cellWidth / 2, envelope.getMinX() - cellWidth);
-        double maxLon = Math.min(180 - cellWidth / 2, envelope.getMaxX() + cellWidth);
-        double minLat = Math.max(-90 + cellHeight / 2, envelope.getMinY() - cellHeight);
-        double maxLat = Math.min(90 - cellHeight / 2, envelope.getMaxY() + cellHeight);
-        return new ReferencedEnvelope(minLon, maxLon, minLat, maxLat, DefaultGeographicCRS.WGS84);
     }
 
     protected abstract Number computeCellValue(Map<String, Object> bucket);

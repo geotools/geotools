@@ -16,11 +16,11 @@
  */
 package org.geotools.process.elasticsearch;
 
-import com.github.davidmoten.geo.GeoHash;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.Query;
+import org.geotools.data.elasticsearch.GeohashUtil;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
@@ -30,14 +30,13 @@ import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.process.vector.VectorProcess;
+import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.coverage.grid.GridGeometry;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.operation.TransformException;
 import org.opengis.util.ProgressListener;
 
 @SuppressWarnings("unused")
@@ -123,9 +122,7 @@ public class GeoHashGridProcess implements VectorProcess {
         try {
             // setup sane defaults for aggregation definition, if missing
             if (aggregationDefinition == null)
-                aggregationDefinition =
-                        defaultAggregation(
-                                argOutputEnv, argOutputWidth, argOutputHeight, obsFeatures);
+                aggregationDefinition = defaultAggregation(argOutputEnv, argOutputWidth);
 
             // construct and populate grid
             final GeoHashGrid geoHashGrid =
@@ -142,32 +139,9 @@ public class GeoHashGridProcess implements VectorProcess {
         }
     }
 
-    String defaultAggregation(
-            ReferencedEnvelope envelope,
-            Integer width,
-            Integer height,
-            SimpleFeatureCollection obsFeatures)
-            throws FactoryException, TransformException {
-        ReferencedEnvelope wgse = envelope.transform(DefaultGeographicCRS.WGS84, true);
-        double cellw = wgse.getWidth() / width;
-        double cellh = wgse.getHeight() / height;
-
-        // find out which GeoHash precision best fits the target width and height, we need
-        // something just a little bit more precise
-        int precision = 0;
-        double ghw = 0, ghh = 0;
-        for (; precision <= GeoHash.MAX_HASH_LENGTH; precision++) {
-            ghw = GeoHash.widthDegrees(precision);
-            ghh = GeoHash.heightDegrees(precision);
-            if (ghw <= cellw && ghh <= cellh) break;
-        }
-        // stick with a lower precision, number of cells goes up by a factor of 32 for
-        // each precision level
-        if (precision > 1 && (ghw != cellw || ghh != cellh)) {
-            precision = precision - 1;
-        }
-
-        // having the precision, compute the aggregation definition
+    String defaultAggregation(ReferencedEnvelope envelope, Integer width) {
+        int precision = GeohashUtil.getPrecisionFromScale(envelope, width);
+        // sets an empty field, which the store will fill in later before encoding the request
         return "{\"agg\": {\"geohash_grid\": {\"size\": 65536, \"field\": \"\", \"precision\": "
                 + precision
                 + "}}}";
@@ -178,6 +152,15 @@ public class GeoHashGridProcess implements VectorProcess {
                             name = "outputBBOX",
                             description = "Georeferenced bounding box of the output")
                     ReferencedEnvelope envelope,
+            @DescribeParameter(
+                            name = "outputWidth",
+                            description = "Width of output raster in pixels")
+                    Integer argOutputWidth,
+            @DescribeParameter(
+                            name = "aggregationDefinition",
+                            description = "Native Elasticsearch Aggregation definition",
+                            min = 0)
+                    String aggregationDefinition,
             Query targetQuery,
             GridGeometry targetGridGeometry)
             throws ProcessException {
@@ -190,9 +173,19 @@ public class GeoHashGridProcess implements VectorProcess {
         }
         final BBOX bbox;
         try {
-            if (envelope.getCoordinateReferenceSystem() != null) {
+            boolean reproject =
+                    !CRS.equalsIgnoreMetadata(
+                            envelope.getCoordinateReferenceSystem(), DefaultGeographicCRS.WGS84);
+            if (reproject) {
                 envelope = envelope.transform(DefaultGeographicCRS.WGS84, false);
+                Integer precision;
+                if (aggregationDefinition == null) {
+                    aggregationDefinition = defaultAggregation(envelope, argOutputWidth);
+                }
+                precision = GeohashUtil.getPrecision(aggregationDefinition);
+                envelope = GridCoverageUtil.pad(envelope, precision);
             }
+
             bbox =
                     FILTER_FACTORY.bbox(
                             geometryName,

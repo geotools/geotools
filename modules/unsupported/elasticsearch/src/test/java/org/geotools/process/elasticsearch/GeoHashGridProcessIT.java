@@ -140,13 +140,13 @@ public class GeoHashGridProcessIT extends ElasticTestSupport {
         // At precision 2 cells are 11.25 by 5.625 degrees
         Envelope envelope = grid.getEnvelope();
         assertEquals(-67.5, envelope.getMinimum(0), 0d);
-        assertEquals(-56.25, envelope.getMinimum(1), 0d);
+        assertEquals(-61.875, envelope.getMinimum(1), 0d);
         assertEquals(56.25, envelope.getMaximum(0), 0d);
-        assertEquals(56.25, envelope.getMaximum(1), 0d);
+        assertEquals(61.875, envelope.getMaximum(1), 0d);
         // smaller area, smaller grid (at precision 2 cells are rectangular)
         RenderedImage ri = grid.getRenderedImage();
         assertEquals(11, ri.getWidth());
-        assertEquals(20, ri.getHeight());
+        assertEquals(22, ri.getHeight());
         // check data type and extract array
         assertEquals(DataBuffer.TYPE_FLOAT, ri.getData().getTransferType());
         float[] data = ((DataBufferFloat) ri.getData().getDataBuffer()).getData();

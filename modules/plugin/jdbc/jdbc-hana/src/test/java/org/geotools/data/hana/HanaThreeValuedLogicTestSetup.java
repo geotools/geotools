@@ -32,7 +32,7 @@ public class HanaThreeValuedLogicTestSetup extends JDBCThreeValuedLogicTestSetup
     @Override
     protected void createAbcTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.createTestSchema();
 
             String[][] cols = {{"name", "VARCHAR(10)"}, {"a", "INT"}, {"b", "INT"}, {"c", "INT"}};
@@ -46,7 +46,7 @@ public class HanaThreeValuedLogicTestSetup extends JDBCThreeValuedLogicTestSetup
     @Override
     protected void dropAbcTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.dropTestTableCascade(TABLE);
         }
     }

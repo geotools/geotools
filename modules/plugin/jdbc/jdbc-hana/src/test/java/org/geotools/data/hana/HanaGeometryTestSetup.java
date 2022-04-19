@@ -30,7 +30,7 @@ public class HanaGeometryTestSetup extends JDBCGeometryTestSetup {
     @Override
     protected void dropSpatialTable(String tableName) throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.dropTestTableCascade(tableName);
         }
     }

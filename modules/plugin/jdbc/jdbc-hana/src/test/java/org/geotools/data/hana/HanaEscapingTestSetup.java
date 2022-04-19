@@ -15,7 +15,7 @@ public class HanaEscapingTestSetup extends JDBCEscapingTestSetup {
     @Override
     protected void dropEscapingTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.dropTestTableCascade(TABLE);
         }
     }

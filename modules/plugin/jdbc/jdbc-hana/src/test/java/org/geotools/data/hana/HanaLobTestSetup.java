@@ -32,7 +32,7 @@ public class HanaLobTestSetup extends JDBCLobTestSetup {
     @Override
     protected void createLobTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.createTestSchema();
 
             String[][] cols = {
@@ -55,7 +55,7 @@ public class HanaLobTestSetup extends JDBCLobTestSetup {
     @Override
     protected void dropLobTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.dropTestTableCascade(TABLE);
         }
     }

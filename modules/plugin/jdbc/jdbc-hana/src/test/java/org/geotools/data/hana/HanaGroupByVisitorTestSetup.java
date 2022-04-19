@@ -32,7 +32,7 @@ public class HanaGroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetup {
     @Override
     protected void createBuildingsTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.createTestSchema();
 
             String[][] cols = {
@@ -160,7 +160,7 @@ public class HanaGroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetup {
     @Override
     protected void dropBuildingsTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.dropTestTableCascade(TABLE);
         }
     }

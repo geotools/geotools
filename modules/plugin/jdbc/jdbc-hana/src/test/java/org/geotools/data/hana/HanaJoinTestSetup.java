@@ -38,7 +38,7 @@ public class HanaJoinTestSetup extends JDBCJoinTestSetup {
     @Override
     protected void createJoinTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.createTestSchema();
 
             String[][] cols1 = {
@@ -90,7 +90,7 @@ public class HanaJoinTestSetup extends JDBCJoinTestSetup {
     @Override
     protected void dropJoinTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.dropTestTableCascade(TABLE1);
             htu.dropTestTableCascade(TABLE2);
         }

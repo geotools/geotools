@@ -32,7 +32,7 @@ public class HanaEmptyTestSetup extends JDBCEmptyTestSetup {
     @Override
     protected void createEmptyTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.createTestSchema();
 
             String[][] cols = {{"key", "INT PRIMARY KEY"}, {"geom", "ST_Geometry(1000004326)"}};
@@ -43,7 +43,7 @@ public class HanaEmptyTestSetup extends JDBCEmptyTestSetup {
     @Override
     protected void dropEmptyTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.dropTestTableCascade(TABLE);
         }
     }

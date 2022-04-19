@@ -24,13 +24,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import org.geotools.data.hana.metadata.MetadataDdl;
 import org.geotools.data.hana.metadata.Srs;
 
 /** @author Stefan Uhrig, SAP SE */
 public class HanaTestUtil {
-
-    private static final String SCHEMA = "geotools";
 
     private static final String HANA_UUID = "8E468249703240F0ACDE78162124A62F";
 
@@ -87,11 +86,14 @@ public class HanaTestUtil {
         }
     }
 
-    public HanaTestUtil(Connection conn) {
+    public HanaTestUtil(Connection conn, Properties fixture) {
         this.conn = conn;
+        this.fixture = fixture;
     }
 
     private Connection conn;
+
+    private Properties fixture;
 
     public boolean srsExists(int srid) throws SQLException {
         try (PreparedStatement ps =
@@ -144,8 +146,12 @@ public class HanaTestUtil {
         execute(sql.toString());
     }
 
+    public String getTestSchema() {
+        return fixture.getProperty("schema", "geotools");
+    }
+
     public void createTestSchema() throws SQLException {
-        createSchema(SCHEMA);
+        createSchema(getTestSchema());
     }
 
     public String resolveSchema(String schemaName) throws SQLException {
@@ -197,7 +203,7 @@ public class HanaTestUtil {
     }
 
     public void createRegisteredTestTable(String tableName, String[]... cols) throws SQLException {
-        createRegisteredTable(SCHEMA, tableName, cols);
+        createRegisteredTable(getTestSchema(), tableName, cols);
     }
 
     public void createTable(String schemaName, String tableName, String[]... cols)
@@ -223,7 +229,7 @@ public class HanaTestUtil {
     }
 
     public void createTestTable(String tableName, String[]... cols) throws SQLException {
-        createTable(SCHEMA, tableName, cols);
+        createTable(getTestSchema(), tableName, cols);
     }
 
     public List<String> getPrimaryKeyColumnsOfTable(String schemaName, String tableName)
@@ -286,7 +292,7 @@ public class HanaTestUtil {
     }
 
     public void dropTestTableCascade(String tableName) throws SQLException {
-        dropTableCascade(SCHEMA, tableName);
+        dropTableCascade(getTestSchema(), tableName);
     }
 
     public void dropTable(String schemaName, String tableName) throws SQLException {
@@ -385,7 +391,7 @@ public class HanaTestUtil {
 
     public void createTestView(String viewName, String sourceTableName, String... selectedFields)
             throws SQLException {
-        createView(SCHEMA, viewName, sourceTableName, selectedFields);
+        createView(getTestSchema(), viewName, sourceTableName, selectedFields);
     }
 
     public void dropView(String schemaName, String viewName) throws SQLException {
@@ -399,7 +405,7 @@ public class HanaTestUtil {
     }
 
     public void dropTestView(String viewName) throws SQLException {
-        dropView(SCHEMA, viewName);
+        dropView(getTestSchema(), viewName);
     }
 
     @SuppressWarnings("PMD.CloseResource") // try-with-resources would be nicer
@@ -476,7 +482,7 @@ public class HanaTestUtil {
     }
 
     public void insertIntoTestTable(String tableName, Object... values) throws SQLException {
-        insertIntoTable(SCHEMA, tableName, values);
+        insertIntoTable(getTestSchema(), tableName, values);
     }
 
     public void insertFieldsIntoTable(
@@ -512,7 +518,7 @@ public class HanaTestUtil {
 
     public Object nextTestSequenceValueForColumn(String tableName, String columnName) {
         String sequenceName = getSequenceName(tableName, columnName);
-        return new NextSequenceValue(SCHEMA, sequenceName);
+        return new NextSequenceValue(getTestSchema(), sequenceName);
     }
 
     public Object nextSequenceValue(String schemaName, String sequenceName) {

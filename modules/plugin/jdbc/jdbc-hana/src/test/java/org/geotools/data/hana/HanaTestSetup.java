@@ -32,9 +32,14 @@ public class HanaTestSetup extends HanaTestSetupBase {
     private static final String TABLE4 = "ft4";
 
     @Override
+    public boolean canResetSchema() {
+        return false;
+    }
+
+    @Override
     protected void setUpData() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
 
             Srs srs =
                     new Srs(

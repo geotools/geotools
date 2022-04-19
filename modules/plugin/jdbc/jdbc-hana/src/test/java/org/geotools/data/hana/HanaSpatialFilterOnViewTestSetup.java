@@ -28,7 +28,7 @@ public class HanaSpatialFilterOnViewTestSetup extends HanaTestSetupBase {
     @Override
     protected void setUpData() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.createTestSchema();
 
             htu.dropTestView(VIEW);

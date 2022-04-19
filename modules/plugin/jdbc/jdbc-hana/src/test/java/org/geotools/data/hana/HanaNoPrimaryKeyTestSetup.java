@@ -31,7 +31,7 @@ public class HanaNoPrimaryKeyTestSetup extends JDBCNoPrimaryKeyTestSetup {
     @Override
     protected void createLakeTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.createTestSchema();
 
             String[][] cols = {
@@ -50,7 +50,7 @@ public class HanaNoPrimaryKeyTestSetup extends JDBCNoPrimaryKeyTestSetup {
     @Override
     protected void dropLakeTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.dropTestTableCascade(TABLE);
         }
     }

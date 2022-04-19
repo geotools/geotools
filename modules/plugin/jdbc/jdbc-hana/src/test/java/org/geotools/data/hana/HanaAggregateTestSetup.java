@@ -31,7 +31,7 @@ public class HanaAggregateTestSetup extends JDBCAggregateTestSetup {
     @Override
     protected void createAggregateTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.createTestSchema();
 
             String[][] cols = {
@@ -66,7 +66,7 @@ public class HanaAggregateTestSetup extends JDBCAggregateTestSetup {
     @Override
     protected void dropAggregateTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.dropTestTableCascade(TABLE);
         }
     }

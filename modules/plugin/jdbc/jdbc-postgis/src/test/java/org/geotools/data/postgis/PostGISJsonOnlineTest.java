@@ -25,8 +25,8 @@ import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.jdbc.JDBCFeatureReader;
+import org.geotools.jdbc.JDBCJsonArrayContainsOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
-import org.geotools.jdbc.JDBCTestSupport;
 import org.junit.Test;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
@@ -39,7 +39,7 @@ import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 
-public class PostGISJsonOnlineTest extends JDBCTestSupport {
+public class PostGISJsonOnlineTest extends JDBCJsonArrayContainsOnlineTest {
 
     PostGISJsonTestSetup pgJsonTestSetup;
 
@@ -423,5 +423,13 @@ public class PostGISJsonOnlineTest extends JDBCTestSupport {
         PropertyIsEqualTo filter = ff.equal(ff.property(aname("name")), ff.literal(name), true);
         Query q = new Query(tname("jsontest"), filter);
         return DataUtilities.first(fs.getFeatures(q));
+    }
+
+    @Test
+    public void testJSONArrayContainsFunction() throws Exception {
+        checkFunction("jsonColumn", "/arrayStrValues", "EL2", 1);
+        if (pgJsonTestSetup.supportJsonB) {
+            checkFunction("jsonbColumn", "/arrayStrValues", "EL2", 1);
+        }
     }
 }

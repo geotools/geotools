@@ -26,6 +26,7 @@ import org.geotools.data.oracle.sdo.SDOSqlDumper;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.function.FilterFunction_area;
+import org.geotools.filter.function.JsonArrayContainsFunction;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.geometry.jts.JTS;
@@ -160,6 +161,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         caps.addType(Beyond.class);
 
         caps.addType(FilterFunction_sdonn.class);
+        caps.addType(JsonArrayContainsFunction.class);
 
         // replaces the OracleDialect.registerFunction support
         caps.addType(FilterFunction_area.class);
@@ -228,6 +230,13 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
                 out.write("SDO_GEOM.SDO_AREA(");
                 s1.accept(this, String.class);
                 out.write(",0.05)");
+                return extraData;
+            } catch (IOException ioe) {
+                throw new RuntimeException(IO_ERROR, ioe);
+            }
+        } else if (function instanceof JsonArrayContainsFunction) {
+            try {
+                out.write(jsonExists(function));
                 return extraData;
             } catch (IOException ioe) {
                 throw new RuntimeException(IO_ERROR, ioe);
@@ -599,9 +608,15 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
             Expression right,
             Class leftContext,
             Class rightContext) {
-
-        super.encodeBinaryComparisonOperator(
-                filter, extraData, left, right, leftContext, rightContext);
+        if (left instanceof JsonArrayContainsFunction) {
+            try {
+                writeBinaryExpressionMember(left, leftContext);
+            } catch (java.io.IOException ioe) {
+                throw new RuntimeException(IO_ERROR, ioe);
+            }
+        } else
+            super.encodeBinaryComparisonOperator(
+                    filter, extraData, left, right, leftContext, rightContext);
     }
 
     public String jsonExists(Function function) {

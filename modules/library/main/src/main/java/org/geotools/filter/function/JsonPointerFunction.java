@@ -23,7 +23,6 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonPointer;
-import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.core.JsonTokenId;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -32,9 +31,7 @@ import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 
 /** Applies a JSON pointer on a given JSON string, extracting a value out of it */
-public class JsonPointerFunction extends FunctionExpressionImpl {
-
-    private static final JsonToken END_OF_STREAM = null;
+public class JsonPointerFunction extends FunctionExpressionImpl implements JsonFunctionUtils {
     private final JsonFactory factory;
 
     public static FunctionName NAME =
@@ -86,71 +83,5 @@ public class JsonPointerFunction extends FunctionExpressionImpl {
 
         // not found
         return null;
-    }
-
-    private void serializeContents(JsonParser parser, JsonGenerator generator) throws IOException {
-        switch (parser.currentTokenId()) {
-            case JsonTokenId.ID_START_ARRAY:
-                serializeArray(parser, generator);
-                break;
-            case JsonTokenId.ID_START_OBJECT:
-                serializeObject(parser, generator);
-                break;
-        }
-    }
-
-    private void serializeArray(JsonParser parser, JsonGenerator generator) throws IOException {
-        generator.writeStartArray();
-        for (JsonToken token = parser.nextToken();
-                token != END_OF_STREAM && token != JsonToken.END_ARRAY;
-                token = parser.nextToken()) {
-            switch (parser.currentTokenId()) {
-                case JsonTokenId.ID_STRING:
-                    generator.writeString(parser.getText());
-                    break;
-                case JsonTokenId.ID_NUMBER_FLOAT:
-                    generator.writeNumber(parser.getFloatValue());
-                    break;
-                case JsonTokenId.ID_NUMBER_INT:
-                    generator.writeNumber(parser.getIntValue());
-                    break;
-                case JsonTokenId.ID_TRUE:
-                case JsonTokenId.ID_FALSE:
-                    generator.writeBoolean(parser.getBooleanValue());
-                    break;
-                default:
-                    serializeContents(parser, generator);
-            }
-        }
-        generator.writeEndArray();
-    }
-
-    private void serializeObject(JsonParser parser, JsonGenerator generator) throws IOException {
-        generator.writeStartObject();
-        for (JsonToken token = parser.nextToken();
-                token != END_OF_STREAM && token != JsonToken.END_OBJECT;
-                token = parser.nextToken()) {
-            switch (parser.currentTokenId()) {
-                case JsonTokenId.ID_FIELD_NAME:
-                    generator.writeFieldName(parser.getCurrentName());
-                    break;
-                case JsonTokenId.ID_STRING:
-                    generator.writeString(parser.getText());
-                    break;
-                case JsonTokenId.ID_NUMBER_FLOAT:
-                    generator.writeNumber(parser.getFloatValue());
-                    break;
-                case JsonTokenId.ID_NUMBER_INT:
-                    generator.writeNumber(parser.getIntValue());
-                    break;
-                case JsonTokenId.ID_TRUE:
-                case JsonTokenId.ID_FALSE:
-                    generator.writeBoolean(parser.getBooleanValue());
-                    break;
-                default:
-                    serializeContents(parser, generator);
-            }
-        }
-        generator.writeEndObject();
     }
 }

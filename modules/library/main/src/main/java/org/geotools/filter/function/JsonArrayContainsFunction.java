@@ -1,14 +1,13 @@
 package org.geotools.filter.function;
 
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
+
 import com.fasterxml.jackson.core.*;
+import java.io.IOException;
+import java.io.StringWriter;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
-
-import java.io.IOException;
-import java.io.StringWriter;
-
-import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 public class JsonArrayContainsFunction extends FunctionExpressionImpl implements JsonFunctionUtils {
 
@@ -40,7 +39,8 @@ public class JsonArrayContainsFunction extends FunctionExpressionImpl implements
             try (JsonParser parser = factory.createParser(json)) {
                 while (parser.nextToken() != END_OF_STREAM && !found) {
                     final JsonPointer pointer = parser.getParsingContext().pathAsPointer();
-                    if (pointer.equals(expectedPointer) && parser.currentTokenId() == JsonTokenId.ID_START_ARRAY) {
+                    if (pointer.equals(expectedPointer)
+                            && parser.currentTokenId() == JsonTokenId.ID_START_ARRAY) {
                         StringWriter writer = new StringWriter();
                         try (final JsonGenerator generator = factory.createGenerator(writer)) {
                             serializeArray(parser, generator);
@@ -51,7 +51,6 @@ public class JsonArrayContainsFunction extends FunctionExpressionImpl implements
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-
         }
         return found;
     }

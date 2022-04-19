@@ -424,4 +424,36 @@ public class PostGISJsonOnlineTest extends JDBCTestSupport {
         Query q = new Query(tname("jsontest"), filter);
         return DataUtilities.first(fs.getFeatures(q));
     }
+
+    @Test
+    public void testJSONArrayContainsFunction() throws Exception {
+        ContentFeatureSource fs = dataStore.getFeatureSource(tname("jsontest"));
+        FilterFactory ff = dataStore.getFilterFactory();
+        arrayContainsString(fs, ff, "jsonColumn");
+        if (pgJsonTestSetup.supportJsonB) {
+            arrayContainsString(fs, ff, "jsonbColumn");
+        }
+    }
+
+    private void arrayContainsString(ContentFeatureSource fs, FilterFactory ff, String column)
+            throws IOException {
+        Function jsonArrayContains =
+                ff.function(
+                        "jsonArrayContains",
+                        ff.property(column),
+                        ff.literal("/arrayValues"),
+                        ff.literal("EL2"));
+        Filter filter = ff.equals(jsonArrayContains, ff.literal(true));
+        Query query = new Query(tname("jsontest"), filter);
+        FeatureCollection collection = fs.getFeatures(query);
+        try (FeatureIterator it = collection.features()) {
+            int size = 0;
+            while (it.hasNext()) {
+                Feature f = it.next();
+                assertTrue((boolean) jsonArrayContains.evaluate(f));
+                size++;
+            }
+            assertEquals(1, size);
+        }
+    }
 }

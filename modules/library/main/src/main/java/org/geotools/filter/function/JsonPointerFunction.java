@@ -17,15 +17,14 @@
 
 package org.geotools.filter.function;
 
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
+
 import com.fasterxml.jackson.core.*;
+import java.io.IOException;
+import java.io.StringWriter;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
-
-import java.io.IOException;
-import java.io.StringWriter;
-
-import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 /** Applies a JSON pointer on a given JSON string, extracting a value out of it */
 public class JsonPointerFunction extends FunctionExpressionImpl implements JsonFunctionUtils {

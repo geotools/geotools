@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.core.JsonTokenId;
-
 import java.io.IOException;
 
 public interface JsonFunctionUtils {
@@ -25,8 +24,8 @@ public interface JsonFunctionUtils {
     default void serializeArray(JsonParser parser, JsonGenerator generator) throws IOException {
         generator.writeStartArray();
         for (JsonToken token = parser.nextToken();
-             token != END_OF_STREAM && token != JsonToken.END_ARRAY;
-             token = parser.nextToken()) {
+                token != END_OF_STREAM && token != JsonToken.END_ARRAY;
+                token = parser.nextToken()) {
             switch (parser.currentTokenId()) {
                 case JsonTokenId.ID_STRING:
                     generator.writeString(parser.getText());
@@ -51,8 +50,8 @@ public interface JsonFunctionUtils {
     default void serializeObject(JsonParser parser, JsonGenerator generator) throws IOException {
         generator.writeStartObject();
         for (JsonToken token = parser.nextToken();
-             token != END_OF_STREAM && token != JsonToken.END_OBJECT;
-             token = parser.nextToken()) {
+                token != END_OF_STREAM && token != JsonToken.END_OBJECT;
+                token = parser.nextToken()) {
             switch (parser.currentTokenId()) {
                 case JsonTokenId.ID_FIELD_NAME:
                     generator.writeFieldName(parser.getCurrentName());

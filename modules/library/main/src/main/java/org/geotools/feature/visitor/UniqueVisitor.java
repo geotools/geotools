@@ -16,7 +16,6 @@
  */
 package org.geotools.feature.visitor;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -35,6 +34,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.PropertyName;
 
 /**
  * Generates a list of unique values from a collection
@@ -46,7 +46,6 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
     private List<Expression> expressions = new LinkedList<>();
     Set<Object> set = new HashSet<>();
     Set<Object> skipped = new HashSet<>();
-    List<String> attrNames = new LinkedList<>();
     int startIndex = 0;
     int maxFeatures = Integer.MAX_VALUE;
     int currentItem = 0;
@@ -64,7 +63,6 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
 
     public UniqueVisitor(String... attributeTypeNames) {
         for (String atn : attributeTypeNames) {
-            attrNames.add(atn);
             expressions.add(factory.property(atn));
         }
     }
@@ -72,7 +70,6 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
     public UniqueVisitor(SimpleFeatureType type, Integer... indexes) throws IllegalFilterException {
         for (Integer i : indexes) {
             String attrName = type.getDescriptor(i).getLocalName();
-            attrNames.add(attrName);
             expressions.add(factory.property(attrName));
         }
     }
@@ -81,17 +78,12 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
             throws IllegalFilterException {
         for (String an : attributeNames) {
             String attrName = type.getDescriptor(an).getLocalName();
-            attrNames.add(attrName);
             expressions.add(factory.property(attrName));
         }
     }
 
     public UniqueVisitor(Expression... expressions) {
-        FilterAttributeExtractor extractor = new FilterAttributeExtractor();
         for (Expression e : expressions) {
-            e.accept(extractor, null);
-            attrNames.addAll(extractor.getAttributeNameSet());
-            extractor.clear();
             this.expressions.add(e);
         }
     }
@@ -199,12 +191,15 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
         if (value instanceof Collection) { // convert to set
             @SuppressWarnings("unchecked")
             Collection<Object> cast = (Collection<Object>) value;
-            Set<Object> uniques = createNewSet(cast);
-            this.set = uniques;
+            this.set = createNewSet(cast);
         } else {
             @SuppressWarnings("unchecked")
             List<Object> collection = Converters.convert(value, List.class);
-            this.set = createNewSet(collection);
+            if (collection != null) {
+                this.set = createNewSet(collection);
+            } else {
+                this.set = createNewSet(Collections.singleton(value));
+            }
         }
     }
 
@@ -223,11 +218,28 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
     @Override
     public CalcResult getResult() {
         if (set.isEmpty()) return CalcResult.NULL_RESULT;
-        else return new UniqueResult(set, this.preserveOrder, attrNames);
+        return new UniqueResult(set, this.preserveOrder);
     }
 
     public List<String> getAttrNames() {
-        return attrNames;
+        List<String> attributes = new LinkedList<>();
+        for (Expression e : expressions) {
+            attributes.add(getPropertyName(e));
+        }
+        return attributes;
+    }
+
+    private String getPropertyName(Expression e) {
+        String name = null;
+        if (e instanceof PropertyName) {
+            name = ((PropertyName) e).getPropertyName();
+        } else {
+            FilterAttributeExtractor extractor = new FilterAttributeExtractor();
+            e.accept(extractor, null);
+            String[] attrs = extractor.getAttributeNames();
+            if (attrs != null && attrs.length > 0) name = extractor.getAttributeNames()[0];
+        }
+        return name;
     }
 
     public static class UniqueResult extends AbstractCalcResult {
@@ -237,18 +249,12 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
         private boolean preserveOrder = false;
 
         public UniqueResult(Set<Object> newSet) {
-            this(newSet, Collections.emptyList());
+            this(newSet, false);
         }
 
-        public UniqueResult(Set<Object> newSet, List<String> attributeNames) {
-            this(newSet, false, attributeNames);
-        }
-
-        public UniqueResult(
-                Set<Object> newSet, boolean preserveOrder, List<String> attributeNames) {
+        public UniqueResult(Set<Object> newSet, boolean preserveOrder) {
             this.unique = newSet;
             this.preserveOrder = preserveOrder;
-            this.attributeNames = attributeNames;
         }
 
         public static <T> Set<T> createNewSet(Collection<T> collection, boolean preserveOrder) {
@@ -284,16 +290,12 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
             }
 
             if (resultsToAdd instanceof UniqueResult) {
-                List<String> attributeNames = this.attributeNames;
-                UniqueResult res = (UniqueResult) resultsToAdd;
-                if (attributeNames != null) attributeNames.addAll(res.attributeNames);
-                else attributeNames = new ArrayList<>(res.attributeNames);
                 // add one set to the other (to create one big unique list)
                 Set<Object> newSet = createNewSet(unique, preserveOrder);
                 @SuppressWarnings("unchecked")
                 Set<Object> other = (Set<Object>) resultsToAdd.getValue();
                 newSet.addAll(other);
-                return new UniqueResult(newSet, preserveOrder, attributeNames);
+                return new UniqueResult(newSet, preserveOrder);
             } else {
                 throw new IllegalArgumentException(
                         "The CalcResults claim to be compatible, but the appropriate merge method has not been implemented.");

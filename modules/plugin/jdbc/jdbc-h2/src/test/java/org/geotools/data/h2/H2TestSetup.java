@@ -123,7 +123,7 @@ public class H2TestSetup extends JDBCTestSetup {
 
         sql =
                 "INSERT INTO \"geotools\".\"ft4\" VALUES ("
-                        + "6,ST_GeomFromText('POINT(6 6)',4326), 3, 3.3,'two_3');";
+                        + "6,ST_GeomFromText('POINT(6 6)',4326), 3, 3.3,'three');";
         run(sql);
 
         sql = "CALL CreateSpatialIndex('geotools', 'ft4', 'geometry', 4326)";

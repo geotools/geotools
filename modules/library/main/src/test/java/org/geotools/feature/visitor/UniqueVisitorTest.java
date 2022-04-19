@@ -21,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -78,31 +79,23 @@ public class UniqueVisitorTest {
                     null),
             SimpleFeatureBuilder.build(
                     uniqueValuesCountTestType,
-                    new Object[] {7, "D", 500.0, 8, wktParser.read("POINT(-5 5)")},
+                    new Object[] {7, "C", 20.0, 10, wktParser.read("POINT(5 -5)")},
                     null),
             SimpleFeatureBuilder.build(
                     uniqueValuesCountTestType,
-                    new Object[] {8, "C", 150.0, 9, wktParser.read("POINT(-5 5)")},
+                    new Object[] {8, "C", 30.0, 11, wktParser.read("POINT(5 -5)")},
                     null),
             SimpleFeatureBuilder.build(
                     uniqueValuesCountTestType,
-                    new Object[] {9, "C", 20.0, 10, wktParser.read("POINT(5 -5)")},
+                    new Object[] {9, "A", 500.0, 12, wktParser.read("POINT(0 0)")},
                     null),
             SimpleFeatureBuilder.build(
                     uniqueValuesCountTestType,
-                    new Object[] {10, "C", 30.0, 11, wktParser.read("POINT(5 -5)")},
+                    new Object[] {10, "A", 500.0, 12, wktParser.read("POINT(0 0)")},
                     null),
             SimpleFeatureBuilder.build(
                     uniqueValuesCountTestType,
                     new Object[] {11, "A", 500.0, 12, wktParser.read("POINT(0 0)")},
-                    null),
-            SimpleFeatureBuilder.build(
-                    uniqueValuesCountTestType,
-                    new Object[] {12, "A", 500.0, 12, wktParser.read("POINT(0 0)")},
-                    null),
-            SimpleFeatureBuilder.build(
-                    uniqueValuesCountTestType,
-                    new Object[] {13, "A", 500.0, 12, wktParser.read("POINT(0 0)")},
                     null),
         };
         // creating the feature collection
@@ -125,7 +118,7 @@ public class UniqueVisitorTest {
         UniqueVisitor uniqueVisitor = new UniqueVisitor("aDoubleValue");
         featureCollection.accepts(uniqueVisitor, null);
         Set result = uniqueVisitor.getResult().toSet();
-        List expected = Arrays.asList(10d, 20d, 30d, 50d, 60d, 150d, 500d);
+        List expected = Arrays.asList(10d, 20d, 30d, 50d, 60d, 500d);
         assertEquals(expected.size(), result.size());
         assertTrue(result.containsAll(expected));
     }
@@ -137,25 +130,18 @@ public class UniqueVisitorTest {
         featureCollection.accepts(uniqueVisitor, null);
         Set result = uniqueVisitor.getResult().toSet();
 
-        assertEquals(10, result.size());
-        List<String> attributes = uniqueVisitor.getAttrNames();
-        assertEquals("aStringValue", attributes.get(0));
-        assertEquals("aDoubleValue", attributes.get(1));
-        LinkedList<Object> shouldContainOnlyOne = new LinkedList<>();
-        shouldContainOnlyOne.add("C");
-        shouldContainOnlyOne.add(20d);
-        LinkedList<Object> shouldContainOnlyOne2 = new LinkedList<>();
-        shouldContainOnlyOne2.add("A");
-        shouldContainOnlyOne2.add(500d);
-        for (Object o : result) {
-            List values = (List) o;
-            assertTrue(values.get(0) instanceof String);
-            assertTrue(values.get(1) instanceof Double);
-        }
-        long count1 = result.stream().filter(o -> o.equals(shouldContainOnlyOne)).count();
-        long count2 = result.stream().filter(o -> o.equals(shouldContainOnlyOne2)).count();
-        assertEquals(1l, count1);
-        assertEquals(1l, count2);
+        Set expected = new HashSet(8);
+        addValues(expected, "A", 500d);
+        addValues(expected, "C", 30d);
+        addValues(expected, "C", 20d);
+        addValues(expected, "E", 10d);
+        addValues(expected, "E", 60d);
+        addValues(expected, "D", 30d);
+        addValues(expected, "B", 10d);
+        addValues(expected, "A", 50d);
+
+        assertEquals(expected.size(), result.size());
+        assertTrue(expected.containsAll(result));
     }
 
     @Test
@@ -166,22 +152,29 @@ public class UniqueVisitorTest {
         featureCollection.accepts(uniqueVisitor, null);
         Set result = uniqueVisitor.getResult().toSet();
 
-        assertEquals(11, result.size());
-        List<String> attributes = uniqueVisitor.getAttrNames();
-        assertEquals("aStringValue", attributes.get(0));
-        assertEquals("aDoubleValue", attributes.get(1));
-        assertEquals("aIntValue", attributes.get(2));
-        LinkedList<Object> shouldContainOnlyOne = new LinkedList<>();
-        shouldContainOnlyOne.add("A");
-        shouldContainOnlyOne.add(500d);
-        shouldContainOnlyOne.add(12);
-        for (Object o : result) {
-            List values = (List) o;
-            assertTrue(values.get(0) instanceof String);
-            assertTrue(values.get(1) instanceof Double);
-            assertTrue(values.get(2) instanceof Integer);
-        }
-        long count = result.stream().filter(o -> o.equals(shouldContainOnlyOne)).count();
-        assertEquals(1l, count);
+        Set expected = new HashSet(9);
+        addValues(expected, "C", 20d, 10);
+        addValues(expected, "A", 500d, 12);
+        addValues(expected, "E", 10d, 7);
+        addValues(expected, "B", 10d, 4);
+        addValues(expected, "E", 60d, 6);
+        addValues(expected, "D", 30d, 5);
+        addValues(expected, "C", 30d, 11);
+        addValues(expected, "A", 50d, 3);
+        addValues(expected, "C", 20d, 1);
+
+        assertEquals(expected.size(), result.size());
+        assertTrue(expected.containsAll(result));
+    }
+
+    @SuppressWarnings("unchecked")
+    private void addValues(Set set, Object... values) {
+        LinkedList list =
+                new LinkedList() {
+                    {
+                        for (Object val : values) add(val);
+                    }
+                };
+        set.add(list);
     }
 }

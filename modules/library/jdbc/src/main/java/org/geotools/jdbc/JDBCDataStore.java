@@ -41,6 +41,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -88,7 +89,6 @@ import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
@@ -715,7 +715,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * <p>This method will map the classes of the attributes of <tt>featureType</tt> to sql types
      * and generate a 'CREATE TABLE' statement against the underlying database.
      *
-     * @see DataStore#createSchema(FeatureType)
+     * @see DataStore#createSchema(SimpleFeatureType)
      * @throws IllegalArgumentException If the table already exists.
      * @throws IOException If the table cannot be created due to an error.
      */
@@ -1408,10 +1408,10 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             return null;
         }
         // try to extract an aggregate attribute from the visitor
-        List<Expression> aggregateExpression = null;
+        List<Expression> aggregateExpressions = null;
         if (!isCountVisitor(visitor)) {
-            aggregateExpression = getAggregateExpression(visitor);
-            if (aggregateExpression != null && !fullySupports(aggregateExpression)) {
+            aggregateExpressions = getAggregateExpression(visitor);
+            if (aggregateExpressions != null && !fullySupports(aggregateExpressions)) {
                 return null;
             }
         }
@@ -1436,7 +1436,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                     st =
                             selectAggregateSQLPS(
                                     function,
-                                    aggregateExpression,
+                                    aggregateExpressions,
                                     groupByExpressions,
                                     featureType,
                                     query,
@@ -1447,7 +1447,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                     String sql =
                             selectAggregateSQL(
                                     function,
-                                    aggregateExpression,
+                                    aggregateExpressions,
                                     groupByExpressions,
                                     featureType,
                                     query,
@@ -4250,15 +4250,18 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             List<Expression> expressions,
             StringBuffer sql,
             FilterToSQL filterToSQL) {
-        sql.append(function);
         if (expressions == null || expressions.isEmpty()) {
+            sql.append(function);
             sql.append("(");
             sql.append("*");
             sql.append(")");
         } else {
             try {
                 int size = expressions.size();
+                boolean encodeOnce = isEncodeOnceFunction(function);
+                if (encodeOnce) sql.append(function);
                 for (int i = 0; i < expressions.size(); i++) {
+                    if (!encodeOnce) sql.append(function);
                     Expression e = expressions.get(i);
                     sql.append("(");
                     sql.append(filterToSQL.encodeToString(e));
@@ -4271,6 +4274,11 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    private boolean isEncodeOnceFunction(String function) {
+        Map<Class<? extends FeatureVisitor>, String> functions = getAggregateFunctions();
+        return Objects.equals(function, functions.get(UniqueVisitor.class));
     }
 
     /** Generates a 'DELETE FROM' sql statement. */

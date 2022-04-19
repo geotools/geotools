@@ -21,10 +21,10 @@ import static org.opengis.filter.sort.SortOrder.ASCENDING;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Predicate;
 import org.geotools.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.visitor.AverageVisitor;
@@ -668,24 +668,20 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         UniqueVisitor v = new UniqueVisitor("stringProperty", "doubleProperty");
         dataStore.getFeatureSource(tname("ft4")).accepts(Query.ALL, v, null);
         Set result = v.getResult().toSet();
-        assertEquals(6, result.size());
-        List<String> names = v.getAttrNames();
-        assertEquals("stringProperty", names.get(0));
-        assertEquals("doubleProperty", names.get(1));
 
-        LinkedList<Object> shouldContainOne = new LinkedList<>();
-        shouldContainOne.add("one_2");
-        shouldContainOne.add(1.1);
+        // makes sure types of numeric values are of the same type. Eg. Oracle DB
+        // uses BigDecimal and BigInteger instead of Double and Integer.
+        convertNumbers(result, new int[] {1}, new Class<?>[] {Double.class});
 
-        // check string and double separately due different number type returned by different DB.
-        Predicate<List> compareDoubleValues =
-                l -> Double.valueOf(l.get(1).toString()).equals(shouldContainOne.get(1));
-
-        Predicate<List> compareValues =
-                l -> l.get(0).equals(shouldContainOne.get(0)) && compareDoubleValues.test(l);
-
-        long count = result.stream().filter(o -> compareValues.test((List) o)).count();
-        assertEquals(1l, count);
+        Set expected = new HashSet();
+        addValues(expected, "zero", 0.0);
+        addValues(expected, "one", 1.1);
+        addValues(expected, "one_2", 1.1);
+        addValues(expected, "two", 2.2);
+        addValues(expected, "two_2", 2.2);
+        addValues(expected, "three", 3.3);
+        assertEquals(expected.size(), result.size());
+        assertTrue(expected.containsAll(result));
     }
 
     @SuppressWarnings("unchecked")
@@ -693,39 +689,17 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         UniqueVisitor v = new UniqueVisitor("intProperty", "doubleProperty");
         dataStore.getFeatureSource(tname("ft4")).accepts(Query.ALL, v, null);
         Set result = v.getResult().toSet();
-        assertEquals(4, result.size());
-        List<String> names = v.getAttrNames();
-        assertEquals("intProperty", names.get(0));
-        assertEquals("doubleProperty", names.get(1));
 
-        LinkedList<Object> shouldContainOne = new LinkedList<>();
-        shouldContainOne.add(1);
-        shouldContainOne.add(1.1);
-        LinkedList<Object> shouldContainOne2 = new LinkedList<>();
-        shouldContainOne2.add(2);
-        shouldContainOne2.add(2.2);
-
-        // check string and double separately due different number type returned by different DB.
-        Predicate<List> compareIntegerValues =
-                l -> Integer.valueOf(l.get(0).toString()).equals(shouldContainOne.get(0));
-        Predicate<List> compareDoubleValues =
-                l -> Double.valueOf(l.get(1).toString()).equals(shouldContainOne.get(1));
-
-        Predicate<List> compareIntegerValues2 =
-                l -> Integer.valueOf(l.get(0).toString()).equals(shouldContainOne2.get(0));
-        Predicate<List> compareDoubleValues2 =
-                l -> Double.valueOf(l.get(1).toString()).equals(shouldContainOne2.get(1));
-
-        Predicate<List> compareValues =
-                l -> compareIntegerValues.test(l) && compareDoubleValues.test(l);
-
-        Predicate<List> compareValues2 =
-                l -> compareIntegerValues2.test(l) && compareDoubleValues2.test(l);
-
-        long count1 = result.stream().filter(o -> compareValues.test((List) o)).count();
-        long count2 = result.stream().filter(o -> compareValues2.test((List) o)).count();
-        assertEquals(1l, count1);
-        assertEquals(1l, count2);
+        // makes sure types of numeric values are of the same type. Eg. Oracle DB
+        // uses BigDecimal and BigInteger instead of Double and Integer.
+        convertNumbers(result, new int[] {0, 1}, new Class<?>[] {Integer.class, Double.class});
+        Set expected = new HashSet();
+        addValues(expected, 0, 0.0);
+        addValues(expected, 1, 1.1);
+        addValues(expected, 2, 2.2);
+        addValues(expected, 3, 3.3);
+        assertEquals(expected.size(), result.size());
+        assertTrue(expected.containsAll(result));
     }
 
     @SuppressWarnings("unchecked")
@@ -733,33 +707,42 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         UniqueVisitor v = new UniqueVisitor("intProperty", "doubleProperty", "stringProperty");
         dataStore.getFeatureSource(tname("ft4")).accepts(Query.ALL, v, null);
         Set result = v.getResult().toSet();
-        assertEquals(6, result.size());
-        List<String> names = v.getAttrNames();
-        assertEquals("intProperty", names.get(0));
-        assertEquals("doubleProperty", names.get(1));
-        assertEquals("stringProperty", names.get(2));
 
-        LinkedList<Object> shouldContainOne = new LinkedList<>();
-        shouldContainOne.add(1);
-        shouldContainOne.add(1.1);
-        shouldContainOne.add("one_2");
+        // makes sure types of numeric values are of the same type. Eg. Oracle DB
+        // uses BigDecimal and BigInteger instead of Double and Integer.
+        convertNumbers(result, new int[] {0, 1}, new Class<?>[] {Integer.class, Double.class});
 
-        // check int, double and string separately due different number type returned by different
-        // DB.
+        Set expected = new HashSet();
+        addValues(expected, 0, 0.0, "zero");
+        addValues(expected, 1, 1.1, "one");
+        addValues(expected, 1, 1.1, "one_2");
+        addValues(expected, 2, 2.2, "two");
+        addValues(expected, 2, 2.2, "two_2");
+        addValues(expected, 3, 3.3, "three");
+        assertEquals(expected.size(), result.size());
+        assertTrue(expected.containsAll(result));
+    }
 
-        Predicate<List> compareIntValues =
-                l -> Integer.valueOf(l.get(0).toString()).equals(shouldContainOne.get(0));
+    @SuppressWarnings("unchecked")
+    private void addValues(Set set, Object... values) {
+        LinkedList list =
+                new LinkedList() {
+                    {
+                        for (Object val : values) add(val);
+                    }
+                };
+        set.add(list);
+    }
 
-        Predicate<List> compareDoubleValues =
-                l -> Double.valueOf(l.get(1).toString()).equals(shouldContainOne.get(1));
-
-        Predicate<List> compareValues =
-                l ->
-                        l.get(2).equals(shouldContainOne.get(2))
-                                && compareDoubleValues.test(l)
-                                && compareIntValues.test(l);
-
-        long count = result.stream().filter(o -> compareValues.test((List) o)).count();
-        assertEquals(1l, count);
+    @SuppressWarnings("unchecked")
+    private void convertNumbers(Set values, int[] indexes, Class<?>[] clazz) {
+        for (Object o : values) {
+            List uniques = (List) o;
+            for (int i = 0; i < indexes.length; i++) {
+                Object val = uniques.get(indexes[i]);
+                Object result = Converters.convert(val, clazz[i]);
+                uniques.set(indexes[i], result);
+            }
+        }
     }
 }

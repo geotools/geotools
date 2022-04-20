@@ -27,7 +27,9 @@ import org.geotools.ows.wmts.WebMapTileServer;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
 import org.geotools.ows.wmts.model.WMTSLayer;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
+import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.parameter.GeneralParameterValue;
@@ -51,5 +53,15 @@ public class WMTSMapLayerTest {
         CoordinateReferenceSystem crs =
                 (CoordinateReferenceSystem) ((ParameterValue) params[0]).getValue();
         assertEquals(CRS.decode("EPSG:3857"), crs);
+    }
+
+    @Test
+    public void testNativelySupported() throws Exception {
+        WMTSCapabilities capa = WMTSTestUtils.createCapabilities("getcapa_kvp.xml");
+        URL url = new URL("http://localhost:8080/geoserver/gwc/service/wmts?");
+        WebMapTileServer server = new WebMapTileServer(url, capa);
+        WMTSMapLayer mapLayer = new WMTSMapLayer(server, capa.getLayer("tasmania"));
+        boolean wgs84supported = mapLayer.isNativelySupported(DefaultGeographicCRS.WGS84);
+        Assert.assertTrue(wgs84supported);
     }
 }

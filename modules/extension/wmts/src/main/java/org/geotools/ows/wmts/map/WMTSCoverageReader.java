@@ -53,6 +53,7 @@ import org.opengis.geometry.Envelope;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.operation.TransformException;
 
 /**
@@ -566,9 +567,25 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
         this.requestedTime = requestedTime;
     }
 
+    /**
+     * Does the WMTS layer serve this coordinate reference system natively. Going through all the
+     * reported SRS's to check if they corresponds with the crs. Extra consideration must be taken
+     * when crs have xy axis.
+     */
     boolean isNativelySupported(CoordinateReferenceSystem crs) {
-        String srs = CRS.toSRS(crs);
-        return srs != null && validSRS.contains(srs);
+        final boolean isXY =
+                crs.getCoordinateSystem().getAxis(0).getDirection() == AxisDirection.EAST;
+        for (String srs : validSRS) {
+            try {
+                CoordinateReferenceSystem validCrs = CRS.decode(srs, isXY);
+                if (!CRS.isTransformationRequired(validCrs, crs)) {
+                    return true;
+                }
+            } catch (FactoryException e) {
+                LOGGER.log(Level.WARNING, "Error with following srs:" + srs, e);
+            }
+        }
+        return false;
     }
 
     /**

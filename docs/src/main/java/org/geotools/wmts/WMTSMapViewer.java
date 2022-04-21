@@ -38,12 +38,11 @@ public class WMTSMapViewer {
 
     public static void main(String[] args) throws Exception {
         URL serverURL;
-    	if (args.length > 0) {
-    		serverURL = new URL(args[0]);
-    	}
-    	else {
-    		serverURL = showChooseWMTS();
-    	}
+        if (args.length > 0) {
+            serverURL = new URL(args[0]);
+        } else {
+            serverURL = showChooseWMTS();
+        }
 
         // start wmtsMapViewer example
         WebMapTileServer server = new WebMapTileServer(serverURL);

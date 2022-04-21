@@ -125,9 +125,6 @@ public class SentinelHubOnlineTest extends OnlineTestCase {
             }
         }
         Assert.assertNotNull("Didn't find 13 as matrix identifier.", matrix13);
-        System.out.printf(
-                "Cols: %d Rows: %d", matrix13.getMatrixWidth(), matrix13.getMatrixHeight());
-
         boolean foundPng = false;
         for (String format : naturalColor.getFormats()) {
             if ("image/png".equals(format)) {
@@ -209,7 +206,7 @@ public class SentinelHubOnlineTest extends OnlineTestCase {
                 (Parameter<GridGeometry2D>) AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         readGG.setValue(
                 new GridGeometry2D(new GridEnvelope2D(new Rectangle(width, height)), extent));
-        GeneralParameterValue[] parameters = new GeneralParameterValue[] {readGG};
+        GeneralParameterValue[] parameters = {readGG};
         GridCoverage2D coverage = reader.read(parameters);
         RenderedImage image = coverage.getRenderedImage();
         Assert.assertNotNull(image);

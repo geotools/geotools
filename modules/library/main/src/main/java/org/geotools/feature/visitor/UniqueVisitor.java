@@ -16,16 +16,17 @@
  */
 package org.geotools.feature.visitor;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.util.Converters;
 import org.opengis.feature.Feature;
@@ -33,6 +34,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.PropertyName;
 
 /**
  * Generates a list of unique values from a collection
@@ -41,32 +43,49 @@ import org.opengis.filter.expression.Expression;
  * @since 2.2.M2
  */
 public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, LimitingVisitor {
-    private Expression expr;
+    private List<Expression> expressions = new LinkedList<>();
     Set<Object> set = new HashSet<>();
     Set<Object> skipped = new HashSet<>();
     int startIndex = 0;
     int maxFeatures = Integer.MAX_VALUE;
     int currentItem = 0;
     boolean preserveOrder = false;
-
-    public UniqueVisitor(String attributeTypeName) {
-        FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
-        expr = factory.property(attributeTypeName);
-    }
+    static FilterFactory factory = CommonFactoryFinder.getFilterFactory();
 
     public UniqueVisitor(int attributeTypeIndex, SimpleFeatureType type)
             throws IllegalFilterException {
-        FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
-        expr = factory.property(type.getDescriptor(attributeTypeIndex).getLocalName());
+        this(type, attributeTypeIndex);
     }
 
     public UniqueVisitor(String attrName, SimpleFeatureType type) throws IllegalFilterException {
-        FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
-        expr = factory.property(type.getDescriptor(attrName).getLocalName());
+        this(type, attrName);
     }
 
-    public UniqueVisitor(Expression expr) {
-        this.expr = expr;
+    public UniqueVisitor(String... attributeTypeNames) {
+        for (String atn : attributeTypeNames) {
+            expressions.add(factory.property(atn));
+        }
+    }
+
+    public UniqueVisitor(SimpleFeatureType type, Integer... indexes) throws IllegalFilterException {
+        for (Integer i : indexes) {
+            String attrName = type.getDescriptor(i).getLocalName();
+            expressions.add(factory.property(attrName));
+        }
+    }
+
+    public UniqueVisitor(SimpleFeatureType type, String... attributeNames)
+            throws IllegalFilterException {
+        for (String an : attributeNames) {
+            String attrName = type.getDescriptor(an).getLocalName();
+            expressions.add(factory.property(attrName));
+        }
+    }
+
+    public UniqueVisitor(Expression... expressions) {
+        for (Expression e : expressions) {
+            this.expressions.add(e);
+        }
     }
 
     public void init(SimpleFeatureCollection collection) {
@@ -83,7 +102,7 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
 
     public void setPreserveOrder(boolean preserveOrder) {
         this.preserveOrder = preserveOrder;
-        set = createNewSet(Collections.emptyList());
+        this.set = createNewSet(Collections.emptyList());
     }
 
     @Override
@@ -98,12 +117,12 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
 
     @Override
     public List<Expression> getExpressions() {
-        return Arrays.asList(expr);
+        return expressions;
     }
 
     @Override
     public Optional<List<Class>> getResultType(List<Class> inputTypes) {
-        return CalcUtil.reflectInputTypes(1, inputTypes);
+        return CalcUtil.reflectInputTypes(inputTypes.size(), inputTypes);
     }
 
     public void visit(SimpleFeature feature) {
@@ -112,8 +131,18 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
 
     @Override
     public void visit(Feature feature) {
+        if (!isMultiAttr()) {
+            visitWithSingleAttribute(feature);
+        } else {
+            visitWithMultiAttributes(feature);
+        }
+    }
+
+    private void visitWithSingleAttribute(Feature feature) {
+        Expression expr = expressions.get(0);
         // we ignore null attributes
         Object value = expr.evaluate(feature);
+
         if (value != null) {
             if (!set.contains(value) && !skipped.contains(value)) {
                 if (currentItem >= startIndex && currentItem < (startIndex + maxFeatures)) {
@@ -126,8 +155,31 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
         }
     }
 
+    private void visitWithMultiAttributes(Feature feature) {
+        List<Object> uniqueVal = new LinkedList<>();
+        for (Expression expr : expressions) {
+            Object value = expr.evaluate(feature);
+            uniqueVal.add(value);
+        }
+        if (skipped == null) {
+            skipped = new LinkedHashSet<>();
+        }
+        if (!set.contains(uniqueVal) && !skipped.contains(uniqueVal)) {
+            if (currentItem >= startIndex && currentItem < (startIndex + maxFeatures)) {
+                set.add(uniqueVal);
+            } else {
+                skipped.add(uniqueVal);
+            }
+            currentItem++;
+        }
+    }
+
+    private boolean isMultiAttr() {
+        return expressions.size() > 1;
+    }
+
     public Expression getExpression() {
-        return expr;
+        return expressions.get(0);
     }
 
     public Set getUnique() {
@@ -135,19 +187,18 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
         return set;
     }
 
-    public void setValue(Object newSet) {
-
-        if (newSet instanceof Collection) { // convert to set
+    public void setValue(Object value) {
+        if (value instanceof Collection) { // convert to set
             @SuppressWarnings("unchecked")
-            Collection<Object> cast = (Collection<Object>) newSet;
+            Collection<Object> cast = (Collection<Object>) value;
             this.set = createNewSet(cast);
         } else {
             @SuppressWarnings("unchecked")
-            List<Object> collection = Converters.convert(newSet, List.class);
+            List<Object> collection = Converters.convert(value, List.class);
             if (collection != null) {
                 this.set = createNewSet(collection);
             } else {
-                this.set = createNewSet(Collections.singleton(newSet));
+                this.set = createNewSet(Collections.singleton(value));
             }
         }
     }
@@ -166,22 +217,43 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
 
     @Override
     public CalcResult getResult() {
-        if (set.isEmpty()) {
-            return CalcResult.NULL_RESULT;
-        }
+        if (set.isEmpty()) return CalcResult.NULL_RESULT;
         return new UniqueResult(set, this.preserveOrder);
     }
 
+    public List<String> getAttrNames() {
+        List<String> attributes = new LinkedList<>();
+        for (Expression e : expressions) {
+            attributes.add(getPropertyName(e));
+        }
+        return attributes;
+    }
+
+    private String getPropertyName(Expression e) {
+        String name = null;
+        if (e instanceof PropertyName) {
+            name = ((PropertyName) e).getPropertyName();
+        } else {
+            FilterAttributeExtractor extractor = new FilterAttributeExtractor();
+            e.accept(extractor, null);
+            String[] attrs = extractor.getAttributeNames();
+            if (attrs != null && attrs.length > 0) name = extractor.getAttributeNames()[0];
+        }
+        return name;
+    }
+
     public static class UniqueResult extends AbstractCalcResult {
+
+        private List<String> attributeNames;
         private Set<Object> unique;
         private boolean preserveOrder = false;
 
         public UniqueResult(Set<Object> newSet) {
-            unique = newSet;
+            this(newSet, false);
         }
 
         public UniqueResult(Set<Object> newSet, boolean preserveOrder) {
-            unique = newSet;
+            this.unique = newSet;
             this.preserveOrder = preserveOrder;
         }
 
@@ -195,7 +267,8 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
 
         @Override
         public Object getValue() {
-            return createNewSet(unique, preserveOrder);
+            if (unique == null) return Collections.emptySet();
+            else return createNewSet(unique, preserveOrder);
         }
 
         @Override

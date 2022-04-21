@@ -21,6 +21,8 @@ import static org.opengis.filter.sort.SortOrder.ASCENDING;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import org.geotools.data.Query;
@@ -659,5 +661,88 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         int result = v.getResult().toInt();
         assertEquals(0, v.getUnique().size());
         assertEquals(2, result);
+    }
+
+    @SuppressWarnings("unchecked")
+    public void testUniqueMultipleAttributes() throws Exception {
+        UniqueVisitor v = new UniqueVisitor("stringProperty", "doubleProperty");
+        dataStore.getFeatureSource(tname("ft4")).accepts(Query.ALL, v, null);
+        Set result = v.getResult().toSet();
+
+        // makes sure types of numeric values are of the same type. Eg. Oracle DB
+        // uses BigDecimal and BigInteger instead of Double and Integer.
+        convertNumbers(result, new int[] {1}, new Class<?>[] {Double.class});
+
+        Set expected = new HashSet();
+        addValues(expected, "zero", 0.0);
+        addValues(expected, "one", 1.1);
+        addValues(expected, "one_2", 1.1);
+        addValues(expected, "two", 2.2);
+        addValues(expected, "two_2", 2.2);
+        addValues(expected, "three", 3.3);
+        assertEquals(expected.size(), result.size());
+        assertTrue(expected.containsAll(result));
+    }
+
+    @SuppressWarnings("unchecked")
+    public void testUniqueMultipleAttributes2() throws Exception {
+        UniqueVisitor v = new UniqueVisitor("intProperty", "doubleProperty");
+        dataStore.getFeatureSource(tname("ft4")).accepts(Query.ALL, v, null);
+        Set result = v.getResult().toSet();
+
+        // makes sure types of numeric values are of the same type. Eg. Oracle DB
+        // uses BigDecimal and BigInteger instead of Double and Integer.
+        convertNumbers(result, new int[] {0, 1}, new Class<?>[] {Integer.class, Double.class});
+        Set expected = new HashSet();
+        addValues(expected, 0, 0.0);
+        addValues(expected, 1, 1.1);
+        addValues(expected, 2, 2.2);
+        addValues(expected, 3, 3.3);
+        assertEquals(expected.size(), result.size());
+        assertTrue(expected.containsAll(result));
+    }
+
+    @SuppressWarnings("unchecked")
+    public void testUniqueMultipleAttributes3() throws Exception {
+        UniqueVisitor v = new UniqueVisitor("intProperty", "doubleProperty", "stringProperty");
+        dataStore.getFeatureSource(tname("ft4")).accepts(Query.ALL, v, null);
+        Set result = v.getResult().toSet();
+
+        // makes sure types of numeric values are of the same type. Eg. Oracle DB
+        // uses BigDecimal and BigInteger instead of Double and Integer.
+        convertNumbers(result, new int[] {0, 1}, new Class<?>[] {Integer.class, Double.class});
+
+        Set expected = new HashSet();
+        addValues(expected, 0, 0.0, "zero");
+        addValues(expected, 1, 1.1, "one");
+        addValues(expected, 1, 1.1, "one_2");
+        addValues(expected, 2, 2.2, "two");
+        addValues(expected, 2, 2.2, "two_2");
+        addValues(expected, 3, 3.3, "three");
+        assertEquals(expected.size(), result.size());
+        assertTrue(expected.containsAll(result));
+    }
+
+    @SuppressWarnings("unchecked")
+    private void addValues(Set set, Object... values) {
+        LinkedList list =
+                new LinkedList() {
+                    {
+                        for (Object val : values) add(val);
+                    }
+                };
+        set.add(list);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void convertNumbers(Set values, int[] indexes, Class<?>[] clazz) {
+        for (Object o : values) {
+            List uniques = (List) o;
+            for (int i = 0; i < indexes.length; i++) {
+                Object val = uniques.get(indexes[i]);
+                Object result = Converters.convert(val, clazz[i]);
+                uniques.set(indexes[i], result);
+            }
+        }
     }
 }

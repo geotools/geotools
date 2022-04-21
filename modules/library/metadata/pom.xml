@@ -225,7 +225,7 @@
         </executions>
         <configuration>
           <parallelThreads>1C</parallelThreads>
-          <ignoreFailures>false</ignoreFailures>
+          <ignoreFailures>true</ignoreFailures>
           <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
           <settingsFile>src/it/settings.xml</settingsFile>
           <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>

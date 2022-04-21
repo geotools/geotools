@@ -32,6 +32,10 @@ public class MetadataImportTest extends JDBCTestSupport {
     @SuppressWarnings("PMD.CloseResource") // no actual need to close the PrintStream
     @Test
     public void testMetadataImport() throws Exception {
+        // This test pollutes the test database by creating non-schema specific metadata. Skip if
+        // polluting tests are disabled.
+        if ("off".equals(fixture.getProperty("pollution", "on"))) return;
+
         List<String> args = new ArrayList<>();
         Properties fixture = getFixture();
         args.add(fixture.getProperty("user"));

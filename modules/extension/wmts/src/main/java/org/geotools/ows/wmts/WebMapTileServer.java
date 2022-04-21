@@ -26,7 +26,6 @@ import java.util.logging.Level;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.ows.AbstractOpenWebService;
-import org.geotools.data.ows.OperationType;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPClientFinder;
@@ -245,22 +244,13 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
 
     /** Creates a GetMultiTileRequest. */
     public GetTileRequest createGetTileRequest() {
-
-        OperationType getTile = getCapabilities().getRequest().getGetTile();
-        URL url = findGetTileURL(getTile);
-
-        if (url == null) {
-            type = WMTSServiceType.REST;
-            url = getCapabilities().getService().getOnlineResource();
-        }
-
         Properties props = new Properties();
         props.put("type", type.name());
 
         GetTileRequest request =
                 getSpecification()
                         .createGetMultiTileRequest(
-                                url, props, getCapabilities(), this.getHTTPClient());
+                                serverURL, props, getCapabilities(), this.getHTTPClient());
 
         if (headers != null) {
             request.getHeaders().putAll(headers);
@@ -281,19 +271,19 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
             return createGetTileRequest();
         }
 
-        OperationType getTile = getCapabilities().getRequest().getGetTile();
-        URL url = findGetTileURL(getTile);
-
         Properties props = new Properties();
         props.put("type", type.name());
 
         GetSingleTileRequest request;
         switch (type) {
             case KVP:
-                request = new WMTSSpecification.GetKVPTileRequest(url, props, this.getHTTPClient());
+                request =
+                        new WMTSSpecification.GetKVPTileRequest(
+                                serverURL, props, this.getHTTPClient());
                 break;
             case REST:
-                request = new WMTSSpecification.GetRestTileRequest(url, props, getHTTPClient());
+                request =
+                        new WMTSSpecification.GetRestTileRequest(serverURL, props, getHTTPClient());
                 break;
             default:
                 throw new RuntimeException("Unknown type");
@@ -302,21 +292,6 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
             request.getHeaders().putAll(headers);
         }
         return request;
-    }
-
-    /** The URL for RESTful can't be established at this point, but it can't be null either. */
-    private URL findGetTileURL(OperationType operation) {
-        if (operation == null) {
-            return null;
-        }
-        switch (type) {
-            case KVP:
-                return operation.getGet() != null ? operation.getGet() : serverURL;
-            case REST:
-                return serverURL;
-            default:
-                return null;
-        }
     }
 
     /** Selects the tileMatrixSet that is linked to this layer with the given CRS */

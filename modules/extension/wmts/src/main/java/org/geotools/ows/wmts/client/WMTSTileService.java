@@ -601,7 +601,7 @@ public class WMTSTileService extends TileService {
             } else {
                 if (LOGGER.isLoggable(Level.FINE))
                     LOGGER.log(
-                            Level.FINE, "Lower neighbour out of extents" + lowerNeighbour.getId());
+                            Level.FINE, "Lower neighbour out of extents " + lowerNeighbour.getId());
                 break;
             }
         } while (tileList.size() < maxNumberOfTilesForZoomLevel);
@@ -681,12 +681,17 @@ public class WMTSTileService extends TileService {
         final int tileRow = tileIdentifier.getY();
 
         GetSingleTileRequest request = createGetTileRequest(tileMatrix, tileCol, tileRow);
+        GetTileResponse response = null;
         try {
-            GetTileResponse response = tileServer.issueRequest(request);
+            response = tileServer.issueRequest(request);
             return response.getTileImage();
         } catch (ServiceException e) {
             LOGGER.log(Level.SEVERE, "WMTS server returned exception", e);
             throw new IOException("WMTS server returned exception", e);
+        } finally {
+            if (response != null) {
+                response.dispose();
+            }
         }
     }
 
@@ -741,7 +746,7 @@ public class WMTSTileService extends TileService {
             try {
                 return new URL(urlBuilder.createURL(tileMatrix, tileCol, tileRow));
             } catch (MalformedURLException e) {
-                throw new RuntimeException("Couldn't creat url from templateUrl");
+                throw new RuntimeException("Couldn't create url from templateUrl");
             }
         }
 

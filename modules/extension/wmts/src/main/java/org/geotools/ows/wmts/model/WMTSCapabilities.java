@@ -63,9 +63,7 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.SimpleInternationalString;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * Represents a base object for a WMTS getCapabilities response.
@@ -256,12 +254,16 @@ public class WMTSCapabilities extends Capabilities {
                             .getBoundingBoxes()
                             .put(srs, new CRSEnvelope(wgs84Env.transform(tmsCRS, true)));
 
-                } catch (TransformException | FactoryException e) {
+                } catch (Exception e) {
                     if (LOGGER.isLoggable(Level.INFO))
                         LOGGER.log(
                                 Level.INFO,
-                                "Not adding CRS " + srs + " for layer " + wmtsLayer.getName(),
-                                e);
+                                "Not adding CRS "
+                                        + srs
+                                        + " for layer "
+                                        + wmtsLayer.getName()
+                                        + " because of exception "
+                                        + e.getMessage());
                 }
             }
         }

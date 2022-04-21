@@ -355,6 +355,35 @@ public class WebMapTileServerTest {
         Assert.assertNotNull(tileImage);
     }
 
+    /** Check that TIME is set when requestedTime is set on GetTileRequest */
+    @Test
+    public void testIssueRequestWithTime() throws Exception {
+        WMTSCapabilities capabilities = createCapabilities("getcapa_kvp.xml");
+        MockHttpClient httpClient = new MockHttpClient();
+        URL serverUrl = new URL("http://localhost:8080/geoserver/gwc/service/wmts");
+
+        httpClient.expectGet(
+                new URL(
+                        "http://localhost:8080/geoserver/gwc/service/wmts?REQUEST=GetTile&VERSION=1.0.0&SERVICE=WMTS&type=KVP&"
+                                + "LAYER=spearfish&STYLE=default&FORMAT=image%2Fpng&TILEMATRIXSET=EPSG%3A4326&"
+                                + "TILEMATRIX=EPSG%3A4326%3A0&TILEROW=0&TILECOL=0&TIME=2020-01-01"),
+                new MockHttpResponse(TestData.file(null, "world.png"), "image/png"));
+
+        WebMapTileServer server = new WebMapTileServer(serverUrl, httpClient, capabilities);
+        GetSingleTileRequest request = (GetSingleTileRequest) server.createGetTileRequest(false);
+        request.setLayer(server.getCapabilities().getLayer("spearfish"));
+        request.setStyle("default");
+        request.setFormat("image/png");
+        request.setTileMatrixSet("EPSG:4326");
+        request.setTileMatrix("EPSG:4326:0");
+        request.setTileRow(0);
+        request.setTileCol(0);
+        request.setRequestedTime("2020-01-01");
+
+        GetTileResponse response = server.issueRequest(request);
+        Assert.assertNotNull(response.getTileImage());
+    }
+
     @Test
     public void testIssueRequestWithRestTileResponseWithImage() throws Exception {
         WMTSCapabilities capabilities = createCapabilities("basemapGetCapa.xml");

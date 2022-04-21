@@ -290,7 +290,7 @@ public class WMTSSpecification extends Specification {
             this.setProperty("TileMatrix", this.getTileMatrix());
             this.setProperty("TileCol", this.getTileCol().toString());
             this.setProperty("TileRow", this.getTileRow().toString());
-
+            this.setProperty("time", this.getRequestedTime());
             return super.getFinalURL();
         }
 

@@ -24,6 +24,7 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.expression.Function;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.Contains;
 import org.opengis.filter.spatial.Crosses;
@@ -158,6 +159,20 @@ public class OracleFilterToSqlTest {
         String encoded = encoder.encodeToString(dwithin);
         Assert.assertEquals(
                 "WHERE SDO_WITHIN_DISTANCE(\"GEOM\",?,'distance=10.0') = 'TRUE' ", encoded);
+    }
+
+    @Test
+    public void testJsonExists() throws Exception {
+        Function function =
+                ff.function(
+                        "jsonArrayContains",
+                        ff.property("operations"),
+                        ff.literal("/operations"),
+                        ff.literal("OP1"));
+        Filter filter = ff.equals(function, ff.literal(true));
+        String encoded = encoder.encodeToString(filter);
+        Assert.assertEquals(
+                "WHERE json_exists(operations, '$.operations?(@ == OP1)') = true", encoded);
     }
 
     // THIS ONE WON'T PASS RIGHT NOW, BUT WE NEED TO PUT A TEST LIKE THIS

@@ -17,14 +17,12 @@
 package org.geotools.data.oracle;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import org.geotools.data.oracle.filter.FilterFunction_sdonn;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.function.FilterFunction_area;
+import org.geotools.filter.function.JsonArrayContainsFunction;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.geometry.jts.JTS;
@@ -44,6 +42,7 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.PropertyIsEqualTo;
@@ -157,6 +156,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         caps.addType(Beyond.class);
 
         caps.addType(FilterFunction_sdonn.class);
+        caps.addType(JsonArrayContainsFunction.class);
 
         // replaces the OracleDialect.registerFunction support
         caps.addType(FilterFunction_area.class);
@@ -225,6 +225,13 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
                 out.write("SDO_GEOM.SDO_AREA(");
                 s1.accept(this, String.class);
                 out.write(",0.05)");
+                return extraData;
+            } catch (IOException ioe) {
+                throw new RuntimeException(IO_ERROR, ioe);
+            }
+        } else if (function instanceof JsonArrayContainsFunction) {
+            try {
+                out.write(jsonExists(function));
                 return extraData;
             } catch (IOException ioe) {
                 throw new RuntimeException(IO_ERROR, ioe);
@@ -584,6 +591,32 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
             return sb.toString();
         } else {
             return name;
+        }
+    }
+
+    @Override
+    protected void encodeBinaryComparisonOperator(BinaryComparisonOperator filter, Object extraData, Expression left, Expression right, Class leftContext, Class rightContext) {
+        if (left instanceof JsonArrayContainsFunction) {
+            try {
+                writeBinaryExpressionMember(left, leftContext);
+            } catch (java.io.IOException ioe) {
+                throw new RuntimeException(IO_ERROR, ioe);
+            }
+        } else super.encodeBinaryComparisonOperator(filter, extraData, left, right, leftContext, rightContext);
+    }
+
+    public String jsonExists(Function function) {
+        PropertyName columnName = (PropertyName) getParameter(function, 0, true);
+        Literal jsonPath = (Literal) getParameter(function, 1, true);
+        Expression expected = getParameter(function, 2, true);
+
+        String[] pointers = jsonPath.getValue().toString().split("/");
+        if (pointers.length > 0) {
+            String strJsonPath = String.join(".", pointers);
+            return String.format(
+                    "json_exists(%s, '$%s?(@ == \"%s\")')", columnName, strJsonPath, expected.evaluate(null));
+        } else {
+            throw new IllegalArgumentException("Cannot encode filter Invalid pointer");
         }
     }
 }

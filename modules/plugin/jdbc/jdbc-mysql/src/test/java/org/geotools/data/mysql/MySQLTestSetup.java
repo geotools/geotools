@@ -61,6 +61,12 @@ public class MySQLTestSetup extends JDBCTestSetup {
         } catch (Exception e) {
             // e.printStackTrace();
         }
+
+        try {
+            run("DROP TABLE ft4;");
+        } catch (Exception e) {
+            // e.printStackTrace();
+        }
         runSafe("DELETE FROM geometry_columns");
 
         // create some data
@@ -89,6 +95,54 @@ public class MySQLTestSetup extends JDBCTestSetup {
         sb = new StringBuffer();
         sb.append("INSERT INTO ft1 VALUES (")
                 .append("2,ST_GeomFromText('POINT(2 2)',4326), 2, 2.2,'two');");
+        run(sb.toString());
+
+        runft4();
+    }
+
+    private void runft4() throws Exception {
+        StringBuffer sb = new StringBuffer();
+        // JD: COLLATE latin1_general_cs is neccesary to ensure case-sensitive string comparisons
+        sb.append("CREATE TABLE ft4 ")
+                .append("(id int AUTO_INCREMENT PRIMARY KEY , ")
+                .append("geometry POINT, intProperty int, ")
+                .append(
+                        "doubleProperty double, stringProperty varchar(255) COLLATE latin1_general_cs) ENGINE=InnoDB;");
+        run(sb.toString());
+
+        sb = new StringBuffer();
+        sb.append("INSERT INTO ft4 VALUES (")
+                .append("0,ST_GeomFromText('POINT(0 0)',4326), 0, 0.0,'zero');");
+        run(sb.toString());
+
+        sb = new StringBuffer();
+        sb.append("INSERT INTO ft4 VALUES (")
+                .append("1,ST_GeomFromText('POINT(1 1)',4326), 1, 1.1,'one');");
+        run(sb.toString());
+
+        sb = new StringBuffer();
+        sb.append("INSERT INTO ft4 VALUES (")
+                .append("2,ST_GeomFromText('POINT(2 2)',4326), 1, 1.1,'one_2');");
+        run(sb.toString());
+
+        sb = new StringBuffer();
+        sb.append("INSERT INTO ft4 VALUES (")
+                .append("3,ST_GeomFromText('POINT(3 3)',4326), 1, 1.1,'one_2');");
+        run(sb.toString());
+
+        sb = new StringBuffer();
+        sb.append("INSERT INTO ft4 VALUES (")
+                .append("4,ST_GeomFromText('POINT(4 4)',4326), 2, 2.2,'two');");
+        run(sb.toString());
+
+        sb = new StringBuffer();
+        sb.append("INSERT INTO ft4 VALUES (")
+                .append("5,ST_GeomFromText('POINT(5 5)',4326), 2, 2.2,'two_2');");
+        run(sb.toString());
+
+        sb = new StringBuffer();
+        sb.append("INSERT INTO ft4 VALUES (")
+                .append("6,ST_GeomFromText('POINT(6 6)',4326), 3, 3.3,'three');");
         run(sb.toString());
     }
 

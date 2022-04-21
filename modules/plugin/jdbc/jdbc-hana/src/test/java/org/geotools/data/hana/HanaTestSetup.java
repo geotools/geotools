@@ -17,6 +17,7 @@
 package org.geotools.data.hana;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import org.geotools.data.hana.metadata.Srs;
 
 /** @author Stefan Uhrig, SAP SE */
@@ -27,6 +28,8 @@ public class HanaTestSetup extends HanaTestSetupBase {
     private static final String TABLE2 = "ft2";
 
     private static final String TABLE3 = "ft3";
+
+    private static final String TABLE4 = "ft4";
 
     @Override
     protected void setUpData() throws Exception {
@@ -58,6 +61,7 @@ public class HanaTestSetup extends HanaTestSetupBase {
             htu.dropTestTableCascade(TABLE1);
             htu.dropTestTableCascade(TABLE2);
             htu.dropTestTableCascade(TABLE3);
+            htu.dropTestTableCascade(TABLE4);
 
             String[][] ft1cols = {
                 {"id", "INT PRIMARY KEY"},
@@ -106,6 +110,75 @@ public class HanaTestSetup extends HanaTestSetupBase {
                     0,
                     0.0,
                     "zero");
+
+            insertFt4(htu);
         }
+    }
+
+    private void insertFt4(HanaTestUtil htu) throws SQLException {
+        String[][] ft3cols = {
+            {"id", "INT PRIMARY KEY"},
+            {"gEoMeTrY", "ST_Geometry(1000004326)"},
+            {"intProperty", "INT"},
+            {"doubleProperty", "DOUBLE"},
+            {"stringProperty", "VARCHAR(255)"}
+        };
+        htu.createRegisteredTestTable(TABLE4, ft3cols);
+
+        htu.insertIntoTestTable(
+                TABLE4,
+                htu.nextTestSequenceValueForColumn(TABLE4, "id"),
+                htu.geometry("POINT(0 0)", 1000004326),
+                0,
+                0.0,
+                "zero");
+
+        htu.insertIntoTestTable(
+                TABLE4,
+                htu.nextTestSequenceValueForColumn(TABLE4, "id"),
+                htu.geometry("POINT(1 1)", 1000004326),
+                1,
+                1.1,
+                "one");
+
+        htu.insertIntoTestTable(
+                TABLE4,
+                htu.nextTestSequenceValueForColumn(TABLE4, "id"),
+                htu.geometry("POINT(2 2)", 1000004326),
+                1,
+                1.1,
+                "one_2");
+
+        htu.insertIntoTestTable(
+                TABLE4,
+                htu.nextTestSequenceValueForColumn(TABLE4, "id"),
+                htu.geometry("POINT(3 3)", 1000004326),
+                1,
+                1.1,
+                "one_2");
+
+        htu.insertIntoTestTable(
+                TABLE4,
+                htu.nextTestSequenceValueForColumn(TABLE4, "id"),
+                htu.geometry("POINT(4 4)", 1000004326),
+                2,
+                2.2,
+                "two");
+
+        htu.insertIntoTestTable(
+                TABLE4,
+                htu.nextTestSequenceValueForColumn(TABLE4, "id"),
+                htu.geometry("POINT(5 5)", 1000004326),
+                2,
+                2.2,
+                "two_2");
+
+        htu.insertIntoTestTable(
+                TABLE4,
+                htu.nextTestSequenceValueForColumn(TABLE4, "id"),
+                htu.geometry("POINT(6 6)", 1000004326),
+                3,
+                3.3,
+                "three");
     }
 }

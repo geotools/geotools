@@ -97,6 +97,11 @@ public class TeradataTestSetup extends JDBCTestSetup {
         runSafe("DROP TRIGGER \"ft2_geometry_md\"");
         runSafe("DROP TABLE \"ft2_geometry_idx\"");
         runSafe("DROP TABLE \"ft2\"");
+        runSafe("DROP TRIGGER \"ft4_geometry_mi\"");
+        runSafe("DROP TRIGGER \"ft4_geometry_mu\"");
+        runSafe("DROP TRIGGER \"ft4_geometry_md\"");
+        runSafe("DROP TABLE \"ft4_geometry_idx\"");
+        runSafe("DROP TABLE \"ft4\"");
 
         run(
                 "CREATE TABLE \"ft1\"(" //
@@ -121,6 +126,38 @@ public class TeradataTestSetup extends JDBCTestSetup {
         run("INSERT INTO \"ft1\" VALUES(0, 'POINT(0 0)', 0, 0.0, 'zero')");
         run("INSERT INTO \"ft1\" VALUES(1, 'POINT(1 1)', 1, 1.1, 'one')");
         run("INSERT INTO \"ft1\" VALUES(2, 'POINT(2 2)', 2, 2.2, 'two')");
+
+        runft4();
+    }
+
+    private void runft4() throws Exception {
+        run(
+                "CREATE TABLE \"ft4\"(" //
+                        + "\"id\" PRIMARY KEY not null integer, " //
+                        + "\"geometry\" ST_GEOMETRY, " //
+                        + "\"intProperty\" int," //
+                        + "\"doubleProperty\" double precision, " //
+                        + "\"stringProperty\" varchar(200) casespecific)");
+        run(
+                "INSERT INTO SYSSPATIAL.GEOMETRY_COLUMNS (F_TABLE_CATALOG, F_TABLE_SCHEMA, F_TABLE_NAME,"
+                        + " F_GEOMETRY_COLUMN, COORD_DIMENSION, SRID, GEOM_TYPE) VALUES ('"
+                        + fixture.getProperty("database")
+                        + "', '"
+                        + fixture.getProperty("schema")
+                        + "', 'ft4', 'geometry', 2, "
+                        + srid4326
+                        + ", 'POINT')");
+        run(
+                "CREATE MULTISET TABLE \"ft4_geometry_idx\""
+                        + " (id INTEGER NOT NULL, cellid INTEGER NOT NULL) PRIMARY INDEX (cellid)");
+
+        run("INSERT INTO \"ft4\" VALUES(0, 'POINT(0 0)', 0, 0.0, 'zero')");
+        run("INSERT INTO \"ft4\" VALUES(1, 'POINT(1 1)', 1, 1.1, 'one')");
+        run("INSERT INTO \"ft4\" VALUES(2, 'POINT(2 2)', 1, 1.1, 'one_2')");
+        run("INSERT INTO \"ft4\" VALUES(3, 'POINT(3 3)', 1, 1.1, 'one_2')");
+        run("INSERT INTO \"ft4\" VALUES(4, 'POINT(4 4)', 2, 2.2, 'two')");
+        run("INSERT INTO \"ft4\" VALUES(5, 'POINT(5 5)', 2, 2.2, 'two_2')");
+        run("INSERT INTO \"ft4\" VALUES(6, 'POINT(6 6)', 3, 3.3, 'three')");
     }
 
     @Override

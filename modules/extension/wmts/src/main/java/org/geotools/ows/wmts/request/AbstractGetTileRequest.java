@@ -211,6 +211,10 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
         this.requestedBBox = requestedBBox;
     }
 
+    protected String getRequestedTime() {
+        return requestedTime;
+    }
+
     @Override
     public void setRequestedTime(String requestedTime) {
         this.requestedTime = requestedTime;

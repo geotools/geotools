@@ -162,7 +162,7 @@ public class OracleFilterToSqlTest {
     }
 
     @Test
-    public void testJsonExists() throws Exception {
+    public void testJsonArrayContainsString() throws Exception {
         Function function =
                 ff.function(
                         "jsonArrayContains",
@@ -172,7 +172,34 @@ public class OracleFilterToSqlTest {
         Filter filter = ff.equals(function, ff.literal(true));
         String encoded = encoder.encodeToString(filter);
         Assert.assertEquals(
-                "WHERE json_exists(operations, '$.operations?(@ == OP1)') = true", encoded);
+                "WHERE json_exists(operations, '$.operations?(@ == \"OP1\")')", encoded);
+    }
+
+    @Test
+    public void testJsonArrayContainsNumber() throws Exception {
+        Function function =
+                ff.function(
+                        "jsonArrayContains",
+                        ff.property("operations"),
+                        ff.literal("/operations"),
+                        ff.literal(1));
+        Filter filter = ff.equals(function, ff.literal(true));
+        String encoded = encoder.encodeToString(filter);
+        Assert.assertEquals("WHERE json_exists(operations, '$.operations?(@ == \"1\")')", encoded);
+    }
+
+    @Test
+    public void testJsonArrayContainsNestedObject() throws Exception {
+        Function function =
+                ff.function(
+                        "jsonArrayContains",
+                        ff.property("operations"),
+                        ff.literal("/operations/parameters"),
+                        ff.literal(1));
+        Filter filter = ff.equals(function, ff.literal(true));
+        String encoded = encoder.encodeToString(filter);
+        Assert.assertEquals(
+                "WHERE json_exists(operations, '$.operations.parameters?(@ == \"1\")')", encoded);
     }
 
     // THIS ONE WON'T PASS RIGHT NOW, BUT WE NEED TO PUT A TEST LIKE THIS

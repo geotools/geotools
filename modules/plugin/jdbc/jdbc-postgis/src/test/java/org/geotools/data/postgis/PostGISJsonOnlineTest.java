@@ -441,7 +441,7 @@ public class PostGISJsonOnlineTest extends JDBCTestSupport {
                 ff.function(
                         "jsonArrayContains",
                         ff.property(column),
-                        ff.literal("/arrayValues"),
+                        ff.literal("/arrayStrValues"),
                         ff.literal("EL2"));
         Filter filter = ff.equals(jsonArrayContains, ff.literal(true));
         Query query = new Query(tname("jsontest"), filter);

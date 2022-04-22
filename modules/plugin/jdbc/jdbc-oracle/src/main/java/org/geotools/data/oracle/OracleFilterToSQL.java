@@ -595,14 +595,22 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
     }
 
     @Override
-    protected void encodeBinaryComparisonOperator(BinaryComparisonOperator filter, Object extraData, Expression left, Expression right, Class leftContext, Class rightContext) {
+    protected void encodeBinaryComparisonOperator(
+            BinaryComparisonOperator filter,
+            Object extraData,
+            Expression left,
+            Expression right,
+            Class leftContext,
+            Class rightContext) {
         if (left instanceof JsonArrayContainsFunction) {
             try {
                 writeBinaryExpressionMember(left, leftContext);
             } catch (java.io.IOException ioe) {
                 throw new RuntimeException(IO_ERROR, ioe);
             }
-        } else super.encodeBinaryComparisonOperator(filter, extraData, left, right, leftContext, rightContext);
+        } else
+            super.encodeBinaryComparisonOperator(
+                    filter, extraData, left, right, leftContext, rightContext);
     }
 
     public String jsonExists(Function function) {
@@ -614,7 +622,8 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         if (pointers.length > 0) {
             String strJsonPath = String.join(".", pointers);
             return String.format(
-                    "json_exists(%s, '$%s?(@ == \"%s\")')", columnName, strJsonPath, expected.evaluate(null));
+                    "json_exists(%s, '$%s?(@ == \"%s\")')",
+                    columnName, strJsonPath, expected.evaluate(null));
         } else {
             throw new IllegalArgumentException("Cannot encode filter Invalid pointer");
         }

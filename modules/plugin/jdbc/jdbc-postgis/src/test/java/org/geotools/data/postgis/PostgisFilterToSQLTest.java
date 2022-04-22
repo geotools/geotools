@@ -299,7 +299,7 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
                         ff.literal("OP1"));
         filterToSql.encode(pointer);
         String sql = writer.toString().trim();
-        assertEquals("OPERATIONS @> '{ \"operations\": [\"OP1\"] }'", sql);
+        assertEquals("\"OPERATIONS\" @> '{ \"operations\": [\"OP1\"] }'", sql);
     }
 
     @Test
@@ -313,7 +313,7 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
                         ff.literal(1));
         filterToSql.encode(pointer);
         String sql = writer.toString().trim();
-        assertEquals("OPERATIONS @> '{ \"operations\": [1] }'", sql);
+        assertEquals("\"OPERATIONS\" @> '{ \"operations\": [1] }'", sql);
     }
 
     @Test
@@ -327,6 +327,6 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
                         ff.literal("P1"));
         filterToSql.encode(pointer);
         String sql = writer.toString().trim();
-        assertEquals("OPERATIONS @> '{ \"operations\": { \"parameters\": [\"P1\"] } }'", sql);
+        assertEquals("\"OPERATIONS\" @> '{ \"operations\": { \"parameters\": [\"P1\"] } }'", sql);
     }
 }

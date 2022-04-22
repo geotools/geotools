@@ -19,7 +19,11 @@ package org.geotools.filter.function;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
-import com.fasterxml.jackson.core.*;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonPointer;
+import com.fasterxml.jackson.core.JsonTokenId;
 import java.io.IOException;
 import java.io.StringWriter;
 import org.geotools.filter.FunctionExpressionImpl;

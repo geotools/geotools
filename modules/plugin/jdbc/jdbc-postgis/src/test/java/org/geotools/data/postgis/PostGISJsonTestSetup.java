@@ -120,8 +120,8 @@ public class PostGISJsonTestSetup extends JDBCDelegatingTestSetup {
                                 ? ", '{\"nestedObj\": {\"nestedProp\":\"stringValue\", \"nestedObj2\": {\"numProp\": 4, \"strProp\": \"stringValue2\"}, \"nestedAr\":[3,5,7]}}'"
                                 : "")
                         + ");"
-                        + "INSERT INTO \"jsontest\" VALUES (9, 'arrayEntryStr', '{\"arrayValues\":[\"EL1\",\"EL2\",\"EL3\"]}'"
-                        + (supportJsonB ? ", '{\"arrayValues\":[\"EL1\",\"EL2\",\"EL3\"]}'" : "")
+                        + "INSERT INTO \"jsontest\" VALUES (9, 'arrayEntryStr', '{\"arrayStrValues\":[\"EL1\",\"EL2\",\"EL3\"]}'"
+                        + (supportJsonB ? ", '{\"arrayStrValues\":[\"EL1\",\"EL2\",\"EL3\"]}'" : "")
                         + ");";
 
         run(sql);

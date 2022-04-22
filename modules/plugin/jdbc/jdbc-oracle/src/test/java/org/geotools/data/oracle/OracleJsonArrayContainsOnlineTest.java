@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2012, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2022, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,21 +16,17 @@
  */
 package org.geotools.data.oracle;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.jdbc.JDBCDelegatingTestSetup;
-import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Function;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public class OracleJsonArrayContainsOnlineTest extends JDBCTestSupport {
 
@@ -38,79 +34,57 @@ public class OracleJsonArrayContainsOnlineTest extends JDBCTestSupport {
     private FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
     @Override
-    protected JDBCJsonArrayContainsTestSetup createTestSetup() {
+    protected OracleJsonArrayContainsTestSetup createTestSetup() {
         testSetup = new OracleJsonArrayContainsTestSetup();
         return testSetup;
     }
 
     public void testJsonArrayContainsStringClob() throws Exception {
-
-        ContentFeatureSource featureSource =
-                dataStore.getFeatureSource(tname("json_data"));
-        Function function = ff.function(
-                "jsonArrayContains",
-                ff.property("JSON_DATA_CLOB"),
-                ff.literal("/arrayStr"),
-                ff.literal("op2"));
-        Filter filter = ff.equals(function, ff.literal(true));
-        try (SimpleFeatureIterator iterator = featureSource.getFeatures(filter).features()) {
-            List<SimpleFeature> features = new ArrayList<>();
-            while (iterator.hasNext()) {
-                features.add(iterator.next());
-            }
-            // check that we retrieved the necessary features
-            assertEquals(features.size(), 1);
-        }
+        checkFunction("JSON_DATA_CLOB", "/arrayStr", "op2", 1);
     }
 
     public void testJsonArrayContainsStringVarchar() throws Exception {
-
-        ContentFeatureSource featureSource =
-                dataStore.getFeatureSource(tname("json_data"));
-        Function function = ff.function(
-                "jsonArrayContains",
-                ff.property("JSON_DATA_VARCHAR2"),
-                ff.literal("/arrayStr"),
-                ff.literal("op2"));
-        Filter filter = ff.equals(function, ff.literal(true));
-        try (SimpleFeatureIterator iterator = featureSource.getFeatures(filter).features()) {
-            List<SimpleFeature> features = new ArrayList<>();
-            while (iterator.hasNext()) {
-                features.add(iterator.next());
-            }
-            // check that we retrieved the necessary features
-            assertEquals(features.size(), 1);
-        }
+        checkFunction("JSON_DATA_VARCHAR2", "/arrayStr", "op2", 1);
     }
 
     public void testJsonArrayContainsStringBlob() throws Exception {
+        checkFunction("JSON_DATA_BLOB", "/arrayStr", "op2", 1);
+    }
 
-        ContentFeatureSource featureSource =
-                dataStore.getFeatureSource(tname("json_data"));
-        Function function = ff.function(
-                "jsonArrayContains",
-                ff.property("JSON_DATA_BLOB"),
-                ff.literal("/arrayStr"),
-                ff.literal("op2"));
+    public void testJsonArrayContainsNumberClob() throws Exception {
+        checkFunction("JSON_DATA_CLOB", "/arrayNum", 2, 1);
+    }
+
+    public void testJsonArrayContainsNumberVarchar() throws Exception {
+        checkFunction("JSON_DATA_VARCHAR2", "/arrayNum", 2, 1);
+    }
+
+    public void testJsonArrayContainsNumberBlob() throws Exception {
+        checkFunction("JSON_DATA_BLOB", "/arrayNum", 2, 1);
+    }
+
+    private void checkFunction(String columnName, String pointer, Object expected, int countResult)
+            throws Exception {
+
+        ContentFeatureSource featureSource = dataStore.getFeatureSource(tname("json_data"));
+        Function function =
+                ff.function(
+                        "jsonArrayContains",
+                        ff.property(columnName),
+                        ff.literal(pointer),
+                        ff.literal(expected));
         Filter filter = ff.equals(function, ff.literal(true));
         try (SimpleFeatureIterator iterator = featureSource.getFeatures(filter).features()) {
             List<SimpleFeature> features = new ArrayList<>();
             while (iterator.hasNext()) {
                 features.add(iterator.next());
             }
-            // check that we retrieved the necessary features
-            assertEquals(features.size(), 1);
+            assertEquals(features.size(), countResult);
         }
     }
 }
 
-abstract class JDBCJsonArrayContainsTestSetup extends JDBCDelegatingTestSetup {
-    protected JDBCJsonArrayContainsTestSetup(JDBCTestSetup delegate) {
-        super(delegate);
-    }
-}
-
-class OracleJsonArrayContainsTestSetup extends JDBCJsonArrayContainsTestSetup {
+class OracleJsonArrayContainsTestSetup extends JDBCDelegatingTestSetup {
 
     protected OracleJsonArrayContainsTestSetup() {
         super(new OracleTestSetup());
@@ -126,17 +100,32 @@ class OracleJsonArrayContainsTestSetup extends JDBCJsonArrayContainsTestSetup {
                 "CREATE TABLE json_data(id integer not null, json_data_clob CLOB, json_data_blob BLOB, json_data_varchar2 VARCHAR2(100),"
                         + "CONSTRAINT ensure_json_clob CHECK (json_data_clob IS JSON),"
                         + "CONSTRAINT ensure_json_blob CHECK (json_data_blob IS JSON),"
-                        + "CONSTRAINT ensure_json_vchar CHECK (json_data_varchar2 IS JSON)," +
-                        " CONSTRAINT json_data_pk PRIMARY KEY(id))");
+                        + "CONSTRAINT ensure_json_vchar CHECK (json_data_varchar2 IS JSON),"
+                        + " CONSTRAINT json_data_pk PRIMARY KEY(id))");
         run(
                 "INSERT INTO json_data VALUES (1,"
                         + "'{ \"arrayStr\": [ \"op1\"]}', "
                         + "UTL_RAW.convert(UTL_RAW.cast_to_raw('{ \"arrayStr\": [ \"op1\"]}'), 'AL32UTF8', 'WE8MSWIN1252'),"
-                        + "'{ \"arrayStr\": [ \"op1\", \"op2\"] }')");
+                        + "'{ \"arrayStr\": [ \"op1\" ] }')");
         run(
                 "INSERT INTO json_data VALUES (2,"
                         + "'{ \"arrayStr\": [ \"op1\", \"op2\"]}', "
                         + "UTL_RAW.convert(UTL_RAW.cast_to_raw('{ \"arrayStr\": [ \"op1\", \"op2\"]}'), 'AL32UTF8', 'WE8MSWIN1252'),"
                         + "'{ \"arrayStr\": [ \"op1\", \"op2\"] }')");
+        run(
+                "INSERT INTO json_data VALUES (3,"
+                        + "'{ \"arrayNum\": [ 1 ]}', "
+                        + "UTL_RAW.convert(UTL_RAW.cast_to_raw('{ \"arrayNum\": [ 1 ]}'), 'AL32UTF8', 'WE8MSWIN1252'),"
+                        + "'{ \"arrayStr\": [ 1 ] }')");
+        run(
+                "INSERT INTO json_data VALUES (4,"
+                        + "'{ \"arrayNum\": [ 1, 2 ]}', "
+                        + "UTL_RAW.convert(UTL_RAW.cast_to_raw('{ \"arrayNum\": [ 1, 2 ]}'), 'AL32UTF8', 'WE8MSWIN1252'),"
+                        + "'{ \"arrayNum\": [ 1, 2] }')");
+        run(
+                "INSERT INTO json_data VALUES (5,"
+                        + "' { \"onNestedObj\": { \"arrayNum\": [ 1, 2 ]} }', "
+                        + "UTL_RAW.convert(UTL_RAW.cast_to_raw('{ \"onNestedObj\": { \"arrayNum\": [ 1, 2 ]} }'), 'AL32UTF8', 'WE8MSWIN1252'),"
+                        + "'{ \"onNestedObj\": { \"arrayNum\": [ 1, 2] } }')");
     }
 }

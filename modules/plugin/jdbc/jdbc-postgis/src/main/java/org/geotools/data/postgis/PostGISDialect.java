@@ -1511,7 +1511,8 @@ public class PostGISDialect extends BasicSQLDialect {
 
                     @Override
                     public Object visit(Function expression, Object notUsed) {
-                        if (expression instanceof JsonPointerFunction || expression instanceof JsonArrayContainsFunction) {
+                        if (expression instanceof JsonPointerFunction
+                                || expression instanceof JsonArrayContainsFunction) {
                             // takes the json pointer param to check if
                             // can be encoded
                             Expression param = expression.getParameters().get(1);

@@ -675,9 +675,7 @@ class FilterToSqlHelper {
         String[] strJsonPath = jsonPath.getValue().toString().split("/");
         String jsonFilter = String.format("{ %s }", buildJsonFromStrPointer(strJsonPath, expected));
 
-        out.write(
-                String.format(
-                        "\"%s\"::jsonb @> '%s' ::jsonb", column.getPropertyName(), jsonFilter));
+        out.write(String.format("\"%s\" @> '%s'", column.getPropertyName(), jsonFilter));
     }
 
     Expression getParameter(Function function, int idx, boolean mandatory) {

@@ -724,6 +724,18 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
     }
 
     @SuppressWarnings("unchecked")
+    public void testUniqueMultipleAttrOneResult() throws Exception {
+        // check that when the result is a single pair the result is returned as a single entry List
+        // and not as separate values.
+        UniqueVisitor v = new UniqueVisitor("intProperty", "doubleProperty");
+        v.setMaxFeatures(1);
+        dataStore.getFeatureSource(tname("ft1")).accepts(Query.ALL, v, null);
+        Set result = v.getResult().toSet();
+        assertEquals(1, result.size());
+        assertTrue(result.iterator().next() instanceof List);
+    }
+
+    @SuppressWarnings("unchecked")
     private void addValues(Set set, Object... values) {
         LinkedList list =
                 new LinkedList() {

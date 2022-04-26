@@ -25,6 +25,7 @@ import javax.xml.parsers.SAXParserFactory;
 import org.geotools.xsd.impl.ElementNameStreamingParserHandler;
 import org.geotools.xsd.impl.StreamingParserHandler;
 import org.geotools.xsd.impl.TypeStreamingParserHandler;
+import org.xml.sax.EntityResolver;
 import org.xml.sax.SAXException;
 
 /**
@@ -212,6 +213,10 @@ public class StreamingParser {
 
         this.handler = handler;
         this.input = input;
+    }
+
+    public void setEntityResolver(EntityResolver entityResolver) {
+        handler.setEntityResolver(entityResolver);
     }
 
     /**

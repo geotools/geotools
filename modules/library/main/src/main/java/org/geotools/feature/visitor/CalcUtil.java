@@ -278,7 +278,7 @@ public class CalcUtil {
      */
     public static Optional<List<Class>> reflectInputTypes(
             int expectedInputCount, List<Class> inputTypes) {
-        if (inputTypes == null || inputTypes.size() != 1)
+        if (inputTypes == null || inputTypes.size() != expectedInputCount)
             throw new IllegalArgumentException(
                     "Expecting " + expectedInputCount + " types in input, but got " + inputTypes);
 

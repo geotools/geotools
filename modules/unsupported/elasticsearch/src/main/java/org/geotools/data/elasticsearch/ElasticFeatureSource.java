@@ -16,7 +16,12 @@
  */
 package org.geotools.data.elasticsearch;
 
+import static org.geotools.filter.visitor.ExtractBoundsFilterVisitor.BOUNDS_VISITOR;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -26,10 +31,12 @@ import org.geotools.data.FilteringFeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
-import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.process.elasticsearch.ElasticBucketVisitor;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
+import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.sort.SortBy;
@@ -40,7 +47,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Provides access to a specific type within the Elasticsearch index described by the associated
  * data store.
  */
-class ElasticFeatureSource extends ContentFeatureSource {
+public class ElasticFeatureSource extends ContentFeatureSource {
 
     private static final Logger LOGGER = Logging.getLogger(ElasticFeatureSource.class);
 
@@ -128,6 +135,9 @@ class ElasticFeatureSource extends ContentFeatureSource {
             final String docType = dataStore.getDocType(entry.getName());
             final boolean scroll = !useSortOrPagination(query) && dataStore.getScrollEnabled();
             final ElasticRequest searchRequest = prepareSearchRequest(query, scroll);
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("Search request: " + searchRequest);
+            }
             final ElasticResponse sr =
                     dataStore.getClient().search(dataStore.getIndexName(), docType, searchRequest);
             if (LOGGER.isLoggable(Level.FINE)) {
@@ -146,6 +156,60 @@ class ElasticFeatureSource extends ContentFeatureSource {
             throw new IOException("Error executing query search", e);
         }
         return reader;
+    }
+
+    @Override
+    protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
+        if (visitor instanceof ElasticBucketVisitor) {
+            ElasticBucketVisitor elasticBucketVisitor = (ElasticBucketVisitor) visitor;
+            final ObjectMapper mapper = new ObjectMapper();
+            Map<String, String> hints = new HashMap<>();
+            if (elasticBucketVisitor.getAggregationDefinition() != null
+                    && elasticBucketVisitor.getAggregationDefinition().length() > 0) {
+                hints.put("a", elasticBucketVisitor.getAggregationDefinition());
+            }
+            if (elasticBucketVisitor.getQueryDefinition() != null
+                    && elasticBucketVisitor.getQueryDefinition().length() > 0) {
+                hints.put("q", elasticBucketVisitor.getQueryDefinition());
+            }
+
+            // if it's Query.ALL passing hints won't work, need to make a modifiable copy
+            query = new Query(query);
+            query.getHints().put(ElasticBucketVisitor.ES_AGGREGATE_BUCKET, hints);
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(query)) {
+
+                while (reader.hasNext()) {
+                    SimpleFeature feature = null;
+                    try {
+                        feature = reader.next();
+                        if (feature.getAttribute("_aggregation") != null) {
+                            final byte[] data = (byte[]) feature.getAttribute("_aggregation");
+                            final Map<String, Object> aggregation =
+                                    mapper.readValue(
+                                            data, new TypeReference<Map<String, Object>>() {});
+                            elasticBucketVisitor.getBuckets().add(aggregation);
+                        }
+                    } catch (IOException erp) {
+                        LOGGER.fine("Failed to parse aggregation value: " + erp);
+                        throw erp;
+                    } catch (Exception unexpected) {
+                        String fid =
+                                feature == null ? "feature" : feature.getIdentifier().toString();
+                        throw new IOException(
+                                "Problem visiting "
+                                        + query.getTypeName()
+                                        + " visiting "
+                                        + fid
+                                        + ":"
+                                        + unexpected,
+                                unexpected);
+                    }
+                }
+            }
+
+            return true;
+        }
+        return false;
     }
 
     private ElasticRequest prepareSearchRequest(Query query, boolean scroll) throws IOException {
@@ -215,10 +279,7 @@ class ElasticFeatureSource extends ContentFeatureSource {
         if (filterToElastic.getAggregations() != null) {
             final Map<String, Map<String, Map<String, Object>>> aggregations =
                     filterToElastic.getAggregations();
-            final Envelope envelope =
-                    (Envelope)
-                            query.getFilter()
-                                    .accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, null);
+            Envelope envelope = getQueryEnvelope(query);
             final long gridSize;
             if (dataStore.getGridSize() != null) {
                 gridSize = dataStore.getGridSize();
@@ -232,13 +293,20 @@ class ElasticFeatureSource extends ContentFeatureSource {
                 gridThreshold = (Double) ElasticDataStoreFactory.GRID_THRESHOLD.getDefaultValue();
             }
             final int precision = GeohashUtil.computePrecision(envelope, gridSize, gridThreshold);
-            LOGGER.fine("Updating GeoHash grid aggregation precision to " + precision);
             GeohashUtil.updateGridAggregationPrecision(aggregations, precision);
             searchRequest.setAggregations(aggregations);
             searchRequest.setSize(0);
         }
 
         return searchRequest;
+    }
+
+    private Envelope getQueryEnvelope(Query query) {
+        Envelope envelope = (Envelope) query.getFilter().accept(BOUNDS_VISITOR, null);
+        // in case of query not having a spatial filter, assume whole world
+        if (Double.isInfinite(envelope.getWidth()))
+            envelope = new ReferencedEnvelope(-180, 180, -90, 90, DefaultGeographicCRS.WGS84);
+        return envelope;
     }
 
     private void setSourceIncludes(final ElasticRequest searchRequest) throws IOException {

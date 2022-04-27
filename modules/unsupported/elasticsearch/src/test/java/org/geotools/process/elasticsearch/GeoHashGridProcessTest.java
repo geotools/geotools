@@ -27,6 +27,7 @@ import com.google.common.collect.ImmutableMap;
 import java.awt.geom.Point2D;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.Query;
+import org.geotools.data.elasticsearch.GeohashUtil;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -37,8 +38,12 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.spatial.BBOX;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.TransformException;
 
 public class GeoHashGridProcessTest {
 
@@ -91,24 +96,13 @@ public class GeoHashGridProcessTest {
                 new ReferencedEnvelope(-180, 180, -90, 90, DefaultGeographicCRS.WGS84);
         int width = 8;
         int height = 4;
-        int pixelsPerCell = 1;
         String strategy = "Basic";
         Float scaleMin = 0f;
 
         GridCoverage2D coverage =
                 process.execute(
-                        features,
-                        pixelsPerCell,
-                        strategy,
-                        null,
-                        null,
-                        scaleMin,
-                        null,
-                        false,
-                        envelope,
-                        width,
-                        height,
-                        null);
+                        features, strategy, null, null, scaleMin, null, false, envelope, width,
+                        height, null, "", null);
         checkInternal(coverage, fineDelta);
         checkEdge(coverage, envelope, fineDelta);
     }
@@ -119,24 +113,13 @@ public class GeoHashGridProcessTest {
                 new ReferencedEnvelope(-180, 180, -90, 90, DefaultGeographicCRS.WGS84);
         int width = 16;
         int height = 8;
-        int pixelsPerCell = 1;
         String strategy = "Basic";
         Float scaleMin = 0f;
 
         GridCoverage2D coverage =
                 process.execute(
-                        features,
-                        pixelsPerCell,
-                        strategy,
-                        null,
-                        null,
-                        scaleMin,
-                        null,
-                        false,
-                        envelope,
-                        width,
-                        height,
-                        null);
+                        features, strategy, null, null, scaleMin, null, false, envelope, width,
+                        height, null, "", null);
         checkInternal(coverage, fineDelta);
         checkEdge(coverage, envelope, fineDelta);
     }
@@ -147,24 +130,13 @@ public class GeoHashGridProcessTest {
                 new ReferencedEnvelope(-168.75, 168.75, -78.75, 78.75, DefaultGeographicCRS.WGS84);
         int width = 16;
         int height = 8;
-        int pixelsPerCell = 1;
         String strategy = "Basic";
         Float scaleMin = 0f;
 
         GridCoverage2D coverage =
                 process.execute(
-                        features,
-                        pixelsPerCell,
-                        strategy,
-                        null,
-                        null,
-                        scaleMin,
-                        null,
-                        false,
-                        envelope,
-                        width,
-                        height,
-                        null);
+                        features, strategy, null, null, scaleMin, null, false, envelope, width,
+                        height, null, "", null);
         checkInternal(coverage, fineDelta);
         checkEdge(coverage, envelope, fineDelta);
     }
@@ -175,25 +147,41 @@ public class GeoHashGridProcessTest {
                 new ReferencedEnvelope(-168.75, 168.75, -78.75, 78.75, DefaultGeographicCRS.WGS84);
         int width = 900;
         int height = 600;
-        int pixelsPerCell = 1;
         String strategy = "Basic";
         Float scaleMin = 0f;
 
         GridCoverage2D coverage =
                 process.execute(
-                        features,
-                        pixelsPerCell,
-                        strategy,
-                        null,
-                        null,
-                        scaleMin,
-                        null,
-                        false,
-                        envelope,
-                        width,
-                        height,
-                        null);
+                        features, strategy, null, null, scaleMin, null, false, envelope, width,
+                        height, null, "", null);
         checkInternal(coverage, fineDelta);
+    }
+
+    @Test
+    public void testAutomaticDefinition() throws FactoryException, TransformException {
+        ReferencedEnvelope envelope =
+                new ReferencedEnvelope(-180, 180, -90, 90, DefaultGeographicCRS.WGS84);
+
+        assertEquals(1, (int) GeohashUtil.getPrecision(process.defaultAggregation(envelope, 8)));
+        assertEquals(1, (int) GeohashUtil.getPrecision(process.defaultAggregation(envelope, 16)));
+        assertEquals(1, (int) GeohashUtil.getPrecision(process.defaultAggregation(envelope, 32)));
+        assertEquals(2, (int) GeohashUtil.getPrecision(process.defaultAggregation(envelope, 128)));
+        assertEquals(3, (int) GeohashUtil.getPrecision(process.defaultAggregation(envelope, 256)));
+        assertEquals(3, (int) GeohashUtil.getPrecision(process.defaultAggregation(envelope, 720)));
+    }
+
+    @Test
+    public void testAutomaticDefinitionWebMercator() throws FactoryException, TransformException {
+        CoordinateReferenceSystem webMercator = CRS.decode("EPSG:3857", true);
+        double wb = 20000000; // world bounds in web mercator
+        ReferencedEnvelope envelope = new ReferencedEnvelope(-wb, wb, -wb, wb, webMercator);
+
+        assertEquals(1, (int) GeohashUtil.getPrecision(process.defaultAggregation(envelope, 8)));
+        assertEquals(1, (int) GeohashUtil.getPrecision(process.defaultAggregation(envelope, 16)));
+        assertEquals(1, (int) GeohashUtil.getPrecision(process.defaultAggregation(envelope, 32)));
+        assertEquals(2, (int) GeohashUtil.getPrecision(process.defaultAggregation(envelope, 128)));
+        assertEquals(3, (int) GeohashUtil.getPrecision(process.defaultAggregation(envelope, 256)));
+        assertEquals(3, (int) GeohashUtil.getPrecision(process.defaultAggregation(envelope, 720)));
     }
 
     /**
@@ -207,7 +195,7 @@ public class GeoHashGridProcessTest {
         ReferencedEnvelope env = new ReferencedEnvelope(0, 1, 2, 3, DefaultGeographicCRS.WGS84);
         Query query = new Query();
         query.setFilter(filter);
-        Query queryOut = process.invertQuery(env, query, null);
+        Query queryOut = process.invertQuery(env, 320, null, query, null);
         assertEquals(ff.bbox("geom", 0, 2, 1, 3, "EPSG:4326"), queryOut.getFilter());
     }
 
@@ -217,7 +205,7 @@ public class GeoHashGridProcessTest {
         ReferencedEnvelope env = new ReferencedEnvelope(0, 1, 2, 3, DefaultGeographicCRS.WGS84);
         Query query = new Query();
         query.setFilter(Filter.INCLUDE);
-        Query queryOut = process.invertQuery(env, query, null);
+        Query queryOut = process.invertQuery(env, 320, null, query, null);
         assertEquals(ff.bbox("", 0, 2, 1, 3, "EPSG:4326"), queryOut.getFilter());
     }
 
@@ -227,7 +215,7 @@ public class GeoHashGridProcessTest {
         ReferencedEnvelope env = new ReferencedEnvelope(0, 1, 2, 3, DefaultGeographicCRS.WGS84);
         Query query = new Query();
         query.setFilter(filter);
-        Query queryOut = process.invertQuery(env, query, null);
+        Query queryOut = process.invertQuery(env, 320, null, query, null);
         assertEquals(ff.bbox("geom", 0, 2, 1, 3, "EPSG:4326"), queryOut.getFilter());
     }
 
@@ -238,7 +226,7 @@ public class GeoHashGridProcessTest {
                 new ReferencedEnvelope(-179, 179, 2, 3, DefaultGeographicCRS.WGS84);
         Query query = new Query();
         query.setFilter(filter);
-        Query queryOut = process.invertQuery(env, query, null);
+        Query queryOut = process.invertQuery(env, 320, null, query, null);
         assertEquals(ff.bbox("geom", -179, 2, 179, 3, "EPSG:4326"), queryOut.getFilter());
     }
 
@@ -250,8 +238,14 @@ public class GeoHashGridProcessTest {
         ReferencedEnvelope env = new ReferencedEnvelope(2, 3, 0, 1, crs);
         Query query = new Query();
         query.setFilter(filter);
-        Query queryOut = process.invertQuery(env, query, null);
-        assertEquals(ff.bbox("geom", 0, 2, 1, 3, "EPSG:4326"), queryOut.getFilter());
+        Query queryOut = process.invertQuery(env, 320, null, query, null);
+        // potential reprojection detected, padding occurs
+        BBOX bbox = (BBOX) queryOut.getFilter();
+        assertEquals("geom", ((PropertyName) bbox.getExpression1()).getPropertyName());
+        assertEquals(-0.01, bbox.getBounds().getMinX(), 1e-3);
+        assertEquals(1.01, bbox.getBounds().getMaxX(), 1e-3);
+        assertEquals(1.99, bbox.getBounds().getMinY(), 1e-3);
+        assertEquals(3.01, bbox.getBounds().getMaxY(), 1e-3);
     }
 
     @Test
@@ -263,7 +257,7 @@ public class GeoHashGridProcessTest {
         ReferencedEnvelope env = new ReferencedEnvelope(0, 1, 2, 3, DefaultGeographicCRS.WGS84);
         Query query = new Query();
         query.setFilter(filter);
-        Query queryOut = process.invertQuery(env, query, null);
+        Query queryOut = process.invertQuery(env, 320, null, query, null);
         assertEquals(
                 ff.and(
                         ff.equals(ff.property("key"), ff.literal("value")),

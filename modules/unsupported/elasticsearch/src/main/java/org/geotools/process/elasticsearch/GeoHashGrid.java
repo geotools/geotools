@@ -16,6 +16,8 @@
  */
 package org.geotools.process.elasticsearch;
 
+import static org.geotools.process.elasticsearch.GridCoverageUtil.pad;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.davidmoten.geo.GeoHash;
@@ -29,9 +31,14 @@ import java.util.logging.Logger;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
+import org.geotools.data.crs.ForceCoordinateSystemFeatureResults;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.store.ContentFeatureCollection;
+import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.collection.DecoratingSimpleFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
@@ -75,15 +82,23 @@ abstract class GeoHashGrid {
         this.scale = new RasterScale();
     }
 
-    public void initalize(ReferencedEnvelope srcEnvelope, SimpleFeatureCollection features)
-            throws TransformException, FactoryException {
-        final List<Map<String, Object>> buckets = readFeatures(features);
+    public void initalize(
+            ReferencedEnvelope srcEnvelope,
+            SimpleFeatureCollection features,
+            String aggregationDefinition,
+            String queryDefinition)
+            throws TransformException, FactoryException, IOException {
+        final List<Map<String, Object>> buckets =
+                readFeatures(features, aggregationDefinition, queryDefinition);
 
+        // cannot trust the definition, as the store might update it to enforce safety limits
+        // check from the first returned geohash instead
         final String firstGeohash = buckets.isEmpty() ? null : (String) buckets.get(0).get("key");
-        final int precision;
+        Integer precision;
         if (!isValid(firstGeohash)) {
-            LOGGER.fine("No aggregations found or missing/invalid geohash key");
+            LOGGER.fine("No aggregations found or missing/invalid GeoHash key");
             precision = DEFAULT_PRECISION;
+
         } else {
             precision = ((String) buckets.get(0).get("key")).length();
         }
@@ -91,12 +106,18 @@ abstract class GeoHashGrid {
         cellWidth = GeoHash.widthDegrees(precision);
         cellHeight = GeoHash.heightDegrees(precision);
 
-        if (srcEnvelope.getCoordinateReferenceSystem() != null) {
-            srcEnvelope = srcEnvelope.transform(DefaultGeographicCRS.WGS84, false);
+        boolean reproject =
+                !CRS.equalsIgnoreMetadata(
+                        srcEnvelope.getCoordinateReferenceSystem(), DefaultGeographicCRS.WGS84);
+        if (reproject) {
+            srcEnvelope = srcEnvelope.transform(DefaultGeographicCRS.WGS84, true);
         }
         computeMinLonOffset(srcEnvelope);
         envelope = computeEnvelope(srcEnvelope, precision);
+        if (reproject) envelope = pad(envelope, precision);
 
+        // the envelope is expressed on the geohash cell centers, boundingbox is the full
+        // coverage of the raster instead
         boundingBox =
                 new ReferencedEnvelope(
                         envelope.getMinX() - cellWidth / 2.0,
@@ -144,6 +165,7 @@ abstract class GeoHashGrid {
     private void updateGrid(double lat, double lon, Number value) {
         final int row = grid.length - (int) Math.round((lat - envelope.getMinY()) / cellHeight) - 1;
         final int col = (int) Math.round((lon - envelope.getMinX()) / cellWidth);
+
         grid[Math.min(row, grid.length - 1)][Math.min(col, grid[0].length - 1)] =
                 scale.scaleValue(value.floatValue());
     }
@@ -154,26 +176,46 @@ abstract class GeoHashGrid {
         return coverageFactory.create("geohashGridAgg", grid, boundingBox);
     }
 
-    private List<Map<String, Object>> readFeatures(SimpleFeatureCollection features) {
-        final ObjectMapper mapper = new ObjectMapper();
-
+    private List<Map<String, Object>> readFeatures(
+            SimpleFeatureCollection features, String aggregationDefinition, String queryDefinition)
+            throws IOException {
         final List<Map<String, Object>> buckets = new ArrayList<>();
-        try (SimpleFeatureIterator iterator = features.features()) {
-            while (iterator.hasNext()) {
-                final SimpleFeature feature = iterator.next();
-                if (feature.getAttribute("_aggregation") != null) {
-                    final byte[] data = (byte[]) feature.getAttribute("_aggregation");
-                    try {
-                        final Map<String, Object> aggregation =
-                                mapper.readValue(data, new TypeReference<Map<String, Object>>() {});
-                        buckets.add(aggregation);
-                    } catch (IOException e) {
-                        LOGGER.fine("Failed to parse aggregation value: " + e);
+        FeatureCollection featureCollection = unwrap(features);
+        ElasticBucketVisitor visitor =
+                new ElasticBucketVisitor(aggregationDefinition, queryDefinition);
+        if (featureCollection instanceof ContentFeatureCollection
+                || featureCollection instanceof DecoratingSimpleFeatureCollection) {
+            featureCollection.accepts(visitor, null);
+            return visitor.getBuckets();
+        } else {
+            ObjectMapper mapper = new ObjectMapper();
+            try (SimpleFeatureIterator iterator = features.features()) {
+                while (iterator.hasNext()) {
+                    final SimpleFeature feature = iterator.next();
+                    if (feature.getAttribute("_aggregation") != null) {
+                        final byte[] data = (byte[]) feature.getAttribute("_aggregation");
+                        try {
+                            final Map<String, Object> aggregation =
+                                    mapper.readValue(
+                                            data, new TypeReference<Map<String, Object>>() {});
+                            buckets.add(aggregation);
+                        } catch (IOException e) {
+                            LOGGER.fine("Failed to parse aggregation value: " + e);
+                        }
                     }
                 }
             }
+            return buckets;
         }
-        return buckets;
+    }
+
+    FeatureCollection unwrap(SimpleFeatureCollection features) {
+        if (features instanceof ForceCoordinateSystemFeatureResults) {
+            ForceCoordinateSystemFeatureResults forceCoordinateSystemFeatureResults =
+                    (ForceCoordinateSystemFeatureResults) features;
+            return forceCoordinateSystemFeatureResults.getOrigin();
+        }
+        return features;
     }
 
     private Envelope computeEnvelope(ReferencedEnvelope outEnvelope, int precision) {

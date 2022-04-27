@@ -19,8 +19,8 @@ package org.geotools.process.elasticsearch;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.coverage.processing.Operations;
 import org.geotools.data.Query;
+import org.geotools.data.elasticsearch.GeohashUtil;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
@@ -30,6 +30,7 @@ import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.process.vector.VectorProcess;
+import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.coverage.grid.GridGeometry;
 import org.opengis.filter.Filter;
@@ -72,16 +73,10 @@ public class GeoHashGridProcess implements VectorProcess {
 
             // process parameters
             @DescribeParameter(
-                            name = "pixelsPerCell",
-                            description = "Resolution used for upsampling (in pixels)",
-                            defaultValue = "1",
-                            min = 1)
-                    Integer argPixelsPerCell,
-            @DescribeParameter(
                             name = "gridStrategy",
                             description = "GeoHash grid strategy",
                             defaultValue = "Basic",
-                            min = 1)
+                            min = 0)
                     String gridStrategy,
             @DescribeParameter(
                             name = "gridStrategyArgs",
@@ -111,38 +106,45 @@ public class GeoHashGridProcess implements VectorProcess {
                             name = "outputHeight",
                             description = "Height of output raster in pixels")
                     Integer argOutputHeight,
+            @DescribeParameter(
+                            name = "aggregationDefinition",
+                            description = "Native Elasticsearch Aggregation definition",
+                            min = 0)
+                    String aggregationDefinition,
+            @DescribeParameter(
+                            name = "queryDefinition",
+                            description = "Native Elasticsearch Query definition",
+                            min = 0)
+                    String queryDefinition,
             ProgressListener monitor)
             throws ProcessException {
 
         try {
+            // setup sane defaults for aggregation definition, if missing
+            if (aggregationDefinition == null)
+                aggregationDefinition = defaultAggregation(argOutputEnv, argOutputWidth);
+
             // construct and populate grid
             final GeoHashGrid geoHashGrid =
                     Strategy.valueOf(gridStrategy.toUpperCase()).createNewInstance();
             geoHashGrid.setParams(gridStrategyArgs);
             geoHashGrid.setEmptyCellValue(emptyCellValue);
             geoHashGrid.setScale(new RasterScale(scaleMin, scaleMax, useLog));
-            geoHashGrid.initalize(argOutputEnv, obsFeatures);
+            geoHashGrid.initalize(
+                    argOutputEnv, obsFeatures, aggregationDefinition, queryDefinition);
             // convert to grid coverage
-            final GridCoverage2D nativeCoverage = geoHashGrid.toGridCoverage2D();
-
-            // reproject
-            final GridCoverage2D transformedCoverage =
-                    (GridCoverage2D)
-                            Operations.DEFAULT.resample(
-                                    nativeCoverage, argOutputEnv.getCoordinateReferenceSystem());
-            // upscale to approximate output resolution
-            final GridCoverage2D scaledCoverage =
-                    GridCoverageUtil.scale(
-                            transformedCoverage,
-                            argOutputWidth * argPixelsPerCell,
-                            argOutputHeight * argPixelsPerCell);
-            // crop (geohash grid envelope will always contain output bbox)
-            final GridCoverage2D croppedCoverage =
-                    GridCoverageUtil.crop(scaledCoverage, argOutputEnv);
-            return GridCoverageUtil.scale(croppedCoverage, argOutputWidth, argOutputHeight);
+            return geoHashGrid.toGridCoverage2D();
         } catch (Exception e) {
             throw new ProcessException("Error executing GeoHashGridProcess", e);
         }
+    }
+
+    String defaultAggregation(ReferencedEnvelope envelope, Integer width) {
+        int precision = GeohashUtil.getPrecisionFromScale(envelope, width);
+        // sets an empty field, which the store will fill in later before encoding the request
+        return "{\"agg\": {\"geohash_grid\": {\"size\": 65536, \"field\": \"\", \"precision\": "
+                + precision
+                + "}}}";
     }
 
     public Query invertQuery(
@@ -150,6 +152,15 @@ public class GeoHashGridProcess implements VectorProcess {
                             name = "outputBBOX",
                             description = "Georeferenced bounding box of the output")
                     ReferencedEnvelope envelope,
+            @DescribeParameter(
+                            name = "outputWidth",
+                            description = "Width of output raster in pixels")
+                    Integer argOutputWidth,
+            @DescribeParameter(
+                            name = "aggregationDefinition",
+                            description = "Native Elasticsearch Aggregation definition",
+                            min = 0)
+                    String aggregationDefinition,
             Query targetQuery,
             GridGeometry targetGridGeometry)
             throws ProcessException {
@@ -162,9 +173,19 @@ public class GeoHashGridProcess implements VectorProcess {
         }
         final BBOX bbox;
         try {
-            if (envelope.getCoordinateReferenceSystem() != null) {
+            boolean reproject =
+                    !CRS.equalsIgnoreMetadata(
+                            envelope.getCoordinateReferenceSystem(), DefaultGeographicCRS.WGS84);
+            if (reproject) {
                 envelope = envelope.transform(DefaultGeographicCRS.WGS84, false);
+                Integer precision;
+                if (aggregationDefinition == null) {
+                    aggregationDefinition = defaultAggregation(envelope, argOutputWidth);
+                }
+                precision = GeohashUtil.getPrecision(aggregationDefinition);
+                envelope = GridCoverageUtil.pad(envelope, precision);
             }
+
             bbox =
                     FILTER_FACTORY.bbox(
                             geometryName,

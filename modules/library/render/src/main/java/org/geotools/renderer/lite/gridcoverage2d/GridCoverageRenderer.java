@@ -442,7 +442,8 @@ public final class GridCoverageRenderer {
             final GridCoverage2D coverage,
             final RasterSymbolizer symbolizer,
             final double[] bkgValues,
-            final Hints hints) {
+            final Hints hints)
+            throws FactoryException {
         // ///////////////////////////////////////////////////////////////////
         //
         // FINAL AFFINE
@@ -488,10 +489,29 @@ public final class GridCoverageRenderer {
 
     /** */
     private GridCoverage2D crop(
-            final GridCoverage2D inputCoverage,
+            GridCoverage2D inputCoverage,
             final GeneralEnvelope destinationEnvelope,
             final boolean doReprojection,
-            double[] backgroundValues) {
+            double[] backgroundValues)
+            throws FactoryException {
+
+        if (advancedProjectionHandlingEnabled) {
+            ProjectionHandler handler =
+                    ProjectionHandlerFinder.getHandler(
+                            ReferencedEnvelope.reference(destinationEnvelope),
+                            inputCoverage.getCoordinateReferenceSystem2D(),
+                            wrapEnabled);
+            if (handler != null) {
+                List<GridCoverage2D> cropped =
+                        GridCoverageRendererUtilities.forceToValidBounds(
+                                Arrays.asList(inputCoverage),
+                                handler,
+                                backgroundValues,
+                                destinationEnvelope.getCoordinateReferenceSystem(),
+                                hints);
+                if (cropped != null && !cropped.isEmpty()) inputCoverage = cropped.get(0);
+            }
+        }
 
         GridCoverage2D outputCoverage =
                 GridCoverageRendererUtilities.crop(

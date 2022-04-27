@@ -479,11 +479,11 @@
     <db2.jdbc.version>11.5.6.0</db2.jdbc.version>
     <eclipse.emf.version>2.15.0</eclipse.emf.version>
     <elasticsearch.version>7.14.0</elasticsearch.version>
-    <imageio.ext.version>1.4.1</imageio.ext.version>
+    <imageio.ext.version>1.4.4</imageio.ext.version>
     <informix.jdbc.version>4.50.7.1</informix.jdbc.version>
     <jackson2.databind.version>2.13.2.1</jackson2.databind.version>
     <jackson2.version>2.13.2</jackson2.version>
-    <jaiext.version>1.1.21</jaiext.version>
+    <jaiext.version>1.1.22</jaiext.version>
     <javax.activation-api.version>1.2.0</javax.activation-api.version>
     <jaxb.api.version>2.4.0-b180830.0359</jaxb.api.version>
     <jaxb.runtime.version>2.4.0-b180830.0438</jaxb.runtime.version>
@@ -1575,6 +1575,10 @@
         <plugin>
           <artifactId>maven-install-plugin</artifactId>
           <version>3.0.0-M1</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-invoker-plugin</artifactId>
+          <version>3.2.2</version>
         </plugin>
         <plugin>
           <artifactId>maven-deploy-plugin</artifactId>

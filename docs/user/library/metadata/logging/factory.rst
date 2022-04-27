@@ -1,95 +1,108 @@
 LoggerFactory
 ^^^^^^^^^^^^^
 
-If you are working in your own application, you can teach GeoTools to use your application logging facilities (rather than Java logging which it uses by internal default).::
-  
-  GeoTools.setLoggerFactory( loggerFactory );
+If you are working in your own application, you can teach GeoTools to use your application logging facilities (rather than Java logging which it uses by default).
 
 GeoTools provides LoggerFactories for:
 
-* ``org.geotools.util.logging.LogbackLoggerFactory``
+* ``org.geotools.util.logging.LogbackLoggerFactory`` - Logback via SLF4J API
 * ``org.geotools.util.logging.Log4j2LoggerFactory`` - Log4J 2 API
 * ``org.geotools.util.logging.Log4j1LoggerFactory`` - Log4J 1 API (maintained by Reload4J project)
 * ``org.geotools.util.logging.CommonsLoggerFactory`` - Apache's Common Logging framework
-
-Using a logger factory:
-
-.. code-block::
-   
-   package net.fun.example;
-   
-   import java.util.logging.Logger;
-   import org.geotools.util.logging.Logging;
-   
-   class Welcome {
-   
-      public static final Logger DEFAULT = initDefaultLogger();
-
-      /**
-       * Setup DEFAULT Logger (taking care to initialize GeoTools with preferred logging framework).
-       *
-       * @return Logger for this application, and the net.fun.example package.
-       */
-      private static Logger initDefaultLogger() {
-          Throwable troubleSettingUpLogging = null;
-          try {
-              Logging.ALL.setLoggerFactory("org.geotools.util.logging.Log4JLoggerFactory");
-          } catch (Throwable trouble) {
-              troubleSettingUpLogging = trouble;
-          }
-          Logger logger = Logging.getLogger("net.fun.example");
-          logger.config("Default Logger:" + logger);
-          if (troubleSettingUpLogging != null) {
-              logger.log(
-                      Level.WARNNING,
-                      "Unable to init \"org.geotools.util.logging.Log4JLoggerFactory\":"
-                              + troubleSettingUpLogging,
-                      troubleSettingUpLogging);
-          }
-          return logger;
-      }
-
-In the above code try/catch is used if Log4JLoggerFactory is was not able to be constructed (due to Log4J not being available on the CLASSAPTH). GeoTools continue to rely on the Java logging system instead, so the WARNING is shown.
-
-You can create your own ``LoggerFactory`` if you wish to bridge GeoTools logging to your own tracking facilities. As an example an OSGi application could check bundle trace settings "trace" settings to determine appropriate level of detail to log.
+* ``org.geotools.util.logging.DefaultLoggerFactory`` - java util logging
 
 GeoTools.init()
 '''''''''''''''
 
-As mentioned in :doc:`../geotools`, the ``GeoTools.init()`` method will do its best to determine which logging library your application is using.
+As mentioned in :doc:`../geotools`, the ``GeoTools.init()`` call sets up the library for use, and will do its best to determine which logging library your application is using.
 
-Keep in mind that ``GeoTools.init()`` must be called prior to Logger creation in your main method:
+Keep in mind that ``GeoTools.init()`` must be called prior to Logger creation:
 
-.. code-block::
+.. literalinclude:: /../src/main/java/org/geotools/tutorial/logging/Example.java 
+   :language: java
+   :start-at: package
+
+A reliable way to do this is using static initializer (before ``main()`` method is called):
+
+.. literalinclude:: /../src/main/java/org/geotools/tutorial/logging/Example2.java 
+   :language: java
+   :start-at: package
    
-   public static void main(String args[]){
-        GeoTools.init();
-        Logger LOGGER = Logging.getLogger("org.geotools.tutorial");
-        LOGGER.fine("Application started - first post!")
-   }
+You may find it more readable to do this using a static method defining a LOGGER:
 
-Or during class initialization:
+.. literalinclude:: /../src/main/java/org/geotools/tutorial/logging/Example3.java 
+   :language: java
+   :start-at: package
 
-.. code-block::
-   
-   static final Logger LOGGER = defaultLogger();
+This method configures:
 
-   public static void main(String args[]){
-        LOGGER.fine("Application started - first post!")
-   }
-   
-   private static final Logger defaultLogger(){
-       GeoTools.init();
-       return Logging.getLogger("org.geotools.tutorial");
-   }
+* ``Logging.ALL``
+* ``Logging.GEOTOOLS``
+* ``Logging.JAI``
 
-Keep in mind this method configures Logging.GEOTOOLS Logger only, if you are using Logging to configure for additional Loggger instances during startup you may do so:
+This is the the most flexible way to set up logging, allowing users of your application to choose
+the logging system based on configuration files and jars supplied at runtime.
 
-.. code-block::
-   
-   GeoTools.init(); // setup org.geotools
-   Logging.ALL.setLoggerFactory(Logging.GEOTOOLS.getLoggerFactory());
-   Logging.JAI.setLoggerFactory(Logging.GEOTOOLS.getLoggerFactory());
+GeoTools.setLoggerFactory()
+'''''''''''''''''''''''''''
+
+If you know the LoggerFactory you wish to use:
+
+.. literalinclude:: /../src/main/java/org/geotools/tutorial/logging/Example4.java 
+   :language: java
+   :start-at: package
+
+The above example uses the ``LogbackLoggerFactory.getInstance()`` singleton, which writes messages using the SLF4J API be available at runtime.
+
+Using the ``GeoTools.setLoggerFactory(LoggerFactory)`` method updates ``Logging.ALL``, ``Logging.GEOTOOLS`` and ``Logging.JAI``.  When subsequently called ``GeoTools.init()`` will check that  ``Logging.ALL.getLoggerFactory()`` is not {@code null} - recognizing logging has already been configured, and will not replace your setting.
+
+Logging.setLoggerFactory()
+''''''''''''''''''''''''''
+
+You may also call ``Logger.setLoggerFactory()`` directly to name the logger factory you wish to use:
+
+.. literalinclude:: /../src/main/java/org/geotools/tutorial/logging/Welcome.java 
+   :language: java
+   :start-at: package
+  
+In the above code try/catch is used if Log4J2LoggerFactory is was not able to be constructed (due to Log4J not being available on the CLASSAPTH). GeoTools continue to rely on the Java logging system instead, so the WARNING is shown.
+
+::
+
+    Apr 09, 2022 6:11:07 PM org.geotools.tutorial.logging.Welcome initDefaultLogger
+    WARNING: Unable to setup "org.geotools.util.logging.Log4J2LoggerFactory", is log4j2 available?
+    java.lang.ClassNotFoundException: No factory of kind "org.geotools.util.logging.Log4JLoggerFactory" found.
+       at org.geotools.util.logging.Logging.factoryNotFound(Logging.java:371)
+       at org.geotools.util.logging.Logging.setLoggerFactory(Logging.java:357)
+       at org.geotools.tutorial.logging.Welcome.initDefaultLogger(Welcome.java:33)
+       at org.geotools.tutorial.logging.Welcome.<clinit>(Welcome.java:20)
+    Caused by: java.lang.NoClassDefFoundError: org/apache/log4j/Logger
+       at org.geotools.util.logging.Log4JLoggerFactory.<init>(Log4JLoggerFactory.java:42)
+       at org.geotools.util.logging.Log4JLoggerFactory.getInstance(Log4JLoggerFactory.java:52)
+       at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+       at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       at java.lang.reflect.Method.invoke(Method.java:498)
+       at org.geotools.util.logging.Logging.setLoggerFactory(Logging.java:341)
+       ... 2 more
+    Caused by: java.lang.ClassNotFoundException: org.apache.log4j.Logger
+       at java.net.URLClassLoader.findClass(URLClassLoader.java:382)
+       at java.lang.ClassLoader.loadClass(ClassLoader.java:418)
+       at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:355)
+       at java.lang.ClassLoader.loadClass(ClassLoader.java:351)
+       ... 9 more
+
+    Apr 09, 2022 6:11:07 PM org.geotools.tutorial.logging.Welcome main
+    INFO: Welcome
+
+If you know the LoggerFactory you wish to use there is a method to pass in the instance:
+
+.. literalinclude:: /../src/main/java/org/geotools/tutorial/logging/Welcome2.java 
+   :language: java
+   :start-at: package
+
+.. note:: You can create your own ``LoggerFactory`` if you wish to bridge GeoTools logging to your own tracking facilities. As an example an OSGi application could check bundle trace settings "trace" settings to determine appropriate level of detail to log.
+
 
 JAI Logging
 '''''''''''

@@ -25,7 +25,7 @@ public class CIBase {
         String user = fixture.getProperty("user");
         String password = fixture.getProperty("password");
         String encrypt = fixture.getProperty("use ssl");
-        Map<String, String> options = new HashMap<String, String>();
+        Map<String, String> options = new HashMap<>();
         if (encrypt != null) {
             options.put("encrypt", encrypt);
         }

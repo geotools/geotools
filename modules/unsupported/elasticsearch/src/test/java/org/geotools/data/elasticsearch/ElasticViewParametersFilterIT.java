@@ -23,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import java.net.URLEncoder;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,17 +46,23 @@ public class ElasticViewParametersFilterIT extends ElasticTestSupport {
         Map<String, String> vparams = new HashMap<>();
         Map<String, Object> query = ImmutableMap.of("term", ImmutableMap.of("security_ss", "WPA"));
         vparams.put("q", mapper.writeValueAsString(query));
-        Hints hints = new Hints(ElasticBucketVisitor.ES_AGGREGATE_BUCKET, vparams);
-        Query q = new Query(featureSource.getSchema().getTypeName());
-        q.setHints(hints);
-        FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo filter = ff.equals(ff.property("speed_is"), ff.literal("300"));
-        q.setFilter(filter);
-        ContentFeatureCollection features = featureSource.getFeatures(q);
-        assertEquals(1, features.size());
-        try (SimpleFeatureIterator fsi = features.features()) {
-            assertTrue(fsi.hasNext());
-            assertEquals(fsi.next().getID(), "active.12");
+        // check it works both directly and as part of an aggregation
+        List<Hints.ClassKey> keys =
+                Arrays.asList(
+                        Hints.VIRTUAL_TABLE_PARAMETERS, ElasticBucketVisitor.ES_AGGREGATE_BUCKET);
+        for (Hints.ClassKey key : keys) {
+            Hints hints = new Hints(key, vparams);
+            Query q = new Query(featureSource.getSchema().getTypeName());
+            q.setHints(hints);
+            FilterFactory ff = dataStore.getFilterFactory();
+            PropertyIsEqualTo filter = ff.equals(ff.property("speed_is"), ff.literal("300"));
+            q.setFilter(filter);
+            ContentFeatureCollection features = featureSource.getFeatures(q);
+            assertEquals(1, features.size());
+            try (SimpleFeatureIterator fsi = features.features()) {
+                assertTrue(fsi.hasNext());
+                assertEquals(fsi.next().getID(), "active.12");
+            }
         }
     }
 
@@ -65,7 +72,7 @@ public class ElasticViewParametersFilterIT extends ElasticTestSupport {
         Map<String, String> vparams = new HashMap<>();
         Map<String, Object> query = ImmutableMap.of("term", ImmutableMap.of("security_ss", "WPA"));
         vparams.put("q", URLEncoder.encode(mapper.writeValueAsString(query), "UTF-8"));
-        Hints hints = new Hints(ElasticBucketVisitor.ES_AGGREGATE_BUCKET, vparams);
+        Hints hints = new Hints(Hints.VIRTUAL_TABLE_PARAMETERS, vparams);
         Query q = new Query(featureSource.getSchema().getTypeName());
         q.setHints(hints);
         FilterFactory ff = dataStore.getFilterFactory();
@@ -92,7 +99,7 @@ public class ElasticViewParametersFilterIT extends ElasticTestSupport {
                                 "must_not",
                                 ImmutableMap.of("term", ImmutableMap.of("modem_b", true))));
         vparams.put("q", mapper.writeValueAsString(query));
-        Hints hints = new Hints(ElasticBucketVisitor.ES_AGGREGATE_BUCKET, vparams);
+        Hints hints = new Hints(Hints.VIRTUAL_TABLE_PARAMETERS, vparams);
         Query q = new Query(featureSource.getSchema().getTypeName());
         q.setHints(hints);
         FilterFactory ff = dataStore.getFilterFactory();

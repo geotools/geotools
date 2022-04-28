@@ -16,6 +16,9 @@
  */
 package org.geotools.data.elasticsearch;
 
+import static org.geotools.process.elasticsearch.ElasticBucketVisitor.ES_AGGREGATE_BUCKET;
+import static org.geotools.util.factory.Hints.VIRTUAL_TABLE_PARAMETERS;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.google.common.collect.ImmutableList;
@@ -35,7 +38,6 @@ import org.geotools.data.elasticsearch.date.ElasticsearchDateConverter;
 import org.geotools.data.geojson.GeoJSONWriter;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.Capabilities;
-import org.geotools.process.elasticsearch.ElasticBucketVisitor;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
 import org.geotools.util.factory.Hints;
@@ -1274,17 +1276,11 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
     }
 
     void addViewParams(Query query) {
-        if (query.getHints() != null
-                && query.getHints().get(Hints.VIRTUAL_TABLE_PARAMETERS) != null) {
-            throw new UnsupportedOperationException(
-                    "Viewparams not supported with Elasticsearch queries.");
-        }
-        if (query.getHints() != null
-                && query.getHints().get(ElasticBucketVisitor.ES_AGGREGATE_BUCKET) != null) {
+        Hints hints = query.getHints();
+        // aggregation handling
+        if (hints != null && hints.get(ES_AGGREGATE_BUCKET) != null) {
             @SuppressWarnings("unchecked")
-            Map<String, String> parameters =
-                    (Map<String, String>)
-                            query.getHints().get(ElasticBucketVisitor.ES_AGGREGATE_BUCKET);
+            Map<String, String> parameters = (Map) hints.get(ES_AGGREGATE_BUCKET);
 
             boolean nativeOnly = false;
             for (final Map.Entry<String, String> entry : parameters.entrySet()) {
@@ -1300,18 +1296,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
 
             for (final Map.Entry<String, String> entry : parameters.entrySet()) {
                 if (entry.getKey().equalsIgnoreCase("q")) {
-                    final String value = entry.getValue();
-                    try {
-                        nativeQueryBuilder = mapReader.readValue(value);
-                    } catch (Exception e) {
-                        // retry with decoded value
-                        try {
-                            nativeQueryBuilder =
-                                    mapReader.readValue(ElasticParserUtil.urlDecode(value));
-                        } catch (Exception e2) {
-                            throw new FilterToElasticException("Unable to parse native query", e);
-                        }
-                    }
+                    setupNativeQuery(entry.getValue());
                 }
                 if (entry.getKey().equalsIgnoreCase("a")) {
                     this.aggregations = GeohashUtil.parseAggregation(entry.getValue());
@@ -1324,6 +1309,29 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
                             .map(a -> a.get("geohash_grid"))
                             .ifPresent(this::setGeometryField);
                 }
+            }
+        }
+        // allow native query to be provided via view param
+        if (hints != null && hints.get(VIRTUAL_TABLE_PARAMETERS) != null) {
+            @SuppressWarnings("unchecked")
+            Map<String, String> parameters = (Map) hints.get(VIRTUAL_TABLE_PARAMETERS);
+            for (final Map.Entry<String, String> entry : parameters.entrySet()) {
+                if (entry.getKey().equalsIgnoreCase("q")) {
+                    setupNativeQuery(entry.getValue());
+                }
+            }
+        }
+    }
+
+    private void setupNativeQuery(String nativeQuery) {
+        try {
+            nativeQueryBuilder = mapReader.readValue(nativeQuery);
+        } catch (Exception e) {
+            // retry with decoded nativeQuery
+            try {
+                nativeQueryBuilder = mapReader.readValue(ElasticParserUtil.urlDecode(nativeQuery));
+            } catch (Exception e2) {
+                throw new FilterToElasticException("Unable to parse native query", e);
             }
         }
     }

@@ -67,6 +67,16 @@ class MosaicQueryBuilder {
     }
 
     private void handleMultiThreadedLoading(Query query) {
+        if (LOGGER.isLoggable(Level.INFO)) {
+            ImageMosaicReader reader = request.getRasterManager().getParentReader();
+            LOGGER.info(
+                    "Multithreading status: "
+                            + String.valueOf(request.isMultithreadingAllowed())
+                            + " and executor: "
+                            + (reader.getMultiThreadedLoader() == null
+                                    ? " NONE"
+                                    : reader.getMultiThreadedLoader().toString()));
+        }
         if (request.isMultithreadingAllowed()) {
             ImageMosaicReader reader = request.getRasterManager().getParentReader();
             ExecutorService executor = reader.getMultiThreadedLoader();

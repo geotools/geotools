@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.coverage.grid.io.GranuleSource;
@@ -188,9 +189,28 @@ public class CachingDataStoreGranuleCatalog extends GranuleCatalog {
             ExecutorService executor) {
         // first submit all visitors, in order, allowing them to load granules in parallel
         List<Future<GranuleDescriptor>> futures = new ArrayList<>();
-        while (fi.hasNext() && !visitor.isVisitComplete()) {
-            final SimpleFeature sf = fi.next();
-            futures.add(executor.submit(() -> getGranuleDescriptor(sf)));
+        try {
+            while (fi.hasNext() && !visitor.isVisitComplete()) {
+                final SimpleFeature sf = fi.next();
+                futures.add(executor.submit(() -> getGranuleDescriptor(sf)));
+            }
+        } catch (RejectedExecutionException e) {
+            int submitted = futures.size();
+            int leftover = 1;
+            while (fi.hasNext()) {
+                fi.next();
+                leftover++;
+            }
+            throw new RuntimeException(
+                    "We were not allowed to fetch all mosaic granules, submitted "
+                            + Integer.toString(submitted)
+                            + " while still having "
+                            + Integer.toString(leftover)
+                            + " left",
+                    e);
+        }
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine("Parallel granule visit using executor " + executor.toString());
         }
 
         // then grab them one by one, in the same order as the features, to preserve the query sort
@@ -222,6 +242,9 @@ public class CachingDataStoreGranuleCatalog extends GranuleCatalog {
             Geometry intersectionGeometry,
             GranuleDescriptor granule) {
         if (granule != null) {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("Visiting granule " + granule.getGranuleUrl().toString());
+            }
             // check ROI inclusion
             final Geometry footprint = granule.getFootprint();
             if (intersectionGeometry == null
@@ -250,6 +273,9 @@ public class CachingDataStoreGranuleCatalog extends GranuleCatalog {
                 // create the granule descriptor
                 MultiLevelROI footprint = getGranuleFootprint(sf);
                 if (footprint == null || !footprint.isEmpty()) {
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.fine("Creating new Granule Descriptor for feature Id: " + featureId);
+                    }
                     // caching only if the footprint is either absent or present and
                     // NON-empty
                     granule =

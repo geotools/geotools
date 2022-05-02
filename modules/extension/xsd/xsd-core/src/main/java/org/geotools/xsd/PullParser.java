@@ -130,6 +130,10 @@ public class PullParser {
         XMLInputFactory factory = XMLInputFactory.newInstance();
         factory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, true);
         factory.setProperty(XMLInputFactory.IS_VALIDATING, false);
+        // disable DTDs
+        factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
+        // disable external entities
+        factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
         try {
             return factory.createXMLStreamReader(input);
         } catch (XMLStreamException e) {

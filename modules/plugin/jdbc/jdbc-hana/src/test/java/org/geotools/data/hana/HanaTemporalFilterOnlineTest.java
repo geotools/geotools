@@ -24,6 +24,6 @@ public class HanaTemporalFilterOnlineTest extends JDBCTemporalFilterOnlineTest {
 
     @Override
     protected JDBCDateTestSetup createTestSetup() {
-        return new HanaDateTestSetup(new HanaTestSetup());
+        return new HanaDateTestSetup(new HanaTestSetupPSPooling());
     }
 }

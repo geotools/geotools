@@ -7,6 +7,6 @@ public class HanaEscapingOnlineTest extends JDBCEscapingOnlineTest {
 
     @Override
     protected JDBCEscapingTestSetup createTestSetup() {
-        return new HanaEscapingTestSetup(new HanaTestSetup());
+        return new HanaEscapingTestSetup(new HanaTestSetupPSPooling());
     }
 }

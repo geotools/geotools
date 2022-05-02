@@ -19,7 +19,7 @@ package org.geotools.data.hana;
 import org.geotools.jdbc.JDBCDataStore;
 
 /** @author Stefan Uhrig, SAP SE */
-public class HanaFunctionTestSetup extends HanaTestSetup {
+public class HanaFunctionTestSetup extends HanaTestSetupDefault {
 
     @Override
     protected void setUpDataStore(JDBCDataStore dataStore) {

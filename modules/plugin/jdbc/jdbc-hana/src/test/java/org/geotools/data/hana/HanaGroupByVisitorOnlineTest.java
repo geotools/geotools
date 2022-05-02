@@ -23,16 +23,6 @@ public class HanaGroupByVisitorOnlineTest extends JDBCGroupByVisitorOnlineTest {
 
     @Override
     protected HanaGroupByVisitorTestSetup createTestSetup() {
-        return new HanaGroupByVisitorTestSetup(new HanaTestSetup());
-    }
-
-    @Override
-    public void testGroupByGeometry() throws Exception {
-        // setup not implemented yet
-    }
-
-    @Override
-    public void testGroupByGeometryFunction() throws Exception {
-        // setup not implemented yet
+        return new HanaGroupByVisitorTestSetup(new HanaTestSetupPSPooling());
     }
 }

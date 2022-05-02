@@ -39,7 +39,7 @@ public class HanaGeometryOnlineTest extends JDBCGeometryOnlineTest {
 
     @Override
     protected JDBCGeometryTestSetup createTestSetup() {
-        return new HanaGeometryTestSetup(new HanaTestSetup());
+        return new HanaGeometryTestSetup(new HanaTestSetupPSPooling());
     }
 
     @Override

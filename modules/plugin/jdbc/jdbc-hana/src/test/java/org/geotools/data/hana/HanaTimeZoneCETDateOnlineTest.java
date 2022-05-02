@@ -26,6 +26,6 @@ public class HanaTimeZoneCETDateOnlineTest extends JDBCTimeZoneDateOnlineTest {
     @Override
     protected JDBCDateTestSetup createTestSetup() {
         super.setTimeZone(TimeZone.getTimeZone("CET"));
-        return new HanaDateTestSetup(new HanaTestSetup());
+        return new HanaDateTestSetup(new HanaTestSetupNonPSPooling());
     }
 }

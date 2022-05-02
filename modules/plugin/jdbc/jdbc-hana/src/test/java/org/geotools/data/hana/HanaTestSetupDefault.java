@@ -21,7 +21,7 @@ import java.sql.SQLException;
 import org.geotools.data.hana.metadata.Srs;
 
 /** @author Stefan Uhrig, SAP SE */
-public class HanaTestSetup extends HanaTestSetupBase {
+public class HanaTestSetupDefault extends HanaTestSetupPSPooling {
 
     private static final String TABLE1 = "ft1";
 
@@ -30,11 +30,6 @@ public class HanaTestSetup extends HanaTestSetupBase {
     private static final String TABLE3 = "ft3";
 
     private static final String TABLE4 = "ft4";
-
-    @Override
-    public boolean canResetSchema() {
-        return false;
-    }
 
     @Override
     protected void setUpData() throws Exception {

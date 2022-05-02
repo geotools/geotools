@@ -26,6 +26,6 @@ public class HanaTimeZoneGMTPlus12DateOnlineTest extends JDBCTimeZoneDateOnlineT
     @Override
     protected JDBCDateTestSetup createTestSetup() {
         super.setTimeZone(TimeZone.getTimeZone("Etc/GMT+12"));
-        return new HanaDateTestSetup(new HanaTestSetup());
+        return new HanaDateTestSetup(new HanaTestSetupNonPSPooling());
     }
 }

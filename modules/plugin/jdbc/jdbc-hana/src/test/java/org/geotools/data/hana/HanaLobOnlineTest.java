@@ -24,6 +24,6 @@ public class HanaLobOnlineTest extends JDBCLobOnlineTest {
 
     @Override
     protected JDBCLobTestSetup createTestSetup() {
-        return new HanaLobTestSetup(new HanaTestSetup());
+        return new HanaLobTestSetup(new HanaTestSetupPSPooling());
     }
 }

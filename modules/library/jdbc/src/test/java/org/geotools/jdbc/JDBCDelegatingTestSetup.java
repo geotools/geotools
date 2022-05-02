@@ -16,9 +16,11 @@
  */
 package org.geotools.jdbc;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
+import javax.sql.DataSource;
 import org.apache.commons.dbcp.BasicDataSource;
 
 /**
@@ -50,6 +52,11 @@ public class JDBCDelegatingTestSetup extends JDBCTestSetup {
     public void setFixture(Properties fixture) {
         super.setFixture(fixture);
         delegate.setFixture(fixture);
+    }
+
+    @Override
+    public DataSource getDataSource() throws IOException {
+        return delegate.getDataSource();
     }
 
     @Override

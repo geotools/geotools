@@ -24,6 +24,6 @@ public class HanaEmptyGeometryOnlineTest extends JDBCEmptyGeometryOnlineTest {
 
     @Override
     protected JDBCEmptyGeometryTestSetup createTestSetup() {
-        return new HanaEmptyGeometryTestSetup(new HanaTestSetup());
+        return new HanaEmptyGeometryTestSetup(new HanaTestSetupPSPooling());
     }
 }

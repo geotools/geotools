@@ -24,6 +24,11 @@ public class HanaDateOnlineTest extends JDBCDateOnlineTest {
 
     @Override
     protected JDBCDateTestSetup createTestSetup() {
-        return new HanaDateTestSetup(new HanaTestSetup());
+        return new HanaDateTestSetup(new HanaTestSetupNonPSPooling());
+    }
+
+    @Override
+    protected boolean useOneTimeZoneOnly() {
+        return false;
     }
 }

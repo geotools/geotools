@@ -24,7 +24,7 @@ public class HanaPrimaryKeyOnlineTest extends JDBCPrimaryKeyOnlineTest {
 
     @Override
     protected JDBCPrimaryKeyTestSetup createTestSetup() {
-        return new HanaPrimaryKeyTestSetup(new HanaTestSetup());
+        return new HanaPrimaryKeyTestSetup(new HanaTestSetupPSPooling());
     }
 
     @Override

@@ -27,7 +27,7 @@ public class HanaTypeNamesTestSetup extends JDBCTypeNamesTestSetup {
     private static final String VIEW = "ftnview";
 
     protected HanaTypeNamesTestSetup() {
-        super(new HanaTestSetup());
+        super(new HanaTestSetupPSPooling());
     }
 
     @Override

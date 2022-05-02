@@ -28,7 +28,7 @@ public class HanaJoinTestSetup extends JDBCJoinTestSetup {
     private static final String TABLE2 = "ftjoin2";
 
     public HanaJoinTestSetup() {
-        this(new HanaTestSetup());
+        this(new HanaTestSetupDefault());
     }
 
     public HanaJoinTestSetup(JDBCTestSetup setup) {

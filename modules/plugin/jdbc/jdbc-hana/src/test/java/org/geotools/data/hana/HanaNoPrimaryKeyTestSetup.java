@@ -25,7 +25,7 @@ public class HanaNoPrimaryKeyTestSetup extends JDBCNoPrimaryKeyTestSetup {
     private static final String TABLE = "lake";
 
     protected HanaNoPrimaryKeyTestSetup() {
-        super(new HanaTestSetup());
+        super(new HanaTestSetupPSPooling());
     }
 
     @Override

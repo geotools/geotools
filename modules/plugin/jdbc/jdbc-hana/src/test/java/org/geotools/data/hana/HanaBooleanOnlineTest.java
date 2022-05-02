@@ -24,6 +24,6 @@ public class HanaBooleanOnlineTest extends JDBCBooleanOnlineTest {
 
     @Override
     protected JDBCBooleanTestSetup createTestSetup() {
-        return new HanaBooleanTestSetup(new HanaTestSetup());
+        return new HanaBooleanTestSetup(new HanaTestSetupPSPooling());
     }
 }

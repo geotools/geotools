@@ -21,7 +21,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import org.geotools.data.hana.HanaTestSetup;
+import org.geotools.data.hana.HanaTestSetupDefault;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
 import org.junit.Test;
@@ -59,6 +59,6 @@ public class MetadataImportTest extends JDBCTestSupport {
 
     @Override
     protected JDBCTestSetup createTestSetup() {
-        return new HanaTestSetup();
+        return new HanaTestSetupDefault();
     }
 }

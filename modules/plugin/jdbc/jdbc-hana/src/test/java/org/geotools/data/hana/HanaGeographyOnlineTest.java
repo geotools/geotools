@@ -33,7 +33,7 @@ public class HanaGeographyOnlineTest extends JDBCGeographyOnlineTest {
 
     @Override
     protected JDBCGeographyTestSetup createTestSetup() {
-        return new HanaGeographyTestSetup(new HanaTestSetup());
+        return new HanaGeographyTestSetup(new HanaTestSetupPSPooling());
     }
 
     @Override

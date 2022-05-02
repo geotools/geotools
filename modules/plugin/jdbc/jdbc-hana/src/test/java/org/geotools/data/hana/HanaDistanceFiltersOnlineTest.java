@@ -22,7 +22,7 @@ import org.geotools.jdbc.JDBCDistanceFiltersTest;
 public class HanaDistanceFiltersOnlineTest extends JDBCDistanceFiltersTest {
 
     @Override
-    protected HanaTestSetup createTestSetup() {
-        return new HanaTestSetup();
+    protected HanaTestSetupDefault createTestSetup() {
+        return new HanaTestSetupDefault();
     }
 }

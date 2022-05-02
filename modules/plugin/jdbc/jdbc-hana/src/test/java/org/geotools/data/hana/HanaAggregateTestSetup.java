@@ -25,7 +25,7 @@ public class HanaAggregateTestSetup extends JDBCAggregateTestSetup {
     private static final String TABLE = "aggregate";
 
     protected HanaAggregateTestSetup() {
-        super(new HanaTestSetup());
+        super(new HanaTestSetupDefault());
     }
 
     @Override

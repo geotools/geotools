@@ -24,6 +24,6 @@ public class HanaSpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest {
 
     @Override
     protected JDBCDataStoreAPITestSetup createTestSetup() {
-        return new HanaDataStoreAPITestSetup(new HanaTestSetup());
+        return new HanaDataStoreAPITestSetup(new HanaTestSetupPSPooling());
     }
 }

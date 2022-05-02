@@ -35,7 +35,7 @@ public class HanaPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSetup
     private static final String MULTIPK_VIEW = "assignedmultipk";
 
     protected HanaPrimaryKeyFinderTestSetup() {
-        super(new HanaTestSetup());
+        super(new HanaTestSetupPSPooling());
     }
 
     @Override

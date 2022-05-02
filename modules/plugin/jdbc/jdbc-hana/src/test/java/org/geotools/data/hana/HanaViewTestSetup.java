@@ -27,7 +27,7 @@ public class HanaViewTestSetup extends JDBCViewTestSetup {
     private static final String VIEW = "lakesview";
 
     protected HanaViewTestSetup() {
-        super(new HanaTestSetup());
+        super(new HanaTestSetupPSPooling());
     }
 
     @Override

@@ -82,21 +82,11 @@ public class CoverageProcessor {
      * The logging level for reporting coverage operations. This level is equals or slightly lower
      * than {@link Level#INFO}.
      */
-    public static final Level OPERATION = new LogLevel("OPERATION", 780);
+    public static final Level OPERATION = Logging.OPERATION;
 
     /** The comparator for ordering operation names. */
     private static final Comparator<String> COMPARATOR =
             (name1, name2) -> name1.toLowerCase().compareTo(name2.toLowerCase());
-
-    /** The grid coverage logging level type. */
-    private static final class LogLevel extends Level {
-        /** */
-        private static final long serialVersionUID = 1L;
-
-        protected LogLevel(final String name, final int level) {
-            super(name, level);
-        }
-    }
 
     /**
      * The default coverage processor. Will be constructed only when first requested.

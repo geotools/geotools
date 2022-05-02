@@ -23,11 +23,12 @@ import org.apache.logging.log4j.spi.StandardLevel;
  * An adapter that redirect all Java logging events to the Apache's <A
  * HREF="http://logging.apache.org/log4j">Log4J</A> framework.
  *
- * <p>Level conversions agree with <a
+ * <p>Level conversions align with <a
  * href="https://logging.apache.org/log4j/2.x/log4j-jul/index.html">Log4j JDK Logging Adapter</a>:
  *
  * <ul>
  *   <li>{@link java.util.logging.Level#OFF}: {@link org.apache.logging.log4j.Level#OFF}
+ *   <li>{@link Logging#FATAL}: {@link org.apache.logging.log4j.Level#FATAL}
  *   <li>{@link java.util.logging.Level#SEVERE}: {@link org.apache.logging.log4j.Level#ERROR}
  *   <li>{@link java.util.logging.Level#WARNING}: {@link org.apache.logging.log4j.Level#WARN}
  *   <li>{@link java.util.logging.Level#INFO}: {@link org.apache.logging.log4j.Level#INFO}
@@ -51,7 +52,7 @@ import org.apache.logging.log4j.spi.StandardLevel;
  * @see Log4J2LoggerFactory
  * @see Logging
  */
-final class Log4J2Logger extends LoggerAdapter {
+public final class Log4J2Logger extends LoggerAdapter {
     /** The Log4J logger to use. */
     final org.apache.logging.log4j.Logger logger;
 
@@ -96,6 +97,8 @@ final class Log4J2Logger extends LoggerAdapter {
     private static org.apache.logging.log4j.Level toLog4JLevel(final Level level) {
         final int n = level.intValue();
         switch (n / 100) {
+            case 11: // FATAL
+                return org.apache.logging.log4j.Level.FATAL;
             case 10: // SEVERE
                 return org.apache.logging.log4j.Level.ERROR;
             case 9: // WARNING
@@ -140,20 +143,20 @@ final class Log4J2Logger extends LoggerAdapter {
         if (n == StandardLevel.OFF.intLevel()) {
             return Level.OFF;
         } else if (n <= StandardLevel.FATAL.intLevel()) {
-            return Level.SEVERE;
+            return Logging.FATAL;
         } else if (n <= StandardLevel.ERROR.intLevel()) {
             return Level.SEVERE;
         } else if (n <= StandardLevel.WARN.intLevel()) {
             return Level.WARNING;
         } else if (n <= StandardLevel.INFO.intLevel()) {
             return Level.INFO;
-        } else if (n < StandardLevel.DEBUG.intLevel()) {
+        } else if (n <= CONFIG.intLevel()) {
             return Level.CONFIG;
-        } else if (n == StandardLevel.DEBUG.intLevel()) {
+        } else if (n <= StandardLevel.DEBUG.intLevel()) {
             return Level.FINE;
         } else if (n <= StandardLevel.TRACE.intLevel()) {
             return Level.FINER;
-        } else if (n <= 1000) {
+        } else if (n <= FINEST.intLevel()) {
             return Level.FINEST;
         } else {
             return Level.ALL;

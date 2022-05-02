@@ -22,6 +22,9 @@ if (!log.contains("WARN [tutorial.reload]")) {
 if (!log.contains("ERROR [tutorial.reload]")) {
     throw new IllegalStateException("ERROR expected");
 }
+if (!log.contains("FATAL [tutorial.reload]")) {
+    throw new IllegalStateException("FATAL expected");
+}
 if (!log.contains("DEBUG [tutorial.reload]")) {
     throw new IllegalStateException("DEBUG expected");
 }

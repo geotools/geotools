@@ -41,16 +41,22 @@ import org.slf4j.MarkerFactory;
  */
 public class LogbackLogger extends LoggerAdapter {
     /**
+     * Marker used to tag configuration {@link Logging#FATAL} messages, as checked with sl4j {@code
+     * logger.isErrorEnabled(FATAL)}.
+     */
+    public static final Marker FATAL = MarkerFactory.getMarker("FATAL");
+
+    /**
      * Marker used to tag configuration {@link Level#CONFIG} messages, as checked with sl4j {@code
      * logger.isInfoEnabled(CONFIG)}.
      */
-    private static final Marker CONFIG = MarkerFactory.getMarker("CONFIG");
+    public static final Marker CONFIG = MarkerFactory.getMarker("CONFIG");
 
     /**
      * Marker used to tag configuration {@link Level#FINEST} messages, as checked with sl4j {@code
      * logger.isInfoEnabled(FINEST)}.
      */
-    private static final Marker FINEST = MarkerFactory.getMarker("FINEST");
+    public static final Marker FINEST = MarkerFactory.getMarker("FINEST");
 
     public org.slf4j.Logger logger;
 
@@ -102,6 +108,7 @@ public class LogbackLogger extends LoggerAdapter {
     private static String toLogbackLevelName(final Level level) {
         final int n = level.intValue();
         switch (n / 100) {
+            case 11:
             case 10:
                 return "ERROR"; // SEVERE
             case 9:
@@ -130,7 +137,7 @@ public class LogbackLogger extends LoggerAdapter {
                     case Integer.MAX_VALUE:
                         return "OFF";
                     default:
-                        if (n >= 0) return "FATAL"; // fallthrough ALL otherwise.
+                        if (n >= 0) return "ERROR"; // fallthrough ALL otherwise.
                         else return "ALL";
                 }
         }
@@ -149,13 +156,28 @@ public class LogbackLogger extends LoggerAdapter {
             else return Level.INFO;
         }
         if (logger.isWarnEnabled()) return Level.WARNING;
-        if (logger.isErrorEnabled()) return Level.SEVERE;
+        if (logger.isErrorEnabled()) {
+            if (logger.isErrorEnabled(FATAL)) return Logging.FATAL;
+            else return Level.SEVERE;
+        }
         return Level.OFF;
     }
 
     @Override
     public boolean isLoggable(Level level) {
         return getLevel().intValue() > level.intValue();
+    }
+
+    @Override
+    public void log(final Level level, final String message) {
+        final int n = level.intValue();
+        switch (n / 100) {
+            case 11:
+                logger.error(FATAL, message);
+                break;
+            default:
+                super.log(level, message);
+        }
     }
 
     @Override
@@ -206,6 +228,9 @@ public class LogbackLogger extends LoggerAdapter {
                     // MAX_VALUE is a special value for Level.OFF. Otherwise and
                     // if positive, fallthrough since we are greater than SEVERE.
                 }
+            case 11:
+                logger.error(FATAL, message, thrown);
+                break;
             case 10:
                 logger.error(message, thrown);
                 break;

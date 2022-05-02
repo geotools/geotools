@@ -25,7 +25,7 @@ import org.apache.commons.logging.Log;
  *
  * <ul>
  *   <li>{@link java.util.logging.Level#OFF}: nothing is enabled
- *   <li>{@link java.util.logging.Level#SEVERE}: {@link Log#isFatalEnabled()}
+ *   <li>{@link Logging#FATAL}: {@link Log#isFatalEnabled()}
  *   <li>{@link java.util.logging.Level#SEVERE}: {@link Log#isErrorEnabled()}
  *   <li>{@link java.util.logging.Level#WARNING}: {@link Log#isWarnEnabled()}
  *   <li>{@link java.util.logging.Level#INFO}: {@link Log#isInfoEnabled()}
@@ -69,7 +69,7 @@ final class CommonsLogger extends LoggerAdapter {
         if (logger.isInfoEnabled()) return Level.INFO;
         if (logger.isWarnEnabled()) return Level.WARNING;
         if (logger.isErrorEnabled()) return Level.SEVERE;
-        if (logger.isFatalEnabled()) return Level.SEVERE;
+        if (logger.isFatalEnabled()) return Logging.FATAL;
         return Level.OFF;
     }
 
@@ -89,6 +89,8 @@ final class CommonsLogger extends LoggerAdapter {
                             return n >= 0 && logger.isFatalEnabled();
                     }
                 }
+            case 11: // FATAL
+                return logger.isFatalEnabled();
             case 10: // SEVERE
                 return logger.isErrorEnabled();
             case 9: // WARNING
@@ -108,6 +110,19 @@ final class CommonsLogger extends LoggerAdapter {
         }
     }
 
+    @Override
+    @SuppressWarnings("fallthrough")
+    public void log(final Level level, final String message) {
+        final int n = level.intValue();
+        switch (n / 100) {
+            case 11:
+                logger.fatal(message);
+                break;
+            default:
+                super.log(level, message);
+        }
+    }
+
     /** Logs a record at the specified level. */
     @Override
     public void log(final Level level, final String message, final Throwable thrown) {
@@ -122,6 +137,9 @@ final class CommonsLogger extends LoggerAdapter {
                     }
                     break;
                 }
+            case 11:
+                logger.fatal(message, thrown);
+                break; // FATAL
             case 10:
                 logger.error(message, thrown);
                 break; // SEVERE

@@ -6,6 +6,9 @@ if (!buildLog.isFile()) {
 }
 String log = org.apache.commons.io.FileUtils.readFileToString(buildLog);
 
+if (!log.contains("FATAL     LoggingIntegration")) {
+    throw new IllegalStateException("FATAL expected");
+}
 if (!log.contains("INFO      LoggingIntegration")) {
     throw new IllegalStateException("INFO expected");
 }

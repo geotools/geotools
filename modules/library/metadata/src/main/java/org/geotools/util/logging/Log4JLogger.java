@@ -41,7 +41,7 @@ import java.util.logging.Level;
  * @see Log4JLoggerFactory
  * @see Logging
  */
-final class Log4JLogger extends LoggerAdapter {
+public final class Log4JLogger extends LoggerAdapter {
     /** The Log4J logger to use. */
     final org.apache.log4j.Logger logger;
 
@@ -82,6 +82,8 @@ final class Log4JLogger extends LoggerAdapter {
     private static org.apache.log4j.Level toLog4JLevel(final Level level) {
         final int n = level.intValue();
         switch (n / 100) {
+            case 11: // FATAL
+                return org.apache.log4j.Level.FATAL;
             case 10: // SEVERE
                 return org.apache.log4j.Level.ERROR;
             case 9: // WARNING
@@ -120,6 +122,7 @@ final class Log4JLogger extends LoggerAdapter {
     private static Level toJavaLevel(final org.apache.log4j.Level level) {
         final int n = level.toInt();
         if (n == org.apache.log4j.Level.OFF_INT) return Level.OFF;
+        if (n >= org.apache.log4j.Level.FATAL_INT) return Logging.FATAL;
         if (n >= org.apache.log4j.Level.ERROR_INT) return Level.SEVERE;
         if (n >= org.apache.log4j.Level.WARN_INT) return Level.WARNING;
         if (n >= org.apache.log4j.Level.INFO_INT) return Level.INFO;

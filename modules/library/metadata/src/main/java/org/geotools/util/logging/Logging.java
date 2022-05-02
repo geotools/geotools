@@ -51,6 +51,27 @@ import org.geotools.util.XArray;
 @SuppressWarnings("PMD.SystemPrintln")
 public final class Logging {
 
+    /**
+     * The logging level for fatal error resulting in application shutdown. This level is equals or
+     * slightly higher than than {@link Level#SEVERE}.
+     */
+    public static final Level FATAL = new LogLevel("FATAL", 1100);
+
+    /**
+     * The logging level for reporting coverage operations. This level is equals or slightly lower
+     * than {@link Level#INFO}.
+     */
+    public static final Level OPERATION = new LogLevel("OPERATION", 780);
+
+    /** Custom logging level used for FATAL and OPERATION. */
+    protected static class LogLevel extends Level {
+        private static final long serialVersionUID = 6282374566935721556L;
+
+        public LogLevel(final String name, final int level) {
+            super(name, level);
+        }
+    }
+
     /** Compares {@link Logging} or {@link String} objects for alphabetical order. */
     private static final Comparator<Object> COMPARATOR =
             (o1, o2) -> {

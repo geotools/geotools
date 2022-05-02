@@ -45,13 +45,17 @@ Messages are logged using one of the predefined levels:
 ========== ================================ ====================================================
 Level      Displayed on standard output     Comments 
 ========== ================================ ====================================================
-Severe     yes by default                   highest value
-Warning    yes by default                   non-fatal warning to bring to user attention
-Info       yes by default                   message for end users (not debugging information)
-Config     no unless configured             configuration information (services available, etc.)
-Fine       no unless configured             information for developers (high level)
-Finer      no unless configured             common when entering, returning, or an exception
-Finest     no unless configured             most verbose output
+OFF        yes by default                   highest value, used turn off all output
+FATAL      yes by default                   fatal problem preventing application from continuing
+SEVERE     yes by default                   serious failure, operation unable to continue
+WARNING    yes by default                   non-fatal warning to bring to user attention
+INFO       yes by default                   message for end users (not debugging information)
+OPERATION  no unless configured             operation configuration
+CONFIG     no unless configured             configuration information (services available, etc.)
+FINE       no unless configured             information for developers (high level)
+FINER      no unless configured             common when entering, returning, or an exception
+FINEST     no unless configured             most verbose output
+ALL        no unless configured             lowest value, used to enable all output
 ========== ================================ ====================================================
 
 Levels are used with the ``log`` methods when logging messages:
@@ -60,11 +64,17 @@ Levels are used with the ``log`` methods when logging messages:
 
    LOGGER.log(Level.INFO,"Hello world");
    
-   LOGGER.log(Level.INFO,"Welcome ",System.getProperty("user.name","Friend"));
+   LOGGER.log(Level.INFO,"Welcome ", System.getProperty("user.name","Friend"));
+
+This technique can be used with the custom level Logging.FATAL:
+
+.. code-block:: java
+
+   LOGGER.log(Logging.FATAL, "I’m sorry Dave, I’m afraid I can’t do that.");
 
 The INFO level is for end users. Use the FINE, FINER or FINEST levels for debug information, and setup yours :file:`logging.properties` file accordingly (see Logging Configuration below).
 
-Convenience method exists in Logger for each of these levels.
+Convenience method exists in Logger for each of buil-in levels.
 
 .. code-block:: java
    

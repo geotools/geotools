@@ -54,6 +54,7 @@
     <module>jdbc-postgis</module>
     <module>jdbc-db2</module>
     <module>jdbc-mysql</module>
+    <module>jdbc-informix</module>
     <module>jdbc-sqlserver</module>
     <module>jdbc-hana</module>
   </modules>

@@ -44,6 +44,7 @@ DataStore plugins:
    oracle
    postgis
    sqlserver
+   informix
    ../data/geopackage
 
 Unsupported plugins:

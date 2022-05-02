@@ -480,6 +480,7 @@
     <eclipse.emf.version>2.15.0</eclipse.emf.version>
     <elasticsearch.version>7.14.0</elasticsearch.version>
     <imageio.ext.version>1.4.4</imageio.ext.version>
+    <informix.jdbc.version>4.50.7.1</informix.jdbc.version>
     <jackson2.databind.version>2.13.2.1</jackson2.databind.version>
     <jackson2.version>2.13.2</jackson2.version>
     <jaiext.version>1.1.22</jaiext.version>
@@ -1027,6 +1028,11 @@
         <groupId>mysql</groupId>
         <artifactId>mysql-connector-java</artifactId>
         <version>${mysql-connector-java.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.ibm.informix</groupId>
+        <artifactId>jdbc</artifactId>
+        <version>${informix.jdbc.version}</version>
       </dependency>
       <dependency>
         <groupId>org.hsqldb</groupId>

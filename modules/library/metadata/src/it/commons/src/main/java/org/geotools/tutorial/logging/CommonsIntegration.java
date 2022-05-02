@@ -35,9 +35,11 @@ public class CommonsIntegration {
         LOGGER.finer("Everything is finer...");
         LOGGER.fine("Everything is fine...");
         LOGGER.config("Everything is configured...");
+        LOGGER.log(Logging.OPERATION, "Everything is operating...");
         LOGGER.info("Everything is okay.");
         LOGGER.warning("Everything is alarming!");
         LOGGER.severe("Everything is terrible!");
+        LOGGER.log(Logging.FATAL, "Everything has died!");
     }
     
     private static Logger initLogger(){

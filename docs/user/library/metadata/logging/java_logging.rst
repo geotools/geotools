@@ -65,6 +65,14 @@ To list detailed messages for a specific module you can define a different loggi
 
 Provides fairly detailed logging message from the GML module, but not from the referencing module.
 
+Custom Levels
+'''''''''''''
+
+Logging defines two custom levels to better map to logging frameworks:
+
+* ``Logging.FATAL`` - unrecoverable error that will cause application or operation to fail
+* ``Logging.OPERATION`` - operation configuration
+
 MonolineFormatter
 '''''''''''''''''
 

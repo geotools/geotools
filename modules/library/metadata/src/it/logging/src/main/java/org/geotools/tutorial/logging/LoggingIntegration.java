@@ -15,6 +15,7 @@ import java.io.File;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 import org.geotools.util.factory.GeoTools;
+import org.geotools.util.logging.DefaultLoggerFactory;
 import org.geotools.util.logging.Logging;
 /**
  * Logging integration demonstration illustrating use of logging.properties to configure GeoTools.
@@ -28,7 +29,7 @@ public class LoggingIntegration {
 
     public static void main(String args[]) {
 
-        if (Logging.ALL.getLoggerFactory() != null) {
+        if (Logging.ALL.getLoggerFactory() != DefaultLoggerFactory.getInstance()) {
             System.err.println(
                     "Expected GeoTools.init() use native java util logging factory, was "
                             + Logging.ALL.getLoggerFactory());
@@ -42,9 +43,11 @@ public class LoggingIntegration {
         LOGGER.finer("Everything is finer...");
         LOGGER.fine("Everything is fine...");
         LOGGER.config("Everything is configured...");
+        LOGGER.log(Logging.OPERATION, "Everything is operating...");
         LOGGER.info("Everything is okay.");
         LOGGER.warning("Everything is alarming!");
         LOGGER.severe("Everything is terrible!");
+        LOGGER.log(Logging.FATAL, "Everything has died!");
     }
 
     private static void checkProperty(String property) {

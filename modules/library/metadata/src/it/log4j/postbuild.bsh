@@ -13,6 +13,10 @@ if (!log.contains("log4j2.xml")) {
 if (!log.contains("INFO   [tutorial.logging]")) {
     throw new IllegalStateException("INFO expected");
 }
+
+if (!log.contains("FATAL  [tutorial.logging]")) {
+    throw new IllegalStateException("FATAL expected");
+}
 if (!log.contains("ERROR  [tutorial.logging]")) {
     throw new IllegalStateException("WARN expected");
 }

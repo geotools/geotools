@@ -67,9 +67,10 @@ To bridge java util logging to Log4J:
   Levels:
   
   ============= ================
-  Java Level	Log4j Level
+  Java Level    Log4j Level
   ============= ================
   OFF           OFF
+  FATAL         FATAL
   SEVERE        ERROR
   WARNING       WARN
   INFO          INFO

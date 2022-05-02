@@ -23,7 +23,7 @@ Commons logging has slightly different concept of levels, using method calls to 
 Java Level	Commons-Logging
 ============= ================
 OFF           
-SEVERE        isFatalEnabled()
+FATAL         isFatalEnabled()
 SEVERE        isErrorEnabled()
 WARNING       isWarnEnabled()
 INFO          isInfoEnabled()

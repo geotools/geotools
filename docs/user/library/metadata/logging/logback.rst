@@ -30,19 +30,20 @@ If your application only depends logback being provided at runtime:
    It will typically throws a ``NoClassDefFoundError`` (the unchecked error, not the checked exception) at some future point. The error may not be thrown at the moment ``setLoggerFactory`` is invoked, but rather be delayed until a message is first logged, which may surprise the user.
 
 
-============= ======================
-Java Level	  LogBack Level (Marker)
-============= ======================
+============= ============= ========
+Java Level    LogBack Level Marker
+============= ============= ========
 OFF           OFF
+FATAL         ERROR         FATAL
 SEVERE        ERROR
 WARNING       WARN
 INFO          INFO
-CONFIG        INFO (CONFIG)
+CONFIG        INFO          CONFIG
 FINE          DEBUG
 FINER         TRACE
-FINEST        TRACE (FINEST)
+FINEST        TRACE         FINEST
 ALL           ALL
-============= ======================
+============= ============= ========
 
 GeoTools logback.xml example:
 

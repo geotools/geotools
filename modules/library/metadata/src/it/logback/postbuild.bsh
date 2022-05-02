@@ -12,6 +12,9 @@ if (!log.contains("INFO   org.geotools.tutorial.logging")) {
 if (!log.contains("logback.xml")) {
     throw new IllegalStateException("logback.xml use expected");
 }
+if (!log.contains("ERROR  org.geotools.tutorial.logging FATAL:")) {
+    throw new IllegalStateException("ERROR with FATAL marker expected");
+}
 if (!log.contains("ERROR  org.geotools.tutorial.logging")) {
     throw new IllegalStateException("ERROR expected");
 }

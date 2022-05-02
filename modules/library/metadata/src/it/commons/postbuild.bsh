@@ -12,6 +12,9 @@ if (!log.contains("[INFO]")) {
 if (!log.contains("commons-logging.properties")) {
     throw new IllegalStateException("commons-logging.properties");
 }
+if (!log.contains("[FATAL] logging - Everything has died!")) {
+    throw new IllegalStateException("FATAL expected");
+}
 if (!log.contains("[ERROR] logging - Everything is terrible!")) {
     throw new IllegalStateException("ERROR expected");
 }

@@ -87,7 +87,7 @@ public class WMTSHelperTest {
 
     @Test
     public void testSpacesInUrl() throws Exception {
-        String result = WMTSHelper.usePercentEncodingForSpace("name with space");
+        String result = WMTSHelper.encodeParameter("name with space");
         Assert.assertEquals(
                 "Spaces should be replaced with %20 instead of +", "name%20with%20space", result);
     }

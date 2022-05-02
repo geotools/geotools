@@ -133,12 +133,12 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
         if (styleName.isEmpty()) {
             StyleImpl defaultStyle = layer.getDefaultStyle();
             if (defaultStyle != null && defaultStyle.getName() != null) {
-                styleName = defaultStyle.getName();
+                setStyle(defaultStyle.getName());
             } else {
                 for (int i = 0; i < layer.getStyles().size(); i++) {
                     StyleImpl aStyle = layer.getStyles().get(i);
                     if (aStyle.getName() != null) {
-                        styleName = aStyle.getName();
+                        setStyle(aStyle.getName());
                         break;
                     }
                 }
@@ -146,6 +146,7 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
         }
     }
 
+    /** Sets the style name for the request */
     @Override
     public void setStyle(String styleName) {
         this.styleName = styleName;
@@ -160,11 +161,13 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
         this.format = format;
     }
 
+    /** Sets the tileMatrixSet for the request. */
     @Override
     public void setTileMatrixSet(String tileMatrixSet) {
         this.tileMatrixSet = tileMatrixSet;
     }
 
+    /** Returns the tileMatrixSet for the request */
     protected String getTileMatrixSet() {
         return tileMatrixSet;
     }
@@ -283,8 +286,8 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
      * <p>If the server supports RESTful calls. It will use that. Otherwise it will create a similar
      * template for KVP requests.
      *
-     * @param tileMatrixSetName
-     * @return
+     * @param tileMatrixSetName the name of the tileMatrixSet. This is expected to be UTF-8 encoded
+     * @return template URL used containing placeholders for request parameters
      */
     protected abstract String createTemplateUrl(String tileMatrixSetName);
 

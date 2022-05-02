@@ -38,22 +38,81 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.LengthFunction;
 import org.geotools.filter.LiteralExpressionImpl;
-import org.geotools.filter.function.*;
-import org.geotools.filter.function.math.*;
+import org.geotools.filter.function.DateDifferenceFunction;
+import org.geotools.filter.function.FilterFunction_area;
+import org.geotools.filter.function.FilterFunction_buffer;
+import org.geotools.filter.function.FilterFunction_equalTo;
+import org.geotools.filter.function.FilterFunction_strConcat;
+import org.geotools.filter.function.FilterFunction_strEndsWith;
+import org.geotools.filter.function.FilterFunction_strEqualsIgnoreCase;
+import org.geotools.filter.function.FilterFunction_strIndexOf;
+import org.geotools.filter.function.FilterFunction_strLength;
+import org.geotools.filter.function.FilterFunction_strReplace;
+import org.geotools.filter.function.FilterFunction_strStartsWith;
+import org.geotools.filter.function.FilterFunction_strSubstring;
+import org.geotools.filter.function.FilterFunction_strSubstringStart;
+import org.geotools.filter.function.FilterFunction_strToLowerCase;
+import org.geotools.filter.function.FilterFunction_strToUpperCase;
+import org.geotools.filter.function.FilterFunction_strTrim;
+import org.geotools.filter.function.FilterFunction_strTrim2;
+import org.geotools.filter.function.InArrayFunction;
+import org.geotools.filter.function.JsonArrayContainsFunction;
+import org.geotools.filter.function.JsonPointerFunction;
+import org.geotools.filter.function.math.FilterFunction_abs;
+import org.geotools.filter.function.math.FilterFunction_abs_2;
+import org.geotools.filter.function.math.FilterFunction_abs_3;
+import org.geotools.filter.function.math.FilterFunction_abs_4;
+import org.geotools.filter.function.math.FilterFunction_ceil;
+import org.geotools.filter.function.math.FilterFunction_floor;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.jdbc.SQLDialect;
 import org.geotools.util.factory.Hints;
-import org.locationtech.jts.geom.*;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryComponentFilter;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.filter.*;
+import org.opengis.filter.BinaryComparisonOperator;
+import org.opengis.filter.MultiValuedFilter;
 import org.opengis.filter.MultiValuedFilter.MatchAction;
-import org.opengis.filter.expression.*;
-import org.opengis.filter.spatial.*;
-import org.opengis.filter.temporal.*;
+import org.opengis.filter.NativeFilter;
+import org.opengis.filter.PropertyIsBetween;
+import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.expression.BinaryExpression;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Function;
+import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.NilExpression;
+import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.spatial.BBOX;
+import org.opengis.filter.spatial.BBOX3D;
+import org.opengis.filter.spatial.Beyond;
+import org.opengis.filter.spatial.BinarySpatialOperator;
+import org.opengis.filter.spatial.Contains;
+import org.opengis.filter.spatial.Crosses;
+import org.opengis.filter.spatial.DWithin;
+import org.opengis.filter.spatial.Disjoint;
+import org.opengis.filter.spatial.DistanceBufferOperator;
+import org.opengis.filter.spatial.Equals;
+import org.opengis.filter.spatial.Intersects;
+import org.opengis.filter.spatial.Overlaps;
+import org.opengis.filter.spatial.Touches;
+import org.opengis.filter.spatial.Within;
+import org.opengis.filter.temporal.After;
+import org.opengis.filter.temporal.Before;
+import org.opengis.filter.temporal.Begins;
+import org.opengis.filter.temporal.BegunBy;
+import org.opengis.filter.temporal.During;
+import org.opengis.filter.temporal.EndedBy;
+import org.opengis.filter.temporal.Ends;
+import org.opengis.filter.temporal.TEquals;
+import org.opengis.filter.temporal.TOverlaps;
 import org.opengis.geometry.BoundingBox3D;
 
 class FilterToSqlHelper {
@@ -99,6 +158,7 @@ class FilterToSqlHelper {
         caps.addType(Ends.class);
         caps.addType(EndedBy.class);
         caps.addType(TEquals.class);
+        caps.addType(JsonArrayContainsFunction.class);
 
         // replacement for area function that was in deprecated dialect registerFunction
         caps.addType(FilterFunction_area.class);
@@ -586,7 +646,7 @@ class FilterToSqlHelper {
         } else if (function instanceof JsonPointerFunction) {
             encodeJsonPointer(function, extraData);
         } else if (function instanceof JsonArrayContainsFunction) {
-            encodeJsonArrayContains(function, extraData);
+            encodeJsonArrayContains(function);
         } else if (function instanceof FilterFunction_buffer) {
             encodeBuffer(function, extraData);
         } else {
@@ -664,18 +724,22 @@ class FilterToSqlHelper {
                     Arrays.copyOfRange(pointers, 1, pointers.length), expectedExp);
     }
 
-    private void encodeJsonArrayContains(Function jsonArrayContains, Object extraData)
-            throws IOException {
+    private void encodeJsonArrayContains(Function jsonArrayContains) throws IOException {
         PropertyName column = (PropertyName) getParameter(jsonArrayContains, 0, true);
         Literal jsonPath = (Literal) getParameter(jsonArrayContains, 1, true);
         Expression expected = getParameter(jsonArrayContains, 2, true);
 
-        // Class binding = NumberUtils.isParsable(expected) ? Integer.class : String.class;
-
         String[] strJsonPath = jsonPath.getValue().toString().split("/");
-        String jsonFilter = String.format("{ %s }", buildJsonFromStrPointer(strJsonPath, expected));
-
-        out.write(String.format("\"%s\" @> '%s'", column.getPropertyName(), jsonFilter));
+        if (strJsonPath.length > 0) {
+            String jsonFilter =
+                    String.format("{ %s }", buildJsonFromStrPointer(strJsonPath, expected));
+            out.write(
+                    String.format(
+                            "\"%s\"::jsonb @> '%s'::jsonb", column.getPropertyName(), jsonFilter));
+        } else {
+            throw new IllegalArgumentException(
+                    "Cannot encode filter Invalid pointer " + jsonPath.getValue());
+        }
     }
 
     Expression getParameter(Function function, int idx, boolean mandatory) {

@@ -39,7 +39,6 @@ import java.util.logging.Level;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterAttributeExtractor;
-import org.geotools.filter.function.JsonArrayContainsFunction;
 import org.geotools.filter.function.JsonPointerFunction;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
@@ -1511,8 +1510,7 @@ public class PostGISDialect extends BasicSQLDialect {
 
                     @Override
                     public Object visit(Function expression, Object notUsed) {
-                        if (expression instanceof JsonPointerFunction
-                                || expression instanceof JsonArrayContainsFunction) {
+                        if (expression instanceof JsonPointerFunction) {
                             // takes the json pointer param to check if
                             // can be encoded
                             Expression param = expression.getParameters().get(1);

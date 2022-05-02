@@ -22,11 +22,13 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.core.JsonTokenId;
 import java.io.IOException;
 
-public interface JsonFunctionUtils {
+public final class JsonFunctionUtils {
 
-    JsonToken END_OF_STREAM = null;
+    static final JsonToken END_OF_STREAM = null;
 
-    default void serializeContents(JsonParser parser, JsonGenerator generator) throws IOException {
+    private JsonFunctionUtils() {}
+
+    static void serializeContents(JsonParser parser, JsonGenerator generator) throws IOException {
         switch (parser.currentTokenId()) {
             case JsonTokenId.ID_START_ARRAY:
                 serializeArray(parser, generator);
@@ -37,7 +39,7 @@ public interface JsonFunctionUtils {
         }
     }
 
-    default void serializeArray(JsonParser parser, JsonGenerator generator) throws IOException {
+    static void serializeArray(JsonParser parser, JsonGenerator generator) throws IOException {
         generator.writeStartArray();
         for (JsonToken token = parser.nextToken();
                 token != END_OF_STREAM && token != JsonToken.END_ARRAY;
@@ -63,7 +65,7 @@ public interface JsonFunctionUtils {
         generator.writeEndArray();
     }
 
-    default void serializeObject(JsonParser parser, JsonGenerator generator) throws IOException {
+    static void serializeObject(JsonParser parser, JsonGenerator generator) throws IOException {
         generator.writeStartObject();
         for (JsonToken token = parser.nextToken();
                 token != END_OF_STREAM && token != JsonToken.END_OBJECT;

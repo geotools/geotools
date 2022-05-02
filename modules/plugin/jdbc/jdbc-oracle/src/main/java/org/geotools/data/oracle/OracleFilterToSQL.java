@@ -17,7 +17,10 @@
 package org.geotools.data.oracle;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.geotools.data.oracle.filter.FilterFunction_sdonn;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterCapabilities;
@@ -625,7 +628,8 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
                     "json_exists(%s, '$%s?(@ == \"%s\")')",
                     columnName, strJsonPath, expected.evaluate(null));
         } else {
-            throw new IllegalArgumentException("Cannot encode filter Invalid pointer");
+            throw new IllegalArgumentException(
+                    "Cannot encode filter Invalid pointer " + jsonPath.getValue());
         }
     }
 }

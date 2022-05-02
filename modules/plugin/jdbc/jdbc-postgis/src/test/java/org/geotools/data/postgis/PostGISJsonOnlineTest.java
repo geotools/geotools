@@ -429,20 +429,46 @@ public class PostGISJsonOnlineTest extends JDBCTestSupport {
     public void testJSONArrayContainsFunction() throws Exception {
         ContentFeatureSource fs = dataStore.getFeatureSource(tname("jsontest"));
         FilterFactory ff = dataStore.getFilterFactory();
-        arrayContainsString(fs, ff, "jsonColumn");
+        arrayContainsTest(fs, ff, "jsonColumn", "/arrayStrValues", "EL2", 1);
         if (pgJsonTestSetup.supportJsonB) {
-            arrayContainsString(fs, ff, "jsonbColumn");
+            arrayContainsTest(fs, ff, "jsonbColumn", "/arrayStrValues", "EL2", 1);
         }
     }
 
-    private void arrayContainsString(ContentFeatureSource fs, FilterFactory ff, String column)
+    @Test
+    public void testJSONArrayContainsFunctionNested() throws Exception {
+        ContentFeatureSource fs = dataStore.getFeatureSource(tname("jsontest"));
+        FilterFactory ff = dataStore.getFilterFactory();
+        arrayContainsTest(fs, ff, "jsonColumn", "/nestedObj/nestedAr", 3, 2);
+        if (pgJsonTestSetup.supportJsonB) {
+            arrayContainsTest(fs, ff, "jsonbColumn", "/nestedObj/nestedAr", 3, 2);
+        }
+    }
+
+    @Test
+    public void testJSONArrayContainsFunctionNestedEmpty() throws Exception {
+        ContentFeatureSource fs = dataStore.getFeatureSource(tname("jsontest"));
+        FilterFactory ff = dataStore.getFilterFactory();
+        arrayContainsTest(fs, ff, "jsonColumn", "/nestedObj/nestedAr", -333, 0);
+        if (pgJsonTestSetup.supportJsonB) {
+            arrayContainsTest(fs, ff, "jsonbColumn", "/nestedObj/nestedAr", -333, 0);
+        }
+    }
+
+    private void arrayContainsTest(
+            ContentFeatureSource fs,
+            FilterFactory ff,
+            String column,
+            String pointer,
+            Object expected,
+            int result)
             throws IOException {
         Function jsonArrayContains =
                 ff.function(
                         "jsonArrayContains",
                         ff.property(column),
-                        ff.literal("/arrayStrValues"),
-                        ff.literal("EL2"));
+                        ff.literal(pointer),
+                        ff.literal(expected));
         Filter filter = ff.equals(jsonArrayContains, ff.literal(true));
         Query query = new Query(tname("jsontest"), filter);
         FeatureCollection collection = fs.getFeatures(query);
@@ -453,7 +479,7 @@ public class PostGISJsonOnlineTest extends JDBCTestSupport {
                 assertTrue((boolean) jsonArrayContains.evaluate(f));
                 size++;
             }
-            assertEquals(1, size);
+            assertEquals(result, size);
         }
     }
 }

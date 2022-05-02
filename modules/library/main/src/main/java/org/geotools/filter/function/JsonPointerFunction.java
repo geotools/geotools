@@ -18,6 +18,7 @@
 package org.geotools.filter.function;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
+import static org.geotools.filter.function.JsonFunctionUtils.serializeContents;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -31,7 +32,7 @@ import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 
 /** Applies a JSON pointer on a given JSON string, extracting a value out of it */
-public class JsonPointerFunction extends FunctionExpressionImpl implements JsonFunctionUtils {
+public class JsonPointerFunction extends FunctionExpressionImpl {
     private final JsonFactory factory;
 
     public static FunctionName NAME =
@@ -54,7 +55,7 @@ public class JsonPointerFunction extends FunctionExpressionImpl implements JsonF
         JsonPointer expectedPointer = JsonPointer.compile(pointerSpec);
         if (json == null) return null;
         try (JsonParser parser = factory.createParser(json)) {
-            while (parser.nextToken() != END_OF_STREAM) {
+            while (parser.nextToken() != JsonFunctionUtils.END_OF_STREAM) {
                 final JsonPointer pointer = parser.getParsingContext().pathAsPointer();
                 if (pointer.equals(expectedPointer)
                         && parser.currentTokenId() != JsonTokenId.ID_FIELD_NAME) {

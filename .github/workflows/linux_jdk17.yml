@@ -17,6 +17,7 @@ jobs:
         java-version: 17
     - name: Set up GDAL
       run: |
+        sudo apt update
         sudo apt install --no-install-recommends -y gdal-bin libgdal-dev libgdal-java
     - name: Maven repository caching
       uses: actions/cache@v2

@@ -362,7 +362,7 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
      * but the wrapped geographic CRS is order dependent)
      */
     protected CoordinateReferenceSystem getUTMCRS() throws FactoryException {
-        return CRS.decode("EPSG:26713");
+        return decodeEPSG(26713);
     }
 
     public void testCreateSchemaFidColumn() throws Exception {

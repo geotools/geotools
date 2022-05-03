@@ -32,6 +32,7 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.NameImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.CRS;
 import org.geotools.test.OnlineTestCase;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
@@ -42,6 +43,7 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
@@ -82,6 +84,9 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
     protected JDBCTestSetup setup;
     protected JDBCDataStore dataStore;
     protected SQLDialect dialect;
+
+    /** Allows implementations to request a longitude first axis ordering for CRSs. */
+    protected boolean forceLongitudeFirst = false;
 
     @Override
     protected Properties createOfflineFixture() {
@@ -253,6 +258,14 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
         }
 
         assertEquals(expected, actual);
+    }
+
+    /**
+     * Returns the {@link CoordinateReferenceSystem} denoted by epsgCode with an axis order taking
+     * into account the {@link #forceLongitudeFirst} setting.
+     */
+    protected CoordinateReferenceSystem decodeEPSG(int epsgCode) throws FactoryException {
+        return CRS.decode(String.format("EPSG:%d", epsgCode), forceLongitudeFirst);
     }
 
     protected boolean areCRSEqual(CoordinateReferenceSystem crs1, CoordinateReferenceSystem crs2) {

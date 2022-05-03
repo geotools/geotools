@@ -16,7 +16,6 @@
  */
 package org.geotools.jdbc;
 
-import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
@@ -38,7 +37,7 @@ public abstract class JDBCFeatureSourceExposePkOnlineTest extends JDBCFeatureSou
         SimpleFeatureType schema = featureSource.getSchema();
         assertEquals(tname("ft1"), schema.getTypeName());
         assertEquals(dataStore.getNamespaceURI(), schema.getName().getNamespaceURI());
-        assertTrue(areCRSEqual(CRS.decode("EPSG:4326"), schema.getCoordinateReferenceSystem()));
+        assertTrue(areCRSEqual(decodeEPSG(4326), schema.getCoordinateReferenceSystem()));
 
         assertEquals(5, schema.getAttributeCount());
         assertNotNull(schema.getDescriptor(aname("id")));

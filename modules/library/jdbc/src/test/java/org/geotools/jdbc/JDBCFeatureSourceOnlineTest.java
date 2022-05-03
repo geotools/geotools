@@ -32,7 +32,6 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.FilterFunction_strToLowerCase;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.referencing.CRS;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -53,8 +52,6 @@ import org.opengis.filter.expression.Subtract;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 import org.opengis.filter.spatial.BBOX;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 @SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
@@ -71,7 +68,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         SimpleFeatureType schema = featureSource.getSchema();
         assertEquals(tname("ft1"), schema.getTypeName());
         assertEquals(dataStore.getNamespaceURI(), schema.getName().getNamespaceURI());
-        assertTrue(areCRSEqual(getWGS84(), schema.getCoordinateReferenceSystem()));
+        assertTrue(areCRSEqual(decodeEPSG(4326), schema.getCoordinateReferenceSystem()));
 
         assertEquals(4, schema.getAttributeCount());
         assertNotNull(schema.getDescriptor(aname("geometry")));
@@ -87,7 +84,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         assertEquals(2l, Math.round(bounds.getMaxX()));
         assertEquals(2l, Math.round(bounds.getMaxY()));
 
-        assertTrue(areCRSEqual(getWGS84(), bounds.getCoordinateReferenceSystem()));
+        assertTrue(areCRSEqual(decodeEPSG(4326), bounds.getCoordinateReferenceSystem()));
     }
 
     public void testBoundsWithQuery() throws Exception {
@@ -104,7 +101,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         assertEquals(1l, Math.round(bounds.getMaxX()));
         assertEquals(1l, Math.round(bounds.getMaxY()));
 
-        assertTrue(areCRSEqual(getWGS84(), bounds.getCoordinateReferenceSystem()));
+        assertTrue(areCRSEqual(decodeEPSG(4326), bounds.getCoordinateReferenceSystem()));
     }
 
     public void testBoundsWithLimit() throws Exception {
@@ -117,7 +114,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         assertEquals(1l, Math.round(bounds.getMaxX()));
         assertEquals(1l, Math.round(bounds.getMaxY()));
 
-        assertTrue(areCRSEqual(getWGS84(), bounds.getCoordinateReferenceSystem()));
+        assertTrue(areCRSEqual(decodeEPSG(4326), bounds.getCoordinateReferenceSystem()));
     }
 
     public void testBoundsWithOffset() throws Exception {
@@ -130,12 +127,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         assertEquals(2l, Math.round(bounds.getMaxX()));
         assertEquals(2l, Math.round(bounds.getMaxY()));
 
-        assertTrue(areCRSEqual(getWGS84(), bounds.getCoordinateReferenceSystem()));
-    }
-
-    /** Allows subclasses to use a axis order specific version of it */
-    protected CoordinateReferenceSystem getWGS84() throws FactoryException {
-        return CRS.decode("EPSG:4326");
+        assertTrue(areCRSEqual(decodeEPSG(4326), bounds.getCoordinateReferenceSystem()));
     }
 
     public void testCount() throws Exception {

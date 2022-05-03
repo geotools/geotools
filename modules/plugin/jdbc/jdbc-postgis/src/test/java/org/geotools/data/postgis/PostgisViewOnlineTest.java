@@ -18,6 +18,6 @@ public class PostgisViewOnlineTest extends JDBCViewOnlineTest {
         CoordinateReferenceSystem crs =
                 schema.getGeometryDescriptor().getCoordinateReferenceSystem();
         assertNotNull(crs);
-        assertTrue(CRS.equalsIgnoreMetadata(CRS.decode("EPSG:4326"), crs));
+        assertTrue(CRS.equalsIgnoreMetadata(decodeEPSG(4326), crs));
     }
 }

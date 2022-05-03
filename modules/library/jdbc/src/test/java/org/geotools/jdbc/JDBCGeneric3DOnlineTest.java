@@ -114,7 +114,7 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
                                 + ":String");
         poly3DType.getGeometryDescriptor().getUserData().put(Hints.COORDINATE_DIMENSION, 3);
 
-        crs = CRS.decode("EPSG:" + getEpsgCode());
+        crs = decodeEPSG(getEpsgCode());
     }
 
     protected Integer getNativeSRID() {

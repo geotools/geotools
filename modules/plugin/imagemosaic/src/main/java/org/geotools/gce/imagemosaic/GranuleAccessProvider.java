@@ -41,14 +41,13 @@ import org.geotools.util.factory.Hints;
  */
 public interface GranuleAccessProvider {
 
-    public static final Hints.Key SUGGESTED_READER_SPI = new Hints.Key(ImageReaderSpi.class);
+    Hints.Key SUGGESTED_READER_SPI = new Hints.Key(ImageReaderSpi.class);
 
-    public static final Hints.Key SUGGESTED_STREAM_SPI = new Hints.Key(ImageInputStreamSpi.class);
+    Hints.Key SUGGESTED_STREAM_SPI = new Hints.Key(ImageInputStreamSpi.class);
 
-    public static final Hints.Key SUGGESTED_FORMAT = new Hints.Key(AbstractGridFormat.class);
+    Hints.Key SUGGESTED_FORMAT = new Hints.Key(AbstractGridFormat.class);
 
-    public static final Hints.Key GRANULE_ACCESS_PROVIDER =
-            new Hints.Key(GranuleAccessProvider.class);
+    Hints.Key GRANULE_ACCESS_PROVIDER = new Hints.Key(GranuleAccessProvider.class);
 
     /** Input to be set before invoking any method of the provider */
     void setGranuleInput(Object input) throws IOException;

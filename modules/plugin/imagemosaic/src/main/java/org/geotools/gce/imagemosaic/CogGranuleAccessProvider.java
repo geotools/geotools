@@ -55,7 +55,7 @@ public class CogGranuleAccessProvider extends DefaultGranuleAccessProvider
     public CogGranuleAccessProvider(CatalogConfigurationBean bean) {
         // A Cog Provider will always have at least a streamSpi and an ImageReaderSpi
         this(getHints(bean));
-        URLSourceSPIProvider urlSourceSpiProvider = bean.getUrlSourceSPIProvider();
+        SourceSPIProviderFactory urlSourceSpiProvider = bean.getUrlSourceSPIProvider();
         if (urlSourceSpiProvider instanceof CogConfiguration) {
             cogConfig = (CogConfiguration) urlSourceSpiProvider;
         } else {
@@ -65,6 +65,7 @@ public class CogGranuleAccessProvider extends DefaultGranuleAccessProvider
                             + urlSourceSpiProvider
                             + " has been found.");
         }
+        this.skipExternalOverviews = bean.isSkipExternalOverviews();
     }
 
     private static Hints getHints(CatalogConfigurationBean bean) {
@@ -88,6 +89,9 @@ public class CogGranuleAccessProvider extends DefaultGranuleAccessProvider
             format = DEFAULT_COG_FORMAT;
         }
         hints.put(GranuleAccessProvider.SUGGESTED_FORMAT, format);
+        if (bean.isSkipExternalOverviews()) {
+            hints.put(Hints.SKIP_EXTERNAL_OVERVIEWS, true);
+        }
 
         hints.add(EXCLUDE_MOSAIC);
         return hints;
@@ -115,7 +119,9 @@ public class CogGranuleAccessProvider extends DefaultGranuleAccessProvider
         if (ovrProvider == null) {
             SourceSPIProvider inputProvider = (SourceSPIProvider) input;
             spiHelper = new SpiHelper(inputProvider);
-            ovrProvider = new MaskOverviewProvider(null, inputProvider.getSourceUrl(), spiHelper);
+            ovrProvider =
+                    new MaskOverviewProvider(
+                            null, inputProvider.getSourceUrl(), spiHelper, skipExternalOverviews);
         }
         if (ovrProvider == null) {
             throw new IOException(
@@ -147,6 +153,7 @@ public class CogGranuleAccessProvider extends DefaultGranuleAccessProvider
     public GranuleAccessProvider copyProviders() {
         CogGranuleAccessProvider provider = new CogGranuleAccessProvider(hints);
         provider.cogConfig = this.cogConfig;
+        provider.skipExternalOverviews = this.skipExternalOverviews;
         return provider;
     }
 }

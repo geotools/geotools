@@ -19,6 +19,8 @@ package org.geotools.gce.imagemosaic;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
@@ -39,7 +41,7 @@ import org.geotools.util.factory.Hints;
 
 /** Types of Resources being supported by ImageMosaic harvest operation. */
 enum HarvestedResource {
-    FILE {
+    FILE(File.class) {
         @Override
         public void harvest(
                 String defaultCoverage,
@@ -57,7 +59,7 @@ enum HarvestedResource {
             harvestCollection(defaultCoverage, result, reader, Collections.singletonList(file));
         }
     },
-    DIRECTORY {
+    DIRECTORY(File.class) {
         @Override
         public void harvest(
                 String defaultCoverage,
@@ -75,7 +77,7 @@ enum HarvestedResource {
             harvestCalculation(defaultCoverage, result, reader, directory, null);
         }
     },
-    FILE_COLLECTION {
+    FILE_COLLECTION(File.class) {
         @Override
         public void harvest(
                 String defaultCoverage,
@@ -89,7 +91,7 @@ enum HarvestedResource {
             harvestCollection(defaultCoverage, result, reader, files);
         }
     },
-    URL {
+    URL(URL.class) {
         @Override
         public void harvest(
                 String defaultCoverage,
@@ -101,7 +103,7 @@ enum HarvestedResource {
                     defaultCoverage, result, reader, Collections.singletonList((URL) source));
         }
     },
-    URL_COLLECTION {
+    URL_COLLECTION(URL.class) {
         @Override
         public void harvest(
                 String defaultCoverage,
@@ -128,9 +130,47 @@ enum HarvestedResource {
             // Harvesting Urls
             harvestURLCollection(defaultCoverage, result, reader, urls);
         }
-    };
+    },
+    URI(URI.class) {
+        @Override
+        public void harvest(
+                String defaultCoverage,
+                Object source,
+                Hints hints,
+                final List<HarvestedSource> result,
+                ImageMosaicReader reader) {
+            harvestURICollection(
+                    defaultCoverage, result, reader, Collections.singletonList((URI) source));
+        }
+    },
+    URI_COLLECTION(URI.class) {
+        @Override
+        public void harvest(
+                String defaultCoverage,
+                Object source,
+                Hints hints,
+                final List<HarvestedSource> result,
+                ImageMosaicReader reader) {
+            Collection<URI> uris = null;
 
-    HarvestedResource() {}
+            if (source instanceof Collection<?>) {
+                try {
+                    @SuppressWarnings("unchecked")
+                    Collection<URI> cast = (Collection<URI>) source;
+                    uris = cast;
+                } catch (ClassCastException e) {
+                    // Log the exception
+                    if (LOGGER.isLoggable(Level.WARNING)) {
+                        LOGGER.log(Level.WARNING, e.getMessage(), e);
+                    }
+                }
+            } else {
+                uris = Collections.singletonList((URI) source);
+            }
+            // Harvesting Urls
+            harvestURICollection(defaultCoverage, result, reader, uris);
+        }
+    };
 
     /** Logger. */
     private static final Logger LOGGER =
@@ -154,6 +194,9 @@ enum HarvestedResource {
         }
         if (source instanceof URL) {
             return URL;
+        }
+        if (source instanceof URI) {
+            return URI;
         }
         // For a String instance, it is converted to String
         if (source instanceof String) {
@@ -196,7 +239,16 @@ enum HarvestedResource {
                 return URL_COLLECTION;
             } else if (sample instanceof String) {
                 HarvestedResource resource = getResourceFromString((String) sample);
-                return resource == FILE ? FILE_COLLECTION : URL_COLLECTION;
+                switch (resource) {
+                    case FILE:
+                        return FILE_COLLECTION;
+                    case URL:
+                        return URL_COLLECTION;
+                    case URI:
+                        return URI_COLLECTION;
+                    default:
+                        throw new RuntimeException("Unexepected collection content: " + resource);
+                }
             }
         }
         return null;
@@ -216,6 +268,15 @@ enum HarvestedResource {
                 && ((protocol = url.getProtocol()) != null)
                 && !"file".equalsIgnoreCase(protocol)) {
             return URL;
+        }
+
+        try {
+            URI uri = new URI(source);
+            if (uri.getScheme() != null && !"file".equals(uri.getScheme())) {
+                return URI;
+            }
+        } catch (URISyntaxException e) {
+            // still doing just guesses, see above
         }
 
         File file = new File(source);
@@ -352,7 +413,7 @@ enum HarvestedResource {
                     }
                 };
 
-        URLSourceSPIProvider urlSourceSPIProvider = null;
+        SourceSPIProviderFactory urlSourceSPIProvider = null;
         RasterManager rasterManager = reader.getRasterManager(defaultCoverage);
         if (rasterManager == null) {
             // We might be in the case of an empty mosaic not yet initialized.
@@ -366,7 +427,7 @@ enum HarvestedResource {
                                 "The specified mosaic can't be empty but no default granules have been found"));
                 return;
             }
-            urlSourceSPIProvider = IndexerUtils.getURLSourceSPIProvider(indexer);
+            urlSourceSPIProvider = IndexerUtils.getSourceSPIProviderFactory(indexer);
         } else {
             MosaicConfigurationBean config = rasterManager.getConfiguration();
             urlSourceSPIProvider = config.getCatalogConfigurationBean().getUrlSourceSPIProvider();
@@ -375,7 +436,7 @@ enum HarvestedResource {
         if (urlSourceSPIProvider == null) {
             eventHandler.fireException(
                     new IOException(
-                            "Unable to harvest the provided URL collection. No Url source SPI provider has been found"));
+                            "Unable to harvest the provided URL collection. No source SPI provider has been found"));
             return;
         }
 
@@ -396,6 +457,102 @@ enum HarvestedResource {
                                             urlEvent.getUrl(),
                                             urlEvent.isIngested(),
                                             urlEvent.getMessage()));
+                        }
+                    }
+
+                    @Override
+                    public void exceptionOccurred(ImageMosaicEventHandlers.ExceptionEvent event) {
+                        // nothing to do
+                    }
+                });
+        // Wait the Walker ends its operations
+        walker.run();
+    }
+
+    /** Method for harvesting on a list of URIs (which are typically not valid URLs */
+    private static void harvestURICollection(
+            String defaultCoverage,
+            final List<HarvestedSource> result,
+            final ImageMosaicReader reader,
+            Collection<URI> urls) {
+
+        // prepare the walker configuration
+        CatalogBuilderConfiguration configuration = new CatalogBuilderConfiguration();
+
+        if (defaultCoverage == null) {
+            String[] coverageNames = reader.getGridCoverageNames();
+            defaultCoverage =
+                    (coverageNames != null && coverageNames.length > 0)
+                            ? coverageNames[0]
+                            : Utils.DEFAULT_INDEX_NAME;
+        }
+
+        configuration.setParameter(Utils.Prop.INDEX_NAME, defaultCoverage);
+        configuration.setHints(new Hints(Utils.MOSAIC_READER, reader));
+        File mosaicSource = URLs.urlToFile(reader.sourceURL);
+        if (!mosaicSource.isDirectory()) {
+            mosaicSource = mosaicSource.getParentFile();
+        }
+        // Setting of the HARVEST_DIRECTORY property for passing the checks even if it is
+        // not used
+        String mosaicRootPath = mosaicSource.getAbsolutePath();
+        configuration.setParameter(Utils.Prop.HARVEST_DIRECTORY, mosaicRootPath);
+        configuration.setParameter(Utils.Prop.ROOT_MOSAIC_DIR, mosaicRootPath);
+
+        // run the walker and collect information
+        ImageMosaicEventHandlers eventHandler = new ImageMosaicEventHandlers();
+        final ImageMosaicConfigHandler catalogHandler =
+                new ImageMosaicConfigHandler(configuration, eventHandler) {
+                    @Override
+                    protected GranuleCatalog buildCatalog() throws IOException {
+                        return reader.granuleCatalog;
+                    }
+                };
+
+        SourceSPIProviderFactory sspFactory = null;
+        RasterManager rasterManager = reader.getRasterManager(defaultCoverage);
+        if (rasterManager == null) {
+            // We might be in the case of an empty mosaic not yet initialized.
+            // let's try with the indexer parsing if any.
+            Indexer indexer = IndexerUtils.initializeIndexer(null, mosaicSource);
+            boolean canBeEmpty =
+                    IndexerUtils.getParameterAsBoolean(Utils.Prop.CAN_BE_EMPTY, indexer);
+            if (!canBeEmpty) {
+                eventHandler.fireException(
+                        new IOException(
+                                "The specified mosaic can't be empty but no default granules have been found"));
+                return;
+            }
+            sspFactory = IndexerUtils.getSourceSPIProviderFactory(indexer);
+        } else {
+            MosaicConfigurationBean config = rasterManager.getConfiguration();
+            sspFactory = config.getCatalogConfigurationBean().getUrlSourceSPIProvider();
+        }
+
+        if (sspFactory == null) {
+            eventHandler.fireException(
+                    new IOException(
+                            "Unable to harvest the provided URI collection. No source SPI provider has been found"));
+            return;
+        }
+
+        // Creation of the Walker for the URI List
+        ImageMosaicReader.ImageMosaicURICollectionWalker walker =
+                new ImageMosaicReader.ImageMosaicURICollectionWalker(
+                        catalogHandler, eventHandler, sspFactory, urls);
+        eventHandler.addProcessingEventListener(
+                new ImageMosaicEventHandlers.ProcessingEventListener() {
+
+                    @Override
+                    public void getNotification(ImageMosaicEventHandlers.ProcessingEvent event) {
+                        if (event instanceof ImageMosaicEventHandlers.URIProcessingEvent) {
+                            ImageMosaicEventHandlers.URIProcessingEvent uriEvent =
+                                    (ImageMosaicEventHandlers.URIProcessingEvent) event;
+                            result.add(
+                                    new DefaultHarvestedSource(
+                                            uriEvent.getURI(),
+                                            uriEvent.isIngested(),
+                                            uriEvent.getMessage()));
                         }
                     }
 
@@ -469,6 +626,20 @@ enum HarvestedResource {
                 });
 
         walker.run();
+    }
+
+    Class<?> elementType;
+
+    HarvestedResource(Class<?> elementType) {
+        this.elementType = elementType;
+    }
+
+    /**
+     * Returns the element type of the resource. It can be the actual type, for single sources, or
+     * the type of the contained element, for collection sources
+     */
+    public Class<?> getElementType() {
+        return elementType;
     }
 
     private static class HarvestMosaicConfigHandler extends ImageMosaicConfigHandler {

@@ -337,6 +337,15 @@ public class ImageMosaicConfigHandler {
             if (indexerTypeName != null && properties.getProperty(Prop.TYPENAME) == null) {
                 properties.put(Prop.TYPENAME, indexerTypeName);
             }
+            // pass the overview skipping hint
+            String skipExtOverviews = runConfiguration.getParameter(Prop.SKIP_EXTERNAL_OVERVIEWS);
+            if ("true".equalsIgnoreCase(skipExtOverviews)) {
+                properties.put(Prop.SKIP_EXTERNAL_OVERVIEWS, skipExtOverviews);
+            }
+            String location = runConfiguration.getParameter(Prop.LOCATION_ATTRIBUTE);
+            if (location != null) {
+                properties.put(Prop.LOCATION_ATTRIBUTE, location);
+            }
             catalog =
                     createGranuleCatalogFromDatastore(
                             parent,
@@ -1244,7 +1253,7 @@ public class ImageMosaicConfigHandler {
             properties.setProperty(Prop.SUGGESTED_FORMAT, cachedFormat.getClass().getName());
         }
 
-        URLSourceSPIProvider urlSourceSpiProvider =
+        SourceSPIProviderFactory urlSourceSpiProvider =
                 catalogConfigurationBean.getUrlSourceSPIProvider();
         if (urlSourceSpiProvider instanceof CogConfiguration) {
             CogConfiguration cogBean = (CogConfiguration) urlSourceSpiProvider;
@@ -1300,6 +1309,12 @@ public class ImageMosaicConfigHandler {
 
         if (mosaicConfiguration.getNoData() != null) {
             properties.setProperty(Prop.NO_DATA, String.valueOf(mosaicConfiguration.getNoData()));
+        }
+
+        if (catalogConfigurationBean.isSkipExternalOverviews()) {
+            properties.setProperty(
+                    Prop.SKIP_EXTERNAL_OVERVIEWS,
+                    String.valueOf(catalogConfigurationBean.isSkipExternalOverviews()));
         }
 
         String filePath =
@@ -1505,6 +1520,8 @@ public class ImageMosaicConfigHandler {
             } else {
                 catalogConfigurationBean.setTypeName(targetCoverageName);
             }
+            catalogConfigurationBean.setSkipExternalOverviews(
+                    IndexerUtils.getParameterAsBoolean(Prop.SKIP_EXTERNAL_OVERVIEWS, indexer));
             configBuilder.setCatalogConfigurationBean(catalogConfigurationBean);
             configBuilder.setCheckAuxiliaryMetadata(
                     IndexerUtils.getParameterAsBoolean(Prop.CHECK_AUXILIARY_METADATA, indexer));
@@ -1765,7 +1782,7 @@ public class ImageMosaicConfigHandler {
             // COG CASE:
             // Create an ImageMosaicURLConsumer to consume urls and an ImageMosaicDatastoreWalker
             // to provide them to the consumer
-            URLSourceSPIProvider urlSourceSPIProvider =
+            SourceSPIProviderFactory urlSourceSPIProvider =
                     new CogConfiguration(getRunConfiguration().getIndexer());
             ImageMosaicURLFeatureConsumer.ImageMosaicURLConsumer urlsConsumer =
                     new ImageMosaicURLFeatureConsumer.ImageMosaicURLConsumer(urlSourceSPIProvider);

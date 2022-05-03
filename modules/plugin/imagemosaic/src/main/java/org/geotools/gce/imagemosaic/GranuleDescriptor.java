@@ -405,7 +405,7 @@ public class GranuleDescriptor {
             } else {
                 granuleAccessProvider =
                         getDefaultProvider(
-                                input, suggestedFormat, suggestedSPI, suggestedIsSPI, hints);
+                                input, suggestedFormat, suggestedSPI, suggestedIsSPI, false, hints);
             }
 
             this.format = granuleAccessProvider.getFormat();
@@ -541,6 +541,7 @@ public class GranuleDescriptor {
             AbstractGridFormat suggestedFormat,
             ImageReaderSpi suggestedSPI,
             ImageInputStreamSpi suggestedIsSPI,
+            boolean skipExternalOverviews,
             Hints hints)
             throws IOException {
         Hints suggestedObjectHints = new Hints(hints);
@@ -552,6 +553,9 @@ public class GranuleDescriptor {
         }
         if (suggestedIsSPI != null) {
             suggestedObjectHints.put(GranuleAccessProvider.SUGGESTED_STREAM_SPI, suggestedIsSPI);
+        }
+        if (skipExternalOverviews) {
+            suggestedObjectHints.put(Hints.SKIP_EXTERNAL_OVERVIEWS, skipExternalOverviews);
         }
         // When looking for formats which may parse this file, make sure to exclude the
         // ImageMosaicFormat as return
@@ -1809,5 +1813,9 @@ public class GranuleDescriptor {
     /** @return */
     public MultiLevelROI getRoiProvider() {
         return this.roiProvider;
+    }
+
+    public MaskOverviewProvider getMaskOverviewProvider() {
+        return ovrProvider;
     }
 }

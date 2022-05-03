@@ -8,6 +8,10 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class PostgisViewOnlineTest extends JDBCViewOnlineTest {
 
+    public PostgisViewOnlineTest() {
+        this.forceLongitudeFirst = true;
+    }
+
     @Override
     protected JDBCViewTestSetup createTestSetup() {
         return new PostgisViewTestSetup();

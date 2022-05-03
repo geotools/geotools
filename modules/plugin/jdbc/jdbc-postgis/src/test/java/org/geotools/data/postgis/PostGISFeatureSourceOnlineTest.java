@@ -21,6 +21,8 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCFeatureSourceOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.CRS.AxisOrder;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -31,6 +33,10 @@ import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.spatial.Intersects;
 
 public class PostGISFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
+
+    public PostGISFeatureSourceOnlineTest() {
+        this.forceLongitudeFirst = true;
+    }
 
     @Override
     protected JDBCTestSetup createTestSetup() {
@@ -121,5 +127,13 @@ public class PostGISFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest 
         SimpleFeatureType schema = dataStore.getSchema(tname("ft3"));
         GeometryDescriptor gd = schema.getGeometryDescriptor();
         assertTrue(areCRSEqual(decodeEPSG(4326), gd.getCoordinateReferenceSystem()));
+    }
+
+    public void testCrsIsLongitudeFirst() throws Exception {
+        SimpleFeatureType schema = dataStore.getSchema(tname("ft3"));
+        GeometryDescriptor gd = schema.getGeometryDescriptor();
+        assertTrue(areCRSEqual(decodeEPSG(4326), gd.getCoordinateReferenceSystem()));
+        // an explicit check to ensure we have a longitude first (XY) axis order.
+        assertEquals(AxisOrder.EAST_NORTH, CRS.getAxisOrder(gd.getCoordinateReferenceSystem()));
     }
 }

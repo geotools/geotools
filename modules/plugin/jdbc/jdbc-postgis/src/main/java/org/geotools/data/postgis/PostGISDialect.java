@@ -192,6 +192,8 @@ public class PostGISDialect extends BasicSQLDialect {
 
     public PostGISDialect(JDBCDataStore dataStore) {
         super(dataStore);
+        this.forceLongitudeFirst =
+                true; // PostGIS has an XY axis order, so forceLongitudeFirst is set.
     }
 
     boolean looseBBOXEnabled = false;

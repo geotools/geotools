@@ -86,7 +86,7 @@ class FastBBOX implements BBOX, BinarySpatialOperator, BinaryComparisonOperator 
     public boolean evaluate(Object feature) {
         if (feature == null) return false;
 
-        Geometry other = (Geometry) property.evaluate(feature);
+        Geometry other = property.evaluate(feature, Geometry.class);
         if (other == null) return false;
 
         return other.getEnvelopeInternal().intersects(envelope);

@@ -20,16 +20,26 @@ package org.geotools.renderer.lite;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Collections;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.GeometryAttributeImpl;
+import org.geotools.feature.NameImpl;
+import org.geotools.feature.type.GeometryDescriptorImpl;
+import org.geotools.feature.type.GeometryTypeImpl;
 import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.PropertyAccessorFactory;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.factory.Hints;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.util.GeometricShapeFactory;
+import org.opengis.feature.GeometryAttribute;
+import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.feature.type.GeometryType;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.referencing.FactoryException;
 
 /**
  * This tests <a href="https://osgeo-org.atlassian.net/browse/GEOT-5401">[GEOT-5401] FastBBOX should
@@ -80,6 +90,14 @@ public class FastBBOXTest {
         assertFalse(fastBBOX.evaluate(circle));
     }
 
+    @Test
+    public void evaluateOnGeometryAttribute() throws FactoryException {
+        Envelope env = new Envelope(0.5, 2, 0.5, 2);
+        FastBBOX fastBBOX =
+                new FastBBOX(filterFactory.property("geometryAttribute"), env, filterFactory);
+        assertTrue(fastBBOX.evaluate(circle));
+    }
+
     /**
      * An object carrying data which will be accessed through a custom {@link
      * MockPropertyAccessorFactory}
@@ -87,8 +105,23 @@ public class FastBBOXTest {
     public static class MockDataObject {
         Geometry geometry;
 
+        GeometryAttribute geometryAttribute;
+
         public MockDataObject(Geometry g) {
             this.geometry = g;
+            GeometryType type =
+                    new GeometryTypeImpl(
+                            new NameImpl("GEOMETRY"),
+                            Geometry.class,
+                            DefaultGeographicCRS.WGS84,
+                            false,
+                            false,
+                            Collections.emptyList(),
+                            null,
+                            null);
+            GeometryDescriptor desc =
+                    new GeometryDescriptorImpl(type, new NameImpl("geometry"), 0, 1, false, null);
+            this.geometryAttribute = new GeometryAttributeImpl(g, desc, null);
         }
     }
 
@@ -117,6 +150,10 @@ public class FastBBOXTest {
                     if ("geometry".equals(xpath)) {
                         @SuppressWarnings("unchecked")
                         T result = (T) ((MockDataObject) object).geometry;
+                        return result;
+                    } else if ("geometryAttribute".equals(xpath)) {
+                        @SuppressWarnings("unchecked")
+                        T result = (T) ((MockDataObject) object).geometryAttribute;
                         return result;
                     } else {
                         throw new IllegalArgumentException("Unknown field");

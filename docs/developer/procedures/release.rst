@@ -86,7 +86,7 @@ When creating the first release candidate of a series, there are some extra step
 * Create the new stable branch and push it to GitHub; for example, if main is ``27-SNAPSHOT`` and the remote for the official GeoTools is called ``upstream``::
 
     git checkout -b 27.x
-    git push upstream 27.x
+    git push --set-upstream upstream 27.x
 
 * `GitHub branch protection <https://github.com/geotools/geotools/settings/branches>`_ uses wild cards to protect the new branch (so no further configuration is required).
 
@@ -112,7 +112,7 @@ When creating the first release candidate of a series, there are some extra step
 
   * For the new stable branch create new jobs, duplicate from the existing ``stable`` jobs, editing branch specifier to the new branch (e.g. `27.x`)
     
-  * Special care is needed when setting up java11 build which uses `A`, `B` and `C` groups.
+  * Special care is needed when setting up java11 build which uses `A`, `B`, `C`, ... groups.
     
     For example if the next group in the rotation is group ``A``:
     
@@ -128,23 +128,23 @@ When creating the first release candidate of a series, there are some extra step
 
 * This is the time to update the README.md, README.html and documentation links
   
-  For the new `stable` branch::
+  For the new `stable` branch, and the remote for the official GeoTools is called ``upstream``::
   
-    git checkout 27.x
+    git checkout 28.x
     git pull
     ant -f build/build.xml stable
     git add .
-    git commit -m "Change 27.x to stable branch"
-    git push geotools 27.x
+    git commit -m "Change 28.x to stable branch"
+    git push upstream 28.x
 
-  For the new `maintenance` branch::
+  For the new `maintenance` branch, and the remote for the official GeoTools is called ``upstream``::
   
     git checkout 26.x
     git pull
     ant -f build/build.xml maintenance
     git add .
     git commit -m "Change 26.x to stable branch"
-    git push geotools 26.x
+    git push upstream 26.x
   
   This change will update the `pom.xml` series used to determine where documentation from the branch is published.
 

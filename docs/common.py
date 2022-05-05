@@ -31,8 +31,8 @@ extlinks = {
     'website': ('https://geotools.org/%s',''),
     'geoserver': ('https://docs.geoserver.org/latest/en/user/%s',''),
     'developer': ('https://docs.geotools.org/latest/developer/%s',''),
-    'user': ('https://docs.geotools.org/stable/userguide/%s',''),
-    'api': ('https://docs.geotools.org/stable/javadocs',''),
+    'user': ('https://docs.geotools.org/maintenance/userguide/%s',''),
+    'api': ('https://docs.geotools.org/maintenance/javadocs',''),
     'geot': ('https://osgeo-org.atlassian.net/browse/GEOT-%s','GEOT-')
 }
 

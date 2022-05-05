@@ -460,7 +460,7 @@
   <!--     manner relevant to the purpose of the "site" goal.      -->
   <!-- =========================================================== -->
   <properties>
-    <series>stable</series>
+    <series>maintenance</series>
     <allow.test.skip>true</allow.test.skip>
     <allow.test.failure.ignore>false</allow.test.failure.ignore>
     <extensive.tests>false</extensive.tests>

@@ -10,7 +10,7 @@
   <tstamp/>
   <property name="release" value="27-SNAPSHOT"/>
   <property name="date" value="${TODAY}"/>
-  <property name="series" value="latest"/>
+  <property name="series" value="stable"/>
   
   <target name="test">
      <echo>release: ${release}</echo>

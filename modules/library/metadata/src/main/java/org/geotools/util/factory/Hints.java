@@ -811,6 +811,13 @@ public class Hints extends RenderingHints {
     public static final Key GRANULE_REMOVAL_POLICY =
             new Key("org.geotools.coverage.grid.io.GranuleRemovalPolicy");
 
+    /**
+     * Indicates whether to skip external overview files when loading a Coverage (on by default in
+     * most raster readers). The lookup can be costly if the files are on a remote server or network
+     * disk.
+     */
+    public static final Key SKIP_EXTERNAL_OVERVIEWS = new Hints.Key(Boolean.class);
+
     ////////////////////////////////////////////////////////////////////////
     ////////                                                        ////////
     ////////                      Data stores                       ////////

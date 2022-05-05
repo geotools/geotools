@@ -363,6 +363,8 @@ public class Utils {
          * mosaic bounds
          */
         public static final String NO_DATA = "NoData";
+        /** Whether to skip checks for external overviews, when no internal overviews are found */
+        public static final String SKIP_EXTERNAL_OVERVIEWS = "SkipExternalOverviews";
     }
 
     /**
@@ -944,6 +946,13 @@ public class Utils {
                             e);
                 }
             }
+        }
+
+        // external overview skip
+        if (!ignoreSome || !ignorePropertiesSet.contains(Prop.SKIP_EXTERNAL_OVERVIEWS)) {
+            catalogConfigurationBean.setSkipExternalOverviews(
+                    Boolean.parseBoolean(
+                            properties.getProperty(Prop.SKIP_EXTERNAL_OVERVIEWS, "false").trim()));
         }
 
         // Also initialize the indexer here, since it will be needed later on.

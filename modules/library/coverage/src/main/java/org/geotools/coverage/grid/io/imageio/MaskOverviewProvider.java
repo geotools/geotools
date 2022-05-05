@@ -97,6 +97,8 @@ public class MaskOverviewProvider {
 
     private ImageReaderSpi maskOvrReaderSpi;
 
+    private boolean skipExternalLookup;
+
     public MaskOverviewProvider(DatasetLayout layout, File inputFile) throws IOException {
         this(layout, inputFile, (ImageReaderSpi) null);
     }
@@ -129,6 +131,15 @@ public class MaskOverviewProvider {
         this(layout, inputUrl, spiHelper, DEFAULT_SKIP_EXTERNAL_FILES_LOOKUP);
     }
 
+    public MaskOverviewProvider(DatasetLayout dtLayout, File inputFile, boolean skipOverviews)
+            throws IOException {
+        this(
+                dtLayout,
+                URLs.fileToUrl(inputFile),
+                new SpiHelper(URLs.fileToUrl(inputFile), null),
+                skipOverviews);
+    }
+
     public MaskOverviewProvider(
             DatasetLayout layout, URL inputFile, SpiHelper spiHelper, boolean skipExternalLookup)
             throws IOException {
@@ -138,6 +149,7 @@ public class MaskOverviewProvider {
         ImageInputStreamSpi streamSpi = sourceSpiProvider.getStreamSpi();
         this.fileURL = sourceSpiProvider.getSourceUrl();
         this.layout = layout;
+        this.skipExternalLookup = skipExternalLookup;
 
         // Handling Overviews
         hasDatasetLayout = layout != null;
@@ -683,6 +695,10 @@ public class MaskOverviewProvider {
 
     public URL getMaskOvrURL() {
         return maskOvrURL;
+    }
+
+    public boolean isSkipExternalLookup() {
+        return skipExternalLookup;
     }
 
     /** Returns an {@link ImageInputStreamSpi} instance for the input {@link URL} */

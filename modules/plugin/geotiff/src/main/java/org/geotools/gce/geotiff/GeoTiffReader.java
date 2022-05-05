@@ -388,6 +388,17 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             //
             dtLayout = TiffDatasetLayoutImpl.parseLayout(reader.getStreamMetadata());
 
+            // allows to skip the .ovr files lookup
+            boolean skipOverviews =
+                    (Boolean)
+                            hints.getOrDefault(
+                                    Hints.SKIP_EXTERNAL_OVERVIEWS,
+                                    ImageIOUtilities.isSkipExternalFilesLookup());
+            if (skipOverviews) {
+                LOGGER.log(Level.FINE, "Skipping GeoTiff overview sidecar files for {0}", source);
+                ((TiffDatasetLayoutImpl) dtLayout).setNumExternalOverviews(0);
+            }
+
             // Creating a new OverviewsProvider instance
             File inputFile = null;
             if (source instanceof File) {
@@ -396,13 +407,12 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                 inputFile = URLs.urlToFile((URL) source);
             }
             if (inputFile != null) {
-                maskOvrProvider = new MaskOverviewProvider(dtLayout, inputFile);
+                maskOvrProvider = new MaskOverviewProvider(dtLayout, inputFile, skipOverviews);
                 hasMaskOvrProvider = true;
             } else if (dtLayout != null && dtLayout.getExternalMasks() != null) {
                 String path = dtLayout.getExternalMasks().getAbsolutePath();
-                maskOvrProvider =
-                        new MaskOverviewProvider(
-                                dtLayout, new File(path.substring(0, path.length() - 4)));
+                File file = new File(path.substring(0, path.length() - 4));
+                maskOvrProvider = new MaskOverviewProvider(dtLayout, file, skipOverviews);
                 hasMaskOvrProvider = true;
             } else if (source instanceof CogSourceSPIProvider) {
                 CogSourceSPIProvider cogSourceProvider = (CogSourceSPIProvider) source;
@@ -410,7 +420,8 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                         new MaskOverviewProvider(
                                 null,
                                 cogSourceProvider.getSourceUrl(),
-                                new MaskOverviewProvider.SpiHelper(cogSourceProvider));
+                                new MaskOverviewProvider.SpiHelper(cogSourceProvider),
+                                skipOverviews);
                 hasMaskOvrProvider = true;
             }
 
@@ -1113,5 +1124,11 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                     layout.getExternalMasks());
         }
         return Collections.singletonList(new FileGroup(file, files, null));
+    }
+
+    /** Returns the {@link MaskOverviewProvider} used by this reader. For testing purposes. */
+    public MaskOverviewProvider getMaskOverviewProvider() {
+        // the object is read only once initialized, not dangerous
+        return maskOvrProvider;
     }
 }

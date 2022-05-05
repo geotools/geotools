@@ -50,6 +50,7 @@ import org.geotools.gce.imagemosaic.GranuleDescriptor;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.gce.imagemosaic.PathType;
 import org.geotools.gce.imagemosaic.Utils;
+import org.geotools.util.Converters;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
@@ -149,6 +150,14 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             }
             if (params.containsKey(Utils.Prop.WRAP_STORE)) {
                 this.wrapstore = (Boolean) params.get(Utils.Prop.WRAP_STORE);
+            }
+            if (params.containsKey(Utils.Prop.SKIP_EXTERNAL_OVERVIEWS)) {
+                // depending on the code path, the value may come as a string (initialize from
+                // datastore) or boolean (index and create a shapefile)
+                this.hints.put(
+                        Hints.SKIP_EXTERNAL_OVERVIEWS,
+                        Converters.convert(
+                                params.get(Utils.Prop.SKIP_EXTERNAL_OVERVIEWS), Boolean.class));
             }
 
             initTileIndexStore(params, create, spi);

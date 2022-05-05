@@ -106,9 +106,11 @@ When creating the first release candidate of a series, there are some extra step
 
 * Update the jobs on build.geoserver.org:
   
-  * Disable the previous maintenance jobs, and remove them from the geotools view
+  * Disable the previous maintenance jobs, and remove them from the geotools view.
+    
+    Even if you wish to continue build prior branches please disable the documentation builds.
 
-  * For the new stable branch create new jobs, duplicate from the existing ``main`` jobs, editing branch specifier to the new branch (e.g. `27.x`)
+  * For the new stable branch create new jobs, duplicate from the existing ``stable`` jobs, editing branch specifier to the new branch (e.g. `27.x`)
     
   * Special care is needed when setting up java11 build which uses `A`, `B` and `C` groups.
     
@@ -120,7 +122,7 @@ When creating the first release candidate of a series, there are some extra step
       
     * Adjust custom workspace (used as a shared workspace and local maven repo location) to match the throttle category groups
       
-      :file:`workspace/java11a`
+      :file:`workspace/java11_27`
 
 * Announce on the developer mailing list that the new stable branch has been created.
 

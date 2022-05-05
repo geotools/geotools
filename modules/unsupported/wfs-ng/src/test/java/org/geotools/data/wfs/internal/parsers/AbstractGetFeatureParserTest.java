@@ -26,9 +26,13 @@ import static org.geotools.data.wfs.WFSTestData.GEOS_STATES_10;
 import static org.geotools.data.wfs.WFSTestData.GEOS_STATES_11;
 import static org.geotools.data.wfs.WFSTestData.GEOS_TASMANIA_CITIES_11;
 import static org.geotools.data.wfs.WFSTestData.IONIC_STATISTICAL_UNIT;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -36,6 +40,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.data.wfs.WFSTestData;
@@ -341,6 +346,30 @@ public abstract class AbstractGetFeatureParserTest {
         }
 
         testParseGetFeatures(featureName, featureType, parser, assertor, expectedCount);
+    }
+
+    @Test
+    public void testParseGeoServer_ArchSites_XXE() throws Exception {
+        final QName featureName = GEOS_ARCHSITES_11.TYPENAME;
+        final URL schemaLocation = GEOS_ARCHSITES_11.SCHEMA;
+        final URL data =
+                WFSTestData.url("GeoServer_2.0/1.1.0_XXE_GetFeature/GetFeature_archsites.xml");
+
+        final String[] properties = {"cat", "str1", "the_geom"};
+        final SimpleFeatureType featureType =
+                getTypeView(featureName, schemaLocation, GEOS_ARCHSITES_11.CRS, properties);
+
+        GetParser<SimpleFeature> parser =
+                getParser(featureName, schemaLocation, featureType, data, null);
+        try {
+            IOException exception = assertThrows(IOException.class, () -> parser.parse());
+            assertThat(exception.getCause(), instanceOf(XMLStreamException.class));
+            assertThat(
+                    exception.getMessage(),
+                    containsString("The entity \"xxe\" was referenced, but not declared"));
+        } finally {
+            parser.close();
+        }
     }
 
     /**

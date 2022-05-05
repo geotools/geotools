@@ -18,7 +18,7 @@
         <dependency>
            <groupId>org.geotools.xsd</groupId>
            <artifactId>gt-xsd-core</artifactId>
-           <version>27-SNAPSHOT</version>
+           <version>28-SNAPSHOT</version>
         </dependency>    
     </dependencies>
 

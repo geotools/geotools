@@ -40,7 +40,6 @@
     <module>wfs-ng</module>
     <module>ogr</module>
     <module>postgis-raster</module>
-    <module>ogcapi-client</module>
     <module>tpk</module>
     <module>cql-json</module>
     <module>vsi</module>
@@ -103,6 +102,12 @@
       <id>feature-aggreate</id>
       <modules>
         <module>feature-aggreate</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>ogcapi</id>
+      <modules>
+        <module>ogcapi-client</module>
       </modules>
     </profile>
     <profile>

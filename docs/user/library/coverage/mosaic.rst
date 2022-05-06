@@ -4,16 +4,6 @@ Mosaic Plugin
 This format make use of a shapefile to act as a kind of index, the features in this shapefile
 list the filename of the "images" to display and the location in which they should be displayed.
 
-**Reference**
-
-* `ImageMosaicFormat <http://docs.geotools.org/latest/javadocs/org/geotools/gce/imagemosaic/ImageMosaicFormat.html>`_ (javadoc)
-* `ImageMosaicJDBCReader <http://docs.geotools.org/latest/javadocs/org/geotools/gce/imagemosaic/jdbc/ImageMosaicJDBCReader.html>`_ (javadoc)
-* :doc:`pyramid`
-* `ImageMosaic plugin <https://docs.geoserver.org/stable/en/user/data/raster/imagemosaic/index.html>`_
-* `Using the ImageMosaic plugin for raster time-series data <https://docs.geoserver.org/stable/en/user/tutorials/imagemosaic_timeseries/imagemosaic_timeseries.html>`_
-* `Using the ImageMosaic plugin for raster with time and elevation data <https://docs.geoserver.org/stable/en/user/tutorials/imagemosaic_timeseries/imagemosaic_time-elevationseries.html>`_
-* `Using the ImageMosaic plugin with footprint management <https://docs.geoserver.org/stable/en/user/tutorials/imagemosaic_footprint/imagemosaic_footprint.html>`_
-
 **Maven**::
    
     <dependency>
@@ -22,8 +12,33 @@ list the filename of the "images" to display and the location in which they shou
       <version>${geotools.version}</version>
     </dependency>
 
-Example
-^^^^^^^
+
+To create the shapefile you simply provide the location of a folder with "images" to the constructor of ImageMosaicReader.
+Those image files must conatin it's own world-file to be a part of the image mosaic.
+
+To display the mosaic within a map, you will use a GridReaderLayer.
+
+.. literalinclude:: /../src/main/java/org/geotools/imagemosaic/MosaicViewer.java
+  :language: java
+  :start-after: // start Create ImageMosaicReader example
+  :end-before: // end Create ImageMosaicReader example
+
+The simplest style to provide would be like this:
+
+.. literalinclude:: /../src/main/java/org/geotools/imagemosaic/MosaicViewer.java
+  :language: java
+  :start-after: // start Create Raster Style
+  :end-before: // end Create Raster Style
+
+To use mulitthreading you must provide a threading pool to the mosaic reader, and also tell the grid reader layer to allow multithreading.
+
+.. literalinclude:: /../src/main/java/org/geotools/imagemosaic/MosaicViewer.java
+  :language: java
+  :start-after: // start Create Multithreaded ImageMosaicReader example
+  :end-before: // end Create Multithreaded ImageMosaicReader example
+
+Example Image Mosaic files
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 An example data set looks something like::
   
@@ -81,3 +96,13 @@ An example data set looks something like::
   * ``Format``: ``minX,minY maxX,maxY``
     
   * ``NumFiles``: should be the same as the number of features in your shapefile
+
+**Reference**
+
+* `ImageMosaicFormat <http://docs.geotools.org/latest/javadocs/org/geotools/gce/imagemosaic/ImageMosaicFormat.html>`_ (javadoc)
+* `ImageMosaicJDBCReader <http://docs.geotools.org/latest/javadocs/org/geotools/gce/imagemosaic/jdbc/ImageMosaicJDBCReader.html>`_ (javadoc)
+* :doc:`pyramid`
+* `ImageMosaic plugin <https://docs.geoserver.org/stable/en/user/data/raster/imagemosaic/index.html>`_
+* `Using the ImageMosaic plugin for raster time-series data <https://docs.geoserver.org/stable/en/user/tutorials/imagemosaic_timeseries/imagemosaic_timeseries.html>`_
+* `Using the ImageMosaic plugin for raster with time and elevation data <https://docs.geoserver.org/stable/en/user/tutorials/imagemosaic_timeseries/imagemosaic_time-elevationseries.html>`_
+* `Using the ImageMosaic plugin with footprint management <https://docs.geoserver.org/stable/en/user/tutorials/imagemosaic_footprint/imagemosaic_footprint.html>`_

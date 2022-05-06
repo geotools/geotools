@@ -9,10 +9,10 @@ list the filename of the "images" to display and the location in which they shou
 * `ImageMosaicFormat <http://docs.geotools.org/latest/javadocs/org/geotools/gce/imagemosaic/ImageMosaicFormat.html>`_ (javadoc)
 * `ImageMosaicJDBCReader <http://docs.geotools.org/latest/javadocs/org/geotools/gce/imagemosaic/jdbc/ImageMosaicJDBCReader.html>`_ (javadoc)
 * :doc:`pyramid`
-* `ImageMosaic plugin <https://docs.geoserver.org/stable/en/user/data/raster/imagemosaic/index.html>`_
-* `Using the ImageMosaic plugin for raster time-series data <https://docs.geoserver.org/stable/en/user/tutorials/imagemosaic_timeseries/imagemosaic_timeseries.html>`_
-* `Using the ImageMosaic plugin for raster with time and elevation data <https://docs.geoserver.org/stable/en/user/tutorials/imagemosaic_timeseries/imagemosaic_time-elevationseries.html>`_
-* `Using the ImageMosaic plugin with footprint management <https://docs.geoserver.org/stable/en/user/tutorials/imagemosaic_footprint/imagemosaic_footprint.html>`_
+* :geoserver:`ImageMosaic plugin <data/raster/imagemosaic/index.html>`
+* :geoserver:`Using the ImageMosaic plugin for raster time-series data <tutorials/imagemosaic_timeseries/imagemosaic_timeseries.html>`
+* :geoserver:`Using the ImageMosaic plugin for raster with time and elevation data <tutorials/imagemosaic_timeseries/imagemosaic_time-elevationseries.html>`
+* :geoserver:`Using the ImageMosaic plugin with footprint management <tutorials/imagemosaic_footprint/imagemosaic_footprint.html>`
 
 **Maven**::
    

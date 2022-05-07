@@ -19,6 +19,9 @@ workspace
 .metadata
 .gradle
 
+# jenkins relesae build
+/settings.xml
+
 # Microsoft Visual Studio Code
 .vscode/
 _build

@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.Date;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.filter.FilterCapabilities;
+import org.geotools.filter.function.JsonArrayContainsFunction;
 import org.geotools.filter.function.JsonPointerFunction;
 import org.geotools.jdbc.JDBCDataStore;
 import org.locationtech.jts.geom.Geometry;
@@ -228,8 +229,21 @@ public class PostgisFilterToSQL extends FilterToSQL {
 
     @Override
     public Object visit(PropertyIsEqualTo filter, Object extraData) {
+        Expression left = filter.getExpression1();
+        Expression right = filter.getExpression2();
+
         helper.out = out;
-        if (helper.isSupportedEqualFunction(filter)) {
+        if (left instanceof JsonArrayContainsFunction
+                || right instanceof JsonArrayContainsFunction) {
+            Class leftContext = super.getExpressionType(left);
+            try {
+                writeBinaryExpression(left, leftContext);
+            } catch (java.io.IOException ioe) {
+                throw new RuntimeException(IO_ERROR, ioe);
+            }
+
+            return extraData;
+        } else if (helper.isSupportedEqualFunction(filter)) {
             return helper.visitSupportedEqualFunction(
                     filter,
                     pgDialect,

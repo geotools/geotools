@@ -25,6 +25,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
@@ -55,6 +56,7 @@ import org.geotools.filter.function.FilterFunction_strToUpperCase;
 import org.geotools.filter.function.FilterFunction_strTrim;
 import org.geotools.filter.function.FilterFunction_strTrim2;
 import org.geotools.filter.function.InArrayFunction;
+import org.geotools.filter.function.JsonArrayContainsFunction;
 import org.geotools.filter.function.JsonPointerFunction;
 import org.geotools.filter.function.math.FilterFunction_abs;
 import org.geotools.filter.function.math.FilterFunction_abs_2;
@@ -156,6 +158,7 @@ class FilterToSqlHelper {
         caps.addType(Ends.class);
         caps.addType(EndedBy.class);
         caps.addType(TEquals.class);
+        caps.addType(JsonArrayContainsFunction.class);
 
         // replacement for area function that was in deprecated dialect registerFunction
         caps.addType(FilterFunction_area.class);
@@ -642,6 +645,8 @@ class FilterToSqlHelper {
             out.write(")");
         } else if (function instanceof JsonPointerFunction) {
             encodeJsonPointer(function, extraData);
+        } else if (function instanceof JsonArrayContainsFunction) {
+            encodeJsonArrayContains(function);
         } else if (function instanceof FilterFunction_buffer) {
             encodeBuffer(function, extraData);
         } else {
@@ -695,6 +700,45 @@ class FilterToSqlHelper {
                 out.write(')');
                 out.write(cast("", (Class) extraData));
             }
+        }
+    }
+
+    public String buildJsonFromStrPointer(String[] pointers, Expression expectedExp) {
+        if (!"".equals(pointers[0])) {
+            if (pointers.length == 1) {
+                final String expected =
+                        getBaseType(expectedExp).isAssignableFrom(String.class)
+                                ? String.format(
+                                        "\"%s\"", ((Literal) expectedExp).getValue().toString())
+                                : ((Literal) expectedExp).getValue().toString();
+                return String.format("\"%s\": [%s]", pointers[0], expected);
+            } else {
+                return String.format(
+                        "\"%s\": { %s }",
+                        pointers[0],
+                        buildJsonFromStrPointer(
+                                Arrays.copyOfRange(pointers, 1, pointers.length), expectedExp));
+            }
+        } else
+            return buildJsonFromStrPointer(
+                    Arrays.copyOfRange(pointers, 1, pointers.length), expectedExp);
+    }
+
+    private void encodeJsonArrayContains(Function jsonArrayContains) throws IOException {
+        PropertyName column = (PropertyName) getParameter(jsonArrayContains, 0, true);
+        Literal jsonPath = (Literal) getParameter(jsonArrayContains, 1, true);
+        Expression expected = getParameter(jsonArrayContains, 2, true);
+
+        String[] strJsonPath = jsonPath.getValue().toString().split("/");
+        if (strJsonPath.length > 0) {
+            String jsonFilter =
+                    String.format("{ %s }", buildJsonFromStrPointer(strJsonPath, expected));
+            out.write(
+                    String.format(
+                            "\"%s\"::jsonb @> '%s'::jsonb", column.getPropertyName(), jsonFilter));
+        } else {
+            throw new IllegalArgumentException(
+                    "Cannot encode filter Invalid pointer " + jsonPath.getValue());
         }
     }
 

@@ -287,4 +287,48 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
         String sql = writer.toString().toLowerCase().trim();
         assertEquals("where testjson ::json  -> 'arr' ->> 0 like 'a_literal'", sql);
     }
+
+    @Test
+    public void testFunctionJsonArrayContains() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        Function pointer =
+                ff.function(
+                        "jsonArrayContains",
+                        ff.property("OPERATIONS"),
+                        ff.literal("/operations"),
+                        ff.literal("OP1"));
+        filterToSql.encode(pointer);
+        String sql = writer.toString().trim();
+        assertEquals("\"OPERATIONS\"::jsonb @> '{ \"operations\": [\"OP1\"] }'::jsonb", sql);
+    }
+
+    @Test
+    public void testFunctionJsonArrayContainsNumber() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        Function pointer =
+                ff.function(
+                        "jsonArrayContains",
+                        ff.property("OPERATIONS"),
+                        ff.literal("/operations"),
+                        ff.literal(1));
+        filterToSql.encode(pointer);
+        String sql = writer.toString().trim();
+        assertEquals("\"OPERATIONS\"::jsonb @> '{ \"operations\": [1] }'::jsonb", sql);
+    }
+
+    @Test
+    public void testNestedObjectJsonArrayContains() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        Function pointer =
+                ff.function(
+                        "jsonArrayContains",
+                        ff.property("OPERATIONS"),
+                        ff.literal("/operations/parameters"),
+                        ff.literal("P1"));
+        filterToSql.encode(pointer);
+        String sql = writer.toString().trim();
+        assertEquals(
+                "\"OPERATIONS\"::jsonb @> '{ \"operations\": { \"parameters\": [\"P1\"] } }'::jsonb",
+                sql);
+    }
 }

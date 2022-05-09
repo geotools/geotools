@@ -424,4 +424,62 @@ public class PostGISJsonOnlineTest extends JDBCTestSupport {
         Query q = new Query(tname("jsontest"), filter);
         return DataUtilities.first(fs.getFeatures(q));
     }
+
+    @Test
+    public void testJSONArrayContainsFunction() throws Exception {
+        ContentFeatureSource fs = dataStore.getFeatureSource(tname("jsontest"));
+        FilterFactory ff = dataStore.getFilterFactory();
+        arrayContainsTest(fs, ff, "jsonColumn", "/arrayStrValues", "EL2", 1);
+        if (pgJsonTestSetup.supportJsonB) {
+            arrayContainsTest(fs, ff, "jsonbColumn", "/arrayStrValues", "EL2", 1);
+        }
+    }
+
+    @Test
+    public void testJSONArrayContainsFunctionNested() throws Exception {
+        ContentFeatureSource fs = dataStore.getFeatureSource(tname("jsontest"));
+        FilterFactory ff = dataStore.getFilterFactory();
+        arrayContainsTest(fs, ff, "jsonColumn", "/nestedObj/nestedAr", 3, 2);
+        if (pgJsonTestSetup.supportJsonB) {
+            arrayContainsTest(fs, ff, "jsonbColumn", "/nestedObj/nestedAr", 3, 2);
+        }
+    }
+
+    @Test
+    public void testJSONArrayContainsFunctionNestedEmpty() throws Exception {
+        ContentFeatureSource fs = dataStore.getFeatureSource(tname("jsontest"));
+        FilterFactory ff = dataStore.getFilterFactory();
+        arrayContainsTest(fs, ff, "jsonColumn", "/nestedObj/nestedAr", -333, 0);
+        if (pgJsonTestSetup.supportJsonB) {
+            arrayContainsTest(fs, ff, "jsonbColumn", "/nestedObj/nestedAr", -333, 0);
+        }
+    }
+
+    private void arrayContainsTest(
+            ContentFeatureSource fs,
+            FilterFactory ff,
+            String column,
+            String pointer,
+            Object expected,
+            int result)
+            throws IOException {
+        Function jsonArrayContains =
+                ff.function(
+                        "jsonArrayContains",
+                        ff.property(column),
+                        ff.literal(pointer),
+                        ff.literal(expected));
+        Filter filter = ff.equals(jsonArrayContains, ff.literal(true));
+        Query query = new Query(tname("jsontest"), filter);
+        FeatureCollection collection = fs.getFeatures(query);
+        try (FeatureIterator it = collection.features()) {
+            int size = 0;
+            while (it.hasNext()) {
+                Feature f = it.next();
+                assertTrue((boolean) jsonArrayContains.evaluate(f));
+                size++;
+            }
+            assertEquals(result, size);
+        }
+    }
 }

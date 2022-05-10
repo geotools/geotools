@@ -2,7 +2,6 @@ package org.geotools.data.h2;
 
 import org.geotools.jdbc.JDBCThreeValuedLogicTestSetup;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class H2ThreeValuedLogicTestSetup extends JDBCThreeValuedLogicTestSetup {
 
     public H2ThreeValuedLogicTestSetup() {

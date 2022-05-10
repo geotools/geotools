@@ -3,7 +3,6 @@ package org.geotools.data.h2;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCSkipColumnTestSetup;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class H2SkipColumnTestSetup extends JDBCSkipColumnTestSetup {
 
     protected H2SkipColumnTestSetup() {

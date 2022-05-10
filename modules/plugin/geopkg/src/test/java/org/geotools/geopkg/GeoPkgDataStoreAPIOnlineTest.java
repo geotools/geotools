@@ -16,6 +16,9 @@
  */
 package org.geotools.geopkg;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.util.Collections;
@@ -53,6 +56,12 @@ public class GeoPkgDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
 
     @Override
     public void testTransactionIsolation() throws Exception {
+        // sqlite does not allow two transactions from two different connections writing
+        // at the same time
+    }
+
+    @Override
+    public void testGetFeatureWriterConcurrency() throws Exception {
         // sqlite does not allow two transactions from two different connections writing
         // at the same time
     }

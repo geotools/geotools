@@ -16,6 +16,8 @@
  */
 package org.geotools.geopkg;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.data.Query;
 import org.geotools.jdbc.JDBCFeatureSourceOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;

@@ -16,6 +16,9 @@
  */
 package org.geotools.data.teradata;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -24,6 +27,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.jdbc.JDBCDataStoreOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.referencing.CRS;
+import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -37,6 +41,7 @@ public class TeradataDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
         return new TeradataTestSetup();
     }
 
+    @Test
     public void testConcurrentWriters() throws Exception {
         final boolean[] errors = {false};
         Thread[] t = new Thread[8];
@@ -85,6 +90,7 @@ public class TeradataDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
         if (errors[0]) fail();
     }
 
+    @Test
     public void testCreateSchemaWithCaseSensitivity() throws Exception {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName(tname("ft2"));

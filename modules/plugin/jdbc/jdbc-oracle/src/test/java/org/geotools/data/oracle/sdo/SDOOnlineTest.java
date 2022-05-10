@@ -19,6 +19,11 @@
  */
 package org.geotools.data.oracle.sdo;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import oracle.jdbc.OracleConnection;
@@ -28,6 +33,8 @@ import org.geotools.data.jdbc.datasource.UnWrapper;
 import org.geotools.data.oracle.OracleTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
+import org.junit.Assert;
+import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.WKTReader;
 
@@ -68,54 +75,65 @@ public class SDOOnlineTest extends JDBCTestSupport {
         super.disconnect();
     }
 
+    @Test
     public final void testGType() throws SQLException {
-        assertEquals(2003, SDO.gType(fixture.rectangle));
+        Assert.assertEquals(2003, SDO.gType(fixture.rectangle));
     }
 
+    @Test
     public final void testGTypeD() {
-        assertEquals(2, SDO.D(fixture.rectangle));
+        Assert.assertEquals(2, SDO.D(fixture.rectangle));
     }
 
+    @Test
     public final void testGTypeL() {
-        assertEquals(0, SDO.L(fixture.rectangle));
+        Assert.assertEquals(0, SDO.L(fixture.rectangle));
     }
 
+    @Test
     public final void testGTypeTT() {
-        assertEquals(03, SDO.TT(fixture.rectangle));
+        Assert.assertEquals(03, SDO.TT(fixture.rectangle));
     }
 
+    @Test
     public final void testSRID() {
-        assertEquals(-1, SDO.SRID(fixture.rectangle));
+        Assert.assertEquals(-1, SDO.SRID(fixture.rectangle));
     }
 
+    @Test
     public final void testElemInfo() throws SQLException {
         int[] elemInfo = SDO.elemInfo(fixture.rectangle);
-        assertEquals(1, elemInfo[0]);
-        assertEquals(1003, elemInfo[1]);
-        assertEquals(3, elemInfo[2]);
+        Assert.assertEquals(1, elemInfo[0]);
+        Assert.assertEquals(1003, elemInfo[1]);
+        Assert.assertEquals(3, elemInfo[2]);
     }
 
+    @Test
     public final void testElemInfoStartingOffset() {
-        assertEquals(1, SDO.elemInfoStartingOffset(fixture.rectangle));
+        Assert.assertEquals(1, SDO.elemInfoStartingOffset(fixture.rectangle));
     }
 
+    @Test
     public final void testElemInfoEType() {
-        assertEquals(1003, SDO.elemInfoEType(fixture.rectangle));
+        Assert.assertEquals(1003, SDO.elemInfoEType(fixture.rectangle));
     }
 
+    @Test
     public final void testGeometryElemInfoInterpretation() {
-        assertEquals(3, SDO.elemInfoInterpretation(fixture.rectangle));
+        Assert.assertEquals(3, SDO.elemInfoInterpretation(fixture.rectangle));
     }
 
+    @Test
     public final void testOrdinates() throws SQLException {
         double[] ords = SDO.ordinates(fixture.rectangle);
-        assertEquals("length", 4, ords.length);
-        assertEquals("x1", 1, ords[0], 0.00001);
-        assertEquals("y1", 1, ords[1], 0.00001);
-        assertEquals("x2", 5, ords[2], 0.00001);
-        assertEquals("y2", 7, ords[3], 0.00001);
+        Assert.assertEquals("length", 4, ords.length);
+        Assert.assertEquals("x1", 1, ords[0], 0.00001);
+        Assert.assertEquals("y1", 1, ords[1], 0.00001);
+        Assert.assertEquals("x2", 5, ords[2], 0.00001);
+        Assert.assertEquals("y2", 7, ords[3], 0.00001);
     }
 
+    @Test
     public final void testDecodePoint() throws SQLException {
         if (this.connection == null) return;
         OracleStruct datum = converter.toSDO(fixture.point);
@@ -124,6 +142,7 @@ public class SDOOnlineTest extends JDBCTestSupport {
         assertEquals(fixture.point, geom);
     }
 
+    @Test
     public final void testDecodeLine() throws SQLException {
         if (this.connection == null) return;
         OracleStruct datum = converter.toSDO(fixture.lineString);
@@ -132,6 +151,7 @@ public class SDOOnlineTest extends JDBCTestSupport {
         assertEquals(fixture.lineString, geom);
     }
 
+    @Test
     public final void testDecodeRectangle() throws SQLException {
         if (this.connection == null) return;
         OracleStruct datum = converter.toSDO(fixture.rectangle);
@@ -140,6 +160,7 @@ public class SDOOnlineTest extends JDBCTestSupport {
         assertEquals(fixture.rectangle, geom);
     }
 
+    @Test
     public final void testDecodePolygon() throws SQLException {
         if (this.connection == null) return;
         OracleStruct datum = converter.toSDO(fixture.polygon);
@@ -200,14 +221,15 @@ public class SDOOnlineTest extends JDBCTestSupport {
      * )
      * }</pre>
      */
+    @Test
     public final void testPolygonEncoding() throws SQLException {
         if (this.connection == null) return;
 
         Geometry g = fixture.polygonWithHole;
         OracleStruct datum = converter.toSDO(g);
 
-        assertEquals(2003, SDO.gType(g));
-        assertEquals(-1, SDO.SRID(g));
+        Assert.assertEquals(2003, SDO.gType(g));
+        Assert.assertEquals(-1, SDO.SRID(g));
         assertNull(SDO.point(g));
 
         int[] elemInfo = SDO.elemInfo(g);
@@ -230,6 +252,7 @@ public class SDOOnlineTest extends JDBCTestSupport {
         assertEquals(fixture.polygonWithHole, geom);
     }
 
+    @Test
     public final void testDecodePolygonWithHole() throws SQLException {
         if (this.connection == null) return;
 
@@ -239,6 +262,7 @@ public class SDOOnlineTest extends JDBCTestSupport {
         assertEquals(fixture.polygonWithHole, geom);
     }
 
+    @Test
     public final void testDecodeMultiPoint() throws SQLException {
         if (this.connection == null) return;
 
@@ -248,6 +272,7 @@ public class SDOOnlineTest extends JDBCTestSupport {
         assertEquals(fixture.multiPoint, geom);
     }
 
+    @Test
     public final void testDecodeMultiLine() throws SQLException {
         if (this.connection == null) return;
 
@@ -258,6 +283,7 @@ public class SDOOnlineTest extends JDBCTestSupport {
         assertEquals(fixture.multiLineString, geom);
     }
 
+    @Test
     public final void testDecodeMultiPolygon() throws SQLException {
         if (this.connection == null) return;
 
@@ -275,6 +301,7 @@ public class SDOOnlineTest extends JDBCTestSupport {
     }
 
     @SuppressWarnings("PMD.SimplifiableTestAssertion")
+    @Test
     public final void testDecodeMultiPolygonWithHole() throws SQLException {
         if (this.connection == null) return;
 
@@ -289,6 +316,7 @@ public class SDOOnlineTest extends JDBCTestSupport {
         assertTrue(fixture.multiPolygonWithHole.equals(geom));
     }
 
+    @Test
     public final void testGeometryCollection() throws SQLException {
         if (this.connection == null) return;
 
@@ -302,6 +330,7 @@ public class SDOOnlineTest extends JDBCTestSupport {
         assertEquals(fixture.geometryCollection, geom);
     }
 
+    @Test
     public final void testGeometryCollection2() throws Exception {
         if (this.connection == null) return;
 
@@ -316,10 +345,11 @@ public class SDOOnlineTest extends JDBCTestSupport {
         original.setSRID(25832);
         OracleStruct datum = converter.toSDO(original);
         Geometry geom = converter.asGeometry(datum);
-        assertEquals(25832, geom.getSRID());
+        Assert.assertEquals(25832, geom.getSRID());
         assertEquals(original, geom);
     }
 
+    @Test
     public final void testGeometryCollection3() throws Exception {
         if (this.connection == null) return;
 
@@ -328,10 +358,11 @@ public class SDOOnlineTest extends JDBCTestSupport {
         original.setSRID(4326);
         OracleStruct datum = converter.toSDO(original);
         Geometry geom = converter.asGeometry(datum);
-        assertEquals(4326, geom.getSRID());
+        Assert.assertEquals(4326, geom.getSRID());
         assertEquals(original, geom);
     }
 
+    @Test
     public final void testGeometryCollectionMultipoint() throws Exception {
         if (this.connection == null) return;
 
@@ -341,7 +372,7 @@ public class SDOOnlineTest extends JDBCTestSupport {
         original.setSRID(4326);
         OracleStruct datum = converter.toSDO(original);
         Geometry geom = converter.asGeometry(datum);
-        assertEquals(4326, geom.getSRID());
+        Assert.assertEquals(4326, geom.getSRID());
         assertEquals(original, geom);
     }
 
@@ -367,9 +398,9 @@ public class SDOOnlineTest extends JDBCTestSupport {
         if (message == null) message = "array";
         assertNotNull(message, expected);
         assertNotNull(message, actual);
-        assertEquals(expected.length, actual.length);
+        Assert.assertEquals(expected.length, actual.length);
         for (int i = 0; i < expected.length; i++) {
-            assertEquals(message + ":" + i, expected[i], actual[i]);
+            Assert.assertEquals(message + ":" + i, expected[i], actual[i]);
         }
     }
 
@@ -378,9 +409,9 @@ public class SDOOnlineTest extends JDBCTestSupport {
         if (message == null) message = "array";
         assertNotNull(message, expected);
         assertNotNull(message, actual);
-        assertEquals(expected.length, actual.length);
+        Assert.assertEquals(expected.length, actual.length);
         for (int i = 0; i < expected.length; i++) {
-            assertEquals(message + ":" + i, expected[i], actual[i], 0.0);
+            Assert.assertEquals(message + ":" + i, expected[i], actual[i], 0.0);
         }
     }
 }

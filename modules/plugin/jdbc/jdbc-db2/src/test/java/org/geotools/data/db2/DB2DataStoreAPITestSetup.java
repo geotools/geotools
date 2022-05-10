@@ -19,7 +19,6 @@ package org.geotools.data.db2;
 import java.sql.Connection;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class DB2DataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
     public DB2DataStoreAPITestSetup() {
         super(new DB2TestSetup());

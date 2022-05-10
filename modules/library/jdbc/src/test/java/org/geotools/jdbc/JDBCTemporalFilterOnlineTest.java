@@ -16,6 +16,8 @@
  */
 package org.geotools.jdbc;
 
+import static org.junit.Assert.assertEquals;
+
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -30,6 +32,7 @@ import org.geotools.temporal.object.DefaultInstant;
 import org.geotools.temporal.object.DefaultPeriod;
 import org.geotools.temporal.object.DefaultPosition;
 import org.geotools.util.Converters;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
@@ -45,7 +48,6 @@ import org.opengis.filter.temporal.TEquals;
 import org.opengis.temporal.Instant;
 import org.opengis.temporal.Period;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCTemporalFilterOnlineTest extends JDBCTestSupport {
 
     /* dates(d:Date,dt:Datetime,t:Time)
@@ -87,6 +89,7 @@ public abstract class JDBCTemporalFilterOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testAfter() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
 
@@ -94,6 +97,7 @@ public abstract class JDBCTemporalFilterOnlineTest extends JDBCTestSupport {
         assertDatesMatch(after, "2009-06-28 15:12:41", "2009-09-29 17:54:23");
     }
 
+    @Test
     public void testAfterInterval() throws Exception {
         Period period = period("2009-02-01 00:00:00", "2009-07-01 00:00:00");
 
@@ -106,6 +110,7 @@ public abstract class JDBCTemporalFilterOnlineTest extends JDBCTestSupport {
         assertDatesMatch(after, "2009-01-15 13:10:12");
     }
 
+    @Test
     public void testBefore() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
 
@@ -113,6 +118,7 @@ public abstract class JDBCTemporalFilterOnlineTest extends JDBCTestSupport {
         assertDatesMatch(before, "2009-01-15 13:10:12");
     }
 
+    @Test
     public void testBeforeInterval() throws Exception {
         Period period = period("2009-07-01 00:00:00", "2009-12-01 00:00:00");
 
@@ -126,6 +132,7 @@ public abstract class JDBCTemporalFilterOnlineTest extends JDBCTestSupport {
         assertDatesMatch(before, "2009-09-29 17:54:23");
     }
 
+    @Test
     public void testBegins() throws Exception {
         Period period = period("2009-01-15 13:10:12", "2009-06-28 15:12:41");
         FilterFactory ff = dataStore.getFilterFactory();
@@ -134,6 +141,7 @@ public abstract class JDBCTemporalFilterOnlineTest extends JDBCTestSupport {
         assertDatesMatch(before, "2009-01-15 13:10:12");
     }
 
+    @Test
     public void testBegunBy() throws Exception {
         Period period = period("2009-01-15 13:10:12", "2009-06-28 15:12:41");
         FilterFactory ff = dataStore.getFilterFactory();
@@ -142,6 +150,7 @@ public abstract class JDBCTemporalFilterOnlineTest extends JDBCTestSupport {
         assertDatesMatch(before, "2009-01-15 13:10:12");
     }
 
+    @Test
     public void testEnds() throws Exception {
         Period period = period("2009-01-15 13:10:12", "2009-06-28 15:12:41");
         FilterFactory ff = dataStore.getFilterFactory();
@@ -150,6 +159,7 @@ public abstract class JDBCTemporalFilterOnlineTest extends JDBCTestSupport {
         assertDatesMatch(before, "2009-06-28 15:12:41");
     }
 
+    @Test
     public void testEndedBy() throws Exception {
         Period period = period("2009-01-15 13:10:12", "2009-06-28 15:12:41");
         FilterFactory ff = dataStore.getFilterFactory();
@@ -158,6 +168,7 @@ public abstract class JDBCTemporalFilterOnlineTest extends JDBCTestSupport {
         assertDatesMatch(before, "2009-06-28 15:12:41");
     }
 
+    @Test
     public void testDuring() throws Exception {
         Period period = period("2009-01-01 00:00:00", "2009-07-28 15:12:41");
         FilterFactory ff = dataStore.getFilterFactory();
@@ -166,6 +177,7 @@ public abstract class JDBCTemporalFilterOnlineTest extends JDBCTestSupport {
         assertDatesMatch(during, "2009-01-15 13:10:12", "2009-06-28 15:12:41");
     }
 
+    @Test
     public void testTContains() throws Exception {
         Period period = period("2009-01-01 00:00:00", "2009-07-28 15:12:41");
         FilterFactory ff = dataStore.getFilterFactory();
@@ -174,6 +186,7 @@ public abstract class JDBCTemporalFilterOnlineTest extends JDBCTestSupport {
         assertDatesMatch(during, "2009-01-15 13:10:12", "2009-06-28 15:12:41");
     }
 
+    @Test
     public void testTEquals() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
 
@@ -181,6 +194,7 @@ public abstract class JDBCTemporalFilterOnlineTest extends JDBCTestSupport {
         assertDatesMatch(equals, "2009-01-15 13:10:12");
     }
 
+    @Test
     public void testTemporalJoin() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
 

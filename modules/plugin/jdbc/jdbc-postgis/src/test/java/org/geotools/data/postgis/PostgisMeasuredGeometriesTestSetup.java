@@ -20,7 +20,6 @@ import org.geotools.jdbc.JDBCMeasuredGeometriesTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
 /** Setups data in PostGIS for the tests with measurements coordinates. */
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public final class PostgisMeasuredGeometriesTestSetup extends JDBCMeasuredGeometriesTestSetup {
 
     public PostgisMeasuredGeometriesTestSetup(JDBCTestSetup delegate) {

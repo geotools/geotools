@@ -16,17 +16,20 @@
  */
 package org.geotools.jdbc;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCPrimaryKeyFinderOnlineTest extends JDBCTestSupport {
 
     @Override
@@ -40,6 +43,7 @@ public abstract class JDBCPrimaryKeyFinderOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testSequencedPrimaryKey() throws Exception {
         JDBCFeatureStore fs = (JDBCFeatureStore) dataStore.getFeatureSource(tname("seqtable"));
 
@@ -52,6 +56,7 @@ public abstract class JDBCPrimaryKeyFinderOnlineTest extends JDBCTestSupport {
         assertPrimaryKeyValues(features, 4);
     }
 
+    @Test
     public void testAssignedSinglePKeyView() throws Exception {
         JDBCFeatureStore fs =
                 (JDBCFeatureStore) dataStore.getFeatureSource(tname("assignedsinglepk"));
@@ -64,6 +69,7 @@ public abstract class JDBCPrimaryKeyFinderOnlineTest extends JDBCTestSupport {
         assertPrimaryKeyValues(features, 3);
     }
 
+    @Test
     public void testAssignedMultiPKeyView() throws Exception {
         JDBCFeatureStore fs =
                 (JDBCFeatureStore) dataStore.getFeatureSource(tname("assignedmultipk"));

@@ -16,9 +16,12 @@
  */
 package org.geotools.data.sqlserver;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.jdbc.JDBCGeometryOnlineTest;
 import org.geotools.jdbc.JDBCGeometryTestSetup;
 import org.geotools.referencing.CRS;
+import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.LineString;
@@ -93,6 +96,7 @@ public class SQLServerGeometryOnlineTest extends JDBCGeometryOnlineTest {
         assertEquals(GeometryCollection.class, checkGeometryType(GeometryCollection.class));
     }
 
+    @Test
     public void testGeometryMetadataTable() throws Exception {
         testSetup.setupMetadataTable(dataStore);
 

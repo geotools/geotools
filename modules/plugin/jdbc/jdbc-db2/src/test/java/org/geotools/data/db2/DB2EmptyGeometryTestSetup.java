@@ -21,7 +21,6 @@ import org.geotools.jdbc.JDBCEmptyGeometryTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
 /** */
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class DB2EmptyGeometryTestSetup extends JDBCEmptyGeometryTestSetup {
 
     public DB2EmptyGeometryTestSetup(JDBCTestSetup delegate) {

@@ -16,10 +16,15 @@
  */
 package org.geotools.jdbc;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
@@ -27,7 +32,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author Andrea Aime - OpenGeo
  */
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCSkipColumnOnlineTest extends JDBCTestSupport {
 
     protected static final String SKIPCOLUMN = "skipcolumn";
@@ -49,11 +53,13 @@ public abstract class JDBCSkipColumnOnlineTest extends JDBCTestSupport {
                         ID + ":0," + GEOM + ":Point," + NAME + ":String");
     }
 
+    @Test
     public void testSkippedColumn() throws Exception {
         SimpleFeatureType ft = dataStore.getSchema(tname(SKIPCOLUMN));
         assertFeatureTypesEqual(schema, ft);
     }
 
+    @Test
     public void testReadFeatures() throws Exception {
         SimpleFeatureCollection fc = dataStore.getFeatureSource(tname(SKIPCOLUMN)).getFeatures();
         assertEquals(1, fc.size());
@@ -64,11 +70,12 @@ public abstract class JDBCSkipColumnOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testGetBounds() throws Exception {
         ReferencedEnvelope env = dataStore.getFeatureSource(tname(SKIPCOLUMN)).getBounds();
-        assertEquals(0.0, env.getMinX());
-        assertEquals(0.0, env.getMinY());
-        assertEquals(0.0, env.getMaxX());
-        assertEquals(0.0, env.getMaxY());
+        assertEquals(0.0, env.getMinX(), 0.0);
+        assertEquals(0.0, env.getMinY(), 0.0);
+        assertEquals(0.0, env.getMaxX(), 0.0);
+        assertEquals(0.0, env.getMaxY(), 0.0);
     }
 }

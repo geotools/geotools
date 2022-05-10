@@ -16,6 +16,9 @@
  */
 package org.geotools.geopkg;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Transaction;

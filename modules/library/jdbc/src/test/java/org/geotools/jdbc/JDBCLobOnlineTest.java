@@ -1,6 +1,8 @@
 package org.geotools.jdbc;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -13,6 +15,7 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -20,7 +23,6 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.identity.Identifier;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCLobOnlineTest extends JDBCTestSupport {
 
     protected static final String TESTLOB = "testlob";
@@ -47,11 +49,13 @@ public abstract class JDBCLobOnlineTest extends JDBCTestSupport {
         lobSchema = tb.buildFeatureType();
     }
 
+    @Test
     public void testSchema() throws Exception {
         SimpleFeatureType ft = dataStore.getSchema(tname(TESTLOB));
         assertFeatureTypesEqual(lobSchema, ft);
     }
 
+    @Test
     public void testRead() throws Exception {
         FeatureCollection<SimpleFeatureType, SimpleFeature> fc =
                 dataStore.getFeatureSource(tname(TESTLOB)).getFeatures();
@@ -68,6 +72,7 @@ public abstract class JDBCLobOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testWrite() throws Exception {
         SimpleFeatureStore fs = (SimpleFeatureStore) dataStore.getFeatureSource(tname(TESTLOB));
 
@@ -88,6 +93,7 @@ public abstract class JDBCLobOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testCreateSchema() throws IOException {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.init(lobSchema);

@@ -16,6 +16,10 @@
  */
 package org.geotools.jdbc;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Transaction;
@@ -23,6 +27,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -31,7 +36,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author Andrea Aime - OpenGeo
  */
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCGeometrylessOnlineTest extends JDBCTestSupport {
 
     protected SimpleFeatureType personSchema;
@@ -59,11 +63,13 @@ public abstract class JDBCGeometrylessOnlineTest extends JDBCTestSupport {
                         dataStore.getNamespaceURI() + "." + ZIPCODE, ID + ":0," + CODE + ":String");
     }
 
+    @Test
     public void testPersonSchema() throws Exception {
         SimpleFeatureType ft = dataStore.getSchema(tname(PERSON));
         assertFeatureTypesEqual(personSchema, ft);
     }
 
+    @Test
     public void testReadFeatures() throws Exception {
         SimpleFeatureCollection fc = dataStore.getFeatureSource(tname(PERSON)).getFeatures();
         assertEquals(2, fc.size());
@@ -76,16 +82,19 @@ public abstract class JDBCGeometrylessOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testGetBounds() throws Exception {
         ReferencedEnvelope env = dataStore.getFeatureSource(tname(PERSON)).getBounds();
         assertTrue(env.isEmpty());
     }
 
+    @Test
     public void testCreate() throws Exception {
         dataStore.createSchema(zipCodeSchema);
         assertFeatureTypesEqual(zipCodeSchema, dataStore.getSchema(tname(ZIPCODE)));
     }
 
+    @Test
     public void testWriteFeatures() throws Exception {
         try (FeatureWriter fw =
                 dataStore.getFeatureWriterAppend(tname(PERSON), Transaction.AUTO_COMMIT)) {

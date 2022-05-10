@@ -27,6 +27,7 @@ import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureSource;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.LineString;
@@ -34,9 +35,9 @@ import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 
 /** Tests that measurements coordinates (M) are correctly handled. */
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCMeasuredGeometriesOnlineTest extends JDBCTestSupport {
 
+    @Test
     public void testRetrievingPointM() {
         // get all the points
         List<SimpleFeature> features = getFeatures("points_m", Query.ALL);
@@ -47,6 +48,7 @@ public abstract class JDBCMeasuredGeometriesOnlineTest extends JDBCTestSupport {
         checkPointCoordinates(findOne(features, "description", "point_m_d"), 3, 1, -2, 5, -3.5);
     }
 
+    @Test
     public void testRetrievingPointZM() {
         // get all the points
         List<SimpleFeature> features = getFeatures("points_zm", Query.ALL);
@@ -58,6 +60,7 @@ public abstract class JDBCMeasuredGeometriesOnlineTest extends JDBCTestSupport {
                 findOne(features, "description", "point_zm_d"), 4, 1, -2, 5, 25, -3.5);
     }
 
+    @Test
     public void testRetrievingLineM() {
         // get all the lines
         List<SimpleFeature> features = getFeatures("lines_m", Query.ALL);
@@ -66,6 +69,7 @@ public abstract class JDBCMeasuredGeometriesOnlineTest extends JDBCTestSupport {
         checkLineCoordinates(findOne(features, "description", "line_m_a"), 3, 1, ordinates);
     }
 
+    @Test
     public void testRetrievingLineZM() {
         // get all the lines
         List<SimpleFeature> features = getFeatures("lines_zm", Query.ALL);

@@ -4,7 +4,6 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCTestSetup;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class PostGISCitextTestSetup extends JDBCTestSetup {
 
     protected PostGISCitextTestSetup() {}

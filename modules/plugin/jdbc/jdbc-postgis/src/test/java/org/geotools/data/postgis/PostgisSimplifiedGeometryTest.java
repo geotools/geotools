@@ -18,6 +18,8 @@
 
 package org.geotools.data.postgis;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -27,6 +29,7 @@ import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
 import org.geotools.util.factory.Hints;
+import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.ParseException;
 
@@ -37,24 +40,28 @@ public class PostgisSimplifiedGeometryTest extends JDBCTestSupport {
         return new PostgisSimplifiedGeometryTestSetup(new PostGISTestSetup());
     }
 
+    @Test
     public void testPoint() throws IOException, ParseException {
         Geometry geom = getFirstGeometry("simplify_point", 10);
         // same point, but before the fix with TWKB enabled it would have been 0,0
         assertGeometryEquals(geom, "POINT(-120 40)");
     }
 
+    @Test
     public void testLine() throws IOException, ParseException {
         Geometry geom = getFirstGeometry("simplify_line", 20);
         // mid point gone
         assertGeometryEquals(geom, "LINESTRING(-120.0 40.0, -140 60)");
     }
 
+    @Test
     public void testPolygon() throws IOException, ParseException {
         Geometry geom = getFirstGeometry("simplify_polygon", 20);
         // simplified down to a triangle
         assertGeometryEquals(geom, "POLYGON ((-120 40, -130 40, -130 50, -120 40))");
     }
 
+    @Test
     public void testCollection() throws IOException, ParseException {
         Geometry geom = getFirstGeometry("simplify_collection", 20);
         // line part simplified, but won't use TWKB
@@ -62,6 +69,7 @@ public class PostgisSimplifiedGeometryTest extends JDBCTestSupport {
                 geom, "GEOMETRYCOLLECTION (POINT (-120 40), LINESTRING (-120 40, -140 50))");
     }
 
+    @Test
     public void testCurve() throws IOException, ParseException {
         Geometry geom = getFirstGeometry("simplify_curve", 20);
         // actual curve, does not get simplified

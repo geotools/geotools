@@ -17,6 +17,7 @@
 package org.geotools.jdbc;
 
 import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.util.Set;
@@ -24,17 +25,18 @@ import java.util.TreeSet;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Function;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCInEncodingOnlineTest extends JDBCTestSupport {
 
     @Override
     protected abstract JDBCTestSetup createTestSetup();
 
+    @Test
     public void testSimpleIn() throws IOException {
         FilterFactory ff = dataStore.getFilterFactory();
         Function function =
@@ -48,6 +50,7 @@ public abstract class JDBCInEncodingOnlineTest extends JDBCTestSupport {
     }
 
     /** Tests "in3" with 3 values that are the same */
+    @Test
     public void testSimpleIn3() throws IOException {
         FilterFactory ff = dataStore.getFilterFactory();
         Function function =
@@ -64,6 +67,7 @@ public abstract class JDBCInEncodingOnlineTest extends JDBCTestSupport {
         assertEquals(getCaseInsensitiveSet("ft1.1"), collectFeatureIds(fc));
     }
 
+    @Test
     public void testNotEqual() throws IOException {
         FilterFactory ff = dataStore.getFilterFactory();
         Function function =
@@ -76,6 +80,7 @@ public abstract class JDBCInEncodingOnlineTest extends JDBCTestSupport {
         assertEquals(getCaseInsensitiveSet("ft1.0"), collectFeatureIds(fc));
     }
 
+    @Test
     public void testNegated() throws IOException {
         FilterFactory ff = dataStore.getFilterFactory();
         Function function =
@@ -88,6 +93,7 @@ public abstract class JDBCInEncodingOnlineTest extends JDBCTestSupport {
         assertEquals(getCaseInsensitiveSet("ft1.0"), collectFeatureIds(fc));
     }
 
+    @Test
     public void testGreater() throws IOException {
         FilterFactory ff = dataStore.getFilterFactory();
         Function function =

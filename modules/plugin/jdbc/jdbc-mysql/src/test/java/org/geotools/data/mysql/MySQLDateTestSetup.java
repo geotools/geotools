@@ -18,7 +18,6 @@ package org.geotools.data.mysql;
 
 import org.geotools.jdbc.JDBCDateTestSetup;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class MySQLDateTestSetup extends JDBCDateTestSetup {
 
     protected MySQLDateTestSetup() {

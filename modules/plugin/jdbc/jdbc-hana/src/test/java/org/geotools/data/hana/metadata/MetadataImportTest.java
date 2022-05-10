@@ -20,16 +20,20 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import org.geotools.data.hana.HanaTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
+import org.junit.Test;
 
 /** @author Stefan Uhrig, SAP SE */
 public class MetadataImportTest extends JDBCTestSupport {
 
     @SuppressWarnings("PMD.CloseResource") // no actual need to close the PrintStream
+    @Test
     public void testMetadataImport() throws Exception {
         List<String> args = new ArrayList<>();
+        Properties fixture = getFixture();
         args.add(fixture.getProperty("user"));
         args.add(fixture.getProperty("host"));
         args.add(fixture.getProperty("instance"));

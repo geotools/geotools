@@ -21,7 +21,6 @@ import org.geotools.jdbc.JDBCEmptyGeometryTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
 /** @author Stefan Uhrig, SAP SE */
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class HanaEmptyGeometryTestSetup extends JDBCEmptyGeometryTestSetup {
 
     private static final String TABLE = "empty";

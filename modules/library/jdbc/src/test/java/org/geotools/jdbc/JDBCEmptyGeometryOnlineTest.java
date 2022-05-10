@@ -16,42 +16,51 @@
  */
 package org.geotools.jdbc;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCEmptyGeometryOnlineTest extends JDBCTestSupport {
 
     @Override
     protected abstract JDBCEmptyGeometryTestSetup createTestSetup();
 
+    @Test
     public void testEmptyPoint() throws Exception {
         testInsertEmptyGeometry("POINT");
     }
 
+    @Test
     public void testEmptyLine() throws Exception {
         testInsertEmptyGeometry("LINESTRING");
     }
 
+    @Test
     public void testEmptyPolygon() throws Exception {
         testInsertEmptyGeometry("POLYGON");
     }
 
+    @Test
     public void testEmptyMultiPoint() throws Exception {
         testInsertEmptyGeometry("MULTIPOINT");
     }
 
+    @Test
     public void testEmptyMultiLine() throws Exception {
         testInsertEmptyGeometry("MULTILINESTRING");
     }
 
+    @Test
     public void testEmptyMultiPolygon() throws Exception {
         testInsertEmptyGeometry("MULTIPOLYGON");
     }

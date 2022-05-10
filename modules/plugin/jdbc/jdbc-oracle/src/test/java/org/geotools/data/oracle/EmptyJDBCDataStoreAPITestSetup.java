@@ -3,7 +3,6 @@ package org.geotools.data.oracle;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class EmptyJDBCDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
 
     protected EmptyJDBCDataStoreAPITestSetup(JDBCTestSetup delegate) {

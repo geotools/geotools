@@ -1,5 +1,10 @@
 package org.geotools.data.teradata;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.StringReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,6 +24,7 @@ import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
 import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.util.logging.Logging;
+import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.simple.SimpleFeature;
@@ -56,6 +62,7 @@ public class TeradataDialectOnlineTest extends JDBCTestSupport {
         return new DialectTestSetup();
     }
 
+    @Test
     public void testLOB() throws Exception {
         insertGeom(16000);
         insertGeom(30000);
@@ -64,17 +71,20 @@ public class TeradataDialectOnlineTest extends JDBCTestSupport {
         assertInline(cnt - 4, true, true, false, false);
     }
 
+    @Test
     public void testSmallWKT() throws Exception {
         int coords = insertGeom(16000);
         read(coords, cnt - 1, true);
     }
 
+    @Test
     public void testLargeWKT() throws Exception {
         int coords = insertGeom(60000);
         read(coords, cnt - 1, false);
     }
 
     // this currently doesn't exercise the indexing since tessalation doesn' exist
+    @Test
     public void testLargerWKTBBox() throws Exception {
         enableLogging(Level.FINE);
         int coords = insertGeom(30000);

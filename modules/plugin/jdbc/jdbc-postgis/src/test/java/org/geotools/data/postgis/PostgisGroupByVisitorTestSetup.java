@@ -19,7 +19,6 @@ package org.geotools.data.postgis;
 import org.geotools.jdbc.JDBCGroupByVisitorTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class PostgisGroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetup {
 
     public PostgisGroupByVisitorTestSetup(JDBCTestSetup delegate) {

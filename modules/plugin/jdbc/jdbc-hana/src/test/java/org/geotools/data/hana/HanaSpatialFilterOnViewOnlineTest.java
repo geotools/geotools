@@ -16,11 +16,14 @@
  */
 package org.geotools.data.hana;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
+import org.junit.Test;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Polygon;
@@ -38,6 +41,7 @@ public class HanaSpatialFilterOnViewOnlineTest extends JDBCTestSupport {
         return new HanaSpatialFilterOnViewTestSetup();
     }
 
+    @Test
     public void testFilterOnView() throws Exception {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         BBOX bbox = ff.bbox(aname("geom"), 0, 0, 4, 4, "EPSG:4326");
@@ -46,6 +50,7 @@ public class HanaSpatialFilterOnViewOnlineTest extends JDBCTestSupport {
         assertEquals(1, features.size());
     }
 
+    @Test
     public void testCountWithFilterOnView() throws Exception {
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();

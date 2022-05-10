@@ -16,6 +16,12 @@
  */
 package org.geotools.jdbc;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeTrue;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,9 +49,9 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Multiply;
 import org.opengis.filter.expression.PropertyName;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
 
+    @Test
     public void testSimpleGroupByWithMax() throws Exception {
         List<Object[]> value = genericGroupByTestTest(Aggregate.MAX, "building_type");
         assertEquals(3, value.size());
@@ -54,6 +60,7 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         checkValueContains(value, "SCHOOL", "60.0");
     }
 
+    @Test
     public void testUnkonwnFunction() throws Exception {
         // use a made up function that cannot be possibly known by JDBCDataStore,
         // and is not subject to cloning or modifications of any kind
@@ -77,6 +84,7 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         checkValueContains(value, "SCHOOL_foo", "60.0");
     }
 
+    @Test
     public void testAggregateOnMathExpression() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         PropertyName pn = ff.property("energy_consumption");
@@ -97,6 +105,7 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         checkValueContains(value, "1500.0", "1");
     }
 
+    @Test
     public void testComputeOnMathExpression() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         PropertyName pn = ff.property(aname("energy_consumption"));
@@ -114,6 +123,7 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
     }
 
     @SuppressWarnings("PMD.UseCollectionIsEmpty")
+    @Test
     public void testComputeOnMathExpressionWithLimit() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         // aggregate on expression
@@ -132,6 +142,7 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         assertTrue(value.size() >= 1 && value.size() <= 2);
     }
 
+    @Test
     public void testNumericHistogram() throws Exception {
         // buckets with a size of 100, the function returns an integer from 0 onwards, which
         // is a zero based bucket number in the bucket sequence
@@ -151,6 +162,7 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         checkValueContains(value, "5", "1");
     }
 
+    @Test
     public void testTimestampHistogram() throws Exception {
         testTimestampHistogram("last_update");
     }
@@ -182,6 +194,7 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         checkValueContains(value, "12", "3"); // 2016-06-15
     }
 
+    @Test
     public void testMultipleGroupByWithMax() throws Exception {
         List<Object[]> value =
                 genericGroupByTestTest(Aggregate.MAX, "building_type", "energy_type");
@@ -199,6 +212,7 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         checkValueContains(value, "FABRIC", "WIND", "20.0");
     }
 
+    @Test
     public void testMultipleGroupByWithMaxWithFilter() throws Exception {
         List<Object[]> value =
                 genericGroupByTestTest(
@@ -212,10 +226,9 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         checkValueContains(value, "FABRIC", "FLOWING_WATER", "500.0");
     }
 
+    @Test
     public void testMultipleGroupByWithMaxWithLimitOffset() throws Exception {
-        if (!dataStore.getSQLDialect().isLimitOffsetSupported()) {
-            return;
-        }
+        assumeTrue(dataStore.getSQLDialect().isLimitOffsetSupported());
         List<Object[]> value =
                 genericGroupByTestTest(
                         queryWithLimits(0, 3), Aggregate.MAX, "building_type", "energy_type");
@@ -223,6 +236,7 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         assertTrue(value.size() <= 3);
     }
 
+    @Test
     public void testSimpleGroupByWithMin() throws Exception {
         List<Object[]> value = genericGroupByTestTest(Aggregate.MIN, "building_type");
         checkValueContains(value, "HOUSE", "4.0");
@@ -230,6 +244,7 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         checkValueContains(value, "SCHOOL", "10.0");
     }
 
+    @Test
     public void testMultipleGroupByWithMin() throws Exception {
         List<Object[]> value =
                 genericGroupByTestTest(Aggregate.MIN, "building_type", "energy_type");
@@ -246,6 +261,7 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         checkValueContains(value, "FABRIC", "WIND", "20.0");
     }
 
+    @Test
     public void testMultipleGroupByWithMinWithFilter() throws Exception {
         List<Object[]> value =
                 genericGroupByTestTest(
@@ -259,10 +275,9 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         checkValueContains(value, "FABRIC", "FLOWING_WATER", "500.0");
     }
 
+    @Test
     public void testMultipleGroupByWithMinWithLimitOffset() throws Exception {
-        if (!dataStore.getSQLDialect().isLimitOffsetSupported()) {
-            return;
-        }
+        assumeTrue(dataStore.getSQLDialect().isLimitOffsetSupported());
         List<Object[]> value =
                 genericGroupByTestTest(
                         queryWithLimits(0, 3), Aggregate.MIN, "building_type", "energy_type");
@@ -270,6 +285,7 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         assertTrue(value.size() <= 3);
     }
 
+    @Test
     public void testSimpleGroupByWithCount() throws Exception {
         List<Object[]> value = genericGroupByTestTest(Aggregate.COUNT, "building_type");
         checkValueContains(value, "HOUSE", "2");
@@ -277,6 +293,7 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         checkValueContains(value, "SCHOOL", "6");
     }
 
+    @Test
     public void testMultipleGroupByWithCount() throws Exception {
         List<Object[]> value =
                 genericGroupByTestTest(Aggregate.COUNT, "building_type", "energy_type");
@@ -293,6 +310,7 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         checkValueContains(value, "FABRIC", "WIND", "1");
     }
 
+    @Test
     public void testMultipleGroupByWithCountWithFilter() throws Exception {
         List<Object[]> value =
                 genericGroupByTestTest(
@@ -306,10 +324,9 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         checkValueContains(value, "FABRIC", "FLOWING_WATER", "1");
     }
 
+    @Test
     public void testMultipleGroupByWithCountWithLimitOffset() throws Exception {
-        if (!dataStore.getSQLDialect().isLimitOffsetSupported()) {
-            return;
-        }
+        assumeTrue(dataStore.getSQLDialect().isLimitOffsetSupported());
         List<Object[]> value =
                 genericGroupByTestTest(
                         queryWithLimits(0, 3), Aggregate.COUNT, "building_type", "energy_type");
@@ -317,6 +334,7 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         assertTrue(value.size() <= 3);
     }
 
+    @Test
     public void testSimpleGroupByWithSum() throws Exception {
         List<Object[]> value = genericGroupByTestTest(Aggregate.SUM, "building_type");
         checkValueContains(value, "HOUSE", "10.0");
@@ -324,6 +342,7 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         checkValueContains(value, "SCHOOL", "180.0");
     }
 
+    @Test
     public void testMultipleGroupByWithSum() throws Exception {
         List<Object[]> value =
                 genericGroupByTestTest(Aggregate.SUM, "building_type", "energy_type");
@@ -340,6 +359,7 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         checkValueContains(value, "SCHOOL", "WIND", "20.0");
     }
 
+    @Test
     public void testMultipleGroupByWithSumWithFilter() throws Exception {
         List<Object[]> value =
                 genericGroupByTestTest(
@@ -353,10 +373,9 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         checkValueContains(value, "FABRIC", "FLOWING_WATER", "500.0");
     }
 
+    @Test
     public void testWithMinWithLimitOffset() throws Exception {
-        if (!dataStore.getSQLDialect().isLimitOffsetSupported()) {
-            return;
-        }
+        assumeTrue(dataStore.getSQLDialect().isLimitOffsetSupported());
         List<Object[]> value =
                 genericGroupByTestTest(
                         queryWithLimits(0, 3), Aggregate.SUM, "building_type", "energy_type");
@@ -536,10 +555,10 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         checkValueContains(value, Integer.toString(12 * multiplyingFactor), "3"); // 2016-06-15
     }
 
-    @Test
     // Geometry should be Comparable<Geometry> but it's just Comparable, this causes issues
     // with usage of Comparable.comparing(...)
     @SuppressWarnings("unchecked")
+    @Test
     public void testGroupByGeometry() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         PropertyName aggProperty = ff.property(aname("intProperty"));
@@ -574,10 +593,10 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
      * dialect has been improved to support the buffer function, to check SQL encoding is not
      * attempted even if the function is actually supported
      */
-    @Test
     // Geometry should be Comparable<Geometry> but it's just Comparable, this causes issues
     // with usage of Comparable.comparing(...)
     @SuppressWarnings("unchecked")
+    @Test
     public void testGroupByGeometryFunction() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         PropertyName aggProperty = ff.property(aname("intProperty"));

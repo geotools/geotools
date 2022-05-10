@@ -1,5 +1,7 @@
 package org.geotools.data.postgis;
 
+import static org.junit.Assert.fail;
+
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -7,6 +9,7 @@ import java.util.logging.Logger;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.jdbc.JDBCVirtualTableOnlineTest;
 import org.geotools.util.logging.Logging;
+import org.junit.Test;
 
 public class PostgisVirtualTableOnlineTest extends JDBCVirtualTableOnlineTest {
 
@@ -15,6 +18,7 @@ public class PostgisVirtualTableOnlineTest extends JDBCVirtualTableOnlineTest {
         return new PostgisDataStoreAPITestSetup(new PostGISTestSetup());
     }
 
+    @Test
     public void testOptimizedBounds() throws Exception {
         Handler handler =
                 new Handler() {

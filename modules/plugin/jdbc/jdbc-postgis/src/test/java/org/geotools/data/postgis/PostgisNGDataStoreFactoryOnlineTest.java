@@ -22,6 +22,9 @@ import static org.geotools.jdbc.JDBCDataStoreFactory.DBTYPE;
 import static org.geotools.jdbc.JDBCDataStoreFactory.HOST;
 import static org.geotools.jdbc.JDBCDataStoreFactory.PASSWD;
 import static org.geotools.jdbc.JDBCDataStoreFactory.USER;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -33,6 +36,7 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
 import org.geotools.util.factory.Hints;
+import org.junit.Test;
 
 public class PostgisNGDataStoreFactoryOnlineTest extends JDBCTestSupport {
 
@@ -41,11 +45,13 @@ public class PostgisNGDataStoreFactoryOnlineTest extends JDBCTestSupport {
         return new PostGISTestSetup();
     }
 
+    @Test
     public void testCreateConnection() throws Exception {
         PostgisNGDataStoreFactory factory = new PostgisNGDataStoreFactory();
         checkCreateConnection(factory, factory.getDatabaseID());
     }
 
+    @Test
     public void testCreateConnectionWithOldId() throws Exception {
         PostgisNGDataStoreFactory factory = new PostgisNGDataStoreFactory();
         checkCreateConnection(factory, "postgis");
@@ -53,7 +59,7 @@ public class PostgisNGDataStoreFactoryOnlineTest extends JDBCTestSupport {
 
     private void checkCreateConnection(PostgisNGDataStoreFactory factory, String dbtype)
             throws IOException {
-        Properties db = fixture;
+        Properties db = getFixture();
 
         Map<String, Object> params = new HashMap<>();
         params.put(HOST.key, db.getProperty(HOST.key));
@@ -78,9 +84,10 @@ public class PostgisNGDataStoreFactoryOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testSimplifyParameterDisabled() throws Exception {
         PostgisNGDataStoreFactory factory = new PostgisNGDataStoreFactory();
-        Properties db = fixture;
+        Properties db = getFixture();
 
         Map<String, Object> params = new HashMap<>();
         params.put(HOST.key, db.getProperty(HOST.key));
@@ -105,9 +112,10 @@ public class PostgisNGDataStoreFactoryOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testSimplifyParameter() throws Exception {
         PostgisNGDataStoreFactory factory = new PostgisNGDataStoreFactory();
-        Properties db = fixture;
+        Properties db = getFixture();
 
         Map<String, Object> params = new HashMap<>();
         params.put(HOST.key, db.getProperty(HOST.key));
@@ -132,9 +140,10 @@ public class PostgisNGDataStoreFactoryOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testEncodeBBOXParameter() throws Exception {
         PostgisNGDataStoreFactory factory = new PostgisNGDataStoreFactory();
-        Properties db = fixture;
+        Properties db = getFixture();
 
         Map<String, Object> params = new HashMap<>();
         params.put(HOST.key, db.getProperty(HOST.key));

@@ -3,6 +3,7 @@ package org.geotools.data.teradata;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
+import org.junit.Test;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 
@@ -15,6 +16,7 @@ public class TeradataFilterToSQLOnlineTest extends JDBCTestSupport {
     }
 
     // Ensure that we exercise the composite primary index with bbox sql
+    @Test
     public void testIt() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         Filter bbox = ff.bbox("geometry", 0, 0, 10, 10, "4326");

@@ -16,11 +16,14 @@
  */
 package org.geotools.data.informix;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.jdbc.JDBCBooleanTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -31,11 +34,13 @@ public class InformixBooleanOnlineTest extends JDBCTestSupport {
         return new InformixBooleanTestSetup();
     }
 
+    @Test
     public void testGetSchema() throws Exception {
         SimpleFeatureType ft = dataStore.getSchema(tname("b"));
         assertEquals(Boolean.class, ft.getDescriptor("boolproperty").getType().getBinding());
     }
 
+    @Test
     public void testGetFeatures() throws Exception {
         try (FeatureReader r =
                 dataStore.getFeatureReader(new Query(tname("b")), Transaction.AUTO_COMMIT)) {

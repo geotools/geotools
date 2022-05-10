@@ -16,6 +16,8 @@
  */
 package org.geotools.data.db2;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Map;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;

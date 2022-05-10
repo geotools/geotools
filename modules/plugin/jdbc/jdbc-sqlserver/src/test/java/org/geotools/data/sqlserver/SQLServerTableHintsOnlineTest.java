@@ -16,10 +16,15 @@
  */
 package org.geotools.data.sqlserver;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import org.geotools.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.junit.Test;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Polygon;
@@ -53,6 +58,7 @@ public class SQLServerTableHintsOnlineTest extends SQLServerSpatialFiltersOnline
         super.tearDownInternal();
     }
 
+    @Test
     public void testDecorateWithIndex() throws IOException {
         SQLServerDialect dialect = (SQLServerDialect) dataStore.getSQLDialect();
         StringBuffer sql = decorateSpatialQuery(dialect);
@@ -60,6 +66,7 @@ public class SQLServerTableHintsOnlineTest extends SQLServerSpatialFiltersOnline
         assertTrue(sql.toString().contains("FROM \"road\" WITH(INDEX(\"_road_geometry_index\"))"));
     }
 
+    @Test
     public void testDecorateWithIndexAndNamespace() throws IOException {
         SQLServerDialect dialect = (SQLServerDialect) dataStore.getSQLDialect();
         StringBuffer sql1 =
@@ -91,6 +98,7 @@ public class SQLServerTableHintsOnlineTest extends SQLServerSpatialFiltersOnline
                                 "FROM \"schema\".\"road\" WITH(INDEX(\"_road_geometry_index\"))"));
     }
 
+    @Test
     public void testDecorateWithIndexAndTableHints() throws IOException {
         SQLServerDialect dialect = (SQLServerDialect) dataStore.getSQLDialect();
         dialect.setTableHints("NOLOCK");
@@ -124,6 +132,7 @@ public class SQLServerTableHintsOnlineTest extends SQLServerSpatialFiltersOnline
         return sql;
     }
 
+    @Test
     public void testNonSpatialNoTableHints() throws IOException {
         SQLServerDialect dialect = (SQLServerDialect) dataStore.getSQLDialect();
         StringBuffer sql =
@@ -142,6 +151,7 @@ public class SQLServerTableHintsOnlineTest extends SQLServerSpatialFiltersOnline
         assertFalse(sql.toString().contains("WITH"));
     }
 
+    @Test
     public void testNonSpatialWithTableHints() throws IOException {
         SQLServerDialect dialect = (SQLServerDialect) dataStore.getSQLDialect();
         dialect.setTableHints("NOLOCK");
@@ -161,6 +171,7 @@ public class SQLServerTableHintsOnlineTest extends SQLServerSpatialFiltersOnline
         assertTrue(sql.toString().contains("WITH(NOLOCK)"));
     }
 
+    @Test
     public void testNonSpatialWithTableHintsAndSchema() throws IOException {
         SQLServerDialect dialect = (SQLServerDialect) dataStore.getSQLDialect();
         dialect.setTableHints("NOLOCK");
@@ -182,6 +193,7 @@ public class SQLServerTableHintsOnlineTest extends SQLServerSpatialFiltersOnline
         assertTrue(sql.toString().contains("WITH(NOLOCK)"));
     }
 
+    @Test
     public void testEnvelopeBboxFilter() throws Exception {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         // should match only "r2"
@@ -194,6 +206,7 @@ public class SQLServerTableHintsOnlineTest extends SQLServerSpatialFiltersOnline
         assertEquals(4, bounds.getMaxY(), 1e-3d);
     }
 
+    @Test
     public void testCountBboxFilter() throws Exception {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         // should match only "r2"

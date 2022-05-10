@@ -16,11 +16,17 @@
  */
 package org.geotools.jdbc;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -50,7 +56,6 @@ import org.opengis.filter.spatial.Within;
  *
  * @author Andrea Aime - OpenGeo
  */
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
 
     TestData td;
@@ -84,6 +89,7 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
     @Override
     protected abstract JDBCDataStoreAPITestSetup createTestSetup();
 
+    @Test
     public void testBboxFilter() throws Exception {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         // should match only "r2"
@@ -92,6 +98,7 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
         checkSingleResult(features, "r2");
     }
 
+    @Test
     public void testBboxFilterDefault() throws Exception {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         // should match only "r2"
@@ -100,6 +107,7 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
         checkSingleResult(features, "r2");
     }
 
+    @Test
     public void testCrossesFilter() throws Exception {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         // should match only "r2"
@@ -111,6 +119,7 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
         checkSingleResult(features, "r2");
     }
 
+    @Test
     public void testIntersectsFilter() throws Exception {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         // should match only "r1"
@@ -122,6 +131,7 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
         checkSingleResult(features, "r1");
     }
 
+    @Test
     public void testIntersectsRingFilter() throws Exception {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         // should match only "r1"
@@ -133,6 +143,7 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
         checkSingleResult(features, "r1");
     }
 
+    @Test
     public void testTouchesFilter() throws Exception {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         // should match only "r1"
@@ -144,6 +155,7 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
         checkSingleResult(features, "r1");
     }
 
+    @Test
     public void testContainsFilter() throws Exception {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         // should match only "r2"
@@ -158,6 +170,7 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
     }
 
     /** Same as contains, with roles reversed */
+    @Test
     public void testWithinFilter() throws Exception {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         // should match only "r2"
@@ -171,6 +184,7 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
         checkSingleResult(features, "r2");
     }
 
+    @Test
     public void testDisjointFilter() throws Exception {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         // should match only "r2"
@@ -184,6 +198,7 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
         checkSingleResult(features, "r2");
     }
 
+    @Test
     public void testEqualsFilter() throws Exception {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         // should match only "r3"
@@ -205,6 +220,7 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testGeometryCollection() throws Exception {
         PrecisionModel precisionModel = new PrecisionModel();
 

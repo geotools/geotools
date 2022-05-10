@@ -16,23 +16,27 @@
  */
 package org.geotools.jdbc;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCBooleanOnlineTest extends JDBCTestSupport {
 
     @Override
     protected abstract JDBCBooleanTestSetup createTestSetup();
 
+    @Test
     public void testGetSchema() throws Exception {
         SimpleFeatureType ft = dataStore.getSchema(tname("b"));
         assertEquals(Boolean.class, ft.getDescriptor("boolProperty").getType().getBinding());
     }
 
+    @Test
     public void testGetFeatures() throws Exception {
         try (FeatureReader r =
                 dataStore.getFeatureReader(new Query(tname("b")), Transaction.AUTO_COMMIT)) {

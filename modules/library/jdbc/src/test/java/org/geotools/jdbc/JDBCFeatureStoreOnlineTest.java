@@ -16,6 +16,10 @@
  */
 package org.geotools.jdbc;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -42,6 +46,7 @@ import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.util.factory.Hints;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -55,7 +60,6 @@ import org.opengis.filter.Id;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.identity.FeatureId;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
     JDBCFeatureStore featureStore;
 
@@ -66,6 +70,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
         featureStore = (JDBCFeatureStore) dataStore.getFeatureSource(tname("ft1"));
     }
 
+    @Test
     public void testAddFeatures() throws IOException {
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(featureStore.getSchema());
         DefaultFeatureCollection collection =
@@ -110,6 +115,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
      * Tests that returned keys are actually allowing the code to get back the same feature inserted
      * (SQLServer code used to rely on a key generation approach that failed this test)
      */
+    @Test
     public void testMultithreadedAddFeatures() throws IOException, InterruptedException {
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(featureStore.getSchema());
 
@@ -148,6 +154,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testAddFeaturesUseProvidedFid() throws IOException {
         // check we advertise the ability to reuse feature ids
         assertTrue(featureStore.getQueryCapabilities().isUseProvidedFIDSupported());
@@ -189,6 +196,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testAddInTransaction() throws IOException {
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(featureStore.getSchema());
         DefaultFeatureCollection collection =
@@ -221,6 +229,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testExternalConnection() throws IOException, SQLException {
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(featureStore.getSchema());
         DefaultFeatureCollection collection =
@@ -268,6 +277,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
     }
 
     /** Check null encoding is working properly */
+    @Test
     public void testAddNullAttributes() throws IOException {
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(featureStore.getSchema());
         SimpleFeature nullFeature = b.buildFeature("testId");
@@ -275,6 +285,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
     }
 
     /** Check null encoding is working properly */
+    @Test
     public void testModifyNullAttributes() throws IOException {
         String[] attributeNames = new String[featureStore.getSchema().getAttributeCount()];
         for (int i = 0; i < attributeNames.length; i++) {
@@ -284,6 +295,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
         featureStore.modifyFeatures(attributeNames, nulls, Filter.INCLUDE);
     }
 
+    @Test
     public void testSetFeatures() throws IOException {
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(featureStore.getSchema());
         DefaultFeatureCollection collection =
@@ -320,6 +332,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testModifyFeatures() throws IOException {
         FeatureEventWatcher watcher = new FeatureEventWatcher();
 
@@ -344,6 +357,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testModifyGeometry() throws IOException {
         // GEOT-2371
         GeometryFactory gf = new GeometryFactory();
@@ -362,6 +376,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testModifyMadeUpGeometry() throws IOException {
         // GEOT-2371
         GeometryFactory gf = new GeometryFactory();
@@ -385,6 +400,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testModifyFeaturesSingleAttribute() throws IOException {
         featureStore.modifyFeatures(new NameImpl(aname("stringProperty")), "foo", Filter.INCLUDE);
 
@@ -399,18 +415,14 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test(expected = Exception.class)
     public void testModifyFeaturesInvalidFilter() throws IOException {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         PropertyIsEqualTo f = ff.equals(ff.property("invalidAttribute"), ff.literal(5));
-
-        try {
-            featureStore.modifyFeatures(new NameImpl(aname("stringProperty")), "foo", f);
-            fail("This should have failed with an exception reporting the invalid filter");
-        } catch (Exception e) {
-            //  fine
-        }
+        featureStore.modifyFeatures(new NameImpl(aname("stringProperty")), "foo", f);
     }
 
+    @Test
     public void testRemoveFeatures() throws IOException {
         FilterFactory ff = dataStore.getFilterFactory();
         Filter filter = ff.equals(ff.property(aname("intProperty")), ff.literal(1));
@@ -425,15 +437,10 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
         assertEquals(0, features.size());
     }
 
+    @Test(expected = Exception.class)
     public void testRemoveFeaturesWithInvalidFilter() throws IOException {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         PropertyIsEqualTo f = ff.equals(ff.property("invalidAttribute"), ff.literal(5));
-
-        try {
-            featureStore.removeFeatures(f);
-            fail("This should have failed with an exception reporting the invalid filter");
-        } catch (Exception e) {
-            //  fine
-        }
+        featureStore.removeFeatures(f);
     }
 }

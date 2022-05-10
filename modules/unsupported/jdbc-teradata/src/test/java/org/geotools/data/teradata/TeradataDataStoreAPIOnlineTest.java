@@ -24,7 +24,7 @@ public class TeradataDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
     @Override
     protected void connect() throws Exception {
         super.connect();
-        dataStore.setDatabaseSchema(fixture.getProperty("user"));
+        dataStore.setDatabaseSchema(getFixture().getProperty("user"));
     }
 
     @Override

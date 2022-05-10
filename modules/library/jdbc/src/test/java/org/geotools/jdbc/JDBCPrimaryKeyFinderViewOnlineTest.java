@@ -1,6 +1,10 @@
 package org.geotools.jdbc;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+
 public abstract class JDBCPrimaryKeyFinderViewOnlineTest extends JDBCTestSupport {
 
     @Override
@@ -14,6 +18,7 @@ public abstract class JDBCPrimaryKeyFinderViewOnlineTest extends JDBCTestSupport
         }
     }
 
+    @Test
     public void testSequencedPrimaryKey() throws Exception {
         JDBCFeatureStore fs = (JDBCFeatureStore) dataStore.getFeatureSource(tname("seqtable"));
         assertEquals(1, fs.getPrimaryKey().getColumns().size());

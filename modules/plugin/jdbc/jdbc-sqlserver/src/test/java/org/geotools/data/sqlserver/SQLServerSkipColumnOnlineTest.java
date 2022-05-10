@@ -1,5 +1,8 @@
 package org.geotools.data.sqlserver;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assume.assumeFalse;
+
 import org.geotools.data.sqlserver.jtds.JTDSSqlServerDataStoreFactory;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCSkipColumnOnlineTest;
@@ -14,10 +17,8 @@ public class SQLServerSkipColumnOnlineTest extends JDBCSkipColumnOnlineTest {
 
     @Override
     public void testSkippedColumn() throws Exception {
-        if (dataStore.getDataStoreFactory() instanceof JTDSSqlServerDataStoreFactory) {
-            // I can't find a weird enough column to skip - IJT
-            return;
-        }
+        // I can't find a weird enough column to skip - IJT
+        assumeFalse(dataStore.getDataStoreFactory() instanceof JTDSSqlServerDataStoreFactory);
         super.testSkippedColumn();
     }
 

@@ -20,7 +20,6 @@ import java.util.logging.Logger;
 import org.geotools.jdbc.JDBCDelegatingTestSetup;
 import org.postgresql.util.PSQLException;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class PostGISHStoreTestSetup extends JDBCDelegatingTestSetup {
 
     private static final Logger LOGGER = Logger.getLogger(PostGISHStoreTestSetup.class.getName());

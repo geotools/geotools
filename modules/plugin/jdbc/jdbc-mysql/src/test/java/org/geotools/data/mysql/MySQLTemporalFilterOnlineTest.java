@@ -16,6 +16,8 @@
  */
 package org.geotools.data.mysql;
 
+import static org.junit.Assert.assertEquals;
+
 import java.time.LocalDateTime;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;

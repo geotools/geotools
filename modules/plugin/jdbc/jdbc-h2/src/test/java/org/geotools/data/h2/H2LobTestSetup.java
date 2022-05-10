@@ -21,7 +21,6 @@ import java.sql.PreparedStatement;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCLobTestSetup;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class H2LobTestSetup extends JDBCLobTestSetup {
 
     public H2LobTestSetup() {

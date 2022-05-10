@@ -18,7 +18,6 @@ package org.geotools.data.postgis;
 
 import org.geotools.jdbc.JDBCNoPrimaryKeyTestSetup;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class PostgisNoPrimaryKeyTestSetup extends JDBCNoPrimaryKeyTestSetup {
 
     protected PostgisNoPrimaryKeyTestSetup() {

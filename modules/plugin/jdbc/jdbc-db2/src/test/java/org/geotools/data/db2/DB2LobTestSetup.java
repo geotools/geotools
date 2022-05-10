@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import org.geotools.jdbc.JDBCLobTestSetup;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class DB2LobTestSetup extends JDBCLobTestSetup {
 
     protected DB2LobTestSetup() {

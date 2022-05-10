@@ -19,7 +19,6 @@ package org.geotools.data.oracle;
 import org.geotools.jdbc.JDBCNativeFilterTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public final class OracleNativeFilterTestSetup extends JDBCNativeFilterTestSetup {
 
     public OracleNativeFilterTestSetup(JDBCTestSetup delegate) {

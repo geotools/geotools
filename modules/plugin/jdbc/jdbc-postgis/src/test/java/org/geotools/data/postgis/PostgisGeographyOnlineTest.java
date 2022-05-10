@@ -16,6 +16,11 @@
  */
 package org.geotools.data.postgis;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.awt.RenderingHints;
 import java.sql.Connection;
 import org.geotools.data.DataUtilities;
@@ -29,6 +34,7 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCGeographyOnlineTest;
 import org.geotools.jdbc.JDBCGeographyTestSetup;
 import org.geotools.util.factory.Hints;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -69,6 +75,7 @@ public class PostgisGeographyOnlineTest extends JDBCGeographyOnlineTest {
     }
 
     // As reported in GEOS-4384 (http://jira.codehaus.org/browse/GEOS-4384)
+    @Test
     public void testDWithinOGCUnits() throws Exception {
         validateOGCUnitUsage(10000, "m");
         validateOGCUnitUsage(10000, "metre");
@@ -118,6 +125,7 @@ public class PostgisGeographyOnlineTest extends JDBCGeographyOnlineTest {
         }
     }
 
+    @Test
     public void testSimplifyGeography() throws Exception {
         // try to simplify geometry, but ST_Simplify is not defined for geometry
         Query query = new Query(tname("geoline"));
@@ -130,12 +138,13 @@ public class PostgisGeographyOnlineTest extends JDBCGeographyOnlineTest {
         // over geography, the test still passes
         SimpleFeature sf = DataUtilities.first(features);
         LineString ls = (LineString) sf.getDefaultGeometry();
-        assertEquals(0d, ls.getStartPoint().getX());
-        assertEquals(0d, ls.getStartPoint().getY());
-        assertEquals(4d, ls.getEndPoint().getX());
-        assertEquals(4d, ls.getEndPoint().getY());
+        assertEquals(0d, ls.getStartPoint().getX(), 0d);
+        assertEquals(0d, ls.getStartPoint().getY(), 0d);
+        assertEquals(4d, ls.getEndPoint().getX(), 0d);
+        assertEquals(4d, ls.getEndPoint().getY(), 0d);
     }
 
+    @Test
     public void testDimensionFromFirstGeography() throws Exception {
         try (Connection cx = dataStore.getDataSource().getConnection()) {
             PostGISDialect dialect = ((PostGISDialect) dataStore.getSQLDialect());

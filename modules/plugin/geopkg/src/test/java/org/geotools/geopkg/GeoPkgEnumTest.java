@@ -3,6 +3,10 @@ package org.geotools.geopkg;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -125,6 +129,7 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void createTwoSchemaWithEnum() throws Exception {
         // create two tables with the same columns
         dataStore.createSchema(getEnumFeatureType("ft2"));

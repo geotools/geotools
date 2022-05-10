@@ -1,5 +1,11 @@
 package org.geotools.jdbc;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,6 +25,7 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
+import org.junit.Test;
 import org.locationtech.jts.geom.LineString;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -28,7 +35,6 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;
 import org.opengis.filter.sort.SortOrder;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
     protected String dbSchemaName = null;
 
@@ -116,6 +122,7 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         dataStore.createVirtualTable(vt);
     }
 
+    @Test
     public void testGuessGeometry() throws Exception {
         SimpleFeatureType type = dataStore.getSchema("riverFull");
         assertNotNull(type);
@@ -126,6 +133,7 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         assertNotNull(type.getGeometryDescriptor());
     }
 
+    @Test
     public void testRiverReducedSchema() throws Exception {
         SimpleFeatureType type = dataStore.getSchema("riverReduced");
         assertNotNull(type);
@@ -133,6 +141,7 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         checkRiverReduced(type);
     }
 
+    @Test
     public void testRiverReducedCommentSchema() throws Exception {
         SimpleFeatureType type = dataStore.getSchema("riverReducedComment");
         assertNotNull(type);
@@ -158,6 +167,7 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         assertEquals(2, type.getGeometryDescriptor().getUserData().get(Hints.COORDINATE_DIMENSION));
     }
 
+    @Test
     public void testListAll() throws Exception {
         SimpleFeatureSource fsView = dataStore.getFeatureSource("riverReduced");
         assertFalse(fsView instanceof FeatureStore);
@@ -173,6 +183,7 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testBounds() throws Exception {
         FeatureSource fsView = dataStore.getFeatureSource("riverReduced");
         ReferencedEnvelope env = fsView.getBounds();
@@ -183,6 +194,7 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         assertNotNull(env);
     }
 
+    @Test
     public void testInvalidQuery() throws Exception {
         String sql = dataStore.getVirtualTables().get("riverReduced").getSql();
 
@@ -196,6 +208,7 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testGetFeatureId() throws Exception {
         SimpleFeatureSource fsView = dataStore.getFeatureSource("riverReducedPk");
         assertFalse(fsView instanceof FeatureStore);
@@ -210,6 +223,7 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testGetFeatureById() throws Exception {
         FeatureSource fsView = dataStore.getFeatureSource("riverReducedPk");
         assertFalse(fsView instanceof FeatureStore);
@@ -228,6 +242,7 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         assertEquals(1, fsView.getCount(new Query(null, filter)));
     }
 
+    @Test
     public void testWhereParam() throws Exception {
         FeatureSource fsView = dataStore.getFeatureSource("riverParam");
 
@@ -247,6 +262,7 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         assertEquals(1, fsView.getCount(q));
     }
 
+    @Test
     public void testMulParamValid() throws Exception {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         FeatureSource fsView = dataStore.getFeatureSource("riverParam");
@@ -266,6 +282,7 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testMulParamInvalid() throws Exception {
         FeatureSource fsView = dataStore.getFeatureSource("riverParam");
 
@@ -281,6 +298,7 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testInvalidView() throws Exception {
         StringBuffer sb = new StringBuffer();
         sb.append("select ");
@@ -352,6 +370,7 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testJoinViews() throws Exception {
         Query joinQuery = new Query("riverFull");
         FilterFactory ff = dataStore.getFilterFactory();
@@ -376,6 +395,7 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         assertEquals(expectedCount, count);
     }
 
+    @Test
     public void testJoinViewsWithPlaceHolder() {
         Query joinQuery = new Query("riverFullPlaceHolder");
         FilterFactory ff = dataStore.getFilterFactory();
@@ -402,6 +422,7 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         fail("count query should have fail with an exception");
     }
 
+    @Test
     public void testPaginationWithPlaceHolder() throws Exception {
         Query query = new Query("riverFullPlaceHolder");
         query.setStartIndex(1);

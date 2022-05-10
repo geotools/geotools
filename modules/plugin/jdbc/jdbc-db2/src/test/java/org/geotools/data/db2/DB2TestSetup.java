@@ -28,7 +28,6 @@ import org.geotools.util.logging.Logging;
  *
  * @author Christian Mueller
  */
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class DB2TestSetup extends JDBCTestSetup {
 
     protected static final Logger LOGGER = Logging.getLogger(DB2TestSetup.class);

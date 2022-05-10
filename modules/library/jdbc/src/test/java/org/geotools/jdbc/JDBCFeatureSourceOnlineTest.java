@@ -16,6 +16,13 @@
  */
 package org.geotools.jdbc;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.sql.Connection;
 import java.util.Arrays;
 import java.util.List;
@@ -33,6 +40,7 @@ import org.geotools.filter.function.FilterFunction_strToLowerCase;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.factory.Hints;
+import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.Feature;
@@ -53,7 +61,6 @@ import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 import org.opengis.filter.spatial.BBOX;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
     protected JDBCFeatureStore featureSource;
 
@@ -64,6 +71,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         featureSource = (JDBCFeatureStore) dataStore.getFeatureSource(tname("ft1"));
     }
 
+    @Test
     public void testSchema() throws Exception {
         SimpleFeatureType schema = featureSource.getSchema();
         assertEquals(tname("ft1"), schema.getTypeName());
@@ -77,6 +85,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         assertNotNull(schema.getDescriptor(aname("doubleProperty")));
     }
 
+    @Test
     public void testBounds() throws Exception {
         ReferencedEnvelope bounds = featureSource.getBounds();
         assertEquals(0l, Math.round(bounds.getMinX()));
@@ -87,6 +96,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         assertTrue(areCRSEqual(decodeEPSG(4326), bounds.getCoordinateReferenceSystem()));
     }
 
+    @Test
     public void testBoundsWithQuery() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         PropertyIsEqualTo filter =
@@ -104,6 +114,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         assertTrue(areCRSEqual(decodeEPSG(4326), bounds.getCoordinateReferenceSystem()));
     }
 
+    @Test
     public void testBoundsWithLimit() throws Exception {
         Query query = new Query(featureSource.getSchema().getTypeName());
         query.setMaxFeatures(2);
@@ -117,6 +128,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         assertTrue(areCRSEqual(decodeEPSG(4326), bounds.getCoordinateReferenceSystem()));
     }
 
+    @Test
     public void testBoundsWithOffset() throws Exception {
         Query query = new Query(featureSource.getSchema().getTypeName());
         query.setStartIndex(2);
@@ -130,10 +142,12 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         assertTrue(areCRSEqual(decodeEPSG(4326), bounds.getCoordinateReferenceSystem()));
     }
 
+    @Test
     public void testCount() throws Exception {
         assertEquals(3, featureSource.getCount(Query.ALL));
     }
 
+    @Test
     public void testCountWithFilter() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         PropertyIsEqualTo filter =
@@ -144,6 +158,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         assertEquals(1, featureSource.getCount(query));
     }
 
+    @Test
     public void testCountWithOffsetLimit() throws Exception {
         Query query = new Query();
         query.setStartIndex(1);
@@ -151,11 +166,13 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         assertEquals(1, featureSource.getCount(query));
     }
 
+    @Test
     public void testGetFeatures() throws Exception {
         SimpleFeatureCollection features = featureSource.getFeatures();
         assertEquals(3, features.size());
     }
 
+    @Test
     public void testGetFeaturesWithFilter() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         PropertyIsEqualTo filter =
@@ -173,6 +190,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testGetFeaturesWithInvalidFilter() throws Exception {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         PropertyIsEqualTo f = ff.equals(ff.property("invalidAttribute"), ff.literal(5));
@@ -186,6 +204,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testGetFeaturesWithLogicFilter() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         PropertyIsEqualTo property =
@@ -205,6 +224,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testCaseInsensitiveFilter() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         PropertyIsEqualTo sensitive =
@@ -215,6 +235,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         assertEquals(1, featureSource.getCount(new Query(null, insensitive)));
     }
 
+    @Test
     public void testGetFeaturesWithQuery() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         PropertyIsEqualTo filter =
@@ -238,19 +259,17 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         }
     }
 
-    public void testGetFeaturesWithInvalidQuery() {
+    @Test(expected = Exception.class)
+    public void testGetFeaturesWithInvalidQuery() throws Exception {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         PropertyIsEqualTo f = ff.equals(ff.property("invalidAttribute"), ff.literal(5));
 
         // make sure a complaint related to the invalid filter is thrown here
-        try (SimpleFeatureIterator fi = featureSource.getFeatures(new Query("ft1", f)).features()) {
-            fail("This query should have failed, it contains an invalid filter");
-        } catch (Exception e) {
-            // e.printStackTrace();
-            // fine
-        }
+        try (SimpleFeatureIterator fi =
+                featureSource.getFeatures(new Query("ft1", f)).features()) {}
     }
 
+    @Test
     public void testGetFeaturesWithSort() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         SortBy sort = ff.sort(aname("stringProperty"), SortOrder.ASCENDING);
@@ -296,6 +315,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testGetFeaturesWithMax() throws Exception {
         Query q = new Query(featureSource.getSchema().getTypeName());
         q.setMaxFeatures(2);
@@ -319,6 +339,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testGetFeaturesWithOffset() throws Exception {
         Query q = new Query(featureSource.getSchema().getTypeName());
         q.setSortBy(dataStore.getFilterFactory().sort(aname("intProperty"), SortOrder.ASCENDING));
@@ -340,6 +361,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testGetFeaturesWithOffsetLimit() throws Exception {
         Query q = new Query(featureSource.getSchema().getTypeName());
         // no sorting, let's see if the database can use native one
@@ -362,6 +384,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testGetFeaturesWithOffsetLimitAndPostFilter() throws Exception {
         Query q = new Query(featureSource.getSchema().getTypeName());
         // no sorting, let's see if the database can use native one
@@ -392,6 +415,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
     }
 
     /** Makes sure the datastore works when the renderer uses the typical rendering hints */
+    @Test
     public void testRendererBehaviour() throws Exception {
         Query query = new Query(featureSource.getSchema().getTypeName());
         query.setHints(
@@ -407,6 +431,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testQueryCapabilitiesSort() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         QueryCapabilities caps = featureSource.getQueryCapabilities();
@@ -420,12 +445,14 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         assertFalse(caps.supportsSorting(ff.sort(aname("geometry"), SortOrder.ASCENDING)));
     }
 
+    @Test
     public void testQueryCapabilitiesReliableFid() throws Exception {
         QueryCapabilities caps = featureSource.getQueryCapabilities();
         // we have a primary key, right?
         assertTrue(caps.isReliableFIDSupported());
     }
 
+    @Test
     public void testNaturalSortingAsc() throws Exception {
         Query q = new Query(featureSource.getSchema().getTypeName());
         q.setSortBy(SortBy.NATURAL_ORDER);
@@ -439,6 +466,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testNaturalSortingdesc() throws Exception {
         Query q = new Query(featureSource.getSchema().getTypeName());
         q.setSortBy(SortBy.REVERSE_ORDER);
@@ -452,6 +480,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testFeatureIteratorNextContract() throws Exception {
         try (SimpleFeatureIterator features = featureSource.getFeatures().features()) {
             // 1) non empty iterator, calling next() should just return the feature
@@ -460,6 +489,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testFeatureIteratorEmptyContract() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         PropertyIsEqualTo filter =
@@ -473,6 +503,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testLikeFilter() throws Exception {
         FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
         PropertyIsLike caseSensitiveLike =
@@ -486,6 +517,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         assertEquals(1, featureSource.getCount(new Query(null, caseInsensitiveLike2)));
     }
 
+    @Test
     public void testConversionFilter() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         PropertyIsEqualTo f =
@@ -495,6 +527,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         assertEquals(1, featureSource.getCount(new Query(null, f)));
     }
 
+    @Test
     public void testNotFilter() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         Filter f = ff.equal(ff.property(aname("stringProperty")), ff.literal("one"), true);
@@ -504,6 +537,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
                 featureSource.getCount(Query.ALL) - 1, featureSource.getCount(new Query(null, f)));
     }
 
+    @Test
     public void testGeometryFactoryHint() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         PropertyIsEqualTo filter =
@@ -525,6 +559,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         assertSame(gf2, ((Geometry) f2.getDefaultGeometry()).getFactory());
     }
 
+    @Test
     public void testGetFeaturesWithArithmeticOpFilter() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
 
@@ -536,6 +571,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         assertTrue(featureSource.getCount(new Query(null, filter)) > 0);
     }
 
+    @Test
     public void testAcceptsVisitor() throws Exception {
         class TotalVisitor implements FeatureVisitor {
             int total = 0;
@@ -568,6 +604,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
     }
 
     /** Integration test checking that a CQL IN filter goes back being a IN in SQL */
+    @Test
     public void testSimpleEncodeIn() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         String property = aname("stringProperty");
@@ -618,6 +655,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
     }
 
     /** Integration test checking that a CQL IN filter goes back being a IN in SQL */
+    @Test
     public void testMixedEncodeIn() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         String sp = aname("stringProperty");
@@ -696,6 +734,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
     }
 
     /** Online tests for String functions along with Like operator */
+    @Test
     public void testStringFunction() throws Exception {
         // ignore if the String function is not supported
         if (!dataStore.getFilterCapabilities().supports(FilterFunction_strToLowerCase.class)) {

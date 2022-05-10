@@ -20,7 +20,6 @@ import java.sql.Connection;
 import org.geotools.jdbc.JDBCNoPrimaryKeyTestSetup;
 
 /** @author Stefan Uhrig, SAP SE */
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class HanaNoPrimaryKeyTestSetup extends JDBCNoPrimaryKeyTestSetup {
 
     private static final String TABLE = "lake";

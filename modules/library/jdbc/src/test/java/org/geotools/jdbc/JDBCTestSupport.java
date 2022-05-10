@@ -16,6 +16,12 @@
  */
 package org.geotools.jdbc;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.HashMap;
@@ -33,7 +39,7 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.NameImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
-import org.geotools.test.OnlineTestCase;
+import org.geotools.test.OnlineTestSupport;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Feature;
@@ -54,11 +60,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  */
-@SuppressWarnings({
-    "PMD.JUnit4TestShouldUseTestAnnotations", // not yet junit 4
-    "PMD.EmptyInitializer"
-})
-public abstract class JDBCTestSupport extends OnlineTestCase {
+@SuppressWarnings("PMD.EmptyInitializer")
+public abstract class JDBCTestSupport extends OnlineTestSupport {
 
     static final Logger LOGGER = Logging.getLogger(JDBCTestSupport.class);
 
@@ -106,7 +109,7 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
     @Override
     protected boolean isOnline() throws Exception {
         JDBCTestSetup setup = createTestSetup();
-        setup.setFixture(fixture);
+        setup.setFixture(getFixture());
 
         DataSource dataSource = setup.getDataSource();
         try (Connection cx = dataSource.getConnection()) {
@@ -127,7 +130,7 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
             setup = createTestSetup();
         }
 
-        setup.setFixture(fixture);
+        setup.setFixture(getFixture());
         setup.setUp();
 
         // initialize the database
@@ -141,7 +144,7 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
         try {
             @SuppressWarnings("unchecked")
             Map<String, Object> temp = (Map<String, Object>) ((HashMap) params).clone();
-            fixture.forEach((k, v) -> temp.put((String) k, v));
+            getFixture().forEach((k, v) -> temp.put((String) k, v));
             dataStore = (JDBCDataStore) DataStoreFinder.getDataStore(temp);
         } catch (Exception e) {
             // ignore

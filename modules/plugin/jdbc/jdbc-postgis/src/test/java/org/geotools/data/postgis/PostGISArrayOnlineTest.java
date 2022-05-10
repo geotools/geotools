@@ -18,7 +18,9 @@ package org.geotools.data.postgis;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertArrayEquals;
-import static org.opengis.filter.MultiValuedFilter.MatchAction;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -47,6 +49,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;
+import org.opengis.filter.MultiValuedFilter.MatchAction;
 import org.opengis.filter.identity.FeatureId;
 
 public class PostGISArrayOnlineTest extends JDBCTestSupport {

@@ -16,6 +16,8 @@
  */
 package org.geotools.data.oracle;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -23,6 +25,7 @@ import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.jdbc.JDBCDelegatingTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
@@ -39,26 +42,32 @@ public class OracleJsonArrayContainsOnlineTest extends JDBCTestSupport {
         return testSetup;
     }
 
+    @Test
     public void testJsonArrayContainsStringClob() throws Exception {
         checkFunction("JSON_DATA_CLOB", "/arrayStr", "op2", 1);
     }
 
+    @Test
     public void testJsonArrayContainsStringVarchar() throws Exception {
         checkFunction("JSON_DATA_VARCHAR2", "/arrayStr", "op2", 1);
     }
 
+    @Test
     public void testJsonArrayContainsStringBlob() throws Exception {
         checkFunction("JSON_DATA_BLOB", "/arrayStr", "op2", 1);
     }
 
+    @Test
     public void testJsonArrayContainsNumberClob() throws Exception {
         checkFunction("JSON_DATA_CLOB", "/arrayNum", 2, 1);
     }
 
+    @Test
     public void testJsonArrayContainsNumberVarchar() throws Exception {
         checkFunction("JSON_DATA_VARCHAR2", "/arrayNum", 2, 1);
     }
 
+    @Test
     public void testJsonArrayContainsNumberBlob() throws Exception {
         checkFunction("JSON_DATA_BLOB", "/arrayNum", 2, 1);
     }

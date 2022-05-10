@@ -1,5 +1,8 @@
 package org.geotools.data.sqlserver;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.jdbc.JDBCViewOnlineTest;
 import org.geotools.jdbc.JDBCViewTestSetup;
 import org.locationtech.jts.geom.Geometry;

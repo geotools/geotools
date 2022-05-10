@@ -16,6 +16,11 @@
  */
 package org.geotools.data.oracle;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.util.List;
 import org.geotools.data.store.ContentFeatureSource;
@@ -24,6 +29,7 @@ import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.jdbc.JDBCFeatureStore;
 import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.jdbc.SequencedPrimaryKeyColumn;
+import org.junit.Test;
 
 public class OracleDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
 
@@ -37,6 +43,7 @@ public class OracleDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
         // skip, does not work with Oracle
     }
 
+    @Test
     public void testSequenceDetection() throws IOException {
         ContentFeatureSource featureSource = dataStore.getFeatureSource(tname("road"));
         assertNotNull(featureSource);
@@ -56,6 +63,7 @@ public class OracleDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
      * @throws IOException if any
      * @see org.geotools.data.oracle.OracleDialect#includeTable(String, String, java.sql.Connection)
      */
+    @Test
     public void testHiddenTables() throws IOException {
         String[] typenames = dataStore.getTypeNames();
         for (String name : typenames) {

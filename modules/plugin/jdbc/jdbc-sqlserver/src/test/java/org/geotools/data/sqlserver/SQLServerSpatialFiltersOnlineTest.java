@@ -16,11 +16,14 @@
  */
 package org.geotools.data.sqlserver;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.jdbc.JDBCSpatialFiltersOnlineTest;
+import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
@@ -34,6 +37,7 @@ public class SQLServerSpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineT
         return new SQLServerSpatialFiltersTestSetup();
     }
 
+    @Test
     public void testPointDistance() throws IOException, ParseException {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         Geometry point = new WKTReader().read("POINT(180000 0)");

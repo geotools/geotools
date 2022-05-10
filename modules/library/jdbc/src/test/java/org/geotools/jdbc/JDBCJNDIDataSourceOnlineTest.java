@@ -17,6 +17,11 @@
 
 package org.geotools.jdbc;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,17 +29,18 @@ import java.util.List;
 import java.util.Map;
 import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.DataStoreFinder;
+import org.junit.Test;
 
 /**
  * @author Christian Mueller
  *     <p>Abstract test class for getting a jdbc data source via JNDI lookup
  */
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCJNDIDataSourceOnlineTest extends JDBCTestSupport {
 
     @Override
     protected abstract JDBCJNDITestSetup createTestSetup();
 
+    @Test
     public void testJNDIDataSource() throws Exception {
 
         ((JDBCJNDITestSetup) setup).setupJNDIEnvironment(getDataStoreFactory());
@@ -61,6 +67,7 @@ public abstract class JDBCJNDIDataSourceOnlineTest extends JDBCTestSupport {
     }
 
     /** Make sure the JNDI factory exposes all the extra params that the non JNDI one exposes */
+    @Test
     public void testExtraParams() {
         List<String> baseParams = getBaseParams();
         List<String> standardParams = getParamKeys(getDataStoreFactory());

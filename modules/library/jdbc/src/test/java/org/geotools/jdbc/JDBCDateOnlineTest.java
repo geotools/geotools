@@ -1,5 +1,7 @@
 package org.geotools.jdbc;
 
+import static org.junit.Assert.assertEquals;
+
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -8,16 +10,17 @@ import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCDateOnlineTest extends JDBCTestSupport {
 
     @Override
     protected abstract JDBCDateTestSetup createTestSetup();
 
+    @Test
     public void testMappings() throws Exception {
         SimpleFeatureType ft = dataStore.getSchema(tname("dates"));
 
@@ -26,6 +29,7 @@ public abstract class JDBCDateOnlineTest extends JDBCTestSupport {
         assertEquals(Time.class, ft.getDescriptor(aname("t")).getType().getBinding());
     }
 
+    @Test
     public void testFiltersByDate() throws Exception {
 
         boolean simple = false;
@@ -87,6 +91,7 @@ public abstract class JDBCDateOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testFilterByTimeStamp() throws Exception {
         FeatureSource fs = dataStore.getFeatureSource(tname("dates"));
 
@@ -105,6 +110,7 @@ public abstract class JDBCDateOnlineTest extends JDBCTestSupport {
         assertEquals(1, fs.getCount(new Query(tname("dates"), f)));
     }
 
+    @Test
     public void testFilterByTime() throws Exception {
         FeatureSource fs = dataStore.getFeatureSource(tname("dates"));
 

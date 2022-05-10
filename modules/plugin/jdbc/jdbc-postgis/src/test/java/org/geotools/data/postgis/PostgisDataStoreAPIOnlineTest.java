@@ -16,6 +16,9 @@
  */
 package org.geotools.data.postgis;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.sql.Connection;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -25,6 +28,7 @@ import org.geotools.jdbc.JDBCDataStoreAPIOnlineTest;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.util.Version;
 import org.geotools.util.factory.Hints;
+import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 
 public class PostgisDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
@@ -44,6 +48,7 @@ public class PostgisDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
     }
 
     /** Test PostGIS specific collapsed simplified geometries (GEOT-4737) */
+    @Test
     public void testSimplificationPreserveCollapsed() throws Exception {
         Version version;
         try (Connection cx = dataStore.getDataSource().getConnection()) {

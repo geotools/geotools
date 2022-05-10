@@ -2,7 +2,6 @@ package org.geotools.data.sqlserver;
 
 import org.geotools.jdbc.JDBC3DTestSetup;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class SQLServer3DTestSetup extends JDBC3DTestSetup {
 
     protected SQLServer3DTestSetup() {

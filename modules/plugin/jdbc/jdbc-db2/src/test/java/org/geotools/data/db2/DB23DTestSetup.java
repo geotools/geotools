@@ -19,7 +19,6 @@ package org.geotools.data.db2;
 import java.sql.Connection;
 import org.geotools.jdbc.JDBC3DTestSetup;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class DB23DTestSetup extends JDBC3DTestSetup {
 
     //	private static int SRID = 4326;

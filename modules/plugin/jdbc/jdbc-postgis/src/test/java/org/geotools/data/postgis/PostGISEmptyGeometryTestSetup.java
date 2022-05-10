@@ -19,7 +19,6 @@ package org.geotools.data.postgis;
 import org.geotools.jdbc.JDBCEmptyGeometryTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class PostGISEmptyGeometryTestSetup extends JDBCEmptyGeometryTestSetup {
 
     public PostGISEmptyGeometryTestSetup(JDBCTestSetup delegate) {

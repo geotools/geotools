@@ -16,12 +16,15 @@
  */
 package org.geotools.data.oracle;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.jdbc.JDBCSpatialFiltersOnlineTest;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -41,6 +44,7 @@ public class OracleSpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest
         return new OracleDataStoreAPITestSetup(new OracleTestSetup());
     }
 
+    @Test
     public void testLooseBboxFilter() throws Exception {
         ((OracleDialect) dataStore.getSQLDialect()).setLooseBBOXEnabled(true);
 
@@ -52,6 +56,7 @@ public class OracleSpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest
     }
 
     // As reported in GEOS-4384 (http://jira.codehaus.org/browse/GEOS-4384)
+    @Test
     public void testSDODWithinOGCUnits() throws Exception {
         // express the same distance in different ways and check results
         validateOGCUnitUsage(10, "kilometers");

@@ -18,7 +18,6 @@ package org.geotools.data.mysql;
 
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class MySQLDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
     public MySQLDataStoreAPITestSetup() {
         super(new MySQLTestSetup());

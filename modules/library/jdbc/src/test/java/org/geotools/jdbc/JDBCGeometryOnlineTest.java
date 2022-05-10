@@ -16,8 +16,12 @@
  */
 package org.geotools.jdbc;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.CRS;
+import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.LineString;
@@ -35,46 +39,54 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * need to override some of the tests method to fix the expectations for specific geometry class
  * types.
  */
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCGeometryOnlineTest extends JDBCTestSupport {
 
     @Override
     protected abstract JDBCGeometryTestSetup createTestSetup();
 
+    @Test
     public void testPoint() throws Exception {
         assertEquals(Point.class, checkGeometryType(Point.class));
     }
 
+    @Test
     public void testLineString() throws Exception {
         assertEquals(LineString.class, checkGeometryType(LineString.class));
     }
 
+    @Test
     public void testLinearRing() throws Exception {
         assertEquals(LinearRing.class, checkGeometryType(LinearRing.class));
     }
 
+    @Test
     public void testPolygon() throws Exception {
         assertEquals(Polygon.class, checkGeometryType(Polygon.class));
     }
 
+    @Test
     public void testMultiPoint() throws Exception {
         assertEquals(MultiPoint.class, checkGeometryType(MultiPoint.class));
     }
 
+    @Test
     public void testMultiLineString() throws Exception {
         assertEquals(MultiLineString.class, checkGeometryType(MultiLineString.class));
     }
 
+    @Test
     public void testMultiPolygon() throws Exception {
         assertEquals(MultiPolygon.class, checkGeometryType(MultiPolygon.class));
     }
 
     /** Sometimes the source cannot anticipate the geometry type, can we cope with this? */
+    @Test
     public void testGeometry() throws Exception {
         assertEquals(Geometry.class, checkGeometryType(Geometry.class));
     }
 
     /** Same goes for heterogeneous collections */
+    @Test
     public void testGeometryCollection() throws Exception {
         assertEquals(GeometryCollection.class, checkGeometryType(GeometryCollection.class));
     }

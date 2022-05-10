@@ -16,9 +16,14 @@
  */
 package org.geotools.jdbc;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Transaction;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 
 /**
@@ -27,9 +32,9 @@ import org.opengis.feature.simple.SimpleFeature;
  * @author Burkhard Strauss
  * @see GEOT-6264
  */
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCFeatureWriterOnlineTest extends JDBCTestSupport {
 
+    @Test
     public void testNext() throws Exception {
 
         try (FeatureWriter writer =
@@ -38,7 +43,7 @@ public abstract class JDBCFeatureWriterOnlineTest extends JDBCTestSupport {
             final SimpleFeature feature = (SimpleFeature) writer.next();
             assertEquals("POINT (0 0)", feature.getAttribute(0).toString());
             assertEquals(0, (int) (Integer) feature.getAttribute(1));
-            assertEquals(0.0, (Double) feature.getAttribute(2));
+            assertEquals(0.0, (double) (Double) feature.getAttribute(2), 0.0);
             assertEquals("zero", feature.getAttribute(3));
         }
         try (FeatureWriter writer =

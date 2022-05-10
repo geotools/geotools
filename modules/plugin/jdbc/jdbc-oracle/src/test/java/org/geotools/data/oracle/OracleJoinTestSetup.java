@@ -18,7 +18,6 @@ package org.geotools.data.oracle;
 
 import org.geotools.jdbc.JDBCJoinTestSetup;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class OracleJoinTestSetup extends JDBCJoinTestSetup {
 
     public OracleJoinTestSetup() {

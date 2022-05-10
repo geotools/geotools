@@ -25,7 +25,6 @@ import org.geotools.jdbc.JDBC3DTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.util.Version;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class PostGIS3DTestSetup extends JDBC3DTestSetup {
 
     static final Version V_2_0_0 = new Version("2.0.0");

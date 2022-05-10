@@ -16,10 +16,14 @@
  */
 package org.geotools.data.informix;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCFeatureSourceOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.referencing.CRS;
+import org.junit.Test;
 
 public class InformixFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
     @Override
@@ -32,6 +36,7 @@ public class InformixFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest
      * return null, and GeoTools will fall back to a different mechanism and the test will still
      * pass. A warning will be seen in the logs, however.
      */
+    @Test
     public void testGetBounds() throws Exception {
         ReferencedEnvelope bounds = dataStore.getFeatureSource(tname("ft1")).getBounds();
         assertEquals(0, Math.round(bounds.getMinX()));

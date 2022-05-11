@@ -133,7 +133,10 @@ public class ElasticFeatureSource extends ContentFeatureSource {
         try {
             final ElasticDataStore dataStore = getDataStore();
             final String docType = dataStore.getDocType(entry.getName());
-            final boolean scroll = !useSortOrPagination(query) && dataStore.getScrollEnabled();
+            final boolean scroll =
+                    !useSortOrPagination(query)
+                            && dataStore.getScrollEnabled()
+                            && !isAggregation(query);
             final ElasticRequest searchRequest = prepareSearchRequest(query, scroll);
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Search request: " + searchRequest);
@@ -156,6 +159,10 @@ public class ElasticFeatureSource extends ContentFeatureSource {
             throw new IOException("Error executing query search", e);
         }
         return reader;
+    }
+
+    private boolean isAggregation(Query query) {
+        return query.getHints().get(ElasticBucketVisitor.ES_AGGREGATE_BUCKET) != null;
     }
 
     @Override

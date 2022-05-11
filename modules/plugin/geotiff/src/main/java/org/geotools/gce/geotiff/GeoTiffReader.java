@@ -157,7 +157,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             Boolean.valueOf(System.getProperty(GeoTiffReader.OVERRIDE_CRS_SWITCH, "True"));
 
     /** SPI for creating tiff readers in ImageIO tools when not using COG */
-    private static final TIFFImageReaderSpi TIFF_READER_SPI = new TIFFImageReaderSpi();
+    static final TIFFImageReaderSpi TIFF_READER_SPI = new TIFFImageReaderSpi();
 
     private ImageReaderSpi readerSpi;
 
@@ -409,13 +409,26 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             } else if (source instanceof URL && (((URL) source).getProtocol() == "file")) {
                 inputFile = URLs.urlToFile((URL) source);
             }
+            // assume overviews are also TIFFs, that's the 99% case
             if (inputFile != null) {
-                maskOvrProvider = new MaskOverviewProvider(dtLayout, inputFile, skipOverviews);
+                URL url = URLs.fileToUrl(inputFile);
+                maskOvrProvider =
+                        new MaskOverviewProvider(
+                                dtLayout,
+                                url,
+                                new MaskOverviewProvider.SpiHelper(url, TIFF_READER_SPI),
+                                skipOverviews);
                 hasMaskOvrProvider = true;
             } else if (dtLayout != null && dtLayout.getExternalMasks() != null) {
                 String path = dtLayout.getExternalMasks().getAbsolutePath();
                 File file = new File(path.substring(0, path.length() - 4));
-                maskOvrProvider = new MaskOverviewProvider(dtLayout, file, skipOverviews);
+                URL url = URLs.fileToUrl(file);
+                maskOvrProvider =
+                        new MaskOverviewProvider(
+                                dtLayout,
+                                url,
+                                new MaskOverviewProvider.SpiHelper(url, TIFF_READER_SPI),
+                                skipOverviews);
                 hasMaskOvrProvider = true;
             } else if (source instanceof CogSourceSPIProvider) {
                 CogSourceSPIProvider cogSourceProvider = (CogSourceSPIProvider) source;

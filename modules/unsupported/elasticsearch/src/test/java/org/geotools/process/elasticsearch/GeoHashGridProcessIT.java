@@ -22,10 +22,13 @@ import static org.junit.Assert.assertNotNull;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferFloat;
 import java.awt.image.RenderedImage;
+import java.io.IOException;
 import java.util.stream.IntStream;
 import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.data.elasticsearch.ElasticLayerConfiguration;
 import org.geotools.data.elasticsearch.ElasticTestSupport;
 import org.geotools.data.store.ContentFeatureCollection;
+import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -70,8 +73,12 @@ public class GeoHashGridProcessIT extends ElasticTestSupport {
     public void testValues() throws Exception {
         init();
 
+        checkAutomaticGrid(featureSource);
+    }
+
+    private void checkAutomaticGrid(ContentFeatureSource fs) throws IOException {
         // force it to a small grid that's easy to check
-        ContentFeatureCollection features = featureSource.getFeatures();
+        ContentFeatureCollection features = fs.getFeatures();
         String aggregationDefinition = null;
         GridCoverage2D grid =
                 new GeoHashGridProcess()
@@ -153,5 +160,21 @@ public class GeoHashGridProcessIT extends ElasticTestSupport {
         // at this precision data is spread out in various cells, let's check the total
         int matches = (int) IntStream.range(0, data.length).mapToDouble(i -> data[i]).sum();
         assertEquals(11, matches);
+    }
+
+    @Test
+    public void testRenamedGeometry() throws Exception {
+        init();
+
+        ElasticLayerConfiguration renaming = new ElasticLayerConfiguration(config);
+        renaming.getAttributes().stream()
+                .filter(a -> a.isDefaultGeometry())
+                .forEach(a -> a.setCustomName("myGeometry"));
+        final String RENAMED_TYPE_NAME = "renamed";
+        renaming.setLayerName(RENAMED_TYPE_NAME);
+
+        dataStore.setLayerConfiguration(renaming);
+        ContentFeatureSource fs = dataStore.getFeatureSource(RENAMED_TYPE_NAME);
+        checkAutomaticGrid(fs);
     }
 }

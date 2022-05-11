@@ -32,6 +32,7 @@ import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.junit.Before;
 import org.junit.Test;
 import org.opengis.geometry.Envelope;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -69,11 +70,28 @@ public class GeoHashGridProcessIT extends ElasticTestSupport {
         assertEquals(128, ri.getHeight());
     }
 
+    @Before
+    @Override
+    public void init() throws Exception {
+        super.init();
+    }
+
     @Test
     public void testValues() throws Exception {
-        init();
-
         checkAutomaticGrid(featureSource);
+    }
+
+    @Test
+    public void testScrollingEnabled() throws Exception {
+        dataStore.setScrollEnabled(true);
+        dataStore.setScrollSize(100l);
+
+        try {
+            checkAutomaticGrid(featureSource);
+        } finally {
+            dataStore.setScrollEnabled(false);
+            dataStore.setScrollSize(null);
+        }
     }
 
     private void checkAutomaticGrid(ContentFeatureSource fs) throws IOException {
@@ -115,8 +133,6 @@ public class GeoHashGridProcessIT extends ElasticTestSupport {
 
     @Test
     public void testReprojected() throws Exception {
-        init();
-
         ReferencedEnvelope base =
                 new ReferencedEnvelope(-50, 50, -50, 50, DefaultGeographicCRS.WGS84);
         CoordinateReferenceSystem webMercator = CRS.decode("EPSG:3857", true);
@@ -164,8 +180,6 @@ public class GeoHashGridProcessIT extends ElasticTestSupport {
 
     @Test
     public void testRenamedGeometry() throws Exception {
-        init();
-
         ElasticLayerConfiguration renaming = new ElasticLayerConfiguration(config);
         renaming.getAttributes().stream()
                 .filter(a -> a.isDefaultGeometry())

@@ -48,6 +48,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.And;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.BinaryLogicOperator;
@@ -1338,7 +1339,10 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
 
     private void setGeometryField(Map<String, Object> m) {
         if ("".equals(m.get("field"))) {
-            m.put("field", featureType.getGeometryDescriptor().getLocalName());
+            GeometryDescriptor gd = featureType.getGeometryDescriptor();
+            String name = (String) gd.getUserData().get(ElasticConstants.FULL_NAME);
+            if (name == null) name = gd.getLocalName();
+            m.put("field", name);
         }
     }
 

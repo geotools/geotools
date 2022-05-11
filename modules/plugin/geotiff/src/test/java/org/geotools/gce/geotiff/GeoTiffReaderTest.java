@@ -65,6 +65,7 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.GroundControlPoints;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.grid.io.imageio.IIOMetadataDumper;
+import org.geotools.coverage.grid.io.imageio.MaskOverviewProvider;
 import org.geotools.coverage.grid.io.imageio.geotiff.TiePoint;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.operation.Scale;
@@ -347,6 +348,11 @@ public class GeoTiffReaderTest {
                         // we cannot write GCPs yet
                         continue;
                     }
+
+                    MaskOverviewProvider ovrs = reader.getMaskOverviewProvider();
+                    assertEquals(
+                            GeoTiffReader.TIFF_READER_SPI,
+                            ovrs.getSourceSpiProvider().getReaderSpi());
 
                     // write and read back
                     writeAndReadBackCheck(coverage, format, writeDirectory, o);

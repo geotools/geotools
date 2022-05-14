@@ -39,6 +39,7 @@ import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -253,8 +254,14 @@ public class ElasticFeatureSource extends ContentFeatureSource {
 
         if (dataStore.isSourceFilteringEnabled()) {
             if (query.getProperties() != Query.ALL_PROPERTIES) {
+                SimpleFeatureType schema = getSchema();
                 for (String property : query.getPropertyNames()) {
-                    searchRequest.addSourceInclude(property);
+                    AttributeDescriptor descriptor = schema.getDescriptor(property);
+                    if (descriptor != null) {
+                        final String sourceName =
+                                (String) descriptor.getUserData().get(ElasticConstants.FULL_NAME);
+                        searchRequest.addSourceInclude(sourceName);
+                    }
                 }
             } else {
                 // add source includes

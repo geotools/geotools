@@ -36,6 +36,7 @@ import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentEntry;
+import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.NameImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.junit.Assert;
@@ -279,6 +280,46 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
             String st = (String) feature.getAttribute("standard_ss");
             // changed from "IEEE 802.11b" in SolrFeatureSourceTest
             assertTrue(st.contains("IEEE 802.11b"));
+        }
+    }
+
+    @Test
+    public void testRenamedProperties() throws Exception {
+        init();
+
+        ElasticLayerConfiguration renaming = new ElasticLayerConfiguration(config);
+        renaming.getAttributes().stream()
+                .forEach(
+                        a -> {
+                            if ("standard_ss".equals(a.getName())) a.setCustomName("std");
+                            if ("security_ss".equals(a.getName())) a.setCustomName("sec");
+                            if ("modem_b".equals(a.getName())) a.setCustomName("mob");
+                        });
+        final String RENAMED_TYPE_NAME = "renamed";
+        renaming.setLayerName(RENAMED_TYPE_NAME);
+
+        dataStore.setLayerConfiguration(renaming);
+        dataStore.setSourceFilteringEnabled(true);
+        ContentFeatureSource fs = dataStore.getFeatureSource(RENAMED_TYPE_NAME);
+
+        // setup a query filtering on, and retrieving, renamed attributes
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyIsEqualTo filter = ff.equals(ff.property("mob"), ff.literal(true));
+        Query query = new Query();
+        query.setPropertyNames("std", "sec");
+        query.setFilter(filter);
+
+        SimpleFeatureCollection features = fs.getFeatures(query);
+        assertEquals(8, features.size());
+
+        try (SimpleFeatureIterator iterator = features.features()) {
+            assertTrue(iterator.hasNext());
+            SimpleFeature feature = iterator.next();
+            assertEquals(2, feature.getAttributeCount());
+            String std = (String) feature.getAttribute("std");
+            assertTrue(std.contains("IEEE 802.11b"));
+            String sec = (String) feature.getAttribute("sec");
+            assertTrue(sec.contains("WEP"));
         }
     }
 

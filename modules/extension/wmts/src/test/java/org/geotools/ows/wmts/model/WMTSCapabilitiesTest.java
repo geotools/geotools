@@ -95,13 +95,21 @@ public class WMTSCapabilitiesTest {
             Assert.assertEquals(7, tml3.getMincol());
             Assert.assertEquals(7, tml3.getMaxcol());
 
-            Assert.assertEquals("b_road", layers.get(1).getTitle());
-            Assert.assertEquals("meridian:b_road", layers.get(1).getName());
-            Assert.assertEquals("b_road_polyline", layers.get(20).getTitle());
-            Assert.assertEquals("meridian:b_road_polyline", layers.get(20).getName());
+            WMTSLayer layerRoad = layers.get(1);
+            WMTSLayer layerPoly = layers.get(20);
 
-            CRSEnvelope bbox = layers.get(1).getBoundingBoxes().get("EPSG:4326");
+            Assert.assertEquals("b_road", layerRoad.getTitle());
+            Assert.assertEquals("meridian:b_road", layerRoad.getName());
+            Assert.assertEquals(
+                    "Missing bounding box for layer b_road",
+                    3,
+                    layerRoad.getBoundingBoxes().size());
+            CRSEnvelope bbox = layerRoad.getBoundingBoxes().get("EPSG:4326");
             Assert.assertNotNull(bbox);
+
+            Assert.assertEquals("b_road_polyline", layerPoly.getTitle());
+            Assert.assertEquals("meridian:b_road_polyline", layerPoly.getName());
+
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {

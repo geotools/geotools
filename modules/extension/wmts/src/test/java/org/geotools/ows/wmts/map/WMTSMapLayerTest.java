@@ -38,6 +38,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class WMTSMapLayerTest {
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testConstructorSourceCRS() throws Exception {
         URL url = TestData.file(null, "geodata.nationaalgeoregister.nl.xml").toURI().toURL();
@@ -51,7 +52,7 @@ public class WMTSMapLayerTest {
         AttributeExpressionImpl xpath = new AttributeExpressionImpl("params");
         GeneralParameterValue[] params = xpath.evaluate(f, GeneralParameterValue[].class);
         CoordinateReferenceSystem crs =
-                (CoordinateReferenceSystem) ((ParameterValue) params[0]).getValue();
+                ((ParameterValue<CoordinateReferenceSystem>) params[0]).getValue();
         assertEquals(CRS.decode("EPSG:3857"), crs);
     }
 

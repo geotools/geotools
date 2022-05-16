@@ -83,6 +83,8 @@ public class WMTSTileService extends TileService {
 
     public static final String EXTRA_HEADERS = "HEADERS";
 
+    public static final String EXTRA_PARAMETERS = "PARAMETERS";
+
     private static final TileFactory tileFactory = new WMTSTileFactory();
 
     /*
@@ -185,7 +187,7 @@ public class WMTSTileService extends TileService {
             case KVP:
                 return WMTSHelper.appendQueryString(
                         templateURL,
-                        WMTSSpecification.GetMultiTileRequest.getKVPparams(
+                        WMTSSpecification.getKVPparams(
                                 layerName, styleName, tileMatrixSet, "image/png"));
             case REST:
                 templateURL = WMTSHelper.replaceToken(templateURL, "layer", layerName);
@@ -270,6 +272,7 @@ public class WMTSTileService extends TileService {
         }
         this.envelope = new ReferencedEnvelope(layer.getLatLonBoundingBox());
         this.urlBuilder = null;
+        this.extrainfo.put(EXTRA_PARAMETERS, new HashMap<String, String>());
         setMatrixSet(tileMatrixSet);
     }
 
@@ -654,22 +657,31 @@ public class WMTSTileService extends TileService {
         return new WMTSTileIdentifier((int) xTile, (int) yTile, zl, getName());
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public BufferedImage loadImageTileImage(Tile tile) throws IOException {
         if (tileServer == null) {
-            if (!getExtrainfo().containsKey(WMTSTileService.EXTRA_HEADERS)) {
-                return super.loadImageTileImage(tile);
-            }
-            Map<String, String> headers =
-                    (Map<String, String>) getExtrainfo().get(WMTSTileService.EXTRA_HEADERS);
-            HTTPResponse http = getHttpClient().get(tile.getUrl(), headers);
-            try {
-                return ImageIOExt.readBufferedImage(http.getResponseStream());
-            } finally {
-                http.dispose();
-            }
+            return loadImageUsingTemplateUrl(tile);
+        } else {
+            return loadImageUsingTileServer(tile);
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    private BufferedImage loadImageUsingTemplateUrl(Tile tile) throws IOException {
+        if (!getExtrainfo().containsKey(WMTSTileService.EXTRA_HEADERS)) {
+            return super.loadImageTileImage(tile);
+        }
+        Map<String, String> headers =
+                (Map<String, String>) getExtrainfo().get(WMTSTileService.EXTRA_HEADERS);
+        HTTPResponse http = getHttpClient().get(tile.getUrl(), headers);
+        try {
+            return ImageIOExt.readBufferedImage(http.getResponseStream());
+        } finally {
+            http.dispose();
+        }
+    }
+
+    private BufferedImage loadImageUsingTileServer(Tile tile) throws IOException {
 
         TileIdentifier tileIdentifier = tile.getTileIdentifier();
         if (LOGGER.isLoggable(Level.FINE)) {
@@ -715,7 +727,9 @@ public class WMTSTileService extends TileService {
         return layer.getTileMatrixLinks().get(tileMatrixSetName);
     }
 
-    private GetSingleTileRequest createGetTileRequest(String tileMatrix, int tileCol, int tileRow) {
+    @SuppressWarnings("unchecked")
+    private GetSingleTileRequest createGetTileRequest(
+            String tileMatrix, long tileCol, long tileRow) {
         GetSingleTileRequest request =
                 (GetSingleTileRequest) tileServer.createGetTileRequest(false);
         request.setLayer(layer);
@@ -724,6 +738,9 @@ public class WMTSTileService extends TileService {
         request.setTileMatrix(tileMatrix);
         request.setTileCol(tileCol);
         request.setTileRow(tileRow);
+        request.setRequestedTime(
+                ((Map<String, String>) extrainfo.get(EXTRA_PARAMETERS))
+                        .get(WMTSSpecification.DIMENSION_TIME));
         return request;
     }
 
@@ -741,7 +758,7 @@ public class WMTSTileService extends TileService {
             try {
                 return new URL(urlBuilder.createURL(tileMatrix, tileCol, tileRow));
             } catch (MalformedURLException e) {
-                throw new RuntimeException("Couldn't creat url from templateUrl");
+                throw new RuntimeException("Couldn't create url from templateUrl");
             }
         }
 
@@ -749,7 +766,7 @@ public class WMTSTileService extends TileService {
         return request.getFinalURL();
     }
 
-    /** */
+    /** Return the TileMatrix for the given zoomLevel */
     public TileMatrix getTileMatrix(int zoomLevel) {
         if (matrixSet == null) {
             throw new RuntimeException("TileMatrix is not set in WMTSService");
@@ -787,9 +804,13 @@ public class WMTSTileService extends TileService {
     }
 
     /**
-     * A place to put any Header that should be sent in http calls.
+     * A place to put additional settings for http-calls.
      *
-     * @return
+     * <p>It could either be HEADERS for the http header, or PARAMETERS for the query string. The
+     * two methods of fetching tile's will treat them differently. Where HEADERS are treated when
+     * templateUrl is set, they should be set directly on WebMapTileServer. And PARAMETERS are only
+     * considered for WebMapTileServer. They should be included in templateUrl prior to the
+     * construction.
      */
     public Map<String, Object> getExtrainfo() {
         return extrainfo;

@@ -21,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileReader;
+import java.net.URL;
 import net.opengis.wmts.v_1.CapabilitiesType;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
 import org.geotools.test.TestData;
@@ -43,5 +44,12 @@ public class WMTSTestUtils {
 
         WMTSCapabilities capabilities = new WMTSCapabilities((CapabilitiesType) object);
         return capabilities;
+    }
+
+    public static WebMapTileServer createServer(URL serverUrl, String resourceName)
+            throws Exception {
+
+        WMTSCapabilities capa = createCapabilities(resourceName);
+        return new WebMapTileServer(serverUrl, capa);
     }
 }

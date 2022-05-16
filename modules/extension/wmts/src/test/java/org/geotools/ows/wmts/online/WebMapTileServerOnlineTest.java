@@ -27,14 +27,19 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wms.Layer;
+import org.geotools.ows.wmts.WMTSSpecification.GetSingleTileRequest;
 import org.geotools.ows.wmts.WebMapTileServer;
 import org.geotools.ows.wmts.client.WMTSTileFactory4326Test;
 import org.geotools.ows.wmts.client.WMTSTileService;
+import org.geotools.ows.wmts.model.TileMatrix;
+import org.geotools.ows.wmts.model.TileMatrixLimits;
 import org.geotools.ows.wmts.model.TileMatrixSet;
+import org.geotools.ows.wmts.model.TileMatrixSetLink;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
 import org.geotools.ows.wmts.model.WMTSLayer;
 import org.geotools.ows.wmts.model.WMTSServiceType;
 import org.geotools.ows.wmts.request.GetTileRequest;
+import org.geotools.ows.wmts.response.GetTileResponse;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.OnlineTestCase;
@@ -101,37 +106,43 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
     public void testIssueGetTileRequestKVP()
             throws ServiceException, IOException, FactoryException {
         WebMapTileServer wmts = new WebMapTileServer(serverURL);
-        issueGetTileRequest(wmts);
-    }
-
-    public void issueGetTileRequest(WebMapTileServer wmts)
-            throws ServiceException, FactoryException {
 
         WMTSCapabilities capabilities = wmts.getCapabilities();
 
-        GetTileRequest request = wmts.createGetTileRequest();
-
-        // request.setVersion("1.1.1");
-
+        GetTileRequest request = wmts.createGetTileRequest(false);
         WMTSLayer layer = capabilities.getLayer("topp:states");
         assertNotNull(layer);
         request.setLayer(layer);
+        request.setFormat(layer.getFormats().get(0));
+        TileMatrixSet matrixSet = null;
+        String tileMatrix = null;
+        Long row = 0L;
+        Long col = 0L;
 
-        request.setRequestedWidth(800);
-        request.setRequestedHeight(400);
-
-        ReferencedEnvelope re = new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326"));
-        request.setRequestedBBox(re);
-
-        // System.out.println(request.getFinalURL());
-        Set<Tile> responses = request.getTiles();
-        assertFalse(responses.isEmpty());
-        for (Tile response : responses) {
-            // System.out.println("Content Type: " + response.getContentType());
-            // System.out.println(response.getTileIdentifier());
-            BufferedImage image = response.getBufferedImage();
-            assertEquals(256, image.getHeight());
+        if (layer.getTileMatrixLinks() != null) {
+            TileMatrixSetLink link = layer.getTileMatrixLinks().values().iterator().next();
+            matrixSet = capabilities.getMatrixSet(link.getIdentifier());
+            if (!link.getLimits().isEmpty()) {
+                TileMatrixLimits limit = link.getLimits().get(0);
+                tileMatrix = limit.getTileMatix();
+                row = limit.getMinrow();
+                col = limit.getMincol();
+            }
+        } else {
+            matrixSet = capabilities.getMatrixSets().get(0);
         }
+        if (tileMatrix == null) {
+            TileMatrix firstMatrix = matrixSet.getMatrices().get(0);
+            tileMatrix = firstMatrix.getIdentifier();
+        }
+
+        request.setTileMatrixSet(matrixSet.getIdentifier());
+        request.setTileMatrix(tileMatrix);
+        request.setTileRow(row);
+        request.setTileCol(col);
+        GetTileResponse response = wmts.issueRequest((GetSingleTileRequest) request);
+        BufferedImage image = response.getTileImage();
+        assertEquals(256, image.getHeight());
     }
 
     @Test

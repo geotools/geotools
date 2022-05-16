@@ -63,6 +63,10 @@ public class WMTSSpecification extends Specification {
 
     public static final String WMTS_VERSION = "1.0.0";
 
+    public static final String DIMENSION_TIME = "time";
+
+    public static final String DIMENSION_ELEVATION = "elevation";
+
     /** */
     public WMTSSpecification() {}
 
@@ -97,6 +101,36 @@ public class WMTSSpecification extends Specification {
         return new GetMultiTileRequest(server, props, caps, client);
     }
 
+    /**
+     * Returns the properties for KVP WMTS, as well as placeholder's for the specific parameters of
+     * GetTile. Values passed in are expected to be already encoded appropriately for use in URLs.
+     * See {@link WMTSHelper#encodeParameter(String)}
+     *
+     * @param layerString layer
+     * @param styleString style
+     * @param tileMatrixSetName tilematrixSet name
+     * @param format format
+     * @return a hashmap containing the properties for the KVP WMTS including placeholders for
+     *     specific parameters of GetTile
+     * @see WMTSHelper#encodeParameter(String)
+     */
+    public static HashMap<String, String> getKVPparams(
+            String layerString, String styleString, String tileMatrixSetName, String format) {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("service", "WMTS");
+        params.put("version", WMTS_VERSION);
+        params.put("request", "GetTile");
+        params.put("layer", layerString);
+        params.put("style", styleString);
+        params.put("format", format);
+        params.put("tilematrixset", tileMatrixSetName);
+        params.put("TileMatrix", "{TileMatrix}");
+        params.put("TileCol", "{TileCol}");
+        params.put("TileRow", "{TileRow}");
+
+        return params;
+    }
+
     /** @deprecated Avoid usage of this - change to GetMultiTileRequest */
     @Deprecated
     public static class GetTileRequest extends GetMultiTileRequest {
@@ -117,6 +151,7 @@ public class WMTSSpecification extends Specification {
     }
 
     /** GetMultiTileRequest - used for getting a Set of tiles */
+    @Deprecated
     public static class GetMultiTileRequest extends AbstractGetTileRequest {
 
         private static Logger LOGGER = Logging.getLogger(GetMultiTileRequest.class);
@@ -246,6 +281,7 @@ public class WMTSSpecification extends Specification {
          *     specific parameters of GetTile
          * @see WMTSHelper#encodeParameter(String)
          */
+        @Deprecated
         public static HashMap<String, String> getKVPparams(
                 String layerString, String styleString, String tileMatrixSetName, String format) {
             HashMap<String, String> params = new HashMap<>();
@@ -304,15 +340,17 @@ public class WMTSSpecification extends Specification {
                         "Missing some properties for a proper GetTile-request.");
             }
 
-            String layerString = WMTSHelper.encodeParameter(layer.getName());
-            String styleString = WMTSHelper.encodeParameter(this.styleName);
-            String tileMatrixSetString = WMTSHelper.encodeParameter(this.getTileMatrixSet());
+            String layerEncoded = WMTSHelper.encodeParameter(layer.getName());
+            String styleEncoded = WMTSHelper.encodeParameter(this.styleName);
+            String formatEncoded = WMTSHelper.encodeParameter(this.getFormat());
+            String tileMatrixSetEncoded = WMTSHelper.encodeParameter(this.getTileMatrixSet());
+            String tileMatrixEncoded = WMTSHelper.encodeParameter(this.getTileMatrix());
 
-            this.setProperty("layer", layerString);
-            this.setProperty("style", styleString);
-            this.setProperty("format", this.getFormat());
-            this.setProperty("tilematrixset", tileMatrixSetString);
-            this.setProperty("TileMatrix", this.getTileMatrix());
+            this.setProperty("layer", layerEncoded);
+            this.setProperty("style", styleEncoded);
+            this.setProperty("format", formatEncoded);
+            this.setProperty("tilematrixset", tileMatrixSetEncoded);
+            this.setProperty("TileMatrix", tileMatrixEncoded);
             this.setProperty("TileCol", this.getTileCol().toString());
             this.setProperty("TileRow", this.getTileRow().toString());
             this.setProperty("time", this.getRequestedTime());

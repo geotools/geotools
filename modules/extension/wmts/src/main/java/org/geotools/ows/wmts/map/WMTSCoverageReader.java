@@ -24,8 +24,10 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,16 +39,20 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.ows.ServiceException;
 import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wms.xml.Dimension;
+import org.geotools.ows.wmts.WMTSSpecification;
 import org.geotools.ows.wmts.WebMapTileServer;
+import org.geotools.ows.wmts.client.WMTSTileService;
+import org.geotools.ows.wmts.model.TileMatrixSet;
+import org.geotools.ows.wmts.model.TileMatrixSetLink;
 import org.geotools.ows.wmts.model.WMTSLayer;
 import org.geotools.ows.wmts.request.GetTileRequest;
 import org.geotools.referencing.CRS;
 import org.geotools.renderer.lite.RendererUtilities;
 import org.geotools.renderer.lite.gridcoverage2d.GridCoverageRendererUtilities;
 import org.geotools.tile.Tile;
+import org.geotools.tile.TileService;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.grid.Format;
@@ -70,11 +76,16 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
 
     static GridCoverageFactory gcf = new GridCoverageFactory();
 
+    private static final int MAX_TILES = 1000;
+
     /** The WMTS server */
     final WebMapTileServer wmts;
 
     /** The layer */
     private final WMTSLayer layer;
+
+    /** Cache of WMTSTileService for a given TileRequest */
+    private Map<String, WMTSTileService> services = new HashMap<>();
 
     /** The default SRS name for this layer */
     String srsName;
@@ -221,49 +232,60 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
             time = requestedTime;
         }
 
-        Envelope requestedEnvelope = null;
         WMTSReadParameters readParameters =
                 new WMTSReadParameters(parameters, getOriginalEnvelope());
-        requestedEnvelope = readParameters.getRequestedEnvelope();
 
-        return getMap(reference(requestedEnvelope), time, readParameters);
+        ReferencedEnvelope requestedEnvelope = reference(readParameters.getRequestedEnvelope());
+        if (isNativelySupported(requestedEnvelope.getCoordinateReferenceSystem())) {
+            return getMap(requestedEnvelope, time, readParameters);
+        } else {
+            return getMapReproject(requestedEnvelope, time, readParameters);
+        }
     }
 
-    /** Execute the GetMap request */
+    /** Execute the GetMap request without any projection. */
     GridCoverage2D getMap(
             ReferencedEnvelope requestedEnvelope, String time, WMTSReadParameters readParameters)
             throws IOException {
 
-        GridCoverage2D result;
-        if (isNativelySupported(requestedEnvelope.getCoordinateReferenceSystem())) {
-            // we can simply perform the tile request and build the final image.
-            TileRequest request =
-                    initTileRequest(
-                            requestedEnvelope,
-                            readParameters.getWidth(),
-                            readParameters.getHeight(),
-                            time);
+        TileRequest request =
+                initTileRequest(
+                        requestedEnvelope,
+                        readParameters.getWidth(),
+                        readParameters.getHeight(),
+                        time);
 
-            result = createTileMap(request, requestedEnvelope, time);
-        } else {
-            result = getMapReproject(requestedEnvelope, time, readParameters);
-        }
-        return result;
+        Set<Tile> tiles = findTiles(request);
+
+        return createTileMap(requestedEnvelope, tiles);
     }
 
-    GridCoverage2D createTileMap(TileRequest request, ReferencedEnvelope tileEnvelope, String time)
+    /** Get the WMTSTileService to use for the given request, and use that to find tile's */
+    Set<Tile> findTiles(TileRequest request) {
+        TileService service = obtainTileService(request);
+        double scale = computeScale(request);
+        return service.findTilesInExtent(request.envelope, scale, false, MAX_TILES);
+    }
+
+    /** Computing the scale using the width and the envelope */
+    double computeScale(TileRequest request) {
+        return Math.round(
+                RendererUtilities.calculateOGCScale(request.envelope, request.width, null));
+    }
+
+    /** Downloading and putting the individual tiles together into a single coverage */
+    protected GridCoverage2D createTileMap(ReferencedEnvelope tileEnvelope, Set<Tile> tiles)
             throws IOException {
+
+        if (tiles.isEmpty()) {
+            LOGGER.fine(() -> "Found 0 tiles in " + tileEnvelope);
+            throw new RuntimeException("No tiles were found in requested extent");
+        }
         try {
-            GetTileRequest tileRequest = request.createTileRequest();
-            Set<Tile> responses = tileRequest.getTiles();
-            if (responses.isEmpty()) {
-                LOGGER.fine(() -> "Found 0 tiles in " + tileEnvelope);
-                throw new RuntimeException("No tiles were found in requested extent");
-            }
+
             AffineTransform at = null;
             ReferencedEnvelope global = null;
-            for (Tile tile : responses) {
-
+            for (Tile tile : tiles) {
                 ReferencedEnvelope extent = tile.getExtent();
                 // ensure the extent has EAST_NORTH axis order because otherwise
                 // RendererUtilities.worldToScreenTransform will produce
@@ -291,15 +313,114 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
                     RendererUtilities.worldToScreenTransform(
                             global, new Rectangle(0, 0, imageWidth, imageHeight));
             renderTiles(
-                    responses,
+                    tiles,
                     image.createGraphics(),
                     toEastNorthAxisOrder(tileEnvelope),
                     targetTransform);
 
             return gcf.create(layer.getTitle(), image, global);
-        } catch (ServiceException | FactoryException e) {
+        } catch (FactoryException e) {
             throw new IOException("GetMap failed", e);
         }
+    }
+
+    /** WMTSTileServices are kept in a Map to keep onto the tile-cache they possess */
+    @SuppressWarnings("unchecked")
+    TileService obtainTileService(TileRequest request) {
+        final String key = request.tileSRS + (request.time != null ? "|" + request.time : "");
+        if (services.containsKey(key)) {
+            return services.get(key);
+        }
+
+        TileMatrixSet matrixSet = selectMatrixSet(request);
+
+        WMTSTileService newService = new WMTSTileService(wmts, layer, matrixSet, format);
+        if (request.time != null) {
+            ((Map<String, String>) newService.getExtrainfo().get(WMTSTileService.EXTRA_PARAMETERS))
+                    .put(WMTSSpecification.DIMENSION_TIME, request.time);
+        }
+        services.put(key, newService);
+        return newService;
+    }
+
+    private TileMatrixSet selectMatrixSet(TileRequest request) {
+        TileMatrixSet retMatrixSet = null;
+
+        Map<String, TileMatrixSetLink> links = layer.getTileMatrixLinks();
+        CoordinateReferenceSystem requestCRS = request.envelope.getCoordinateReferenceSystem();
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine("request CRS " + (requestCRS == null ? "NULL" : requestCRS.getName()));
+        }
+        if (requestCRS == null && request.tileSRS != null) {
+            try {
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine("request CRS decoding" + request.tileSRS);
+                }
+                requestCRS = CRS.decode(request.tileSRS);
+
+            } catch (FactoryException e) {
+                if (LOGGER.isLoggable(Level.FINER)) {
+                    LOGGER.log(Level.FINER, e.getMessage(), e);
+                }
+                throw new RuntimeException(e);
+            }
+        }
+        if (requestCRS == null && request.envelope != null) {
+            requestCRS = request.envelope.getCoordinateReferenceSystem();
+        }
+
+        if (requestCRS == null) {
+            throw new IllegalStateException("CRS or SRS wasn't set for this WMTSCoverageReader.");
+        }
+
+        // See if the layer supports the requested SRS. Matching against the SRS rather than the
+        // full CRS will avoid missing matches due to Longitude first being set on the request
+        // CRS and therefore minimise transformations that need to be performed on the received tile
+        String requestSRS = CRS.toSRS(requestCRS);
+        for (TileMatrixSet matrixSet : wmts.getCapabilities().getMatrixSets()) {
+
+            CoordinateReferenceSystem matrixCRS = matrixSet.getCoordinateReferenceSystem();
+            String matrixSRS = CRS.toSRS(matrixCRS);
+            if (requestSRS.equals(matrixSRS)) { // matching SRS
+                if (links.containsKey((matrixSet.getIdentifier()))) { // and available for
+                    // this layer
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.fine("selected matrix set:" + matrixSet.getIdentifier());
+                    }
+                    retMatrixSet = matrixSet;
+
+                    break;
+                }
+            }
+        }
+
+        // The layer does not provide the requested CRS, so just take any one
+        if (retMatrixSet == null) {
+            if (LOGGER.isLoggable(Level.INFO)) {
+                LOGGER.info(
+                        "Failed to match the requested CRS ("
+                                + requestCRS.getName()
+                                + ") with any of the tile matrices!");
+            }
+            for (TileMatrixSet matrix : wmts.getCapabilities().getMatrixSets()) {
+                if (links.containsKey((matrix.getIdentifier()))) { // available for this layer
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.fine("defaulting matrix set:" + matrix.getIdentifier());
+                    }
+                    retMatrixSet = matrix;
+
+                    break;
+                }
+            }
+        }
+        if (retMatrixSet == null) {
+            throw new IllegalStateException(
+                    "Unable to find a matching TileMatrixSet for layer "
+                            + layer.getName()
+                            + " and SRS: "
+                            + requestCRS.getName());
+        }
+        return retMatrixSet;
     }
 
     /**
@@ -647,7 +768,9 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
                             readParameters.getWidth(),
                             readParameters.getHeight(),
                             time);
-            GridCoverage2D result = createTileMap(request, nativeEnvelope, time);
+
+            Set<Tile> tiles = findTiles(request);
+            GridCoverage2D result = createTileMap(nativeEnvelope, tiles);
 
             // in case the reprojection is concerning two crs differing only by axis order
             // it should not be needed because already happened to make sure
@@ -717,6 +840,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
             this.time = time;
         }
 
+        @Deprecated
         GetTileRequest createTileRequest() {
             try {
                 GetTileRequest tileRequest = wmts.createGetTileRequest();

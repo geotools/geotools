@@ -46,22 +46,32 @@ public interface GetTileRequest extends Request {
 
     void setTileMatrix(String tileMatrix);
 
-    void setTileRow(Integer tileRow);
+    void setTileRow(Long tileRow);
 
-    void setTileCol(Integer tileCol);
+    void setTileCol(Long tileCol);
 
+    @Deprecated
     Set<Tile> getTiles() throws ServiceException;
 
+    @Deprecated
     void setRequestedHeight(int height);
 
+    @Deprecated
     void setRequestedWidth(int width);
 
+    @Deprecated
     void setRequestedBBox(ReferencedEnvelope bbox);
 
     void setRequestedTime(String time);
 
+    @Deprecated
     void setCRS(CoordinateReferenceSystem coordinateReferenceSystem);
 
-    /** HTTP headers required for some WMTS * */
+    /**
+     * HTTP headers required for some WMTS *
+     *
+     * @deprecated Call WebMapTileServer.getHeaders()
+     */
+    @Deprecated
     Map<String, String> getHeaders();
 }

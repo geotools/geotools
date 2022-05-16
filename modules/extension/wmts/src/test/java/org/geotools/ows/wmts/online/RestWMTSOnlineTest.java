@@ -30,12 +30,14 @@ import org.geotools.ows.wmts.WebMapTileServer;
 import org.geotools.ows.wmts.client.WMTSTileFactory4326Test;
 import org.geotools.ows.wmts.client.WMTSTileService;
 import org.geotools.ows.wmts.map.WMTSMapLayer;
+import org.geotools.ows.wmts.model.TileMatrixSet;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
 import org.geotools.ows.wmts.model.WMTSLayer;
 import org.geotools.ows.wmts.model.WMTSServiceType;
 import org.geotools.ows.wmts.request.GetTileRequest;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.renderer.lite.RendererUtilities;
 import org.geotools.test.OnlineTestCase;
 import org.geotools.tile.Tile;
 import org.junit.Test;
@@ -44,6 +46,8 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class RestWMTSOnlineTest extends OnlineTestCase {
+
+    private static final int MAX_TILES = 100;
 
     private URL restWMTS;
 
@@ -115,11 +119,6 @@ public class RestWMTSOnlineTest extends OnlineTestCase {
     public void testIssueGetTileRequestREST()
             throws ServiceException, IOException, FactoryException {
         WebMapTileServer wmts = new WebMapTileServer(restWMTS);
-        issueGetTileRequest(wmts);
-    }
-
-    public void issueGetTileRequest(WebMapTileServer wmts)
-            throws ServiceException, FactoryException {
 
         WMTSCapabilities capabilities = wmts.getCapabilities();
 
@@ -128,21 +127,22 @@ public class RestWMTSOnlineTest extends OnlineTestCase {
         // request.setVersion("1.1.1");
 
         WMTSLayer layer = capabilities.getLayer("topp:states");
+
         assertNotNull(layer);
+        TileMatrixSet matrixSet = capabilities.getMatrixSets().get(0);
+        assertNotNull(matrixSet);
+
+        ReferencedEnvelope re =
+                new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326", true));
         request.setLayer(layer);
 
-        request.setRequestedWidth(800);
-        request.setRequestedHeight(400);
+        WMTSTileService service = new WMTSTileService(wmts, layer, matrixSet);
 
-        ReferencedEnvelope re = new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326"));
-        request.setRequestedBBox(re);
+        long scale = Math.round(RendererUtilities.calculateOGCScale(re, 800, null));
 
-        // System.out.println(request.getFinalURL());
-        Set<Tile> responses = request.getTiles();
+        Set<Tile> responses = service.findTilesInExtent(re, scale, false, MAX_TILES);
         assertFalse(responses.isEmpty());
         for (Tile response : responses) {
-            // System.out.println("Content Type: " + response.getContentType());
-            // System.out.println(response.getTileIdentifier());
             BufferedImage image = response.getBufferedImage();
             assertEquals(256, image.getHeight());
         }

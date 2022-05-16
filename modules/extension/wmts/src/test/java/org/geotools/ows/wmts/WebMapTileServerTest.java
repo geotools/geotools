@@ -26,13 +26,10 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
 import org.geotools.TestData;
 import org.geotools.geometry.GeneralEnvelope;
-import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.http.AbstractHttpClient;
 import org.geotools.http.HTTPResponse;
 import org.geotools.http.MockHttpClient;
@@ -47,8 +44,6 @@ import org.geotools.ows.wmts.request.AbstractGetTileRequest;
 import org.geotools.ows.wmts.request.GetTileRequest;
 import org.geotools.ows.wmts.response.GetTileResponse;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.tile.Tile;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -119,80 +114,6 @@ public class WebMapTileServerTest {
         assertEquals(11.47757, envelope.getMaximum(0), 0.0001);
     }
 
-    @Test
-    public void testMapRequestCRS() throws Exception {
-
-        WebMapTileServer server =
-                createServer(
-                        new URL("https://geodata.nationaalgeoregister.nl/tiles/service/wmts"),
-                        "geodata.nationaalgeoregister.nl.xml");
-        WMTSLayer layer = server.getCapabilities().getLayer("brtachtergrondkaartwater");
-        ReferencedEnvelope bbox = new ReferencedEnvelope(51, 53, 4, 6, CRS.decode("EPSG:4326"));
-
-        // Try with a CRS that doesn't exist in the layer and expect the first CRS supported by the
-        // layer
-        GetTileRequest tileRequest1 = server.createGetTileRequest();
-        tileRequest1.setLayer(layer);
-        tileRequest1.setCRS(CRS.decode("EPSG:4326"));
-        tileRequest1.setRequestedBBox(bbox);
-        tileRequest1.setRequestedHeight(768);
-        tileRequest1.setRequestedWidth(1024);
-        Set<Tile> receivedTiles = tileRequest1.getTiles();
-        assertFalse(receivedTiles.isEmpty());
-        for (Tile t : receivedTiles) {
-
-            String recvdTileCRS =
-                    t.getExtent()
-                            .getCoordinateReferenceSystem()
-                            .getIdentifiers()
-                            .toArray()[0]
-                            .toString();
-
-            assertEquals("EPSG:25831", recvdTileCRS);
-        }
-
-        // Now try with a specific  CRS that isn't the first one declared for the layer and expect
-        // that one
-        GetTileRequest tileRequest2 = server.createGetTileRequest();
-        tileRequest2.setLayer(layer);
-        tileRequest2.setCRS(CRS.decode("EPSG:3857"));
-        tileRequest2.setRequestedBBox(bbox);
-        tileRequest2.setRequestedHeight(768);
-        tileRequest2.setRequestedWidth(1024);
-        Set<Tile> receivedTiles2 = tileRequest2.getTiles();
-        assertFalse(receivedTiles2.isEmpty());
-        for (Tile t : receivedTiles2) {
-            String recvdTileCRS =
-                    t.getExtent()
-                            .getCoordinateReferenceSystem()
-                            .getIdentifiers()
-                            .toArray()[0]
-                            .toString();
-
-            assertEquals("EPSG:3857", recvdTileCRS);
-        }
-
-        // Now try with a CRS that exists but is in longitude first format
-        GetTileRequest tileRequest3 = server.createGetTileRequest();
-        tileRequest3.setLayer(layer);
-        tileRequest3.setCRS(CRS.decode("EPSG:3857", true));
-        tileRequest3.setRequestedBBox(bbox);
-        tileRequest3.setRequestedHeight(768);
-        tileRequest3.setRequestedWidth(1024);
-        Set<Tile> receivedTiles3 = tileRequest3.getTiles();
-        assertFalse(receivedTiles3.isEmpty());
-        for (Tile t : receivedTiles3) {
-            String recvdTileCRS =
-                    t.getExtent()
-                            .getCoordinateReferenceSystem()
-                            .getIdentifiers()
-                            .toArray()[0]
-                            .toString();
-
-            assertEquals("EPSG:3857", recvdTileCRS);
-        }
-    }
-
     /**
      * Check that servers that don't support KVP work
      *
@@ -201,7 +122,7 @@ public class WebMapTileServerTest {
     @Test
     public void testGEOT6741() throws Exception {
         WebMapTileServer server =
-                createServer(
+                WMTSTestUtils.createServer(
                         new URL(
                                 "https://data.linz.govt.nz/services%3Bkey%3De501b3b9aa96472a85fe188cc8919487/wmts/1.0.0/layer/50767/WMTSCapabilities.xml"),
                         "linz.xml");
@@ -219,7 +140,7 @@ public class WebMapTileServerTest {
     @Test
     public void testGEOT6742() throws Exception {
         WebMapTileServer server =
-                createServer(
+                WMTSTestUtils.createServer(
                         new URL("http://tileservice.charts.noaa.gov/tiles/wmts"),
                         "noaa-tileserver.xml");
         GetTileRequest tileRequest = server.createGetTileRequest();
@@ -233,7 +154,8 @@ public class WebMapTileServerTest {
 
         @Override
         public HTTPResponse get(URL url) throws IOException {
-            throw new RuntimeException("This method should not have been called.");
+            Assert.fail("This method should not have been called.");
+            return null;
         }
 
         @Override
@@ -251,7 +173,8 @@ public class WebMapTileServerTest {
         @Override
         public HTTPResponse post(URL url, InputStream content, String contentType)
                 throws IOException {
-            throw new RuntimeException("This method should not have been called.");
+            Assert.fail("This method should not have been called.");
+            return null;
         }
     }
 
@@ -263,19 +186,21 @@ public class WebMapTileServerTest {
                         new URL("http://dummy.net/"),
                         new CheckHeadersHttpClient(),
                         createCapabilities("getcapa_kvp.xml"));
-        GetTileRequest request = server.createGetTileRequest();
-        request.getHeaders().put("Authorization", "dummy");
 
-        final CoordinateReferenceSystem crs = DefaultGeographicCRS.WGS84;
-        request.setCRS(crs);
-        request.setLayer(server.getCapabilities().getLayer("spearfish"));
-        request.setRequestedBBox(new ReferencedEnvelope(-103.878, -103.729, 44.396, 44.456, crs));
-        request.setRequestedWidth(1000);
+        GetSingleTileRequest request = (GetSingleTileRequest) server.createGetTileRequest(false);
+        server.getHeaders().put("Authorization", "dummy");
 
-        Set<Tile> tiles = request.getTiles();
-        Assert.assertFalse(tiles.isEmpty());
+        WMTSLayer layer = server.getCapabilities().getLayer("spearfish");
+        request.setLayer(layer);
+        request.setFormat("image/png");
+        TileMatrixSet matrixSet = server.getCapabilities().getMatrixSets().get(0);
+        request.setTileMatrixSet(matrixSet.getIdentifier());
+        request.setTileMatrix(matrixSet.getMatrices().get(0).getIdentifier());
+        request.setTileRow(0L);
+        request.setTileCol(0L);
 
-        tiles.iterator().next().getBufferedImage();
+        // Should trigger a call against CheckHeadersHttpClient
+        server.issueRequest(request);
     }
 
     /**
@@ -286,45 +211,23 @@ public class WebMapTileServerTest {
         URL capUrl =
                 new URL(
                         "https://sgx.geodatenzentrum.de/wmts_topplus_open/1.0.0/WMTSCapabilities.xml");
-        WebMapTileServer tileServer = createServer(capUrl, "sgx_geodatenzentrum_de.getcapa.xml");
+        WebMapTileServer tileServer =
+                WMTSTestUtils.createServer(capUrl, "sgx_geodatenzentrum_de.getcapa.xml");
         Assert.assertEquals(WMTSServiceType.REST, tileServer.getType());
 
         WMTSLayer layer = tileServer.getCapabilities().getLayer("web_light");
-        TileMatrixSet matrixSet =
-                tileServer.getCapabilities().getMatrixSet("EU_EPSG_25832_TOPPLUS");
-
-        GetTileRequest tileRequest = tileServer.createGetTileRequest();
+        GetTileRequest tileRequest = tileServer.createGetTileRequest(false);
         tileRequest.setLayer(layer);
-        tileRequest.setRequestedHeight(256);
-        tileRequest.setRequestedWidth(256);
-
-        CoordinateReferenceSystem requestCrs = matrixSet.getCoordinateReferenceSystem();
-        tileRequest.setCRS(requestCrs);
-
-        double tileMinX = 540903.2072301595;
-        double tileMaxX = 580038.9657121699;
-
-        double tileMinY = 5714183.162769842;
-        double tileMaxY = 5753318.921251852;
-
-        ReferencedEnvelope requestBbox =
-                new ReferencedEnvelope(tileMinX, tileMaxX, tileMinY, tileMaxY, requestCrs);
-        tileRequest.setRequestedBBox(requestBbox);
-
-        Iterator<Tile> tiles = tileRequest.getTiles().iterator();
-        Assert.assertTrue(tiles.hasNext());
-
-        Tile tile = tiles.next();
+        tileRequest.setFormat("image/png");
+        tileRequest.setTileMatrixSet("EU_EPSG_25832_TOPPLUS");
+        tileRequest.setTileMatrix("05");
+        tileRequest.setTileRow(79L);
+        tileRequest.setTileCol(111L);
+        String finalUrl = tileRequest.getFinalURL().toExternalForm();
 
         Assert.assertEquals(
                 "https://sgx.geodatenzentrum.de/wmts_topplus_open/tile/1.0.0/web_light/default/EU_EPSG_25832_TOPPLUS/05/79/111.png",
-                tile.getUrl().toExternalForm());
-    }
-
-    private WebMapTileServer createServer(URL serverUrl, String resourceName) throws Exception {
-
-        WMTSCapabilities capa = createCapabilities(resourceName);
-        return new WebMapTileServer(serverUrl, capa);
+                finalUrl);
     }
 
     @Test
@@ -347,8 +250,8 @@ public class WebMapTileServerTest {
         request.setFormat("image/png");
         request.setTileMatrixSet("EPSG:4326");
         request.setTileMatrix("EPSG:4326:0");
-        request.setTileRow(0);
-        request.setTileCol(0);
+        request.setTileRow(0L);
+        request.setTileCol(0L);
 
         GetTileResponse response = server.issueRequest(request);
         BufferedImage tileImage = response.getTileImage();
@@ -376,8 +279,8 @@ public class WebMapTileServerTest {
         request.setFormat("image/png");
         request.setTileMatrixSet("EPSG:4326");
         request.setTileMatrix("EPSG:4326:0");
-        request.setTileRow(0);
-        request.setTileCol(0);
+        request.setTileRow(0L);
+        request.setTileCol(0L);
         request.setRequestedTime("2020-01-01");
 
         GetTileResponse response = server.issueRequest(request);
@@ -405,8 +308,8 @@ public class WebMapTileServerTest {
         request.setFormat("image/png");
         request.setTileMatrixSet("EPSG:4326");
         request.setTileMatrix("2");
-        request.setTileRow(1);
-        request.setTileCol(2);
+        request.setTileRow(1L);
+        request.setTileCol(2L);
 
         GetTileResponse response = server.issueRequest(request);
         BufferedImage tileImage = response.getTileImage();
@@ -435,8 +338,8 @@ public class WebMapTileServerTest {
         request.setFormat("image/png");
         request.setTileMatrixSet(" \"<>#%|");
         request.setTileMatrix("2");
-        request.setTileRow(1);
-        request.setTileCol(2);
+        request.setTileRow(1L);
+        request.setTileCol(2L);
 
         GetTileResponse response = server.issueRequest(request);
         BufferedImage tileImage = response.getTileImage();
@@ -464,8 +367,8 @@ public class WebMapTileServerTest {
         request.setFormat("image/png");
         request.setTileMatrixSet(" \"<>#%|");
         request.setTileMatrix("EPSG:4326:0");
-        request.setTileRow(0);
-        request.setTileCol(0);
+        request.setTileRow(0L);
+        request.setTileCol(0L);
 
         GetTileResponse response = server.issueRequest(request);
         BufferedImage tileImage = response.getTileImage();

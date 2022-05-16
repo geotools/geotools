@@ -222,9 +222,11 @@ public class Layer implements Comparable<Layer> {
         return allBoundingBoxesCache;
     }
 
+    /** Sets the layers bounding box */
     public void setBoundingBoxes(CRSEnvelope boundingBox) {
         this.boundingBoxes.clear();
         this.boundingBoxes.add(boundingBox);
+        clearCache();
     }
 
     /**

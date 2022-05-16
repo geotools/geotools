@@ -305,6 +305,7 @@ public class LantmaterietWMTSServerOnlineTest extends WMTSOnlineTestCase {
             URL url = getClass().getResource("different_srs_def.png");
             ImageAssert.assertEquals(new File(url.toURI()), ri, 100);
         } finally {
+            CRS.reset("all");
             System.clearProperty("org.geotools.referencing.forceXY");
         }
     }

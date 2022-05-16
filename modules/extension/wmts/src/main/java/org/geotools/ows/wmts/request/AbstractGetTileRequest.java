@@ -96,9 +96,9 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
 
     private String tileMatrix = null;
 
-    private Integer tileRow = null;
+    private Long tileRow = null;
 
-    private Integer tileCol = null;
+    private Long tileCol = null;
 
     /**
      * Constructs a GetMapRequest. The data passed in represents valid values that can be used.
@@ -182,33 +182,36 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
     }
 
     @Override
-    public void setTileRow(Integer tileRow) {
+    public void setTileRow(Long tileRow) {
         this.tileRow = tileRow;
     }
 
-    protected Integer getTileRow() {
+    protected Long getTileRow() {
         return tileRow;
     }
 
     @Override
-    public void setTileCol(Integer tileCol) {
+    public void setTileCol(Long tileCol) {
         this.tileCol = tileCol;
     }
 
-    protected Integer getTileCol() {
+    protected Long getTileCol() {
         return tileCol;
     }
 
+    @Deprecated
     @Override
     public void setRequestedHeight(int height) {
         this.requestedHeight = height;
     }
 
+    @Deprecated
     @Override
     public void setRequestedWidth(int width) {
         this.requestedWidth = width;
     }
 
+    @Deprecated
     @Override
     public void setRequestedBBox(ReferencedEnvelope requestedBBox) {
         this.requestedBBox = requestedBBox;
@@ -223,21 +226,25 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
         this.requestedTime = requestedTime;
     }
 
+    @Deprecated
     @Override
     public Map<String, String> getHeaders() {
         return headers;
     }
 
+    @Deprecated
     /** @return the crs */
     public CoordinateReferenceSystem getCrs() {
         return crs;
     }
 
+    @Deprecated
     @Override
     public void setCRS(CoordinateReferenceSystem coordinateReferenceSystem) {
         crs = coordinateReferenceSystem;
     }
 
+    @Deprecated
     /** Compute the set of tiles needed to generate the image. */
     @Override
     public Set<Tile> getTiles() throws ServiceException {

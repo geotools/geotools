@@ -16,6 +16,9 @@
  */
 package org.geotools.ows.wmts.client;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.Arrays;
@@ -36,6 +39,7 @@ import org.geotools.ows.wmts.model.WMTSCapabilities;
 import org.geotools.ows.wmts.model.WMTSLayer;
 import org.geotools.ows.wmts.model.WMTSServiceType;
 import org.geotools.referencing.CRS;
+import org.geotools.renderer.lite.RendererUtilities;
 import org.geotools.tile.Tile;
 import org.geotools.tile.Tile.RenderState;
 import org.junit.Assert;
@@ -129,6 +133,83 @@ public class WMTSTileServiceTest {
         Set<Tile> tiles2 = service.findTilesInExtent(requestEnvelope2, scale, false, MAX_TILES);
         Assert.assertFalse("Tiles shouldn't be empty.", tiles2.isEmpty());
         Assert.assertEquals("There should be two tiles.", 2, tiles2.size());
+    }
+
+    @Test
+    public void testMapRequestCRS() throws Exception {
+
+        WebMapTileServer server =
+                WMTSTestUtils.createServer(
+                        new URL("https://geodata.nationaalgeoregister.nl/tiles/service/wmts"),
+                        "geodata.nationaalgeoregister.nl.xml");
+
+        WMTSLayer layer = server.getCapabilities().getLayer("brtachtergrondkaartwater");
+
+        // Try with a CRS that doesn't exist in the layer and expect the first CRS supported by the
+        // layer
+        ReferencedEnvelope bbox = new ReferencedEnvelope(51, 53, 4, 6, CRS.decode("EPSG:4326"));
+        String matrixSetIdentifier = "EPSG:28992:16";
+
+        Set<Tile> receivedTiles = findTiles(server, layer, matrixSetIdentifier, bbox);
+
+        assertFalse(receivedTiles.isEmpty());
+        for (Tile t : receivedTiles) {
+
+            String recvdTileCRS =
+                    t.getExtent()
+                            .getCoordinateReferenceSystem()
+                            .getIdentifiers()
+                            .toArray()[0]
+                            .toString();
+
+            assertEquals("EPSG:28992", recvdTileCRS);
+        }
+
+        // Now try with a specific  CRS that isn't the first one declared for the layer and expect
+        // that one
+        String matrixSetIdentifier2 = "EPSG:3857";
+
+        Set<Tile> receivedTiles2 = findTiles(server, layer, matrixSetIdentifier2, bbox);
+        assertFalse(receivedTiles2.isEmpty());
+        for (Tile t : receivedTiles2) {
+            String recvdTileCRS =
+                    t.getExtent()
+                            .getCoordinateReferenceSystem()
+                            .getIdentifiers()
+                            .toArray()[0]
+                            .toString();
+
+            assertEquals("EPSG:3857", recvdTileCRS);
+        }
+
+        // Now try with a CRS that exists but is in longitude first format
+        String matrixSetIdentifier3 = "EPSG:3857";
+        ReferencedEnvelope bbox2 = bbox.transform(CRS.decode("EPSG:4326"), true);
+
+        Set<Tile> receivedTiles3 = findTiles(server, layer, matrixSetIdentifier3, bbox2);
+        assertFalse(receivedTiles3.isEmpty());
+        for (Tile t : receivedTiles3) {
+            String recvdTileCRS =
+                    t.getExtent()
+                            .getCoordinateReferenceSystem()
+                            .getIdentifiers()
+                            .toArray()[0]
+                            .toString();
+
+            assertEquals("EPSG:3857", recvdTileCRS);
+        }
+    }
+
+    private Set<Tile> findTiles(
+            WebMapTileServer server,
+            WMTSLayer layer,
+            String matrixSetIdentifier,
+            ReferencedEnvelope requestedEnvelope) {
+        TileMatrixSet matrixSet = server.getCapabilities().getMatrixSet(matrixSetIdentifier);
+        Assert.assertNotNull("MatrixSetIdentifier wasn't found in capabilities", matrixSet);
+        long scale = Math.round(RendererUtilities.calculateOGCScale(requestedEnvelope, 1024, null));
+        WMTSTileService service = new WMTSTileService(server, layer, matrixSet);
+        return service.findTilesInExtent(requestedEnvelope, scale, false, 1000);
     }
 
     private WMTSTileService createWMTSTileService() throws Exception {

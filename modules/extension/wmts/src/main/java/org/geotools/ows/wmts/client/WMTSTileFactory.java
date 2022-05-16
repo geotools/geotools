@@ -76,12 +76,15 @@ public class WMTSTileFactory extends TileFactory {
         return constrainToUpperLeftTile(matrixTile, zoomLevel, service);
     }
 
+    /**
+     * Returns the col and row min/max. Either as defined within layer or compute from matrixSet.
+     * Makes the WMTSTileService tolerante for server spec without TileMatrixSetLink for the layer.
+     */
     public static TileMatrixLimits getLimits(TileMatrixSetLink tmsl, TileMatrixSet tms, int z) {
-
-        List<TileMatrixLimits> limitsList = tmsl.getLimits();
         TileMatrixLimits limits;
 
-        if (limitsList != null && z < limitsList.size()) {
+        if (tmsl != null && z < tmsl.getLimits().size()) {
+            List<TileMatrixLimits> limitsList = tmsl.getLimits();
             limits = limitsList.get(z);
         } else {
             // no limits defined in layer; let's take all the defined tiles

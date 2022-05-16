@@ -33,6 +33,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import javax.media.jai.Interpolation;
@@ -53,8 +54,6 @@ import org.geotools.ows.wmts.WebMapTileServer;
 import org.geotools.ows.wmts.map.WMTSCoverageReader.TileRequest;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
 import org.geotools.ows.wmts.model.WMTSLayer;
-import org.geotools.ows.wmts.request.AbstractGetTileRequest;
-import org.geotools.ows.wmts.request.GetTileRequest;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -82,7 +81,8 @@ public class WMTSCoverageReaderTest {
         WMTSLayer layer =
                 server.getCapabilities().getLayer("ch.are.agglomerationen_isolierte_staedte");
         WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
-        ReferencedEnvelope bbox = new ReferencedEnvelope(5, 12, 45, 49, CRS.decode("EPSG:4326"));
+        ReferencedEnvelope bbox =
+                new ReferencedEnvelope(5, 12, 45, 49, CRS.decode("EPSG:4326", true));
         testInitMapRequest(wcr, bbox);
     }
 
@@ -95,7 +95,7 @@ public class WMTSCoverageReaderTest {
         WMTSLayer layer = server.getCapabilities().getLayer("topp:states");
         WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
         ReferencedEnvelope bbox =
-                new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326"));
+                new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326", true));
         testInitMapRequest(wcr, bbox);
     }
 
@@ -108,7 +108,7 @@ public class WMTSCoverageReaderTest {
         WMTSLayer layer = server.getCapabilities().getLayer("topp:states_jpeg");
         WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
         ReferencedEnvelope bbox =
-                new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326"));
+                new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326", true));
         Set<Tile> responses = testInitMapRequest(wcr, bbox);
         assertFalse(responses.isEmpty());
         URL url = responses.iterator().next().getUrl();
@@ -131,7 +131,7 @@ public class WMTSCoverageReaderTest {
                 new MockHttpResponse(kvpCapaFile, "application/xml; UTF-8");
 
         final File worldFile = getResourceFile("test-data/world.png");
-        HTTPResponse getTileResponse = new MockHttpResponse(worldFile, "application/xml; UTF-8");
+        HTTPResponse getTileResponse = new MockHttpResponse(worldFile, "image/png");
 
         final Map<String, String> getTileHeadersCalled = new HashMap<>();
 
@@ -180,7 +180,7 @@ public class WMTSCoverageReaderTest {
         WMTSLayer layer = server.getCapabilities().getLayer("topp:states");
         WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
         ReferencedEnvelope bbox =
-                new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326"));
+                new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326", true));
         Set<Tile> responses = testInitMapRequest(wcr, bbox);
         assertFalse(responses.isEmpty());
         Tile firstTile = responses.iterator().next();
@@ -205,7 +205,7 @@ public class WMTSCoverageReaderTest {
                             final File worldFile =
                                     WMTSCoverageReaderTest.this.getResourceFile(
                                             "test-data/world.png");
-                            return new MockHttpResponse(worldFile, "application/xml; UTF-8");
+                            return new MockHttpResponse(worldFile, "image/png");
                         } else {
                             throw new NotImplementedException(
                                     "request is not implemented. " + url.toString());
@@ -244,16 +244,23 @@ public class WMTSCoverageReaderTest {
                         "test-data/GetCapaJPEGOnly.xml");
         WMTSLayer layer = server.getCapabilities().getLayer("bmaphidpi");
         WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
-        ReferencedEnvelope bbox = new ReferencedEnvelope(5, 12, 45, 49, CRS.decode("EPSG:4326"));
+        ReferencedEnvelope bbox =
+                new ReferencedEnvelope(1000000, 1200000, 5900000, 6100000, CRS.decode("EPSG:3857"));
         int width = 400;
-        int height = 200;
+        int height = 400;
         TileRequest request = wcr.initTileRequest(bbox, width, height, null);
         assertNotNull(request);
-        GetTileRequest mapRequest = request.createTileRequest();
-        String templateURL = ((AbstractGetTileRequest) mapRequest).getTemplateUrl();
+        Set<Tile> tiles = wcr.findTiles(request);
+        assertNotNull(tiles);
+        Iterator<Tile> iterator = tiles.iterator();
+        assertTrue(iterator.hasNext());
+
+        Tile firstTile = iterator.next();
+        String firstURL = firstTile.getUrl().toExternalForm();
+
         assertEquals(
-                "https://maps.wien.gv.at/basemap/bmaphidpi/{Style}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpeg",
-                templateURL);
+                "https://maps.wien.gv.at/basemap/bmaphidpi/normal/google3857/8/89/135.jpeg",
+                firstURL);
     }
 
     @Test
@@ -288,13 +295,15 @@ public class WMTSCoverageReaderTest {
         int width = 400;
         int height = 200;
         TileRequest request = wcr.initTileRequest(bbox, width, height, null);
+
         assertNotNull(request);
-        GetTileRequest mapRequest = request.createTileRequest();
-        Set<Tile> responses = mapRequest.getTiles();
-        for (Tile t : responses) {
+
+        Set<Tile> tiles = wcr.findTiles(request);
+
+        for (Tile t : tiles) {
             assertNotNull(t);
         }
-        return responses;
+        return tiles;
     }
 
     private WebMapTileServer createServer(URL serverUrl, String resourceName) throws Exception {

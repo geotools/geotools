@@ -257,11 +257,13 @@ public class WMTSCapabilities extends Capabilities {
                             .put(srs, new CRSEnvelope(wgs84Env.transform(tmsCRS, true)));
 
                 } catch (TransformException | FactoryException e) {
-                    if (LOGGER.isLoggable(Level.INFO))
-                        LOGGER.log(
-                                Level.INFO,
-                                "Not adding CRS " + srs + " for layer " + wmtsLayer.getName(),
-                                e);
+                    LOGGER.info(
+                            () -> {
+                                return "Not adding CRS "
+                                        + srs
+                                        + " for layer "
+                                        + wmtsLayer.getName();
+                            });
                 }
             }
         }

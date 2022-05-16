@@ -32,7 +32,7 @@ public class TileMatrixSetLink {
 
     String identifier = "";
 
-    List<TileMatrixLimits> limits = new ArrayList<>();
+    final List<TileMatrixLimits> limits = new ArrayList<>();
 
     /** @return the identifier */
     public String getIdentifier() {
@@ -51,7 +51,8 @@ public class TileMatrixSetLink {
 
     /** @param limits the limits to set */
     public void setLimits(List<TileMatrixLimits> limits) {
-        this.limits = limits;
+        this.limits.clear();
+        this.limits.addAll(limits);
     }
 
     public void addLimit(TileMatrixLimits limit) {

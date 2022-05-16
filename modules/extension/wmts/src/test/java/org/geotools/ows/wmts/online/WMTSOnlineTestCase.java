@@ -13,18 +13,23 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wms.CRSEnvelope;
 import org.geotools.ows.wmts.WebMapTileServer;
+import org.geotools.ows.wmts.client.WMTSTileService;
 import org.geotools.ows.wmts.map.WMTSCoverageReader;
 import org.geotools.ows.wmts.map.WMTSMapLayer;
+import org.geotools.ows.wmts.model.TileMatrixSet;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
 import org.geotools.ows.wmts.model.WMTSLayer;
-import org.geotools.ows.wmts.request.GetTileRequest;
 import org.geotools.parameter.Parameter;
+import org.geotools.referencing.CRS;
+import org.geotools.renderer.lite.RendererUtilities;
 import org.geotools.test.OnlineTestCase;
 import org.geotools.tile.Tile;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public abstract class WMTSOnlineTestCase extends OnlineTestCase {
+
+    protected final int MAX_TILES = 10;
 
     @Override
     protected String getFixtureId() {
@@ -39,23 +44,34 @@ public abstract class WMTSOnlineTestCase extends OnlineTestCase {
     protected Set<Tile> issueTileRequest(
             WebMapTileServer wmts,
             WMTSCapabilities capabilities,
-            ReferencedEnvelope bboxes,
-            ReferencedEnvelope requested,
-            CoordinateReferenceSystem crs,
+            ReferencedEnvelope layerBoundingBox,
+            ReferencedEnvelope requestedEnvelope,
+            CoordinateReferenceSystem matrixSetCRS,
             String layerName)
             throws ServiceException {
-        WMTSLayer layer = capabilities.getLayer(layerName);
-        assertNotNull(layer);
-        GetTileRequest request = wmts.createGetTileRequest();
-        layer.setBoundingBoxes(new CRSEnvelope(bboxes));
-        layer.setSrs(layer.getBoundingBoxes().keySet());
-        request.setLayer(layer);
 
-        request.setRequestedWidth(800);
-        request.setRequestedHeight(400);
-        request.setCRS(crs);
-        request.setRequestedBBox(requested);
-        return request.getTiles();
+        int width = 800;
+
+        WMTSLayer layer = capabilities.getLayer(layerName);
+        layer.setBoundingBoxes(new CRSEnvelope(layerBoundingBox));
+        layer.setSrs(layer.getBoundingBoxes().keySet());
+
+        assertNotNull(layer);
+        TileMatrixSet requestMatrixSet = null;
+        for (TileMatrixSet matrixSet : capabilities.getMatrixSets()) {
+            if (CRS.equalsIgnoreMetadata(matrixSetCRS, matrixSet.getCoordinateReferenceSystem())) {
+                requestMatrixSet = matrixSet;
+                break;
+            }
+        }
+        assertNotNull(
+                "Didn't find suitable matrixSet for matrixSetCRS = " + matrixSetCRS.toString(),
+                requestMatrixSet);
+        WMTSTileService service = new WMTSTileService(wmts, layer, requestMatrixSet);
+        long scale =
+                Math.round(RendererUtilities.calculateOGCScale(requestedEnvelope, width, null));
+
+        return service.findTilesInExtent(requestedEnvelope, scale, false, MAX_TILES);
     }
 
     protected RenderedImage getRenderImageResult(

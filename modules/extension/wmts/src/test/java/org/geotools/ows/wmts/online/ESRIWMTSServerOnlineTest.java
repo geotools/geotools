@@ -19,17 +19,14 @@ package org.geotools.ows.wmts.online;
 
 import java.net.URL;
 import java.util.Properties;
-import java.util.Set;
 import org.geotools.ows.wmts.WebMapTileServer;
-import org.geotools.ows.wmts.client.WMTSTileService;
+import org.geotools.ows.wmts.model.TileMatrix;
 import org.geotools.ows.wmts.model.TileMatrixSet;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
 import org.geotools.ows.wmts.model.WMTSLayer;
 import org.geotools.ows.wmts.model.WMTSServiceType;
 import org.geotools.ows.wmts.request.GetTileRequest;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.OnlineTestCase;
-import org.geotools.tile.Tile;
 import org.junit.Test;
 
 public class ESRIWMTSServerOnlineTest extends OnlineTestCase {
@@ -58,8 +55,8 @@ public class ESRIWMTSServerOnlineTest extends OnlineTestCase {
     }
 
     /*
-     * ESRI ArcGis Servers require that the style is named and not left blank. Sadly the WMTS specification agrees with them.
-     * See GEOT-6017
+     * ESRI ArcGis Servers require that the style is named and not left blank.
+     * GetTileRequest has code to set the layer's default style according to the capabilities.
      */
     @Test
     public void testDefaultStyleRequired() throws Exception {
@@ -68,21 +65,19 @@ public class ESRIWMTSServerOnlineTest extends OnlineTestCase {
         wmts.setType(WMTSServiceType.KVP);
         WMTSCapabilities capabilities = wmts.getCapabilities();
         WMTSLayer wmtsLayer = capabilities.getLayer("Toronto");
+        String matrixSetName = "default028mm";
 
-        TileMatrixSet matrixSet = capabilities.getMatrixSet("default028mm");
-        WMTSTileService service =
-                new WMTSTileService(
-                        test.toExternalForm(), WMTSServiceType.KVP, wmtsLayer, null, matrixSet);
+        TileMatrixSet matrixSet = capabilities.getMatrixSet(matrixSetName);
+        TileMatrix matrix = matrixSet.getMatrices().get(0);
 
-        GetTileRequest request = wmts.createGetTileRequest();
+        GetTileRequest request = wmts.createGetTileRequest(false);
         request.setLayer(wmtsLayer);
-        request.setRequestedBBox(service.getBounds());
-        request.setRequestedWidth(256);
-        request.setRequestedHeight(256);
-        request.setCRS(DefaultGeographicCRS.WGS84);
-        Set<Tile> tiles = request.getTiles();
-        for (Tile tile : tiles) {
-            assertTrue(tile.getUrl().toString().toLowerCase().contains("style=default"));
-        }
+        request.setFormat("image/png");
+        request.setTileMatrixSet(matrixSetName);
+        request.setTileMatrix(matrix.getIdentifier());
+        request.setTileRow(0L);
+        request.setTileCol(0L);
+        String finalUrl = request.getFinalURL().toExternalForm();
+        assertTrue(finalUrl.toLowerCase().contains("style=default"));
     }
 }

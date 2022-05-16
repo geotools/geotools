@@ -19,6 +19,7 @@ package org.geotools.ows.wmts;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -61,6 +62,18 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
     private WMTSServiceType type;
 
     /**
+     * Set up the WebMapTileServer by calling serverURL with the default http client.
+     *
+     * @param serverURL
+     * @throws IOException
+     * @throws ServiceException
+     */
+    public WebMapTileServer(URL serverURL) throws IOException, ServiceException {
+        this(serverURL, HTTPClientFinder.createClient(), null, null);
+        setupType();
+    }
+
+    /**
      * Set up the WebMapTileServer by the given serverUrl using the given http client.
      *
      * @param serverURL
@@ -70,7 +83,7 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
      */
     public WebMapTileServer(URL serverURL, HTTPClient httpClient)
             throws ServiceException, IOException {
-        super(serverURL, httpClient);
+        this(serverURL, httpClient, null, null);
         setupType();
     }
 
@@ -136,19 +149,7 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
             WMTSCapabilities capabilities,
             Map<String, Object> hints)
             throws ServiceException, IOException {
-        super(serverURL, httpClient, capabilities, hints);
-        setupType();
-    }
-
-    /**
-     * Set up the WebMapTileServer by calling serverURL with the default http client.
-     *
-     * @param serverURL
-     * @throws IOException
-     * @throws ServiceException
-     */
-    public WebMapTileServer(URL serverURL) throws IOException, ServiceException {
-        super(serverURL);
+        super(serverURL, httpClient, capabilities, hints, new HashMap<String, String>());
         setupType();
     }
 
@@ -176,7 +177,12 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
     @Deprecated
     public WebMapTileServer(WMTSCapabilities capabilities, HTTPClient httpClient)
             throws ServiceException, IOException {
-        super(extractServerURL(capabilities), httpClient, capabilities);
+        super(
+                extractServerURL(capabilities),
+                httpClient,
+                capabilities,
+                null,
+                new HashMap<String, String>());
         setupType();
     }
 
@@ -190,6 +196,15 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
             }
         }
         return url;
+    }
+
+    /**
+     * Assign all headers used for HTTP calls.
+     *
+     * <p>The constructors make sure it's never null
+     */
+    public Map<String, String> getHeaders() {
+        return headers;
     }
 
     /**
@@ -243,7 +258,12 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
         return (GetTileResponse) internalIssueRequest(tileRequest);
     }
 
-    /** Creates a GetMultiTileRequest. */
+    /**
+     * Creates a GetMultiTileRequest.
+     *
+     * <p>Should return a GetSingleTileRequest when GetMultiTileRequest is removed.
+     */
+    @SuppressWarnings("deprecation")
     public GetTileRequest createGetTileRequest() {
 
         OperationType getTile = getCapabilities().getRequest().getGetTile();
@@ -276,6 +296,7 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
      * <p>The url served to GetRestTileRequest is just the serverUrl. The proper templateUrl is
      * found at a later stage.
      */
+    @SuppressWarnings("deprecation")
     public GetTileRequest createGetTileRequest(boolean multiTile) {
         if (multiTile) {
             return createGetTileRequest();
@@ -304,18 +325,19 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
         return request;
     }
 
-    /** The URL for RESTful can't be established at this point, but it can't be null either. */
+    /**
+     * Finds the onlineResource that are used for either GetKVPTileRequest / GetRestTileRequest.
+     * Should return serverURL, if no other is found.
+     */
     private URL findGetTileURL(OperationType operation) {
         if (operation == null) {
-            return null;
+            return serverURL;
         }
         switch (type) {
             case KVP:
                 return operation.getGet() != null ? operation.getGet() : serverURL;
-            case REST:
-                return serverURL;
             default:
-                return null;
+                return serverURL;
         }
     }
 

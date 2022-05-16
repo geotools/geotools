@@ -993,6 +993,15 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
         }
     }
 
+    @Override
+    protected void notifySuccess(
+            final String method,
+            final String code,
+            final CRSAuthorityFactory factory,
+            final CoordinateReferenceSystem crs) {
+        // Shouldn't notify
+    }
+
     /**
      * Returns the number of time the primary factory failed and the fallback factory was used
      * instead. This information is provided mostly for debugging and testing purpose. It is

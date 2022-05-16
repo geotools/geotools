@@ -496,6 +496,15 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
         return exception;
     }
 
+    @Override
+    protected void notifySuccess(
+            final String method,
+            final String code,
+            final CRSAuthorityFactory factory,
+            final CoordinateReferenceSystem crs) {
+        // Shouldn't notify
+    }
+
     /**
      * Returns a generic object authority factory for the specified {@code "AUTHORITY:NUMBER"} code.
      *

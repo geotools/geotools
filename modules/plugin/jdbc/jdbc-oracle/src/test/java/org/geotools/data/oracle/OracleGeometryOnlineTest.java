@@ -16,6 +16,11 @@
  */
 package org.geotools.data.oracle;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.ArrayList;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
@@ -28,6 +33,7 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.jdbc.JDBCGeometryOnlineTest;
 import org.geotools.jdbc.JDBCGeometryTestSetup;
 import org.geotools.referencing.CRS;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.Geometry;
@@ -55,6 +61,7 @@ public class OracleGeometryOnlineTest extends JDBCGeometryOnlineTest {
         assertEquals(LineString.class, checkGeometryType(LinearRing.class));
     }
 
+    @Test
     public void testInsertEmptyGeometry() throws Exception {
         ContentFeatureSource source = dataStore.getFeatureSource("COLA_MARKETS_CS");
         if (!(source instanceof SimpleFeatureStore)) {
@@ -90,6 +97,7 @@ public class OracleGeometryOnlineTest extends JDBCGeometryOnlineTest {
         }
     }
 
+    @Test
     public void testComplexGeometryFallback() throws Exception {
         try (SimpleFeatureIterator fi =
                 dataStore.getFeatureSource("COLA_MARKETS_CS").getFeatures().features()) {
@@ -101,6 +109,7 @@ public class OracleGeometryOnlineTest extends JDBCGeometryOnlineTest {
         }
     }
 
+    @Test
     public void testGeometryMetadataTable() throws Exception {
         testSetup.setupGeometryColumns(dataStore);
 

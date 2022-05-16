@@ -18,7 +18,6 @@ package org.geotools.data.teradata;
 
 import org.geotools.jdbc.JDBCViewTestSetup;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class TeradataViewTestSetup extends JDBCViewTestSetup {
 
     public TeradataViewTestSetup() {

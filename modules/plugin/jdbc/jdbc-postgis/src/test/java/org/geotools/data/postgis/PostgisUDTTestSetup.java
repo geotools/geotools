@@ -21,7 +21,6 @@ import static org.geotools.data.postgis.PostGISDialect.BIGDATE_UDT;
 
 import org.geotools.jdbc.JDBCUDTTestSetup;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class PostgisUDTTestSetup extends JDBCUDTTestSetup {
 
     public PostgisUDTTestSetup() {

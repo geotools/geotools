@@ -21,7 +21,6 @@ import org.geotools.jdbc.JDBCGroupByVisitorTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
 /** @author Stefan Uhrig, SAP SE */
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class HanaGroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetup {
 
     private static final String TABLE = "buildings_group_by_tests";

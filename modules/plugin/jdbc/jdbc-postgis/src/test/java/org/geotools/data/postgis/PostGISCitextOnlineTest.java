@@ -1,5 +1,7 @@
 package org.geotools.data.postgis;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -8,6 +10,7 @@ import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Filter;
@@ -35,7 +38,7 @@ public class PostGISCitextOnlineTest extends JDBCTestSupport {
         // create it, to make things easy, we just directly try to do so, if this fails,
         // the test will be skipped
         JDBCTestSetup setup = createTestSetup();
-        setup.setFixture(fixture);
+        setup.setFixture(getFixture());
 
         DataSource dataSource = setup.getDataSource();
         try (Connection cx = dataSource.getConnection();
@@ -54,6 +57,7 @@ public class PostGISCitextOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testSchema() throws IOException {
         SimpleFeatureType schema = dataStore.getSchema(tname("users"));
         assertEquals(2, schema.getAttributeCount());
@@ -62,6 +66,7 @@ public class PostGISCitextOnlineTest extends JDBCTestSupport {
         assertEquals(String.class, ad.getType().getBinding());
     }
 
+    @Test
     public void testEquality() throws IOException {
         SimpleFeatureSource fs = dataStore.getFeatureSource(tname("users"));
         FilterFactory ff = dataStore.getFilterFactory();
@@ -72,6 +77,7 @@ public class PostGISCitextOnlineTest extends JDBCTestSupport {
         assertEquals(1, count);
     }
 
+    @Test
     public void testLike() throws IOException {
         SimpleFeatureSource fs = dataStore.getFeatureSource(tname("users"));
         FilterFactory ff = dataStore.getFilterFactory();

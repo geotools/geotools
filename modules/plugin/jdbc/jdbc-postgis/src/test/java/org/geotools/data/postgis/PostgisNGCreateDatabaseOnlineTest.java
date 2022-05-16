@@ -36,8 +36,8 @@ import org.geotools.data.DataUtilities;
 import org.geotools.feature.SchemaException;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.test.OnlineTestCase;
+import org.junit.Test;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not a JUnit4 test yet
 public class PostgisNGCreateDatabaseOnlineTest extends OnlineTestCase {
 
     private static final String CREATE_DROP_TESTDB = "gt2_create_drop_testdb";
@@ -109,6 +109,7 @@ public class PostgisNGCreateDatabaseOnlineTest extends OnlineTestCase {
         }
     }
 
+    @Test
     public void testCreateDrop() throws IOException, SQLException, SchemaException {
         PostgisNGDataStoreFactory factory = new PostgisNGDataStoreFactory();
         Properties db = fixture;

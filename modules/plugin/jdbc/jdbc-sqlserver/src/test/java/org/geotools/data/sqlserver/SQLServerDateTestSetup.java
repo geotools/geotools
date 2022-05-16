@@ -18,7 +18,6 @@ package org.geotools.data.sqlserver;
 
 import org.geotools.jdbc.JDBCDateTestSetup;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class SQLServerDateTestSetup extends JDBCDateTestSetup {
 
     protected SQLServerDateTestSetup() {

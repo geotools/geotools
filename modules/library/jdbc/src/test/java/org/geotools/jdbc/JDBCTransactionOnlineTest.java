@@ -16,6 +16,8 @@
  */
 package org.geotools.jdbc;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureWriter;
@@ -25,11 +27,12 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCTransactionOnlineTest extends JDBCTestSupport {
+    @Test
     public void testCommit() throws IOException {
         // JDBCFeatureStore fs = (JDBCFeatureStore) dataStore.getFeatureSource(tname("ft1"));
 
@@ -47,6 +50,7 @@ public abstract class JDBCTransactionOnlineTest extends JDBCTestSupport {
         assertEquals(4, fc.size());
     }
 
+    @Test
     public void testNoCommit() throws IOException {
         try (Transaction tx = new DefaultTransaction();
                 FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
@@ -61,6 +65,7 @@ public abstract class JDBCTransactionOnlineTest extends JDBCTestSupport {
         assertEquals(3, fc.size());
     }
 
+    @Test
     public void testConcurrentTransactions() throws IOException {
         try (Transaction tx1 = new DefaultTransaction();
                 Transaction tx2 = new DefaultTransaction();
@@ -89,6 +94,7 @@ public abstract class JDBCTransactionOnlineTest extends JDBCTestSupport {
         assertEquals(5, fc.size());
     }
 
+    @Test
     public void testSerialTransactions() throws IOException {
         SimpleFeatureStore st = (SimpleFeatureStore) dataStore.getFeatureSource(tname("ft1"));
 

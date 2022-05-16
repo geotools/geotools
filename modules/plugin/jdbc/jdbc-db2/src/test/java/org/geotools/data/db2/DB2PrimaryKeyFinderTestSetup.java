@@ -20,7 +20,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import org.geotools.jdbc.JDBCPrimaryKeyFinderTestSetup;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class DB2PrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSetup {
 
     protected DB2PrimaryKeyFinderTestSetup() {

@@ -16,6 +16,8 @@
  */
 package org.geotools.data.postgis;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;

@@ -16,9 +16,12 @@
  */
 package org.geotools.data.mysql;
 
+import static org.junit.Assert.assertFalse;
+
 import java.util.Map;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
+import org.junit.Test;
 
 /**
  * Tests that enhandedSpatialSupport is not enabled in MySQL versions < 5.6 even if
@@ -40,6 +43,7 @@ public class MySQLDataStoreManualEnhandedSpatialSupportTest extends JDBCTestSupp
         return params;
     }
 
+    @Test
     public void testManualEnhancedSpatialSupportDetection() throws Exception {
         // ensure that if not version 5.6 or later then PreciseSpatialOps are
         // disabled

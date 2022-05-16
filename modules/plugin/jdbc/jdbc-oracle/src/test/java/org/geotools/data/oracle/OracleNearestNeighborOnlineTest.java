@@ -16,6 +16,10 @@
  */
 package org.geotools.data.oracle;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +30,7 @@ import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
@@ -85,6 +90,7 @@ public class OracleNearestNeighborOnlineTest extends JDBCTestSupport {
                 });
     }
 
+    @Test
     public void testNearestNeighbor() throws Exception {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         ContentFeatureSource source = dataStore.getFeatureSource(tname("NEIGHBORS"));
@@ -93,8 +99,8 @@ public class OracleNearestNeighborOnlineTest extends JDBCTestSupport {
             assertTrue(features.hasNext());
             SimpleFeature f = features.next();
             Point point = (Point) f.getDefaultGeometry();
-            assertEquals(0.0, point.getCoordinate().x);
-            assertEquals(0.0, point.getCoordinate().y);
+            assertEquals(0.0, point.getCoordinate().x, 0.0);
+            assertEquals(0.0, point.getCoordinate().y, 0.0);
             assertFalse(features.hasNext());
         }
 
@@ -102,8 +108,8 @@ public class OracleNearestNeighborOnlineTest extends JDBCTestSupport {
             assertTrue(features.hasNext());
             SimpleFeature f = features.next();
             Point point = (Point) f.getDefaultGeometry();
-            assertEquals(40.0, point.getCoordinate().x);
-            assertEquals(40.0, point.getCoordinate().y);
+            assertEquals(40.0, point.getCoordinate().x, 0.0);
+            assertEquals(40.0, point.getCoordinate().y, 0.0);
             assertFalse(features.hasNext());
         }
 

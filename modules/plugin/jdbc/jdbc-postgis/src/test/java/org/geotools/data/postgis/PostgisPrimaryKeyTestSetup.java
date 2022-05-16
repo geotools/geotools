@@ -3,7 +3,6 @@ package org.geotools.data.postgis;
 import org.geotools.jdbc.JDBCPrimaryKeyTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class PostgisPrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
 
     public PostgisPrimaryKeyTestSetup(JDBCTestSetup delegate) {

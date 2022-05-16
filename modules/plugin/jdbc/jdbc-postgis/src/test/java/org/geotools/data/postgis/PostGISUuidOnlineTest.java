@@ -5,6 +5,8 @@
 
 package org.geotools.data.postgis;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Query;

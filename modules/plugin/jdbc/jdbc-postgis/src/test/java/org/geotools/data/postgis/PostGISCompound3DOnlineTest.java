@@ -16,6 +16,8 @@
  */
 package org.geotools.data.postgis;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCCompound3DOnlineTest;
 import org.geotools.jdbc.JDBCCompound3DTestSetup;

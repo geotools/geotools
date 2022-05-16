@@ -1,14 +1,18 @@
 package org.geotools.jdbc;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureCollection;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCEscapingOnlineTest extends JDBCTestSupport {
 
     protected SimpleFeatureType escapingSchema;
@@ -28,6 +32,7 @@ public abstract class JDBCEscapingOnlineTest extends JDBCTestSupport {
                         ID + ":0," + NAME + ":String");
     }
 
+    @Test
     public void testEscaping() throws Exception {
         dataStore.createSchema(escapingSchema);
         assertFeatureTypesEqual(escapingSchema, dataStore.getSchema(tname(ESCAPING)));

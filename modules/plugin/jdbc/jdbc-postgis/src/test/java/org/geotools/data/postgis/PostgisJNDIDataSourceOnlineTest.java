@@ -17,6 +17,8 @@
 
 package org.geotools.data.postgis;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.List;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCJNDIDataSourceOnlineTest;

@@ -16,6 +16,8 @@
  */
 package org.geotools.data.hana;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.jdbc.JDBCGeometryOnlineTest;
 import org.geotools.jdbc.JDBCGeometryTestSetup;
 import org.locationtech.jts.geom.Geometry;

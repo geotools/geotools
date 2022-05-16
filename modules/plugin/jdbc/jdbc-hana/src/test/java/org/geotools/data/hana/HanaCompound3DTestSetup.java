@@ -23,7 +23,6 @@ import org.geotools.jdbc.JDBCCompound3DTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
 /** @author Stefan Uhrig, SAP SE */
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class HanaCompound3DTestSetup extends JDBCCompound3DTestSetup {
 
     private static final String TABLE_POINT = "pointCompound3d";

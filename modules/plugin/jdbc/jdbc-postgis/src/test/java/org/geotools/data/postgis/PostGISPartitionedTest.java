@@ -16,6 +16,8 @@
  */
 package org.geotools.data.postgis;
 
+import static org.junit.Assert.assertEquals;
+
 import java.math.BigDecimal;
 import java.util.List;
 import org.geotools.data.DataUtilities;
@@ -25,6 +27,7 @@ import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory;
@@ -44,12 +47,14 @@ public class PostGISPartitionedTest extends JDBCTestSupport {
         dataStore.setExposePrimaryKeyColumns(true);
     }
 
+    @Test
     public void testTableExists() throws Exception {
         SimpleFeatureType schema = dataStore.getSchema(tname("customers"));
         assertEquals(String.class, schema.getDescriptor("status").getType().getBinding());
         assertEquals(BigDecimal.class, schema.getDescriptor("arr").getType().getBinding());
     }
 
+    @Test
     public void testReadAll() throws Exception {
         SimpleFeatureSource fs = dataStore.getFeatureSource(tname("customers"));
         FilterFactory ff = dataStore.getFilterFactory();
@@ -62,6 +67,7 @@ public class PostGISPartitionedTest extends JDBCTestSupport {
         assertEquals("REACTIVATED", features.get(2).getAttribute(statusAttribute));
     }
 
+    @Test
     public void testInsertNew() throws Exception {
         // initial states, contains RECURRING AND REACTIVATED
         SimpleFeatureSource others = dataStore.getFeatureSource(tname("cust_others"));

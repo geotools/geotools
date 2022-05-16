@@ -19,7 +19,6 @@ package org.geotools.data.teradata;
 import org.geotools.jdbc.JDBCGeometrylessTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class TeradataGeometrylessTestSetup extends JDBCGeometrylessTestSetup {
 
     public TeradataGeometrylessTestSetup(JDBCTestSetup delegate) {

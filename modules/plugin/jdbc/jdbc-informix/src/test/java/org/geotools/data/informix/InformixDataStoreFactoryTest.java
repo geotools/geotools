@@ -16,19 +16,24 @@
  */
 package org.geotools.data.informix;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.HashMap;
 import java.util.Map;
-import junit.framework.TestCase;
 import org.geotools.jdbc.JDBCDataStoreFactory;
+import org.junit.Before;
+import org.junit.Test;
 
-public class InformixDataStoreFactoryTest extends TestCase {
+public class InformixDataStoreFactoryTest {
     InformixDataStoreFactory factory;
 
-    @Override
-    protected void setUp() {
+    @Before
+    public void setUp() {
         factory = new InformixDataStoreFactory();
     }
 
+    @Test
     public void testCanProcess() {
         Map<String, Object> params = new HashMap<>();
         assertFalse(factory.canProcess(params));

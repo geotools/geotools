@@ -16,6 +16,8 @@
  */
 package org.geotools.data.postgis.ps;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.data.postgis.PostgisGeographyTestSetup;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCGeographyOnlineTest;

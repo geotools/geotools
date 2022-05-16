@@ -21,7 +21,6 @@ import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCThreeValuedLogicTestSetup;
 
 /** @author Stefan Uhrig, SAP SE */
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class HanaThreeValuedLogicTestSetup extends JDBCThreeValuedLogicTestSetup {
 
     private static final String TABLE = "abc";

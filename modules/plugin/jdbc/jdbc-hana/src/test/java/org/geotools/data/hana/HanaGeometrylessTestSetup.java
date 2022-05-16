@@ -21,7 +21,6 @@ import org.geotools.jdbc.JDBCGeometrylessTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
 /** @author Stefan Uhrig, SAP SE */
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class HanaGeometrylessTestSetup extends JDBCGeometrylessTestSetup {
 
     private static final String PERSON_TABLE = "person";

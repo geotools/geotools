@@ -23,6 +23,8 @@ import static org.geotools.jdbc.JDBCDataStoreFactory.HOST;
 import static org.geotools.jdbc.JDBCDataStoreFactory.PASSWD;
 import static org.geotools.jdbc.JDBCDataStoreFactory.SCHEMA;
 import static org.geotools.jdbc.JDBCDataStoreFactory.USER;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -46,7 +48,7 @@ public class TeradataDataStoreFactoryOnlineTest extends JDBCTestSupport {
 
     private void checkCreateConnection(TeradataDataStoreFactory factory, String dbtype)
             throws IOException {
-        Properties db = fixture;
+        Properties db = getFixture();
 
         Map<String, Object> params = new HashMap<>();
         params.put(HOST.key, db.getProperty(HOST.key));

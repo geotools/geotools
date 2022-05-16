@@ -16,11 +16,15 @@
  */
 package org.geotools.data.postgis;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.IOException;
 import java.util.List;
 import org.geotools.data.Query;
 import org.geotools.feature.visitor.Aggregate;
 import org.geotools.jdbc.JDBCGroupByVisitorOnlineTest;
+import org.junit.Test;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Function;
 
@@ -31,6 +35,7 @@ public class PostgisGroupByVisitorOnlineTest extends JDBCGroupByVisitorOnlineTes
         return new PostgisGroupByVisitorTestSetup(new PostGISTestSetup());
     }
 
+    @Test
     public void testAggregateOnNonEncodableFunction() throws Exception {
         PostGISDialect sqlDialect = (PostGISDialect) dataStore.getSQLDialect();
         boolean oldValue = sqlDialect.isFunctionEncodingEnabled();
@@ -42,6 +47,7 @@ public class PostgisGroupByVisitorOnlineTest extends JDBCGroupByVisitorOnlineTes
         }
     }
 
+    @Test
     public void testAggregateOnEncodableFunction() throws Exception {
         PostGISDialect sqlDialect = (PostGISDialect) dataStore.getSQLDialect();
         boolean oldValue = sqlDialect.isFunctionEncodingEnabled();
@@ -69,6 +75,7 @@ public class PostgisGroupByVisitorOnlineTest extends JDBCGroupByVisitorOnlineTes
         checkValueContains(value, "SCH", "60.0");
     }
 
+    @Test
     public void testTimestampHistogramDate() throws Exception {
         testTimestampHistogram("last_update_date");
     }

@@ -20,7 +20,6 @@ import java.sql.Connection;
 import org.geotools.jdbc.JDBCPrimaryKeyFinderTestSetup;
 
 /** @author Stefan Uhrig, SAP SE */
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class HanaPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSetup {
 
     private static final String METADATA_TABLE = "GT_PK_METADATA";

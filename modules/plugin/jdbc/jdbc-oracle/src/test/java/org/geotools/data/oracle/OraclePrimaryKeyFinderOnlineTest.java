@@ -1,5 +1,7 @@
 package org.geotools.data.oracle;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.Map;
 import java.util.logging.Logger;
 import org.geotools.data.DataUtilities;

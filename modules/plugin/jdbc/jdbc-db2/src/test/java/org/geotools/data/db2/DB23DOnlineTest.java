@@ -16,6 +16,8 @@
  */
 package org.geotools.data.db2;
 
+import static org.junit.Assert.assertEquals;
+
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.jdbc.JDBC3DOnlineTest;

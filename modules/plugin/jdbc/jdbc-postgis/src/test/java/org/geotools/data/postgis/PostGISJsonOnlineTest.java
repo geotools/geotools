@@ -16,6 +16,12 @@
  */
 package org.geotools.data.postgis;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
@@ -389,6 +395,7 @@ public class PostGISJsonOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testJSONPointerFunctionLike() throws Exception {
         ContentFeatureSource fs = dataStore.getFeatureSource(tname("jsontest"));
         FilterFactory ff = dataStore.getFilterFactory();

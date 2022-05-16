@@ -5,6 +5,10 @@
 
 package org.geotools.jdbc;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -19,6 +23,7 @@ import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.util.factory.Hints;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
@@ -28,7 +33,6 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 
 /** @author kbyte */
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCUuidOnlineTest extends JDBCTestSupport {
 
     @Override
@@ -40,11 +44,13 @@ public abstract class JDBCUuidOnlineTest extends JDBCTestSupport {
 
     protected UUID uuid3 = UUID.fromString("34362328-9842-2385-8926-000000000003");
 
+    @Test
     public void testGetSchema() throws Exception {
         SimpleFeatureType ft = dataStore.getSchema(tname("guid"));
         assertEquals(UUID.class, ft.getDescriptor(aname("uuidProperty")).getType().getBinding());
     }
 
+    @Test
     public void testGetFeatures() throws Exception {
         try (FeatureReader<SimpleFeatureType, SimpleFeature> r =
                 dataStore.getFeatureReader(new Query(tname(("guid"))), Transaction.AUTO_COMMIT)) {
@@ -61,6 +67,7 @@ public abstract class JDBCUuidOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testInsertFeatures() throws Exception {
         try (Transaction transaction = new DefaultTransaction()) {
             SimpleFeatureStore featureStore =
@@ -79,6 +86,7 @@ public abstract class JDBCUuidOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testModifyFeatures() throws Exception {
         try (FeatureWriter<SimpleFeatureType, SimpleFeature> w =
                 dataStore.getFeatureWriter(tname("guid"), Transaction.AUTO_COMMIT)) {
@@ -90,6 +98,7 @@ public abstract class JDBCUuidOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testRemoveFeatures() throws Exception {
         SimpleFeatureStore featureStore =
                 (SimpleFeatureStore) dataStore.getFeatureSource(tname("guid"));
@@ -103,6 +112,7 @@ public abstract class JDBCUuidOnlineTest extends JDBCTestSupport {
         assertEquals(1, featureStore.getCount(Query.ALL));
     }
 
+    @Test
     public void testUUIDAsPrimaryKey() throws Exception {
         try (Transaction transaction = new DefaultTransaction()) {
             SimpleFeatureStore featureStore =

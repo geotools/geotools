@@ -16,6 +16,8 @@
  */
 package org.geotools.data.h2;
 
+import static org.junit.Assert.assertEquals;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -26,6 +28,7 @@ import org.geotools.jdbc.JDBCConnectionLifecycleOnlineTest;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.VirtualTable;
+import org.junit.Test;
 
 public class H2ConnectionLifecycleTest extends JDBCConnectionLifecycleOnlineTest {
 
@@ -65,6 +68,7 @@ public class H2ConnectionLifecycleTest extends JDBCConnectionLifecycleOnlineTest
         return new H2TestSetup();
     }
 
+    @Test
     public void testVariableListener() throws Exception {
         // setup a virtual table using the user variable
         VirtualTable vt =

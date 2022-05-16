@@ -16,6 +16,10 @@
  */
 package org.geotools.jdbc;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.Collections;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureLock;
@@ -25,13 +29,13 @@ import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.feature.NameImpl;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsEqualTo;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
 
     JDBCFeatureStore store;
@@ -44,6 +48,7 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
         store.setFeatureLock(FeatureLock.TRANSACTION);
     }
 
+    @Test
     public void testLockFeatures() throws Exception {
 
         FeatureLock lock = new FeatureLock(tname("ft1"), 60 * 60 * 1000);
@@ -95,6 +100,7 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testLockFeaturesWithFilter() throws Exception {
 
         FeatureLock lock = new FeatureLock(tname("ft1"), 60 * 60 * 1000);
@@ -136,6 +142,7 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testLockFeaturesWithInvalidFilter() throws Exception {
 
         FeatureLock lock = new FeatureLock(tname("ft1"), 60 * 60 * 1000);
@@ -157,6 +164,7 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testLockFeaturesWithInvalidQuery() throws Exception {
         FeatureLock lock = new FeatureLock(tname("ft1"), 60 * 60 * 1000);
 
@@ -177,6 +185,7 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testUnlockFeatures() throws Exception {
         FeatureLock lock = new FeatureLock(tname("ft1"), 60 * 60 * 1000);
 
@@ -220,6 +229,7 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testUnlockFeaturesInvalidFilter() throws Exception {
         FeatureLock lock = new FeatureLock(tname("ft1"), 60 * 60 * 1000);
 
@@ -245,6 +255,7 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testDeleteLockedFeatures() throws Exception {
         FeatureLock lock = new FeatureLock(tname("ft1"), 60 * 60 * 1000);
 
@@ -274,6 +285,7 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testModifyLockedFeatures() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
 

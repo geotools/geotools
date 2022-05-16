@@ -24,6 +24,9 @@ import static org.geotools.jdbc.JDBCDataStoreFactory.PASSWD;
 import static org.geotools.jdbc.JDBCDataStoreFactory.PORT;
 import static org.geotools.jdbc.JDBCDataStoreFactory.SCHEMA;
 import static org.geotools.jdbc.JDBCDataStoreFactory.USER;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -33,6 +36,7 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
 import org.geotools.test.FixtureUtilities;
+import org.junit.Test;
 
 public class OracleNGDataStoreFactoryOnlineTest extends JDBCTestSupport {
 
@@ -41,16 +45,19 @@ public class OracleNGDataStoreFactoryOnlineTest extends JDBCTestSupport {
         return new OracleTestSetup();
     }
 
+    @Test
     public void testCreateConnection() throws Exception {
         OracleNGDataStoreFactory factory = new OracleNGDataStoreFactory();
         checkCreateConnection(factory, factory.getDatabaseID());
     }
 
+    @Test
     public void testCaptureOldDatastoreConfig() throws Exception {
         OracleNGDataStoreFactory factory = new OracleNGDataStoreFactory();
         checkCreateConnection(factory, "oracle");
     }
 
+    @Test
     public void testGeometryMetadata() throws IOException {
         OracleNGDataStoreFactory factory = new OracleNGDataStoreFactory();
         Properties db = FixtureUtilities.loadFixture("oracle");

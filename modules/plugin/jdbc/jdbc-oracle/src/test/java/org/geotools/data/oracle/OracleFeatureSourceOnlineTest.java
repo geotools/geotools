@@ -16,6 +16,9 @@
  */
 package org.geotools.data.oracle;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
@@ -24,6 +27,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCFeatureSourceOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.referencing.CRS;
+import org.junit.Test;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsEqualTo;
 
@@ -39,6 +43,7 @@ public class OracleFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
      *
      * @author Hendrik Peilke
      */
+    @Test
     public void testSDOGeomMetadataBounds() throws Exception {
         // enable fast bounds retrieval from SDO_GEOM_METADATA table
         ((OracleDialect) dataStore.getSQLDialect()).setMetadataBboxEnabled(true);
@@ -52,6 +57,7 @@ public class OracleFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
         assertTrue(areCRSEqual(CRS.decode("EPSG:4326"), bounds.getCoordinateReferenceSystem()));
     }
 
+    @Test
     public void testEstimatedBounds() throws Exception {
         // enable fast bbox
         ((OracleDialect) dataStore.getSQLDialect()).setEstimatedExtentsEnabled(true);
@@ -65,6 +71,7 @@ public class OracleFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
         assertTrue(areCRSEqual(CRS.decode("EPSG:4326"), bounds.getCoordinateReferenceSystem()));
     }
 
+    @Test
     public void testEstimatedBoundsWithQuery() throws Exception {
         // enable fast bbox
         ((OracleDialect) dataStore.getSQLDialect()).setEstimatedExtentsEnabled(true);

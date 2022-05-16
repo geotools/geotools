@@ -16,6 +16,8 @@
  */
 package org.geotools.data.informix;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 import java.sql.Types;
 import java.util.function.Consumer;

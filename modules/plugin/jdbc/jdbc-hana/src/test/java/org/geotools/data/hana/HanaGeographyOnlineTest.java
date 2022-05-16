@@ -16,6 +16,10 @@
  */
 package org.geotools.data.hana;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.jdbc.JDBCGeographyOnlineTest;
 import org.geotools.jdbc.JDBCGeographyTestSetup;
 import org.geotools.jdbc.VirtualTable;

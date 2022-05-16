@@ -18,7 +18,6 @@ package org.geotools.data.db2;
 
 import org.geotools.jdbc.JDBCTypeNamesTestSetup;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class DB2TypeNamesTestSetup extends JDBCTypeNamesTestSetup {
 
     protected DB2TypeNamesTestSetup() {

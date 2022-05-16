@@ -16,6 +16,9 @@
  */
 package org.geotools.jdbc;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -37,6 +40,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.referencing.CRS;
 import org.geotools.util.factory.Hints;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -59,7 +63,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Andrea Aime - OpenGeo
  * @author Martin Davis - OpenGeo
  */
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
 
     protected static final String ID = "id";
@@ -123,6 +126,7 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
 
     protected abstract int getEpsgCode();
 
+    @Test
     public void testSchema() throws Exception {
         SimpleFeatureType schema = dataStore.getSchema(tname(getLine3d()));
         CoordinateReferenceSystem crs =
@@ -135,6 +139,7 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
                 3, schema.getGeometryDescriptor().getUserData().get(Hints.COORDINATE_DIMENSION));
     }
 
+    @Test
     public void testReadPoint() throws Exception {
         SimpleFeatureCollection fc = dataStore.getFeatureSource(tname(getPoint3d())).getFeatures();
         try (SimpleFeatureIterator fr = fc.features()) {
@@ -144,6 +149,7 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testReadLine() throws Exception {
         SimpleFeatureCollection fc = dataStore.getFeatureSource(tname(getLine3d())).getFeatures();
         try (SimpleFeatureIterator fr = fc.features()) {
@@ -158,6 +164,7 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testBBOX3DReadLine() throws Exception {
         BBOX3D bbox3d = FF.bbox("", new ReferencedEnvelope3D(2, 3, 1, 2, 0, 1, crs));
         SimpleFeatureCollection fc =
@@ -174,6 +181,7 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testBBOX3DOutsideLine() throws Exception {
         // a bbox 3d well outside the line footprint
         BBOX3D bbox3d = FF.bbox("", new ReferencedEnvelope3D(2, 3, 1, 2, 100, 101, crs));
@@ -182,6 +190,7 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
         assertEquals(0, fc.size());
     }
 
+    @Test
     public void testWriteLine() throws Exception {
         // build a 3d line
         GeometryFactory gf = new GeometryFactory();
@@ -207,6 +216,7 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testCreateSchemaAndInsertPolyTriangle() throws Exception {
         LiteCoordinateSequenceFactory csf = new LiteCoordinateSequenceFactory();
         GeometryFactory gf = new GeometryFactory(csf);
@@ -219,6 +229,7 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
         checkCreateSchemaAndInsert(poly);
     }
 
+    @Test
     public void testCreateSchemaAndInsertPolyRectangle() throws Exception {
         LiteCoordinateSequenceFactory csf = new LiteCoordinateSequenceFactory();
         GeometryFactory gf = new GeometryFactory(csf);
@@ -233,6 +244,7 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
         checkCreateSchemaAndInsert(poly);
     }
 
+    @Test
     public void testCreateSchemaAndInsertPolyRectangleWithHole() throws Exception {
         LiteCoordinateSequenceFactory csf = new LiteCoordinateSequenceFactory();
         GeometryFactory gf = new GeometryFactory(csf);
@@ -252,6 +264,7 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
         checkCreateSchemaAndInsert(poly);
     }
 
+    @Test
     public void testCreateSchemaAndInsertPolyWithHoleCW() throws Exception {
         LiteCoordinateSequenceFactory csf = new LiteCoordinateSequenceFactory();
         GeometryFactory gf = new GeometryFactory(csf);
@@ -348,6 +361,7 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
     }
 
     /** Make sure we can properly retrieve the bounds of 3d layers */
+    @Test
     public void testBounds() throws Exception {
         ReferencedEnvelope env = dataStore.getFeatureSource(tname(getLine3d())).getBounds();
 
@@ -360,6 +374,7 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
     }
 
     // disabled as the liter coordinate sequence has still not been updated to support 3d data
+    @Test
     public void testRendererBehaviour() throws Exception {
         // make sure the hints are supported
         ContentFeatureSource fs = dataStore.getFeatureSource(tname(getLine3d()));

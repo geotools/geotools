@@ -16,6 +16,9 @@
  */
 package org.geotools.data.teradata;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import org.geotools.data.Query;
@@ -25,6 +28,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.jdbc.JDBCViewOnlineTest;
 import org.geotools.jdbc.JDBCViewTestSetup;
 import org.geotools.util.logging.Logging;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.spatial.BBOX;
@@ -41,6 +45,7 @@ public class TeradataViewOnlineTest extends JDBCViewOnlineTest {
         return false;
     }
 
+    @Test
     public void testViewWithTesselationAndIndex() throws Exception {
 
         Handler handler = Logging.getLogger(TeradataViewOnlineTest.class).getHandlers()[0];

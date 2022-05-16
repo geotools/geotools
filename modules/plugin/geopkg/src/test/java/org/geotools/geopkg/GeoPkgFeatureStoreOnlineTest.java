@@ -16,6 +16,8 @@
  */
 package org.geotools.geopkg;
 
+import static org.junit.Assert.assertTrue;
+
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.sql.SQLException;

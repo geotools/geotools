@@ -16,6 +16,10 @@
  */
 package org.geotools.jdbc;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -24,13 +28,13 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCFeatureCollectionOnlineTest extends JDBCTestSupport {
     SimpleFeatureCollection collection;
     JDBCFeatureStore source;
@@ -43,6 +47,7 @@ public abstract class JDBCFeatureCollectionOnlineTest extends JDBCTestSupport {
         collection = source.getFeatures();
     }
 
+    @Test
     public void testIterator() throws Exception {
         try (FeatureIterator<SimpleFeature> i = collection.features()) {
             assertNotNull(i);
@@ -71,6 +76,7 @@ public abstract class JDBCFeatureCollectionOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Test
     public void testBounds() throws IOException {
         ReferencedEnvelope bounds = collection.getBounds();
         assertNotNull(bounds);
@@ -81,10 +87,12 @@ public abstract class JDBCFeatureCollectionOnlineTest extends JDBCTestSupport {
         assertEquals(2d, bounds.getMaxY(), 0.1);
     }
 
+    @Test
     public void testSize() throws IOException {
         assertEquals(3, collection.size());
     }
 
+    @Test
     public void testSubCollection() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         Filter f = ff.equals(ff.property(aname("intProperty")), ff.literal(1));
@@ -102,6 +110,7 @@ public abstract class JDBCFeatureCollectionOnlineTest extends JDBCTestSupport {
         assertEquals(exp.getMaxY(), act.getMaxY(), 0.1);
     }
 
+    @Test
     public void testAdd() throws IOException {
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(collection.getSchema());
         b.set(aname("intProperty"), Integer.valueOf(3));

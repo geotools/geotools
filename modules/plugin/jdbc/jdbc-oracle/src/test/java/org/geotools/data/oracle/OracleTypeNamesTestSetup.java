@@ -19,7 +19,6 @@ package org.geotools.data.oracle;
 import java.util.List;
 import org.geotools.jdbc.JDBCTypeNamesTestSetup;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class OracleTypeNamesTestSetup extends JDBCTypeNamesTestSetup {
 
     protected OracleTypeNamesTestSetup() {

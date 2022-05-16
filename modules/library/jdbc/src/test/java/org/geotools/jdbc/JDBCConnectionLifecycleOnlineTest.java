@@ -16,6 +16,9 @@
  */
 package org.geotools.jdbc;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -26,10 +29,10 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCConnectionLifecycleOnlineTest extends JDBCTestSupport {
 
     protected MockListener mockListener = new MockListener();
@@ -43,6 +46,7 @@ public abstract class JDBCConnectionLifecycleOnlineTest extends JDBCTestSupport 
     }
 
     /** Check null encoding is working properly */
+    @Test
     public void testListenerCalled() throws IOException {
         dataStore.getConnectionLifecycleListeners().add(mockListener);
 
@@ -81,6 +85,7 @@ public abstract class JDBCConnectionLifecycleOnlineTest extends JDBCTestSupport 
         }
     }
 
+    @Test
     public void testConnectionReleased() throws IOException {
         dataStore.getConnectionLifecycleListeners().add(new ExceptionListener());
 

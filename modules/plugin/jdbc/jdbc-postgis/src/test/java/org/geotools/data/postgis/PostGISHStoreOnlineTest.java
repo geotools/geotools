@@ -16,6 +16,12 @@
  */
 package org.geotools.data.postgis;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeFalse;
+
 import java.io.IOException;
 import java.util.logging.Logger;
 import org.geotools.data.DataUtilities;
@@ -55,9 +61,7 @@ public class PostGISHStoreOnlineTest extends JDBCTestSupport {
 
     @Test
     public void testSinglePair() throws Exception {
-        if (skipTests()) {
-            return;
-        }
+        assumeFalse(skipTests());
         String name = "singlepair";
         Object object = getHstoreColumnForFeatureWithName(name);
         assertNotNull(object);

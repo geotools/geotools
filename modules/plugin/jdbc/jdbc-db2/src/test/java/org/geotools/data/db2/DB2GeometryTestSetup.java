@@ -20,7 +20,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import org.geotools.jdbc.JDBCGeometryTestSetup;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class DB2GeometryTestSetup extends JDBCGeometryTestSetup {
 
     protected DB2GeometryTestSetup() {

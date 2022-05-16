@@ -18,7 +18,6 @@ package org.geotools.data.mysql;
 
 import org.geotools.jdbc.JDBCNoPrimaryKeyTestSetup;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class MySQLNoPrimaryKeyTestSetup extends JDBCNoPrimaryKeyTestSetup {
 
     public MySQLNoPrimaryKeyTestSetup() {

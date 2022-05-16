@@ -20,7 +20,6 @@ import java.sql.Connection;
 import org.geotools.jdbc.JDBCTypeNamesTestSetup;
 
 /** @author Stefan Uhrig, SAP SE */
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class HanaTypeNamesTestSetup extends JDBCTypeNamesTestSetup {
 
     private static final String TABLE = "ftntable";

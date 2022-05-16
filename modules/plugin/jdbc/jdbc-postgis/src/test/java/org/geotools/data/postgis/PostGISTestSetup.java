@@ -24,7 +24,6 @@ import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.util.Version;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not a test by itself
 public class PostGISTestSetup extends JDBCTestSetup {
 
     protected Version postgisVersion, pgsqlVersion;

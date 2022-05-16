@@ -19,7 +19,6 @@ package org.geotools.data.db2;
 import java.sql.Connection;
 import org.geotools.jdbc.JDBCEmptyTestSetup;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class DB2EmptyTestSetup extends JDBCEmptyTestSetup {
     public DB2EmptyTestSetup() {
         super(new DB2TestSetup());

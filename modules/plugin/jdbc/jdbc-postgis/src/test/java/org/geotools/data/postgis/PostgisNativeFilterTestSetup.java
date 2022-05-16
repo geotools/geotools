@@ -19,7 +19,6 @@ package org.geotools.data.postgis;
 import org.geotools.jdbc.JDBCNativeFilterTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public final class PostgisNativeFilterTestSetup extends JDBCNativeFilterTestSetup {
 
     public PostgisNativeFilterTestSetup(JDBCTestSetup delegate) {

@@ -16,16 +16,21 @@
  */
 package org.geotools.jdbc;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Arrays;
 import java.util.List;
+import org.junit.Test;
 
 /** @author r0bb3n */
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCTypeNamesOnlineTest extends JDBCTestSupport {
 
     @Override
     protected abstract JDBCTypeNamesTestSetup createTestSetup();
 
+    @Test
     public void testTypeNames() throws Exception {
 
         String[] typeNamesArr = dataStore.getTypeNames();

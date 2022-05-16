@@ -26,17 +26,18 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.NativeFilter;
 import org.opengis.filter.spatial.BBOX;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCNativeFilterOnlineTest extends JDBCTestSupport {
 
     protected final FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2(null);
 
+    @Test
     public void testNativeFilterExecution() throws Exception {
         // build the filter that will be send to the database
         BBOX boundingBoxFilter =

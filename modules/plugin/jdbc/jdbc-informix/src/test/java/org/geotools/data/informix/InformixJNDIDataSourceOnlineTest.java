@@ -17,6 +17,8 @@
 
 package org.geotools.data.informix;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCJNDIDataSourceOnlineTest;

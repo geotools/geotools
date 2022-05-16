@@ -16,6 +16,9 @@
  */
 package org.geotools.data.teradata;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.data.DataUtilities;
 import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -24,6 +27,7 @@ import org.geotools.jdbc.JDBCFeatureStore;
 import org.geotools.jdbc.JDBCPrimaryKeyOnlineTest;
 import org.geotools.jdbc.JDBCPrimaryKeyTestSetup;
 import org.geotools.jdbc.NonIncrementingPrimaryKeyColumn;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeature;
@@ -36,6 +40,7 @@ public class TeradataPrimaryKeyOnlineTest extends JDBCPrimaryKeyOnlineTest {
         return new TeradataPrimaryKeyTestSetup(new TeradataTestSetup());
     }
 
+    @Test
     public void testUniqueGeneratedPrimaryKey() throws Exception {
         JDBCFeatureStore fs =
                 (JDBCFeatureStore) dataStore.getFeatureSource(tname("uniquetablenotgenerated"));
@@ -63,6 +68,7 @@ public class TeradataPrimaryKeyOnlineTest extends JDBCPrimaryKeyOnlineTest {
         assertPrimaryKeyValues(features, 4);
     }
 
+    @Test
     public void testUniqueNonGeneratedPrimaryKey() throws Exception {
         JDBCFeatureStore fs = (JDBCFeatureStore) dataStore.getFeatureSource(tname("uniquetable"));
 

@@ -167,6 +167,9 @@ public abstract class SQLDialect {
     /** The datastore using the dialect */
     protected JDBCDataStore dataStore;
 
+    /** Used to influence the CRS axis ordering in {@link #createCRS(int, java.sql.Connection) }. */
+    protected boolean forceLongitudeFirst = false;
+
     /**
      * Creates the dialect.
      *
@@ -612,6 +615,9 @@ public abstract class SQLDialect {
      * Turns the specified srid into a {@link CoordinateReferenceSystem}, or returns <code>null
      * </code> if not possible.
      *
+     * <p>Note this implementation takes account of {@link #forceLongitudeFirst} which should be set
+     * when longitude first (XY) axis ordering is required.
+     *
      * <p>The implementation might just use <code>CRS.decode("EPSG:" + srid)</code>, but most
      * spatial databases will have their own SRS database that can be queried as well.
      *
@@ -624,7 +630,7 @@ public abstract class SQLDialect {
      */
     public CoordinateReferenceSystem createCRS(int srid, Connection cx) throws SQLException {
         try {
-            return CRS.decode("EPSG:" + srid);
+            return CRS.decode("EPSG:" + srid, forceLongitudeFirst);
         } catch (Exception e) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.log(

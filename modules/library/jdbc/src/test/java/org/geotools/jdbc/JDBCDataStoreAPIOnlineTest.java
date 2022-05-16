@@ -48,7 +48,6 @@ import org.geotools.filter.function.math.FilterFunction_ceil;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.referencing.CRS;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -69,7 +68,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     private static final int LOCK_DURATION = 3600 * 1000; // one hour
     protected TestData td;
-    protected boolean forceLongitudeFirst = false;
 
     @Override
     protected void connect() throws Exception {
@@ -151,7 +149,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         String featureTypeName = tname("building");
 
         // create a featureType and write it to PostGIS
-        CoordinateReferenceSystem crs = CRS.decode("EPSG:4326", forceLongitudeFirst);
+        CoordinateReferenceSystem crs = decodeEPSG(4326);
 
         SimpleFeatureTypeBuilder ftb = new SimpleFeatureTypeBuilder();
         ftb.setName(featureTypeName);
@@ -915,7 +913,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         SimpleFeatureCollection some = road.getFeatures(td.rd12Filter);
         assertEquals(2, some.size());
 
-        ReferencedEnvelope e = new ReferencedEnvelope(CRS.decode("EPSG:4326", forceLongitudeFirst));
+        ReferencedEnvelope e = new ReferencedEnvelope(decodeEPSG(4326));
         e.include(td.roadFeatures[0].getBounds());
         e.include(td.roadFeatures[1].getBounds());
         //        assertEquals(e, some.getBounds());

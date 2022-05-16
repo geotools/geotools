@@ -44,6 +44,10 @@ import org.opengis.filter.spatial.DWithin;
 
 public class PostgisGeographyOnlineTest extends JDBCGeographyOnlineTest {
 
+    public PostgisGeographyOnlineTest() {
+        this.forceLongitudeFirst = true;
+    }
+
     @Override
     protected JDBCGeographyTestSetup createTestSetup() {
         return new PostgisGeographyTestSetup(new PostGISTestSetup());

@@ -22,6 +22,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCFeatureSourceOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.CRS.AxisOrder;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -32,6 +33,10 @@ import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.spatial.Intersects;
 
 public class PostGISFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
+
+    public PostGISFeatureSourceOnlineTest() {
+        this.forceLongitudeFirst = true;
+    }
 
     @Override
     protected JDBCTestSetup createTestSetup() {
@@ -72,7 +77,7 @@ public class PostGISFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest 
         assertEquals(2l, Math.round(bounds.getMaxX()));
         assertEquals(2l, Math.round(bounds.getMaxY()));
 
-        assertTrue(areCRSEqual(CRS.decode("EPSG:4326"), bounds.getCoordinateReferenceSystem()));
+        assertTrue(areCRSEqual(decodeEPSG(4326), bounds.getCoordinateReferenceSystem()));
     }
 
     public void testEstimatedBounds() throws Exception {
@@ -85,7 +90,7 @@ public class PostGISFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest 
         assertEquals(2l, Math.round(bounds.getMaxX()));
         assertEquals(2l, Math.round(bounds.getMaxY()));
 
-        assertTrue(areCRSEqual(CRS.decode("EPSG:4326"), bounds.getCoordinateReferenceSystem()));
+        assertTrue(areCRSEqual(decodeEPSG(4326), bounds.getCoordinateReferenceSystem()));
     }
 
     public void testEstimatedBoundsWithQuery() throws Exception {
@@ -105,7 +110,7 @@ public class PostGISFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest 
         assertEquals(1l, Math.round(bounds.getMaxX()));
         assertEquals(1l, Math.round(bounds.getMaxY()));
 
-        assertTrue(areCRSEqual(CRS.decode("EPSG:4326"), bounds.getCoordinateReferenceSystem()));
+        assertTrue(areCRSEqual(decodeEPSG(4326), bounds.getCoordinateReferenceSystem()));
     }
 
     public void testEstimatedBoundsWithLimit() throws Exception {
@@ -121,6 +126,14 @@ public class PostGISFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest 
     public void testSridFirstGeometry() throws Exception {
         SimpleFeatureType schema = dataStore.getSchema(tname("ft3"));
         GeometryDescriptor gd = schema.getGeometryDescriptor();
-        assertTrue(areCRSEqual(CRS.decode("EPSG:4326"), gd.getCoordinateReferenceSystem()));
+        assertTrue(areCRSEqual(decodeEPSG(4326), gd.getCoordinateReferenceSystem()));
+    }
+
+    public void testCrsIsLongitudeFirst() throws Exception {
+        SimpleFeatureType schema = dataStore.getSchema(tname("ft3"));
+        GeometryDescriptor gd = schema.getGeometryDescriptor();
+        assertTrue(areCRSEqual(decodeEPSG(4326), gd.getCoordinateReferenceSystem()));
+        // an explicit check to ensure we have a longitude first (XY) axis order.
+        assertEquals(AxisOrder.EAST_NORTH, CRS.getAxisOrder(gd.getCoordinateReferenceSystem()));
     }
 }

@@ -29,6 +29,10 @@ import org.locationtech.jts.geom.Geometry;
 
 public class PostgisDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
 
+    public PostgisDataStoreAPIOnlineTest() {
+        this.forceLongitudeFirst = true;
+    }
+
     @Override
     protected JDBCDataStoreAPITestSetup createTestSetup() {
         return new PostgisDataStoreAPITestSetup(new PostGISTestSetup());

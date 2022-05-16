@@ -31,6 +31,10 @@ import org.opengis.feature.simple.SimpleFeature;
 
 public class PostGIS3DOnlineTest extends JDBC3DOnlineTest {
 
+    public PostGIS3DOnlineTest() {
+        this.forceLongitudeFirst = true;
+    }
+
     @Override
     protected JDBC3DTestSetup createTestSetup() {
         return new PostGIS3DTestSetup(new PostGISTestSetup());

@@ -189,8 +189,7 @@ public abstract class JDBCGeographyOnlineTest extends JDBCTestSupport {
         }
 
         ReferencedEnvelope env = dataStore.getFeatureSource(tname("geopoint")).getBounds();
-        ReferencedEnvelope expected =
-                new ReferencedEnvelope(-110, 0, 29, 49, CRS.decode("EPSG:4326"));
+        ReferencedEnvelope expected = new ReferencedEnvelope(-110, 0, 29, 49, decodeEPSG(4326));
         assertEquals(expected, env);
     }
 

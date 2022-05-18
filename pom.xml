@@ -483,7 +483,7 @@
     <informix.jdbc.version>4.50.7.1</informix.jdbc.version>
     <jackson2.databind.version>2.13.2.1</jackson2.databind.version>
     <jackson2.version>2.13.2</jackson2.version>
-    <jaiext.version>1.1.22</jaiext.version>
+    <jaiext.version>1.1.23</jaiext.version>
     <javax.activation-api.version>1.2.0</javax.activation-api.version>
     <jaxb.api.version>2.4.0-b180830.0359</jaxb.api.version>
     <jaxb.runtime.version>2.4.0-b180830.0438</jaxb.runtime.version>

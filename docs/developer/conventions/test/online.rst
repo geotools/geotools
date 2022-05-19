@@ -242,10 +242,10 @@ ____________________
 The PostGIS project provides official docker `images on dockerhub <https://registry.hub.docker.com/r/postgis/postgis>`_.
 The project provides a long list of version combinations (tags).
 
-Use the following to create and start a PostgreSQL 12 container with PostGIS 3 listening on port 54321:::
+Use the following to create and start a PostgreSQL 14 container with PostGIS 3 listening on port 54321:::
 
-    docker pull postgis/postgis:12-3.0
-    docker run -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=geotools --rm -p 54321:5432 --name geotools -h geotools -d postgis/postgis:12-3.0
+    docker pull postgis/postgis:14-3.2
+    docker run -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=geotools --rm -p 54321:5432 --name geotools -h geotools -d postgis/postgis:14-3.2
 
 Note that the ``--rm`` option will delete the container after stopping it, the image is preserved so you won't need
 to pull it next time, but you may want to preserve the container so you don't have to build a new one.
@@ -264,7 +264,7 @@ The appropriate fixture for using the above database schema would be::
     host=127.0.0.1
     driver=org.postgresql.Driver
 
-In file ``~/.geotools/sqlserver.properties``
+In file ``~/.geotools/postgis.properties``
 
 To run the online test for the ``gt-jdbc-postgis`` module use the following Maven command:::
 

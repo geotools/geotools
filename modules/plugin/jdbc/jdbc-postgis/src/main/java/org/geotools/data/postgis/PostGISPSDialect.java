@@ -334,4 +334,9 @@ public class PostGISPSDialect extends PreparedStatementSQLDialect {
     public boolean canGroupOnGeometry() {
         return delegate.canGroupOnGeometry();
     }
+
+    @Override
+    public int getDefaultVarcharSize() {
+        return delegate.getDefaultVarcharSize();
+    }
 }

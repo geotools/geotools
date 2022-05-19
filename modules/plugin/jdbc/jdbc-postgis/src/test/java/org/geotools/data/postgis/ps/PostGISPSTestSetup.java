@@ -33,4 +33,10 @@ public class PostGISPSTestSetup extends PostGISTestSetup {
         dialect.setLooseBBOXEnabled(false);
         dataStore.setSQLDialect(dialect);
     }
+
+    @Override
+    protected void setUpData() throws Exception {
+        super.setUpData();
+        runSafe("DROP TABLE \"varchartest\"");
+    }
 }

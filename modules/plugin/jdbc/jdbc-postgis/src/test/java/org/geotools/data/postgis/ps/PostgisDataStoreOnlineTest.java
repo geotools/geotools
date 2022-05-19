@@ -47,7 +47,6 @@ public class PostgisDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
      */
     @Test
     public void testDefaultVarcharSize() throws Exception {
-        dataStore.removeSchema("varchartest");
         dataStore.createSchema(DataUtilities.createType("varchartest", "stringProperty:String"));
 
         SimpleFeatureType simpleFeatureType = dataStore.getSchema(tname("varchartest"));
@@ -63,6 +62,5 @@ public class PostgisDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
                     "column size should be larger than 255 (default) but was " + columnSize,
                     columnSize > 255);
         }
-        dataStore.removeSchema("varchartest");
     }
 }

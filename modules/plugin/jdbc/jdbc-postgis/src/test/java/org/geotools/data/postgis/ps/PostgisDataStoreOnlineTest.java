@@ -16,8 +16,18 @@
  */
 package org.geotools.data.postgis.ps;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import org.geotools.data.DataUtilities;
+import org.geotools.data.DefaultTransaction;
+import org.geotools.data.Transaction;
 import org.geotools.jdbc.JDBCDataStoreOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
+import org.junit.Test;
+import org.opengis.feature.simple.SimpleFeatureType;
 
 public class PostgisDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
 
@@ -29,5 +39,28 @@ public class PostgisDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
     @Override
     protected String getCLOBTypeName() {
         return "TEXT";
+    }
+
+    /**
+     * verifies that the column width of a varchar column is larger than 255 if length is not
+     * specified. See <a href="https://osgeo-org.atlassian.net/browse/GEOT-6888">GEOT-6888</a>.
+     */
+    @Test
+    public void testDefaultVarcharSize() throws Exception {
+        dataStore.createSchema(DataUtilities.createType("varchartest", "stringProperty:String"));
+
+        SimpleFeatureType simpleFeatureType = dataStore.getSchema(tname("varchartest"));
+        assertNotNull(simpleFeatureType);
+        try (Transaction t = new DefaultTransaction("metadata");
+                Connection cx = dataStore.getConnection(t);
+                ResultSet rs =
+                        cx.getMetaData().getColumns(null, null, "varchartest", "stringProperty")) {
+
+            rs.absolute(1);
+            int columnSize = rs.getInt("COLUMN_SIZE");
+            assertTrue(
+                    "column size should be larger than 255 (default) but was " + columnSize,
+                    columnSize > 255);
+        }
     }
 }

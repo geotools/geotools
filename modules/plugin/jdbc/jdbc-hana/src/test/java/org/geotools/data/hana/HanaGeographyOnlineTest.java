@@ -44,7 +44,7 @@ public class HanaGeographyOnlineTest extends JDBCGeographyOnlineTest {
     @Override
     public void testVirtualTable() throws Exception {
         // We have to override to use the proper schema in the select-statement.
-        String schema = fixture.getProperty("schema", "geotools");
+        String schema = getFixture().getProperty("schema", "geotools");
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT * FROM ");
         HanaTestUtil.encodeIdentifiers(sb, schema, "geopoint");

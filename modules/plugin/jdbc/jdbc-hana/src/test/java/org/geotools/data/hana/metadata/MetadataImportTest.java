@@ -34,7 +34,7 @@ public class MetadataImportTest extends JDBCTestSupport {
     public void testMetadataImport() throws Exception {
         // This test pollutes the test database by creating non-schema specific metadata. Skip if
         // polluting tests are disabled.
-        if ("off".equals(fixture.getProperty("pollution", "on"))) return;
+        if ("off".equals(getFixture().getProperty("pollution", "on"))) return;
 
         List<String> args = new ArrayList<>();
         Properties fixture = getFixture();

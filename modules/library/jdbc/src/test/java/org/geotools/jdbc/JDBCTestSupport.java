@@ -162,7 +162,7 @@ public abstract class JDBCTestSupport extends OnlineTestSupport {
     protected Map<String, Object> createDataStoreFactoryParams() throws Exception {
         Map<String, Object> params = new HashMap<>();
         params.put(JDBCDataStoreFactory.NAMESPACE.key, "http://www.geotools.org/test");
-        String testSchema = fixture.getProperty(JDBCDataStoreFactory.SCHEMA.key, "geotools");
+        String testSchema = getFixture().getProperty(JDBCDataStoreFactory.SCHEMA.key, "geotools");
         params.put(JDBCDataStoreFactory.SCHEMA.key, testSchema);
         params.put(JDBCDataStoreFactory.DATASOURCE.key, setup.getDataSource());
 

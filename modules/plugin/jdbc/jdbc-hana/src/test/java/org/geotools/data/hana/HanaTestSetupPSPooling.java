@@ -9,7 +9,6 @@ import org.apache.commons.dbcp.BasicDataSource;
  *
  * @author Stefan Uhrig, SAP SE
  */
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class HanaTestSetupPSPooling extends HanaTestSetupBase {
 
     private static volatile BasicDataSource dataSource;
@@ -24,7 +23,7 @@ public class HanaTestSetupPSPooling extends HanaTestSetupBase {
                     ds = new BasicDataSource();
                     setCommonDataSourceOptions(ds);
                     ds.setPoolPreparedStatements(true);
-                    ds.setMaxActive(8);
+                    ds.setMaxActive(16);
                 }
                 dataSource = ds;
             }

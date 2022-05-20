@@ -12,6 +12,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Random;
 import java.util.logging.Logger;
@@ -39,9 +40,12 @@ public final class CISetup extends CIBase {
 
     private void run() throws Exception {
         writeTestFixture();
+        Properties fixture = readFixture();
+        ArrayList<String> oldSchemas;
         try (Connection conn = connectUsingFixture(readFixture())) {
-            deleteOldTestSchemas(conn);
+            oldSchemas = getOldTestSchemas(conn);
         }
+        dropSchemasInParallel(fixture, oldSchemas);
     }
 
     private void writeTestFixture() throws IOException {
@@ -62,13 +66,14 @@ public final class CISetup extends CIBase {
         ret.setProperty("password", "id76Tn!klz81UT");
         ret.setProperty("pollution", "off");
         ret.setProperty("use ssl", Boolean.toString(ENCRYPT));
-        String schema = generateSchemaName();
-        LOGGER.info("Using schema " + schema);
-        ret.setProperty("schema", schema);
+        String schemaBase = generateSchemaName();
+        LOGGER.info("Using schemabase " + schemaBase);
+        ret.setProperty("schemabase", schemaBase);
         return ret;
     }
 
-    private void deleteOldTestSchemas(Connection conn) throws SQLException {
+    private ArrayList<String> getOldTestSchemas(Connection conn) throws SQLException {
+        ArrayList<String> oldSchemas = new ArrayList<>();
         try (PreparedStatement psGetOldSchemas =
                 conn.prepareStatement(
                         "SELECT SCHEMA_NAME FROM SYS.SCHEMAS WHERE SCHEMA_NAME LIKE 'geotools__%' ESCAPE '_' AND LOCALTOUTC(CREATE_TIME) < ?")) {
@@ -78,9 +83,9 @@ public final class CISetup extends CIBase {
             psGetOldSchemas.setString(1, s);
             try (ResultSet rs = psGetOldSchemas.executeQuery()) {
                 while (rs.next()) {
-                    String schema = rs.getString(1);
-                    dropSchema(conn, schema);
+                    oldSchemas.add(rs.getString(1));
                 }
+                return oldSchemas;
             }
         }
     }

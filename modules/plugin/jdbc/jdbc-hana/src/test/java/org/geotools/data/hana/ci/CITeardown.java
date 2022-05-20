@@ -1,7 +1,10 @@
 package org.geotools.data.hana.ci;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Logger;
 import org.geotools.util.logging.Logging;
@@ -20,16 +23,26 @@ public final class CITeardown extends CIBase {
 
     private void run() throws Exception {
         Properties fixture = readFixture();
+        ArrayList<String> schemas;
         try (Connection conn = connectUsingFixture(fixture)) {
-            String schema = fixture.getProperty("schema");
-            try {
-                dropSchema(conn, schema);
-            } catch (SQLException e) {
-                // Ignore exceptions reporting non-existing schema
-                if (e.getErrorCode() != 362) {
-                    throw e;
+            String schemaBase = fixture.getProperty("schemabase");
+            schemas = getSchemas(conn, schemaBase);
+        }
+        dropSchemasInParallel(fixture, schemas);
+    }
+
+    private ArrayList<String> getSchemas(Connection conn, String schemaBase) throws SQLException {
+        schemaBase = schemaBase.replace("_", "__") + "%";
+        try (PreparedStatement ps =
+                conn.prepareStatement(
+                        "SELECT SCHEMA_NAME FROM SYS.SCHEMAS WHERE SCHEMA_NAME LIKE ? ESCAPE '_'")) {
+            ps.setString(1, schemaBase);
+            try (ResultSet rs = ps.executeQuery()) {
+                ArrayList<String> ret = new ArrayList<>();
+                while (rs.next()) {
+                    ret.add(rs.getString(1));
                 }
-                LOGGER.info("Schema " + schema + " does not exist");
+                return ret;
             }
         }
     }

@@ -7,9 +7,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.hana.HanaConnectionParameters;
 import org.geotools.data.hana.HanaUtil;
@@ -18,6 +21,8 @@ import org.geotools.util.logging.Logging;
 public class CIBase {
 
     private static Logger LOGGER = Logging.getLogger(CIBase.class);
+
+    private static final int NUM_DROP_THREADS = 8;
 
     protected Connection connectUsingFixture(Properties fixture) throws IOException, SQLException {
         String host = fixture.getProperty("host");
@@ -57,6 +62,55 @@ public class CIBase {
             StringBuilder sb = new StringBuilder();
             sb.append("DROP SCHEMA ").append(HanaUtil.encodeIdentifier(schema)).append(" CASCADE");
             stmt.execute(sb.toString());
+        }
+    }
+
+    protected void dropSchemasInParallel(Properties fixture, ArrayList<String> schemas)
+            throws InterruptedException {
+        if (schemas.isEmpty()) {
+            return;
+        }
+        int numThreads = Math.min(NUM_DROP_THREADS, schemas.size());
+        AtomicInteger counter = new AtomicInteger();
+        SchemaDropThread[] threads = new SchemaDropThread[numThreads];
+        for (int i = 0; i < numThreads; ++i) {
+            threads[i] = new SchemaDropThread(fixture, schemas, counter);
+            threads[i].start();
+        }
+        for (int i = 0; i < numThreads; ++i) {
+            threads[i].join();
+        }
+    }
+
+    private class SchemaDropThread extends Thread {
+
+        public SchemaDropThread(
+                Properties fixture, ArrayList<String> schemas, AtomicInteger counter) {
+            this.fixture = fixture;
+            this.schemas = schemas;
+            this.counter = counter;
+        }
+
+        private Properties fixture;
+
+        private ArrayList<String> schemas;
+
+        private AtomicInteger counter;
+
+        @Override
+        public void run() {
+            try (Connection conn = connectUsingFixture(fixture)) {
+                while (true) {
+                    int idx = counter.getAndIncrement();
+                    if (idx >= schemas.size()) {
+                        return;
+                    }
+                    String schema = schemas.get(idx);
+                    dropSchema(conn, schema);
+                }
+            } catch (Exception e) {
+                LOGGER.log(Level.SEVERE, "Exception in schema drop thread", e);
+            }
         }
     }
 }

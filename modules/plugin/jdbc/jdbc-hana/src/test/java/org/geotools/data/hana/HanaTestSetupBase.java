@@ -18,6 +18,7 @@ package org.geotools.data.hana;
 
 import java.util.HashMap;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCTestSetup;
@@ -26,6 +27,8 @@ import org.geotools.jdbc.JDBCTestSetup;
 public class HanaTestSetupBase extends JDBCTestSetup {
 
     private static final String DRIVER_CLASS_NAME = "com.sap.db.jdbc.Driver";
+
+    private static AtomicInteger schemaCounter = new AtomicInteger();
 
     @Override
     public boolean canResetSchema() {
@@ -51,6 +54,14 @@ public class HanaTestSetupBase extends JDBCTestSetup {
         String sinstance = fixture.getProperty("instance");
         String database = fixture.getProperty("database");
         String useSsl = fixture.getProperty("use ssl");
+
+        if ((fixture.getProperty("schemabase") != null)
+                && (fixture.getProperty("schema") == null)) {
+            String schemaBase = fixture.getProperty("schemabase");
+            int counter = schemaCounter.getAndIncrement();
+            String schema = schemaBase + "_" + counter;
+            fixture.setProperty("schema", schema);
+        }
 
         HashMap<String, String> options = new HashMap<>();
         if ("true".equals(useSsl)) {

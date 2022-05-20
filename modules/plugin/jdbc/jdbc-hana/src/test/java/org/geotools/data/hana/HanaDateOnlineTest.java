@@ -16,10 +16,12 @@
  */
 package org.geotools.data.hana;
 
+import net.jcip.annotations.NotThreadSafe;
 import org.geotools.jdbc.JDBCDateOnlineTest;
 import org.geotools.jdbc.JDBCDateTestSetup;
 
 /** @author Stefan Uhrig, SAP SE */
+@NotThreadSafe
 public class HanaDateOnlineTest extends JDBCDateOnlineTest {
 
     @Override

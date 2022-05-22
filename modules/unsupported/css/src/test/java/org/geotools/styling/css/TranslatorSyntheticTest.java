@@ -562,6 +562,36 @@ public class TranslatorSyntheticTest extends CssBaseTest {
     }
 
     @Test
+    public void labelPartials() throws Exception {
+        String css = "* { label: 'test'; label-partials: true}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        TextSymbolizer2 ts = assertSingleSymbolizer(rule, TextSymbolizer2.class);
+        assertLiteral("test", ts.getLabel());
+        assertEquals("true", ts.getOptions().get(TextSymbolizer.PARTIALS_KEY));
+    }
+
+    @Test
+    public void labelDisplacementMode() throws Exception {
+        String css = "* { label: 'test'; label-displacement-mode: 'N,E,W,S'}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        TextSymbolizer2 ts = assertSingleSymbolizer(rule, TextSymbolizer2.class);
+        assertLiteral("test", ts.getLabel());
+        assertEquals("N,E,W,S", ts.getOptions().get(TextSymbolizer.DISPLACEMENT_MODE_KEY));
+    }
+
+    @Test
+    public void labelShrink() throws Exception {
+        String css = "* { label: 'test'; font-shrink-size-min: 5}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        TextSymbolizer2 ts = assertSingleSymbolizer(rule, TextSymbolizer2.class);
+        assertLiteral("test", ts.getLabel());
+        assertEquals("5", ts.getOptions().get(TextSymbolizer.FONT_SHRINK_SIZE_MIN));
+    }
+
+    @Test
     public void rasterBasic() throws Exception {
         String css = "* { raster-channels: auto;}";
         Style style = translate(css);

@@ -197,7 +197,7 @@ public class CssTranslator {
             new HashMap<String, String>() {
                 {
                     put("label-padding", TextSymbolizer.SPACE_AROUND_KEY);
-                    put("label-group", "group");
+                    put("label-group", TextSymbolizer.GROUP_KEY);
                     put("label-max-displacement", TextSymbolizer.MAX_DISPLACEMENT_KEY);
                     put("label-min-group-distance", TextSymbolizer.MIN_GROUP_DISTANCE_KEY);
                     put("label-repeat", TextSymbolizer.LABEL_REPEAT_KEY);
@@ -216,9 +216,12 @@ public class CssTranslator {
                     put("label-fit-goodness", TextSymbolizer.GOODNESS_OF_FIT_KEY);
                     put("label-kerning", TextSymbolizer.KERNING_KEY);
                     put("label-polygon-align", TextSymbolizer.POLYGONALIGN_KEY);
-                    put("shield-resize", "graphic-resize");
-                    put("shield-margin", "graphic-margin");
+                    put("label-partials", TextSymbolizer.PARTIALS_KEY);
+                    put("label-displacement-mode", TextSymbolizer.DISPLACEMENT_MODE_KEY);
+                    put("shield-resize", TextSymbolizer.GRAPHIC_RESIZE_KEY);
+                    put("shield-margin", TextSymbolizer.GRAPHIC_MARGIN_KEY);
                     put("shield-placement", TextSymbolizer.GRAPHIC_PLACEMENT_KEY);
+                    put("font-shrink-size-min", TextSymbolizer.FONT_SHRINK_SIZE_MIN);
                 }
             };
 

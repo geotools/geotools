@@ -60,7 +60,7 @@ public class CSVLatLonStrategyTest {
 
         GeometryDescriptor geometryDescriptor = featureType.getGeometryDescriptor();
         GeometryType geometryType = geometryDescriptor.getType();
-        assertEquals("Invalid geometry name", "location", geometryType.getName().getLocalPart());
+        assertEquals("Invalid geometry name", "Point", geometryType.getName().getLocalPart());
     }
 
     @Test

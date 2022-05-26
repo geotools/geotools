@@ -1435,7 +1435,7 @@ public class ImageMosaicReaderTest {
         final int granules = source.getCount(null);
         final SimpleFeatureType type = source.getSchema();
         assertEquals(
-                "SimpleFeatureTypeImpl time_domainsRanges identified extends polygonFeature(the_geom:MultiPolygon,location:location,time:time,endtime:endtime,date:date,lowz:lowz,highz:highz,loww:loww,highw:highw)",
+                "SimpleFeatureTypeImpl time_domainsRanges identified extends polygonFeature(the_geom:MultiPolygon,location:String,time:Date,endtime:Date,date:String,lowz:Integer,highz:Integer,loww:Integer,highw:Integer)",
                 type.toString());
         assertEquals(granules, 12);
 

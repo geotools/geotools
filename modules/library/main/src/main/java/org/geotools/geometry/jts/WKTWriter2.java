@@ -109,6 +109,7 @@ public class WKTWriter2 extends WKTWriter {
         // specify decimal separator explicitly to avoid problems in other locales
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
         symbols.setDecimalSeparator('.');
+        symbols.setMinusSign('-');
         String fmtString = "0" + (decimalPlaces > 0 ? "." : "") + stringOfChar('#', decimalPlaces);
         return new DecimalFormat(fmtString, symbols);
     }

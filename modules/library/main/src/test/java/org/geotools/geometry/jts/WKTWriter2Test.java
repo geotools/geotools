@@ -18,6 +18,7 @@ package org.geotools.geometry.jts;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Locale;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.ParseException;
@@ -85,6 +86,19 @@ public class WKTWriter2Test {
                         + "COMPOUNDCURVE ((6 10, 10 1, 14 10), CIRCULARSTRING (14 10, 10 14, 6 10)), COMPOUNDCURVE ((13 10, 10 2, 7 10), CIRCULARSTRING (7 10, 10 13, 13 10))), "
                         + "CURVEPOLYGON (COMPOUNDCURVE ((106 110, 110 101, 114 110), CIRCULARSTRING (114 110, 110 114, 106 110))))");
         testRoundTrip("MULTISURFACE EMPTY");
+    }
+
+    @Test
+    public void treatingNegativeNumbersInNorwegianLocale() throws Exception {
+        Locale defLocale = Locale.getDefault();
+        try {
+            Locale norLocale = new Locale("nb");
+            Locale.setDefault(norLocale);
+            testRoundTrip(
+                    "CURVEPOLYGON (CIRCULARSTRING (143.62025166838282 -30.037497356076827, 142.92857147299705 -32.75101196874403, 143.62025166838282 -30.037497356076827))");
+        } finally {
+            Locale.setDefault(defLocale);
+        }
     }
 
     private void testRoundTrip(String wkt, String expectedWkt) throws ParseException {

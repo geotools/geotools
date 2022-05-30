@@ -106,6 +106,7 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.sort.SortOrder;
@@ -340,10 +341,11 @@ public class NetCDFMosaicReaderTest {
 
     @Test
     public void testCustomTimeAttributeRepository() throws IOException {
+        File indexDirectory = new File("./target/custom_time_attribute_idx");
+
         // setup repository
         ShpFileStoreFactory dialect =
                 new ShpFileStoreFactory(new ShapefileDataStoreFactory(), new HashMap<>());
-        File indexDirectory = new File("./target/custom_time_attribute_idx");
         FileUtils.deleteQuietly(indexDirectory);
         indexDirectory.mkdir();
         File auxiliaryDataStoreFile = new File(indexDirectory, "test.properties");
@@ -478,24 +480,10 @@ public class NetCDFMosaicReaderTest {
                 assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
             }
         } finally {
-            if (coverage != null) {
-                coverage.dispose(true);
-            }
+            disposeCoverage(coverage);
 
-            if (reader != null) {
-                try {
-                    reader.dispose();
-                } catch (Exception e) {
-                    // Ignore exception on dispose
-                }
-            }
-            if (imageReader != null) {
-                try {
-                    imageReader.dispose();
-                } catch (Exception e) {
-                    // Ignore exception on dispose
-                }
-            }
+            disposeReader(reader);
+            disposeImageReader(imageReader);
         }
 
         // the index files have actually been created
@@ -505,6 +493,162 @@ public class NetCDFMosaicReaderTest {
         assertTrue(typeNames.contains(name));
         dataStore.dispose();
         assertTrue(disposed.get());
+    }
+
+    @Test
+    public void testPurgeMetadata() throws IOException {
+        File indexDirectory = new File("./target/repo_idx_purge_metadata");
+
+        // setup repository
+        ShpFileStoreFactory dialect =
+                new ShpFileStoreFactory(new ShapefileDataStoreFactory(), new HashMap<>());
+        FileUtils.deleteQuietly(indexDirectory);
+        indexDirectory.mkdir();
+        File auxiliaryDataStoreFile = new File(indexDirectory, "test.properties");
+        String theStoreName = "testStore";
+        FileUtils.writeStringToFile(
+                auxiliaryDataStoreFile, NetCDFUtilities.STORE_NAME + "=" + theStoreName, "UTF-8");
+
+        DirectoryDataStore dataStore = new DirectoryDataStore(indexDirectory, dialect);
+
+        ImageMosaicReader reader =
+                setupPolyphemusTwoFiles(auxiliaryDataStoreFile, theStoreName, dataStore);
+        String coverageName = "O3";
+        GridCoverage2D coverage = null;
+        try {
+            GranuleStore o3 = (GranuleStore) reader.getGranules(coverageName, false);
+
+            // check the granules count and the metadata entries count before removal
+            assertEquals(4, dataStore.getFeatureSource(coverageName).getCount(Query.ALL));
+            assertEquals(4, o3.getCount(Query.ALL));
+
+            // remove
+            o3.removeGranules(
+                    Filter.INCLUDE,
+                    new Hints(Hints.GRANULE_REMOVAL_POLICY, GranuleRemovalPolicy.METADATA));
+
+            // all metadata was removed
+            assertTrue(o3.getGranules(Query.ALL).isEmpty());
+            assertEquals(0, dataStore.getFeatureSource(coverageName).getCount(Query.ALL));
+
+            // but the files are still there
+            File mosaicDirectory = (File) reader.getSource();
+            assertEquals(2, mosaicDirectory.listFiles((dir, name) -> name.endsWith(".nc")).length);
+        } finally {
+            disposeCoverage(coverage);
+            disposeReader(reader);
+        }
+    }
+
+    @Test
+    public void testPurgeAll() throws IOException {
+        File indexDirectory = new File("./target/repo_idx_purge_all");
+
+        // setup repository
+        ShpFileStoreFactory dialect =
+                new ShpFileStoreFactory(new ShapefileDataStoreFactory(), new HashMap<>());
+        FileUtils.deleteQuietly(indexDirectory);
+        indexDirectory.mkdir();
+        File auxiliaryDataStoreFile = new File(indexDirectory, "test.properties");
+        String theStoreName = "testStore";
+        FileUtils.writeStringToFile(
+                auxiliaryDataStoreFile, NetCDFUtilities.STORE_NAME + "=" + theStoreName, "UTF-8");
+
+        DirectoryDataStore dataStore = new DirectoryDataStore(indexDirectory, dialect);
+
+        ImageMosaicReader reader =
+                setupPolyphemusTwoFiles(auxiliaryDataStoreFile, theStoreName, dataStore);
+        String coverageName = "O3";
+        GridCoverage2D coverage = null;
+        try {
+            GranuleStore o3 = (GranuleStore) reader.getGranules(coverageName, false);
+
+            // check the granules count and the metadata entries count before removal
+            assertEquals(4, dataStore.getFeatureSource(coverageName).getCount(Query.ALL));
+            assertEquals(4, o3.getCount(Query.ALL));
+
+            // remove
+            o3.removeGranules(
+                    Filter.INCLUDE,
+                    new Hints(Hints.GRANULE_REMOVAL_POLICY, GranuleRemovalPolicy.ALL));
+
+            // everything was removed
+            assertTrue(o3.getGranules(Query.ALL).isEmpty());
+            assertEquals(0, dataStore.getFeatureSource(coverageName).getCount(Query.ALL));
+
+            // that includes the netcdf files, all means all
+            File mosaicDirectory = (File) reader.getSource();
+            assertEquals(0, mosaicDirectory.listFiles((dir, name) -> name.endsWith(".nc")).length);
+        } finally {
+            disposeCoverage(coverage);
+            disposeReader(reader);
+        }
+    }
+
+    private ImageMosaicReader setupPolyphemusTwoFiles(
+            File auxiliaryDataStoreFile, String theStoreName, DirectoryDataStore dataStore)
+            throws IOException {
+        DefaultRepository repository = new DefaultRepository();
+        repository.register(new NameImpl(theStoreName), dataStore);
+
+        File nc1 = TestData.file(this, "polyphemus_20130301_test.nc");
+        File nc2 = TestData.file(this, "polyphemus_20130302_test.nc");
+        File mosaic = tempFolder.newFolder("nc_repo");
+        FileUtils.copyFileToDirectory(nc1, mosaic);
+        FileUtils.copyFileToDirectory(nc2, mosaic);
+
+        // The indexer
+        Properties indexer = new Properties();
+        indexer.put("TimeAttribute", "time");
+        indexer.put(
+                "Schema",
+                "the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date");
+        indexer.put("AuxiliaryDatastoreFile", auxiliaryDataStoreFile.getCanonicalPath());
+        final String auxiliaryFilePath =
+                mosaic.getAbsolutePath() + File.separatorChar + ".polyphemus_20130301_test";
+        final File auxiliaryFileDir = new File(auxiliaryFilePath);
+        assertTrue(auxiliaryFileDir.mkdirs());
+
+        File nc1Aux = TestData.file(this, "polyphemus_test_aux.xml");
+        FileUtils.copyFileToDirectory(nc1Aux, auxiliaryFileDir);
+
+        try (FileOutputStream fos = new FileOutputStream(new File(mosaic, "indexer.properties"))) {
+            indexer.store(fos, null);
+        }
+        File dsp = TestData.file(this, "datastore.properties");
+        FileUtils.copyFileToDirectory(dsp, mosaic);
+
+        ImageMosaicFormat format = new ImageMosaicFormat();
+        ImageMosaicReader reader =
+                format.getReader(mosaic, new Hints(Hints.REPOSITORY, repository));
+        assertNotNull(reader);
+        return reader;
+    }
+
+    private void disposeImageReader(NetCDFImageReader imageReader) {
+        if (imageReader != null) {
+            try {
+                imageReader.dispose();
+            } catch (Exception e) {
+                // Ignore exception on dispose
+            }
+        }
+    }
+
+    private void disposeCoverage(GridCoverage2D coverage) {
+        if (coverage != null) {
+            coverage.dispose(true);
+        }
+    }
+
+    private void disposeReader(ImageMosaicReader reader) {
+        if (reader != null) {
+            try {
+                reader.dispose();
+            } catch (Exception e) {
+                // Ignore exception on dispose
+            }
+        }
     }
 
     @Test
@@ -573,20 +717,8 @@ public class NetCDFMosaicReaderTest {
                 testHarvest(reader, mosaic, source, q);
             }
         } finally {
-            if (reader != null) {
-                try {
-                    reader.dispose();
-                } catch (Exception e) {
-                    // Ignore exception on dispose
-                }
-            }
-            if (imageReader != null) {
-                try {
-                    imageReader.dispose();
-                } catch (Exception e) {
-                    // Ignore exception on dispose
-                }
-            }
+            disposeReader(reader);
+            disposeImageReader(imageReader);
         }
 
         dataStore.dispose();
@@ -629,24 +761,9 @@ public class NetCDFMosaicReaderTest {
                 assertNotNull(featureType.getDescriptor("time"));
             }
         } finally {
-            if (coverage != null) {
-                coverage.dispose(true);
-            }
-
-            if (reader != null) {
-                try {
-                    reader.dispose();
-                } catch (Exception e) {
-                    // Ignore exception on dispose
-                }
-            }
-            if (imageReader != null) {
-                try {
-                    imageReader.dispose();
-                } catch (Exception e) {
-                    // Ignore exception on dispose
-                }
-            }
+            disposeCoverage(coverage);
+            disposeReader(reader);
+            disposeImageReader(imageReader);
         }
     }
 

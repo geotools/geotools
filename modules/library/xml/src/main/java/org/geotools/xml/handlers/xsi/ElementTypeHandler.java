@@ -151,16 +151,25 @@ public class ElementTypeHandler extends ElementGroupingHandler {
     public void startElement(String namespaceURI, String localName, Attributes atts)
             throws SAXException {
         // abstract
-        String abstracT1 = atts.getValue("", "abstracT");
+        String abstracT1 = atts.getValue("", "abstract");
 
         if (abstracT1 == null) {
-            abstracT1 = atts.getValue(namespaceURI, "abstracT");
+            abstracT1 = atts.getValue(namespaceURI, "abstract");
         }
 
         if ((abstracT1 == null) || "".equalsIgnoreCase(abstracT1)) {
             this.abstracT = false;
         } else {
-            this.abstracT = Boolean.getBoolean(abstracT1);
+            if ("true".equals(abstracT1)) {
+                this.abstracT = true;
+            } else if ("false".equals(abstracT1)) {
+                this.abstracT = false;
+            } else {
+                throw new SAXException(
+                        String.format(
+                                "Schema element declaration supports 'abstract' \"true\" or \"false\" only (abstract=\"%s\")",
+                                abstracT1));
+            }
         }
 
         // block

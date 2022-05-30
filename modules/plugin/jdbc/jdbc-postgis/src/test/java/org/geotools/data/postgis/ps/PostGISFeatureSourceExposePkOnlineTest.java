@@ -21,6 +21,10 @@ import org.geotools.jdbc.JDBCTestSetup;
 
 public class PostGISFeatureSourceExposePkOnlineTest extends JDBCFeatureSourceExposePkOnlineTest {
 
+    public PostGISFeatureSourceExposePkOnlineTest() {
+        this.forceLongitudeFirst = true;
+    }
+
     @Override
     protected JDBCTestSetup createTestSetup() {
         return new PostGISPSTestSetup();

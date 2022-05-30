@@ -37,6 +37,7 @@ import org.locationtech.jts.io.WKBWriter;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class PostGISPSDialect extends PreparedStatementSQLDialect {
 
@@ -116,6 +117,11 @@ public class PostGISPSDialect extends PreparedStatementSQLDialect {
             String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
         return delegate.getGeometrySRID(schemaName, tableName, columnName, cx);
+    }
+
+    @Override
+    public CoordinateReferenceSystem createCRS(int srid, Connection cx) throws SQLException {
+        return delegate.createCRS(srid, cx);
     }
 
     @Override

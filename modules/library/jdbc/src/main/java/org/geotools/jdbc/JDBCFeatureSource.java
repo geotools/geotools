@@ -299,7 +299,23 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                         } else {
                             srid = dialect.getGeometrySRID(databaseSchema, tableName, name, cx);
                         }
-                        if (srid != null) crs = dialect.createCRS(srid, cx);
+                        if (srid != null) {
+                            crs = dialect.createCRS(srid, cx);
+                            if (crs == null) {
+                                getDataStore()
+                                        .getLogger()
+                                        .warning(
+                                                "Couldn't determine CRS of table "
+                                                        + tableName
+                                                        + " with srid: "
+                                                        + srid.toString()
+                                                        + ".");
+                            }
+                        } else {
+                            getDataStore()
+                                    .getLogger()
+                                    .info("No srid returned of database table:" + tableName);
+                        }
                     } catch (Exception e) {
                         String msg = "Error occured determing srid for " + tableName + "." + name;
                         getDataStore().getLogger().log(Level.WARNING, msg, e);

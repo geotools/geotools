@@ -21,6 +21,10 @@ import org.geotools.jdbc.JDBCTestSetup;
 
 public class PostGISFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
 
+    public PostGISFeatureSourceOnlineTest() {
+        this.forceLongitudeFirst = true;
+    }
+
     @Override
     protected JDBCTestSetup createTestSetup() {
         return new PostGISPSTestSetup();

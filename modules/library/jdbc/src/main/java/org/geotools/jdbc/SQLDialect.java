@@ -634,8 +634,7 @@ public abstract class SQLDialect {
         } catch (Exception e) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.log(
-                        Level.FINE,
-                        "Could not decode " + srid + " using the built-in EPSG database");
+                        Level.FINE, "Could not decode EPSG:" + srid + " using the EPSG plugins.");
             }
             return null;
         }

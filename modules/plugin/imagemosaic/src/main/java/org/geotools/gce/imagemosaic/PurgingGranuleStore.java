@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -96,14 +97,34 @@ class PurgingGranuleStore extends GranuleStoreDecorator {
                         countGranulesMatchingLocations(countsByFilter.keySet());
                 Set<String> removedLocations =
                         getRemovedLocations(countsByFilter, countsByLocation);
-
-                // apply the purge policy as needed
                 boolean deleteData = policy == GranuleRemovalPolicy.ALL;
-                Filter removedLocationsFilter = buildLocationsFilter(manager, removedLocations);
-                manager.getGranuleCatalog()
-                        .getGranuleDescriptors(
-                                new Query(manager.getTypeName(), removedLocationsFilter),
-                                new FileRemovingGranuleVisitor(deleteData));
+
+                // for single files, we can be efficient and do a single pass, for files
+                // providing multiple granules, not, as the descriptor is going to be created
+                // during the visit, whether we use it or not, and that may cause the involved
+                // reader to re-init itself (e.g., NetCDF would re-index its contents), causing
+                // a loop of init and deletion which is slowing down removal a lot.
+                Set<String> singleGranules =
+                        removedLocations.stream()
+                                .filter(l -> countsByLocation.get(l) == 1)
+                                .collect(Collectors.toSet());
+                Set<String> multiGranules =
+                        removedLocations.stream()
+                                .filter(l -> countsByLocation.get(l) > 1)
+                                .collect(Collectors.toSet());
+
+                // quick pass over the single granule locations
+                removeGranuleFiles(deleteData, singleGranules);
+
+                // for the multi-granule, go over one file at a time
+                for (String multiGranule : multiGranules) {
+                    Filter removedLocationsFilter =
+                            buildLocationsFilter(manager, Collections.singleton(multiGranule));
+                    Query q = new Query(manager.getTypeName(), removedLocationsFilter);
+                    q.setMaxFeatures(1);
+                    manager.getGranuleCatalog()
+                            .getGranuleDescriptors(q, new FileRemovingGranuleVisitor(deleteData));
+                }
 
                 // do the removal inside the catalog
                 removed = delegate.removeGranules(filter);
@@ -113,6 +134,15 @@ class PurgingGranuleStore extends GranuleStoreDecorator {
         }
 
         return removed;
+    }
+
+    private void removeGranuleFiles(boolean deleteData, Set<String> singleGranules)
+            throws IOException {
+        Filter removedLocationsFilter = buildLocationsFilter(manager, singleGranules);
+        manager.getGranuleCatalog()
+                .getGranuleDescriptors(
+                        new Query(manager.getTypeName(), removedLocationsFilter),
+                        new FileRemovingGranuleVisitor(deleteData));
     }
 
     private Set<String> getRemovedLocations(
@@ -210,6 +240,7 @@ class PurgingGranuleStore extends GranuleStoreDecorator {
         public void visit(GranuleDescriptor granule, SimpleFeature feature) {
             AbstractGridCoverage2DReader reader = null;
             try {
+
                 reader = granule.getReader();
                 File granuleFile = URLs.urlToFile(granule.getGranuleUrl());
                 // check common sidecars not handled by the readers

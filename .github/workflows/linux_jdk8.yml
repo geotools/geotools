@@ -32,7 +32,7 @@ jobs:
     - uses: BSFishy/pip-action@v1
       with:
         packages: |
-          sphinx
+          sphinx==4.5.0
           requests
     - name: Disable checksum offloading
       # See: https://github.com/actions/virtual-environments/issues/1187#issuecomment-686735760

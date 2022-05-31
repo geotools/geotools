@@ -27,13 +27,13 @@ import datetime
 extensions = ['sphinx.ext.todo','sphinx.ext.extlinks']
 
 extlinks = { 
-    'wiki': ('https://github.com/geotools/geotools/wiki/%s',''),
-    'website': ('https://geotools.org/%s',''),
-    'geoserver': ('https://docs.geoserver.org/latest/en/user/%s',''),
-    'developer': ('https://docs.geotools.org/latest/developer/%s',''),
-    'user': ('https://docs.geotools.org/maintenance/userguide/%s',''),
-    'api': ('https://docs.geotools.org/maintenance/javadocs',''),
-    'geot': ('https://osgeo-org.atlassian.net/browse/GEOT-%s','GEOT-')
+    'wiki': ('https://github.com/geotools/geotools/wiki/%s', None),
+    'website': ('https://geotools.org/%s', None),
+    'geoserver': ('https://docs.geoserver.org/latest/en/user/%s', None),
+    'developer': ('https://docs.geotools.org/latest/developer/%s', None),
+    'user': ('https://docs.geotools.org/latest/userguide/%s', None),
+    'api': ('https://docs.geotools.org/latest/javadocs/%s', None),
+    'geot': ('https://osgeo-org.atlassian.net/browse/GEOT-%s','GEOT-%s')
 }
 
 # Add any paths that contain templates here, relative to this directory.

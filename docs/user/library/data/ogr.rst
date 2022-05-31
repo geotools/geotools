@@ -19,7 +19,7 @@ The OGR DataStore does require the GDAL/OGR native library:
 
 * Add the location to your ``PATH`` on Windows, or ``LD_LIBRARY_PATH`` on Linux.
 * Include this GDAL install location in the ``java.library.path`` system property when running your program.
-* macOS users are advised to use ``java.library.path` system property (``DYLD_LIBRARY_PATH`` and ``DYLD_FALLBACK_LIBRARY_PATH`` environmental variables not recommended).
+* macOS users are advised to use ``java.library.path`` system property (``DYLD_LIBRARY_PATH`` and ``DYLD_FALLBACK_LIBRARY_PATH`` environmental variables not recommended).
 
 You can then access the module by creating a ``DataStoreFactory``.
 

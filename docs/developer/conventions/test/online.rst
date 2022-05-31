@@ -360,3 +360,47 @@ To run the online tests for the ``gt-jdbc-db2`` module use the following Maven c
     mvn install -Dall -pl :gt-jdbc-db2 -Ponline -T1.1C -Dfmt.skip=true -am
 
 When done use ``docker stop geotools`` to stop and cleanup/remove the container.
+
+
+IBM Informix
+____________________
+
+Informix images are provided by `Ibm on dockerhub <https://hub.docker.com/r/ibmcom/informix-developer-database/>`_.
+
+Use the following to create and start an Informix container listening on port 9088:::
+
+    docker pull ibmcom/informix-developer-database:latest
+    docker run -e 'LICENSE=accept' -e 'DB_INIT=1' -e 'SIZE=small' -e 'STORAGE=local' --rm -p 9088:9088 --name geotools --privileged=true -d ibmcom/informix-developer-database:latest
+
+Note that the ``--rm`` option will delete the container after stopping it, the image is preserved so you won't need
+to pull it next time, but you may want to preserve the container or map some volumes so you don't have to setup a new one.
+The Docker page linked above provides more documentation on how to do this with this image.
+
+Then create a database ``geotools`` in the database using:::
+
+    docker cp ./build/ci/informix/setup-informix-database.sql geotools:/home/informix/
+    docker cp ./build/ci/informix/setup-informix-database.sh geotools:/home/informix/
+    docker exec -u informix -i geotools /home/informix/setup-informix-database.sh
+
+This will copy the setup command into the container and execute.
+
+The appropriate fixture for using the above database schema would be::
+
+    driver=com.informix.jdbc.IfxDriver
+    port=9088
+    user=informix
+    host=127.0.0.1
+    dbtype=informix
+    password=in4mix
+    database=geotools
+    url=jdbc:informix-sqli://localhost:9088/geotools:INFORMIXSERVER=informix
+
+In file ``~/.geotools/informix-sqli.properties``
+
+Shell scripts ``start-informix.sh`` and ``setup-informix.sh`` for the above steps are provided in directory ``build/ci/informix/`` of the source tree.
+
+To run the online tests for the ``gt-jdbc-informix`` module use the following Maven command:::
+
+    mvn install -Dall -pl :gt-jdbc-informix -Ponline -T1.1C -Dfmt.skip=true -am
+
+When done use ``docker stop geotools`` to stop and cleanup/remove the container.

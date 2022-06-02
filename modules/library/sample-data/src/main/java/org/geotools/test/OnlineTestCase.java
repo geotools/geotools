@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Properties;
 import junit.framework.TestCase; // NOPMD
 import junit.framework.TestResult;
+import org.junit.Assume;
 
 /**
  * Test support for test cases that require an "online" resource, such as an
@@ -243,7 +244,13 @@ public abstract class OnlineTestCase extends TestCase {
                 // disable the test
                 fixture = null;
                 // leave some trace of the swallowed exception
-                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
+                java.util.logging.Logger.getGlobal()
+                        .log(
+                                java.util.logging.Level.INFO,
+                                "SetUp of test failed. Test ignored.",
+                                e);
+
+                Assume.assumeTrue("Ignorded because of exception: " + e.getMessage(), false);
             } else {
                 // do not swallow the exception
                 throw e;

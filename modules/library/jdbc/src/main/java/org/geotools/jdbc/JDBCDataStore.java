@@ -648,7 +648,12 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * @return The mapped java class, or <code>null</code>. if no such mapping exists.
      */
     public Class<?> getMapping(String sqlTypeName) {
-        return getSqlTypeNameToClassMappings().get(sqlTypeName);
+        Class<?> columnClass = getSqlTypeNameToClassMappings().get(sqlTypeName);
+        if( columnClass==null){
+               return dialect.getDesiredColumnMapping(sqlTypeName);
+        }
+        return columnClass;
+
     }
 
     /**

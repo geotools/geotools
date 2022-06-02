@@ -1395,4 +1395,16 @@ public abstract class SQLDialect {
     public boolean canGroupOnGeometry() {
         return false;
     }
+
+    /**
+     * Returns the java type mapped to the a specified sql type name defined by the dialect.
+     *
+     * <p>If there is no such type mapped to <tt>sqlTypeName</tt>, <code>null</code> is returned.
+     *
+     * @param sqlTypeName The name of the sql type.
+     * @return The mapped java class, or <code>null</code>. if no such mapping exists.
+     */
+    public Class<?> getDesiredColumnMapping(String sqlTypeName) {
+        return null;
+    }
 }

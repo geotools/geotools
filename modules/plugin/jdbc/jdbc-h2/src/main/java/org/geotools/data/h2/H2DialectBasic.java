@@ -267,12 +267,7 @@ public class H2DialectBasic extends BasicSQLDialect {
     @Override
     public String[] getDesiredTablesType() {
         return new String[] {
-                "TABLE",
-                "VIEW",
-                "MATERIALIZED VIEW",
-                "SYNONYM",
-                "TABLE LINK",
-                "EXTERNAL"
+            "TABLE", "VIEW", "MATERIALIZED VIEW", "SYNONYM", "TABLE LINK", "EXTERNAL"
         };
     }
 }

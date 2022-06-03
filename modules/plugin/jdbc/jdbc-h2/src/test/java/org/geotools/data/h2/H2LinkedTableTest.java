@@ -23,7 +23,6 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.jdbc.JDBCDataStore;

@@ -263,4 +263,16 @@ public class H2DialectBasic extends BasicSQLDialect {
     public void registerSqlTypeToSqlTypeNameOverrides(Map<Integer, String> overrides) {
         delegate.registerSqlTypeToSqlTypeNameOverrides(overrides);
     }
+
+    @Override
+    public String[] getDesiredTablesType() {
+        return new String[] {
+                "TABLE",
+                "VIEW",
+                "MATERIALIZED VIEW",
+                "SYNONYM",
+                "TABLE LINK",
+                "EXTERNAL"
+        };
+    }
 }

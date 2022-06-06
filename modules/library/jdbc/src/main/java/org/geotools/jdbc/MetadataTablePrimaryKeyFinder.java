@@ -121,7 +121,7 @@ public class MetadataTablePrimaryKeyFinder extends PrimaryKeyFinder {
                                                     null,
                                                     metadataSchema,
                                                     "%",
-                                                    new String[] {"TABLE", "VIEW"});
+                                                    store.getSQLDialect().getDesiredTablesType());
 
                             metadataTableExists = false;
 

@@ -184,6 +184,9 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         // grab the dialect
         SQLDialect dialect = getDataStore().getSQLDialect();
 
+        // logger
+        final Logger storeLogger = getDataStore().getLogger();
+
         // get metadata about columns from database
         try {
             DatabaseMetaData metaData = cx.getMetaData();
@@ -228,7 +231,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                         relationships = ((PreparedStatement) st).executeQuery();
                     } else {
                         String sql = getDataStore().selectRelationshipSQL(tableName, name);
-                        getDataStore().getLogger().fine(sql);
+                        storeLogger.fine(sql);
 
                         st = cx.createStatement();
                         relationships = st.executeQuery(sql);
@@ -262,12 +265,10 @@ public class JDBCFeatureSource extends ContentFeatureSource {
 
                 // if still not found, ignore the column we don't know about
                 if (binding == null) {
-                    getDataStore()
-                            .getLogger()
-                            .warning(
-                                    "Could not find mapping for '"
-                                            + name
-                                            + "', ignoring the column and setting the feature type read only");
+                    storeLogger.warning(
+                            "Could not find mapping for '"
+                                    + name
+                                    + "', ignoring the column and setting the feature type read only");
                     readOnly = true;
                     continue;
                 }
@@ -302,23 +303,19 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                         if (srid != null) {
                             crs = dialect.createCRS(srid, cx);
                             if (crs == null) {
-                                getDataStore()
-                                        .getLogger()
-                                        .warning(
-                                                "Couldn't determine CRS of table "
-                                                        + tableName
-                                                        + " with srid: "
-                                                        + srid.toString()
-                                                        + ".");
+                                storeLogger.warning(
+                                        "Couldn't determine CRS of table "
+                                                + tableName
+                                                + " with srid: "
+                                                + srid
+                                                + ".");
                             }
                         } else {
-                            getDataStore()
-                                    .getLogger()
-                                    .info("No srid returned of database table:" + tableName);
+                            storeLogger.info("No srid returned of database table:" + tableName);
                         }
                     } catch (Exception e) {
                         String msg = "Error occured determing srid for " + tableName + "." + name;
-                        getDataStore().getLogger().log(Level.WARNING, msg, e);
+                        storeLogger.log(Level.WARNING, msg, e);
                     }
 
                     // compute the dimension too
@@ -334,7 +331,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                     } catch (Exception e) {
                         String msg =
                                 "Error occured determing dimension for " + tableName + "." + name;
-                        getDataStore().getLogger().log(Level.WARNING, msg, e);
+                        storeLogger.log(Level.WARNING, msg, e);
                     }
 
                     ab.setBinding(binding);

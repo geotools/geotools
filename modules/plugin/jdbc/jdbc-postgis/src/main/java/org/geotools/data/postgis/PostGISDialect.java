@@ -694,46 +694,41 @@ public class PostGISDialect extends BasicSQLDialect {
         if (srid <= 0) {
             return null;
         }
-        try (Statement statement = cx.createStatement()) {
-            String sqlStatement =
-                    "SELECT AUTH_NAME, AUTH_SRID, SRTEXT FROM SPATIAL_REF_SYS WHERE SRID = "
-                            + Integer.toString(srid);
-            try (ResultSet result = statement.executeQuery(sqlStatement)) {
-                if (result.next()) {
-                    String code = result.getString(1) + ":" + Integer.toString(result.getInt(2));
-                    CoordinateReferenceSystem crs = null;
-                    try {
-                        crs = CRS.decode(code, true);
-                    } catch (FactoryException e) {
-                        LOGGER.log(Level.FINE, "Failed to decode " + code + ".", e);
-                    }
-                    if (crs == null) {
-                        String wkt = result.getString(3);
-                        try {
-                            crs = CRS.parseWKT(wkt);
-                        } catch (FactoryException e) {
-                            LOGGER.log(
-                                    Level.WARNING,
-                                    "Failed to parse wkt! "
-                                            + e.getMessage()
-                                            + " The problematic WKT is: "
-                                            + wkt,
-                                    e);
-                        }
-                    }
-                    return crs;
-                } else {
-                    LOGGER.warning(
-                            "SPATIAL_REF_SYS didn't have a row for srid: "
-                                    + Integer.toString(srid));
-                }
-            } catch (SQLException e) {
-                LOGGER.log(
-                        Level.WARNING,
-                        "Failed to retrive information from SPATIAL_REF_SYS for srid: "
-                                + Integer.toString(srid),
-                        e);
+        String sqlStatement =
+                "SELECT AUTH_NAME, AUTH_SRID, SRTEXT FROM SPATIAL_REF_SYS WHERE SRID = " + srid;
+        try (Statement statement = cx.createStatement();
+                ResultSet result = statement.executeQuery(sqlStatement)) {
+            if (!result.next()) {
+                LOGGER.warning("SPATIAL_REF_SYS didn't have a row for srid: " + srid);
+                return null;
             }
+            String code = result.getString(1) + ":" + Integer.toString(result.getInt(2));
+            CoordinateReferenceSystem crs = null;
+            try {
+                crs = CRS.decode(code, true);
+            } catch (FactoryException e) {
+                LOGGER.log(Level.FINE, "Failed to decode " + code + ".", e);
+            }
+            if (crs == null) {
+                String wkt = result.getString(3);
+                try {
+                    crs = CRS.parseWKT(wkt);
+                } catch (FactoryException e) {
+                    LOGGER.log(
+                            Level.WARNING,
+                            "Failed to parse wkt! "
+                                    + e.getMessage()
+                                    + " The problematic WKT is: "
+                                    + wkt,
+                            e);
+                }
+            }
+            return crs;
+        } catch (SQLException e) {
+            LOGGER.log(
+                    Level.WARNING,
+                    "Failed to retrive information from SPATIAL_REF_SYS for srid: " + srid,
+                    e);
         }
         return null;
     }

@@ -16,7 +16,9 @@
  */
 package org.geotools.data.h2;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -25,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
+import org.geotools.data.jdbc.datasource.ManageableDataSource;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.junit.Before;
@@ -34,42 +37,54 @@ import org.opengis.filter.Filter;
 
 public class H2LinkedTableTest {
     H2DataStoreFactory factory;
-    Map<String, Object> params;
-    private JDBCDataStore ds1;
 
     @Before
     public void setUp() throws Exception {
         factory = new H2DataStoreFactory();
-        params = new HashMap<>();
-        params.put(JDBCDataStoreFactory.NAMESPACE.key, "http://www.geotools.org/test");
-        params.put(JDBCDataStoreFactory.DATABASE.key, "geotools");
-        params.put(JDBCDataStoreFactory.DBTYPE.key, "h2");
-        ds1 = factory.createDataStore(params);
     }
 
     @Test
     public void testLinkedTable() throws Exception {
         org.h2.Driver.load();
-        Connection con2 = DriverManager.getConnection("jdbc:h2:mem:one", "sa", "sa");
-        Statement sa = con2.createStatement();
-        sa.execute(
-                "DROP TABLE IF EXISTS \"test\"; "
-                        + "CREATE TABLE \"test\" as select * from SYSTEM_RANGE(1,2) as n;");
+        try (Connection con = DriverManager.getConnection("jdbc:h2:geotools2", "sa", "sa")) {
+            try (Statement stmt = con.createStatement()) {
+                stmt.execute(
+                        "DROP TABLE IF EXISTS \"test\"; "
+                                + "CREATE TABLE \"test\" as select * from SYSTEM_RANGE(1,2) as n;");
+            }
+        }
 
-        Connection con1 = ds1.getDataSource().getConnection();
-        String sql =
-                "DROP TABLE IF EXISTS \"test_linked\"; CREATE LINKED TABLE \"test_linked\"(NULL, "
-                        + "'jdbc:h2:mem:one', 'sa', 'sa', '\"test\"')";
-        Statement sb = con1.createStatement();
-        sb.execute(sql);
-        FeatureSource fs = ds1.getFeatureSource("test_linked");
-        SimpleFeatureType featureType = ds1.getFeatureSource("test_linked").getSchema();
-        Query query = new Query(featureType.getTypeName(), Filter.INCLUDE);
-        assertEquals(2, fs.getCount(query));
-        assertNotNull(featureType);
-        assertEquals(1, featureType.getAttributeCount());
-        assertEquals("X", featureType.getDescriptor(0).getName().getLocalPart());
-        con2.close();
-        ds1.dispose();
+        Map<String, String> params1 = new HashMap<>();
+        params1.put(JDBCDataStoreFactory.NAMESPACE.key, "http://www.geotools.org/test");
+        params1.put(JDBCDataStoreFactory.DATABASE.key, "geotools");
+        params1.put(JDBCDataStoreFactory.DBTYPE.key, "h2");
+
+        JDBCDataStore ds = null;
+        try {
+            ds = factory.createDataStore(params1);
+            assertNotNull(ds);
+            assertTrue(ds.getDataSource() instanceof ManageableDataSource);
+            try (Connection con = ds.getDataSource().getConnection()) {
+                try (Statement stmt = con.createStatement()) {
+                    String sql =
+                            "DROP TABLE IF EXISTS \"test_linked\"; CREATE LINKED TABLE \"test_linked\"(NULL, "
+                                    + "'jdbc:h2:geotools2', 'sa', 'sa', '\"test\"')";
+                    stmt.execute(sql);
+                }
+            }
+
+            FeatureSource fs = ds.getFeatureSource("test_linked");
+            SimpleFeatureType featureType = ds.getFeatureSource("test_linked").getSchema();
+            Query query = new Query(featureType.getTypeName(), Filter.INCLUDE);
+            assertEquals(2, fs.getCount(query));
+            assertNotNull(featureType);
+            assertEquals(1, featureType.getAttributeCount());
+            assertEquals("X", featureType.getDescriptor(0).getName().getLocalPart());
+
+        } finally {
+            if (ds != null) {
+                ds.dispose();
+            }
+        }
     }
 }

@@ -1404,7 +1404,7 @@ public abstract class SQLDialect {
      * @param sqlTypeName The name of the sql type.
      * @return The mapped java class, or <code>null</code>. if no such mapping exists.
      */
-    public Class<?> getDesiredColumnMapping(String sqlTypeName) {
+    public Class<?> getMapping(String sqlTypeName) {
         return null;
     }
 }

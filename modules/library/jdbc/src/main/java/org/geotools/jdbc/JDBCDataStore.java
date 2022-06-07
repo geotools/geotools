@@ -5109,7 +5109,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             cx = getConnection(Transaction.AUTO_COMMIT);
             dialect.dropIndex(cx, schema, databaseSchema, indexName);
         } catch (SQLException e) {
-            throw new IOException("Failed to create index", e);
+            throw new IOException("Failed to drop index", e);
         } finally {
             closeSafe(cx);
         }
@@ -5129,7 +5129,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             cx = getConnection(Transaction.AUTO_COMMIT);
             return dialect.getIndexes(cx, databaseSchema, typeName);
         } catch (SQLException e) {
-            throw new IOException("Failed to create index", e);
+            throw new IOException("Failed to get indexes", e);
         } finally {
             closeSafe(cx);
         }

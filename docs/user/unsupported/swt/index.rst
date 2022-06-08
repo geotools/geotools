@@ -23,4 +23,3 @@ in a future extraction of common interfaces for GUI modules.
    :maxdepth: 1
 
    swtmapframe
-   rcp

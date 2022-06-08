@@ -19,12 +19,10 @@ package org.geotools.swt.action;
 
 import java.io.File;
 import java.io.IOException;
-
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFinder;
@@ -45,13 +43,17 @@ import org.geotools.swt.utils.Utils;
 public class OpenShapefileAction extends MapAction implements ISelectionChangedListener {
 
     public OpenShapefileAction() {
-        super("Open Shapefile@O", "Load a shapefile into the viewer.", ImageCache.getInstance().getImage(ImageCache.OPEN));
+        super(
+                "Open Shapefile@O",
+                "Load a shapefile into the viewer.",
+                ImageCache.getInstance().getImage(ImageCache.OPEN));
     }
 
     public void run() {
         Display display = Display.getCurrent();
         Shell shell = new Shell(display);
-        File openFile = JFileDataStoreChooser.showOpenFile(new String[]{"*.shp"}, shell); // $NON-NLS-1$
+        File openFile =
+                JFileDataStoreChooser.showOpenFile(new String[] {"*.shp"}, shell); // $NON-NLS-1$
 
         try {
             if (openFile != null && openFile.exists()) {
@@ -61,25 +63,25 @@ public class OpenShapefileAction extends MapAction implements ISelectionChangedL
                 ReferencedEnvelope bounds = featureSource.getBounds();
                 if (bounds.getCoordinateReferenceSystem() == null) {
                     if (mapContent.getCoordinateReferenceSystem() != null) {
-                        MessageBox dialog = new MessageBox(shell, SWT.ICON_QUESTION | SWT.OK | SWT.CANCEL);
-                        dialog.setText("Missing CRS");
-                        dialog.setMessage(
-                                "No CRS is available for the dataset. Want to write a prj file for the current map CRS?");
-                        int answer = dialog.open();
-                        if (answer == SWT.OK) {
+                        boolean doWritePrj =
+                                MessageDialog.openConfirm(
+                                        shell,
+                                        "Missing CRS",
+                                        "No CRS is available for the dataset. Want to write a prj file for the current map CRS?");
+                        if (doWritePrj) {
                             File prjFile = Utils.getPrjFile(openFile.getAbsolutePath(), "shp");
                             if (!prjFile.exists()) {
-                                Utils.writeProjectionFile(prjFile, mapContent.getCoordinateReferenceSystem());
+                                Utils.writeProjectionFile(
+                                        prjFile, mapContent.getCoordinateReferenceSystem());
                                 store = FileDataStoreFinder.getDataStore(openFile);
                                 featureSource = store.getFeatureSource();
                             }
                         }
-                    }else {
-                        MessageBox dialog = new MessageBox(shell, SWT.ICON_WARNING | SWT.OK );
-                        dialog.setText("Missing CRS");
-                        dialog.setMessage(
+                    } else {
+                        MessageDialog.openWarning(
+                                shell,
+                                "Missing CRS",
                                 "No CRS is available for the dataset and the map view. Check your data.");
-                        dialog.open();
                         return;
                     }
                 }
@@ -94,6 +96,5 @@ public class OpenShapefileAction extends MapAction implements ISelectionChangedL
         }
     }
 
-    public void selectionChanged( SelectionChangedEvent arg0 ) {
-    }
+    public void selectionChanged(SelectionChangedEvent arg0) {}
 }

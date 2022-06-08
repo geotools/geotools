@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
+
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -68,24 +69,27 @@ import org.opengis.style.ContrastMethod;
  */
 public class Utils {
     /** The default {@link StyleFactory} to use. */
-    public static StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(GeoTools.getDefaultHints());
+    public static StyleFactory styleFactory =
+            CommonFactoryFinder.getStyleFactory(GeoTools.getDefaultHints());
 
     /** The default {@link FilterFactory} to use. */
-    public static FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
+    public static FilterFactory filterFactory =
+            CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
 
     /** The default {@link StyleBuilder} to use. */
     public static StyleBuilder sb = new StyleBuilder(styleFactory, filterFactory);
 
-    private static final Class< ? > BASE_GRID_CLASS = org.opengis.coverage.grid.GridCoverage.class;
+    private static final Class<?> BASE_GRID_CLASS = org.opengis.coverage.grid.GridCoverage.class;
 
-    private static final Class< ? > BASE_READER_CLASS = org.opengis.coverage.grid.GridCoverageReader.class;
+    private static final Class<?> BASE_READER_CLASS =
+            org.opengis.coverage.grid.GridCoverageReader.class;
 
     /**
      * Sets the location of the shell to the center of the screen.
      *
      * @param shell the shell to place.
      */
-    public static void setShellLocation( Shell shell ) {
+    public static void setShellLocation(Shell shell) {
         Rectangle monitorArea = shell.getDisplay().getPrimaryMonitor().getBounds();
         Rectangle shellArea = shell.getBounds();
         int x = monitorArea.x + (monitorArea.width - shellArea.width) / 2;
@@ -101,9 +105,12 @@ public class Utils {
      * @param rect2d The awt rectangle to map.
      * @return an swt <code>Rectangle</code> object.
      */
-    public static Rectangle toSwtRectangle( java.awt.Rectangle rect2d ) {
-        return new Rectangle((int) Math.round(rect2d.getMinX()), (int) Math.round(rect2d.getMinY()),
-                (int) Math.round(rect2d.getWidth()), (int) Math.round(rect2d.getHeight()));
+    public static Rectangle toSwtRectangle(java.awt.Rectangle rect2d) {
+        return new Rectangle(
+                (int) Math.round(rect2d.getMinX()),
+                (int) Math.round(rect2d.getMinY()),
+                (int) Math.round(rect2d.getWidth()),
+                (int) Math.round(rect2d.getHeight()));
     }
 
     /**
@@ -112,7 +119,7 @@ public class Utils {
      * @param rect the swt <code>Rectangle</code>
      * @return a {@link java.awt.Rectangle} instance with the appropriate location and size.
      */
-    public static java.awt.Rectangle toAwtRectangle( Rectangle rect ) {
+    public static java.awt.Rectangle toAwtRectangle(Rectangle rect) {
         java.awt.Rectangle rect2d = new java.awt.Rectangle();
         rect2d.setRect(rect.x, rect.y, rect.width, rect.height);
         return rect2d;
@@ -124,7 +131,7 @@ public class Utils {
      * <p>If an SLD file is in the same directory as the shapefile then we will create the Style by
      * processing this.
      */
-    public static Style createStyle( File file, SimpleFeatureSource featureSource ) {
+    public static Style createStyle(File file, SimpleFeatureSource featureSource) {
         File sld = toSLDFile(file);
         if (sld != null) {
             return createFromSLD(sld);
@@ -139,7 +146,7 @@ public class Utils {
      * @param file the file to search for style sidecar file.
      * @return the style file or null.
      */
-    public static File toSLDFile( File file ) {
+    public static File toSLDFile(File file) {
         String path = file.getAbsolutePath();
         String base = path.substring(0, path.length() - 4);
         String newPath = base + ".sld";
@@ -161,7 +168,7 @@ public class Utils {
      * @param sld the sld file.
      * @return the created {@link Style} or <code>null</code>.
      */
-    public static Style createFromSLD( File sld ) {
+    public static Style createFromSLD(File sld) {
         try {
             SLDParser stylereader = new SLDParser(styleFactory, sld.toURI().toURL());
             Style[] style = stylereader.readXML();
@@ -179,14 +186,16 @@ public class Utils {
      * @param featureSource the source on which to create the style.
      * @return the style created.
      */
-    public static Style createStyle2( SimpleFeatureSource featureSource ) {
+    public static Style createStyle2(SimpleFeatureSource featureSource) {
         SimpleFeatureType schema = (SimpleFeatureType) featureSource.getSchema();
-        Class< ? > geomType = schema.getGeometryDescriptor().getType().getBinding();
+        Class<?> geomType = schema.getGeometryDescriptor().getType().getBinding();
 
-        if (Polygon.class.isAssignableFrom(geomType) || MultiPolygon.class.isAssignableFrom(geomType)) {
+        if (Polygon.class.isAssignableFrom(geomType)
+                || MultiPolygon.class.isAssignableFrom(geomType)) {
             return createPolygonStyle();
 
-        } else if (LineString.class.isAssignableFrom(geomType) || MultiLineString.class.isAssignableFrom(geomType)) {
+        } else if (LineString.class.isAssignableFrom(geomType)
+                || MultiLineString.class.isAssignableFrom(geomType)) {
             return createLineStyle();
 
         } else {
@@ -202,11 +211,16 @@ public class Utils {
     public static Style createPolygonStyle() {
 
         // create a partially opaque outline stroke
-        Stroke stroke = styleFactory.createStroke(filterFactory.literal(Color.BLUE), filterFactory.literal(1),
-                filterFactory.literal(0.5));
+        Stroke stroke =
+                styleFactory.createStroke(
+                        filterFactory.literal(Color.BLUE),
+                        filterFactory.literal(1),
+                        filterFactory.literal(0.5));
 
         // create a partial opaque fill
-        Fill fill = styleFactory.createFill(filterFactory.literal(Color.CYAN), filterFactory.literal(0.5));
+        Fill fill =
+                styleFactory.createFill(
+                        filterFactory.literal(Color.CYAN), filterFactory.literal(0.5));
 
         /*
          * Setting the geometryPropertyName arg to null signals that we want to
@@ -216,7 +230,7 @@ public class Utils {
 
         Rule rule = styleFactory.createRule();
         rule.symbolizers().add(sym);
-        FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(new Rule[]{rule});
+        FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(new Rule[] {rule});
         Style style = styleFactory.createStyle();
         style.featureTypeStyles().add(fts);
 
@@ -229,7 +243,9 @@ public class Utils {
      * @return the created style.
      */
     public static Style createLineStyle() {
-        Stroke stroke = styleFactory.createStroke(filterFactory.literal(Color.BLUE), filterFactory.literal(1));
+        Stroke stroke =
+                styleFactory.createStroke(
+                        filterFactory.literal(Color.BLUE), filterFactory.literal(1));
 
         /*
          * Setting the geometryPropertyName arg to null signals that we want to
@@ -239,7 +255,7 @@ public class Utils {
 
         Rule rule = styleFactory.createRule();
         rule.symbolizers().add(sym);
-        FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(new Rule[]{rule});
+        FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(new Rule[] {rule});
         Style style = styleFactory.createStyle();
         style.featureTypeStyles().add(fts);
 
@@ -256,7 +272,9 @@ public class Utils {
 
         Mark mark = styleFactory.getCircleMark();
 
-        mark.setStroke(styleFactory.createStroke(filterFactory.literal(Color.BLUE), filterFactory.literal(1)));
+        mark.setStroke(
+                styleFactory.createStroke(
+                        filterFactory.literal(Color.BLUE), filterFactory.literal(1)));
 
         mark.setFill(styleFactory.createFill(filterFactory.literal(Color.CYAN)));
 
@@ -272,7 +290,7 @@ public class Utils {
 
         Rule rule = styleFactory.createRule();
         rule.symbolizers().add(sym);
-        FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(new Rule[]{rule});
+        FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(new Rule[] {rule});
         Style style = styleFactory.createStyle();
         style.featureTypeStyles().add(fts);
 
@@ -285,7 +303,7 @@ public class Utils {
      * @param runner the runnable to run.
      * @param sync if <code>true</code>, the runnable is run in sync mode, else in async.
      */
-    public static void runGuiRunnableSafe( Runnable runner, boolean sync ) {
+    public static void runGuiRunnableSafe(Runnable runner, boolean sync) {
         if (Display.getCurrent() != null) {
             runner.run();
         } else {
@@ -305,7 +323,7 @@ public class Utils {
      *
      * @return a new Style object containing a raster symbolizer set up for RGB image
      */
-    public static Style createRGBStyle( GridCoverage2DReader reader ) {
+    public static Style createRGBStyle(GridCoverage2DReader reader) {
         GridCoverage2D cov = null;
         try {
             cov = reader.read(null);
@@ -319,7 +337,7 @@ public class Utils {
         }
         // Get the names of the bands
         String[] sampleDimensionNames = new String[numBands];
-        for( int i = 0; i < numBands; i++ ) {
+        for (int i = 0; i < numBands; i++) {
             GridSampleDimension dim = cov.getSampleDimension(i);
             sampleDimensionNames[i] = dim.getDescription().toString();
         }
@@ -327,7 +345,7 @@ public class Utils {
         int[] channelNum = {-1, -1, -1};
         // We examine the band names looking for "red...", "green...", "blue...".
         // Note that the channel numbers we record are indexed from 1, not 0.
-        for( int i = 0; i < numBands; i++ ) {
+        for (int i = 0; i < numBands; i++) {
             String name = sampleDimensionNames[i].toLowerCase();
             if (name != null) {
                 if (name.matches("red.*")) {
@@ -348,8 +366,10 @@ public class Utils {
         }
         // Now we create a RasterSymbolizer using the selected channels
         SelectedChannelType[] sct = new SelectedChannelType[cov.getNumSampleDimensions()];
-        ContrastEnhancement ce = styleFactory.contrastEnhancement(filterFactory.literal(1.0), ContrastMethod.NORMALIZE);
-        for( int i = 0; i < 3; i++ ) {
+        ContrastEnhancement ce =
+                styleFactory.contrastEnhancement(
+                        filterFactory.literal(1.0), ContrastMethod.NORMALIZE);
+        for (int i = 0; i < 3; i++) {
             sct[i] = styleFactory.createSelectedChannelType(String.valueOf(channelNum[i]), ce);
         }
         RasterSymbolizer sym = styleFactory.getDefaultRasterSymbolizer();
@@ -369,13 +389,15 @@ public class Utils {
      * @param layer the map layer
      * @return true if this is a grid layer; false otherwise
      */
-    public static boolean isGridLayer( Layer layer ) {
+    public static boolean isGridLayer(Layer layer) {
 
-        Collection<PropertyDescriptor> descriptors = layer.getFeatureSource().getSchema().getDescriptors();
-        for( PropertyDescriptor desc : descriptors ) {
-            Class< ? > binding = desc.getType().getBinding();
+        Collection<PropertyDescriptor> descriptors =
+                layer.getFeatureSource().getSchema().getDescriptors();
+        for (PropertyDescriptor desc : descriptors) {
+            Class<?> binding = desc.getType().getBinding();
 
-            if (BASE_GRID_CLASS.isAssignableFrom(binding) || BASE_READER_CLASS.isAssignableFrom(binding)) {
+            if (BASE_GRID_CLASS.isAssignableFrom(binding)
+                    || BASE_READER_CLASS.isAssignableFrom(binding)) {
                 return true;
             }
         }
@@ -383,20 +405,16 @@ public class Utils {
         return false;
     }
 
-    /**
-     * Get the grid name from a layer.
-     * 
-     * @param layer the {@link Layer} to get the name for.
-     * @return the name.
-     */
-    public static String getGridAttributeName( Layer layer ) {
+    public static String getGridAttributeName(Layer layer) {
         String attrName = null;
 
-        Collection<PropertyDescriptor> descriptors = layer.getFeatureSource().getSchema().getDescriptors();
-        for( PropertyDescriptor desc : descriptors ) {
-            Class< ? > binding = desc.getType().getBinding();
+        Collection<PropertyDescriptor> descriptors =
+                layer.getFeatureSource().getSchema().getDescriptors();
+        for (PropertyDescriptor desc : descriptors) {
+            Class<?> binding = desc.getType().getBinding();
 
-            if (BASE_GRID_CLASS.isAssignableFrom(binding) || BASE_READER_CLASS.isAssignableFrom(binding)) {
+            if (BASE_GRID_CLASS.isAssignableFrom(binding)
+                    || BASE_READER_CLASS.isAssignableFrom(binding)) {
                 attrName = desc.getName().getLocalPart();
                 break;
             }

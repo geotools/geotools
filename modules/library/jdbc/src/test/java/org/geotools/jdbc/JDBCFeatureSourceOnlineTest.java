@@ -27,6 +27,7 @@ import java.sql.Connection;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Query;
@@ -748,5 +749,17 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         // should hit the row where stringProperty starts with z (e.g zero)
         PropertyIsLike likeWithStringFunction = ff.like(function, "z%", "%", "-", "\\", true);
         assertEquals(1, featureSource.getCount(new Query(null, likeWithStringFunction)));
+    }
+
+    @Test
+    public void testStrMatchesFilter() throws Exception {
+
+      FilterFactory ff = dataStore.getFilterFactory();
+      Function function = ff.function("strMatches", ff.property("stringProperty"), ff.literal("\b(fred)\b"));
+
+      // should hit the row where stringProperty starts with z (e.g zero)
+      PropertyIsEqualTo StrMatchFunction = ff.equals(function, ff.literal(true));
+
+      assertEquals(1, featureSource.getCount(new Query(null, StrMatchFunction)));
     }
 }

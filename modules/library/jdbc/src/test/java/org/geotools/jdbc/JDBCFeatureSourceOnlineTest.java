@@ -755,7 +755,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
 
         FilterFactory ff = dataStore.getFilterFactory();
         Function function =
-                ff.function("strMatches", ff.property("stringProperty"), ff.literal("^z*"));
+                ff.function("strMatches", ff.property("stringProperty"), ff.literal("^z.*"));
 
         // should hit the row where stringProperty starts with z (e.g zero)
         PropertyIsEqualTo StrMatchFunction = ff.equals(function, ff.literal(true));

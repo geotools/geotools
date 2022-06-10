@@ -75,6 +75,7 @@ import org.geotools.feature.visitor.UniqueCountVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.visitor.ExpressionTypeVisitor;
+import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JoinInfo.JoinPart;
 import org.geotools.referencing.CRS;
@@ -3603,6 +3604,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             // grab the full feature type, as we might be encoding a filter
             // that uses attributes that aren't returned in the results
             toSQL.setInline(true);
+
             String filterSql = toSQL.encodeToString(filter);
             int whereClauseIndex = sql.indexOf(WHERE_CLAUSE_PLACE_HOLDER);
             if (whereClauseIndex != -1) {
@@ -4107,6 +4109,19 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             toSQL.addAll(encodeWhereJoin(featureType, join, sql));
         } else {
             Filter filter = query.getFilter();
+            // here or before we need to split the filter in case it is not to
+            // be passed to the db - GEOT-7161
+            if (!toSQL.isEmpty()) {
+                FilterCapabilities caps = toSQL.get(0).getCapabilities();
+
+                PostPreProcessFilterSplittingVisitor splitter =
+                        new PostPreProcessFilterSplittingVisitor(caps, featureType, null);
+                filter.accept(splitter, null);
+                if (!splitter.getFilterPost().equals(Filter.INCLUDE)) {
+                    throw new RuntimeException(
+                            "Unable to process filter: '" + splitter.getFilterPost() + ";");
+                }
+            }
             if (filter != null && !Filter.INCLUDE.equals(filter)) {
                 sql.append(" WHERE ");
                 toSQL.add(filter(featureType, filter, sql));

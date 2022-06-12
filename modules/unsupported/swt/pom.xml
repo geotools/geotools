@@ -93,55 +93,26 @@
     </dependency>
 
     <!-- ECLIPSE JARS -->
-    <!-- https://mvnrepository.com/artifact/org.eclipse.platform/org.eclipse.core.commands -->
     <dependency>
       <groupId>org.eclipse.platform</groupId>
       <artifactId>org.eclipse.core.commands</artifactId>
       <version>3.10.100</version>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/org.eclipse.platform/org.eclipse.jface -->
     <dependency>
       <groupId>org.eclipse.platform</groupId>
       <artifactId>org.eclipse.jface</artifactId>
       <version>3.23.0</version>
     </dependency>
-    <!-- <dependency> <groupId>org.eclipse</groupId> <artifactId>ui.workbench</artifactId> 
-			<version>3.123.0.v20210817-0704</version> </dependency> -->
-
-    <!-- https://mvnrepository.com/artifact/org.eclipse.platform/org.eclipse.core.runtime -->
     <dependency>
       <groupId>org.eclipse.platform</groupId>
       <artifactId>org.eclipse.core.runtime</artifactId>
       <version>3.23.0</version>
     </dependency>
-
-    <!-- https://mvnrepository.com/artifact/org.eclipse.platform/org.eclipse.equinox.common -->
     <dependency>
       <groupId>org.eclipse.platform</groupId>
       <artifactId>org.eclipse.equinox.common</artifactId>
       <version>3.15.0</version>
     </dependency>
-
-    <!-- https://mvnrepository.com/artifact/org.eclipse.platform/org.eclipse.swt -->
-    <!--  
-		<dependency>
-			<groupId>org.eclipse.platform</groupId>
-			<artifactId>org.eclipse.swt</artifactId>
-			<version>3.117.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.platform</groupId>
-			<artifactId>org.eclipse.swt.win32.win32.x86_64</artifactId>
-			<version>3.117.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.eclipse.platform</groupId>
-			<artifactId>org.eclipse.swt.gtk.linux.x86_64</artifactId>
-			<version>3.117.0</version>
-		</dependency>
-		 -->
-
     <dependency>
       <groupId>org.eclipse.platform</groupId>
       <artifactId>org.eclipse.swt.gtk.linux.x86_64</artifactId>

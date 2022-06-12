@@ -22,7 +22,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
-
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -427,11 +426,10 @@ public class Utils {
      * Fill the prj file with the actual map projection.
      *
      * @param prjFile the prj file to write.
-     * @param crs       the {@link CoordinateReferenceSystem} to write.
-     *
+     * @param crs the {@link CoordinateReferenceSystem} to write.
      * @throws IOException
      */
-    public static void writeProjectionFile( File prjFile, CoordinateReferenceSystem crs )
+    public static void writeProjectionFile(File prjFile, CoordinateReferenceSystem crs)
             throws IOException {
         if (!prjFile.exists()) {
             try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(prjFile))) {
@@ -442,12 +440,12 @@ public class Utils {
 
     /**
      * Get the prj file for a given file.
-     * 
+     *
      * @param filePath the existing main or sidecar file.
      * @param extention the extension to get rid of.
      * @return the prj file.
      */
-    public static File getPrjFile( String filePath, String extention ) {
+    public static File getPrjFile(String filePath, String extention) {
         String prjPath = null;
         if (extention != null && filePath.toLowerCase().endsWith("." + extention)) {
             int dotLoc = filePath.lastIndexOf(".");

@@ -20,7 +20,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import static org.junit.Assume.assumeTrue;
 import static org.opengis.filter.sort.SortOrder.ASCENDING;
 
@@ -178,16 +177,11 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
                 ff.equals(
                         ff.function(
                                 "strMatches", ff.property("stringProperty"), ff.literal("zero*")),
-                        ff.literal(true));
+                        ff.literal(false));
         Query q = new Query(tname("ft1"), f);
-        try {
-            dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
-            fail("currently can't handle unprocessable functions");
-        } catch (RuntimeException e) {
-            assertEquals(
-                    "Unable to process filter: '[ strMatches([stringProperty], [zero*]) = true ];",
-                    e.getMessage());
-        }
+
+        dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
+        assertEquals(3.3, v.getResult().toDouble(), 0.00001);
     }
 
     @Test

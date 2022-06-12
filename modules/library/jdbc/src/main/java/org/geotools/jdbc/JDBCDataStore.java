@@ -1412,6 +1412,15 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             // this visitor is not supported
             return null;
         }
+        FilterCapabilities caps = getFilterCapabilities();
+
+        PostPreProcessFilterSplittingVisitor splitter =
+                new PostPreProcessFilterSplittingVisitor(caps, featureType, null);
+        query.getFilter().accept(splitter, null);
+        if (!splitter.getFilterPost().equals(Filter.INCLUDE)) {
+            // we can't process all of the filter
+            return null;
+        }
         // try to extract an aggregate attribute from the visitor
         List<Expression> aggregateExpressions = null;
         if (!isCountVisitor(visitor)) {
@@ -4109,19 +4118,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             toSQL.addAll(encodeWhereJoin(featureType, join, sql));
         } else {
             Filter filter = query.getFilter();
-            // here or before we need to split the filter in case it is not to
-            // be passed to the db - GEOT-7161
-            if (!toSQL.isEmpty()) {
-                FilterCapabilities caps = toSQL.get(0).getCapabilities();
-
-                PostPreProcessFilterSplittingVisitor splitter =
-                        new PostPreProcessFilterSplittingVisitor(caps, featureType, null);
-                filter.accept(splitter, null);
-                if (!splitter.getFilterPost().equals(Filter.INCLUDE)) {
-                    throw new RuntimeException(
-                            "Unable to process filter: '" + splitter.getFilterPost() + ";");
-                }
-            }
             if (filter != null && !Filter.INCLUDE.equals(filter)) {
                 sql.append(" WHERE ");
                 toSQL.add(filter(featureType, filter, sql));

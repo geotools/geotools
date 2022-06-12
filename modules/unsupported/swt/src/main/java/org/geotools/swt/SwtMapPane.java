@@ -417,7 +417,7 @@ public class SwtMapPane extends Canvas
 
     public void setCrs(CoordinateReferenceSystem crs) {
         try {
-            if(crs == null) {
+            if (crs == null) {
                 return;
             }
             // System.out.println(content.layers().size());

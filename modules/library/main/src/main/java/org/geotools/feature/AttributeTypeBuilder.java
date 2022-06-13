@@ -435,17 +435,6 @@ public class AttributeTypeBuilder {
         return type;
     }
 
-    protected String typeName() {
-        if (name == null) {
-            return Classes.getShortName(binding);
-        }
-        return name;
-    }
-
-    private InternationalString description() {
-        return description != null ? new SimpleInternationalString(description) : null;
-    }
-
     /**
      * Builds the geometry attribute type.
      *
@@ -468,22 +457,37 @@ public class AttributeTypeBuilder {
         return type;
     }
 
+    private Name name() {
+        if (name == null) {
+            name = Classes.getShortName(binding);
+        }
+        return separator == null
+                ? new NameImpl(namespaceURI, name)
+                : new NameImpl(namespaceURI, separator, name);
+    }
+
+    private InternationalString description() {
+        return description != null ? new SimpleInternationalString(description) : null;
+    }
+
     /**
      * Builds an attribute descriptor first building an attribute type from internal state.
      *
-     * <p>If {@link #crs} has been set via {@link #setCRS(CoordinateReferenceSystem)} the internal
-     * attribute type will be built via {@link #buildGeometryType()}, otherwise it will be built via
-     * {@link #buildType()}.
+     * <p>If {@link #crs} has been set via {@link #setCRS(CoordinateReferenceSystem)}, or {@link
+     * #binding} is of Geometry. The internal attribute type will be built via {@link
+     * #buildGeometryType()}, and {@link #buildDescriptor(String, GeometryType)} will be called.
      *
-     * <p>This method calls through to {@link #buildDescriptor(String, AttributeType)}.
+     * <p>Otherwise it will be built via {@link #buildType()}, and {@link #buildDescriptor(String,
+     * AttributeType)} will be called.
      *
      * @param name The name of the descriptor.
      * @see #buildDescriptor(String, AttributeType)
+     * @throws IllegalStateException If no binding is set
      */
     public AttributeDescriptor buildDescriptor(String name) {
-        setName(name);
-        if (binding == null)
+        if (binding == null) {
             throw new IllegalStateException("No binding has been provided for this attribute");
+        }
         if (crs != null || Geometry.class.isAssignableFrom(binding)) {
             return buildDescriptor(name, buildGeometryType());
         } else {
@@ -560,14 +564,6 @@ public class AttributeTypeBuilder {
             return 1;
         }
         return maxOccurs;
-    }
-
-    private Name name() {
-        if (separator == null) {
-            return new NameImpl(namespaceURI, typeName());
-        } else {
-            return new NameImpl(namespaceURI, separator, typeName());
-        }
     }
 
     private Object defaultValue() {

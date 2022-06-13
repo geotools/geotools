@@ -23,8 +23,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import junit.framework.TestCase; // NOPMD
 import junit.framework.TestResult;
+import org.junit.Assume;
 
 /**
  * Test support for test cases that require an "online" resource, such as an
@@ -143,7 +146,7 @@ public abstract class OnlineTestCase extends TestCase {
                                     + fixtureId
                                     + " tests, resources not available: "
                                     + t.getMessage());
-                    java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", t);
+                    Logger.getGlobal().log(Level.INFO, "", t);
                     available = Boolean.FALSE;
                 }
                 online.put(fixtureId, available);
@@ -198,7 +201,7 @@ public abstract class OnlineTestCase extends TestCase {
                     FixtureUtilities.printSkipNotice(fixtureId, fixtureFile);
                 }
             } catch (Exception e) {
-                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
+                Logger.getGlobal().log(Level.INFO, "", e);
             }
         }
     }
@@ -219,7 +222,7 @@ public abstract class OnlineTestCase extends TestCase {
             // System.out.println("Wrote example fixture file to " + exFixtureFile);
         } catch (IOException ioe) {
             // System.out.println("Unable to write out example fixture " + exFixtureFile);
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", ioe);
+            Logger.getGlobal().log(Level.INFO, "", ioe);
         }
     }
     /**
@@ -243,7 +246,9 @@ public abstract class OnlineTestCase extends TestCase {
                 // disable the test
                 fixture = null;
                 // leave some trace of the swallowed exception
-                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
+                Logger.getGlobal().log(Level.INFO, "SetUp of test failed. Test ignored.", e);
+
+                Assume.assumeTrue("Ignorded because of exception: " + e.getMessage(), false);
             } else {
                 // do not swallow the exception
                 throw e;

@@ -42,6 +42,7 @@ import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.SortByImpl;
 import org.geotools.filter.function.FilterFunction_area;
 import org.geotools.util.Converters;
+import org.junit.Test;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
@@ -155,6 +156,26 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
         assertFalse(visited);
         assertEquals(1.1, v.getResult().toDouble(), 0.01);
+    }
+
+    @Test
+    public void testSumWithFunctionFilter() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyName p = ff.property(aname("doubleProperty"));
+
+        SumVisitor v = new MySumVisitor(p);
+
+        Filter f =
+                ff.equals(
+                        ff.function(
+                                "strMatches",
+                                ff.property(aname("stringProperty")),
+                                ff.literal("zero*")),
+                        ff.literal(false));
+        Query q = new Query(tname("ft1"), f);
+
+        dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
+        assertEquals(3.3, v.getResult().toDouble(), 0.00001);
     }
 
     public void testSumWithLimitOffset() throws Exception {

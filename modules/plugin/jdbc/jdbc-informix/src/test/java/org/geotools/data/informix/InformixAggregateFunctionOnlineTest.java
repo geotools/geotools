@@ -41,12 +41,4 @@ public class InformixAggregateFunctionOnlineTest extends JDBCAggregateFunctionOn
         // skip this test as it requires "ft4"
     }
 
-    /*
-     * for some reason this fails while
-     * org.geotools.jdbc.JDBCAggregateFunctionOnlineTest.testSumWithFilter()
-     * which is functionally identical passes.
-     */
-    @Override
-    public void testSumWithFunctionFilter() throws Exception {
-    }
 }

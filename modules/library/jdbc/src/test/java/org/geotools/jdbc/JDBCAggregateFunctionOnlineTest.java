@@ -30,7 +30,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-
 import org.geotools.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.visitor.AverageVisitor;
@@ -177,7 +176,9 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         Filter f =
                 ff.equals(
                         ff.function(
-                    "strMatches", ff.property(aname("stringProperty")), ff.literal("zero*")),
+                                "strMatches",
+                                ff.property(aname("stringProperty")),
+                                ff.literal("zero*")),
                         ff.literal(false));
         Query q = new Query(tname("ft1"), f);
 

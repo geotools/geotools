@@ -75,6 +75,7 @@ import org.geotools.feature.visitor.UniqueCountVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.visitor.ExpressionTypeVisitor;
+import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JoinInfo.JoinPart;
 import org.geotools.referencing.CRS;
@@ -1409,6 +1410,15 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         String function = matchAggregateFunction(visitor);
         if (function == null) {
             // this visitor is not supported
+            return null;
+        }
+        FilterCapabilities caps = getFilterCapabilities();
+
+        PostPreProcessFilterSplittingVisitor splitter =
+                new PostPreProcessFilterSplittingVisitor(caps, featureType, null);
+        query.getFilter().accept(splitter, null);
+        if (!splitter.getFilterPost().equals(Filter.INCLUDE)) {
+            // we can't process all of the filter
             return null;
         }
         // try to extract an aggregate attribute from the visitor
@@ -3603,6 +3613,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             // grab the full feature type, as we might be encoding a filter
             // that uses attributes that aren't returned in the results
             toSQL.setInline(true);
+
             String filterSql = toSQL.encodeToString(filter);
             int whereClauseIndex = sql.indexOf(WHERE_CLAUSE_PLACE_HOLDER);
             if (whereClauseIndex != -1) {

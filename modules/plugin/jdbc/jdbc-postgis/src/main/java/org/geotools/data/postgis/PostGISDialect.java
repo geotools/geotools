@@ -80,6 +80,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class PostGISDialect extends BasicSQLDialect {
@@ -685,6 +686,51 @@ public class PostGISDialect extends BasicSQLDialect {
         } finally {
             dataStore.closeSafe(st);
         }
+    }
+
+    /** Using PostGIS table spatial_ref_sys to determine authority name and code of srid */
+    @Override
+    public CoordinateReferenceSystem createCRS(int srid, Connection cx) throws SQLException {
+        if (srid <= 0) {
+            return null;
+        }
+        String sqlStatement =
+                "SELECT AUTH_NAME, AUTH_SRID, SRTEXT FROM SPATIAL_REF_SYS WHERE SRID = " + srid;
+        try (Statement statement = cx.createStatement();
+                ResultSet result = statement.executeQuery(sqlStatement)) {
+            if (!result.next()) {
+                LOGGER.warning("SPATIAL_REF_SYS didn't have a row for srid: " + srid);
+                return null;
+            }
+            String code = result.getString(1) + ":" + Integer.toString(result.getInt(2));
+            CoordinateReferenceSystem crs = null;
+            try {
+                crs = CRS.decode(code, true);
+            } catch (FactoryException e) {
+                LOGGER.log(Level.FINE, "Failed to decode " + code + ".", e);
+            }
+            if (crs == null) {
+                String wkt = result.getString(3);
+                try {
+                    crs = CRS.parseWKT(wkt);
+                } catch (FactoryException e) {
+                    LOGGER.log(
+                            Level.WARNING,
+                            "Failed to parse wkt! "
+                                    + e.getMessage()
+                                    + " The problematic WKT is: "
+                                    + wkt,
+                            e);
+                }
+            }
+            return crs;
+        } catch (SQLException e) {
+            LOGGER.log(
+                    Level.WARNING,
+                    "Failed to retrive information from SPATIAL_REF_SYS for srid: " + srid,
+                    e);
+        }
+        return null;
     }
 
     @Override

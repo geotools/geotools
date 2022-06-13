@@ -26,6 +26,10 @@ import org.opengis.feature.simple.SimpleFeatureType;
 
 public class PostgisGeographyOnlineTest extends JDBCGeographyOnlineTest {
 
+    public PostgisGeographyOnlineTest() {
+        this.forceLongitudeFirst = true;
+    }
+
     @Override
     protected JDBCGeographyTestSetup createTestSetup() {
         return new PostgisGeographyTestSetup(new PostGISPSTestSetup());

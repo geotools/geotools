@@ -22,6 +22,10 @@ import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 
 public class PostgisDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
 
+    public PostgisDataStoreAPIOnlineTest() {
+        this.forceLongitudeFirst = true;
+    }
+
     @Override
     protected JDBCDataStoreAPITestSetup createTestSetup() {
         return new PostgisDataStoreAPITestSetup(new PostGISPSTestSetup());

@@ -712,10 +712,21 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         }
 
         FilterFactory ff = dataStore.getFilterFactory();
-        Function function = ff.function("strToLowerCase", ff.property("stringProperty"));
+        Function function = ff.function("strToLowerCase", ff.property(aname("stringProperty")));
 
         // should hit the row where stringProperty starts with z (e.g zero)
         PropertyIsLike likeWithStringFunction = ff.like(function, "z%", "%", "-", "\\", true);
         assertEquals(1, featureSource.getCount(new Query(null, likeWithStringFunction)));
+    }
+
+    public void testStrMatchesFilter() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        Function function = ff.function("strToLowerCase", ff.property(aname("stringProperty")));
+        Function functiond = ff.function("strMatches", function, ff.literal("^z.*"));
+
+        // should hit the row where stringProperty starts with z (e.g zero)
+        PropertyIsEqualTo StrMatchFunction = ff.equals(functiond, ff.literal(true));
+
+        assertEquals(1, featureSource.getCount(new Query(null, StrMatchFunction)));
     }
 }

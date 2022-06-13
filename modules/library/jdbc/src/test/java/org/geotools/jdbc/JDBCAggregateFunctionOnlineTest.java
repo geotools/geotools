@@ -157,6 +157,27 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         assertEquals(1.1, v.getResult().toDouble(), 0.01);
     }
 
+    @Test
+    public void testSumWithFunctionFilter() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyName p = ff.property(aname("doubleProperty"));
+
+        SumVisitor v = new MySumVisitor(p);
+
+        Filter f =
+                ff.equals(
+                        ff.function(
+                                "strMatches",
+                                ff.property(aname("stringProperty")),
+                                ff.literal("zero*")),
+                        ff.literal(false));
+        Query q = new Query(tname("ft1"), f);
+
+        dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
+        assertEquals(3.3, v.getResult().toDouble(), 0.00001);
+    }
+
+    @Test
     public void testSumWithLimitOffset() throws Exception {
         if (!dataStore.getSQLDialect().isLimitOffsetSupported()) {
             return;

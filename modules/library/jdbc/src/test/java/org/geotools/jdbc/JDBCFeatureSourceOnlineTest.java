@@ -754,7 +754,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
     @Test
     public void testStrMatchesFilter() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
-        Function function = ff.function("strToLowerCase", ff.property("stringProperty"));
+        Function function = ff.function("strToLowerCase", ff.property(aname("stringProperty")));
         Function functiond = ff.function("strMatches", function, ff.literal("^z.*"));
 
         // should hit the row where stringProperty starts with z (e.g zero)

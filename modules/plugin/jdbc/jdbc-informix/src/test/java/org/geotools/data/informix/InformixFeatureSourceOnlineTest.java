@@ -46,13 +46,4 @@ public class InformixFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest
 
         assertTrue(areCRSEqual(CRS.decode("EPSG:4326"), bounds.getCoordinateReferenceSystem()));
     }
-
-    /*
-     * for some reason this fails while
-     * org.geotools.jdbc.JDBCFeatureSourceOnlineTest.testStringFunction() which
-     * is functionally identical passes.
-     */
-    @Override
-    public void testStrMatchesFilter() throws Exception {
-    }
 }

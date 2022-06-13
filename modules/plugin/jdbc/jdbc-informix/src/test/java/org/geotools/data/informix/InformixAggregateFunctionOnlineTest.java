@@ -40,5 +40,4 @@ public class InformixAggregateFunctionOnlineTest extends JDBCAggregateFunctionOn
     public void testUniqueMultipleAttributes3() {
         // skip this test as it requires "ft4"
     }
-
 }

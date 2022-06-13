@@ -22,7 +22,6 @@ import static org.junit.Assert.assertTrue;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
-
 import org.geotools.data.Query;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCFeatureSourceOnlineTest;
@@ -102,14 +101,5 @@ public class OracleFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
     @Override
     protected List<Object> getTestMixedEncodeInExpected() {
         return Arrays.asList("zero", "two", BigDecimal.valueOf(1), BigDecimal.valueOf(2), 0d);
-    }
-
-    /*
-     * for some reason this fails while
-     * org.geotools.jdbc.JDBCFeatureSourceOnlineTest.testStringFunction() which
-     * is functionally identical passes.
-     */
-    @Override
-    public void testStrMatchesFilter() throws Exception {
     }
 }

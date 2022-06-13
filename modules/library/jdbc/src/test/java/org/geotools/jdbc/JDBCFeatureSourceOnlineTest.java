@@ -27,6 +27,7 @@ import java.sql.Connection;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Query;
@@ -743,7 +744,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         }
 
         FilterFactory ff = dataStore.getFilterFactory();
-        Function function = ff.function("strToLowerCase", ff.property("stringProperty"));
+        Function function = ff.function("strToLowerCase", ff.property(aname("stringProperty")));
 
         // should hit the row where stringProperty starts with z (e.g zero)
         PropertyIsLike likeWithStringFunction = ff.like(function, "z%", "%", "-", "\\", true);

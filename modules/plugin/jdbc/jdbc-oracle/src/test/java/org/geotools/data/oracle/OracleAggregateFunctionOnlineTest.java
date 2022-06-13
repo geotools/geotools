@@ -78,5 +78,4 @@ public class OracleAggregateFunctionOnlineTest extends JDBCAggregateFunctionOnli
      */
     @Override
     public void testStoreChecksVisitorLimits() {}
-
 }

@@ -21,6 +21,7 @@ import java.util.HashSet;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.StatusLineLayoutData;
 import org.eclipse.jface.action.StatusLineManager;
 import org.eclipse.jface.action.ToolBarManager;
@@ -31,10 +32,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.geotools.map.MapContent;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.lite.StreamingRenderer;
+import org.geotools.swt.action.ExitAction;
 import org.geotools.swt.action.InfoAction;
+import org.geotools.swt.action.MapAction;
 import org.geotools.swt.action.OpenGeotiffAction;
 import org.geotools.swt.action.OpenShapefileAction;
 import org.geotools.swt.action.PanAction;
@@ -43,6 +47,7 @@ import org.geotools.swt.action.ZoomInAction;
 import org.geotools.swt.action.ZoomOutAction;
 import org.geotools.swt.utils.CrsStatusBarButton;
 import org.geotools.swt.utils.StatusBarNotifier;
+import org.geotools.swt.utils.SwtActionsHandler;
 
 /**
  * An SWT frame containing a map display pane and a toolbar, status bar and map layer table.
@@ -85,8 +90,9 @@ public class SwtMapFrame extends ApplicationWindow {
     private ZoomInAction zoominAction;
     private ZoomOutAction zoomoutAction;
 
-    private OpenShapefileAction openShapeAction;
-    private OpenGeotiffAction openCoverageAction;
+    private ExitAction exitAction;
+
+    private SwtActionsHandler actionsHandler;
 
     /*
      * to see how overlay of shapes works, uncomment all the lines that
@@ -95,27 +101,52 @@ public class SwtMapFrame extends ApplicationWindow {
     // private DrawShapeAction drawAction;
 
     /**
-     * Creates a new {@code JMapFrame} object with a toolbar, map pane and status bar; sets the
+     * Creates a new {@code SwtMapFrame} object with a toolbar, map pane and status bar; sets the
      * supplied {@code MapContent}; and displays the frame on the AWT event dispatching thread. The
      * context's title is used as the frame's title.
      *
      * @param content the map context containing the layers to display
      */
-    public static void showMap(MapContent content) {
-        final SwtMapFrame frame = new SwtMapFrame(true, true, true, true, content);
-        // frame.getShell().setSize(500, 500);
+    public static void showMap(MapContent content, SwtActionsHandler actionsHandler) {
+        if (actionsHandler == null) {
+            actionsHandler =
+                    new SwtActionsHandler() {
+                        @Override
+                        public MapAction[] getFileMenuActions() {
+                            return new MapAction[] {
+                                new OpenShapefileAction(), new OpenGeotiffAction()
+                            };
+                        }
+
+                        @Override
+                        public MapAction[] getFileNavigationMenuActions() {
+                            return new MapAction[0];
+                        }
+                    };
+        }
+        final SwtMapFrame frame = new SwtMapFrame(true, true, true, true, actionsHandler, content);
         frame.setBlockOnOpen(true);
         frame.open();
     }
 
-    /** Default constructor. Creates a {@code JMapFrame} with no context or renderer set */
+    @Override
+    protected void configureShell(Shell newShell) {
+        super.configureShell(newShell);
+        newShell.setMinimumSize(1200, 800);
+    }
+
+    /** Default constructor. Creates a {@code SwtMapFrame} with no context or renderer set */
     public SwtMapFrame(
-            boolean showMenu, boolean showToolBar, boolean showStatusBar, boolean showLayerTable) {
-        this(showMenu, showToolBar, showStatusBar, showLayerTable, null);
+            boolean showMenu,
+            boolean showToolBar,
+            boolean showStatusBar,
+            boolean showLayerTable,
+            SwtActionsHandler actionsHandler) {
+        this(showMenu, showToolBar, showStatusBar, showLayerTable, actionsHandler, null);
     }
 
     /**
-     * Constructs a new {@code JMapFrame} object with specified context and a default renderer (an
+     * Constructs a new {@code SwtMapFrame} object with specified context and a default renderer (an
      * instance of {@link StreamingRenderer}).
      *
      * @param content the map context with layers to be displayed
@@ -125,12 +156,14 @@ public class SwtMapFrame extends ApplicationWindow {
             boolean showToolBar,
             boolean showStatusBar,
             boolean showLayerTable,
+            SwtActionsHandler actionsHandler,
             MapContent content) {
         this(
                 showMenu,
                 showToolBar,
                 showStatusBar,
                 showLayerTable,
+                actionsHandler,
                 content,
                 new StreamingRenderer());
     }
@@ -146,10 +179,12 @@ public class SwtMapFrame extends ApplicationWindow {
             boolean showToolBar,
             boolean showStatusBar,
             boolean showLayerTable,
+            SwtActionsHandler actionsHandler,
             MapContent content,
             GTRenderer renderer) {
         super(null);
         this.showLayerTable = showLayerTable;
+        this.actionsHandler = actionsHandler;
         this.content = content;
         this.renderer = renderer;
 
@@ -159,8 +194,8 @@ public class SwtMapFrame extends ApplicationWindow {
         resetAction = new ResetAction();
         zoominAction = new ZoomInAction();
         zoomoutAction = new ZoomOutAction();
-        openShapeAction = new OpenShapefileAction();
-        openCoverageAction = new OpenGeotiffAction();
+
+        exitAction = new ExitAction(this);
 
         toolSet = new HashSet<>();
         toolSet.addAll(EnumSet.allOf(Tool.class));
@@ -205,7 +240,7 @@ public class SwtMapFrame extends ApplicationWindow {
             mapPane = new SwtMapPane(mainComposite, SWT.BORDER | SWT.NO_BACKGROUND);
             mapPane.setMapContent(content);
             mapLayerTable.setMapPane(mapPane);
-            sashForm.setWeights(new int[] {1, 3});
+            sashForm.setWeights(new int[] {2, 5});
         } else {
             mainComposite = parent;
             mapPane = new SwtMapPane(mainComposite, SWT.BORDER | SWT.NO_BACKGROUND);
@@ -222,8 +257,15 @@ public class SwtMapFrame extends ApplicationWindow {
         resetAction.setMapPane(mapPane);
         zoominAction.setMapPane(mapPane);
         zoomoutAction.setMapPane(mapPane);
-        openShapeAction.setMapPane(mapPane);
-        openCoverageAction.setMapPane(mapPane);
+
+        if (actionsHandler != null) {
+            for (MapAction action : actionsHandler.getFileMenuActions()) {
+                action.setMapPane(mapPane);
+            }
+            for (MapAction action : actionsHandler.getFileNavigationMenuActions()) {
+                action.setMapPane(mapPane);
+            }
+        }
 
         StatusLineManager statusLineManager = getStatusLineManager();
         if (statusLineManager != null) {
@@ -264,8 +306,13 @@ public class SwtMapFrame extends ApplicationWindow {
         MenuManager bar_menu = new MenuManager("");
 
         MenuManager file_menu = new MenuManager("&File");
-        file_menu.add(openShapeAction);
-        file_menu.add(openCoverageAction);
+        if (actionsHandler != null) {
+            for (MapAction action : actionsHandler.getFileMenuActions()) {
+                file_menu.add(action);
+            }
+        }
+        file_menu.add(new Separator());
+        file_menu.add(exitAction);
 
         MenuManager navigation_menu = new MenuManager("&Navigation");
         bar_menu.add(file_menu);
@@ -276,6 +323,11 @@ public class SwtMapFrame extends ApplicationWindow {
         navigation_menu.add(resetAction);
         navigation_menu.add(zoominAction);
         navigation_menu.add(zoomoutAction);
+        if (actionsHandler != null) {
+            for (MapAction action : actionsHandler.getFileNavigationMenuActions()) {
+                file_menu.add(action);
+            }
+        }
         return bar_menu;
     }
 

@@ -17,7 +17,9 @@
 package org.geotools.swt.utils;
 
 import java.awt.Color;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
 import org.eclipse.swt.graphics.Rectangle;
@@ -56,6 +58,7 @@ import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.FilterFactory;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.style.ContrastMethod;
 
 /**
@@ -417,5 +420,44 @@ public class Utils {
         }
 
         return attrName;
+    }
+
+    /**
+     * Fill the prj file with the actual map projection.
+     *
+     * @param prjFile the prj file to write.
+     * @param crs the {@link CoordinateReferenceSystem} to write.
+     * @throws IOException
+     */
+    public static void writeProjectionFile(File prjFile, CoordinateReferenceSystem crs)
+            throws IOException {
+        if (!prjFile.exists()) {
+            try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(prjFile))) {
+                bufferedWriter.write(crs.toWKT());
+            }
+        }
+    }
+
+    /**
+     * Get the prj file for a given file.
+     *
+     * @param filePath the existing main or sidecar file.
+     * @param extention the extension to get rid of.
+     * @return the prj file.
+     */
+    public static File getPrjFile(String filePath, String extention) {
+        String prjPath = null;
+        if (extention != null && filePath.toLowerCase().endsWith("." + extention)) {
+            int dotLoc = filePath.lastIndexOf(".");
+            prjPath = filePath.substring(0, dotLoc);
+            prjPath = prjPath + ".prj";
+        } else {
+            if (!filePath.endsWith(".prj")) {
+                prjPath = filePath + ".prj";
+            } else {
+                prjPath = filePath;
+            }
+        }
+        return new File(prjPath);
     }
 }

@@ -19,6 +19,7 @@ package org.geotools.swt.action;
 
 import java.io.File;
 import java.io.IOException;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.widgets.Display;
@@ -26,6 +27,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFinder;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.styling.Style;
@@ -42,7 +44,7 @@ public class OpenShapefileAction extends MapAction implements ISelectionChangedL
 
     public OpenShapefileAction() {
         super(
-                "Open Shapefile",
+                "Open Shapefile@O",
                 "Load a shapefile into the viewer.",
                 ImageCache.getInstance().getImage(ImageCache.OPEN));
     }
@@ -58,6 +60,32 @@ public class OpenShapefileAction extends MapAction implements ISelectionChangedL
                 MapContent mapContent = mapPane.getMapContent();
                 FileDataStore store = FileDataStoreFinder.getDataStore(openFile);
                 SimpleFeatureSource featureSource = store.getFeatureSource();
+                ReferencedEnvelope bounds = featureSource.getBounds();
+                if (bounds.getCoordinateReferenceSystem() == null) {
+                    if (mapContent.getCoordinateReferenceSystem() != null) {
+                        boolean doWritePrj =
+                                MessageDialog.openConfirm(
+                                        shell,
+                                        "Missing CRS",
+                                        "No CRS is available for the dataset. Want to write a prj file for the current map CRS?");
+                        if (doWritePrj) {
+                            File prjFile = Utils.getPrjFile(openFile.getAbsolutePath(), "shp");
+                            if (!prjFile.exists()) {
+                                Utils.writeProjectionFile(
+                                        prjFile, mapContent.getCoordinateReferenceSystem());
+                                store = FileDataStoreFinder.getDataStore(openFile);
+                                featureSource = store.getFeatureSource();
+                            }
+                        }
+                    } else {
+                        MessageDialog.openWarning(
+                                shell,
+                                "Missing CRS",
+                                "No CRS is available for the dataset and the map view. Check your data.");
+                        return;
+                    }
+                }
+
                 Style style = Utils.createStyle(openFile, featureSource);
                 FeatureLayer featureLayer = new FeatureLayer(featureSource, style);
                 mapContent.addLayer(featureLayer);

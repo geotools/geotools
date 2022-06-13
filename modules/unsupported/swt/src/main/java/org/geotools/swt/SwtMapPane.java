@@ -417,12 +417,18 @@ public class SwtMapPane extends Canvas
 
     public void setCrs(CoordinateReferenceSystem crs) {
         try {
+            if (crs == null) {
+                return;
+            }
             // System.out.println(content.layers().size());
             ReferencedEnvelope rEnv = getDisplayArea();
             // System.out.println(rEnv);
 
             CoordinateReferenceSystem sourceCRS = rEnv.getCoordinateReferenceSystem();
             CoordinateReferenceSystem targetCRS = crs;
+            if (sourceCRS == null) {
+                sourceCRS = targetCRS;
+            }
 
             MathTransform transform = CRS.findMathTransform(sourceCRS, targetCRS);
             org.locationtech.jts.geom.Envelope newJtsEnv = JTS.transform(rEnv, transform);
@@ -776,7 +782,8 @@ public class SwtMapPane extends Canvas
         if (firstLayer || atFullExtent) {
             reset();
             if (firstLayer) {
-                setCrs(layer.getBounds().getCoordinateReferenceSystem());
+                ReferencedEnvelope bounds = layer.getBounds();
+                setCrs(bounds.getCoordinateReferenceSystem());
                 return;
             }
         }

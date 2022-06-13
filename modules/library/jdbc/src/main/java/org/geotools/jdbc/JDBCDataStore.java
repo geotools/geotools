@@ -74,7 +74,6 @@ import org.geotools.feature.visitor.LimitingVisitor;
 import org.geotools.feature.visitor.UniqueCountVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.FilterCapabilities;
-import org.geotools.filter.visitor.ExpressionTypeVisitor;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JoinInfo.JoinPart;

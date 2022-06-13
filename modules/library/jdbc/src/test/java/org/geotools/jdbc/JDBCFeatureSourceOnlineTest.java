@@ -719,7 +719,6 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         assertEquals(1, featureSource.getCount(new Query(null, likeWithStringFunction)));
     }
 
-    @Test
     public void testStrMatchesFilter() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         Function function = ff.function("strToLowerCase", ff.property(aname("stringProperty")));

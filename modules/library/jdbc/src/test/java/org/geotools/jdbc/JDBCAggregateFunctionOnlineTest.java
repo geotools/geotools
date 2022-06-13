@@ -42,6 +42,7 @@ import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.SortByImpl;
 import org.geotools.filter.function.FilterFunction_area;
 import org.geotools.util.Converters;
+import org.junit.Test;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
@@ -177,7 +178,6 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         assertEquals(3.3, v.getResult().toDouble(), 0.00001);
     }
 
-    @Test
     public void testSumWithLimitOffset() throws Exception {
         if (!dataStore.getSQLDialect().isLimitOffsetSupported()) {
             return;

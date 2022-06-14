@@ -22,6 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCTestSetup;
+import tech.units.indriya.function.MultiplyConverter;
 
 /** @author Stefan Uhrig, SAP SE */
 public class HanaTestSetupBase extends JDBCTestSetup {
@@ -29,6 +30,22 @@ public class HanaTestSetupBase extends JDBCTestSetup {
     private static final String DRIVER_CLASS_NAME = "com.sap.db.jdbc.Driver";
 
     private static AtomicInteger schemaCounter = new AtomicInteger();
+
+    private static Object workaroundLock = new Object();
+
+    private static boolean workaroundsApplied = false;
+
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        synchronized (workaroundLock) {
+            if (!workaroundsApplied) {
+                // Workaround for issue https://github.com/unitsofmeasurement/indriya/issues/371
+                MultiplyConverter.ofPiExponent(1).getValue();
+                workaroundsApplied = true;
+            }
+        }
+    }
 
     @Override
     public boolean canResetSchema() {

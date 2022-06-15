@@ -29,11 +29,13 @@ import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
+import org.geotools.metadata.iso.citation.CitationImpl;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.util.GenericName;
 import org.geotools.util.factory.Factory;
 import org.geotools.util.factory.FactoryRegistryException;
+import org.opengis.metadata.Identifier;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.AuthorityFactory;
 import org.opengis.referencing.FactoryException;
@@ -166,33 +168,45 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
          * the collection of factories for each authority.
          */
         int authorityCount = 0;
-        final Citation[] authorities = new Citation[factories.size()];
-        @SuppressWarnings("unchecked")
-        final List<AuthorityFactory>[] factoriesByAuthority = new List[authorities.length];
+        final List<Citation> authorities = new ArrayList<>(factories.size());
+        final List<List<AuthorityFactory>> factoriesByAuthority = new ArrayList<>(factories.size());
         for (final AuthorityFactory factory : factories) {
             /*
-             * Check if the authority has already been meet previously. If the authority is found
+             * Check if the authority has already been met previously. If the authority is found
              * then 'authorityIndex' is set to its index. Otherwise the new authority is added to
              * the 'authorities' list.
+             * Some authorities are registered with more than one identifiers. Those must be treated
+             * for each identifier separately.
              */
             Citation authority = factory.getAuthority();
-            int authorityIndex;
-            for (authorityIndex = 0; authorityIndex < authorityCount; authorityIndex++) {
-                final Citation candidate = authorities[authorityIndex];
-                if (Citations.identifierMatches(candidate, authority)) {
-                    authority = candidate;
-                    break;
+            boolean multipleIdentifiers = authority.getIdentifiers().size() > 1;
+
+            for (Identifier identifier : authority.getIdentifiers()) {
+                Citation singularCitation =
+                        multipleIdentifiers
+                                ? createSingularCitation(authority, identifier)
+                                : authority;
+
+                int authorityIndex;
+                for (authorityIndex = 0; authorityIndex < authorityCount; authorityIndex++) {
+                    final Citation candidate = authorities.get(authorityIndex);
+                    if (Citations.identifierMatches(candidate, singularCitation)) {
+                        singularCitation = candidate;
+                        break;
+                    }
                 }
-            }
-            final List<AuthorityFactory> list;
-            if (authorityIndex == authorityCount) {
-                authorities[authorityCount++] = authority;
-                factoriesByAuthority[authorityIndex] = list = new ArrayList<>(4);
-            } else {
-                list = factoriesByAuthority[authorityIndex];
-            }
-            if (!list.contains(factory)) {
-                list.add(factory);
+                final List<AuthorityFactory> list;
+                if (authorityIndex == authorityCount) {
+                    authorityCount += 1;
+                    authorities.add(singularCitation);
+                    list = new ArrayList<>(4);
+                    factoriesByAuthority.add(list);
+                } else {
+                    list = factoriesByAuthority.get(authorityIndex);
+                }
+                if (!list.contains(factory)) {
+                    list.add(factory);
+                }
             }
         }
         /*
@@ -201,7 +215,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
         final ArrayList<AuthorityFactory> result = new ArrayList<>();
         final List<AuthorityFactory> buffer = new ArrayList<>(4);
         for (int i = 0; i < authorityCount; i++) {
-            final Collection<AuthorityFactory> list = factoriesByAuthority[i];
+            final Collection<AuthorityFactory> list = factoriesByAuthority.get(i);
             while (!list.isEmpty()) {
                 AuthorityFactory primary = null;
                 boolean needOtherChains = false;
@@ -224,6 +238,12 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
         }
         result.trimToSize();
         return result;
+    }
+
+    private static Citation createSingularCitation(Citation original, Identifier identifier) {
+        CitationImpl newCitation = new CitationImpl(original);
+        newCitation.setIdentifiers(Collections.singleton(identifier));
+        return newCitation;
     }
 
     /**

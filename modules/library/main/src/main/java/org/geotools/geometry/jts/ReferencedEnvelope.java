@@ -31,6 +31,7 @@ import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.geometry.MismatchedReferenceSystemException;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.cs.CoordinateSystem;
 import org.opengis.referencing.operation.CoordinateOperation;
 import org.opengis.referencing.operation.CoordinateOperationFactory;
 import org.opengis.referencing.operation.MathTransform;
@@ -743,8 +744,24 @@ public class ReferencedEnvelope extends Envelope
 
             buffer.append(getMinimum(i)).append(" : ").append(getMaximum(i));
         }
+        buffer.append(']');
 
-        return buffer.append(']').toString();
+        final CoordinateReferenceSystem crs = getCoordinateReferenceSystem();
+        if (crs != null) {
+            buffer.append(" ")
+                    .append(Classes.getShortClassName(crs))
+                    .append("[")
+                    .append(crs.getName())
+                    .append("]");
+            final CoordinateSystem cs = crs.getCoordinateSystem();
+            if (cs != null) {
+                for (int i = 0; i < cs.getDimension(); i++) {
+                    buffer.append(" ").append(cs.getAxis(i));
+                }
+            }
+        }
+
+        return buffer.toString();
     }
     /**
      * Factory method to create the correct ReferencedEnvelope.

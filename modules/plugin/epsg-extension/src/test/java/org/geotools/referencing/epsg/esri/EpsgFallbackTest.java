@@ -24,6 +24,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.factory.epsg.FactoryUsingWKT;
 import org.junit.Assert;
+import org.junit.Test;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
@@ -45,7 +46,7 @@ public class EpsgFallbackTest {
      * A random CRS for fun. This CRS is defined in the {@linkplain DefaultFactory default EPSG
      * authority factory}.
      */
-    @org.junit.Test
+    @Test
     public void test26910() throws FactoryException {
         final String code = "EPSG:26910";
         final CoordinateReferenceSystem crs = CRS.decode(code);
@@ -58,7 +59,7 @@ public class EpsgFallbackTest {
      * UDIG requires this to work. This CRS is defined in the {@linkplain DefaultFactory default
      * EPSG authority factory}.
      */
-    @org.junit.Test
+    @Test
     public void test4326() throws FactoryException {
         final String code = "EPSG:4326";
         final CoordinateReferenceSystem crs = CRS.decode(code);
@@ -71,7 +72,7 @@ public class EpsgFallbackTest {
      * UDIG requires this to work. This CRS is defined in the {@linkplain DefaultFactory default
      * EPSG authority factory}.
      */
-    @org.junit.Test
+    @Test
     public void test4269() throws FactoryException {
         final String code = "EPSG:4269";
         final CoordinateReferenceSystem crs = CRS.decode(code);
@@ -81,7 +82,7 @@ public class EpsgFallbackTest {
     }
 
     /** UDIG requires this to work. This CRS is defined in {@code unnamed.properties}. */
-    @org.junit.Test
+    @Test
     public void test42102() throws FactoryException {
         final String code = "EPSG:42102";
         final CoordinateReferenceSystem crs = CRS.decode(code);
@@ -101,7 +102,7 @@ public class EpsgFallbackTest {
      * A random CRS for fun. This CRS is defined in the {@linkplain DefaultFactory default EPSG
      * authority factory}.
      */
-    @org.junit.Test
+    @Test
     public void test26910Lower() throws FactoryException {
         final String code = "epsg:26910";
         final CoordinateReferenceSystem crs = CRS.decode(code);
@@ -114,7 +115,7 @@ public class EpsgFallbackTest {
      * A random CRS for fun. This CRS is defined in the {@linkplain DefaultFactory default EPSG
      * authority factory}.
      */
-    @org.junit.Test
+    @Test
     public void test26986Lower() throws FactoryException {
         final String code = "epsg:26986";
         final CoordinateReferenceSystem crs = CRS.decode(code);
@@ -127,7 +128,7 @@ public class EpsgFallbackTest {
      * WFS requires this to work. This CRS is defined in the {@linkplain DefaultFactory default EPSG
      * authority factory}.
      */
-    @org.junit.Test
+    @Test
     public void test4326Lower() throws FactoryException {
         final String code = "epsg:4326";
         final CoordinateReferenceSystem crs = CRS.decode(code);
@@ -140,7 +141,7 @@ public class EpsgFallbackTest {
      * WFS requires this to work. This CRS is defined in the {@linkplain DefaultFactory default EPSG
      * authority factory}.
      */
-    @org.junit.Test
+    @Test
     public void test26742Lower() throws FactoryException {
         final String code = "epsg:26742";
         final CoordinateReferenceSystem crs = CRS.decode(code);
@@ -153,7 +154,7 @@ public class EpsgFallbackTest {
      * WFS requires this to work. This CRS is defined in the {@linkplain DefaultFactory default EPSG
      * authority factory}.
      */
-    @org.junit.Test
+    @Test
     public void test4269Lower() throws FactoryException {
         final String code = "epsg:4269";
         final CoordinateReferenceSystem crs = CRS.decode(code);
@@ -163,7 +164,7 @@ public class EpsgFallbackTest {
     }
 
     /** WFS requires this to work. This CRS is defined in {@code unnamed.properties}. */
-    @org.junit.Test
+    @Test
     public void test42304Lower() throws FactoryException {
         final String code = "epsg:42304";
         final CoordinateReferenceSystem crs = CRS.decode(code);
@@ -172,7 +173,7 @@ public class EpsgFallbackTest {
     }
 
     /** WFS requires this to work. This CRS is defined in {@code unnamed.properties}. */
-    @org.junit.Test
+    @Test
     public void test42102Lower() throws FactoryException {
         final String code = "epsg:42102";
         final CoordinateReferenceSystem crs = CRS.decode(code);
@@ -188,7 +189,7 @@ public class EpsgFallbackTest {
     }
 
     /** This CRS is defined in {@code esri.properties}. */
-    @org.junit.Test
+    @Test
     public void test54004() throws FactoryException {
         final CRSAuthorityFactory factory = CRS.getAuthorityFactory(false);
         final String code = "EPSG:54004";
@@ -207,13 +208,13 @@ public class EpsgFallbackTest {
     }
 
     /** Tests the obtention of various codes. */
-    @org.junit.Test
+    @Test
     public void testCodes() throws FactoryException {
         final CRSAuthorityFactory factory = CRS.getAuthorityFactory(false);
         final Collection codes = factory.getAuthorityCodes(ProjectedCRS.class);
         assertTrue(codes.contains("EPSG:3395")); // Defined in EPSG database
-        assertTrue(codes.contains("EPSG:54004")); // Defined in ESRI database
-        Assert.assertFalse(codes.contains("ESRI:54004"));
+        assertTrue(codes.contains("ESRI:54004")); // Defined in ESRI database
+        assertTrue(codes.contains("EPSG:54004")); // With EPSG as well
         assertTrue(codes.contains("EPSG:42304")); // Defined in unnamed database
         assertTrue(codes.contains("EPSG:26742")); // Defined in EPSG database
         assertTrue(codes.contains("EPSG:42102")); // Defined in unnamed database

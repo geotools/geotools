@@ -53,6 +53,11 @@ public class HanaTestSetupBase extends JDBCTestSetup {
     }
 
     @Override
+    protected boolean useDelegateDataSource() {
+        return true;
+    }
+
+    @Override
     protected Properties createExampleFixture() {
         Properties fixture = new Properties();
         fixture.put("host", "localhost");

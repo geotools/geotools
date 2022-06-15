@@ -56,7 +56,7 @@ public class JDBCDelegatingTestSetup extends JDBCTestSetup {
 
     @Override
     public DataSource getDataSource() throws IOException {
-        return delegate.getDataSource();
+        return delegate.useDelegateDataSource() ? delegate.getDataSource() : super.getDataSource();
     }
 
     @Override

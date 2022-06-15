@@ -69,6 +69,17 @@ public abstract class JDBCTestSetup {
         return null;
     }
 
+    /**
+     * If this test setup is used as a delegate, the return value controls whether the delegate's
+     * data source or the delegator's data source.
+     *
+     * @return True if the delegate's data source should be used, false if the delegator's data
+     *     source should be used.
+     */
+    protected boolean useDelegateDataSource() {
+        return false;
+    }
+
     public DataSource getDataSource() throws IOException {
         if (dataSource == null) dataSource = createDataSource();
         return dataSource;

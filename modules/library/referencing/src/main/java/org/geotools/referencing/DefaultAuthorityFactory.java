@@ -165,11 +165,11 @@ final class DefaultAuthorityFactory extends ThreadedAuthorityFactory
     @Override
     public CoordinateReferenceSystem createCoordinateReferenceSystem(String code)
             throws FactoryException {
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("Create CRS: " + code);
-        }
         if (code != null) {
             code = code.trim();
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("Create CRS with code:" + code);
+            }
             if (code.equalsIgnoreCase("WGS84(DD)")) {
                 return DefaultGeographicCRS.WGS84;
             }

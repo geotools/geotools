@@ -665,7 +665,11 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
             crs = (CoordinateReferenceSystem) cached;
         } else {
             crs = getBackingStore().createCoordinateReferenceSystem(code);
+            if (LOGGER.isLoggable(Level.FINER)) {
+                LOGGER.finer("Created CRS with code:" + code + "\n" + crs);
+            }
         }
+        LOGGER.fine(() -> "Using CRS[" + crs.getName() + "] for code:" + code);
         objectCache.put(key, crs);
         return crs;
     }

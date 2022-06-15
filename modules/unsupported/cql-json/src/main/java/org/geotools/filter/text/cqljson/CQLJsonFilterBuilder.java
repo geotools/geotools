@@ -95,7 +95,16 @@ final class CQLJsonFilterBuilder {
         }
     }
 
-    private Expression getExpression(JsonNode node)
+    /**
+     * Convert a JSON node to an expression.
+     *
+     * @param node the JSON node
+     * @return the expression
+     * @throws CQLException if the node is not an expression
+     * @throws IOException if there is an error parsing the JSON
+     * @throws ParseException if there is an error parsing the WKT
+     */
+    public Expression getExpression(JsonNode node)
             throws CQLException, IOException, ParseException {
         Expression expression = null;
         ObjectMapper mapper = new ObjectMapper();

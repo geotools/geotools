@@ -1052,10 +1052,7 @@ public class RasterManager implements Cloneable {
                         new RenderingHints(Utils.AUXILIARY_DATASTORE_PATH, auxiliaryDatastorePath));
                 update = true;
             }
-            if (update
-                    && (configuration.getCatalogConfigurationBean().getPathType()
-                            != PathType.ABSOLUTE)
-                    && !hints.containsKey(Utils.PARENT_DIR)) {
+            if (update && !hints.containsKey(Utils.PARENT_DIR)) {
                 String parentDir = null;
                 if (parentReader.parentDirectory != null) {
                     parentDir = parentReader.parentDirectory.getAbsolutePath();
@@ -1065,7 +1062,7 @@ public class RasterManager implements Cloneable {
                         parentDir = ((File) source).getAbsolutePath();
                     }
                 }
-                hints.add(new RenderingHints(Utils.PARENT_DIR, parentDir));
+                if (parentDir != null) hints.add(new RenderingHints(Utils.PARENT_DIR, parentDir));
             }
         }
     }

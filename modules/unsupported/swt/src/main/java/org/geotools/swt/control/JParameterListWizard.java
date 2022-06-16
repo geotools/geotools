@@ -55,8 +55,7 @@ public class JParameterListWizard extends Wizard {
             List<Parameter<?>> contents,
             Map<String, Object> connectionParams) {
 
-        this.connectionParameters =
-                connectionParams == null ? new HashMap<>() : connectionParams;
+        this.connectionParameters = connectionParams == null ? new HashMap<>() : connectionParams;
         fillInDefaults(contents, this.connectionParameters);
 
         List<Parameter<?>> userContents = contentsForLevel(contents, "user");

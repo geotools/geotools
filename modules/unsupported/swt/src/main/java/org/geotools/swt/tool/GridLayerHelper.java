@@ -96,7 +96,7 @@ public class GridLayerHelper extends InfoToolHelper<List<Number>> {
         if (isValid()) {
             GridCoverage2D cov = covRef.get();
             ReferencedEnvelope env = new ReferencedEnvelope(cov.getEnvelope2D());
-            DirectPosition2D trPos = getTransformed(pos);
+            DirectPosition trPos = getTransformed(pos);
             if (env.contains(trPos)) {
                 Object objArray = cov.evaluate(trPos);
                 Number[] bandValues = asNumberArray(objArray);
@@ -165,7 +165,7 @@ public class GridLayerHelper extends InfoToolHelper<List<Number>> {
      * @param pos query position in {@code MapContext} coordinates
      * @return query position in data ({@code MapLayer}) coordinates
      */
-    private DirectPosition2D getTransformed(DirectPosition2D pos) {
+    private DirectPosition getTransformed(DirectPosition2D pos) {
         if (isTransformRequired()) {
             MathTransform tr = getTransform();
             if (tr == null) {
@@ -173,7 +173,7 @@ public class GridLayerHelper extends InfoToolHelper<List<Number>> {
             }
 
             try {
-                return (DirectPosition2D) tr.transform(pos, null);
+                return tr.transform(pos, null);
             } catch (Exception ex) {
                 throw new IllegalStateException(ex);
             }

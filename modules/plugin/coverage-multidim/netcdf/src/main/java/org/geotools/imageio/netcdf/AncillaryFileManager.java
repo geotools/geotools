@@ -326,20 +326,18 @@ public class AncillaryFileManager implements FileSetManager {
      */
     private File lookupFile(String filePath, String baseName, AuxiliaryFileType type) {
         // CASE 1: file externally provided
-        File file = null;
         if (filePath != null) {
-            file = new File(filePath);
-            if (!file.exists() || !file.canRead()) {
-                file = null;
+            // absolute path?
+            File file = new File(filePath);
+            if (file.exists() && file.canRead()) return file;
+            // findable relative path?
+            if (!file.isAbsolute()) {
+                file = new File(parentDirectory, filePath);
+                if (file.exists() && file.canRead()) return file;
             }
         }
-        if (file != null) {
-            return file;
-        } else {
-            file = type.lookup(baseName, parentDirectory, destinationDir);
-        }
-
-        return file;
+        // CASE 2, default lookup
+        return type.lookup(baseName, parentDirectory, destinationDir);
     }
 
     private static boolean cutExtension(String extension) {

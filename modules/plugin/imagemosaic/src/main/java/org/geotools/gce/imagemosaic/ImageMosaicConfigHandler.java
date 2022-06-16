@@ -867,49 +867,24 @@ public class ImageMosaicConfigHandler {
             final String rootMosaicDir) {
         final boolean isAbsolutePath =
                 Boolean.parseBoolean(configuration.getParameter(Prop.ABSOLUTE_PATH));
-        hints =
-                updateHints(
-                        ancillaryFile,
-                        isAbsolutePath,
-                        rootMosaicDir,
-                        configuration,
-                        hints,
-                        Utils.AUXILIARY_FILES_PATH);
-        hints =
-                updateHints(
-                        datastoreFile,
-                        isAbsolutePath,
-                        rootMosaicDir,
-                        configuration,
-                        hints,
-                        Utils.AUXILIARY_DATASTORE_PATH);
+        hints = updateHints(ancillaryFile, configuration, hints, Utils.AUXILIARY_FILES_PATH);
+        hints = updateHints(datastoreFile, configuration, hints, Utils.AUXILIARY_DATASTORE_PATH);
+        // the ND readers use the parentDir in case the path was not absolute
+        if (!isAbsolutePath) {
+            hints.put(Utils.PARENT_DIR, rootMosaicDir);
+        }
         hints = updateRepositoryHints(configuration, hints);
         setReader(hints, true);
     }
 
     private Hints updateHints(
-            String filePath,
-            boolean isAbsolutePath,
-            String rootMosaicDir,
-            CatalogBuilderConfiguration configuration,
-            Hints hints,
-            Key key) {
-        String updatedFilePath = null;
+            String filePath, CatalogBuilderConfiguration configuration, Hints hints, Key key) {
         if (filePath != null) {
-            if (isAbsolutePath && !filePath.startsWith(rootMosaicDir)) {
-                updatedFilePath = rootMosaicDir + File.separatorChar + filePath;
-            } else {
-                updatedFilePath = filePath;
-            }
-
             if (hints != null) {
-                hints.put(key, updatedFilePath);
+                hints.put(key, filePath);
             } else {
-                hints = new Hints(key, updatedFilePath);
+                hints = new Hints(key, filePath);
                 configuration.setHints(hints);
-            }
-            if (!isAbsolutePath) {
-                hints.put(Utils.PARENT_DIR, rootMosaicDir);
             }
         }
         return hints;

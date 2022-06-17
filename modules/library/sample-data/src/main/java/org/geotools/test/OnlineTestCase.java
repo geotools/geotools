@@ -244,6 +244,8 @@ public abstract class OnlineTestCase extends TestCase {
                 fixture = null;
                 // leave some trace of the swallowed exception
                 java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
+
+                Assume.assumeTrue("Ignored because of exception: " + e.getMessage(), false);
             } else {
                 // do not swallow the exception
                 throw e;

@@ -27,6 +27,7 @@ import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
+import org.geotools.util.Version;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -39,6 +40,16 @@ public class PostGISPartitionedTest extends JDBCTestSupport {
     @Override
     protected JDBCTestSetup createTestSetup() {
         return new PostGISPartitionedTestSetup();
+    }
+
+    public boolean isPgsqlVersionGreaterThanEqualTo(Version v) {
+        return ((PostGISTestSetup) setup).pgsqlVersion != null
+                && ((PostGISTestSetup) setup).pgsqlVersion.compareTo(v) >= 0;
+    }
+
+    @Override
+    protected boolean isOnline() throws Exception {
+        return isPgsqlVersionGreaterThanEqualTo(new Version("10.0"));
     }
 
     @Override

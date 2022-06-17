@@ -248,7 +248,7 @@ public abstract class OnlineTestCase extends TestCase {
                 // leave some trace of the swallowed exception
                 Logger.getGlobal().log(Level.INFO, "SetUp of test failed. Test ignored.", e);
 
-                Assume.assumeTrue("Ignorded because of exception: " + e.getMessage(), false);
+                Assume.assumeTrue("Ignored because of exception: " + e.getMessage(), false);
             } else {
                 // do not swallow the exception
                 throw e;

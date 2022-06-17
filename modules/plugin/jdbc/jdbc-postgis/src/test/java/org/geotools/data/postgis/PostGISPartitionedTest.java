@@ -19,9 +19,11 @@ package org.geotools.data.postgis;
 import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.util.List;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
+import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -49,6 +51,11 @@ public class PostGISPartitionedTest extends JDBCTestSupport {
 
     @Test
     public void testTableExists() throws Exception {
+        try (Connection connection = dataStore.getConnection(Transaction.AUTO_COMMIT)) {
+            if (!setup.shouldRunTests(connection)) {
+                return;
+            }
+        }
         SimpleFeatureType schema = dataStore.getSchema(tname("customers"));
         assertEquals(String.class, schema.getDescriptor("status").getType().getBinding());
         assertEquals(BigDecimal.class, schema.getDescriptor("arr").getType().getBinding());
@@ -56,6 +63,11 @@ public class PostGISPartitionedTest extends JDBCTestSupport {
 
     @Test
     public void testReadAll() throws Exception {
+        try (Connection connection = dataStore.getConnection(Transaction.AUTO_COMMIT)) {
+            if (!setup.shouldRunTests(connection)) {
+                return;
+            }
+        }
         SimpleFeatureSource fs = dataStore.getFeatureSource(tname("customers"));
         FilterFactory ff = dataStore.getFilterFactory();
         Query q = new Query();
@@ -69,6 +81,11 @@ public class PostGISPartitionedTest extends JDBCTestSupport {
 
     @Test
     public void testInsertNew() throws Exception {
+        try (Connection connection = dataStore.getConnection(Transaction.AUTO_COMMIT)) {
+            if (!setup.shouldRunTests(connection)) {
+                return;
+            }
+        }
         // initial states, contains RECURRING AND REACTIVATED
         SimpleFeatureSource others = dataStore.getFeatureSource(tname("cust_others"));
         assertEquals(2, others.getCount(Query.ALL));

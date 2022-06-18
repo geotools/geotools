@@ -1,12 +1,30 @@
 package org.geotools.data.postgis;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import org.geotools.jdbc.JDBCDelegatingTestSetup;
+import org.geotools.util.Version;
 
 @SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class PostGISPartitionedTestSetup extends JDBCDelegatingTestSetup {
 
     protected PostGISPartitionedTestSetup() {
         super(new PostGISTestSetup());
+    }
+
+    public boolean isPgsqlVersionGreaterThanEqualTo(Version v) {
+
+        PostGISTestSetup postGISTestSetup = (PostGISTestSetup) delegate;
+
+        boolean var =
+                postGISTestSetup.pgsqlVersion != null
+                        && postGISTestSetup.pgsqlVersion.compareTo(v) >= 0;
+        return var;
+    }
+
+    @Override
+    public boolean shouldRunTests(Connection cx) throws SQLException {
+        return isPgsqlVersionGreaterThanEqualTo(new Version("11.0")) && delegate.shouldRunTests(cx);
     }
 
     @Override

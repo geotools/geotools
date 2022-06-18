@@ -313,7 +313,7 @@ public class ShapefileTest extends TestCaseSupport {
         }
         assertEquals("Did not read all Geometries from sparse file.", 1, cnt);
     }
-    
+
     @Test
     public void testScreenMapIndexedReader() throws Exception {
         URL shpUrl =

@@ -300,6 +300,21 @@ public class ShapefileTest extends TestCaseSupport {
     }
 
     @Test
+    /* GEOT-7127 */
+    public void testReadingEmptyDbf() throws IOException {
+        File file = TestData.file(TestCaseSupport.class, "missing/aaa1.shp");
+        int cnt = 0;
+        try (ShapefileReader reader =
+                new ShapefileReader(new ShpFiles(file), false, false, new GeometryFactory())) {
+            while (reader.hasNext()) {
+                reader.nextRecord().shape();
+                cnt++;
+            }
+        }
+        assertEquals("Did not read all Geometries from sparse file.", 1, cnt);
+    }
+
+    @Test
     public void testScreenMapIndexedReader() throws Exception {
         URL shpUrl =
                 TestData.url(

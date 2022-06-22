@@ -25,5 +25,4 @@ public class InformixAggregateFunctionOnlineTest extends JDBCAggregateFunctionOn
     protected JDBCAggregateTestSetup createTestSetup() {
         return new InformixAggregateTestSetup();
     }
-
 }

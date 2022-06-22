@@ -90,8 +90,9 @@ public class LineStringTypeBindingTest extends GML3TestSupport {
         LineString line = GML3MockData.lineStringLite2D();
         Document doc = encode(line, GML.LineString);
 
-        checkDimension(doc, GML.LineString.getLocalPart(), 2);
-        checkPosListOrdinates(doc, 2 * line.getNumPoints());
+        int dimension = line.getCoordinateSequence().getDimension();
+        checkDimension(doc, GML.LineString.getLocalPart(), dimension);
+        checkPosListOrdinates(doc, dimension * line.getNumPoints());
     }
 
     @Test
@@ -111,7 +112,8 @@ public class LineStringTypeBindingTest extends GML3TestSupport {
         LineString line = GML3MockData.lineStringLite2D(10);
         Document doc = encode(line, GML.LineString);
 
-        checkDimension(doc, GML.LineString.getLocalPart(), 2);
-        checkPosListOrdinates(doc, 2 * line.getNumPoints());
+        int dimension = line.getCoordinateSequence().getDimension();
+        checkDimension(doc, GML.LineString.getLocalPart(), dimension);
+        checkPosListOrdinates(doc, dimension * line.getNumPoints());
     }
 }

@@ -25,19 +25,4 @@ public class InformixAggregateFunctionOnlineTest extends JDBCAggregateFunctionOn
     protected JDBCAggregateTestSetup createTestSetup() {
         return new InformixAggregateTestSetup();
     }
-
-    @Override
-    public void testUniqueMultipleAttributes() {
-        // skip this test as it requires "ft4"
-    }
-
-    @Override
-    public void testUniqueMultipleAttributes2() {
-        // skip this test as it requires "ft4"
-    }
-
-    @Override
-    public void testUniqueMultipleAttributes3() {
-        // skip this test as it requires "ft4"
-    }
 }

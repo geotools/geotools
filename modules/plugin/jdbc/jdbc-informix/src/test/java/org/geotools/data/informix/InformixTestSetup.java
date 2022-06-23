@@ -65,6 +65,12 @@ public class InformixTestSetup extends JDBCTestSetup {
         } catch (Exception e) {
             //            e.printStackTrace();
         }
+
+        try {
+            run("DROP TABLE ft4;");
+        } catch (Exception e) {
+            // ignore
+        }
         runSafe("DELETE FROM geometry_columns");
 
         // create some data
@@ -94,6 +100,53 @@ public class InformixTestSetup extends JDBCTestSetup {
         sb = new StringBuffer();
         sb.append("INSERT INTO ft1 VALUES (")
                 .append("2,ST_GeomFromText('POINT(2 2)',4326)::ST_Point, 2, 2.2,'two');");
+        run(sb.toString());
+        // ft4
+        runft4();
+    }
+
+    private void runft4() throws Exception {
+        StringBuffer sb = new StringBuffer();
+        sb.append("CREATE TABLE ft4 ")
+                .append("(id integer PRIMARY KEY , ")
+                .append("geometry ST_Point, intProperty integer, ")
+                .append("doubleProperty double precision, stringProperty varchar(255));");
+        run(sb.toString());
+
+        run("create index ft4_geom_idx on ft4(geometry ST_Geometry_ops) using rtree;");
+        sb = new StringBuffer();
+        sb.append("INSERT INTO ft4 VALUES (")
+                .append("0,ST_GeomFromText('POINT(0 0)',4326)::ST_Point, 0, 0.0,'zero');");
+        run(sb.toString());
+
+        sb = new StringBuffer();
+        sb.append("INSERT INTO ft4 VALUES (")
+                .append("1,ST_GeomFromText('POINT(1 1)',4326)::ST_Point, 1, 1.1,'one');");
+        run(sb.toString());
+
+        sb = new StringBuffer();
+        sb.append("INSERT INTO ft4 VALUES (")
+                .append("2,ST_GeomFromText('POINT(2 2)',4326)::ST_Point, 1, 1.1,'one_2');");
+        run(sb.toString());
+
+        sb = new StringBuffer();
+        sb.append("INSERT INTO ft4 VALUES (")
+                .append("3,ST_GeomFromText('POINT(3 3)',4326)::ST_Point, 1, 1.1,'one_2');");
+        run(sb.toString());
+
+        sb = new StringBuffer();
+        sb.append("INSERT INTO ft4 VALUES (")
+                .append("4,ST_GeomFromText('POINT(4 4)',4326)::ST_Point, 2, 2.2,'two');");
+        run(sb.toString());
+
+        sb = new StringBuffer();
+        sb.append("INSERT INTO ft4 VALUES (")
+                .append("5,ST_GeomFromText('POINT(5 5)',4326)::ST_Point, 2, 2.2,'two_2');");
+        run(sb.toString());
+
+        sb = new StringBuffer();
+        sb.append("INSERT INTO ft4 VALUES (")
+                .append("6,ST_GeomFromText('POINT(6 6)',4326)::ST_Point, 3, 3.3,'three');");
         run(sb.toString());
     }
 

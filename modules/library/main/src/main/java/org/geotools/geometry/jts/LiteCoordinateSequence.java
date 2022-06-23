@@ -111,9 +111,6 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
             for (int i = 0; i < coordinates.length; i++) {
                 coords[i * this.dimension] = coordinates[i].x;
                 coords[i * this.dimension + 1] = coordinates[i].y;
-                if (dimension == 2) {
-                    continue;
-                }
                 if (this.dimension == 4) {
                     coords[i * this.dimension + 2] = coordinates[i].getZ();
                     coords[i * this.dimension + 3] = coordinates[i].getM();
@@ -121,8 +118,6 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
                     coords[i * this.dimension + 2] = coordinates[i].getM();
                 } else if (this.dimension == 3 && this.measures == 0) {
                     coords[i * this.dimension + 2] = coordinates[i].getZ();
-                } else {
-                    throw new RuntimeException("Unexpected mix of ordinates in coordinate");
                 }
             }
             this.size = coordinates.length;

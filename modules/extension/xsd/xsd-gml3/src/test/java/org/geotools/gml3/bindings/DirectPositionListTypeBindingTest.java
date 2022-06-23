@@ -23,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 import org.geotools.geometry.DirectPosition1D;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.DirectPosition3D;
+import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
 import org.junit.Test;
@@ -94,7 +95,8 @@ public class DirectPositionListTypeBindingTest extends GML3TestSupport {
         LineString line = GML3MockData.lineStringLite2D();
         CoordinateSequence seq = line.getCoordinateSequence();
         Document doc = encode(seq, GML.posList);
-        checkPosListOrdinates(doc, seq.getDimension() * line.getNumPoints());
+        checkPosListOrdinates(
+                doc, CoordinateSequences.coordinateDimension(seq) * line.getNumPoints());
     }
 
     @Test
@@ -102,6 +104,7 @@ public class DirectPositionListTypeBindingTest extends GML3TestSupport {
         LineString line = GML3MockData.lineStringLite3D();
         CoordinateSequence seq = line.getCoordinateSequence();
         Document doc = encode(seq, GML.posList);
-        checkPosListOrdinates(doc, 3 * line.getNumPoints());
+        checkPosListOrdinates(
+                doc, CoordinateSequences.coordinateDimension(seq) * line.getNumPoints());
     }
 }

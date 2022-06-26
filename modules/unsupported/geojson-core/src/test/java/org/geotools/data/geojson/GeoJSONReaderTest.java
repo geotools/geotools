@@ -418,4 +418,46 @@ public class GeoJSONReaderTest {
         assertEquals("abc", array.get(1));
         assertNull(array.get(2));
     }
+
+    @Test
+    public void testObjectInList() throws Exception {
+        String geojson =
+                "{"
+                        + "  'type': 'Feature',"
+                        + "  'id': 'feature.0',"
+                        + "  'properties': {"
+                        + "    'array': [{'a': 10}, {'b': 'foo'}]"
+                        + "   },"
+                        + "  'geometry': {"
+                        + "    'type': 'Point',"
+                        + "    'coordinates': [0.1, 0.1]"
+                        + "  }"
+                        + "}";
+        geojson = geojson.replace('\'', '"');
+        SimpleFeature feature = GeoJSONReader.parseFeature(geojson);
+        List array = (List) feature.getAttribute("array");
+        assertEquals(10, ((ObjectNode) array.get(0)).get("a").asDouble(), 0d);
+        assertEquals("foo", ((ObjectNode) array.get(1)).get("b").asText());
+    }
+
+    @Test
+    public void testObjectInObject() throws Exception {
+        String geojson =
+                "{"
+                        + "  'type': 'Feature',"
+                        + "  'id': 'feature.0',"
+                        + "  'properties': {"
+                        + "    'parent': {'child': {'a': 10, 'b': 'foo'}}"
+                        + "   },"
+                        + "  'geometry': {"
+                        + "    'type': 'Point',"
+                        + "    'coordinates': [0.1, 0.1]"
+                        + "  }"
+                        + "}";
+        geojson = geojson.replace('\'', '"');
+        SimpleFeature feature = GeoJSONReader.parseFeature(geojson);
+        ObjectNode parent = (ObjectNode) feature.getAttribute("parent");
+        assertEquals(10, ((ObjectNode) parent.get("child")).get("a").asDouble(), 0d);
+        assertEquals("foo", ((ObjectNode) parent.get("child")).get("b").asText());
+    }
 }

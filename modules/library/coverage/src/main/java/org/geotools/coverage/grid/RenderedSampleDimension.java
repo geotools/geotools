@@ -23,8 +23,6 @@ import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import javax.measure.Unit;
-import javax.media.jai.iterator.RectIter;
-import javax.media.jai.iterator.RectIterFactory;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
@@ -125,16 +123,7 @@ final class RenderedSampleDimension extends GridSampleDimension {
                  */
                 if (defaultSD == null) {
                     defaultSD = new GridSampleDimension[numBands];
-                    create(
-                            name,
-                            RectIterFactory.create(image, null),
-                            image.getSampleModel(),
-                            null,
-                            null,
-                            null,
-                            null,
-                            defaultSD,
-                            null);
+                    create(name, image.getSampleModel(), null, null, null, null, defaultSD, null);
                 }
                 sd = defaultSD[i];
             }
@@ -175,24 +164,14 @@ final class RenderedSampleDimension extends GridSampleDimension {
             final Color[][] colors,
             final RenderingHints hints) {
         final GridSampleDimension[] dst = new GridSampleDimension[raster.getNumBands()];
-        create(
-                name,
-                (min == null || max == null) ? RectIterFactory.create(raster, null) : null,
-                raster.getSampleModel(),
-                min,
-                max,
-                units,
-                colors,
-                dst,
-                hints);
+        create(name, raster.getSampleModel(), min, max, units, colors, dst, hints);
         return dst;
     }
 
     /**
-     * Creates a set of sample dimensions for the data backing the given iterator.
+     * Creates a set of sample dimensions for the data
      *
      * @param name The name for data (e.g. "Elevation").
-     * @param iterator The iterator through the raster data, or {@code null}.
      * @param model The image or raster sample model.
      * @param min The minimal value, or {@code null} for computing it automatically.
      * @param max The maximal value, or {@code null} for computing it automatically.
@@ -210,7 +189,6 @@ final class RenderedSampleDimension extends GridSampleDimension {
      */
     private static void create(
             final CharSequence name,
-            final RectIter iterator,
             final SampleModel model,
             double[] min,
             double[] max,

@@ -23,12 +23,15 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.DataUtilities;
@@ -459,5 +462,29 @@ public class GeoJSONReaderTest {
         ObjectNode parent = (ObjectNode) feature.getAttribute("parent");
         assertEquals(10, ((ObjectNode) parent.get("child")).get("a").asDouble(), 0d);
         assertEquals("foo", ((ObjectNode) parent.get("child")).get("b").asText());
+    }
+
+    @Test
+    public void testObjectsListsOutsideOfProperties() throws Exception {
+        URL url = TestData.url(GeoJSONReaderTest.class, "stac.json");
+        try (GeoJSONReader reader = new GeoJSONReader(url)) {
+            SimpleFeature feature = reader.getFeature();
+            Map topLevelAttributes =
+                    (Map) feature.getUserData().get(GeoJSONReader.TOP_LEVEL_ATTRIBUTES);
+            assertEquals("1.0.0", ((TextNode) topLevelAttributes.get("stac_version")).asText());
+            assertEquals(
+                    "simple-collection",
+                    ((TextNode) topLevelAttributes.get("collection")).asText());
+            ArrayNode stacExtensions = (ArrayNode) topLevelAttributes.get("stac_extensions");
+            assertEquals(
+                    "https://stac-extensions.github.io/eo/v1.0.0/schema.json",
+                    ((TextNode) stacExtensions.get(0)).asText());
+            ArrayNode links = (ArrayNode) topLevelAttributes.get("links");
+            assertEquals("./collection.json", ((TextNode) links.get(0).get("href")).asText());
+            ObjectNode assets = (ObjectNode) topLevelAttributes.get("assets");
+            assertEquals(
+                    "https://storage.googleapis.com/open-cogs/stac-examples/20201211_223832_CS2.jpg",
+                    ((TextNode) assets.get("thumbnail").get("href")).asText());
+        }
     }
 }

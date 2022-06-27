@@ -35,9 +35,11 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -73,6 +75,8 @@ public class GeoJSONReader implements AutoCloseable {
     public static final String GEOMETRY_NAME = "geometry";
 
     private static final Logger LOGGER = Logging.getLogger(GeoJSONReader.class);
+    /** Top Level Attributes Not Included in Properties */
+    public static final Object TOP_LEVEL_ATTRIBUTES = "topLevelAttributes";
 
     private JsonParser parser;
 
@@ -368,6 +372,24 @@ public class GeoJSONReader implements AutoCloseable {
 
             String newId = baseName + "." + nextID++;
             feature = builder.buildFeature(newId);
+            if (node.fields().hasNext()) {
+                Map<String, Object> topLevelAttributes = new HashMap<>();
+                node.fields()
+                        .forEachRemaining(
+                                e -> {
+                                    String k = e.getKey();
+                                    if (!"geometry".equals(k)
+                                            && !"type".equals(k)
+                                            && !"properties".equals(k)
+                                            && !"id".equals(k)
+                                            && !"bbox".equals(k)) {
+                                        topLevelAttributes.put(k, e.getValue());
+                                    }
+                                });
+                if (!topLevelAttributes.isEmpty()) {
+                    feature.getUserData().put(TOP_LEVEL_ATTRIBUTES, topLevelAttributes);
+                }
+            }
         }
         return feature;
     }

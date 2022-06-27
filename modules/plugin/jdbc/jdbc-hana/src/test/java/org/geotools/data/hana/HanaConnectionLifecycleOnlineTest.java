@@ -24,6 +24,6 @@ public class HanaConnectionLifecycleOnlineTest extends JDBCConnectionLifecycleOn
 
     @Override
     protected JDBCTestSetup createTestSetup() {
-        return new HanaTestSetup();
+        return new HanaTestSetupDefault();
     }
 }

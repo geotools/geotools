@@ -38,7 +38,7 @@ public class HanaCompound3DTestSetup extends JDBCCompound3DTestSetup {
     @Override
     protected void createLineCompound3DTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             createSrs(htu);
             htu.createTestSchema();
 
@@ -68,7 +68,7 @@ public class HanaCompound3DTestSetup extends JDBCCompound3DTestSetup {
     @Override
     protected void createPointCompound3DTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             createSrs(htu);
             htu.createTestSchema();
 
@@ -98,7 +98,7 @@ public class HanaCompound3DTestSetup extends JDBCCompound3DTestSetup {
     @Override
     protected void dropLineCompound3DTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.dropTestTableCascade(TABLE_LINE);
         }
     }
@@ -106,7 +106,7 @@ public class HanaCompound3DTestSetup extends JDBCCompound3DTestSetup {
     @Override
     protected void dropPolyCompound3DTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.dropTestTableCascade(TABLE_POLY);
         }
     }
@@ -114,7 +114,7 @@ public class HanaCompound3DTestSetup extends JDBCCompound3DTestSetup {
     @Override
     protected void dropPointCompound3DTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.dropTestTableCascade(TABLE_POINT);
         }
     }

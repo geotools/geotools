@@ -24,6 +24,6 @@ public class HanaCompound3DOnlineTest extends JDBCCompound3DOnlineTest {
 
     @Override
     protected JDBCCompound3DTestSetup createTestSetup() {
-        return new HanaCompound3DTestSetup(new HanaTestSetup());
+        return new HanaCompound3DTestSetup(new HanaTestSetupPSPooling());
     }
 }

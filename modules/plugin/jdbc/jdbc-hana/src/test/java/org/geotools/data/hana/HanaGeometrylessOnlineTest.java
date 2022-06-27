@@ -24,6 +24,6 @@ public class HanaGeometrylessOnlineTest extends JDBCGeometrylessOnlineTest {
 
     @Override
     protected JDBCGeometrylessTestSetup createTestSetup() {
-        return new HanaGeometrylessTestSetup(new HanaTestSetup());
+        return new HanaGeometrylessTestSetup(new HanaTestSetupPSPooling());
     }
 }

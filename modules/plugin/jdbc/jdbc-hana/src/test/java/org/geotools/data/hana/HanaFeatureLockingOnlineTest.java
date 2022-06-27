@@ -24,6 +24,6 @@ public class HanaFeatureLockingOnlineTest extends JDBCFeatureLockingOnlineTest {
 
     @Override
     protected JDBCTestSetup createTestSetup() {
-        return new HanaTestSetup();
+        return new HanaTestSetupDefault();
     }
 }

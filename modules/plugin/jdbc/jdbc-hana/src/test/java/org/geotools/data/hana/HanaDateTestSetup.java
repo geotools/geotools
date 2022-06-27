@@ -32,7 +32,7 @@ public class HanaDateTestSetup extends JDBCDateTestSetup {
     @Override
     protected void createDateTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.createTestSchema();
 
             String[][] cols = {{"d", "DATE"}, {"dt", "TIMESTAMP"}, {"t", "TIME"}};
@@ -47,7 +47,7 @@ public class HanaDateTestSetup extends JDBCDateTestSetup {
     @Override
     protected void dropDateTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.dropTestTableCascade(TABLE);
         }
     }

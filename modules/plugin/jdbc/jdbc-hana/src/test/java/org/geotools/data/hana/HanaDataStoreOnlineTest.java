@@ -24,6 +24,6 @@ public class HanaDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
 
     @Override
     protected JDBCTestSetup createTestSetup() {
-        return new HanaTestSetup();
+        return new HanaTestSetupDefault();
     }
 }

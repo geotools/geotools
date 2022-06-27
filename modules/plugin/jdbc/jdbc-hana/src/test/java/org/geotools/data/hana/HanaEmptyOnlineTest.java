@@ -24,6 +24,6 @@ public class HanaEmptyOnlineTest extends JDBCEmptyOnlineTest {
 
     @Override
     protected JDBCEmptyTestSetup createTestSetup() {
-        return new HanaEmptyTestSetup(new HanaTestSetup());
+        return new HanaEmptyTestSetup(new HanaTestSetupPSPooling());
     }
 }

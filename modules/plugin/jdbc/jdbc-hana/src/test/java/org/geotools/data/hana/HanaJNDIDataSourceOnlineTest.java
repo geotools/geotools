@@ -29,7 +29,7 @@ public class HanaJNDIDataSourceOnlineTest extends JDBCJNDIDataSourceOnlineTest {
 
     @Override
     protected JDBCJNDITestSetup createTestSetup() {
-        return new JDBCJNDITestSetup(new HanaTestSetup());
+        return new JDBCJNDITestSetup(new HanaTestSetupPSPooling());
     }
 
     @Override

@@ -32,12 +32,7 @@ public abstract class JDBCDateOnlineTest extends JDBCTestSupport {
     @Test
     public void testFiltersByDate() throws Exception {
 
-        boolean simple = false;
-        // work around the fact that postgis (and others??) don't handle
-        // programs that change the timezone well.
-        if (dataStore.dialect instanceof PreparedStatementSQLDialect) {
-            simple = true;
-        }
+        boolean simple = useOneTimeZoneOnly();
         FilterFactory ff = dataStore.getFilterFactory();
 
         DateFormat df = new SimpleDateFormat("yyyy-dd-MM");
@@ -125,5 +120,13 @@ public abstract class JDBCDateOnlineTest extends JDBCTestSupport {
                         ff.property(aname("t")),
                         ff.literal(new SimpleDateFormat("ss:HH:mm").parse("12:13:10")));
         assertEquals(3, fs.getCount(new Query(tname("dates"), f)));
+    }
+
+    protected boolean useOneTimeZoneOnly() {
+        // Some JDBC drivers cache the default time zone when a statement is prepared.
+        // Prepared statement pooling (enabled by default) will prevent the driver of querying the
+        // default time zone again after it has been changed. So, for prepared statement dialects,
+        // we will use one time zone only by default.
+        return dataStore.dialect instanceof PreparedStatementSQLDialect;
     }
 }

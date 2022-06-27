@@ -17,15 +17,17 @@
 package org.geotools.data.hana;
 
 import java.util.TimeZone;
+import net.jcip.annotations.NotThreadSafe;
 import org.geotools.jdbc.JDBCDateTestSetup;
 import org.geotools.jdbc.JDBCTimeZoneDateOnlineTest;
 
 /** @author Stefan Uhrig, SAP SE */
+@NotThreadSafe
 public class HanaTimeZoneGMTPlus12DateOnlineTest extends JDBCTimeZoneDateOnlineTest {
 
     @Override
     protected JDBCDateTestSetup createTestSetup() {
         super.setTimeZone(TimeZone.getTimeZone("Etc/GMT+12"));
-        return new HanaDateTestSetup(new HanaTestSetup());
+        return new HanaDateTestSetup(new HanaTestSetupNonPSPooling());
     }
 }

@@ -24,6 +24,6 @@ public class HanaFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
 
     @Override
     protected JDBCTestSetup createTestSetup() {
-        return new HanaTestSetup();
+        return new HanaTestSetupDefault();
     }
 }

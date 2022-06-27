@@ -18,13 +18,44 @@ package org.geotools.data.hana;
 
 import java.util.HashMap;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicInteger;
+import org.apache.commons.dbcp.BasicDataSource;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCTestSetup;
+import tech.units.indriya.function.MultiplyConverter;
 
 /** @author Stefan Uhrig, SAP SE */
 public class HanaTestSetupBase extends JDBCTestSetup {
 
     private static final String DRIVER_CLASS_NAME = "com.sap.db.jdbc.Driver";
+
+    private static AtomicInteger schemaCounter = new AtomicInteger();
+
+    private static Object workaroundLock = new Object();
+
+    private static boolean workaroundsApplied = false;
+
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        synchronized (workaroundLock) {
+            if (!workaroundsApplied) {
+                // Workaround for issue https://github.com/unitsofmeasurement/indriya/issues/371
+                MultiplyConverter.ofPiExponent(1).getValue();
+                workaroundsApplied = true;
+            }
+        }
+    }
+
+    @Override
+    public boolean canResetSchema() {
+        return false;
+    }
+
+    @Override
+    protected boolean useDelegateDataSource() {
+        return true;
+    }
 
     @Override
     protected Properties createExampleFixture() {
@@ -45,6 +76,14 @@ public class HanaTestSetupBase extends JDBCTestSetup {
         String sinstance = fixture.getProperty("instance");
         String database = fixture.getProperty("database");
         String useSsl = fixture.getProperty("use ssl");
+
+        if ((fixture.getProperty("schemabase") != null)
+                && (fixture.getProperty("schema") == null)) {
+            String schemaBase = fixture.getProperty("schemabase");
+            int counter = schemaCounter.getAndIncrement();
+            String schema = schemaBase + "_" + counter;
+            fixture.setProperty("schema", schema);
+        }
 
         HashMap<String, String> options = new HashMap<>();
         if ("true".equals(useSsl)) {
@@ -78,6 +117,23 @@ public class HanaTestSetupBase extends JDBCTestSetup {
                         .buildUrl());
         super.setFixture(fixture);
     }
+
+    protected void setCommonDataSourceOptions(BasicDataSource dataSource) {
+        dataSource.setDriverClassName(fixture.getProperty("driver"));
+        dataSource.setUrl(fixture.getProperty("url"));
+
+        if (fixture.containsKey("user")) {
+            dataSource.setUsername(fixture.getProperty("user"));
+        } else if (fixture.containsKey("username")) {
+            dataSource.setUsername(fixture.getProperty("username"));
+        }
+        if (fixture.containsKey("password")) {
+            dataSource.setPassword(fixture.getProperty("password"));
+        }
+    }
+
+    @Override
+    public void tearDown() throws Exception {}
 
     @Override
     protected JDBCDataStoreFactory createDataStoreFactory() {

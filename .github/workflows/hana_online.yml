@@ -1,0 +1,37 @@
+name: SAP HANA online tests
+
+on: [pull_request]
+
+jobs:
+  build:
+    name: SAP HANA online test
+    runs-on: [ubuntu-latest]
+    strategy:
+      matrix:
+        java: [11]
+    
+    steps:
+    - name: Set up JDK ${{ matrix.java }}
+      uses: actions/setup-java@v2
+      with:
+        java-version: ${{ matrix.java }}
+        distribution: 'temurin'
+    - uses: actions/checkout@v2
+    - name: Maven repository caching
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2/repository
+        key: gt-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          gt-maven-
+    - name: Build GeoTools dependent modules (no tests)
+      run: mvn -B clean install -T1C -Dall -pl :gt-jdbc-hana -DskipTests -Dspotless.apply.skip=true -am
+    - name: Setup test environment for SAP HANA
+      run: mvn -B -pl :gt-jdbc-hana exec:java -Dexec.mainClass="org.geotools.data.hana.ci.CISetup" -Dexec.classpathScope="test" -Dexec.cleanupDaemonThreads="false"
+    - name: Test SAP HANA data store
+      run: mvn -B test -pl :gt-jdbc-hana -Ponline
+    - name: Teardown test environment for SAP HANA
+      run: mvn -B -pl :gt-jdbc-hana exec:java -Dexec.mainClass="org.geotools.data.hana.ci.CITeardown" -Dexec.classpathScope="test" -Dexec.cleanupDaemonThreads="false"
+    - name: Remove SNAPSHOT jars from repository
+      run: |
+        find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {}

@@ -35,13 +35,14 @@ public class HanaPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSetup
     private static final String MULTIPK_VIEW = "assignedmultipk";
 
     protected HanaPrimaryKeyFinderTestSetup() {
-        super(new HanaTestSetup());
+        super(new HanaTestSetupPSPooling());
     }
 
     @Override
     protected void createMetadataTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
+            htu.createTestSchema();
 
             String[][] cols = {
                 {"TABLE_SCHEMA", "VARCHAR(256)"},
@@ -51,56 +52,58 @@ public class HanaPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSetup
                 {"PK_POLICY", "VARCHAR(32)"},
                 {"PK_SEQUENCE", "VARCHAR(256)"}
             };
-            htu.createTable(null, METADATA_TABLE, cols);
+            htu.createTestTable(METADATA_TABLE, cols);
         }
     }
 
     @Override
     protected void dropMetadataTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
-            htu.dropTableCascade(null, METADATA_TABLE);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
+            htu.dropTestTableCascade(METADATA_TABLE);
         }
     }
 
     @Override
     protected void createSequencedPrimaryKeyTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
+            htu.createTestSchema();
 
             String[][] cols = {
                 {"key", "INT PRIMARY KEY"},
                 {"name", "VARCHAR(256)"},
                 {"geom", "ST_Geometry(1000004326)"}
             };
-            htu.createTable(null, SEQ_TABLE, cols);
-            htu.createSequence(null, SEQUENCE, 1);
+            htu.createTestTable(SEQ_TABLE, cols);
+            htu.createSequence(htu.getTestSchema(), SEQUENCE, 1);
 
-            htu.insertIntoTable(
-                    null, SEQ_TABLE, htu.nextSequenceValue(null, SEQUENCE), "one", null);
-            htu.insertIntoTable(
-                    null, SEQ_TABLE, htu.nextSequenceValue(null, SEQUENCE), "two", null);
-            htu.insertIntoTable(
-                    null, SEQ_TABLE, htu.nextSequenceValue(null, SEQUENCE), "three", null);
+            htu.insertIntoTestTable(
+                    SEQ_TABLE, htu.nextSequenceValue(htu.getTestSchema(), SEQUENCE), "one", null);
+            htu.insertIntoTestTable(
+                    SEQ_TABLE, htu.nextSequenceValue(htu.getTestSchema(), SEQUENCE), "two", null);
+            htu.insertIntoTestTable(
+                    SEQ_TABLE, htu.nextSequenceValue(htu.getTestSchema(), SEQUENCE), "three", null);
 
-            htu.insertIntoTable(
-                    null, METADATA_TABLE, null, SEQ_TABLE, "key", 0, "sequence", SEQUENCE);
+            htu.insertIntoTestTable(
+                    METADATA_TABLE, htu.getTestSchema(), SEQ_TABLE, "key", 0, "sequence", SEQUENCE);
         }
     }
 
     @Override
     protected void dropSequencedPrimaryKeyTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
-            htu.dropSequence(null, SEQUENCE);
-            htu.dropTable(null, SEQ_TABLE);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
+            htu.dropSequence(htu.getTestSchema(), SEQUENCE);
+            htu.dropTable(htu.getTestSchema(), SEQ_TABLE);
         }
     }
 
     @Override
     protected void createPlainTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
+            htu.createTestSchema();
 
             String[][] cols = {
                 {"key1", "INT"},
@@ -108,58 +111,68 @@ public class HanaPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSetup
                 {"name", "VARCHAR(256)"},
                 {"geom", "ST_Geometry(1000004326)"}
             };
-            htu.createTable(null, PLAIN_TABLE, cols);
+            htu.createTestTable(PLAIN_TABLE, cols);
 
-            htu.insertIntoTable(null, PLAIN_TABLE, 1, 2, "one", null);
-            htu.insertIntoTable(null, PLAIN_TABLE, 2, 3, "two", null);
-            htu.insertIntoTable(null, PLAIN_TABLE, 3, 4, "three", null);
+            htu.insertIntoTestTable(PLAIN_TABLE, 1, 2, "one", null);
+            htu.insertIntoTestTable(PLAIN_TABLE, 2, 3, "two", null);
+            htu.insertIntoTestTable(PLAIN_TABLE, 3, 4, "three", null);
         }
     }
 
     @Override
     protected void dropPlainTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
-            htu.dropTable(null, PLAIN_TABLE);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
+            htu.dropTable(htu.getTestSchema(), PLAIN_TABLE);
         }
     }
 
     @Override
     protected void createAssignedSinglePkView() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
-            htu.createView(null, SINGLEPK_VIEW, PLAIN_TABLE);
-            htu.insertIntoTable(
-                    null, METADATA_TABLE, null, SINGLEPK_VIEW, "key1", 0, "assigned", null);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
+            htu.createTestSchema();
+
+            htu.createTestView(SINGLEPK_VIEW, PLAIN_TABLE);
+            htu.insertIntoTestTable(
+                    METADATA_TABLE,
+                    htu.getTestSchema(),
+                    SINGLEPK_VIEW,
+                    "key1",
+                    0,
+                    "assigned",
+                    null);
         }
     }
 
     @Override
     protected void dropAssignedSinglePkView() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
-            htu.dropView(null, SINGLEPK_VIEW);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
+            htu.dropView(htu.getTestSchema(), SINGLEPK_VIEW);
         }
     }
 
     @Override
     protected void createAssignedMultiPkView() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
-            htu.createView(null, MULTIPK_VIEW, PLAIN_TABLE);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
+            htu.createTestSchema();
 
-            htu.insertIntoTable(
-                    null, METADATA_TABLE, null, MULTIPK_VIEW, "key1", 0, "assigned", null);
-            htu.insertIntoTable(
-                    null, METADATA_TABLE, null, MULTIPK_VIEW, "key2", 1, "assigned", null);
+            htu.createTestView(MULTIPK_VIEW, PLAIN_TABLE);
+
+            htu.insertIntoTestTable(
+                    METADATA_TABLE, htu.getTestSchema(), MULTIPK_VIEW, "key1", 0, "assigned", null);
+            htu.insertIntoTestTable(
+                    METADATA_TABLE, htu.getTestSchema(), MULTIPK_VIEW, "key2", 1, "assigned", null);
         }
     }
 
     @Override
     protected void dropAssignedMultiPkView() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
-            htu.dropView(null, MULTIPK_VIEW);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
+            htu.dropView(htu.getTestSchema(), MULTIPK_VIEW);
         }
     }
 }

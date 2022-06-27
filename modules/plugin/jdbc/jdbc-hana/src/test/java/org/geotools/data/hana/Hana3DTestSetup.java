@@ -36,7 +36,7 @@ public class Hana3DTestSetup extends JDBC3DTestSetup {
     @Override
     protected void createPoint3DTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.createTestSchema();
 
             String[][] cols = {
@@ -65,7 +65,7 @@ public class Hana3DTestSetup extends JDBC3DTestSetup {
     @Override
     protected void dropPoint3DTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.dropTestTableCascade(POINT3D_TABLE);
         }
     }
@@ -73,7 +73,7 @@ public class Hana3DTestSetup extends JDBC3DTestSetup {
     @Override
     protected void createLine3DTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.createTestSchema();
 
             String[][] cols = {
@@ -102,7 +102,7 @@ public class Hana3DTestSetup extends JDBC3DTestSetup {
     @Override
     protected void dropLine3DTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.dropTestTableCascade(LINE3D_TABLE);
         }
     }
@@ -110,7 +110,7 @@ public class Hana3DTestSetup extends JDBC3DTestSetup {
     @Override
     protected void dropPoly3DTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.dropTestTableCascade(POLY3D_TABLE);
         }
     }

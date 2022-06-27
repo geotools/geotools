@@ -25,7 +25,7 @@ public class HanaInEncodingOnlineTest extends JDBCInEncodingOnlineTest {
 
     @Override
     protected JDBCTestSetup createTestSetup() {
-        return new HanaTestSetup();
+        return new HanaTestSetupDefault();
     }
 
     @Override

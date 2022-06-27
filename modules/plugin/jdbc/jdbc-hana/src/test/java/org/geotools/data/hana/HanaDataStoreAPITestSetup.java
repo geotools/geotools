@@ -39,7 +39,8 @@ public class HanaDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
     @Override
     protected void createLakeTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
+            htu.createTestSchema();
 
             String[][] cols = {
                 {"fid", "INT PRIMARY KEY"},
@@ -47,12 +48,11 @@ public class HanaDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
                 {"geom", "ST_Geometry(1000004326)"},
                 {"name", "VARCHAR(255)"}
             };
-            htu.createRegisteredTable(null, LAKE_TABLE, cols);
+            htu.createRegisteredTestTable(LAKE_TABLE, cols);
 
-            htu.insertIntoTable(
-                    null,
+            htu.insertIntoTestTable(
                     LAKE_TABLE,
-                    htu.nextSequenceValueForColumn(null, LAKE_TABLE, "fid"),
+                    htu.nextTestSequenceValueForColumn(LAKE_TABLE, "fid"),
                     0,
                     htu.geometry("POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))", 1000004326),
                     "muddy");
@@ -62,7 +62,8 @@ public class HanaDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
     @Override
     protected void createRiverTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
+            htu.createTestSchema();
 
             String[][] cols = {
                 {"fid", "INT PRIMARY KEY"},
@@ -71,22 +72,20 @@ public class HanaDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
                 {"river", "VARCHAR(255)"},
                 {"flow", "REAL"}
             };
-            htu.createRegisteredTable(null, RIVER_TABLE, cols);
+            htu.createRegisteredTestTable(RIVER_TABLE, cols);
 
-            htu.insertIntoTable(
-                    null,
+            htu.insertIntoTestTable(
                     RIVER_TABLE,
-                    htu.nextSequenceValueForColumn(null, RIVER_TABLE, "fid"),
+                    htu.nextTestSequenceValueForColumn(RIVER_TABLE, "fid"),
                     0,
                     htu.geometry(
                             "MULTILINESTRING((5 5, 7 4), (7 5, 9 7, 13 7), (7 5, 9 3, 11 3))",
                             1000004326),
                     "rv1",
                     4.5);
-            htu.insertIntoTable(
-                    null,
+            htu.insertIntoTestTable(
                     RIVER_TABLE,
-                    htu.nextSequenceValueForColumn(null, RIVER_TABLE, "fid"),
+                    htu.nextTestSequenceValueForColumn(RIVER_TABLE, "fid"),
                     1,
                     htu.geometry("MULTILINESTRING((4 6, 4 8, 6 10))", 1000004326),
                     "rv2",
@@ -97,7 +96,8 @@ public class HanaDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
     @Override
     protected void createRoadTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
+            htu.createTestSchema();
 
             String[][] cols = {
                 {"fid", "INT PRIMARY KEY"},
@@ -105,26 +105,23 @@ public class HanaDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
                 {"geom", "ST_Geometry(1000004326)"},
                 {"name", "VARCHAR(255)"}
             };
-            htu.createRegisteredTable(null, ROAD_TABLE, cols);
+            htu.createRegisteredTestTable(ROAD_TABLE, cols);
 
-            htu.insertIntoTable(
-                    null,
+            htu.insertIntoTestTable(
                     ROAD_TABLE,
-                    htu.nextSequenceValueForColumn(null, ROAD_TABLE, "fid"),
+                    htu.nextTestSequenceValueForColumn(ROAD_TABLE, "fid"),
                     0,
                     htu.geometry("LINESTRING(1 1, 2 2, 4 2, 5 1)", 1000004326),
                     "r1");
-            htu.insertIntoTable(
-                    null,
+            htu.insertIntoTestTable(
                     ROAD_TABLE,
-                    htu.nextSequenceValueForColumn(null, ROAD_TABLE, "fid"),
+                    htu.nextTestSequenceValueForColumn(ROAD_TABLE, "fid"),
                     1,
                     htu.geometry("LINESTRING(3 0, 3 2, 3 3, 3 4)", 1000004326),
                     "r2");
-            htu.insertIntoTable(
-                    null,
+            htu.insertIntoTestTable(
                     ROAD_TABLE,
-                    htu.nextSequenceValueForColumn(null, ROAD_TABLE, "fid"),
+                    htu.nextTestSequenceValueForColumn(ROAD_TABLE, "fid"),
                     2,
                     htu.geometry("LINESTRING(3 2, 4 2, 5 3)", 1000004326),
                     "r3");
@@ -134,32 +131,32 @@ public class HanaDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
     @Override
     protected void dropBuildingTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
-            htu.dropTableCascade(null, BUILDING_TABLE);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
+            htu.dropTestTableCascade(BUILDING_TABLE);
         }
     }
 
     @Override
     protected void dropLakeTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
-            htu.dropTableCascade(null, LAKE_TABLE);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
+            htu.dropTestTableCascade(LAKE_TABLE);
         }
     }
 
     @Override
     protected void dropRiverTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
-            htu.dropTableCascade(null, RIVER_TABLE);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
+            htu.dropTestTableCascade(RIVER_TABLE);
         }
     }
 
     @Override
     protected void dropRoadTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
-            htu.dropTableCascade(null, ROAD_TABLE);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
+            htu.dropTestTableCascade(ROAD_TABLE);
         }
     }
 }

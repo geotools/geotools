@@ -19,7 +19,7 @@ package org.geotools.data.hana;
 import java.sql.Connection;
 
 /** @author Stefan Uhrig, SAP SE */
-public class HanaSpatialFilterOnViewTestSetup extends HanaTestSetupBase {
+public class HanaSpatialFilterOnViewTestSetup extends HanaTestSetupPSPooling {
 
     private static final String TABLE = "tabforview";
 
@@ -28,7 +28,7 @@ public class HanaSpatialFilterOnViewTestSetup extends HanaTestSetupBase {
     @Override
     protected void setUpData() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.createTestSchema();
 
             htu.dropTestView(VIEW);

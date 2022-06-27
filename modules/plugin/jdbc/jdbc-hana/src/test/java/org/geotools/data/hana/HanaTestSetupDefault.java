@@ -21,7 +21,7 @@ import java.sql.SQLException;
 import org.geotools.data.hana.metadata.Srs;
 
 /** @author Stefan Uhrig, SAP SE */
-public class HanaTestSetup extends HanaTestSetupBase {
+public class HanaTestSetupDefault extends HanaTestSetupPSPooling {
 
     private static final String TABLE1 = "ft1";
 
@@ -34,7 +34,7 @@ public class HanaTestSetup extends HanaTestSetupBase {
     @Override
     protected void setUpData() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
 
             Srs srs =
                     new Srs(

@@ -133,6 +133,12 @@ public class HanaDialect extends PreparedStatementSQLDialect {
         CLASS_TO_SQL_TYPE.put(GeometryCollection.class, GEOMETRY_TYPE_CODE);
     }
 
+    private static final Map<Integer, String> SQL_TYPE_TO_SQL_TYPE_NAME = new HashMap<>();
+
+    static {
+        SQL_TYPE_TO_SQL_TYPE_NAME.put(Types.CLOB, "CLOB");
+    }
+
     private static final String GEOMETRY_TYPE_NAME = "ST_Geometry";
 
     public HanaDialect(JDBCDataStore dataStore) {
@@ -192,6 +198,12 @@ public class HanaDialect extends PreparedStatementSQLDialect {
     public void registerClassToSqlMappings(Map<Class<?>, Integer> mappings) {
         super.registerClassToSqlMappings(mappings);
         mappings.putAll(CLASS_TO_SQL_TYPE);
+    }
+
+    @Override
+    public void registerSqlTypeToSqlTypeNameOverrides(Map<Integer, String> overrides) {
+        super.registerSqlTypeToSqlTypeNameOverrides(overrides);
+        overrides.putAll(SQL_TYPE_TO_SQL_TYPE_NAME);
     }
 
     @Override

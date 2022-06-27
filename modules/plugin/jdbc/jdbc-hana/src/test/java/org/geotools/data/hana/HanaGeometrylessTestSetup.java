@@ -34,7 +34,7 @@ public class HanaGeometrylessTestSetup extends JDBCGeometrylessTestSetup {
     @Override
     protected void createPersonTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.createTestSchema();
 
             String[][] cols = {
@@ -60,7 +60,7 @@ public class HanaGeometrylessTestSetup extends JDBCGeometrylessTestSetup {
     @Override
     protected void dropPersonTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.dropTestTableCascade(PERSON_TABLE);
         }
     }
@@ -68,7 +68,7 @@ public class HanaGeometrylessTestSetup extends JDBCGeometrylessTestSetup {
     @Override
     protected void dropZipCodeTable() throws Exception {
         try (Connection conn = getConnection()) {
-            HanaTestUtil htu = new HanaTestUtil(conn);
+            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.dropTestTableCascade(ZIPCODE_TABLE);
         }
     }

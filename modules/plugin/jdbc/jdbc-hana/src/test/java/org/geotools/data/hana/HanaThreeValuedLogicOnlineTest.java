@@ -24,6 +24,6 @@ public class HanaThreeValuedLogicOnlineTest extends JDBCThreeValuedLogicOnlineTe
 
     @Override
     protected JDBCThreeValuedLogicTestSetup createTestSetup() {
-        return new HanaThreeValuedLogicTestSetup(new HanaTestSetup());
+        return new HanaThreeValuedLogicTestSetup(new HanaTestSetupPSPooling());
     }
 }

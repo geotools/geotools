@@ -162,7 +162,8 @@ public abstract class JDBCTestSupport extends OnlineTestSupport {
     protected Map<String, Object> createDataStoreFactoryParams() throws Exception {
         Map<String, Object> params = new HashMap<>();
         params.put(JDBCDataStoreFactory.NAMESPACE.key, "http://www.geotools.org/test");
-        params.put(JDBCDataStoreFactory.SCHEMA.key, "geotools");
+        String testSchema = getFixture().getProperty(JDBCDataStoreFactory.SCHEMA.key, "geotools");
+        params.put(JDBCDataStoreFactory.SCHEMA.key, testSchema);
         params.put(JDBCDataStoreFactory.DATASOURCE.key, setup.getDataSource());
 
         // Enable batch insert in the tests. Some tests will revert that back to the default because

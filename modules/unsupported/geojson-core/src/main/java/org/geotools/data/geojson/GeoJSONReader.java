@@ -327,6 +327,12 @@ public class GeoJSONReader implements AutoCloseable {
                             case STRING:
                                 vc = item.asText();
                                 break;
+                            case OBJECT:
+                                vc = item;
+                                break;
+                            case ARRAY:
+                                vc = item;
+                                break;
                             case NULL:
                                 vc = null;
                                 break;

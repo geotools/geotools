@@ -220,7 +220,7 @@ public class TWKBReader {
         metadata.setHeader(header);
 
         int dims = 2;
-        // accordingto https://github.com/TWKB/Specification/blob/master/twkb.md it is Z then M
+        // according to https://github.com/TWKB/Specification/blob/master/twkb.md it is Z then M
         if (metadata.hasExtendedDims()) {
             int dimensions = dis.readByte();
 

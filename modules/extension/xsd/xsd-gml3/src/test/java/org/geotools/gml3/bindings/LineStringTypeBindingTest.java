@@ -20,7 +20,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
 import org.junit.Test;
@@ -83,7 +82,7 @@ public class LineStringTypeBindingTest extends GML3TestSupport {
         Document doc = encode(line, GML.LineString);
 
         int expectedDim = 2;
-		checkDimension(doc, GML.LineString.getLocalPart(), expectedDim);
+        checkDimension(doc, GML.LineString.getLocalPart(), expectedDim);
         checkPosListOrdinates(doc, expectedDim * line.getNumPoints());
     }
 
@@ -93,7 +92,7 @@ public class LineStringTypeBindingTest extends GML3TestSupport {
         Document doc = encode(line, GML.LineString);
 
         int expectedDim = 2;
-		checkDimension(doc, GML.LineString.getLocalPart(), expectedDim);
+        checkDimension(doc, GML.LineString.getLocalPart(), expectedDim);
         checkPosListOrdinates(doc, expectedDim * line.getNumPoints());
     }
 
@@ -103,7 +102,7 @@ public class LineStringTypeBindingTest extends GML3TestSupport {
         Document doc = encode(line, GML.LineString);
 
         int expectedDim = 3;
-		checkDimension(doc, GML.LineString.getLocalPart(), expectedDim);
+        checkDimension(doc, GML.LineString.getLocalPart(), expectedDim);
         checkPosListOrdinates(doc, expectedDim * line.getNumPoints());
     }
 

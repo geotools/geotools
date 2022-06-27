@@ -145,6 +145,8 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.simplify.TopologyPreservingSimplifier;
 import org.opengis.coverage.processing.OperationNotFoundException;
 import org.opengis.feature.Feature;
+import org.opengis.feature.GeometryAttribute;
+import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
@@ -3160,17 +3162,30 @@ public class StreamingRenderer implements GTRenderer {
         // get the geometry
         Geometry geom;
         if (geomExpr == null) {
-            if (drawMe instanceof SimpleFeature) {
+            if (drawMe instanceof SimpleFeature)
                 geom = (Geometry) ((SimpleFeature) drawMe).getDefaultGeometry();
-            } else if (drawMe instanceof Feature) {
-                geom = (Geometry) ((Feature) drawMe).getDefaultGeometryProperty().getValue();
-            } else {
-                geom = defaultGeometryPropertyName.evaluate(drawMe, Geometry.class);
-            }
+            else if (drawMe instanceof Feature) geom = findComplexFeatureGeometry((Feature) drawMe);
+            else geom = defaultGeometryPropertyName.evaluate(drawMe, Geometry.class);
         } else {
             geom = geomExpr.evaluate(drawMe, Geometry.class);
         }
 
+        return geom;
+    }
+
+    private Geometry findComplexFeatureGeometry(Feature feature) {
+        Geometry geom = null;
+        FeatureType schema = feature.getType();
+        if (feature.getDefaultGeometryProperty() != null) {
+            geom = (Geometry) feature.getDefaultGeometryProperty().getValue();
+        } else if (schema.getGeometryDescriptor() != null) {
+            GeometryDescriptor descriptor = schema.getGeometryDescriptor();
+            geom = (Geometry) feature.getProperty(descriptor.getName()).getValue();
+        } else {
+            for (Property p : feature.getProperties()) {
+                if (p instanceof GeometryAttribute) geom = (Geometry) p.getValue();
+            }
+        }
         return geom;
     }
 

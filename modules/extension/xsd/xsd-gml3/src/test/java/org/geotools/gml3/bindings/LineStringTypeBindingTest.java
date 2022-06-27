@@ -82,8 +82,9 @@ public class LineStringTypeBindingTest extends GML3TestSupport {
         LineString line = GML3MockData.lineString();
         Document doc = encode(line, GML.LineString);
 
-        checkDimension(doc, GML.LineString.getLocalPart(), 2);
-        checkPosListOrdinates(doc, 2 * line.getNumPoints());
+        int expectedDim = 2;
+		checkDimension(doc, GML.LineString.getLocalPart(), expectedDim);
+        checkPosListOrdinates(doc, expectedDim * line.getNumPoints());
     }
 
     @Test
@@ -91,9 +92,9 @@ public class LineStringTypeBindingTest extends GML3TestSupport {
         LineString line = GML3MockData.lineStringLite2D();
         Document doc = encode(line, GML.LineString);
 
-        int dimension = CoordinateSequences.coordinateDimension(line.getCoordinateSequence());
-        checkDimension(doc, GML.LineString.getLocalPart(), dimension);
-        checkPosListOrdinates(doc, dimension * line.getNumPoints());
+        int expectedDim = 2;
+		checkDimension(doc, GML.LineString.getLocalPart(), expectedDim);
+        checkPosListOrdinates(doc, expectedDim * line.getNumPoints());
     }
 
     @Test
@@ -101,8 +102,9 @@ public class LineStringTypeBindingTest extends GML3TestSupport {
         LineString line = GML3MockData.lineStringLite3D();
         Document doc = encode(line, GML.LineString);
 
-        checkDimension(doc, GML.LineString.getLocalPart(), 3);
-        checkPosListOrdinates(doc, 3 * line.getNumPoints());
+        int expectedDim = 3;
+		checkDimension(doc, GML.LineString.getLocalPart(), expectedDim);
+        checkPosListOrdinates(doc, expectedDim * line.getNumPoints());
     }
 
     /**
@@ -113,8 +115,8 @@ public class LineStringTypeBindingTest extends GML3TestSupport {
         LineString line = GML3MockData.lineStringLite2D(10);
         Document doc = encode(line, GML.LineString);
 
-        int dimension = CoordinateSequences.coordinateDimension(line.getCoordinateSequence());
-        checkDimension(doc, GML.LineString.getLocalPart(), dimension);
-        checkPosListOrdinates(doc, dimension * line.getNumPoints());
+        int expectedDim = 2;
+        checkDimension(doc, GML.LineString.getLocalPart(), expectedDim);
+        checkPosListOrdinates(doc, expectedDim * line.getNumPoints());
     }
 }

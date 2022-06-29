@@ -348,9 +348,10 @@ public class TWKBReaderTest {
                 throw new RuntimeException("Never gonna get here!");
         }
 
+        int result = expected.compareTo(actual, comp);
         assertEquals(
-                "\nExpected:" + expected + "\nActual:  " + actual,
+                "\nExpected:" + expected.getCoordinate() + "\nActual:  " + actual.getCoordinate(),
                 0,
-                expected.compareTo(actual, comp));
+                result);
     }
 }

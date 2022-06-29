@@ -60,7 +60,7 @@ public class ArcStringTypeBindingTest extends GML32TestSupport {
                                 new LiteCoordinateSequence(
                                         new double[] {1, 1, 2, 2, 3, 1, 5, 5, 7, 3}));
         Document dom = encode(curve, GML.curveProperty);
-        // print(dom);
+        print(dom);
         XpathEngine xpath = XMLUnit.newXpathEngine();
         String basePath = "/gml:curveProperty/gml:Curve/gml:segments/gml:ArcString";
         assertEquals(

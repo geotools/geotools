@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2022, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -14,12 +14,17 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+
 package org.geotools.geometry.jts;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.CoordinateXY;
+import org.locationtech.jts.geom.CoordinateXYM;
+import org.locationtech.jts.geom.CoordinateXYZM;
+import org.locationtech.jts.geom.Coordinates;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -96,31 +101,30 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
 
     /** Builds a new packed coordinate sequence out of a coordinate array */
     public LiteCoordinateSequence(Coordinate... coordinates) {
-        super(guessDimension(coordinates == null ? new Coordinate[0] : coordinates), 0);
-        if (coordinates == null) coordinates = new Coordinate[0];
-        this.dimension = guessDimension(coordinates);
+        super(2, 0);
 
-        coords = new double[coordinates.length * this.dimension];
-        for (int i = 0; i < coordinates.length; i++) {
-            coords[i * this.dimension] = coordinates[i].x;
-            if (this.dimension > 2) {
+        if (coordinates != null && coordinates.length != 0) {
+            this.dimension = Coordinates.dimension(coordinates[0]);
+            this.measures = Coordinates.measures(coordinates[0]);
+
+            coords = new double[coordinates.length * this.dimension];
+            for (int i = 0; i < coordinates.length; i++) {
+                coords[i * this.dimension] = coordinates[i].x;
                 coords[i * this.dimension + 1] = coordinates[i].y;
-                coords[i * this.dimension + 2] = coordinates[i].getZ();
-            } else if (this.dimension > 1) {
-                coords[i * this.dimension + 1] = coordinates[i].y;
+                if (this.dimension == 4) {
+                    coords[i * this.dimension + 2] = coordinates[i].getZ();
+                    coords[i * this.dimension + 3] = coordinates[i].getM();
+                } else if (this.dimension == 3 && this.measures == 1) {
+                    coords[i * this.dimension + 2] = coordinates[i].getM();
+                } else if (this.dimension == 3 && this.measures == 0) {
+                    coords[i * this.dimension + 2] = coordinates[i].getZ();
+                }
             }
+            this.size = coordinates.length;
+        } else {
+            this.size = 0;
+            this.coords = new double[0];
         }
-        this.size = coordinates.length;
-    }
-
-    private static int guessDimension(Coordinate... coordinates) {
-        for (Coordinate c : coordinates) {
-            if (!java.lang.Double.isNaN(c.getZ())) {
-                return 3;
-            }
-        }
-
-        return 2;
     }
 
     /** Builds a new empty packed coordinate sequence of a given size and dimension */
@@ -176,8 +180,20 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
     public Coordinate getCoordinateInternal(int i) {
         double x = coords[i * dimension];
         double y = coords[i * dimension + 1];
-        double z = dimension == 2 ? java.lang.Double.NaN : coords[i * dimension + 2];
-        return new Coordinate(x, y, z);
+        if (dimension == 2 && measures == 0) {
+            return new CoordinateXY(x, y);
+        } else if (dimension == 3 && measures == 0) {
+            double z = coords[i * dimension + 2];
+            return new Coordinate(x, y, z);
+        } else if (dimension == 3 && measures == 1) {
+            double m = coords[i * dimension + 2];
+            return new CoordinateXYM(x, y, m);
+        } else if (dimension == 4) {
+            double z = coords[i * dimension + 2];
+            double m = coords[i * dimension + 3];
+            return new CoordinateXYZM(x, y, z, m);
+        }
+        return new Coordinate(x, y);
     }
 
     /** @see org.locationtech.jts.geom.CoordinateSequence#size() */
@@ -343,6 +359,7 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
     public static final Geometry cloneGeometry(Geometry geom) {
         return cloneGeometry(geom, 2);
     }
+
     /** changes this to a new CSF -- more efficient than the JTS way */
     private static final Geometry cloneGeometry(Polygon geom, int dimension) {
         LinearRing lr = (LinearRing) cloneGeometry(geom.getExteriorRing(), dimension);

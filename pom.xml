@@ -1436,42 +1436,6 @@
     </dependency>
   </dependencies>
 
-  <!-- ================================================================== -->
-  <!--     Repositories. This is where Maven looks for dependencies. The  -->
-  <!--     Maven repository is implicit and doesn't need to be specified. -->
-  <!-- ================================================================== -->
-  <repositories>
-
-    <!-- Maven Central is assumed -->
-
-    <repository>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <!-- contains release (including third-party-dependences)                            -->
-      <!-- ucar (https://artifacts.unidata.ucar.edu/content/repositories/unidata-releases) -->
-      <!-- geosolutions (http://maven.geo-solutions.it/)                                   -->
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>osgeo</id>
-      <name>OSGeo Nexus Release Repository</name>
-      <url>https://repo.osgeo.org/repository/release/</url>
-    </repository>
-
-    <repository>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <id>osgeo-snapshot</id>
-      <name>OSGeo Nexus Snapshot Repository</name>
-      <url>https://repo.osgeo.org/repository/snapshot/</url>
-    </repository>
-  </repositories>
-
   <!-- =========================================================== -->
   <!--     Plugin repositories.                                    -->
   <!--     This is where Maven looks for plugin dependencies.      -->

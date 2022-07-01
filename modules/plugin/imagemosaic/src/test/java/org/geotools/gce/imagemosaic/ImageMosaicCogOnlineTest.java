@@ -174,6 +174,35 @@ public class ImageMosaicCogOnlineTest {
     }
 
     @Test
+    public void testCogMosaicBandSelect() throws Exception {
+        File workDir = prepareWorkingDir("s3cogtest.zip", "default", "s3cogtest");
+        File file = new File(workDir, "cogtest.properties");
+        Properties properties = new Properties();
+        try (FileInputStream fin = new FileInputStream(file)) {
+            properties.load(fin);
+        }
+
+        try (FileWriter fw = new FileWriter(file)) {
+            Assert.assertNotNull(properties.remove("CogRangeReader"));
+            Assert.assertNotNull(properties.remove("SuggestedSPI"));
+            properties.store(fw, "");
+        }
+
+        // do a duplicate band selection, since the source file only has one band, also
+        // checks for usage of the EnhancedReadParam bands parameter, which supports duplicates
+        ImageMosaicReader reader = IMAGE_MOSAIC_FORMAT.getReader(workDir);
+        ParameterValue<int[]> bands = AbstractGridFormat.BANDS.createValue();
+        bands.setValue(new int[] {0, 0});
+        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {bands});
+        Assert.assertNotNull(coverage);
+        RenderedImage image = coverage.getRenderedImage();
+        assertEquals(2, image.getSampleModel().getNumBands());
+        assertEquals(2, image.getColorModel().getNumComponents());
+        assertEquals(2, image.getTile(0, 0).getNumBands());
+        reader.dispose();
+    }
+
+    @Test
     public void testHarvestSingleURL() throws Exception {
         File workDir = prepareWorkingDir("s3cogtest.zip", "harvest", "s3cogtest");
         File file = new File(workDir, "indexer.properties");

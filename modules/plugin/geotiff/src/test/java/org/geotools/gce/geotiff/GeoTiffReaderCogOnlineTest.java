@@ -37,6 +37,7 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.geometry.GeneralEnvelope;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
@@ -46,7 +47,7 @@ public class GeoTiffReaderCogOnlineTest extends Assert {
 
     private CogSourceSPIProvider getInputProvider() {
         String url =
-                "https://s3-us-west-2.amazonaws.com/landsat-pds/c1/L8/153/075/LC08_L1TP_153075_20190515_20190515_01_RT/LC08_L1TP_153075_20190515_20190515_01_RT_B2.TIF";
+                "https://s3-us-west-2.amazonaws.com/sentinel-cogs/sentinel-s2-l2a-cogs/5/C/MK/2018/10/S2B_5CMK_20181020_0_L2A/B01.tif";
         BasicAuthURI cogUri = new BasicAuthURI(url, false);
         HttpRangeReader rangeReader =
                 new HttpRangeReader(cogUri.getUri(), CogImageReadParam.DEFAULT_HEADER_LENGTH);
@@ -62,8 +63,7 @@ public class GeoTiffReaderCogOnlineTest extends Assert {
     @Test
     public void testCogRead() throws URISyntaxException, IOException {
         GeoTiffReader reader = new GeoTiffReader(getInputProvider());
-        assertEquals(
-                "LC08_L1TP_153075_20190515_20190515_01_RT_B2", reader.getGridCoverageNames()[0]);
+        assertEquals("B01", reader.getGridCoverageNames()[0]);
         GridCoverage2D coverage = reader.read(null);
         assertNotNull(coverage);
         RenderedImage image = coverage.getRenderedImage();
@@ -71,16 +71,29 @@ public class GeoTiffReaderCogOnlineTest extends Assert {
         int numTileY = image.getNumYTiles();
 
         Raster raster = image.getTile(numTileX / 2, numTileY / 2);
-        assertEquals(512, raster.getWidth());
-        assertEquals(512, raster.getHeight());
+        assertEquals(256, raster.getWidth());
+        assertEquals(256, raster.getHeight());
         assertEquals(1, raster.getNumBands());
     }
 
     @Test
+    public void testCogReadBandSelect() throws URISyntaxException, IOException {
+        GeoTiffReader reader = new GeoTiffReader(getInputProvider());
+
+        ParameterValue<int[]> bands = AbstractGridFormat.BANDS.createValue();
+        bands.setValue(new int[] {0, 0});
+        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {bands});
+        assertNotNull(coverage);
+        assertEquals(2, coverage.getRenderedImage().getSampleModel().getNumBands());
+        assertEquals(2, coverage.getRenderedImage().getColorModel().getNumComponents());
+    }
+
+    // the old cog file used to have a landsat-pds scene with a sidecar .ovr file that is now gone
+    @Test
+    @Ignore
     public void testCogOverview() throws URISyntaxException, IOException {
         GeoTiffReader reader = new GeoTiffReader(getInputProvider());
-        assertEquals(
-                "LC08_L1TP_153075_20190515_20190515_01_RT_B2", reader.getGridCoverageNames()[0]);
+        assertEquals("B01", reader.getGridCoverageNames()[0]);
 
         GeneralParameterValue[] params = new GeneralParameterValue[1];
         // Define a GridGeometry in order to reduce the output

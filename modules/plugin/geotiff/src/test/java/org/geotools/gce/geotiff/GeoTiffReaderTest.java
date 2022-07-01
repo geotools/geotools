@@ -1402,4 +1402,73 @@ public class GeoTiffReaderTest {
     private static Color gray(int i) {
         return new Color(i, i, i);
     }
+
+    @Test
+    public void testBandSelection() throws Exception {
+        // prepare reader
+        final File scaleOffset = TestData.file(GeoTiffReaderTest.class, "scaleOffset.tif");
+        GeoTiffReader reader = new GeoTiffReader(scaleOffset);
+
+        // read with explicit request not to rescale
+        GridCoverage2D coverage = null;
+        try {
+            ParameterValue<int[]> bands = AbstractGridFormat.BANDS.createValue();
+            bands.setValue(new int[] {1, 3, 5});
+            coverage = reader.read(new GeneralParameterValue[] {bands});
+            RenderedImage ri = coverage.getRenderedImage();
+            assertEquals(3, ri.getSampleModel().getNumBands());
+
+            // check right bands have been selected using stats
+            ImageWorker iw = new ImageWorker(ri);
+            double[] maximums = iw.getMaximums();
+            double[] minimums = iw.getMinimums();
+            assertArrayEquals(new double[] {0.602, 0.0001, 1}, maximums, 1E-6d);
+            assertArrayEquals(new double[] {-0.2473, 0, 0}, minimums, 1E-6d);
+        } finally {
+            if (coverage != null) {
+                ImageUtilities.disposeImage(coverage.getRenderedImage());
+                coverage.dispose(true);
+            }
+        }
+    }
+
+    @Test
+    public void testBandDuplication() throws Exception {
+        // prepare reader
+        final File scaleOffset = TestData.file(GeoTiffReaderTest.class, "scaleOffset.tif");
+        GeoTiffReader reader = new GeoTiffReader(scaleOffset);
+
+        // read with explicit request not to rescale
+        GridCoverage2D coverage = null;
+        try {
+            ParameterValue<int[]> bands = AbstractGridFormat.BANDS.createValue();
+            bands.setValue(new int[] {0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5});
+            coverage = reader.read(new GeneralParameterValue[] {bands});
+            RenderedImage ri = coverage.getRenderedImage();
+            assertEquals(12, ri.getSampleModel().getNumBands());
+
+            // check right bands have been selected using stats
+            ImageWorker iw = new ImageWorker(ri);
+            double[] maximums = iw.getMaximums();
+            double[] minimums = iw.getMinimums();
+            assertArrayEquals(
+                    new double[] {
+                        0.602, 0.602, 0.602, 0.0001, 0, 1, 0.602, 0.602, 0.602, 0.0001, 0, 1
+                    },
+                    maximums,
+                    1E-6d);
+            assertArrayEquals(
+                    new double[] {
+                        -0.2473, -0.2473, -0.2473, 0, 0, 0, -0.2473, -0.2473, -0.2473, 0, 0, 0
+                    },
+                    minimums,
+                    1E-6d);
+
+        } finally {
+            if (coverage != null) {
+                ImageUtilities.disposeImage(coverage.getRenderedImage());
+                coverage.dispose(true);
+            }
+        }
+    }
 }

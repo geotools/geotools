@@ -36,6 +36,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
+import java.awt.image.SampleModel;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -162,6 +163,8 @@ public class GranuleDescriptor {
 
     private GeneralEnvelope granuleEnvelope;
     private AbstractGridFormat format;
+
+    private boolean nativeBandSelection;
     private Hints hints;
 
     public GeneralEnvelope getGranuleEnvelope() {
@@ -372,6 +375,8 @@ public class GranuleDescriptor {
     private Double[] scales;
     private Double[] offsets;
 
+    private SampleModel sampleModel;
+
     @SuppressWarnings("PMD.UseTryWithResources") // ImageInputStream initialized in multiple places
     protected void init(
             final BoundingBox granuleBBOX,
@@ -409,6 +414,7 @@ public class GranuleDescriptor {
             }
 
             this.format = granuleAccessProvider.getFormat();
+            this.nativeBandSelection = supportsNativeBandSelection();
             gcReader = granuleAccessProvider.getGridCoverageReader();
             ovrProvider = granuleAccessProvider.getMaskOverviewsProvider();
 
@@ -536,6 +542,21 @@ public class GranuleDescriptor {
         }
     }
 
+    private boolean supportsNativeBandSelection() {
+        try {
+            return format.getReadParameters().values().stream()
+                    .anyMatch(
+                            p ->
+                                    p.getDescriptor()
+                                            .getName()
+                                            .equals(AbstractGridFormat.BANDS.getName()));
+        } catch (UnsupportedOperationException e) {
+            // AbstractGridFormat may throw this exception if there are no read params (happens
+            // with the test class RemoteImageFormat for example)
+            return false;
+        }
+    }
+
     private GranuleAccessProvider getDefaultProvider(
             Object input,
             AbstractGridFormat suggestedFormat,
@@ -598,6 +619,9 @@ public class GranuleDescriptor {
                         e);
             }
         }
+        // store sample model to compute band-selected sub-image type for deferred loading
+        // (it needs to know in advance or it will use the image native structure)
+        this.sampleModel = reader.getImageTypes(index).next().getSampleModel();
     }
 
     public OverviewsController getOverviewsController() {
@@ -1226,6 +1250,18 @@ public class GranuleDescriptor {
                 erp.setBands(null);
             }
 
+            // deferred loading needs a target image type to work, otherwise it's going
+            // to use the native image number of bands
+            if (nativeBandSelection
+                    && readParameters instanceof EnhancedImageReadParam
+                    && ((EnhancedImageReadParam) readParameters).getBands() != null
+                    && request.getReadType() == ReadType.JAI_IMAGEREAD) {
+                int[] bands = ((EnhancedImageReadParam) readParameters).getBands();
+                ImageTypeSpecifier selected =
+                        ImageIOUtilities.getBandSelectedType(bands.length, sampleModel);
+                readParameters.setDestinationType(selected);
+            }
+
             RenderedImage raster;
             try {
                 // read
@@ -1259,7 +1295,7 @@ public class GranuleDescriptor {
             // be used to know if the low level reader already performed the bands selection or if
             // image mosaic is responsible for do it
             int[] bands = request.getBands();
-            if (bands != null && !reader.getFormatName().equalsIgnoreCase("netcdf")) {
+            if (bands != null && (!nativeBandSelection || expandToRGB)) {
                 raster = selectBands(hints, expandToRGB, raster, bands);
             }
 

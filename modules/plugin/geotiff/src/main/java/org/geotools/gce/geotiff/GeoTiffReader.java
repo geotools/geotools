@@ -36,6 +36,7 @@ package org.geotools.gce.geotiff;
 
 import it.geosolutions.imageio.core.BasicAuthURI;
 import it.geosolutions.imageio.maskband.DatasetLayout;
+import it.geosolutions.imageio.plugins.tiff.TIFFImageReadParam;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.imageioimpl.plugins.cog.CogImageInputStreamSpi;
 import it.geosolutions.imageioimpl.plugins.cog.CogSourceSPIProvider;
@@ -622,6 +623,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
         Color inputTransparentColor = null;
         OverviewPolicy overviewPolicy = null;
         int[] suggestedTileSize = null;
+        int[] bands = null;
         boolean rescalePixels = AbstractGridFormat.RESCALE_PIXELS.getDefaultValue();
 
         //
@@ -668,6 +670,9 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                 if (name.equals(AbstractGridFormat.RESCALE_PIXELS.getName())) {
                     rescalePixels = Boolean.TRUE.equals(param.getValue());
                 }
+                if (name.equals(AbstractGridFormat.BANDS.getName())) {
+                    bands = (int[]) param.getValue();
+                }
             }
         }
 
@@ -675,11 +680,19 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
         // set params
         //
         Integer imageChoice = Integer.valueOf(0);
-        final ImageReadParam readP = new ImageReadParam();
+        final TIFFImageReadParam readP = new TIFFImageReadParam();
         try {
             imageChoice = setReadParams(overviewPolicy, readP, requestedEnvelope, dim);
         } catch (TransformException e) {
             throw new DataSourceException(e);
+        }
+        if (bands != null) {
+            // the destination type is set to support ImageReadOp, as it cannot recognize
+            // the bands parameter (which is otherwise needed to support repeated band numbers)
+            readP.setBands(bands);
+            readP.setDestinationType(
+                    ImageIOUtilities.getBandSelectedType(
+                            bands.length, getImageLayout().getSampleModel(null)));
         }
 
         //
@@ -741,6 +754,8 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                 t.setProperty(NoDataContainer.GC_NODATA, new NoDataContainer(noData));
                 coverageRaster = t;
             }
+            Double[] scales = selectElements(this.scales, bands);
+            Double[] offsets = selectElements(this.offsets, bands);
             coverageRaster =
                     PlanarImage.wrapRenderedImage(
                             ImageUtilities.applyRescaling(
@@ -804,6 +819,15 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             }
             throw new DataSourceException(e);
         }
+    }
+
+    private Double[] selectElements(Double[] source, int[] bands) {
+        if (bands == null || source == null) return source;
+        Double[] result = new Double[bands.length];
+        for (int b = 0; b < bands.length; b++) {
+            result[b] = source[bands[b]];
+        }
+        return result;
     }
 
     private ImageInputStream getImageInputStream() throws IOException {

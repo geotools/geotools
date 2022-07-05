@@ -69,6 +69,19 @@ Advanced
 |                       | the bounds are configured right in the tables  |
 |                       | default is false                               |
 +-----------------------+------------------------------------------------+
+|  ``Login timemout``   | Specifies the timeout for opening              |
+|                       | an Oracle JDBC connection (seconds)            |
++-----------------------+------------------------------------------------+
+|  ``Socket connection``| Specifies the timeout when connecting          |
+|      ``timeout``      | a socket to the database listener              |
+|                       | (milliseconds)                                 |
++-----------------------+------------------------------------------------+
+|     ``Outbound ``     | Specifies the timeout when negotiating         |
+| ``connection timeout``| a session with the database listener           |
+|                       | (milliseconds)                                 |
+|                       |                                                |
++-----------------------+------------------------------------------------+
+
 
 Example use::
   

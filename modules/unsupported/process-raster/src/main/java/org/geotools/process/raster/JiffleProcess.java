@@ -235,6 +235,15 @@ public class JiffleProcess implements RasterProcess {
             return null;
         }
 
+        // was the band selection applied at all? We know that GetTransformationBands returns bands
+        // - with no duplicates
+        // - sorted from lower to higher
+        // A band selection was performed unless the source has more bands than the
+        // max band value (if they are equal, we don't care, they must be a match
+        // with the source bands due to the two previous properties
+        if (source.getSampleModel().getNumBands() > scriptBands[scriptBands.length - 1])
+            return null;
+
         // is there a mismatch between the available bands and the ones used in the script?
         // if so assume bands mapping has taken place in the RT
         int maxReadBand = Arrays.stream(scriptBands).max().getAsInt();

@@ -10,6 +10,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.io.File;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,9 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
+import org.geotools.filter.function.RenderingTransformation;
 import org.geotools.gce.geotiff.GeoTiffReader;
+import org.geotools.gce.image.WorldImageReader;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.map.GridReaderLayer;
@@ -36,6 +39,8 @@ import org.geotools.test.TestData;
 import org.geotools.xml.styling.SLDParser;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
+import org.opengis.parameter.GeneralParameterValue;
+import org.opengis.parameter.ParameterValue;
 
 public class JiffleProcessTest {
 
@@ -180,10 +185,85 @@ public class JiffleProcessTest {
                 ReferencedEnvelope.reference(reader.getOriginalEnvelope()));
         graphics.dispose();
 
+        // this test is a bit unfortunate, in that we cannot do a straight comparison of values
+        // computed, but the StreamingRenderer has produced a BufferedImage in output, only colors
         File expected =
                 new File(
                         "src/test/resources/org/geotools/process/raster/test-data/ndvi-expected.png");
         ImageAssert.assertEquals(expected, bi, 0);
+    }
+
+    @Test
+    public void testNdviTransformationLowLevel() throws Exception {
+        File file = TestData.file(this, "s2_13bands.tif");
+
+        // grab the original coverage, compute NDVI directly from it
+        GeoTiffReader reader = new GeoTiffReader(file);
+        GridCoverage2D original = reader.read(null);
+        int[] allBands = new int[13];
+        original.getRenderedImage().getData().getPixel(0, 0, allBands);
+        double ndviOriginal = (allBands[7] - allBands[3]) / (double) (allBands[7] + allBands[3]);
+
+        // get the style, and the tx from it
+        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        URL styleURL = TestData.getResource(this, "ndvi.sld");
+        SLDParser stylereader = new SLDParser(factory, styleURL);
+        Style style = stylereader.readXML()[0];
+        RenderingTransformation tx =
+                (RenderingTransformation) style.featureTypeStyles().get(0).getTransformation();
+
+        // check the bands have been passed down to the reader
+        GeneralParameterValue[] params =
+                tx.customizeReadParams(reader, new GeneralParameterValue[0]);
+        assertEquals(1, params.length);
+        assertArrayEquals(new int[] {3, 7}, (int[]) ((ParameterValue) params[0]).getValue());
+
+        // read with band selection
+        GridCoverage2D selected = reader.read(params);
+        assertEquals(2, selected.getRenderedImage().getSampleModel().getNumBands());
+
+        // perform calculation
+        GridCoverage2D ndvi = (GridCoverage2D) tx.evaluate(selected);
+        double[] ndviBands = new double[1];
+        ndvi.getRenderedImage().getData().getPixel(0, 0, ndviBands);
+
+        // the value computed thought band selection and script remapping matches the one
+        // computed from
+        assertEquals(ndviOriginal, ndviBands[0], 0d);
+    }
+
+    @Test
+    public void testNdviTransformationLowLevelWorldImage() throws Exception {
+        File file = TestData.file(this, "s2_13bands_wld.tif");
+
+        // grab the original coverage, compute NDVI directly from it
+        WorldImageReader reader = new WorldImageReader(file);
+        GridCoverage2D original = reader.read(null);
+        int[] allBands = new int[13];
+        original.getRenderedImage().getData().getPixel(0, 0, allBands);
+        double ndviOriginal = (allBands[7] - allBands[3]) / (double) (allBands[7] + allBands[3]);
+
+        // get the style, and the tx from it
+        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        URL styleURL = TestData.getResource(this, "ndvi.sld");
+        SLDParser stylereader = new SLDParser(factory, styleURL);
+        Style style = stylereader.readXML()[0];
+        RenderingTransformation tx =
+                (RenderingTransformation) style.featureTypeStyles().get(0).getTransformation();
+
+        // check the bands will not be passed to the reader
+        GeneralParameterValue[] params =
+                tx.customizeReadParams(reader, new GeneralParameterValue[0]);
+        assertEquals(0, params.length);
+
+        // perform calculation
+        GridCoverage2D ndvi = (GridCoverage2D) tx.evaluate(original);
+        double[] ndviBands = new double[1];
+        ndvi.getRenderedImage().getData().getPixel(0, 0, ndviBands);
+
+        // the value computed thought band selection and script remapping matches the one
+        // computed from
+        assertEquals(ndviOriginal, ndviBands[0], 0d);
     }
 
     @Test

@@ -76,10 +76,9 @@ Advanced
 |      ``timeout``      | a socket to the database listener              |
 |                       | (milliseconds)                                 |
 +-----------------------+------------------------------------------------+
-|     ``Outbound ``     | Specifies the timeout when negotiating         |
-| ``connection timeout``| a session with the database listener           |
+|``Outbound connection``| Specifies the timeout when negotiating         |
+|     ``timeout``       | a session with the database listener           |
 |                       | (milliseconds)                                 |
-|                       |                                                |
 +-----------------------+------------------------------------------------+
 
 

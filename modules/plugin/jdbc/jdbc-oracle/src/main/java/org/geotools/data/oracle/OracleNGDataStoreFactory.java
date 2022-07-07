@@ -214,7 +214,7 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
                 basicSource.addConnectionProperty(CONN_TIMEOUT_NAME, connectionTimeout.toString());
             if (outboundConnTimeout != null)
                 basicSource.addConnectionProperty(
-                        OUTBOUND_TIMEOUT_NAME, connectionTimeout.toString());
+                        OUTBOUND_TIMEOUT_NAME, outboundConnTimeout.toString());
         }
 
         if (dataStore.getFetchSize() <= 0) {

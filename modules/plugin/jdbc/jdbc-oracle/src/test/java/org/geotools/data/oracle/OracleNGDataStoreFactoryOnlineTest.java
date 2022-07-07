@@ -36,6 +36,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -107,22 +108,26 @@ public class OracleNGDataStoreFactoryOnlineTest extends JDBCTestSupport {
         params.put(USER.key, db.getProperty(USER.key));
         params.put(PASSWD.key, db.getProperty("password"));
         params.put(DBTYPE.key, "oracle");
-        params.put(LOGIN_TIMEOUT.key, 1);
-        params.put(CONNECTION_TIMEOUT.key, 1000);
-        params.put(OUTBOUND_CONNECTION_TIMEOUT.key, 1000);
+        int login = Integer.MAX_VALUE - 3;
+        int connTimeout = Integer.MAX_VALUE - 2;
+        int outbound = Integer.MAX_VALUE - 1;
+        params.put(LOGIN_TIMEOUT.key, login);
+        params.put(CONNECTION_TIMEOUT.key, connTimeout);
+        params.put(OUTBOUND_CONNECTION_TIMEOUT.key, outbound);
 
         assertTrue(factory.canProcess(params));
         JDBCDataStore store = factory.createDataStore(params);
         assertNotNull(store);
-        try {
-            DataSource ds = store.getDataSource();
-            DBCPDataSource dataSource = (DBCPDataSource) ds;
+        DataSource ds = store.getDataSource();
+        try (DBCPDataSource dataSource = (DBCPDataSource) ds) {
             Field field = BasicDataSource.class.getDeclaredField("connectionProperties");
             field.setAccessible(true);
             Properties props = (Properties) field.get(dataSource.getWrapped());
-            assertEquals("1", props.getProperty(LOGIN_TIMEOUT_NAME));
-            assertEquals("1000", props.getProperty(CONN_TIMEOUT_NAME));
-            assertEquals("1000", props.getProperty(OUTBOUND_TIMEOUT_NAME));
+            assertEquals(String.valueOf(login), props.getProperty(LOGIN_TIMEOUT_NAME));
+            assertEquals(String.valueOf(connTimeout), props.getProperty(CONN_TIMEOUT_NAME));
+            assertEquals(String.valueOf(outbound), props.getProperty(OUTBOUND_TIMEOUT_NAME));
+        } catch (SQLException e) {
+            // do nothing
         } finally {
             store.dispose();
         }

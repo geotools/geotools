@@ -18,6 +18,11 @@ do
     fi
     sleep 10
     _WAIT=$(($_WAIT+10))
+
+    if (($_WAIT > 300)); then
+        printf "\nWaited 300 seconds for Bb2 database, giving up.\n\n"
+        break
+    fi
 done
 
 # print logs

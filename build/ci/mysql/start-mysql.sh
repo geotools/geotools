@@ -15,13 +15,19 @@ do
     printf " $_WAIT"
     # look for a line with: "mysqld: ready for connections."
     # followed by a line with "port: 3306 " (maybe on the same line)
-    if $(docker logs geotools 2>&1 | grep -A2 'ready for connections' | grep -q 'port: 3306 '); then
+    # or a line with "Ready for start up." for mysql 5
+    if $(docker logs geotools 2>&1 | grep -A2 'ready for connections' | grep -q 'port: 3306 ') || $(docker logs geotools 2>&1 | grep -q 'Ready for start up.'); then
         printf "\nMySQL ready for connections\n\n"
         break
     fi
 
     sleep 10
     _WAIT=$(($_WAIT+10))
+
+    if (($_WAIT > 300)); then
+        printf "\nWaited 300 seconds for MySQL $1 database, giving up.\n\n"
+        break
+    fi
 done
 
 # print logs

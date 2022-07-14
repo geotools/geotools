@@ -32,26 +32,20 @@ import org.geotools.data.FilteringFeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.ReTypeFeatureReader;
-import org.geotools.data.mongodb.complex.JsonSelectAllFunction;
-import org.geotools.data.mongodb.complex.JsonSelectFunction;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.feature.visitor.MinVisitor;
+import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.SortByImpl;
-import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.Filter;
-import org.opengis.filter.PropertyIsLike;
-import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
@@ -332,61 +326,8 @@ public class MongoFeatureSource extends ContentFeatureSource {
     }
 
     Filter[] splitFilter(Filter f) {
-        PostPreProcessFilterSplittingVisitor splitter =
-                new PostPreProcessFilterSplittingVisitor(
-                        getDataStore().getFilterCapabilities(), null, null) {
-
-                    @Override
-                    protected void visitBinaryComparisonOperator(BinaryComparisonOperator filter) {
-                        Expression expression1 = filter.getExpression1();
-                        Expression expression2 = filter.getExpression2();
-                        if ((expression1 instanceof JsonSelectFunction
-                                        || expression1 instanceof JsonSelectAllFunction)
-                                && expression2 instanceof Literal) {
-                            preStack.push(filter);
-                        } else if ((expression2 instanceof JsonSelectFunction
-                                        || expression2 instanceof JsonSelectAllFunction)
-                                && expression1 instanceof Literal) {
-                            preStack.push(filter);
-                        }
-                    }
-
-                    @Override
-                    public Object visit(PropertyIsLike filter, Object notUsed) {
-                        if (original == null) original = filter;
-
-                        if (!fcs.supports(PropertyIsLike.class)) {
-                            // MongoDB can only encode like expressions using propertyName
-                            postStack.push(filter);
-                            return null;
-                        }
-                        if (!(filter.getExpression() instanceof PropertyName)) {
-                            // MongoDB can only encode like expressions using propertyName
-                            postStack.push(filter);
-                            return null;
-                        }
-
-                        int i = postStack.size();
-                        filter.getExpression().accept(this, null);
-
-                        if (i < postStack.size()) {
-                            postStack.pop();
-                            postStack.push(filter);
-
-                            return null;
-                        }
-
-                        preStack.pop(); // value
-                        preStack.push(filter);
-                        return null;
-                    }
-
-                    @Override
-                    public Object visit(PropertyIsNull filter, Object notUsed) {
-                        preStack.push(filter);
-                        return null;
-                    }
-                };
+        FilterCapabilities filterCapabilities = getDataStore().getFilterCapabilities();
+        MongoFilterSplitter splitter = new MongoFilterSplitter(filterCapabilities, null, null);
         f.accept(splitter, null);
         return new Filter[] {splitter.getFilterPre(), splitter.getFilterPost()};
     }

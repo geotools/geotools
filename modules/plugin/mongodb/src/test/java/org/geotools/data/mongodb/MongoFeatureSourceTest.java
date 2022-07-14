@@ -79,13 +79,13 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
 
         assertEquals(1, source.getCount(q));
         assertEquals(
-                new ReferencedEnvelope(2d, 0d, 2d, 0d, DefaultGeographicCRS.WGS84),
+                new ReferencedEnvelope(2d, 2d, 2d, 2d, DefaultGeographicCRS.WGS84),
                 source.getBounds(q));
 
         SimpleFeatureCollection features = source.getFeatures(q);
         try (SimpleFeatureIterator it = features.features()) {
             assertTrue(it.hasNext());
-            assertFeature(it.next(), 0);
+            assertFeature(it.next(), 2);
         }
     }
 
@@ -165,13 +165,13 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
 
         assertEquals(2, source.getCount(q));
         assertEquals(
-                new ReferencedEnvelope(0d, 2d, 0d, 2d, DefaultGeographicCRS.WGS84),
+                new ReferencedEnvelope(1d, 2d, 1d, 2d, DefaultGeographicCRS.WGS84),
                 source.getBounds(q));
 
         SimpleFeatureCollection features = source.getFeatures(q);
         try (SimpleFeatureIterator it = features.features()) {
             assertTrue(it.hasNext());
-            assertFeature(it.next(), 0);
+            assertFeature(it.next(), 1);
         }
 
         // test again passing Date object as literal
@@ -183,11 +183,11 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
 
         assertEquals(2, source.getCount(q));
         assertEquals(
-                new ReferencedEnvelope(0d, 2d, 0d, 2d, DefaultGeographicCRS.WGS84),
+                new ReferencedEnvelope(1d, 2d, 1d, 2d, DefaultGeographicCRS.WGS84),
                 source.getBounds(q));
         try (SimpleFeatureIterator it = source.getFeatures(q).features()) {
             assertTrue(it.hasNext());
-            assertFeature(it.next(), 0);
+            assertFeature(it.next(), 1);
         }
 
         // test no-match filter
@@ -213,7 +213,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
 
         assertEquals(1, source.getCount(q));
         assertEquals(
-                new ReferencedEnvelope(0d, 2d, 0d, 2d, DefaultGeographicCRS.WGS84),
+                new ReferencedEnvelope(0d, 0d, 0d, 0d, DefaultGeographicCRS.WGS84),
                 source.getBounds(q));
 
         SimpleFeatureCollection features = source.getFeatures(q);

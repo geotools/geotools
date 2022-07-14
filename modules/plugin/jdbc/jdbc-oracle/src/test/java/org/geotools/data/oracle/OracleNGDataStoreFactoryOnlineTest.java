@@ -89,7 +89,6 @@ public class OracleNGDataStoreFactoryOnlineTest extends JDBCTestSupport {
         }
     }
 
-    @Test
     public void testTimeoutProps() throws IOException, ReflectiveOperationException {
         OracleNGDataStoreFactory factory = new OracleNGDataStoreFactory();
         Properties db = FixtureUtilities.loadFixture("oracle");

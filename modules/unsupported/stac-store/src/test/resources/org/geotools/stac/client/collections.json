@@ -1,0 +1,659 @@
+{
+  "collections": [
+    {
+      "type": "Collection",
+      "stac_version": "1.0.0",
+      "stac_extensions": [
+        "https://stac-extensions.github.io/processing/v1.0.0/schema.json",
+        "https://stac-extensions.github.io/datacube/v2.0.0/schema.json"
+      ],
+      "id": "D4H",
+      "title": "Sentinel-1 Floodmasks (Data4Human)",
+      "description": "Sentinel-1 based floodmask products processed within the project Data4Human",
+      "license": "CC-BY-NC 4.0",
+      "extent": {
+        "spatial": {
+          "bbox": [
+            [
+              -180.0,
+              -90.0,
+              180.0,
+              90.0
+            ]
+          ]
+        },
+        "temporal": {
+          "interval": [
+            [
+              "2022-01-01T00:00:00.000+00:00",
+              null
+            ]
+          ]
+        }
+      },
+      "cube:dimensions": {
+        "time": {
+          "type": "temporal",
+          "extent": [
+            "2022-01-01T00:00:00.000+00:00",
+            null
+          ]
+        },
+        "x": {
+          "type": "spatial",
+          "axis": "x",
+          "extent": [
+            -180.0,
+            180.0
+          ],
+          "reference_system": 4326
+        },
+        "y": {
+          "type": "spatial",
+          "axis": "y",
+          "extent": [
+            -90.0,
+            90.0
+          ],
+          "reference_system": 4326
+        }
+      },
+      "assets": {
+        "thumbnail": {
+          "title": "Thumbnail",
+          "type": "image/jpg",
+          "roles": [
+            "thumbnail"
+          ],
+          "href": "https://geoservice.dlr.de/resources/images/d4h_collection_thumbnail.png"
+        },
+        "overview": {
+          "title": "Overview",
+          "type": "image/jpg",
+          "roles": [
+            "overview"
+          ],
+          "href": "https://geoservice.dlr.de/resources/images/d4h_collection_thumbnail.png"
+        }
+      },
+      "links": [
+        {
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/D4H?f=application/json",
+          "rel": "self",
+          "type": "application/json"
+        },
+        {
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac?f=application/json",
+          "rel": "root",
+          "type": "application/json"
+        },
+        {
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac?f=application/json",
+          "rel": "parent",
+          "type": "application/json"
+        },
+        {
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections?f=application/json",
+          "rel": "collections",
+          "type": "application/json"
+        },
+        {
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/D4H/items?f=application/geo%2Bjson",
+          "rel": "items",
+          "type": "application/geo+json"
+        },
+        {
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/D4H/queryables?f=application/schema%2Bjson",
+          "rel": "http://www.opengis.net/def/rel/ogc/1.0/queryables",
+          "type": "application/schema+json"
+        },
+        {
+          "rel": "license",
+          "href": "https://spdx.org/licenses/CC-BY-NC 4.0",
+          "type": "text/html",
+          "title": "CC-BY-NC 4.0"
+        }
+      ]
+    },
+    {
+      "type": "Collection",
+      "stac_version": "1.0.0",
+      "stac_extensions": [
+        "https://stac-extensions.github.io/processing/v1.0.0/schema.json",
+        "https://stac-extensions.github.io/datacube/v2.0.0/schema.json",
+        "https://stac-extensions.github.io/scientific/v1.0.0/schema.json"
+      ],
+      "id": "S2_L2A_MAJA",
+      "title": "Sentinel-2 L2A MAJA Products",
+      "description": "Sentinel-2 L2A Products of Germany processed by DLR using the MAJA processor",
+      "keywords": [
+        "DLR",
+        "EOC",
+        "Imagery",
+        "ESA",
+        "Copernicus",
+        "Sentinel",
+        "Sentinel-2",
+        "MAJA"
+      ],
+      "license": "CC-BY-4.0",
+      "sci:doi": "10.15489/ifczsszkcp63",
+      "providers": [
+        {
+          "name": "DLR/EOC Geoservice",
+          "url": "https://geoservice.dlr.de",
+          "roles": [
+            "host"
+          ]
+        },
+        {
+          "name": "European Union/ESA/Copernicus",
+          "roles": [
+            "producer",
+            "licensor"
+          ],
+          "url": "https://sentinel.esa.int/web/sentinel/user-guides/sentinel-2-msi"
+        },
+        {
+          "name": "DLR/EOC Remote Sensing Technology Institute, Photogrammetry and Image Analysis",
+          "url": "https://dlr.de/eoc",
+          "roles": [
+            "processor"
+          ],
+          "processing:lineage": "Generation of Level-2A User Product",
+          "processing:level": "L2A",
+          "processing:software": {
+            "Maccs-Atcor Joint Algorithm (MAJA)": "3.3",
+            "Maccs-Atcor Joint Algorithm (MAJA)": "3.3"
+          }
+        }
+      ],
+      "extent": {
+        "spatial": {
+          "bbox": [
+            [
+              5.763545147601,
+              46.793670688196,
+              15.152753273727,
+              55.945635321533
+            ]
+          ]
+        },
+        "temporal": {
+          "interval": [
+            [
+              "2015-07-01T00:00:00.000+00:00",
+              null
+            ]
+          ]
+        }
+      },
+      "cube:dimensions": {
+        "time": {
+          "type": "temporal",
+          "extent": [
+            "2015-07-01T00:00:00.000+00:00",
+            null
+          ]
+        },
+        "x": {
+          "type": "spatial",
+          "axis": "x",
+          "extent": [
+            5.763545147601,
+            15.152753273727
+          ],
+          "reference_system": 4326
+        },
+        "y": {
+          "type": "spatial",
+          "axis": "y",
+          "extent": [
+            46.793670688196,
+            55.945635321533
+          ],
+          "reference_system": 4326
+        },
+        "spectral": {
+          "type": "bands",
+          "values": [
+            "FRE_B2",
+            "FRE_B3",
+            "FRE_B4",
+            "FRE_B5",
+            "FRE_B6",
+            "FRE_B7",
+            "FRE_B8",
+            "FRE_B8A",
+            "FRE_B9",
+            "FRE_B10",
+            "FRE_B11",
+            "FRE_B12",
+            "SRE_B2",
+            "SRE_B3",
+            "SRE_B4",
+            "SRE_B5",
+            "SRE_B6",
+            "SRE_B7",
+            "SRE_B8",
+            "SRE_B8A",
+            "SRE_B9",
+            "SRE_B10",
+            "SRE_B11",
+            "SRE_B12",
+            "CLM_R1",
+            "CLM_R2",
+            "EDG_R1",
+            "EDG_R2",
+            "IAB_R1",
+            "IAB_R2",
+            "MG2_R1",
+            "MG2_R2",
+            "SAT_R1",
+            "SAT_R2",
+            "ATB_R1",
+            "ATB_R2"
+          ]
+        }
+      },
+      "assets": {
+        "thumbnail": {
+          "title": "Thumbnail",
+          "type": "image/jpg",
+          "roles": [
+            "thumbnail"
+          ],
+          "href": "https://geoservice.dlr.de/catalogue/srv/api/records/97f6e84c-5db2-4121-b257-d3318cedc059/attachments/sentinel2_l2a_maja_ql_s.jpg"
+        },
+        "overview": {
+          "title": "Overview",
+          "type": "image/jpg",
+          "roles": [
+            "overview"
+          ],
+          "href": "https://geoservice.dlr.de/catalogue/srv/api/records/97f6e84c-5db2-4121-b257-d3318cedc059/attachments/sentinel2_l2a_maja_ql.jpg"
+        },
+        "metadata": {
+          "title": "Collection Metadata (ISO)",
+          "type": "application/xml",
+          "roles": [
+            "metadata"
+          ],
+          "href": "https://geoservice.dlr.de/catalogue/srv/api/records/97f6e84c-5db2-4121-b257-d3318cedc059/formatters/xml"
+        }
+      },
+      "links": [
+        {
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/S2_L2A_MAJA?f=application/json",
+          "rel": "self",
+          "type": "application/json"
+        },
+        {
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac?f=application/json",
+          "rel": "root",
+          "type": "application/json"
+        },
+        {
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac?f=application/json",
+          "rel": "parent",
+          "type": "application/json"
+        },
+        {
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections?f=application/json",
+          "rel": "collections",
+          "type": "application/json"
+        },
+        {
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/S2_L2A_MAJA/items?f=application/geo%2Bjson",
+          "rel": "items",
+          "type": "application/geo+json"
+        },
+        {
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/S2_L2A_MAJA/queryables?f=application/schema%2Bjson",
+          "rel": "http://www.opengis.net/def/rel/ogc/1.0/queryables",
+          "type": "application/schema+json"
+        },
+        {
+          "rel": "cite-as",
+          "href": "https://doi.org/10.15489/ifczsszkcp63",
+          "type": "text/html",
+          "title": "DOI Citation"
+        },
+        {
+          "rel": "license",
+          "href": "https://spdx.org/licenses/CC-BY-4.0",
+          "type": "text/html",
+          "title": "CC-BY-4.0"
+        }
+      ]
+    },
+    {
+      "type": "Collection",
+      "stac_version": "1.0.0",
+      "stac_extensions": [
+        "https://stac-extensions.github.io/processing/v1.0.0/schema.json",
+        "https://stac-extensions.github.io/datacube/v2.0.0/schema.json",
+        "https://stac-extensions.github.io/scientific/v1.0.0/schema.json"
+      ],
+      "id": "S2_L3A_WASP",
+      "title": "Sentinel-2 L3A Monthly WASP Products",
+      "description": "Sentinel-2 L3A WASP Products of Germany processed by DLR using the WASP processor",
+      "keywords": [
+        "DLR",
+        "MAJA"
+      ],
+      "license": "CC-BY-4.0",
+      "sci:doi": "10.15489/4hcq6dgkj648",
+      "providers": [
+        {
+          "name": "DLR/EOC Geoservice",
+          "url": "https://geoservice.dlr.de",
+          "roles": [
+            "host"
+          ]
+        },
+        {
+          "name": "European Union/ESA/Copernicus",
+          "roles": [
+            "producer",
+            "licensor"
+          ],
+          "url": "https://sentinel.esa.int/web/sentinel/user-guides/sentinel-2-msi"
+        },
+        {
+          "name": "DLR/EOC Remote Sensing Technology Institute, Photogrammetry and Image Analysis",
+          "url": "https://dlr.de/eoc",
+          "roles": [
+            "processor"
+          ],
+          "processing:lineage": "Generation of Level-3A User Product",
+          "processing:level": "L3A",
+          "processing:software": {
+            "Maccs-Atcor Joint Algorithm (MAJA)": "3.3",
+            "Weighted Average Synthesis Processor (WASP)": "1.1",
+            "Weighted Average Synthesis Processor (WASP)": "1.1"
+          }
+        }
+      ],
+      "extent": {
+        "spatial": {
+          "bbox": [
+            [
+              5.7635451,
+              46.7936707,
+              15.1527533,
+              55.046986
+            ]
+          ]
+        },
+        "temporal": {
+          "interval": [
+            [
+              "2015-07-01T00:00:00.000+00:00",
+              null
+            ]
+          ]
+        }
+      },
+      "cube:dimensions": {
+        "time": {
+          "type": "temporal",
+          "extent": [
+            "2015-07-01T00:00:00.000+00:00",
+            null
+          ]
+        },
+        "x": {
+          "type": "spatial",
+          "axis": "x",
+          "extent": [
+            5.7635451,
+            15.1527533
+          ],
+          "reference_system": 4326
+        },
+        "y": {
+          "type": "spatial",
+          "axis": "y",
+          "extent": [
+            46.7936707,
+            55.046986
+          ],
+          "reference_system": 4326
+        },
+        "spectral": {
+          "type": "bands",
+          "values": [
+            "FRC_B2",
+            "FRC_B3",
+            "FRC_B4",
+            "FRC_B5",
+            "FRC_B6",
+            "FRC_B7",
+            "FRC_B8",
+            "FRC_B8A",
+            "FRC_B9",
+            "FRC_B10",
+            "FRC_B11",
+            "FRC_B12",
+            "FLG_R1",
+            "FLG_R2",
+            "DTS_R1",
+            "DTS_R2",
+            "WGT_R1",
+            "WGT_R2"
+          ]
+        }
+      },
+      "assets": {
+        "thumbnail": {
+          "title": "Thumbnail",
+          "type": "image/jpg",
+          "roles": [
+            "thumbnail"
+          ],
+          "href": "https://geoservice.dlr.de/catalogue/srv/api/records/03c193e6-c1b7-49b9-9edb-cd29aeabae5f/attachments/sentinel2_l3a_maja_ql_s.jpg"
+        },
+        "overview": {
+          "title": "Overview",
+          "type": "image/jpg",
+          "roles": [
+            "overview"
+          ],
+          "href": "https://geoservice.dlr.de/catalogue/srv/api/records/03c193e6-c1b7-49b9-9edb-cd29aeabae5f/attachments/sentinel2_l3a_maja_ql.jpg"
+        },
+        "metadata": {
+          "title": "Collection Metadata (ISO)",
+          "type": "application/xml",
+          "roles": [
+            "metadata"
+          ],
+          "href": "https://geoservice.dlr.de/catalogue/srv/api/records/03c193e6-c1b7-49b9-9edb-cd29aeabae5f/formatters/xml"
+        }
+      },
+      "links": [
+        {
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/S2_L3A_WASP?f=application/json",
+          "rel": "self",
+          "type": "application/json"
+        },
+        {
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac?f=application/json",
+          "rel": "root",
+          "type": "application/json"
+        },
+        {
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac?f=application/json",
+          "rel": "parent",
+          "type": "application/json"
+        },
+        {
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections?f=application/json",
+          "rel": "collections",
+          "type": "application/json"
+        },
+        {
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/S2_L3A_WASP/items?f=application/geo%2Bjson",
+          "rel": "items",
+          "type": "application/geo+json"
+        },
+        {
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/S2_L3A_WASP/queryables?f=application/schema%2Bjson",
+          "rel": "http://www.opengis.net/def/rel/ogc/1.0/queryables",
+          "type": "application/schema+json"
+        },
+        {
+          "rel": "cite-as",
+          "href": "https://doi.org/10.15489/4hcq6dgkj648",
+          "type": "text/html",
+          "title": "DOI Citation"
+        },
+        {
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/S2_L2A_MAJA?f=json",
+          "rel": "derived_from",
+          "type": "application/json"
+        }
+      ]
+    },
+    {
+      "type": "Collection",
+      "stac_version": "1.0.0",
+      "stac_extensions": [
+        "https://stac-extensions.github.io/processing/v1.0.0/schema.json",
+        "https://stac-extensions.github.io/datacube/v2.0.0/schema.json"
+      ],
+      "id": "SUPERSITES",
+      "title": "TerraSAR-X Geohazard Supersites Products",
+      "description": "TerraSAR-X - CEOS Geohazard Supersites Products provided by DLR",
+      "keywords": [
+        "DLR",
+        "EOC",
+        "TSX",
+        "SAR",
+        "Supersites",
+        "Geohazards"
+      ],
+      "license": "proprietary",
+      "providers": [
+        {
+          "name": "DLR/EOC Geoservice",
+          "url": "https://geoservice.dlr.de",
+          "roles": [
+            "host"
+          ]
+        }
+      ],
+      "extent": {
+        "spatial": {
+          "bbox": [
+            [
+              -180.0,
+              -90.0,
+              180.0,
+              90.0
+            ]
+          ]
+        },
+        "temporal": {
+          "interval": [
+            [
+              "2008-05-02T00:00:00.000+00:00",
+              null
+            ]
+          ]
+        }
+      },
+      "cube:dimensions": {
+        "time": {
+          "type": "temporal",
+          "extent": [
+            "2008-05-02T00:00:00.000+00:00",
+            null
+          ]
+        },
+        "x": {
+          "type": "spatial",
+          "axis": "x",
+          "extent": [
+            -180.0,
+            180.0
+          ],
+          "reference_system": 4326
+        },
+        "y": {
+          "type": "spatial",
+          "axis": "y",
+          "extent": [
+            -90.0,
+            90.0
+          ],
+          "reference_system": 4326
+        }
+      },
+      "assets": {
+        "thumbnail": {
+          "title": "Thumbnail",
+          "type": "image/jpg",
+          "roles": [
+            "thumbnail"
+          ],
+          "href": "https://geoservice.dlr.de/catalogue/srv/api/records/e514d88d-35de-4d96-8931-db442f2404a7/attachments/supersites_ql_s.jpg"
+        },
+        "overview": {
+          "title": "Overview",
+          "type": "image/jpg",
+          "roles": [
+            "overview"
+          ],
+          "href": "https://geoservice.dlr.de/catalogue/srv/api/records/e514d88d-35de-4d96-8931-db442f2404a7/attachments/supersites_ql.jpg"
+        },
+        "metadata": {
+          "title": "Collection Metadata (ISO)",
+          "type": "application/xml",
+          "roles": [
+            "metadata"
+          ],
+          "href": "https://geoservice.dlr.de/catalogue/srv/api/records/e514d88d-35de-4d96-8931-db442f2404a7/formatters/xml"
+        }
+      },
+      "links": [
+        {
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/SUPERSITES?f=application/json",
+          "rel": "self",
+          "type": "application/json"
+        },
+        {
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac?f=application/json",
+          "rel": "root",
+          "type": "application/json"
+        },
+        {
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac?f=application/json",
+          "rel": "parent",
+          "type": "application/json"
+        },
+        {
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections?f=application/json",
+          "rel": "collections",
+          "type": "application/json"
+        },
+        {
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/SUPERSITES/items?f=application/geo%2Bjson",
+          "rel": "items",
+          "type": "application/geo+json"
+        },
+        {
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/SUPERSITES/queryables?f=application/schema%2Bjson",
+          "rel": "http://www.opengis.net/def/rel/ogc/1.0/queryables",
+          "type": "application/schema+json"
+        },
+        {
+          "rel": "license",
+          "href": "https://spdx.org/licenses/proprietary",
+          "type": "text/html",
+          "title": "proprietary"
+        }
+      ]
+    }
+  ]
+}

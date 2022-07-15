@@ -45,6 +45,7 @@
     <module>vsi</module>
     <module>cql2</module>
     <module>jdbc-teradata</module>
+    <module>stac-store</module>
   </modules>
   <profiles>
     <!-- ================================================== -->

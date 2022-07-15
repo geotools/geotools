@@ -1,0 +1,170 @@
+{
+  "title": "EOC EO Products Service",
+  "description": "*BETA* Provides interoperable access to metadata from EO collections and products of DLR's Earth Observation Center (EOC). *BETA*",
+  "links": [
+    {
+      "href": "https://geoservice.dlr.de/eoc/ogc/stac/?f=application%2Fx-yaml",
+      "rel": "alternate",
+      "type": "application/x-yaml",
+      "title": "This document as application/x-yaml"
+    },
+    {
+      "href": "https://geoservice.dlr.de/eoc/ogc/stac/?f=application%2Fjson",
+      "rel": "self",
+      "type": "application/json",
+      "title": "This document"
+    },
+    {
+      "href": "https://geoservice.dlr.de/eoc/ogc/stac/?f=text%2Fhtml",
+      "rel": "alternate",
+      "type": "text/html",
+      "title": "This document as text/html"
+    },
+    {
+      "href": "https://geoservice.dlr.de/eoc/ogc/stac/api?f=application%2Fvnd.oai.openapi%2Bjson%3Bversion%3D3.0",
+      "rel": "service-desc",
+      "type": "application/vnd.oai.openapi+json;version=3.0",
+      "title": "API definition for this endpoint as application/vnd.oai.openapi+json;version=3.0"
+    },
+    {
+      "href": "https://geoservice.dlr.de/eoc/ogc/stac/api?f=application%2Fx-yaml",
+      "rel": "service-desc",
+      "type": "application/x-yaml",
+      "title": "API definition for this endpoint as application/x-yaml"
+    },
+    {
+      "href": "https://geoservice.dlr.de/eoc/ogc/stac/api?f=text%2Fhtml",
+      "rel": "service-doc",
+      "type": "text/html",
+      "title": "API definition for this endpoint as text/html"
+    },
+    {
+      "href": "https://geoservice.dlr.de/eoc/ogc/stac/conformance?f=application%2Fx-yaml",
+      "rel": "conformance",
+      "type": "application/x-yaml",
+      "title": "Conformance declaration as application/x-yaml"
+    },
+    {
+      "href": "https://geoservice.dlr.de/eoc/ogc/stac/conformance?f=application%2Fjson",
+      "rel": "conformance",
+      "type": "application/json",
+      "title": "Conformance declaration as application/json"
+    },
+    {
+      "href": "https://geoservice.dlr.de/eoc/ogc/stac/conformance?f=text%2Fhtml",
+      "rel": "conformance",
+      "type": "text/html",
+      "title": "Conformance declaration as text/html"
+    },
+    {
+      "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections?f=application%2Fjson",
+      "rel": "data",
+      "type": "application/json",
+      "title": "Collections Metadata as application/json"
+    },
+    {
+      "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections?f=text%2Fhtml",
+      "rel": "data",
+      "type": "text/html",
+      "title": "Collections Metadata as text/html"
+    },
+    {
+      "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/S2_L2A_MAJA",
+      "rel": "child",
+      "type": "application/json"
+    },
+    {
+      "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/SUPERSITES",
+      "rel": "child",
+      "type": "application/json"
+    },
+    {
+      "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/S2_L3A_WASP",
+      "rel": "child",
+      "type": "application/json"
+    },
+    {
+      "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/D4H",
+      "rel": "child",
+      "type": "application/json"
+    },
+    {
+      "href": "https://geoservice.dlr.de/eoc/ogc/stac/search?f=application%2Fgeo%2Bjson",
+      "rel": "search",
+      "type": "application/geo+json",
+      "title": "Items as application/geo+json",
+      "method": "GET"
+    },
+    {
+      "href": "https://geoservice.dlr.de/eoc/ogc/stac/search?f=text%2Fhtml",
+      "rel": "search",
+      "type": "text/html",
+      "title": "Items as text/html",
+      "method": "GET"
+    },
+    {
+      "href": "https://geoservice.dlr.de/eoc/ogc/stac/search?f=application%2Fgeo%2Bjson",
+      "rel": "search",
+      "type": "application/geo+json",
+      "title": "Items as application/geo+json",
+      "method": "POST"
+    },
+    {
+      "href": "https://geoservice.dlr.de/eoc/ogc/stac/search?f=text%2Fhtml",
+      "rel": "search",
+      "type": "text/html",
+      "title": "Items as text/html",
+      "method": "POST"
+    },
+    {
+      "href": "https://geoservice.dlr.de/eoc/ogc/stac/queryables?f=application%2Fschema%2Bjson",
+      "rel": "http://www.opengis.net/def/rel/ogc/1.0/queryables",
+      "type": "application/schema+json",
+      "title": "Queryables as application/schema+json"
+    },
+    {
+      "href": "https://geoservice.dlr.de/eoc/ogc/stac/queryables?f=text%2Fhtml",
+      "rel": "http://www.opengis.net/def/rel/ogc/1.0/queryables",
+      "type": "text/html",
+      "title": "Queryables as text/html"
+    },
+    {
+      "href": "https://geoservice.dlr.de/eoc/ogc/stac/sortables?f=application%2Fschema%2Bjson",
+      "rel": "http://www.opengis.net/def/rel/ogc/1.0/sortables",
+      "type": "application/schema+json",
+      "title": "Sortables as application/schema+json"
+    },
+    {
+      "href": "https://geoservice.dlr.de/eoc/ogc/stac/sortables?f=text%2Fhtml",
+      "rel": "http://www.opengis.net/def/rel/ogc/1.0/sortables",
+      "type": "text/html",
+      "title": "Sortables as text/html"
+    }
+  ],
+  "id": "GeoserverSTACLandingPage",
+  "conformsTo": [
+    "http://www.opengis.net/spec/ogcapi-features-1/1.0/conf/core",
+    "http://www.opengis.net/spec/ogcapi-features-1/1.0/conf/oas30",
+    "http://www.opengis.net/spec/ogcapi-features-1/1.0/conf/html",
+    "http://www.opengis.net/spec/ogcapi-features-1/1.0/conf/geojson",
+    "https://api.stacspec.org/v1.0.0-beta.5/core",
+    "https://api.stacspec.org/spec/v1.0.0-beta.1/ogcapi-features",
+    "https://api.stacspec.org/v1.0.0-beta.5/item-search",
+    "https://api.stacspec.org/v1.0.0-beta.5/item-search#filter",
+    "https://api.stacspec.org/v1.0.0-beta.5/item-search#sort",
+    "http://www.opengis.net/spec/ogcapi-features-3/1.0/req/features-filter",
+    "http://www.opengis.net/spec/ogcapi-features-3/1.0/req/filter",
+    "http://geoserver.org/spec/ecql/1.0/req/gs-ecql",
+    "http://geoserver.org/spec/ecql/1.0/req/ecql-text",
+    "http://www.opengis.net/spec/cql2/1.0/req/basic-cql2",
+    "http://www.opengis.net/spec/cql2/1.0/req/advanced-comparison-operators",
+    "http://www.opengis.net/spec/cql2/1.0/req/arithmetic",
+    "http://www.opengis.net/spec/cql2/1.0/req/property-property",
+    "http://www.opengis.net/spec/cql2/1.0/req/basic-spatial-operators",
+    "http://www.opengis.net/spec/cql2/1.0/req/spatial-operators",
+    "http://www.opengis.net/spec/cql2/1.0/req/functions",
+    "http://www.opengis.net/spec/cql2/1.0/req/cql2-text"
+  ],
+  "type": "Catalog",
+  "stac_version": "1.0.0"
+}

@@ -42,7 +42,7 @@
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-geojsondatastore</artifactId>
+      <artifactId>gt-geojson-store</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

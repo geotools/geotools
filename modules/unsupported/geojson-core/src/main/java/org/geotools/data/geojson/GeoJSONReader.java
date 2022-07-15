@@ -423,7 +423,6 @@ public class GeoJSONReader implements AutoCloseable {
                                     if (!"geometry".equals(k)
                                             && !"type".equals(k)
                                             && !"properties".equals(k)
-                                            && !"id".equals(k)
                                             && !"bbox".equals(k)) {
                                         topLevelAttributes.put(k, e.getValue());
                                     }

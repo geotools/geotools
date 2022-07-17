@@ -1,0 +1,35 @@
+{
+  "type":"Feature",
+  "properties":{
+    "aString":"testString",
+    "aTextNode":"testTextNode",
+    "aThreeLevelObject":{
+      "secondLevel":{
+        "firstLevel":1,
+        "firstLevelDate": "2022-07-18T21:48:17+00:00"
+      }
+    },
+    "aTwoLevelObject":{
+      "firstLevel":1
+    },
+    "aTwoLevelObjectNoChildren":{
+      "firstLevel":{
+
+      }
+    },
+    "aDateAsText":"2022-07-18T21:48:17+00:00",
+    "aThreeLevelObjectWithDouble":{
+      "secondLevel":{
+        "firstLevel":1.3
+      }
+    }
+  },
+  "geometry":{
+    "type":"Point",
+    "coordinates":[
+      1,
+      1
+    ]
+  },
+  "id":"fid"
+}

@@ -105,9 +105,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
 
         // best guess at the format with a preference for PNG (since it's
         // normally transparent)
-        List<String> formats =
-                ((WMTSLayer) layer)
-                        .getFormats(); // wms2.getCapabilities().getRequest().getGetTile().getFormats();
+        List<String> formats = ((WMTSLayer) layer).getFormats();
         this.format = formats.iterator().next();
         for (String f : formats) {
             if ("image/png".equals(f)
@@ -131,7 +129,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
                     new String[] {"EPSG:4326", "WGS84", "CRS:84", "WGS 84", "WGS84(DD)"}) {
                 if (layer.getSrs().contains(preferred)) {
                     srsName = preferred;
-                    if (LOGGER.isLoggable(Level.INFO)) LOGGER.info("defaulting CRS to: " + srsName);
+                    LOGGER.info(() -> "defaulting CRS to: " + srsName);
                 }
             }
 
@@ -144,7 +142,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
                         CRS.decode(srs);
                         srsName = srs;
 
-                        if (LOGGER.isLoggable(Level.INFO)) LOGGER.info("setting CRS: " + srsName);
+                        LOGGER.info(() -> "setting CRS: " + srsName);
                         break;
                     } catch (Exception e) {
                         // it's fine, we could not decode that code
@@ -155,14 +153,13 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
             if (srsName == null) {
                 if (layer.getSrs().isEmpty()) {
                     // force 4326
-                    if (LOGGER.isLoggable(Level.INFO))
-                        LOGGER.info("adding default CRS to: " + srsName);
+                    LOGGER.info(() -> "adding default CRS to: " + srsName);
                     srsName = "EPSG:4326";
                     layer.getSrs().add(srsName);
                 } else {
                     // if not even that works we just take the first...
                     srsName = layer.getSrs().iterator().next();
-                    if (LOGGER.isLoggable(Level.INFO)) LOGGER.info("guessing CRS to: " + srsName);
+                    LOGGER.info(() -> "guessing CRS to: " + srsName);
                 }
             }
 
@@ -195,15 +192,13 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
         try {
             crs = CRS.decode(srsName);
         } catch (Exception e) {
-            LOGGER.log(
-                    Level.INFO,
+            LOGGER.info(
                     () ->
                             "Default srs ("
                                     + srsName
                                     + ") for layer ("
                                     + layer
-                                    + ") couldn't be decoded. "
-                                    + e.getMessage());
+                                    + ") couldn't be decoded.");
         }
         this.crs = crs;
         updateBounds();

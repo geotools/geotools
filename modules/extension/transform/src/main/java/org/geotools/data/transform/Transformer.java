@@ -252,9 +252,6 @@ class Transformer {
 
         // can we support the required sorting?
         QueryCapabilities caps = source.getQueryCapabilities();
-        if (query.getStartIndex() != null && !caps.isJoiningSupported()) {
-            txQuery.setStartIndex(null);
-        }
         if (query.getSortBy() != null && !caps.supportsSorting(txQuery.getSortBy())) {
             txQuery.setSortBy(null);
         }
@@ -269,6 +266,7 @@ class Transformer {
         // if the wrapped store cannot apply offsets we have to remove them too
         if (!caps.isOffsetSupported()) {
             txQuery.setStartIndex(null);
+            txQuery.setMaxFeatures(Query.DEFAULT_MAX);
         }
 
         return txQuery;

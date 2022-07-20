@@ -1,0 +1,110 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "poi.5",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.01183158,
+          40.70852996
+        ]
+      },
+      "geometry_name": "the_geom",
+      "properties": {
+        "NAME": "church",
+        "THUMBNAIL": "pics/22037839-Ti.jpg",
+        "MAINPAGE": "pics/22037839-L.jpg"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "poi.6",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.00153046,
+          40.71988512
+        ]
+      },
+      "geometry_name": "the_geom",
+      "properties": {
+        "NAME": "fire",
+        "THUMBNAIL": "pics/28640984-Ti.jpg",
+        "MAINPAGE": "pics/28640984-L.jpg"
+      }
+    }
+  ],
+  "numberMatched": 6,
+  "numberReturned": 2,
+  "timeStamp": "2022-07-20T16:18:02.593Z",
+  "links": [
+    {
+      "title": "Previous page",
+      "type": "application/geo+json",
+      "rel": "prev",
+      "href": "http://localhost:8080/geoserver/ogc/features/collections/tiger%3Apoi/items?f=application%2Fgeo%2Bjson&limit=4&startIndex=0"
+    },
+    {
+      "title": "This document as application/gml+xml;version=3.2",
+      "type": "application/gml+xml;version=3.2",
+      "rel": "alternate",
+      "href": "http://localhost:8080/geoserver/ogc/features/collections/tiger%3Apoi/items?f=application%2Fgml%2Bxml%3Bversion%3D3.2"
+    },
+    {
+      "title": "This document as text/csv",
+      "type": "text/csv",
+      "rel": "alternate",
+      "href": "http://localhost:8080/geoserver/ogc/features/collections/tiger%3Apoi/items?f=text%2Fcsv"
+    },
+    {
+      "title": "This document as application/json",
+      "type": "application/json",
+      "rel": "alternate",
+      "href": "http://localhost:8080/geoserver/ogc/features/collections/tiger%3Apoi/items?f=application%2Fjson"
+    },
+    {
+      "title": "This document as application/vnd.google-earth.kml+xml",
+      "type": "application/vnd.google-earth.kml+xml",
+      "rel": "alternate",
+      "href": "http://localhost:8080/geoserver/ogc/features/collections/tiger%3Apoi/items?f=application%2Fvnd.google-earth.kml%2Bxml"
+    },
+    {
+      "title": "This document",
+      "type": "application/geo+json",
+      "rel": "self",
+      "href": "http://localhost:8080/geoserver/ogc/features/collections/tiger%3Apoi/items?f=application%2Fgeo%2Bjson"
+    },
+    {
+      "title": "This document as application/stac+json",
+      "type": "application/stac+json",
+      "rel": "alternate",
+      "href": "http://localhost:8080/geoserver/ogc/features/collections/tiger%3Apoi/items?f=application%2Fstac%2Bjson"
+    },
+    {
+      "title": "This document as text/html",
+      "type": "text/html",
+      "rel": "alternate",
+      "href": "http://localhost:8080/geoserver/ogc/features/collections/tiger%3Apoi/items?f=text%2Fhtml"
+    },
+    {
+      "title": "The collection description as application/x-yaml",
+      "type": "application/x-yaml",
+      "rel": "collection",
+      "href": "http://localhost:8080/geoserver/ogc/features/collections/tiger%3Apoi?f=application%2Fx-yaml"
+    },
+    {
+      "title": "The collection description as application/json",
+      "type": "application/json",
+      "rel": "collection",
+      "href": "http://localhost:8080/geoserver/ogc/features/collections/tiger%3Apoi?f=application%2Fjson"
+    },
+    {
+      "title": "The collection description as text/html",
+      "type": "text/html",
+      "rel": "collection",
+      "href": "http://localhost:8080/geoserver/ogc/features/collections/tiger%3Apoi?f=text%2Fhtml"
+    }
+  ]
+}

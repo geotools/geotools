@@ -16,6 +16,7 @@
  */
 package org.geotools.data.geojson;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -43,6 +44,7 @@ import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
 import org.geotools.util.logging.Logging;
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -485,6 +487,48 @@ public class GeoJSONReaderTest {
             assertEquals(
                     "https://storage.googleapis.com/open-cogs/stac-examples/20201211_223832_CS2.jpg",
                     ((TextNode) assets.get("thumbnail").get("href")).asText());
+        }
+    }
+
+    @Test
+    public void testPaging() throws Exception {
+        URL url = TestData.url(GeoJSONReaderTest.class, "poi1.json");
+        try (GeoJSONReader reader = new GeoJSONReader(url)) {
+            SimpleFeatureCollection features = reader.getFeatures();
+            assertThat(features, CoreMatchers.instanceOf(PagingFeatureCollection.class));
+            assertNotNull(((PagingFeatureCollection) features).matched);
+            assertEquals(6, ((PagingFeatureCollection) features).matched.intValue());
+            assertEquals(6, features.size());
+            List<SimpleFeature> list = DataUtilities.list(features);
+            // first file
+            assertEquals("museam", list.get(0).getAttribute("NAME"));
+            assertEquals("stock", list.get(1).getAttribute("NAME"));
+            assertEquals("art", list.get(2).getAttribute("NAME"));
+            assertEquals("lox", list.get(3).getAttribute("NAME"));
+            // second file
+            assertEquals("church", list.get(4).getAttribute("NAME"));
+            assertEquals("fire", list.get(5).getAttribute("NAME"));
+        }
+    }
+
+    @Test
+    public void testPagingSTAC() throws Exception {
+        URL url = TestData.url(GeoJSONReaderTest.class, "stac1.json");
+        try (GeoJSONReader reader = new GeoJSONReader(url)) {
+            SimpleFeatureCollection features = reader.getFeatures();
+            assertThat(features, CoreMatchers.instanceOf(PagingFeatureCollection.class));
+            assertNotNull(((PagingFeatureCollection) features).matched);
+            assertEquals(2, ((PagingFeatureCollection) features).matched.intValue());
+            assertEquals(2, features.size());
+            List<SimpleFeature> list = DataUtilities.list(features);
+            // first file
+            assertEquals(
+                    "S2A_OPER_MSI_L2A_TL_ESRI_20220720T131757_A036953_T50XNK_N04.00",
+                    list.get(0).getAttribute("s2:granule_id"));
+            // second file
+            assertEquals(
+                    "S2A_OPER_MSI_L2A_TL_ESRI_20220720T133447_A036953_T50XNH_N04.00",
+                    list.get(1).getAttribute("s2:granule_id"));
         }
     }
 }

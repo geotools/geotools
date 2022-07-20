@@ -221,14 +221,18 @@ public class GeoJSONReader implements AutoCloseable {
         }
         ObjectMapper mapper = ObjectMapperFactory.getDefaultMapper();
         List<SimpleFeature> features = new ArrayList<>();
+        URL next = null;
+        Integer matched = null;
         builder = null;
         while (!parser.isClosed()) {
             JsonToken token = parser.nextToken();
             if (token == null) {
                 break;
             }
-            if (JsonToken.FIELD_NAME.equals(token)
-                    && "features".equalsIgnoreCase(parser.currentName())) {
+            if (!JsonToken.FIELD_NAME.equals(token)) continue;
+            //
+            String name = parser.currentName();
+            if ("features".equalsIgnoreCase(name)) {
                 token = parser.nextToken();
                 if (!JsonToken.START_ARRAY.equals(token) || token == null) {
                     break;
@@ -239,6 +243,37 @@ public class GeoJSONReader implements AutoCloseable {
                     SimpleFeature feature = getNextFeature(node);
                     features.add(feature);
                 }
+            }
+            // support paged feature collections, OGC API style
+            else if ("links".equalsIgnoreCase(name)) {
+                token = parser.nextToken();
+                if (!JsonToken.START_ARRAY.equals(token) || token == null) {
+                    break;
+                }
+                while (parser.nextToken() == JsonToken.START_OBJECT) {
+                    ObjectNode node = mapper.readTree(parser);
+                    JsonNode rel = node.get("rel");
+                    if (rel != null && "next".equals(rel.textValue())) {
+                        JsonNode href = node.get("href");
+                        if (href != null) {
+                            next = new URL(href.textValue());
+                            break;
+                        }
+                    }
+                }
+            }
+            // checking matched attributes from STAC/Features to optimize out size() if possible
+            else if ("context".equalsIgnoreCase(name)) {
+                token = parser.nextToken();
+                if (!JsonToken.START_OBJECT.equals(token) || token == null) {
+                    break;
+                }
+                ObjectNode node = mapper.readTree(parser);
+                JsonNode matchedNode = node.get("matched");
+                matched = matchedNode.asInt();
+            } else if ("numberMatched".equals(name)
+                    && parser.nextToken() == JsonToken.VALUE_NUMBER_INT) {
+                matched = mapper.readValue(parser, Integer.class);
             }
         }
         if (isSchemaChanged()) {
@@ -254,10 +289,17 @@ public class GeoJSONReader implements AutoCloseable {
             }
             features = nFeatures;
         }
+
         // a GeoJSON feature collection has an array of features -> it's an ordered entity
         // so we should return the features in the same order we got them, cannot use
-        // DefaultFeatureCollectin, but an order preserving collection instead
-        return new ListFeatureCollection(schema, features);
+        // DefaultFeatureCollection, but an order preserving collection instead
+        SimpleFeatureCollection result = new ListFeatureCollection(schema, features);
+
+        // if there is a next link, support paging
+        if (next != null) {
+            return new PagingFeatureCollection(result, next, matched);
+        }
+        return result;
     }
 
     /** */

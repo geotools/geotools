@@ -38,4 +38,19 @@ public class TransformerTest extends AbstractTransformTest {
         assertEquals(1, transformedQuery.getSortBy().length);
         assertEquals("state_name", transformedQuery.getSortBy()[0].getPropertyName().toString());
     }
+
+    @Test
+    public void testTransformedPaging() throws Exception {
+        TransformFeatureSource transformedSource = (TransformFeatureSource) transformWithRename();
+
+        Query query = new Query(Query.ALL);
+        query.setStartIndex(10);
+        query.setMaxFeatures(5);
+
+        Query transformedQuery = transformedSource.transformer.transformQuery(query);
+        assertNotNull(transformedQuery);
+        assertNotNull(transformedQuery.getStartIndex());
+        assertEquals(10, transformedQuery.getStartIndex().intValue());
+        assertEquals(5, transformedQuery.getMaxFeatures());
+    }
 }

@@ -132,7 +132,7 @@ public class GeoJSONReaderTest {
                         + "'features': "
                         + "[{"
                         + "  'type': 'Feature',"
-                        + "  'id': 'feature.0',"
+                        + "  'id': 'features.0',"
                         + "  'properties': {"
                         + "    'otherGeometry': {"
                         + "      'type': 'LineString',"
@@ -231,7 +231,7 @@ public class GeoJSONReaderTest {
                         + "'features': "
                         + "[{"
                         + "  'type': 'Feature',"
-                        + "  'id': 'feature.0',"
+                        + "  'id': 'features.0',"
                         + "  'properties': {"
                         + "    'otherGeometry': {"
                         + "      'type': 'LineString',"
@@ -270,7 +270,7 @@ public class GeoJSONReaderTest {
         String geojson1 =
                 "{"
                         + "  'type': 'Feature',"
-                        + "  'id': 'feature.0',"
+                        + "  'id': 'features.0',"
                         + "  'properties': {"
                         + "    'otherGeometry': {"
                         + "      'type': 'LineString',"
@@ -313,7 +313,7 @@ public class GeoJSONReaderTest {
         String geojson =
                 "{"
                         + "  'type': 'Feature',"
-                        + "  'id': 'feature.0',"
+                        + "  'id': 'features.0',"
                         + "  'properties': {"
                         + "    'boolTrue': true,"
                         + "    'boolFalse': false"
@@ -335,7 +335,7 @@ public class GeoJSONReaderTest {
         String geojson =
                 "{"
                         + "  'type': 'Feature',"
-                        + "  'id': 'feature.0',"
+                        + "  'id': 'features.0',"
                         + "  'properties': {"
                         + "    'object': {"
                         + "       'a': 10,"
@@ -359,7 +359,7 @@ public class GeoJSONReaderTest {
         String geojson =
                 "{"
                         + "  'type': 'Feature',"
-                        + "  'id': 'feature.0',"
+                        + "  'id': 'features.0',"
                         + "  'properties': {"
                         + "    'array': [10, 'abc', null]"
                         + "   },"

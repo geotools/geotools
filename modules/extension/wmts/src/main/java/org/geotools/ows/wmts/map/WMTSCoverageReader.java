@@ -192,13 +192,10 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
         try {
             crs = CRS.decode(srsName);
         } catch (Exception e) {
-            LOGGER.info(
-                    () ->
-                            "Default srs ("
-                                    + srsName
-                                    + ") for layer ("
-                                    + layer
-                                    + ") couldn't be decoded.");
+            LOGGER.log(
+                    Level.WARNING,
+                    "Default crs (" + srsName + ") for layer (" + layer + ") couldn't be set.",
+                    e);
         }
         this.crs = crs;
         updateBounds();

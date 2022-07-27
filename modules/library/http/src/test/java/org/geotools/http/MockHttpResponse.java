@@ -16,15 +16,13 @@
  */
 package org.geotools.http;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -40,7 +38,7 @@ import java.util.Map;
  */
 public class MockHttpResponse implements HTTPResponse {
 
-    InputStream stream;
+    byte[] response;
 
     String contentType;
 
@@ -49,7 +47,7 @@ public class MockHttpResponse implements HTTPResponse {
     Charset charset = StandardCharsets.UTF_8;
 
     public MockHttpResponse(InputStream stream, String contentType, String... headers) {
-        this.stream = stream;
+        this.response = toByteArray(stream);
         this.contentType = contentType;
 
         if (headers != null) {
@@ -64,6 +62,22 @@ public class MockHttpResponse implements HTTPResponse {
                 String value = headers[i++];
                 this.headers.put(key, value);
             }
+        }
+    }
+
+    private byte[] toByteArray(InputStream is) {
+        try {
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
+            byte[] data = new byte[16384];
+            int nRead;
+            while ((nRead = is.read(data, 0, data.length)) != -1) {
+                buffer.write(data, 0, nRead);
+            }
+
+            return buffer.toByteArray();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load the response into a reusable byte array", e);
         }
     }
 
@@ -120,11 +134,7 @@ public class MockHttpResponse implements HTTPResponse {
 
     @Override
     public void dispose() {
-        try {
-            this.stream.close();
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
+        // nothing to do
     }
 
     @Override
@@ -139,7 +149,7 @@ public class MockHttpResponse implements HTTPResponse {
 
     @Override
     public InputStream getResponseStream() throws IOException {
-        return stream;
+        return new ByteArrayInputStream(response);
     }
 
     /**
@@ -153,25 +163,7 @@ public class MockHttpResponse implements HTTPResponse {
 
     @Override
     public String toString() {
-
-        StringBuilder textBuilder = new StringBuilder();
-        try {
-            try (Reader reader = new BufferedReader(new InputStreamReader(stream, charset))) {
-                int c = 0;
-                while ((c = reader.read()) != -1) {
-                    textBuilder.append((char) c);
-                }
-            }
-            return contentType + " - " + textBuilder.toString();
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        } finally {
-            try {
-                stream.reset();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        }
+        return new String(response, charset);
     }
 
     @Deprecated

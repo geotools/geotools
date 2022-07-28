@@ -18,6 +18,7 @@ package org.geotools.stac.client;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.util.Arrays;
 import java.util.List;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.Filter;
@@ -31,11 +32,24 @@ public class SearchQuery {
     private String datetime;
     Geometry intersects;
 
+    private List<String> fields;
+
     @JsonProperty("filter-lang")
     FilterLang filterLang;
 
     @JsonSerialize(using = STACFilterSerializer.class)
     private Filter filter;
+
+    @JsonProperty("sortby")
+    List<SortBy> sortBy;
+
+    public List<SortBy> getSortBy() {
+        return sortBy;
+    }
+
+    public void setSortBy(List<SortBy> sortBy) {
+        this.sortBy = sortBy;
+    }
 
     public List<String> getCollections() {
         return collections;
@@ -92,5 +106,38 @@ public class SearchQuery {
 
     public void setIntersects(Geometry intersects) {
         this.intersects = intersects;
+    }
+
+    public List<String> getFields() {
+        return fields;
+    }
+
+    public void setFields(List<String> fields) {
+        this.fields = fields;
+    }
+
+    @Override
+    public String toString() {
+        return "SearchQuery{"
+                + "collections="
+                + collections
+                + ", bbox="
+                + Arrays.toString(bbox)
+                + ", limit="
+                + limit
+                + ", datetime='"
+                + datetime
+                + '\''
+                + ", intersects="
+                + intersects
+                + ", fields="
+                + fields
+                + ", filterLang="
+                + filterLang
+                + ", filter="
+                + filter
+                + ", sortBy="
+                + sortBy
+                + '}';
     }
 }

@@ -34,11 +34,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
 import org.geotools.data.geojson.GeoJSONReader;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPResponse;
+import org.geotools.util.logging.Logging;
 
 /**
  * Minimal STAC API client supporting the needs of the STAC datastore. Not currently meant to be a
@@ -46,18 +49,18 @@ import org.geotools.http.HTTPResponse;
  */
 public class STACClient implements Closeable {
 
+    static final Logger LOGGER = Logging.getLogger(STACClient.class);
+
     /** Used to indicate how to perform search queries. */
-    public static enum SearchMode {
+    public enum SearchMode {
         /** Forces usage of GET requests (might fail if parameters are too big/long) */
         GET,
         /** Forces usage of POST requests (might fail if not supported by the server) */
-        POST,
-        /** Will prefer POST if supported by the server, GET otherwise */
-        AUTO
+        POST
     }
 
-    static final String JSON_MIME = "application/json";
-    static final String GEOJSON_MIME = "application/geo+json";
+    public static final String JSON_MIME = "application/json";
+    public static final String GEOJSON_MIME = "application/geo+json";
 
     private static final Map<String, String> ACCEPTS_JSON = singletonMap("Accepts", JSON_MIME);
     static ObjectMapper OBJECT_MAPPER;
@@ -148,16 +151,11 @@ public class STACClient implements Closeable {
                     "The server does not support the item-search conformance class, cannot query it");
 
         try {
-            // prefer POST, supports large requests (intersection geometries, complex filters)
-            if (mode == SearchMode.AUTO) {
-                String postURL = landingPage.getSearchLink(HttpMethod.POST);
-                if (postURL != null) mode = SearchMode.POST;
-                else mode = SearchMode.GET;
-            }
-
             HTTPResponse response = null;
             if (mode == SearchMode.GET) {
                 URL getURL = new SearchGetBuilder(landingPage).toGetURL(search);
+
+                LOGGER.log(Level.FINE, () -> "STAC GET search request: " + getURL);
                 response = this.http.get(getURL);
             } else {
                 URL postURL = new URL(landingPage.getSearchLink(HttpMethod.POST));
@@ -165,6 +163,10 @@ public class STACClient implements Closeable {
                     throw new IllegalArgumentException("Cannot find GeoJSON search GET link");
                 }
                 String body = OBJECT_MAPPER.writeValueAsString(search);
+
+                LOGGER.log(
+                        Level.FINE,
+                        () -> "STAC POST search request: " + postURL + " with body:\n" + body);
                 response =
                         this.http.post(
                                 postURL,

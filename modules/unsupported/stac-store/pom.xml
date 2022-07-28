@@ -7,8 +7,8 @@
     <version>28-SNAPSHOT</version>
   </parent>
 
-  <artifactId>stac-store</artifactId>
-  <name>stac-store</name>
+  <artifactId>gt-stac-store</artifactId>
+  <name>STAC API Datastore</name>
   <description>A DataStore reading data from a STAC API</description>
 
   <dependencies>

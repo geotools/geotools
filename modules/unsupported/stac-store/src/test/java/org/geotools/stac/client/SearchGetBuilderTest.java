@@ -24,6 +24,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import org.geotools.filter.text.cql2.CQL;
+import org.geotools.stac.STACOfflineTest;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.locationtech.jts.io.WKTReader;
@@ -36,8 +37,7 @@ public class SearchGetBuilderTest {
 
     @BeforeClass
     public static void setupBuilder() throws IOException {
-        try (InputStream stream =
-                SearchGetBuilderTest.class.getResourceAsStream("landingPage.json")) {
+        try (InputStream stream = STACOfflineTest.class.getResourceAsStream("landingPage.json")) {
             STACLandingPage landingPage =
                     STACClient.OBJECT_MAPPER.readValue(stream, STACLandingPage.class);
             BUILDER = new SearchGetBuilder(landingPage);

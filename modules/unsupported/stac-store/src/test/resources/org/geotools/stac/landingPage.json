@@ -151,6 +151,7 @@
     "https://api.stacspec.org/spec/v1.0.0-beta.1/ogcapi-features",
     "https://api.stacspec.org/v1.0.0-beta.5/item-search",
     "https://api.stacspec.org/v1.0.0-beta.5/item-search#filter",
+    "https://api.stacspec.org/v1.0.0-beta.5/item-search#fields",
     "https://api.stacspec.org/v1.0.0-beta.5/item-search#sort",
     "http://www.opengis.net/spec/ogcapi-features-3/1.0/req/features-filter",
     "http://www.opengis.net/spec/ogcapi-features-3/1.0/req/filter",

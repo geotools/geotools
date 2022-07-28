@@ -82,6 +82,21 @@ class SearchGetBuilder {
         if (search.getLimit() != null) {
             builder.addParameter("limit", String.valueOf(search.getLimit()));
         }
+        if (search.getFields() != null) {
+            String spec = search.getFields().stream().collect(COMMA_JOINER);
+            builder.addParameter("fields", spec);
+        }
+        if (search.getSortBy() != null) {
+            String spec =
+                    search.getSortBy().stream()
+                            .map(sb -> getSortSpecification(sb))
+                            .collect(COMMA_JOINER);
+            builder.addParameter("sortby", spec);
+        }
         return builder.build().toURL();
+    }
+
+    private static String getSortSpecification(SortBy sb) {
+        return (sb.getDirection() == SortBy.Direction.desc ? "-" : "+") + sb.getField();
     }
 }

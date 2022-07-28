@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import org.geotools.data.DataUtilities;
@@ -49,6 +50,8 @@ import org.geotools.referencing.CRS;
 import org.geotools.wfs.v1_1.WFSConfiguration;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.XSD;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -85,6 +88,20 @@ public abstract class AbstractGetFeatureParserTest {
 
     private boolean supportsCount = true;
     private static final GeometryFactory GF = new GeometryFactory();
+
+    private static Locale defaultLocale;
+
+    @BeforeClass
+    public static void setupLocale() {
+        // XXE message might be localized otherwise
+        defaultLocale = Locale.getDefault();
+        Locale.setDefault(Locale.ENGLISH);
+    }
+
+    @AfterClass
+    public static void resetLocale() {
+        Locale.setDefault(defaultLocale);
+    }
 
     protected void setSupportsCount(boolean supportsCount) {
         this.supportsCount = supportsCount;

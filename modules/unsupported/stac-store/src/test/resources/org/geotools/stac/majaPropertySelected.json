@@ -1,0 +1,49 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "SENTINEL2B_20220722-101702-713_L2A_T32UQA_C",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              11.8208,
+              50.5181
+            ],
+            [
+              13.3657,
+              50.4704
+            ],
+            [
+              13.2774,
+              49.4856
+            ],
+            [
+              11.7635,
+              49.5317
+            ],
+            [
+              11.8208,
+              50.5181
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "datetime": "2022-07-22T10:05:59.024+00:00"
+      }
+    }
+  ],
+  "numberMatched": 1,
+  "numberReturned": 1,
+  "stac_version": "1.0.0",
+  "links": [
+    {
+      "type": "application/geo+json",
+      "rel": "self",
+      "href": "http://geoservice.dlr.de/eoc/ogc/stac/search?collections=S2_L2A_MAJA&bbox=12,50,12.001,50.001&datetime=2022-07-22T10:05:59.024Z&f=json"
+    }
+  ]
+}

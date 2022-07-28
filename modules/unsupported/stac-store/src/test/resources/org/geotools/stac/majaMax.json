@@ -1,0 +1,15 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "SENTINEL2B_20220722-101702-713_L2A_T32UQA_C",
+      "properties": {
+        "datetime": "2023-07-22T10:05:59.024Z"
+      }
+    }
+  ],
+  "numberMatched": 1,
+  "numberReturned": 1,
+  "stac_version": "1.0.0"
+}

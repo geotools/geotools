@@ -13,46 +13,46 @@
         "https://stac-extensions.github.io/alternate-assets/v1.1.0/schema.json",
         "https://stac-extensions.github.io/sat/v1.0.0/schema.json"
       ],
-      "id": "SENTINEL2B_20220714-105646-098_L2A_T32ULB_C",
+      "id": "SENTINEL2B_20220722-101702-713_L2A_T32UQA_C",
       "collection": "S2_L2A_MAJA",
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              6.1237,
-              51.4159
+              11.8208,
+              50.5181
             ],
             [
-              7.7021,
-              51.444
+              13.3657,
+              50.4704
             ],
             [
-              7.7293,
-              50.4569
+              13.2774,
+              49.4856
             ],
             [
-              6.1839,
-              50.4297
+              11.7635,
+              49.5317
             ],
             [
-              6.1237,
-              51.4159
+              11.8208,
+              50.5181
             ]
           ]
         ]
       },
       "bbox": [
-        6.123708248138,
-        50.429714202881,
-        7.7293009758,
-        51.443996429443
+        11.763545036316,
+        49.485618591309,
+        13.365742683411,
+        50.518112182617
       ],
       "keywords": [],
       "properties": {
-        "created": "2022-07-19T06:15:21.1470000Z",
-        "updated": "2022-07-19T06:15:21.1470000Z",
-        "datetime": "2022-07-14T10:46:29.0240000Z",
+        "created": "2022-07-25T01:43:48.446+00:00",
+        "updated": "2022-07-25T01:43:48.446+00:00",
+        "datetime": "2022-07-22T10:05:59.024+00:00",
         "platform": "SENTINEL-2B",
         "constellation": "SENTINEL-2",
         "instruments": [
@@ -62,12 +62,12 @@
         "license": "CC-BY-4.0",
         "proj:epsg": 32632,
         "sci:doi": "10.15489/ifczsszkcp63",
-        "sat:absolute_orbit": 51,
-        "eo:cloud_cover": 4,
+        "sat:absolute_orbit": 22,
+        "eo:cloud_cover": 33,
         "eo:snow_cover": 0,
-        "view:incidence_angle": 11.315982150736,
-        "view:azimuth": 290.772574338312,
-        "view:sun_azimuth": 160.776213409109,
+        "view:incidence_angle": 5.705337799534,
+        "view:azimuth": 106.807158938768,
+        "view:sun_azimuth": 153.108369392091,
         "processing:facility": "DLR-EOC",
         "processing:lineage": "CATENA",
         "processing:level": "L2A",
@@ -83,7 +83,7 @@
           "roles": [
             "thumbnail"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3_QKL_ALL.jpg"
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3_QKL_ALL.jpg"
         },
         "data": {
           "title": "Product Download",
@@ -91,7 +91,7 @@
           "roles": [
             "product"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip"
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip"
         },
         "metadata": {
           "title": "Original Metadata",
@@ -99,7 +99,7 @@
           "roles": [
             "metadata"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3_QKL_ALL.xml"
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3_QKL_ALL.xml"
         },
         "info": {
           "title": "Product Information",
@@ -116,7 +116,7 @@
             "data",
             "cloud"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/MASKS/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_CLM_R1.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/MASKS/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_CLM_R1.tif",
           "eo:bands": [
             {
               "name": "CLM_R1"
@@ -129,10 +129,10 @@
           "proj:transform": [
             10.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -10.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "gsd": 10
@@ -144,7 +144,7 @@
             "data",
             "cloud"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/MASKS/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_CLM_R2.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/MASKS/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_CLM_R2.tif",
           "eo:bands": [
             {
               "name": "CLM_R2"
@@ -157,10 +157,10 @@
           "proj:transform": [
             20.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -20.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "gsd": 20
@@ -171,7 +171,7 @@
           "roles": [
             "data"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/MASKS/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_EDG_R1.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/MASKS/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_EDG_R1.tif",
           "eo:bands": [
             {
               "name": "EDG_R1",
@@ -181,10 +181,10 @@
           "proj:transform": [
             10.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -10.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "proj:shape": [
@@ -199,7 +199,7 @@
           "roles": [
             "data"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/MASKS/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_EDG_R2.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/MASKS/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_EDG_R2.tif",
           "eo:bands": [
             {
               "name": "EDG_R2",
@@ -213,10 +213,10 @@
           "proj:transform": [
             20.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -20.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "gsd": 20
@@ -227,7 +227,7 @@
           "roles": [
             "data"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/MASKS/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_IAB_R1.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/MASKS/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_IAB_R1.tif",
           "eo:bands": [
             {
               "name": "IAB_R1"
@@ -240,10 +240,10 @@
           "proj:transform": [
             10.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -10.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "gsd": 10
@@ -254,7 +254,7 @@
           "roles": [
             "data"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/MASKS/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_IAB_R2.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/MASKS/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_IAB_R2.tif",
           "eo:bands": [
             {
               "name": "IAB_R2"
@@ -267,10 +267,10 @@
           "proj:transform": [
             20.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -20.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "gsd": 20
@@ -281,7 +281,7 @@
           "roles": [
             "data"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/MASKS/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_MG2_R1.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/MASKS/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_MG2_R1.tif",
           "eo:bands": [
             {
               "name": "MG2_R1",
@@ -295,10 +295,10 @@
           "proj:transform": [
             10.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -10.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "gsd": 10
@@ -309,7 +309,7 @@
           "roles": [
             "data"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/MASKS/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_MG2_R2.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/MASKS/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_MG2_R2.tif",
           "eo:bands": [
             {
               "name": "MG2_R2",
@@ -323,10 +323,10 @@
           "proj:transform": [
             20.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -20.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "gsd": 20
@@ -338,7 +338,7 @@
             "data",
             "saturation"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/MASKS/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_SAT_R1.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/MASKS/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_SAT_R1.tif",
           "eo:bands": [
             {
               "name": "SAT_R1",
@@ -352,10 +352,10 @@
           "proj:transform": [
             10.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -10.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "gsd": 10
@@ -367,7 +367,7 @@
             "data",
             "saturation"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/MASKS/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_SAT_R2.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/MASKS/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_SAT_R2.tif",
           "eo:bands": [
             {
               "name": "SAT_R2",
@@ -381,10 +381,10 @@
           "proj:transform": [
             20.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -20.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "gsd": 20
@@ -395,7 +395,7 @@
           "roles": [
             "data"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_ATB_R1.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_ATB_R1.tif",
           "eo:bands": [
             {
               "name": "WVC",
@@ -413,10 +413,10 @@
           "proj:transform": [
             10.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -10.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "gsd": 10
@@ -427,7 +427,7 @@
           "roles": [
             "data"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_ATB_R2.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_ATB_R2.tif",
           "eo:bands": [
             {
               "name": "WVC",
@@ -445,10 +445,10 @@
           "proj:transform": [
             20.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -20.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "gsd": 20
@@ -460,7 +460,7 @@
             "data",
             "reflectance"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_FRE_B2.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_FRE_B2.tif",
           "eo:bands": [
             {
               "name": "FRE_B2",
@@ -477,10 +477,10 @@
           "proj:transform": [
             10.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -10.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "gsd": 10
@@ -492,7 +492,7 @@
             "data",
             "reflectance"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_FRE_B3.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_FRE_B3.tif",
           "eo:bands": [
             {
               "name": "FRE_B3",
@@ -509,10 +509,10 @@
           "proj:transform": [
             10.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -10.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "gsd": 10
@@ -524,7 +524,7 @@
             "data",
             "reflectance"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_FRE_B4.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_FRE_B4.tif",
           "eo:bands": [
             {
               "name": "FRE_B4",
@@ -541,10 +541,10 @@
           "proj:transform": [
             10.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -10.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "gsd": 10
@@ -556,7 +556,7 @@
             "data",
             "reflectance"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_FRE_B5.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_FRE_B5.tif",
           "eo:bands": [
             {
               "name": "FRE_B5",
@@ -573,10 +573,10 @@
           "proj:transform": [
             20.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -20.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "gsd": 20
@@ -588,7 +588,7 @@
             "data",
             "reflectance"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_FRE_B6.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_FRE_B6.tif",
           "eo:bands": [
             {
               "name": "FRE_B6",
@@ -605,10 +605,10 @@
           "proj:transform": [
             20.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -20.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "gsd": 20
@@ -620,7 +620,7 @@
             "data",
             "reflectance"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_FRE_B7.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_FRE_B7.tif",
           "eo:bands": [
             {
               "name": "FRE_B7",
@@ -637,10 +637,10 @@
           "proj:transform": [
             20.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -20.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "gsd": 20
@@ -652,7 +652,7 @@
             "data",
             "reflectance"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_FRE_B8.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_FRE_B8.tif",
           "eo:bands": [
             {
               "name": "FRE_B8",
@@ -669,10 +669,10 @@
           "proj:transform": [
             10.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -10.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "gsd": 10
@@ -684,7 +684,7 @@
             "data",
             "reflectance"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_FRE_B8A.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_FRE_B8A.tif",
           "eo:bands": [
             {
               "name": "FRE_B8A",
@@ -701,10 +701,10 @@
           "proj:transform": [
             20.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -20.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "gsd": 20
@@ -716,7 +716,7 @@
             "data",
             "reflectance"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_FRE_B11.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_FRE_B11.tif",
           "eo:bands": [
             {
               "name": "FRE_B11",
@@ -733,10 +733,10 @@
           "proj:transform": [
             20.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -20.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "gsd": 20
@@ -748,7 +748,7 @@
             "data",
             "reflectance"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_FRE_B12.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_FRE_B12.tif",
           "eo:bands": [
             {
               "name": "FRE_B12",
@@ -765,10 +765,10 @@
           "proj:transform": [
             20.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -20.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "gsd": 20
@@ -780,7 +780,7 @@
             "data",
             "reflectance"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_SRE_B2.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_SRE_B2.tif",
           "eo:bands": [
             {
               "name": "SRE_B2",
@@ -797,10 +797,10 @@
           "proj:transform": [
             10.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -10.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "gsd": 10
@@ -812,7 +812,7 @@
             "data",
             "reflectance"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_SRE_B3.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_SRE_B3.tif",
           "eo:bands": [
             {
               "name": "SRE_B3",
@@ -829,10 +829,10 @@
           "proj:transform": [
             10.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -10.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "gsd": 10
@@ -844,7 +844,7 @@
             "data",
             "reflectance"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_SRE_B4.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_SRE_B4.tif",
           "eo:bands": [
             {
               "name": "SRE_B4",
@@ -861,10 +861,10 @@
           "proj:transform": [
             10.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -10.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "gsd": 10
@@ -876,7 +876,7 @@
             "data",
             "reflectance"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_SRE_B5.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_SRE_B5.tif",
           "eo:bands": [
             {
               "name": "SRE_B5",
@@ -893,10 +893,10 @@
           "proj:transform": [
             20.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -20.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "gsd": 20
@@ -908,7 +908,7 @@
             "data",
             "reflectance"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_SRE_B6.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_SRE_B6.tif",
           "eo:bands": [
             {
               "name": "SRE_B6",
@@ -925,10 +925,10 @@
           "proj:transform": [
             20.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -20.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "gsd": 20
@@ -940,7 +940,7 @@
             "data",
             "reflectance"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_SRE_B7.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_SRE_B7.tif",
           "eo:bands": [
             {
               "name": "SRE_B7",
@@ -957,10 +957,10 @@
           "proj:transform": [
             20.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -20.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "gsd": 20
@@ -972,7 +972,7 @@
             "data",
             "reflectance"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_SRE_B8.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_SRE_B8.tif",
           "eo:bands": [
             {
               "name": "SRE_B8",
@@ -989,10 +989,10 @@
           "proj:transform": [
             10.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -10.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "gsd": 10
@@ -1004,7 +1004,7 @@
             "data",
             "reflectance"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_SRE_B8A.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_SRE_B8A.tif",
           "eo:bands": [
             {
               "name": "SRE_B8A",
@@ -1021,10 +1021,10 @@
           "proj:transform": [
             20.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -20.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "gsd": 20
@@ -1036,7 +1036,7 @@
             "data",
             "reflectance"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_SRE_B11.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_SRE_B11.tif",
           "eo:bands": [
             {
               "name": "SRE_B11",
@@ -1053,10 +1053,10 @@
           "proj:transform": [
             20.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -20.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "gsd": 20
@@ -1068,7 +1068,7 @@
             "data",
             "reflectance"
           ],
-          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/LB/2022/07/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_V1-3.zip#SENTINEL2B_20220714-105646-098_L2A_T32ULB_C/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C_SRE_B12.tif",
+          "href": "https://download.geoservice.dlr.de/S2_L2A_MAJA/files/32/U/QA/2022/07/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_V1-3.zip#SENTINEL2B_20220722-101702-713_L2A_T32UQA_C/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C_SRE_B12.tif",
           "eo:bands": [
             {
               "name": "SRE_B12",
@@ -1085,10 +1085,10 @@
           "proj:transform": [
             20.0,
             0.0,
-            300000.0,
+            699960.0,
             0.0,
             -20.0,
-            5700000.0
+            5600040.0
           ],
           "proj:epsg": 32632,
           "gsd": 20
@@ -1110,19 +1110,19 @@
         {
           "title": "Self",
           "rel": "self",
-          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/S2_L2A_MAJA/items/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C?f=application%2Fgeo%2Bjson",
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/S2_L2A_MAJA/items/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C?f=application%2Fgeo%2Bjson",
           "type": "application/geo+json"
         },
         {
           "title": "Item",
           "rel": "item",
-          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/S2_L2A_MAJA/items/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C?f=application%2Fgeo%2Bjson",
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/S2_L2A_MAJA/items/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C?f=application%2Fgeo%2Bjson",
           "type": "application/geo+json"
         },
         {
           "title": "Item as HTML",
           "rel": "item",
-          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/S2_L2A_MAJA/items/SENTINEL2B_20220714-105646-098_L2A_T32ULB_C?f=text%2Fhtml",
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/S2_L2A_MAJA/items/SENTINEL2B_20220722-101702-713_L2A_T32UQA_C?f=text%2Fhtml",
           "type": "text/html"
         },
         {
@@ -1164,19 +1164,19 @@
         {
           "title": "OpenSearch GeoJSON",
           "rel": "item",
-          "href": "https://geoservice.dlr.de/eoc/oseo/search?parentIdentifier=S2_L2A_MAJA&identifier=SENTINEL2B_20220714-105646-098_L2A_T32ULB_C&httpAccept=application%2Fgeo%2Bjson",
+          "href": "https://geoservice.dlr.de/eoc/oseo/search?parentIdentifier=S2_L2A_MAJA&identifier=SENTINEL2B_20220722-101702-713_L2A_T32UQA_C&httpAccept=application%2Fgeo%2Bjson",
           "type": "application/geo+json"
         },
         {
           "title": "OpenSearch Atom XML",
           "rel": "item",
-          "href": "https://geoservice.dlr.de/eoc/oseo/search?parentIdentifier=S2_L2A_MAJA&identifier=SENTINEL2B_20220714-105646-098_L2A_T32ULB_C&httpAccept=application%2Fatom%2Bxml",
+          "href": "https://geoservice.dlr.de/eoc/oseo/search?parentIdentifier=S2_L2A_MAJA&identifier=SENTINEL2B_20220722-101702-713_L2A_T32UQA_C&httpAccept=application%2Fatom%2Bxml",
           "type": "application/atom+xml"
         },
         {
           "title": "OpenSearch O&M XML",
           "rel": "item",
-          "href": "https://geoservice.dlr.de/eoc/oseo/metadata?parentId=S2_L2A_MAJA&uid=SENTINEL2B_20220714-105646-098_L2A_T32ULB_C&httpAccept=application%2Fgml%2Bxml",
+          "href": "https://geoservice.dlr.de/eoc/oseo/metadata?parentId=S2_L2A_MAJA&uid=SENTINEL2B_20220722-101702-713_L2A_T32UQA_C&httpAccept=application%2Fgml%2Bxml",
           "type": "application/gml+xml"
         },
         {
@@ -1201,7 +1201,7 @@
     {
       "type": "application/geo+json",
       "rel": "self",
-      "href": "http://geoservice.dlr.de/eoc/ogc/stac/search?collections=S2_L2A_MAJA&limit=1&f=json"
+      "href": "http://geoservice.dlr.de/eoc/ogc/stac/search?collections=S2_L2A_MAJA&bbox=12,50,12.001,50.001&datetime=2022-07-22T10:05:59.024Z&f=json"
     }
   ]
 }

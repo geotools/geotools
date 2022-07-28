@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -48,6 +49,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.SerializationUtils;
 import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.collection.CollectionFeatureSource;
 import org.geotools.data.collection.ListFeatureCollection;
@@ -741,6 +743,11 @@ public class DataUtilities {
 
         if (src instanceof GridCoverage) {
             return src; // inmutable
+        }
+
+        // last ditch effort is the source is serializable
+        if (src instanceof Serializable) {
+            return SerializationUtils.clone((Serializable) src);
         }
 
         //

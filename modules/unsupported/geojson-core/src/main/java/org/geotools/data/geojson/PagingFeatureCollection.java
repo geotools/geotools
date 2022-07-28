@@ -29,7 +29,7 @@ import org.opengis.feature.simple.SimpleFeature;
 /**
  * A GeoJSON specific feature collection that can follow "next" links in order to retrieve all data
  */
-class PagingFeatureCollection extends BaseSimpleFeatureCollection {
+public class PagingFeatureCollection extends BaseSimpleFeatureCollection {
 
     static final Logger LOGGER = Logging.getLogger(PagingFeatureCollection.class);
 
@@ -42,6 +42,11 @@ class PagingFeatureCollection extends BaseSimpleFeatureCollection {
         this.first = first;
         this.next = next;
         this.matched = matched;
+    }
+
+    /** Matched header from the GeoJSON feature collection, if found, or null otherwise. */
+    public Integer getMatched() {
+        return matched;
     }
 
     @Override

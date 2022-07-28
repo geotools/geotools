@@ -16,8 +16,6 @@
  */
 package org.geotools.stac.client;
 
-import static org.geotools.stac.client.STACClient.GEOJSON_MIME;
-import static org.geotools.stac.client.STACClient.JSON_MIME;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -42,49 +40,23 @@ import java.util.stream.StreamSupport;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.geojson.GeoJSONReader;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.http.HTTPResponse;
-import org.geotools.http.MockHttpClient;
-import org.geotools.http.MockHttpResponse;
+import org.geotools.stac.STACOfflineTest;
 import org.hamcrest.CoreMatchers;
-import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeature;
 
 /** STACClient test using stored responses and a mock HTTPClient, can be run offline */
 @SuppressWarnings("unchecked")
-public class STACClientOfflineTest {
-
-    private static final String BASE_URL = "https://geoservice.dlr.de/eoc/ogc/stac";
-    static final String LANDING_PAGE_URL = BASE_URL;
-    static final String COLLECTIONS_URL = BASE_URL + "/collections?f=application%2Fjson";
-
-    static final String MAJA_ALL_URL =
-            BASE_URL + "/search?f=application%2Fgeo%2Bjson&collections=S2_L2A_MAJA";
-
-    static final String MAJA_ONE =
-            BASE_URL
-                    + "/search?f=application%2Fgeo%2Bjson&collections=S2_L2A_MAJA&datetime=2022-07-14T10:46:29.0240000Z";
+public class STACClientOfflineTest extends STACOfflineTest {
 
     protected STACClient client;
 
-    @Before
+    @Override
     public void setup() throws IOException {
-        MockHttpClient httpClient = new MockHttpClient();
-        httpClient.expectGet(new URL(LANDING_PAGE_URL), jsonResponse("landingPage.json"));
-        httpClient.expectGet(new URL(COLLECTIONS_URL), jsonResponse("collections.json"));
-        httpClient.expectGet(new URL(MAJA_ALL_URL), geojsonResponse("majaAll.json"));
-        httpClient.expectGet(new URL(MAJA_ONE), geojsonResponse("majaOne.json"));
+        super.setup();
 
         this.client = new STACClient(new URL(LANDING_PAGE_URL), httpClient);
-    }
-
-    private HTTPResponse jsonResponse(String fileName) {
-        return new MockHttpResponse(getClass().getResourceAsStream(fileName), JSON_MIME);
-    }
-
-    private HTTPResponse geojsonResponse(String fileName) {
-        return new MockHttpResponse(getClass().getResourceAsStream(fileName), GEOJSON_MIME);
     }
 
     @Test

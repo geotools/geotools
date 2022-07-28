@@ -19,6 +19,10 @@ package org.geotools.data.geojson;
 import static org.geotools.data.geojson.GeoJSONWriter.DEFAULT_TIME_ZONE;
 
 import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -39,9 +43,10 @@ class DateParser {
 
     static final Logger LOGGER = Logging.getLogger(DateParser.class);
 
+    private static final String FULL_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSX";
     static final List<FastDateFormat> DEFAULT_FAST_DATE_FORMATS =
             Arrays.asList(
-                    FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss.SSSX", DEFAULT_TIME_ZONE),
+                    FastDateFormat.getInstance(FULL_PATTERN, DEFAULT_TIME_ZONE),
                     FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss.SSS", DEFAULT_TIME_ZONE),
                     FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ssX", DEFAULT_TIME_ZONE),
                     FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss", DEFAULT_TIME_ZONE),
@@ -90,6 +95,19 @@ class DateParser {
      * parse the date
      */
     public Date parse(String text) {
+        // is it a date with nanosecond precision? FastDateFormat cannot handle it
+        if (text.length() > FULL_PATTERN.length()) {
+            try {
+                return Date.from(ZonedDateTime.parse(text).toInstant());
+            } catch (DateTimeParseException e) {
+                LOGGER.log(Level.FINEST, "Failed to parse " + text + " using ZonedDateTime", e);
+            }
+            try {
+                return Date.from(LocalDateTime.parse(text).toInstant(ZoneOffset.UTC));
+            } catch (DateTimeParseException e) {
+                LOGGER.log(Level.FINEST, "Failed to parse " + text + " using LocalDateTime", e);
+            }
+        }
         for (FastDateFormat format : formats) {
             try {
                 return format.parse(text);

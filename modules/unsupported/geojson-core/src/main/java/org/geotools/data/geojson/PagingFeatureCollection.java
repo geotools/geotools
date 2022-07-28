@@ -19,15 +19,19 @@ package org.geotools.data.geojson;
 import java.io.IOException;
 import java.net.URL;
 import java.util.NoSuchElementException;
+import java.util.logging.Logger;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.collection.BaseSimpleFeatureCollection;
+import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * A GeoJSON specific feature collection that can follow "next" links in order to retrieve all data
  */
 class PagingFeatureCollection extends BaseSimpleFeatureCollection {
+
+    static final Logger LOGGER = Logging.getLogger(PagingFeatureCollection.class);
 
     final Integer matched;
     SimpleFeatureCollection first;
@@ -51,7 +55,7 @@ class PagingFeatureCollection extends BaseSimpleFeatureCollection {
         return new PagingFeatureIterator(first.features(), next);
     }
 
-    private class PagingFeatureIterator implements SimpleFeatureIterator {
+    protected class PagingFeatureIterator implements SimpleFeatureIterator {
         private SimpleFeatureIterator delegate;
         private URL next;
 
@@ -68,6 +72,7 @@ class PagingFeatureCollection extends BaseSimpleFeatureCollection {
                 try {
                     // call the reader again, but do not delegate to avoid creating a series of
                     // nested objects (the next collection might contain another and so on)
+                    LOGGER.fine(() -> "Fetching next page of data at " + next);
                     SimpleFeatureCollection features = new GeoJSONReader(next).getFeatures();
                     this.delegate = features.features();
                     if (features instanceof PagingFeatureCollection) {

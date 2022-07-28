@@ -105,6 +105,8 @@ public class GeoJSONReader implements AutoCloseable {
     /** For reading be a bit more lenient regarding what we parse */
     private DateParser dateParser = new DateParser();
 
+    ObjectMapper mapper = new ObjectMapper();
+
     /**
      * Builds a GeoJSON parser from a GeoJSON source, located at the specified URL.
      *
@@ -281,13 +283,20 @@ public class GeoJSONReader implements AutoCloseable {
             List<SimpleFeature> nFeatures = new ArrayList<>(features.size());
             for (SimpleFeature feature : features) {
                 if (feature.getFeatureType() != schema) {
-                    SimpleFeature nFeature = DataUtilities.reType(schema, feature);
+                    // do not deep copy attributes, needless expense, won't work for JsonNode
+                    SimpleFeature nFeature = DataUtilities.reType(schema, feature, false);
                     nFeatures.add(nFeature);
                 } else {
                     nFeatures.add(feature);
                 }
             }
             features = nFeatures;
+        }
+
+        // in case no features are found, we'd be without a schema, have an empty one
+        // rather than a null one
+        if (schema == null) {
+            this.schema = getBuilder(mapper.createObjectNode(), null).getFeatureType();
         }
 
         // a GeoJSON feature collection has an array of features -> it's an ordered entity
@@ -317,15 +326,23 @@ public class GeoJSONReader implements AutoCloseable {
         }
         JsonNode geom = node.get("geometry");
 
-        Geometry g = GEOM_PARSER.geometryFromJson(geom);
+        // the geometry might have been selected away by a property selection
+        Geometry g = null;
+        if (geom != null) g = GEOM_PARSER.geometryFromJson(geom);
 
         JsonNode props = node.get("properties");
+        // accommodate for STAC servers that remove the properties object altogether, when
+        // no property is selected using the STAC API Search Fields extension
+        if (props == null) props = mapper.createObjectNode();
+
         if (builder == null
-                || !builder.getFeatureType()
-                        .getGeometryDescriptor()
-                        .getType()
-                        .getBinding()
-                        .isInstance(g)) {
+                || (builder.getFeatureType().getGeometryDescriptor() == null && g != null)
+                || (builder.getFeatureType().getGeometryDescriptor() != null
+                        && !builder.getFeatureType()
+                                .getGeometryDescriptor()
+                                .getType()
+                                .getBinding()
+                                .isInstance(g))) {
             builder = getBuilder(props, g);
         }
         boolean restart = true;
@@ -410,7 +427,7 @@ public class GeoJSONReader implements AutoCloseable {
                     builder.set(n.getKey(), n.getValue().asText());
                 }
             }
-            builder.set(GEOMETRY_NAME, g);
+            if (g != null) builder.set(GEOMETRY_NAME, g);
 
             String newId = baseName + "." + nextID++;
             feature = builder.buildFeature(newId);
@@ -472,6 +489,7 @@ public class GeoJSONReader implements AutoCloseable {
                 typeBuilder.add(GEOMETRY_NAME, geomType, DefaultGeographicCRS.WGS84);
             }
         }
+
         Iterator<Entry<String, JsonNode>> fields = props.fields();
         while (fields.hasNext()) {
             Entry<String, JsonNode> n = fields.next();
@@ -515,6 +533,7 @@ public class GeoJSONReader implements AutoCloseable {
                 typeBuilder.add(n.getKey(), String.class);
             }
         }
+
         schema = typeBuilder.buildFeatureType();
 
         return new SimpleFeatureBuilder(schema);
@@ -576,9 +595,6 @@ public class GeoJSONReader implements AutoCloseable {
     }
 
     private class GeoJsonIterator implements SimpleFeatureIterator, AutoCloseable {
-        /** @throws IOException */
-        ObjectMapper mapper = new ObjectMapper();
-
         JsonParser parser;
 
         private SimpleFeature feature;

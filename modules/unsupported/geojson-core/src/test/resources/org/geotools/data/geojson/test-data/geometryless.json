@@ -1,0 +1,51 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "id": "LC08_L2SP_202033_20220327_02_T1",
+      "bbox": [
+        -7.22954028,
+        37.78128502,
+        -4.4239345,
+        40.00653498
+      ],
+      "type": "Feature",
+      "collection": "landsat-8-c2-l2",
+      "properties": {
+        "datetime": "2022-03-27T11:01:55.956478Z",
+        "platform": "landsat-8",
+        "proj:bbox": [
+          138585.0,
+          4189485.0,
+          374715.0,
+          4429515.0
+        ],
+        "proj:epsg": 32630,
+        "description": "Landsat Collection 2 Level-2 Surface Reflectance Product",
+        "instruments": [
+          "oli",
+          "tirs"
+        ],
+        "eo:cloud_cover": 52.77,
+        "view:off_nadir": 0,
+        "landsat:wrs_row": "033",
+        "landsat:scene_id": "LC82020332022086LGN00",
+        "landsat:wrs_path": "202",
+        "landsat:wrs_type": "2",
+        "view:sun_azimuth": 145.99500627,
+        "view:sun_elevation": 48.74594838,
+        "landsat:cloud_cover_land": 52.77,
+        "landsat:processing_level": "L2SP",
+        "landsat:collection_number": "02",
+        "landsat:collection_category": "T1"
+      },
+      "stac_extensions": [
+        "https://stac-extensions.github.io/eo/v1.0.0/schema.json",
+        "https://stac-extensions.github.io/view/v1.0.0/schema.json",
+        "https://stac-extensions.github.io/projection/v1.0.0/schema.json",
+        "https://landsat.usgs.gov/stac/landsat-extension/v1.1.0/schema.json"
+      ],
+      "stac_version": "1.0.0"
+    }
+  ]
+}

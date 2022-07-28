@@ -36,6 +36,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.WKTReader2;
@@ -50,6 +51,7 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.Property;
@@ -529,6 +531,48 @@ public class GeoJSONReaderTest {
             assertEquals(
                     "S2A_OPER_MSI_L2A_TL_ESRI_20220720T133447_A036953_T50XNH_N04.00",
                     list.get(1).getAttribute("s2:granule_id"));
+        }
+    }
+
+    @Test
+    public void testPropertyless() throws Exception {
+        URL url = TestData.url(GeoJSONReaderTest.class, "propertyless.json");
+        try (GeoJSONReader reader = new GeoJSONReader(url)) {
+            SimpleFeatureCollection features = reader.getFeatures();
+            assertThat(features, CoreMatchers.instanceOf(ListFeatureCollection.class));
+            assertEquals(1, features.size());
+            assertEquals(1, features.getSchema().getAttributeCount());
+            assertEquals(
+                    Polygon.class,
+                    features.getSchema().getGeometryDescriptor().getType().getBinding());
+            SimpleFeature feature = DataUtilities.first(features);
+            assertNotNull(feature.getDefaultGeometry());
+        }
+    }
+
+    @Test
+    public void testGeometryless() throws Exception {
+        URL url = TestData.url(GeoJSONReaderTest.class, "geometryless.json");
+        try (GeoJSONReader reader = new GeoJSONReader(url)) {
+            SimpleFeatureCollection features = reader.getFeatures();
+            assertThat(features, CoreMatchers.instanceOf(ListFeatureCollection.class));
+            assertEquals(1, features.size());
+            assertNull(features.getSchema().getGeometryDescriptor());
+            SimpleFeature feature = DataUtilities.first(features);
+            assertNull(feature.getDefaultGeometry());
+            assertEquals("landsat-8", feature.getAttribute("platform"));
+        }
+    }
+
+    @Test
+    public void testEmpty() throws Exception {
+        URL url = TestData.url(GeoJSONReaderTest.class, "empty.json");
+        try (GeoJSONReader reader = new GeoJSONReader(url)) {
+            SimpleFeatureCollection features = reader.getFeatures();
+            assertEquals(0, features.size());
+            assertTrue(features.isEmpty());
+            assertNotNull(features.getSchema());
+            assertEquals(0, features.getSchema().getAttributeCount());
         }
     }
 }

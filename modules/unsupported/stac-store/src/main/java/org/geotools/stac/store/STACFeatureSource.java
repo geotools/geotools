@@ -27,11 +27,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
-import org.geotools.data.FilteringFeatureReader;
+import org.geotools.data.MaxFeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.geojson.PagingFeatureCollection;
+import org.geotools.data.simple.FilteringSimpleFeatureReader;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureReader;
 import org.geotools.data.store.ContentEntry;
@@ -44,7 +45,6 @@ import org.geotools.feature.visitor.MinVisitor;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.stac.client.STACClient;
-import org.geotools.stac.client.STACClient.SearchMode;
 import org.geotools.stac.client.STACConformance;
 import org.geotools.stac.client.SearchQuery;
 import org.geotools.util.DateRange;
@@ -73,16 +73,15 @@ public class STACFeatureSource extends ContentFeatureSource {
             new ReferencedEnvelope(-180, 180, -90, 90, WGS84);
 
     private final STACClient client;
-    private SearchMode searchMode;
 
-    private int fetchSize;
-
-    public STACFeatureSource(
-            ContentEntry entry, STACClient client, SearchMode searchMode, int fetchSize) {
+    public STACFeatureSource(ContentEntry entry, STACClient client) {
         super(entry, Query.ALL);
         this.client = client;
-        this.searchMode = searchMode;
-        this.fetchSize = fetchSize;
+    }
+
+    @Override
+    public STACDataStore getDataStore() {
+        return (STACDataStore) super.getDataStore();
     }
 
     @Override
@@ -123,8 +122,20 @@ public class STACFeatureSource extends ContentFeatureSource {
         // if the query cannot be fully translated, we cannot do an efficient count
         if (searchQuery == null) return -1;
 
+        Integer fc = getCountFromClient(searchQuery);
+        if (fc != null) {
+            int hardLimit = getDataStore().getHardLimit();
+            if (hardLimit > 0) return Math.min(hardLimit, fc);
+            else return fc;
+        }
+
+        // no fast way to count, give up, most catalogs have too many features
+        return -1;
+    }
+
+    private Integer getCountFromClient(SearchQuery searchQuery) throws IOException {
         // try to get the "matched" header from the GeoJSON collection, if available
-        SimpleFeatureCollection fc = client.search(searchQuery, searchMode);
+        SimpleFeatureCollection fc = client.search(searchQuery, getDataStore().getSearchMode());
         // if there was a "next" link, the reader returns a paging collection
         if (fc instanceof PagingFeatureCollection) {
             return Optional.ofNullable(((PagingFeatureCollection) fc).getMatched()).orElse(-1);
@@ -133,16 +144,14 @@ public class STACFeatureSource extends ContentFeatureSource {
         if (fc instanceof ListFeatureCollection) {
             return fc.size();
         }
-
-        // no fast way to count, give up, most catalogs have too many features
-        return -1;
+        return null;
     }
 
     @Override
     protected SimpleFeatureType buildFeatureType() throws IOException {
         SearchQuery sq = getSearchQuery(Query.ALL, false);
-        sq.setLimit(fetchSize);
-        SimpleFeatureCollection fc = client.search(sq, searchMode);
+        sq.setLimit(getDataStore().getFetchSize());
+        SimpleFeatureCollection fc = client.search(sq, getDataStore().getSearchMode());
         SimpleFeatureType rawSchema = fc.getSchema();
 
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
@@ -165,7 +174,7 @@ public class STACFeatureSource extends ContentFeatureSource {
 
         // the limit in STAC-API is a suggestion on how many features to return to the first
         // page, not an actual limit
-        sq.setLimit(Math.min(q.getMaxFeatures(), fetchSize));
+        sq.setLimit(Math.min(q.getMaxFeatures(), getDataStore().getFetchSize()));
 
         // if the server supports fields selection, use it
         if (q.getPropertyNames() != null && !q.getProperties().isEmpty()) {
@@ -307,6 +316,12 @@ public class STACFeatureSource extends ContentFeatureSource {
     }
 
     @Override
+    protected boolean canLimit() {
+        return true;
+    }
+
+    @Override
+    @SuppressWarnings("PMD.CloseResource")
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
         SearchQuery sq = getSearchQuery(query, true);
@@ -318,10 +333,16 @@ public class STACFeatureSource extends ContentFeatureSource {
             sq = getSearchQuery(full, false);
         }
 
-        SimpleFeatureCollection fc = client.search(sq, searchMode);
+        SimpleFeatureCollection fc = client.search(sq, getDataStore().getSearchMode());
         SimpleFeatureReader result = new CollectionReader(fc);
 
-        if (postFilter) return new FilteringFeatureReader<>(result, query.getFilter());
+        if (postFilter) result = new FilteringSimpleFeatureReader(result, query.getFilter());
+
+        // handle max feature and hard limit
+        int max = Math.min(query.getMaxFeatures(), getDataStore().getHardLimit());
+        if (max < Query.DEFAULT_MAX)
+            result = DataUtilities.simple(new MaxFeatureReader<>(result, max));
+
         return result;
     }
 

@@ -69,7 +69,16 @@ public class STACDataStoreFactory implements DataStoreFactorySpi {
                     Integer.class,
                     "How many items to fetch in a single request (just a suggestion to the server)",
                     false,
-                    1000,
+                    STACDataStore.DEFAULT_FETCH_SIZE,
+                    Collections.singletonMap(Parameter.MIN, 1));
+
+    public static final Param HARD_LIMIT =
+            new Param(
+                    "hardLimit",
+                    Integer.class,
+                    "How many items to fetch from a collection, tops, even while paging. Set to zero or negative to disable.",
+                    false,
+                    STACDataStore.DEFAULT_HARD_LIMIT,
                     Collections.singletonMap(Parameter.MIN, 1));
 
     @Override
@@ -84,7 +93,7 @@ public class STACDataStoreFactory implements DataStoreFactorySpi {
 
     @Override
     public Param[] getParametersInfo() {
-        return new Param[] {NAMESPACE, DBTYPE, LANDING_PAGE, SEARCH_MODE, FETCH_SIZE};
+        return new Param[] {NAMESPACE, DBTYPE, LANDING_PAGE, SEARCH_MODE, FETCH_SIZE, HARD_LIMIT};
     }
 
     @Override
@@ -98,6 +107,7 @@ public class STACDataStoreFactory implements DataStoreFactorySpi {
         URI namespace = (URI) NAMESPACE.lookUp(params);
         SearchMode mode = (SearchMode) SEARCH_MODE.lookUp(params);
         Integer fetchSize = (Integer) FETCH_SIZE.lookUp(params);
+        Integer hardLimit = (Integer) HARD_LIMIT.lookUp(params);
 
         // TODO: make the HTTP client configurable just like a WMS store
         @SuppressWarnings("PMD.CloseResource") // will be closed by the store
@@ -106,6 +116,7 @@ public class STACDataStoreFactory implements DataStoreFactorySpi {
         if (namespace != null) store.setNamespaceURI(namespace.toString());
         if (mode != null) store.setSearchMode(mode);
         if (fetchSize != null) store.setFetchSize(fetchSize);
+        if (hardLimit != null) store.setHardLimit(hardLimit);
         return store;
     }
 

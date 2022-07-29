@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.geotools.data.DataUtilities;
@@ -68,6 +69,12 @@ public class STACFeatureSourceTest extends AbstractSTACStoreTest {
     private static String MAJA_MAX =
             BASE_URL
                     + "/search?collections=S2_L2A_MAJA&f=application/geo%2Bjson&limit=1&fields=properties.datetime,type,id,-links&sortby=-datetime";
+
+    private static String MAJA_PAGE_1 =
+            BASE_URL + "/search?collections=S2_L2A_MAJA&f=application/geo%2Bjson&limit=10";
+
+    private static String MAJA_PAGE_2 =
+            "https://geoservice.dlr.de/eoc/ogc/stac/search?collections=S2_L2A_MAJA&requestId=1234&page=2";
     private static final String NS_URI = "https://stacspec.org/store";
     private static final String MAJA = "S2_L2A_MAJA";
 
@@ -85,6 +92,8 @@ public class STACFeatureSourceTest extends AbstractSTACStoreTest {
                 new URL(MAJA_PROPERTY_SELECTED), geojsonResponse("majaPropertySelected.json", cls));
         httpClient.expectGet(new URL(MAJA_MIN), geojsonResponse("majaMin.json", cls));
         httpClient.expectGet(new URL(MAJA_MAX), geojsonResponse("majaMax.json", cls));
+        httpClient.expectGet(new URL(MAJA_PAGE_1), geojsonResponse("maja10.json", cls));
+        httpClient.expectGet(new URL(MAJA_PAGE_2), geojsonResponse("maja20.json", cls));
 
         @SuppressWarnings("PMD.CloseResource") // managed by the store, based on mocks
         STACClient client = new STACClient(new URL(LANDING_PAGE_URL), httpClient);
@@ -153,6 +162,24 @@ public class STACFeatureSourceTest extends AbstractSTACStoreTest {
         Map<String, Object> topLevels = getTopLevelAttributes(f);
         JsonNode assets = (JsonNode) topLevels.get("assets");
         assertEquals("image/jpeg", assets.get("thumbnail").get("type").textValue());
+    }
+
+    @Test
+    public void testFetchDataHardLimit() throws Exception {
+        store.setHardLimit(20);
+        store.setFetchSize(10);
+        try {
+            SimpleFeatureSource fs = store.getFeatureSource(MAJA);
+            SimpleFeatureCollection fc = fs.getFeatures(Query.ALL);
+
+            assertEquals(20, fc.size());
+            assertEquals(store.getSchema(MAJA), fc.getSchema());
+            List<SimpleFeature> features = DataUtilities.list(fc);
+            assertEquals(20, features.size());
+        } finally {
+            store.setHardLimit(STACDataStore.DEFAULT_HARD_LIMIT);
+            store.setFetchSize(STACDataStore.DEFAULT_FETCH_SIZE);
+        }
     }
 
     private static Query getSpaceTimeFilter() {

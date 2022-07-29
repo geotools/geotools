@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import org.geotools.data.DataStore;
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
@@ -30,13 +31,15 @@ import org.geotools.util.logging.Logging;
 import org.opengis.feature.type.Name;
 
 /**
- * A {@link org.geotools.data.DataStore} implementation connecting to a <a
+ * A {@link DataStore} implementation connecting to a <a
  * href="https://github.com/radiantearth/stac-api-spec">STAC API</a>, exposing collections as
  * feature types, and items as features.
  */
 public class STACDataStore extends ContentDataStore {
 
     static final int DEFAULT_FETCH_SIZE = 1000;
+
+    static final Integer DEFAULT_HARD_LIMIT = 100000;
 
     static final Logger LOGGER = Logging.getLogger(STACDataStore.class);
 
@@ -45,6 +48,7 @@ public class STACDataStore extends ContentDataStore {
     private STACClient.SearchMode searchMode = STACClient.SearchMode.GET;
 
     private int fetchSize = DEFAULT_FETCH_SIZE;
+    private Integer hardLimit = DEFAULT_HARD_LIMIT;
 
     public STACDataStore(STACClient client) {
         this.client = client;
@@ -75,7 +79,7 @@ public class STACDataStore extends ContentDataStore {
 
     @Override
     protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
-        return new STACFeatureSource(entry, client, searchMode, fetchSize);
+        return new STACFeatureSource(entry, client);
     }
 
     @Override
@@ -85,5 +89,19 @@ public class STACDataStore extends ContentDataStore {
         } catch (IOException e) {
             LOGGER.log(Level.FINE, "Failed to cleanly close the STAC client", e);
         }
+    }
+
+    /**
+     * Maximum number of STAC items a collection will ever provide (set to zero or negative not to
+     * have this limit).
+     *
+     * @param hardLimit
+     */
+    public void setHardLimit(int hardLimit) {
+        this.hardLimit = hardLimit;
+    }
+
+    public int getHardLimit() {
+        return hardLimit;
     }
 }

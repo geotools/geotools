@@ -223,7 +223,7 @@ public class GeoJSONReader implements AutoCloseable {
         }
         ObjectMapper mapper = ObjectMapperFactory.getDefaultMapper();
         List<SimpleFeature> features = new ArrayList<>();
-        URL next = null;
+        ObjectNode next = null;
         Integer matched = null;
         builder = null;
         while (!parser.isClosed()) {
@@ -256,11 +256,7 @@ public class GeoJSONReader implements AutoCloseable {
                     ObjectNode node = mapper.readTree(parser);
                     JsonNode rel = node.get("rel");
                     if (rel != null && "next".equals(rel.textValue())) {
-                        JsonNode href = node.get("href");
-                        if (href != null) {
-                            next = new URL(href.textValue());
-                            break;
-                        }
+                        next = node;
                     }
                 }
             }
@@ -306,9 +302,14 @@ public class GeoJSONReader implements AutoCloseable {
 
         // if there is a next link, support paging
         if (next != null) {
-            return new PagingFeatureCollection(result, next, matched);
+            return getPagingFeatureCollection(result, matched, next);
         }
         return result;
+    }
+
+    protected PagingFeatureCollection getPagingFeatureCollection(
+            SimpleFeatureCollection result, Integer matched, ObjectNode next) {
+        return new PagingFeatureCollection(result, next, matched);
     }
 
     /** */

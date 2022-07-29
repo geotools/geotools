@@ -37,7 +37,6 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
-import org.geotools.data.geojson.GeoJSONReader;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPResponse;
@@ -176,7 +175,10 @@ public class STACClient implements Closeable {
             checkGeoJSONResponse(response);
 
             // TODO: support paging following links
-            return new GeoJSONReader(response.getResponseStream()).getFeatures();
+            try (STACGeoJSONReader reader =
+                    new STACGeoJSONReader(response.getResponseStream(), http)) {
+                return reader.getFeatures();
+            }
         } catch (URISyntaxException e) {
             throw new IOException("Failed to build the search query URL", e);
         }

@@ -254,16 +254,16 @@ public class GeoJSONWriteTest {
             int size = auto.getFeatures().size();
             assertEquals(
                     "auto after featureStore1 commits removal of fid1 (featureStore2 has added fid5)",
-                    8,
+                    9,
                     size);
 
             assertEquals(
                     "featureStore1 after commiting removal of fid1 (featureStore2 has added fid5)",
-                    8,
+                    9,
                     featureStore1.getFeatures().size());
             assertEquals(
                     "featureStore2 after featureStore1 commits removal of fid1 (featureStore2 has added fid5)",
-                    9,
+                    10,
                     featureStore2.getFeatures().size());
 
             // commit transaction two
@@ -273,16 +273,16 @@ public class GeoJSONWriteTest {
 
             assertEquals(
                     "auto after featureStore2 commits addition of fid5 (fid1 previously removed)",
-                    9,
+                    10,
                     auto.getFeatures().size());
 
             assertEquals(
                     "featureStore1 after featureStore2 commits addition of fid5 (fid1 previously removed)",
-                    9,
+                    10,
                     featureStore1.getFeatures().size());
             assertEquals(
                     "featureStore2 after commiting addition of fid5 (fid1 previously removed)",
-                    9,
+                    10,
                     featureStore2.getFeatures().size());
         }
         store.dispose(); // clear out any listeners

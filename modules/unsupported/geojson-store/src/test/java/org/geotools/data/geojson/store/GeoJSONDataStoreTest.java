@@ -16,6 +16,8 @@ package org.geotools.data.geojson.store;
  *    Lesser General Public License for more details.
  */
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.StringStartsWith.startsWith;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -126,6 +128,23 @@ public class GeoJSONDataStoreTest {
                 count++;
             }
             assertEquals(9, count);
+        }
+    }
+
+    @Test
+    public void testLocationsPresetIds() throws IOException {
+        URL url = TestData.url(GeoJSONDataStore.class, "location_with_id.json");
+
+        GeoJSONDataStore fds = new GeoJSONDataStore(url);
+        String type = fds.getNames().get(0).getLocalPart();
+        Query query = new Query(type);
+
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                fds.getFeatureReader(query, null)) {
+            while (reader.hasNext()) {
+                SimpleFeature sf = reader.next();
+                assertThat(sf.getID(), startsWith("location_with_id.f"));
+            }
         }
     }
 

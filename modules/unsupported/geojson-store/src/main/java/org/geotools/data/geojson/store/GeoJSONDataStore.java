@@ -61,8 +61,7 @@ public class GeoJSONDataStore extends ContentDataStore implements FileDataStore 
     }
 
     GeoJSONReader read() throws IOException {
-        GeoJSONReader reader = new GeoJSONReader(getUrl());
-
+        GeoJSONReader reader = new GeoJSONReader(getUrl(), GeoJSONReader.IdStrategy.PREFIX);
         return reader;
     }
 

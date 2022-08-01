@@ -22,14 +22,18 @@ import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.tuple.Pair;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.MaxFeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
+import org.geotools.data.ReTypeFeatureReader;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.geojson.PagingFeatureCollection;
 import org.geotools.data.simple.FilteringSimpleFeatureReader;
@@ -42,12 +46,16 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.feature.visitor.MinVisitor;
+import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.stac.client.CQL2Conformance;
+import org.geotools.stac.client.FilterLang;
 import org.geotools.stac.client.STACClient;
 import org.geotools.stac.client.STACConformance;
 import org.geotools.stac.client.SearchQuery;
 import org.geotools.util.DateRange;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
@@ -102,6 +110,11 @@ public class STACFeatureSource extends ContentFeatureSource {
     }
 
     @Override
+    protected void addHints(Set<Hints.Key> hints) {
+        hints.add(Hints.FEATURE_DETACHED);
+    }
+
+    @Override
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
         // the STAC API does not offer a fast way to retrieve bounds based on a query,
         // it only reports the bounds of a full collection
@@ -118,11 +131,11 @@ public class STACFeatureSource extends ContentFeatureSource {
 
     @Override
     protected int getCountInternal(Query query) throws IOException {
-        SearchQuery searchQuery = getSearchQuery(query, true);
+        Pair<SearchQuery, Filter> pair = getSearchQuery(query, true);
         // if the query cannot be fully translated, we cannot do an efficient count
-        if (searchQuery == null) return -1;
+        if (pair == null) return -1;
 
-        Integer fc = getCountFromClient(searchQuery);
+        Integer fc = getCountFromClient(pair.getKey());
         if (fc != null) {
             int hardLimit = getDataStore().getHardLimit();
             if (hardLimit > 0) return Math.min(hardLimit, fc);
@@ -149,7 +162,8 @@ public class STACFeatureSource extends ContentFeatureSource {
 
     @Override
     protected SimpleFeatureType buildFeatureType() throws IOException {
-        SearchQuery sq = getSearchQuery(Query.ALL, false);
+        SearchQuery sq = getSearchQuery(Query.ALL, false).getKey();
+
         sq.setLimit(getDataStore().getFetchSize());
         SimpleFeatureCollection fc = client.search(sq, getDataStore().getSearchMode());
         SimpleFeatureType rawSchema = fc.getSchema();
@@ -166,9 +180,10 @@ public class STACFeatureSource extends ContentFeatureSource {
      * @param q The GeoTools query
      * @param strict If strict is true, will return null if the query cannot be fully mapped into
      *     the SearchQuery
-     * @return
+     * @return A pair with a SearchQuery and a post filter, or null if strict is true and part of
+     *     the query could not be mapped
      */
-    private SearchQuery getSearchQuery(Query q, boolean strict) {
+    private Pair<SearchQuery, Filter> getSearchQuery(Query q, boolean strict) {
         SearchQuery sq = new SearchQuery();
         sq.setCollections(Arrays.asList(getCollectionId(q)));
 
@@ -176,25 +191,10 @@ public class STACFeatureSource extends ContentFeatureSource {
         // page, not an actual limit
         sq.setLimit(Math.min(q.getMaxFeatures(), getDataStore().getFetchSize()));
 
-        // if the server supports fields selection, use it
-        if (q.getPropertyNames() != null && !q.getProperties().isEmpty()) {
-            if (STACConformance.FIELDS.matches(client.getLandingPage().getConformance())) {
-                List<String> fields =
-                        Arrays.stream(q.getPropertyNames())
-                                .map(n -> n.equals("geometry") ? n : "properties." + n)
-                                .collect(Collectors.toList());
-                fields.add("type"); // some servers would even remove this field if not included!
-                fields.add("id"); // and this as well
-                fields.add(
-                        "-links"); // some servers like to return the links no matter what instead
-                sq.setFields(fields);
-
-            } else if (strict) return null;
-        }
-
         // not supported yet, but could be added
+        List<String> conformance = client.getLandingPage().getConformance();
         if (q.getSortBy() != null && q.getSortBy() != SortBy.UNSORTED) {
-            if (STACConformance.SORT.matches(client.getLandingPage().getConformance())) {
+            if (STACConformance.SORT.matches(conformance)) {
                 List<org.geotools.stac.client.SortBy> sorts =
                         Arrays.stream(q.getSortBy())
                                 .map(sb -> toSTACSort(sb))
@@ -206,19 +206,76 @@ public class STACFeatureSource extends ContentFeatureSource {
         // no plans to support this
         if (q.getJoins() != null && !q.getJoins().isEmpty() && strict) return null;
 
+        Filter post = Filter.INCLUDE;
         if (q.getFilter() != null && q.getFilter() != Filter.INCLUDE) {
             Filter simplified = SimplifyingFilterVisitor.simplify(q.getFilter());
 
             // see if we can use the simple space/time filtering, should be better implemented
             // across the board
             if (!encodeSimpleFilter(simplified, sq)) {
-                // we might encode in CQL, but need to turn the CQL conformance classes into filter
-                // capabilities --> for later
-                if (strict) return null;
+                if (!STACConformance.FILTER.matches(conformance)) return null;
+
+                CQL2PostPreFilterSplitter splitter = new CQL2PostPreFilterSplitter(conformance);
+                simplified.accept(splitter, null);
+                Filter pre = splitter.getFilterPre();
+                post = splitter.getFilterPost();
+
+                if (strict && !Filter.INCLUDE.equals(post)) return null;
+                if (setupFilterLanguage(sq, conformance)) {
+                    sq.setFilter(pre);
+                }
             }
         }
 
-        return sq;
+        // if the server supports fields selection, use it
+        String[] propertyNames = q.getPropertyNames();
+        if (propertyNames != null && !q.getProperties().isEmpty()) {
+            if (STACConformance.FIELDS.matches(conformance)) {
+                Set<String> nameList = new LinkedHashSet<>(Arrays.asList(propertyNames));
+                if (post != null && !Filter.INCLUDE.equals(post)) {
+                    FilterAttributeExtractor fex = new FilterAttributeExtractor();
+                    post.accept(fex, null);
+                    nameList.addAll(fex.getAttributeNameSet());
+                }
+                List<String> fields =
+                        nameList.stream()
+                                .map(n -> n.equals("geometry") ? n : "properties." + n)
+                                .collect(Collectors.toList());
+                fields.add("type"); // some servers would even remove this field if not included!
+                fields.add("id"); // and this as well
+                fields.add(
+                        "-links"); // some servers like to return the links no matter what instead
+                sq.setFields(fields);
+
+            } else if (strict) return null;
+        }
+
+        return Pair.of(sq, post);
+    }
+
+    /**
+     * Sets up a filter encoding language that's supported on both ends. If both text and JSON are
+     * supported, choose based on the type of request, GET vsPOST.
+     *
+     * @param sq
+     * @param conformance
+     * @return True if a supported language was set up, otherwise not
+     */
+    private boolean setupFilterLanguage(SearchQuery sq, List<String> conformance) {
+        boolean text = CQL2Conformance.TEXT.matches(conformance);
+        boolean json = CQL2Conformance.JSON.matches(conformance);
+
+        if (text && json) {
+            if (getDataStore().getSearchMode().equals(STACClient.SearchMode.GET))
+                sq.setFilterLang(FilterLang.CQL2_TEXT);
+            else sq.setFilterLang(FilterLang.CQL2_JSON);
+        } else if (text) {
+            sq.setFilterLang(FilterLang.CQL2_TEXT);
+        } else if (json) {
+            sq.setFilterLang(FilterLang.CQL2_JSON);
+        }
+
+        return sq.getFilterLang() != null;
     }
 
     private org.geotools.stac.client.SortBy toSTACSort(SortBy sort) {
@@ -324,19 +381,27 @@ public class STACFeatureSource extends ContentFeatureSource {
     @SuppressWarnings("PMD.CloseResource")
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
-        SearchQuery sq = getSearchQuery(query, true);
-        boolean postFilter = false;
-        if (sq == null) {
-            postFilter = true;
-            Query full = new Query(query);
-            full.setPropertyNames((String[]) null);
-            sq = getSearchQuery(full, false);
-        }
+        Pair<SearchQuery, Filter> pair = getSearchQuery(query, false);
+        SearchQuery sq = pair.getKey();
+        Filter postFilter = pair.getValue();
 
         SimpleFeatureCollection fc = client.search(sq, getDataStore().getSearchMode());
         SimpleFeatureReader result = new CollectionReader(fc);
 
-        if (postFilter) result = new FilteringSimpleFeatureReader(result, query.getFilter());
+        // handle post filtering, if the full filter could not be encoded
+        if (!Filter.INCLUDE.equals(postFilter))
+            result = new FilteringSimpleFeatureReader(result, query.getFilter());
+
+        // handle property selection, if it was not fully encoded in the query, or a post
+        // filter required more properties than strictly necessary
+        if (query.getProperties() != null
+                && !query.getProperties().isEmpty()
+                && (sq.getFields() == null || !Filter.INCLUDE.equals(postFilter))) {
+            SimpleFeatureType targetType =
+                    SimpleFeatureTypeBuilder.retype(
+                            getSchema(), Arrays.asList(query.getPropertyNames()));
+            result = DataUtilities.simple(new ReTypeFeatureReader(result, targetType, false));
+        }
 
         // handle max feature and hard limit
         int max = Math.min(query.getMaxFeatures(), getDataStore().getHardLimit());

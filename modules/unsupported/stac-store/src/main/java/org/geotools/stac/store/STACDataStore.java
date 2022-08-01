@@ -39,7 +39,7 @@ public class STACDataStore extends ContentDataStore {
 
     static final int DEFAULT_FETCH_SIZE = 1000;
 
-    static final Integer DEFAULT_HARD_LIMIT = 100000;
+    static final Integer DEFAULT_HARD_LIMIT = 10000;
 
     static final Logger LOGGER = Logging.getLogger(STACDataStore.class);
 

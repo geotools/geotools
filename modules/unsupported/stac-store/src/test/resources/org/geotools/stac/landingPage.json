@@ -164,7 +164,8 @@
     "http://www.opengis.net/spec/cql2/1.0/req/basic-spatial-operators",
     "http://www.opengis.net/spec/cql2/1.0/req/spatial-operators",
     "http://www.opengis.net/spec/cql2/1.0/req/functions",
-    "http://www.opengis.net/spec/cql2/1.0/req/cql2-text"
+    "http://www.opengis.net/spec/cql2/1.0/req/cql2-text",
+    "http://www.opengis.net/spec/cql2/1.0/req/cql2-json"
   ],
   "type": "Catalog",
   "stac_version": "1.0.0"

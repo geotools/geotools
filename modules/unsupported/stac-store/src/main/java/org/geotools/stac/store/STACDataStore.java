@@ -104,4 +104,9 @@ public class STACDataStore extends ContentDataStore {
     public int getHardLimit() {
         return hardLimit;
     }
+
+    /** Returns the {@link STACClient} used by the store */
+    public STACClient getClient() {
+        return client;
+    }
 }

@@ -25,10 +25,14 @@ import java.util.Map;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.Parameter;
-import org.geotools.http.commons.MultithreadedHttpClient;
+import org.geotools.http.HTTPClient;
+import org.geotools.http.HTTPClientFinder;
+import org.geotools.http.HTTPConnectionPooling;
+import org.geotools.http.SimpleHttpClient;
 import org.geotools.stac.client.STACClient;
 import org.geotools.stac.client.STACClient.SearchMode;
 import org.geotools.util.KVP;
+import org.geotools.util.factory.Hints;
 
 public class STACDataStoreFactory implements DataStoreFactorySpi {
 
@@ -81,6 +85,48 @@ public class STACDataStoreFactory implements DataStoreFactorySpi {
                     STACDataStore.DEFAULT_HARD_LIMIT,
                     Collections.singletonMap(Parameter.MIN, 1));
 
+    public static final Param USE_CONNECTION_POOLING =
+            new Param(
+                    "useConnectionPooling",
+                    Boolean.class,
+                    "Use HTTP connection pooling",
+                    false,
+                    Boolean.TRUE);
+
+    public static final Param MAX_CONNECTIONS =
+            new Param(
+                    "maxConnections",
+                    Integer.class,
+                    "Maximum number of connections",
+                    false,
+                    Integer.valueOf(6),
+                    Collections.singletonMap(Parameter.MIN, 1));
+
+    public static final Param TRY_GZIP =
+            new Param(
+                    "tryGZIP",
+                    Boolean.class,
+                    "Use GZIP compression, if available",
+                    false,
+                    Boolean.TRUE);
+
+    public static final Param USERNAME =
+            new Param("username", String.class, "User name for HTTP basic authentication", false);
+
+    public static final Param PASSWORD =
+            new Param(
+                    "password",
+                    String.class,
+                    "Password for HTTP basic authentication",
+                    false,
+                    Boolean.TRUE);
+
+    public static final Param CONNECTION_TIMEOUT =
+            new Param("connectionTimeout", Integer.class, "Connection timeout (sec)", false, 10);
+
+    public static final Param READ_TIMEOUT =
+            new Param("readTimeout", Integer.class, "Read timeout (sec)", false, 10);
+
     @Override
     public String getDisplayName() {
         return "STAC-API";
@@ -93,7 +139,21 @@ public class STACDataStoreFactory implements DataStoreFactorySpi {
 
     @Override
     public Param[] getParametersInfo() {
-        return new Param[] {NAMESPACE, DBTYPE, LANDING_PAGE, SEARCH_MODE, FETCH_SIZE, HARD_LIMIT};
+        return new Param[] {
+            NAMESPACE,
+            DBTYPE,
+            LANDING_PAGE,
+            SEARCH_MODE,
+            FETCH_SIZE,
+            HARD_LIMIT,
+            USE_CONNECTION_POOLING,
+            MAX_CONNECTIONS,
+            TRY_GZIP,
+            USERNAME,
+            PASSWORD,
+            CONNECTION_TIMEOUT,
+            READ_TIMEOUT
+        };
     }
 
     @Override
@@ -103,21 +163,62 @@ public class STACDataStoreFactory implements DataStoreFactorySpi {
 
     @Override
     public DataStore createDataStore(Map<String, ?> params) throws IOException {
+
+        // build the client
+        HTTPClient http = buildHttpClient(params);
+
+        // fetch the store params and build the STAC client
         URL landingPage = (URL) LANDING_PAGE.lookUp(params);
+        @SuppressWarnings("PMD.CloseResource") // will be closed by the store
+        STACClient client = new STACClient(landingPage, http);
+
+        // now build the actual store
         URI namespace = (URI) NAMESPACE.lookUp(params);
         SearchMode mode = (SearchMode) SEARCH_MODE.lookUp(params);
         Integer fetchSize = (Integer) FETCH_SIZE.lookUp(params);
         Integer hardLimit = (Integer) HARD_LIMIT.lookUp(params);
-
-        // TODO: make the HTTP client configurable just like a WMS store
-        @SuppressWarnings("PMD.CloseResource") // will be closed by the store
-        STACClient client = new STACClient(landingPage, new MultithreadedHttpClient());
         STACDataStore store = new STACDataStore(client);
         if (namespace != null) store.setNamespaceURI(namespace.toString());
         if (mode != null) store.setSearchMode(mode);
         if (fetchSize != null) store.setFetchSize(fetchSize);
         if (hardLimit != null) store.setHardLimit(hardLimit);
         return store;
+    }
+
+    @SuppressWarnings("PMD.CloseResource") // the store will handle
+    private HTTPClient buildHttpClient(Map<String, ?> params) throws IOException {
+        Boolean pooling = (Boolean) USE_CONNECTION_POOLING.lookUp(params);
+        HTTPClient client;
+        if (Boolean.TRUE.equals(pooling)) {
+            client = HTTPClientFinder.createClient(HTTPConnectionPooling.class);
+            HTTPConnectionPooling pc = (HTTPConnectionPooling) client;
+
+            Integer maxConnections = (Integer) MAX_CONNECTIONS.lookUp(params);
+            if (maxConnections != null) pc.setMaxConnections(maxConnections);
+        } else {
+            client =
+                    HTTPClientFinder.createClient(
+                            new Hints(Hints.HTTP_CLIENT, SimpleHttpClient.class));
+        }
+
+        Boolean gzip = (Boolean) TRY_GZIP.lookUp(params);
+        if (gzip != null) {
+            client.setTryGzip(gzip);
+        }
+
+        Integer ct = (Integer) CONNECTION_TIMEOUT.lookUp(params);
+        if (ct != null) client.setConnectTimeout(ct);
+
+        Integer rt = (Integer) READ_TIMEOUT.lookUp(params);
+        if (rt != null) client.setReadTimeout(rt);
+
+        String username = (String) USERNAME.lookUp(params);
+        if (username != null) {
+            client.setUser(username);
+            client.setPassword((String) PASSWORD.lookUp(params));
+        }
+
+        return client;
     }
 
     @Override

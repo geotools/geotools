@@ -183,4 +183,9 @@ public class STACClient implements Closeable {
             throw new IOException("Failed to build the search query URL", e);
         }
     }
+
+    /** Returns the HTTP client used by the this STAC client */
+    public HTTPClient getHttp() {
+        return http;
+    }
 }

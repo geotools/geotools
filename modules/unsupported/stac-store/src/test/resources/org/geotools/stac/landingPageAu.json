@@ -1,0 +1,527 @@
+{
+  "stac_version": "1.0.0",
+  "id": "AWS_Explorer",
+  "title": "AWS Explorer",
+  "description": "Configure stac endpoint information in your Explorer `settings.env.py` file",
+  "type": "Catalog",
+  "links": [
+    {
+      "title": "Collections",
+      "description": "All product collections",
+      "rel": "children",
+      "type": "application/json",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections"
+    },
+    {
+      "title": "Arrivals",
+      "description": "Most recently added items",
+      "rel": "child",
+      "type": "application/json",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/arrivals"
+    },
+    {
+      "title": "Item Search",
+      "rel": "search",
+      "type": "application/json",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/search"
+    },
+    {
+      "rel": "self",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/"
+    },
+    {
+      "title": "aster_aloh_group_composition",
+      "description": "ASTER",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/aster_aloh_group_composition"
+    },
+    {
+      "title": "aster_aloh_group_content",
+      "description": "ASTER",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/aster_aloh_group_content"
+    },
+    {
+      "title": "aster_false_colour",
+      "description": "ASTER",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/aster_false_colour"
+    },
+    {
+      "title": "aster_feoh_group_content",
+      "description": "ASTER",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/aster_feoh_group_content"
+    },
+    {
+      "title": "aster_ferric_oxide_composition",
+      "description": "ASTER",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/aster_ferric_oxide_composition"
+    },
+    {
+      "title": "aster_ferric_oxide_content",
+      "description": "ASTER",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/aster_ferric_oxide_content"
+    },
+    {
+      "title": "aster_ferrous_iron_content_in_mgoh",
+      "description": "ASTER",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/aster_ferrous_iron_content_in_mgoh"
+    },
+    {
+      "title": "aster_ferrous_iron_index",
+      "description": "ASTER",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/aster_ferrous_iron_index"
+    },
+    {
+      "title": "aster_green_vegetation",
+      "description": "ASTER",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/aster_green_vegetation"
+    },
+    {
+      "title": "aster_gypsum_index",
+      "description": "ASTER",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/aster_gypsum_index"
+    },
+    {
+      "title": "aster_kaolin_group_index",
+      "description": "ASTER",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/aster_kaolin_group_index"
+    },
+    {
+      "title": "aster_mgoh_group_composition",
+      "description": "ASTER",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/aster_mgoh_group_composition"
+    },
+    {
+      "title": "aster_mgoh_group_content",
+      "description": "ASTER",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/aster_mgoh_group_content"
+    },
+    {
+      "title": "aster_opaque_index",
+      "description": "ASTER",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/aster_opaque_index"
+    },
+    {
+      "title": "aster_quartz_index",
+      "description": "ASTER",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/aster_quartz_index"
+    },
+    {
+      "title": "aster_regolith_ratios",
+      "description": "ASTER",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/aster_regolith_ratios"
+    },
+    {
+      "title": "aster_silica_index",
+      "description": "ASTER",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/aster_silica_index"
+    },
+    {
+      "title": "cemp_insar_alos_displacement",
+      "description": "CEMP InSAR ALOS Displacement",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/cemp_insar_alos_displacement"
+    },
+    {
+      "title": "cemp_insar_alos_velocity",
+      "description": "CEMP InSAR ALOS Velocity",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/cemp_insar_alos_velocity"
+    },
+    {
+      "title": "cemp_insar_envisat_displacement",
+      "description": "CEMP InSAR Envisat Displacement",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/cemp_insar_envisat_displacement"
+    },
+    {
+      "title": "cemp_insar_envisat_velocity",
+      "description": "CEMP InSAR Envisat Velocity",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/cemp_insar_envisat_velocity"
+    },
+    {
+      "title": "cemp_insar_radarsat2_displacement",
+      "description": "CEMP InSAR Radarsat-2 Displacement",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/cemp_insar_radarsat2_displacement"
+    },
+    {
+      "title": "cemp_insar_radarsat2_velocity",
+      "description": "CEMP InSAR Radarsat-2 Velocity",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/cemp_insar_radarsat2_velocity"
+    },
+    {
+      "title": "fc_percentile_albers_annual",
+      "description": "Landsat Fractional Cover percentile 25 metre, 100km tile, Australian Albers Equal Area projection (EPSG:3577)",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/fc_percentile_albers_annual"
+    },
+    {
+      "title": "fc_percentile_albers_seasonal",
+      "description": "Landsat Fractional Cover percentile 25 metre, 100km tile, Australian Albers Equal Area projection (EPSG:3577)",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/fc_percentile_albers_seasonal"
+    },
+    {
+      "title": "ga_ls5t_ard_3",
+      "description": "Geoscience Australia Landsat 5 Thematic Mapper Analysis Ready Data Collection 3",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ga_ls5t_ard_3"
+    },
+    {
+      "title": "ga_ls5t_nbart_gm_cyear_3",
+      "description": "Geoscience Australia Landsat Nadir BRDF Adjusted Reflectance Terrain, Landsat 5 Geomedian Calendar Year Collection 3",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ga_ls5t_nbart_gm_cyear_3"
+    },
+    {
+      "title": "ga_ls7e_ard_3",
+      "description": "Geoscience Australia Landsat 7 Enhanced Thematic Mapper Plus Analysis Ready Data Collection 3",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ga_ls7e_ard_3"
+    },
+    {
+      "title": "ga_ls7e_ard_provisional_3",
+      "description": "Geoscience Australia Landsat 7 Enhanced Thematic Mapper Plus Analysis Ready Data Collection 3 (provisional)",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ga_ls7e_ard_provisional_3"
+    },
+    {
+      "title": "ga_ls7e_nbart_gm_cyear_3",
+      "description": "Geoscience Australia Landsat Nadir BRDF Adjusted Reflectance Terrain, Landsat 7 Geomedian Calendar Year Collection 3",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ga_ls7e_nbart_gm_cyear_3"
+    },
+    {
+      "title": "ga_ls8c_ard_3",
+      "description": "Geoscience Australia Landsat 8 Operational Land Imager and Thermal Infra-Red Scanner Analysis Ready Data Collection 3",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ga_ls8c_ard_3"
+    },
+    {
+      "title": "ga_ls8c_ard_provisional_3",
+      "description": "Geoscience Australia Landsat 8 Operational Land Imager and Thermal Infra-Red Scanner Analysis Ready Data Collection 3 (provisional)",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ga_ls8c_ard_provisional_3"
+    },
+    {
+      "title": "ga_ls8c_nbart_gm_cyear_3",
+      "description": "Geoscience Australia Landsat Nadir BRDF Adjusted Reflectance Terrain, Landsat 8 Geomedian Calendar Year Collection 3",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ga_ls8c_nbart_gm_cyear_3"
+    },
+    {
+      "title": "ga_ls_fc_3",
+      "description": "Geoscience Australia Landsat Fractional Cover Collection 3",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ga_ls_fc_3"
+    },
+    {
+      "title": "ga_ls_fc_pc_cyear_3",
+      "description": "Geoscience Australia Landsat Fractional Cover Percentile Calendar Year Collection 3",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ga_ls_fc_pc_cyear_3"
+    },
+    {
+      "title": "ga_ls_landcover_class_cyear_2",
+      "description": "Geoscience Australia Landsat Land Cover Calendar Year Collection 2.0",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ga_ls_landcover_class_cyear_2"
+    },
+    {
+      "title": "ga_ls_mangrove_cover_cyear_3",
+      "description": "Geoscience Australia Landsat Mangrove Cover Calendar Year Collection 3",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ga_ls_mangrove_cover_cyear_3"
+    },
+    {
+      "title": "ga_ls_tc_pc_cyear_3",
+      "description": "Geoscience Australia Landsat Tasseled Cap Percentile Calendar Year Collection 3",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ga_ls_tc_pc_cyear_3"
+    },
+    {
+      "title": "ga_ls_tcw_percentiles_2",
+      "description": "Geoscience Australia Landsat Tasseled Cap Wetness Percentiles Collection 2, 25 metre, 100km tile, Australian Albers Equal Area projection (EPSG:3577)",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ga_ls_tcw_percentiles_2"
+    },
+    {
+      "title": "ga_ls_wo_3",
+      "description": "Geoscience Australia Landsat Water Observations Collection 3",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ga_ls_wo_3"
+    },
+    {
+      "title": "ga_ls_wo_fq_apr_oct_3",
+      "description": "Geoscience Australia Landsat Water Observations Frequency April to October Collection 3",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ga_ls_wo_fq_apr_oct_3"
+    },
+    {
+      "title": "ga_ls_wo_fq_cyear_3",
+      "description": "Geoscience Australia Landsat Water Observations Frequency Calendar Year Collection 3",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ga_ls_wo_fq_cyear_3"
+    },
+    {
+      "title": "ga_ls_wo_fq_myear_3",
+      "description": "Geoscience Australia Landsat Water Observations Frequency Multi Year Collection 3",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ga_ls_wo_fq_myear_3"
+    },
+    {
+      "title": "ga_ls_wo_fq_nov_mar_3",
+      "description": "Geoscience Australia Landsat Water Observations Frequency November to March Collection 3",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ga_ls_wo_fq_nov_mar_3"
+    },
+    {
+      "title": "ga_s2am_ard_provisional_3",
+      "description": "Geoscience Australia Sentinel 2a MSI Analysis Ready Data Collection 3 (provisional)",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ga_s2am_ard_provisional_3"
+    },
+    {
+      "title": "ga_s2_ba_provisional_3",
+      "description": "Sentinel 2 Burnt Area Collection 3 (Provisional)",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ga_s2_ba_provisional_3"
+    },
+    {
+      "title": "ga_s2bm_ard_provisional_3",
+      "description": "Geoscience Australia Sentinel 2b MSI Analysis Ready Data Collection 3 (provisional)",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ga_s2bm_ard_provisional_3"
+    },
+    {
+      "title": "ga_srtm_dem1sv1_0",
+      "description": "DEM 1sec Version 1.0",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ga_srtm_dem1sv1_0"
+    },
+    {
+      "title": "geodata_coast_100k",
+      "description": "Coastline data for Australia",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/geodata_coast_100k"
+    },
+    {
+      "title": "high_tide_comp_20p",
+      "description": "High tide 20 percentage composites 25m v. 2.0.0",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/high_tide_comp_20p"
+    },
+    {
+      "title": "item_v2",
+      "description": "Relative Extents Model",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/item_v2"
+    },
+    {
+      "title": "item_v2_conf",
+      "description": "Average ndwi Standard Deviation, the Confidence Layer",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/item_v2_conf"
+    },
+    {
+      "title": "landsat_barest_earth",
+      "description": "Landsat-5/Landsat-7/Landsat-8 combined Barest Earth pixel composite albers 25 metre, 100km tile, Australian Albers Equal Area projection (EPSG:3577)",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/landsat_barest_earth"
+    },
+    {
+      "title": "low_tide_comp_20p",
+      "description": "Low tide 20 percentage composites 25m v. 2.0.0",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/low_tide_comp_20p"
+    },
+    {
+      "title": "ls5_fc_albers",
+      "description": "Landsat 5 Fractional Cover 25 metre, 100km tile, Australian Albers Equal Area projection (EPSG:3577)",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ls5_fc_albers"
+    },
+    {
+      "title": "ls5_nbart_geomedian_annual",
+      "description": "Surface Reflectance Geometric Median 25 metre, 100km tile, Australian Albers Equal Area projection (EPSG:3577)",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ls5_nbart_geomedian_annual"
+    },
+    {
+      "title": "ls5_nbart_tmad_annual",
+      "description": "Surface Reflectance Triple Median Absolute Deviation 25 metre, 100km tile, Australian Albers Equal Area projection (EPSG:3577)",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ls5_nbart_tmad_annual"
+    },
+    {
+      "title": "ls7_fc_albers",
+      "description": "Landsat 7 Fractional Cover 25 metre, 100km tile, Australian Albers Equal Area projection (EPSG:3577)",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ls7_fc_albers"
+    },
+    {
+      "title": "ls7_nbart_geomedian_annual",
+      "description": "Surface Reflectance Geometric Median 25 metre, 100km tile, Australian Albers Equal Area projection (EPSG:3577)",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ls7_nbart_geomedian_annual"
+    },
+    {
+      "title": "ls7_nbart_tmad_annual",
+      "description": "Surface Reflectance Triple Median Absolute Deviation 25 metre, 100km tile, Australian Albers Equal Area projection (EPSG:3577)",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ls7_nbart_tmad_annual"
+    },
+    {
+      "title": "ls8_barest_earth_albers",
+      "description": "Landsat-8 Barest Earth pixel composite albers 25 metre, 100km tile, Australian Albers Equal Area projection (EPSG:3577)",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ls8_barest_earth_albers"
+    },
+    {
+      "title": "ls8_fc_albers",
+      "description": "Landsat 8 Fractional Cover 25 metre, 100km tile, Australian Albers Equal Area projection (EPSG:3577)",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ls8_fc_albers"
+    },
+    {
+      "title": "ls8_nbart_geomedian_annual",
+      "description": "Surface Reflectance Geometric Median 25 metre, 100km tile, Australian Albers Equal Area projection (EPSG:3577)",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ls8_nbart_geomedian_annual"
+    },
+    {
+      "title": "ls8_nbart_tmad_annual",
+      "description": "Surface Reflectance Triple Median Absolute Deviation 25 metre, 100km tile, Australian Albers Equal Area projection (EPSG:3577)",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/ls8_nbart_tmad_annual"
+    },
+    {
+      "title": "mangrove_cover",
+      "description": "Mangrove Cover, Australian Albers Equal Area projection (EPSG:3577)",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/mangrove_cover"
+    },
+    {
+      "title": "multi_scale_topographic_position",
+      "description": "Multi-scale Topographic Position Image",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/multi_scale_topographic_position"
+    },
+    {
+      "title": "nidem",
+      "description": "National Intertidal Digital Elevation Model 25m 1.0.0",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/nidem"
+    },
+    {
+      "title": "s1_gamma0_geotif_scene",
+      "description": "Sentinel-1A/B SAR Gamma0 scenes, processed to the CEOS ARD standard - Orbit updates, GRD border noise, thermal noise, radiometric calibration and terrain correction, orthorectification.",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/s1_gamma0_geotif_scene"
+    },
+    {
+      "title": "s2a_ard_granule",
+      "description": "Sentinel-2A MSI Definitive ARD - NBART and Pixel Quality",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/s2a_ard_granule"
+    },
+    {
+      "title": "s2a_nrt_granule",
+      "description": "Sentinel-2A MSI ARD NRT - NBAR NBART and Pixel Quality",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/s2a_nrt_granule"
+    },
+    {
+      "title": "s2b_ard_granule",
+      "description": "Sentinel-2B MSI Definitive ARD - NBART and Pixel Quality",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/s2b_ard_granule"
+    },
+    {
+      "title": "s2_barest_earth",
+      "description": "The Sentinel-2 Barest Earth",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/s2_barest_earth"
+    },
+    {
+      "title": "s2b_nrt_granule",
+      "description": "Sentinel-2B MSI ARD NRT - NBAR NBART and Pixel Quality",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/s2b_nrt_granule"
+    },
+    {
+      "title": "water_bodies",
+      "description": "Water Body ID Map",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/water_bodies"
+    },
+    {
+      "title": "weathering_intensity",
+      "description": "Weathering Intensity Model",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/weathering_intensity"
+    },
+    {
+      "title": "wofs_albers",
+      "description": "Historic Flood Mapping Water Observations from Space",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/wofs_albers"
+    },
+    {
+      "title": "wofs_annual_summary",
+      "description": "Water Observations from Space Annual Statistics",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/wofs_annual_summary"
+    },
+    {
+      "title": "wofs_apr_oct_summary",
+      "description": "Water Observations from Space April to October Statistics",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/wofs_apr_oct_summary"
+    },
+    {
+      "title": "wofs_filtered_summary",
+      "description": "Water Observations from Space Statistics confidence filtered",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/wofs_filtered_summary"
+    },
+    {
+      "title": "wofs_nov_mar_summary",
+      "description": "Water Observations from Space November to March Statistics",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/wofs_nov_mar_summary"
+    },
+    {
+      "title": "wofs_summary",
+      "description": "Water Observations from Space Statistics",
+      "rel": "child",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac/collections/wofs_summary"
+    },
+    {
+      "rel": "root",
+      "href": "https://explorer.sandbox.dea.ga.gov.au/stac"
+    }
+  ],
+  "conformsTo": [
+    "https://api.stacspec.org/v1.0.0-beta.2/core",
+    "https://api.stacspec.org/v1.0.0-beta.2/item-search"
+  ]
+}

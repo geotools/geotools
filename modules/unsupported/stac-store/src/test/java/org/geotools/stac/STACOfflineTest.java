@@ -37,6 +37,10 @@ public class STACOfflineTest {
             BASE_URL
                     + "/search?f=application%2Fgeo%2Bjson&collections=S2_L2A_MAJA&datetime=2022"
                     + "-07-14T10:46:29.0240000Z";
+
+    protected static final String LANDING_AU = "https://explorer.sandbox.dea.ga.gov.au/stac/";
+    protected static final String COLLECTIONS_AU = LANDING_AU + "collections";
+
     protected MockHttpClient httpClient;
 
     @Before
@@ -47,6 +51,9 @@ public class STACOfflineTest {
         httpClient.expectGet(new URL(COLLECTIONS_URL), jsonResponse("collections.json", cls));
         httpClient.expectGet(new URL(MAJA_ALL_URL), geojsonResponse("majaAll.json", cls));
         httpClient.expectGet(new URL(MAJA_ONE), geojsonResponse("majaOne.json", cls));
+
+        httpClient.expectGet(new URL(LANDING_AU), jsonResponse("landingPageAu.json", cls));
+        httpClient.expectGet(new URL(COLLECTIONS_AU), jsonResponse("collectionsAu.json", cls));
     }
 
     protected HTTPResponse jsonResponse(String fileName, Class<?> cls) {

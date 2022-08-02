@@ -87,6 +87,9 @@ public class STACFeatureSourceTest extends AbstractSTACStoreTest {
     private static String CLOUD_50_GET =
             "https://geoservice.dlr.de/eoc/ogc/stac/search?collections=S2_L2A_MAJA&filter=\"eo:cloud_cover\" < 50&filter-lang=cql2-text&limit=1000&f=application/geo%2Bjson";
 
+    private static String CLOUD_0_GET =
+            "https://geoservice.dlr.de/eoc/ogc/stac/search?collections=S2_L2A_MAJA&filter=\"eo:cloud_cover\" < 0&filter-lang=cql2-text&limit=1000&f=application/geo%2Bjson";
+
     private static final String MAJA_CC_50_POST =
             "{\"collections\":[\"S2_L2A_MAJA\"],\"limit\":1000,\"filter\":{\"op\":\"<\","
                     + "\"args\":[{\"property\":\"eo:cloud_cover\"},50]},\"filter-lang\":\"cql2-json\"}";
@@ -111,6 +114,7 @@ public class STACFeatureSourceTest extends AbstractSTACStoreTest {
         httpClient.expectGet(new URL(MAJA_PAGE_1), geojsonResponse("maja10.json", cls));
         httpClient.expectGet(new URL(MAJA_PAGE_2), geojsonResponse("maja20.json", cls));
         httpClient.expectGet(new URL(CLOUD_50_GET), geojsonResponse("majaCloudCover50.json", cls));
+        httpClient.expectGet(new URL(CLOUD_0_GET), geojsonResponse("majaNone.json", cls));
 
         // POST request support
         URL postURL = new URL(BASE_URL + "/search?f=application/geo%2Bjson");
@@ -323,5 +327,17 @@ public class STACFeatureSourceTest extends AbstractSTACStoreTest {
                 assertThat((Integer) next.getAttribute("eo:cloud_cover"), Matchers.lessThan(50));
             }
         }
+    }
+
+    @Test
+    public void testCloudCoverZero() throws Exception {
+        SimpleFeatureSource fs = store.getFeatureSource(MAJA);
+        Query q = new Query();
+        q.setFilter(ECQL.toFilter("eo:cloud_cover < 0")); // impossible filter
+        SimpleFeatureCollection fc = fs.getFeatures(q);
+
+        // used to break
+        assertEquals(0, fc.size());
+        assertEquals(fs.getSchema(), fc.getSchema());
     }
 }

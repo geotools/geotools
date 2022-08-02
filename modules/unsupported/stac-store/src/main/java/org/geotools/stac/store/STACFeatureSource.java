@@ -382,18 +382,31 @@ public class STACFeatureSource extends ContentFeatureSource {
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
         Pair<SearchQuery, Filter> pair = getSearchQuery(query, false);
-        SearchQuery sq = pair.getKey();
-        Filter postFilter = pair.getValue();
+        SearchQuery sq;
+        Filter postFilter;
+        if (pair == null) {
+            sq = getSearchQuery(Query.ALL, false).getKey();
+            postFilter = query.getFilter();
+        } else {
+            sq = pair.getKey();
+            postFilter = pair.getValue();
+        }
 
-        SimpleFeatureCollection fc = client.search(sq, getDataStore().getSearchMode());
+        SimpleFeatureCollection fc = client.search(sq, getDataStore().getSearchMode(), getSchema());
         SimpleFeatureReader result = new CollectionReader(fc);
+
+        // the hard limit must be applied before filtering, or we'll fetch more features
+        int hardLimit = getDataStore().getHardLimit();
+        if (hardLimit > 0) {
+            result = DataUtilities.simple(new MaxFeatureReader<>(result, hardLimit));
+        }
 
         // handle post filtering, if the full filter could not be encoded
         if (!Filter.INCLUDE.equals(postFilter))
             result = new FilteringSimpleFeatureReader(result, query.getFilter());
 
         // handle property selection, if it was not fully encoded in the query, or a post
-        // filter required more properties than strictly necessary
+        // filter required more properties than strictly necessary.
         if (query.getProperties() != null
                 && !query.getProperties().isEmpty()
                 && (sq.getFields() == null || !Filter.INCLUDE.equals(postFilter))) {
@@ -403,8 +416,8 @@ public class STACFeatureSource extends ContentFeatureSource {
             result = DataUtilities.simple(new ReTypeFeatureReader(result, targetType, false));
         }
 
-        // handle max feature and hard limit
-        int max = Math.min(query.getMaxFeatures(), getDataStore().getHardLimit());
+        // handle max feature from the query
+        int max = query.getMaxFeatures();
         if (max < Query.DEFAULT_MAX)
             result = DataUtilities.simple(new MaxFeatureReader<>(result, max));
 

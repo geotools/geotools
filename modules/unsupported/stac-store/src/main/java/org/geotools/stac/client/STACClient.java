@@ -36,11 +36,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPResponse;
 import org.geotools.util.logging.Logging;
+import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * Minimal STAC API client supporting the needs of the STAC datastore. Not currently meant to be a
@@ -128,12 +130,19 @@ public class STACClient implements Closeable {
     public List<Collection> getCollections() throws IOException {
         Optional<Link> maybeData =
                 landingPage.getLinks().stream().filter(this::isDataJSONLink).findFirst();
+        if (!maybeData.isPresent()) {
+            maybeData =
+                    landingPage.getLinks().stream().filter(this::isChildrenJSONLink).findFirst();
+        }
         if (!maybeData.isPresent()) return Collections.emptyList();
 
         HTTPResponse response = http.get(new URL(maybeData.get().getHref()));
         checkJSONResponse(response);
         try (InputStream is = response.getResponseStream()) {
-            return OBJECT_MAPPER.readValue(is, CollectionList.class).getCollections();
+            return OBJECT_MAPPER.readValue(is, CollectionList.class).getCollections().stream()
+                    // discard eventual sub-catalogs
+                    .filter(c -> c.getType() == null || "collection".equalsIgnoreCase(c.getType()))
+                    .collect(Collectors.toList());
         }
     }
 
@@ -142,7 +151,33 @@ public class STACClient implements Closeable {
                 && (StringUtils.isEmpty(l.getType()) || l.getType().equals(JSON_MIME));
     }
 
+    private boolean isChildrenJSONLink(Link l) {
+        return l.getRel().equals("children")
+                && (StringUtils.isEmpty(l.getType()) || l.getType().equals(JSON_MIME));
+    }
+
+    /**
+     * Retrieves data using the Search API
+     *
+     * @param search The search request
+     * @param mode The search mode
+     * @throws IOException
+     */
     public SimpleFeatureCollection search(SearchQuery search, SearchMode mode) throws IOException {
+        return this.search(search, mode, null);
+    }
+
+    /**
+     * Retrieves data using the Search API
+     *
+     * @param search The search request
+     * @param mode The search mode
+     * @param schema An optional base schema, can be used to ensure at least those properties are
+     *     present
+     * @throws IOException
+     */
+    public SimpleFeatureCollection search(
+            SearchQuery search, SearchMode mode, SimpleFeatureType schema) throws IOException {
         if (!STACConformance.ITEM_SEARCH.matches(landingPage.getConformance()))
             // might want to take a different path and see if OGC API - Features is supported
             // instead
@@ -177,6 +212,7 @@ public class STACClient implements Closeable {
             // TODO: support paging following links
             try (STACGeoJSONReader reader =
                     new STACGeoJSONReader(response.getResponseStream(), http)) {
+                if (schema != null) reader.setSchema(schema);
                 return reader.getFeatures();
             }
         } catch (URISyntaxException e) {

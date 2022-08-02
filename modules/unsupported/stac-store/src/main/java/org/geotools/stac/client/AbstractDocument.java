@@ -19,6 +19,7 @@ package org.geotools.stac.client;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /** Base OGC API document class, with identifier and links */
 public class AbstractDocument extends AnyJSONObject {
@@ -28,6 +29,8 @@ public class AbstractDocument extends AnyJSONObject {
     String title;
 
     String description;
+
+    String type;
 
     protected final List<Link> links = new ArrayList<>();
 
@@ -63,5 +66,18 @@ public class AbstractDocument extends AnyJSONObject {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }

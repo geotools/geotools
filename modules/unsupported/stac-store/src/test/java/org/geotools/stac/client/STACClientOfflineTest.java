@@ -42,6 +42,7 @@ import org.geotools.data.geojson.GeoJSONReader;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.stac.STACOfflineTest;
 import org.hamcrest.CoreMatchers;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeature;
@@ -175,5 +176,21 @@ public class STACClientOfflineTest extends STACOfflineTest {
 
         // check id
         assertEquals("SENTINEL2B_20220714-105646-098_L2A_T32ULB_C", top.get("id").textValue());
+    }
+
+    @Test
+    public void testSearchCollectionsTolerance() throws IOException {
+        this.client = new STACClient(new URL(LANDING_AU), httpClient);
+        List<String> collections =
+                client.getCollections().stream().map(c -> c.getId()).collect(Collectors.toList());
+        // just checking a few items are there
+        assertThat(
+                collections,
+                Matchers.hasItems("aster_aloh_group_composition", "aster_aloh_group_content"));
+
+        // also check the search page is found, despite using the wrong mime
+        assertEquals(
+                "https://explorer.sandbox.dea.ga.gov.au/stac/search",
+                client.getLandingPage().getSearchLink(HttpMethod.GET));
     }
 }

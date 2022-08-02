@@ -17,6 +17,7 @@
 package org.geotools.stac.client;
 
 import static org.geotools.stac.client.STACClient.GEOJSON_MIME;
+import static org.geotools.stac.client.STACClient.JSON_MIME;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -41,16 +42,28 @@ public class STACLandingPage extends AbstractDocument {
     }
 
     public String getSearchLink(HttpMethod method) {
-        return getLinks().stream()
-                .filter(l -> isSearchLink(l, method))
-                .map(l -> l.getHref())
-                .findFirst()
-                .orElse(null);
+        String link =
+                getLinks().stream()
+                        .filter(l -> isSearchLink(l, method, GEOJSON_MIME))
+                        .map(l -> l.getHref())
+                        .findFirst()
+                        .orElse(null);
+
+        // bit of tolerance, although this is wrong
+        if (link == null)
+            link =
+                    getLinks().stream()
+                            .filter(l -> isSearchLink(l, method, JSON_MIME))
+                            .map(l -> l.getHref())
+                            .findFirst()
+                            .orElse(null);
+
+        return link;
     }
 
-    private boolean isSearchLink(Link l, HttpMethod method) {
+    private boolean isSearchLink(Link l, HttpMethod method, String mime) {
         return SERCH_REL.equals(l.getRel())
-                && (GEOJSON_MIME.equals(l.getType()) || l.getType() == null)
+                && (mime.equals(l.getType()) || l.getType() == null)
                 && (l.getMethod() == null || l.getMethod() == method);
     }
 }

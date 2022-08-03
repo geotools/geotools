@@ -24,8 +24,8 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
+import org.geotools.gce.imagemosaic.catalog.index.IndexerUtils;
 import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * This class is responsible for walking through the target schema and check all the located
@@ -82,6 +82,12 @@ class ImageMosaicDatastoreWalker extends ImageMosaicWalker implements Runnable {
 
                     // how many rows for this feature type?
                     final Query query = new Query(typeName);
+                    Integer maxInitializationTiles =
+                            IndexerUtils.getParameterAsInteger(
+                                    Prop.MAX_INIT_TILES,
+                                    configHandler.getRunConfiguration().getIndexer());
+                    if (maxInitializationTiles != null)
+                        query.setMaxFeatures(maxInitializationTiles);
                     int numFiles = catalog.getGranulesCount(query);
                     if (numFiles <= 0) {
                         // empty table?
@@ -93,23 +99,6 @@ class ImageMosaicDatastoreWalker extends ImageMosaicWalker implements Runnable {
                     // cool, now let's walk over the features
                     final SimpleFeatureCollection coll = catalog.getGranules(query);
 
-                    SimpleFeatureType schema = coll.getSchema();
-                    if (schema.getDescriptor(locationAttrName) == null) {
-                        LOGGER.fine(
-                                "Skipping feature type "
-                                        + typeName
-                                        + " as the location attribute "
-                                        + locationAttrName
-                                        + " is not part of the schema");
-                        continue;
-                    } else if (schema.getGeometryDescriptor() == null) {
-                        LOGGER.fine(
-                                "Skipping feature type "
-                                        + typeName
-                                        + " as it does not have a footprint column");
-                        continue;
-                    }
-
                     // create an iterator
                     try (SimpleFeatureIterator it = coll.features()) {
                         // TODO setup index name
@@ -117,9 +106,7 @@ class ImageMosaicDatastoreWalker extends ImageMosaicWalker implements Runnable {
                             // get next element
                             final SimpleFeature feature = it.next();
                             consumer.handleElement(feature, this);
-                            if (getStop()) {
-                                break;
-                            }
+                            if (getStop()) break;
                         }
                     }
                 } // next table

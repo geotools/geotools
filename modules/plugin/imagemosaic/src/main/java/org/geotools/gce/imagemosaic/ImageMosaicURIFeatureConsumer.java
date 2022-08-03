@@ -60,8 +60,11 @@ public class ImageMosaicURIFeatureConsumer implements ImageMosaicElementConsumer
         ImageMosaicConfigHandler configHandler = walker.getConfigHandler();
         CatalogBuilderConfiguration runConfiguration = configHandler.getRunConfiguration();
         String locationAttrName = runConfiguration.getParameter(Utils.Prop.LOCATION_ATTRIBUTE);
-        Object locationAttrObj = feature.getAttribute(locationAttrName);
-        String location = (String) locationAttrObj;
+        String location = (String) Utils.getAttribute(feature, locationAttrName);
+        if (location == null) {
+            throw new IllegalArgumentException(
+                    "Could not find the location using attribute name: " + locationAttrName);
+        }
         try {
             imageMosaicURIConsumer.handleElement(new URI(location), walker);
         } catch (URISyntaxException e) {

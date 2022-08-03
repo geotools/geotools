@@ -31,6 +31,7 @@ import java.util.stream.DoubleStream;
 import org.apache.http.client.utils.URIBuilder;
 import org.geootols.filter.text.cql_2.CQL2;
 import org.geotools.filter.text.cqljson.CQL2Json;
+import org.opengis.filter.Filter;
 
 /** Builds a Search GET URL based on the landing page and {@link SearchQuery} specification */
 class SearchGetBuilder {
@@ -70,11 +71,13 @@ class SearchGetBuilder {
                 throw new RuntimeException(e);
             }
         }
-        if (search.getFilter() != null) {
+        Filter filter = search.getFilter();
+        if (filter != null) {
             FilterLang lang = Optional.ofNullable(search.getFilterLang()).orElse(CQL2_TEXT);
             String spec;
-            if (CQL2_TEXT.equals(lang)) spec = CQL2.toCQL2(search.getFilter());
-            else if (CQL2_JSON.equals(lang)) spec = CQL2Json.toCQL2(search.getFilter());
+            Filter defaulted = GeometryDefaulter.defaultGeometry(filter);
+            if (CQL2_TEXT.equals(lang)) spec = CQL2.toCQL2(defaulted);
+            else if (CQL2_JSON.equals(lang)) spec = CQL2Json.toCQL2(defaulted);
             else throw new IllegalArgumentException("Unrecognized filter language: " + lang);
             builder.addParameter("filter", spec);
             builder.addParameter("filter-lang", lang.toString());

@@ -112,7 +112,7 @@ public class ImageMosaicFileResourceInfo extends DefaultResourceInfo implements 
             SimpleFeature firstFeature = null;
 
             // resolve the location
-            String granuleLocation = (String) next.getAttribute(locationAttributeName);
+            String granuleLocation = (String) Utils.getAttribute(next, locationAttributeName);
             URL resolved = pathType.resolvePath(parentLocation, granuleLocation);
             File file = null;
             if (resolved != null) {
@@ -129,7 +129,7 @@ public class ImageMosaicFileResourceInfo extends DefaultResourceInfo implements 
             while (featureIterator.hasNext()) {
                 // Group features sharing same location
                 next = featureIterator.next();
-                String nextLocation = (String) next.getAttribute(locationAttributeName);
+                String nextLocation = (String) Utils.getAttribute(next, locationAttributeName);
                 if (granuleLocation.equalsIgnoreCase(nextLocation)) {
                     groupedFeatures++;
                 } else {
@@ -200,7 +200,7 @@ public class ImageMosaicFileResourceInfo extends DefaultResourceInfo implements 
                             granuleCatalog.computeAggregateFunction(query, minVisitor);
                             min = minVisitor.getMin();
                         } else {
-                            max = min = (Comparable) firstFeature.getAttribute(attribute);
+                            max = min = (Comparable) Utils.getAttribute(firstFeature, attribute);
                         }
                         addMetadaElement(name, min, max, metadataMap);
                     }

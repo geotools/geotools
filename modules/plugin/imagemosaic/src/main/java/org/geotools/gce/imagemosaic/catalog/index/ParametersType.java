@@ -154,7 +154,7 @@ public class ParametersType {
          */
         @Override
         public String toString() {
-            return "Parameter [value=" + value + ", name=" + name + "]";
+            return "Parameter [name=" + name + ", value=" + value + "]";
         }
     }
 

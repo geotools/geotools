@@ -134,7 +134,6 @@ public class ImageMosaicConfigHandler {
      */
     private static final Boolean USE_MEMORY_MAPPED_BUFFERS =
             !System.getProperty("os.name", "Windows").contains("Windows");
-
     private List<PropertiesCollector> propertiesCollectors = null;
 
     private Map<String, MosaicConfigurationBean> configurations = new HashMap<>();
@@ -1444,7 +1443,7 @@ public class ImageMosaicConfigHandler {
             configBuilder.setTimeAttribute(
                     IndexerUtils.getAttribute(targetCoverageName, Utils.TIME_DOMAIN, indexer));
             configBuilder.setCrsAttribute(
-                    IndexerUtils.getAttribute(targetCoverageName, Prop.CRS_ATTRIBUTE, indexer));
+                    IndexerUtils.getAttribute(targetCoverageName, Utils.CRS_DOMAIN, indexer));
             configBuilder.setElevationAttribute(
                     IndexerUtils.getAttribute(targetCoverageName, Utils.ELEVATION_DOMAIN, indexer));
             configBuilder.setAdditionalDomainAttributes(
@@ -1759,11 +1758,11 @@ public class ImageMosaicConfigHandler {
             // to provide them to the consumer
             SourceSPIProviderFactory urlSourceSPIProvider =
                     new CogConfiguration(getRunConfiguration().getIndexer());
-            ImageMosaicURLFeatureConsumer.ImageMosaicURLConsumer urlsConsumer =
-                    new ImageMosaicURLFeatureConsumer.ImageMosaicURLConsumer(urlSourceSPIProvider);
+            ImageMosaicURIFeatureConsumer.ImageMosaicURIConsumer uriConsumer =
+                    new ImageMosaicURIFeatureConsumer.ImageMosaicURIConsumer(urlSourceSPIProvider);
             walker =
                     new ImageMosaicDatastoreWalker(
-                            this, eventHandler, new ImageMosaicURLFeatureConsumer(urlsConsumer));
+                            this, eventHandler, new ImageMosaicURIFeatureConsumer(uriConsumer));
         } else if (isUseExistingSchema()) {
             // walks existing granules in the origin store
             walker =

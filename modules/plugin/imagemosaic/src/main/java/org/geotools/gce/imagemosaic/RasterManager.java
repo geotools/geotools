@@ -1120,8 +1120,10 @@ public class RasterManager implements Cloneable {
                 dimensionDescriptors.addAll(domainsManager.dimensions);
             } else {
                 DimensionDescriptor crsDimension =
-                        domainsManager.addDimension(Utils.CRS_DOMAIN, attributeName);
-                dimensionDescriptors.add(crsDimension);
+                        domainsManager.addDimension(DimensionDescriptor.CRS, attributeName);
+                if (!dimensionDescriptors.stream()
+                        .anyMatch(dd -> DimensionDescriptor.CRS.equalsIgnoreCase(dd.getName())))
+                    dimensionDescriptors.add(crsDimension);
             }
         }
     }
@@ -1845,8 +1847,8 @@ public class RasterManager implements Cloneable {
                             + "the 'crs' property is missing from the index schema");
         }
 
-        String granuleCRSCode =
-                (String) templateDescriptor.getOriginator().getAttribute(crsAttribute);
+        Object granuleCRSCode =
+                Utils.getAttribute(templateDescriptor.getOriginator(), crsAttribute);
         FilterFactory2 ff = FeatureUtilities.DEFAULT_FILTER_FACTORY;
         PropertyIsEqualTo crsFilter =
                 ff.equal(ff.property(crsAttribute), ff.literal(granuleCRSCode), false);

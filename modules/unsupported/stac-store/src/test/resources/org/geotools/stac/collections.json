@@ -654,6 +654,157 @@
           "title": "proprietary"
         }
       ]
+    },
+    {
+      "type": "Collection",
+      "stac_version": "1.0.0",
+      "stac_extensions": [
+        "https://stac-extensions.github.io/processing/v1.0.0/schema.json",
+        "https://stac-extensions.github.io/datacube/v2.0.0/schema.json"
+      ],
+      "id": "WSF_2019",
+      "title": "WSF 2019",
+      "description": "World Settlement Footprint 2019",
+      "keywords": [
+        "DLR",
+        "EOC",
+        "WSF",
+        "Urbanization",
+        "Global Settlement Extent",
+        "Sentinel-1",
+        "Sentinel-2",
+        "Copernicus",
+        "Land"
+      ],
+      "license": "CC-BY-NC-4.0",
+      "providers": [
+        {
+          "url": "https://geoservice.dlr.de",
+          "name": "DLR/EOC Geoservice",
+          "roles": [
+            "host"
+          ]
+        },
+        {
+          "url": "https://dlr.de/eoc",
+          "name": "DLR/EOC Land Surface Dynamics",
+          "roles": [
+            "processor"
+          ]
+        }
+      ],
+      "extent": {
+        "spatial": {
+          "bbox": [
+            [
+              -74.0361813,
+              40.6789500,
+              -73.9702449,
+              40.7332082
+            ]
+          ]
+        },
+        "temporal": {
+          "interval": [
+            [
+              "2019-01-01T00:00:00.000+00:00",
+              "2019-12-31T23:59:59.999+00:00"
+            ]
+          ]
+        }
+      },
+      "cube:dimensions": {
+        "time": {
+          "type": "temporal",
+          "extent": [
+            "2019-01-01T00:00:00.000+00:00",
+            "2019-12-31T23:59:59.999+00:00"
+          ],
+          "step": "P1Y"
+        },
+        "x": {
+          "type": "spatial",
+          "axis": "x",
+          "extent": [
+            -180.0,
+            180.0
+          ],
+          "reference_system": 4326
+        },
+        "y": {
+          "type": "spatial",
+          "axis": "y",
+          "extent": [
+            -90.0,
+            90.0
+          ],
+          "reference_system": 4326
+        }
+      },
+      "assets": {
+        "thumbnail": {
+          "href": "https://geoservice.dlr.de/catalogue/srv/api/records/cbc6cb05-1245-41f9-a866-051119441187/attachments/WSF2019_Hanoi_180x180.png",
+          "type": "image/png",
+          "title": "Thumbnail",
+          "roles": [
+            "thumbnail"
+          ]
+        },
+        "overview": {
+          "href": "https://geoservice.dlr.de/catalogue/srv/api/records/cbc6cb05-1245-41f9-a866-051119441187/attachments/WSF2019_Hanoi_800x800.png",
+          "type": "image/png",
+          "title": "Overview",
+          "roles": [
+            "overview"
+          ]
+        },
+        "preview": {
+          "href": "https://geoservice.dlr.de/web/maps/eoc:wsf2019",
+          "type": "text/html",
+          "title": "Map Preview",
+          "roles": [
+            "preview"
+          ]
+        }
+      },
+      "links": [
+        {
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/WSF_2019?f=application/json",
+          "rel": "self",
+          "type": "application/json"
+        },
+        {
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac?f=application/json",
+          "rel": "root",
+          "type": "application/json"
+        },
+        {
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac?f=application/json",
+          "rel": "parent",
+          "type": "application/json"
+        },
+        {
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections?f=application/json",
+          "rel": "collections",
+          "type": "application/json"
+        },
+        {
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/WSF_2019/items?f=application/geo%2Bjson",
+          "rel": "items",
+          "type": "application/geo+json"
+        },
+        {
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/WSF_2019/queryables?f=application/schema%2Bjson",
+          "rel": "http://www.opengis.net/def/rel/ogc/1.0/queryables",
+          "type": "application/schema+json"
+        },
+        {
+          "rel": "license",
+          "href": "https://spdx.org/licenses/CC-BY-NC-4.0",
+          "type": "text/html",
+          "title": "CC-BY-NC-4.0"
+        }
+      ]
     }
   ]
 }

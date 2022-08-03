@@ -231,6 +231,18 @@ public class IndexerUtils {
     }
 
     /**
+     * Return the parameter value (as an integer) of the specified parameter name from the provider
+     * indexer, or null, if the parameter was not found
+     */
+    public static Integer getParameterAsInteger(String parameterName, Indexer indexer) {
+        String value = getParameter(parameterName, indexer);
+        if (value != null) {
+            return Integer.parseInt(value);
+        }
+        return null;
+    }
+
+    /**
      * Return the parameter value (as a boolean) of the specified parameter name from the provider
      * indexer
      */
@@ -586,15 +598,9 @@ public class IndexerUtils {
             } else {
                 setParam(parameters, Utils.Prop.COG_RANGE_READER, Utils.DEFAULT_RANGE_READER);
             }
-            if (props.containsKey(Utils.Prop.COG_USE_CACHE)) {
-                setParam(parameters, props, Utils.Prop.COG_USE_CACHE);
-            }
-            if (props.containsKey(Utils.Prop.COG_PASSWORD)) {
-                setParam(parameters, props, Utils.Prop.COG_PASSWORD);
-            }
-            if (props.containsKey(Utils.Prop.COG_USER)) {
-                setParam(parameters, props, Utils.Prop.COG_USER);
-            }
+            addProperty(Utils.Prop.COG_USE_CACHE, props, parameters);
+            addProperty(Utils.Prop.COG_PASSWORD, props, parameters);
+            addProperty(Utils.Prop.COG_USER, props, parameters);
         }
 
         // wildcard
@@ -602,13 +608,9 @@ public class IndexerUtils {
             setParam(parameters, props, Utils.Prop.WILDCARD);
 
         // granule acceptors string
-        if (props.containsKey(Utils.Prop.GRANULE_ACCEPTORS)) {
-            setParam(parameters, props, Utils.Prop.GRANULE_ACCEPTORS);
-        }
+        addProperty(Utils.Prop.GRANULE_ACCEPTORS, props, parameters);
 
-        if (props.containsKey(Utils.Prop.GEOMETRY_HANDLER)) {
-            setParam(parameters, props, Utils.Prop.GEOMETRY_HANDLER);
-        }
+        addProperty(Utils.Prop.GEOMETRY_HANDLER, props, parameters);
 
         if (props.containsKey(Utils.Prop.COVERAGE_NAME_COLLECTOR_SPI)) {
             IndexerUtils.setParam(parameters, props, Utils.Prop.COVERAGE_NAME_COLLECTOR_SPI);
@@ -631,6 +633,13 @@ public class IndexerUtils {
         addDomain(props, coverage, Utils.Prop.RESOLUTION_ATTRIBUTE, Utils.RESOLUTION_DOMAIN);
         addDomain(props, coverage, Utils.Prop.RESOLUTION_X_ATTRIBUTE, Utils.RESOLUTION_X_DOMAIN);
         addDomain(props, coverage, Utils.Prop.RESOLUTION_Y_ATTRIBUTE, Utils.RESOLUTION_Y_DOMAIN);
+
+        addProperty(Utils.Prop.TIME_ATTRIBUTE, props, parameters);
+        addProperty(Utils.Prop.ELEVATION_ATTRIBUTE, props, parameters);
+        addProperty(Utils.Prop.CRS_ATTRIBUTE, props, parameters);
+        addProperty(Utils.Prop.RESOLUTION_ATTRIBUTE, props, parameters);
+        addProperty(Utils.Prop.RESOLUTION_X_ATTRIBUTE, props, parameters);
+        addProperty(Utils.Prop.RESOLUTION_Y_ATTRIBUTE, props, parameters);
 
         // Additional domain attr
         if (props.containsKey(Utils.Prop.ADDITIONAL_DOMAIN_ATTRIBUTES)) {
@@ -659,54 +668,32 @@ public class IndexerUtils {
 
         if (props.containsKey(Utils.Prop.CACHING)) setParam(parameters, props, Utils.Prop.CACHING);
 
-        if (props.containsKey(Utils.Prop.ROOT_MOSAIC_DIR)) {
-            // Overriding root mosaic directory
-            setParam(parameters, props, Utils.Prop.ROOT_MOSAIC_DIR);
-        }
+        addProperty(Utils.Prop.ROOT_MOSAIC_DIR, props, parameters);
 
-        if (props.containsKey(Utils.Prop.INDEXING_DIRECTORIES)) {
-            setParam(parameters, props, Utils.Prop.INDEXING_DIRECTORIES);
-        }
-        if (props.containsKey(Utils.Prop.AUXILIARY_FILE)) {
-            setParam(parameters, props, Utils.Prop.AUXILIARY_FILE);
-        }
-        if (props.containsKey(Utils.Prop.AUXILIARY_DATASTORE_FILE)) {
-            setParam(parameters, props, Utils.Prop.AUXILIARY_DATASTORE_FILE);
-        }
-        if (props.containsKey(Utils.Prop.CAN_BE_EMPTY)) {
-            setParam(parameters, props, Utils.Prop.CAN_BE_EMPTY);
-        }
-        if (props.containsKey(Utils.Prop.WRAP_STORE)) {
-            setParam(parameters, props, Utils.Prop.WRAP_STORE);
-        }
-        if (props.containsKey(Utils.Prop.USE_EXISTING_SCHEMA)) {
-            setParam(parameters, props, Utils.Prop.USE_EXISTING_SCHEMA);
-        }
-        if (props.containsKey(Utils.Prop.CHECK_AUXILIARY_METADATA)) {
-            setParam(parameters, props, Utils.Prop.CHECK_AUXILIARY_METADATA);
-        }
-
-        if (props.containsKey(Utils.Prop.GRANULE_COLLECTOR_FACTORY)) {
-            setParam(parameters, props, Utils.Prop.GRANULE_COLLECTOR_FACTORY);
-        }
-
-        if (props.containsKey(Utils.Prop.HETEROGENEOUS_CRS)) {
-            setParam(parameters, props, Utils.Prop.HETEROGENEOUS_CRS);
-        }
-
-        if (props.containsKey(Utils.Prop.MOSAIC_CRS)) {
-            setParam(parameters, props, Utils.Prop.MOSAIC_CRS);
-        }
-
-        if (props.containsKey(Utils.Prop.NO_DATA)) {
-            setParam(parameters, props, Utils.Prop.NO_DATA);
-        }
-
-        if (props.containsKey(Utils.Prop.SKIP_EXTERNAL_OVERVIEWS)) {
-            setParam(parameters, props, Utils.Prop.SKIP_EXTERNAL_OVERVIEWS);
-        }
+        addProperty(Utils.Prop.INDEXING_DIRECTORIES, props, parameters);
+        addProperty(Utils.Prop.AUXILIARY_FILE, props, parameters);
+        addProperty(Utils.Prop.AUXILIARY_DATASTORE_FILE, props, parameters);
+        addProperty(Utils.Prop.CAN_BE_EMPTY, props, parameters);
+        addProperty(Utils.Prop.WRAP_STORE, props, parameters);
+        addProperty(Utils.Prop.USE_EXISTING_SCHEMA, props, parameters);
+        addProperty(Utils.Prop.CHECK_AUXILIARY_METADATA, props, parameters);
+        addProperty(Utils.Prop.GRANULE_COLLECTOR_FACTORY, props, parameters);
+        addProperty(Utils.Prop.HETEROGENEOUS_CRS, props, parameters);
+        addProperty(Utils.Prop.CRS_ATTRIBUTE, props, parameters);
+        addProperty(Utils.Prop.MOSAIC_CRS, props, parameters);
+        addProperty(Utils.Prop.NO_DATA, props, parameters);
+        addProperty(Utils.Prop.SKIP_EXTERNAL_OVERVIEWS, props, parameters);
+        addProperty(Utils.Prop.LOCATION_ATTRIBUTE, props, parameters);
+        addProperty(Utils.Prop.MAX_INIT_TILES, props, parameters);
 
         return indexer;
+    }
+
+    private static void addProperty(
+            String propertyName, Properties props, List<Parameter> parameters) {
+        if (props.containsKey(propertyName)) {
+            setParam(parameters, props, propertyName);
+        }
     }
 
     public static SourceSPIProviderFactory getSourceSPIProviderFactory(Indexer indexer) {

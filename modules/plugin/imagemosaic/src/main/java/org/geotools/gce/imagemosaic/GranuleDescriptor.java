@@ -894,7 +894,7 @@ public class GranuleDescriptor {
             final boolean heterogeneousGranules,
             final Hints hints) {
         // Get location and envelope of the image to load.
-        final String granuleLocation = (String) feature.getAttribute(locationAttribute);
+        final String granuleLocation = (String) Utils.getAttribute(feature, locationAttribute);
         final ReferencedEnvelope granuleBBox = getFeatureBounds(feature);
 
         PathResolver pathResolver = new PathResolver(pathType, parentLocation);

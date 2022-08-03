@@ -1450,9 +1450,9 @@ public class RasterLayerResponse {
                             String crsAttribute = manager.getCrsAttribute();
                             String granuleCRSCode =
                                     (String)
-                                            templateDescriptor
-                                                    .getOriginator()
-                                                    .getAttribute(crsAttribute);
+                                            Utils.getAttribute(
+                                                    templateDescriptor.getOriginator(),
+                                                    crsAttribute);
                             FilterFactory2 ff = FeatureUtilities.DEFAULT_FILTER_FACTORY;
                             PropertyIsEqualTo crsFilter =
                                     ff.equal(

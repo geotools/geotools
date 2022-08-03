@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.Closeable;
 import java.io.IOException;
@@ -211,7 +212,8 @@ public class STACClient implements Closeable {
 
             // TODO: support paging following links
             try (STACGeoJSONReader reader =
-                    new STACGeoJSONReader(response.getResponseStream(), http)) {
+                    new STACGeoJSONReader(
+                            new BufferedInputStream(response.getResponseStream()), http)) {
                 if (schema != null) reader.setSchema(schema);
                 return reader.getFeatures();
             }

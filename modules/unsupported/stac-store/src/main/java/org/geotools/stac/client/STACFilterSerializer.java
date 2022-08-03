@@ -28,7 +28,7 @@ import org.opengis.filter.Filter;
 public class STACFilterSerializer extends JsonSerializer<Filter> {
     @Override
     public void serialize(
-            Filter o, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
+            Filter filter, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
             throws IOException {
         FilterLang lang = null;
         Object container = jsonGenerator.getCurrentValue();
@@ -37,10 +37,11 @@ public class STACFilterSerializer extends JsonSerializer<Filter> {
         }
         if (lang == null) lang = FilterLang.CQL2_JSON;
 
+        Filter defaulted = GeometryDefaulter.defaultGeometry(filter);
         if (lang == FilterLang.CQL2_TEXT) {
-            jsonGenerator.writeString(CQL2.toCQL2(o));
+            jsonGenerator.writeString(CQL2.toCQL2(defaulted));
         } else if (lang == FilterLang.CQL2_JSON) {
-            JsonNode node = CQL2Json.toCQL2Json(o);
+            JsonNode node = CQL2Json.toCQL2Json(defaulted);
             jsonGenerator.writeObject(node);
         }
     }

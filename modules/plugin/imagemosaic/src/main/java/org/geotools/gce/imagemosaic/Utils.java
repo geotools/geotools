@@ -119,6 +119,7 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.TopologyException;
 import org.locationtech.jts.operation.overlay.snap.GeometrySnapper;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.FilterFactory2;
@@ -259,6 +260,14 @@ public class Utils {
         return false;
     }
 
+    public static Object getAttribute(SimpleFeature feature, String attribute) {
+        Object value = feature.getAttribute(attribute);
+        if (value == null && attribute.indexOf('/') != -1) {
+            return FF.property(attribute).evaluate(feature);
+        }
+        return value;
+    }
+
     public static class Prop {
         public static final String LOCATION_ATTRIBUTE = "LocationAttribute";
 
@@ -315,6 +324,8 @@ public class Utils {
         public static final String TYPENAME = "TypeName";
 
         public static final String STORE_NAME = "StoreName";
+
+        public static final String MAX_INIT_TILES = "MaxInitTiles";
 
         public static final String PATH_TYPE = "PathType";
 
@@ -2335,6 +2346,9 @@ public class Utils {
         if (schema == null || schema.getGeometryDescriptor() == null) {
             return false;
         }
+
+        // if it's a xpath the type might not be known until later
+        if (locationAttributeName.contains("/")) return true;
 
         // does it have the location property?
         AttributeDescriptor location = schema.getDescriptor(locationAttributeName);

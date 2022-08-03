@@ -1,0 +1,539 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "stac_version": "1.0.0",
+      "stac_extensions": [
+        "https://stac-extensions.github.io/eo/v1.0.0/schema.json",
+        "https://stac-extensions.github.io/view/v1.0.0/schema.json",
+        "https://stac-extensions.github.io/projection/v1.0.0/schema.json",
+        "https://stac-extensions.github.io/processing/v1.0.0/schema.json",
+        "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+        "https://stac-extensions.github.io/alternate-assets/v1.1.0/schema.json"
+      ],
+      "id": "WSF2019_v1_-74_40",
+      "collection": "WSF_2019",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.0361813,
+              40.6789500
+            ],
+            [
+              -73.9702449,
+              40.6789500
+            ],
+            [
+              -73.9702449,
+              40.7332082
+            ],
+            [
+              -74.0361813,
+              40.7332082
+            ],
+            [
+              -74.0361813,
+              40.6789500
+            ]
+          ]
+        ]
+      },
+      "bbox": [
+        -74.01004030192549,
+        39.98994217703509,
+        -71.98999872252591,
+        42.01007358796307
+      ],
+      "properties": {
+        "created": "2022-08-16T13:25:01.929+00:00",
+        "updated": "2022-08-16T13:25:01.929+00:00",
+        "datetime": "2019-07-02T11:59:59Z",
+        "start_datetime": "2019-01-01T00:00:00.000Z",
+        "end_datetime": "2019-12-31T23:59:59.999Z",
+        "proj:epsg": 4326,
+        "proj:bbox": [
+          -74.01004030192549,
+          39.98994217703509,
+          -71.98999872252591,
+          42.01007358796307
+        ],
+        "proj:shape": [
+          22488,
+          22487
+        ],
+        "proj:geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                -74.01004030192549,
+                39.98994217703509
+              ],
+              [
+                -71.98999872252591,
+                39.98994217703509
+              ],
+              [
+                -71.98999872252591,
+                42.01007358796307
+              ],
+              [
+                -74.01004030192549,
+                42.01007358796307
+              ],
+              [
+                -74.01004030192549,
+                39.98994217703509
+              ]
+            ]
+          ]
+        },
+        "proj:transform": [
+          8.983152841195215E-5,
+          0,
+          -74.01004030192549,
+          0,
+          -8.983152841195215E-5,
+          42.01007358796307,
+          0,
+          0,
+          1
+        ]
+      },
+      "assets": {
+        "wsf2019": {
+          "href": "WSF2019_v1_-74_40_small.tif",
+          "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+          "raster:bands": [
+            {
+              "data_type": "uint8",
+              "scale": 1,
+              "offset": 0,
+              "sampling": "area",
+              "statistics": {
+                "mean": 11.552352905273438,
+                "minimum": 0,
+                "maximum": 255,
+                "stddev": 53.032001029536374,
+                "valid_percent": 9.5367431640625E-5
+              },
+              "histogram": {
+                "count": 11,
+                "min": 0,
+                "max": 255,
+                "buckets": [
+                  1001072,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  47504
+                ]
+              }
+            }
+          ],
+          "roles": [
+            "data"
+          ],
+          "title": "Data",
+          "description": "Original data converted to cloud-optimized GeoTIFF with mode resampling"
+        },
+        "thumbnail": {
+          "title": "Thumbnail",
+          "description": "Thumbnail rendered in black/white as 512x512 pixel PNG file",
+          "href": "https://download.geoservice.dlr.de/WSF2019/files/WSF2019_v1_-74_40_thumbnail.png",
+          "type": "image/png",
+          "roles": [
+            "thumbnail"
+          ]
+        },
+        "overview": {
+          "title": "Overview",
+          "description": "Overview rendered in black/white as 4096x4096 pixel PNG file",
+          "href": "https://download.geoservice.dlr.de/WSF2019/files/WSF2019_v1_-74_40_overview.png",
+          "type": "image/png",
+          "roles": [
+            "overview"
+          ]
+        }
+      },
+      "links": [
+        {
+          "title": "Root",
+          "rel": "root",
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac?f=application/json",
+          "type": "application/json"
+        },
+        {
+          "title": "Parent",
+          "rel": "parent",
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac?f=application/json",
+          "type": "application/json"
+        },
+        {
+          "title": "Self",
+          "rel": "self",
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/WSF_2019/items/WSF2019_v1_-74_40?f=application%2Fgeo%2Bjson",
+          "type": "application/geo+json"
+        },
+        {
+          "title": "Item",
+          "rel": "item",
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/WSF_2019/items/WSF2019_v1_-74_40?f=application%2Fgeo%2Bjson",
+          "type": "application/geo+json"
+        },
+        {
+          "title": "Item as HTML",
+          "rel": "item",
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/WSF_2019/items/WSF2019_v1_-74_40?f=text%2Fhtml",
+          "type": "text/html"
+        },
+        {
+          "title": "Items",
+          "rel": "items",
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/WSF_2019/items?f=application%2Fgeo%2Bjson",
+          "type": "application/geo+json"
+        },
+        {
+          "title": "Items as HTML",
+          "rel": "items",
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/WSF_2019/items?f=text%2Fhtml",
+          "type": "text/html"
+        },
+        {
+          "title": "Collection",
+          "rel": "collection",
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/WSF_2019?f=application%2Fjson",
+          "type": "application/json"
+        },
+        {
+          "title": "Collection as HTML",
+          "rel": "collection",
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/WSF_2019?f=text%2Fhtml",
+          "type": "text/html"
+        },
+        {
+          "title": "Collections",
+          "rel": "collection",
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections?f=application%2Fjson",
+          "type": "application/json"
+        },
+        {
+          "title": "Collections as HTML",
+          "rel": "collection",
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections?f=text%2Fhtml",
+          "type": "text/html"
+        },
+        {
+          "title": "OpenSearch GeoJSON",
+          "rel": "item",
+          "href": "https://geoservice.dlr.de/eoc/oseo/search?parentIdentifier=WSF_2019&identifier=WSF2019_v1_-74_40&httpAccept=application%2Fgeo%2Bjson",
+          "type": "application/geo+json"
+        },
+        {
+          "title": "OpenSearch Atom XML",
+          "rel": "item",
+          "href": "https://geoservice.dlr.de/eoc/oseo/search?parentIdentifier=WSF_2019&identifier=WSF2019_v1_-74_40&httpAccept=application%2Fatom%2Bxml",
+          "type": "application/atom+xml"
+        },
+        {
+          "title": "OpenSearch O&M XML",
+          "rel": "item",
+          "href": "https://geoservice.dlr.de/eoc/oseo/metadata?parentId=WSF_2019&uid=WSF2019_v1_-74_40&httpAccept=application%2Fgml%2Bxml",
+          "type": "application/gml+xml"
+        },
+        {
+          "title": "Queryables",
+          "rel": "http://www.opengis.net/def/rel/ogc/1.0/queryables",
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/WSF_2019/queryables?f=json",
+          "type": "application/schema+json"
+        },
+        {
+          "rel": "license",
+          "href": "https://spdx.org/licenses/CC-BY-NC-4.0",
+          "type": "text/html",
+          "title": "CC-BY-NC-4.0"
+        }
+      ]
+    },
+    {
+      "type": "Feature",
+      "stac_version": "1.0.0",
+      "stac_extensions": [
+        "https://stac-extensions.github.io/eo/v1.0.0/schema.json",
+        "https://stac-extensions.github.io/view/v1.0.0/schema.json",
+        "https://stac-extensions.github.io/projection/v1.0.0/schema.json",
+        "https://stac-extensions.github.io/processing/v1.0.0/schema.json",
+        "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+        "https://stac-extensions.github.io/alternate-assets/v1.1.0/schema.json"
+      ],
+      "id": "WSF2019_v1_-76_40",
+      "collection": "WSF_2019",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.0361813,
+              40.6789500
+            ],
+            [
+              -73.9702449,
+              40.6789500
+            ],
+            [
+              -73.9702449,
+              40.7332082
+            ],
+            [
+              -74.0361813,
+              40.7332082
+            ],
+            [
+              -74.0361813,
+              40.6789500
+            ]
+          ]
+        ]
+      },
+      "bbox": [
+        -76.01004945048919,
+        39.98994217703509,
+        -73.98991803956122,
+        42.01007358796307
+      ],
+      "properties": {
+        "created": "2022-08-16T13:26:58.299+00:00",
+        "updated": "2022-08-16T13:26:58.299+00:00",
+        "datetime": "2019-07-02T11:59:59Z",
+        "start_datetime": "2019-01-01T00:00:00.000Z",
+        "end_datetime": "2019-12-31T23:59:59.999Z",
+        "proj:epsg": 4326,
+        "proj:bbox": [
+          -76.01004945048919,
+          39.98994217703509,
+          -73.98991803956122,
+          42.01007358796307
+        ],
+        "proj:shape": [
+          22488,
+          22488
+        ],
+        "proj:geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                -76.01004945048919,
+                39.98994217703509
+              ],
+              [
+                -73.98991803956122,
+                39.98994217703509
+              ],
+              [
+                -73.98991803956122,
+                42.01007358796307
+              ],
+              [
+                -76.01004945048919,
+                42.01007358796307
+              ],
+              [
+                -76.01004945048919,
+                39.98994217703509
+              ]
+            ]
+          ]
+        },
+        "proj:transform": [
+          8.983152841195215E-5,
+          0,
+          -76.01004945048919,
+          0,
+          -8.983152841195215E-5,
+          42.01007358796307,
+          0,
+          0,
+          1
+        ]
+      },
+      "assets": {
+        "wsf2019": {
+          "href": "WSF2019_v1_-76_40_small.tif",
+          "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+          "raster:bands": [
+            {
+              "data_type": "uint8",
+              "scale": 1,
+              "offset": 0,
+              "sampling": "area",
+              "statistics": {
+                "mean": 14.300122261047363,
+                "minimum": 0,
+                "maximum": 255,
+                "stddev": 58.66888169963852,
+                "valid_percent": 9.5367431640625E-5
+              },
+              "histogram": {
+                "count": 11,
+                "min": 0,
+                "max": 255,
+                "buckets": [
+                  989773,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  58803
+                ]
+              }
+            }
+          ],
+          "roles": [
+            "data"
+          ],
+          "title": "Data",
+          "description": "Original data converted to cloud-optimized GeoTIFF with mode resampling"
+        },
+        "thumbnail": {
+          "title": "Thumbnail",
+          "description": "Thumbnail rendered in black/white as 512x512 pixel PNG file",
+          "href": "https://download.geoservice.dlr.de/WSF2019/files/WSF2019_v1_-76_40_thumbnail.png",
+          "type": "image/png",
+          "roles": [
+            "thumbnail"
+          ]
+        },
+        "overview": {
+          "title": "Overview",
+          "description": "Overview rendered in black/white as 4096x4096 pixel PNG file",
+          "href": "https://download.geoservice.dlr.de/WSF2019/files/WSF2019_v1_-76_40_overview.png",
+          "type": "image/png",
+          "roles": [
+            "overview"
+          ]
+        }
+      },
+      "links": [
+        {
+          "title": "Root",
+          "rel": "root",
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac?f=application/json",
+          "type": "application/json"
+        },
+        {
+          "title": "Parent",
+          "rel": "parent",
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac?f=application/json",
+          "type": "application/json"
+        },
+        {
+          "title": "Self",
+          "rel": "self",
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/WSF_2019/items/WSF2019_v1_-76_40?f=application%2Fgeo%2Bjson",
+          "type": "application/geo+json"
+        },
+        {
+          "title": "Item",
+          "rel": "item",
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/WSF_2019/items/WSF2019_v1_-76_40?f=application%2Fgeo%2Bjson",
+          "type": "application/geo+json"
+        },
+        {
+          "title": "Item as HTML",
+          "rel": "item",
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/WSF_2019/items/WSF2019_v1_-76_40?f=text%2Fhtml",
+          "type": "text/html"
+        },
+        {
+          "title": "Items",
+          "rel": "items",
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/WSF_2019/items?f=application%2Fgeo%2Bjson",
+          "type": "application/geo+json"
+        },
+        {
+          "title": "Items as HTML",
+          "rel": "items",
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/WSF_2019/items?f=text%2Fhtml",
+          "type": "text/html"
+        },
+        {
+          "title": "Collection",
+          "rel": "collection",
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/WSF_2019?f=application%2Fjson",
+          "type": "application/json"
+        },
+        {
+          "title": "Collection as HTML",
+          "rel": "collection",
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/WSF_2019?f=text%2Fhtml",
+          "type": "text/html"
+        },
+        {
+          "title": "Collections",
+          "rel": "collection",
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections?f=application%2Fjson",
+          "type": "application/json"
+        },
+        {
+          "title": "Collections as HTML",
+          "rel": "collection",
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections?f=text%2Fhtml",
+          "type": "text/html"
+        },
+        {
+          "title": "OpenSearch GeoJSON",
+          "rel": "item",
+          "href": "https://geoservice.dlr.de/eoc/oseo/search?parentIdentifier=WSF_2019&identifier=WSF2019_v1_-76_40&httpAccept=application%2Fgeo%2Bjson",
+          "type": "application/geo+json"
+        },
+        {
+          "title": "OpenSearch Atom XML",
+          "rel": "item",
+          "href": "https://geoservice.dlr.de/eoc/oseo/search?parentIdentifier=WSF_2019&identifier=WSF2019_v1_-76_40&httpAccept=application%2Fatom%2Bxml",
+          "type": "application/atom+xml"
+        },
+        {
+          "title": "OpenSearch O&M XML",
+          "rel": "item",
+          "href": "https://geoservice.dlr.de/eoc/oseo/metadata?parentId=WSF_2019&uid=WSF2019_v1_-76_40&httpAccept=application%2Fgml%2Bxml",
+          "type": "application/gml+xml"
+        },
+        {
+          "title": "Queryables",
+          "rel": "http://www.opengis.net/def/rel/ogc/1.0/queryables",
+          "href": "https://geoservice.dlr.de/eoc/ogc/stac/collections/WSF_2019/queryables?f=json",
+          "type": "application/schema+json"
+        },
+        {
+          "rel": "license",
+          "href": "https://spdx.org/licenses/CC-BY-NC-4.0",
+          "type": "text/html",
+          "title": "CC-BY-NC-4.0"
+        }
+      ]
+    }
+  ],
+  "numberMatched": 2,
+  "numberReturned": 2,
+  "stac_version": "1.0.0",
+  "links": [
+    {
+      "type": "application/geo+json",
+      "rel": "self",
+      "href": "http://geoservice.dlr.de/eoc/ogc/stac/search?collections=WSF_2019&limit=4&bbox=-74,40.5,-73,41&f=json"
+    }
+  ]
+}

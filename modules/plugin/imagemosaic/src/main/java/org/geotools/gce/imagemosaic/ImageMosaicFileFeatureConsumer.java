@@ -57,7 +57,7 @@ public class ImageMosaicFileFeatureConsumer implements ImageMosaicElementConsume
         ImageMosaicConfigHandler configHandler = provider.getConfigHandler();
         CatalogBuilderConfiguration runConfiguration = configHandler.getRunConfiguration();
         String locationAttrName = runConfiguration.getParameter(Utils.Prop.LOCATION_ATTRIBUTE);
-        Object locationAttrObj = feature.getAttribute(locationAttrName);
+        Object locationAttrObj = Utils.getAttribute(feature, locationAttrName);
         File file = null;
         if (locationAttrObj instanceof String) {
             final String path = (String) locationAttrObj;
@@ -82,7 +82,7 @@ public class ImageMosaicFileFeatureConsumer implements ImageMosaicElementConsume
         ImageMosaicConfigHandler configHandler = provider.getConfigHandler();
         CatalogBuilderConfiguration runConfiguration = configHandler.getRunConfiguration();
         String locationAttrName = runConfiguration.getParameter(Utils.Prop.LOCATION_ATTRIBUTE);
-        Object locationAttrObj = feature.getAttribute(locationAttrName);
+        Object locationAttrObj = Utils.getAttribute(feature, locationAttrName);
         File file = null;
         if (locationAttrObj instanceof String) {
             final String path = (String) locationAttrObj;

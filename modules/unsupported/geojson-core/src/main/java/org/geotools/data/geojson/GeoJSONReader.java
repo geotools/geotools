@@ -29,6 +29,8 @@ import com.fasterxml.jackson.databind.node.DoubleNode;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
+
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -133,7 +135,6 @@ public class GeoJSONReader implements AutoCloseable {
      */
     public GeoJSONReader(URL url) throws IOException {
         this.url = url;
-        this.is = url.openStream();
         parser = factory.createParser(url);
         baseName = FilenameUtils.getBaseName(url.getPath());
         idPrefix = baseName;

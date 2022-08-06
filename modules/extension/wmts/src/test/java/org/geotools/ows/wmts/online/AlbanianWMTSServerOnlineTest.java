@@ -17,11 +17,9 @@
 
 package org.geotools.ows.wmts.online;
 
-import java.awt.Image;
 import java.net.URL;
 import java.util.Properties;
 import java.util.Set;
-
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.wmts.WebMapTileServer;
 import org.geotools.ows.wmts.client.WMTSTileService;
@@ -33,11 +31,11 @@ import org.geotools.ows.wmts.model.WMTSServiceType;
 import org.geotools.ows.wmts.request.GetTileRequest;
 import org.geotools.referencing.CRS;
 import org.geotools.tile.Tile;
+import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.referencing.FactoryException;
 
 public class AlbanianWMTSServerOnlineTest extends WMTSMapLayerOnlineTest {
-
 
     @Override
     protected String getFixtureId() {
@@ -47,7 +45,7 @@ public class AlbanianWMTSServerOnlineTest extends WMTSMapLayerOnlineTest {
 
     @Override
     protected void setUpInternal() throws Exception {
-    	
+
         serverURL = new URL(fixture.getProperty("albanian_server"));
 
         httpClient = new CountHttpGetClient();
@@ -56,12 +54,11 @@ public class AlbanianWMTSServerOnlineTest extends WMTSMapLayerOnlineTest {
         assertNotNull(wlayer);
         kvpMapLayer = new WMTSMapLayer(server, wlayer);
     }
+
     @Override
     protected Properties createExampleFixture() {
         Properties example = new Properties();
-        example.put(
-                "albanian_server",
-                "https://geoportal.asig.gov.al/service/wmts");
+        example.put("albanian_server", "https://geoportal.asig.gov.al/service/wmts");
         return example;
     }
 
@@ -89,11 +86,10 @@ public class AlbanianWMTSServerOnlineTest extends WMTSMapLayerOnlineTest {
         request.setCRS(CRS.decode("EPSG:4326"));
         Set<Tile> tiles = request.getTiles();
         for (Tile tile : tiles) {
-        	System.out.println(tile.getTileState());
-        	tile.loadImageTileImage(tile);
-        	Image img = tile.getBufferedImage();
+            Assert.assertNotEquals(Tile.ContextState.INVALID, tile.getTileState());
         }
     }
+
     @Test
     @Override
     public void testGetCoordinateReferenceSystem() throws FactoryException {
@@ -105,7 +101,7 @@ public class AlbanianWMTSServerOnlineTest extends WMTSMapLayerOnlineTest {
     }
     /** */
     @Override
-     void checkEnv(ReferencedEnvelope env) throws FactoryException {
+    void checkEnv(ReferencedEnvelope env) throws FactoryException {
         assertEquals(
                 "wrong CRS",
                 "EPSG:4326",

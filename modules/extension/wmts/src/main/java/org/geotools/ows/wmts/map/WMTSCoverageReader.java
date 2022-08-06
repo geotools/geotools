@@ -264,6 +264,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
             AffineTransform at = null;
             ReferencedEnvelope global = null;
             for (Tile tile : responses) {
+
                 ReferencedEnvelope extent = tile.getExtent();
                 // ensure the extent has EAST_NORTH axis order because otherwise
                 // RendererUtilities.worldToScreenTransform will produce

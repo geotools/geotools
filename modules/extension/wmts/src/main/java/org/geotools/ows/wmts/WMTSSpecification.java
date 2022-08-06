@@ -198,7 +198,8 @@ public class WMTSSpecification extends Specification {
                 case KVP:
                     return WMTSHelper.appendQueryString(
                             getFinalURL().toExternalForm(),
-                            getKVPparams(layerString, styleString, tileMatrixSetString, format));
+                            getKVPparams(
+                                    layer.getName(), this.styleName, tileMatrixSetName, format));
                 case REST:
                     return getRESTurl(
                             getTemplateUrl(), layerString, styleString, tileMatrixSetString);

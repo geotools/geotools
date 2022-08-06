@@ -57,6 +57,7 @@ import org.geotools.ows.wmts.request.AbstractGetTileRequest;
 import org.geotools.ows.wmts.request.GetTileRequest;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.tile.Tile;
 import org.geotools.wmts.WMTSConfiguration;
 import org.geotools.xsd.Parser;
@@ -253,6 +254,32 @@ public class WMTSCoverageReaderTest {
         assertEquals(
                 "https://maps.wien.gv.at/basemap/bmaphidpi/{Style}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpeg",
                 templateURL);
+    }
+
+    @Test
+    public void testDoubleEncoding() throws Exception {
+        WebMapTileServer server =
+                createServer(
+                        new URL("https://geoportal.asig.gov.al/service/wmts"),
+                        "test-data/albania.xml");
+        WMTSLayer layer = server.getCapabilities().getLayer("orthophoto_2007:OrthoImagery");
+        WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
+
+        ReferencedEnvelope bbox =
+                new ReferencedEnvelope(
+                        18.773065, 21.179343, 39.538499, 42.758209, DefaultGeographicCRS.WGS84);
+        int width = 400;
+        int height = 200;
+        TileRequest request = wcr.initTileRequest(bbox, width, height, null);
+        assertNotNull(request);
+        GetTileRequest mapRequest = request.createTileRequest();
+        Set<Tile> responses = mapRequest.getTiles();
+        for (Tile t : responses) {
+            assertNotNull(t);
+            assertFalse(
+                    "URL is double encoded " + t.getUrl(),
+                    t.getUrl().toString().contains("%253A")); // a double encoded :
+        }
     }
 
     protected Set<Tile> testInitMapRequest(WMTSCoverageReader wcr, ReferencedEnvelope bbox)

@@ -44,11 +44,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 /** @author ian */
 public class WMTSMapLayerOnlineTest extends OnlineTestCase {
 
-    private CountHttpGetClient httpClient;
+    protected CountHttpGetClient httpClient;
 
-    private URL serverURL;
+    protected URL serverURL;
 
-    private WMTSMapLayer kvpMapLayer;
+    protected WMTSMapLayer kvpMapLayer;
 
     @Override
     protected String getFixtureId() {
@@ -73,7 +73,7 @@ public class WMTSMapLayerOnlineTest extends OnlineTestCase {
     }
 
     /** */
-    private void checkEnv(ReferencedEnvelope env) throws FactoryException {
+    void checkEnv(ReferencedEnvelope env) throws FactoryException {
         assertEquals(
                 "wrong CRS",
                 "EPSG:3857",
@@ -127,7 +127,7 @@ public class WMTSMapLayerOnlineTest extends OnlineTestCase {
         assertFalse(kvpMapLayer.isNativelySupported(crs));
     }
 
-    private static class CountHttpGetClient extends DelegateHTTPClient {
+    static class CountHttpGetClient extends DelegateHTTPClient {
 
         int count;
 

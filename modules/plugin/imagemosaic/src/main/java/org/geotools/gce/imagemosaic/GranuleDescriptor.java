@@ -1040,7 +1040,7 @@ public class GranuleDescriptor {
             if (request.isHeterogeneousGranules()
                     && (originator == null || originator.getAttribute("imageindex") == null)) {
                 // create read parameters
-                readParameters = new EnhancedImageReadParam();
+                readParameters = new ImageReadParam();
 
                 // override the overviews controller for the base layer
                 imageIndex =
@@ -1052,12 +1052,6 @@ public class GranuleDescriptor {
                                 request.rasterManager,
                                 overviewsController,
                                 virtualNativeResolution);
-
-                if (imageReadParameters instanceof EnhancedImageReadParam) {
-                    EnhancedImageReadParam erp = (EnhancedImageReadParam) imageReadParameters;
-                    if (erp.getBands() != null)
-                        ((EnhancedImageReadParam) readParameters).setBands(erp.getBands());
-                }
             } else {
                 imageIndex = index;
                 readParameters = imageReadParameters;

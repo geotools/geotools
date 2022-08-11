@@ -317,6 +317,37 @@ public class HeterogenousCRSTest {
     }
 
     @Test
+    public void testHeteroBandSelection() throws Exception {
+        String testLocation = "hetero_utm";
+        URL storeUrl = TestData.url(this, testLocation);
+
+        File testDataFolder = new File(storeUrl.toURI());
+        File testDirectory = crsMosaicFolder.newFolder(testLocation);
+        FileUtils.copyDirectory(testDataFolder, testDirectory);
+
+        ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, null);
+        Assert.assertNotNull(imReader);
+
+        // check we have the expected bounds and CRS
+        assertExpectedBounds(new ReferencedEnvelope(11, 13, -1, 1, WGS84), imReader);
+
+        // read the whole dataset with duplicated band selection (which requires EnhancedReadParam)
+        ParameterValue<int[]> bands = AbstractGridFormat.BANDS.createValue();
+        bands.setValue(new int[] {0, 0});
+        // would throw an exception on read
+        GridCoverage2D coverage = imReader.read(new GeneralParameterValue[] {bands});
+        Assert.assertNotNull(coverage);
+        RenderedImage image = coverage.getRenderedImage();
+        assertEquals(2, image.getSampleModel().getNumBands());
+        assertEquals(2, image.getColorModel().getNumComponents());
+        assertEquals(2, image.getTile(0, 0).getNumBands());
+
+        // cleanup
+        coverage.dispose(true);
+        imReader.dispose();
+    }
+
+    @Test
     public void testConcurrentHeteroUTMH2FullArea() throws Exception {
         runConcurrentHeteroUTMH2(r -> null);
     }

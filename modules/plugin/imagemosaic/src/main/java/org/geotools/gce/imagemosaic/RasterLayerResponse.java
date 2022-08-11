@@ -599,9 +599,6 @@ public class RasterLayerResponse {
             return;
         }
 
-        // add extra parameters to image parameters reader
-        baseReadParameters.setBands(request.getBands());
-
         // assemble granules
         final MosaicOutput mosaic = prepareResponse();
         if (mosaic == null || mosaic.image == null) {
@@ -654,6 +651,9 @@ public class RasterLayerResponse {
 
             // === init raster bounds
             initRasterBounds();
+
+            // === inits the native band selection
+            initBands();
 
             // === init excess granule removal if needed
             initExcessGranuleRemover();
@@ -758,6 +758,12 @@ public class RasterLayerResponse {
         } catch (Exception e) {
             throw new DataSourceException("Unable to create this mosaic", e);
         }
+    }
+
+    /** Sets up native band selection */
+    private void initBands() {
+        // add extra parameters to image parameters reader
+        baseReadParameters.setBands(request.getBands());
     }
 
     private void initExcessGranuleRemover() {
@@ -1495,6 +1501,7 @@ public class RasterLayerResponse {
         response.initBBOX();
         response.initTransformations();
         response.initRasterBounds();
+        response.initBands();
 
         return response;
     }

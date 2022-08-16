@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.filter.expression;
+package org.geotools.filter.expression.geojson;
 
 import static org.junit.Assert.assertEquals;
 
@@ -25,6 +25,8 @@ import java.util.Date;
 import java.util.Scanner;
 import org.geotools.data.geojson.GeoJSONReader;
 import org.geotools.data.geojson.GeoJSONReaderTest;
+import org.geotools.filter.expression.PropertyAccessor;
+import org.geotools.filter.expression.SimpleFeaturePropertyAccessorFactory;
 import org.geotools.test.TestData;
 import org.junit.Assert;
 import org.junit.Before;

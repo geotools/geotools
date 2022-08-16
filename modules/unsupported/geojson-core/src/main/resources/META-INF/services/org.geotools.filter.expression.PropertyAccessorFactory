@@ -1,1 +1,1 @@
-org.geotools.filter.expression.JSONNodePropertyAccessorFactory
+org.geotools.filter.expression.geojson.JSONNodePropertyAccessorFactory

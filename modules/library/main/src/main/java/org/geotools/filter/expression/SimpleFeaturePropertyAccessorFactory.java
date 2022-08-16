@@ -39,12 +39,12 @@ import org.opengis.feature.type.GeometryDescriptor;
  */
 public class SimpleFeaturePropertyAccessorFactory implements PropertyAccessorFactory {
 
-    /** Single instnace is fine - we are not stateful */
-    static PropertyAccessor ATTRIBUTE_ACCESS = new SimpleFeaturePropertyAccessor();
+    /** Single instance is fine - we are not stateful */
+    public static final PropertyAccessor ATTRIBUTE_ACCESS = new SimpleFeaturePropertyAccessor();
 
-    static PropertyAccessor DEFAULT_GEOMETRY_ACCESS =
+    public static final PropertyAccessor DEFAULT_GEOMETRY_ACCESS =
             new DefaultGeometrySimpleFeaturePropertyAccessor();
-    static PropertyAccessor FID_ACCESS = new FidSimpleFeaturePropertyAccessor();
+    public static final PropertyAccessor FID_ACCESS = new FidSimpleFeaturePropertyAccessor();
     static Pattern idPattern = Pattern.compile("@(\\w+:)?id");
 
     private static final String NAME_START_CHAR =

@@ -76,6 +76,15 @@ public class STACDataStoreFactory implements DataStoreFactorySpi {
                     STACDataStore.DEFAULT_FETCH_SIZE,
                     Collections.singletonMap(Parameter.MIN, 1));
 
+    public static final Param FEATURE_TYPE_ITEMS =
+            new Param(
+                    "featureTypeItems",
+                    Integer.class,
+                    "How many items to fetch in order to guess the items structure",
+                    false,
+                    STACDataStore.DEFAULT_FEATURE_TYPE_ITEMS,
+                    Collections.singletonMap(Parameter.MIN, 1));
+
     public static final Param HARD_LIMIT =
             new Param(
                     "hardLimit",
@@ -145,6 +154,7 @@ public class STACDataStoreFactory implements DataStoreFactorySpi {
             LANDING_PAGE,
             SEARCH_MODE,
             FETCH_SIZE,
+            FEATURE_TYPE_ITEMS,
             HARD_LIMIT,
             USE_CONNECTION_POOLING,
             MAX_CONNECTIONS,
@@ -176,11 +186,13 @@ public class STACDataStoreFactory implements DataStoreFactorySpi {
         URI namespace = (URI) NAMESPACE.lookUp(params);
         SearchMode mode = (SearchMode) SEARCH_MODE.lookUp(params);
         Integer fetchSize = (Integer) FETCH_SIZE.lookUp(params);
+        Integer featureTypeItems = (Integer) FEATURE_TYPE_ITEMS.lookUp(params);
         Integer hardLimit = (Integer) HARD_LIMIT.lookUp(params);
         STACDataStore store = new STACDataStore(client);
         if (namespace != null) store.setNamespaceURI(namespace.toString());
         if (mode != null) store.setSearchMode(mode);
         if (fetchSize != null) store.setFetchSize(fetchSize);
+        if (featureTypeItems != null) store.setFeatureTypeItems(featureTypeItems);
         if (hardLimit != null) store.setHardLimit(hardLimit);
         return store;
     }

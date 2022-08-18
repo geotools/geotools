@@ -39,6 +39,8 @@ public class STACDataStore extends ContentDataStore {
 
     static final int DEFAULT_FETCH_SIZE = 1000;
 
+    static final int DEFAULT_FEATURE_TYPE_ITEMS = 100;
+
     static final Integer DEFAULT_HARD_LIMIT = 10000;
 
     static final Logger LOGGER = Logging.getLogger(STACDataStore.class);
@@ -49,6 +51,8 @@ public class STACDataStore extends ContentDataStore {
 
     private int fetchSize = DEFAULT_FETCH_SIZE;
     private Integer hardLimit = DEFAULT_HARD_LIMIT;
+
+    private int featureTypeItems = DEFAULT_FEATURE_TYPE_ITEMS;
 
     public STACDataStore(STACClient client) {
         this.client = client;
@@ -103,6 +107,14 @@ public class STACDataStore extends ContentDataStore {
 
     public int getHardLimit() {
         return hardLimit;
+    }
+
+    public int getFeatureTypeItems() {
+        return featureTypeItems;
+    }
+
+    public void setFeatureTypeItems(int featureTypeItems) {
+        this.featureTypeItems = featureTypeItems;
     }
 
     /** Returns the {@link STACClient} used by the store */

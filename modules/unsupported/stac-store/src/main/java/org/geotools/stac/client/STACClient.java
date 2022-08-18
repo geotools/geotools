@@ -213,7 +213,8 @@ public class STACClient implements Closeable {
             // TODO: support paging following links
             try (STACGeoJSONReader reader =
                     new STACGeoJSONReader(
-                            new BufferedInputStream(response.getResponseStream()), http)) {
+                            new BufferedInputStream(response.getResponseStream(), 1024 * 32),
+                            http)) {
                 if (schema != null) reader.setSchema(schema);
                 return reader.getFeatures();
             }

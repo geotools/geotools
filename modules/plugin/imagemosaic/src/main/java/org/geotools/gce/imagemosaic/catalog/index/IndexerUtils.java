@@ -579,16 +579,9 @@ public class IndexerUtils {
             coverage.setName(props.getProperty(Utils.Prop.TYPENAME));
         }
 
-        // absolute
-        if (props.containsKey(Utils.Prop.ABSOLUTE_PATH))
-            setParam(parameters, props, Utils.Prop.ABSOLUTE_PATH);
-
-        if (props.containsKey(Utils.Prop.PATH_TYPE))
-            setParam(parameters, props, Utils.Prop.PATH_TYPE);
-
-        // recursive
-        if (props.containsKey(Utils.Prop.RECURSIVE))
-            setParam(parameters, props, Utils.Prop.RECURSIVE);
+        addProperty(Utils.Prop.ABSOLUTE_PATH, props, parameters);
+        addProperty(Utils.Prop.PATH_TYPE, props, parameters);
+        addProperty(Utils.Prop.RECURSIVE, props, parameters);
 
         // isCog
         if (props.containsKey(Utils.Prop.COG)) {
@@ -603,18 +596,10 @@ public class IndexerUtils {
             addProperty(Utils.Prop.COG_USER, props, parameters);
         }
 
-        // wildcard
-        if (props.containsKey(Utils.Prop.WILDCARD))
-            setParam(parameters, props, Utils.Prop.WILDCARD);
-
-        // granule acceptors string
+        addProperty(Utils.Prop.WILDCARD, props, parameters);
         addProperty(Utils.Prop.GRANULE_ACCEPTORS, props, parameters);
-
         addProperty(Utils.Prop.GEOMETRY_HANDLER, props, parameters);
-
-        if (props.containsKey(Utils.Prop.COVERAGE_NAME_COLLECTOR_SPI)) {
-            IndexerUtils.setParam(parameters, props, Utils.Prop.COVERAGE_NAME_COLLECTOR_SPI);
-        }
+        addProperty(Utils.Prop.COVERAGE_NAME_COLLECTOR_SPI, props, parameters);
 
         // schema
         if (props.containsKey(Utils.Prop.SCHEMA)) {
@@ -653,23 +638,16 @@ public class IndexerUtils {
             parseAdditionalDomains(attributes, domainList);
         }
 
-        // imposed BBOX
-        if (props.containsKey(Utils.Prop.ENVELOPE2D))
-            setParam(parameters, props, Utils.Prop.ENVELOPE2D);
-
-        // imposed Pyramid Layout
-        if (props.containsKey(Utils.Prop.RESOLUTION_LEVELS))
-            setParam(parameters, props, Utils.Prop.RESOLUTION_LEVELS);
+        addProperty(Utils.Prop.ENVELOPE2D, props, parameters);
+        addProperty(Utils.Prop.RESOLUTION_LEVELS, props, parameters);
 
         // collectors
         if (props.containsKey(Utils.Prop.PROPERTY_COLLECTORS)) {
             setPropertyCollectors(indexer, props.getProperty(Utils.Prop.PROPERTY_COLLECTORS));
         }
 
-        if (props.containsKey(Utils.Prop.CACHING)) setParam(parameters, props, Utils.Prop.CACHING);
-
+        addProperty(Utils.Prop.CACHING, props, parameters);
         addProperty(Utils.Prop.ROOT_MOSAIC_DIR, props, parameters);
-
         addProperty(Utils.Prop.INDEXING_DIRECTORIES, props, parameters);
         addProperty(Utils.Prop.AUXILIARY_FILE, props, parameters);
         addProperty(Utils.Prop.AUXILIARY_DATASTORE_FILE, props, parameters);

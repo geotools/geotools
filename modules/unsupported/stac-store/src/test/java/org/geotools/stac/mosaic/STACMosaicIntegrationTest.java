@@ -41,7 +41,7 @@ import org.opengis.parameter.ParameterValue;
 public class STACMosaicIntegrationTest extends AbstractSTACStoreTest {
 
     protected static String WSF_TYPE =
-            BASE_URL + "/search?f=application%2Fgeo%2Bjson&collections=WSF_2019&limit=1000";
+            BASE_URL + "/search?f=application%2Fgeo%2Bjson&collections=WSF_2019&limit=100";
     protected static String WSF_2 =
             BASE_URL + "/search?f=application%2Fgeo%2Bjson&collections=WSF_2019&limit=2";
 

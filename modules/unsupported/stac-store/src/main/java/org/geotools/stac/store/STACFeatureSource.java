@@ -164,7 +164,7 @@ public class STACFeatureSource extends ContentFeatureSource {
     protected SimpleFeatureType buildFeatureType() throws IOException {
         SearchQuery sq = getSearchQuery(Query.ALL, false).getKey();
 
-        sq.setLimit(getDataStore().getFetchSize());
+        sq.setLimit(getDataStore().getFeatureTypeItems());
         SimpleFeatureCollection fc = client.search(sq, getDataStore().getSearchMode());
         SimpleFeatureType rawSchema = fc.getSchema();
 

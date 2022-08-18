@@ -57,8 +57,7 @@ public class STACFeatureSourceTest extends AbstractSTACStoreTest {
 
     private static String MAJA_1000 =
             BASE_URL + "/search?f=application%2Fgeo%2Bjson&collections=S2_L2A_MAJA&limit=1000";
-    private static final String MAJA_1000_POST =
-            "{\"collections\":[\"S2_L2A_MAJA\"],\"limit\":1000}";
+    private static final String MAJA_100_POST = "{\"collections\":[\"S2_L2A_MAJA\"],\"limit\":100}";
     private static final String APPLICATION_JSON = "application/json";
 
     private static FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
@@ -119,7 +118,7 @@ public class STACFeatureSourceTest extends AbstractSTACStoreTest {
         // POST request support
         URL postURL = new URL(BASE_URL + "/search?f=application/geo%2Bjson");
         httpClient.expectPost(
-                postURL, MAJA_1000_POST, APPLICATION_JSON, geojsonResponse("majaAll.json", cls));
+                postURL, MAJA_100_POST, APPLICATION_JSON, geojsonResponse("majaAll.json", cls));
 
         httpClient.expectPost(
                 postURL,

@@ -23,8 +23,8 @@ import org.geotools.stac.client.STACClient;
 
 public abstract class AbstractSTACStoreTest extends STACOfflineTest {
 
-    protected static String MAJA_1000 =
-            BASE_URL + "/search?f=application%2Fgeo%2Bjson&collections=S2_L2A_MAJA&limit=1000";
+    protected static String MAJA_100 =
+            BASE_URL + "/search?f=application%2Fgeo%2Bjson&collections=S2_L2A_MAJA&limit=100";
     protected static final String NS_URI = "https://stacspec.org/store";
     protected static final String MAJA = "S2_L2A_MAJA";
     protected static final String[] TYPE_NAMES = {
@@ -37,7 +37,7 @@ public abstract class AbstractSTACStoreTest extends STACOfflineTest {
         super.setup();
 
         Class<?> cls = STACOfflineTest.class;
-        httpClient.expectGet(new URL(MAJA_1000), geojsonResponse("majaAll.json", cls));
+        httpClient.expectGet(new URL(MAJA_100), geojsonResponse("majaAll.json", cls));
 
         @SuppressWarnings("PMD.CloseResource") // managed by the store
         STACClient client = new STACClient(new URL(LANDING_PAGE_URL), httpClient);

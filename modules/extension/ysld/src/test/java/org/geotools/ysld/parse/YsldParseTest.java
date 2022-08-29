@@ -59,6 +59,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 import org.easymock.EasyMock;
+import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.function.RecodeFunction;
 import org.geotools.filter.function.string.ConcatenateFunction;
 import org.geotools.process.function.ProcessFunction;
@@ -1808,6 +1809,28 @@ public class YsldParseTest {
         assertThat(rgbChannels[2].getContrastEnhancement(), nullContrast());
         assertThat(rgbChannels[2].getChannelName().evaluate(null, String.class), equalTo("3"));
         assertThat(rgbChannels[2].getContrastEnhancement(), nullContrast());
+    }
+
+    @Test
+    public void testBandSelectionExpression() throws Exception {
+        String yaml =
+                "feature-styles:\n"
+                        + "- rules:\n"
+                        + "  - symbolizers:\n"
+                        + "    - raster:\n"
+                        + "        channels:\n"
+                        + "          gray:\n"
+                        + "            name: ${env('B1','1')}";
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        RasterSymbolizer raster = SLD.rasterSymbolizer(SLD.defaultStyle(sld));
+        Expression name = raster.getChannelSelection().getGrayChannel().getChannelName();
+        assertEquals("1", name.evaluate(null, String.class));
+        try {
+            EnvFunction.setLocalValue("B1", "2");
+            assertEquals("2", name.evaluate(null, String.class));
+        } finally {
+            EnvFunction.clearLocalValues();
+        }
     }
 
     @Test

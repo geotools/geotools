@@ -2215,6 +2215,24 @@ public class YsldEncodeCookbookTest {
                                 lexEqualTo(""))));
     }
 
+    @Test
+    public void testRasterWithBandSelectionExpression() throws Exception {
+        YamlMap obj = encode("raster", "band-selection-expression.sld");
+        String name =
+                obj.seq("feature-styles")
+                        .map(0)
+                        .seq("rules")
+                        .map(0)
+                        .seq("symbolizers")
+                        .map(0)
+                        .map("raster")
+                        .map("channels")
+                        .map("gray")
+                        .str("name")
+                        .trim();
+        assertEquals("${env('B1','1')}", name);
+    }
+
     YamlMap encode(String dirname, String filename) throws Exception {
         SLDParser sldParser = new SLDParser(CommonFactoryFinder.getStyleFactory());
         sldParser.setInput(YsldTests.sld(dirname, filename));

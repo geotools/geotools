@@ -104,7 +104,7 @@ public class RasterParser extends SymbolizerParser<RasterSymbolizer> {
             if (map.get(band.key) instanceof Map) {
                 context.push(band.key, new SelectedChannelHandler(sel));
             } else {
-                sel.setChannelName(map.str(band.key));
+                sel.setChannelName(Util.expression(map.str(band.key), factory));
             }
         }
 
@@ -143,7 +143,7 @@ public class RasterParser extends SymbolizerParser<RasterSymbolizer> {
         @Override
         public void handle(YamlObject<?> obj, YamlParseContext context) {
             String name = obj.map().str("name");
-            sel.setChannelName(name);
+            sel.setChannelName(Util.expression(name, factory));
             context.push(
                     "contrast-enhancement",
                     new ContrastEnhancementHandler() {

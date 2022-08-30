@@ -22,8 +22,7 @@ import java.util.Map;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
 import javax.measure.quantity.Length;
-import org.geotools.data.hana.wkb.HanaWKBWriter;
-import org.geotools.data.hana.wkb.HanaWKBWriterException;
+import org.geotools.filter.ConstantExpression;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.function.FilterFunction_strConcat;
 import org.geotools.filter.function.FilterFunction_strEndsWith;
@@ -50,6 +49,7 @@ import org.geotools.referencing.CRS;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
@@ -206,8 +206,7 @@ public class HanaFilterToSQL extends PreparedFilterToSQL {
 
     @Override
     protected void visitLiteralGeometry(Literal expression) throws IOException {
-        Geometry geom = (Geometry) evaluateLiteral(expression, Geometry.class);
-        visitGeometry(geom);
+        ConstantExpression.constant(expression).accept(this, null);
     }
 
     private Object visitDistanceSpatialOperator(
@@ -283,11 +282,11 @@ public class HanaFilterToSQL extends PreparedFilterToSQL {
                 out.write(" AND ");
                 property.accept(this, extraData);
                 out.write(".ST_ZMin() <= ");
-                out.write(Double.toString(maxz));
+                ConstantExpression.constant(maxz).accept(this, Double.class);
                 out.write(" AND ");
                 property.accept(this, extraData);
                 out.write(".ST_ZMax() >= ");
-                out.write(Double.toString(minz));
+                ConstantExpression.constant(minz).accept(this, Double.class);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -309,12 +308,12 @@ public class HanaFilterToSQL extends PreparedFilterToSQL {
         out.write('.');
         out.write(function);
         out.write("(");
-        Coordinate ll = new Coordinate(bbox.getMinX(), bbox.getMinY());
-        Coordinate ur = new Coordinate(bbox.getMaxX(), bbox.getMaxY());
         GeometryFactory factory = new GeometryFactory();
-        visitGeometry(factory.createPoint(ll));
+        Point ll = factory.createPoint(new Coordinate(bbox.getMinX(), bbox.getMinY()));
+        ConstantExpression.constant(ll).accept(this, Geometry.class);
         out.write(", ");
-        visitGeometry(factory.createPoint(ur));
+        Point ur = factory.createPoint(new Coordinate(bbox.getMaxX(), bbox.getMaxY()));
+        ConstantExpression.constant(ur).accept(this, Geometry.class);
         out.write(") = 1");
     }
 
@@ -400,45 +399,6 @@ public class HanaFilterToSQL extends PreparedFilterToSQL {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private void visitGeometry(Geometry geom) throws IOException {
-        if (geom == null) {
-            out.write("NULL");
-            return;
-        }
-
-        int dimension = HanaDimensionFinder.findDimension(geom);
-        byte[] wkb;
-        try {
-            wkb = HanaWKBWriter.write(geom, dimension);
-        } catch (HanaWKBWriterException e) {
-            throw new IOException(e);
-        }
-
-        out.write("ST_GeomFromWKB('");
-        out.write(encodeAsHex(wkb));
-        if ((currentSRID == null) && (currentGeometry != null)) {
-            out.write("', ");
-            out.write(HanaUtil.encodeIdentifier(currentGeometry.getLocalName()));
-            out.write(".ST_SRID())");
-        } else {
-            out.write("', " + currentSRID + ")");
-        }
-    }
-
-    private static final char[] HEXDIGITS = {
-        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
-    };
-
-    private char[] encodeAsHex(byte[] data) {
-        int l = data.length;
-        char[] ret = new char[2 * l];
-        for (int i = 0, j = 0; i < l; i++) {
-            ret[j++] = HEXDIGITS[(0xF0 & data[i]) >>> 4];
-            ret[j++] = HEXDIGITS[0x0F & data[i]];
-        }
-        return ret;
     }
 
     @Override

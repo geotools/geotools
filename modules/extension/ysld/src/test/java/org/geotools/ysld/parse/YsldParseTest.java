@@ -67,6 +67,7 @@ import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.LabelPlacement;
 import org.geotools.styling.LineSymbolizer;
+import org.geotools.styling.NamedLayer;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.ResourceLocator;
@@ -108,6 +109,14 @@ import org.yaml.snakeyaml.constructor.ConstructorException;
 @SuppressWarnings("unchecked") // unchecked generics array creation due to Hamcrest
 public class YsldParseTest {
     Logger LOG = Logging.getLogger("org.geotools.ysld.Ysld");
+
+    @Test
+    public void testName() throws Exception {
+        StyledLayerDescriptor sld = Ysld.parse("name: Simple");
+        NamedLayer layer = (NamedLayer) sld.layers().get(0);
+        assertEquals("Simple", layer.getName());
+        assertEquals("Simple", layer.styles().get(0).getName());
+    }
 
     @Test
     public void testAnchor() throws Exception {

@@ -6,6 +6,7 @@ import java.util.List;
 import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
+import org.geotools.referencing.CRS;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -18,7 +19,7 @@ public class HanaBBOXFilterOnlineTest extends JDBCTestSupport {
 
     @Override
     protected JDBCTestSetup createTestSetup() {
-        return new HanaTestSetupPSPooling();
+        return new HanaTestSetup();
     }
 
     @Test
@@ -48,7 +49,7 @@ public class HanaBBOXFilterOnlineTest extends JDBCTestSupport {
         HanaFilterToSQL filterToSQL = new HanaFilterToSQL(dialect, true, version);
 
         FilterFactory ff = dataStore.getFilterFactory();
-        CoordinateReferenceSystem crs = decodeEPSG(4326);
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:4326");
         BBOX3D filter = ff.bbox("GEOM", new ReferencedEnvelope3D(1, 2, 3, 4, 5, 6, crs));
         String s = filterToSQL.encodeToString(filter);
         assertEquals(

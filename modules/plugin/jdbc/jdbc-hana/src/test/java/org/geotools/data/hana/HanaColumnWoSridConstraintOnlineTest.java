@@ -16,9 +16,6 @@
  */
 package org.geotools.data.hana;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assume.assumeTrue;
-
 import java.sql.Connection;
 import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
@@ -45,7 +42,9 @@ public class HanaColumnWoSridConstraintOnlineTest extends JDBCTestSupport {
     public void testFindSridOnColumn() throws Exception {
         try (Connection conn = dataStore.getDataSource().getConnection()) {
             HanaVersion version = new HanaVersion(conn.getMetaData().getDatabaseProductVersion());
-            assumeTrue(supportsColumnsWoSridConstraint(version));
+            if (!supportsColumnsWoSridConstraint(version)) {
+                return;
+            }
 
             HanaDialect dialect = (HanaDialect) this.dialect;
             dialect.initializeConnection(conn);
@@ -60,7 +59,9 @@ public class HanaColumnWoSridConstraintOnlineTest extends JDBCTestSupport {
     public void testFilterOnColumn() throws Exception {
         try (Connection conn = dataStore.getDataSource().getConnection()) {
             HanaVersion version = new HanaVersion(conn.getMetaData().getDatabaseProductVersion());
-            assumeTrue(supportsColumnsWoSridConstraint(version));
+            if (!supportsColumnsWoSridConstraint(version)) {
+                return;
+            }
         }
 
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);

@@ -19,7 +19,7 @@ package org.geotools.data.hana;
 import java.sql.Connection;
 
 /** @author Stefan Uhrig, SAP SE */
-public class HanaColumnWoSridConstraintTestSetup extends HanaTestSetupPSPooling {
+public class HanaColumnWoSridConstraintTestSetup extends HanaTestSetup {
 
     private static final String TABLE = "tabwosc";
 
@@ -34,7 +34,7 @@ public class HanaColumnWoSridConstraintTestSetup extends HanaTestSetupPSPooling 
                 return;
             }
 
-            HanaTestUtil htu = new HanaTestUtil(conn, fixture);
+            HanaTestUtil htu = new HanaTestUtil(conn);
             htu.createTestSchema();
 
             htu.dropTestTableCascade(TABLE);

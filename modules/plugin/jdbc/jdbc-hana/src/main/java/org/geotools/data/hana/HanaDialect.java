@@ -222,6 +222,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
             rs = ps.executeQuery();
             if (!rs.next()) return null;
             int srid = rs.getInt(1);
+            if (rs.wasNull()) return null;
             if (rs.next()) return null;
             return srid;
         } finally {

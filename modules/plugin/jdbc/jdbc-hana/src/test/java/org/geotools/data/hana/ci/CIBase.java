@@ -34,6 +34,7 @@ import org.geotools.data.hana.HanaConnectionParameters;
 import org.geotools.data.hana.HanaUtil;
 import org.geotools.util.logging.Logging;
 
+/** @author Stefan Uhrig, SAP SE */
 public class CIBase {
 
     private static Logger LOGGER = Logging.getLogger(CIBase.class);

@@ -167,32 +167,25 @@ public class HanaTestUtil {
         return schemaName;
     }
 
-    @SuppressWarnings("PMD.CloseResource") // would be better to have try-with-resources
     public boolean tableExists(String schemaName, String tableName) throws SQLException {
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        try {
+        String sql =
+                (schemaName == null)
+                        ? "SELECT COUNT(*) FROM PUBLIC.TABLES WHERE SCHEMA_NAME = CURRENT_SCHEMA AND TABLE_NAME = ?"
+                        : "SELECT COUNT(*) FROM PUBLIC.TABLES WHERE SCHEMA_NAME = ? AND TABLE_NAME = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             if (schemaName == null) {
-                ps =
-                        conn.prepareStatement(
-                                "SELECT COUNT(*) FROM PUBLIC.TABLES WHERE SCHEMA_NAME = CURRENT_SCHEMA AND TABLE_NAME = ?");
                 ps.setString(1, tableName);
             } else {
-                ps =
-                        conn.prepareStatement(
-                                "SELECT COUNT(*) FROM PUBLIC.TABLES WHERE SCHEMA_NAME = ? AND TABLE_NAME = ?");
                 ps.setString(1, schemaName);
                 ps.setString(2, tableName);
             }
-            rs = ps.executeQuery();
-            if (!rs.next()) {
-                throw new AssertionError();
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) {
+                    throw new AssertionError();
+                }
+                int count = rs.getInt(1);
+                return (count == 1);
             }
-            int count = rs.getInt(1);
-            return (count == 1);
-        } finally {
-            safeClose(rs);
-            safeClose(ps);
         }
     }
 
@@ -338,32 +331,25 @@ public class HanaTestUtil {
         return ret;
     }
 
-    @SuppressWarnings("PMD.CloseResource") // try-with-resources would be nicer
     public boolean viewExists(String schemaName, String viewName) throws SQLException {
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        try {
+        String sql =
+                (schemaName == null)
+                        ? "SELECT COUNT(*) FROM PUBLIC.VIEWS WHERE SCHEMA_NAME = CURRENT_SCHEMA AND VIEW_NAME = ?"
+                        : "SELECT COUNT(*) FROM PUBLIC.VIEWS WHERE SCHEMA_NAME = ? AND VIEW_NAME = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             if (schemaName == null) {
-                ps =
-                        conn.prepareStatement(
-                                "SELECT COUNT(*) FROM PUBLIC.VIEWS WHERE SCHEMA_NAME = CURRENT_SCHEMA AND VIEW_NAME = ?");
                 ps.setString(1, viewName);
             } else {
-                ps =
-                        conn.prepareStatement(
-                                "SELECT COUNT(*) FROM PUBLIC.VIEWS WHERE SCHEMA_NAME = ? AND VIEW_NAME = ?");
                 ps.setString(1, schemaName);
                 ps.setString(2, viewName);
             }
-            rs = ps.executeQuery();
-            if (!rs.next()) {
-                throw new AssertionError();
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) {
+                    throw new AssertionError();
+                }
+                int count = rs.getInt(1);
+                return (count == 1);
             }
-            int count = rs.getInt(1);
-            return (count == 1);
-        } finally {
-            safeClose(rs);
-            safeClose(ps);
         }
     }
 
@@ -408,32 +394,25 @@ public class HanaTestUtil {
         dropView(getTestSchema(), viewName);
     }
 
-    @SuppressWarnings("PMD.CloseResource") // try-with-resources would be nicer
     public boolean sequenceExists(String schemaName, String sequenceName) throws SQLException {
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        try {
+        String sql =
+                (schemaName == null)
+                        ? "SELECT COUNT(*) FROM PUBLIC.SEQUENCES WHERE SCHEMA_NAME = CURRENT_SCHEMA AND SEQUENCE_NAME = ?"
+                        : "SELECT COUNT(*) FROM PUBLIC.SEQUENCES WHERE SCHEMA_NAME = ? AND SEQUENCE_NAME = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             if (schemaName == null) {
-                ps =
-                        conn.prepareStatement(
-                                "SELECT COUNT(*) FROM PUBLIC.SEQUENCES WHERE SCHEMA_NAME = CURRENT_SCHEMA AND SEQUENCE_NAME = ?");
                 ps.setString(1, sequenceName);
             } else {
-                ps =
-                        conn.prepareStatement(
-                                "SELECT COUNT(*) FROM PUBLIC.SEQUENCES WHERE SCHEMA_NAME = ? AND SEQUENCE_NAME = ?");
                 ps.setString(1, schemaName);
                 ps.setString(2, sequenceName);
             }
-            rs = ps.executeQuery();
-            if (!rs.next()) {
-                throw new AssertionError();
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) {
+                    throw new AssertionError();
+                }
+                int count = rs.getInt(1);
+                return (count == 1);
             }
-            int count = rs.getInt(1);
-            return (count == 1);
-        } finally {
-            safeClose(rs);
-            safeClose(ps);
         }
     }
 

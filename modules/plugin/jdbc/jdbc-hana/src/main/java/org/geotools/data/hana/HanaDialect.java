@@ -43,6 +43,7 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
 import org.geotools.referencing.CRS;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -431,8 +432,13 @@ public class HanaDialect extends PreparedStatementSQLDialect {
     @Override
     public void encodeGeometryColumnSimplified(
             GeometryDescriptor gatt, String prefix, int srid, StringBuffer sql, Double distance) {
-        // TODO Enable once ST_Simplify is available
-        throw new UnsupportedOperationException("Geometry simplification not supported");
+        encodeColumnName(prefix, gatt.getLocalName(), sql);
+        if ((distance != null) && (distance > 0.0)) {
+            sql.append(".ST_Simplify(");
+            sql.append(distance.toString());
+            sql.append(")");
+        }
+        sql.append(".ST_AsBinary()");
     }
 
     @Override
@@ -774,7 +780,10 @@ public class HanaDialect extends PreparedStatementSQLDialect {
 
     @Override
     protected void addSupportedHints(Set<org.geotools.util.factory.Hints.Key> hints) {
-        // TODO Add Hints#GEOMETRY_SIMPLIFICATION as soon as it is available
+        if ((hanaVersion.getVersion() > 2)
+                || ((hanaVersion.getVersion() == 2) && (hanaVersion.getRevision() >= 40))) {
+            hints.add(Hints.GEOMETRY_SIMPLIFICATION);
+        }
     }
 
     @Override

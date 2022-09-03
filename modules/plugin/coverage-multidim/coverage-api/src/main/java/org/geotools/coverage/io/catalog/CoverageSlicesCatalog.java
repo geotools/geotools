@@ -212,7 +212,6 @@ public class CoverageSlicesCatalog {
 
             String typeName = null;
             String[] typeNamesValues = null;
-            boolean scanForTypeNames = false;
 
             // Handle multiple typeNames
             if (params.containsKey(Utils.Prop.TYPENAME)) {
@@ -222,10 +221,7 @@ public class CoverageSlicesCatalog {
                 }
             }
 
-            if (params.containsKey(Utils.SCAN_FOR_TYPENAMES)) {
-                scanForTypeNames = Boolean.valueOf((String) (params.get(Utils.SCAN_FOR_TYPENAMES)));
-            }
-            if (typeNamesValues == null && scanForTypeNames) {
+            if (typeNamesValues == null) {
                 typeNamesValues = slicesIndexStore.getTypeNames();
             }
 

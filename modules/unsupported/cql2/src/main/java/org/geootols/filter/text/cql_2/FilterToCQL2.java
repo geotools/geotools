@@ -41,6 +41,7 @@ import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.Beyond;
 import org.opengis.filter.spatial.Contains;
@@ -67,6 +68,7 @@ import org.opengis.filter.temporal.OverlappedBy;
 import org.opengis.filter.temporal.TContains;
 import org.opengis.filter.temporal.TEquals;
 import org.opengis.filter.temporal.TOverlaps;
+import org.opengis.geometry.BoundingBox;
 
 /**
  * This class is responsible to transform a filter to an ECQL predicate.
@@ -88,7 +90,6 @@ final class FilterToCQL2 implements FilterVisitor {
 
     @Override
     public Object visit(ExcludeFilter filter, Object extraData) {
-
         return FilterToTextUtil.buildExclude(extraData);
     }
 
@@ -302,7 +303,22 @@ final class FilterToCQL2 implements FilterVisitor {
 
     @Override
     public Object visit(BBOX filter, Object extraData) {
-        return FilterToTextUtil.buildBBOX(filter, extraData);
+
+        StringBuilder output = FilterToTextUtil.asStringBuilder(extraData);
+        BoundingBox bounds = filter.getBounds();
+        output.append("S_INTERSECTS(");
+        output.append(((PropertyName) filter.getExpression1()).getPropertyName());
+        output.append(", ENVELOPE(");
+        output.append(bounds.getMinX());
+        output.append(",");
+        output.append(bounds.getMinY());
+        output.append(",");
+        output.append(bounds.getMaxX());
+        output.append(",");
+        output.append(bounds.getMaxY());
+        output.append("))");
+
+        return output;
     }
 
     @Override

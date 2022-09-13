@@ -46,6 +46,7 @@ import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.temporal.After;
 import org.opengis.filter.temporal.Before;
@@ -378,5 +379,13 @@ public class CQL2Test {
         assertThat(pet.getExpression1(), CoreMatchers.instanceOf(PropertyName.class));
         PropertyName pn = (PropertyName) pet.getExpression1();
         assertEquals("id", pn.getPropertyName());
+    }
+
+    @Test
+    public void bbox() throws CQLException {
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        BBOX bbox = ff.bbox("geometry", -180, -90, 180, 90, "CRS:84");
+        assertEquals(
+                "S_INTERSECTS(geometry, ENVELOPE(-180.0,-90.0,180.0,90.0))", CQL2.toCQL2(bbox));
     }
 }

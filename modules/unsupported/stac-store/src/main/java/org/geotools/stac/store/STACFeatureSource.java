@@ -16,17 +16,10 @@
  */
 package org.geotools.stac.store;
 
-import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
-
 import java.io.IOException;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.apache.commons.lang3.tuple.Pair;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
@@ -46,45 +39,30 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.feature.visitor.MinVisitor;
-import org.geotools.filter.FilterAttributeExtractor;
-import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.stac.client.CQL2Conformance;
-import org.geotools.stac.client.FilterLang;
 import org.geotools.stac.client.STACClient;
-import org.geotools.stac.client.STACConformance;
 import org.geotools.stac.client.SearchQuery;
-import org.geotools.util.DateRange;
 import org.geotools.util.factory.Hints;
-import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
-import org.opengis.filter.spatial.BBOX;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.operation.TransformException;
 
 public class STACFeatureSource extends ContentFeatureSource {
 
     static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
 
-    /**
-     * Used to cut eventual "out of world" coordinates that the remote server could not appreciate
-     */
-    private static final ReferencedEnvelope WORLD =
-            new ReferencedEnvelope(-180, 180, -90, 90, WGS84);
-
     private final STACClient client;
+    private final SearchQueryBuilder queryBuilder;
 
     public STACFeatureSource(ContentEntry entry, STACClient client) {
         super(entry, Query.ALL);
         this.client = client;
+        this.queryBuilder = new SearchQueryBuilder(getSchema(), getDataStore());
     }
 
     @Override
@@ -103,8 +81,7 @@ public class STACFeatureSource extends ContentFeatureSource {
 
             @Override
             public boolean supportsSorting(SortBy... sortAttributes) {
-                // we really need to check the capabilities here
-                return false;
+                return false; // STACConformance.SORT.matches(client.getLandingPage().getConformance());
             }
         };
     }
@@ -131,7 +108,7 @@ public class STACFeatureSource extends ContentFeatureSource {
 
     @Override
     protected int getCountInternal(Query query) throws IOException {
-        Pair<SearchQuery, Filter> pair = getSearchQuery(query, true);
+        Pair<SearchQuery, Filter> pair = queryBuilder.toSearchQuery(query, true);
         // if the query cannot be fully translated, we cannot do an efficient count
         if (pair == null) return -1;
 
@@ -162,7 +139,11 @@ public class STACFeatureSource extends ContentFeatureSource {
 
     @Override
     protected SimpleFeatureType buildFeatureType() throws IOException {
-        SearchQuery sq = getSearchQuery(Query.ALL, false).getKey();
+        // used during construction, cannot rely on the query builder field
+        Query q = new Query();
+        q.setTypeName(entry.getTypeName());
+        SearchQueryBuilder builder = new SearchQueryBuilder(null, getDataStore());
+        SearchQuery sq = builder.toSearchQuery(q, false).getKey();
 
         sq.setLimit(getDataStore().getFeatureTypeItems());
         SimpleFeatureCollection fc = client.search(sq, getDataStore().getSearchMode());
@@ -172,185 +153,6 @@ public class STACFeatureSource extends ContentFeatureSource {
         tb.init(rawSchema);
         tb.setName(entry.getTypeName());
         return tb.buildFeatureType();
-    }
-
-    /**
-     * Maps the GeoTools {@link Query} to a {@link SearchQuery}.
-     *
-     * @param q The GeoTools query
-     * @param strict If strict is true, will return null if the query cannot be fully mapped into
-     *     the SearchQuery
-     * @return A pair with a SearchQuery and a post filter, or null if strict is true and part of
-     *     the query could not be mapped
-     */
-    private Pair<SearchQuery, Filter> getSearchQuery(Query q, boolean strict) {
-        SearchQuery sq = new SearchQuery();
-        sq.setCollections(Arrays.asList(getCollectionId(q)));
-
-        // the limit in STAC-API is a suggestion on how many features to return to the first
-        // page, not an actual limit
-        sq.setLimit(Math.min(q.getMaxFeatures(), getDataStore().getFetchSize()));
-
-        // not supported yet, but could be added
-        List<String> conformance = client.getLandingPage().getConformance();
-        if (q.getSortBy() != null && q.getSortBy() != SortBy.UNSORTED) {
-            if (STACConformance.SORT.matches(conformance)) {
-                List<org.geotools.stac.client.SortBy> sorts =
-                        Arrays.stream(q.getSortBy())
-                                .map(sb -> toSTACSort(sb))
-                                .collect(Collectors.toList());
-                sq.setSortBy(sorts);
-            }
-        }
-
-        // no plans to support this
-        if (q.getJoins() != null && !q.getJoins().isEmpty() && strict) return null;
-
-        Filter post = Filter.INCLUDE;
-        if (q.getFilter() != null && q.getFilter() != Filter.INCLUDE) {
-            Filter simplified = SimplifyingFilterVisitor.simplify(q.getFilter());
-
-            // see if we can use the simple space/time filtering, should be better implemented
-            // across the board
-            if (!encodeSimpleFilter(simplified, sq)) {
-                if (!STACConformance.FILTER.matches(conformance)) return null;
-
-                CQL2PostPreFilterSplitter splitter = new CQL2PostPreFilterSplitter(conformance);
-                simplified.accept(splitter, null);
-                Filter pre = splitter.getFilterPre();
-                post = splitter.getFilterPost();
-
-                if (strict && !Filter.INCLUDE.equals(post)) return null;
-                if (setupFilterLanguage(sq, conformance)) {
-                    sq.setFilter(pre);
-                }
-            }
-        }
-
-        // if the server supports fields selection, use it
-        String[] propertyNames = q.getPropertyNames();
-        if (propertyNames != null && !q.getProperties().isEmpty()) {
-            if (STACConformance.FIELDS.matches(conformance)) {
-                Set<String> nameList = new LinkedHashSet<>(Arrays.asList(propertyNames));
-                if (post != null && !Filter.INCLUDE.equals(post)) {
-                    FilterAttributeExtractor fex = new FilterAttributeExtractor();
-                    post.accept(fex, null);
-                    nameList.addAll(fex.getAttributeNameSet());
-                }
-                List<String> fields =
-                        nameList.stream()
-                                .map(n -> n.equals("geometry") ? n : "properties." + n)
-                                .collect(Collectors.toList());
-                fields.add("type"); // some servers would even remove this field if not included!
-                fields.add("id"); // and this as well
-                fields.add(
-                        "-links"); // some servers like to return the links no matter what instead
-                sq.setFields(fields);
-
-            } else if (strict) return null;
-        }
-
-        return Pair.of(sq, post);
-    }
-
-    /**
-     * Sets up a filter encoding language that's supported on both ends. If both text and JSON are
-     * supported, choose based on the type of request, GET vsPOST.
-     *
-     * @param sq
-     * @param conformance
-     * @return True if a supported language was set up, otherwise not
-     */
-    private boolean setupFilterLanguage(SearchQuery sq, List<String> conformance) {
-        boolean text = CQL2Conformance.TEXT.matches(conformance);
-        boolean json = CQL2Conformance.JSON.matches(conformance);
-
-        if (text && json) {
-            if (getDataStore().getSearchMode().equals(STACClient.SearchMode.GET))
-                sq.setFilterLang(FilterLang.CQL2_TEXT);
-            else sq.setFilterLang(FilterLang.CQL2_JSON);
-        } else if (text) {
-            sq.setFilterLang(FilterLang.CQL2_TEXT);
-        } else if (json) {
-            sq.setFilterLang(FilterLang.CQL2_JSON);
-        }
-
-        return sq.getFilterLang() != null;
-    }
-
-    private org.geotools.stac.client.SortBy toSTACSort(SortBy sort) {
-        return new org.geotools.stac.client.SortBy(
-                sort.getPropertyName().getPropertyName(),
-                sort.getSortOrder() == SortOrder.DESCENDING
-                        ? org.geotools.stac.client.SortBy.Direction.desc
-                        : org.geotools.stac.client.SortBy.Direction.asc);
-    }
-
-    private boolean encodeSimpleFilter(Filter filter, SearchQuery sq) {
-        try {
-            if (filter instanceof BBOX) {
-                encodeBBOX((BBOX) filter, sq);
-                return true;
-            } else if (isTimeFilter(filter)) {
-                encodeTimeFilter(filter, sq);
-                return true;
-            } else if (filter instanceof And) {
-                And and = (And) filter;
-                List<Filter> children = and.getChildren();
-                if (children.size() != 2) return false;
-                if (children.get(0) instanceof BBOX && isTimeFilter(children.get(1))) {
-                    encodeBBOX((BBOX) children.get(0), sq);
-                    encodeTimeFilter(children.get(1), sq);
-                    return true;
-                } else if (children.get(1) instanceof BBOX && isTimeFilter(children.get(0))) {
-                    encodeBBOX((BBOX) children.get(1), sq);
-                    encodeTimeFilter(children.get(0), sq);
-                    return true;
-                }
-            }
-        } catch (FactoryException | TransformException e) {
-            throw new RuntimeException("Failed to setup the bbox filter", e);
-        }
-
-        return false;
-    }
-
-    private void encodeTimeFilter(Filter filter, SearchQuery sq) {
-        TimeRangeVisitor visitor = new TimeRangeVisitor();
-        DateRange range = (DateRange) filter.accept(visitor, null);
-        if (TimeRangeVisitor.DATE_NEGATIVE_INFINITE.equals(range.getMinValue())) {
-            // should not get here, but just in case, don't encode anything
-            if (TimeRangeVisitor.DATE_POSITIVE_INFINITE.equals(range.getMaxValue())) return;
-            else sq.setDatetime("../" + toISO(range.getMaxValue()));
-        } else if (TimeRangeVisitor.DATE_POSITIVE_INFINITE.equals(range.getMaxValue())) {
-            sq.setDatetime(toISO(range.getMinValue()) + "/..");
-        } else if (range.getMinValue().equals(range.getMaxValue())) {
-            // some servers need nanosecond precision for match, use the smallest range available
-            long next = range.getMinValue().getTime() + 1;
-            sq.setDatetime(toISO(range.getMinValue()) + "/" + toISO(new Date(next)));
-        } else {
-            sq.setDatetime(toISO(range.getMinValue()) + "/" + toISO(range.getMaxValue()));
-        }
-    }
-
-    private String toISO(Date value) {
-        return DateTimeFormatter.ISO_INSTANT.format(value.toInstant());
-    }
-
-    private boolean isTimeFilter(Filter filter) {
-        TimeRangeVisitor visitor = new TimeRangeVisitor();
-        DateRange range = (DateRange) filter.accept(visitor, null);
-        return range != null
-                && !range.isEmpty()
-                && !TimeRangeVisitor.INFINITY.equals(range)
-                && visitor.isExact();
-    }
-
-    private void encodeBBOX(BBOX filter, SearchQuery sq)
-            throws TransformException, FactoryException {
-        Envelope box = ReferencedEnvelope.reference(filter.getBounds()).transform(WGS84, true);
-        box = box.intersection(WORLD);
-        sq.setBbox(new double[] {box.getMinX(), box.getMinY(), box.getMaxX(), box.getMaxY()});
     }
 
     private String getCollectionId(Query query) {
@@ -381,11 +183,11 @@ public class STACFeatureSource extends ContentFeatureSource {
     @SuppressWarnings("PMD.CloseResource")
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
-        Pair<SearchQuery, Filter> pair = getSearchQuery(query, false);
+        Pair<SearchQuery, Filter> pair = queryBuilder.toSearchQuery(query, false);
         SearchQuery sq;
         Filter postFilter;
         if (pair == null) {
-            sq = getSearchQuery(Query.ALL, false).getKey();
+            sq = queryBuilder.toSearchQuery(Query.ALL, false).getKey();
             postFilter = query.getFilter();
         } else {
             sq = pair.getKey();

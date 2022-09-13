@@ -100,6 +100,6 @@ class SearchGetBuilder {
     }
 
     private static String getSortSpecification(SortBy sb) {
-        return (sb.getDirection() == SortBy.Direction.desc ? "-" : "+") + sb.getField();
+        return (sb.getDirection() == SortBy.Direction.desc ? "-" : "") + sb.getField();
     }
 }

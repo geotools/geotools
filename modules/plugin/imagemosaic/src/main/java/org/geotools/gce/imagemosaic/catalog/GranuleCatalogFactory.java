@@ -31,6 +31,7 @@ import org.geotools.data.Repository;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.jdbc.JDBCDataStore;
+import org.geotools.util.Converters;
 import org.geotools.util.URLs;
 import org.geotools.util.decorate.Wrapper;
 import org.geotools.util.factory.Hints;
@@ -84,7 +85,18 @@ public abstract class GranuleCatalogFactory {
                         "Cannot perform in complete memory caching of granules when having multiple coverages");
             catalog = new STRTreeGranuleCatalog(params, gtCatalog, hints);
         } else {
-            catalog = new CachingDataStoreGranuleCatalog(gtCatalog);
+            Integer maxAge =
+                    Converters.convert(params.get(Utils.Prop.QUERY_CACHE_MAX_AGE), Integer.class);
+            Integer maxFeatures =
+                    Converters.convert(
+                            params.get(Utils.Prop.QUERY_CACHE_MAX_FEATURES), Integer.class);
+            if (maxAge != null && maxFeatures != null) {
+                GranuleCatalog queryCache =
+                        new QueryCacheGranuleCatalog(gtCatalog, maxFeatures, maxAge);
+                catalog = new CachingDataStoreGranuleCatalog(queryCache);
+            } else {
+                catalog = new CachingDataStoreGranuleCatalog(gtCatalog);
+            }
         }
 
         // locking wrappers

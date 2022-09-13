@@ -38,12 +38,14 @@ import org.opengis.geometry.BoundingBox;
 public abstract class GranuleCatalog {
 
     protected final Hints hints;
+    protected final CatalogConfigurationBeans configurations;
 
     protected MultiLevelROIProvider multiScaleROIProvider;
 
-    /** @param hints */
-    public GranuleCatalog(Hints hints) {
+    /** */
+    public GranuleCatalog(Hints hints, CatalogConfigurationBeans configurations) {
         this.hints = hints;
+        this.configurations = configurations;
     }
 
     public void addGranule(
@@ -170,4 +172,14 @@ public abstract class GranuleCatalog {
      * @throws IOException in case something bad happens
      */
     public abstract void drop() throws IOException;
+
+    protected CatalogConfigurationBeans getConfigurations() {
+        return configurations;
+    }
+
+    protected abstract String getParentLocation();
+
+    public Hints getHints() {
+        return hints;
+    }
 }

@@ -388,6 +388,10 @@ public class Utils {
         public static final String NO_DATA = "NoData";
         /** Whether to skip checks for external overviews, when no internal overviews are found */
         public static final String SKIP_EXTERNAL_OVERVIEWS = "SkipExternalOverviews";
+
+        public static final String QUERY_CACHE_MAX_AGE = "QueryCacheMaxAge";
+
+        public static final String QUERY_CACHE_MAX_FEATURES = "QueryCacheMaxFeatures";
     }
 
     /**

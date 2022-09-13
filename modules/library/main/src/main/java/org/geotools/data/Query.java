@@ -352,7 +352,7 @@ public class Query {
         this.coordinateSystem = query.getCoordinateSystem();
         this.coordinateSystemReproject = query.getCoordinateSystemReproject();
         this.version = query.getVersion();
-        this.hints = query.getHints();
+        this.hints = query.getHints() != null ? new Hints(query.getHints()) : null;
         this.startIndex = query.getStartIndex();
         this.alias = query.getAlias();
         this.joins = new ArrayList<>();
@@ -874,7 +874,7 @@ public class Query {
                 | ((getCoordinateSystemReproject() == null)
                         ? 0
                         : getCoordinateSystemReproject().hashCode())
-                | getStartIndex();
+                | ((getStartIndex() == null) ? 0 : getStartIndex());
     }
 
     /**

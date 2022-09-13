@@ -139,7 +139,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
             final Properties params,
             AbstractGTDataStoreGranuleCatalog wrappedCatalogue,
             final Hints hints) {
-        super(hints);
+        super(hints, wrappedCatalogue.getConfigurations());
         Utilities.ensureNonNull("params", params);
         this.wrappedCatalogue = wrappedCatalogue;
         this.typeName = (String) params.get("TypeName");
@@ -559,5 +559,10 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
         } finally {
             lock.unlock();
         }
+    }
+
+    @Override
+    protected String getParentLocation() {
+        return wrappedCatalogue.getParentLocation();
     }
 }

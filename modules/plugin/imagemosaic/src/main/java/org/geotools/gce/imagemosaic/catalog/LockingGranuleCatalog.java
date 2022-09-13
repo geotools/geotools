@@ -41,14 +41,14 @@ import org.opengis.geometry.BoundingBox;
  * Applies read/write locks around all operations to protect the underlying store, which might not
  * be able to handle this scenario correctly
  */
-class LockingGranuleCatalog extends GranuleCatalog {
+public class LockingGranuleCatalog extends GranuleCatalog {
 
     GranuleCatalog delegate;
     ReadWriteLock rwLock = new ReentrantReadWriteLock(true);
 
     /** */
     public LockingGranuleCatalog(GranuleCatalog delegate, Hints hints) {
-        super(hints);
+        super(hints, delegate.getConfigurations());
         this.delegate = delegate;
     }
 
@@ -256,5 +256,14 @@ class LockingGranuleCatalog extends GranuleCatalog {
     @Override
     public void drop() throws IOException {
         guardIO(() -> delegate.drop(), rwLock.writeLock());
+    }
+
+    @Override
+    protected String getParentLocation() {
+        return delegate.getParentLocation();
+    }
+
+    public GranuleCatalog getAdaptee() {
+        return delegate;
     }
 }

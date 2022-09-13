@@ -663,6 +663,8 @@ public class IndexerUtils {
         addProperty(Utils.Prop.SKIP_EXTERNAL_OVERVIEWS, props, parameters);
         addProperty(Utils.Prop.LOCATION_ATTRIBUTE, props, parameters);
         addProperty(Utils.Prop.MAX_INIT_TILES, props, parameters);
+        addProperty(Utils.Prop.QUERY_CACHE_MAX_AGE, props, parameters);
+        addProperty(Utils.Prop.QUERY_CACHE_MAX_FEATURES, props, parameters);
 
         return indexer;
     }

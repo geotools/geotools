@@ -24,7 +24,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.sql.Types;
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -165,6 +167,9 @@ public class SQLServerDialect extends BasicSQLDialect {
         mappings.put("uniqueidentifier", UUID.class);
         mappings.put("time", Time.class);
         mappings.put("date", Date.class);
+        mappings.put("datetime", Timestamp.class);
+        mappings.put("datetime2", Timestamp.class);
+        mappings.put("datetimeoffset", OffsetDateTime.class);
     }
 
     @Override

@@ -18,7 +18,6 @@ package org.geotools.gce.imagemosaic.catalog;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -29,12 +28,9 @@ import java.util.logging.Logger;
 import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.data.Query;
-import org.geotools.data.QueryCapabilities;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.feature.SchemaException;
-import org.geotools.feature.visitor.FeatureCalc;
 import org.geotools.gce.imagemosaic.GranuleDescriptor;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.gce.imagemosaic.Utils;
@@ -44,8 +40,6 @@ import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.geometry.BoundingBox;
 
 /**
  * This class simply builds an SRTREE spatial index in memory for fast indexed geometric queries.
@@ -59,69 +53,18 @@ import org.opengis.geometry.BoundingBox;
  *     jar:file:foo.jar/bar.properties URLs
  * @since 2.5
  */
-public class CachingDataStoreGranuleCatalog extends GranuleCatalog {
+public class CachingDataStoreGranuleCatalog extends DelegatingGranuleCatalog {
 
     /** Logger. */
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(CachingDataStoreGranuleCatalog.class);
 
-    private final AbstractGTDataStoreGranuleCatalog adaptee;
-
     private final SoftValueHashMap<String, GranuleDescriptor> descriptorsCache =
             new SoftValueHashMap<>();
 
     /** */
-    public CachingDataStoreGranuleCatalog(AbstractGTDataStoreGranuleCatalog adaptee) {
-        super(null);
-        this.adaptee = adaptee;
-    }
-
-    @Override
-    public void addGranules(
-            String typeName, Collection<SimpleFeature> granules, Transaction transaction)
-            throws IOException {
-        adaptee.addGranules(typeName, granules, transaction);
-    }
-
-    @Override
-    public void computeAggregateFunction(Query q, FeatureCalc function) throws IOException {
-        adaptee.computeAggregateFunction(q, function);
-    }
-
-    @Override
-    public void createType(String namespace, String typeName, String typeSpec)
-            throws IOException, SchemaException {
-        adaptee.createType(namespace, typeName, typeSpec);
-    }
-
-    @Override
-    public void createType(SimpleFeatureType featureType) throws IOException {
-        adaptee.createType(featureType);
-    }
-
-    @Override
-    public void createType(String identification, String typeSpec)
-            throws SchemaException, IOException {
-        adaptee.createType(identification, typeSpec);
-    }
-
-    @Override
-    public void dispose() {
-        adaptee.dispose();
-        if (multiScaleROIProvider != null) {
-            multiScaleROIProvider.dispose();
-            multiScaleROIProvider = null;
-        }
-    }
-
-    @Override
-    public BoundingBox getBounds(String typeName) {
-        return adaptee.getBounds(typeName);
-    }
-
-    @Override
-    public BoundingBox getBounds(String typeName, Transaction t) {
-        return adaptee.getBounds(typeName, t);
+    public CachingDataStoreGranuleCatalog(GranuleCatalog adaptee) {
+        super(adaptee);
     }
 
     @Override
@@ -147,11 +90,6 @@ public class CachingDataStoreGranuleCatalog extends GranuleCatalog {
         } else {
             return adaptee.getGranules(q, t);
         }
-    }
-
-    @Override
-    public int getGranulesCount(Query q) throws IOException {
-        return adaptee.getGranulesCount(q);
     }
 
     @Override
@@ -300,10 +238,10 @@ public class CachingDataStoreGranuleCatalog extends GranuleCatalog {
                                     configuration.suggestedIsSPI(),
                                     configuration.getPathType(),
                                     configuration.getLocationAttribute(),
-                                    adaptee.parentLocation,
+                                    adaptee.getParentLocation(),
                                     footprint,
                                     configuration.isHeterogeneous(),
-                                    adaptee.hints);
+                                    adaptee.getHints());
                     descriptorsCache.put(key, granule);
                 }
             } catch (Exception e) {
@@ -317,16 +255,6 @@ public class CachingDataStoreGranuleCatalog extends GranuleCatalog {
         // TODO: try to use relate instead
         Geometry intersection = g1.intersection(g2);
         return intersection != null && intersection.getDimension() == 2;
-    }
-
-    @Override
-    public QueryCapabilities getQueryCapabilities(String typeName) {
-        return adaptee.getQueryCapabilities(typeName);
-    }
-
-    @Override
-    public SimpleFeatureType getType(String typeName) throws IOException {
-        return adaptee.getType(typeName);
     }
 
     @Override
@@ -345,25 +273,5 @@ public class CachingDataStoreGranuleCatalog extends GranuleCatalog {
         }
 
         return val;
-    }
-
-    @Override
-    public String[] getTypeNames() {
-        return adaptee.getTypeNames();
-    }
-
-    /** @return the adaptee */
-    public GranuleCatalog getAdaptee() {
-        return adaptee;
-    }
-
-    @Override
-    public void removeType(String typeName) throws IOException {
-        adaptee.removeType(typeName);
-    }
-
-    @Override
-    public void drop() throws IOException {
-        adaptee.drop();
     }
 }

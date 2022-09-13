@@ -90,8 +90,6 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
 
     boolean wrapstore = false;
 
-    CatalogConfigurationBeans configurations;
-
     protected Properties params;
 
     private DataStoreFactorySpi spi;
@@ -102,13 +100,12 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             final boolean create,
             final DataStoreFactorySpi spi,
             final Hints hints) {
-        super(hints);
+        super(hints, configurations);
         Utilities.ensureNonNull("params", params);
         this.spi = spi;
         this.params = params;
 
         try {
-            this.configurations = configurations;
             this.parentLocation = (String) params.get(Utils.Prop.PARENT_LOCATION);
             // assumes this one does not change by configuration
             this.wrapstore = configurations.first().isWrapStore();
@@ -713,7 +710,13 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
      */
     protected abstract Set<String> getValidTypeNames();
 
+    @Override
     protected CatalogConfigurationBeans getConfigurations() {
         return configurations;
+    }
+
+    @Override
+    protected String getParentLocation() {
+        return parentLocation;
     }
 }

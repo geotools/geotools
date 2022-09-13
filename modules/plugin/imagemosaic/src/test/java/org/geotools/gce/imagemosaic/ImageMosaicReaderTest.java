@@ -142,7 +142,10 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.gce.imagemosaic.Utils.Prop;
+import org.geotools.gce.imagemosaic.catalog.CachingDataStoreGranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
+import org.geotools.gce.imagemosaic.catalog.LockingGranuleCatalog;
+import org.geotools.gce.imagemosaic.catalog.QueryCacheGranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer;
 import org.geotools.gce.imagemosaic.catalog.index.IndexerUtils;
 import org.geotools.gce.imagemosaic.catalog.index.ParametersType;
@@ -5932,7 +5935,6 @@ public class ImageMosaicReaderTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testMultilocation() throws Exception {
         // copy the data and get the reader
         File directory =
@@ -5965,5 +5967,65 @@ public class ImageMosaicReaderTest {
         gray.dispose(true);
 
         reader.dispose();
+    }
+
+    /** Query caching should cause no differences, just testing the same images come out */
+    @Test
+    public void testMultiLocationCached() throws Exception {
+        // copy the data and get the reader
+        File directory =
+                setupTestDirectory(
+                        this, TestData.url(this, "coverage_multilocation"), "multilocation");
+        Properties prop = new Properties();
+        prop.put("url", URLs.fileToUrl(new File(directory, "multilocation.shp")).toExternalForm());
+        prop.put("SPI", ShapefileDataStoreFactory.class.getName());
+        try (FileOutputStream fos =
+                new FileOutputStream(new File(directory, "datastore.properties"))) {
+            prop.store(fos, null);
+        }
+
+        // immediate read, avoids need for disposing images and sticks them in memory
+        ParameterValue<Boolean> imageRead = ImageMosaicFormat.USE_JAI_IMAGEREAD.createValue();
+        imageRead.setValue(false);
+        GeneralParameterValue[] params = {imageRead};
+
+        // the reader has two coverages
+        ImageMosaicReader reader = getReader(directory);
+
+        // rgb comes from the rgb_sample file
+        GridCoverage2D rgb = reader.read("rgb", params);
+        RenderedImage rgbNonCached = rgb.getRenderedImage();
+
+        GridCoverage2D gray = reader.read("gray", params);
+        RenderedImage grayNonCached = gray.getRenderedImage();
+
+        reader.dispose();
+
+        // enable caching
+        prop.put(Prop.QUERY_CACHE_MAX_FEATURES, "10000");
+        prop.put(Prop.QUERY_CACHE_MAX_AGE, "60000");
+        try (FileOutputStream fos =
+                new FileOutputStream(new File(directory, "datastore.properties"))) {
+            prop.store(fos, null);
+        }
+
+        // get images again
+        reader = getReader(directory);
+        RenderedImage rgbCached = reader.read("rgb", params).getRenderedImage();
+        RenderedImage grayCached = reader.read("gray", params).getRenderedImage();
+
+        // drill into the catalog wrappers, verify that we are using a query caching one
+        GranuleCatalog catalog = reader.rasterManagers.get("rgb").getGranuleCatalog();
+        assertThat(catalog, CoreMatchers.instanceOf(LockingGranuleCatalog.class));
+        catalog = ((LockingGranuleCatalog) catalog).getAdaptee();
+        assertThat(catalog, CoreMatchers.instanceOf(CachingDataStoreGranuleCatalog.class));
+        assertThat(
+                ((CachingDataStoreGranuleCatalog) catalog).getAdaptee(),
+                CoreMatchers.instanceOf(QueryCacheGranuleCatalog.class));
+
+        reader.dispose();
+
+        ImageAssert.assertEquals(rgbNonCached, rgbCached, 0);
+        ImageAssert.assertEquals(grayNonCached, grayCached, 0);
     }
 }

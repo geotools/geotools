@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>modules</artifactId>
-    <version>26-SNAPSHOT</version>
+    <version>26.6</version>
   </parent>
   <!-- =========================================================== -->
   <!-- Module Description -->

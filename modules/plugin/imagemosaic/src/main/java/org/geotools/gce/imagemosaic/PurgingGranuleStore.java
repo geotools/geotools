@@ -47,6 +47,7 @@ import org.geotools.feature.visitor.CalcResult;
 import org.geotools.feature.visitor.GroupByVisitor;
 import org.geotools.filter.Filters;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
+import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBeans;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogVisitor;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
@@ -120,7 +121,8 @@ class PurgingGranuleStore extends GranuleStoreDecorator {
                 for (String multiGranule : multiGranules) {
                     Filter removedLocationsFilter =
                             buildLocationsFilter(manager, Collections.singleton(multiGranule));
-                    Query q = new Query(manager.getTypeName(), removedLocationsFilter);
+                    Query q = buildQuery();
+                    q.setFilter(removedLocationsFilter);
                     q.setMaxFeatures(1);
                     manager.getGranuleCatalog()
                             .getGranuleDescriptors(q, new FileRemovingGranuleVisitor(deleteData));
@@ -139,10 +141,20 @@ class PurgingGranuleStore extends GranuleStoreDecorator {
     private void removeGranuleFiles(boolean deleteData, Set<String> singleGranules)
             throws IOException {
         Filter removedLocationsFilter = buildLocationsFilter(manager, singleGranules);
+        Query q = buildQuery();
+        q.setFilter(removedLocationsFilter);
         manager.getGranuleCatalog()
-                .getGranuleDescriptors(
-                        new Query(manager.getTypeName(), removedLocationsFilter),
-                        new FileRemovingGranuleVisitor(deleteData));
+                .getGranuleDescriptors(q, new FileRemovingGranuleVisitor(deleteData));
+    }
+
+    private Query buildQuery() {
+        return buildQuery(manager.getTypeName());
+    }
+
+    private Query buildQuery(String typeName) {
+        Query q = new Query(typeName);
+        q.getHints().put(CatalogConfigurationBeans.COVERAGE_NAME, manager.getName());
+        return q;
     }
 
     private Set<String> getRemovedLocations(
@@ -209,7 +221,7 @@ class PurgingGranuleStore extends GranuleStoreDecorator {
 
     private CalcResult countGranulesMatchingCalc(Filter filter, RasterManager manager)
             throws IOException {
-        Query q = new Query(manager.getTypeName());
+        Query q = buildQuery(manager.getTypeName());
         q.setFilter(filter);
         SimpleFeatureCollection lc = manager.getGranuleCatalog().getGranules(q);
         List<Expression> groupByExpressions = Arrays.asList(getLocationProperty(manager));

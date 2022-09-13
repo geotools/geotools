@@ -134,6 +134,7 @@ import org.geotools.data.Query;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.Transaction;
 import org.geotools.data.shapefile.ShapefileDataStore;
+import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureStore;
@@ -161,6 +162,7 @@ import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
+import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -5927,5 +5929,41 @@ public class ImageMosaicReaderTest {
         } finally {
             if (reader2 != null) reader2.dispose();
         }
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testMultilocation() throws Exception {
+        // copy the data and get the reader
+        File directory =
+                setupTestDirectory(
+                        this, TestData.url(this, "coverage_multilocation"), "multilocation");
+        Properties prop = new Properties();
+        prop.put("url", URLs.fileToUrl(new File(directory, "multilocation.shp")).toExternalForm());
+        prop.put("SPI", ShapefileDataStoreFactory.class.getName());
+        try (FileOutputStream fos =
+                new FileOutputStream(new File(directory, "datastore.properties"))) {
+            prop.store(fos, null);
+        }
+
+        // the reader has two coverages
+        ImageMosaicReader reader = getReader(directory);
+        assertThat(
+                Arrays.asList(reader.getGridCoverageNames()), CoreMatchers.hasItems("rgb", "gray"));
+
+        // rgb comes from the rgb_sample file
+        GridCoverage2D rgb = reader.read("rgb", null);
+        assertThat(
+                (String) rgb.getProperty(AbstractGridCoverage2DReader.FILE_SOURCE_PROPERTY),
+                CoreMatchers.endsWith("rgb_sample.tif"));
+        rgb.dispose(true);
+
+        GridCoverage2D gray = reader.read("gray", null);
+        assertThat(
+                (String) gray.getProperty(AbstractGridCoverage2DReader.FILE_SOURCE_PROPERTY),
+                CoreMatchers.endsWith("gray_sample.tif"));
+        gray.dispose(true);
+
+        reader.dispose();
     }
 }

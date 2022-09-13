@@ -47,6 +47,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -59,6 +60,7 @@ import java.util.Set;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageInputStreamSpi;
@@ -505,9 +507,23 @@ public class Utils {
             final boolean absolutePath,
             final Hints hints) {
 
+        List<String> coverageNames = getNamesFromIndexer(location);
+        if (!coverageNames.isEmpty()) {
+            boolean result = true;
+            for (String coverageName : coverageNames) {
+                result &=
+                        createMosaicInternal(location, coverageName, wildcard, absolutePath, hints);
+            }
+            return result;
+        } else {
+            return createMosaicInternal(location, indexName, wildcard, absolutePath, hints);
+        }
+    }
+
+    private static boolean createMosaicInternal(
+            String location, String indexName, String wildcard, boolean absolutePath, Hints hints) {
         // create a mosaic index builder and set the relevant elements
         final CatalogBuilderConfiguration configuration = new CatalogBuilderConfiguration();
-        // check if the indexer.properties is there
 
         // retain hints as this may contain an instance of an ImageMosaicReader
         configuration.setHints(hints);
@@ -527,8 +543,8 @@ public class Utils {
 
         // this is going to help us with catching exceptions and logging them
         final Queue<Throwable> exceptions = new LinkedList<>();
-        try {
 
+        try {
             final ImageMosaicEventHandlers.ProcessingEventListener listener =
                     new ImageMosaicEventHandlers.ProcessingEventListener() {
 
@@ -564,6 +580,38 @@ public class Utils {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Returns the list of coverages to be loaded, under the following conditions:
+     *
+     * <ul>
+     *   <li>There is a indexer.xml listing coverages
+     *   <li>Instead of pulling coverage names from the reader or the file name (file driven
+     *       approach), we are just bound to use an existing store
+     * </ul>
+     *
+     * @param location
+     * @return A list of coverage names, or an empty list if the conditions above to not apply
+     * @throws IOException
+     */
+    private static List<String> getNamesFromIndexer(String location) {
+        try {
+            File indexerFile = new File(location, IndexerUtils.INDEXER_XML);
+            if (!checkFileReadable(indexerFile)) return Collections.emptyList();
+            Indexer indexer = Utils.unmarshal(indexerFile);
+            if (indexer == null
+                    || !IndexerUtils.getParameterAsBoolean(Prop.USE_EXISTING_SCHEMA, indexer))
+                return Collections.emptyList();
+            return indexer.getCoverages().getCoverage().stream()
+                    .map(c -> c.getName())
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            LOGGER.log(
+                    Level.WARNING,
+                    "Failed to check if mosaic should index multiple coverages from existing schema");
+            return Collections.emptyList();
+        }
     }
 
     // Make additional filters pluggable
@@ -790,6 +838,7 @@ public class Utils {
             }
             String coverageName = properties.getProperty(Prop.NAME).trim();
             retValue.setName(coverageName);
+            catalogConfigurationBean.setName(coverageName);
         }
 
         // need a color expansion?

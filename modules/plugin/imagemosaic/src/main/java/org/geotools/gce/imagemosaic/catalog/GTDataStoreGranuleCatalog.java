@@ -41,8 +41,12 @@ public class GTDataStoreGranuleCatalog extends AbstractGTDataStoreGranuleCatalog
     private Set<String> validTypeNames;
 
     public GTDataStoreGranuleCatalog(
-            Properties params, boolean create, DataStoreFactorySpi spi, Hints hints) {
-        super(params, create, spi, hints);
+            Properties params,
+            CatalogConfigurationBeans configurations,
+            boolean create,
+            DataStoreFactorySpi spi,
+            Hints hints) {
+        super(params, configurations, create, spi, hints);
     }
 
     @Override

@@ -62,6 +62,7 @@ import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
 import org.geotools.gce.imagemosaic.OverviewsController.OverviewLevel;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
+import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBeans;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogFactory;
 import org.geotools.gce.imagemosaic.catalog.MultiLevelROIProviderMosaicFactory;
@@ -371,18 +372,15 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                             ImageMosaicConfigHandler.createGranuleCatalogFromDatastore(
                                     parentDirectory, datastoreProperties, true, getHints());
                 } else {
-                    // We need to figure out if there is an heterogeneous mosaic in the list and use
-                    // it as reference. (Otherwise, read on heterogeneous coverages may not work
-                    // properly)
-                    MosaicConfigurationBean mosaicBean =
-                            beans.stream()
-                                    .filter(p -> p.getCatalogConfigurationBean().isHeterogeneous())
-                                    .findFirst()
-                                    .orElse(beans.get(0));
-                    CatalogConfigurationBean bean = mosaicBean.getCatalogConfigurationBean();
+                    CatalogConfigurationBeans catalogConfigurations =
+                            new CatalogConfigurationBeans(beans);
+
                     catalog =
                             GranuleCatalogFactory.createGranuleCatalog(
-                                    sourceURL, bean, params, getCatalogHints(bean));
+                                    sourceURL,
+                                    catalogConfigurations,
+                                    params,
+                                    getCatalogHints(catalogConfigurations.first()));
                 }
                 MultiLevelROIProvider rois =
                         MultiLevelROIProviderMosaicFactory.createFootprintProvider(parentDirectory);
@@ -433,11 +431,11 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
         Hints catalogHints = getHints();
         if (bean != null && bean.getUrlSourceSPIProvider() != null) {
             catalogHints = new Hints(catalogHints);
-            if (bean.isSkipExternalOverviews())
-                catalogHints.put(Hints.SKIP_EXTERNAL_OVERVIEWS, true);
             CogGranuleAccessProvider provider = new CogGranuleAccessProvider(bean);
             catalogHints.put(GranuleAccessProvider.GRANULE_ACCESS_PROVIDER, provider);
         }
+        if (bean != null && bean.isSkipExternalOverviews())
+            catalogHints.put(Hints.SKIP_EXTERNAL_OVERVIEWS, true);
         return catalogHints;
     }
 

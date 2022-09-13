@@ -557,7 +557,14 @@ public class Indexer {
         @XmlAccessorType(XmlAccessType.FIELD)
         @XmlType(
                 name = "",
-                propOrder = {"schema", "origName", "domains", "name", "nameCollector"})
+                propOrder = {
+                    "schema",
+                    "origName",
+                    "domains",
+                    "name",
+                    "nameCollector",
+                    "parameters"
+                })
         public static class Coverage {
 
             @XmlElement(required = true)
@@ -572,6 +579,8 @@ public class Indexer {
             protected String name;
 
             protected String nameCollector;
+
+            protected ParametersType parameters;
 
             /**
              * Gets the value of the schema property.
@@ -661,6 +670,16 @@ public class Indexer {
              */
             public void setNameCollector(String value) {
                 this.nameCollector = value;
+            }
+
+            /** Returns coverage specific parameters. */
+            public ParametersType getParameters() {
+                return parameters;
+            }
+
+            /** Sets the coverage specific parameters */
+            public void setParameters(ParametersType parameters) {
+                this.parameters = parameters;
             }
         }
     }

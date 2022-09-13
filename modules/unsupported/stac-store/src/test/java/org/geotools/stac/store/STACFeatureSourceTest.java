@@ -71,7 +71,7 @@ public class STACFeatureSourceTest extends AbstractSTACStoreTest {
 
     private static String MAJA_MIN =
             BASE_URL
-                    + "/search?collections=S2_L2A_MAJA&f=application/geo%2Bjson&limit=1&fields=properties.datetime,type,id,-links&sortby=%2Bdatetime";
+                    + "/search?collections=S2_L2A_MAJA&f=application/geo%2Bjson&limit=1&fields=properties.datetime,type,id,-links&sortby=datetime";
 
     private static String MAJA_MAX =
             BASE_URL

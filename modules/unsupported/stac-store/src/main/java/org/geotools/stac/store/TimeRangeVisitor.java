@@ -122,7 +122,7 @@ public class TimeRangeVisitor extends NullFilterVisitor {
      */
     protected boolean isTimeProperty(Expression expression) {
         return expression instanceof PropertyName
-                && ((PropertyName) expression).getPropertyName().equals(timeProperty);
+                && timeProperty.equals(((PropertyName) expression).getPropertyName());
     }
 
     private DateRange infinity() {
@@ -457,7 +457,7 @@ public class TimeRangeVisitor extends NullFilterVisitor {
         boolean p2 = isTimeProperty(filter.getExpression2());
         boolean l1 = isTimeLiteral(filter.getExpression1());
         boolean l2 = isTimeLiteral(filter.getExpression2());
-        if (!(p1 && !l2) && !(p2 && l1)) return infinity();
+        if (!(p1 && l2) && !(p2 && l1)) return infinity();
 
         Date date;
         if (p1 && l2) date = filter.getExpression2().evaluate(null, Date.class);

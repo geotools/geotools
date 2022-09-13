@@ -1427,6 +1427,7 @@ public class RasterLayerResponse {
         RasterManager originalRasterManager = originalRequest.getRasterManager();
         RasterManager manager =
                 originalRasterManager.getForGranuleCRS(
+                        request,
                         templateDescriptor,
                         this.mosaicBBox,
                         originalRequest.spatialRequestHelper.isSupportingAlternativeCRSOutput()

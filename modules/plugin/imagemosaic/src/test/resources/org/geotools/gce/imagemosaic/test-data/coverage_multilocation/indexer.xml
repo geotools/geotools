@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Indexer>
+  <coverages>
+    <coverage>
+      <name>rgb</name>
+      <parameters>
+          <parameter name="LocationAttribute" value="rgb" />
+      </parameters>
+    </coverage>
+     <coverage>
+      <name>gray</name>
+      <parameters>
+          <parameter name="LocationAttribute" value="gray" />
+      </parameters>
+    </coverage>
+  </coverages>
+  <parameters>
+      <parameter name="MosaicCRS" value="EPSG:4326" />
+      <parameter name="UseExistingSchema" value="true" />
+      <parameter name="TypeName" value="multilocation" />
+  </parameters>
+</Indexer>

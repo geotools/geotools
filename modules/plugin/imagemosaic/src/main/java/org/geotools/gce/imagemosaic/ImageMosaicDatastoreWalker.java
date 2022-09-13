@@ -26,6 +26,7 @@ import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.index.IndexerUtils;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * This class is responsible for walking through the target schema and check all the located
@@ -68,48 +69,28 @@ class ImageMosaicDatastoreWalker extends ImageMosaicWalker implements Runnable {
                     configHandler.getRunConfiguration().getParameter(Prop.LOCATION_ATTRIBUTE);
             String requestedTypeName =
                     configHandler.getRunConfiguration().getParameter(Prop.TYPENAME);
-            String[] typeNames = catalog.getTypeNames();
-            if (typeNames != null) {
-                for (String typeName : catalog.getTypeNames()) {
-                    if (requestedTypeName != null && !requestedTypeName.equals(typeName)) {
-                        continue;
-                    }
 
-                    if (!Utils.isValidMosaicSchema(catalog.getType(typeName), locationAttrName)) {
-                        LOGGER.log(Level.FINE, "Skipping invalid mosaic index table " + typeName);
-                        continue;
-                    }
-
-                    // how many rows for this feature type?
-                    final Query query = new Query(typeName);
-                    Integer maxInitializationTiles =
-                            IndexerUtils.getParameterAsInteger(
-                                    Prop.MAX_INIT_TILES,
-                                    configHandler.getRunConfiguration().getIndexer());
-                    if (maxInitializationTiles != null)
-                        query.setMaxFeatures(maxInitializationTiles);
-                    int numFiles = catalog.getGranulesCount(query);
-                    if (numFiles <= 0) {
-                        // empty table?
-                        LOGGER.log(Level.FINE, "No rows in the typeName: " + typeName);
-                        continue;
-                    }
-                    setNumElements(numFiles);
-
-                    // cool, now let's walk over the features
-                    final SimpleFeatureCollection coll = catalog.getGranules(query);
-
-                    // create an iterator
-                    try (SimpleFeatureIterator it = coll.features()) {
-                        // TODO setup index name
-                        while (it.hasNext()) {
-                            // get next element
-                            final SimpleFeature feature = it.next();
-                            consumer.handleElement(feature, this);
-                            if (getStop()) break;
+            if (requestedTypeName != null) {
+                SimpleFeatureType type = catalog.getType(requestedTypeName);
+                if (!Utils.isValidMosaicSchema(type, locationAttrName)) {
+                    LOGGER.log(
+                            Level.FINE, "Skipping invalid mosaic index table " + requestedTypeName);
+                } else {
+                    processGranules(catalog, requestedTypeName);
+                }
+            } else {
+                String[] typeNames = catalog.getTypeNames();
+                if (typeNames != null) {
+                    for (String typeName : typeNames) {
+                        if (!Utils.isValidMosaicSchema(
+                                catalog.getType(typeName), locationAttrName)) {
+                            LOGGER.log(
+                                    Level.FINE, "Skipping invalid mosaic index table " + typeName);
+                            continue;
                         }
+                        processGranules(catalog, typeName);
                     }
-                } // next table
+                }
             }
 
             // close transaction
@@ -163,5 +144,32 @@ class ImageMosaicDatastoreWalker extends ImageMosaicWalker implements Runnable {
                 }
             }
         }
+    }
+
+    private void processGranules(GranuleCatalog catalog, String requestedTypeName)
+            throws IOException {
+        // how many rows for this feature type?
+        final Query query = new Query(requestedTypeName);
+        Integer maxInitializationTiles =
+                IndexerUtils.getParameterAsInteger(
+                        Prop.MAX_INIT_TILES, configHandler.getRunConfiguration().getIndexer());
+        if (maxInitializationTiles != null) query.setMaxFeatures(maxInitializationTiles);
+
+        // cool, now let's walk over the features
+        final SimpleFeatureCollection coll = catalog.getGranules(query);
+
+        // create an iterator
+        int numFiles = 0;
+        try (SimpleFeatureIterator it = coll.features()) {
+            // TODO setup index name
+            while (it.hasNext()) {
+                // get next element
+                final SimpleFeature feature = it.next();
+                consumer.handleElement(feature, this);
+                numFiles++;
+                if (getStop()) break;
+            }
+        }
+        setNumElements(numFiles);
     }
 }

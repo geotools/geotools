@@ -110,7 +110,6 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortOrder;
-import org.opengis.filter.spatial.BBOX;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.Envelope;
 import org.opengis.metadata.Identifier;
@@ -1356,6 +1355,11 @@ public class RasterManager implements Cloneable {
                 : ((RangeVisitor) visitor).getRange();
     }
 
+    /**
+     * Checks if this EPSG code matches at least one feature. Since this method may perform a
+     * database query to find out, it's important to call it last while performing conditionals,
+     * leaving cheaper tests first.
+     */
     public boolean hasAlternativeCRS(Integer epsgCode) throws IOException {
         try {
             return epsgCode != null && heterogeneousCRS ? alternativeCRSCache.get(epsgCode) : false;
@@ -1728,17 +1732,12 @@ public class RasterManager implements Cloneable {
         return parentReader;
     }
 
-    public RasterManager getForGranuleCRS(
-            GranuleDescriptor templateDescriptor, ReferencedEnvelope requestBounds)
-            throws Exception {
-        return getForGranuleCRS(templateDescriptor, requestBounds, requestBounds);
-    }
-
     /**
      * Builds a RasterManager for the sub mosaic of a given template granule, and within a given
      * search bounds
      */
     public RasterManager getForGranuleCRS(
+            RasterLayerRequest request,
             GranuleDescriptor templateDescriptor,
             ReferencedEnvelope requestBounds,
             ReferencedEnvelope requestBoundsQuery)
@@ -1751,8 +1750,8 @@ public class RasterManager implements Cloneable {
         // requestBounds and requestBoundsQuery are the same object
         boolean useAlternativeCRS =
                 heterogeneousCRS
-                        && hasAlternativeCRS(CRS.lookupEpsgCode(requestedCRS, false))
-                        && !requestBounds.equals(requestBoundsQuery);
+                        && !requestBounds.equals(requestBoundsQuery)
+                        && hasAlternativeCRS(CRS.lookupEpsgCode(requestedCRS, false));
         CoordinateReferenceSystem referenceCRS =
                 useAlternativeCRS ? requestedCRS : spatialDomainManager.coverageCRS2D;
         if (CRS.equalsIgnoreMetadata(referenceCRS, granuleCRS)) {
@@ -1760,7 +1759,8 @@ public class RasterManager implements Cloneable {
         }
 
         // compute the bounds of the sub-mosaic in that CRS
-        ReferencedEnvelope bounds = getBoundsForGranuleCRS(templateDescriptor, requestBoundsQuery);
+        ReferencedEnvelope bounds =
+                getBoundsForGranuleCRS(request, templateDescriptor, requestBoundsQuery);
         ReferencedEnvelope targetBounds = reprojectBounds(requestBounds, granuleCRS, bounds);
 
         // rebuild the raster manager
@@ -1837,8 +1837,10 @@ public class RasterManager implements Cloneable {
      * general, the whole mosaic bounds in the granule local CRS)
      */
     private ReferencedEnvelope getBoundsForGranuleCRS(
-            GranuleDescriptor templateDescriptor, ReferencedEnvelope requestBounds)
-            throws IOException {
+            RasterLayerRequest request,
+            GranuleDescriptor templateDescriptor,
+            ReferencedEnvelope requestBounds)
+            throws IOException, FactoryException, TransformException {
 
         String crsAttribute = getCrsAttribute();
         if (crsAttribute == null) {
@@ -1852,19 +1854,19 @@ public class RasterManager implements Cloneable {
         FilterFactory2 ff = FeatureUtilities.DEFAULT_FILTER_FACTORY;
         PropertyIsEqualTo crsFilter =
                 ff.equal(ff.property(crsAttribute), ff.literal(granuleCRSCode), false);
-        BBOX bbox = ff.bbox(ff.property(""), requestBounds);
-        Filter filter = ff.and(crsFilter, bbox);
 
         GranuleSource granuleSource = getGranuleSource(true, null);
-        Query q = new Query(granuleSource.getSchema().getTypeName(), filter);
+        MosaicQueryBuilder builder = new MosaicQueryBuilder(request, requestBounds);
+        Query q = builder.build();
+        q.setFilter(ff.and(q.getFilter(), crsFilter));
         SimpleFeatureCollection granules = granuleSource.getGranules(q);
         ReferencedEnvelope bounds = granules.getBounds();
         return bounds;
     }
 
     /**
-     * Returns the name of the crs attribute in heterogeneous mosaics (for non heterogenous ones, it
-     * will return null
+     * Returns the name of the crs attribute in heterogeneous mosaics (for non-heterogenous ones, it
+     * will return null)
      */
     public String getCrsAttribute() throws IOException {
         String crsAttribute = configuration.getCRSAttribute();
@@ -1874,6 +1876,10 @@ public class RasterManager implements Cloneable {
 
         GranuleSource granuleSource = getGranuleSource(true, null);
         if (granuleSource.getSchema().getDescriptor(crsAttribute) == null) {
+            if (heterogeneousCRS)
+                throw new IllegalStateException(
+                        "Invalid heterogeneous mosaic configuration, "
+                                + "the 'crs' property is missing from the index schema");
             return null;
         }
 
@@ -1888,5 +1894,10 @@ public class RasterManager implements Cloneable {
     /** The attribute containing the location information for the single granules */
     public String getLocationAttribute() {
         return getParentReader().locationAttributeName;
+    }
+
+    /** Returns the coverage name */
+    public String getName() {
+        return name;
     }
 }

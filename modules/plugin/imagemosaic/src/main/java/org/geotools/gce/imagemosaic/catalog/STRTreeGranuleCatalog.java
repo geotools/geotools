@@ -144,7 +144,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
         this.wrappedCatalogue = wrappedCatalogue;
         this.typeName = (String) params.get("TypeName");
         if (typeName == null) {
-            wrappedCatalogue.getValidTypeNames().iterator().next();
+            this.typeName = wrappedCatalogue.getValidTypeNames().iterator().next();
         }
     }
 

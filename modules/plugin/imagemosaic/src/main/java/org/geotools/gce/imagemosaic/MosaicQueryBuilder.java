@@ -28,6 +28,7 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.Query;
 import org.geotools.filter.SortByImpl;
+import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBeans;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.renderer.crs.ProjectionHandler;
@@ -62,8 +63,14 @@ class MosaicQueryBuilder {
         handleAdditionalFilters(query);
         handleSortByClause(query);
         handleMultiThreadedLoading(query);
+        handleCoverageName(query);
 
         return query;
+    }
+
+    private void handleCoverageName(Query query) {
+        query.getHints()
+                .put(CatalogConfigurationBeans.COVERAGE_NAME, request.getRasterManager().getName());
     }
 
     private void handleMultiThreadedLoading(Query query) {
@@ -233,7 +240,7 @@ class MosaicQueryBuilder {
                         .supportsSorting(sortBy)) {
                     query.setSortBy(sortBy);
                 } else {
-                    LOGGER.severe(
+                    LOGGER.info(
                             "Sorting parameter ignored, underlying datastore cannot sort on "
                                     + Arrays.toString(sortBy));
                 }

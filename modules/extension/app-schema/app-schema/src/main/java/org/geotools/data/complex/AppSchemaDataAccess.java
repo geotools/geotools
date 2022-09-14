@@ -40,6 +40,7 @@ import org.geotools.data.DataStore;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.ServiceInfo;
+import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.config.NonFeatureTypeProxy;
 import org.geotools.data.complex.feature.type.Types;
 import org.geotools.data.complex.filter.ComplexFilterSplitter;
@@ -286,7 +287,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      *     expensive to calculate or any errors or occur.
      * @throws IOException if there are errors getting the count
      */
-    protected int getCount(final Query targetQuery) throws IOException {
+    protected int getCount(Query targetQuery) throws IOException {
 
         int count = 0;
 
@@ -295,28 +296,26 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
         Filter filter = targetQuery.getFilter();
         FilterAttributeExtractor extractor = new FilterAttributeExtractor();
         filter.accept(extractor, null);
-        Set<PropertyName> propertyNames = extractor.getPropertyNameSet();
         // Wrap with JoiningJDBCFeatureSource like in DataAccessMappingFeatureIterator
         // this is so it'd use the splitFilter in JoiningJDBCFeatureSource
         // otherwise you'll get an error when it can't find complex attributes in the
         // simple feature source
-        if (mappedSource instanceof JDBCFeatureSource) {
-            mappedSource = new JoiningJDBCFeatureSource((JDBCFeatureSource) mappedSource);
-        } else if (mappedSource instanceof JDBCFeatureStore) {
-            mappedSource = new JoiningJDBCFeatureSource((JDBCFeatureStore) mappedSource);
+        if (AppSchemaDataAccessConfigurator.isJoining()) {
+            if (mappedSource instanceof JDBCFeatureSource) {
+                mappedSource = new JoiningJDBCFeatureSource((JDBCFeatureSource) mappedSource);
+                targetQuery = new JoiningQuery(targetQuery);
+            } else if (mappedSource instanceof JDBCFeatureStore) {
+                mappedSource = new JoiningJDBCFeatureSource((JDBCFeatureStore) mappedSource);
+                targetQuery = new JoiningQuery(targetQuery);
+            }
         }
-        FeatureType featureType = mappedSource.getSchema();
         boolean canCount = canCount(targetQuery, mappedSource, mapping);
         if (canCount) {
-            if (!hasNestedProperties(featureType, propertyNames)) {
-                JoiningQuery joiningQuery = new JoiningQuery(targetQuery);
-                joiningQuery.setRootMapping(mapping);
-                count = mappedSource.getCount(joiningQuery);
-            } else if (mappedSource instanceof JoiningJDBCFeatureSource) {
-                count =
-                        getCountNestedFilter(
-                                (JoiningJDBCFeatureSource) mappedSource, targetQuery, mapping);
+            Query unrollQuery = unrollQuery(targetQuery, mapping);
+            if (unrollQuery instanceof JoiningQuery) {
+                ((JoiningQuery) unrollQuery).setRootMapping(mapping);
             }
+            return mappedSource.getCount(unrollQuery);
         }
         return count;
     }
@@ -346,28 +345,6 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
             }
         }
         return canCount;
-    }
-
-    private int getCountNestedFilter(
-            JoiningJDBCFeatureSource source, Query targetQuery, FeatureTypeMapping mapping)
-            throws IOException {
-        // wrap the query in the Joining one to have the unmapping visitor
-        // setting the ids
-        JoiningQuery unrollQuery =
-                (JoiningQuery) unrollQuery(new JoiningQuery(targetQuery), mapping);
-        unrollQuery.setRootMapping(mapping);
-        return source.getCount(unrollQuery);
-    }
-
-    private boolean hasNestedProperties(FeatureType featureType, Set<PropertyName> propertyNames) {
-        boolean nestedProperties = false;
-        for (PropertyName pn : propertyNames) {
-            if (pn.evaluate(featureType) == null) {
-                nestedProperties = true;
-                break;
-            }
-        }
-        return nestedProperties;
     }
 
     /**

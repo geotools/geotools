@@ -46,6 +46,7 @@
     <module>cql2</module>
     <module>jdbc-teradata</module>
     <module>stac-store</module>
+    <module>vector-mosaic</module>
   </modules>
   <profiles>
     <!-- ================================================== -->

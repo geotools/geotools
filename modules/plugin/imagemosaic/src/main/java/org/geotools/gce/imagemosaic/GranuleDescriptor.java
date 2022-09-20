@@ -1380,17 +1380,19 @@ public class GranuleDescriptor {
                 return new GranuleLoadingResult(
                         raster, null, granuleURLUpdated, doFiltering, pamDataset, this);
             } else {
-                return loadTiled(
-                        request,
-                        hints,
-                        virtualNativeResolution,
-                        useFootprint,
-                        doFiltering,
-                        granuleURLUpdated,
-                        raster,
-                        finalRaster2Model,
-                        interpolation,
-                        localHints);
+                RenderedImage image =
+                        loadTiled(
+                                request,
+                                hints,
+                                virtualNativeResolution,
+                                useFootprint,
+                                raster,
+                                finalRaster2Model,
+                                interpolation,
+                                localHints);
+                if (image == null) return null;
+                return new GranuleLoadingResult(
+                        image, null, granuleURLUpdated, doFiltering, pamDataset, this);
             }
 
         } catch (org.opengis.referencing.operation.NoninvertibleTransformException e) {
@@ -1435,27 +1437,28 @@ public class GranuleDescriptor {
      * read type is Direct since buffered images comes up untiled and this can affect the
      * performances of the subsequent affine operation.
      */
-    private GranuleLoadingResult loadTiled(
+    private RenderedImage loadTiled(
             RasterLayerRequest request,
             Hints hints,
             double[] virtualNativeResolution,
             boolean useFootprint,
-            boolean doFiltering,
-            URL granuleURLUpdated,
             RenderedImage raster,
             AffineTransform finalRaster2Model,
             Interpolation interpolation,
             RenderingHints localHints) {
         final Dimension tileDimensions = request.getTileDimensions();
+        ImageLayout layout = null;
         if (tileDimensions != null && request.getReadType().equals(ReadType.DIRECT_READ)) {
-            final ImageLayout layout = new ImageLayout();
+            layout = new ImageLayout();
             layout.setTileHeight(tileDimensions.width).setTileWidth(tileDimensions.height);
-            localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
         } else {
-            ImageLayout layout = Utils.getImageLayoutHint(hints);
-            if (layout != null) {
-                localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout.clone()));
-            }
+            layout = Utils.getImageLayoutHint(hints);
+        }
+        // make sure the tiling is not going to make the image size balloon out of control
+        if (layout != null) {
+            layout.setTileWidth(Math.min(layout.getTileWidth(null), raster.getWidth()));
+            layout.setTileHeight(Math.min(layout.getTileHeight(null), raster.getHeight()));
+            localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
         }
         final TileCache cache = Utils.getTileCacheHint(hints);
         if (cache != null) {
@@ -1501,14 +1504,12 @@ public class GranuleDescriptor {
             renderedImage = t;
         } else if (this.noData != null) {
             // on deferred loading we cannot get the noData from the image, but we might
-            // have read it
-            // at the beginning
+            // have read it at the beginning
             PlanarImage t = PlanarImage.wrapRenderedImage(renderedImage);
             t.setProperty(NoDataContainer.GC_NODATA, noData);
             renderedImage = t;
         }
-        return new GranuleLoadingResult(
-                renderedImage, null, granuleURLUpdated, doFiltering, pamDataset, this);
+        return renderedImage;
     }
 
     private AffineTransform setupRaster2Model(

@@ -387,7 +387,6 @@ public class ImageMosaicReaderTest {
 
     /** Tests the {@link ImageMosaicReader} with default parameters for the various input params. */
     @Test
-    //	@Ignore
     public void overviews() throws Exception {
         final AbstractGridFormat format = TestUtils.getFormat(overviewURL);
         ParameterValueGroup readParams = format.getReadParameters();
@@ -429,8 +428,20 @@ public class ImageMosaicReaderTest {
         tileSize.setValue("128,128");
 
         // Test the output coverage
-        TestUtils.checkCoverage(
-                reader, new GeneralParameterValue[] {gg, useJai, tileSize}, "overviews test");
+        GridCoverage2D coverage =
+                TestUtils.checkCoverage(
+                        reader,
+                        new GeneralParameterValue[] {gg, useJai, tileSize},
+                        "overviews test");
+        RenderedImage image = coverage.getRenderedImage();
+        assertEquals(128, image.getTileWidth());
+        assertEquals(128, image.getTileHeight());
+        // source images are smaller than the tile size, make sure they have not been inflated
+        for (RenderedImage source : image.getSources()) {
+            assertEquals(70, source.getTileWidth());
+            assertEquals(94, source.getTileHeight());
+        }
+        coverage.dispose(true);
         reader.dispose();
     }
 

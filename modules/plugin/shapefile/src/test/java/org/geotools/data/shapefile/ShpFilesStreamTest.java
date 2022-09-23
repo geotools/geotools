@@ -44,7 +44,7 @@ import org.geotools.data.shapefile.files.StorageFile;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ShpFilesTestStream implements org.geotools.data.shapefile.files.FileWriter {
+public class ShpFilesStreamTest implements org.geotools.data.shapefile.files.FileWriter {
 
     private String typeName;
     private Map<ShpFileType, File> map;
@@ -182,12 +182,9 @@ public class ShpFilesTestStream implements org.geotools.data.shapefile.files.Fil
     }
 
     @Test
-    @SuppressWarnings("PMD.UnusedVariable") // really want to just open and close
     public void testGetReadChannelURL() throws IOException {
         URL url = TestData.url("shapes/statepop.shp");
         ShpFiles files = new ShpFiles(url);
-
-        assertFalse(files.isLocal());
 
         try (ReadableByteChannel read = files.getReadChannel(SHP, this)) {
             assertEquals(1, files.numberOfLocks());

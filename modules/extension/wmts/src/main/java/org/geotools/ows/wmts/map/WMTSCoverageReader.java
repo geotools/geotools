@@ -48,6 +48,7 @@ import org.geotools.renderer.lite.RendererUtilities;
 import org.geotools.renderer.lite.gridcoverage2d.GridCoverageRendererUtilities;
 import org.geotools.tile.Tile;
 import org.geotools.util.factory.Hints;
+import org.geotools.util.logging.Logging;
 import org.opengis.coverage.grid.Format;
 import org.opengis.geometry.Envelope;
 import org.opengis.parameter.GeneralParameterValue;
@@ -65,8 +66,7 @@ import org.opengis.referencing.operation.TransformException;
 public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
 
     /** The logger for the map module. */
-    public static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(WMTSCoverageReader.class);
+    public static final Logger LOGGER = Logging.getLogger(WMTSCoverageReader.class);
 
     static GridCoverageFactory gcf = new GridCoverageFactory();
 
@@ -105,9 +105,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
 
         // best guess at the format with a preference for PNG (since it's
         // normally transparent)
-        List<String> formats =
-                ((WMTSLayer) layer)
-                        .getFormats(); // wms2.getCapabilities().getRequest().getGetTile().getFormats();
+        List<String> formats = ((WMTSLayer) layer).getFormats();
         this.format = formats.iterator().next();
         for (String f : formats) {
             if ("image/png".equals(f)
@@ -131,7 +129,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
                     new String[] {"EPSG:4326", "WGS84", "CRS:84", "WGS 84", "WGS84(DD)"}) {
                 if (layer.getSrs().contains(preferred)) {
                     srsName = preferred;
-                    if (LOGGER.isLoggable(Level.INFO)) LOGGER.info("defaulting CRS to: " + srsName);
+                    LOGGER.info(() -> "defaulting CRS to: " + srsName);
                 }
             }
 
@@ -144,7 +142,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
                         CRS.decode(srs);
                         srsName = srs;
 
-                        if (LOGGER.isLoggable(Level.INFO)) LOGGER.info("setting CRS: " + srsName);
+                        LOGGER.info(() -> "setting CRS: " + srsName);
                         break;
                     } catch (Exception e) {
                         // it's fine, we could not decode that code
@@ -155,14 +153,13 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
             if (srsName == null) {
                 if (layer.getSrs().isEmpty()) {
                     // force 4326
-                    if (LOGGER.isLoggable(Level.INFO))
-                        LOGGER.info("adding default CRS to: " + srsName);
+                    LOGGER.info(() -> "adding default CRS to: " + srsName);
                     srsName = "EPSG:4326";
                     layer.getSrs().add(srsName);
                 } else {
                     // if not even that works we just take the first...
                     srsName = layer.getSrs().iterator().next();
-                    if (LOGGER.isLoggable(Level.INFO)) LOGGER.info("guessing CRS to: " + srsName);
+                    LOGGER.info(() -> "guessing CRS to: " + srsName);
                 }
             }
 
@@ -195,8 +192,10 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
         try {
             crs = CRS.decode(srsName);
         } catch (Exception e) {
-            if (LOGGER.isLoggable(Level.INFO))
-                LOGGER.log(Level.INFO, "Bounds unavailable for layer" + layer);
+            LOGGER.log(
+                    Level.WARNING,
+                    "Default crs (" + srsName + ") for layer (" + layer + ") couldn't be set.",
+                    e);
         }
         this.crs = crs;
         updateBounds();
@@ -462,6 +461,12 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
 
     /** Updates the coverage bounds based on layer and crs */
     public void updateBounds() {
+        if (crs == null) {
+
+            this.bounds = null;
+            this.originalEnvelope = null;
+            return;
+        }
         if (LOGGER.isLoggable(Level.FINER)) LOGGER.entering("WMTSCoverage", "updatingBounds");
         GeneralEnvelope envelope = layer.getEnvelope(crs);
         ReferencedEnvelope result = reference(envelope);
@@ -665,48 +670,31 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
     CoordinateReferenceSystem getBestSourceCRS(
             CoordinateReferenceSystem targetCRS, WMTSReadParameters readParameters)
             throws IOException {
-        try {
-            CoordinateReferenceSystem result = null;
-            String switched = switchDefinition(targetCRS);
-            if (switched != null) {
-                // check first by changing the srs definition
-                result = CRS.decode(switched);
-                LOGGER.fine(() -> "Will request tiles with server supported crs " + switched);
-            } else if (readParameters.getSourceCRS() != null) {
-                // otherwise get the preferred one
-                result = readParameters.getSourceCRS();
-            } else if (!validSRS.isEmpty()) {
-                // last attempt is to retrieve the firs valid srs available
-                LOGGER.fine(() -> "Retrieving random srs to perform reprojection");
-                result = randomSupportedCRS();
-            }
-            if (result == null) {
-                throw new RuntimeException(
-                        "Unable to retrieve a CRS to be used as the source in order to perform reprojection.");
-            }
-            return result;
-        } catch (FactoryException e) {
-            if (LOGGER.isLoggable(Level.SEVERE))
-                LOGGER.log(
-                        Level.SEVERE,
-                        "Error while retrieving the source CRS to perform reprojection. ",
-                        e);
-            throw new IOException(e);
-        }
-    }
 
-    private CoordinateReferenceSystem randomSupportedCRS() {
-        CoordinateReferenceSystem result = null;
-        for (String srs : validSRS) {
-            LOGGER.fine(() -> "trying to decode " + srs);
+        String switched = switchDefinition(targetCRS);
+        if (switched != null) {
+            // check first by changing the srs definition
+            LOGGER.fine(() -> "Will request tiles with server supported srs " + switched);
             try {
-                result = CRS.decode(srs);
-                break;
+                return CRS.decode(switched);
             } catch (FactoryException e) {
-                LOGGER.fine(() -> "failed to decode from " + srs);
+                if (LOGGER.isLoggable(Level.SEVERE))
+                    LOGGER.log(
+                            Level.SEVERE,
+                            "Error while retrieving the source CRS to perform reprojection. ",
+                            e);
+                throw new IOException(e);
             }
+        } else if (readParameters.getSourceCRS() != null) {
+            // otherwise get the preferred one
+            return readParameters.getSourceCRS();
+        } else {
+            if (crs == null) {
+                throw new IllegalStateException(
+                        "Layer " + this.layer + " isn't set up with a default CRS.");
+            }
+            return crs;
         }
-        return result;
     }
 
     /** Keep on to values for single request */

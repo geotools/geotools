@@ -150,7 +150,8 @@ public class FeatureTypeHandler extends DelegatingHandler<SimpleFeatureType>
                         return false;
                     }
                 } else if (knownType != newType) {
-                    if (Number.class.isAssignableFrom(knownType) && newType == Double.class) {
+                    if ((Number.class.isAssignableFrom(knownType) && newType == Double.class)
+                            || (Number.class.isAssignableFrom(newType) && knownType == Double.class)) {
                         propertyTypes.put(currentProp, Double.class);
                     } else {
                         throw new IllegalStateException(

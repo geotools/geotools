@@ -19,11 +19,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.opengis.ows11.AllowedValuesType;
@@ -54,13 +51,13 @@ import org.geotools.data.ows.OperationType;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wms.CRSEnvelope;
-import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wms.StyleImpl;
 import org.geotools.ows.wms.xml.Dimension;
 import org.geotools.ows.wms.xml.Extent;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.SimpleInternationalString;
+import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.referencing.FactoryException;
@@ -78,8 +75,7 @@ import org.opengis.referencing.operation.TransformException;
  */
 public class WMTSCapabilities extends Capabilities {
 
-    public static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(WMTSCapabilities.class);
+    public static final Logger LOGGER = Logging.getLogger(WMTSCapabilities.class);
 
     private WMTSRequest request;
 
@@ -87,15 +83,12 @@ public class WMTSCapabilities extends Capabilities {
 
     CapabilitiesType caps;
 
-    private Map<String, WMTSLayer> layerMap = new HashMap<>();
-
-    private List<WMTSLayer> layers = new ArrayList<>(); // cache
+    private final Map<String, WMTSLayer> layerMap = new HashMap<>();
+    private final List<WMTSLayer> layers = new ArrayList<>();
+    private final Map<String, TileMatrixSet> matrixSetMap = new HashMap<>();
+    private final List<TileMatrixSet> matrixes = new ArrayList<>();
 
     private String[] exceptions = new String[0];
-
-    private List<TileMatrixSet> matrixes = new ArrayList<>();
-
-    private Map<String, TileMatrixSet> matrixSetMap = new HashMap<>();
 
     private WMTSServiceType type;
 
@@ -113,7 +106,6 @@ public class WMTSCapabilities extends Capabilities {
                 WMTSLayer layer = parseLayer(layerType);
                 layers.add(layer);
                 layerMap.put(layer.getName(), layer);
-
             } else {
                 if (LOGGER.isLoggable(Level.INFO)) {
                     LOGGER.info("Unknown object " + l);
@@ -128,22 +120,9 @@ public class WMTSCapabilities extends Capabilities {
             matrixSetMap.put(matrixSet.getIdentifier(), matrixSet);
         }
 
-        // set layer SRS - this comes from the tile matrix link
-        Set<String> srs = new TreeSet<>();
-        Set<CoordinateReferenceSystem> crs = new HashSet<>();
-        Map<String, CoordinateReferenceSystem> names = new HashMap<>();
-        for (TileMatrixSet tms : matrixes) {
-            CoordinateReferenceSystem refSystem = tms.getCoordinateReferenceSystem();
-            crs.add(refSystem);
-            names.put(tms.getIdentifier(), refSystem);
-
-            srs.add(tms.getCrs());
-        }
-
         // Fill in some layers info from the linked MatrixSets
-        for (Layer l : layers) {
-            WMTSLayer wmtsLayer = (WMTSLayer) l;
-            fillTileMatrixSet(wmtsLayer, names);
+        for (WMTSLayer wmtsLayer : layers) {
+            fillTileMatrixSet(wmtsLayer);
         }
 
         request = new WMTSRequest();
@@ -234,19 +213,30 @@ public class WMTSCapabilities extends Capabilities {
         }
     }
 
-    private void fillTileMatrixSet(
-            WMTSLayer wmtsLayer, Map<String, CoordinateReferenceSystem> crsLookup) {
-        Map<String, TileMatrixSetLink> tileMatrixLinks = wmtsLayer.getTileMatrixLinks();
-        if (wmtsLayer.getLatLonBoundingBox() == null) setLatLonBBox(wmtsLayer);
-
+    private void fillTileMatrixSet(WMTSLayer wmtsLayer) {
+        // set WGS84 LatLonBBox if not present
+        if (wmtsLayer.getLatLonBoundingBox() == null) {
+            setLatLonBBox(wmtsLayer);
+        }
         ReferencedEnvelope wgs84Env = new ReferencedEnvelope(wmtsLayer.getLatLonBoundingBox());
 
+        Map<String, TileMatrixSetLink> tileMatrixLinks = wmtsLayer.getTileMatrixLinks();
         // add a bbox for every CRS
         for (TileMatrixSetLink tmsLink : tileMatrixLinks.values()) {
-            CoordinateReferenceSystem tmsCRS = crsLookup.get(tmsLink.getIdentifier());
+            String tmsIdentifier = tmsLink.getIdentifier();
+            TileMatrixSet tms = matrixSetMap.get(tmsIdentifier);
+            if (tms == null) {
+                LOGGER.info(
+                        String.format(
+                                "WMTS capabilities for layer %s specified a TileMatrixSet link %s that doesn't exist.",
+                                wmtsLayer.getName(), tmsIdentifier));
+                tileMatrixLinks.remove(tmsIdentifier);
+                continue;
+            }
+            CoordinateReferenceSystem tmsCRS = tms.getCoordinateReferenceSystem();
             wmtsLayer.addSRS(tmsCRS);
             String srs = CRS.toSRS(tmsCRS);
-            TileMatrixSet tms = matrixSetMap.get(tmsLink.getIdentifier());
+
             if (tms.getBbox() != null) {
                 wmtsLayer.getBoundingBoxes().put(srs, tms.getBbox());
             } else {
@@ -507,14 +497,19 @@ public class WMTSCapabilities extends Capabilities {
         this.exceptions = exceptions;
     }
 
-    /** @return the matrixes */
+    /** @return An unmodifiable list of MatrixSets */
     public List<TileMatrixSet> getMatrixSets() {
-        return matrixes;
+        return Collections.unmodifiableList(matrixes);
     }
 
-    /** @param matrixes the matrixes to set */
+    /** Clears all matrixSet's and populates with the list */
     public void setMatrixSets(List<TileMatrixSet> matrixes) {
-        this.matrixes = matrixes;
+        matrixSetMap.clear();
+        this.matrixes.clear();
+        for (TileMatrixSet tms : matrixes) {
+            matrixSetMap.put(tms.getIdentifier(), tms);
+            this.matrixes.add(tms);
+        }
     }
 
     public TileMatrixSet getMatrixSet(String identifier) {

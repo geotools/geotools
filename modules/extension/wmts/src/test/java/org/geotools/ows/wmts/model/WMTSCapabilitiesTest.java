@@ -122,8 +122,8 @@ public class WMTSCapabilitiesTest {
         WMTSCapabilities capabilities = createCapabilities("nasa.getcapa.xml");
         WMTSLayer layer = capabilities.getLayer("Blue_Marble_Extended");
         TileMatrixSetLink link = layer.getTileMatrixLinks().get("1.5km");
-        Assert.assertTrue(
-                "1.5km isn't defined as a MatrixSet and should be omitted.", link == null);
+        Assert.assertNull(
+                "1.5km isn't defined as a MatrixSet and should be omitted.", link);
     }
 
     @Test

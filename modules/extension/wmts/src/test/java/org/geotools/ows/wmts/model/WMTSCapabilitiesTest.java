@@ -20,6 +20,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.ows.OperationType;
 import org.geotools.ows.wms.CRSEnvelope;
@@ -103,13 +104,25 @@ public class WMTSCapabilitiesTest {
             CRSEnvelope bbox = layers.get(1).getBoundingBoxes().get("EPSG:4326");
             Assert.assertNotNull(bbox);
         } catch (Exception e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
+            Logger.getGlobal().log(Level.INFO, "", e);
             if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
                 LOGGER.warning("Unable to test - timed out: " + e);
             } else {
                 throw (e);
             }
         }
+    }
+
+    /**
+     * A Layer might have a MatrixSetLink with an identifier that isn't within the MatrixSet's. Such
+     * a link should be removed.
+     */
+    @Test
+    public void testMissingMatrixSetLink() throws Exception {
+        WMTSCapabilities capabilities = createCapabilities("nasa.getcapa.xml");
+        WMTSLayer layer = capabilities.getLayer("Blue_Marble_Extended");
+        TileMatrixSetLink link = layer.getTileMatrixLinks().get("1.5km");
+        Assert.assertNull("1.5km isn't defined as a MatrixSet and should be omitted.", link);
     }
 
     @Test
@@ -165,7 +178,7 @@ public class WMTSCapabilitiesTest {
                     0d);
 
         } catch (Exception e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
+            Logger.getGlobal().log(Level.INFO, "", e);
             if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
                 LOGGER.warning("Unable to test - timed out: " + e);
             } else {
@@ -195,7 +208,7 @@ public class WMTSCapabilitiesTest {
             OperationType getTile = request.getGetTile();
             Assert.assertNotNull(getTile);
 
-            Assert.assertEquals(519, capabilities.getLayerList().size());
+            Assert.assertEquals(520, capabilities.getLayerList().size());
 
             List<WMTSLayer> layers = capabilities.getLayerList();
             WMTSLayer l0 = layers.get(0);
@@ -217,7 +230,7 @@ public class WMTSCapabilitiesTest {
             Assert.assertNotNull(bbox);
 
         } catch (Exception e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
+            Logger.getGlobal().log(Level.INFO, "", e);
             if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
                 LOGGER.warning("Unable to test - timed out: " + e);
             } else {

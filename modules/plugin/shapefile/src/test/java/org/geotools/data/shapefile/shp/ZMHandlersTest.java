@@ -18,6 +18,7 @@ package org.geotools.data.shapefile.shp;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
@@ -86,6 +87,28 @@ public class ZMHandlersTest {
                 SimpleFeature f = reader.next();
                 assertNotNull(f.getDefaultGeometry());
             }
+        }
+        store.dispose();
+    }
+
+    @Test
+    public void testReadTazRoads() throws IOException {
+        // tests that tasmainia roads (a LineStringZ) file reads correctly
+        URL url = TestData.url(ShapefileDataStore.class, "taz_shapes/tasmania_roads.shp");
+        ShapefileDataStore store = new ShapefileDataStore(url);
+        Query q = new Query(store.getTypeNames()[0]);
+
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                store.getFeatureReader(q, Transaction.AUTO_COMMIT)) {
+            reader.hasNext();
+            SimpleFeature f = reader.next();
+            Geometry geom = (Geometry) f.getDefaultGeometry();
+            assertNotNull(geom);
+            Coordinate coord = geom.getCoordinates()[0];
+            assertEquals("wrong x", coord.getX(), 146.468582, 0.00001);
+            assertEquals("wrong y", coord.getY(), -41.241478, 0.00001);
+            assertEquals("wrong z", coord.getZ(), -41.241478, 0.00001);
+            assertTrue("Bad M value " + coord.getM(), Double.isNaN(coord.getM()));
         }
         store.dispose();
     }
@@ -175,6 +198,7 @@ public class ZMHandlersTest {
         assertEquals("wrong x", 340d, coordinate.getX(), 0.001);
         assertEquals("wrong y", 377d, coordinate.getY(), 0.001);
         assertEquals("wrong z", 3d, coordinate.getZ(), 0.00001);
+
         store.dispose();
     }
 
@@ -230,15 +254,6 @@ public class ZMHandlersTest {
             assertEquals("wrong z", expected[k + 2], coordinate.getZ(), 0.00001);
         }
 
-        //        Query query = new Query();
-        //        query.getHints().put(Hints.FEATURE_2D, Boolean.TRUE);
-        //        try (SimpleFeatureIterator itr =
-        // store.getFeatureSource().getFeatures(query).features()) {
-        //            while (itr.hasNext()) {
-        //                SimpleFeature f = itr.next();
-        //                System.out.println(f.getDefaultGeometryProperty());
-        //            }
-        //        }
         store.dispose();
     }
 
@@ -466,7 +481,8 @@ public class ZMHandlersTest {
 
     @Test
     public void testReadZPointsFalse2D() throws IOException {
-        // tests that Point with Z and without optional M and with Feature2D false are correctly
+        // tests that Point with Z and without optional M and with Feature2D false
+        // are correctly
         // parsed
         URL url = TestData.url(ShapefileDataStore.class, "mzvalues/pointZ.shp");
         ShapefileDataStore store = new ShapefileDataStore(url);

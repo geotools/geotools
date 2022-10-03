@@ -191,7 +191,17 @@ public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
             } else {
                 return bbox(bounds);
             }
+        } else if (value instanceof Envelope) {
+            Envelope bounds = (Envelope) value;
+            if (bbox != null) {
+                bbox.expandToInclude(bounds);
+                return bbox;
+            } else {
+                return bbox(bounds);
+            }
+
         } else {
+
             LOGGER.finer("LiteralExpression ignored!");
         }
         return bbox;

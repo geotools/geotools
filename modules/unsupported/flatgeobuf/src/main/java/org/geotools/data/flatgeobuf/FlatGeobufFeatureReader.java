@@ -86,7 +86,8 @@ public class FlatGeobufFeatureReader implements FeatureReader<SimpleFeatureType,
         if (q != null && q.getFilter() != null) {
             bbox = (Envelope) q.getFilter().accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, bbox);
         }
-        if (bbox.isNull()
+        if (bbox == null
+                || bbox.isNull()
                 || Double.isInfinite(bbox.getWidth())
                 || Double.isInfinite(bbox.getHeight())) {
             bbox = null;

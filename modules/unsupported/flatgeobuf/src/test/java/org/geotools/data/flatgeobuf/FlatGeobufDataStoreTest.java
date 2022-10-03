@@ -842,14 +842,7 @@ public class FlatGeobufDataStoreTest {
 
     @Test
     public void readCountriesBbox() throws IOException {
-        URL url =
-                getClass()
-                        .getClassLoader()
-                        .getResource("org/geotools/data/flatgeobuf/countries.fgb");
-        Map<String, Serializable> params = new HashMap<>();
-        params.put("url", url);
-        DataStore store = DataStoreFinder.getDataStore(params);
-        SimpleFeatureSource featureSource = store.getFeatureSource("countries");
+        SimpleFeatureSource featureSource = getFeatureSource("countries");
         SimpleFeatureType schema = featureSource.getSchema();
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         String geometryPropertyName = schema.getGeometryDescriptor().getLocalName();
@@ -868,6 +861,36 @@ public class FlatGeobufDataStoreTest {
             }
             assertEquals(2, count);
         }
+    }
+
+    @Test
+    public void readCountriesWithNullIntersection() throws IOException {
+        SimpleFeatureSource featureSource = getFeatureSource("countries");
+        SimpleFeatureType schema = featureSource.getSchema();
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        String geometryPropertyName = schema.getGeometryDescriptor().getLocalName();
+        Filter filter = ff.intersects(ff.property(geometryPropertyName), ff.literal(null));
+        Query query = new Query(schema.getTypeName(), filter);
+        SimpleFeatureCollection featureCollection = featureSource.getFeatures(query);
+        try (SimpleFeatureIterator it = featureCollection.features()) {
+            int count = 0;
+            while (it.hasNext()) {
+                it.next();
+                count++;
+            }
+            assertEquals(0, count);
+        }
+    }
+
+    private SimpleFeatureSource getFeatureSource(String name) throws IOException {
+        URL url =
+                getClass()
+                        .getClassLoader()
+                        .getResource("org/geotools/data/flatgeobuf/" + name + ".fgb");
+        Map<String, Serializable> params = new HashMap<>();
+        params.put("url", url);
+        DataStore store = DataStoreFinder.getDataStore(params);
+        return store.getFeatureSource(name);
     }
 
     @Test

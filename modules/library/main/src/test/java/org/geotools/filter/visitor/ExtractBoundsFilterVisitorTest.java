@@ -71,6 +71,13 @@ public class ExtractBoundsFilterVisitorTest extends TemporalFilterTestSupport {
     }
 
     @Test
+    public void testEnvelopeIntersects() {
+        Filter f = ff.intersects(ff.property("geom"), ff.literal(new Envelope(-10, 10, -10, 10)));
+        Envelope env = (Envelope) f.accept(visitor, null);
+        assertEquals(new Envelope(-10, 10, -10, 10), env);
+    }
+
+    @Test
     public void testTouches() {
         Coordinate[] coords = {new Coordinate(0, 0), new Coordinate(10, 10)};
         LineString lineString = new GeometryFactory().createLineString(coords);

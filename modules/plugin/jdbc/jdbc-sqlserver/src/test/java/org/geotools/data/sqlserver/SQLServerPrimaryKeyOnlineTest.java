@@ -25,9 +25,4 @@ public class SQLServerPrimaryKeyOnlineTest extends JDBCPrimaryKeyOnlineTest {
     protected JDBCPrimaryKeyTestSetup createTestSetup() {
         return new SQLServerPrimaryKeyTestSetup();
     }
-
-    @Override
-    public void testSequencedPrimaryKey() throws Exception {
-        // seems sqlserver does not really do explicit sequences...
-    }
 }

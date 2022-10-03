@@ -197,9 +197,7 @@ public class MultiLineHandler implements ShapeHandler {
         if (shapeType == ShapeType.ARCZ && !flatGeometry) {
             // z min, max
             // buffer.position(buffer.position() + 2 * 8);
-            // ((Buffer) doubleBuffer).position(doubleBuffer.position() + 2);
-            double[] minmax = new double[2];
-            doubleBuffer.get(minmax);
+            ((Buffer) doubleBuffer).position(doubleBuffer.position() + 2);
             for (int part = 0; part < numParts; part++) {
                 start = partOffsets[part];
 
@@ -229,9 +227,7 @@ public class MultiLineHandler implements ShapeHandler {
         if ((isArcZWithM || shapeType == ShapeType.ARCM) && !flatGeometry) {
             // M min, max
             // buffer.position(buffer.position() + 2 * 8);
-            // ((Buffer) doubleBuffer).position(doubleBuffer.position() + 2);
-            double[] minmax = new double[2];
-            doubleBuffer.get(minmax);
+            ((Buffer) doubleBuffer).position(doubleBuffer.position() + 2);
 
             for (int part = 0; part < numParts; part++) {
                 start = partOffsets[part];
@@ -253,11 +249,6 @@ public class MultiLineHandler implements ShapeHandler {
                 double[] m = new double[length];
                 doubleBuffer.get(m);
                 for (int i = 0; i < length; i++) {
-                    // Page 2 of the spec says that values less than -10E38 are
-                    // NaNs
-                    if (m[i] < -10e38) {
-                        m[i] = Double.NaN;
-                    }
                     lines[part].setOrdinate(i, CoordinateSequence.M, m[i]);
                 }
             }

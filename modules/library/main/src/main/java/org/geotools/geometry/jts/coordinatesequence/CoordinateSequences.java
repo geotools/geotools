@@ -173,7 +173,7 @@ public class CoordinateSequences extends org.locationtech.jts.geom.CoordinateSeq
         if (seq == null) return 3;
 
         int dim = seq.getDimension();
-        if (dim < 3) return dim;
+        if (dim != 3) return dim;
 
         // hack to handle issue that CoordinateArraySequence always reports
         // dimension = 3
@@ -182,13 +182,6 @@ public class CoordinateSequences extends org.locationtech.jts.geom.CoordinateSeq
             if (seq.size() > 0) {
                 if (Double.isNaN(seq.getOrdinate(0, CoordinateSequence.Y))) return 1;
                 if (Double.isNaN(seq.getOrdinate(0, CoordinateSequence.Z))) return 2;
-                if (dim == 4) {
-                    if (Double.isNaN(seq.getM(0))) {
-                        return 3;
-                    } else {
-                        return 4;
-                    }
-                }
             }
         }
         return 3;
@@ -212,8 +205,7 @@ public class CoordinateSequences extends org.locationtech.jts.geom.CoordinateSeq
             return true;
         }
 
-        // ok, 2d equal, it means they have the same list of geometries and
-        // coordinate sequences, in
+        // ok, 2d equal, it means they have the same list of geometries and coordinate sequences, in
         // the same order
         List<CoordinateSequence> sequences1 = CoordinateSequenceCollector.find(g1);
         List<CoordinateSequence> sequences2 = CoordinateSequenceCollector.find(g2);

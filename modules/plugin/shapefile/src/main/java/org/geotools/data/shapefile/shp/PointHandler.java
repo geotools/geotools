@@ -95,13 +95,7 @@ public class PointHandler implements ShapeHandler {
         c.setY(buffer.getDouble());
 
         if (shapeType == ShapeType.POINTM && !flatGeometry) {
-            double m = buffer.getDouble();
-            // Page 2 of the spec says that values less than 10E-38 are
-            // NaNs
-            if (m < -10e38) {
-                m = Double.NaN;
-            }
-            c.setM(m);
+            c.setM(buffer.getDouble());
         }
 
         if (shapeType == ShapeType.POINTZ && !flatGeometry) {

@@ -207,10 +207,11 @@ public class PolygonHandler implements ShapeHandler {
                             coords.getOrdinate(offset, CoordinateSequence.Z));
                 }
                 if (coords.hasM() && !flatFeature) {
-                    csRing.setOrdinate(
-                            i,
-                            CoordinateSequence.M,
-                            coords.getOrdinate(offset, CoordinateSequence.M));
+                    double m = coords.getOrdinate(offset, CoordinateSequence.M);
+                    if (m < -10e38) {
+                        m = Double.NaN;
+                    }
+                    csRing.setOrdinate(i, CoordinateSequence.M, m);
                 }
                 offset++;
             }

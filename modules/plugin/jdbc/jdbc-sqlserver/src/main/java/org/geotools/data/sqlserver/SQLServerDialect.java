@@ -1017,4 +1017,24 @@ public class SQLServerDialect extends BasicSQLDialect {
         // The type "geometry" is not comparable. It cannot be used in the GROUP BY clause.
         return false;
     }
+
+    @Override
+    public String encodeNextSequenceValue(String schemaName, String sequenceName) {
+        return "NEXT VALUE FOR " + sequenceName;
+    }
+
+    @Override
+    public Object getNextSequenceValue(String schemaName, String sequenceName, Connection cx)
+            throws SQLException {
+        final String sql = "SELECT " + encodeNextSequenceValue(schemaName, sequenceName);
+        dataStore.getLogger().fine(sql);
+
+        try (Statement st = cx.createStatement();
+                ResultSet rs = st.executeQuery(sql)) {
+            if (rs.next()) {
+                return rs.getLong(1);
+            }
+            return null;
+        }
+    }
 }

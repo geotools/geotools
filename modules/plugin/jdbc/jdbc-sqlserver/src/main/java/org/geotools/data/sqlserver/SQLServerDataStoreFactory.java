@@ -84,7 +84,16 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
             new Param(
                     "Force spatial index usage via hints",
                     Boolean.class,
-                    "When enabled, spatial filters will be accompained by a WITH INDEX sql hint forcing the usage of the spatial index.",
+                    "When enabled, spatial filters will be accompanied by a WITH INDEX sql hint forcing the usage of the spatial index.",
+                    false,
+                    Boolean.FALSE);
+
+    /** parameter that enables estimated extends instead of exact ones */
+    public static final Param ESTIMATED_EXTENTS =
+            new Param(
+                    "Estimated extents",
+                    Boolean.class,
+                    "Use the spatial index information to quickly get an estimate of the data bounds",
                     false,
                     Boolean.FALSE);
 
@@ -218,6 +227,11 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
         Boolean forceSpatialIndexes = (Boolean) FORCE_SPATIAL_INDEX.lookUp(params);
         if (forceSpatialIndexes != null) {
             dialect.setForceSpatialIndexes(forceSpatialIndexes);
+        }
+
+        Boolean estimatedExtentsEnabled = (Boolean) ESTIMATED_EXTENTS.lookUp(params);
+        if (estimatedExtentsEnabled != null) {
+            dialect.setEstimatedExtentsEnabled(estimatedExtentsEnabled);
         }
 
         String tableHints = (String) TABLE_HINTS.lookUp(params);

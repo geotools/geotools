@@ -21,6 +21,7 @@ package org.geotools.geometry.jts.coordinatesequence;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.geometry.jts.CurvedGeometry;
+import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.locationtech.jts.algorithm.RobustDeterminant;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
@@ -172,15 +173,22 @@ public class CoordinateSequences extends org.locationtech.jts.geom.CoordinateSeq
         if (seq == null) return 3;
 
         int dim = seq.getDimension();
-        if (dim != 3) return dim;
+        if (dim < 3) return dim;
 
         // hack to handle issue that CoordinateArraySequence always reports
         // dimension = 3
         // check if a Z value is NaN - if so, assume dim is 2
-        if (seq instanceof CoordinateArraySequence) {
+        if (seq instanceof CoordinateArraySequence || seq instanceof LiteCoordinateSequence) {
             if (seq.size() > 0) {
                 if (Double.isNaN(seq.getOrdinate(0, CoordinateSequence.Y))) return 1;
                 if (Double.isNaN(seq.getOrdinate(0, CoordinateSequence.Z))) return 2;
+                if (dim == 4) {
+                    if (Double.isNaN(seq.getM(0))) {
+                        return 3;
+                    } else {
+                        return 4;
+                    }
+                }
             }
         }
         return 3;
@@ -204,7 +212,8 @@ public class CoordinateSequences extends org.locationtech.jts.geom.CoordinateSeq
             return true;
         }
 
-        // ok, 2d equal, it means they have the same list of geometries and coordinate sequences, in
+        // ok, 2d equal, it means they have the same list of geometries and
+        // coordinate sequences, in
         // the same order
         List<CoordinateSequence> sequences1 = CoordinateSequenceCollector.find(g1);
         List<CoordinateSequence> sequences2 = CoordinateSequenceCollector.find(g2);

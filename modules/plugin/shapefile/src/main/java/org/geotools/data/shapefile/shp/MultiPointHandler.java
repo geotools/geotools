@@ -151,6 +151,11 @@ public class MultiPointHandler implements ShapeHandler {
 
             dbuffer.get(ordinates, 0, numpoints);
             for (int t = 0; t < numpoints; t++) {
+                // Page 2 of the spec says that values less than 10E-38 are
+                // NaNs
+                if (ordinates[t] < -10e38) {
+                    ordinates[t] = Double.NaN;
+                }
                 cs.setOrdinate(t, CoordinateSequence.M, ordinates[t]); // m
             }
         }

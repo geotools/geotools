@@ -9,7 +9,7 @@
     <version>28-SNAPSHOT</version>
   </parent>
 
-  <groupId>org.orbisgis</groupId>
+  <groupId>org.geotools.jdbc</groupId>
   <artifactId>gt-jdbc-h2gis</artifactId>
   <version>28-SNAPSHOT</version>
   <packaging>jar</packaging>

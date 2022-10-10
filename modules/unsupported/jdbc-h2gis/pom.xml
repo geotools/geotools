@@ -4,8 +4,8 @@
 
   <!-- Maven Coordinates -->
   <parent>
-    <groupId>org.geotools.jdbc</groupId>
-    <artifactId>gt-jdbc</artifactId>
+    <groupId>org.geotools</groupId>
+    <artifactId>unsupported</artifactId>
     <version>28-SNAPSHOT</version>
   </parent>
 
@@ -41,11 +41,6 @@
   <!-- Properties -->
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <java-version>11</java-version>
-    <maven.compiler.target>${java-version}</maven.compiler.target>
-    <maven.compiler.source>${java-version}</maven.compiler.source>
-
-    <geotools-version>28-SNAPSHOT</geotools-version>
     <h2gis-version>2.1.0</h2gis-version>
     <h2-version>2.1.214</h2-version>
     <cts-version>1.6.0</cts-version>
@@ -61,11 +56,6 @@
     <dependency>
       <groupId>org.orbisgis</groupId>
       <artifactId>h2gis</artifactId>
-      <version>${h2gis-version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.orbisgis</groupId>
-      <artifactId>h2gis-network</artifactId>
       <version>${h2gis-version}</version>
     </dependency>
     <dependency>
@@ -86,24 +76,24 @@
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-main</artifactId>
-      <version>${geotools-version}</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-epsg-hsql</artifactId>
-      <version>${geotools-version}</version>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-epsg-extension</artifactId>
-      <version>${geotools-version}</version>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-cql</artifactId>
-      <version>${geotools-version}</version>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -121,39 +111,21 @@
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-jdbc</artifactId>
-      <version>28-SNAPSHOT</version>
-      <scope>test</scope>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-jdbc</artifactId>
-      <version>28-SNAPSHOT</version>
+      <version>${project.version}</version>
+      <classifier>tests</classifier>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-sample-data</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
-  <!-- Dependencies -->
-  <repositories>
-    <repository>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>osgeo</id>
-      <name>OSGeo Release Repository</name>
-      <url>https://repo.osgeo.org/repository/release/</url>
-    </repository>
-    <repository>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <id>osgeo-snapshots</id>
-      <name>OSGeo Nexus Snapshot Repository</name>
-      <url>https://repo.osgeo.org/repository/snapshot/</url>
-    </repository>
-  </repositories>
 </project>

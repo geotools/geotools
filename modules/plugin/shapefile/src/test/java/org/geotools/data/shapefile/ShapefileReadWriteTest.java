@@ -149,19 +149,19 @@ public class ShapefileReadWriteTest extends TestCaseSupport {
         if (charset != null) {
             s.setCharset(charset);
         }
-        String typeName = s.getTypeNames()[0];
-        SimpleFeatureSource source = s.getFeatureSource(typeName);
-        SimpleFeatureType type = source.getSchema();
-        SimpleFeatureCollection one = source.getFeatures();
-        File tmp = getTempFile();
+        try {
+            String typeName = s.getTypeNames()[0];
+            SimpleFeatureSource source = s.getFeatureSource(typeName);
+            SimpleFeatureType type = source.getSchema();
+            SimpleFeatureCollection one = source.getFeatures();
+            ShapefileDataStoreFactory maker = new ShapefileDataStoreFactory();
+            test(type, one, getTempFile(), maker, true, charset);
 
-        ShapefileDataStoreFactory maker = new ShapefileDataStoreFactory();
-        test(type, one, tmp, maker, true, charset);
-
-        File tmp2 = getTempFile(); // TODO consider reuse tmp results in
-        // failure
-        test(type, one, tmp2, maker, false, charset);
-        s.dispose();
+            // failure
+            test(type, one, getTempFile(), maker, false, charset);
+        } finally {
+            s.dispose();
+        }
     }
 
     private void test(
@@ -176,32 +176,38 @@ public class ShapefileReadWriteTest extends TestCaseSupport {
         Map<String, Serializable> params = new HashMap<>();
         params.put(ShapefileDataStoreFactory.URLP.key, tmp.toURI().toURL());
         params.put(ShapefileDataStoreFactory.MEMORY_MAPPED.key, memorymapped);
+
         ShapefileDataStore shapefile = (ShapefileDataStore) maker.createDataStore(params);
-        if (charset != null) shapefile.setCharset(charset);
-
-        shapefile.createSchema(type);
-
-        SimpleFeatureStore store = (SimpleFeatureStore) shapefile.getFeatureSource();
-
-        store.addFeatures(original);
-
-        SimpleFeatureCollection copy = store.getFeatures();
-        compare(original, copy);
-
-        ShapefileDataStore review = new ShapefileDataStore(tmp.toURI().toURL());
-        review.setMemoryMapped(memorymapped);
         if (charset != null) {
-            review.setCharset(charset);
+            shapefile.setCharset(charset);
         }
-        String typeName = review.getTypeNames()[0];
-        SimpleFeatureSource featureSource = review.getFeatureSource(typeName);
-        SimpleFeatureCollection again = featureSource.getFeatures();
+        try {
+            shapefile.createSchema(type);
 
-        compare(copy, again);
-        compare(original, again);
-        review.dispose();
+            SimpleFeatureStore store = (SimpleFeatureStore) shapefile.getFeatureSource();
+            store.addFeatures(original);
 
-        shapefile.dispose();
+            SimpleFeatureCollection copy = store.getFeatures();
+            compare(original, copy);
+
+            ShapefileDataStore review = new ShapefileDataStore(tmp.toURI().toURL());
+            review.setMemoryMapped(memorymapped);
+            if (charset != null) {
+                review.setCharset(charset);
+            }
+            try {
+                String typeName = review.getTypeNames()[0];
+                SimpleFeatureSource featureSource = review.getFeatureSource(typeName);
+                SimpleFeatureCollection again = featureSource.getFeatures();
+
+                compare(copy, again);
+                compare(original, again);
+            } finally {
+                review.dispose();
+            }
+        } finally {
+            shapefile.dispose();
+        }
     }
 
     static void compare(SimpleFeatureCollection one, SimpleFeatureCollection two) throws Exception {

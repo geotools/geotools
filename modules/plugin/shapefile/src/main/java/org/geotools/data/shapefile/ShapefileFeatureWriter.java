@@ -214,7 +214,13 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
 
     /** Clean up our temporary write if there was one */
     protected void clean() throws IOException {
-        StorageFile.replaceOriginals(storageFiles.values().toArray(new StorageFile[0]));
+        try {
+            StorageFile.replaceOriginals(storageFiles.values().toArray(new StorageFile[0]));
+        } catch (IOException e) {
+            throw new IOException(
+                    "An error occured while replacing the original shapefiles. You're changes may have been lost.",
+                    e);
+        }
     }
 
     /** Release resources and flush the header information. */

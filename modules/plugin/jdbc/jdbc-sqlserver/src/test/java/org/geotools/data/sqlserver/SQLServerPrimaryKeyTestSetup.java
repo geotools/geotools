@@ -43,11 +43,27 @@ public class SQLServerPrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
     }
 
     @Override
-    protected void createSequencedPrimaryKeyTable() throws Exception {}
+    protected void createSequencedPrimaryKeyTable() throws Exception {
+        run("CREATE SEQUENCE seq_pkey_sequence START WITH 1 INCREMENT BY 1");
+        run(
+                "CREATE TABLE seq (pkey int PRIMARY KEY DEFAULT NEXT VALUE FOR seq_pkey_sequence, "
+                        + " name VARCHAR(255), geom geometry)");
+        // sql server has a specific datatype for auto-incrementing values: IDENTITY; as such it
+        // does not mark columns with a default value from a sequence as auto-incrementing,
+        // however using the primary key metadata table we can learn Geotools that it has to
+        // use the sequence
+        run(
+                "INSERT INTO gt_pk_metadata (table_name, pk_column, pk_policy, pk_sequence) "
+                        + " VALUES ('seq','pkey','sequence', 'seq_pkey_sequence')");
+
+        run("INSERT INTO seq VALUES (NEXT VALUE FOR seq_pkey_sequence,'one',NULL)");
+        run("INSERT INTO seq VALUES (NEXT VALUE FOR seq_pkey_sequence,'two',NULL)");
+        run("INSERT INTO seq VALUES (NEXT VALUE FOR seq_pkey_sequence,'three',NULL)");
+    }
 
     @Override
     protected void createNonIncrementingPrimaryKeyTable() throws Exception {
-        run("CREATE TABLE noninc ( pkey int PRIMARY KEY, " + "name VARCHAR(255), geom geometry)");
+        run("CREATE TABLE noninc ( pkey int PRIMARY KEY, name VARCHAR(255), geom geometry)");
 
         run("INSERT INTO noninc VALUES (1, 'one', geometry::STGeomFromText('POINT(1 1)',4326))");
         run("INSERT INTO noninc VALUES (2, 'two', geometry::STGeomFromText('POINT(2 2)',4326))");
@@ -119,7 +135,11 @@ public class SQLServerPrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
     }
 
     @Override
-    protected void dropSequencedPrimaryKeyTable() throws Exception {}
+    protected void dropSequencedPrimaryKeyTable() throws Exception {
+        runSafe("DELETE FROM gt_pk_metadata WHERE table_name='seq'");
+        runSafe("DROP TABLE seq");
+        runSafe("DROP SEQUENCE seq_pkey_sequence");
+    }
 
     @Override
     protected void dropNonIncrementingPrimaryKeyTable() throws Exception {

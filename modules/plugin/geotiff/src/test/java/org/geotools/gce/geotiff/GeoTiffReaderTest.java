@@ -1471,4 +1471,27 @@ public class GeoTiffReaderTest {
             }
         }
     }
+
+    @Test
+    public void testFloatNegInfinityNoData() throws IOException {
+        // has a negative infinity nodata value
+        final File scaleOffset =
+                TestData.file(GeoTiffReaderTest.class, "float32_neg_infinity_nodata.tif");
+        GeoTiffReader reader = new GeoTiffReader(scaleOffset);
+
+        GridCoverage2D coverage = null;
+        try {
+            coverage = reader.read(null);
+            ImageWorker iw = new ImageWorker(coverage.getRenderedImage());
+
+            Range noDataRange = iw.getNoData();
+            double noData = noDataRange.getMin().doubleValue();
+            assertEquals(Double.NEGATIVE_INFINITY, noData, 0d);
+        } finally {
+            if (coverage != null) {
+                ImageUtilities.disposeImage(coverage.getRenderedImage());
+                coverage.dispose(true);
+            }
+        }
+    }
 }

@@ -110,6 +110,16 @@ class ShpFilesLocker {
                 : "Expected the requestor and the writer to be the same object: " + writer.id();
     }
 
+    /** Check if this locker could be the same for the url and requestor. */
+    public boolean compare(URL url2, FileReader requestor) {
+        return this.url.equals(url2) && reader != null && reader.equals(requestor);
+    }
+
+    /** Check if this locker could be the one for the given url and requestor */
+    public boolean compare(URL url2, FileWriter requestor) {
+        return this.url.equals(url2) && writer != null && writer.equals(requestor);
+    }
+
     @Override
     public String toString() {
         if (reader != null) {

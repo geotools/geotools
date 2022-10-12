@@ -28,6 +28,7 @@ import java.util.Arrays;
  * @version $Id$
  * @author Martin Desruisseaux
  */
+@Deprecated
 public final class Java6 {
     private Java6() {}
 

@@ -19,6 +19,7 @@ package org.geotools.metadata.math;
 import static org.geotools.util.XMath.next;
 import static org.geotools.util.XMath.previous;
 
+import java.util.Arrays;
 import org.geotools.util.XArray;
 
 /**
@@ -386,7 +387,7 @@ public final class XMath {
             for (int j = i; j < count; j++) {
                 d2 = d1 * divisors[j];
                 if (number % d2 == 0) {
-                    int p = org.geotools.util.Java6.binarySearch(divisors, j, count, d2);
+                    int p = Arrays.binarySearch(divisors, j, count, d2);
                     if (p < 0) {
                         p = ~p; // ~ operator, not minus
                         if (count == divisors.length) {

@@ -16,6 +16,7 @@
  */
 package org.geotools.util;
 
+import java.io.Console;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -351,9 +352,9 @@ public class Arguments {
      */
     public static Reader getReader(final InputStream in) {
         if (in == System.in) {
-            final Reader candidate = Java6.consoleReader();
+            final Console candidate = System.console();
             if (candidate != null) {
-                return candidate;
+                return candidate.reader();
             }
         }
         return new InputStreamReader(in);
@@ -367,9 +368,9 @@ public class Arguments {
      */
     public static Writer getWriter(final OutputStream out) {
         if (out == System.out || out == System.err) {
-            final PrintWriter candidate = Java6.consoleWriter();
+            final Console candidate = System.console();
             if (candidate != null) {
-                return candidate;
+                return candidate.writer();
             }
         }
         return new OutputStreamWriter(out);
@@ -383,9 +384,9 @@ public class Arguments {
      */
     public static PrintWriter getPrintWriter(final PrintStream out) {
         if (out == System.out || out == System.err) {
-            final PrintWriter candidate = Java6.consoleWriter();
+            final Console candidate = System.console();
             if (candidate != null) {
-                return candidate;
+                return candidate.writer();
             }
         }
         return new PrintWriter(out, true);

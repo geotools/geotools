@@ -19,7 +19,9 @@ package org.geotools.data.hana;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.Parameter;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
@@ -32,19 +34,38 @@ import org.geotools.jdbc.SQLDialect;
  */
 public class HanaDataStoreFactory extends JDBCDataStoreFactory {
 
+    private static final String DATABASE_ID = "hana";
+
     public static final Param DBTYPE =
             new Param(
                     "dbtype",
                     String.class,
                     "Type",
                     true,
-                    "hana",
+                    DATABASE_ID,
                     Collections.singletonMap(Parameter.LEVEL, "program"));
 
-    public static final Param PORT = new Param("port", Integer.class, "Port", false);
+    public static final Param PORT =
+            new Param(
+                    "port",
+                    Integer.class,
+                    "Port to connect to. If omitted, you have to specify an instance.",
+                    false);
 
     public static final Param INSTANCE =
-            new Param("instance", Integer.class, "Instance Number", false);
+            new Param(
+                    "instance",
+                    Integer.class,
+                    "Instance Number. Leave empty if you have specified a port.",
+                    false);
+
+    public static final Param DATABASE =
+            new Param(
+                    "database",
+                    String.class,
+                    "Database. Leave empty if you have specified a port or if you want to connect in single database mode. "
+                            + "Use SYSTEMDB for the system database. ",
+                    false);
 
     public static final Param USE_SSL = new Param("use ssl", Boolean.class, "Use SSL", false);
 
@@ -61,6 +82,15 @@ public class HanaDataStoreFactory extends JDBCDataStoreFactory {
                     Boolean.FALSE,
                     Collections.singletonMap(Param.LEVEL, "advanced"));
 
+    public static final Param SELECT_HINTS =
+            new Param(
+                    "SELECT Hints",
+                    String.class,
+                    "Comma-separated list of hints that will be applied to SELECT queries, e.g. ESTIMATION_SAPLES(0), NO_HASH_JOIN",
+                    false,
+                    null,
+                    Collections.singletonMap(Parameter.IS_LARGE_TEXT, Boolean.TRUE));
+
     private static final String DESCRIPTION = "SAP HANA";
 
     private static final String DRIVER_CLASS_NAME = "com.sap.db.jdbc.Driver";
@@ -72,7 +102,7 @@ public class HanaDataStoreFactory extends JDBCDataStoreFactory {
 
     @Override
     protected String getDatabaseID() {
-        return (String) DBTYPE.sample;
+        return DATABASE_ID;
     }
 
     @Override
@@ -92,13 +122,32 @@ public class HanaDataStoreFactory extends JDBCDataStoreFactory {
 
     @Override
     protected void setupParameters(Map<String, Object> parameters) {
-        super.setupParameters(parameters);
+        LinkedHashMap<String, Object> parentParams = new LinkedHashMap<>();
+        super.setupParameters(parentParams);
 
-        parameters.put(DBTYPE.key, DBTYPE);
-        parameters.put(PORT.key, PORT);
-        parameters.put(INSTANCE.key, INSTANCE);
-        parameters.put(USE_SSL.key, USE_SSL);
-        parameters.put(ENCODE_FUNCTIONS.key, ENCODE_FUNCTIONS);
+        // Replace dbtype because the program level annotation is missing
+        parentParams.put(DBTYPE.key, DBTYPE);
+
+        // Replace port parameter as it is not required for HANA
+        parentParams.put(PORT.key, PORT);
+
+        // Replace database parameter to add additional documentation
+        parentParams.put(DATABASE.key, DATABASE);
+
+        // Insert additional parameters at the proper place
+        for (Map.Entry<String, Object> param : parentParams.entrySet()) {
+            parameters.put(param.getKey(), param.getValue());
+            if (PORT.key.equals(param.getKey())) {
+                parameters.put(INSTANCE.key, INSTANCE);
+            }
+            if (DATABASE.key.equals(param.getKey())) {
+                parameters.put(USE_SSL.key, USE_SSL);
+            }
+            if (EXPOSE_PK.key.equals(param.getKey())) {
+                parameters.put(ENCODE_FUNCTIONS.key, ENCODE_FUNCTIONS);
+                parameters.put(SELECT_HINTS.key, SELECT_HINTS);
+            }
+        }
     }
 
     @Override
@@ -133,6 +182,8 @@ public class HanaDataStoreFactory extends JDBCDataStoreFactory {
         HanaDialect dialect = (HanaDialect) dataStore.getSQLDialect();
         Boolean encodeFunctions = (Boolean) ENCODE_FUNCTIONS.lookUp(params);
         dialect.setFunctionEncodingEnabled((encodeFunctions != null) && encodeFunctions);
+        String selectHints = (String) SELECT_HINTS.lookUp(params);
+        dialect.setSelectHints(selectHints);
         return dataStore;
     }
 }

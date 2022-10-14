@@ -330,7 +330,13 @@ public class WMTSCapabilities extends Capabilities {
     }
 
     private WMTSLayer parseLayer(LayerType layerType) {
-        String title = ((LanguageStringType) layerType.getTitle().get(0)).getValue();
+        String title;
+        if (!layerType.getTitle().isEmpty()) {
+            title = ((LanguageStringType) layerType.getTitle().get(0)).getValue();
+        } else {
+            title = layerType.getIdentifier().getValue();
+        }
+
         WMTSLayer layer = new WMTSLayer(title);
         layer.setName(layerType.getIdentifier().getValue());
 

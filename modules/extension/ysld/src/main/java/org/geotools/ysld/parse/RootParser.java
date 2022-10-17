@@ -64,7 +64,7 @@ public class RootParser extends YsldParseHandler {
             context.setDocHint(ZoomContext.HINT_ID, getZoomContext(root.map("grid")));
         }
 
-        layer.setName(root.str("name"));
+        layer.setName(root.str("layer-name"));
         style.setName(root.str("name"));
         if (root.has("title")) {
             style.getDescription().setTitle(root.str("title"));

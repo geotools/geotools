@@ -29,6 +29,7 @@ import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
 import org.geotools.filter.Filters;
+import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.styling.ColorMapEntry;
 import org.geotools.styling.ContrastEnhancement;
@@ -51,6 +52,7 @@ import org.geotools.styling.TextSymbolizer;
 import org.geotools.ysld.TestUtils;
 import org.geotools.ysld.YsldTests;
 import org.junit.Test;
+import org.opengis.filter.expression.Expression;
 import org.opengis.style.ContrastMethod;
 
 public class YsldParseCookbookTest {
@@ -1946,6 +1948,20 @@ public class YsldParseCookbookTest {
         e = raster.getColorMap().getColorMapEntry(1);
         assertEquals("#663333", Filters.asString(e.getColor()));
         assertEquals(256, Filters.asInt(e.getQuantity()));
+    }
+
+    @Test
+    public void testRasterWithBandSelectionExpression() throws Exception {
+        Style style = parse("raster", "band-selection-expression.sld");
+        RasterSymbolizer raster = SLD.rasterSymbolizer(style);
+        Expression name = raster.getChannelSelection().getGrayChannel().getChannelName();
+        assertEquals("1", name.evaluate(null, String.class).trim());
+        try {
+            EnvFunction.setLocalValue("B1", "2");
+            assertEquals("2", name.evaluate(null, String.class).trim());
+        } finally {
+            EnvFunction.clearLocalValues();
+        }
     }
 
     Style parse(String dir, String file) throws IOException {

@@ -111,6 +111,27 @@
          <ResourceURL format="image/png" resourceType="tile" template="https://gibs.earthdata.nasa.gov/wmts/epsg4326/best/AMSR2_Snow_Water_Equivalent/default/{Time}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png"/>
       </Layer>
       <Layer>
+         <ows:Title xml:lang="en">Blue Marble (Extended Extent)</ows:Title>
+         <ows:WGS84BoundingBox crs="urn:ogc:def:crs:OGC:2:84">
+            <ows:LowerCorner>-135 19.735368</ows:LowerCorner>
+            <ows:UpperCorner>45 19.735368</ows:UpperCorner>
+         </ows:WGS84BoundingBox>
+         <ows:BoundingBox crs="urn:ogc:def:crs:EPSG::3031">
+            <ows:LowerCorner>-12400000 -12400000</ows:LowerCorner>
+            <ows:UpperCorner>12400000 12400000</ows:UpperCorner>
+         </ows:BoundingBox>
+         <ows:Identifier>Blue_Marble_Extended</ows:Identifier>
+         <Style isDefault="true">
+            <ows:Title xml:lang="en">default</ows:Title>
+            <ows:Identifier>default</ows:Identifier>
+         </Style>
+         <Format>image/jpeg</Format>
+         <TileMatrixSetLink>
+            <TileMatrixSet>1.5km</TileMatrixSet>
+         </TileMatrixSetLink>
+         <ResourceURL format="image/jpeg" resourceType="tile" template="https://gibs.earthdata.nasa.gov/wmts/epsg3031/best/Blue_Marble_Extended/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpeg"/>
+      </Layer>
+      <Layer>
          <ows:Title xml:lang="en">Soil Moisture (Normalized Polarization Difference, Day, AMSR2, GCOM-W1)</ows:Title>
          <ows:WGS84BoundingBox crs="urn:ogc:def:crs:OGC:2:84">
             <ows:LowerCorner>-180 -90</ows:LowerCorner>

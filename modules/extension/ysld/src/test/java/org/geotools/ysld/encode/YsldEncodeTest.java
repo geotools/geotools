@@ -1418,6 +1418,36 @@ public class YsldEncodeTest {
                 yHasEntry("contrast-enhancement", yHasEntry("mode", equalTo("histogram"))));
     }
 
+    @Test
+    public void testBandSelectionExpression() throws Exception {
+        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2();
+        Expression nameExpression =
+                filterFactory.function(
+                        "env", filterFactory.literal("B1"), filterFactory.literal("1"));
+        RasterSymbolizer r = styleFactory.createRasterSymbolizer();
+        ChannelSelection sel =
+                styleFactory.channelSelection(
+                        styleFactory.createSelectedChannelType(nameExpression, (Expression) null));
+        r.setChannelSelection(sel);
+
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld(r), out);
+
+        YamlMap obj = new YamlMap(YamlUtil.getSafeYaml().load(out.toString()));
+        YamlMap channelMap =
+                obj.seq("feature-styles")
+                        .map(0)
+                        .seq("rules")
+                        .map(0)
+                        .seq("symbolizers")
+                        .map(0)
+                        .map("raster")
+                        .map("channels")
+                        .map("gray");
+        assertThat(channelMap, yHasEntry("name", equalTo("${env('B1','1')}")));
+    }
+
     StyledLayerDescriptor sld(Symbolizer sym) {
         return sld(fts(sym));
     }

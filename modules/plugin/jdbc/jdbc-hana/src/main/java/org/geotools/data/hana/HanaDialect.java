@@ -433,12 +433,25 @@ public class HanaDialect extends PreparedStatementSQLDialect {
     public void encodeGeometryColumnSimplified(
             GeometryDescriptor gatt, String prefix, int srid, StringBuffer sql, Double distance) {
         encodeColumnName(prefix, gatt.getLocalName(), sql);
-        if ((distance != null) && (distance > 0.0)) {
+        if ((distance != null)
+                && (distance >= 0.0)
+                && isPlanarCRS(gatt.getCoordinateReferenceSystem())) {
             sql.append(".ST_Simplify(");
             sql.append(distance.toString());
             sql.append(")");
         }
         sql.append(".ST_AsBinary()");
+    }
+
+    private boolean isPlanarCRS(CoordinateReferenceSystem crs) {
+        if (crs == null) {
+            return false;
+        }
+        CoordinateReferenceSystem hcrs = CRS.getHorizontalCRS(crs);
+        if (hcrs == null) {
+            return false;
+        }
+        return !(hcrs instanceof GeographicCRS);
     }
 
     @Override

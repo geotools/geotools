@@ -113,10 +113,10 @@ public class YsldParseTest {
 
     @Test
     public void testName() throws Exception {
-        StyledLayerDescriptor sld = Ysld.parse("name: Simple");
+        StyledLayerDescriptor sld = Ysld.parse("layer-name: MyLayer\nname: MyStyle");
         NamedLayer layer = (NamedLayer) sld.layers().get(0);
-        assertEquals("Simple", layer.getName());
-        assertEquals("Simple", layer.styles().get(0).getName());
+        assertEquals("MyLayer", layer.getName());
+        assertEquals("MyStyle", layer.styles().get(0).getName());
     }
 
     @Test

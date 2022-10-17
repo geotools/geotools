@@ -412,15 +412,20 @@ public class ShpFiles {
         if (requestor == null) {
             throw new NullPointerException("requestor cannot be null");
         }
-
+        LOGGER.fine(() -> "Read lock: " + url + " by " + requestor.id());
         Collection<ShpFilesLocker> threadLockers = getCurrentThreadLockers();
-        boolean removed = threadLockers.remove(new ShpFilesLocker(url, requestor));
-        if (!removed) {
-            throw new IllegalArgumentException(
-                    "Expected requestor "
-                            + requestor
-                            + " to have locked the url but it does not hold the lock for the URL");
-        }
+        ShpFilesLocker requestedLocker =
+                threadLockers.stream()
+                        .filter(l -> l.compare(url, requestor))
+                        .findAny()
+                        .orElseThrow(
+                                () ->
+                                        new IllegalArgumentException(
+                                                "Expected requestor "
+                                                        + requestor
+                                                        + " to have locked the url but it does not hold the lock for the URL"));
+
+        threadLockers.remove(requestedLocker);
         if (threadLockers.isEmpty()) lockers.remove(Thread.currentThread());
         readWriteLock.readLock().unlock();
     }
@@ -515,7 +520,7 @@ public class ShpFiles {
     }
 
     /**
-     * Unlocks a read lock. The file and requestor must be the the same as the one of the lockers.
+     * Unlocks a write lock. The file and requestor must be the the same as the one of the lockers.
      *
      * @param file file that was locked
      * @param requestor the class that requested the file
@@ -530,7 +535,7 @@ public class ShpFiles {
     }
 
     /**
-     * Unlocks a read lock. The requestor must be have previously obtained a lock for the url.
+     * Unlocks a write lock. The requestor must be have previously obtained a lock for the url.
      *
      * @param url url that was locked
      * @param requestor the class that requested the url
@@ -542,14 +547,19 @@ public class ShpFiles {
         if (requestor == null) {
             throw new NullPointerException("requestor cannot be null");
         }
+        LOGGER.fine(() -> "Write lock: " + url + " by " + requestor.id());
         Collection<ShpFilesLocker> threadLockers = getCurrentThreadLockers();
-        boolean removed = threadLockers.remove(new ShpFilesLocker(url, requestor));
-        if (!removed) {
-            throw new IllegalArgumentException(
-                    "Expected requestor "
-                            + requestor
-                            + " to have locked the url but it does not hold the lock for the URL");
-        }
+        ShpFilesLocker requestedLocker =
+                threadLockers.stream()
+                        .filter(l -> l.compare(url, requestor))
+                        .findAny()
+                        .orElseThrow(
+                                () ->
+                                        new IllegalArgumentException(
+                                                "Expected requestor "
+                                                        + requestor
+                                                        + " to have locked the url but it does not hold the lock for the URL"));
+        threadLockers.remove(requestedLocker);
 
         if (threadLockers.isEmpty()) {
             lockers.remove(Thread.currentThread());
@@ -561,7 +571,7 @@ public class ShpFiles {
     }
 
     /** Returns the list of lockers attached to a given thread, or creates it if missing */
-    private Collection<ShpFilesLocker> getCurrentThreadLockers() {
+    Collection<ShpFilesLocker> getCurrentThreadLockers() {
         Collection<ShpFilesLocker> threadLockers = lockers.get(Thread.currentThread());
         if (threadLockers == null) {
             threadLockers = new ArrayList<>();

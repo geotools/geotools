@@ -16,6 +16,7 @@
  */
 package org.geotools.util;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
@@ -175,46 +176,80 @@ public final class NIOUtilities {
      * {@code SEVERE} to the logger of the package name. To force logging of errors, set the System
      * property "org.geotools.io.debugBuffer" to "true".
      *
-     * <p>Starting from Java 9 the underlying Java runtime issue got fixed, so the method returns
-     * immediately in that case, without forcing any cleaning by reflection on a non exposed API
-     *
      * @param buffer The buffer to close.
      * @return true if the operation was successful, false otherwise.
      * @see java.nio.MappedByteBuffer
      */
     public static boolean clean(final ByteBuffer buffer) {
-        // the issue was fixed in Java 9+, and Java 8 too from a given point, but testing
-        // the minor version is annoying
-        if (buffer == null
-                || !buffer.isDirect()
-                || SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_9)) {
+        if (buffer == null || !buffer.isDirect()) {
             return true;
         }
 
         PrivilegedAction<Boolean> action =
-                () -> {
-                    Boolean success = Boolean.FALSE;
-                    try {
-                        Method getCleanerMethod = getCleanerMethod(buffer);
-                        if (getCleanerMethod != null) {
-                            Object cleaner = getCleanerMethod.invoke(buffer, (Object[]) null);
-                            if (cleaner != null) {
-                                Method clean =
-                                        cleaner.getClass().getMethod("clean", (Class[]) null);
-                                clean.invoke(cleaner, (Object[]) null);
-                                success = Boolean.TRUE;
-                            }
-                        }
-                    } catch (Exception e) {
-                        // This really is a show stopper on windows
-                        if (isLoggable()) {
-                            log(e, buffer);
-                        }
+                SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_9)
+                        ? () -> new CleanupAfterJdk8(buffer).clean()
+                        : () -> new CleanupPriorJdk9(buffer).clean();
+
+        return AccessController.doPrivileged(action).booleanValue();
+    }
+
+    private static class CleanupPriorJdk9 {
+        private final ByteBuffer buffer;
+
+        CleanupPriorJdk9(ByteBuffer buffer) {
+            this.buffer = buffer;
+        }
+
+        Boolean clean() {
+            Boolean success = Boolean.FALSE;
+            try {
+                Method getCleanerMethod = getCleanerMethod(buffer);
+                if (getCleanerMethod != null) {
+                    Object cleaner = getCleanerMethod.invoke(buffer, (Object[]) null);
+                    if (cleaner != null) {
+                        Method clean = cleaner.getClass().getMethod("clean", (Class[]) null);
+                        clean.invoke(cleaner, (Object[]) null);
+                        success = Boolean.TRUE;
                     }
-                    return success;
-                };
-        Boolean b = AccessController.doPrivileged(action);
-        return b.booleanValue();
+                }
+            } catch (Exception e) {
+                // This really is a show stopper on windows
+                if (isLoggable()) {
+                    log(e, buffer);
+                }
+            }
+            return success;
+        }
+    }
+
+    private static class CleanupAfterJdk8 {
+        private final ByteBuffer buffer;
+
+        CleanupAfterJdk8(ByteBuffer buffer) {
+            this.buffer = buffer;
+        }
+
+        Boolean clean() {
+            Boolean success = Boolean.FALSE;
+            try {
+                // https://bugs.openjdk.java.net/browse/JDK-8171377
+                // https://bugs.openjdk.java.net/browse/JDK-4724038
+                final Class<?> unsafeClass = Class.forName("sun.misc.Unsafe");
+                final Field theUnsafeField = unsafeClass.getDeclaredField("theUnsafe");
+                theUnsafeField.setAccessible(true);
+                final Object theUnsafe = theUnsafeField.get(null);
+                final Method invokeCleanerMethod =
+                        unsafeClass.getMethod("invokeCleaner", ByteBuffer.class);
+                invokeCleanerMethod.invoke(theUnsafe, buffer);
+
+                success = Boolean.TRUE;
+            } catch (Exception e) {
+                if (isLoggable()) {
+                    log(e, buffer);
+                }
+            }
+            return success;
+        }
     }
 
     static Method getCleanerMethod(final ByteBuffer buffer) throws NoSuchMethodException {

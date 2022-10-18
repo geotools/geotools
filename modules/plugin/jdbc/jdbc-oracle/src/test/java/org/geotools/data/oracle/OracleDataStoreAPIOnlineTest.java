@@ -16,7 +16,14 @@
  */
 package org.geotools.data.oracle;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.List;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.jdbc.JDBCDataStoreAPIOnlineTest;
@@ -24,6 +31,10 @@ import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.jdbc.JDBCFeatureStore;
 import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.jdbc.SequencedPrimaryKeyColumn;
+import org.junit.Test;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.AttributeType;
 
 public class OracleDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
 
@@ -37,6 +48,36 @@ public class OracleDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
         // skip, does not work with Oracle
     }
 
+    @Test
+    public void testGetCommentsWithOracleOptionDefaultFalse() throws Exception {
+        // Turning on comment retrieval in Oracle is set off by default in the
+        // OracleNGDataStoreFactory, so this should work
+        ContentFeatureSource featureSource = dataStore.getFeatureSource(tname("lake"));
+        SimpleFeatureType simpleFeatureType = featureSource.getSchema();
+        AttributeDescriptor attributeDescriptor = simpleFeatureType.getDescriptor("NAME");
+        AttributeType attributeType = attributeDescriptor.getType();
+        assertNull(attributeType.getDescription());
+    }
+
+    @Test
+    public void testGetCommentsWithOracleOptionTrue() throws Exception {
+        // explicitly turning on comment retrieval
+        try (Connection conn = dataStore.getDataSource().getConnection(); ) {
+            OracleDialect dialect = (OracleDialect) dataStore.getSQLDialect();
+            dialect.setGetColumnRemarksEnabled(true);
+            ContentFeatureSource featureSource = dataStore.getFeatureSource(tname("lake"));
+            SimpleFeatureType simpleFeatureType = featureSource.getSchema();
+            AttributeDescriptor attributeDescriptor = simpleFeatureType.getDescriptor("NAME");
+            AttributeType attributeType = attributeDescriptor.getType();
+            assertEquals("This is a text column", attributeType.getDescription().toString());
+            AttributeDescriptor attributeDescriptor2 = simpleFeatureType.getDescriptor("GEOM");
+            AttributeType attributeType2 = attributeDescriptor2.getType();
+            assertNull(attributeType2.getDescription()); // no comment on GEOM
+            dialect.setRemarksReporting(conn, false);
+        }
+    }
+
+    @Test
     public void testSequenceDetection() throws IOException {
         ContentFeatureSource featureSource = dataStore.getFeatureSource(tname("road"));
         assertNotNull(featureSource);

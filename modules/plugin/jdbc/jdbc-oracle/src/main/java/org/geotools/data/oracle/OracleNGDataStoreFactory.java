@@ -124,6 +124,15 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
                     "Specifies the timeout when negotiating a session with the database listener (milliseconds)",
                     false);
 
+    /** Specifies whether column REMARKS metadata will be returned. */
+    public static final Param GET_COLUMN_REMARKS =
+            new Param(
+                    "Get column remarks",
+                    Boolean.class,
+                    "Indicates whether column REMARKS metadata available for attribute description",
+                    false,
+                    Boolean.FALSE);
+
     static final String LOGIN_TIMEOUT_NAME = "oracle.jdbc.loginTimeout";
 
     static final String CONN_TIMEOUT_NAME = "oracle.net.CONNECT_TIMEOUT";
@@ -201,6 +210,10 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
         // check the metadata bbox option
         Boolean metadateBbox = (Boolean) METADATA_BBOX.lookUp(params);
         dialect.setMetadataBboxEnabled(Boolean.TRUE.equals(metadateBbox));
+
+        // check the get column remarks option
+        Boolean getColumnRemarks = (Boolean) GET_COLUMN_REMARKS.lookUp(params);
+        dialect.setGetColumnRemarksEnabled(Boolean.TRUE.equals(getColumnRemarks));
 
         DataSource source = getDataSource(dataStore);
         if (source instanceof BasicDataSource) {
@@ -291,6 +304,7 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
         parameters.put(LOGIN_TIMEOUT.key, LOGIN_TIMEOUT);
         parameters.put(CONNECTION_TIMEOUT.key, CONNECTION_TIMEOUT);
         parameters.put(OUTBOUND_CONNECTION_TIMEOUT.key, OUTBOUND_CONNECTION_TIMEOUT);
+        parameters.put(GET_COLUMN_REMARKS.key, GET_COLUMN_REMARKS);
     }
 
     @Override

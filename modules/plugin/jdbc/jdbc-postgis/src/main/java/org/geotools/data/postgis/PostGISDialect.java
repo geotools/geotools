@@ -1491,7 +1491,7 @@ public class PostGISDialect extends BasicSQLDialect {
             ResultSet rs = null;
             try {
                 st = conn.createStatement();
-                rs = st.executeQuery("select PostGIS_Lib_Version()");
+                rs = st.executeQuery("select PostGIS_Lib_Version()");// If the PostGIS extension is in other schema (not public schema), an exception is thrown. 
                 if (rs.next()) {
                     version = new Version(rs.getString(1));
                 }

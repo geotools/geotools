@@ -46,6 +46,14 @@ public class OracleDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
                         + "SDO_ORDINATE_ARRAY(12,6, 14,8, 16,6, 16,4, 14,4, 12,6)), 'muddy')");
 
         run("ANALYZE INDEX LAKE_GEOM_IDX compute statistics");
+
+        // Add column comments
+        String sql = "COMMENT ON COLUMN lake.name IS 'This is a text column'";
+        run(sql);
+        sql = "COMMENT ON COLUMN lake.id IS 'This is an int column'";
+        run(sql);
+        sql = "COMMENT ON COLUMN lake.geom IS 'This is a geometry column'";
+        run(sql);
     }
 
     @Override

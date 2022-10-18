@@ -153,6 +153,19 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         }
     }
 
+    /**
+     * Turns on return of column comments metadata.
+     *
+     * @param cx the connection to use
+     * @param reportRemarks true to turn on column comments metadata
+     * @throws SQLException if the connection is not valid or there is a problem setting the flag
+     */
+    @SuppressWarnings("PMD.CloseResource") // connection is closed by caller
+    public void setRemarksReporting(Connection cx, boolean reportRemarks) throws SQLException {
+        OracleConnection ocx = unwrapConnection(cx);
+        ocx.setRemarksReporting(reportRemarks);
+    }
+
     static final class GeomClasses extends HashMap<Class, String> {
         private static final long serialVersionUID = -3359664692996608331L;
 

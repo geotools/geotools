@@ -19,9 +19,11 @@ package org.geotools.data.oracle;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.List;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.jdbc.JDBCDataStoreAPIOnlineTest;
@@ -30,6 +32,9 @@ import org.geotools.jdbc.JDBCFeatureStore;
 import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.jdbc.SequencedPrimaryKeyColumn;
 import org.junit.Test;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.AttributeType;
 
 public class OracleDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
 
@@ -41,6 +46,32 @@ public class OracleDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
     @Override
     public void testGetFeatureWriterConcurrency() throws Exception {
         // skip, does not work with Oracle
+    }
+
+    @Test
+    public void testGetComments() throws Exception {
+        // Turning on comment retrieval in Oracle is set by default in the OracleNGDataStoreFactory,
+        // so this should work
+        ContentFeatureSource featureSource = dataStore.getFeatureSource(tname("lake"));
+        SimpleFeatureType simpleFeatureType = featureSource.getSchema();
+        AttributeDescriptor attributeDescriptor = simpleFeatureType.getDescriptor("NAME");
+        AttributeType attributeType = attributeDescriptor.getType();
+        assertEquals("This is a text column", attributeType.getDescription().toString());
+    }
+
+    @Test
+    public void testGetCommentsWithOracleOptionFalse() throws Exception {
+        // explicitly turning off comment retrieval
+        try (Connection conn = dataStore.getDataSource().getConnection(); ) {
+            OracleDialect dialect = (OracleDialect) dataStore.getSQLDialect();
+            dialect.setRemarksReporting(conn, false);
+            ContentFeatureSource featureSource = dataStore.getFeatureSource(tname("lake"));
+            SimpleFeatureType simpleFeatureType = featureSource.getSchema();
+            AttributeDescriptor attributeDescriptor = simpleFeatureType.getDescriptor("NAME");
+            AttributeType attributeType = attributeDescriptor.getType();
+            assertNull(attributeType.getDescription());
+            dialect.setRemarksReporting(conn, true);
+        }
     }
 
     @Test

@@ -124,6 +124,15 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
                     "Specifies the timeout when negotiating a session with the database listener (milliseconds)",
                     false);
 
+    /** Specifies whether column REMARKS metadata will be returned. */
+    public static final Param GET_COLUMN_REMARKS =
+            new Param(
+                    "Get column remarks",
+                    Boolean.class,
+                    "Specifies whether column REMARKS metadata will be returned",
+                    false,
+                    Boolean.TRUE);
+
     static final String LOGIN_TIMEOUT_NAME = "oracle.jdbc.loginTimeout";
 
     static final String CONN_TIMEOUT_NAME = "oracle.net.CONNECT_TIMEOUT";
@@ -224,6 +233,13 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
 
         Connection cx = dataStore.getConnection(Transaction.AUTO_COMMIT);
         try {
+            Boolean getRemarks = (Boolean) GET_COLUMN_REMARKS.lookUp(params);
+            if (getRemarks == null
+                    || Boolean.TRUE.equals(getRemarks)) { // default to turning remarks on
+                dialect.setRemarksReporting(cx, true);
+            } else {
+                dialect.setRemarksReporting(cx, false);
+            }
             dialect.unwrapConnection(cx);
             dialect.initVersion(cx);
         } catch (SQLException e) {

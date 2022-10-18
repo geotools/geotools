@@ -218,6 +218,7 @@ Style definition:
 .. code-block:: yaml
 
     # style definition 
+    layer-name: <text>
     name: <text>
     title: <text>
     abstract: <text>

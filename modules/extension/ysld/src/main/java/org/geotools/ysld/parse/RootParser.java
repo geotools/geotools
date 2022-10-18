@@ -64,6 +64,7 @@ public class RootParser extends YsldParseHandler {
             context.setDocHint(ZoomContext.HINT_ID, getZoomContext(root.map("grid")));
         }
 
+        layer.setName(root.str("layer-name"));
         style.setName(root.str("name"));
         if (root.has("title")) {
             style.getDescription().setTitle(root.str("title"));
@@ -71,7 +72,6 @@ public class RootParser extends YsldParseHandler {
         if (root.has("abstract")) {
             style.getDescription().setAbstract(root.str("abstract"));
         }
-        style.setName(root.str("name"));
 
         if (root.has("feature-styles")) {
             context.push("feature-styles", new FeatureStyleParser(style, factory));

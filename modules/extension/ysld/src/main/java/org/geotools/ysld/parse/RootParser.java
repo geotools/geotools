@@ -22,9 +22,11 @@ import java.util.Collections;
 import java.util.List;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.NamedLayer;
+import org.geotools.styling.RemoteOWS;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.styling.UserLayer;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
@@ -53,18 +55,53 @@ public class RootParser extends YsldParseHandler {
     public void handle(YamlObject<?> obj, YamlParseContext context) {
         sld = factory.style.createStyledLayerDescriptor();
 
-        NamedLayer layer = factory.style.createNamedLayer();
-        sld.layers().add(layer);
-
-        layer.styles().add(style = factory.style.createStyle());
-
         YamlMap root = obj.map();
 
         if (root.has("grid")) {
             context.setDocHint(ZoomContext.HINT_ID, getZoomContext(root.map("grid")));
         }
 
-        layer.setName(root.str("layer-name"));
+        // sld prefix for sld properties
+        if (root.has("sld-name")) {
+            sld.setName(root.str("sld-name"));
+        }
+        if (root.has("sld-title")) {
+            sld.setTitle(root.str("sld-title"));
+        }
+        if (root.has("sld-abstract")) {
+            sld.setAbstract(root.str("sld-abstract"));
+        }
+
+        style = factory.style.createStyle();
+
+        if (root.has("user-name") || root.has("user-remote") || root.has("user-service")) {
+            // user prefix for user layer properties
+            UserLayer layer = factory.style.createUserLayer();
+            sld.layers().add(layer);
+            layer.userStyles().add(style);
+
+            if (root.has("user-name")) {
+                layer.setName(root.str("user-name"));
+            }
+            if (root.has("user-remote")) {
+                RemoteOWS remote =
+                        factory.style.createRemoteOWS(
+                                root.strOr("user-service", "WMS"), root.str("user-remote"));
+                layer.setRemoteOWS(remote);
+            }
+        } else {
+            // assume named layer
+            NamedLayer layer = factory.style.createNamedLayer();
+            sld.layers().add(layer);
+            layer.styles().add(style);
+
+            // layer prefix for named layer properties
+            if (root.has("layer-name")) {
+                layer.setName(root.str("layer-name"));
+            }
+        }
+
+        // no prefix for style properties
         style.setName(root.str("name"));
         if (root.has("title")) {
             style.getDescription().setTitle(root.str("title"));

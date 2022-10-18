@@ -79,6 +79,7 @@ import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 import org.geotools.styling.UomOgcMapping;
+import org.geotools.styling.UserLayer;
 import org.geotools.util.logging.Logging;
 import org.geotools.ysld.Ysld;
 import org.geotools.ysld.YsldTests;
@@ -112,11 +113,30 @@ public class YsldParseTest {
     Logger LOG = Logging.getLogger("org.geotools.ysld.Ysld");
 
     @Test
-    public void testName() throws Exception {
+    public void testRoot() throws Exception {
         StyledLayerDescriptor sld = Ysld.parse("layer-name: MyLayer\nname: MyStyle");
-        NamedLayer layer = (NamedLayer) sld.layers().get(0);
-        assertEquals("MyLayer", layer.getName());
-        assertEquals("MyStyle", layer.styles().get(0).getName());
+        NamedLayer namedLayer = (NamedLayer) sld.layers().get(0);
+        assertEquals("MyLayer", namedLayer.getName());
+        assertEquals("MyStyle", namedLayer.styles().get(0).getName());
+
+        sld =
+                Ysld.parse(
+                        "sld-name: SLDName\nsld-title: SLD Title\nsld-abstract: Remote user layer\n"
+                                + "user-name: RemoteLayer\nuser-remote: http://localhost:8080/geoserver/wms\nuser-service: wms\n"
+                                + "name: RemoteStyle");
+
+        assertEquals("SLDName", sld.getName());
+        assertEquals("SLD Title", sld.getTitle());
+        assertEquals("Remote user layer", sld.getAbstract());
+
+        UserLayer userlayer = (UserLayer) sld.layers().get(0);
+        assertEquals("RemoteLayer", userlayer.getName());
+        assertEquals("wms", userlayer.getRemoteOWS().getService());
+        assertEquals(
+                "http://localhost:8080/geoserver/wms",
+                userlayer.getRemoteOWS().getOnlineResource());
+
+        assertEquals("RemoteStyle", userlayer.userStyles().get(0).getName());
     }
 
     @Test

@@ -163,7 +163,6 @@ public class Definition {
         }
 
         ab.setBinding(computedBinding);
-        ab.setName(name);
         if (computedCRS != null) {
             ab.setCRS(computedCRS);
         }
@@ -181,9 +180,7 @@ public class Definition {
         ExpressionTypeEvaluator typeEvaluator = new ExpressionTypeEvaluator(originalSchema);
 
         if (binding != null) {
-
             ab.setBinding(binding);
-            ab.setName(name);
             if (crs != null) {
                 ab.setCRS(crs);
             } else {
@@ -206,7 +203,6 @@ public class Definition {
                             "Original feature type does not have a property named " + name);
                 } else {
                     ab.init(descriptor);
-                    ab.setName(name);
                     return ab.buildDescriptor(name);
                 }
             } else {
@@ -222,7 +218,6 @@ public class Definition {
                 }
 
                 ab.setBinding(computedBinding);
-                ab.setName(name);
                 if (computedCRS != null) {
                     ab.setCRS(computedCRS);
                 }

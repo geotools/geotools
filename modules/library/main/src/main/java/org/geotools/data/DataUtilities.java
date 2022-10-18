@@ -89,6 +89,7 @@ import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.styling.UserLayer;
+import org.geotools.util.Classes;
 import org.geotools.util.Converters;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
@@ -2599,7 +2600,7 @@ public class DataUtilities {
             if (Geometry.class.isAssignableFrom(clazz)) {
                 GeometryType at =
                         new GeometryTypeImpl(
-                                new NameImpl(name),
+                                new NameImpl(Classes.getShortName(clazz)),
                                 clazz,
                                 crs,
                                 false,
@@ -2611,7 +2612,7 @@ public class DataUtilities {
             } else {
                 AttributeType at =
                         new AttributeTypeImpl(
-                                new NameImpl(name),
+                                new NameImpl(Classes.getShortName(clazz)),
                                 clazz,
                                 false,
                                 false,

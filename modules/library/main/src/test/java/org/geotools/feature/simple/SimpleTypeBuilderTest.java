@@ -27,6 +27,7 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.GeometryType;
 import org.opengis.feature.type.Schema;
@@ -204,5 +205,17 @@ public class SimpleTypeBuilderTest {
 
         Assert.assertEquals("geo2", type1.getGeometryDescriptor().getLocalName());
         Assert.assertEquals("geo1", type2.getGeometryDescriptor().getLocalName());
+    }
+
+    @Test
+    public void testNameOfAttributeType() {
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName("testAttributeTypeName");
+        builder.add("test", Integer.class);
+        SimpleFeatureType featureType = builder.buildFeatureType();
+        AttributeDescriptor descriptor = featureType.getDescriptor(0);
+        Assert.assertNotNull(descriptor.getType());
+        Assert.assertNull(descriptor.getType().getName().getNamespaceURI());
+        Assert.assertEquals("Integer", descriptor.getType().getName().getLocalPart());
     }
 }

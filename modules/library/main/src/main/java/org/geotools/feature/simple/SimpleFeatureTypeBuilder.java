@@ -577,7 +577,6 @@ public class SimpleFeatureTypeBuilder {
         AttributeDescriptor descriptor = null;
 
         attributeBuilder.setBinding(binding);
-        attributeBuilder.setName(name);
 
         // check if this is the name of the default geometry, in that case we
         // better make it a geometry type
@@ -685,7 +684,6 @@ public class SimpleFeatureTypeBuilder {
      */
     public void add(String name, Class<?> binding, CoordinateReferenceSystem crs) {
         attributeBuilder.setBinding(binding);
-        attributeBuilder.setName(name);
         attributeBuilder.setCRS(crs);
 
         GeometryType type = attributeBuilder.buildGeometryType();

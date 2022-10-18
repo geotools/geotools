@@ -335,7 +335,6 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                     }
 
                     ab.setBinding(binding);
-                    ab.setName(name);
                     ab.setCRS(crs);
                     if (srid != null) {
                         ab.addUserData(JDBCDataStore.JDBC_NATIVE_SRID, srid);
@@ -344,7 +343,6 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                     att = ab.buildDescriptor(name, ab.buildGeometryType());
                 } else {
                     // add the attribute
-                    ab.setName(name);
                     ab.setBinding(binding);
                     att = ab.buildDescriptor(name, ab.buildType());
                 }

@@ -290,7 +290,7 @@ public class PointStackerProcess implements VectorProcess {
                 // transformed featured
                 SimpleFeature ref = sp.getFeature();
                 for (AttributeDescriptor ad : ref.getType().getAttributeDescriptors()) {
-                    fb.set(ad.getType().getName(), ref.getAttribute(ad.getType().getName()));
+                    fb.set(ad.getName(), ref.getAttribute(ad.getName()));
                 }
             }
             result.add(fb.buildFeature(null));

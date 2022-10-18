@@ -68,6 +68,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public class JDBCFeatureSource extends ContentFeatureSource {
 
     private static final Logger LOGGER = Logging.getLogger(JDBCFeatureSource.class);
+    private static final String REMARKS = "REMARKS";
 
     /** primary key of the table */
     PrimaryKey primaryKey;
@@ -283,6 +284,9 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                 }
                 if (column.restriction != null) {
                     ab.addRestriction(column.restriction);
+                }
+                if (column.getRemarks() != null && !column.getRemarks().isEmpty()) {
+                    ab.setDescription(column.getRemarks());
                 }
 
                 AttributeDescriptor att = null;
@@ -811,6 +815,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                 column.nullable = "YES".equalsIgnoreCase(columns.getString("IS_NULLABLE"));
                 column.binding = dialect.getMapping(columns, cx);
                 column.restriction = dialect.getRestrictions(columns, cx);
+                column.setRemarks(columns.getString(REMARKS));
 
                 // support for user defined types, allow the dialect to handle them
                 if (column.sqlType == Types.DISTINCT) {

@@ -180,7 +180,16 @@ public class CatalogSliceTest extends Assert {
                             .contains(
                                     referencedEnvelope.toBounds(
                                             referencedEnvelope.getCoordinateReferenceSystem())));
-            assertEquals(src.getSchema(), schema);
+            assertEquals(src.getSchema().getType("coverage"), schema.getType("coverage"));
+            assertEquals(src.getSchema().getType("imageindex"), schema.getType("imageindex"));
+            assertEquals(
+                    src.getSchema().getType("cloud_formations"),
+                    schema.getType("cloud_formations"));
+            // type not equal because source schema has a column comment that gets assigned to the
+            // description
+            assertNotEquals(src.getSchema().getType("the_geom"), schema.getType("the_geom"));
+            assertEquals(
+                    "POLYGON", src.getSchema().getType("the_geom").getDescription().toString());
 
             // remove
             sliceCat.removeGranules("1", Filter.INCLUDE, t);

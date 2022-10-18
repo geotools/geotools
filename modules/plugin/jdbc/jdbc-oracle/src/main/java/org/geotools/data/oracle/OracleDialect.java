@@ -153,6 +153,19 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         }
     }
 
+    /**
+     * Turns on return of column comments metadata.
+     *
+     * @param cx the connection to use
+     * @param reportRemarks true to turn on column comments metadata
+     * @throws SQLException if the connection is not valid or there is a problem setting the flag
+     */
+    @SuppressWarnings("PMD.CloseResource") // connection is closed by caller
+    public void setRemarksReporting(Connection cx, boolean reportRemarks) throws SQLException {
+        OracleConnection ocx = unwrapConnection(cx);
+        ocx.setRemarksReporting(reportRemarks);
+    }
+
     static final class GeomClasses extends HashMap<Class, String> {
         private static final long serialVersionUID = -3359664692996608331L;
 
@@ -187,6 +200,9 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     /** Whether to use estimated extents to build */
     boolean estimatedExtentsEnabled = false;
 
+    /** Whether to turn on requesting column comments metadata */
+    boolean isGetColumnRemarksEnabled = false;
+
     /**
      * Stores srid and their nature, true if geodetic, false otherwise. Avoids repeated accesses to
      * the MDSYS.GEODETIC_SRIDS table
@@ -207,8 +223,17 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     }
 
     @Override
+    public void initializeConnection(Connection cx) throws SQLException {
+        setRemarksReporting(cx, isGetColumnRemarksEnabled);
+    }
+
+    @Override
     public boolean isAggregatedSortSupported(String function) {
         return "distinct".equalsIgnoreCase(function);
+    }
+
+    public void setGetColumnRemarksEnabled(boolean getColumnRemarksEnabled) {
+        isGetColumnRemarksEnabled = getColumnRemarksEnabled;
     }
 
     public boolean isLooseBBOXEnabled() {

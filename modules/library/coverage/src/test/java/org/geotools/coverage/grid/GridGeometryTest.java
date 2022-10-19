@@ -25,6 +25,7 @@ import static org.junit.Assert.fail;
 
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
@@ -34,6 +35,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.IdentityTransform;
+import org.junit.Assert;
 import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
 import org.opengis.coverage.grid.GridEnvelope;
@@ -309,6 +311,25 @@ public final class GridGeometryTest extends GridCoverageTestBase {
 
         GridGeometry2D canonical = gg.toCanonical();
         assertEquivalentCanonical(gg, canonical);
+    }
+
+    @Test
+    public void testRectangleConstructor() throws Exception {
+        GridGeometry2D gg1 =
+                new GridGeometry2D(
+                        new Rectangle(100, 100),
+                        new Envelope2D(DefaultGeographicCRS.WGS84, -180, 180, -90, 90));
+        Assert.assertTrue(gg1.isDefined(GridGeometry2D.CRS_BITMASK));
+        try {
+            Assert.assertNotNull(gg1.getCoordinateReferenceSystem());
+        } catch (InvalidGridGeometryException e) {
+            Assert.fail("crs should be set.");
+        }
+
+        GridGeometry2D gg2 =
+                new GridGeometry2D(
+                        new Rectangle(100, 100), new Rectangle2D.Double(-180, 180, -90, 90));
+        Assert.assertFalse(gg2.isDefined(GridGeometry2D.CRS_BITMASK));
     }
 
     private void assertEquivalentCanonical(GridGeometry2D original, GridGeometry2D canonical) {

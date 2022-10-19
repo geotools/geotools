@@ -410,7 +410,8 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
         assertEquals(e.getAttributeCount(), a.getAttributeCount());
         for (int i = 0; i < e.getAttributeCount(); i++) {
             AttributeDescriptor att1 = e.getDescriptor(i);
-            AttributeDescriptor att2 = a.getDescriptor(i);
+            AttributeDescriptor att2 = a.getDescriptor(att1.getLocalName());
+            assertNotNull(att2);
 
             assertEquals(att1.getName(), att2.getName());
             assertEquals(att1.getMinOccurs(), att2.getMinOccurs());

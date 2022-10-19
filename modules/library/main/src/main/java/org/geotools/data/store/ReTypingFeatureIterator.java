@@ -72,18 +72,18 @@ public class ReTypingFeatureIterator implements SimpleFeatureIterator {
 
             return builder.buildFeature(id);
         } catch (IllegalAttributeException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Couldn't retype feature with id: " + id, e);
         }
     }
 
     /**
-     * Supplies mapping from origional to target FeatureType.
+     * Supplies mapping from original to target FeatureType.
      *
-     * <p>Will also ensure that origional can cover target
+     * <p>Will also ensure that original can cover target
      *
      * @param target Desired FeatureType
-     * @param original Origional FeatureType
-     * @return Mapping from originoal to target FeatureType
+     * @param original Original FeatureType
+     * @return Mapping from original to target FeatureType
      * @throws IllegalArgumentException if unable to provide a mapping
      */
     protected AttributeDescriptor[] typeAttributes(
@@ -95,7 +95,9 @@ public class ReTypingFeatureIterator implements SimpleFeatureIterator {
 
         if (target.getAttributeCount() > original.getAttributeCount()) {
             throw new IllegalArgumentException(
-                    "Unable to retype  FeatureReader<SimpleFeatureType, SimpleFeature> (origional does not cover requested type)");
+                    "Unable to retype "
+                            + original.getName()
+                            + " (original does not cover target type)");
         }
 
         String xpath;
@@ -106,9 +108,15 @@ public class ReTypingFeatureIterator implements SimpleFeatureIterator {
             xpath = attrib.getLocalName();
             types[i] = attrib;
 
-            if (!attrib.equals(original.getDescriptor(xpath))) {
+            AttributeDescriptor origAttrib = original.getDescriptor(xpath);
+            if (origAttrib == null
+                    || !attrib.getType()
+                            .getBinding()
+                            .isAssignableFrom(origAttrib.getType().getBinding())) {
                 throw new IllegalArgumentException(
-                        "Unable to retype  FeatureReader<SimpleFeatureType, SimpleFeature> (origional does not cover "
+                        "Unable to retype "
+                                + original.getName()
+                                + " (original does not cover "
                                 + xpath
                                 + ")");
             }

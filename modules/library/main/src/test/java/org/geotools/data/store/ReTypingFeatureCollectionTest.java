@@ -28,9 +28,12 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.AttributeTypeBuilder;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.visitor.NearestVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
+import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -140,5 +143,32 @@ public class ReTypingFeatureCollectionTest extends FeatureCollectionWrapperTestS
         ReTypingFeatureCollection rtc = new ReTypingFeatureCollection(delegate, renamed);
         SimpleFeature first = DataUtilities.first(rtc);
         assertEquals(TEST_VALUE, first.getUserData().get(TEST_KEY));
+    }
+
+    @Test
+    public void testSimilarAttributes() throws Exception {
+        SimpleFeatureTypeBuilder stb = new SimpleFeatureTypeBuilder();
+        stb.setName("original");
+        stb.add("bar", Integer.class);
+
+        SimpleFeatureType schema = stb.buildFeatureType();
+        Assert.assertEquals("bar", schema.getDescriptor(0).getType().getName().getLocalPart());
+
+        SimpleFeatureCollection source = new DefaultFeatureCollection("source", schema);
+
+        SimpleFeatureTypeBuilder stb2 = new SimpleFeatureTypeBuilder();
+        stb2.setName("test");
+
+        AttributeTypeBuilder atb = new AttributeTypeBuilder();
+        atb.setName("Integer");
+        atb.setBinding(Integer.class);
+        stb2.add(atb.buildDescriptor("bar"));
+
+        SimpleFeatureType schema2 = stb2.buildFeatureType();
+        Assert.assertEquals("Integer", schema2.getDescriptor(0).getType().getName().getLocalPart());
+        SimpleFeatureCollection retyped = new ReTypingFeatureCollection(source, schema2);
+        try (SimpleFeatureIterator features = retyped.features()) {
+            Assert.assertFalse(features.hasNext());
+        }
     }
 }

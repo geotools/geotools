@@ -297,7 +297,10 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
                 granuleHasAlpha = granule.getColorModel().hasAlpha();
             }
             assert granuleHasAlpha;
+        } else if (!rasterLayerResponse.getFootprintBehavior().handleFootprints()) {
+            granuleHasAlpha = granule.getColorModel().hasAlpha();
         }
+
         PlanarImage alphaChannel = null;
         if (granuleHasAlpha || doInputTransparency) {
             ImageWorker w = new ImageWorker(granule);

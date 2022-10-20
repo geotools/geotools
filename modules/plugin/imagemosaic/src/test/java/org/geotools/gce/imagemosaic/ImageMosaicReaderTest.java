@@ -289,7 +289,6 @@ public class ImageMosaicReaderTest {
 
     /** Tests the {@link ImageMosaicReader} with default parameters for the various input params. */
     @Test
-    //        @Ignore
     public void alpha() throws Exception {
 
         final String testName = "alpha-";
@@ -445,7 +444,6 @@ public class ImageMosaicReaderTest {
 
     /** */
     @Test
-    // @Ignore
     public void readingResolutions() throws Exception {
         final AbstractGridFormat format = TestUtils.getFormat(overviewURL);
         final ImageMosaicReader reader = getReader(overviewURL, format);
@@ -470,7 +468,6 @@ public class ImageMosaicReaderTest {
     }
 
     @Test
-    // @Ignore
     public void timeElevationH2() throws Exception {
 
         final File workDir = new File(TestData.file(this, "."), "water_temp3");
@@ -613,7 +610,6 @@ public class ImageMosaicReaderTest {
      * the TypeName=MOSAICNAME into the generated MOSAICNAME.properties file
      */
     @Test
-    // @Ignore
     public void testTypeNameBackwardsCompatibility() throws Exception {
 
         final File workDir = new File(TestData.file(this, "."), "water_temp5");
@@ -1041,8 +1037,6 @@ public class ImageMosaicReaderTest {
 
     /** Simple test method accessing time and 2 custom dimensions for the sample dataset */
     @Test
-    // @Ignore
-    @SuppressWarnings("rawtypes")
     public void timeAdditionalDim() throws Exception {
 
         final AbstractGridFormat format = TestUtils.getFormat(timeAdditionalDomainsURL);
@@ -1845,7 +1839,6 @@ public class ImageMosaicReaderTest {
      * => Pixel Size = (0.666666666666667,-0.666666666666667); 0 overviews
      */
     @Test
-    // @Ignore
     public void testHeterogeneousGranules() throws Exception {
 
         final AbstractGridFormat format = TestUtils.getFormat(heterogeneousGranulesURL);
@@ -1935,7 +1928,6 @@ public class ImageMosaicReaderTest {
     }
 
     @Test
-    // @Ignore
     public void errors() throws Exception {
         final Hints hints =
                 new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
@@ -2282,7 +2274,6 @@ public class ImageMosaicReaderTest {
     }
 
     @Test
-    // @Ignore
     public void testRequestInOut() throws Exception {
         final AbstractGridFormat format = TestUtils.getFormat(rgbAURL, null);
         final ImageMosaicReader reader = getReader(rgbAURL, format);
@@ -2466,8 +2457,6 @@ public class ImageMosaicReaderTest {
 
     /** Simple test method accessing time and 2 custom dimensions for the sample dataset */
     @Test
-    // @Ignore
-    @SuppressWarnings("rawtypes")
     public void timeAdditionalDimNoResultsDueToWrongDim() throws Exception {
 
         final AbstractGridFormat format = TestUtils.getFormat(timeAdditionalDomainsURL);
@@ -5894,6 +5883,26 @@ public class ImageMosaicReaderTest {
                             assertTrue(granule.getMaskOverviewProvider().isSkipExternalLookup()));
         } finally {
             if (reader2 != null) reader2.dispose();
+        }
+    }
+
+    @Test
+    public void testAlphaOverlap() throws Exception {
+        URL alphaOverlap = TestData.url(this, "alpha-overlap/");
+        final AbstractGridFormat format = TestUtils.getFormat(alphaOverlap);
+        File mosaicFile = URLs.urlToFile(alphaOverlap);
+        final ImageMosaicReader reader =
+                (ImageMosaicReader) format.getReader(mosaicFile.getAbsolutePath());
+        GridCoverage2D coverage = null;
+        try {
+            coverage = reader.read(null);
+            File sample =
+                    new File(
+                            "src/test/resources/org/geotools/gce/imagemosaic/test-data/rgba-overlap.png");
+            ImageAssert.assertEquals(sample, coverage.getRenderedImage(), 0);
+        } finally {
+            if (coverage != null) coverage.dispose(true);
+            reader.dispose();
         }
     }
 }

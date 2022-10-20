@@ -48,6 +48,8 @@ import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.GeometryType;
@@ -226,22 +228,23 @@ public class GeoJSONWriter implements AutoCloseable {
 
         // Check CRS and Axis order before writing out to comply with
         // https://tools.ietf.org/html/rfc7946 unless they asked nicely
-        if (!encodeFeatureCollectionCRS) {
-            defaultGeometry = reprojectGeometry(currentFeature);
-        }
-
         if (defaultGeometry != null) {
+            if (!encodeFeatureCollectionCRS) {
+                defaultGeometry = reprojectGeometry(currentFeature);
+            }
             if (isEncodeFeatureBounds()) {
                 writeBbox(g, defaultGeometry);
             }
+
             g.writeFieldName("geometry");
             String gString = mapper.writeValueAsString(defaultGeometry);
-
             g.writeRawValue(gString);
-            g.writeStringField("id", currentFeature.getID());
+
         } else {
+            g.writeFieldName("geometry");
             g.writeNull();
         }
+        g.writeStringField("id", currentFeature.getID());
         g.writeEndObject();
         g.flush();
     }
@@ -292,8 +295,15 @@ public class GeoJSONWriter implements AutoCloseable {
         }
     }
 
+    private static GeometryFactory gf = new GeometryFactory();
+
     private Geometry reprojectGeometry(SimpleFeature currentFeature) {
         Geometry defaultGeometry = (Geometry) currentFeature.getDefaultGeometry();
+        if (defaultGeometry == null) {
+            LOGGER.fine("No geometry found in " + currentFeature.getID() + " skipping");
+            GeometryCollection collection = gf.createGeometryCollection(null);
+            return collection;
+        }
         CoordinateReferenceSystem inCRS =
                 currentFeature
                         .getDefaultGeometryProperty()

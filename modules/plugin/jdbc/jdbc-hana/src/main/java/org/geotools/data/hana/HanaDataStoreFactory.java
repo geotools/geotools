@@ -86,7 +86,7 @@ public class HanaDataStoreFactory extends JDBCDataStoreFactory {
             new Param(
                     "SELECT Hints",
                     String.class,
-                    "Comma-separated list of hints that will be applied to SELECT queries, e.g. ESTIMATION_SAPLES(0), NO_HASH_JOIN",
+                    "Comma-separated list of hints that will be applied to SELECT queries, e.g. ESTIMATION_SAMPLES(0), NO_HASH_JOIN",
                     false,
                     null,
                     Collections.singletonMap(Parameter.IS_LARGE_TEXT, Boolean.TRUE));

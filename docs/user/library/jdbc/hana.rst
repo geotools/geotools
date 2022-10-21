@@ -49,7 +49,7 @@ Parameter        Description
 ``passwd``       Password
 ``use ssl``      Use SSL to connect
 ``SELECT Hints`` Comma-separated list of hints that will be applied to SELECT
-                 queries, e.g. ``ESTIMATION_SAPLES(0), NO_HASH_JOIN``.
+                 queries, e.g. ``ESTIMATION_SAMPLES(0), NO_HASH_JOIN``.
 ================ ===============================================================
 
 Creating

@@ -20,6 +20,7 @@ import net.opengis.wfs20.WFSCapabilitiesType;
 import org.geotools.wfs.v2_0.WFSConfiguration;
 import org.geotools.xsd.Parser;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -27,6 +28,7 @@ import org.junit.Test;
  *
  * @author Matthias Schulze (LDBV at ldbv dot bayern dot de)
  */
+@Ignore
 public class Capabilities200ServiceInfoOnlineTest {
     public static final String SERVER_URL =
             "http://laermkartierung1.eisenbahn-bundesamt.de/deegree/services/wfs?service=WFS&request=GetCapabilities"; // $NON-NLS-1$

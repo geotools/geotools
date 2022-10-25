@@ -29,6 +29,15 @@ The first step to upgrade: change the ``geotools.version`` of your dependencies 
         ....
     </dependencies>
 
+GeoTools 29.x
+-------------
+
+Deprecated functions removed
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In gt-wfs-ng we've removed:
+``org.geotools.data.wfs.WFSFeatureReader.WFSFeatureReader(GetParser<SimpleFeature>)``
+
 GeoTools 27.x
 -------------
 

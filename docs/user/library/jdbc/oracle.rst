@@ -80,7 +80,7 @@ Advanced
 |     ``timeout``       | a session with the database listener           |
 |                       | (milliseconds)                                 |
 +-----------------------+------------------------------------------------+
-|``Get column remarks`` | Boolean flag specifies whether column REMARKS  |
+|``Get remarks``        | Boolean flag specifies whether REMARKS         |
 |                       | metadata will be returned. Note that this      |
 |                       | parameter is not available in the JNDI version |
 |                       | of the DataStore.  Instead you can set a       |

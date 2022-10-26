@@ -23,6 +23,7 @@ import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -30,14 +31,20 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.visitor.NearestVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
+import org.geotools.referencing.CRS;
 import org.junit.Assert;
 import org.junit.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class ReTypingFeatureCollectionTest extends FeatureCollectionWrapperTestSupport {
 
@@ -146,6 +153,38 @@ public class ReTypingFeatureCollectionTest extends FeatureCollectionWrapperTestS
     }
 
     @Test
+    public void testChangedCRS() throws Exception {
+        SimpleFeatureTypeBuilder stb = new SimpleFeatureTypeBuilder();
+        stb.setName("original");
+        stb.setCRS(CRS.decode("EPSG:32633"));
+        stb.add("geom", Point.class);
+
+        SimpleFeatureType original = stb.buildFeatureType();
+        DefaultFeatureCollection source = new DefaultFeatureCollection("source", original);
+
+        GeometryFactory factory = new GeometryFactory();
+
+        source.add(
+                SimpleFeatureBuilder.build(
+                        original,
+                        new Point[] {factory.createPoint(new Coordinate(345634, 6777652))},
+                        "1"));
+        CoordinateReferenceSystem targetCrs = CRS.decode("EPSG:32632");
+
+        SimpleFeatureType target = SimpleFeatureTypeBuilder.retype(original, targetCrs);
+        SimpleFeatureCollection retyped = new ReTypingFeatureCollection(source, target);
+        try (SimpleFeatureIterator features = retyped.features()) {
+            Assert.assertTrue(features.hasNext());
+            SimpleFeature next = features.next();
+            Assert.assertEquals(targetCrs, next.getFeatureType().getCoordinateReferenceSystem());
+            Assert.assertNotEquals(345634.0, ((Point) next.getDefaultGeometry()).getX(), 1.0);
+            Assert.assertNotEquals(6777652.0, ((Point) next.getDefaultGeometry()).getY(), 1.0);
+        } catch (IllegalArgumentException e) {
+            // We would like an IllegalArgumentException
+        }
+    }
+
+    @Test
     public void testSimilarAttributes() throws Exception {
         SimpleFeatureTypeBuilder stb = new SimpleFeatureTypeBuilder();
         stb.setName("original");
@@ -169,6 +208,35 @@ public class ReTypingFeatureCollectionTest extends FeatureCollectionWrapperTestS
         SimpleFeatureCollection retyped = new ReTypingFeatureCollection(source, schema2);
         try (SimpleFeatureIterator features = retyped.features()) {
             Assert.assertFalse(features.hasNext());
+        }
+    }
+
+    @Test
+    public void testDifferentNamespace() throws Exception {
+        SimpleFeatureTypeBuilder stb = new SimpleFeatureTypeBuilder();
+        stb.setName("original");
+        stb.setNamespaceURI("http://namespace.org/v1");
+        stb.add("geom", Point.class);
+        stb.add("bar", Integer.class);
+
+        SimpleFeatureType schema = stb.buildFeatureType();
+        DefaultFeatureCollection source = new DefaultFeatureCollection(null, schema);
+        Point pnt = new GeometryFactory().createPoint(new Coordinate(0.0, 1.0));
+
+        source.add(SimpleFeatureBuilder.build(schema, new Object[] {pnt, 1}, "1"));
+
+        SimpleFeatureTypeBuilder stb2 = new SimpleFeatureTypeBuilder();
+        stb2.setName("test");
+        stb2.add("bar", Integer.class);
+        stb2.add("geom", Point.class);
+
+        SimpleFeatureCollection retyped =
+                new ReTypingFeatureCollection(source, stb2.buildFeatureType());
+        try (SimpleFeatureIterator features = retyped.features()) {
+            assertTrue(features.hasNext());
+            SimpleFeature next = features.next();
+            assertEquals(1, next.getAttribute(0));
+            assertEquals(0.0, ((Point) next.getAttribute(1)).getX(), 0.1);
         }
     }
 }

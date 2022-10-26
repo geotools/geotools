@@ -35,8 +35,8 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 
 /**
- * SimpleFeatureCollection decorator which decorates a feature collection "re-typing" its schema
- * based on attributes specified in a query.
+ * SimpleFeatureCollection decorator which re-type's a feature collection. The target schema could
+ * be a reordered set of the original attributes.
  *
  * @author Justin Deoliveira, The Open Planning Project
  */

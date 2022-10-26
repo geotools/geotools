@@ -22,6 +22,8 @@ import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * FeatureIterator wrapper which re-types features on the fly based on a target feature type.
@@ -36,8 +38,8 @@ public class ReTypingFeatureIterator implements SimpleFeatureIterator {
     /** The target feature type */
     SimpleFeatureType target;
 
-    /** The matching types from target */
-    AttributeDescriptor[] types;
+    /** Indexes to delegate attributes */
+    final int[] delegateIndexes;
 
     SimpleFeatureBuilder builder;
 
@@ -45,7 +47,7 @@ public class ReTypingFeatureIterator implements SimpleFeatureIterator {
             SimpleFeatureIterator delegate, SimpleFeatureType source, SimpleFeatureType target) {
         this.delegate = delegate;
         this.target = target;
-        types = typeAttributes(source, target);
+        delegateIndexes = findDelegateIndexes(source, target);
         this.builder = new SimpleFeatureBuilder(target);
     }
 
@@ -64,9 +66,8 @@ public class ReTypingFeatureIterator implements SimpleFeatureIterator {
         String id = next.getID();
 
         try {
-            for (AttributeDescriptor type : types) {
-                final String xpath = type.getLocalName();
-                builder.add(next.getAttribute(xpath));
+            for (int idx : delegateIndexes) {
+                builder.add(next.getAttribute(idx));
             }
             builder.featureUserData(next);
 
@@ -86,8 +87,7 @@ public class ReTypingFeatureIterator implements SimpleFeatureIterator {
      * @return Mapping from original to target FeatureType
      * @throws IllegalArgumentException if unable to provide a mapping
      */
-    protected AttributeDescriptor[] typeAttributes(
-            SimpleFeatureType original, SimpleFeatureType target) {
+    private int[] findDelegateIndexes(SimpleFeatureType original, SimpleFeatureType target) {
         if (target.equals(original)) {
             throw new IllegalArgumentException(
                     "FeatureReader allready produces contents with the correct schema");
@@ -101,14 +101,31 @@ public class ReTypingFeatureIterator implements SimpleFeatureIterator {
         }
 
         String xpath;
-        AttributeDescriptor[] types = new AttributeDescriptor[target.getAttributeCount()];
+        int[] indexes = new int[target.getAttributeCount()];
 
         for (int i = 0; i < target.getAttributeCount(); i++) {
             AttributeDescriptor attrib = target.getDescriptor(i);
             xpath = attrib.getLocalName();
-            types[i] = attrib;
 
             AttributeDescriptor origAttrib = original.getDescriptor(xpath);
+            if (origAttrib instanceof GeometryDescriptor) {
+                if (!(attrib instanceof GeometryDescriptor)) {
+                    throw new IllegalArgumentException(
+                            "Unable to retype "
+                                    + origAttrib.getLocalName()
+                                    + " (target isn't a geometry attribute).");
+                }
+                CoordinateReferenceSystem origCrs =
+                        ((GeometryDescriptor) origAttrib).getCoordinateReferenceSystem();
+                if (origCrs != null
+                        && !origCrs.equals(
+                                ((GeometryDescriptor) attrib).getCoordinateReferenceSystem())) {
+                    throw new IllegalArgumentException(
+                            "Unable to retype "
+                                    + original.getName()
+                                    + " (target have a different crs).");
+                }
+            }
             if (origAttrib == null
                     || !attrib.getType()
                             .getBinding()
@@ -120,9 +137,10 @@ public class ReTypingFeatureIterator implements SimpleFeatureIterator {
                                 + xpath
                                 + ")");
             }
+            indexes[i] = original.indexOf(origAttrib.getName());
         }
 
-        return types;
+        return indexes;
     }
 
     @Override

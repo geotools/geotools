@@ -57,7 +57,7 @@ public class OracleJNDIDataSourceOnlineTest extends JDBCJNDIDataSourceOnlineTest
         jndiParams.removeAll(baseJndiParams);
         // not including column remarks parameter for JNDI, direct configuration
         // is explained in the documentation
-        standardParams.remove(OracleNGDataStoreFactory.GET_COLUMN_REMARKS.key);
+        standardParams.remove(OracleNGDataStoreFactory.GET_REMARKS.key);
         assertEquals(standardParams, jndiParams);
     }
 }

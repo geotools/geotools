@@ -11,12 +11,13 @@
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.geotools.data.wfs.internal.v2_0;
+package org.geotools.data.wfs.online.v2_0;
 
 import static org.junit.Assert.assertNotNull;
 
 import java.net.URL;
 import net.opengis.wfs20.WFSCapabilitiesType;
+import org.geotools.data.wfs.internal.v2_0.Capabilities200ServiceInfo;
 import org.geotools.wfs.v2_0.WFSConfiguration;
 import org.geotools.xsd.Parser;
 import org.junit.Before;
@@ -28,10 +29,10 @@ import org.junit.Test;
  *
  * @author Matthias Schulze (LDBV at ldbv dot bayern dot de)
  */
-@Ignore
+@Ignore("Server has an certificate failure.")
 public class Capabilities200ServiceInfoOnlineTest {
     public static final String SERVER_URL =
-            "http://laermkartierung1.eisenbahn-bundesamt.de/deegree/services/wfs?service=WFS&request=GetCapabilities"; // $NON-NLS-1$
+            "https://laermkartierung1.eisenbahn-bundesamt.de/deegree/services/wfs?service=WFS&request=GetCapabilities"; // $NON-NLS-1$
 
     private Capabilities200ServiceInfo featureType;
 

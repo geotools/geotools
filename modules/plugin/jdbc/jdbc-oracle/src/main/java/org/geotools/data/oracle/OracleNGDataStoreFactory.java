@@ -129,7 +129,7 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
             new Param(
                     "Get remarks",
                     Boolean.class,
-                    "Indicates whether REMARKS metadata available for description",
+                    "Indicates whether REMARKS are fetched from database",
                     false,
                     Boolean.FALSE);
 

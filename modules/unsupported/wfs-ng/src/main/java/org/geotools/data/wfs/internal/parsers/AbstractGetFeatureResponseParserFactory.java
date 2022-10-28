@@ -30,8 +30,12 @@ import org.geotools.data.wfs.internal.WFSResponseFactory;
 import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.type.FeatureType;
 
-/** An abstract WFS response parser factory for GetFeature requests in GML output formats. */
+/**
+ * An abstract WFS response parser factory for GetFeature requests in GML output formats. Treats
+ * feature type's that implement SimpleFeatureType
+ */
 public abstract class AbstractGetFeatureResponseParserFactory extends AbstractWFSResponseFactory {
 
     /** @see WFSResponseFactory#isAvailable() */
@@ -47,6 +51,8 @@ public abstract class AbstractGetFeatureResponseParserFactory extends AbstractWF
      * <p>For instance, this factory can create a parser as long as the request is a {@link
      * GetFeatureType GetFeature} request and the request output format matches {@code "text/xml;
      * subtype=gml/3.1.1"}.
+     *
+     * <p>It also check's that requested type is a SimpleFeatureType
      *
      * @see WFSResponseFactory#canProcess(WFSOperationType, String)
      */
@@ -92,6 +98,14 @@ public abstract class AbstractGetFeatureResponseParserFactory extends AbstractWF
     @Override
     public boolean canProcess(WFSOperationType operation) {
         return WFSOperationType.GET_FEATURE.equals(operation);
+    }
+
+    protected FeatureType getRequestedType(GetFeatureRequest request) {
+        FeatureType queryType = request.getQueryType();
+        if (queryType == null) {
+            queryType = request.getFullType();
+        }
+        return queryType;
     }
 
     protected abstract GetParser<SimpleFeature> parser(GetFeatureRequest request, InputStream in)

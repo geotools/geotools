@@ -16,9 +16,13 @@
  */
 package org.geotools.data.wfs.online;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -33,6 +37,7 @@ import org.geotools.data.wfs.WFSTestData;
 import org.geotools.data.wfs.WFSTestData.TestDataType;
 import org.geotools.data.wfs.impl.WFSContentDataAccess;
 import org.geotools.data.wfs.impl.WFSDataAccessFactory;
+import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.test.TestData;
 import org.junit.Assert;
@@ -166,5 +171,41 @@ public class KartverketStedsnavnDataStoreOnlineTest extends AbstractWfsDataStore
     @Ignore
     public void testDataStoreHandlesAxisFlipping() {
         // disabled, not implemented for 2.0.0
+    }
+
+    @Test
+    public void testComplexDataAccessWithFilter() throws Exception {
+        final HashMap<String, Serializable> params = new HashMap<>();
+        params.put(WFSDataStoreFactory.URL.key, new URL(SERVER_URL));
+        params.put(WFSDataStoreFactory.TIMEOUT.key, 6000);
+        params.put(WFSDataStoreFactory.BUFFER_SIZE.key, 100);
+        params.put(
+                WFSDataStoreFactory.SCHEMA_CACHE_LOCATION.key,
+                TestData.file(WFSTestData.class, "KartverketNo")
+                        .getAbsolutePath()); // Must be specified when Schema is http
+
+        WFSContentDataAccess dataAccess =
+                (WFSContentDataAccess) new WFSDataAccessFactory().createDataStore(params);
+        Name featureName = null;
+        for (Name nextName : dataAccess.getNames()) {
+            if (NAME.equals(nextName.getLocalPart())) {
+                featureName = nextName;
+                break;
+            }
+        }
+
+        Filter extentFilter = ff.bbox("posisjon", 257500, 6694000, 258000, 6694500, "EPSG:32633");
+        FeatureCollection<FeatureType, Feature> collection =
+                dataAccess.getFeatureSource(featureName).getFeatures(extentFilter);
+        List<Number> stedsnr = new ArrayList<>();
+        try (FeatureIterator<Feature> features = collection.features()) {
+            while (features.hasNext()) {
+                Feature feature = features.next();
+                stedsnr.add((Number) feature.getProperty("stedsnummer").getValue());
+            }
+        }
+        assertTrue(
+                "Should contain Blistein with id=6948 (BigInteger)",
+                stedsnr.contains(BigInteger.valueOf(6948)));
     }
 }

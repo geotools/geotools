@@ -24,9 +24,11 @@ import java.util.List;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.GetParser;
 import org.geotools.data.wfs.internal.Versions;
+import org.geotools.data.wfs.internal.WFSRequest;
 import org.geotools.wfs.v1_0.WFSConfiguration_1_0;
 import org.geotools.xsd.Configuration;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
 
 /**
@@ -39,7 +41,7 @@ import org.opengis.feature.type.FeatureType;
  */
 public class GetFeatureResponseParserFactory extends AbstractGetFeatureResponseParserFactory {
 
-    private static final List<String> SUPPORTED_FORMATS =
+    static final List<String> SUPPORTED_FORMATS =
             Collections.unmodifiableList(
                     Arrays.asList( //
                             "text/xml; subtype=gml/3.1.1", //
@@ -69,7 +71,7 @@ public class GetFeatureResponseParserFactory extends AbstractGetFeatureResponseP
                             "gml32" //
                             ));
 
-    private static final List<String> SUPPORTED_VERSIONS =
+    static final List<String> SUPPORTED_VERSIONS =
             Collections.unmodifiableList(
                     Arrays.asList(
                             Versions.v2_0_0.toString()
@@ -80,13 +82,21 @@ public class GetFeatureResponseParserFactory extends AbstractGetFeatureResponseP
                             ));
 
     @Override
+    public boolean canProcess(final WFSRequest request, final String contentType) {
+        if (!super.canProcess(request, contentType)) {
+            return false;
+        }
+        if (!(getRequestedType((GetFeatureRequest) request) instanceof SimpleFeatureType)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     protected GetParser<SimpleFeature> parser(GetFeatureRequest request, InputStream in)
             throws IOException {
 
-        FeatureType queryType = request.getQueryType();
-        if (queryType == null) {
-            queryType = request.getFullType();
-        }
+        FeatureType queryType = getRequestedType(request);
 
         Configuration config = null;
         if (request.getStrategy().getVersion().equals(Versions.v2_0_0.toString())) {

@@ -22,22 +22,35 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Set;
 import java.util.logging.Level;
 import javax.xml.namespace.QName;
+import org.geotools.TestData;
+import org.geotools.data.wfs.TestHttpClient;
+import org.geotools.data.wfs.TestWFSClient;
 import org.geotools.data.wfs.WFSServiceInfo;
 import org.geotools.data.wfs.WFSTestData;
 import org.geotools.data.wfs.internal.v1_x.CubeWerxStrategy;
 import org.geotools.data.wfs.internal.v1_x.IonicStrategy;
 import org.geotools.data.wfs.internal.v1_x.StrictWFS_1_x_Strategy;
+import org.geotools.feature.FakeTypes;
+import org.geotools.feature.NameImpl;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.feature.type.FeatureTypeImpl;
 import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPClientFinder;
+import org.geotools.http.MockHttpResponse;
 import org.geotools.ows.ServiceException;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.locationtech.jts.geom.Point;
+import org.opengis.feature.type.FeatureType;
+import org.opengis.feature.type.Name;
+import org.opengis.filter.Filter;
 
 public class WFSClientTest {
 
@@ -189,6 +202,62 @@ public class WFSClientTest {
         assertEquals("1.1.0", info.getVersion());
     }
 
+    private static QName STED_REMOTE_NAME =
+            new QName(
+                    "http://skjema.geonorge.no/SOSI/produktspesifikasjon/StedsnavnForVanligBruk/20181115",
+                    "Sted",
+                    "app");
+    private static Name STED_LOCAL_NAME =
+            new NameImpl(
+                    "http://skjema.geonorge.no/SOSI/produktspesifikasjon/StedsnavnForVanligBruk/20181115",
+                    "Sted");
+
+    @Test
+    public void testIssueGetFeatureRequest() throws Exception {
+
+        WFSClient client = createKartverketWFSClient();
+        GetFeatureRequest simpleRequest = client.createGetFeatureRequest();
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName(STED_LOCAL_NAME);
+        builder.add("posisjon", Point.class);
+        builder.add("stedsnummer", Integer.class);
+
+        simpleRequest.setTypeName(STED_REMOTE_NAME);
+        simpleRequest.setFullType(builder.buildFeatureType());
+        simpleRequest.setFilter(Filter.INCLUDE);
+        GetFeatureResponse simpleResponse = client.issueRequest(simpleRequest);
+        Assert.assertNotNull(simpleResponse);
+        try {
+            client.issueComplexRequest(simpleRequest);
+            Assert.fail("Should throw exception.");
+        } catch (Exception e) {
+            // Good to throw exception
+        }
+
+        GetFeatureRequest complexRequest = client.createGetFeatureRequest();
+        FeatureType complexType =
+                new FeatureTypeImpl(
+                        STED_LOCAL_NAME,
+                        Collections.emptyList(),
+                        null,
+                        false,
+                        Collections.emptyList(),
+                        FakeTypes.ANYTYPE_TYPE,
+                        null);
+
+        complexRequest.setTypeName(STED_REMOTE_NAME);
+        complexRequest.setFullType(complexType);
+        complexRequest.setFilter(Filter.INCLUDE);
+        ComplexGetFeatureResponse complexResponse = client.issueComplexRequest(complexRequest);
+        Assert.assertNotNull(complexResponse);
+        try {
+            client.issueRequest(complexRequest);
+            Assert.fail("Should throw exception.");
+        } catch (Exception e) {
+            // Good to throw exception
+        }
+    }
+
     private void testGetRemoteTypeNames(String capabilitiesLocation, int typeCount)
             throws Exception {
 
@@ -196,5 +265,28 @@ public class WFSClientTest {
         Set<QName> remoteTypeNames = client.getRemoteTypeNames();
         assertNotNull(remoteTypeNames);
         assertEquals(capabilitiesLocation, typeCount, remoteTypeNames.size());
+    }
+
+    private TestWFSClient createKartverketWFSClient() throws Exception {
+        final URL capabilities = new URL("https://wfs.geonorge.no/skwms1/wfs.stedsnavn");
+
+        TestHttpClient mockHttp = new TestHttpClient();
+        mockHttp.expectGet(
+                new URL(
+                        "https://wfs.geonorge.no/skwms1/wfs.stedsnavn?REQUEST=GetCapabilities&SERVICE=WFS"),
+                new MockHttpResponse(
+                        TestData.file(TestHttpClient.class, "KartverketNo/GetCapabilities.xml"),
+                        "text/xml"));
+
+        mockHttp.expectGet(
+                new URL(
+                        "https://wfs.geonorge.no/skwms1/wfs.stedsnavn?REQUEST=GetFeature&RESULTTYPE=RESULTS&OUTPUTFORMAT=application%2Fgml%2Bxml%3B+version%3D3.2&VERSION=2.0.0&TYPENAMES=app%3ASted&SERVICE=WFS"),
+                new MockHttpResponse(
+                        TestData.file(TestHttpClient.class, "KartverketNo/GetFeature_sted.xml"),
+                        "text/xml"));
+
+        TestWFSClient client = new TestWFSClient(capabilities, mockHttp);
+        client.setProtocol(false); // Http GET method
+        return client;
     }
 }

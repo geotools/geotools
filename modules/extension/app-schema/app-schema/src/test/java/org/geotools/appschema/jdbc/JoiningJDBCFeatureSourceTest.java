@@ -19,7 +19,9 @@ package org.geotools.appschema.jdbc;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
+import java.io.IOException;
 import java.util.Collections;
 import org.geotools.data.joining.JoiningQuery;
 import org.geotools.data.postgis.PostGISDialect;
@@ -59,5 +61,27 @@ public class JoiningJDBCFeatureSourceTest {
         assertNotNull(type);
         assertEquals("FOREIGN_ID_0_0", type.getDescriptor(0).getName().getLocalPart());
         assertEquals("FOREIGN_ID_0_1", type.getDescriptor(1).getName().getLocalPart());
+    }
+
+    @Test
+    public void testSimpleFeatureTypeNoPk() throws IOException {
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName("test");
+
+        JoiningQuery query = new JoiningQuery();
+        JoiningQuery.QueryJoin join = new JoiningQuery.QueryJoin();
+        join.getIds().add("one");
+        join.getIds().add("two");
+        query.setQueryJoins(Collections.singletonList(join));
+
+        JDBCDataStore mockStore = Mockito.mock(JDBCDataStore.class);
+        ContentEntry mockEntry = Mockito.mock(ContentEntry.class);
+
+        Mockito.when(mockStore.getSQLDialect()).thenReturn(new PostGISDialect(mockStore));
+        Mockito.when(mockEntry.getDataStore()).thenReturn(mockStore);
+        JoiningJDBCFeatureSource source =
+                new JoiningJDBCFeatureSource(new JDBCFeatureSource(mockEntry, null));
+
+        assertNull(source.getPrimaryKey());
     }
 }

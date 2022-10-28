@@ -1465,7 +1465,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         String[] attributes = extractor.getAttributeNames();
         // the id from the app-schema configuration
         String idMapping = attributes.length > 0 ? extractor.getAttributeNames()[0] : null;
-        boolean idsColumnEquals = idColumnName.equals(idMapping);
+        boolean idsColumnEquals = idColumnName != null && idColumnName.equals(idMapping);
         Filter filter = jQuery.getFilter();
         filter.accept(extractor, null);
 
@@ -1581,7 +1581,11 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
     }
 
     private String getIdColumnName(SimpleFeatureType featureType) throws IOException {
-        PrimaryKeyColumn column = getDataStore().getPrimaryKey(featureType).getColumns().get(0);
+        List<PrimaryKeyColumn> columns = getDataStore().getPrimaryKey(featureType).getColumns();
+        if (columns.isEmpty()) {
+            return null;
+        }
+        PrimaryKeyColumn column = columns.get(0);
         String columnName = column.getName();
         return columnName;
     }

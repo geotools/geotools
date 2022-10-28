@@ -4,3 +4,4 @@ org.geotools.data.wfs.internal.parsers.GmlGetFeatureResponseParserFactory
 org.geotools.data.wfs.internal.parsers.ListStoredQueriesResponseFactory
 org.geotools.data.wfs.internal.parsers.TransactionResponseFactory
 org.geotools.data.wfs.internal.parsers.GetFeatureResponseParserFactory
+org.geotools.data.wfs.internal.parsers.ComplexGetFeatureResponseParserFactory

@@ -41,42 +41,66 @@ public class WFSContentComplexFeatureCollection
     private static final Logger LOGGER =
             Logging.getLogger(WFSContentComplexFeatureCollection.class);
 
-    private FeatureType schema;
+    private final WFSClient client;
 
-    private GetFeatureRequest request;
+    private final FeatureType schema;
 
-    private QName name;
+    private final GetFeatureRequest request;
 
-    private Filter filter;
+    private final QName name;
 
+    private final Filter filter;
+
+    /** @deprecated - Will not work when using POST */
+    @Deprecated
     public WFSContentComplexFeatureCollection(
             GetFeatureRequest request, FeatureType schema, QName name) throws IOException {
-
-        this.request = request;
-        this.name = name;
-        this.schema = schema;
+        this(request, schema, name, Filter.INCLUDE, null);
     }
 
+    /** @deprecated - Will not work when using POST */
+    @Deprecated
     public WFSContentComplexFeatureCollection(
             GetFeatureRequest request, FeatureType schema, QName name, Filter filter)
             throws IOException {
+        this(request, schema, name, filter, null);
+    }
 
+    /** Making a feature collection based on a request for a type without any filter. */
+    public WFSContentComplexFeatureCollection(
+            GetFeatureRequest request, FeatureType schema, QName name, WFSClient client) {
+        this(request, schema, name, Filter.INCLUDE, client);
+    }
+
+    /** Making a feature collection based on a request for a type with a filter. */
+    public WFSContentComplexFeatureCollection(
+            GetFeatureRequest request,
+            FeatureType schema,
+            QName name,
+            Filter filter,
+            WFSClient client) {
         this.request = request;
         this.name = name;
         this.schema = schema;
+        this.client = client;
         this.filter = filter;
     }
 
+    /** Make sure to close the iterator. */
+    @SuppressWarnings("PMD.CloseResource") // wrapped and returned
     @Override
     public FeatureIterator<Feature> features() {
-
         try {
-            @SuppressWarnings("PMD.CloseResource") // wrapped and returned
-            InputStream stream = request.getFinalURL().openStream();
-            XmlComplexFeatureParser parser =
-                    new XmlComplexFeatureParser(
-                            stream, schema, name, filter, request.getStrategy());
-            return new ComplexFeatureIteratorImpl(parser);
+            if (client == null) {
+                InputStream stream = request.getFinalURL().openStream();
+                XmlComplexFeatureParser parser =
+                        new XmlComplexFeatureParser(
+                                stream, schema, name, filter, request.getStrategy());
+                return new ComplexFeatureIteratorImpl(parser);
+            } else {
+                ComplexGetFeatureResponse response = client.issueComplexRequest(request);
+                return response.features();
+            }
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RuntimeException("Couldn't read features of collection.", e);
@@ -88,14 +112,9 @@ public class WFSContentComplexFeatureCollection
         return schema;
     }
 
+    /** Issue a new request for subCollection */
     @Override
     public FeatureCollection<FeatureType, Feature> subCollection(Filter filter) {
-
-        try {
-            return new WFSContentComplexFeatureCollection(request, schema, name, filter);
-        } catch (IOException e) {
-            LOGGER.log(Level.FINER, e.getMessage(), e);
-            return null;
-        }
+        return new WFSContentComplexFeatureCollection(request, schema, name, filter, client);
     }
 }

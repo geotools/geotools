@@ -204,8 +204,9 @@ public class MockHttpClient extends AbstractHttpClient {
                                 ? ""
                                 : ", content type "
                                         + contentType
-                                        + ", content "
-                                        + new String(postContent, StandardCharsets.UTF_8));
+                                        + ", content ["
+                                        + new String(postContent, StandardCharsets.UTF_8))
+                        + "]";
             }
         }
     }

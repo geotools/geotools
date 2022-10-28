@@ -30,6 +30,7 @@ import org.geotools.data.ows.GetCapabilitiesRequest;
 import org.geotools.data.ows.Request;
 import org.geotools.data.ows.Response;
 import org.geotools.data.ows.Specification;
+import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.data.wfs.WFSServiceInfo;
 import org.geotools.data.wfs.internal.GetFeatureRequest.ResultType;
 import org.geotools.data.wfs.internal.v1_x.ArcGisStrategy_1_X;
@@ -361,16 +362,51 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
         return (TransactionResponse) response;
     }
 
+    /** Issue a GetFeature request that have a SimpleFeatureType in request.getFullType() */
     public GetFeatureResponse issueRequest(GetFeatureRequest request) throws IOException {
 
         requestDebug("Sending GetFeature request to ", request.getFinalURL());
 
         Response response = internalIssueRequest(request);
+        if (!(response instanceof GetFeatureResponse)) {
+            throw new RuntimeException(
+                    "Should have been a GetFeatureResponse, but instead is:"
+                            + response.getClass().getSimpleName());
+        }
         return (GetFeatureResponse) response;
+    }
+
+    /** Issue a GetFeature request that will not be treated as SimpleFeatureType */
+    public ComplexGetFeatureResponse issueComplexRequest(GetFeatureRequest request)
+            throws IOException {
+        requestDebug("Sending GetFeature request to ", request.getFinalURL());
+        Response response = internalIssueRequest(request);
+        if (!(response instanceof ComplexGetFeatureResponse)) {
+            throw new RuntimeException(
+                    "Should have been a ComplexGetFeatureResponse, but instead is:"
+                            + response.getClass().getSimpleName());
+        }
+        return (ComplexGetFeatureResponse) response;
     }
 
     public DescribeFeatureTypeRequest createDescribeFeatureTypeRequest() {
         return new DescribeFeatureTypeRequest(config, getStrategy());
+    }
+
+    /** Utillizing DescribeFeatureTypeRequest to create a URL, but make sure to use a GET method */
+    public URL getDescribeFeatureTypeGetURL(QName name) {
+        try {
+            WFSConfig config =
+                    WFSConfig.fromParams(
+                            Collections.singletonMap(
+                                    WFSDataStoreFactory.PROTOCOL.key, Boolean.FALSE));
+            DescribeFeatureTypeRequest request =
+                    new DescribeFeatureTypeRequest(config, getStrategy());
+            request.setTypeName(name);
+            return request.getFinalURL();
+        } catch (IOException e) {
+            throw new RuntimeException("Couldn't create a WFS config object.", e);
+        }
     }
 
     public ListStoredQueriesRequest createListStoredQueriesRequest() {

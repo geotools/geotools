@@ -41,14 +41,14 @@ public class ReTypingFeatureIterator implements SimpleFeatureIterator {
     /** Indexes to delegate attributes */
     final int[] delegateIndexes;
 
-    SimpleFeatureBuilder builder;
+    final SimpleFeatureBuilder builder;
 
     public ReTypingFeatureIterator(
             SimpleFeatureIterator delegate, SimpleFeatureType source, SimpleFeatureType target) {
         this.delegate = delegate;
         this.target = target;
-        delegateIndexes = findDelegateIndexes(source, target);
         this.builder = new SimpleFeatureBuilder(target);
+        this.delegateIndexes = findDelegateIndexes(source, target);
     }
 
     public SimpleFeatureIterator getDelegate() {
@@ -101,6 +101,8 @@ public class ReTypingFeatureIterator implements SimpleFeatureIterator {
         }
 
         String xpath;
+        boolean needsConversion = false;
+
         int[] indexes = new int[target.getAttributeCount()];
 
         for (int i = 0; i < target.getAttributeCount(); i++) {
@@ -108,36 +110,41 @@ public class ReTypingFeatureIterator implements SimpleFeatureIterator {
             xpath = attrib.getLocalName();
 
             AttributeDescriptor origAttrib = original.getDescriptor(xpath);
-            if (origAttrib instanceof GeometryDescriptor) {
-                if (!(attrib instanceof GeometryDescriptor)) {
-                    throw new IllegalArgumentException(
-                            "Unable to retype "
-                                    + origAttrib.getLocalName()
-                                    + " (target isn't a geometry attribute).");
+
+            if (!origAttrib.equals(attrib)) {
+                needsConversion = true;
+                if (origAttrib instanceof GeometryDescriptor) {
+                    if (!(attrib instanceof GeometryDescriptor)) {
+                        throw new IllegalArgumentException(
+                                "Unable to retype "
+                                        + origAttrib.getLocalName()
+                                        + " (target isn't a geometry attribute).");
+                    }
+                    CoordinateReferenceSystem origCrs =
+                            ((GeometryDescriptor) origAttrib).getCoordinateReferenceSystem();
+                    if (origCrs != null
+                            && !origCrs.equals(
+                                    ((GeometryDescriptor) attrib).getCoordinateReferenceSystem())) {
+                        throw new IllegalArgumentException(
+                                "Unable to retype "
+                                        + original.getName()
+                                        + " (target have a different crs).");
+                    }
                 }
-                CoordinateReferenceSystem origCrs =
-                        ((GeometryDescriptor) origAttrib).getCoordinateReferenceSystem();
-                if (origCrs != null
-                        && !origCrs.equals(
-                                ((GeometryDescriptor) attrib).getCoordinateReferenceSystem())) {
+                if (origAttrib == null
+                        || !attrib.getType()
+                                .getBinding()
+                                .isAssignableFrom(origAttrib.getType().getBinding())) {
                     throw new IllegalArgumentException(
                             "Unable to retype "
                                     + original.getName()
-                                    + " (target have a different crs).");
+                                    + " (original does not cover "
+                                    + xpath
+                                    + ")");
                 }
             }
-            if (origAttrib == null
-                    || !attrib.getType()
-                            .getBinding()
-                            .isAssignableFrom(origAttrib.getType().getBinding())) {
-                throw new IllegalArgumentException(
-                        "Unable to retype "
-                                + original.getName()
-                                + " (original does not cover "
-                                + xpath
-                                + ")");
-            }
             indexes[i] = original.indexOf(origAttrib.getName());
+            builder.setConverting(needsConversion);
         }
 
         return indexes;

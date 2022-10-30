@@ -25,6 +25,7 @@ import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureBuilder;
 import org.geotools.feature.type.Types;
+import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureFactory;
@@ -111,7 +112,7 @@ import org.opengis.feature.type.Name;
  */
 public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
     /** logger */
-    static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(SimpleFeatureBuilder.class);
+    static Logger LOGGER = Logging.getLogger(SimpleFeatureBuilder.class);
 
     /** the feature type */
     SimpleFeatureType featureType;
@@ -135,8 +136,12 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
 
     boolean validating;
 
+    /** convert values or simply set */
+    boolean converting;
+
     public SimpleFeatureBuilder(SimpleFeatureType featureType) {
         this(featureType, CommonFactoryFinder.getFeatureFactory(null));
+        this.converting = true;
     }
 
     public SimpleFeatureBuilder(SimpleFeatureType featureType, FeatureFactory factory) {
@@ -259,9 +264,18 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
             throw new ArrayIndexOutOfBoundsException(
                     "Can handle " + values.length + " attributes only, index is " + index);
 
-        AttributeDescriptor descriptor = featureType.getDescriptor(index);
-        values[index] = convert(value, descriptor);
-        if (validating) Types.validate(descriptor, values[index]);
+        if (converting) {
+            AttributeDescriptor descriptor = featureType.getDescriptor(index);
+            values[index] = convert(value, descriptor);
+            if (validating) {
+                Types.validate(descriptor, values[index]);
+            }
+        } else {
+            if (validating) {
+                Types.validate(featureType.getDescriptor(index), value);
+            }
+            values[index] = value;
+        }
     }
 
     private Object convert(Object value, AttributeDescriptor descriptor) {
@@ -527,5 +541,13 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
 
     public void setValidating(boolean validating) {
         this.validating = validating;
+    }
+
+    public boolean isConverting() {
+        return converting;
+    }
+
+    public void setConverting(boolean converting) {
+        this.converting = converting;
     }
 }

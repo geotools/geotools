@@ -21,7 +21,6 @@ import org.geotools.data.wfs.internal.v2_0.Capabilities200ServiceInfo;
 import org.geotools.wfs.v2_0.WFSConfiguration;
 import org.geotools.xsd.Parser;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -29,10 +28,9 @@ import org.junit.Test;
  *
  * @author Matthias Schulze (LDBV at ldbv dot bayern dot de)
  */
-@Ignore("Server has an certificate failure.")
 public class Capabilities200ServiceInfoOnlineTest {
     public static final String SERVER_URL =
-            "https://laermkartierung1.eisenbahn-bundesamt.de/deegree/services/wfs?service=WFS&request=GetCapabilities"; // $NON-NLS-1$
+            "https://laermkartierung.eisenbahn-bundesamt.de/deegree/services/wfs?service=WFS&request=GetCapabilities"; // $NON-NLS-1$
 
     private Capabilities200ServiceInfo featureType;
 

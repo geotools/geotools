@@ -88,6 +88,12 @@ The following connection parameters are defined for WFS.
 |                                              | use also ``OtherSRS`` if available.                              |
 |                                              | The false value is currently supported in 1.1.0 protocol only.   |
 +----------------------------------------------+------------------------------------------------------------------+
+| ``WFSDataStoreFactory:SCHEMA_CACHE_LOCATION``| Optional used for having a cache of the XSD-files. In each       |
+|                                              | response there will be a header with a set of corresponding      |
+|                                              | schema files. To avoid downloading these each time, we will by   |
+|                                              | this parameter specify a location on disk that should be used    |
+|                                              | for downloading files.                                           |
++----------------------------------------------+------------------------------------------------------------------+
 
 Historical Note: We apologize for the long connection parameter keys, WFS was one of the first ``DataStores`` written and we were unsure at the
 time if they keys for each datastore would need to be unique or not. On the plus side you can see our devotion to stability.

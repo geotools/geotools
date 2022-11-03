@@ -134,7 +134,7 @@ public class KartverketStedsnavnDataStoreOnlineTest extends AbstractWfsDataStore
         params.put(WFSDataStoreFactory.URL.key, new URL(SERVER_URL));
         params.put(WFSDataStoreFactory.PROTOCOL.key, Boolean.FALSE); // Prefer GET to support Schema
         params.put(
-                "WFSDataStoreFactory:SCHEMA_CACHE_LOCATION",
+                WFSDataStoreFactory.SCHEMA_CACHE_LOCATION.key,
                 TestData.file(WFSTestData.class, "KartverketNo")
                         .getAbsolutePath()); // Must be specified when Schema is http
 

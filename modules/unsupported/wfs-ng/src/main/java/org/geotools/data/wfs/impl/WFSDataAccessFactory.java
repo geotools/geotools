@@ -127,7 +127,7 @@ public class WFSDataAccessFactory implements DataAccessFactory {
     }
 
     /** Access with {@link WFSDataStoreFactory#getParametersInfo()  */
-    private static final WFSFactoryParam<?>[] parametersInfo = new WFSFactoryParam[22];
+    private static final WFSFactoryParam<?>[] parametersInfo = new WFSFactoryParam[23];
 
     private static final int GMLComplianceLevel = 2;
 
@@ -561,6 +561,20 @@ public class WFSDataAccessFactory implements DataAccessFactory {
                         new WFSFactoryParam<>(name, Integer.class, title, description, 6);
     }
 
+    public static final WFSFactoryParam<String> SCHEMA_CACHE_LOCATION;
+
+    static {
+        String name = "WFSDataStoreFactory:SCHEMA_CACHE_LOCATION";
+        String title = "Set location for storing cache of schema's.";
+        String description =
+                "During encoding of xml responses,"
+                        + " the corresponding xsd schema will be downloaded and curated."
+                        + " By setting this parameter it's possible to avoid repeated downloads.";
+        parametersInfo[22] =
+                SCHEMA_CACHE_LOCATION =
+                        new WFSFactoryParam<>(name, String.class, title, description);
+    }
+
     /**
      * Checks whether {@code params} contains a valid set of parameters to connect to a WFS.
      *
@@ -628,10 +642,8 @@ public class WFSDataAccessFactory implements DataAccessFactory {
 
         WFSContentDataAccess dataAccess = new WFSContentDataAccess(getWFSClient(params));
 
-        String cacheLocationKey = "WFSDataStoreFactory:SCHEMA_CACHE_LOCATION";
-
-        if (params.containsKey(cacheLocationKey)) {
-            String cacheLocation = (String) params.get(cacheLocationKey);
+        if (params.containsKey(SCHEMA_CACHE_LOCATION.key)) {
+            String cacheLocation = (String) params.get(SCHEMA_CACHE_LOCATION.key);
             dataAccess.setCacheLocation(new File(cacheLocation));
         }
 

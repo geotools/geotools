@@ -17,8 +17,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <target>1.8</target>
-                    <source>1.8</source>
+                    <target>11</target>
+                    <source>11</source>
                 </configuration>
             </plugin>
             <plugin>

@@ -250,7 +250,7 @@ such as GeoTools publish their work.
    
    .. note:: Note the snapshot repository above is only required if you are using a nightly build (such as |branch|-SNAPSHOT)
 
-7. GeoTools now requires Java 8 language level features (e.g. lambdas) - you need to tell Maven to use the 1.8 source level.
+7. GeoTools now requires Java 11 - you need to tell Maven to use the 11 source level.
 
    .. literalinclude:: /../../tutorials/quickstart/pom.xml
       :language: xml
@@ -373,11 +373,11 @@ generating eclipse :file:`.project` and :file:`.classpath` files used by :comman
    Add the following system variables:
    
    * ``JAVA_HOME = :file:`C:\\Program Files (x86)\\Java\\jdk1.8.0_66```
-   * ``M2_HOME = :file:`C:\\java\\apache-maven-3.2.3```
+   * ``MAVEN_HOME = :file:`C:\\java\\apache-maven-3.8.6```
    
    And add the following to your ``PATH``:
    
-   * ``PATH = :file:`%JAVA_HOME%\\bin;%M2_HOME%\\bin```
+   * ``PATH = :file:`%JAVA_HOME%\\bin;%MAVEN_HOME%\\bin```
    
    .. image:: images/env-variables.png
       :scale: 60
@@ -461,7 +461,7 @@ generating eclipse :file:`.project` and :file:`.classpath` files used by :comman
 
    .. note:: Note the snapshot repository above is only required if you are using a nightly build (such as |branch|-SNAPSHOT)
 
-7. GeoTools now requires Java 8 language level features (e.g. lambdas) - you need to tell Maven to use the 1.8 source level.
+7. GeoTools now requires Java 11 - you need to tell Maven to use the 11 source level.
 
    .. literalinclude:: /../../tutorials/quickstart/pom.xml
       :language: xml

@@ -9,7 +9,7 @@ Our policy is waiting for the majority of our users before migrating to a new ve
 language. In general we are held up by the slow migration of Java Enterprise Edition environments
 such as websphere.
 
-GeoTools 15.x uses Java 8.
+GeoTools 29.x uses Java 11.
 
 How do I build from source code?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -120,8 +120,8 @@ GeoTools modules and their dependencies.
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <target>1.8</target>
-                    <source>1.8</source>
+                    <target>11</target>
+                    <source>11</source>
                 </configuration>
             </plugin>
             <plugin>

@@ -133,7 +133,7 @@ Maven downloads jars from public repositories on the internet where projects suc
 
    .. note:: Note the snapshot repository above is only required if you are using a nightly build (such as |branch|-SNAPSHOT)
 
-#. GeoTools requires Java 8 language level features (e.g. lambdas), you need to tell Maven to use the 1.8 source level
+#. GeoTools requires Java 11, you need to tell Maven to use the 11 source level
 
    .. literalinclude::  /../../tutorials/quickstart/pom.xml
       :language: xml

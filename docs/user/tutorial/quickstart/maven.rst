@@ -32,21 +32,12 @@ Java Install
 
 We are going to be making use of Java so if you don't have a Java Development Kit (JDK) installed now is the time to do so. 
 
-#. Download the latest Java 8 JDK:
+#. Download the latest Java 11 JDK:
 
-   * Oracle JDK: http://www.oracle.com/technetwork/java/javase/downloads/
    * OpenJDK: http://openjdk.java.net/
-   
-#. At the time of writing the latest Java 8 release was:
-   
-   * ``jdk-8u66-windows-i586.exe``
-   
-   GeoTools is not yet tested with Java 9, we are limited by build infrastructure and volunteers.
-   
+   * Adoptium distribution: https://adoptium.net/
+    
 #. Click through the installer you will need to set an acceptance a license agreement and so forth.
-   By default this will install to:
-   
-   :file:`C:\\Program Files (x86)\\Java\jdk1.8.0_66`
      
 .. Note::
 
@@ -81,21 +72,21 @@ Installing Maven
 
 #. Download Maven from http://maven.apache.org/download.html 
    
-   In this tutorial we refer to Maven version 3.2.3, we have had relatively little trouble with Maven version 3.
+   In this tutorial we refer to Maven version 3.8.6.
    
-#. Unzip the file ``apache-maven-3.2.3-bin.zip``
+#. Unzip the file ``apache-maven-3.8.6-bin.zip``
 
 #. You need to have a couple of environmental variables set for maven to work. Navigate to
    :menuselection:`Control Panel --> System --> Advanced`. Change to the :guilabel:`Advanced` tab and click :guilabel:`Environmental Variables` button.
    
-   Add the following system variables:
+   Add the following system variables (short paths on Windows might be needed):
    
-   * JAVA_HOME = :file:`C:\\Program Files (x86)\\Java\\jdk1.8.0_66`
-   * M2_HOME = :file:`C:\\java\\apache-maven-3.2.3`
+   * JAVA_HOME = :file:`C:\PROGRA~1\ECLIPS~1\jdk-11.0.17.8-hotspot`
+   * MAVEN_HOME = :file:`C:\\java\\apache-maven-3.8.6`
    
    And add the following to your PATH:
    
-   * PATH = :file:`%JAVA_HOME%\\bin;%M2_HOME%\\bin`
+   * PATH = :file:`%JAVA_HOME%\\bin;%MAVEN_HOME%\\bin`
    
    .. image:: images/env-variables.png
       :scale: 60
@@ -109,12 +100,11 @@ Installing Maven
 #. This should produce something similar to the following output::
 
       C:\java>mvn -version
-      Apache Maven 3.2.3 (33f8c3e1027c3ddde99d3cdebad2656a31e8fdf4; 2014-08-11T13:58:10-07:00)
-      Maven home: C:\java\apache-maven-3.2.3
-      Java version: 1.8.0_66, vendor: Oracle Corporation
-      Java home: C:\Program Files (x86)\Java\jdk1.8.0_66\jre
-      Default locale: en_US, platform encoding: Cp1252
-      OS name: "windows 7", version: "6.1", arch: "x86", family: "windows"
+      Apache Maven 3.8.6 (84538c9988a25aec085021c365c560670ad80f63)
+      Maven home: C:\devel\apache-maven-3.8.6
+      Java version: 11.0.17, vendor: Eclipse Adoptium, runtime: C:\PROGRA~1\ECLIPS~1\jdk-11.0.17.8-hotspot
+      Default locale: it_IT, platform encoding: Cp1252
+      OS name: "windows 10", version: "10.0", arch: "amd64", family: "windows"
 
    .. image:: images/maven-version.png
       :scale: 60
@@ -191,7 +181,7 @@ Creating a new project
 
    .. note:: Note the snapshot repository above is only required if you are using a nightly build (such as |branch|-SNAPSHOT)
 
-#. GeoTools requires Java 8 language level features (e.g. lambdas), you need to tell Maven to use the 1.8 source level
+#. GeoTools requires Java 11, you need to tell Maven to use the 11 source level
 
    .. literalinclude:: /../../tutorials/quickstart/pom.xml
       :language: xml

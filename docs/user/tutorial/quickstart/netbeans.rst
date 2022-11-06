@@ -41,39 +41,17 @@ Imaging and Java Image IO section – both of these libraries are used by GeoToo
 
 #. Download the latest JDK from the java.sun.com website:
 
-   http://java.sun.com/javase/downloads/index.jsp
+   https://adoptium.net/
    
 #. At the time of writing the latest JDK was:
    
-   ``jdk-8u91-windows-i586.exe``
+   ``OpenJDK11U-jdk_x64_windows_hotspot_11.0.17_8.msi``
    
 #. Click through the installer you will need to set an acceptance a license agreement and so forth.
    By default this will install to:     
    
-   ``C:\\Program Files\\Java\\jdk1.8.0_91\\``
-     
-#. **Optional**: Java Advanced Imaging is used by GeoTools for raster support. If you install JAI 1.1.3 
-   performance will be improved:   
-   
-   http://www.oracle.com/technetwork/java/javase/tech/jai-142803.html
-   
-   Both a JDK and JRE installer are available:
-   
-   * ``jai-1_1_3-lib-windows-i586-jdk.exe``
-   * ``jai-1_1_3-lib-windows-i586-jre.exe``
-     
-#. **Optional**: ImageIO Is used to read and write raster files. GeoTools uses version 1_1 of the
-   ImageIO library:
-   
-  https://docs.oracle.com/javase/6/docs/technotes/guides/imageio/index.html
-   
-   Both a JDK and JRE installer are available:   
-   
-   * ``jai_imageio-1_1-lib-windows-i586-jdk.exe``
-   * ``jai_imageio-1_1-lib-windows-i586-jre.exe``
-   
-For more details of how to install these packages see `this page <http://docs.geoserver.org/latest/en/user/production/java.html#install-native-jai-and-imageio-extensions>`_
-   
+   ``C:\\Program Files\\Eclipse Adoptium\\jdk-11.0.17.8-hotspot``
+      
 NetBeans Install
 ================
 
@@ -213,7 +191,7 @@ such as GeoTools publish their work.
 
    .. note:: Note the snapshot repository above is only required if you are using a nightly build (such as |branch|-SNAPSHOT)
 
-5. GeoTools requires Java 8 language level features (e.g. lambdas), you need to tell Maven to use the 1.8 source level
+5. GeoTools requires Java 11, you need to tell Maven to use the 11 source level
 
    .. literalinclude:: /../../tutorials/quickstart/pom.xml
       :language: xml

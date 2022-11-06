@@ -5,8 +5,7 @@ The java util logging configuration is defined by a file :file:`logging.properti
 
 * ``java.util.logging.config.file`` system property
 * ``java.util.logging.config.class`` identifying a class in your application responsible for configuration
-* Java 8: :file:`$JAVA_HOME/jre/lib/logging.properties`
-* Java 9: :file:`$JAVA_HOME/conf/logging.properties`
+* Java 11: :file:`$JAVA_HOME/conf/logging.properties`
 
 And can be detected during application startup if necessary:
 

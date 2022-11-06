@@ -32,6 +32,11 @@ The first step to upgrade: change the ``geotools.version`` of your dependencies 
 GeoTools 29.x
 -------------
 
+Java 11 as the minimum version
+------------------------------
+
+GeoTools 29.x requires Java 11 as the min
+
 Deprecated functions removed
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

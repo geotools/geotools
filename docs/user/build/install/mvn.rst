@@ -12,20 +12,20 @@ Reference:
 Download and Install Maven
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1. Download Maven. Last tested with Maven 3.3.9.
+1. Download Maven. Last tested with Maven 3.8.6.
 2. Unzip the Maven download to your computer:
    
-   Example: ``C:\java\apache-maven-3.3.9``.
+   Example: ``C:\java\apache-maven-3.8.6``.
    
    If you do not have an unzip program may we recommend: http://www.7-zip.org/
 
 3. You need to have the following environmental variables set for Maven to work (note your paths may differ based on Java or Maven revision numbers):
    
-   * ``JAVA_HOME = C:\Program Files\java\jdk1.8.0_91\``
+   * ``JAVA_HOME = C:\PROGRA~1\ECLIPS~1\jdk-11.0.17.8-hotspot``
     
      Location of your JDK installation
    
-   * ``M2_HOME = C:\java\apache-maven-3.0.5``
+   * ``MAVEN_HOME = C:\java\apache-maven-3.8.6``
      
      Location of your Maven installation
    
@@ -36,12 +36,11 @@ Download and Install Maven
 4. Open up a ``cmd`` window and type the following::
      
      > mvn -version
-     Apache Maven 3.0.5 (r01de14724cdef164cd33c7c8c2fe155faf9602da; 2013-02-20 00:51:28+1100)
-     Maven home: /opt/apache-maven-3.0.5
-     Java version: 1.8.0_91, vendor: Oracle Corporation
-     Java home: /Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/jre
-     Default locale: en_US, platform encoding: UTF-8
-     OS name: "mac os x", version: "10.9.3", arch: "x86_64", family: "mac"
+    Apache Maven 3.8.6 (84538c9988a25aec085021c365c560670ad80f63)
+    Maven home: C:\devel\apache-maven-3.8.6
+    Java version: 11.0.17, vendor: Eclipse Adoptium, runtime: C:\PROGRA~1\ECLIPS~1\jdk-11.0.17.8-hotspot
+    Default locale: it_IT, platform encoding: Cp1252
+    OS name: "windows 10", version: "10.0", arch: "amd64", family: "windows"
 
 Maven and Apt-Get
 ^^^^^^^^^^^^^^^^^

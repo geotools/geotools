@@ -1670,9 +1670,9 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.0</version>
         <configuration>
-          <source>1.8</source>
+          <source>11</source>
           <!-- The -source argument for the Java compiler. -->
-          <target>1.8</target>
+          <target>11</target>
           <!-- The -target argument for the Java compiler. -->
           <debug>true</debug>
           <!-- Whether to include debugging information.   -->
@@ -1868,7 +1868,7 @@
         <artifactId>maven-javadoc-plugin</artifactId>
 
         <configuration>
-          <source>1.8</source>
+          <source>11</source>
           <!-- Specifies whether or not the version text is included.-->
           <version>false</version>
           <!-- Omit qualifying package name before class names in output.-->
@@ -2077,7 +2077,7 @@
         <version>${maven.javadoc.plugin.version}</version>
 
         <configuration>
-          <source>1.8</source>
+          <source>11</source>
           <!-- Specifies whether or not the version text is included.-->
           <version>false</version>
           <!-- Omit qualifying package name before class names in output.-->
@@ -2400,7 +2400,6 @@
       </build>
     </profile>
 
-    <!-- for those using JDK 11 -->
     <profile>
       <id>errorprone</id>
       <activation>
@@ -2419,45 +2418,6 @@
               <compilerArgs>
                 <arg>-XDcompilePolicy=simple</arg>
                 <arg>-Xplugin:ErrorProne -XepExcludedPaths:${project.build.directory}/generated-sources/.* ${errorProneFlags}</arg>
-                <arg>-Xlint:${lint}</arg>
-                <arg>-Werror</arg>
-                <arg>-Xmaxwarns</arg>
-                <arg>1000</arg>
-              </compilerArgs>
-              <annotationProcessorPaths>
-                <path>
-                  <groupId>com.google.errorprone</groupId>
-                  <artifactId>error_prone_core</artifactId>
-                  <version>${errorProne.version}</version>
-                </path>
-              </annotationProcessorPaths>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <!-- using github.com/google/error-prone-javac is required when running on JDK 8 -->
-    <profile>
-      <id>errorprone8</id>
-      <activation>
-        <jdk>1.8</jdk>
-        <property>
-          <name>qa</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.8.0</version>
-            <configuration>
-              <fork>true</fork>
-              <compilerArgs combine.children="append">
-                <arg>-XDcompilePolicy=simple</arg>
-                <arg>-Xplugin:ErrorProne -XepExcludedPaths:${project.build.directory}/generated-sources/.* ${errorProneFlags}</arg>
-                <arg>-J-Xbootclasspath/p:${settings.localRepository}/com/google/errorprone/javac/${javac.version}/javac-${javac.version}.jar</arg>
                 <arg>-Xlint:${lint}</arg>
                 <arg>-Werror</arg>
                 <arg>-Xmaxwarns</arg>

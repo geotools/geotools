@@ -10,7 +10,7 @@ jobs:
       fail-fast: false
       matrix:
         mysql: [5, 8]
-        java: [8]
+        java: [11]
 
     steps:
     - name: Set up JDK ${{ matrix.java }}

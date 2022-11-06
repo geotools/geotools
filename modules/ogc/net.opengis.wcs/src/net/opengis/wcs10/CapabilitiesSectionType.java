@@ -37,7 +37,7 @@ public final class CapabilitiesSectionType extends AbstractEnumerator {
 	 * @generated
 	 * @ordered
 	 */
-    public static final int _ = 0;
+    public static final int EMPTY_STRING = 0;
 
     /**
 	 * The '<em><b>WCS Capabilities Service</b></em>' literal value.
@@ -85,11 +85,12 @@ public final class CapabilitiesSectionType extends AbstractEnumerator {
 	 * The '<em><b></b></em>' literal object.
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-	 * @see #_
+	 * @see #EMPTY_STRING
 	 * @generated
 	 * @ordered
 	 */
-    public static final CapabilitiesSectionType __LITERAL = new CapabilitiesSectionType(_, "_", "/");
+    public static final CapabilitiesSectionType __LITERAL = new CapabilitiesSectionType(
+			EMPTY_STRING, "_", "/");
 
     /**
 	 * The '<em><b>WCS Capabilities Service</b></em>' literal object.
@@ -183,7 +184,7 @@ public final class CapabilitiesSectionType extends AbstractEnumerator {
 	 */
     public static CapabilitiesSectionType get(int value) {
 		switch (value) {
-			case _: return __LITERAL;
+			case EMPTY_STRING: return __LITERAL;
 			case WCS_CAPABILITIES_SERVICE: return WCS_CAPABILITIES_SERVICE_LITERAL;
 			case WCS_CAPABILITIES_CAPABILITY: return WCS_CAPABILITIES_CAPABILITY_LITERAL;
 			case WCS_CAPABILITIES_CONTENT_METADATA: return WCS_CAPABILITIES_CONTENT_METADATA_LITERAL;

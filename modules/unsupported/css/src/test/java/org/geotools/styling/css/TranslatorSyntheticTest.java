@@ -697,7 +697,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
     public void rasterColorMapWithLabels() throws Exception {
         String css =
                 "* { raster-channels: 'auto'; raster-color-map: color-map-entry(black, 100, 0, label1) "
-                        + "color-map-entry(white, 1000, 2.0, label2) color-map-entry(red, 10000);}";
+                        + "color-map-entry(white, 1000, 2.0, label2) color-map-entry(red, 10000); raster-label-fi: 'add'; raster-label-name: 'name'}";
         Style style = translate(css);
         Rule rule = assertSingleRule(style);
         RasterSymbolizer rs = assertSingleSymbolizer(rule, RasterSymbolizer.class);
@@ -715,6 +715,9 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertLiteral("1.0", cm.getColorMapEntry(2).getOpacity());
         assertLiteral("10000", cm.getColorMapEntry(2).getQuantity());
         assertNull(cm.getColorMapEntry(2).getLabel());
+        // GeoServer specific vendor options
+        assertEquals("add", rs.getOptions().get("labelInFeatureInfo"));
+        assertEquals("name", rs.getOptions().get("labelAttributeName"));
     }
 
     @Test

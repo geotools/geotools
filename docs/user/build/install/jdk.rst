@@ -7,7 +7,7 @@ Java Run-time Environment:
 
 * Java 17 - Experimentally supported in GeoTools 27.x and above (OpenJDK tested)
 * Java 11 - GeoTools 21.x and above (OpenJDK tested)
-* Java 8 - GeoTools 15.x and above (OpenJDK and Oracle JRE tested)
+* Java 8 - GeoTools 15.x up to and including GeoTools 28.x (OpenJDK and Oracle JRE tested)
 * Java 7 - GeoTools 11.x to GeoTools 14.x (OpenJDK and Oracle JRE tested)
 * Java 6 - GeoTools 8.x to GeoTools 10.x (Oracle JRE tested)
 * Java 5 - GeoTools 2.5.x to GeoTools 8.x (Sun JRE tested)

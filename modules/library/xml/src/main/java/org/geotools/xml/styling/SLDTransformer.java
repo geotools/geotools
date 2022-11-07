@@ -691,6 +691,8 @@ public class SLDTransformer extends TransformerBase {
                 end("ImageOutline");
             }
 
+            encodeVendorOptions(raster.getOptions());
+
             end("RasterSymbolizer");
         }
 

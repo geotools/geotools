@@ -2297,4 +2297,19 @@ public class SLDTransformerTest {
         assertEquals("firstValue", rule.getOptions().get("firstOption"));
         assertEquals("secondValue", rule.getOptions().get("secondOption"));
     }
+
+    @Test
+    public void testRasterVendorOption() throws Exception {
+        RasterSymbolizer rs = sf.createRasterSymbolizer();
+        rs.getOptions().put("test", "value");
+
+        SLDTransformer st = new SLDTransformer();
+        st.setExportDefaultValues(true);
+        st.setIndentation(2);
+        String xml = st.transform(rs);
+
+        Document doc = buildTestDocument(xml);
+        assertXpathEvaluatesTo(
+                "value", "/sld:RasterSymbolizer/sld:VendorOption[@name='test']", doc);
+    }
 }

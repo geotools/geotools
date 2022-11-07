@@ -16,6 +16,9 @@
  */
 package org.geotools.data.geojson;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -27,11 +30,13 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.WKTReader2;
@@ -417,5 +422,22 @@ public class GeoJSONReaderTest {
         assertEquals(10, (double) array.get(0), 0d);
         assertEquals("abc", array.get(1));
         assertNull(array.get(2));
+    }
+
+    @Test
+    public void testGuessDates() throws Exception {
+        URL url = TestData.url(GeoJSONReaderTest.class, "dates.json");
+        try (GeoJSONReader reader = new GeoJSONReader(url)) {
+            SimpleFeatureCollection features = reader.getFeatures();
+            assertThat(features, instanceOf(ListFeatureCollection.class));
+            assertEquals(1, features.size());
+            SimpleFeature feature = DataUtilities.first(features);
+            assertThat(feature.getAttribute("date"), instanceOf(Date.class));
+            assertThat(feature.getAttribute("dateTime"), instanceOf(Date.class));
+            assertThat(feature.getAttribute("dateTimeFull"), instanceOf(Date.class));
+            Object notDateValue = feature.getAttribute("notDate");
+            assertThat(notDateValue, instanceOf(String.class));
+            assertThat(notDateValue, equalTo("2009-08-29T223949_RE4_1B-NAC_1678843_48007"));
+        }
     }
 }

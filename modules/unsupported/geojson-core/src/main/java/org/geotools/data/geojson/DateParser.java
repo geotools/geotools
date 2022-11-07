@@ -18,7 +18,7 @@ package org.geotools.data.geojson;
 
 import static org.geotools.data.geojson.GeoJSONWriter.DEFAULT_TIME_ZONE;
 
-import java.text.ParseException;
+import java.text.ParsePosition;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -110,8 +110,15 @@ class DateParser {
         }
         for (FastDateFormat format : formats) {
             try {
-                return format.parse(text);
-            } catch (ParseException | NumberFormatException e) {
+                // FastDateFormat is lenient, but using a ParsePosition provides an indication
+                // of whether the parsing hit an error, or parsed the beginning of the string,
+                // looking like a date, without consuming it fully
+                ParsePosition pp = new ParsePosition(0);
+                Date result = format.parse(text, pp);
+                if (result == null || pp.getErrorIndex() > -1 || pp.getIndex() < text.length())
+                    continue;
+                return result;
+            } catch (NumberFormatException e) {
                 if (LOGGER.isLoggable(Level.FINEST))
                     LOGGER.log(
                             Level.FINEST,

@@ -1,0 +1,15 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "id": "identifier",
+      "type": "Feature",
+      "properties": {
+        "date": "2022-03-27",
+        "dateTime": "2022-03-27T11:01:55Z",
+        "dateTimeFull": "2022-03-27T11:01:55.956478Z",
+        "notDate": "2009-08-29T223949_RE4_1B-NAC_1678843_48007"
+      }
+    }
+  ]
+}

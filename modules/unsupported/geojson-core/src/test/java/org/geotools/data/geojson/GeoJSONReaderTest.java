@@ -16,6 +16,8 @@
  */
 package org.geotools.data.geojson;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -30,6 +32,7 @@ import com.fasterxml.jackson.databind.node.TextNode;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +48,6 @@ import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
 import org.geotools.util.logging.Logging;
-import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -621,7 +623,7 @@ public class GeoJSONReaderTest {
         URL url = TestData.url(GeoJSONReaderTest.class, "poi1.json");
         try (GeoJSONReader reader = new GeoJSONReader(url)) {
             SimpleFeatureCollection features = reader.getFeatures();
-            assertThat(features, CoreMatchers.instanceOf(PagingFeatureCollection.class));
+            assertThat(features, instanceOf(PagingFeatureCollection.class));
             assertNotNull(((PagingFeatureCollection) features).matched);
             assertEquals(6, ((PagingFeatureCollection) features).matched.intValue());
             assertEquals(6, features.size());
@@ -642,7 +644,7 @@ public class GeoJSONReaderTest {
         URL url = TestData.url(GeoJSONReaderTest.class, "stac1.json");
         try (GeoJSONReader reader = new GeoJSONReader(url)) {
             SimpleFeatureCollection features = reader.getFeatures();
-            assertThat(features, CoreMatchers.instanceOf(PagingFeatureCollection.class));
+            assertThat(features, instanceOf(PagingFeatureCollection.class));
             assertNotNull(((PagingFeatureCollection) features).matched);
             assertEquals(2, ((PagingFeatureCollection) features).matched.intValue());
             assertEquals(2, features.size());
@@ -663,7 +665,7 @@ public class GeoJSONReaderTest {
         URL url = TestData.url(GeoJSONReaderTest.class, "propertyless.json");
         try (GeoJSONReader reader = new GeoJSONReader(url)) {
             SimpleFeatureCollection features = reader.getFeatures();
-            assertThat(features, CoreMatchers.instanceOf(ListFeatureCollection.class));
+            assertThat(features, instanceOf(ListFeatureCollection.class));
             assertEquals(1, features.size());
             assertEquals(1, features.getSchema().getAttributeCount());
             assertEquals(
@@ -679,7 +681,7 @@ public class GeoJSONReaderTest {
         URL url = TestData.url(GeoJSONReaderTest.class, "geometryless.json");
         try (GeoJSONReader reader = new GeoJSONReader(url)) {
             SimpleFeatureCollection features = reader.getFeatures();
-            assertThat(features, CoreMatchers.instanceOf(ListFeatureCollection.class));
+            assertThat(features, instanceOf(ListFeatureCollection.class));
             assertEquals(1, features.size());
             assertNull(features.getSchema().getGeometryDescriptor());
             SimpleFeature feature = DataUtilities.first(features);
@@ -697,6 +699,23 @@ public class GeoJSONReaderTest {
             assertTrue(features.isEmpty());
             assertNotNull(features.getSchema());
             assertEquals(0, features.getSchema().getAttributeCount());
+        }
+    }
+
+    @Test
+    public void testGuessDates() throws Exception {
+        URL url = TestData.url(GeoJSONReaderTest.class, "dates.json");
+        try (GeoJSONReader reader = new GeoJSONReader(url)) {
+            SimpleFeatureCollection features = reader.getFeatures();
+            assertThat(features, instanceOf(ListFeatureCollection.class));
+            assertEquals(1, features.size());
+            SimpleFeature feature = DataUtilities.first(features);
+            assertThat(feature.getAttribute("date"), instanceOf(Date.class));
+            assertThat(feature.getAttribute("dateTime"), instanceOf(Date.class));
+            assertThat(feature.getAttribute("dateTimeFull"), instanceOf(Date.class));
+            Object notDateValue = feature.getAttribute("notDate");
+            assertThat(notDateValue, instanceOf(String.class));
+            assertThat(notDateValue, equalTo("2009-08-29T223949_RE4_1B-NAC_1678843_48007"));
         }
     }
 }

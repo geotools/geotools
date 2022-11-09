@@ -572,7 +572,8 @@ public class WFSDataAccessFactory implements DataAccessFactory {
                         + " By setting this parameter it's possible to avoid repeated downloads.";
         parametersInfo[22] =
                 SCHEMA_CACHE_LOCATION =
-                        new WFSFactoryParam<>(name, String.class, title, description);
+                        new WFSFactoryParam<>(
+                                name, String.class, title, description, null, "program");
     }
 
     /**

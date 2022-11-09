@@ -19,6 +19,7 @@ package org.geotools.factory;
 import java.util.Arrays;
 import java.util.Set;
 import org.geotools.data.FileDataStoreFactorySpi;
+import org.geotools.feature.LenientFeatureFactoryImpl;
 import org.geotools.filter.FunctionFactory;
 import org.geotools.styling.StyleFactory;
 import org.geotools.util.LazySet;
@@ -154,24 +155,22 @@ public final class CommonFactoryFinder extends FactoryFinder {
     }
 
     /**
-     * Return the first implementation of {@link FeatureFactory} matching the specified hints.
+     * Return an implementation of {@link FeatureFactory} matching the specified hint
+     * FEATURE_FACTORY.
      *
-     * <p>If no implementation matches, a new one is created if possible or an exception is thrown.
+     * <p>If no hint is specified, {@link LenientFeatureFactoryImpl} will be used.
+     *
+     * <p>Uses lookup functionality to get an instance of the factory.
      *
      * @param hints An optional map of hints; or {@code null} if none
-     * @return Instance of FeatureFactory matching the supplied hints
+     * @return Instance of FeatureFactory
      * @throws FactoryRegistryException if no implementation could be provided
      * @see Hints#FEATURE_FACTORY
      */
     public static FeatureFactory getFeatureFactory(Hints hints) {
         hints = mergeSystemHints(hints);
         if (hints.get(Hints.FEATURE_FACTORY) == null) {
-            try {
-                Class<?> lenient = Class.forName("org.geotools.feature.LenientFeatureFactoryImpl");
-                hints.put(Hints.FEATURE_FACTORY, lenient);
-            } catch (ClassNotFoundException e) {
-                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            }
+            hints.put(Hints.FEATURE_FACTORY, LenientFeatureFactoryImpl.class);
         }
         return lookup(FeatureFactory.class, hints, Hints.FEATURE_FACTORY);
     }

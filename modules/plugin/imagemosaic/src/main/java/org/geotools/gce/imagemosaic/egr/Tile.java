@@ -254,22 +254,28 @@ class Tile {
     }
 
     /**
-     * Draws a binary image already in raster space. Updates the coverage count as a side effect, so
-     * no need to call {@link #refreshCoverageCount()} after it
+     * Draws a binary image already in raster space.
      *
      * @return True if at least one pixel has been added
      */
     public boolean draw(PlanarImage binaryImage) {
         initRaster(false);
-        final Rectangle tileBounds = raster.getBounds();
         final Rectangle imageBounds = binaryImage.getBounds();
-        final Rectangle overlapArea = imageBounds.intersection(tileBounds);
+        final Rectangle overlapArea = imageBounds.intersection(tileArea);
         if (overlapArea.isEmpty()) {
             return false;
         }
+        int xOffset = tileArea.x;
+        int yOffset = tileArea.y;
+        final Rectangle tileOverlap =
+                new Rectangle(
+                        overlapArea.x - xOffset,
+                        overlapArea.y - yOffset,
+                        overlapArea.width,
+                        overlapArea.height);
 
         RandomIter sourceIter = RandomIterFactory.create(binaryImage, overlapArea, true, true);
-        WritableRandomIter rasterIter = RandomIterFactory.createWritable(raster, overlapArea);
+        WritableRandomIter rasterIter = RandomIterFactory.createWritable(raster, tileOverlap);
 
         boolean added = false;
         final int maxCol = overlapArea.x + overlapArea.width;
@@ -277,9 +283,9 @@ class Tile {
         for (int row = overlapArea.y; row < maxRow; row++) {
             for (int col = overlapArea.x; col < maxCol; col++) {
                 int maskValue = sourceIter.getSample(col, row, 0);
-                int rasValue = rasterIter.getSample(col, row, 0);
+                int rasValue = rasterIter.getSample(col - xOffset, row - yOffset, 0);
                 if (maskValue == 1 && rasValue == 0) {
-                    rasterIter.setSample(col, row, 0, 1);
+                    rasterIter.setSample(col - xOffset, row - yOffset, 0, 1);
                     coverageCount++;
                     added = true;
                 }

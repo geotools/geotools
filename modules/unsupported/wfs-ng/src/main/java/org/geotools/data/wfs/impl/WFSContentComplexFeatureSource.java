@@ -205,12 +205,21 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
 
     @Override
     public ReferencedEnvelope getBounds() throws IOException {
-        return dataAccess.getFeatureSource(typeName).getBounds();
+        return getBounds(Query.ALL);
     }
 
     @Override
     public ReferencedEnvelope getBounds(Query query) throws IOException {
-        return dataAccess.getFeatureSource(typeName).getBounds(query);
+        if (!Filter.INCLUDE.equals(query.getFilter())) {
+            return null;
+        }
+        QName name = dataAccess.getRemoteTypeName(typeName);
+        final CoordinateReferenceSystem targetCrs =
+                query.getCoordinateSystemReproject() != null
+                        ? query.getCoordinateSystemReproject()
+                        : client.getDefaultCRS(name);
+
+        return client.getBounds(name, targetCrs);
     }
 
     @Override

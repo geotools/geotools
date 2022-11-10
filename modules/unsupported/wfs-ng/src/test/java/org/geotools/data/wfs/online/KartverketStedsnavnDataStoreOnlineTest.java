@@ -97,7 +97,7 @@ public class KartverketStedsnavnDataStoreOnlineTest extends AbstractWfsDataStore
     @Override
     @Test
     public void testTypes() throws IOException, NoSuchElementException {
-        if (Boolean.FALSE.equals(serviceAvailable)) {
+        if (!isOnline()) {
             return;
         }
 
@@ -121,7 +121,7 @@ public class KartverketStedsnavnDataStoreOnlineTest extends AbstractWfsDataStore
      */
     @Test
     public void testComplexSchemaMatches() throws Exception {
-        if (Boolean.FALSE.equals(serviceAvailable)) {
+        if (!isOnline()) {
             return;
         }
 

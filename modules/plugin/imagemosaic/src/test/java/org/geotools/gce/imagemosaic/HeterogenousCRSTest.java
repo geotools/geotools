@@ -19,6 +19,7 @@ package org.geotools.gce.imagemosaic;
 
 import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
 import static org.geotools.util.URLs.fileToUrl;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasKey;
@@ -341,6 +342,14 @@ public class HeterogenousCRSTest {
         assertEquals(2, image.getSampleModel().getNumBands());
         assertEquals(2, image.getColorModel().getNumComponents());
         assertEquals(2, image.getTile(0, 0).getNumBands());
+
+        // check source files
+        final String fileSource =
+                (String) coverage.getProperty(AbstractGridCoverage2DReader.FILE_SOURCE_PROPERTY);
+        assertThat(fileSource, containsString("utm32n.tiff"));
+        assertThat(fileSource, containsString("utm32s.tiff"));
+        assertThat(fileSource, containsString("utm33n.tiff"));
+        assertThat(fileSource, containsString("utm33s.tiff"));
 
         // cleanup
         coverage.dispose(true);

@@ -95,7 +95,7 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
      */
     @Test
     public void testFeatureReaderWithQueryFilter() throws Exception {
-        if (Boolean.FALSE.equals(serviceAvailable)) {
+        if (!isOnline()) {
             return;
         }
 

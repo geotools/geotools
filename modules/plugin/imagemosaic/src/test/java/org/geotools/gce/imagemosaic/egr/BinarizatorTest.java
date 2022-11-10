@@ -20,8 +20,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import java.util.logging.Logger;
+import javax.media.jai.ROI;
 import org.geotools.util.logging.Logging;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.locationtech.jts.geom.CoordinateSequence;
@@ -96,6 +99,42 @@ public class BinarizatorTest {
     }
 
     @Test
+    public void testTileRemovalRaster() {
+        Polygon reqBBox = createBBox(0, 0, 2560, 2560);
+        Binarizator bin = new Binarizator(reqBBox, 256, 256, TILE_WIDTH, TILE_HEIGHT);
+
+        assertEquals(4 * 4, bin.getActiveTiles().size());
+
+        Polygon feature = createBBox(0, 0, 640, 640);
+        boolean added = bin.add(toRasterROI(feature));
+
+        assertTrue("Feature not added", added);
+
+        assertEquals((4 * 4) - 1, bin.getActiveTiles().size());
+    }
+
+    @Test
+    public void testTileRemovalRasterOffset() {
+        // offset origin so that tile raster space won't line up with ROI ones
+        Polygon reqBBox = createBBox(1000, 1000, 2560, 2560);
+        Binarizator bin = new Binarizator(reqBBox, 256, 256, TILE_WIDTH, TILE_HEIGHT);
+
+        assertEquals(4 * 4, bin.getActiveTiles().size());
+
+        Polygon feature = createBBox(1000, 1000, 1640, 1640);
+        boolean added = bin.add(toRasterROI(feature));
+
+        assertTrue("Feature not added", added);
+
+        assertEquals((4 * 4) - 1, bin.getActiveTiles().size());
+    }
+
+    @NotNull
+    private static ROI toRasterROI(Polygon feature) {
+        return new ROI(new ROIGeometry(feature).getAsImage());
+    }
+
+    @Test
     public void testFeatRemovalInMissingTile() {
         Polygon reqBBox = createBBox(0, 0, 2560, 2560);
         Binarizator bin = new Binarizator(reqBBox, 256, 256, TILE_WIDTH, TILE_HEIGHT);
@@ -108,6 +147,22 @@ public class BinarizatorTest {
 
         Polygon hidden = createBBox(10, 10, 600, 600);
         boolean addedhidden = bin.add(hidden);
+        assertFalse("Hidden feature has been added", addedhidden);
+    }
+
+    @Test
+    public void testFeatRemovalInMissingTileRaster() {
+        Polygon reqBBox = createBBox(0, 0, 2560, 2560);
+        Binarizator bin = new Binarizator(reqBBox, 256, 256, TILE_WIDTH, TILE_HEIGHT);
+
+        Polygon feature = createBBox(0, 0, 640, 640);
+        boolean added = bin.add(toRasterROI(feature));
+        assertTrue("Feature not added", added);
+
+        assertEquals("Tile not removed", (4 * 4) - 1, bin.getActiveTiles().size());
+
+        Polygon hidden = createBBox(10, 10, 600, 600);
+        boolean addedhidden = bin.add(toRasterROI(hidden));
         assertFalse("Hidden feature has been added", addedhidden);
     }
 
@@ -126,6 +181,24 @@ public class BinarizatorTest {
 
         Polygon hidden = createBBox(10, 10, 600, 600);
         boolean addedhidden = bin.add(hidden);
+        assertFalse("Hidden feature has been added", addedhidden);
+    }
+
+    @Test
+    public void testHiddenFeatureRaster() {
+        Polygon reqBBox = createBBox(0, 0, 2560, 2560);
+        Binarizator bin = new Binarizator(reqBBox, 256, 256, TILE_WIDTH, TILE_HEIGHT);
+
+        assertEquals(4 * 4, bin.getActiveTiles().size());
+
+        Polygon feature = createBBox(9, 9, 639, 639);
+        boolean added = bin.add(toRasterROI(feature));
+        assertTrue("Feature not added", added);
+
+        assertEquals("Tile should not be removed", 4 * 4, bin.getActiveTiles().size());
+
+        Polygon hidden = createBBox(10, 10, 600, 600);
+        boolean addedhidden = bin.add(toRasterROI(hidden));
         assertFalse("Hidden feature has been added", addedhidden);
     }
 

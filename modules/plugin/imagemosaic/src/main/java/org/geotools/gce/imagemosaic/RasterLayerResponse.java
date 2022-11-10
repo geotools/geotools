@@ -1495,7 +1495,12 @@ public class RasterLayerResponse {
             return null;
         }
         RasterLayerResponse response =
-                new RasterLayerResponse(request, manager, this.submosaicProducerFactory);
+                new RasterLayerResponse(request, manager, this.submosaicProducerFactory) {
+                    @Override
+                    public void addGranulePaths(String granulesPaths) {
+                        RasterLayerResponse.this.addGranulePaths(granulesPaths);
+                    }
+                };
         // initialize enough info without actually running the output computation
         response.chooseOverview();
         response.initBBOX();

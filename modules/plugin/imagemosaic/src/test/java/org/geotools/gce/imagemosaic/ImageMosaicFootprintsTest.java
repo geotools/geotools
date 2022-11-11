@@ -126,7 +126,7 @@ public class ImageMosaicFootprintsTest {
     private static boolean DEBUG = false;
 
     @Before
-    public void cleanup() throws IOException, ParseException {
+    public void setupMosaic() throws IOException, ParseException {
         // clean up
         testMosaic = new File(TestData.file(this, "."), "footprintMosaic");
         if (testMosaic.exists()) {

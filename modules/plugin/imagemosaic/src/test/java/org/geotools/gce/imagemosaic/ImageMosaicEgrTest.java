@@ -67,6 +67,14 @@ public class ImageMosaicEgrTest {
 
     private URL testMosaicUrl;
 
+    private File testAlphaMosaic;
+
+    private URL testAlphaMosaicUrl;
+
+    private File testAlphaHeteroMosaic;
+
+    private URL testAlphaHeteroMosaicUrl;
+
     @AfterClass
     public static void close() {
         System.clearProperty("org.geotools.referencing.forceXY");
@@ -87,7 +95,7 @@ public class ImageMosaicEgrTest {
     }
 
     @Before
-    public void cleanup() throws IOException {
+    public void setupMosaic() throws IOException {
         // clean up
         testMosaic = new File("target", "egrMosaic");
         if (testMosaic.exists()) {
@@ -97,8 +105,43 @@ public class ImageMosaicEgrTest {
         // create the base mosaic we are going to use
         File mosaicSource = TestData.file(this, "egr");
         FileUtils.copyDirectory(mosaicSource, testMosaic);
-        // System.out.println(testMosaic.getAbsolutePath());
         testMosaicUrl = URLs.fileToUrl(testMosaic);
+    }
+
+    @Before
+    public void setupAlphaMosaic() throws IOException {
+        // clean up
+        testAlphaMosaic = new File("target", "egrAlphaMosaic");
+        if (testAlphaMosaic.exists()) {
+            FileUtils.deleteDirectory(testAlphaMosaic);
+        }
+
+        // create the base mosaic we are going to use
+        File mosaicSource = TestData.file(this, "rgba");
+        FileUtils.copyDirectory(mosaicSource, testAlphaMosaic);
+        Arrays.stream(
+                        testAlphaMosaic.listFiles(
+                                f -> {
+                                    String name = f.getName();
+                                    return name.startsWith("rgba")
+                                            || name.equals("sample_image.dat");
+                                }))
+                .forEach(f -> f.delete());
+        testAlphaMosaicUrl = URLs.fileToUrl(testAlphaMosaic);
+    }
+
+    @Before
+    public void setupAlphaHeteroMosaic() throws IOException {
+        // clean up
+        testAlphaHeteroMosaic = new File("target", "egrAlphaHeteroMosaic");
+        if (testAlphaHeteroMosaic.exists()) {
+            FileUtils.deleteDirectory(testAlphaHeteroMosaic);
+        }
+
+        // create the base mosaic we are going to use
+        File mosaicSource = TestData.file(this, "egrAlpha");
+        FileUtils.copyDirectory(mosaicSource, testAlphaHeteroMosaic);
+        testAlphaHeteroMosaicUrl = URLs.fileToUrl(testAlphaHeteroMosaic);
     }
 
     private GeneralParameterValue[] getFootprintReadParams(
@@ -424,5 +467,80 @@ public class ImageMosaicEgrTest {
                     new LinkedHashSet<>(Arrays.asList(expectedNamesArray));
             assertEquals(expectedNames, actualNames);
         }
+    }
+
+    @Test
+    public void testHeteroCRSAlpha() throws Exception {
+        ImageMosaicReader reader = new ImageMosaicReader(testAlphaHeteroMosaicUrl, hints);
+
+        // EGR does not really work when all images are in different CRSs, as it operates
+        // at the single uniform CRS sub-mosaic level, but we check the output is still fine
+        GeneralParameterValue[] readParams =
+                getFootprintReadParams(
+                        reader,
+                        new SimpleEntry<>(ImageMosaicFormat.SORT_BY, "z D"),
+                        new SimpleEntry<>(
+                                ImageMosaicFormat.EXCESS_GRANULE_REMOVAL, ExcessGranulePolicy.ROI),
+                        new SimpleEntry<>(ImageMosaicFormat.FOOTPRINT_BEHAVIOR, "Transparent"));
+        GridCoverage2D coverage = reader.read(readParams);
+        // there is a bit of black-ish border as the images have been painted with antialiasing
+        File expectedOutput =
+                new File(
+                        "src/test/resources/org/geotools/gce/imagemosaic/test-data/egr-alpha-hetero.png");
+        ImageAssert.assertEquals(expectedOutput, coverage.getRenderedImage(), 300);
+    }
+
+    @Test
+    public void testHeteroCRSAlphaBlend() throws Exception {
+        ImageMosaicReader reader = new ImageMosaicReader(testAlphaHeteroMosaicUrl, hints);
+
+        // EGR does not really work when all images are in different CRSs, as it operates
+        // at the single uniform CRS sub-mosaic level, but we check the output is still fine
+        GeneralParameterValue[] readParams =
+                getFootprintReadParams(
+                        reader,
+                        new SimpleEntry<>(ImageMosaicFormat.SORT_BY, "z D"),
+                        new SimpleEntry<>(
+                                ImageMosaicFormat.EXCESS_GRANULE_REMOVAL, ExcessGranulePolicy.ROI),
+                        new SimpleEntry<>(ImageMosaicFormat.FOOTPRINT_BEHAVIOR, "Transparent"),
+                        new SimpleEntry<>(ImageMosaicFormat.FADING, true));
+        GridCoverage2D coverage = reader.read(readParams);
+        // in fading mode images are blent toghether rather than mosaicked. Just checking
+        // that handling alpha as a ROI does not cause issues
+        File expectedOutput =
+                new File(
+                        "src/test/resources/org/geotools/gce/imagemosaic/test-data/egr-alpha-hetero-fade.png");
+        ImageAssert.assertEquals(expectedOutput, coverage.getRenderedImage(), 300);
+    }
+
+    @Test
+    public void testAlpha() throws Exception {
+        ImageMosaicReader reader = new ImageMosaicReader(testAlphaMosaicUrl, hints);
+
+        // in this overlap only a single image will be used
+        GridGeometry2D geom =
+                new GridGeometry2D(
+                        new GridEnvelope2D(0, 0, 300, 300),
+                        new ReferencedEnvelope(
+                                -1380000,
+                                -1026000,
+                                1866000,
+                                2200000,
+                                reader.getCoordinateReferenceSystem()));
+
+        GeneralParameterValue[] readParams =
+                getFootprintReadParams(
+                        reader,
+                        new SimpleEntry<>(
+                                ImageMosaicFormat.EXCESS_GRANULE_REMOVAL, ExcessGranulePolicy.ROI),
+                        new SimpleEntry<>(ImageMosaicFormat.FOOTPRINT_BEHAVIOR, "Transparent"),
+                        new SimpleEntry<>(ImageMosaicFormat.SORT_BY, "location A"),
+                        new SimpleEntry<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, geom));
+        GridCoverage2D coverage = reader.read(readParams);
+        // there is a bit of black-ish border as the images have been painted with antialiasing
+        File expectedOutput =
+                new File("src/test/resources/org/geotools/gce/imagemosaic/test-data/egr-alpha.png");
+        ImageAssert.assertEquals(expectedOutput, coverage.getRenderedImage(), 300);
+        assertSourceFileNames(coverage, "passA2006128193711.png");
     }
 }

@@ -276,19 +276,19 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
         // TRANSPARENT COLOR MANAGEMENT
         //
         boolean granuleHasAlpha = false;
-        if (doInputTransparency) {
+        if (doInputTransparency || hasAlpha) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Support for alpha on input granule " + result.getGranuleUrl());
             }
-            granule =
-                    new ImageWorker(granule)
-                            .makeColorTransparent(inputTransparentColor)
-                            .getRenderedImage();
+            if (doInputTransparency)
+                granule =
+                        new ImageWorker(granule)
+                                .makeColorTransparent(inputTransparentColor)
+                                .getRenderedImage();
             granuleHasAlpha = granule.getColorModel().hasAlpha();
             if (!granule.getColorModel().hasAlpha()) {
                 // if the resulting image has no transparency (can happen with IndexColorModel then
-                // we need to try component
-                // color model
+                // we need to try component color model
                 granule =
                         new ImageWorker(granule)
                                 .forceComponentColorModel(true)

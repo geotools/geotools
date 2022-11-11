@@ -36,6 +36,7 @@ import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.MosaicDescriptor;
+import javax.media.jai.operator.MosaicType;
 import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -186,6 +187,10 @@ public class Mosaicker {
         //
         // SPECIAL CASE
         // 1 single tile, we try not do a mosaic.
+        MosaicType mosaicType =
+                rasterLayerResponse.getRequest().isBlend()
+                        ? MosaicDescriptor.MOSAIC_TYPE_BLEND
+                        : MosaicDescriptor.MOSAIC_TYPE_OVERLAY;
         if (!skipSingleElementOptimization && size == 1 && Utils.OPTIMIZE_CROP) {
             // prepare input
             MosaicElement in = inputs.get(0);
@@ -242,9 +247,7 @@ public class Mosaicker {
                                                 ? new PlanarImage[] {in.alphaChannel}
                                                 : new PlanarImage[] {null},
                                         new ROI[] {in.roi},
-                                        rasterLayerResponse.getRequest().isBlend()
-                                                ? MosaicDescriptor.MOSAIC_TYPE_BLEND
-                                                : MosaicDescriptor.MOSAIC_TYPE_OVERLAY,
+                                        mosaicType,
                                         localHints);
                         ROIGeometry envelopeROI =
                                 new ROIGeometry(
@@ -274,10 +277,11 @@ public class Mosaicker {
         // === do the mosaic as usual
         // prepare sources for the mosaic operation
         final RenderedImage[] sources = new RenderedImage[size];
-        final PlanarImage[] alphas = new PlanarImage[size];
+        PlanarImage[] alphas = new PlanarImage[size];
         ROI[] rois = new ROI[size];
         final PAMDataset[] pams = new PAMDataset[size];
         int realROIs = 0;
+        int realAlphas = 0;
         for (int i = 0; i < size; i++) {
             final MosaicElement mosaicElement = inputs.get(i);
             sources[i] = mosaicElement.source;
@@ -287,22 +291,32 @@ public class Mosaicker {
 
             // If we have an alpha, mask it by the ROI
             if (alphas[i] != null && rois[i] != null) {
-                // Get ROI as image, fix color space
-                ImageWorker roi = new ImageWorker(rois[i].getAsImage());
-                roi.forceComponentColorModel();
-                ImageWorker alpha = new ImageWorker(alphas[i]);
-                alpha.multiply(roi.getRenderedImage());
+                if (mosaicType == MosaicDescriptor.MOSAIC_TYPE_BLEND) {
+                    // Get ROI as image, fix color space
+                    ImageWorker roi = new ImageWorker(rois[i].getAsImage());
+                    roi.forceComponentColorModel();
+                    ImageWorker alpha = new ImageWorker(alphas[i]);
+                    alpha.multiply(roi.getRenderedImage());
 
-                alphas[i] = alpha.getPlanarImage();
+                    alphas[i] = alpha.getPlanarImage();
+                    rois[i] = null;
+                } else {
+                    // overlay, turn alpha into ROI, remove alphas instead
+                    ROI alphaROI = new ROI(alphas[i]);
+                    rois[i] = rois[i].intersect(alphaROI);
+                    alphas[i] = null;
+                }
             }
             // compose the overall ROI if needed
-            if (mosaicElement.roi != null) {
+            if (rois[i] != null) {
                 realROIs++;
             }
+            if (alphas[i] != null) realAlphas++;
         }
         if (realROIs == 0) {
             rois = null;
         }
+        if (realAlphas == 0) alphas = null;
 
         // execute mosaic
         final RenderedImage mosaic =
@@ -312,9 +326,7 @@ public class Mosaicker {
                         sourceThreshold,
                         (hasAlpha || doInputTransparency) ? alphas : null,
                         rois,
-                        rasterLayerResponse.getRequest().isBlend()
-                                ? MosaicDescriptor.MOSAIC_TYPE_BLEND
-                                : MosaicDescriptor.MOSAIC_TYPE_OVERLAY,
+                        mosaicType,
                         localHints);
 
         Object property = mosaic.getProperty("ROI");

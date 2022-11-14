@@ -27,20 +27,21 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.http.MockHttpResponse;
 import org.geotools.referencing.CRS;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
+import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * WFS returning complex feature source
  *
- * <p>The response from calling GetConfiguration is mocked, but some schemas defined within that
- * response are downloaded to a temporary cache. Without this set we will get a Failed to resolve...
- * exception. Because of the schemas, we must also define preferred http method as GET.
+ * <p>The responses from calling GetConfiguration and GetFeatures is mocked, but some schemas
+ * defined within that response are downloaded using ordinary download. Therefore we're using a
+ * cached version of those schemas.
  *
  * @author Roar Brænden
  */
@@ -52,6 +53,9 @@ public class WFSContentComplexFeatureSourceTest {
             new NameImpl(
                     "http://skjema.geonorge.no/SOSI/produktspesifikasjon/StedsnavnForVanligBruk/20181115",
                     STED);
+    private static final String GEOM_FIELD_NAME = "posisjon";
+
+    private static FilterFactory ff = CommonFactoryFinder.getFilterFactory2();
 
     private static final String DEFAULT_SRS = "urn:ogc:def:crs:EPSG::4258";
 
@@ -68,7 +72,24 @@ public class WFSContentComplexFeatureSourceTest {
     }
 
     @Test
-    @Ignore
+    public void testGetFeaturesWithFilter() throws Exception {
+        final WFSClient client = createWFSClient();
+        final WFSContentDataAccess dataAccess = createDataAccess(client);
+
+        WFSContentComplexFeatureSource featureSource =
+                new WFSContentComplexFeatureSource(STED_NAME, client, dataAccess);
+
+        Filter filter = ff.bbox(GEOM_FIELD_NAME, 58.71, 58.73, 7.39, 7.41, "EPSG:4258");
+        FeatureCollection<FeatureType, Feature> collection = featureSource.getFeatures(filter);
+        Assert.assertNotNull(collection);
+
+        try (FeatureIterator<Feature> features = collection.features()) {
+            Assert.assertTrue(features.hasNext());
+            Assert.assertNotNull(features.next());
+        }
+    }
+
+    @Test
     public void testGetFeaturesWithNameQuery() throws Exception {
         final WFSClient client = createWFSClient();
         final WFSContentDataAccess dataAccess = createDataAccess(client);
@@ -82,7 +103,8 @@ public class WFSContentComplexFeatureSourceTest {
         Assert.assertNotNull(collection);
 
         try (FeatureIterator<Feature> features = collection.features()) {
-            Assert.assertNotNull(features);
+            Assert.assertTrue(features.hasNext());
+            Assert.assertNotNull(features.next());
         }
     }
 
@@ -135,6 +157,20 @@ public class WFSContentComplexFeatureSourceTest {
                         "https://wfs.geonorge.no/skwms1/wfs.stedsnavn?REQUEST=GetCapabilities&SERVICE=WFS"),
                 new MockHttpResponse(
                         TestData.file(TestHttpClient.class, "KartverketNo/GetCapabilities.xml"),
+                        "text/xml"));
+
+        mockHttp.expectGet(
+                new URL(
+                        "https://wfs.geonorge.no/skwms1/wfs.stedsnavn?REQUEST=GetFeature&RESULTTYPE=RESULTS&OUTPUTFORMAT=application%2Fgml%2Bxml%3B+version%3D3.2&VERSION=2.0.0&TYPENAMES=app%3ASted&SERVICE=WFS"),
+                new MockHttpResponse(
+                        TestData.file(TestHttpClient.class, "KartverketNo/GetFeature_sted.xml"),
+                        "text/xml"));
+
+        mockHttp.expectGet(
+                new URL(
+                        "https://wfs.geonorge.no/skwms1/wfs.stedsnavn?FILTER=%3Cfes%3AFilter+xmlns%3Axs%3D%22http%3A%2F%2Fwww.w3.org%2F2001%2FXMLSchema%22+xmlns%3Afes%3D%22http%3A%2F%2Fwww.opengis.net%2Ffes%2F2.0%22+xmlns%3Agml%3D%22http%3A%2F%2Fwww.opengis.net%2Fgml%2F3.2%22%3E%3Cfes%3ABBOX%3E%3Cfes%3AValueReference%3Eposisjon%3C%2Ffes%3AValueReference%3E%3Cgml%3AEnvelope+srsDimension%3D%222%22+srsName%3D%22urn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A4258%22%3E%3Cgml%3AlowerCorner%3E7.39+7.41%3C%2Fgml%3AlowerCorner%3E%3Cgml%3AupperCorner%3E58.71+58.73%3C%2Fgml%3AupperCorner%3E%3C%2Fgml%3AEnvelope%3E%3C%2Ffes%3ABBOX%3E%3C%2Ffes%3AFilter%3E&REQUEST=GetFeature&RESULTTYPE=RESULTS&OUTPUTFORMAT=application%2Fgml%2Bxml%3B+version%3D3.2&VERSION=2.0.0&TYPENAMES=app%3ASted&SERVICE=WFS"),
+                new MockHttpResponse(
+                        TestData.file(TestHttpClient.class, "KartverketNo/GetFeature_sted.xml"),
                         "text/xml"));
 
         TestWFSClient client = new TestWFSClient(capabilities, mockHttp);

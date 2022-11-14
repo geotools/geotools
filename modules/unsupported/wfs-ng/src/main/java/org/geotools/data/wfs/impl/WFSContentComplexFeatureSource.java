@@ -72,7 +72,7 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
     /** Get features based on the specified filter. */
     @Override
     public FeatureCollection<FeatureType, Feature> getFeatures(Filter filter) throws IOException {
-        return getFeatures(new Query(this.typeName.toString(), filter));
+        return getFeatures(new Query(this.typeName.getLocalPart(), filter));
     }
 
     /** Get features using the default Query.ALL. */

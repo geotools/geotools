@@ -30,7 +30,7 @@ The GeoTools User Guide is available online:
     The user guide is available for `download <https://sourceforge.net/projects/geotools/files/>`__
     as a zip file.
        
-`Tutorials <tutorial/https://docs.geotools.org/stable/userguide/>`__ ( `stable <https://docs.geotools.org/stable/userguide/tutorial/>`__ | `maintenance <https://docs.geotools.org/maintenance/userguide/tutorial/>`__ )
+`Tutorials <https://docs.geotools.org/latest/tutorial/https://docs.geotools.org/stable/userguide/>`__ ( `stable <https://docs.geotools.org/stable/userguide/tutorial/>`__ | `maintenance <https://docs.geotools.org/maintenance/userguide/tutorial/>`__ )
     Step by step tutorials introducing both GeoTools and geospatial concepts for Java developers.
 
 `FAQ <https://docs.geotools.org/stable/userguide/faq.html>` ( `stable <https://docs.geotools.org/stable/userguide/faq.html>`__ | `maintenance <https://docs.geotools.org/maintenance/userguide/faq.html>`__ )

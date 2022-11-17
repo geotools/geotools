@@ -7,5 +7,3 @@ html_title='GeoTools Documentation'
 
 # do not use user extlink for index page generation
 del extlinks['user']
-
-print(extlinks)

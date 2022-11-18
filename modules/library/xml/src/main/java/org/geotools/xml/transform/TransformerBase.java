@@ -963,7 +963,7 @@ public abstract class TransformerBase {
 
         @Override
         public void parse(InputSource in) throws SAXException {
-            ContentHandler handler = getContentHandler();
+            ContentHandler handler = new QNameValidatingHandler(getContentHandler());
 
             if (base.isNamespaceDeclartionEnabled()) {
                 AttributesImpl atts = new AttributesImpl();

@@ -863,7 +863,7 @@ public class FeatureTransformer extends TransformerBase {
                 // but OGC people are fine with just leaving it out.
             } catch (Exception e) {
                 throw new IllegalStateException(
-                        "Could not transform " + descriptor.getName() + ":" + e, e);
+                        "Could not transform '" + descriptor.getName() + "': " + e, e);
             }
         }
 

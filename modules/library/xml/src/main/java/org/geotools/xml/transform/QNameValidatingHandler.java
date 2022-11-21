@@ -82,6 +82,9 @@ public class QNameValidatingHandler implements TransformerHandler {
             for (int i = 0; i < atts.getLength(); i++) {
                 String localName = atts.getLocalName(i);
                 String qName = atts.getQName(i);
+                // there are existing cases where attributes are set with the qualified
+                // name as the local name
+                localName = qName != null && qName.equals(localName) ? "" : localName;
                 if (!checkName(localName, qName)) {
                     return false;
                 } else if ("xmlns".equals(localName)

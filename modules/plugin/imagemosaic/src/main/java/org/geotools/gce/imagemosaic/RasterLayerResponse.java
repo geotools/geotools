@@ -1259,7 +1259,7 @@ public class RasterLayerResponse {
             properties.put(GridCoverage2DReader.SOURCE_URL_PROPERTY, sourceUrl);
         }
         if (mosaicOutput.pamDataset != null) {
-            properties.put(Utils.PAM_DATASET, mosaicOutput.pamDataset);
+            properties.put(GridCoverage2DReader.PAM_DATASET, mosaicOutput.pamDataset);
         }
         // Setting NoData as the NoData for the first Band
         ImageWorker w = new ImageWorker(image);

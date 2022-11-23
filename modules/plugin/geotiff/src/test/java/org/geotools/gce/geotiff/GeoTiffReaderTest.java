@@ -28,12 +28,14 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import it.geosolutions.imageio.maskband.DatasetLayout;
+import it.geosolutions.imageio.pam.PAMDataset;
 import it.geosolutions.imageio.stream.input.FileImageInputStreamExtImpl;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.jaiext.range.NoDataContainer;
 import it.geosolutions.jaiext.range.Range;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.Raster;
@@ -44,6 +46,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -1493,5 +1496,66 @@ public class GeoTiffReaderTest {
                 coverage.dispose(true);
             }
         }
+    }
+
+    @Test
+    public void testNoPamDataset() throws IOException {
+        final File bogota = TestData.file(GeoTiffReaderTest.class, "bogot.tiff");
+        final AbstractGridFormat format = new GeoTiffFormat();
+        GeoTiffReader reader = (GeoTiffReader) format.getReader(bogota);
+        assertNotNull(reader);
+        GridCoverage2D coverage = reader.read(null);
+        assertEquals(
+                Image.UndefinedProperty, coverage.getProperty(GridCoverage2DReader.PAM_DATASET));
+        coverage.dispose(true);
+        reader.dispose();
+    }
+
+    @Test
+    public void testSidecarPamDataset() throws IOException {
+        final File bogota = TestData.file(GeoTiffReaderTest.class, "gaarc_subset.tiff");
+        final AbstractGridFormat format = new GeoTiffFormat();
+        GeoTiffReader reader = (GeoTiffReader) format.getReader(bogota);
+        assertNotNull(reader);
+        GridCoverage2D coverage = reader.read(null);
+        checkGaarcPamDataset(coverage);
+
+        coverage.dispose(true);
+        reader.dispose();
+    }
+
+    @Test
+    public void testTagPamDataset() throws IOException {
+        final File bogota = TestData.file(GeoTiffReaderTest.class, "stats/gaarc_stats.tiff");
+        final AbstractGridFormat format = new GeoTiffFormat();
+        GeoTiffReader reader = (GeoTiffReader) format.getReader(bogota);
+        assertNotNull(reader);
+        GridCoverage2D coverage = reader.read(null);
+        checkGaarcPamDataset(coverage);
+
+        coverage.dispose(true);
+        reader.dispose();
+    }
+
+    private void checkGaarcPamDataset(GridCoverage2D coverage) {
+        PAMDataset pam = (PAMDataset) coverage.getProperty(GridCoverage2DReader.PAM_DATASET);
+        assertEquals("26", getStatistic(pam, 1, "STATISTICS_MINIMUM"));
+        assertEquals("244", getStatistic(pam, 1, "STATISTICS_MAXIMUM"));
+        assertEquals("37", getStatistic(pam, 2, "STATISTICS_MINIMUM"));
+        assertEquals("243", getStatistic(pam, 2, "STATISTICS_MAXIMUM"));
+        assertEquals("48", getStatistic(pam, 3, "STATISTICS_MINIMUM"));
+        assertEquals("241", getStatistic(pam, 3, "STATISTICS_MAXIMUM"));
+    }
+
+    private String getStatistic(PAMDataset pam, int bandNumber, String keyName) {
+        Optional<String> value =
+                pam.getPAMRasterBand().stream()
+                        .filter(b -> bandNumber == b.getBand())
+                        .flatMap(b -> b.getMetadata().getMDI().stream())
+                        .filter(m -> m.getKey().equalsIgnoreCase(keyName))
+                        .map(m -> m.getValue())
+                        .findFirst();
+        assertTrue(value.isPresent());
+        return value.get();
     }
 }

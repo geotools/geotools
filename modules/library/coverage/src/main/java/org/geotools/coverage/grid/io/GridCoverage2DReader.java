@@ -123,6 +123,12 @@ public interface GridCoverage2DReader extends GridCoverageReader {
     public static final String MULTICRS_EPSGCODES = "MultiCRSEPSGCodes";
 
     /**
+     * The name of the property containing the eventual GDAL {@link
+     * it.geosolutions.imageio.pam.PAMDataset} for the coverage at hand.
+     */
+    public static final String PAM_DATASET = "PamDataset";
+
+    /**
      * Return the original {@link GeneralEnvelope} for the default coverage served by the underlying
      * store.
      *

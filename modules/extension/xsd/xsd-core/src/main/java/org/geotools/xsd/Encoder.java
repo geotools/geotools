@@ -62,6 +62,7 @@ import org.eclipse.xsd.util.XSDUtil;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.xml.XMLUtils;
+import org.geotools.xml.transform.QNameValidatingHandler;
 import org.geotools.xs.XS;
 import org.geotools.xsd.impl.BindingFactoryImpl;
 import org.geotools.xsd.impl.BindingLoader;
@@ -547,6 +548,7 @@ public class Encoder {
 
         // TODO
         // xmls.setNamespaces(namespaceAware);
+        xmls = new QNameValidatingHandler(xmls);
         try {
             encode(object, name, xmls);
         } catch (SAXException e) {
@@ -616,7 +618,10 @@ public class Encoder {
         }
 
         try {
-            serializer = handler;
+            serializer =
+                    (handler instanceof QNameValidatingHandler)
+                            ? handler
+                            : new QNameValidatingHandler(handler);
 
             if (!inline) {
                 serializer.startDocument();
@@ -647,7 +652,7 @@ public class Encoder {
                 if (entry.encoding != null) {
                     // element has been started, get the next child
                     if (!entry.children.isEmpty()) {
-                        processChildren(handler, encoded, entry);
+                        processChildren(serializer, encoded, entry);
                     } else {
                         // no more children, finish the element
                         finishElement(encoded, entry);

@@ -117,6 +117,7 @@ import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.grid.io.GranuleRemovalPolicy;
 import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.grid.io.GranuleStore;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.HarvestedSource;
 import org.geotools.coverage.grid.io.OverviewPolicy;
@@ -4105,7 +4106,7 @@ public class ImageMosaicReaderTest {
         time.setValue(timeValues);
 
         GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {time});
-        Object object = coverage.getProperty(Utils.PAM_DATASET);
+        Object object = coverage.getProperty(GridCoverage2DReader.PAM_DATASET);
         assertNotNull(object);
         assertTrue(object instanceof PAMDataset);
         PAMDataset dataset = (PAMDataset) object;
@@ -4143,7 +4144,7 @@ public class ImageMosaicReaderTest {
         assertNotNull(metadataNames);
 
         GridCoverage2D coverage = reader.read(null);
-        Object object = coverage.getProperty(Utils.PAM_DATASET);
+        Object object = coverage.getProperty(GridCoverage2DReader.PAM_DATASET);
         assertNotNull(object);
         assertTrue(object instanceof PAMDataset);
         PAMDataset dataset = (PAMDataset) object;

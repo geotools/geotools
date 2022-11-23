@@ -169,7 +169,7 @@ public class Utils {
 
     private static JAXBContext CONTEXT = null;
 
-    public static final String PAM_DATASET = "PamDataset";
+    @Deprecated public static final String PAM_DATASET = GridCoverage2DReader.PAM_DATASET;
 
     static final String DEFAULT = "default";
 

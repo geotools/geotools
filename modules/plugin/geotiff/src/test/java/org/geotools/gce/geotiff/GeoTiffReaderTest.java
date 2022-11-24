@@ -1466,5 +1466,4 @@ public class GeoTiffReaderTest {
         assertTrue(value.isPresent());
         return value.get();
     }
-
 }

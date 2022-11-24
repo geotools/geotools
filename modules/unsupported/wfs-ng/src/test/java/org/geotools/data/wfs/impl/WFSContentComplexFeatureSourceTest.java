@@ -13,11 +13,14 @@
  */
 package org.geotools.data.wfs.impl;
 
+import java.io.ByteArrayOutputStream;
 import java.net.URL;
+import javax.xml.namespace.QName;
 import org.geotools.TestData;
 import org.geotools.data.Query;
 import org.geotools.data.wfs.TestHttpClient;
 import org.geotools.data.wfs.TestWFSClient;
+import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
@@ -53,11 +56,18 @@ public class WFSContentComplexFeatureSourceTest {
             new NameImpl(
                     "http://skjema.geonorge.no/SOSI/produktspesifikasjon/StedsnavnForVanligBruk/20181115",
                     STED);
+
+    private static final QName REMOTE_STED_NAME =
+            new QName(STED_NAME.getNamespaceURI(), STED_NAME.getLocalPart(), "app");
+
     private static final String GEOM_FIELD_NAME = "posisjon";
 
     private static FilterFactory ff = CommonFactoryFinder.getFilterFactory2();
 
     private static final String DEFAULT_SRS = "urn:ogc:def:crs:EPSG::4258";
+
+    private static final Filter FILTER =
+            ff.bbox(GEOM_FIELD_NAME, 58.71, 58.73, 7.39, 7.41, "EPSG:4258");
 
     @Test
     public void testGetFeaturesWithoutArgument() throws Exception {
@@ -79,8 +89,7 @@ public class WFSContentComplexFeatureSourceTest {
         WFSContentComplexFeatureSource featureSource =
                 new WFSContentComplexFeatureSource(STED_NAME, client, dataAccess);
 
-        Filter filter = ff.bbox(GEOM_FIELD_NAME, 58.71, 58.73, 7.39, 7.41, "EPSG:4258");
-        FeatureCollection<FeatureType, Feature> collection = featureSource.getFeatures(filter);
+        FeatureCollection<FeatureType, Feature> collection = featureSource.getFeatures(FILTER);
         Assert.assertNotNull(collection);
 
         try (FeatureIterator<Feature> features = collection.features()) {
@@ -159,6 +168,11 @@ public class WFSContentComplexFeatureSourceTest {
                         TestData.file(TestHttpClient.class, "KartverketNo/GetCapabilities.xml"),
                         "text/xml"));
 
+        TestWFSClient client = new TestWFSClient(capabilities, mockHttp);
+        if (usingGet) {
+            client.setProtocol(false); // Http GET method
+        }
+
         mockHttp.expectGet(
                 new URL(
                         "https://wfs.geonorge.no/skwms1/wfs.stedsnavn?REQUEST=GetFeature&RESULTTYPE=RESULTS&OUTPUTFORMAT=application%2Fgml%2Bxml%3B+version%3D3.2&VERSION=2.0.0&TYPENAMES=app%3ASted&SERVICE=WFS"),
@@ -166,30 +180,22 @@ public class WFSContentComplexFeatureSourceTest {
                         TestData.file(TestHttpClient.class, "KartverketNo/GetFeature_sted.xml"),
                         "text/xml"));
 
+        GetFeatureRequest request = client.createGetFeatureRequest();
+        request.setTypeName(REMOTE_STED_NAME);
+        request.setFilter(FILTER);
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        request.performPostOutput(out);
+        String postContent = out.toString(client.getConfig().getDefaultEncoding().name());
+
         mockHttp.expectPost(
                 new URL("https://wfs.geonorge.no/skwms1/wfs.stedsnavn"),
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><wfs:GetFeature xmlns:app=\"http://skjema.geonorge.no/SOSI/produktspesifikasjon/StedsnavnForVanligBruk/20181115\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:fes=\"http://www.opengis.net/fes/2.0\" xmlns:wfs=\"http://www.opengis.net/wfs/2.0\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:ows=\"http://www.opengis.net/ows/1.1\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"  outputFormat=\"application/gml+xml; version=3.2\" resolve=\"none\" resolveDepth=\"*\" resolveTimeout=\"300\" resultType=\"results\" service=\"WFS\" version=\"2.0.0\">\n"
-                        + " <wfs:Query srsName=\"urn:ogc:def:crs:EPSG::4258\" typeNames=\"app:Sted\">\n"
-                        + "  <fes:Filter>\n"
-                        + "   <fes:BBOX>\n"
-                        + "    <fes:ValueReference>posisjon</fes:ValueReference>\n"
-                        + "    <gml:Envelope srsDimension=\"2\" srsName=\"urn:ogc:def:crs:EPSG::4258\">\n"
-                        + "     <gml:lowerCorner>7.39 7.41</gml:lowerCorner>\n"
-                        + "     <gml:upperCorner>58.71 58.73</gml:upperCorner>\n"
-                        + "    </gml:Envelope>\n"
-                        + "   </fes:BBOX>\n"
-                        + "  </fes:Filter>\n"
-                        + " </wfs:Query>\n"
-                        + "</wfs:GetFeature>\n",
+                postContent,
                 "text/xml",
                 new MockHttpResponse(
                         TestData.file(TestHttpClient.class, "KartverketNo/GetFeature_sted.xml"),
                         "text/xml"));
 
-        TestWFSClient client = new TestWFSClient(capabilities, mockHttp);
-        if (usingGet) {
-            client.setProtocol(false); // Http GET method
-        }
         return client;
     }
 

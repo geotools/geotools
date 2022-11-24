@@ -4112,26 +4112,7 @@ public class ImageMosaicReaderTest {
 
         GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {time});
         Object object = coverage.getProperty(GridCoverage2DReader.PAM_DATASET);
-        assertNotNull(object);
-        assertTrue(object instanceof PAMDataset);
-        PAMDataset dataset = (PAMDataset) object;
-        PAMRasterBand band = dataset.getPAMRasterBand().get(0);
-
-        PAMParser parser = PAMParser.getInstance();
-        assertEquals(
-                0, Double.parseDouble(parser.getMetadataValue(band, "STATISTICS_MINIMUM")), DELTA);
-        assertEquals(
-                255.0,
-                Double.parseDouble(parser.getMetadataValue(band, "STATISTICS_MAXIMUM")),
-                DELTA);
-        assertEquals(
-                73.0352,
-                Double.parseDouble(parser.getMetadataValue(band, "STATISTICS_MEAN")),
-                DELTA);
-        assertEquals(
-                84.3132,
-                Double.parseDouble(parser.getMetadataValue(band, "STATISTICS_STDDEV")),
-                DELTA);
+        checkPAMDataset(object, 73.0352, 84.3132);
 
         reader.dispose();
     }
@@ -4150,6 +4131,31 @@ public class ImageMosaicReaderTest {
 
         GridCoverage2D coverage = reader.read(null);
         Object object = coverage.getProperty(GridCoverage2DReader.PAM_DATASET);
+        checkPAMDataset(object, 72.6912, 83.2542);
+
+        reader.dispose();
+    }
+
+    @Test
+    public void testPAMInternalMerged() throws Exception {
+        final URL timePamURL = TestData.url(this, "pam-internal");
+
+        final AbstractGridFormat format = TestUtils.getFormat(timePamURL);
+        assertNotNull(format);
+        ImageMosaicReader reader = getReader(timePamURL, format);
+        assertNotNull(format);
+
+        final String[] metadataNames = reader.getMetadataNames();
+        assertNotNull(metadataNames);
+
+        GridCoverage2D coverage = reader.read(null);
+        Object object = coverage.getProperty(GridCoverage2DReader.PAM_DATASET);
+        checkPAMDataset(object, 72.6912, 83.2542);
+
+        reader.dispose();
+    }
+
+    private static void checkPAMDataset(Object object, double mean, double stddev) {
         assertNotNull(object);
         assertTrue(object instanceof PAMDataset);
         PAMDataset dataset = (PAMDataset) object;
@@ -4163,15 +4169,11 @@ public class ImageMosaicReaderTest {
                 Double.parseDouble(parser.getMetadataValue(band, "STATISTICS_MAXIMUM")),
                 DELTA);
         assertEquals(
-                72.6912,
-                Double.parseDouble(parser.getMetadataValue(band, "STATISTICS_MEAN")),
-                DELTA);
+                mean, Double.parseDouble(parser.getMetadataValue(band, "STATISTICS_MEAN")), DELTA);
         assertEquals(
-                83.2542,
+                stddev,
                 Double.parseDouble(parser.getMetadataValue(band, "STATISTICS_STDDEV")),
                 DELTA);
-
-        reader.dispose();
     }
 
     @Test

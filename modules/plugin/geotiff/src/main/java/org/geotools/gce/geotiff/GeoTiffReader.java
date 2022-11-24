@@ -37,19 +37,12 @@ package org.geotools.gce.geotiff;
 import it.geosolutions.imageio.core.BasicAuthURI;
 import it.geosolutions.imageio.maskband.DatasetLayout;
 import it.geosolutions.imageio.pam.PAMDataset;
-import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
-import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand.Metadata.MDI;
-import it.geosolutions.imageio.pam.PAMParser;
-import it.geosolutions.imageio.plugins.tiff.TIFFField;
 import it.geosolutions.imageio.plugins.tiff.TIFFImageReadParam;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.imageioimpl.plugins.cog.CogImageInputStreamSpi;
 import it.geosolutions.imageioimpl.plugins.cog.CogSourceSPIProvider;
-import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageMetadata;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 import it.geosolutions.imageioimpl.plugins.tiff.TiffDatasetLayoutImpl;
-import it.geosolutions.imageioimpl.plugins.tiff.gdal.GDALMetadata;
-import it.geosolutions.imageioimpl.plugins.tiff.gdal.GDALMetadataParser;
 import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.Color;
 import java.awt.Rectangle;
@@ -74,7 +67,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -168,12 +160,6 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
 
     /** SPI for creating tiff readers in ImageIO tools when not using COG */
     static final TIFFImageReaderSpi TIFF_READER_SPI = new TIFFImageReaderSpi();
-
-    /**
-     * Custom tag holding a XML that can be parsed into a {@link
-     * it.geosolutions.imageioimpl.plugins.tiff.gdal.GDALMetadata}
-     */
-    static final int GDAL_METADATA_TAG = 42112;
 
     private ImageReaderSpi readerSpi;
 
@@ -401,7 +387,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             collectScaleOffset(iioMetadata);
 
             // collect PAM dataset if available
-            collectPamDataset(iioMetadata);
+            this.pamDataset = getPamDataset(getSourceAsFile(), iioMetadata);
 
             //
             // parse and set layout
@@ -621,78 +607,6 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                 } catch (Throwable t) {
                 }
         }
-    }
-
-    /**
-     * Method that looks for an external {@link PAMDataset} first, and if not found, checks for an
-     * internal {@link it.geosolutions.imageioimpl.plugins.tiff.gdal.GDALMetadata} inside a custom
-     * tag.
-     *
-     * <p>The method is tolerant to invalid metadata contents and will log at INFO level in case of
-     * invalid metadata structure: there might be files with invalid metadata that used to be read
-     * just fine before PAM dataset reading was implemented.
-     *
-     * @param metadata
-     */
-    private void collectPamDataset(IIOMetadata metadata) {
-        File sourceFile = getSourceAsFile();
-        if (sourceFile != null && !ImageIOUtilities.isSkipExternalFilesLookup()) {
-            File pamFile = new File(sourceFile.getParent(), sourceFile.getName() + ".aux.xml");
-            if (pamFile.exists()) {
-                PAMParser pamParser = PAMParser.getInstance();
-
-                try {
-                    this.pamDataset = pamParser.parsePAM(pamFile);
-                } catch (Exception e) {
-                    LOGGER.log(Level.INFO, "GDAL aux.xml metadata file could not be parsed", e);
-                }
-            }
-        }
-
-        if (this.pamDataset == null && metadata instanceof TIFFImageMetadata) {
-            TIFFImageMetadata tm = (TIFFImageMetadata) metadata;
-            TIFFField f = tm.getTIFFField(GDAL_METADATA_TAG);
-            if (f != null) {
-                try {
-                    String xml = f.getAsString(0);
-                    GDALMetadata gdalMetadata = GDALMetadataParser.parse(xml);
-                    this.pamDataset = toPamDataset(gdalMetadata);
-                } catch (Exception e) {
-                    LOGGER.log(Level.INFO, "GDAL_METADATA tag contents could not be parsed", e);
-                }
-            }
-        }
-    }
-
-    /**
-     * Part of the information contained in {@link GDALMetadata} can be trasformed in a semantically
-     * equivalent PAM dataset
-     */
-    private PAMDataset toPamDataset(GDALMetadata metadata) {
-        PAMDataset pam = new PAMDataset();
-        Map<Integer, PAMRasterBand> bands = new TreeMap<>();
-        metadata.getItems().stream()
-                .filter(i -> i.getSample() != null)
-                .forEach(
-                        i -> {
-                            int bandNumber = i.getSample() + 1;
-                            PAMRasterBand band =
-                                    bands.computeIfAbsent(
-                                            bandNumber,
-                                            n -> {
-                                                PAMRasterBand result = new PAMRasterBand();
-                                                result.setBand(n);
-                                                return result;
-                                            });
-                            MDI mdi = new MDI();
-                            mdi.setKey(i.getName());
-                            mdi.setValue(i.getValue());
-                            if (band.getMetadata() == null)
-                                band.setMetadata(new PAMRasterBand.Metadata());
-                            band.getMetadata().getMDI().add(mdi);
-                        });
-        pam.getPAMRasterBand().addAll(bands.values());
-        return pam;
     }
 
     /** @see org.opengis.coverage.grid.GridCoverageReader#getFormat() */

@@ -52,7 +52,7 @@ public abstract class AbstractGetFeatureResponseParserFactory extends AbstractWF
      * GetFeatureType GetFeature} request and the request output format matches {@code "text/xml;
      * subtype=gml/3.1.1"}.
      *
-     * <p>It also check's that requested type is a SimpleFeatureType
+     * <p>It also checks that the requested type is a SimpleFeatureType
      *
      * @see WFSResponseFactory#canProcess(WFSOperationType, String)
      */

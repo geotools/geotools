@@ -23,12 +23,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.geotools.filter.function.FilterFunction_if_then_else;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.BinaryExpression;
 import org.opengis.filter.expression.Divide;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
@@ -170,7 +172,28 @@ public class ExpressionTypeVisitor implements ExpressionVisitor {
     public Object visit(Function expression, Object extraData) {
         FunctionName name = expression.getFunctionName();
         if (name != null && name.getReturn() != null) {
+            if (FilterFunction_if_then_else.NAME.equals(name)) {
+                return visitIfThenElse((FilterFunction_if_then_else) expression);
+            }
             return name.getReturn().getType();
+        } else {
+            return Object.class;
+        }
+    }
+
+    /**
+     * Special case for the if then else function, which stores parameters in the second and third
+     * list items
+     *
+     * @param expression IfThenElse function
+     * @return The common ancestor type of the two parameters possibly returned by if then else
+     */
+    protected Object visitIfThenElse(FilterFunction_if_then_else expression) {
+        List<Expression> parameters = expression.getParameters();
+        if (parameters.size() > 2) {
+            Class<?> type1 = (Class<?>) parameters.get(1).accept(this, null);
+            Class<?> type2 = (Class<?>) parameters.get(2).accept(this, null);
+            return largestType(type1, type2);
         } else {
             return Object.class;
         }

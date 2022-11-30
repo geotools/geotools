@@ -16,12 +16,14 @@
  */
 package org.geotools.measure;
 
+import java.io.IOException;
+import java.text.ParsePosition;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
+import javax.measure.Quantity;
 import javax.measure.Unit;
-import org.geotools.measure.SimpleUnitFormatForwarder.DefaultFormatForwarder;
+import javax.measure.format.MeasurementParseException;
+import tech.units.indriya.format.SimpleUnitFormat;
 
 /**
  * This class encapsulates the required machinations to initialize the unit formatter implementation
@@ -30,7 +32,10 @@ import org.geotools.measure.SimpleUnitFormatForwarder.DefaultFormatForwarder;
  * <p>GeoTools' unit formatters should be implemented by calling the provided constructors.
  */
 // This class should be final, currently only prevented by the Wkt unit formatter subclass.
-public class BaseUnitFormatter extends DefaultFormatForwarder {
+public class BaseUnitFormatter extends SimpleUnitFormat implements UnitFormatter {
+
+    private static final char MIDDLE_DOT = '\u00b7';
+    private SimpleUnitFormat delegateFormatter = SimpleUnitFormat.getNewInstance();
 
     /**
      * Create a new {@code BaseUnitFormatter} instance, initialized with provided the unit
@@ -74,28 +79,6 @@ public class BaseUnitFormatter extends DefaultFormatForwarder {
         }
     }
 
-    /**
-     * @return an immutable map that shows the units (associated with their symbols) that this unit
-     *     formatter contains
-     */
-    public Map<Unit<?>, String> getUnitToSymbolMap() {
-        return Collections.unmodifiableMap(this.unitToName);
-    }
-
-    /**
-     * @return an immutable map that shows the symbols (associated with their units) that this unit
-     *     formatter contains
-     */
-    public Map<String, Unit<?>> getSymbolToUnitMap() {
-        return Collections.unmodifiableMap(this.nameToUnit);
-    }
-
-    @Override
-    public void label(Unit<?> unit, String label) {
-        super.label(unit, label);
-        addUnit(unit);
-    }
-
     /** Defaults to being a no-op, subclasses can override */
     protected void addUnit(Unit<?> unit) {}
 
@@ -117,5 +100,74 @@ public class BaseUnitFormatter extends DefaultFormatForwarder {
         for (String prefixAlias : prefix.getPrefixAliases()) {
             this.alias(prefixedUnit, prefixAlias + unitSymbol);
         }
+    }
+
+    @Override
+    public Appendable format(Unit<?> unit, Appendable appendable) throws IOException {
+        return delegateFormatter.format(unit, appendable);
+    }
+
+    @Override
+    public Unit<? extends Quantity> parseProductUnit(CharSequence csq, ParsePosition pos)
+            throws MeasurementParseException {
+        return delegateFormatter.parseProductUnit(csq, pos);
+    }
+
+    @Override
+    public Unit<? extends Quantity> parseSingleUnit(CharSequence csq, ParsePosition pos)
+            throws MeasurementParseException {
+        return delegateFormatter.parseSingleUnit(csq, pos);
+    }
+
+    @Override
+    public void label(Unit<?> unit, String label) {
+        delegateFormatter.label(unit, label);
+        addUnit(unit);
+    }
+
+    @Override
+    public Unit<?> parse(CharSequence csq, ParsePosition cursor) throws IllegalArgumentException {
+        return delegateFormatter.parse(csq, cursor);
+    }
+
+    @Override
+    public Unit<?> parse(CharSequence csq) throws MeasurementParseException {
+        return delegateFormatter.parse(csq);
+    }
+
+    @Override
+    protected Unit<?> parse(CharSequence csq, int index) throws IllegalArgumentException {
+        return parse(csq, new ParsePosition(index));
+    }
+
+    @Override
+    public void alias(Unit<?> unit, String alias) {
+        delegateFormatter.alias(unit, alias);
+    }
+
+    /** Copy from DefaultFormatter */
+    @Override
+    protected boolean isValidIdentifier(String name) {
+        if ((name == null) || (name.length() == 0)) return false;
+        return isUnitIdentifierPart(name.charAt(0));
+    }
+
+    protected static boolean isUnitIdentifierPart(char ch) {
+        return Character.isLetter(ch)
+                || (!Character.isWhitespace(ch)
+                        && !Character.isDigit(ch)
+                        && (ch != MIDDLE_DOT)
+                        && (ch != '*')
+                        && (ch != '/')
+                        && (ch != '(')
+                        && (ch != ')')
+                        && (ch != '[')
+                        && (ch != ']')
+                        && (ch != '\u00b9')
+                        && (ch != '\u00b2')
+                        && (ch != '\u00b3')
+                        && (ch != '^')
+                        && (ch != '+')
+                        && (ch != '-'));
     }
 }

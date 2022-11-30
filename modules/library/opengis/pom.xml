@@ -169,6 +169,11 @@
       <artifactId>systems-common</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>tech.units</groupId>
+      <artifactId>indriya</artifactId>
+    </dependency>
+
     <!-- Test dependencies -->
     <dependency>
       <!-- Required for ImageParameterDescriptor test. -->

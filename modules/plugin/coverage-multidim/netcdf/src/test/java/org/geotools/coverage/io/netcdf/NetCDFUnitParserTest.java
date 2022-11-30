@@ -160,7 +160,7 @@ public class NetCDFUnitParserTest {
         public void testDU() throws Exception {
             // could not find a way to make this work with the above test, so doing it another way
             Unit<?> unit = NetCDFUnitFormat.parse("DU");
-            assertEquals("(1/m²)*446.2·μmol", unit.toString());
+            assertEquals("μmol·(1/m²)*446.2", unit.toString());
         }
 
         @Test(expected = MeasurementParseException.class)
@@ -168,7 +168,7 @@ public class NetCDFUnitParserTest {
             // the normal instance should be isolated, the configuration of the the NetCDF
             // unit parse should not affect the normal parser
             SimpleUnitFormat instance = SimpleUnitFormat.getInstance();
-            instance.parse("degree");
+            instance.parse("Degree");
         }
 
         @Test

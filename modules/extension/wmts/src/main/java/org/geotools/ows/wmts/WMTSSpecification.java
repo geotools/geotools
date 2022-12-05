@@ -29,7 +29,6 @@ import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
 import org.geotools.data.ows.AbstractGetCapabilitiesRequest;
 import org.geotools.data.ows.GetCapabilitiesRequest;
-import org.geotools.data.ows.Response;
 import org.geotools.data.ows.Specification;
 import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPClientFinder;
@@ -77,43 +76,10 @@ public class WMTSSpecification extends Specification {
         return new GetCapsRequest(server);
     }
 
-    /** @deprecated Use createGetMultiTileRequest */
-    @Deprecated
-    public GetTileRequest createGetTileRequest(
-            URL server, Properties props, WMTSCapabilities caps) {
-        return this.createGetTileRequest(server, props, caps, HTTPClientFinder.createClient());
-    }
-
-    /** @deprecated Use createGetMultiTileRequest */
-    @Deprecated
-    public GetTileRequest createGetTileRequest(
-            URL server, Properties props, WMTSCapabilities caps, HTTPClient client) {
-        return new GetTileRequest(server, props, caps, client);
-    }
-
     /** Create a GetMultiTileRequest */
     GetMultiTileRequest createGetMultiTileRequest(
             URL server, Properties props, WMTSCapabilities caps, HTTPClient client) {
         return new GetMultiTileRequest(server, props, caps, client);
-    }
-
-    /** @deprecated Avoid usage of this - change to GetMultiTileRequest */
-    @Deprecated
-    public static class GetTileRequest extends GetMultiTileRequest {
-
-        public GetTileRequest(
-                URL onlineResource,
-                Properties properties,
-                WMTSCapabilities capabilities,
-                HTTPClient client) {
-            super(onlineResource, properties, capabilities, client);
-        }
-
-        /** Returns a GetTileResponse which in most cases represents an Image. */
-        @Override
-        public Response createResponse(HTTPResponse response) throws ServiceException, IOException {
-            return new GetTileResponse(response, getType());
-        }
     }
 
     /** GetMultiTileRequest - used for getting a Set of tiles */

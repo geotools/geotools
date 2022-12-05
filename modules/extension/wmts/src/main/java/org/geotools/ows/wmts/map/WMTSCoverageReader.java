@@ -88,9 +88,6 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
     /** The cached layer bounds */
     ReferencedEnvelope bounds;
 
-    /** Keep the last tileRequest that was handled by this Reader */
-    private GetTileRequest lastTileRequest;
-
     private String requestedTime;
 
     public final boolean debug = System.getProperty("wmts.debug") != null;
@@ -507,18 +504,6 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
         return super.getMetadataValue(name);
     }
 
-    /** @return the mapRequest */
-    @Deprecated
-    public GetTileRequest getTileRequest() {
-        return this.lastTileRequest;
-    }
-
-    /** @param mapRequest the mapRequest to set */
-    @Deprecated
-    public void setTileRequest(GetTileRequest mapRequest) {
-        this.lastTileRequest = mapRequest;
-    }
-
     /** Get the Request time */
     public String getRequestedTime() {
         return this.requestedTime;
@@ -727,8 +712,6 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
                 tileRequest.setRequestedBBox(envelope);
                 tileRequest.setRequestedTime(time);
                 tileRequest.setFormat(format);
-
-                WMTSCoverageReader.this.lastTileRequest = tileRequest;
 
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.log(Level.FINE, "Issuing request: " + tileRequest.getFinalURL());

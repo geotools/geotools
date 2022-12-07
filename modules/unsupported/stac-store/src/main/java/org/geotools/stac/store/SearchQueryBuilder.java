@@ -61,6 +61,11 @@ class SearchQueryBuilder {
     private static final ReferencedEnvelope WORLD =
             new ReferencedEnvelope(-180, 180, -90, 90, WGS84);
 
+    private static final String TYPE = "type";
+    private static final String ID = "id";
+    private static final String BBOX = "bbox";
+    private static final String GEOMETRY = "geometry";
+
     private final SimpleFeatureType schema;
     private final STACDataStore store;
 
@@ -161,7 +166,7 @@ class SearchQueryBuilder {
                     }
                 }
             } catch (FactoryException | TransformException e) {
-                throw new RuntimeException("Failed to setup the bbox filter", e);
+                throw new RuntimeException("Failed to setup the " + BBOX + " filter", e);
             }
         }
 
@@ -177,18 +182,41 @@ class SearchQueryBuilder {
                 }
                 List<String> fields =
                         nameList.stream()
-                                .map(n -> n.equals("geometry") ? n : "properties." + n)
+                                .map(n -> propertyToField(n))
+                                .map(n -> n.replace('/', '.'))
                                 .collect(Collectors.toList());
-                fields.add("type"); // some servers would even remove this field if not included!
-                fields.add("id"); // and this as well
-                fields.add(
-                        "-links"); // some servers like to return the links no matter what instead
+                fields.add(TYPE); // some servers would even remove this field if not included!
+                fields.add(ID); // and this as well
+                fields.add("-" + BBOX); // no need for the top level bbox
+                if (nameList.stream().noneMatch(n -> n.startsWith("properties"))) {
+                    fields.add("-properties");
+                }
+                if (fields.stream().noneMatch(n -> n.equals(STACFeatureSource.ASSETS))) {
+                    // assets is large, remove if not requested. There migth be properties
+                    // inside assets, it's better to say "assets.my.properties,-assets" to
+                    // ensure the other assets properties are not returned
+                    fields.add("-assets");
+                }
+                fields.add("-links"); // some servers like to return the links no matter what
+
                 sq.setFields(fields);
 
             } else if (strict) return null;
         }
 
         return Pair.of(sq, post);
+    }
+
+    /**
+     * Most properties are found under "properties" but a few are top level. They need different
+     * paths in the JSON structure.
+     */
+    private static String propertyToField(String n) {
+        return n.equals(GEOMETRY)
+                        || n.equals(STACFeatureSource.ASSETS)
+                        || n.startsWith(STACFeatureSource.ASSETS + "/")
+                ? n
+                : "properties." + n;
     }
 
     private String getCollectionId(Query query) {

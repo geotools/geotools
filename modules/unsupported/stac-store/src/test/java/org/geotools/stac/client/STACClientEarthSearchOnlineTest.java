@@ -84,9 +84,9 @@ public class STACClientEarthSearchOnlineTest extends AbstractSTACClientOnlineTes
                         .findFirst()
                         .get();
         assertEquals(
-                "Sentinel-2a and Sentinel-2b imagery, processed to Level 2A (Surface Reflectance)",
+                "Global Sentinel-2 data from the Multispectral Instrument (MSI) onboard Sentinel 2",
                 s2.getDescription());
-        assertEquals("Sentinel 2 L2A", s2.getTitle());
+        assertEquals("Sentinel 2 Level 2A", s2.getTitle());
         CollectionExtent extent = s2.getExtent();
         assertEquals(Arrays.asList(-180d, -90d, 180d, 90d), extent.getSpatial().getBbox().get(0));
         List<Date> interval = extent.getTemporal().getInterval().get(0);

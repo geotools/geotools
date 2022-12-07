@@ -66,16 +66,24 @@ public class STACFeatureSourceTest extends AbstractSTACStoreTest {
             BASE_URL
                     + "/search?bbox=50.0,12.0,50.001,12.001&collections=S2_L2A_MAJA&datetime=2022-07-22T10:05:59.024Z/2022-07-22T10:05:59.025Z&f=application/geo%2Bjson&limit=1000";
 
-    private static String MAJA_PROPERTY_SELECTED =
-            MAJA_SPACE_TIME + "&fields=geometry,properties.datetime,type,id,-links";
+    private static final String DATETIME_FIELDS =
+            "&fields=geometry,properties.datetime,type,id,-bbox,-properties,-assets,-links";
+    private static String MAJA_PROPERTY_SELECTED = MAJA_SPACE_TIME + DATETIME_FIELDS;
+
+    private static final String DATETIME_MINMAX_FIELDS =
+            "&fields=properties.datetime,type,id,-bbox,-properties,-assets,-links";
 
     private static String MAJA_MIN =
             BASE_URL
-                    + "/search?collections=S2_L2A_MAJA&f=application/geo%2Bjson&limit=1&fields=properties.datetime,type,id,-links&sortby=datetime";
+                    + "/search?collections=S2_L2A_MAJA&f=application/geo%2Bjson&limit=1"
+                    + DATETIME_MINMAX_FIELDS
+                    + "&sortby=datetime";
 
     private static String MAJA_MAX =
             BASE_URL
-                    + "/search?collections=S2_L2A_MAJA&f=application/geo%2Bjson&limit=1&fields=properties.datetime,type,id,-links&sortby=-datetime";
+                    + "/search?collections=S2_L2A_MAJA&f=application/geo%2Bjson&limit=1"
+                    + DATETIME_MINMAX_FIELDS
+                    + "&sortby=-datetime";
 
     private static String MAJA_PAGE_1 =
             BASE_URL + "/search?collections=S2_L2A_MAJA&f=application/geo%2Bjson&limit=10";

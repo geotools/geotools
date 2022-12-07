@@ -1328,6 +1328,12 @@ public class ImageMosaicConfigHandler {
                     String.valueOf(catalogConfigurationBean.isSkipExternalOverviews()));
         }
 
+        if (catalogConfigurationBean.isPropertySelectionEnabled()) {
+            properties.setProperty(
+                    Prop.PROPERTY_SELECTION,
+                    String.valueOf(catalogConfigurationBean.isPropertySelectionEnabled()));
+        }
+
         String filePath =
                 runConfiguration.getParameter(Prop.ROOT_MOSAIC_DIR)
                         + "/"
@@ -1536,6 +1542,8 @@ public class ImageMosaicConfigHandler {
             configBuilder.setCatalogConfigurationBean(catalogConfigurationBean);
             configBuilder.setCheckAuxiliaryMetadata(
                     IndexerUtils.getParameterAsBoolean(Prop.CHECK_AUXILIARY_METADATA, indexer));
+            catalogConfigurationBean.setPropertySelectionEnabled(
+                    IndexerUtils.getParameterAsBoolean(Prop.PROPERTY_SELECTION, indexer));
 
             currentConfigurationBean = configBuilder.getMosaicConfigurationBean();
             if (heterogeneousCRS) {

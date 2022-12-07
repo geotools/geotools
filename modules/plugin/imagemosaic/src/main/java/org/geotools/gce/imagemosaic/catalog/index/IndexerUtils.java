@@ -625,6 +625,7 @@ public class IndexerUtils {
         addProperty(Utils.Prop.RESOLUTION_ATTRIBUTE, props, parameters);
         addProperty(Utils.Prop.RESOLUTION_X_ATTRIBUTE, props, parameters);
         addProperty(Utils.Prop.RESOLUTION_Y_ATTRIBUTE, props, parameters);
+        addProperty(Utils.Prop.PROPERTY_SELECTION, props, parameters);
 
         // Additional domain attr
         if (props.containsKey(Utils.Prop.ADDITIONAL_DOMAIN_ATTRIBUTES)) {

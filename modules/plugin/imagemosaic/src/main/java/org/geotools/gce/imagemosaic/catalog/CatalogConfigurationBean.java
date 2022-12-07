@@ -73,6 +73,8 @@ public class CatalogConfigurationBean {
     private transient ImageReaderSpi resolvedSuggestedSPI;
     private transient ImageInputStreamSpi resolvedIsSPI;
 
+    private boolean propertySelectionEnabled;
+
     public CatalogConfigurationBean() {}
 
     public CatalogConfigurationBean(final CatalogConfigurationBean that) {
@@ -228,5 +230,13 @@ public class CatalogConfigurationBean {
 
     public String getName() {
         return name;
+    }
+
+    public boolean isPropertySelectionEnabled() {
+        return propertySelectionEnabled;
+    }
+
+    public void setPropertySelectionEnabled(boolean propertySelectionEnabled) {
+        this.propertySelectionEnabled = propertySelectionEnabled;
     }
 }

@@ -118,7 +118,15 @@ public class SearchQueryBuilderTest extends AbstractSTACStoreTest {
         assertEquals(Arrays.asList(MAJA), sq.getCollections());
         assertArrayEquals(new double[] {-180, -90, 180, 90}, sq.getBbox(), 0d);
         assertEquals(
-                Arrays.asList("geometry", "properties.datetime", "type", "id", "-links"),
+                Arrays.asList(
+                        "geometry",
+                        "properties.datetime",
+                        "type",
+                        "id",
+                        "-bbox",
+                        "-properties",
+                        "-assets",
+                        "-links"),
                 sq.getFields());
         assertEquals(ECQL.toFilter("foo > 10"), sq.getFilter());
         assertEquals("../2006-11-30T01:30:00Z", sq.getDatetime());

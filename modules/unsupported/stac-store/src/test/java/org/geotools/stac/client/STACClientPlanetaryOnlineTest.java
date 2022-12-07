@@ -151,7 +151,7 @@ public class STACClientPlanetaryOnlineTest extends AbstractSTACClientOnlineTest 
         search.setDatetime("2022-07-18T23:56:19.024000Z");
         search.setBbox(new double[] {173, 63, 174, 64});
         SimpleFeatureCollection fc = this.client.search(search, STACClient.SearchMode.GET);
-        assertEquals(9, fc.size());
+        assertEquals(8, fc.size());
 
         // test some basic properties
         SimpleFeature feature = DataUtilities.first(fc);

@@ -369,6 +369,8 @@ public class Utils {
 
         public static final String HETEROGENEOUS_CRS = "HeterogeneousCRS";
 
+        public static final String PROPERTY_SELECTION = "PropertySelection";
+
         public static final String GRANULE_COLLECTOR_FACTORY = "GranuleCollectorFactory";
 
         public static final String COG = "Cog";
@@ -938,6 +940,13 @@ public class Utils {
             catalogConfigurationBean.setSkipExternalOverviews(
                     Boolean.parseBoolean(
                             properties.getProperty(Prop.SKIP_EXTERNAL_OVERVIEWS, "false").trim()));
+        }
+
+        // property selection
+        if (!ignoreSome || !ignorePropertiesSet.contains(Prop.PROPERTY_SELECTION)) {
+            catalogConfigurationBean.setPropertySelectionEnabled(
+                    Boolean.parseBoolean(
+                            properties.getProperty(Prop.PROPERTY_SELECTION, "false").trim()));
         }
 
         // Also initialize the indexer here, since it will be needed later on.

@@ -6053,4 +6053,60 @@ public class ImageMosaicReaderTest {
             reader.dispose();
         }
     }
+
+    @Test
+    public void testPropertySelection() throws Exception {
+        final File workDir = new File("./target", "water_temp_selection");
+        if (!workDir.mkdir()) {
+            FileUtils.deleteDirectory(workDir);
+            assertTrue("Unable to create workdir:" + workDir, workDir.mkdir());
+        }
+        File zipFile = new File(workDir, "watertemp.zip");
+        FileUtils.copyFile(TestData.file(this, "watertemp.zip"), zipFile);
+        TestData.unzip(zipFile, workDir);
+
+        // append the parameter to the indexer.properties
+        try (FileWriter out = new FileWriter(new File(workDir, "indexer.properties"), true)) {
+            out.write(Prop.PROPERTY_SELECTION + "=true");
+            out.flush();
+        }
+
+        // read everything, will populate the cache
+        ImageMosaicReader reader = getReader(workDir);
+        GridCoverage2D coverage = reader.read(null);
+        coverage.dispose(true);
+
+        String name = reader.getGridCoverageNames()[0];
+        RasterManager rm = reader.getRasterManager(name);
+        assertTrue(
+                rm.getConfiguration().getCatalogConfigurationBean().isPropertySelectionEnabled());
+        rm.getGranuleCatalog()
+                .getGranuleDescriptors(
+                        new Query(name),
+                        (granule, feature) -> {
+                            SimpleFeature originator = granule.getOriginator();
+                            // mandatory properties are there
+                            assertNotNull(originator.getProperty("the_geom"));
+                            assertNotNull(originator.getProperty("location"));
+                            // others have been skipped
+                            assertNull(originator.getProperty("elevation"));
+                            assertNull(originator.getProperty("ingestion"));
+                        });
+
+        // however going straight onto the granules provides full properties
+        GranuleSource granules = reader.getGranules(name, true);
+        granules.getGranules(Query.ALL)
+                .accepts(
+                        f -> {
+                            // all properties are there
+                            assertNotNull(f.getProperty("the_geom"));
+                            assertNotNull(f.getProperty("location"));
+                            assertNotNull(f.getProperty("elevation"));
+                            assertNotNull(f.getProperty("ingestion"));
+                        },
+                        null);
+
+        // clean up
+        reader.dispose();
+    }
 }

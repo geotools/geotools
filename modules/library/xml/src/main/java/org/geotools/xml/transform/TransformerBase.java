@@ -36,6 +36,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
 import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.helpers.AttributesImpl;
 import org.xml.sax.helpers.NamespaceSupport;
@@ -959,6 +961,14 @@ public abstract class TransformerBase {
 
         public final Translator getTranslator() {
             return translator;
+        }
+
+        @Override
+        public void setFeature(String name, boolean value)
+                throws SAXNotRecognizedException, SAXNotSupportedException {
+            // no-op. The base XMLFilterImpl will throw an exception, so we must override this as
+            // Transformer implementations such as Saxonica's Saxon expect to at least switch on
+            // http://xml.org/sax/features/namespaces
         }
 
         @Override

@@ -19,7 +19,10 @@ package org.geotools.measure;
 import java.io.IOException;
 import java.text.ParsePosition;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.measure.Quantity;
 import javax.measure.Unit;
 import javax.measure.format.MeasurementParseException;
@@ -35,7 +38,14 @@ import tech.units.indriya.format.SimpleUnitFormat;
 public class BaseUnitFormatter extends SimpleUnitFormat implements UnitFormatter {
 
     private static final char MIDDLE_DOT = '\u00b7';
+    private static final char EXPONENT_ONE = '\u00b9';
+    private static final char EXPONENT_TWO = '\u00b2';
+    private static final char EXPONENT_THREE = '\u00b3';
+
     private SimpleUnitFormat delegateFormatter = SimpleUnitFormat.getNewInstance();
+
+    @Deprecated private Map<String, Unit<?>> nameToUnit = new HashMap<>();
+    @Deprecated private Map<Unit<?>, String> unitToName = new HashMap<>();
 
     /**
      * Create a new {@code BaseUnitFormatter} instance, initialized with provided the unit
@@ -79,10 +89,30 @@ public class BaseUnitFormatter extends SimpleUnitFormat implements UnitFormatter
         }
     }
 
+    /**
+     * @return an immutable map that shows the units (associated with their symbols) that this unit
+     *     formatter contains
+     */
+    @Deprecated
+    public Map<Unit<?>, String> getUnitToSymbolMap() {
+        return Collections.unmodifiableMap(this.unitToName);
+    }
+
+    /**
+     * @return an immutable map that shows the symbols (associated with their units) that this unit
+     *     formatter contains
+     */
+    @Deprecated
+    public Map<String, Unit<?>> getSymbolToUnitMap() {
+        return Collections.unmodifiableMap(this.nameToUnit);
+    }
+
     /** Defaults to being a no-op, subclasses can override */
     protected void addUnit(Unit<?> unit) {}
 
     private void addUnit(Unit<?> unit, String unitSymbol, PrefixDefinition prefix) {
+        this.nameToUnit.put(unitSymbol, unit);
+        this.unitToName.put(unit, unitSymbol);
         Unit<?> prefixedUnit = unit.prefix(prefix.getPrefix());
         String prefixString = prefix.getPrefix().getSymbol();
         String prefixedSymbol = prefixString + unitSymbol;
@@ -93,6 +123,8 @@ public class BaseUnitFormatter extends SimpleUnitFormat implements UnitFormatter
     }
 
     private void addAlias(Unit<?> unit, String unitSymbol, PrefixDefinition prefix) {
+        this.nameToUnit.put(unitSymbol, unit);
+        this.unitToName.put(unit, unitSymbol);
         Unit<?> prefixedUnit = unit.prefix(prefix.getPrefix());
         String prefixString = prefix.getPrefix().getSymbol();
         String prefixedSymbol = prefixString + unitSymbol;
@@ -121,6 +153,8 @@ public class BaseUnitFormatter extends SimpleUnitFormat implements UnitFormatter
 
     @Override
     public void label(Unit<?> unit, String label) {
+        nameToUnit.put(label, unit);
+        unitToName.put(unit, label);
         delegateFormatter.label(unit, label);
         addUnit(unit);
     }
@@ -142,6 +176,7 @@ public class BaseUnitFormatter extends SimpleUnitFormat implements UnitFormatter
 
     @Override
     public void alias(Unit<?> unit, String alias) {
+        nameToUnit.put(alias, unit);
         delegateFormatter.alias(unit, alias);
     }
 
@@ -163,9 +198,9 @@ public class BaseUnitFormatter extends SimpleUnitFormat implements UnitFormatter
                         && (ch != ')')
                         && (ch != '[')
                         && (ch != ']')
-                        && (ch != '\u00b9')
-                        && (ch != '\u00b2')
-                        && (ch != '\u00b3')
+                        && (ch != EXPONENT_ONE)
+                        && (ch != EXPONENT_TWO)
+                        && (ch != EXPONENT_THREE)
                         && (ch != '^')
                         && (ch != '+')
                         && (ch != '-'));

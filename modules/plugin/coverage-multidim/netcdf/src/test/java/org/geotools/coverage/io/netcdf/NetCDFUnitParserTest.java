@@ -168,7 +168,7 @@ public class NetCDFUnitParserTest {
             // the normal instance should be isolated, the configuration of the the NetCDF
             // unit parse should not affect the normal parser
             SimpleUnitFormat instance = SimpleUnitFormat.getInstance();
-            instance.parse("Degree");
+            instance.parse("degree");
         }
 
         @Test

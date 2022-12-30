@@ -16,6 +16,7 @@
  */
 package org.geotools.stac.store;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Optional;
@@ -55,6 +56,7 @@ import org.opengis.filter.sort.SortOrder;
 public class STACFeatureSource extends ContentFeatureSource {
 
     static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    static final String ASSETS = "assets";
 
     private final STACClient client;
     private final SearchQueryBuilder queryBuilder;
@@ -149,8 +151,10 @@ public class STACFeatureSource extends ContentFeatureSource {
         SimpleFeatureCollection fc = client.search(sq, getDataStore().getSearchMode());
         SimpleFeatureType rawSchema = fc.getSchema();
 
-        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        SimpleFeatureTypeBuilder tb =
+                new SimpleFeatureTypeBuilder(new STACFeatureTypeFactoryImpl());
         tb.init(rawSchema);
+        tb.add(ASSETS, ObjectNode.class);
         tb.setName(entry.getTypeName());
         return tb.buildFeatureType();
     }
@@ -197,6 +201,11 @@ public class STACFeatureSource extends ContentFeatureSource {
         SimpleFeatureCollection fc = client.search(sq, getDataStore().getSearchMode(), getSchema());
         SimpleFeatureReader result = new CollectionReader(fc);
 
+        // map out assets if necessary
+        if (sq.getFields() != null && sq.getFields().stream().anyMatch(f -> usesAssets(f))) {
+            result = new AssetsMappingReader(getSchema(), result);
+        }
+
         // the hard limit must be applied before filtering, or we'll fetch more features
         int hardLimit = getDataStore().getHardLimit();
         if (hardLimit > 0) {
@@ -224,6 +233,10 @@ public class STACFeatureSource extends ContentFeatureSource {
             result = DataUtilities.simple(new MaxFeatureReader<>(result, max));
 
         return result;
+    }
+
+    private static boolean usesAssets(String f) {
+        return f.equals(STACFeatureSource.ASSETS) || f.startsWith(STACFeatureSource.ASSETS + ".");
     }
 
     @Override

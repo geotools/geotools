@@ -100,10 +100,9 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
         request.setSortBy(query.getSortBy());
 
         String srsName = null;
-
         request.setSrsName(srsName);
 
-        return new WFSContentComplexFeatureCollection(request, schema, name);
+        return new WFSContentComplexFeatureCollection(request, schema, name, client);
     }
 
     @Override

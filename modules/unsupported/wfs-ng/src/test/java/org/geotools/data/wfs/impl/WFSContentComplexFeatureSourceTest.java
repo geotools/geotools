@@ -13,11 +13,14 @@
  */
 package org.geotools.data.wfs.impl;
 
+import java.io.ByteArrayOutputStream;
 import java.net.URL;
+import javax.xml.namespace.QName;
 import org.geotools.TestData;
 import org.geotools.data.Query;
 import org.geotools.data.wfs.TestHttpClient;
 import org.geotools.data.wfs.TestWFSClient;
+import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
@@ -53,15 +56,22 @@ public class WFSContentComplexFeatureSourceTest {
             new NameImpl(
                     "http://skjema.geonorge.no/SOSI/produktspesifikasjon/StedsnavnForVanligBruk/20181115",
                     STED);
+
+    private static final QName REMOTE_STED_NAME =
+            new QName(STED_NAME.getNamespaceURI(), STED_NAME.getLocalPart(), "app");
+
     private static final String GEOM_FIELD_NAME = "posisjon";
 
     private static FilterFactory ff = CommonFactoryFinder.getFilterFactory2();
 
     private static final String DEFAULT_SRS = "urn:ogc:def:crs:EPSG::4258";
 
+    private static final Filter FILTER =
+            ff.bbox(GEOM_FIELD_NAME, 58.71, 58.73, 7.39, 7.41, "EPSG:4258");
+
     @Test
     public void testGetFeaturesWithoutArgument() throws Exception {
-        final WFSClient client = createWFSClient();
+        final WFSClient client = createWFSClient(true);
         final WFSContentDataAccess dataAccess = createDataAccess(client);
 
         WFSContentComplexFeatureSource featureSource =
@@ -73,14 +83,13 @@ public class WFSContentComplexFeatureSourceTest {
 
     @Test
     public void testGetFeaturesWithFilter() throws Exception {
-        final WFSClient client = createWFSClient();
+        final WFSClient client = createWFSClient(false);
         final WFSContentDataAccess dataAccess = createDataAccess(client);
 
         WFSContentComplexFeatureSource featureSource =
                 new WFSContentComplexFeatureSource(STED_NAME, client, dataAccess);
 
-        Filter filter = ff.bbox(GEOM_FIELD_NAME, 58.71, 58.73, 7.39, 7.41, "EPSG:4258");
-        FeatureCollection<FeatureType, Feature> collection = featureSource.getFeatures(filter);
+        FeatureCollection<FeatureType, Feature> collection = featureSource.getFeatures(FILTER);
         Assert.assertNotNull(collection);
 
         try (FeatureIterator<Feature> features = collection.features()) {
@@ -91,7 +100,7 @@ public class WFSContentComplexFeatureSourceTest {
 
     @Test
     public void testGetFeaturesWithNameQuery() throws Exception {
-        final WFSClient client = createWFSClient();
+        final WFSClient client = createWFSClient(true);
         final WFSContentDataAccess dataAccess = createDataAccess(client);
 
         WFSContentComplexFeatureSource featureSource =
@@ -110,7 +119,7 @@ public class WFSContentComplexFeatureSourceTest {
 
     @Test
     public void testGetBounds() throws Exception {
-        final WFSClient client = createWFSClient();
+        final WFSClient client = createWFSClient(true);
         final WFSContentDataAccess dataAccess = createDataAccess(client);
 
         ReferencedEnvelope envelope = dataAccess.getFeatureSource(STED_NAME).getBounds();
@@ -148,7 +157,7 @@ public class WFSContentComplexFeatureSourceTest {
         Assert.assertEquals(actual.getMaxY(), test.getMaxY(), 0.1);
     }
 
-    private TestWFSClient createWFSClient() throws Exception {
+    private TestWFSClient createWFSClient(boolean usingGet) throws Exception {
         final URL capabilities = new URL("https://wfs.geonorge.no/skwms1/wfs.stedsnavn");
 
         TestHttpClient mockHttp = new TestHttpClient();
@@ -159,6 +168,11 @@ public class WFSContentComplexFeatureSourceTest {
                         TestData.file(TestHttpClient.class, "KartverketNo/GetCapabilities.xml"),
                         "text/xml"));
 
+        TestWFSClient client = new TestWFSClient(capabilities, mockHttp);
+        if (usingGet) {
+            client.setProtocol(false); // Http GET method
+        }
+
         mockHttp.expectGet(
                 new URL(
                         "https://wfs.geonorge.no/skwms1/wfs.stedsnavn?REQUEST=GetFeature&RESULTTYPE=RESULTS&OUTPUTFORMAT=application%2Fgml%2Bxml%3B+version%3D3.2&VERSION=2.0.0&TYPENAMES=app%3ASted&SERVICE=WFS"),
@@ -166,15 +180,21 @@ public class WFSContentComplexFeatureSourceTest {
                         TestData.file(TestHttpClient.class, "KartverketNo/GetFeature_sted.xml"),
                         "text/xml"));
 
-        mockHttp.expectGet(
-                new URL(
-                        "https://wfs.geonorge.no/skwms1/wfs.stedsnavn?FILTER=%3Cfes%3AFilter+xmlns%3Axs%3D%22http%3A%2F%2Fwww.w3.org%2F2001%2FXMLSchema%22+xmlns%3Afes%3D%22http%3A%2F%2Fwww.opengis.net%2Ffes%2F2.0%22+xmlns%3Agml%3D%22http%3A%2F%2Fwww.opengis.net%2Fgml%2F3.2%22%3E%3Cfes%3ABBOX%3E%3Cfes%3AValueReference%3Eposisjon%3C%2Ffes%3AValueReference%3E%3Cgml%3AEnvelope+srsDimension%3D%222%22+srsName%3D%22urn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A4258%22%3E%3Cgml%3AlowerCorner%3E7.39+7.41%3C%2Fgml%3AlowerCorner%3E%3Cgml%3AupperCorner%3E58.71+58.73%3C%2Fgml%3AupperCorner%3E%3C%2Fgml%3AEnvelope%3E%3C%2Ffes%3ABBOX%3E%3C%2Ffes%3AFilter%3E&REQUEST=GetFeature&RESULTTYPE=RESULTS&OUTPUTFORMAT=application%2Fgml%2Bxml%3B+version%3D3.2&VERSION=2.0.0&TYPENAMES=app%3ASted&SERVICE=WFS"),
+        GetFeatureRequest request = client.createGetFeatureRequest();
+        request.setTypeName(REMOTE_STED_NAME);
+        request.setFilter(FILTER);
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        request.performPostOutput(out);
+        String postContent = out.toString(client.getConfig().getDefaultEncoding().name());
+
+        mockHttp.expectPost(
+                new URL("https://wfs.geonorge.no/skwms1/wfs.stedsnavn"),
+                postContent,
+                "text/xml",
                 new MockHttpResponse(
                         TestData.file(TestHttpClient.class, "KartverketNo/GetFeature_sted.xml"),
                         "text/xml"));
-
-        TestWFSClient client = new TestWFSClient(capabilities, mockHttp);
-        client.setProtocol(false); // Http GET method
 
         return client;
     }

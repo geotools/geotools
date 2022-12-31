@@ -26,6 +26,10 @@
       <groupId>systems.uom</groupId>
       <artifactId>systems-common</artifactId>
     </dependency>
+    <dependency>
+      <groupId>tech.units</groupId>
+      <artifactId>indriya</artifactId>
+    </dependency>
   </dependencies>
 
 </project>

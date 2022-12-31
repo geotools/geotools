@@ -17,9 +17,15 @@
 package org.geotools.measure;
 
 import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
 import static javax.measure.MetricPrefix.MICRO;
 import static org.junit.Assert.assertEquals;
+import static si.uom.SI.ASTRONOMICAL_UNIT;
+import static systems.uom.common.USCustomary.ELECTRICAL_HORSEPOWER;
+import static systems.uom.common.USCustomary.HORSEPOWER;
+import static systems.uom.common.USCustomary.REVOLUTION_PER_MINUTE;
+import static tech.units.indriya.unit.Units.CUBIC_METRE;
+import static tech.units.indriya.unit.Units.MONTH;
+import static tech.units.indriya.unit.Units.SQUARE_METRE;
 
 import java.lang.reflect.Field;
 import java.util.AbstractMap;
@@ -34,6 +40,7 @@ import java.util.stream.Stream;
 import javax.measure.Unit;
 import javax.measure.format.UnitFormat;
 import org.junit.Test;
+import si.uom.SI;
 import tech.units.indriya.format.SimpleUnitFormat;
 import tech.units.indriya.unit.Units;
 
@@ -45,6 +52,7 @@ public class UnitFormatterTest {
 
         List<Map.Entry<Unit<?>, String>> unitToName =
                 toSortedList1(getUnitToNameMap(simpleUnitFormat));
+        @SuppressWarnings("deprecation")
         List<Map.Entry<Unit<?>, String>> unitToSymbol =
                 toSortedList1(formatter.getUnitToSymbolMap());
 
@@ -52,12 +60,19 @@ public class UnitFormatterTest {
                 unitToName.stream()
                         .filter(entry -> !unitToSymbol.contains(entry))
                         .collect(Collectors.toList());
-        // only one kind of µ is added for those special-cased units in indriya:
         List<Map.Entry<Unit<?>, String>> indriyaBug =
                 asList(
+                        entry(ASTRONOMICAL_UNIT, "UA"),
+                        entry(HORSEPOWER, "hp"),
+                        entry(ELECTRICAL_HORSEPOWER, "hp(E)"),
+                        entry(Units.MONTH, "mo"),
+                        entry(SI.REVOLUTION, "rev"),
+                        entry(REVOLUTION_PER_MINUTE, "rpm"),
                         entry(Units.GRAM.prefix(MICRO), "µg"),
                         entry(Units.LITRE.prefix(MICRO), "µl"),
-                        entry(Units.CELSIUS.prefix(MICRO), "µ℃"));
+                        entry(Units.CELSIUS.prefix(MICRO), "µ℃"),
+                        entry(Units.OHM, "Ω"),
+                        entry(Units.CELSIUS, "℃"));
         List<Map.Entry<Unit<?>, String>> unitsOnlyInOldWithoutBugs =
                 new ArrayList<>(unitsOnlyInOld);
         unitsOnlyInOldWithoutBugs.removeAll(indriyaBug);
@@ -76,6 +91,7 @@ public class UnitFormatterTest {
 
         List<Map.Entry<Unit<?>, String>> unitToNameMap =
                 toSortedList1(getUnitToNameMap(simpleUnitFormat));
+        @SuppressWarnings("deprecation")
         List<Map.Entry<Unit<?>, String>> unitToSymbol =
                 toSortedList1(formatter.getUnitToSymbolMap());
 
@@ -86,9 +102,12 @@ public class UnitFormatterTest {
         // only one kind of µ is added for those special-cased units in indriya:
         List<Map.Entry<? extends Unit<?>, String>> indriyaBug =
                 asList(
+                        entry(HORSEPOWER, "HP"),
                         entry(Units.GRAM.prefix(MICRO), "μg"),
                         entry(Units.LITRE.prefix(MICRO), "μl"),
-                        entry(Units.CELSIUS.prefix(MICRO), "μ℃"));
+                        entry(Units.CELSIUS.prefix(MICRO), "μ℃"),
+                        entry(Units.OHM, "Ohm"),
+                        entry(Units.CELSIUS, "°C"));
         List<Map.Entry<Unit<?>, String>> unitsOnlyInNewWithoutBugs =
                 new ArrayList<>(unitsOnlyInNew);
         unitsOnlyInNewWithoutBugs.removeAll(indriyaBug);
@@ -107,6 +126,7 @@ public class UnitFormatterTest {
 
         List<Map.Entry<String, Unit<?>>> nameToUnitMap =
                 toSortedList2(getNameToUnitMap(simpleUnitFormat));
+        @SuppressWarnings("deprecation")
         List<Map.Entry<String, Unit<?>>> symbolToUnit =
                 toSortedList2(formatter.getSymbolToUnitMap());
 
@@ -114,9 +134,22 @@ public class UnitFormatterTest {
                 nameToUnitMap.stream()
                         .filter(entry -> !symbolToUnit.contains(entry))
                         .collect(Collectors.toList());
+        List<Map.Entry<String, Unit<?>>> indriyaBug =
+                asList(
+                        entry("hp", HORSEPOWER),
+                        entry("hp(E)", ELECTRICAL_HORSEPOWER),
+                        entry("month", MONTH),
+                        entry("mo", MONTH),
+                        entry("mon", MONTH),
+                        entry("m2", SQUARE_METRE),
+                        entry("rpm", REVOLUTION_PER_MINUTE),
+                        entry("m3", CUBIC_METRE));
+        List<Map.Entry<String, Unit<?>>> unitsOnlyInNewWithoutBug = new ArrayList<>(unitsOnlyInOld);
+        unitsOnlyInNewWithoutBug.removeAll(indriyaBug);
+
         assertEquals(
                 unitsOnlyInOld.size() + " names only in old: " + unitsOnlyInOld + "\n",
-                emptyList(),
+                indriyaBug,
                 unitsOnlyInOld);
     }
 
@@ -126,6 +159,7 @@ public class UnitFormatterTest {
 
         List<Map.Entry<String, Unit<?>>> nameToUnitMap =
                 toSortedList2(getNameToUnitMap(simpleUnitFormat));
+        @SuppressWarnings("deprecation")
         List<Map.Entry<String, Unit<?>>> symbolToUnit =
                 toSortedList2(formatter.getSymbolToUnitMap());
 
@@ -136,6 +170,7 @@ public class UnitFormatterTest {
         // only one kind of µ is added for those special-cased units in indriya:
         List<Map.Entry<String, Unit<?>>> indriyaBug =
                 asList(
+                        entry("HP", HORSEPOWER),
                         entry("μg", Units.GRAM.prefix(MICRO)),
                         entry("μl", Units.LITRE.prefix(MICRO)),
                         entry("μ°C", Units.CELSIUS.prefix(MICRO)),

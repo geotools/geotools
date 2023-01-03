@@ -13,6 +13,7 @@ This tutorial is available for:
    netbeans
    intellij
    maven
+   modules
 
 If you are interested in porting this tutorial to an additional IDE please :website:`contact us <getinvolved.html>` on the
 users list.

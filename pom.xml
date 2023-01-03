@@ -2403,7 +2403,6 @@
     <profile>
       <id>errorprone</id>
       <activation>
-        <jdk>(1.8,)</jdk>
         <property>
           <name>qa</name>
         </property>

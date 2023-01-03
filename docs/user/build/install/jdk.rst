@@ -42,6 +42,8 @@ RedHat OpenJDK            GPL                 x                            2024 
 Adopt OpenJDK             GPL                 x     x              x       2022 September
 ========================= =================== ===== ====== ======= ======= ==============
 
+.. warning:: Since the API changes from Java version to version, building a GeoTools version with a newer Java SDK is risky (you may accidentally use a new method). Pull requests are tested against Java 11 and Java 17, but we do ask you to be careful.
+
 Why JAVA_HOME does not work on Windows
 ''''''''''''''''''''''''''''''''''''''
 

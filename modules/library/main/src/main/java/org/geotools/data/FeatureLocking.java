@@ -93,9 +93,9 @@ public interface FeatureLocking<T extends FeatureType, F extends Feature>
     /**
      * FeatureLock features described by Filter.
      *
-     * <p>To implement WFS parcial Locking retrieve your features with a query operation first
+     * <p>To implement WFS partial Locking retrieve your features with a query operation first
      * before trying to lock them individually. If you are not into WFS please don't ask what
-     * parcial locking is.
+     * partial locking is.
      *
      * @param filter Filter describing the features to lock
      * @return Number of features locked

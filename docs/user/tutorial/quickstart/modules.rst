@@ -18,7 +18,9 @@ In addition to the steps performed in the other tutorials (Eclipse, IntelliJ, Ma
 #. Name our module ``org.geotools.tutorial.quickstart``:
 
    .. code-block:: java
+
         module org.geotools.tutorial.quickstart { }
+
 #. Then, add the modules we depend upon:
 
    .. literalinclude:: artifacts/module-info.java

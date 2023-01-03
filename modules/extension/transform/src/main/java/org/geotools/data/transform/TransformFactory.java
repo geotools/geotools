@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.data.simple.SimpleFeatureLocking;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.NameImpl;
@@ -62,6 +63,19 @@ public class TransformFactory {
     public static SimpleFeatureSource transform(
             SimpleFeatureSource source, Name name, List<Definition> definitions)
             throws IOException {
+        if (source instanceof SimpleFeatureLocking) {
+            try {
+                return new TransformFeatureLocking(
+                        (SimpleFeatureLocking) source, name, definitions);
+            } catch (IllegalArgumentException e) {
+                LOGGER.log(
+                        Level.FINEST,
+                        "Could not transform the provided locking, will turn it into a read "
+                                + "only SimpleFeatureSource instead (this is not a problem unless you "
+                                + "actually needed to write on the store)",
+                        e);
+            }
+        }
         if (source instanceof SimpleFeatureStore) {
             try {
                 return new TransformFeatureStore((SimpleFeatureStore) source, name, definitions);

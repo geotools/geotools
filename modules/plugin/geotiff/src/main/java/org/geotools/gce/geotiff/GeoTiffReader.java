@@ -36,6 +36,7 @@ package org.geotools.gce.geotiff;
 
 import it.geosolutions.imageio.core.BasicAuthURI;
 import it.geosolutions.imageio.maskband.DatasetLayout;
+import it.geosolutions.imageio.pam.PAMDataset;
 import it.geosolutions.imageio.plugins.tiff.TIFFImageReadParam;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.imageioimpl.plugins.cog.CogImageInputStreamSpi;
@@ -184,6 +185,9 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
 
     /** The ground control points, populated if there is no grid to world transformation */
     private GroundControlPoints gcps;
+
+    /** The band statistics provided by GDAL, either via sidecar file or custom TIFF tag */
+    private PAMDataset pamDataset;
 
     /**
      * Creates a new instance of GeoTiffReader
@@ -381,6 +385,9 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
 
             // collect scales and offsets is present
             collectScaleOffset(iioMetadata);
+
+            // collect PAM dataset if available
+            this.pamDataset = getPamDataset(getSourceAsFile(), iioMetadata);
 
             //
             // parse and set layout
@@ -998,7 +1005,11 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                     || bandNames.contains(bandName)) {
                 bandName = "Band" + (i + 1);
             }
+            bandNames.add(bandName);
             bands[i] = new GridSampleDimension(bandName, categories, null);
+        }
+        if (pamDataset != null) {
+            properties.put(GridCoverage2DReader.PAM_DATASET, pamDataset);
         }
         // creating coverage
         if (raster2Model != null) {

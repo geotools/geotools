@@ -17,13 +17,15 @@
 package org.geotools.gce.imagemosaic.egr;
 
 import java.awt.Rectangle;
+import java.awt.image.ColorModel;
+import java.awt.image.IndexColorModel;
+import java.awt.image.MultiPixelPackedSampleModel;
 import java.awt.image.RenderedImage;
-import java.util.ArrayList;
-import java.util.List;
 import javax.media.jai.ROI;
 import javax.media.jai.ROIShape;
 import org.geotools.gce.imagemosaic.GranuleDescriptor.GranuleLoadingResult;
 import org.geotools.geometry.jts.JTS;
+import org.geotools.image.ImageWorker;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -47,12 +49,6 @@ public class ROIExcessGranuleRemover {
     int tileHeight;
 
     CoordinateReferenceSystem targetCRS;
-
-    /**
-     * Holds the granule loading results until it becomes evident actual geometric computation is
-     * needed
-     */
-    List<ROI> roiBuffer = new ArrayList<>();
 
     public ROIExcessGranuleRemover(
             Rectangle rasterBounds,
@@ -84,16 +80,31 @@ public class ROIExcessGranuleRemover {
         // get the ROI
         ROI roi = result.getFootprint();
         if (roi == null) {
-            // TODO: check if the image has some form transparency (alpha band, palette
-            // with fully transparent pixels), binarize it and use it as a ROI?
-            final RenderedImage raster = result.getRaster();
-            Rectangle bounds =
-                    new Rectangle(
-                            raster.getMinX(),
-                            raster.getMinY(),
-                            raster.getWidth(),
-                            raster.getHeight());
-            roi = new ROIShape(bounds);
+            RenderedImage raster = result.getRaster();
+            ColorModel cm = raster.getColorModel();
+            if (cm.hasAlpha()) {
+                ImageWorker w = new ImageWorker(raster);
+                if (raster.getSampleModel() instanceof MultiPixelPackedSampleModel
+                        || raster.getColorModel() instanceof IndexColorModel) {
+                    w.forceComponentColorModel();
+                }
+                // doing this here gives the guarantee that I get the correct
+                // index for the transparency band
+                int[] alphaIndex = {raster.getColorModel().getNumComponents() - 1};
+
+                RenderedImage mask = w.retainBands(alphaIndex).binarize(127).getRenderedImage();
+                roi = new ROI(mask);
+            } else {
+                // TODO: check if the image has palette
+                // with fully transparent pixels, binarize it and use it as a ROI?
+                Rectangle bounds =
+                        new Rectangle(
+                                raster.getMinX(),
+                                raster.getMinY(),
+                                raster.getWidth(),
+                                raster.getHeight());
+                roi = new ROIShape(bounds);
+            }
         }
 
         boolean essential;

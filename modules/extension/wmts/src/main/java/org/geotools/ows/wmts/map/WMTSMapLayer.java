@@ -22,7 +22,6 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.GridReaderLayer;
 import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wmts.WebMapTileServer;
-import org.geotools.ows.wmts.request.GetTileRequest;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.Parameter;
 import org.geotools.styling.FeatureTypeStyle;
@@ -98,21 +97,9 @@ public class WMTSMapLayer extends GridReaderLayer {
         return super.getBounds();
     }
 
-    /** Returns the {@link WebMapTileServer} used by this layer */
-    @Deprecated
-    public WebMapTileServer getWebMapServer() {
-        return getReader().wmts;
-    }
-
     /** Returns the CRS used to make requests to the remote WMTS */
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
         return reader.getCoordinateReferenceSystem();
-    }
-
-    /** Returns last GetMap request performed by this layer */
-    @Deprecated
-    public GetTileRequest getLastGetMap() {
-        return getReader().getTileRequest();
     }
 
     /**

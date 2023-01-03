@@ -19,6 +19,7 @@ package org.geotools.gce.imagemosaic;
 
 import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
 import static org.geotools.util.URLs.fileToUrl;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasKey;
@@ -37,6 +38,7 @@ import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -82,6 +84,7 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.store.DecoratingDataStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.text.cql2.CQL;
+import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
@@ -341,6 +344,14 @@ public class HeterogenousCRSTest {
         assertEquals(2, image.getSampleModel().getNumBands());
         assertEquals(2, image.getColorModel().getNumComponents());
         assertEquals(2, image.getTile(0, 0).getNumBands());
+
+        // check source files
+        final String fileSource =
+                (String) coverage.getProperty(AbstractGridCoverage2DReader.FILE_SOURCE_PROPERTY);
+        assertThat(fileSource, containsString("utm32n.tiff"));
+        assertThat(fileSource, containsString("utm32s.tiff"));
+        assertThat(fileSource, containsString("utm33n.tiff"));
+        assertThat(fileSource, containsString("utm33s.tiff"));
 
         // cleanup
         coverage.dispose(true);
@@ -1092,5 +1103,57 @@ public class HeterogenousCRSTest {
         assertArrayEquals(
                 new SortBy[] {ff.sort("crs", SortOrder.ASCENDING)}, dataQuery.getSortBy());
         assertThat(dataQuery.getFilter(), Matchers.instanceOf(And.class));
+    }
+
+    /**
+     * Checks heteroCRS mosaic composition works even with property selection (e.g., the crs
+     * property is preserved)
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testHeteroPropertySelection() throws Exception {
+        String testLocation = "hetero_utm";
+        URL storeUrl = TestData.url(this, testLocation);
+
+        File testDataFolder = new File(storeUrl.toURI());
+        File testDirectory = crsMosaicFolder.newFolder(testLocation);
+        FileUtils.copyDirectory(testDataFolder, testDirectory);
+
+        // set up property selection
+        File indexerFile = new File(testDirectory, "indexer.properties");
+        Properties props = new Properties();
+        try (FileReader in = new FileReader(indexerFile)) {
+            props.load(in);
+        }
+        props.put(Utils.Prop.PROPERTY_SELECTION, "true");
+        try (FileWriter out = new FileWriter(indexerFile)) {
+            props.store(out, null);
+        }
+
+        ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, null);
+        Assert.assertNotNull(imReader);
+
+        // check we have the expected bounds and CRS
+        assertExpectedBounds(new ReferencedEnvelope(11, 13, -1, 1, WGS84), imReader);
+
+        // read a coverage and compare with expected image
+        final String expectedResultLocation = "hetero_utm_results/full.png";
+        assertExpectedMosaic(imReader, expectedResultLocation);
+
+        // check the granule descriptors have it all
+        RasterManager rm = imReader.getRasterManager("hetero_utm");
+        assertTrue(
+                rm.getConfiguration().getCatalogConfigurationBean().isPropertySelectionEnabled());
+        GranuleCatalog catalog = rm.getGranuleCatalog();
+        catalog.getGranuleDescriptors(
+                new Query("hetero_utm"),
+                (granule, feature) -> {
+                    assertNotNull(feature.getProperty("crs"));
+                    assertNotNull(granule.getOriginator().getProperty("crs"));
+                });
+
+        // done
+        imReader.dispose();
     }
 }

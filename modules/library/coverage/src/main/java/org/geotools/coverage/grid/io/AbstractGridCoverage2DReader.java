@@ -19,6 +19,13 @@ package org.geotools.coverage.grid.io;
 import it.geosolutions.imageio.core.CoreCommonImageMetadata;
 import it.geosolutions.imageio.maskband.DatasetLayout;
 import it.geosolutions.imageio.maskband.DefaultDatasetLayoutImpl;
+import it.geosolutions.imageio.pam.PAMDataset;
+import it.geosolutions.imageio.pam.PAMParser;
+import it.geosolutions.imageio.plugins.tiff.TIFFField;
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
+import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageMetadata;
+import it.geosolutions.imageioimpl.plugins.tiff.gdal.GDALMetadata;
+import it.geosolutions.imageioimpl.plugins.tiff.gdal.GDALMetadataParser;
 import it.geosolutions.jaiext.utilities.ImageLayout2;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
@@ -37,6 +44,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageReadParam;
@@ -116,6 +124,12 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
 
     /** Small number used for double comparisons */
     protected static double EPS = 1e-6;
+
+    /**
+     * Custom tag holding a XML that can be parsed into a {@link
+     * it.geosolutions.imageioimpl.plugins.tiff.gdal.GDALMetadata}
+     */
+    static final int GDAL_METADATA_TAG = 42112;
 
     /** This contains the number of overviews.aaa */
     protected int numOverviews = 0;
@@ -1360,5 +1374,85 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
             this.scales = ccm.getScales();
             this.offsets = ccm.getOffsets();
         }
+    }
+
+    /**
+     * Method that looks for an external {@link PAMDataset} first, and if not found, checks for an
+     * internal {@link it.geosolutions.imageioimpl.plugins.tiff.gdal.GDALMetadata} inside a custom
+     * tag.
+     *
+     * <p>The method is tolerant to invalid metadata contents and will log at INFO level in case of
+     * invalid metadata structure: there might be files with invalid metadata that used to be read
+     * just fine before PAM dataset reading was implemented.
+     */
+    public static PAMDataset getPamDataset(File sourceFile, IIOMetadata metadata) {
+        if (sourceFile != null && !ImageIOUtilities.isSkipExternalFilesLookup()) {
+            File pamFile = new File(sourceFile.getParent(), sourceFile.getName() + ".aux.xml");
+            if (pamFile.exists()) {
+                PAMParser pamParser = PAMParser.getInstance();
+
+                try {
+                    return pamParser.parsePAM(pamFile);
+                } catch (Exception e) {
+                    LOGGER.log(Level.INFO, "GDAL aux.xml metadata file could not be parsed", e);
+                }
+            }
+        }
+
+        // So far supported only by TIFF files, we can consider moving up to CoreCommonImageMetadata
+        // if more examples show up in different formats
+        if (metadata instanceof TIFFImageMetadata) {
+            PAMDataset gdalMetadata = getPamDataset((TIFFImageMetadata) metadata);
+            if (gdalMetadata != null) return gdalMetadata;
+        }
+
+        return null;
+    }
+
+    /** If available, parses the GDAL_METADATA tag contents and transforms it into a PAMDataset */
+    public static PAMDataset getPamDataset(TIFFImageMetadata metadata) {
+        TIFFImageMetadata tm = metadata;
+        TIFFField f = tm.getTIFFField(GDAL_METADATA_TAG);
+        if (f != null) {
+            try {
+                String xml = f.getAsString(0);
+                GDALMetadata gdalMetadata = GDALMetadataParser.parse(xml);
+                return toPamDataset(gdalMetadata);
+            } catch (Exception e) {
+                LOGGER.log(Level.INFO, "GDAL_METADATA tag contents could not be parsed", e);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Part of the information contained in {@link GDALMetadata} can be trasformed in a semantically
+     * equivalent PAM dataset
+     */
+    private static PAMDataset toPamDataset(GDALMetadata metadata) {
+        PAMDataset pam = new PAMDataset();
+        Map<Integer, PAMDataset.PAMRasterBand> bands = new TreeMap<>();
+        metadata.getItems().stream()
+                .filter(i -> i.getSample() != null)
+                .forEach(i -> collectItemIntoBands(bands, i));
+        pam.getPAMRasterBand().addAll(bands.values());
+        return pam;
+    }
+
+    private static void collectItemIntoBands(
+            Map<Integer, PAMDataset.PAMRasterBand> bands, GDALMetadata.Item i) {
+        int bandNumber = i.getSample() + 1;
+        PAMDataset.PAMRasterBand band = bands.computeIfAbsent(bandNumber, n -> getRasterBand(n));
+        PAMDataset.PAMRasterBand.Metadata.MDI mdi = new PAMDataset.PAMRasterBand.Metadata.MDI();
+        mdi.setKey(i.getName());
+        mdi.setValue(i.getValue());
+        if (band.getMetadata() == null) band.setMetadata(new PAMDataset.PAMRasterBand.Metadata());
+        band.getMetadata().getMDI().add(mdi);
+    }
+
+    private static PAMDataset.PAMRasterBand getRasterBand(Integer n) {
+        PAMDataset.PAMRasterBand result = new PAMDataset.PAMRasterBand();
+        result.setBand(n);
+        return result;
     }
 }

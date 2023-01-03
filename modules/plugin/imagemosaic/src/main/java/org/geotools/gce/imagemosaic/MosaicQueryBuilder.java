@@ -28,6 +28,7 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.Query;
 import org.geotools.filter.SortByImpl;
+import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBeans;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -36,6 +37,7 @@ import org.geotools.renderer.crs.ProjectionHandlerFinder;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
@@ -64,6 +66,7 @@ class MosaicQueryBuilder {
         handleSortByClause(query);
         handleMultiThreadedLoading(query);
         handleCoverageName(query);
+        handlePropertySelection(query);
 
         return query;
     }
@@ -295,5 +298,32 @@ class MosaicQueryBuilder {
             return clauses.toArray(new SortBy[] {});
         }
         return null;
+    }
+
+    private void handlePropertySelection(Query query) throws IOException {
+        CatalogConfigurationBean config =
+                rasterManager.getConfiguration().getCatalogConfigurationBean();
+        boolean selectProperties = config.isPropertySelectionEnabled();
+        // stack merge behavior needs extra attributes, for simplicity we disable property selection
+        if (selectProperties && request.getMergeBehavior() == MergeBehavior.FLAT) {
+            List<String> propertyNames = new ArrayList<>();
+            SimpleFeatureType schema =
+                    rasterManager.getGranuleCatalog().getType(rasterManager.getTypeName());
+            propertyNames.add(schema.getGeometryDescriptor().getLocalName());
+            propertyNames.add(getLocationAttributeProperty());
+            if (schema.getDescriptor("imageindex") != null) propertyNames.add("imageindex");
+            if (rasterManager.getCrsAttribute() != null) {
+                propertyNames.add(rasterManager.getCrsAttribute());
+            }
+
+            query.setPropertyNames(propertyNames);
+        }
+    }
+
+    private String getLocationAttributeProperty() {
+        return rasterManager
+                .getConfiguration()
+                .getCatalogConfigurationBean()
+                .getLocationAttribute();
     }
 }

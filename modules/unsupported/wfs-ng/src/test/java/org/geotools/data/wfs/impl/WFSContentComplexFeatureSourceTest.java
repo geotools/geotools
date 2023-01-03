@@ -13,29 +13,38 @@
  */
 package org.geotools.data.wfs.impl;
 
+import java.io.ByteArrayOutputStream;
 import java.net.URL;
+import javax.xml.namespace.QName;
 import org.geotools.TestData;
 import org.geotools.data.Query;
 import org.geotools.data.wfs.TestHttpClient;
 import org.geotools.data.wfs.TestWFSClient;
+import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.WFSClient;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.NameImpl;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.http.MockHttpResponse;
+import org.geotools.referencing.CRS;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
+import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory;
+import org.opengis.filter.FilterFactory2;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * WFS returning complex feature source
  *
- * <p>The response from calling GetConfiguration is mocked, but some schemas defined within that
- * response are downloaded to a temporary cache. Without this set we will get a Failed to resolve...
- * exception. Because of the schemas, we must also define preferred http method as GET.
+ * <p>The responses from calling GetConfiguration and GetFeatures is mocked, but some schemas
+ * defined within that response are downloaded using ordinary download. Therefore we're using a
+ * cached version of those schemas.
  *
  * @author Roar Brænden
  */
@@ -48,9 +57,21 @@ public class WFSContentComplexFeatureSourceTest {
                     "http://skjema.geonorge.no/SOSI/produktspesifikasjon/StedsnavnForVanligBruk/20181115",
                     STED);
 
+    private static final QName REMOTE_STED_NAME =
+            new QName(STED_NAME.getNamespaceURI(), STED_NAME.getLocalPart(), "app");
+
+    private static final String GEOM_FIELD_NAME = "posisjon";
+
+    private static FilterFactory ff = CommonFactoryFinder.getFilterFactory2();
+
+    private static final String DEFAULT_SRS = "urn:ogc:def:crs:EPSG::4258";
+
+    private static final Filter FILTER =
+            ff.bbox(GEOM_FIELD_NAME, 58.71, 58.73, 7.39, 7.41, "EPSG:4258");
+
     @Test
     public void testGetFeaturesWithoutArgument() throws Exception {
-        final WFSClient client = createWFSClient();
+        final WFSClient client = createWFSClient(true);
         final WFSContentDataAccess dataAccess = createDataAccess(client);
 
         WFSContentComplexFeatureSource featureSource =
@@ -61,9 +82,25 @@ public class WFSContentComplexFeatureSourceTest {
     }
 
     @Test
-    @Ignore
+    public void testGetFeaturesWithFilter() throws Exception {
+        final WFSClient client = createWFSClient(false);
+        final WFSContentDataAccess dataAccess = createDataAccess(client);
+
+        WFSContentComplexFeatureSource featureSource =
+                new WFSContentComplexFeatureSource(STED_NAME, client, dataAccess);
+
+        FeatureCollection<FeatureType, Feature> collection = featureSource.getFeatures(FILTER);
+        Assert.assertNotNull(collection);
+
+        try (FeatureIterator<Feature> features = collection.features()) {
+            Assert.assertTrue(features.hasNext());
+            Assert.assertNotNull(features.next());
+        }
+    }
+
+    @Test
     public void testGetFeaturesWithNameQuery() throws Exception {
-        final WFSClient client = createWFSClient();
+        final WFSClient client = createWFSClient(true);
         final WFSContentDataAccess dataAccess = createDataAccess(client);
 
         WFSContentComplexFeatureSource featureSource =
@@ -75,11 +112,52 @@ public class WFSContentComplexFeatureSourceTest {
         Assert.assertNotNull(collection);
 
         try (FeatureIterator<Feature> features = collection.features()) {
-            Assert.assertNotNull(features);
+            Assert.assertTrue(features.hasNext());
+            Assert.assertNotNull(features.next());
         }
     }
 
-    private TestWFSClient createWFSClient() throws Exception {
+    @Test
+    public void testGetBounds() throws Exception {
+        final WFSClient client = createWFSClient(true);
+        final WFSContentDataAccess dataAccess = createDataAccess(client);
+
+        ReferencedEnvelope envelope = dataAccess.getFeatureSource(STED_NAME).getBounds();
+        Assert.assertNotNull(envelope);
+        ReferencedEnvelope actual =
+                new ReferencedEnvelope(
+                        58.111523, 70.671561, 6.034809, 30.528068, CRS.decode(DEFAULT_SRS));
+        assertEnvelope(actual, envelope);
+
+        CoordinateReferenceSystem utm33 = CRS.decode("EPSG:32633");
+        Query reprojectQuery = new Query();
+        reprojectQuery.setCoordinateSystemReproject(utm33);
+
+        ReferencedEnvelope envelopeReprojected =
+                dataAccess.getFeatureSource(STED_NAME).getBounds(reprojectQuery);
+        ReferencedEnvelope actualReprojected = actual.transform(utm33, true);
+        assertEnvelope(actualReprojected, envelopeReprojected);
+
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        Query filteredQuery =
+                new Query(STED, ff.bbox("posisjon", 60.0, 20.0, 61.0, 21.0, DEFAULT_SRS));
+        ReferencedEnvelope envelopeFilter =
+                dataAccess.getFeatureSource(STED_NAME).getBounds(filteredQuery);
+        Assert.assertNull("We're assuming a null when using a filter.", envelopeFilter);
+    }
+
+    private void assertEnvelope(ReferencedEnvelope actual, ReferencedEnvelope test) {
+        Assert.assertTrue(
+                CRS.equalsIgnoreMetadata(
+                        actual.getCoordinateReferenceSystem(),
+                        test.getCoordinateReferenceSystem()));
+        Assert.assertEquals(actual.getMinX(), test.getMinX(), 0.1);
+        Assert.assertEquals(actual.getMaxX(), test.getMaxX(), 0.1);
+        Assert.assertEquals(actual.getMinY(), test.getMinY(), 0.1);
+        Assert.assertEquals(actual.getMaxY(), test.getMaxY(), 0.1);
+    }
+
+    private TestWFSClient createWFSClient(boolean usingGet) throws Exception {
         final URL capabilities = new URL("https://wfs.geonorge.no/skwms1/wfs.stedsnavn");
 
         TestHttpClient mockHttp = new TestHttpClient();
@@ -91,7 +169,32 @@ public class WFSContentComplexFeatureSourceTest {
                         "text/xml"));
 
         TestWFSClient client = new TestWFSClient(capabilities, mockHttp);
-        client.setProtocol(false); // Http GET method
+        if (usingGet) {
+            client.setProtocol(false); // Http GET method
+        }
+
+        mockHttp.expectGet(
+                new URL(
+                        "https://wfs.geonorge.no/skwms1/wfs.stedsnavn?REQUEST=GetFeature&RESULTTYPE=RESULTS&OUTPUTFORMAT=application%2Fgml%2Bxml%3B+version%3D3.2&VERSION=2.0.0&TYPENAMES=app%3ASted&SERVICE=WFS"),
+                new MockHttpResponse(
+                        TestData.file(TestHttpClient.class, "KartverketNo/GetFeature_sted.xml"),
+                        "text/xml"));
+
+        GetFeatureRequest request = client.createGetFeatureRequest();
+        request.setTypeName(REMOTE_STED_NAME);
+        request.setFilter(FILTER);
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        request.performPostOutput(out);
+        String postContent = out.toString(client.getConfig().getDefaultEncoding().name());
+
+        mockHttp.expectPost(
+                new URL("https://wfs.geonorge.no/skwms1/wfs.stedsnavn"),
+                postContent,
+                "text/xml",
+                new MockHttpResponse(
+                        TestData.file(TestHttpClient.class, "KartverketNo/GetFeature_sted.xml"),
+                        "text/xml"));
 
         return client;
     }

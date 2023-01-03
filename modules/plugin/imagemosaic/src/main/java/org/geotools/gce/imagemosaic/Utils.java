@@ -172,7 +172,7 @@ public class Utils {
 
     private static JAXBContext CONTEXT = null;
 
-    public static final String PAM_DATASET = "PamDataset";
+    @Deprecated public static final String PAM_DATASET = GridCoverage2DReader.PAM_DATASET;
 
     static final String DEFAULT = "default";
 
@@ -368,6 +368,8 @@ public class Utils {
         public static final String MOSAIC_CRS = "MosaicCRS";
 
         public static final String HETEROGENEOUS_CRS = "HeterogeneousCRS";
+
+        public static final String PROPERTY_SELECTION = "PropertySelection";
 
         public static final String GRANULE_COLLECTOR_FACTORY = "GranuleCollectorFactory";
 
@@ -938,6 +940,13 @@ public class Utils {
             catalogConfigurationBean.setSkipExternalOverviews(
                     Boolean.parseBoolean(
                             properties.getProperty(Prop.SKIP_EXTERNAL_OVERVIEWS, "false").trim()));
+        }
+
+        // property selection
+        if (!ignoreSome || !ignorePropertiesSet.contains(Prop.PROPERTY_SELECTION)) {
+            catalogConfigurationBean.setPropertySelectionEnabled(
+                    Boolean.parseBoolean(
+                            properties.getProperty(Prop.PROPERTY_SELECTION, "false").trim()));
         }
 
         // Also initialize the indexer here, since it will be needed later on.

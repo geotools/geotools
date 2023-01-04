@@ -1266,6 +1266,15 @@ public abstract class SQLDialect {
         // nothing to do
     }
 
+    /**
+     * Controls whether select hints should be added to queries on virtual tables.
+     *
+     * @return True if select hints hould be added to queries on virtual tables, false otherwise.
+     */
+    public boolean applyHintsOnVirtualTables() {
+        return false;
+    }
+
     /** @return Table types filtered from jdbc {@link DatabaseMetaData} */
     public String[] getDesiredTablesType() {
         return new String[] {"TABLE", "VIEW", "MATERIALIZED VIEW", "SYNONYM"};

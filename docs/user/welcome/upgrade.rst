@@ -35,7 +35,8 @@ GeoTools 29.x
 Java 11 as the minimum version
 ------------------------------
 
-GeoTools 29.x requires Java 11 as the min
+GeoTools 29.x requires Java 11 as the minimum version. If you are still using Java 8, you will have
+to remain on GeoTools 28.x or ealier.
 
 Deprecated functions removed
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^

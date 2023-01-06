@@ -822,6 +822,12 @@
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-dom</artifactId>
         <version>${batik.version}</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>xml-apis</artifactId>
+            <groupId>xml-apis</groupId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>

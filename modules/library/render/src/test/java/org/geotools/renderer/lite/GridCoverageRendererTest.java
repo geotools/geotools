@@ -622,7 +622,12 @@ public class GridCoverageRendererTest {
         File reference =
                 new File(
                         "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/googleMercatorLargerThanWorld.png");
-        ImageAssert.assertEquals(reference, image, 0);
+        int threshold = 0;
+        if ("aarch64".equals(System.getProperty("os.arch"))) {
+            // Due to differences in FP architecture different visual near the poles (GEOT-7290)
+            threshold = 305;
+        }
+        ImageAssert.assertEquals(reference, image, threshold);
     }
 
     @Test

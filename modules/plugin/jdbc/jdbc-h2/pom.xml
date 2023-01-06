@@ -60,11 +60,20 @@
           <artifactId>h2</artifactId>
           <groupId>com.h2database</groupId>
         </exclusion>
+        <exclusion>
+          <artifactId>hatbox</artifactId>
+          <groupId>net.sourceforge.hatbox</groupId>
+        </exclusion>
       </exclusions>
     </dependency>
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>net.sourceforge.hatbox</groupId>
+      <artifactId>hatbox</artifactId>
+      <version>1.0.b11</version>
     </dependency>
   </dependencies>
 

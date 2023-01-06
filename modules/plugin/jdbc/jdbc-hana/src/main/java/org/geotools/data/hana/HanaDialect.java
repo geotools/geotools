@@ -826,6 +826,11 @@ public class HanaDialect extends PreparedStatementSQLDialect {
     }
 
     @Override
+    public boolean applyHintsOnVirtualTables() {
+        return true;
+    }
+
+    @Override
     public String[] getDesiredTablesType() {
         return new String[] {"TABLE", "OLAP VIEW", "JOIN VIEW", "VIEW", "CALC VIEW", "SYNONYM"};
     }

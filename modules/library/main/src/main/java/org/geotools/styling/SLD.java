@@ -1584,8 +1584,8 @@ public class SLD {
      * Retrieve the default style from the given StyledLayerDescriptor.
      *
      * @param sld the StyledLayerDescriptor object
-     * @return the default style; or the first style if no default is defined; or null if there are
-     *     not styles
+     * @return the default style; or the first style if no default is defined; or {@code null} if
+     *     there are no styles
      */
     public static Style defaultStyle(StyledLayerDescriptor sld) {
         Style[] style = styles(sld);

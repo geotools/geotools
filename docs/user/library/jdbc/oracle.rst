@@ -80,7 +80,15 @@ Advanced
 |     ``timeout``       | a session with the database listener           |
 |                       | (milliseconds)                                 |
 +-----------------------+------------------------------------------------+
+|``Get remarks``        | Boolean flag specifies whether REMARKS         |
+|                       | metadata will be returned. Note that this      |
+|                       | parameter is not available in the JNDI version |
+|                       | of the DataStore.  Instead you can set a       |
+|                       | Connection Property called ``remarksReporting``|
+|                       | as described in the Oracle `documentation`_.   |
++-----------------------+------------------------------------------------+
 
+.. _documentation: https://docs.oracle.com/cd/A97335_02/apps.102/a83724/basic1.htm#1024018
 
 Example use::
   

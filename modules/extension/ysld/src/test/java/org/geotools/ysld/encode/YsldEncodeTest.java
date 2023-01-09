@@ -51,6 +51,7 @@ import org.geotools.styling.Mark;
 import org.geotools.styling.NamedLayer;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
+import org.geotools.styling.RemoteOWS;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
@@ -85,6 +86,52 @@ public class YsldEncodeTest {
     private static final double EPSILON = 0.0000000001;
 
     Logger LOG = Logging.getLogger("org.geotools.ysld.Ysld");
+
+    @Test
+    public void testRoot() throws Exception {
+        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+
+        StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
+        sld.setName("MySLD");
+        sld.setTitle("My SLD");
+        sld.setAbstract("Remote WMS user layer style definition");
+
+        UserLayer layer = styleFactory.createUserLayer();
+        RemoteOWS remote =
+                styleFactory.createRemoteOWS("WMS", "http://localhost:8080/geoserver/wms");
+        layer.setName("MyLayer");
+        layer.setRemoteOWS(remote);
+
+        sld.layers().add(layer);
+
+        Style style = styleFactory.createStyle();
+        style.setName("Ignored");
+        layer.userStyles().add(style);
+
+        Style defaultStyle = styleFactory.createStyle();
+        defaultStyle.setDefault(true);
+        defaultStyle.setName("MyStyle");
+        layer.userStyles().add(defaultStyle);
+
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld, out);
+
+        YamlMap obj = new YamlMap(YamlUtil.getSafeYaml().load(out.toString()));
+
+        assertThat(obj, yHasEntry("sld-name", lexEqualTo("MySLD")));
+        assertThat(obj, yHasEntry("sld-title", lexEqualTo("My SLD")));
+        assertThat(
+                obj,
+                yHasEntry("sld-abstract", lexEqualTo("Remote WMS user layer style definition")));
+
+        assertThat(obj, yHasEntry("user-name", lexEqualTo("MyLayer")));
+        assertThat(
+                obj, yHasEntry("user-remote", lexEqualTo("http://localhost:8080/geoserver/wms")));
+        assertThat(obj, yHasEntry("user-service", lexEqualTo("WMS")));
+
+        assertThat(obj, yHasEntry("user-name", lexEqualTo("MyLayer")));
+        assertThat(obj, yHasEntry("name", lexEqualTo("MyStyle")));
+    }
 
     @Test
     public void testFunction() throws Exception {

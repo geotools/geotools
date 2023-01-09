@@ -117,6 +117,7 @@ import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.grid.io.GranuleRemovalPolicy;
 import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.grid.io.GranuleStore;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.HarvestedSource;
 import org.geotools.coverage.grid.io.OverviewPolicy;
@@ -296,7 +297,6 @@ public class ImageMosaicReaderTest {
 
     /** Tests the {@link ImageMosaicReader} with default parameters for the various input params. */
     @Test
-    //        @Ignore
     public void alpha() throws Exception {
 
         final String testName = "alpha-";
@@ -452,7 +452,6 @@ public class ImageMosaicReaderTest {
 
     /** */
     @Test
-    // @Ignore
     public void readingResolutions() throws Exception {
         final AbstractGridFormat format = TestUtils.getFormat(overviewURL);
         final ImageMosaicReader reader = getReader(overviewURL, format);
@@ -477,7 +476,6 @@ public class ImageMosaicReaderTest {
     }
 
     @Test
-    // @Ignore
     public void timeElevationH2() throws Exception {
 
         final File workDir = new File(TestData.file(this, "."), "water_temp3");
@@ -620,7 +618,6 @@ public class ImageMosaicReaderTest {
      * the TypeName=MOSAICNAME into the generated MOSAICNAME.properties file
      */
     @Test
-    // @Ignore
     public void testTypeNameBackwardsCompatibility() throws Exception {
 
         final File workDir = new File(TestData.file(this, "."), "water_temp5");
@@ -1048,7 +1045,6 @@ public class ImageMosaicReaderTest {
 
     /** Simple test method accessing time and 2 custom dimensions for the sample dataset */
     @Test
-    // @Ignore
     public void timeAdditionalDim() throws Exception {
 
         final AbstractGridFormat format = TestUtils.getFormat(timeAdditionalDomainsURL);
@@ -1849,7 +1845,6 @@ public class ImageMosaicReaderTest {
      * => Pixel Size = (0.666666666666667,-0.666666666666667); 0 overviews
      */
     @Test
-    // @Ignore
     public void testHeterogeneousGranules() throws Exception {
 
         final AbstractGridFormat format = TestUtils.getFormat(heterogeneousGranulesURL);
@@ -1939,7 +1934,6 @@ public class ImageMosaicReaderTest {
     }
 
     @Test
-    // @Ignore
     public void errors() throws Exception {
         final Hints hints =
                 new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
@@ -2286,7 +2280,6 @@ public class ImageMosaicReaderTest {
     }
 
     @Test
-    // @Ignore
     public void testRequestInOut() throws Exception {
         final AbstractGridFormat format = TestUtils.getFormat(rgbAURL, null);
         final ImageMosaicReader reader = getReader(rgbAURL, format);
@@ -2470,7 +2463,6 @@ public class ImageMosaicReaderTest {
 
     /** Simple test method accessing time and 2 custom dimensions for the sample dataset */
     @Test
-    // @Ignore
     public void timeAdditionalDimNoResultsDueToWrongDim() throws Exception {
 
         final AbstractGridFormat format = TestUtils.getFormat(timeAdditionalDomainsURL);
@@ -4119,27 +4111,8 @@ public class ImageMosaicReaderTest {
         time.setValue(timeValues);
 
         GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {time});
-        Object object = coverage.getProperty(Utils.PAM_DATASET);
-        assertNotNull(object);
-        assertTrue(object instanceof PAMDataset);
-        PAMDataset dataset = (PAMDataset) object;
-        PAMRasterBand band = dataset.getPAMRasterBand().get(0);
-
-        PAMParser parser = PAMParser.getInstance();
-        assertEquals(
-                0, Double.parseDouble(parser.getMetadataValue(band, "STATISTICS_MINIMUM")), DELTA);
-        assertEquals(
-                255.0,
-                Double.parseDouble(parser.getMetadataValue(band, "STATISTICS_MAXIMUM")),
-                DELTA);
-        assertEquals(
-                73.0352,
-                Double.parseDouble(parser.getMetadataValue(band, "STATISTICS_MEAN")),
-                DELTA);
-        assertEquals(
-                84.3132,
-                Double.parseDouble(parser.getMetadataValue(band, "STATISTICS_STDDEV")),
-                DELTA);
+        Object object = coverage.getProperty(GridCoverage2DReader.PAM_DATASET);
+        checkPAMDataset(object, 73.0352, 84.3132);
 
         reader.dispose();
     }
@@ -4157,7 +4130,32 @@ public class ImageMosaicReaderTest {
         assertNotNull(metadataNames);
 
         GridCoverage2D coverage = reader.read(null);
-        Object object = coverage.getProperty(Utils.PAM_DATASET);
+        Object object = coverage.getProperty(GridCoverage2DReader.PAM_DATASET);
+        checkPAMDataset(object, 72.6912, 83.2542);
+
+        reader.dispose();
+    }
+
+    @Test
+    public void testPAMInternalMerged() throws Exception {
+        final URL timePamURL = TestData.url(this, "pam-internal");
+
+        final AbstractGridFormat format = TestUtils.getFormat(timePamURL);
+        assertNotNull(format);
+        ImageMosaicReader reader = getReader(timePamURL, format);
+        assertNotNull(format);
+
+        final String[] metadataNames = reader.getMetadataNames();
+        assertNotNull(metadataNames);
+
+        GridCoverage2D coverage = reader.read(null);
+        Object object = coverage.getProperty(GridCoverage2DReader.PAM_DATASET);
+        checkPAMDataset(object, 72.6912, 83.2542);
+
+        reader.dispose();
+    }
+
+    private static void checkPAMDataset(Object object, double mean, double stddev) {
         assertNotNull(object);
         assertTrue(object instanceof PAMDataset);
         PAMDataset dataset = (PAMDataset) object;
@@ -4171,15 +4169,11 @@ public class ImageMosaicReaderTest {
                 Double.parseDouble(parser.getMetadataValue(band, "STATISTICS_MAXIMUM")),
                 DELTA);
         assertEquals(
-                72.6912,
-                Double.parseDouble(parser.getMetadataValue(band, "STATISTICS_MEAN")),
-                DELTA);
+                mean, Double.parseDouble(parser.getMetadataValue(band, "STATISTICS_MEAN")), DELTA);
         assertEquals(
-                83.2542,
+                stddev,
                 Double.parseDouble(parser.getMetadataValue(band, "STATISTICS_STDDEV")),
                 DELTA);
-
-        reader.dispose();
     }
 
     @Test
@@ -6038,5 +6032,81 @@ public class ImageMosaicReaderTest {
 
         ImageAssert.assertEquals(rgbNonCached, rgbCached, 0);
         ImageAssert.assertEquals(grayNonCached, grayCached, 0);
+    }
+
+    @Test
+    public void testAlphaOverlap() throws Exception {
+        URL alphaOverlap = TestData.url(this, "alpha-overlap/");
+        final AbstractGridFormat format = TestUtils.getFormat(alphaOverlap);
+        File mosaicFile = URLs.urlToFile(alphaOverlap);
+        final ImageMosaicReader reader =
+                (ImageMosaicReader) format.getReader(mosaicFile.getAbsolutePath());
+        GridCoverage2D coverage = null;
+        try {
+            coverage = reader.read(null);
+            File sample =
+                    new File(
+                            "src/test/resources/org/geotools/gce/imagemosaic/test-data/rgba-overlap.png");
+            ImageAssert.assertEquals(sample, coverage.getRenderedImage(), 0);
+        } finally {
+            if (coverage != null) coverage.dispose(true);
+            reader.dispose();
+        }
+    }
+
+    @Test
+    public void testPropertySelection() throws Exception {
+        final File workDir = new File("./target", "water_temp_selection");
+        if (!workDir.mkdir()) {
+            FileUtils.deleteDirectory(workDir);
+            assertTrue("Unable to create workdir:" + workDir, workDir.mkdir());
+        }
+        File zipFile = new File(workDir, "watertemp.zip");
+        FileUtils.copyFile(TestData.file(this, "watertemp.zip"), zipFile);
+        TestData.unzip(zipFile, workDir);
+
+        // append the parameter to the indexer.properties
+        try (FileWriter out = new FileWriter(new File(workDir, "indexer.properties"), true)) {
+            out.write(Prop.PROPERTY_SELECTION + "=true");
+            out.flush();
+        }
+
+        // read everything, will populate the cache
+        ImageMosaicReader reader = getReader(workDir);
+        GridCoverage2D coverage = reader.read(null);
+        coverage.dispose(true);
+
+        String name = reader.getGridCoverageNames()[0];
+        RasterManager rm = reader.getRasterManager(name);
+        assertTrue(
+                rm.getConfiguration().getCatalogConfigurationBean().isPropertySelectionEnabled());
+        rm.getGranuleCatalog()
+                .getGranuleDescriptors(
+                        new Query(name),
+                        (granule, feature) -> {
+                            SimpleFeature originator = granule.getOriginator();
+                            // mandatory properties are there
+                            assertNotNull(originator.getProperty("the_geom"));
+                            assertNotNull(originator.getProperty("location"));
+                            // others have been skipped
+                            assertNull(originator.getProperty("elevation"));
+                            assertNull(originator.getProperty("ingestion"));
+                        });
+
+        // however going straight onto the granules provides full properties
+        GranuleSource granules = reader.getGranules(name, true);
+        granules.getGranules(Query.ALL)
+                .accepts(
+                        f -> {
+                            // all properties are there
+                            assertNotNull(f.getProperty("the_geom"));
+                            assertNotNull(f.getProperty("location"));
+                            assertNotNull(f.getProperty("elevation"));
+                            assertNotNull(f.getProperty("ingestion"));
+                        },
+                        null);
+
+        // clean up
+        reader.dispose();
     }
 }

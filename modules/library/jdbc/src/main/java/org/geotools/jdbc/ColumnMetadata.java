@@ -34,6 +34,8 @@ public class ColumnMetadata {
     boolean nullable;
     /** The native srid */
     Integer srid;
+    /** Column Remarks */
+    String remarks;
 
     public Class getBinding() {
         return binding;
@@ -89,5 +91,13 @@ public class ColumnMetadata {
 
     public void setRestriction(Filter restriction) {
         this.restriction = restriction;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 }

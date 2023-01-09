@@ -3501,8 +3501,10 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     }
 
     private void applySearchHints(SimpleFeatureType featureType, Query query, StringBuffer sql) {
-        // we can apply search hints only on real tables
-        if (virtualTables.containsKey(featureType.getTypeName())) {
+        // If there are virtual tables in the query, ask the dialect whether select hints should be
+        // omitted
+        if (virtualTables.containsKey(featureType.getTypeName())
+                && !dialect.applyHintsOnVirtualTables()) {
             return;
         }
 

@@ -35,7 +35,6 @@ import org.geotools.referencing.factory.ReferencingFactoryContainer;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.DimensionFilter;
-import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.util.Classes;
 import org.geotools.util.factory.Hints;
 import org.opengis.coverage.CannotEvaluateException;
@@ -481,21 +480,22 @@ public class GridGeometry2D extends GeneralGridGeometry {
     }
 
     /**
-     * Constructs a new two-dimensional grid geometry. A math transform will be computed
-     * automatically with an inverted <var>y</var> axis (i.e. {@code gridRange} and {@code
-     * userRange} are assumed to have <var>y</var> axis in opposite direction).
+     * Constructs a new two-dimensional grid geometry using java.awt objects. Initialising
+     * corresponding GeoTools objects if necessary, and calls {@linkplain
+     * #GridGeometry2D(GridEnvelope, Envelope)}
      *
      * @param gridRange The valid coordinate range of a grid coverage. Increasing <var>x</var>
      *     values goes right and increasing <var>y</var> values goes <strong>down</strong>.
-     * @param userRange The corresponding coordinate range in user coordinate. Increasing
-     *     <var>x</var> values goes right and increasing <var>y</var> values goes
-     *     <strong>up</strong>. This rectangle must contains entirely all pixels, i.e. the
-     *     rectangle's upper left corner must coincide with the upper left corner of the first pixel
-     *     and the rectangle's lower right corner must coincide with the lower right corner of the
-     *     last pixel.
+     * @param userRange The corresponding coordinate range in user coordinate.
      */
     public GridGeometry2D(final Rectangle gridRange, final Rectangle2D userRange) {
-        this(new GridEnvelope2D(gridRange), getMathTransform(gridRange, userRange), null);
+        this(
+                gridRange instanceof GridEnvelope2D
+                        ? (GridEnvelope2D) gridRange
+                        : new GridEnvelope2D(gridRange),
+                userRange instanceof Envelope
+                        ? (Envelope) userRange
+                        : new Envelope2D(null, userRange));
     }
 
     /**
@@ -513,21 +513,6 @@ public class GridGeometry2D extends GeneralGridGeometry {
             return (GridGeometry2D) other;
         }
         return new GridGeometry2D(other);
-    }
-
-    /**
-     * Workaround for RFE #4093999 ("Relax constraint on placement of this()/super() call in
-     * constructors").
-     */
-    private static MathTransform getMathTransform(
-            final Rectangle gridRange, final Rectangle2D userRange) {
-        final double scaleX = userRange.getWidth() / gridRange.getWidth();
-        final double scaleY = userRange.getHeight() / gridRange.getHeight();
-        final double transX = userRange.getMinX() - gridRange.x * scaleX;
-        final double transY = userRange.getMaxY() + gridRange.y * scaleY;
-        final AffineTransform tr = new AffineTransform(scaleX, 0, 0, -scaleY, transX, transY);
-        tr.translate(0.5, 0.5); // Maps to pixel center
-        return ProjectiveTransform.create(tr);
     }
 
     /**

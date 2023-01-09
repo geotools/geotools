@@ -23,16 +23,12 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
@@ -46,10 +42,13 @@ import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.data.wfs.WFSTestData;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.http.HTTPClient;
+import org.geotools.http.HTTPClientFinder;
+import org.geotools.http.HTTPResponse;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.CRS.AxisOrder;
+import org.geotools.test.OnlineTestSupport;
 import org.geotools.util.logging.Logging;
-import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -61,21 +60,21 @@ import org.opengis.filter.Id;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.geometry.BoundingBox;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** Online tests only run if {@link #SERVER_URL} can be reached. */
-public abstract class AbstractWfsDataStoreOnlineTest {
+/** Online tests only run if {@link #serverUrl} can be reached, and fixture file wfs is found */
+public abstract class AbstractWfsDataStoreOnlineTest extends OnlineTestSupport {
 
     private static final Logger LOGGER = Logging.getLogger(AbstractWfsDataStoreOnlineTest.class);
 
     protected static final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
-    private final String SERVER_URL;
+    private static final String FIXTURE_ID = "wfs";
+
+    private final String serverUrl;
 
     /** Check for availability only once: true, false, or null for unknown. */
-    protected static Boolean serviceAvailable = null;
+    protected static Map<String, Boolean> serviceAvailable = new HashMap<>();
 
     /** The DataStore under test, static so we create it only once */
     protected WFSDataStore wfs = null;
@@ -111,7 +110,7 @@ public abstract class AbstractWfsDataStoreOnlineTest {
             Id fidFilter,
             Filter spatialFilter,
             String axisOrder) {
-        this.SERVER_URL = serverURL;
+        this.serverUrl = serverURL;
         this.testType = testType;
         this.defaultGeometryName = defaultGeometryName;
         this.featureCount = featureCount;
@@ -121,33 +120,30 @@ public abstract class AbstractWfsDataStoreOnlineTest {
         this.spatialFilter = spatialFilter;
     }
 
-    @Before
-    public void setUp() throws IOException {
-        if (serviceAvailable == null) {
+    @Override
+    protected void connect() throws Exception {
+        if (!serviceAvailable.containsKey(serverUrl)) {
             // check for service availability only once
-            URL url = new URL(SERVER_URL);
-            serviceAvailable = Boolean.FALSE;
-
-            try (InputStream stream = url.openStream()) {
-                serviceAvailable = Boolean.TRUE;
-            } catch (Throwable t) {
-                LOGGER.log(
-                        Level.WARNING,
-                        "The test server is not available: "
-                                + SERVER_URL
-                                + ". "
-                                + getClass().getSimpleName()
-                                + " test disabled ");
-                url = null;
-                return;
+            URL url = new URL(serverUrl);
+            Boolean available = Boolean.FALSE;
+            HTTPClient client = HTTPClientFinder.createClient();
+            HTTPResponse response = client.get(url);
+            try {
+                response.getResponseStream();
+                available = Boolean.TRUE;
+            } catch (Exception e) {
+                LOGGER.warning(serverUrl + " not available. Tests will be skipped.");
+            } finally {
+                response.dispose();
+                serviceAvailable.put(serverUrl, available);
             }
         }
 
-        if (wfs == null && serviceAvailable.booleanValue()) {
-            LOGGER.info("Creating test datastore for " + SERVER_URL);
+        if (wfs == null && isOnline()) {
+            LOGGER.info("Creating test datastore for " + serverUrl);
 
             Map<String, Serializable> params = new HashMap<>();
-            params.put(WFSDataStoreFactory.URL.key, SERVER_URL);
+            params.put(WFSDataStoreFactory.URL.key, serverUrl);
             setUpParameters(params);
 
             WFSDataStoreFactory dataStoreFactory = new WFSDataStoreFactory();
@@ -156,17 +152,30 @@ public abstract class AbstractWfsDataStoreOnlineTest {
         }
     }
 
+    @Override
+    protected String getFixtureId() {
+        return FIXTURE_ID;
+    }
+
+    @Override
+    protected boolean isOnline() {
+        if (!serviceAvailable.containsKey(serverUrl)) {
+            try {
+                connect();
+            } catch (Exception e) {
+                return false;
+            }
+        }
+        return serviceAvailable.get(serverUrl).booleanValue();
+    }
+
     protected void setUpParameters(Map<String, Serializable> params) {
         params.put(WFSDataStoreFactory.GML_COMPATIBLE_TYPENAMES.key, true);
         params.put(WFSDataStoreFactory.AXIS_ORDER.key, axisOrder);
     }
 
     @Test
-    public void testFeatureSourceInfo()
-            throws IOException, NoSuchAuthorityCodeException, FactoryException {
-        if (Boolean.FALSE.equals(serviceAvailable)) {
-            return;
-        }
+    public void testFeatureSourceInfo() throws Exception {
 
         SimpleFeatureSource featureSource = wfs.getFeatureSource(testType.FEATURETYPENAME);
 
@@ -182,11 +191,7 @@ public abstract class AbstractWfsDataStoreOnlineTest {
     }
 
     @Test
-    public void testFeatureSourceGetBounds()
-            throws IOException, NoSuchAuthorityCodeException, FactoryException {
-        if (Boolean.FALSE.equals(serviceAvailable)) {
-            return;
-        }
+    public void testFeatureSourceGetBounds() throws Exception {
 
         SimpleFeatureSource featureSource = wfs.getFeatureSource(testType.FEATURETYPENAME);
         assertNotNull(featureSource);
@@ -214,10 +219,7 @@ public abstract class AbstractWfsDataStoreOnlineTest {
     }
 
     @Test
-    public void testFeatureSourceGetCountAll() throws IOException {
-        if (Boolean.FALSE.equals(serviceAvailable)) {
-            return;
-        }
+    public void testFeatureSourceGetCountAll() throws Exception {
 
         SimpleFeatureSource featureSource = wfs.getFeatureSource(testType.FEATURETYPENAME);
         assertNotNull(featureSource);
@@ -230,10 +232,7 @@ public abstract class AbstractWfsDataStoreOnlineTest {
      * filter is not null.
      */
     @Test
-    public void testFeatureSourceGetCountFilter() throws IOException {
-        if (Boolean.FALSE.equals(serviceAvailable)) {
-            return;
-        }
+    public void testFeatureSourceGetCountFilter() throws Exception {
 
         if (featureCount >= 0) { // server doesn't support feature count anyway, skip
             if (fidFilter == null) {
@@ -254,10 +253,8 @@ public abstract class AbstractWfsDataStoreOnlineTest {
     }
 
     @Test
-    public void testFeatureSourceGetFeatures() throws IOException {
-        if (Boolean.FALSE.equals(serviceAvailable)) {
-            return;
-        }
+    public void testFeatureSourceGetFeatures() throws Exception {
+
         if (fidFilter == null) {
             LOGGER.info(
                     "Ignoring testFeatureSourceGetCountFilter "
@@ -288,10 +285,7 @@ public abstract class AbstractWfsDataStoreOnlineTest {
     }
 
     @Test
-    public void testFeatureSourceGetFeaturesFilter() throws IOException {
-        if (Boolean.FALSE.equals(serviceAvailable)) {
-            return;
-        }
+    public void testFeatureSourceGetFeaturesFilter() throws Exception {
 
         if (spatialFilter == null) {
             LOGGER.info(
@@ -321,10 +315,7 @@ public abstract class AbstractWfsDataStoreOnlineTest {
     }
 
     @Test
-    public void testTypes() throws IOException, NoSuchElementException {
-        if (Boolean.FALSE.equals(serviceAvailable)) {
-            return;
-        }
+    public void testTypes() throws Exception {
 
         assertTrue(wfs instanceof WFSDataStore);
 
@@ -366,10 +357,8 @@ public abstract class AbstractWfsDataStoreOnlineTest {
     }
 
     @Test
-    public void testSingleType() throws IOException, NoSuchElementException {
-        if (Boolean.FALSE.equals(serviceAvailable)) {
-            return;
-        }
+    public void testSingleType() throws Exception {
+
         SimpleFeatureType type = wfs.getSchema(testType.FEATURETYPENAME);
         type.getTypeName();
         type.getName().getNamespaceURI();
@@ -401,9 +390,7 @@ public abstract class AbstractWfsDataStoreOnlineTest {
     /** {@link BBOX} support? */
     @Test
     public void testDataStoreSupportsPlainBBOXInterface() throws Exception {
-        if (Boolean.FALSE.equals(serviceAvailable)) {
-            return;
-        }
+
         final SimpleFeatureType ft = wfs.getSchema(testType.FEATURETYPENAME);
         SimpleFeatureSource featureSource = wfs.getFeatureSource(testType.FEATURETYPENAME);
         final ReferencedEnvelope bounds = featureSource.getBounds();
@@ -487,9 +474,6 @@ public abstract class AbstractWfsDataStoreOnlineTest {
 
     @Test
     public void testDataStoreHandlesAxisFlipping() throws Exception {
-        if (Boolean.FALSE.equals(serviceAvailable)) {
-            return;
-        }
 
         final SimpleFeatureType ft = wfs.getSchema(testType.FEATURETYPENAME);
         final SimpleFeatureSource featureSource = wfs.getFeatureSource(testType.FEATURETYPENAME);
@@ -556,33 +540,25 @@ public abstract class AbstractWfsDataStoreOnlineTest {
     }
 
     public void XtestFeatureType() throws Exception {
-        if (Boolean.FALSE.equals(serviceAvailable)) {
-            return;
-        }
+
         WFSOnlineTestSupport.doFeatureType(wfs, testType.FEATURETYPENAME);
     }
 
     @Test
     public void testFeatureReader() throws Exception {
-        if (Boolean.FALSE.equals(serviceAvailable)) {
-            return;
-        }
+
         WFSOnlineTestSupport.doFeatureReader(wfs, testType.FEATURETYPENAME);
     }
 
     @Test
     public void testFeatureReaderWithQuery() throws Exception {
-        if (Boolean.FALSE.equals(serviceAvailable)) {
-            return;
-        }
+
         WFSOnlineTestSupport.doFeatureReaderWithQuery(wfs, testType.FEATURETYPENAME);
     }
 
     @Test
     public void testFeatureReaderWithFilterBBox() throws Exception {
-        if (Boolean.FALSE.equals(serviceAvailable)) {
-            return;
-        }
+
         ReferencedEnvelope bbox = wfs.getFeatureSource(testType.FEATURETYPENAME).getBounds();
         WFSOnlineTestSupport.doFeatureReaderWithBBox(
                 wfs, testType.FEATURETYPENAME, defaultGeometryName, bbox);

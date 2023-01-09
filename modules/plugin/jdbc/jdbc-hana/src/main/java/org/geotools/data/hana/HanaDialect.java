@@ -148,12 +148,18 @@ public class HanaDialect extends PreparedStatementSQLDialect {
 
     private boolean functionEncodingEnabled;
 
+    private String selectHints;
+
     private HanaVersion hanaVersion;
 
     private SchemaCache currentSchemaCache = new SchemaCache();
 
     public void setFunctionEncodingEnabled(boolean enabled) {
         functionEncodingEnabled = enabled;
+    }
+
+    public void setSelectHints(String selectHints) {
+        this.selectHints = selectHints;
     }
 
     @Override
@@ -433,12 +439,25 @@ public class HanaDialect extends PreparedStatementSQLDialect {
     public void encodeGeometryColumnSimplified(
             GeometryDescriptor gatt, String prefix, int srid, StringBuffer sql, Double distance) {
         encodeColumnName(prefix, gatt.getLocalName(), sql);
-        if ((distance != null) && (distance > 0.0)) {
+        if ((distance != null)
+                && (distance >= 0.0)
+                && isPlanarCRS(gatt.getCoordinateReferenceSystem())) {
             sql.append(".ST_Simplify(");
             sql.append(distance.toString());
             sql.append(")");
         }
         sql.append(".ST_AsBinary()");
+    }
+
+    private boolean isPlanarCRS(CoordinateReferenceSystem crs) {
+        if (crs == null) {
+            return false;
+        }
+        CoordinateReferenceSystem hcrs = CRS.getHorizontalCRS(crs);
+        if (hcrs == null) {
+            return false;
+        }
+        return !(hcrs instanceof GeographicCRS);
     }
 
     @Override
@@ -798,7 +817,17 @@ public class HanaDialect extends PreparedStatementSQLDialect {
 
     @Override
     public void handleSelectHints(StringBuffer sql, SimpleFeatureType featureType, Query query) {
-        // TODO Maybe apply estimation samples hint
+        if ((selectHints == null) || selectHints.trim().isEmpty()) {
+            return;
+        }
+        sql.append(" WITH HINT( ");
+        sql.append(selectHints);
+        sql.append(" )");
+    }
+
+    @Override
+    public boolean applyHintsOnVirtualTables() {
+        return true;
     }
 
     @Override

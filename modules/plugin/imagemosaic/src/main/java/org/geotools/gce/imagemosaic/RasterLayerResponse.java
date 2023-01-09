@@ -1265,7 +1265,7 @@ public class RasterLayerResponse {
             properties.put(GridCoverage2DReader.SOURCE_URL_PROPERTY, sourceUrl);
         }
         if (mosaicOutput.pamDataset != null) {
-            properties.put(Utils.PAM_DATASET, mosaicOutput.pamDataset);
+            properties.put(GridCoverage2DReader.PAM_DATASET, mosaicOutput.pamDataset);
         }
         // Setting NoData as the NoData for the first Band
         ImageWorker w = new ImageWorker(image);
@@ -1495,7 +1495,12 @@ public class RasterLayerResponse {
             return null;
         }
         RasterLayerResponse response =
-                new RasterLayerResponse(request, manager, this.submosaicProducerFactory);
+                new RasterLayerResponse(request, manager, this.submosaicProducerFactory) {
+                    @Override
+                    public void addGranulePaths(String granulesPaths) {
+                        RasterLayerResponse.this.addGranulePaths(granulesPaths);
+                    }
+                };
         // initialize enough info without actually running the output computation
         response.chooseOverview();
         response.initBBOX();

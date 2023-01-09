@@ -72,7 +72,7 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
     /** Get features based on the specified filter. */
     @Override
     public FeatureCollection<FeatureType, Feature> getFeatures(Filter filter) throws IOException {
-        return getFeatures(new Query(this.typeName.toString(), filter));
+        return getFeatures(new Query(this.typeName.getLocalPart(), filter));
     }
 
     /** Get features using the default Query.ALL. */
@@ -100,10 +100,9 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
         request.setSortBy(query.getSortBy());
 
         String srsName = null;
-
         request.setSrsName(srsName);
 
-        return new WFSContentComplexFeatureCollection(request, schema, name);
+        return new WFSContentComplexFeatureCollection(request, schema, name, client);
     }
 
     @Override
@@ -205,12 +204,21 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
 
     @Override
     public ReferencedEnvelope getBounds() throws IOException {
-        return dataAccess.getFeatureSource(typeName).getBounds();
+        return getBounds(Query.ALL);
     }
 
     @Override
     public ReferencedEnvelope getBounds(Query query) throws IOException {
-        return dataAccess.getFeatureSource(typeName).getBounds(query);
+        if (!Filter.INCLUDE.equals(query.getFilter())) {
+            return null;
+        }
+        QName name = dataAccess.getRemoteTypeName(typeName);
+        final CoordinateReferenceSystem targetCrs =
+                query.getCoordinateSystemReproject() != null
+                        ? query.getCoordinateSystemReproject()
+                        : client.getDefaultCRS(name);
+
+        return client.getBounds(name, targetCrs);
     }
 
     @Override

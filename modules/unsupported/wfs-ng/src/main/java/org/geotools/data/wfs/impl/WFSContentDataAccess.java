@@ -32,7 +32,6 @@ import org.geotools.data.ServiceInfo;
 import org.geotools.data.complex.feature.type.ComplexFeatureTypeFactoryImpl;
 import org.geotools.data.complex.feature.type.FeatureTypeRegistry;
 import org.geotools.data.complex.util.EmfComplexFeatureReader;
-import org.geotools.data.wfs.internal.DescribeFeatureTypeRequest;
 import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.feature.NameImpl;
 import org.geotools.gml3.complex.GmlFeatureTypeRegistryConfiguration;
@@ -149,6 +148,10 @@ public class WFSContentDataAccess implements DataAccess<FeatureType, Feature> {
         return qName;
     }
 
+    /**
+     * Create the FeatureType based on a call to DescribeFeatureType. Using gt-complex to parse the
+     * xsd-document, and use the schema cache.
+     */
     @Override
     public FeatureType getSchema(Name name) throws IOException {
         // If there are no values in this.names it probably means that getNames
@@ -157,13 +160,11 @@ public class WFSContentDataAccess implements DataAccess<FeatureType, Feature> {
             this.getNames();
         }
 
-        // Generate the URL for the feature request:
+        // Generate the URL for the feature request
+        // (should be for a GET request):
         // -----------------------------------------
-        DescribeFeatureTypeRequest describeFeatureTypeRequest =
-                client.createDescribeFeatureTypeRequest();
         QName qname = this.names.get(name);
-        describeFeatureTypeRequest.setTypeName(qname);
-        URL describeRequestURL = describeFeatureTypeRequest.getFinalURL();
+        URL describeRequestURL = client.getDescribeFeatureTypeGetURL(qname);
 
         // Create type registry and add the schema to it:
         // ----------------------------------------------

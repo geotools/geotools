@@ -1,6 +1,9 @@
 package org.geotools.gml.producer;
 
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathEvaluatesTo;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertThrows;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
@@ -8,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
+import javax.xml.transform.TransformerException;
 import org.custommonkey.xmlunit.SimpleNamespaceContext;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.geotools.data.DataUtilities;
@@ -154,5 +158,27 @@ public class FeatureTransformerTest {
             System.getProperties().remove("org.geotools.dateTimeFormatHandling");
             TimeZone.setDefault(defaultTimeZone);
         }
+    }
+
+    @Test
+    public void testInvalidElementName() throws Exception {
+        SimpleFeatureType ft = DataUtilities.createType("invalid", "the_geom:Point,foo><bar:int");
+        SimpleFeature f = SimpleFeatureBuilder.build(ft, new Object[] {null, 1}, "foo");
+        SimpleFeatureCollection fc = DataUtilities.collection(f);
+        FeatureTransformer tx = new FeatureTransformer();
+        tx.getFeatureTypeNamespaces().declareNamespace(ft, "gt", "http://www.geotools.org");
+        Exception e = assertThrows(TransformerException.class, () -> tx.transform(fc));
+        assertThat(e.getMessage(), containsString("INVALID_CHARACTER_ERR"));
+    }
+
+    @Test
+    public void testHtmlNamespaceUri() throws Exception {
+        SimpleFeatureType ft = DataUtilities.createType("invalid", "the_geom:Point,script:String");
+        SimpleFeature f = SimpleFeatureBuilder.build(ft, new Object[] {null, "bar"}, "foo");
+        SimpleFeatureCollection fc = DataUtilities.collection(f);
+        FeatureTransformer tx = new FeatureTransformer();
+        tx.getFeatureTypeNamespaces().declareNamespace(ft, "gt", "http://www.w3.org/1999/xhtml");
+        Exception e = assertThrows(TransformerException.class, () -> tx.transform(fc));
+        assertThat(e.getMessage(), containsString("NAMESPACE_ERR"));
     }
 }

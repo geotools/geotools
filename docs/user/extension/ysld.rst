@@ -224,6 +224,23 @@ Style definition:
     feature-styles:
     - <feature style>
 
+Optional top-level sld and layer definition:
+
+.. code-block:: yaml
+   
+   # sld definition
+   sld-name: <text>
+   sld-title: <text>
+   sld-abstract: <text>
+   
+   # named layer definition
+   layer-name: <text>
+
+   # user layer definition
+   user-name: <text>
+   user-remote: <text>
+   user-service: <text>
+
 Feature style definition:
 
 .. code-block:: yaml

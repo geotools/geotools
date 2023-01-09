@@ -69,6 +69,13 @@ public class ExpressionTypeVisitorTest {
     }
 
     @Test
+    public void testIfThenElse() { // special case within function
+        Function func =
+                ff.function(("if_then_else"), ff.literal(true), ff.literal(10), ff.literal(20));
+        assertEquals(Integer.class, func.accept(visitor, null));
+    }
+
+    @Test
     public void testProperty() {
         PropertyName pn = ff.property("s");
         assertEquals(Short.class, pn.accept(visitor, null));

@@ -37,6 +37,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.media.jai.Interpolation;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 import javax.media.jai.ROIShape;
@@ -44,6 +45,7 @@ import javax.media.jai.RasterFactory;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.LiteShape;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.ImageWorker;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -158,7 +160,7 @@ class Binarizator {
             return add(geometry);
         } else if (roi instanceof ROIShape) {
             Shape shape = roi.getAsShape();
-            Geometry geometry = JTS.toGeometry(shape);
+            Geometry geometry = JTS.toGeometry(shape).getEnvelope();
             return add(geometry);
         }
 
@@ -169,9 +171,17 @@ class Binarizator {
         for (Iterator<Tile> it = activeTiles.iterator(); it.hasNext(); ) {
             Tile tile = it.next();
 
-            Rectangle tileBounds = tile.getTileArea();
-            if (tileBounds.intersects(roiBounds)) {
-                if (tile.draw(roiImage)) {
+            Envelope tileBBox = tile.getTileBBox().getEnvelopeInternal();
+            Envelope roiEnvelope = JTS.toEnvelope(roiBounds);
+            if (tileBBox.intersects(roiEnvelope)) {
+                PlanarImage txROI =
+                        new ImageWorker(roiImage)
+                                .affine(
+                                        w2gTransform,
+                                        Interpolation.getInstance(Interpolation.INTERP_NEAREST),
+                                        null)
+                                .getPlanarImage();
+                if (tile.draw(txROI)) {
                     added = true;
                     if (tile.isFullyCovered()) {
                         if (LOGGER.isLoggable(Level.FINE)) {

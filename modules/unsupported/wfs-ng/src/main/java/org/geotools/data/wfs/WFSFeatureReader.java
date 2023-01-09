@@ -40,12 +40,6 @@ class WFSFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature
 
     private GetFeatureResponse response;
 
-    /** @Deprecated (pass on response so it can be disposed.) */
-    @Deprecated
-    public WFSFeatureReader(final GetParser<SimpleFeature> parser) throws IOException {
-        this(parser, null);
-    }
-
     public WFSFeatureReader(
             final GetParser<SimpleFeature> parser, final GetFeatureResponse response)
             throws IOException {

@@ -17,6 +17,7 @@
 package org.geotools.factory;
 
 import org.geotools.feature.AbstractFeatureFactoryImpl;
+import org.geotools.feature.LenientFeatureFactoryImpl;
 import org.geotools.feature.ValidatingFeatureFactoryImpl;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
@@ -28,7 +29,9 @@ public class CommonFactoryFinderTest {
 
     @Test
     public void testGetFeatureFactory() {
-        Assert.assertNotNull(CommonFactoryFinder.getFeatureFactory(null));
+        FeatureFactory featureFactory = CommonFactoryFinder.getFeatureFactory(null);
+        Assert.assertNotNull(featureFactory);
+        Assert.assertTrue(featureFactory instanceof LenientFeatureFactoryImpl);
     }
 
     @Test

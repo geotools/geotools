@@ -248,6 +248,8 @@ public class CssTranslator {
             new HashMap<String, String>() {
                 {
                     put("raster-composite", "composite");
+                    put("raster-label-fi", "labelInFeatureInfo");
+                    put("raster-label-name", "labelAttributeName");
                 }
             };
 

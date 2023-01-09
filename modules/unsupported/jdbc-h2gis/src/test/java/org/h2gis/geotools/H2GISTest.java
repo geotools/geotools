@@ -29,6 +29,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.Map;
+
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
@@ -68,7 +70,7 @@ class H2GISTest extends H2GISTestSetup {
     private static final String DB_NAME = "H2GISDBTest";
 
     public H2GISDataStoreFactory factory;
-    private HashMap params;
+    private Map<String, String> params;
     public JDBCDataStore ds;
     public WKTReader wKTReader;
     private static Statement st;
@@ -77,12 +79,12 @@ class H2GISTest extends H2GISTestSetup {
     void setUpStatement() throws Exception {
         factory = new H2GISDataStoreFactory();
         factory.setBaseDirectory(new File(getDataBasePath(DB_NAME)));
-        params = new HashMap();
+        params = new HashMap<>();
         params.put(JDBCDataStoreFactory.NAMESPACE.key, "http://www.geotools.org/h2gis");
         params.put(JDBCDataStoreFactory.DATABASE.key, "h2gis");
         params.put(JDBCDataStoreFactory.DBTYPE.key, "h2gis");
-        params.put(JDBCDataStoreFactory.USER, "h2gis");
-        params.put(JDBCDataStoreFactory.PASSWD, "h2gis");
+        params.put(JDBCDataStoreFactory.USER.key, "h2gis");
+        params.put(JDBCDataStoreFactory.PASSWD.key, "h2gis");
         ds = factory.createDataStore(params);
         wKTReader = new WKTReader();
         st = ds.getDataSource().getConnection().createStatement();
@@ -92,8 +94,8 @@ class H2GISTest extends H2GISTestSetup {
     /**
      * Generate a path for the database
      *
-     * @param dbName
-     * @return
+     * @param dbName Name of the database
+     * @return Path to the database.
      */
     private String getDataBasePath(String dbName) {
         if (dbName.startsWith("file://")) {
@@ -289,7 +291,7 @@ class H2GISTest extends H2GISTestSetup {
     }
 
     @Test
-    void testBboxFilter() throws SQLException, IOException, CQLException, ParseException {
+    void testBboxFilter() throws SQLException, IOException, ParseException {
         st.execute("drop table if exists LANDCOVER");
         st.execute(
                 "CREATE TABLE LANDCOVER ( FID INTEGER, NAME CHARACTER VARYING(64),"
@@ -299,9 +301,9 @@ class H2GISTest extends H2GISTestSetup {
                         + "INSERT INTO LANDCOVER VALUES(3, 'Building', 'POINT(90 130)');");
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         BBOX bbox = ff.bbox("THE_GEOM", 0, 0, 10, 10, "EPSG:4326");
-        FeatureCollection fc = ds.getFeatureSource("LANDCOVER").getFeatures(bbox);
+        FeatureCollection<?, ?> fc = ds.getFeatureSource("LANDCOVER").getFeatures(bbox);
         assertEquals(1, fc.size());
-        SimpleFeature[] features = (SimpleFeature[]) fc.toArray(new SimpleFeature[fc.size()]);
+        SimpleFeature[] features = fc.toArray(new SimpleFeature[fc.size()]);
         assertEquals(features[0].getDefaultGeometry(), wKTReader.read("POINT(5 5)"));
         st.execute("drop table LANDCOVER");
     }
@@ -318,9 +320,9 @@ class H2GISTest extends H2GISTestSetup {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         Intersects is =
                 ff.intersects(ff.property("THE_GEOM"), ff.literal(wKTReader.read("POINT(5 5)")));
-        FeatureCollection fc = ds.getFeatureSource("LANDCOVER").getFeatures(is);
+        FeatureCollection<?, ?> fc = ds.getFeatureSource("LANDCOVER").getFeatures(is);
         assertEquals(1, fc.size());
-        SimpleFeature[] features = (SimpleFeature[]) fc.toArray(new SimpleFeature[fc.size()]);
+        SimpleFeature[] features = fc.toArray(new SimpleFeature[fc.size()]);
         assertEquals(features[0].getDefaultGeometry(), wKTReader.read("POINT(5 5)"));
         st.execute("drop table LANDCOVER");
     }
@@ -375,7 +377,7 @@ class H2GISTest extends H2GISTestSetup {
         SimpleFeatureType type = ds.getSchema("LANDCOVER_CEREAL");
         assertNotNull(type);
         assertNotNull(type.getGeometryDescriptor());
-        FeatureSource fsView = ds.getFeatureSource("LANDCOVER_CEREAL");
+        FeatureSource<?, ?> fsView = ds.getFeatureSource("LANDCOVER_CEREAL");
         ReferencedEnvelope env = fsView.getBounds();
         assertNotNull(env);
         assertTrue(
@@ -404,7 +406,7 @@ class H2GISTest extends H2GISTestSetup {
         SimpleFeatureType type = ds.getSchema("LANDCOVER_CEREAL");
         assertNotNull(type);
         assertNotNull(type.getGeometryDescriptor());
-        FeatureSource fsView = ds.getFeatureSource("LANDCOVER_CEREAL");
+        FeatureSource<?, ?> fsView = ds.getFeatureSource("LANDCOVER_CEREAL");
         ReferencedEnvelope env = fsView.getBounds();
         assertNotNull(env);
         assertTrue(
@@ -550,7 +552,7 @@ class H2GISTest extends H2GISTestSetup {
         VirtualTable vTable =
                 new VirtualTable("LANDCOVER_CEREAL", "SELECT * FROM PUBLIC.LANDCOVER");
         ds.createVirtualTable(vTable);
-        FeatureSource fs = ds.getFeatureSource("LANDCOVER_CEREAL");
+        FeatureSource<?, ?> fs = ds.getFeatureSource("LANDCOVER_CEREAL");
         GeometryDescriptor geomDes = fs.getSchema().getGeometryDescriptor();
         assertNotNull(geomDes);
         assertEquals(Polygon.class, geomDes.getType().getBinding());

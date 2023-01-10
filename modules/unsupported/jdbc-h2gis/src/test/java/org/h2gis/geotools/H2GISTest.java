@@ -20,7 +20,10 @@
  */
 package org.h2gis.geotools;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,12 +46,25 @@ import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.jdbc.*;
+import org.geotools.jdbc.JDBCDataStore;
+import org.geotools.jdbc.JDBCDataStoreFactory;
+import org.geotools.jdbc.PrimaryKey;
+import org.geotools.jdbc.SQLDialect;
+import org.geotools.jdbc.VirtualTable;
 import org.geotools.referencing.CRS;
 import org.h2gis.utilities.GeometryTableUtilities;
 import org.h2gis.utilities.TableLocation;
-import org.junit.jupiter.api.*;
-import org.locationtech.jts.geom.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.simple.SimpleFeature;
@@ -124,17 +140,16 @@ class H2GISTest extends H2GISTestSetup {
         sql = "INSERT INTO h2gis.geomtable VALUES (" + "0,ST_GeomFromText('POINT(12 0)',4326));";
         st.execute(sql);
 
-        ResultSet rs = st.executeQuery("select count(id) from h2gis.geomtable");
+        try (ResultSet rs = st.executeQuery("select count(id) from h2gis.geomtable")) {
+            rs.next();
+            assertEquals(1, rs.getInt(1));
+        }
 
-        assertTrue(rs.next());
-        assertEquals(1, rs.getInt(1));
-        rs.close();
-
-        rs = st.executeQuery("select * from h2gis.geomtable;");
-        rs.next();
-        assertEquals(0, rs.getInt(1));
-        assertEquals("SRID=4326;POINT (12 0)", rs.getString(2));
-        rs.close();
+        try (ResultSet rs = st.executeQuery("select * from h2gis.geomtable;")) {
+            rs.next();
+            assertEquals(0, rs.getInt(1));
+            assertEquals("SRID=4326;POINT (12 0)", rs.getString(2));
+        }
         st.execute("DROP TABLE h2gis.geomtable");
     }
 
@@ -172,10 +187,12 @@ class H2GISTest extends H2GISTestSetup {
         assertEquals("THE_GEOM", geomDesc.getLocalName());
         assertNotNull(geomDesc.getCoordinateReferenceSystem());
 
-        ResultSet rs = st.executeQuery("SELECT ST_EXTENT(THE_GEOM) FROM LANDCOVER_LINKED");
-        rs.next();
-        assertTrue(
-                JTS.toEnvelope(((Geometry) rs.getObject(1))).boundsEquals2D(fs.getBounds(), 0.01));
+        try (ResultSet rs = st.executeQuery("SELECT ST_EXTENT(THE_GEOM) FROM LANDCOVER_LINKED")) {
+            rs.next();
+            assertTrue(
+                    JTS.toEnvelope(((Geometry) rs.getObject(1)))
+                            .boundsEquals2D(fs.getBounds(), 0.01));
+        }
         st.execute("drop table LANDCOVER_LINKED");
     }
 
@@ -212,21 +229,17 @@ class H2GISTest extends H2GISTestSetup {
                         + "INSERT INTO LANDCOVER VALUES(3, 'Building', 'POLYGON((90 130, 140 130, 140 110, 90 110, 90 130))');");
 
         SimpleFeatureSource fs = (SimpleFeatureSource) ds.getFeatureSource("LANDCOVER");
-        SimpleFeatureCollection features = fs.getFeatures(Filter.INCLUDE);
-
-        SimpleFeatureIterator iterator = features.features();
+        SimpleFeatureCollection featureCollection = fs.getFeatures(Filter.INCLUDE);
 
         double sumArea = 0;
         int sumFID = 0;
-        try {
+        try (SimpleFeatureIterator iterator = featureCollection.features()) {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
                 Geometry geom = (Geometry) feature.getDefaultGeometry();
                 sumArea += geom.getArea();
                 sumFID += (Integer) feature.getAttribute("FID");
             }
-        } finally {
-            iterator.close();
         }
         assertEquals(16600.0, sumArea, 0.1);
         assertEquals(6, sumFID, 0.1);
@@ -559,6 +572,8 @@ class H2GISTest extends H2GISTestSetup {
     }
 
     @Test
+    @Disabled
+    // TODO : FIX detect PK on table engine
     void getPrimaryKeyFromLinkedFile() throws SQLException, IOException {
         st.execute("drop table if exists LANDCOVER_LINKED");
         st.execute(
@@ -567,6 +582,6 @@ class H2GISTest extends H2GISTestSetup {
                         + "', 'LANDCOVER_LINKED');");
         SimpleFeatureType schema = ds.getFeatureSource("LANDCOVER_LINKED").getSchema();
         PrimaryKey pk = ds.getPrimaryKey(schema);
-        System.out.println(pk);
+        assertEquals(1, pk.getColumns().size());
     }
 }

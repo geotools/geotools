@@ -250,15 +250,10 @@ public class H2GISDataStoreFactory extends JDBCDataStoreFactory {
         if (!jdbcURl.contains("h2:tcp")) {
             // if we got here the database has been created, now verify it has the H2GIS extension
             // and eventually try to create them
-            JDBCDataStore closer = new JDBCDataStore();
-            Connection cx = null;
-            try {
-                cx = dataSource.getConnection();
+            try (Connection cx = dataSource.getConnection()) {
                 H2GISDialect.initSpatialFunctions(cx);
             } catch (SQLException e) {
                 throw new IOException("Failed to create the target database", e);
-            } finally {
-                closer.closeSafe(cx);
             }
         }
         return new DBCPDataSource(dataSource);

@@ -20,7 +20,11 @@
  */
 package org.h2gis.geotools;
 
-import static org.h2gis.geotools.H2GISDataStoreFactory.*;
+import static org.h2gis.geotools.H2GISDataStoreFactory.ASSOCIATIONS;
+import static org.h2gis.geotools.H2GISDataStoreFactory.AUTO_SERVER;
+import static org.h2gis.geotools.H2GISDataStoreFactory.ENCODE_FUNCTIONS;
+import static org.h2gis.geotools.H2GISDataStoreFactory.ESTIMATED_EXTENTS;
+import static org.h2gis.geotools.H2GISDataStoreFactory.PREPARED_STATEMENTS;
 
 import java.util.Map;
 import org.geotools.jdbc.JDBCJNDIDataStoreFactory;

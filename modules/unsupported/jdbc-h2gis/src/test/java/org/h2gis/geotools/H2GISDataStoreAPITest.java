@@ -18,6 +18,7 @@ package org.h2gis.geotools;
 
 import org.geotools.jdbc.JDBCDataStoreAPIOnlineTest;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
+import org.junit.jupiter.api.Test;
 
 public class H2GISDataStoreAPITest extends JDBCDataStoreAPIOnlineTest {
     @Override
@@ -25,6 +26,7 @@ public class H2GISDataStoreAPITest extends JDBCDataStoreAPIOnlineTest {
         return new H2GISDataStoreAPITestSetup();
     }
 
+    @Test
     @Override
     public void testTransactionIsolation() throws Exception {
         // JD: h2 does table level locking so this test fails.

@@ -16,7 +16,7 @@
  */
 package org.h2gis.geotools;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -28,6 +28,7 @@ import org.geotools.jdbc.JDBCConnectionLifecycleOnlineTest;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.VirtualTable;
+import org.junit.Test;
 
 public class H2GISConnectionLifecycleTest extends JDBCConnectionLifecycleOnlineTest {
 
@@ -47,7 +48,7 @@ public class H2GISConnectionLifecycleTest extends JDBCConnectionLifecycleOnlineT
         }
 
         @Override
-        public void onRelease(JDBCDataStore store, Connection cx) {
+        public void onRelease(JDBCDataStore store, Connection cx) throws SQLException {
             // nothing to do
         }
 
@@ -57,7 +58,7 @@ public class H2GISConnectionLifecycleTest extends JDBCConnectionLifecycleOnlineT
         }
 
         @Override
-        public void onRollback(JDBCDataStore store, Connection cx) {
+        public void onRollback(JDBCDataStore store, Connection cx) throws SQLException {
             // nothing to do
         }
     }
@@ -67,6 +68,7 @@ public class H2GISConnectionLifecycleTest extends JDBCConnectionLifecycleOnlineT
         return new H2GISTestSetup();
     }
 
+    @Test
     public void testVariableListener() throws Exception {
         // setup a virtual table using the user variable
         VirtualTable vt =

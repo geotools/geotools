@@ -21,10 +21,20 @@
 package org.h2gis.geotools;
 
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Savepoint;
+import java.sql.Statement;
 import java.sql.Time;
-import java.util.*;
+import java.sql.Timestamp;
+import java.sql.Types;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -771,7 +781,7 @@ public class H2GISDialect extends BasicSQLDialect {
         }
         TableLocation tableLocation = new TableLocation(null, schema, tableName, DBTypes.H2GIS);
 
-        List<ReferencedEnvelope> result = new ArrayList<ReferencedEnvelope>();
+        List<ReferencedEnvelope> result = new ArrayList<>();
         Savepoint savePoint = null;
         try {
             if (!cx.getAutoCommit()) {

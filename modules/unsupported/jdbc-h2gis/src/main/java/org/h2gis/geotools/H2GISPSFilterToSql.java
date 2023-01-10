@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2018, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2023, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -13,6 +13,7 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
+ *
  */
 package org.h2gis.geotools;
 
@@ -26,6 +27,14 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BinarySpatialOperator;
 import org.opengis.filter.spatial.DistanceBufferOperator;
 
+/**
+ * jdbc-h2gis is an extension to connect H2GIS a spatial library that brings spatial support to the
+ * H2 Java database.
+ *
+ * <p>H2GIS dialect filter based on prepared statements.
+ *
+ * @author Erwan Bocher
+ */
 public class H2GISPSFilterToSql extends PreparedFilterToSQL {
 
     private final H2GISFilterToSQLHelper helper;

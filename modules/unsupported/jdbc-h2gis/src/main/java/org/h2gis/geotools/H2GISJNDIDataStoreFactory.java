@@ -1,22 +1,19 @@
 /*
- * h2gis-geotools is an extension to the geotools library to connect H2GIS a
- * spatial library that brings spatial support to the H2 Java database. *
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
  *
- * Copyright (C) 2017 LAB-STICC CNRS UMR 6285
+ *    (C) 2023, Open Source Geospatial Foundation (OSGeo)
  *
- * h2gis-geotools is free software;
- * you can redistribute it and/or modify it under the terms of the GNU
- * Lesser General Public License as published by the Free Software Foundation;
- * version 3.0 of the License.
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
  *
- * h2gis-geotools is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
- * for more details <http://www.gnu.org/licenses/>.
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
  *
- *
- * For more information, please consult: <http://www.h2gis.org/>
- * or contact directly: info_at_h2gis.org
  */
 package org.h2gis.geotools;
 
@@ -29,7 +26,14 @@ import static org.h2gis.geotools.H2GISDataStoreFactory.PREPARED_STATEMENTS;
 import java.util.Map;
 import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
 
-/** @author Erwan Bocher, CNRS, 2020 */
+/**
+ * jdbc-h2gis is an extension to connect H2GIS a spatial library that brings spatial support to the
+ * H2 Java database.
+ *
+ * <p>JNDI DataStoreFactory for H2GIS database.
+ *
+ * @author Erwan Bocher
+ */
 public class H2GISJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
 
     public H2GISJNDIDataStoreFactory() {

@@ -148,6 +148,8 @@ public class HanaDialect extends PreparedStatementSQLDialect {
 
     private boolean functionEncodingEnabled;
 
+    private boolean simplifyDisabled;
+
     private String selectHints;
 
     private HanaVersion hanaVersion;
@@ -156,6 +158,10 @@ public class HanaDialect extends PreparedStatementSQLDialect {
 
     public void setFunctionEncodingEnabled(boolean enabled) {
         functionEncodingEnabled = enabled;
+    }
+
+    public void setSimplifyDisabled(boolean disabled) {
+        simplifyDisabled = disabled;
     }
 
     public void setSelectHints(String selectHints) {
@@ -441,6 +447,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
         encodeColumnName(prefix, gatt.getLocalName(), sql);
         if ((distance != null)
                 && (distance >= 0.0)
+                && !simplifyDisabled
                 && isPlanarCRS(gatt.getCoordinateReferenceSystem())) {
             sql.append(".ST_Simplify(");
             sql.append(distance.toString());
@@ -799,9 +806,11 @@ public class HanaDialect extends PreparedStatementSQLDialect {
 
     @Override
     protected void addSupportedHints(Set<org.geotools.util.factory.Hints.Key> hints) {
-        if ((hanaVersion.getVersion() > 2)
-                || ((hanaVersion.getVersion() == 2) && (hanaVersion.getRevision() >= 40))) {
-            hints.add(Hints.GEOMETRY_SIMPLIFICATION);
+        if (!simplifyDisabled) {
+            if ((hanaVersion.getVersion() > 2)
+                    || ((hanaVersion.getVersion() == 2) && (hanaVersion.getRevision() >= 40))) {
+                hints.add(Hints.GEOMETRY_SIMPLIFICATION);
+            }
         }
     }
 

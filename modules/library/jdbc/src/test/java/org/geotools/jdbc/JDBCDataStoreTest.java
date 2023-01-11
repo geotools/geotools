@@ -228,26 +228,25 @@ public class JDBCDataStoreTest {
 
     @Test
     public void testGetConnectionAutocommit() throws Exception {
-        JDBCDataStore store = new JDBCDataStore();
+
         JDBCMockObjectFactory jdbcMock = new JDBCMockObjectFactory();
         MockDataSource dataSource = jdbcMock.getMockDataSource();
         dataSource.setupConnection(jdbcMock.getMockConnection());
+        JDBCDataStore store = new JDBCDataStore();
         store.setSQLDialect(mock(BasicSQLDialect.class));
         store.setDataSource(dataSource);
 
-        Connection conn = store.getConnection(Transaction.AUTO_COMMIT);
-        Assert.assertEquals(Boolean.TRUE, conn.getAutoCommit());
-        conn.close();
+        try (Connection conn = store.getConnection(Transaction.AUTO_COMMIT)) {
+            Assert.assertEquals(Boolean.TRUE, conn.getAutoCommit());
+        }
 
-        Transaction transaction = new DefaultTransaction();
-        conn = store.getConnection(transaction);
-        Assert.assertEquals(Boolean.FALSE, conn.getAutoCommit());
-        transaction.close();
-        conn.close();
+        try (Transaction transaction = new DefaultTransaction();
+                Connection conn2 = store.getConnection(transaction)) {
+            Assert.assertEquals(Boolean.FALSE, conn2.getAutoCommit());
+        }
 
-        try {
-            transaction = null;
-            conn = store.getConnection(transaction);
+        Transaction transaction = null;
+        try (Connection conn = store.getConnection(transaction)) {
             Assert.fail("Transaction should be set.");
         } catch (Exception e) {
             // should fail

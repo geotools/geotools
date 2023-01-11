@@ -96,6 +96,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
     public static final String PRIMARY_KEY = "PARENT_TABLE_PKEY";
 
     private static final String COUNT_TABLE_ALIAS = "COUNT_TABLE";
+    private static final String DISTINCT_TABLE_ALIAS = "DISTINCT_TABLE";
 
     public JoiningJDBCFeatureSource(JDBCFeatureSource featureSource) throws IOException {
         super(featureSource);
@@ -1547,7 +1548,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             Set<String> idColumnNames,
             AtomicReference<PreparedFilterToSQL> toSQLRef)
             throws FilterToSQLException, SQLException {
-        StringBuffer countSQL = new StringBuffer("SELECT COUNT(").append("DISTINCT ");
+        StringBuffer countSQL = new StringBuffer("SELECT COUNT(*) FROM (SELECT DISTINCT ");
         boolean first = true;
         for (String idColumnName : idColumnNames) {
             if (!first) {
@@ -1558,13 +1559,15 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             dialect.encodeColumnName(null, idColumnName, countSQL);
             first = false;
         }
-        countSQL.append(")").append(" FROM ");
+        countSQL.append(" FROM ");
         getDataStore().encodeTableName(querySchema.getTypeName(), countSQL, query.getHints());
         if (!query.getFilter().equals(Filter.INCLUDE)) {
             FilterToSQL toSql = createFilterToSQL(querySchema);
             countSQL.append(toSql.encodeToString(query.getFilter()));
             if (toSql instanceof PreparedFilterToSQL) toSQLRef.set((PreparedFilterToSQL) toSql);
         }
+        countSQL.append(")");
+        dialect.encodeTableName(DISTINCT_TABLE_ALIAS, countSQL);
         String countQuery = countSQL.toString();
         if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine(countQuery);
         return countQuery;
@@ -1577,7 +1580,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             Set<String> idColumnNames,
             AtomicReference<PreparedFilterToSQL> toSQLRef)
             throws IOException, SQLException, FilterToSQLException {
-        StringBuffer countSQL = new StringBuffer("SELECT COUNT(").append("DISTINCT ");
+        StringBuffer countSQL = new StringBuffer("SELECT COUNT(*) FROM (SELECT DISTINCT ");
         boolean first = true;
         for (String idColumnName : idColumnNames) {
             if (!first) {
@@ -1586,10 +1589,12 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             dialect.encodeColumnName(COUNT_TABLE_ALIAS, idColumnName, countSQL);
             first = false;
         }
-        countSQL.append(")").append(" FROM (");
+        countSQL.append(" FROM (");
         String sql = selectSQL(querySchema, query, toSQLRef, true);
         countSQL.append(sql).append(") ");
         dialect.encodeTableName(COUNT_TABLE_ALIAS, countSQL);
+        countSQL.append(") ");
+        dialect.encodeTableName(DISTINCT_TABLE_ALIAS, countSQL);
         String countQuery = countSQL.toString();
         if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine(countQuery);
         return countQuery;

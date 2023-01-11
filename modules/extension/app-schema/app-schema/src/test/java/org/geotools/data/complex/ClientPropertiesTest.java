@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2023, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.data.complex;
 
 import static org.junit.Assert.assertEquals;
@@ -88,7 +104,7 @@ public class ClientPropertiesTest extends AppSchemaTestSupport {
         FeatureCollection<FeatureType, Feature> mfCollection = mfSource.getFeatures(query);
 
         try (FeatureIterator iterator = mfCollection.features()) {
-            int i = 0;
+            int featureCount = 0;
             while (iterator.hasNext()) {
                 Feature feature = iterator.next();
                 String name = namePn.evaluate(feature, String.class);
@@ -96,9 +112,9 @@ public class ClientPropertiesTest extends AppSchemaTestSupport {
                         "urn:x-test:classifierScheme:TestAuthority:" + name,
                         clientProp1.evaluate(feature));
                 assertEquals("static_property", clientProp2.evaluate(feature));
-                i++;
+                featureCount++;
             }
-            assertEquals(5, i);
+            assertEquals(5, featureCount);
         }
     }
 }

@@ -21,7 +21,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.Parameter;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
@@ -81,6 +80,16 @@ public class HanaDataStoreFactory extends JDBCDataStoreFactory {
                     false,
                     Boolean.FALSE,
                     Collections.singletonMap(Param.LEVEL, "advanced"));
+
+    /** Prevents simplification by the database */
+    public static final Param DISABLE_SIMPLIFY =
+            new Param(
+                    "disable simplification",
+                    Boolean.class,
+                    "Certain operations like map rendering can request geometry simplification from the database. "
+                            + "Setting this option to true will prevent geometry simplifcation by the database.",
+                    false,
+                    Boolean.FALSE);
 
     public static final Param SELECT_HINTS =
             new Param(
@@ -145,6 +154,7 @@ public class HanaDataStoreFactory extends JDBCDataStoreFactory {
             }
             if (EXPOSE_PK.key.equals(param.getKey())) {
                 parameters.put(ENCODE_FUNCTIONS.key, ENCODE_FUNCTIONS);
+                parameters.put(DISABLE_SIMPLIFY.key, DISABLE_SIMPLIFY);
                 parameters.put(SELECT_HINTS.key, SELECT_HINTS);
             }
         }
@@ -182,6 +192,8 @@ public class HanaDataStoreFactory extends JDBCDataStoreFactory {
         HanaDialect dialect = (HanaDialect) dataStore.getSQLDialect();
         Boolean encodeFunctions = (Boolean) ENCODE_FUNCTIONS.lookUp(params);
         dialect.setFunctionEncodingEnabled((encodeFunctions != null) && encodeFunctions);
+        Boolean disableSimplify = (Boolean) DISABLE_SIMPLIFY.lookUp(params);
+        dialect.setSimplifyDisabled((disableSimplify != null) && disableSimplify);
         String selectHints = (String) SELECT_HINTS.lookUp(params);
         dialect.setSelectHints(selectHints);
         return dataStore;

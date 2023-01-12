@@ -32,6 +32,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 import javax.xml.namespace.QName;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.geotools.appschema.feature.AppSchemaAttributeBuilder;
 import org.geotools.appschema.jdbc.JoiningJDBCFeatureSource;
@@ -1411,7 +1413,8 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             try {
                 if (skipTopElement(targetNodeName, attMapping, targetFeature.getType())) {
                     // ignore the top level mapping for the Feature itself
-                    // as it was already set
+                    // as it was already set, but make sure client properties are set
+                    setClientPropertiesRootEl(target, sources, attMapping);
                     continue;
                 }
                 if (attMapping.isList()) {
@@ -1508,6 +1511,14 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         cleanEmptyElements(target);
 
         return target;
+    }
+
+    private void setClientPropertiesRootEl(
+            Feature target, List<Feature> sources, AttributeMapping attMapping) {
+        Map<Name, Expression> clientProps = attMapping.getClientProperties();
+        if (MapUtils.isNotEmpty(clientProps) && CollectionUtils.isNotEmpty(sources)) {
+            sources.forEach(f -> setClientProperties(target, f, clientProps));
+        }
     }
 
     private void setDefaultGeometryAttribute(Feature feature) {

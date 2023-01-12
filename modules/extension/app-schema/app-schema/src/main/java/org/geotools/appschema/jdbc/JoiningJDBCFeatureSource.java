@@ -1541,7 +1541,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         }
     }
 
-    private String createCountQuery(
+    String createCountQuery(
             SQLDialect dialect,
             SimpleFeatureType querySchema,
             JoiningQuery query,
@@ -1562,6 +1562,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         countSQL.append(" FROM ");
         getDataStore().encodeTableName(querySchema.getTypeName(), countSQL, query.getHints());
         if (!query.getFilter().equals(Filter.INCLUDE)) {
+            countSQL.append(" ");
             FilterToSQL toSql = createFilterToSQL(querySchema);
             countSQL.append(toSql.encodeToString(query.getFilter()));
             if (toSql instanceof PreparedFilterToSQL) toSQLRef.set((PreparedFilterToSQL) toSql);

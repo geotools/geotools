@@ -47,6 +47,7 @@
     <module>jdbc-teradata</module>
     <module>stac-store</module>
     <module>vector-mosaic</module>
+    <module>jdbc-h2gis</module>
   </modules>
   <profiles>
     <!-- ================================================== -->

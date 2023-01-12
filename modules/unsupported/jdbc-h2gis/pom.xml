@@ -65,11 +65,6 @@
     </dependency>
     <dependency>
       <groupId>org.orbisgis</groupId>
-      <artifactId>postgis-jts</artifactId>
-      <version>${h2gis-version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.orbisgis</groupId>
       <artifactId>cts</artifactId>
       <version>${cts-version}</version>
     </dependency>

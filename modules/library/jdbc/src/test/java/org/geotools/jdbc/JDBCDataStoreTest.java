@@ -246,10 +246,6 @@ public class JDBCDataStoreTest {
         }
 
         Transaction transaction = null;
-        try (Connection conn = store.getConnection(transaction)) {
-            Assert.fail("Transaction should be set.");
-        } catch (Exception e) {
-            // should fail
-        }
+        Assert.assertThrows(Exception.class, () -> store.getConnection(transaction));
     }
 }

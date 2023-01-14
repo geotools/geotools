@@ -245,7 +245,10 @@ public class JDBCDataStoreTest {
             Assert.assertEquals(Boolean.FALSE, conn2.getAutoCommit());
         }
 
-        Transaction transaction = null;
-        Assert.assertThrows(Exception.class, () -> store.getConnection(transaction));
+        Assert.assertThrows(
+                Exception.class,
+                () -> {
+                    try (Connection connection = store.getConnection((Transaction) null)) {}
+                });
     }
 }

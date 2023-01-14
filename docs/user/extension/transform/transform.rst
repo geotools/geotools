@@ -1,7 +1,7 @@
 Transform plugin
 ----------------
 
-The *gt-transform* module allows to wrap ``SimpleFeatureSource`` or ``SimpleFeatureStore`` objects and transform their features and feature types. The transformation abilities include:
+The *gt-transform* module allows to wrap ``SimpleFeatureSource``, ``SimpleFeatureStore`` or ``SimpleFeatureLocking`` objects and transform their features and feature types. The transformation abilities include:
 
   * renaming existing attributes
   * convert an attribute type to a different type (via Converters API)

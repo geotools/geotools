@@ -9,6 +9,7 @@ import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -20,6 +21,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public abstract class AbstractTransformTest {
 
     static SimpleFeatureSource STATES;
+
+    static SimpleFeatureSource STATES2;
 
     static ReferencedEnvelope DELAWARE_BOUNDS;
 
@@ -41,26 +44,36 @@ public abstract class AbstractTransformTest {
         PropertyDataStore pds =
                 new PropertyDataStore(new File("./src/test/resources/org/geotools/data/transform"));
         STATES = pds.getFeatureSource("states");
+        STATES2 = pds.getFeatureSource("states");
     }
 
     SimpleFeatureSource transformWithSelection() throws IOException {
+        return transformWithSelection(STATES);
+    }
+
+    SimpleFeatureSource transformWithSelection(SimpleFeatureSource states) throws IOException {
         List<Definition> definitions = new ArrayList<>();
         definitions.add(new Definition("the_geom"));
         definitions.add(new Definition("state_name"));
         definitions.add(new Definition("persons"));
 
         SimpleFeatureSource transformed =
-                TransformFactory.transform(STATES, "states_mini", definitions);
+                TransformFactory.transform(states, "states_mini", definitions);
         return transformed;
     }
 
     SimpleFeatureSource transformWithRename() throws Exception {
+        return transformWithRename(STATES);
+    }
+
+    SimpleFeatureSource transformWithRename(SimpleFeatureSource states)
+            throws CQLException, IOException {
         List<Definition> definitions = new ArrayList<>();
         definitions.add(new Definition("geom", ECQL.toExpression("the_geom")));
         definitions.add(new Definition("name", ECQL.toExpression("state_name")));
         definitions.add(new Definition("people", ECQL.toExpression("persons")));
 
-        SimpleFeatureSource transformed = TransformFactory.transform(STATES, "usa", definitions);
+        SimpleFeatureSource transformed = TransformFactory.transform(states, "usa", definitions);
         return transformed;
     }
 

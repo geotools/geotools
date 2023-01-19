@@ -250,7 +250,7 @@ public class H2GISDialect extends BasicSQLDialect {
                 if (geomMetata != null) {
                     gType = geomMetata.getGeometryType();
                 }
-            } else if (getH2GISVersion(cx).compareTo(V_2_0_0) <= 0) {
+            } else if (getH2GISVersion(cx).getMajor().equals(2)) {
                 GeometryMetaData geomMetata =
                         GeometryMetaData.getMetaDataFromTablePattern(typeName);
                 if (geomMetata != null) {
@@ -636,7 +636,7 @@ public class H2GISDialect extends BasicSQLDialect {
                                         + ");";
                         LOGGER.fine(sql);
                         st.execute(sql);
-                    } else if (getH2GISVersion(cx).compareTo(V_2_0_0) <= 0) {
+                    } else if (getH2GISVersion(cx).getMajor().equals(2)) {
                         // setup the geometry type
                         if (dimensions == 3) {
                             geomType = geomType + "Z";
@@ -869,11 +869,7 @@ public class H2GISDialect extends BasicSQLDialect {
         int srid = 0;
         try (ResultSet geomResultSet =
                 GeometryTableUtilities.getGeometryColumnsView(
-                        connection,
-                        "",
-                        schema,
-                        table,
-                        TableLocation.quoteIdentifier(geometryColumnName))) {
+                        connection, "", schema, table, geometryColumnName)) {
             if (geomResultSet.next()) {
                 srid = geomResultSet.getInt("srid");
             }

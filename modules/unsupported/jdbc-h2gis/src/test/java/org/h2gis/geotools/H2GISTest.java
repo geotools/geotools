@@ -17,6 +17,7 @@
  */
 package org.h2gis.geotools;
 
+import static org.h2gis.geotools.H2GISDataStoreFactory.AUTO_SERVER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -74,6 +75,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.Intersects;
+import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /** @author Erwan Bocher */
@@ -97,6 +99,7 @@ class H2GISTest extends H2GISTestSetup {
         params.put(JDBCDataStoreFactory.DBTYPE.key, "h2gis");
         params.put(JDBCDataStoreFactory.USER.key, "h2gis");
         params.put(JDBCDataStoreFactory.PASSWD.key, "h2gis");
+        params.put(AUTO_SERVER.key, "true");
         ds = factory.createDataStore(params);
         wKTReader = new WKTReader();
         st = ds.getDataSource().getConnection().createStatement();
@@ -113,7 +116,8 @@ class H2GISTest extends H2GISTestSetup {
         if (dbName.startsWith("file://")) {
             return new File(URI.create(dbName)).getAbsolutePath();
         } else {
-            return new File("target/test-resources/" + dbName).getAbsolutePath();
+            return new File("/tmp/" + dbName).getAbsolutePath();
+            // return new File("target/test-resources/" + dbName).getAbsolutePath();
         }
     }
 
@@ -540,15 +544,28 @@ class H2GISTest extends H2GISTestSetup {
         SimpleFeatureType schema =
                 DataUtilities.createType(tableName, "geom:Point:srid=4326,id:Integer,name:String");
         ds.createSchema(schema);
-        assertNotNull(ds.getSchema(schema.getName()));
+        SimpleFeatureType dbSchema = ds.getSchema(schema.getName());
+        assertNotNull(dbSchema);
         assertNotNull(ds.getFeatureSource(tableName));
+        assertEquals(Point.class, dbSchema.getGeometryDescriptor().getType().getBinding());
         tableName = "MYGEOTABLE";
         st.execute("DROP TABLE if exists \"" + tableName + "\"");
         ds.removeSchema(schema.getTypeName());
         schema = DataUtilities.createType(tableName, "geom:Point:srid=4326,id:Integer,name:String");
+        st.execute("DROP TABLE if exists \"" + tableName + "\"");
         ds.createSchema(schema);
-        assertNotNull(ds.getSchema(schema.getName()));
+        dbSchema = ds.getSchema(schema.getName());
+        assertNotNull(dbSchema);
         assertNotNull(ds.getFeatureSource(tableName));
+        assertEquals(Point.class, dbSchema.getGeometryDescriptor().getType().getBinding());
+        ReferenceIdentifier crsidentifier =
+                dbSchema.getGeometryDescriptor().getCoordinateReferenceSystem().getIdentifiers()
+                        .stream()
+                        .findFirst()
+                        .get();
+        assertNotNull(crsidentifier);
+        assertEquals("EPSG:4326", crsidentifier.toString());
+        st.execute("DROP TABLE if exists \"" + tableName + "\"");
     }
 
     @Test

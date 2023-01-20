@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.geotools.data.oracle.filter.FilterFunction_sdonn;
+import org.geotools.data.oracle.sdo.SDOSqlDumper;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.function.FilterFunction_area;
@@ -39,6 +40,7 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
@@ -631,5 +633,18 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
             throw new IllegalArgumentException(
                     "Cannot encode filter Invalid pointer " + jsonPath.getValue());
         }
+    }
+
+    @Override
+    protected void visitLiteralGeometry(Literal expression) throws IOException {
+        // evaluate the literal and store it for later
+        Geometry geom = (Geometry) evaluateLiteral(expression, Geometry.class);
+
+        if (geom instanceof LinearRing) {
+            geom = geom.getFactory().createLineString(((LinearRing) geom).getCoordinateSequence());
+        }
+        geom = clipToWorldFeatureTypeGeometry(geom);
+        String sdoGeom = SDOSqlDumper.toSDOGeom(geom, getFeatureTypeGeometrySRID());
+        out.write(sdoGeom);
     }
 }

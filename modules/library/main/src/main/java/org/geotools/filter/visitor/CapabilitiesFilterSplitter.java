@@ -815,7 +815,11 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
         }
 
         int i = postStack.size();
-        ((PropertyIsNull) filter).getExpression().accept(this, null);
+        if (filter instanceof PropertyIsNull) {
+            ((PropertyIsNull) filter).getExpression().accept(this, null);
+        } else {
+            ((PropertyIsNil) filter).getExpression().accept(this, null);
+        }
 
         if (i < postStack.size()) {
             postStack.pop();

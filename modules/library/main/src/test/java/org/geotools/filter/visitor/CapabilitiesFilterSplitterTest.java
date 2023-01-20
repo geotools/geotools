@@ -30,6 +30,7 @@ import org.opengis.filter.Id;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.PropertyIsNil;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.spatial.BBOX;
 
@@ -151,6 +152,12 @@ public class CapabilitiesFilterSplitterTest extends AbstractCapabilitiesFilterSp
     public void testVisitNullFilter() throws Exception {
         Filter filter = ff.isNull(ff.property(nameAtt));
         runTest(filter, newCapabilities(PropertyIsNull.class), nameAtt);
+    }
+
+    @Test
+    public void testVisitNilFilter() throws Exception {
+        Filter filter = ff.isNil(ff.property(nameAtt), null);
+        runTest(filter, newCapabilities(PropertyIsNil.class), nameAtt);
     }
 
     @Test

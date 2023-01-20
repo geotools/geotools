@@ -30,6 +30,7 @@ import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.PropertyIsNil;
 import org.opengis.filter.spatial.Beyond;
 import org.opengis.filter.temporal.After;
 import org.opengis.filter.temporal.BegunBy;
@@ -130,5 +131,15 @@ public class CapabilitiesTest {
         Assert.assertTrue("supports", capabilities.supports(filter));
 
         Assert.assertTrue("fullySupports", capabilities.fullySupports(filter));
+    }
+
+    @Test
+    public void testCapablities_PropertyIsNil() {
+        Capabilities capabilities = new Capabilities();
+        capabilities.addType(PropertyIsNil.class);
+
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        Filter filter = ff.isNil(ff.property("x"), null);
+        Assert.assertTrue("supports", capabilities.supports(filter));
     }
 }

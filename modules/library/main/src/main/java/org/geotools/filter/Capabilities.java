@@ -42,6 +42,7 @@ import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
 import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.PropertyIsNil;
 import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.capability.FilterCapabilities;
@@ -120,6 +121,7 @@ public class Capabilities {
         scalarNames.put(PropertyIsGreaterThanOrEqualTo.class, PropertyIsGreaterThanOrEqualTo.NAME);
         scalarNames.put(PropertyIsLessThan.class, PropertyIsLessThan.NAME);
         scalarNames.put(PropertyIsLessThanOrEqualTo.class, PropertyIsLessThanOrEqualTo.NAME);
+        scalarNames.put(PropertyIsNil.class, PropertyIsNil.NAME);
         scalarNames.put(PropertyIsNull.class, PropertyIsNull.NAME);
         scalarNames.put(PropertyIsLike.class, PropertyIsLike.NAME);
         scalarNames.put(PropertyIsBetween.class, PropertyIsBetween.NAME);

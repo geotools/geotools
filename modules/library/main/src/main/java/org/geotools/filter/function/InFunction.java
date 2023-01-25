@@ -17,9 +17,14 @@
 
 package org.geotools.filter.function;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.util.Converters;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 
@@ -33,6 +38,14 @@ import org.opengis.filter.expression.Expression;
  * @author Stefano Costa, GeoSolutions
  */
 public class InFunction extends FunctionExpressionImpl {
+
+    static final Boolean FAST_IN_FUNCTION =
+            Boolean.valueOf(System.getProperty("geotools.function.fastInFunction", "true"));
+
+    private boolean staticSet = true;
+
+    private Set<?> lookup;
+    private Class<?> lastContext;
 
     /**
      * Returns true if the expression is a function in the "in" family, that is, "in", "in2", "in3",
@@ -91,8 +104,52 @@ public class InFunction extends FunctionExpressionImpl {
     }
 
     @Override
+    public void setParameters(List<Expression> parameters) {
+        super.setParameters(parameters);
+
+        // see if the table is full of attribute independent expressions
+        if (!FAST_IN_FUNCTION) return;
+        synchronized (this) {
+            staticSet = true;
+            FilterAttributeExtractor extractor = new FilterAttributeExtractor();
+            for (int i = 1; i < parameters.size(); i++) {
+                Expression expression = parameters.get(i);
+                if (expression != null) {
+                    extractor.clear();
+                    expression.accept(extractor, null);
+                    if (!extractor.isConstantExpression()) {
+                        staticSet = false;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
     public Object evaluate(Object feature) {
         Object candidate = getExpression(0).evaluate(feature);
+        Class<?> context = getContextFromCandidate(candidate);
+
+        // lazy initialization of the lookup set
+        if (FAST_IN_FUNCTION) {
+            if (staticSet && context != null && (lookup == null || !lastContext.equals(context))) {
+                synchronized (this) {
+                    if (lookup == null) {
+                        lastContext = context;
+                        lookup = buildLookup(context);
+                    }
+                }
+            }
+            // if we have a lookup and the situation allows for optimization, go for the fast path
+            if (context != null && lookup != null) {
+                // numbers are converted to doubles, dates to java.util.Date
+                Object converted = Converters.convert(candidate, context);
+                if (converted != null) {
+                    return lookup.contains(converted);
+                }
+            }
+        }
 
         boolean result = false;
         List<Expression> valuesToTest = getParameters().subList(1, getParameters().size());
@@ -110,5 +167,27 @@ public class InFunction extends FunctionExpressionImpl {
         }
 
         return result;
+    }
+
+    private Class<?> getContextFromCandidate(Object candidate) {
+        if (candidate == null) return Object.class;
+        Class<?> target = candidate.getClass();
+        if (Number.class.isAssignableFrom(target)) {
+            return Double.class; // StaticGeometry.equalTo will convert to double
+        } else if (Boolean.class.isAssignableFrom(target)) {
+            return Boolean.class;
+        } else if (Date.class.isAssignableFrom(target)) {
+            return Date.class;
+        } else if (String.class.isAssignableFrom(target)) {
+            return String.class;
+        }
+        // chance of improper emulation of StaticGeometry.equalTo is too high, bail out
+        return null;
+    }
+
+    private <T> Set<?> buildLookup(Class<T> context) {
+        return params.subList(1, params.size()).stream()
+                .map(e -> e.evaluate(null, context))
+                .collect(Collectors.toSet());
     }
 }

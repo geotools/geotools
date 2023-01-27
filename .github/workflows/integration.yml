@@ -44,7 +44,7 @@ jobs:
     - name: Build GeoWebCache with tests
       run: |
         export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"
-        export MAVEN_OPTS="-Xmx512m $TEST_OPTS"
+        export MAVEN_OPTS="-Xmx1024m $TEST_OPTS"
         cd ~
         mvn -B -f geowebcache/geowebcache/pom.xml install -nsu -Dspotless.apply.skip=true -DskipTests
         mvn -B -f geowebcache/geowebcache/pom.xml test -nsu -T2 -Dspotless.apply.skip=true

@@ -294,6 +294,9 @@ public class Hints extends RenderingHints {
      */
     public static final Key FORCE_LONGITUDE_FIRST_AXIS_ORDER = new Key(Boolean.class);
 
+    /** Forces encoding all CRS with the srs style */
+    public static final Key FORCE_SRS_STYLE = new Key(Boolean.class);
+
     /**
      * Applies the {@link #FORCE_LONGITUDE_FIRST_AXIS_ORDER} hint to some factories that usually
      * ignore it. The <cite>axis order</cite> issue is of concern mostly to the {@code "EPSG"} name

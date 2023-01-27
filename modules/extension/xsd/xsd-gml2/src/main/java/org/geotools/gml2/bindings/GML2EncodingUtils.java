@@ -34,6 +34,7 @@ import org.geotools.gml2.SrsSyntax;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.CRS.AxisOrder;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.SchemaIndex;
@@ -108,7 +109,8 @@ public class GML2EncodingUtils {
             // specified
             // syntax verbatim, maintaining this check for to maintain the excision behavior of this
             // method
-            if (axisOrder == AxisOrder.EAST_NORTH || axisOrder == AxisOrder.INAPPLICABLE) {
+            if (!Boolean.TRUE.equals(Hints.getSystemDefault(Hints.FORCE_SRS_STYLE))
+                    && (axisOrder == AxisOrder.EAST_NORTH || axisOrder == AxisOrder.INAPPLICABLE)) {
                 srsSyntax = SrsSyntax.OGC_HTTP_URL;
             }
 

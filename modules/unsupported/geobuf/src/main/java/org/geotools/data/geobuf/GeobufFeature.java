@@ -24,6 +24,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
+import java.util.Date;
 
 /**
  * GeobufFeature encodes and decodes SimpleFeatures
@@ -110,6 +111,14 @@ public class GeobufFeature {
             builder.setDoubleValue((Double) value);
         } else if (value instanceof Boolean) {
             builder.setBoolValue((Boolean) value);
+        } else if (value instanceof Date) {
+            Date date = (Date) value;
+            long timestamp = date.getTime();
+            if (timestamp >= 0) {
+                builder.setPosIntValue(timestamp);
+            } else {
+                builder.setNegIntValue(-timestamp);
+            }
         } else {
             // cannot pass null here, will NPE
             if (value != null) {

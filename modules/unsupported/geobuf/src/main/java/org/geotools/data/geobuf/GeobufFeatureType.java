@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -40,6 +41,8 @@ import org.opengis.feature.type.GeometryDescriptor;
  * @author Jared Erickson
  */
 public class GeobufFeatureType {
+
+    private final static String defaultGeometryName = "geom";
 
     private int precision;
 
@@ -81,15 +84,24 @@ public class GeobufFeatureType {
         dataBuilder.setFeatureCollection(Geobuf.Data.FeatureCollection.newBuilder().build());
     }
 
+    private String createGeometryName(List<String> names) {
+        if (!names.contains(defaultGeometryName)) {
+            return defaultGeometryName;
+        }
+        Integer maxLen = names.stream().map(String::length).max(Integer::compareTo).orElse(0);
+        return defaultGeometryName + new String(new char[maxLen]);
+    }
+
     protected SimpleFeatureType getFeatureType(String name, Geobuf.Data data) throws IOException {
         SimpleFeatureTypeBuilder featureTypeBuilder = new SimpleFeatureTypeBuilder();
         featureTypeBuilder.setName(name);
         if (data.getDataTypeCase() == Geobuf.Data.DataTypeCase.GEOMETRY) {
-            featureTypeBuilder.setDefaultGeometry("geom");
-            featureTypeBuilder.add("geom", getGeometryType(data.getGeometry()));
+            featureTypeBuilder.setDefaultGeometry(defaultGeometryName);
+            featureTypeBuilder.add(defaultGeometryName, getGeometryType(data.getGeometry()));
         } else if (data.getDataTypeCase() == Geobuf.Data.DataTypeCase.FEATURE) {
-            featureTypeBuilder.setDefaultGeometry("geom");
-            featureTypeBuilder.add("geom", getGeometryType(data.getFeature().getGeometry()));
+            String geometryName = createGeometryName(data.getKeysList());
+            featureTypeBuilder.setDefaultGeometry(geometryName);
+            featureTypeBuilder.add(geometryName, getGeometryType(data.getFeature().getGeometry()));
             int keyCount = data.getKeysCount();
             for (int i = 0; i < keyCount; i++) {
                 String key = data.getKeys(i);
@@ -97,12 +109,13 @@ public class GeobufFeatureType {
                 featureTypeBuilder.add(key, type);
             }
         } else if (data.getDataTypeCase() == Geobuf.Data.DataTypeCase.FEATURE_COLLECTION) {
-            featureTypeBuilder.setDefaultGeometry("geom");
+            String geometryName = createGeometryName(data.getKeysList());
+            featureTypeBuilder.setDefaultGeometry(geometryName);
             if (data.getFeatureCollection().getFeaturesCount() == 0) {
-                featureTypeBuilder.add("geom", Geometry.class);
+                featureTypeBuilder.add(geometryName, Geometry.class);
             } else {
                 featureTypeBuilder.add(
-                        "geom",
+                        geometryName,
                         getGeometryType(data.getFeatureCollection().getFeatures(0).getGeometry()));
             }
 

@@ -44,5 +44,7 @@ public class OracleNGJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
                 OracleNGDataStoreFactory.GEOMETRY_METADATA_TABLE);
         parameters.put(
                 OracleNGDataStoreFactory.METADATA_BBOX.key, OracleNGDataStoreFactory.METADATA_BBOX);
+        parameters.put(
+                OracleNGDataStoreFactory.GET_REMARKS.key, OracleNGDataStoreFactory.GET_REMARKS);
     }
 }

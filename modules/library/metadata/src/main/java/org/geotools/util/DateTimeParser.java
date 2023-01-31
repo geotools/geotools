@@ -28,6 +28,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.TreeSet;
@@ -151,7 +152,7 @@ public class DateTimeParser {
         }
 
         public SimpleDateFormat getFormat() {
-            SimpleDateFormat sdf = new SimpleDateFormat(format);
+            SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.ROOT);
             sdf.setTimeZone(UTC_TZ);
             return sdf;
         }
@@ -599,7 +600,7 @@ public class DateTimeParser {
         if (parsed == null && isFlagSet(FLAG_IS_LENIENT)) {
             for (String lenientFormat : f.getLenientFormats()) {
                 // rebuild formats at each parse since date formats are not thread safe
-                final SimpleDateFormat format = new SimpleDateFormat(lenientFormat);
+                final SimpleDateFormat format = new SimpleDateFormat(lenientFormat, Locale.ROOT);
                 format.setTimeZone(UTC_TZ);
                 // The lenientFormat is already somehow a lenient version of the
                 // official format. no need to have it lenient too.

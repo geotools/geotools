@@ -20,8 +20,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -42,7 +42,7 @@ import org.opengis.feature.type.GeometryDescriptor;
  */
 public class GeobufFeatureType {
 
-    private final static String defaultGeometryName = "geom";
+    private static final String defaultGeometryName = "geom";
 
     private int precision;
 

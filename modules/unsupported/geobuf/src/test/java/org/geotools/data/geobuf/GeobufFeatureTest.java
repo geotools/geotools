@@ -42,7 +42,8 @@ public class GeobufFeatureTest {
         File file = temporaryFolder.newFile("feature.pbf");
 
         SimpleFeatureType featureType =
-                DataUtilities.createType("test2", "name:String,geom:String,geometry:String,id:int,g:Point");
+                DataUtilities.createType(
+                        "test2", "name:String,geom:String,geometry:String,id:int,g:Point");
         SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(featureType);
         WKTReader wkt = new WKTReader();
         featureBuilder.set("name", "Name");
@@ -62,7 +63,7 @@ public class GeobufFeatureTest {
             assertEquals(
                     feature.getDefaultGeometry().toString(),
                     decodedFeature.getDefaultGeometry().toString());
-            for (String attr: new String[]{"name", "geom", "id", "geometry"}) {
+            for (String attr : new String[] {"name", "geom", "id", "geometry"}) {
                 assertEquals(feature.getAttribute(attr), decodedFeature.getAttribute(attr));
             }
         }

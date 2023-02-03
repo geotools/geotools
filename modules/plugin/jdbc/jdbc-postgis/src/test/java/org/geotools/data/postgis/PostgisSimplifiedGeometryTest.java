@@ -48,6 +48,15 @@ public class PostgisSimplifiedGeometryTest extends JDBCTestSupport {
     }
 
     @Test
+    public void testPointSmallDistance() throws IOException, ParseException {
+        Geometry geom = getFirstGeometry("simplify_point", 6.191820034473494e-8);
+        // same point, but before the fix with TWKB parameters it would have
+        // thrown ERROR: lwgeom_write_to_buffer: X/Z precision cannot be greater
+        // than 7 or less than -7
+        assertGeometryEquals(geom, "POINT(-120 40)");
+    }
+
+    @Test
     public void testLine() throws IOException, ParseException {
         Geometry geom = getFirstGeometry("simplify_line", 20);
         // mid point gone

@@ -155,11 +155,11 @@ public class GeometryColumnEncoder {
      */
     private int getTWKBDigits(Double distance) {
         int result = -(int) Math.floor(Math.log10(distance));
-        // Prevent PostGIS ERROR: lwgeom_write_to_buffer: X/Z precision cannot be greater than 7 or less than -7
+        // Prevent PostGIS ERROR: lwgeom_write_to_buffer: X/Z precision cannot be greater than 7 or
+        // less than -7
         if (result > 7) {
             result = 7;
-        }
-        if (result < -7) {
+        } else if (result < -7) {
             result = -7;
         }
         return result;

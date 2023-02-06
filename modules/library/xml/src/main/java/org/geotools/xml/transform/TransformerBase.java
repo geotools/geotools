@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.xml.XMLConstants;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -818,8 +819,12 @@ public abstract class TransformerBase {
                 }
             }
             try {
+                String ns = (prefix == null) ? XMLConstants.NULL_NS_URI : nsSupport.getURI(prefix);
+                if (ns == null) {
+                    ns = XMLConstants.NULL_NS_URI;
+                }
                 String el = (prefix == null) ? element : (prefix + ":" + element);
-                contentHandler.startElement("", "", el, atts);
+                contentHandler.startElement(ns, element, el, atts);
             } catch (Exception e) {
                 throw new RuntimeException("Error transforming start of element: " + element, e);
             }
@@ -844,8 +849,12 @@ public abstract class TransformerBase {
 
         private void _end(String element) {
             try {
+                String ns = (prefix == null) ? XMLConstants.NULL_NS_URI : nsSupport.getURI(prefix);
+                if (ns == null) {
+                    ns = XMLConstants.NULL_NS_URI;
+                }
                 String el = (prefix == null) ? element : (prefix + ":" + element);
-                contentHandler.endElement("", "", el);
+                contentHandler.endElement(ns, element, el);
             } catch (Exception e) {
                 throw new RuntimeException("Error transforming end of element: " + element, e);
             }

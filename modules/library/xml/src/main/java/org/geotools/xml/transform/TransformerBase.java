@@ -19,8 +19,11 @@ package org.geotools.xml.transform;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -299,6 +302,21 @@ public abstract class TransformerBase {
         private final ContentHandler original;
         private AttributesImpl namespaceDecls;
 
+        private int level = 0;
+
+        private static class LevelPrefixMappings {
+            final int level;
+            final Set<String> prefixes;
+
+            private LevelPrefixMappings(final int level, final String prefix) {
+                this.level = level;
+                this.prefixes = new HashSet<>();
+                this.prefixes.add(prefix);
+            }
+        }
+
+        private Deque<LevelPrefixMappings> prefixMappings = null;
+
         public ContentHandlerFilter(ContentHandler original, AttributesImpl nsDecls) {
             this.original = original;
             this.namespaceDecls = nsDecls;
@@ -315,14 +333,49 @@ public abstract class TransformerBase {
         }
 
         @Override
-        public void endElement(String namespaceURI, String localName, String qName)
-                throws SAXException {
-            original.endElement(namespaceURI, localName, qName);
+        public void endPrefixMapping(String prefix) throws SAXException {
+            if (removePrefixMapping(prefix)) {
+                original.endPrefixMapping(prefix);
+            }
+        }
+
+        private boolean removePrefixMapping(String prefix) {
+            if (prefixMappings != null) {
+                final Iterator<LevelPrefixMappings> it = prefixMappings.iterator();
+                while (it.hasNext()) {
+                    final LevelPrefixMappings levelPrefixMappings = it.next();
+
+                    if (levelPrefixMappings.level < level) {
+                        break;
+                    }
+
+                    if (levelPrefixMappings.level == level) {
+                        if (levelPrefixMappings.prefixes.remove(prefix)) {
+                            if (levelPrefixMappings.prefixes.isEmpty()) {
+                                it.remove();
+                            }
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
         }
 
         @Override
-        public void endPrefixMapping(String prefix) throws SAXException {
-            original.endPrefixMapping(prefix);
+        public void endElement(String namespaceURI, String localName, String qName)
+                throws SAXException {
+            original.endElement(namespaceURI, localName, qName);
+            level--;
+
+            // call endPrefixMapping to stop any namespace prefixes
+            if (qName != null) {
+                final int c = qName.indexOf(":");
+                if (c != -1) {
+                    final String prefix = qName.substring(0, c);
+                    endPrefixMapping(prefix);
+                }
+            }
         }
 
         @Override
@@ -351,10 +404,41 @@ public abstract class TransformerBase {
         }
 
         @Override
+        public void startPrefixMapping(String prefix, String uri) throws SAXException {
+            original.startPrefixMapping(prefix, uri);
+            storePrefixMapping(prefix);
+        }
+
+        private void storePrefixMapping(final String prefix) {
+            if (prefixMappings == null) {
+                prefixMappings = new ArrayDeque<>();
+            }
+            final LevelPrefixMappings levelPrefixMappings = prefixMappings.peekFirst();
+            if (levelPrefixMappings == null || levelPrefixMappings.level != level) {
+                prefixMappings.addFirst(new LevelPrefixMappings(level, prefix));
+            } else {
+                if (!levelPrefixMappings.prefixes.contains(prefix)) {
+                    levelPrefixMappings.prefixes.add(prefix);
+                }
+            }
+        }
+
+        @Override
         public void startElement(
                 String namespaceURI, String localName, String qName, Attributes atts)
                 throws SAXException {
             if (namespaceDecls != null) {
+
+                // call startPrefixMapping for any namespace prefixes
+                for (int i = 0; i < namespaceDecls.getLength(); i++) {
+                    final String nsQName = namespaceDecls.getQName(i);
+                    if (nsQName != null && nsQName.startsWith("xmlns:")) {
+                        final String nsPrefix = nsQName.substring(6);
+                        final String nsUri = namespaceDecls.getValue(i);
+                        startPrefixMapping(nsPrefix, nsUri);
+                    }
+                }
+
                 for (int i = 0, ii = atts.getLength(); i < ii; i++) {
                     namespaceDecls.addAttribute(
                             null, null, atts.getQName(i), atts.getType(i), atts.getValue(i));
@@ -363,14 +447,11 @@ public abstract class TransformerBase {
                 atts = namespaceDecls;
                 namespaceDecls = null;
             }
+
             if (namespaceURI == null) namespaceURI = "";
             if (localName == null) localName = "";
             original.startElement(namespaceURI, localName, qName, atts);
-        }
-
-        @Override
-        public void startPrefixMapping(String prefix, String uri) throws SAXException {
-            original.startPrefixMapping(prefix, uri);
+            level++;
         }
 
         @Override

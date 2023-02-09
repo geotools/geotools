@@ -77,7 +77,9 @@ public class FilteringFeatureCollection<T extends FeatureType, F extends Feature
 
     @Override
     public boolean isEmpty() {
-        return size() == 0;
+        try (FeatureIterator<F> i = features()) {
+            return !i.hasNext();
+        }
     }
 
     @Override

@@ -34,6 +34,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.apache.commons.io.FileUtils;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.property.PropertyDataStore;
@@ -49,6 +51,7 @@ import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -61,11 +64,15 @@ public class ShapefileDumperTest {
 
     static final String ALL_TYPES_WITH_NULL = "AllTypesWithNull";
 
+    static final String ALL_TYPES_MULTI_COLUMN = "AllTypesMultiColumn";
+
     static final String LONGNAMES = "longnames";
 
     static final String NULLGEOM = "nullgeom";
 
     static final String EMPTYGEOMS = "MultiTypeEmpty";
+
+    static final String PRIMITIVE_GEO_FEATURE = "PrimitiveGeoFeature";
 
     File properties = new File("./src/test/resources/org/geotools/data/shapefile/test-data/dumper");
 
@@ -459,5 +466,135 @@ public class ShapefileDumperTest {
         assertNull(lineFeatures.get(1).getDefaultGeometry());
         checkTypeStructure(line.getSchema(), MultiLineString.class, "name");
         assertCst(EMPTYGEOMS + "Line", "ISO-8859-1");
+    }
+
+    @Test
+    public void testMultiGeometryColumns() throws Exception {
+        SimpleFeatureCollection fc = getFeaturesFromProperties(PRIMITIVE_GEO_FEATURE);
+        ShapefileDumper dumper = new ShapefileDumper(dumperFolder);
+        dumper.dump(fc);
+
+        // expected attribute name list
+        String[] alphanumericAttributes = {
+            "descriptio",
+            "name",
+            "intPropert",
+            "uriPropert",
+            "measurand",
+            "dateTimePr",
+            "dateProper",
+            "decimalPro",
+            "booleanPro"
+        };
+
+        // one shapefile per column
+        assertEquals(3, dumperFolder.listFiles(f -> f.getName().endsWith("shp")).length);
+
+        // curveProperty
+        SimpleFeatureCollection curves =
+                getFeaturesFromShapefile(PRIMITIVE_GEO_FEATURE + "curveProperty");
+        assertEquals(1, curves.size());
+        checkTypeStructure(curves.getSchema(), MultiLineString.class, alphanumericAttributes);
+        SimpleFeature firstCurve = DataUtilities.first(curves);
+        assertEquals("name-f003", firstCurve.getAttribute("name"));
+        assertEquals(12.92, (Double) firstCurve.getAttribute("decimalPro"), 0.01);
+        assertEquals(Boolean.TRUE, firstCurve.getAttribute("booleanPro"));
+        assertEquals(
+                new WKTReader().read("MULTILINESTRING((46.074 9.799,46.652 10.466,47.114 11.021))"),
+                firstCurve.getDefaultGeometry());
+
+        // surfaceProperty
+        SimpleFeatureCollection surfaces =
+                getFeaturesFromShapefile(PRIMITIVE_GEO_FEATURE + "surfaceProperty");
+        assertEquals(1, surfaces.size());
+        checkTypeStructure(surfaces.getSchema(), MultiPolygon.class, alphanumericAttributes);
+        SimpleFeature firstSurface = DataUtilities.first(surfaces);
+        assertEquals("name-f008", firstSurface.getAttribute("name"));
+        assertEquals(18.92, (Double) firstSurface.getAttribute("decimalPro"), 0.01);
+        assertEquals(Boolean.TRUE, firstSurface.getAttribute("booleanPro"));
+        assertEquals(
+                new WKTReader()
+                        .read(
+                                "MULTIPOLYGON(((45.174 30.899,45.891 30.466,45.652 30.466,45.174 30.899)))"),
+                firstSurface.getDefaultGeometry());
+
+        // pointProperty
+        SimpleFeatureCollection points =
+                getFeaturesFromShapefile(PRIMITIVE_GEO_FEATURE + "pointProperty");
+        assertEquals(3, points.size());
+        checkTypeStructure(points.getSchema(), Point.class, alphanumericAttributes);
+        SimpleFeature firstPoint = DataUtilities.first(points);
+        assertEquals("name-f001", firstPoint.getAttribute("name"));
+        assertEquals(5.03, (Double) firstPoint.getAttribute("decimalPro"), 0.01);
+        assertEquals(Boolean.TRUE, firstPoint.getAttribute("booleanPro"));
+        assertEquals(
+                new WKTReader().read("POINT(39.73245 2.00342)"), firstPoint.getDefaultGeometry());
+    }
+
+    @Test
+    public void testAllTypesMultiColumn() throws Exception {
+        // two geometry columns, one generic. One record fully null
+        SimpleFeatureCollection fc = getFeaturesFromProperties(ALL_TYPES_MULTI_COLUMN);
+        ShapefileDumper dumper = new ShapefileDumper(dumperFolder);
+        dumper.dump(fc);
+
+        // centroid (almost all features, f004 and f005 are missing)
+        SimpleFeatureCollection centroids =
+                getFeaturesFromShapefile(ALL_TYPES_MULTI_COLUMN + "centroid");
+        assertEquals(4, centroids.size());
+        assertEquals(Set.of("f001", "f002", "f003", "f006"), getNames(centroids));
+        checkTypeStructure(centroids.getSchema(), Point.class, "name");
+        SimpleFeature firstCentroid = DataUtilities.first(centroids);
+        assertEquals("f001", firstCentroid.getAttribute("name"));
+        assertEquals(new WKTReader().read("POINT(3 62)"), firstCentroid.getDefaultGeometry());
+
+        // geomPolygon
+        SimpleFeatureCollection geomPolygons =
+                getFeaturesFromShapefile(ALL_TYPES_MULTI_COLUMN + "geomPolygon");
+        assertEquals(2, geomPolygons.size());
+        assertEquals(Set.of("f001", "f002"), getNames(geomPolygons));
+        checkTypeStructure(geomPolygons.getSchema(), MultiPolygon.class, "name");
+        SimpleFeature firstPolygon = DataUtilities.first(geomPolygons);
+        assertEquals("f001", firstPolygon.getAttribute("name"));
+        assertEquals(
+                new WKTReader().read("MULTIPOLYGON(((0 60.5,0 64,6.25 64,6.25 60.5,0 60.5)))"),
+                firstPolygon.getDefaultGeometry());
+
+        // geomLine
+        SimpleFeatureCollection geomLines =
+                getFeaturesFromShapefile(ALL_TYPES_MULTI_COLUMN + "geomLine");
+        assertEquals(2, geomLines.size());
+        assertEquals(Set.of("f003", "f004"), getNames(geomLines));
+        checkTypeStructure(geomLines.getSchema(), MultiLineString.class, "name");
+        SimpleFeature firstLine = DataUtilities.first(geomLines);
+        assertEquals("f003", firstLine.getAttribute("name"));
+        assertEquals(
+                new WKTReader().read("MULTILINESTRING((0 0,1 2,3 4))"),
+                firstLine.getDefaultGeometry());
+
+        // geomMPoint
+        SimpleFeatureCollection geomMPoints =
+                getFeaturesFromShapefile(ALL_TYPES_MULTI_COLUMN + "geomMPoint");
+        assertEquals(1, geomMPoints.size());
+        checkTypeStructure(geomMPoints.getSchema(), MultiPoint.class, "name");
+        SimpleFeature firstMPoint = DataUtilities.first(geomMPoints);
+        assertEquals("f006", firstMPoint.getAttribute("name"));
+        assertEquals(
+                new WKTReader().read("MULTIPOINT(0 0, 1 1)"), firstMPoint.getDefaultGeometry());
+
+        // the feature with two null geometries
+        SimpleFeatureCollection geomNull =
+                getFeaturesFromShapefile(ALL_TYPES_MULTI_COLUMN + "geom_NULL");
+        assertEquals(1, geomNull.size());
+        checkTypeStructure(geomNull.getSchema(), Point.class, "name");
+        SimpleFeature firstNull = DataUtilities.first(geomNull);
+        assertEquals("f005", firstNull.getAttribute("name"));
+        assertNull(firstNull.getDefaultGeometry());
+    }
+
+    private static Set<Object> getNames(SimpleFeatureCollection geomLines) {
+        return DataUtilities.list(geomLines).stream()
+                .map(f -> f.getAttribute("name"))
+                .collect(Collectors.toSet());
     }
 }

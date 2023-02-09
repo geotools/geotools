@@ -23,16 +23,23 @@ import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import org.geotools.data.DataSourceException;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.store.FilteringFeatureCollection;
+import org.geotools.data.store.ReTypingFeatureCollection;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
@@ -48,12 +55,14 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory2;
 
 /**
  * Class specializing in dumping a feature collection onto one or more shapefiles into a target
  * directory.
  *
- * <p>The collection will be distributed among different shapefiles if needed do respect certain
+ * <p>The collection will be distributed among different shapefiles if needed To respect certain
  * limitations:
  *
  * <ul>
@@ -68,6 +77,8 @@ import org.opengis.feature.type.GeometryDescriptor;
  * @author Andrea Aime - GeoSolutions
  */
 public class ShapefileDumper {
+
+    static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
 
     private class StoreWriter {
         int currentFileId = 0;
@@ -186,14 +197,13 @@ public class ShapefileDumper {
     }
 
     /**
-     * Dumps the collection into one or more shapefiles. Multiple files will be geneated when the
+     * Dumps the collection into one or more shapefiles. Multiple files will be generated when the
      * input collection contains multiple geometry types, or as the size limit for output files get
      * reached
      *
      * @param fc The input feature collection
      * @return True if at least one feature got written, false otherwise
      */
-    @SuppressWarnings("PMD.UseTryWithResources")
     public boolean dump(String fileName, SimpleFeatureCollection fc) throws IOException {
         // make sure we are not trying to write out a geometryless data set
         if (fc.getSchema().getGeometryDescriptor() == null) {
@@ -203,6 +213,85 @@ public class ShapefileDumper {
                             + " has no geometry field");
         }
 
+        // the input collection could have multiple geometry columns, split it so that
+        // a separate shapefile group is created fore each one of them (the single column
+        // could be a generic Geometry, in which case we need to split it as well)
+        List<SimpleFeatureCollection> geometryCollections = splitByGeometryColumn(fc);
+        boolean featuresWritten = false;
+        if (geometryCollections.size() == 1) {
+            featuresWritten = dumpSingleGeometry(fileName, fc, null);
+        } else {
+
+            for (SimpleFeatureCollection geometryCollection : geometryCollections) {
+                String geometryName =
+                        geometryCollection.getSchema().getGeometryDescriptor().getLocalName();
+                featuresWritten |= dumpSingleGeometry(fileName, geometryCollection, geometryName);
+            }
+        }
+
+        return featuresWritten;
+    }
+
+    private List<SimpleFeatureCollection> splitByGeometryColumn(SimpleFeatureCollection fc) {
+        SimpleFeatureType schema = fc.getSchema();
+        List<GeometryDescriptor> geometryColumns =
+                schema.getAttributeDescriptors().stream()
+                        .filter(sd -> sd instanceof GeometryDescriptor)
+                        .map(sd -> (GeometryDescriptor) sd)
+                        .collect(Collectors.toList());
+        if (geometryColumns.size() == 1) {
+            // no need to split, we have a single geometry column
+            return Collections.singletonList(fc);
+        }
+
+        // split the collection into one per geometry column
+        List<SimpleFeatureCollection> result = new ArrayList<>();
+        List<AttributeDescriptor> otherColumns =
+                schema.getAttributeDescriptors().stream()
+                        .filter(sd -> !(sd instanceof GeometryDescriptor))
+                        .collect(Collectors.toList());
+        for (GeometryDescriptor geometryColumn : geometryColumns) {
+            SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+            tb.setName(schema.getName());
+            tb.add(geometryColumn);
+            tb.addAll(otherColumns);
+            SimpleFeatureType ft = tb.buildFeatureType();
+            // collection specific to a geometry column, filter out null geometries
+            SimpleFeatureCollection nonNullGeometries =
+                    DataUtilities.simple(
+                            new FilteringFeatureCollection<>(
+                                    fc, FF.not(FF.isNull(FF.property(geometryColumn.getName())))));
+            SimpleFeatureCollection split = new ReTypingFeatureCollection(nonNullGeometries, ft);
+            result.add(split);
+        }
+
+        // do we have features whose geometry is null? If so, add a collection for them
+        List<Filter> nullGeometryFilters =
+                geometryColumns.stream()
+                        .map(gd -> FF.isNull(FF.property(gd.getName())))
+                        .collect(Collectors.toList());
+        Filter nullGeometryFilter = FF.and(nullGeometryFilters);
+        SimpleFeatureCollection nullGeometries =
+                DataUtilities.simple(new FilteringFeatureCollection<>(fc, nullGeometryFilter));
+        if (!nullGeometries.isEmpty()) result.add(nullGeometries);
+
+        return result;
+    }
+
+    /**
+     * Dumps a single geometry column into one or more shapefiles. Multiple files will be generated
+     *
+     * @param fileName The base name for the shapefiles to be generated, or null if the name should
+     *     be generated
+     * @param fc The feature collection to be dumped
+     * @param geometryName The name of the geometry column to be dumped, or null if the original
+     *     collection had a single geometry column
+     * @return True if at least one feature got written, false otherwise
+     * @throws IOException
+     */
+    @SuppressWarnings("PMD.UseTryWithResources")
+    private boolean dumpSingleGeometry(
+            String fileName, SimpleFeatureCollection fc, String geometryName) throws IOException {
         // Takes a feature collection with a generic schema and remaps it to one whose schema
         // respects the limitations of the shapefile format
         fc = RemappingFeatureCollection.getShapefileCompatibleCollection(fc);
@@ -226,19 +315,20 @@ public class ShapefileDumper {
                 StoreWriter storeWriter;
                 if (multiWriter && f.getDefaultGeometry() == null) {
                     // lazy instantiation of NULL geometries writer
-                    nullStoreWriter =
-                            nullStoreWriter == null
-                                    ? getStoreWriter(
-                                            fileName,
-                                            schema,
-                                            null,
-                                            multiWriter,
-                                            Point.class,
-                                            "_NULL")
-                                    : nullStoreWriter;
+                    if (nullStoreWriter == null) {
+                        nullStoreWriter =
+                                getStoreWriter(
+                                        fileName,
+                                        geometryName,
+                                        schema,
+                                        null,
+                                        multiWriter,
+                                        Point.class,
+                                        "_NULL");
+                    }
                     storeWriter = nullStoreWriter;
                 } else {
-                    storeWriter = getStoreWriter(fileName, f, writers, multiWriter);
+                    storeWriter = getStoreWriter(fileName, geometryName, f, writers, multiWriter);
                 }
                 // try to write, the shapefile size limits could be reached
                 try {
@@ -256,9 +346,17 @@ public class ShapefileDumper {
             if (!featuresWritten && emptyShapefileAllowed) {
                 if (multiWriter) {
                     // force the dump of a point file
-                    getStoreWriter(fileName, fc.getSchema(), writers, true, Point.class, null);
+                    getStoreWriter(
+                            fileName,
+                            geometryName,
+                            fc.getSchema(),
+                            writers,
+                            true,
+                            Point.class,
+                            null);
                 } else {
-                    getStoreWriter(fileName, fc.getSchema(), writers, false, geomType, null);
+                    getStoreWriter(
+                            fileName, geometryName, fc.getSchema(), writers, false, geomType, null);
                 }
             }
 
@@ -296,7 +394,6 @@ public class ShapefileDumper {
                 throw new IOException(stored);
             }
         }
-
         return featuresWritten;
     }
 
@@ -397,6 +494,7 @@ public class ShapefileDumper {
      */
     private StoreWriter getStoreWriter(
             String fileName,
+            String geometryName,
             SimpleFeature f,
             Map<Class<?>, StoreWriter> writers,
             boolean multiWriter)
@@ -418,11 +516,18 @@ public class ShapefileDumper {
         }
 
         return getStoreWriter(
-                fileName, f.getFeatureType(), writers, multiWriter, target, geometryType);
+                fileName,
+                geometryName,
+                f.getFeatureType(),
+                writers,
+                multiWriter,
+                target,
+                geometryType);
     }
 
     private StoreWriter getStoreWriter(
             String fileName,
+            String geometryName,
             SimpleFeatureType original,
             Map<Class<?>, StoreWriter> writers,
             boolean multiWriter,
@@ -448,9 +553,9 @@ public class ShapefileDumper {
             // we need to associate the geometry type to the file name only if we can have be
             // multiple types
             if (multiWriter) {
-                fileName = getShapeName(fileName, original, geometryType);
+                fileName = getShapeName(fileName, geometryName, original, geometryType);
             } else {
-                fileName = getShapeName(fileName, original, null);
+                fileName = getShapeName(fileName, geometryName, original, null);
             }
             builder.setName(fileName);
 
@@ -471,31 +576,41 @@ public class ShapefileDumper {
      *
      * <p>This method will only be called if a custom name was not provided.
      *
+     * @param geometryName The name of the geometry column, in case the original data source had
+     *     multiple geometry columns
      * @param geometryType The name of the geometry type, will be null if there is no need for a
      *     geometry type suffix
      */
+    protected String getShapeName(
+            SimpleFeatureType schema, String geometryName, String geometryType) {
+        // backwards compatibility
+        if (geometryName == null) return getShapeName(schema, geometryType);
+        return getShapeName(schema.getTypeName(), geometryName, geometryType);
+    }
+
+    /** Please use {@link #getShapeName(SimpleFeatureType, String, String)} instead */
+    @Deprecated
     protected String getShapeName(SimpleFeatureType schema, String geometryType) {
-        return getShapeName(schema.getTypeName(), geometryType);
+        return getShapeName(schema.getTypeName(), null, geometryType);
     }
 
     /**
      * Returns the shape name from the given suggested name (if available), schema and geometry
      * type.
      */
-    private String getShapeName(String fileName, SimpleFeatureType schema, String geometryType) {
+    private String getShapeName(
+            String fileName, String geometryName, SimpleFeatureType schema, String geometryType) {
         if (fileName == null) {
-            return getShapeName(schema, geometryType);
+            return getShapeName(schema, geometryName, geometryType);
         } else {
-            return getShapeName(fileName, geometryType);
+            return getShapeName(fileName, geometryName, geometryType);
         }
     }
 
     /** Returns the shape name from the given suggested name and geometry type. */
-    private String getShapeName(String fileName, String geometryType) {
-        if (geometryType == null) {
-            return fileName;
-        } else {
-            return fileName + geometryType;
-        }
+    private String getShapeName(String fileName, String geometryName, String geometryType) {
+        return Arrays.stream(new String[] {fileName, geometryName, geometryType})
+                .filter(s -> s != null)
+                .collect(Collectors.joining(""));
     }
 }

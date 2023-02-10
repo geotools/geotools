@@ -1483,7 +1483,7 @@ public abstract class SQLDialect {
                 toUnwrap = testCon;
                 testCon = unwrapper.unwrap(testCon);
                 if (clazz.isInstance(testCon)) {
-                    return clazz.cast(cx);
+                    return clazz.cast(testCon);
                 }
             } while (testCon != null && testCon != toUnwrap);
             // try to use Java unwrapping

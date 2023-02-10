@@ -236,6 +236,31 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
     }
 
     @Test
+    public void testFunctionStrEndsWithEscaping() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        Filter filter =
+                ff.equals(
+                        ff.literal(true),
+                        ff.function("strEndsWith", ff.property("testString"), ff.literal("'FOO")));
+        filterToSql.encode(filter);
+        String sql = writer.toString();
+        assertEquals("WHERE true = (testString LIKE ('%' || '''FOO'))", sql);
+    }
+
+    @Test
+    public void testFunctionStrStartsWithEscaping() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        Filter filter =
+                ff.equals(
+                        ff.literal(true),
+                        ff.function(
+                                "strStartsWith", ff.property("testString"), ff.literal("'FOO")));
+        filterToSql.encode(filter);
+        String sql = writer.toString();
+        assertEquals("WHERE true = (testString LIKE ('''FOO' || '%'))", sql);
+    }
+
+    @Test
     public void testFunctionLike() throws Exception {
         filterToSql.setFeatureType(testSchema);
         PropertyIsLike like =
@@ -299,7 +324,7 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
                         ff.literal("OP1"));
         filterToSql.encode(pointer);
         String sql = writer.toString().trim();
-        assertEquals("\"OPERATIONS\"::jsonb @> '{ \"operations\": [\"OP1\"] }'::jsonb", sql);
+        assertEquals("OPERATIONS::jsonb @> '{ \"operations\": [\"OP1\"] }'::jsonb", sql);
     }
 
     @Test
@@ -313,7 +338,7 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
                         ff.literal(1));
         filterToSql.encode(pointer);
         String sql = writer.toString().trim();
-        assertEquals("\"OPERATIONS\"::jsonb @> '{ \"operations\": [1] }'::jsonb", sql);
+        assertEquals("OPERATIONS::jsonb @> '{ \"operations\": [1] }'::jsonb", sql);
     }
 
     @Test
@@ -328,7 +353,35 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
         filterToSql.encode(pointer);
         String sql = writer.toString().trim();
         assertEquals(
-                "\"OPERATIONS\"::jsonb @> '{ \"operations\": { \"parameters\": [\"P1\"] } }'::jsonb",
+                "OPERATIONS::jsonb @> '{ \"operations\": { \"parameters\": [\"P1\"] } }'::jsonb",
                 sql);
+    }
+
+    @Test
+    public void testFunctionJsonArrayContainsEscapingPointer() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        Function pointer =
+                ff.function(
+                        "jsonArrayContains",
+                        ff.property("OPERATIONS"),
+                        ff.literal("/\"'FOO"),
+                        ff.literal("OP1"));
+        filterToSql.encode(pointer);
+        String sql = writer.toString().trim();
+        assertEquals("OPERATIONS::jsonb @> '{ \"\\\"''FOO\": [\"OP1\"] }'::jsonb", sql);
+    }
+
+    @Test
+    public void testFunctionJsonArrayContainsEscapingExpected() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        Function pointer =
+                ff.function(
+                        "jsonArrayContains",
+                        ff.property("OPERATIONS"),
+                        ff.literal("/operations"),
+                        ff.literal("\"'FOO"));
+        filterToSql.encode(pointer);
+        String sql = writer.toString().trim();
+        assertEquals("OPERATIONS::jsonb @> '{ \"operations\": [\"\\\"''FOO\"] }'::jsonb", sql);
     }
 }

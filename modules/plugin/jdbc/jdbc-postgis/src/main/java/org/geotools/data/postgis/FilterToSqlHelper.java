@@ -25,7 +25,6 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
@@ -65,6 +64,7 @@ import org.geotools.filter.function.math.FilterFunction_abs_4;
 import org.geotools.filter.function.math.FilterFunction_ceil;
 import org.geotools.filter.function.math.FilterFunction_floor;
 import org.geotools.geometry.jts.JTS;
+import org.geotools.jdbc.EscapeSql;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PrimaryKeyColumn;
@@ -569,30 +569,18 @@ class FilterToSqlHelper {
 
             out.write("(");
             str.accept(delegate, String.class);
-            out.write(" LIKE ");
-            if (end instanceof Literal) {
-                out.write("'%" + end.evaluate(null, String.class) + "'");
-            } else {
-                out.write("('%' || ");
-                end.accept(delegate, String.class);
-                out.write(")");
-            }
-            out.write(")");
+            out.write(" LIKE ('%' || ");
+            end.accept(delegate, String.class);
+            out.write("))");
         } else if (function instanceof FilterFunction_strStartsWith) {
             Expression str = getParameter(function, 0, true);
             Expression start = getParameter(function, 1, true);
 
             out.write("(");
             str.accept(delegate, String.class);
-            out.write(" LIKE ");
-            if (start instanceof Literal) {
-                out.write("'" + start.evaluate(null, String.class) + "%'");
-            } else {
-                out.write("(");
-                start.accept(delegate, String.class);
-                out.write(" || '%')");
-            }
-            out.write(")");
+            out.write(" LIKE (");
+            start.accept(delegate, String.class);
+            out.write(" || '%'))");
         } else if (function instanceof FilterFunction_strEqualsIgnoreCase) {
             Expression first = getParameter(function, 0, true);
             Expression second = getParameter(function, 1, true);
@@ -703,25 +691,19 @@ class FilterToSqlHelper {
         }
     }
 
-    public String buildJsonFromStrPointer(String[] pointers, Expression expectedExp) {
-        if (!"".equals(pointers[0])) {
-            if (pointers.length == 1) {
-                final String expected =
-                        getBaseType(expectedExp).isAssignableFrom(String.class)
-                                ? String.format(
-                                        "\"%s\"", ((Literal) expectedExp).getValue().toString())
-                                : ((Literal) expectedExp).getValue().toString();
-                return String.format("\"%s\": [%s]", pointers[0], expected);
-            } else {
-                return String.format(
-                        "\"%s\": { %s }",
-                        pointers[0],
-                        buildJsonFromStrPointer(
-                                Arrays.copyOfRange(pointers, 1, pointers.length), expectedExp));
+    public String buildJsonFromStrPointer(String[] pointers, int index, Expression expected) {
+        if (pointers[index].isEmpty()) {
+            return buildJsonFromStrPointer(pointers, index + 1, expected);
+        } else if (index == pointers.length - 1) {
+            String strExpected = escapeJsonLiteral(expected.evaluate(null, String.class));
+            if (getBaseType(expected).isAssignableFrom(String.class)) {
+                strExpected = '"' + strExpected + '"';
             }
-        } else
-            return buildJsonFromStrPointer(
-                    Arrays.copyOfRange(pointers, 1, pointers.length), expectedExp);
+            return String.format("\"%s\": [%s]", pointers[index], strExpected);
+        } else {
+            String jsonPointers = buildJsonFromStrPointer(pointers, index + 1, expected);
+            return String.format("\"%s\": { %s }", pointers[index], jsonPointers);
+        }
     }
 
     private void encodeJsonArrayContains(Function jsonArrayContains) throws IOException {
@@ -729,17 +711,20 @@ class FilterToSqlHelper {
         Literal jsonPath = (Literal) getParameter(jsonArrayContains, 1, true);
         Expression expected = getParameter(jsonArrayContains, 2, true);
 
-        String[] strJsonPath = jsonPath.getValue().toString().split("/");
+        String[] strJsonPath = escapeJsonLiteral(jsonPath.getValue().toString()).split("/");
         if (strJsonPath.length > 0) {
-            String jsonFilter =
-                    String.format("{ %s }", buildJsonFromStrPointer(strJsonPath, expected));
-            out.write(
-                    String.format(
-                            "\"%s\"::jsonb @> '%s'::jsonb", column.getPropertyName(), jsonFilter));
+            column.accept(delegate, null);
+            out.write("::jsonb @> '{ ");
+            out.write(buildJsonFromStrPointer(strJsonPath, 0, expected));
+            out.write(" }'::jsonb");
         } else {
             throw new IllegalArgumentException(
                     "Cannot encode filter Invalid pointer " + jsonPath.getValue());
         }
+    }
+
+    private static String escapeJsonLiteral(String literal) {
+        return EscapeSql.escapeLiteral(literal, true, true);
     }
 
     Expression getParameter(Function function, int idx, boolean mandatory) {

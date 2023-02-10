@@ -44,10 +44,6 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
 
 public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
 
-    public PostgisFilterToSQLTest(String name) {
-        super(name);
-    }
-
     private static FilterFactory2 ff;
 
     private static GeometryFactory gf = new GeometryFactory();
@@ -232,6 +228,31 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
         filterToSql.encode(expr);
         String sql = writer.toString().toLowerCase();
         assertEquals("where testarray = array['1', '2', '3']", sql);
+    }
+
+    @Test
+    public void testFunctionStrEndsWithEscaping() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        Filter filter =
+                ff.equals(
+                        ff.literal(true),
+                        ff.function("strEndsWith", ff.property("testString"), ff.literal("'FOO")));
+        filterToSql.encode(filter);
+        String sql = writer.toString();
+        assertEquals("WHERE true = (testString LIKE ('%' || '''FOO'))", sql);
+    }
+
+    @Test
+    public void testFunctionStrStartsWithEscaping() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        Filter filter =
+                ff.equals(
+                        ff.literal(true),
+                        ff.function(
+                                "strStartsWith", ff.property("testString"), ff.literal("'FOO")));
+        filterToSql.encode(filter);
+        String sql = writer.toString();
+        assertEquals("WHERE true = (testString LIKE ('''FOO' || '%'))", sql);
     }
 
     @Test

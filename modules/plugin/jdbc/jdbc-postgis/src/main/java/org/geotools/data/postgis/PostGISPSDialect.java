@@ -244,6 +244,7 @@ public class PostGISPSDialect extends PreparedStatementSQLDialect {
         fts.setFunctionEncodingEnabled(delegate.isFunctionEncodingEnabled());
         fts.setLooseBBOXEnabled(delegate.isLooseBBOXEnabled());
         fts.setEncodeBBOXFilterAsEnvelope(delegate.isEncodeBBOXFilterAsEnvelope());
+        fts.setEscapeBackslash(delegate.isEscapeBackslash());
         return fts;
     }
 

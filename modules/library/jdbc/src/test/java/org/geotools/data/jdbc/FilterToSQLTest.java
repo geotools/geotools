@@ -422,4 +422,16 @@ public class FilterToSQLTest extends TestCase {
         encoder.setSqlNameEscape("");
         assertEquals("abc", encoder.escapeName("abc"));
     }
+
+    public void testLikeEscaping() throws Exception {
+        Filter filter = ff.like(ff.property("testString"), "\\'FOO", "%", "-", "\\", true);
+        FilterToSQL encoder = new FilterToSQL(output);
+        assertEquals("WHERE testString LIKE '''FOO'", encoder.encodeToString(filter));
+    }
+
+    public void testIdEscaping() throws Exception {
+        Id id = ff.id(Collections.singleton(ff.featureId("'FOO")));
+        encoder.encode(id);
+        assertEquals("WHERE (id = '''FOO')", output.toString());
+    }
 }

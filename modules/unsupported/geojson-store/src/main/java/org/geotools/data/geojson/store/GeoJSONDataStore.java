@@ -53,11 +53,11 @@ public class GeoJSONDataStore extends ContentDataStore implements FileDataStore 
     private boolean quick = true;
 
     public GeoJSONDataStore(URL url) {
-        this.setUrl(url);
+        this.url = url;
     }
 
     public GeoJSONDataStore(File f) {
-        this.setUrl(URLs.fileToUrl(f));
+        this(URLs.fileToUrl(f));
     }
 
     GeoJSONReader read() throws IOException {
@@ -108,6 +108,9 @@ public class GeoJSONDataStore extends ContentDataStore implements FileDataStore 
     @Override
     public SimpleFeatureType getSchema() throws IOException {
         if (schema == null) {
+            if (typeName == null) {
+                createTypeNames();
+            }
             schema = getSchema(typeName);
         }
         return schema;
@@ -134,6 +137,7 @@ public class GeoJSONDataStore extends ContentDataStore implements FileDataStore 
 
     public void setUrl(URL url) {
         this.url = url;
+        this.typeName = null;
     }
 
     @Override
@@ -146,7 +150,6 @@ public class GeoJSONDataStore extends ContentDataStore implements FileDataStore 
 
     @Override
     public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader() throws IOException {
-
         return new GeoJSONFeatureSource(this).getReader();
     }
 

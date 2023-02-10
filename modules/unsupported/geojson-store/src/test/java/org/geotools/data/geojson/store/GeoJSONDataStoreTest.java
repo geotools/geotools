@@ -168,4 +168,12 @@ public class GeoJSONDataStoreTest {
         }
         assertEquals(1, cnt);
     }
+
+    @Test
+    public void testDirectSchemaAccess() throws Exception {
+        URL url = TestData.url(this.getClass(), "locations.json");
+        GeoJSONDataStore store = new GeoJSONDataStore(url);
+        SimpleFeatureType schema = store.getSchema();
+        assertEquals("locations", schema.getTypeName());
+    }
 }

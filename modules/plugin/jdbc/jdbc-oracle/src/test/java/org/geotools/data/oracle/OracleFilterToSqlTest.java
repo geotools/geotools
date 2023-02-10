@@ -138,6 +138,17 @@ public class OracleFilterToSqlTest extends TestCase {
                 "WHERE SDO_WITHIN_DISTANCE(\"GEOM\",?,'distance=10.0 unit=km') = 'TRUE' ", encoded);
     }
 
+    public void testDWithinFilterWithUnitEscaping() throws Exception {
+        Coordinate coordinate = new Coordinate();
+        DWithin dwithin =
+                ff.dwithin(
+                        ff.property("GEOM"), ff.literal(gf.createPoint(coordinate)), 10.0, "'FOO");
+        String encoded = encoder.encodeToString(dwithin);
+        assertEquals(
+                "WHERE SDO_WITHIN_DISTANCE(\"GEOM\",?,'distance=10.0 unit=''FOO') = 'TRUE' ",
+                encoded);
+    }
+
     public void testDWithinFilterWithoutUnit() throws Exception {
         Coordinate coordinate = new Coordinate();
         DWithin dwithin =

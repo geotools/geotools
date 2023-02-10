@@ -246,7 +246,12 @@ public class MySQLDialectBasic extends BasicSQLDialect {
 
     @Override
     public FilterToSQL createFilterToSQL() {
-        return new MySQLFilterToSQL(delegate.getUsePreciseSpatialOps());
+        MySQLFilterToSQL fts = new MySQLFilterToSQL(delegate.getUsePreciseSpatialOps());
+        // see https://dev.mysql.com/doc/refman/8.0/en/sql-mode.html#sqlmode_no_backslash_escapes
+        // NOTE: for future enhancement, do not escape backslashes when the NO_BACKSLASH_ESCAPES
+        // mode is enabled since that would create an incorrect string in the SQL
+        fts.setEscapeBackslash(true);
+        return fts;
     }
 
     @Override

@@ -46,15 +46,6 @@ public abstract class SQLFilterTestSupport extends TestCase {
 
     protected boolean setup = false;
 
-    /**
-     * Creates a new instance of TestCaseSupport
-     *
-     * @param name what to call this...
-     */
-    public SQLFilterTestSupport(String name) {
-        super(name);
-    }
-
     protected void setUp() throws Exception {
         if (setup) {
             return;

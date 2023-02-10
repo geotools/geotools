@@ -45,6 +45,7 @@ import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.filter.function.InFunction;
 import org.geotools.filter.spatial.BBOXImpl;
 import org.geotools.jdbc.EnumMapper;
+import org.geotools.jdbc.EscapeSql;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JoinPropertyName;
 import org.geotools.jdbc.PrimaryKey;
@@ -229,6 +230,9 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     /** Whether the encoder should try to encode "in" function into a SQL IN operator */
     protected boolean inEncodingEnabled = true;
 
+    /** Whether to escape backslash characters in string literals */
+    protected boolean escapeBackslash = false;
+
     /** Default constructor */
     public FilterToSQL() {}
 
@@ -262,6 +266,16 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      */
     public void setInEncodingEnabled(boolean inEncodingEnabled) {
         this.inEncodingEnabled = inEncodingEnabled;
+    }
+
+    /** @return whether to escape backslash characters in string literals */
+    public boolean isEscapeBackslash() {
+        return escapeBackslash;
+    }
+
+    /** @param escapeBackslash whether to escape backslash characters in string literals */
+    public void setEscapeBackslash(boolean escapeBackslash) {
+        this.escapeBackslash = escapeBackslash;
     }
 
     /**
@@ -389,6 +403,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         capabilities.addAll(FilterCapabilities.LOGICAL_OPENGIS);
         capabilities.addAll(FilterCapabilities.SIMPLE_COMPARISONS_OPENGIS);
         capabilities.addType(PropertyIsNull.class);
+        capabilities.addType(PropertyIsLike.class);
         capabilities.addType(PropertyIsBetween.class);
         capabilities.addType(Id.class);
         capabilities.addType(IncludeFilter.class);
@@ -521,7 +536,8 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             literal += multi;
         }
 
-        String pattern = LikeFilterImpl.convertToSQL92(esc, multi, single, matchCase, literal);
+        String pattern =
+                LikeFilterImpl.convertToSQL92(esc, multi, single, matchCase, literal, false);
 
         try {
             if (!matchCase) {
@@ -531,13 +547,12 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             att.accept(this, extraData);
 
             if (!matchCase) {
-                out.write(") LIKE '");
+                out.write(") LIKE ");
             } else {
-                out.write(" LIKE '");
+                out.write(" LIKE ");
             }
 
-            out.write(pattern);
-            out.write("' ");
+            writeLiteral(pattern);
         } catch (java.io.IOException ioe) {
             throw new RuntimeException(IO_ERROR, ioe);
         }
@@ -1145,11 +1160,8 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
 
                 for (int j = 0; j < attValues.size(); j++) {
                     out.write(escapeName(columns.get(j).getName()));
-                    out.write(" = '");
-                    out.write(
-                            attValues.get(j).toString()); // DJB: changed this to attValues[j] from
-                    // attValues[i].
-                    out.write("'");
+                    out.write(" = ");
+                    writeLiteral(attValues.get(j));
 
                     if (j < (attValues.size() - 1)) {
                         out.write(" AND ");
@@ -1708,10 +1720,15 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                 encoding = literal.toString();
             }
 
-            // sigle quotes must be escaped to have a valid sql string
-            String escaped = encoding.replaceAll("'", "''");
+            // single quotes must be escaped to have a valid sql string
+            String escaped = escapeLiteral(encoding);
             out.write("'" + escaped + "'");
         }
+    }
+
+    /** Escapes the string literal. */
+    public String escapeLiteral(String literal) {
+        return EscapeSql.escapeLiteral(literal, escapeBackslash, false);
     }
 
     /**

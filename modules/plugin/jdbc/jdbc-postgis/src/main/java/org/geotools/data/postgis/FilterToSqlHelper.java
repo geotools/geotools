@@ -62,6 +62,7 @@ import org.geotools.filter.function.math.FilterFunction_abs_4;
 import org.geotools.filter.function.math.FilterFunction_ceil;
 import org.geotools.filter.function.math.FilterFunction_floor;
 import org.geotools.geometry.jts.JTS;
+import org.geotools.jdbc.EscapeSql;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PrimaryKeyColumn;
@@ -564,30 +565,18 @@ class FilterToSqlHelper {
 
             out.write("(");
             str.accept(delegate, String.class);
-            out.write(" LIKE ");
-            if (end instanceof Literal) {
-                out.write("'%" + end.evaluate(null, String.class) + "'");
-            } else {
-                out.write("('%' || ");
-                end.accept(delegate, String.class);
-                out.write(")");
-            }
-            out.write(")");
+            out.write(" LIKE ('%' || ");
+            end.accept(delegate, String.class);
+            out.write("))");
         } else if (function instanceof FilterFunction_strStartsWith) {
             Expression str = getParameter(function, 0, true);
             Expression start = getParameter(function, 1, true);
 
             out.write("(");
             str.accept(delegate, String.class);
-            out.write(" LIKE ");
-            if (start instanceof Literal) {
-                out.write("'" + start.evaluate(null, String.class) + "%'");
-            } else {
-                out.write("(");
-                start.accept(delegate, String.class);
-                out.write(" || '%')");
-            }
-            out.write(")");
+            out.write(" LIKE (");
+            start.accept(delegate, String.class);
+            out.write(" || '%'))");
         } else if (function instanceof FilterFunction_strEqualsIgnoreCase) {
             Expression first = getParameter(function, 0, true);
             Expression second = getParameter(function, 1, true);
@@ -682,6 +671,25 @@ class FilterToSqlHelper {
                 out.write(cast("", (Class) extraData));
             }
         }
+    }
+
+    public String buildJsonFromStrPointer(String[] pointers, int index, Expression expected) {
+        if (pointers[index].isEmpty()) {
+            return buildJsonFromStrPointer(pointers, index + 1, expected);
+        } else if (index == pointers.length - 1) {
+            String strExpected = escapeJsonLiteral(expected.evaluate(null, String.class));
+            if (getBaseType(expected).isAssignableFrom(String.class)) {
+                strExpected = '"' + strExpected + '"';
+            }
+            return String.format("\"%s\": [%s]", pointers[index], strExpected);
+        } else {
+            String jsonPointers = buildJsonFromStrPointer(pointers, index + 1, expected);
+            return String.format("\"%s\": { %s }", pointers[index], jsonPointers);
+        }
+    }
+
+    private static String escapeJsonLiteral(String literal) {
+        return EscapeSql.escapeLiteral(literal, true, true);
     }
 
     Expression getParameter(Function function, int idx, boolean mandatory) {

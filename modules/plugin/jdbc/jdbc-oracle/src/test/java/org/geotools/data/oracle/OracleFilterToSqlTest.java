@@ -151,6 +151,18 @@ public class OracleFilterToSqlTest {
     }
 
     @Test
+    public void testDWithinFilterWithUnitEscaping() throws Exception {
+        Coordinate coordinate = new Coordinate();
+        DWithin dwithin =
+                ff.dwithin(
+                        ff.property("GEOM"), ff.literal(gf.createPoint(coordinate)), 10.0, "'FOO");
+        String encoded = encoder.encodeToString(dwithin);
+        Assert.assertEquals(
+                "WHERE SDO_WITHIN_DISTANCE(\"GEOM\",?,'distance=10.0 unit=''FOO') = 'TRUE' ",
+                encoded);
+    }
+
+    @Test
     public void testDWithinFilterWithoutUnit() throws Exception {
         Coordinate coordinate = new Coordinate();
         DWithin dwithin =

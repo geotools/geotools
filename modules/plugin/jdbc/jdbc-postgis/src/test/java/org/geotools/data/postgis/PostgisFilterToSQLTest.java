@@ -235,6 +235,31 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
     }
 
     @Test
+    public void testFunctionStrEndsWithEscaping() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        Filter filter =
+                ff.equals(
+                        ff.literal(true),
+                        ff.function("strEndsWith", ff.property("testString"), ff.literal("'FOO")));
+        filterToSql.encode(filter);
+        String sql = writer.toString();
+        assertEquals("WHERE true = (testString LIKE ('%' || '''FOO'))", sql);
+    }
+
+    @Test
+    public void testFunctionStrStartsWithEscaping() throws Exception {
+        filterToSql.setFeatureType(testSchema);
+        Filter filter =
+                ff.equals(
+                        ff.literal(true),
+                        ff.function(
+                                "strStartsWith", ff.property("testString"), ff.literal("'FOO")));
+        filterToSql.encode(filter);
+        String sql = writer.toString();
+        assertEquals("WHERE true = (testString LIKE ('''FOO' || '%'))", sql);
+    }
+
+    @Test
     public void testFunctionLike() throws Exception {
         filterToSql.setFeatureType(testSchema);
         PropertyIsLike like =

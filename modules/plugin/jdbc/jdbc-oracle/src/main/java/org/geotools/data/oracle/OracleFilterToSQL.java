@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.geotools.data.oracle.filter.FilterFunction_sdonn;
+import org.geotools.data.oracle.sdo.SDOSqlDumper;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.function.FilterFunction_area;
@@ -38,12 +39,14 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.PropertyIsEqualTo;
@@ -534,9 +537,10 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         e2.accept(this, extraData);
 
         // encode the unit verbatim when available
-        if (unit != null && !"".equals(unit.trim()))
+        if (unit != null && !"".equals(unit.trim())) {
+            unit = escapeLiteral(unit);
             out.write(",'distance=" + distance + " unit=" + unit + "') = '" + within + "' ");
-        else out.write(",'distance=" + distance + "') = '" + within + "' ");
+        } else out.write(",'distance=" + distance + "') = '" + within + "' ");
     }
 
     /**
@@ -585,5 +589,48 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         } else {
             return name;
         }
+    }
+
+    @Override
+    protected void encodeBinaryComparisonOperator(
+            BinaryComparisonOperator filter,
+            Object extraData,
+            Expression left,
+            Expression right,
+            Class leftContext,
+            Class rightContext) {
+
+        super.encodeBinaryComparisonOperator(
+                filter, extraData, left, right, leftContext, rightContext);
+    }
+
+    public String jsonExists(Function function) {
+        PropertyName columnName = (PropertyName) getParameter(function, 0, true);
+        Literal jsonPath = (Literal) getParameter(function, 1, true);
+        Expression expected = getParameter(function, 2, true);
+
+        String[] pointers = jsonPath.getValue().toString().split("/");
+        if (pointers.length > 0) {
+            String strJsonPath = escapeLiteral(String.join(".", pointers));
+            String strExpected = escapeLiteral(expected.evaluate(null, String.class));
+            return String.format(
+                    "json_exists(%s, '$%s?(@ == \"%s\")')", columnName, strJsonPath, strExpected);
+        } else {
+            throw new IllegalArgumentException(
+                    "Cannot encode filter Invalid pointer " + jsonPath.getValue());
+        }
+    }
+
+    @Override
+    protected void visitLiteralGeometry(Literal expression) throws IOException {
+        // evaluate the literal and store it for later
+        Geometry geom = (Geometry) evaluateLiteral(expression, Geometry.class);
+
+        if (geom instanceof LinearRing) {
+            geom = geom.getFactory().createLineString(((LinearRing) geom).getCoordinateSequence());
+        }
+        geom = clipToWorldFeatureTypeGeometry(geom);
+        String sdoGeom = SDOSqlDumper.toSDOGeom(geom, getFeatureTypeGeometrySRID());
+        out.write(sdoGeom);
     }
 }

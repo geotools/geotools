@@ -79,13 +79,49 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
      * have a special char as another special char. Using this will throw an error
      * (IllegalArgumentException).
      */
+    @Deprecated
     public static String convertToSQL92(
             char escape, char multi, char single, boolean matchCase, String pattern)
             throws IllegalArgumentException {
+        return convertToSQL92(escape, multi, single, matchCase, pattern, true);
+    }
+
+    /**
+     * Given OGC PropertyIsLike Filter information, construct an SQL-compatible 'like' pattern.
+     *
+     * <p>SQL % --> match any number of characters _ --> match a single character
+     *
+     * <p>NOTE; the SQL command is 'string LIKE pattern [ESCAPE escape-character]' We could
+     * re-define the escape character, but I'm not doing to do that in this code since some
+     * databases will not handle this case.
+     *
+     * <p>Method: 1.
+     *
+     * <p>Examples: ( escape ='!', multi='*', single='.' ) broadway* -> 'broadway%' broad_ay ->
+     * 'broad_ay' broadway -> 'broadway'
+     *
+     * <p>broadway!* -> 'broadway*' (* has no significance and is escaped) can't -> 'can''t' ( '
+     * escaped for SQL compliance)
+     *
+     * <p>NOTE: when the escapeSingleQuote parameter is false, this method will not convert ' to ''
+     * (double single quote) and it is the caller's responsibility to ensure that the resulting
+     * pattern is used safely in SQL queries.
+     *
+     * <p>NOTE: we dont handle "'" as a 'special' character because it would be too confusing to
+     * have a special char as another special char. Using this will throw an error
+     * (IllegalArgumentException).
+     */
+    public static String convertToSQL92(
+            char escape,
+            char multi,
+            char single,
+            boolean matchCase,
+            String pattern,
+            boolean escapeSingleQuote) {
         if ((escape == '\'') || (multi == '\'') || (single == '\''))
             throw new IllegalArgumentException("do not use single quote (') as special char!");
 
-        StringBuffer result = new StringBuffer(pattern.length() + 5);
+        StringBuilder result = new StringBuilder(pattern.length() + 5);
         for (int i = 0; i < pattern.length(); i++) {
             char chr = pattern.charAt(i);
             if (chr == escape) {
@@ -96,7 +132,7 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
                 result.append('_');
             } else if (chr == multi) {
                 result.append('%');
-            } else if (chr == '\'') {
+            } else if (chr == '\'' && escapeSingleQuote) {
                 result.append('\'');
                 result.append('\'');
             } else {
@@ -108,6 +144,7 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
     }
 
     /** see convertToSQL92 */
+    @Deprecated
     public String getSQL92LikePattern() throws IllegalArgumentException {
         if (escape.length() != 1) {
             throw new IllegalArgumentException(
@@ -126,7 +163,8 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
                 wildcardMulti.charAt(0),
                 wildcardSingle.charAt(0),
                 matchingCase,
-                pattern);
+                pattern,
+                true);
     }
 
     public void setWildCard(String wildCard) {

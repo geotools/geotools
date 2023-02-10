@@ -28,6 +28,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.Join.Type;
 import org.geotools.data.Query;
+import org.geotools.data.jdbc.datasource.DataSourceFinder;
+import org.geotools.data.jdbc.datasource.UnWrapper;
 import org.geotools.feature.visitor.AverageVisitor;
 import org.geotools.feature.visitor.CountVisitor;
 import org.geotools.feature.visitor.FeatureAttributeVisitor;
@@ -163,6 +166,41 @@ public abstract class SQLDialect {
                     addType(NativeFilter.class);
                 }
             };
+
+    /**
+     * Sentinel value used to mark that the unwrapper lookup happened already, and an unwrapper was
+     * not found
+     */
+    protected static final UnWrapper UNWRAPPER_NOT_FOUND =
+            new UnWrapper() {
+
+                @Override
+                public Statement unwrap(Statement statement) {
+                    throw new UnsupportedOperationException();
+                }
+
+                @Override
+                public Connection unwrap(Connection conn) {
+                    throw new UnsupportedOperationException();
+                }
+
+                @Override
+                public boolean canUnwrap(Statement st) {
+                    return false;
+                }
+
+                @Override
+                public boolean canUnwrap(Connection conn) {
+                    return false;
+                }
+            };
+
+    /**
+     * Map of {@code UnWrapper} objects keyed by the class of {@code Connection} it is an unwrapper
+     * for. This avoids the overhead of searching the {@code DataSourceFinder} service registry at
+     * each unwrap.
+     */
+    protected final Map<Class<? extends Connection>, UnWrapper> uwMap = new HashMap<>();
 
     /** The datastore using the dialect */
     protected JDBCDataStore dataStore;
@@ -1380,5 +1418,53 @@ public abstract class SQLDialect {
     public Object convertValue(Object value, AttributeDescriptor ad) {
         Class<?> binding = ad.getType().getBinding();
         return Converters.convert(value, binding);
+    }
+
+    /** Obtains the native connection object given a database connection. */
+    @SuppressWarnings("PMD.CloseResource")
+    protected <T extends Connection> T unwrapConnection(Connection cx, Class<T> clazz)
+            throws SQLException {
+        if (clazz.isInstance(cx)) {
+            return clazz.cast(cx);
+        }
+        try {
+            // Unwrap the connection multiple levels as necessary to get at the underlying
+            // connection. Maintain a map of UnWrappers to avoid searching the registry
+            // every time we need to unwrap.
+            Connection testCon = cx;
+            Connection toUnwrap;
+            do {
+                UnWrapper unwrapper = uwMap.get(testCon.getClass());
+                if (unwrapper == null) {
+                    unwrapper = DataSourceFinder.getUnWrapper(testCon);
+                    if (unwrapper == null) {
+                        unwrapper = UNWRAPPER_NOT_FOUND;
+                    }
+                    uwMap.put(testCon.getClass(), unwrapper);
+                }
+                if (unwrapper == UNWRAPPER_NOT_FOUND) {
+                    // give up and do Java unwrap below
+                    break;
+                }
+                toUnwrap = testCon;
+                testCon = unwrapper.unwrap(testCon);
+                if (clazz.isInstance(testCon)) {
+                    return clazz.cast(cx);
+                }
+            } while (testCon != null && testCon != toUnwrap);
+            // try to use Java unwrapping
+            try {
+                if (cx.isWrapperFor(clazz)) {
+                    return cx.unwrap(clazz);
+                }
+            } catch (Throwable t) {
+                // not a mistake, old DBCP versions will throw an Error here, we need to catch it
+                LOGGER.log(Level.FINER, "Failed to unwrap connection using Java facilities", t);
+            }
+        } catch (IOException e) {
+            throw new SQLException(
+                    "Could not obtain " + clazz.getName() + " from " + cx.getClass(), e);
+        }
+        throw new SQLException("Could not obtain " + clazz.getName() + " from " + cx.getClass());
     }
 }

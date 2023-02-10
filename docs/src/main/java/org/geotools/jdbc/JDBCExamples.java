@@ -63,6 +63,8 @@ public class JDBCExamples {
         params.put("database", "database");
         params.put("user", "postgres");
         params.put("passwd", "postgres");
+        params.put("preparedStatements", true);
+        params.put("encode functions", true);
 
         DataStore dataStore = DataStoreFinder.getDataStore(params);
         // postgisExample end

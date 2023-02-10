@@ -546,9 +546,10 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         e2.accept(this, extraData);
 
         // encode the unit verbatim when available
-        if (unit != null && !"".equals(unit.trim()))
+        if (unit != null && !"".equals(unit.trim())) {
+            unit = escapeLiteral(unit);
             out.write(",'distance=" + distance + " unit=" + unit + "') = '" + within + "' ");
-        else out.write(",'distance=" + distance + "') = '" + within + "' ");
+        } else out.write(",'distance=" + distance + "') = '" + within + "' ");
     }
 
     /**
@@ -625,10 +626,10 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
 
         String[] pointers = jsonPath.getValue().toString().split("/");
         if (pointers.length > 0) {
-            String strJsonPath = String.join(".", pointers);
+            String strJsonPath = escapeLiteral(String.join(".", pointers));
+            String strExpected = escapeLiteral(expected.evaluate(null, String.class));
             return String.format(
-                    "json_exists(%s, '$%s?(@ == \"%s\")')",
-                    columnName, strJsonPath, expected.evaluate(null));
+                    "json_exists(%s, '$%s?(@ == \"%s\")')", columnName, strJsonPath, strExpected);
         } else {
             throw new IllegalArgumentException(
                     "Cannot encode filter Invalid pointer " + jsonPath.getValue());

@@ -162,6 +162,18 @@ public class OracleFilterToSqlTest {
     }
 
     @Test
+    public void testDWithinFilterWithUnitEscaping() throws Exception {
+        Coordinate coordinate = new Coordinate();
+        DWithin dwithin =
+                ff.dwithin(
+                        ff.property("GEOM"), ff.literal(gf.createPoint(coordinate)), 10.0, "'FOO");
+        String encoded = encoder.encodeToString(dwithin);
+        assertEquals(
+                "WHERE SDO_WITHIN_DISTANCE(\"GEOM\",?,'distance=10.0 unit=''FOO') = 'TRUE' ",
+                encoded);
+    }
+
+    @Test
     public void testDWithinFilterWithoutUnit() throws Exception {
         Coordinate coordinate = new Coordinate();
         DWithin dwithin =
@@ -208,6 +220,34 @@ public class OracleFilterToSqlTest {
         String encoded = encoder.encodeToString(filter);
         assertEquals(
                 "WHERE json_exists(operations, '$.operations.parameters?(@ == \"1\")')", encoded);
+    }
+
+    @Test
+    public void testFunctionJsonArrayContainsEscapingPointer() throws Exception {
+        Function function =
+                ff.function(
+                        "jsonArrayContains",
+                        ff.property("operations"),
+                        ff.literal("/'FOO"),
+                        ff.literal(1));
+        Filter filter = ff.equals(function, ff.literal(true));
+        String encoded = encoder.encodeToString(filter);
+        assertEquals("WHERE json_exists(operations, '$.''FOO?(@ == \"1\")')", encoded);
+    }
+
+    @Test
+    public void testFunctionJsonArrayContainsEscapingExpected() throws Exception {
+        Function function =
+                ff.function(
+                        "jsonArrayContains",
+                        ff.property("operations"),
+                        ff.literal("/operations/parameters"),
+                        ff.literal("'FOO"));
+        Filter filter = ff.equals(function, ff.literal(true));
+        String encoded = encoder.encodeToString(filter);
+        assertEquals(
+                "WHERE json_exists(operations, '$.operations.parameters?(@ == \"''FOO\")')",
+                encoded);
     }
 
     // THIS ONE WON'T PASS RIGHT NOW, BUT WE NEED TO PUT A TEST LIKE THIS

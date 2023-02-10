@@ -29,6 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
 import org.geotools.data.Parameter;
+import org.geotools.data.Transaction;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.SQLDialect;
@@ -259,6 +260,15 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         }
         dialect.setEncodeBBOXFilterAsEnvelope(Boolean.TRUE.equals(encodeBBOXAsEnvelope));
 
+        Connection cx = dataStore.getConnection(Transaction.AUTO_COMMIT);
+        try {
+            // creating a new connection will internally call
+            // org.geotools.data.postgis.PostGISDialect.initializeConnection(Connection)
+            // the following line is really just to prevent empty try block PMD violation
+            LOGGER.finest("escaping backslashes: " + dialect.isEscapeBackslash());
+        } finally {
+            dataStore.closeSafe(cx);
+        }
         return dataStore;
     }
 

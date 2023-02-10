@@ -24,17 +24,19 @@ Note that the ``groupId`` is ``org.geotools.jdbc`` for this and other JDBC plugi
 Connection Parameters
 ^^^^^^^^^^^^^^^^^^^^^
 
-============== ============================================
-Parameter      Description
-============== ============================================
-``dbtype``       Must be the string ``postgis``
-``host``         Machine name or IP address to connect to
-``port``         Port number to connect to, default 5432
-``schema``       The database schema to access
-``database``     The database to connect to
-``user``         User name
-``passwd``       Password
-============== ============================================
+====================== ============================================
+Parameter              Description
+====================== ============================================
+``dbtype``             Must be the string ``postgis``
+``host``               Machine name or IP address to connect to
+``port``               Port number to connect to, default 5432
+``schema``             The database schema to access
+``database``           The database to connect to
+``user``               User name
+``passwd``             Password
+``preparedStatements`` Use 
+``encode functions``   
+====================== ============================================
 
 Creation
 ^^^^^^^^
@@ -58,11 +60,14 @@ Advanced
 | ``preparedStatements`` | Flag controlling whether prepared statements   |
 |                        | are used, default is false                     |
 +------------------------+------------------------------------------------+
+| ``encode functions``   | Flag controlling if some common functions can  |
+|                        | be encoded into their SQL equivalent           |
++------------------------+------------------------------------------------+
 
 Example use::
   
-  params.put(PostgisDataStoreFactory.LOOSEBBOX, true );
-  params.put(PostgisDataStoreFactory.PREPARED_STATEMENTS, true );
+  params.put(PostgisNGDataStoreFactory.LOOSEBBOX, true );
+  params.put(PostgisNGDataStoreFactory.PREPARED_STATEMENTS, true );
   
 Configuration Flags
 ^^^^^^^^^^^^^^^^^^^

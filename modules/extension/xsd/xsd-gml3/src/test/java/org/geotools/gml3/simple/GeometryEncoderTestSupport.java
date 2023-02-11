@@ -30,8 +30,6 @@ import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import org.custommonkey.xmlunit.XMLUnit;
-import org.custommonkey.xmlunit.XpathEngine;
 import org.geotools.gml2.simple.GMLWriter;
 import org.geotools.gml2.simple.GeometryEncoder;
 import org.geotools.gml3.GML;
@@ -48,14 +46,11 @@ public abstract class GeometryEncoderTestSupport extends GML3TestSupport {
 
     protected Encoder gtEncoder;
 
-    protected XpathEngine xpath;
-
     @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
         this.gtEncoder = new Encoder(createConfiguration());
-        this.xpath = XMLUnit.newXpathEngine();
     }
 
     protected <T extends Geometry> Document encode(GeometryEncoder<T> encoder, T geometry)

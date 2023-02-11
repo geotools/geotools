@@ -16,7 +16,9 @@
  */
 package org.geotools.gml3;
 
-import static org.custommonkey.xmlunit.XMLAssert.assertXpathEvaluatesTo;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.xmlunit.matchers.EvaluateXPathMatcher.hasXPath;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -24,8 +26,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import org.custommonkey.xmlunit.SimpleNamespaceContext;
-import org.custommonkey.xmlunit.XMLUnit;
+import javax.xml.transform.Source;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -36,7 +37,6 @@ import org.geotools.gml3.bindings.TEST;
 import org.geotools.gml3.bindings.TestConfiguration;
 import org.geotools.xsd.Encoder;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.WKTReader;
@@ -48,15 +48,14 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.Attributes;
+import org.xmlunit.builder.Input;
 
 public class GML3EncodingTest {
 
-    @Before
-    public void setUp() throws Exception {
+    private static Map<String, String> NAMESPACES = new HashMap<>();
 
-        Map<String, String> namespaces = new HashMap<>();
-        namespaces.put("test", TEST.TestFeature.getNamespaceURI());
-        XMLUnit.setXpathNamespaceContext(new SimpleNamespaceContext(namespaces));
+    static {
+        NAMESPACES.put("test", TEST.TestFeature.getNamespaceURI());
     }
 
     @Test
@@ -194,8 +193,11 @@ public class GML3EncodingTest {
         String xml = encoder.encodeAsString(feature, TEST.TestFeature);
 
         // System.out.println(xml);
-        Document dom = XMLUnit.buildControlDocument(xml);
-        assertXpathEvaluatesTo("0.000000015", "//test:decimal", dom);
+        Source actual = Input.fromString(xml).build();
+        assertThat(
+                actual,
+                hasXPath("//test:decimal", equalTo("0.000000015"))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     @Test
@@ -219,8 +221,10 @@ public class GML3EncodingTest {
 
         // System.out.println(result);
 
-        Document dom = XMLUnit.buildControlDocument(result);
-        assertXpathEvaluatesTo("One  test", "//test:data", dom);
+        Source actual = Input.fromString(result).build();
+        assertThat(
+                actual,
+                hasXPath("//test:data", equalTo("One  test")).withNamespaceContext(NAMESPACES));
     }
 
     @Test

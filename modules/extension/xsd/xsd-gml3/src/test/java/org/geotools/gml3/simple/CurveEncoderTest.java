@@ -17,13 +17,17 @@
 
 package org.geotools.gml3.simple;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.xmlunit.matchers.EvaluateXPathMatcher.hasXPath;
 
+import javax.xml.transform.Source;
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.gml3.GML;
 import org.junit.Test;
 import org.locationtech.jts.geom.LineString;
 import org.w3c.dom.Document;
+import org.xmlunit.builder.Input;
 
 public class CurveEncoderTest extends GeometryEncoderTestSupport {
     @Test
@@ -34,18 +38,28 @@ public class CurveEncoderTest extends GeometryEncoderTestSupport {
                         new WKTReader2().read("CIRCULARSTRING(-10 0, -8 2, -6 0, -8 -2, -10 0)");
         Document doc = encode(encoder, geometry, "circle.abc");
         // MLTestSupport.print(doc);
-        assertEquals(
-                1,
-                xpath.getMatchingNodes("//gml:Curve/gml:segments/gml:ArcString/gml:posList", doc)
-                        .getLength());
-        assertEquals(
-                "circularArc3Points",
-                xpath.evaluate("//gml:Curve/gml:segments/gml:ArcString/@interpolation", doc));
-        assertEquals(
-                "-10 0 -8 2 -6 0 -8 -2 -10 0",
-                xpath.evaluate("//gml:Curve/gml:segments/gml:ArcString/gml:posList", doc));
+        Source actual = Input.fromDocument(doc).build();
+        assertThat(
+                actual,
+                hasXPath("count(//gml:Curve/gml:segments/gml:ArcString/gml:posList)", equalTo("1"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "//gml:Curve/gml:segments/gml:ArcString/@interpolation",
+                                equalTo("circularArc3Points"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "//gml:Curve/gml:segments/gml:ArcString/gml:posList",
+                                equalTo("-10 0 -8 2 -6 0 -8 -2 -10 0"))
+                        .withNamespaceContext(NAMESPACES));
         // geometry ids
-        assertEquals("circle.abc", xpath.evaluate("//gml:Curve/@gml:id", doc));
+        assertThat(
+                actual,
+                hasXPath("//gml:Curve/@gml:id", equalTo("circle.abc"))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     @Test
@@ -58,14 +72,40 @@ public class CurveEncoderTest extends GeometryEncoderTestSupport {
                                         "COMPOUNDCURVE(CIRCULARSTRING(0 0, 2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0))");
         Document doc = encode(encoder, geometry, "compound.3");
         // XMLTestSupport.print(doc);
-        assertEquals(2, xpath.getMatchingNodes("//gml:Curve//gml:segments/*", doc).getLength());
-        assertEquals(1, xpath.getMatchingNodes("//gml:ArcString", doc).getLength());
-        assertEquals(1, xpath.getMatchingNodes("//gml:LineStringSegment", doc).getLength());
-        assertEquals("circularArc3Points", xpath.evaluate("//gml:ArcString/@interpolation", doc));
-        assertEquals("0 0 2 0 2 1 2 3 4 3", xpath.evaluate("//gml:ArcString/gml:posList", doc));
-        assertEquals("linear", xpath.evaluate("//gml:LineStringSegment/@interpolation", doc));
-        assertEquals("4 3 4 5 1 4 0 0", xpath.evaluate("//gml:LineStringSegment/gml:posList", doc));
+        Source actual = Input.fromDocument(doc).build();
+
+        assertThat(
+                actual,
+                hasXPath("count(//gml:Curve//gml:segments/*)", equalTo("2"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("count(//gml:ArcString)", equalTo("1")).withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("count(//gml:LineStringSegment)", equalTo("1"))
+                        .withNamespaceContext(NAMESPACES));
+
+        assertThat(
+                actual,
+                hasXPath("//gml:ArcString/@interpolation", equalTo("circularArc3Points"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("//gml:ArcString/gml:posList", equalTo("0 0 2 0 2 1 2 3 4 3"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("//gml:LineStringSegment/@interpolation", equalTo("linear"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("//gml:LineStringSegment/gml:posList", equalTo("4 3 4 5 1 4 0 0"))
+                        .withNamespaceContext(NAMESPACES));
         // geometry ids
-        assertEquals("compound.3", xpath.evaluate("//gml:Curve/@gml:id", doc));
+        assertThat(
+                actual,
+                hasXPath("//gml:Curve/@gml:id", equalTo("compound.3"))
+                        .withNamespaceContext(NAMESPACES));
     }
 }

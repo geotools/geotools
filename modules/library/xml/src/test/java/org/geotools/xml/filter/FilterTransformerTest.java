@@ -16,17 +16,18 @@
  */
 package org.geotools.xml.filter;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.xmlunit.matchers.EvaluateXPathMatcher.hasXPath;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
-import org.custommonkey.xmlunit.SimpleNamespaceContext;
-import org.custommonkey.xmlunit.XMLAssert;
-import org.custommonkey.xmlunit.XMLUnit;
+import javax.xml.transform.Source;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.referencing.CRS;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.WKTReader;
@@ -34,23 +35,23 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.w3c.dom.Document;
+import org.xmlunit.builder.DiffBuilder;
+import org.xmlunit.builder.Input;
+import org.xmlunit.diff.Diff;
 
 public class FilterTransformerTest {
+
+    private static Map<String, String> NAMESPACES = new HashMap<>();
+
+    static {
+        NAMESPACES.put("ogc", "http://www.opengis.net/ogc");
+        NAMESPACES.put("gml", "http://www.opengis.net/gml");
+        NAMESPACES.put("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+    }
+
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
     FilterTransformer transform = new FilterTransformer();
-
-    @Before
-    public void setUp() throws Exception {
-        // init xmlunit
-        Map<String, String> namespaces = new HashMap<>();
-        namespaces.put("ogc", "http://www.opengis.net/ogc");
-        namespaces.put("gml", "http://www.opengis.net/gml");
-        namespaces.put("xsi", "http://www.w3.org/2001/XMLSchema-instance");
-
-        XMLUnit.setXpathNamespaceContext(new SimpleNamespaceContext(namespaces));
-    }
 
     @Test
     public void testIdEncode() throws Exception {
@@ -90,8 +91,11 @@ public class FilterTransformerTest {
         // a filter on top of it
         Filter filter = ff.overlaps(ff.property("geom"), ff.literal(point));
         String output = transform.transform(filter);
-        Document doc = XMLUnit.buildControlDocument(output);
-        XMLAssert.assertXpathEvaluatesTo("EPSG:4326", "//gml:Point/@srsName", doc);
+        Source actual = Input.fromString(output).build();
+        assertThat(
+                actual,
+                hasXPath("//gml:Point/@srsName", equalTo("EPSG:4326"))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     @Test
@@ -104,8 +108,11 @@ public class FilterTransformerTest {
         // a filter on top of it
         Filter filter = ff.overlaps(ff.property("geom"), ff.literal(point));
         String output = transform.transform(filter);
-        Document doc = XMLUnit.buildControlDocument(output);
-        XMLAssert.assertXpathEvaluatesTo("urn:ogc:def:crs:EPSG::4326", "//gml:Point/@srsName", doc);
+        Source actual = Input.fromString(output).build();
+        assertThat(
+                actual,
+                hasXPath("//gml:Point/@srsName", equalTo("urn:ogc:def:crs:EPSG::4326"))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     @Test

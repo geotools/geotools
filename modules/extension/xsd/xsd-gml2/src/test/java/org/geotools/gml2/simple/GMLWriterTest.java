@@ -16,7 +16,9 @@
  */
 package org.geotools.gml2.simple;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.xmlunit.matchers.EvaluateXPathMatcher.hasXPath;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -24,18 +26,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import org.custommonkey.xmlunit.SimpleNamespaceContext;
-import org.custommonkey.xmlunit.XMLUnit;
-import org.custommonkey.xmlunit.XpathEngine;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.gml2.GML;
@@ -52,25 +48,27 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 import org.w3c.dom.Document;
 import org.xml.sax.helpers.AttributesImpl;
+import org.xmlunit.builder.Input;
 
 public class GMLWriterTest extends GMLTestSupport {
 
+    private static Map<String, String> NAMESPACES = new HashMap<>();
+
+    static {
+        NAMESPACES.put("xs", "http://www.w3.org/2001/XMLSchema");
+        NAMESPACES.put("xsd", "http://www.w3.org/2001/XMLSchema");
+        NAMESPACES.put("gml", "http://www.opengis.net/gml");
+        NAMESPACES.put("xlink", "http://www.w3.org/1999/xlink");
+        NAMESPACES.put("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+    }
+
     Encoder gtEncoder;
     static final String INDENT_AMOUNT_KEY = "{http://xml.apache.org/xslt}indent-amount";
-    protected XpathEngine xpath;
 
     @Override
     @Before
     public void setUp() throws Exception {
-        Map<String, String> namespaces = new HashMap<>();
-        namespaces.put("xs", "http://www.w3.org/2001/XMLSchema");
-        namespaces.put("xsd", "http://www.w3.org/2001/XMLSchema");
-        namespaces.put("gml", "http://www.opengis.net/gml");
-        namespaces.put("xlink", "http://www.w3.org/1999/xlink");
-        namespaces.put("xsi", "http://www.w3.org/2001/XMLSchema-instance");
-        XMLUnit.setXpathNamespaceContext(new SimpleNamespaceContext(namespaces));
         this.gtEncoder = new Encoder(createConfiguration());
-        this.xpath = XMLUnit.newXpathEngine();
     }
 
     @Test
@@ -84,9 +82,19 @@ public class GMLWriterTest extends GMLTestSupport {
                                                 + " (180 200, 160 180), POINT (19 19), POINT (20 10))");
         Document doc = encode(gce, geometry);
         // print(doc);
-        assertEquals(1, xpath.getMatchingNodes("//gml:LineString", doc).getLength());
-        assertEquals(2, xpath.getMatchingNodes("//gml:Point", doc).getLength());
-        assertEquals(3, xpath.getMatchingNodes("//gml:coordinates", doc).getLength());
+        Source actual = Input.fromDocument(doc).build();
+
+        assertThat(
+                actual,
+                hasXPath("count(//gml:LineString)", (equalTo("1")))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("count(//gml:Point)", (equalTo("2"))).withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("count(//gml:coordinates)", (equalTo("3")))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     @Test
@@ -95,7 +103,12 @@ public class GMLWriterTest extends GMLTestSupport {
         LineString geometry = (LineString) new WKTReader2().read("LINESTRING(0 0 50, 120 0 100)");
         Document doc = encode(encoder, geometry);
         // print(doc);
-        assertEquals("0,0,50 120,0,100", xpath.evaluate("//gml:coordinates", doc));
+        Source actual = Input.fromDocument(doc).build();
+
+        assertThat(
+                actual,
+                hasXPath("//gml:coordinates", equalTo("0,0,50 120,0,100"))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     @Test
@@ -105,8 +118,12 @@ public class GMLWriterTest extends GMLTestSupport {
                 new LiteCoordinateSequence(new double[] {0, 0, 50, 120, 0, 100}, 3);
         LineString geometry = new GeometryFactory().createLineString(cs);
         Document doc = encode(encoder, geometry);
+        Source actual = Input.fromDocument(doc).build();
         // print(doc);
-        assertEquals("0,0,50 120,0,100", xpath.evaluate("//gml:coordinates", doc));
+        assertThat(
+                actual,
+                hasXPath("//gml:coordinates", equalTo("0,0,50 120,0,100"))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     @Test
@@ -114,8 +131,11 @@ public class GMLWriterTest extends GMLTestSupport {
         PointEncoder encoder = new PointEncoder(gtEncoder, "gml");
         Point geometry = (Point) new WKTReader2().read("POINT(0 0 50)");
         Document doc = encode(encoder, geometry);
+        Source actual = Input.fromDocument(doc).build();
         // print(doc);
-        assertEquals("0,0,50", xpath.evaluate("//gml:coordinates", doc));
+        assertThat(
+                actual,
+                hasXPath("//gml:coordinates", equalTo("0,0,50")).withNamespaceContext(NAMESPACES));
     }
 
     @Test
@@ -123,13 +143,25 @@ public class GMLWriterTest extends GMLTestSupport {
         PointEncoder encoder = new PointEncoder(gtEncoder, "gml");
         Point geometry = (Point) new WKTReader2().read("POINT(21396814.969 0 50)");
         Document doc = encode(encoder, geometry, 2, true, false);
-        assertEquals("21396814.97,0,50", xpath.evaluate("//gml:coordinates", doc));
+        Source actual = Input.fromDocument(doc).build();
+        assertThat(
+                actual,
+                hasXPath("//gml:coordinates", equalTo("21396814.97,0,50"))
+                        .withNamespaceContext(NAMESPACES));
 
         doc = encode(encoder, geometry, 4, true, true);
-        assertEquals("21396814.9690,0.0000,50.0000", xpath.evaluate("//gml:coordinates", doc));
+        actual = Input.fromDocument(doc).build();
+        assertThat(
+                actual,
+                hasXPath("//gml:coordinates", equalTo("21396814.9690,0.0000,50.0000"))
+                        .withNamespaceContext(NAMESPACES));
 
         doc = encode(encoder, geometry, 4, false, false);
-        assertEquals("2.1396814969E7,0,50", xpath.evaluate("//gml:coordinates", doc));
+        actual = Input.fromDocument(doc).build();
+        assertThat(
+                actual,
+                hasXPath("//gml:coordinates", equalTo("2.1396814969E7,0,50"))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     @Override

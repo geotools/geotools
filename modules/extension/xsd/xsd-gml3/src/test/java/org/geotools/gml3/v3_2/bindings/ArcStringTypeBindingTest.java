@@ -16,11 +16,13 @@
  */
 package org.geotools.gml3.v3_2.bindings;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.xmlunit.matchers.EvaluateXPathMatcher.hasXPath;
 
-import org.custommonkey.xmlunit.XMLUnit;
-import org.custommonkey.xmlunit.XpathEngine;
+import javax.xml.transform.Source;
 import org.geotools.geometry.jts.CircularString;
 import org.geotools.geometry.jts.CurvedGeometryFactory;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
@@ -30,6 +32,7 @@ import org.geotools.gml3.v3_2.GML32TestSupport;
 import org.junit.Test;
 import org.locationtech.jts.geom.LineString;
 import org.w3c.dom.Document;
+import org.xmlunit.builder.Input;
 
 public class ArcStringTypeBindingTest extends GML32TestSupport {
     @Test
@@ -61,13 +64,19 @@ public class ArcStringTypeBindingTest extends GML32TestSupport {
                                         new double[] {1, 1, 2, 2, 3, 1, 5, 5, 7, 3}));
         Document dom = encode(curve, GML.curveProperty);
         print(dom);
-        XpathEngine xpath = XMLUnit.newXpathEngine();
+        Source actual = Input.fromDocument(dom).build();
+
         String basePath = "/gml:curveProperty/gml:Curve/gml:segments/gml:ArcString";
-        assertEquals(
-                1,
-                xpath.getMatchingNodes(basePath + "[@interpolation='circularArc3Points']", dom)
-                        .getLength());
-        assertEquals("1 1 2 2 3 1 5 5 7 3", xpath.evaluate(basePath + "/gml:posList", dom));
+        assertThat(
+                actual,
+                hasXPath(
+                                "count(" + basePath + "[@interpolation='circularArc3Points'])",
+                                equalTo("1"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(basePath + "/gml:posList", equalTo("1 1 2 2 3 1 5 5 7 3"))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     @Test
@@ -83,21 +92,30 @@ public class ArcStringTypeBindingTest extends GML32TestSupport {
         // encode
         Document dom = encode(compound, GML.curveProperty);
         // print(dom);
-        XpathEngine xpath = XMLUnit.newXpathEngine();
+        Source actual = Input.fromDocument(dom).build();
 
         // the curve portion
         String basePath1 = "/gml:curveProperty/gml:Curve/gml:segments/gml:ArcString";
-        assertEquals(
-                1,
-                xpath.getMatchingNodes(basePath1 + "[@interpolation='circularArc3Points']", dom)
-                        .getLength());
-        assertEquals("1 1 2 2 3 1 5 5 7 3", xpath.evaluate(basePath1 + "/gml:posList", dom));
+        assertThat(
+                actual,
+                hasXPath(
+                                "count(" + basePath1 + "[@interpolation='circularArc3Points'])",
+                                equalTo("1"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(basePath1 + "/gml:posList", equalTo("1 1 2 2 3 1 5 5 7 3"))
+                        .withNamespaceContext(NAMESPACES));
 
         // the straight portion
         String basePath2 = "/gml:curveProperty/gml:Curve/gml:segments/gml:LineStringSegment";
-        assertEquals(
-                1,
-                xpath.getMatchingNodes(basePath2 + "[@interpolation='linear']", dom).getLength());
-        assertEquals("7 3 10 15", xpath.evaluate(basePath2 + "/gml:posList", dom));
+        assertThat(
+                actual,
+                hasXPath("count(" + basePath2 + "[@interpolation='linear'])", equalTo("1"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(basePath2 + "/gml:posList", equalTo("7 3 10 15"))
+                        .withNamespaceContext(NAMESPACES));
     }
 }

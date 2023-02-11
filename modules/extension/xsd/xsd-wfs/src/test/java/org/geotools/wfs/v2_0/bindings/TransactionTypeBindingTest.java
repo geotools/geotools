@@ -16,14 +16,20 @@
  */
 package org.geotools.wfs.v2_0.bindings;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.xmlunit.matchers.EvaluateXPathMatcher.hasXPath;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import javax.xml.namespace.QName;
+import javax.xml.transform.Source;
 import net.opengis.wfs20.AbstractTransactionActionType;
 import net.opengis.wfs20.DeleteType;
 import net.opengis.wfs20.InsertType;
@@ -32,9 +38,6 @@ import net.opengis.wfs20.TransactionType;
 import net.opengis.wfs20.UpdateType;
 import net.opengis.wfs20.ValueReferenceType;
 import net.opengis.wfs20.Wfs20Factory;
-import org.custommonkey.xmlunit.SimpleNamespaceContext;
-import org.custommonkey.xmlunit.XMLAssert;
-import org.custommonkey.xmlunit.XMLUnit;
 import org.eclipse.emf.common.util.EList;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -52,8 +55,23 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;
 import org.opengis.filter.identity.Identifier;
 import org.w3c.dom.Document;
+import org.xmlunit.builder.Input;
 
 public class TransactionTypeBindingTest extends WFSTestSupport {
+
+    private static Map<String, String> NAMESPACES = new HashMap<>();
+
+    static {
+        NAMESPACES.put("bla", "http://blabla");
+        NAMESPACES.put("wfs", WFS.NAMESPACE);
+        NAMESPACES.put("gml", GML.NAMESPACE);
+        NAMESPACES.put("fes", FES.NAMESPACE);
+        NAMESPACES.put("xlink", XLINK.NAMESPACE);
+        NAMESPACES.put("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+        NAMESPACES.put("xsd", "http://www.w3.org/2001/XMLSchema");
+        NAMESPACES.put("xs", "http://www.w3.org/2001/XMLSchema");
+    }
+
     @Test
     public void testParseInsert() throws Exception {
         String xml =
@@ -209,32 +227,59 @@ public class TransactionTypeBindingTest extends WFSTestSupport {
         Document doc = encode(t, WFS.Transaction);
         // print(doc);
 
-        HashMap<String, String> m = new HashMap<>();
-        m.put("bla", "http://blabla");
-        m.put("wfs", WFS.NAMESPACE);
-        m.put("gml", GML.NAMESPACE);
-        m.put("fes", FES.NAMESPACE);
-        m.put("xlink", XLINK.NAMESPACE);
-        m.put("xsi", "http://www.w3.org/2001/XMLSchema-instance");
-        m.put("xsd", "http://www.w3.org/2001/XMLSchema");
-        m.put("xs", "http://www.w3.org/2001/XMLSchema");
-        XMLUnit.setXpathNamespaceContext(new SimpleNamespaceContext(m));
-
-        XMLAssert.assertXpathExists("//wfs:Transaction/wfs:Update", doc);
-        XMLAssert.assertXpathExists("//wfs:Transaction/wfs:Insert", doc);
-        XMLAssert.assertXpathExists("//wfs:Transaction/wfs:Delete", doc);
-        XMLAssert.assertXpathEvaluatesTo("bla:MyProperty", "//wfs:Update//wfs:ValueReference", doc);
-        XMLAssert.assertXpathEvaluatesTo("myvalue", "//wfs:Update//wfs:Value", doc);
-        XMLAssert.assertXpathExists("//wfs:Update//fes:Filter/fes:ResourceId", doc);
-        XMLAssert.assertXpathEvaluatesTo(
-                "myid", "//wfs:Update//fes:Filter/fes:ResourceId/@rid", doc);
-        XMLAssert.assertXpathExists("//wfs:Delete//fes:Filter/fes:ResourceId", doc);
-        XMLAssert.assertXpathEvaluatesTo(
-                "myid2", "//wfs:Delete//fes:Filter/fes:ResourceId/@rid", doc);
-        XMLAssert.assertXpathExists("//wfs:Insert//bla:MyFeature", doc);
-        XMLAssert.assertXpathEvaluatesTo("zero", "//wfs:Insert//bla:MyFeature/@gml:id", doc);
-        XMLAssert.assertXpathExists("//wfs:Insert//bla:MyFeature/bla:geometry", doc);
-        XMLAssert.assertXpathEvaluatesTo("0", "//wfs:Insert//bla:MyFeature/bla:integer", doc);
+        Source actual = Input.fromDocument(doc).build();
+        assertThat(
+                actual,
+                hasXPath("//wfs:Transaction/wfs:Update", notNullValue(String.class))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("//wfs:Transaction/wfs:Insert", notNullValue(String.class))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("//wfs:Transaction/wfs:Delete", notNullValue(String.class))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("//wfs:Update//wfs:ValueReference", equalTo("bla:MyProperty"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("//wfs:Update//wfs:Value", equalTo("myvalue"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("//wfs:Update//fes:Filter/fes:ResourceId", notNullValue(String.class))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("//wfs:Update//fes:Filter/fes:ResourceId/@rid", equalTo("myid"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("//wfs:Delete//fes:Filter/fes:ResourceId", notNullValue(String.class))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("//wfs:Delete//fes:Filter/fes:ResourceId/@rid", equalTo("myid2"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("//wfs:Insert//bla:MyFeature", notNullValue(String.class))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("//wfs:Insert//bla:MyFeature/@gml:id", equalTo("zero"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("//wfs:Insert//bla:MyFeature/bla:geometry", notNullValue(String.class))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("//wfs:Insert//bla:MyFeature/bla:integer", equalTo("0"))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     @Test

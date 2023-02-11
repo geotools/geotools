@@ -16,12 +16,17 @@
  */
 package org.geotools.gml3.v3_2.bindings;
 
-import org.custommonkey.xmlunit.XMLAssert;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.xmlunit.matchers.EvaluateXPathMatcher.hasXPath;
+
+import javax.xml.transform.Source;
 import org.geotools.gml3.bindings.GML3MockData;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.gml3.v3_2.GML32TestSupport;
 import org.junit.Test;
 import org.w3c.dom.Document;
+import org.xmlunit.builder.Input;
 
 public class MultiCurveTypeBindingTest extends GML32TestSupport {
 
@@ -30,7 +35,13 @@ public class MultiCurveTypeBindingTest extends GML32TestSupport {
         Document dom = encode(GML3MockData.multiLineString(), GML.MultiCurve);
         // print(dom);
 
-        XMLAssert.assertXpathEvaluatesTo("2", "count(//gml:curveMember)", dom);
-        XMLAssert.assertXpathEvaluatesTo("2", "count(//gml:LineString)", dom);
+        Source actual = Input.fromDocument(dom).build();
+        assertThat(
+                actual,
+                hasXPath("count(//gml:curveMember)", equalTo("2"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("count(//gml:LineString)", equalTo("2")).withNamespaceContext(NAMESPACES));
     }
 }

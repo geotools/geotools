@@ -16,22 +16,22 @@
  */
 package org.geotools.xml.styling;
 
-import static org.custommonkey.xmlunit.XMLAssert.assertXpathEvaluatesTo;
-import static org.custommonkey.xmlunit.XMLAssert.assertXpathExists;
-import static org.custommonkey.xmlunit.XMLAssert.assertXpathNotExists;
-import static org.custommonkey.xmlunit.XMLUnit.buildTestDocument;
-import static org.custommonkey.xmlunit.XMLUnit.setXpathNamespaceContext;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.xmlunit.matchers.EvaluateXPathMatcher.hasXPath;
 
 import java.awt.Color;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -40,10 +40,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
-import org.custommonkey.xmlunit.Diff;
-import org.custommonkey.xmlunit.SimpleNamespaceContext;
-import org.custommonkey.xmlunit.exceptions.XpathException;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.ChannelSelectionImpl;
@@ -99,6 +98,9 @@ import org.opengis.style.Symbolizer;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xmlunit.builder.DiffBuilder;
+import org.xmlunit.builder.Input;
+import org.xmlunit.diff.Diff;
 
 /**
  * This test case captures specific problems encountered with the SLDTransformer code.
@@ -109,6 +111,16 @@ import org.xml.sax.SAXException;
  * @author Jody
  */
 public class SLDTransformerTest {
+
+    private static Map<String, String> NAMESPACES = new HashMap<>();
+
+    static {
+        NAMESPACES.put("sld", "http://www.opengis.net/sld");
+        NAMESPACES.put("ogc", "http://www.opengis.net/ogc");
+        NAMESPACES.put("gml", "http://www.opengis.net/gml");
+        NAMESPACES.put("xlink", "http://www.w3.org/1999/xlink");
+    }
+
     static StyleFactory2 sf = (StyleFactory2) CommonFactoryFinder.getStyleFactory(null);
 
     static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
@@ -121,14 +133,6 @@ public class SLDTransformerTest {
     public void setUp() throws Exception {
         transformer = new SLDTransformer();
         transformer.setIndentation(4);
-
-        // setup xml unit
-        Map<String, String> namespaces = new HashMap<>();
-        namespaces.put("sld", "http://www.opengis.net/sld");
-        namespaces.put("ogc", "http://www.opengis.net/ogc");
-        namespaces.put("gml", "http://www.opengis.net/gml");
-        namespaces.put("xlink", "http://www.w3.org/1999/xlink");
-        setXpathNamespaceContext(new SimpleNamespaceContext(namespaces));
     }
 
     /**
@@ -158,7 +162,7 @@ public class SLDTransformerTest {
      * complete style object.
      */
     @Test
-    public void testEncodingStyle() throws Exception {
+    public void testEncodingStyle() throws TransformerException {
 
         // simple default raster symbolizer
         RasterSymbolizer defaultRasterSymbolizer = sf.createRasterSymbolizer();
@@ -228,7 +232,7 @@ public class SLDTransformerTest {
      * restore it) and the stroke is comming back black and with width 1 all the time.
      */
     @Test
-    public void testStroke() throws Exception {
+    public void testStroke() {
         String xml =
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?><sld:UserStyle xmlns=\"http://www.opengis.net/sld\" xmlns:sld=\"http://www.opengis.net/sld\" xmlns:ogc=\"http://www.opengis.net/ogc\" xmlns:gml=\"http://www.opengis.net/gml\"><sld:Name>Default Styler</sld:Name><sld:Title>Default Styler</sld:Title><sld:FeatureTypeStyle><sld:Name>simple</sld:Name><sld:Title>title</sld:Title><sld:Abstract>abstract</sld:Abstract><sld:FeatureTypeName>Feature</sld:FeatureTypeName><sld:SemanticTypeIdentifier>generic:geometry</sld:SemanticTypeIdentifier><sld:SemanticTypeIdentifier>simple</sld:SemanticTypeIdentifier><sld:Rule><sld:Title>title</sld:Title><sld:Abstract>abstract</sld:Abstract><sld:MaxScaleDenominator>1.7976931348623157E308</sld:MaxScaleDenominator><sld:LineSymbolizer><sld:Stroke><sld:CssParameter name=\"stroke\"><ogc:Literal>#0000FF</ogc:Literal></sld:CssParameter><sld:CssParameter name=\"stroke-linecap\"><ogc:Literal>butt</ogc:Literal></sld:CssParameter><sld:CssParameter name=\"stroke-linejoin\"><ogc:Literal>miter</ogc:Literal></sld:CssParameter><sld:CssParameter name=\"stroke-opacity\"><ogc:Literal>1.0</ogc:Literal></sld:CssParameter><sld:CssParameter name=\"stroke-width\"><ogc:Literal>2.0</ogc:Literal></sld:CssParameter><sld:CssParameter name=\"stroke-dashoffset\"><ogc:Literal>0.0</ogc:Literal></sld:CssParameter></sld:Stroke></sld:LineSymbolizer></sld:Rule></sld:FeatureTypeStyle></sld:UserStyle>";
         StringReader reader = new StringReader(xml);
@@ -253,7 +257,7 @@ public class SLDTransformerTest {
 
     /** SLD Fragment reported to produce error on user list - no related Jira. */
     @Test
-    public void testTextSymbolizerLabelPalcement() throws Exception {
+    public void testTextSymbolizerLabelPalcement() {
         String xml =
                 "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>"
                         + "<StyledLayerDescriptor version=\"1.0.0\" "
@@ -440,7 +444,7 @@ public class SLDTransformerTest {
      * it) and the stroke is comming back black and with width 1 all the time.
      */
     @Test
-    public void testPointSymbolizer() throws Exception {
+    public void testPointSymbolizer() {
         String xml =
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
                         + "<sld:StyledLayerDescriptor xmlns:sld=\"http://www.opengis.net/sld\" "
@@ -544,7 +548,7 @@ public class SLDTransformerTest {
      * This is the same test as above but with logging enganged at the FINEST level.
      */
     @Test
-    public void testStrokeWithLogging() throws Exception {
+    public void testStrokeWithLogging() {
         Logger logger = Logger.getLogger("org.geotools.styling");
         Level before = logger.getLevel();
         try {
@@ -576,7 +580,7 @@ public class SLDTransformerTest {
     }
 
     @Test
-    public void testUOMEncodingPointSymbolizer() throws Exception {
+    public void testUOMEncodingPointSymbolizer() throws TransformerException {
 
         // simple default line symbolizer
         PointSymbolizer pointSymbolizer = sf.createPointSymbolizer();
@@ -601,7 +605,8 @@ public class SLDTransformerTest {
     }
 
     @Test
-    public void testUOMEncodingPolygonSymbolizer() throws Exception {
+    public void testUOMEncodingPolygonSymbolizer()
+            throws TransformerException, ParserConfigurationException, IOException, SAXException {
 
         // simple default line symbolizer
         PolygonSymbolizer polygonSymbolizer = sf.createPolygonSymbolizer();
@@ -622,7 +627,8 @@ public class SLDTransformerTest {
     }
 
     @Test
-    public void testUOMEncodingRasterSymbolizer2() throws Exception {
+    public void testUOMEncodingRasterSymbolizer2()
+            throws TransformerException, ParserConfigurationException, IOException, SAXException {
 
         // simple default line symbolizer
         RasterSymbolizer rasterSymbolizer = sf.createRasterSymbolizer();
@@ -643,7 +649,7 @@ public class SLDTransformerTest {
     }
 
     @Test
-    public void testChannelExpressionEncodingRasterSymbolizer() throws Exception {
+    public void testChannelExpressionEncodingRasterSymbolizer() throws TransformerException {
         final String b1 = "B1";
         Function envFunction = ff.function("env", ff.literal(b1), ff.literal("1"));
         RasterSymbolizer rasterSymbolizer = sf.createRasterSymbolizer();
@@ -653,28 +659,36 @@ public class SLDTransformerTest {
         String xmlFragment = transformer.transform(rasterSymbolizer);
         assertNotNull(xmlFragment);
 
-        Document doc = buildTestDocument(xmlFragment);
+        Source actual = Input.fromString(xmlFragment).build();
 
-        assertXpathExists(
-                "//sld:RasterSymbolizer/sld:ChannelSelection"
-                        + "/sld:GrayChannel/sld:SourceChannelName/ogc:Function[@name='env']/ogc:Literal",
-                doc);
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:RasterSymbolizer/sld:ChannelSelection"
+                                        + "/sld:GrayChannel/sld:SourceChannelName/ogc:Function[@name='env']/ogc:Literal",
+                                notNullValue(String.class))
+                        .withNamespaceContext(NAMESPACES));
 
-        assertXpathEvaluatesTo(
-                "B1",
-                "//sld:RasterSymbolizer/sld:ChannelSelection"
-                        + "/sld:GrayChannel/sld:SourceChannelName/ogc:Function[@name='env']/ogc:Literal[1]",
-                doc);
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:RasterSymbolizer/sld:ChannelSelection"
+                                        + "/sld:GrayChannel/sld:SourceChannelName/ogc:Function[@name='env']/ogc:Literal[1]",
+                                equalTo("B1"))
+                        .withNamespaceContext(NAMESPACES));
 
-        assertXpathEvaluatesTo(
-                "1",
-                "//sld:RasterSymbolizer/sld:ChannelSelection"
-                        + "/sld:GrayChannel/sld:SourceChannelName/ogc:Function[@name='env']/ogc:Literal[2]",
-                doc);
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:RasterSymbolizer/sld:ChannelSelection"
+                                        + "/sld:GrayChannel/sld:SourceChannelName/ogc:Function[@name='env']/ogc:Literal[2]",
+                                equalTo("1"))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     @Test
-    public void testUOMEncodingLineSymbolizer() throws Exception {
+    public void testUOMEncodingLineSymbolizer()
+            throws TransformerException, ParserConfigurationException, IOException, SAXException {
 
         // simple default line symbolizer
         LineSymbolizer lineSymbolizer = sf.createLineSymbolizer();
@@ -695,7 +709,8 @@ public class SLDTransformerTest {
     }
 
     @Test
-    public void testUOMEncodingTextSymbolizer() throws Exception {
+    public void testUOMEncodingTextSymbolizer()
+            throws TransformerException, ParserConfigurationException, IOException, SAXException {
 
         // simple default text symbolizer
         TextSymbolizer textSymbolizer = sf.createTextSymbolizer();
@@ -721,7 +736,7 @@ public class SLDTransformerTest {
     }
 
     @Test
-    public void testNullUOMEncodingPointSymbolizer() throws Exception {
+    public void testNullUOMEncodingPointSymbolizer() throws TransformerException {
 
         // simple default line symbolizer
         PointSymbolizer pointSymbolizer = sf.createPointSymbolizer();
@@ -745,7 +760,8 @@ public class SLDTransformerTest {
     }
 
     @Test
-    public void testNullUOMEncodingPolygonSymbolizer() throws Exception {
+    public void testNullUOMEncodingPolygonSymbolizer()
+            throws TransformerException, ParserConfigurationException, IOException, SAXException {
 
         // simple default line symbolizer
         PolygonSymbolizer polygonSymbolizer = sf.createPolygonSymbolizer();
@@ -765,7 +781,8 @@ public class SLDTransformerTest {
     }
 
     @Test
-    public void testNullUOMEncodingRasterSymbolizer2() throws Exception {
+    public void testNullUOMEncodingRasterSymbolizer2()
+            throws TransformerException, ParserConfigurationException, IOException, SAXException {
 
         // simple default line symbolizer
         RasterSymbolizer rasterSymbolizer = sf.createRasterSymbolizer();
@@ -785,7 +802,8 @@ public class SLDTransformerTest {
     }
 
     @Test
-    public void testNullUOMEncodingLineSymbolizer() throws Exception {
+    public void testNullUOMEncodingLineSymbolizer()
+            throws TransformerException, ParserConfigurationException, IOException, SAXException {
 
         // simple default line symbolizer
         LineSymbolizer lineSymbolizer = sf.createLineSymbolizer();
@@ -805,7 +823,8 @@ public class SLDTransformerTest {
     }
 
     @Test
-    public void testNullUOMEncodingTextSymbolizer() throws Exception {
+    public void testNullUOMEncodingTextSymbolizer()
+            throws TransformerException, ParserConfigurationException, IOException, SAXException {
 
         // simple default text symbolizer
         TextSymbolizer textSymbolizer = sf.createTextSymbolizer();
@@ -826,7 +845,7 @@ public class SLDTransformerTest {
 
     /** The displacement tag has not been exported to XML for a while... */
     @Test
-    public void testDisplacement() throws Exception {
+    public void testDisplacement() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
 
         Graphic graphic = sb.createGraphic();
@@ -842,7 +861,7 @@ public class SLDTransformerTest {
     }
 
     @Test
-    public void testTextSymbolizerTransformOutAndInAndOutAgain() throws Exception {
+    public void testTextSymbolizerTransformOutAndInAndOutAgain() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
 
         Style style = sb.createStyle(sb.createTextSymbolizer());
@@ -914,7 +933,7 @@ public class SLDTransformerTest {
      * Checks whether the "Priority" parameter of a TextSymbolizer is correctly stored and loaded
      */
     @Test
-    public void testPriorityTransformOutAndIn() throws Exception {
+    public void testPriorityTransformOutAndIn() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
 
         TextSymbolizer ts = sb.createTextSymbolizer();
@@ -971,7 +990,7 @@ public class SLDTransformerTest {
 
     /** SLD Transformer did't save the type of the colormap */
     @Test
-    public void testColorMap() throws Exception {
+    public void testColorMap() throws TransformerException {
         SLDTransformer st = new SLDTransformer();
         ColorMap cm = sf.createColorMap();
 
@@ -996,7 +1015,7 @@ public class SLDTransformerTest {
     }
 
     @Test
-    public void testColorMapExtended() throws Exception {
+    public void testColorMapExtended() throws TransformerException {
         SLDTransformer st = new SLDTransformer();
         ColorMap cm = sf.createColorMap();
 
@@ -1027,17 +1046,23 @@ public class SLDTransformerTest {
      * values
      */
     @Test
-    public void testMinimumLineSymbolizer() throws Exception {
+    public void testMinimumLineSymbolizer() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
 
         LineSymbolizer ls = sb.createLineSymbolizer();
         String xml = transformer.transform(ls);
         // System.out.println(xml);
-        Document doc = buildTestDocument(xml);
+        Source actual = Input.fromString(xml).build();
 
         // check LineSymbolizer has the stroke element inside, but stroke does not have children
-        assertXpathEvaluatesTo("1", "count(/sld:LineSymbolizer/*)", doc);
-        assertXpathEvaluatesTo("0", "count(/sld:LineSymbolizer/sld:Stroke/*)", doc);
+        assertThat(
+                actual,
+                hasXPath("count(/sld:LineSymbolizer/*)", equalTo("1"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("count(/sld:LineSymbolizer/sld:Stroke/*)", equalTo("0"))
+                        .withNamespaceContext(NAMESPACES));
 
         // setup custom line width and color, and explicitly set the opacity to the default value
         ls.getStroke().setWidth(ff.literal(3));
@@ -1045,99 +1070,182 @@ public class SLDTransformerTest {
         ls.getStroke().setOpacity(ff.literal(1));
         xml = transformer.transform(ls);
         // System.out.println(xml);
-        doc = buildTestDocument(xml);
+        actual = Input.fromString(xml).build();
 
         // same as above, but this time we expect the width and color to be set
-        assertXpathEvaluatesTo("1", "count(/sld:LineSymbolizer/*)", doc);
-        assertXpathEvaluatesTo("2", "count(/sld:LineSymbolizer/sld:Stroke/*)", doc);
-        assertXpathEvaluatesTo(
-                "#FFFF00", "/sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke']", doc);
-        assertXpathEvaluatesTo(
-                "3", "/sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke-width']", doc);
+        assertThat(
+                actual,
+                hasXPath("count(/sld:LineSymbolizer/*)", equalTo("1"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("count(/sld:LineSymbolizer/sld:Stroke/*)", equalTo("2"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "/sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke']",
+                                equalTo("#FFFF00"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "/sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke-width']",
+                                equalTo("3"))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     @Test
-    public void testMinimumPolygonSymbolizer() throws Exception {
+    public void testMinimumPolygonSymbolizer() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
         PolygonSymbolizer ps = sb.createPolygonSymbolizer();
         String xml = transformer.transform(ps);
         // System.out.println(xml);
-        Document doc = buildTestDocument(xml);
+        Source actual = Input.fromString(xml).build();
 
         // check PolygonSymbolizer has a fill and a stroke, both empty
-        assertXpathEvaluatesTo("2", "count(/sld:PolygonSymbolizer/*)", doc);
-        assertXpathEvaluatesTo("0", "count(/sld:PolygonSymbolizer/sld:Stroke/*)", doc);
-        assertXpathEvaluatesTo("0", "count(/sld:PolygonSymbolizer/sld:Fill/*)", doc);
+        assertThat(
+                actual,
+                hasXPath("count(/sld:PolygonSymbolizer/*)", equalTo("2"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("count(/sld:PolygonSymbolizer/sld:Stroke/*)", equalTo("0"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("count(/sld:PolygonSymbolizer/sld:Fill/*)", equalTo("0"))
+                        .withNamespaceContext(NAMESPACES));
 
         ps.getFill().setColor(ff.literal(Color.BLUE));
         xml = transformer.transform(ps);
         // System.out.println(xml);
-        doc = buildTestDocument(xml);
+        actual = Input.fromString(xml).build();
 
         // this time check the fill has the color
-        assertXpathEvaluatesTo("2", "count(/sld:PolygonSymbolizer/*)", doc);
-        assertXpathEvaluatesTo("0", "count(/sld:PolygonSymbolizer/sld:Stroke/*)", doc);
-        assertXpathEvaluatesTo("1", "count(/sld:PolygonSymbolizer/sld:Fill/*)", doc);
-        assertXpathEvaluatesTo(
-                "#0000FF", "/sld:PolygonSymbolizer/sld:Fill/sld:CssParameter[@name='fill']", doc);
+        assertThat(
+                actual,
+                hasXPath("count(/sld:PolygonSymbolizer/*)", equalTo("2"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("count(/sld:PolygonSymbolizer/sld:Stroke/*)", equalTo("0"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("count(/sld:PolygonSymbolizer/sld:Fill/*)", equalTo("1"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "/sld:PolygonSymbolizer/sld:Fill/sld:CssParameter[@name='fill']",
+                                equalTo("#0000FF"))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     @Test
-    public void testMinimumPointSymbolizer() throws Exception {
+    public void testMinimumPointSymbolizer() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
         PointSymbolizer ps = sb.createPointSymbolizer();
         String xml = transformer.transform(ps);
         // System.out.println(xml);
-        Document doc = buildTestDocument(xml);
+        Source actual = Input.fromString(xml).build();
 
         // check PolygonSymbolizer has a fill and a stroke, both empty
-        assertXpathEvaluatesTo("1", "count(/sld:PointSymbolizer/*)", doc);
-        assertXpathEvaluatesTo("1", "count(/sld:PointSymbolizer/sld:Graphic/*)", doc);
-        assertXpathEvaluatesTo("2", "count(/sld:PointSymbolizer/sld:Graphic/sld:Mark/*)", doc);
-        assertXpathExists("/sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Fill", doc);
-        assertXpathExists("/sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Stroke", doc);
-        assertXpathEvaluatesTo(
-                "0", "count(/sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Fill/*)", doc);
-        assertXpathEvaluatesTo(
-                "0", "count(/sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Stroke/*)", doc);
+        assertThat(
+                actual,
+                hasXPath("count(/sld:PointSymbolizer/*)", equalTo("1"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("count(/sld:PointSymbolizer/sld:Graphic/*)", equalTo("1"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("count(/sld:PointSymbolizer/sld:Graphic/sld:Mark/*)", equalTo("2"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "/sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Fill",
+                                notNullValue(String.class))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "/sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Stroke",
+                                notNullValue(String.class))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "count(/sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Fill/*)",
+                                equalTo("0"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "count(/sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Stroke/*)",
+                                equalTo("0"))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     @Test
-    public void testMinimumRasterSymbolizer() throws Exception {
+    public void testMinimumRasterSymbolizer() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
         RasterSymbolizer rs = sb.getStyleFactory().createRasterSymbolizer();
         String xml = transformer.transform(rs);
         // System.out.println(xml);
-        Document doc = buildTestDocument(xml);
+        Source actual = Input.fromString(xml).build();
 
         // check RasterSymbolizer just has the default geometry value
         // (which is not a default in SLD, just in our builder)
-        assertXpathEvaluatesTo("1", "count(/sld:RasterSymbolizer)", doc);
-        assertXpathEvaluatesTo("", "/sld:RasterSymbolizer/sld:Geometry/ogc:PropertyName", doc);
+        assertThat(
+                actual,
+                hasXPath("count(/sld:RasterSymbolizer)", equalTo("1"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("/sld:RasterSymbolizer/sld:Geometry/ogc:PropertyName", equalTo(""))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     @Test
-    public void testMinimumStyle() throws Exception {
+    public void testMinimumStyle() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
         Style s = sb.createStyle(sb.createPointSymbolizer());
         String xml = transformer.transform(s);
         // System.out.println(xml);
-        Document doc = buildTestDocument(xml);
+        Source actual = Input.fromString(xml).build();
 
         // check RasterSymbolizer just has the default geometry value
         // (which is not a default in SLD, just in our builder)
-        assertXpathEvaluatesTo("2", "count(/sld:UserStyle/sld:FeatureTypeStyle/*)", doc);
-        assertXpathEvaluatesTo("1", "count(/sld:UserStyle/sld:FeatureTypeStyle/sld:Name)", doc);
-        assertXpathEvaluatesTo("1", "count(/sld:UserStyle/sld:FeatureTypeStyle/sld:Rule)", doc);
-        assertXpathEvaluatesTo("1", "count(/sld:UserStyle/sld:FeatureTypeStyle/sld:Rule/*)", doc);
-        assertXpathEvaluatesTo(
-                "1",
-                "count(/sld:UserStyle/sld:FeatureTypeStyle/sld:Rule/sld:PointSymbolizer)",
-                doc);
+        assertThat(
+                actual,
+                hasXPath("count(/sld:UserStyle/sld:FeatureTypeStyle/*)", equalTo("2"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("count(/sld:UserStyle/sld:FeatureTypeStyle/sld:Name)", equalTo("1"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("count(/sld:UserStyle/sld:FeatureTypeStyle/sld:Rule)", equalTo("1"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("count(/sld:UserStyle/sld:FeatureTypeStyle/sld:Rule/*)", equalTo("1"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "count(/sld:UserStyle/sld:FeatureTypeStyle/sld:Rule/sld:PointSymbolizer)",
+                                equalTo("1"))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     @Test
-    public void testDefaultStyle() throws Exception {
+    public void testDefaultStyle() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
         Style s = sb.createStyle(sb.createPointSymbolizer());
         s.setDefault(true);
@@ -1150,14 +1258,18 @@ public class SLDTransformerTest {
 
         String xml = transformer.transform(sld);
         // System.out.println(xml);
-        Document doc = buildTestDocument(xml);
+        Source actual = Input.fromString(xml).build();
 
-        assertXpathEvaluatesTo(
-                "1", "/sld:StyledLayerDescriptor/sld:NamedLayer/sld:UserStyle/sld:IsDefault", doc);
+        assertThat(
+                actual,
+                hasXPath(
+                                "/sld:StyledLayerDescriptor/sld:NamedLayer/sld:UserStyle/sld:IsDefault",
+                                equalTo("1"))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     @Test
-    public void testLocalizedTitle() throws Exception {
+    public void testLocalizedTitle() throws TransformerException {
         RuleImpl rule = (RuleImpl) CommonFactoryFinder.getStyleFactory().createRule();
         GrowableInternationalString intString =
                 new GrowableInternationalString("title") {
@@ -1172,25 +1284,40 @@ public class SLDTransformerTest {
         intString.add(Locale.CANADA_FRENCH, "titre");
         rule.getDescription().setTitle(intString);
         String xml = transformer.transform(rule);
-        Document doc = buildTestDocument(xml);
+        Source actual = Input.fromString(xml).build();
 
-        assertXpathEvaluatesTo("title", "normalize-space(//sld:Title/text()[1])", doc);
-        assertXpathEvaluatesTo(
-                "titolo",
-                "//sld:Title/sld:Localized[@lang='" + Locale.ITALIAN.toString() + "']",
-                doc);
-        assertXpathEvaluatesTo(
-                "titre",
-                "//sld:Title/sld:Localized[@lang='" + Locale.FRENCH.toString() + "']",
-                doc);
-        assertXpathEvaluatesTo(
-                "titre",
-                "//sld:Title/sld:Localized[@lang='" + Locale.CANADA_FRENCH.toString() + "']",
-                doc);
+        assertThat(
+                actual,
+                hasXPath("normalize-space(//sld:Title/text()[1])", equalTo("title"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:Title/sld:Localized[@lang='"
+                                        + Locale.ITALIAN.toString()
+                                        + "']",
+                                equalTo("titolo"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:Title/sld:Localized[@lang='"
+                                        + Locale.FRENCH.toString()
+                                        + "']",
+                                equalTo("titre"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:Title/sld:Localized[@lang='"
+                                        + Locale.CANADA_FRENCH.toString()
+                                        + "']",
+                                equalTo("titre"))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     @Test
-    public void testLocalizedAbstract() throws Exception {
+    public void testLocalizedAbstract() throws TransformerException {
         RuleImpl rule = (RuleImpl) CommonFactoryFinder.getStyleFactory().createRule();
         GrowableInternationalString intString =
                 new GrowableInternationalString("title") {
@@ -1205,24 +1332,39 @@ public class SLDTransformerTest {
         intString.add(Locale.CANADA_FRENCH, "titre");
         rule.getDescription().setAbstract(intString);
         String xml = transformer.transform(rule);
-        Document doc = buildTestDocument(xml);
-        assertXpathEvaluatesTo("title", "normalize-space(//sld:Abstract/text()[1])", doc);
-        assertXpathEvaluatesTo(
-                "titolo",
-                "//sld:Abstract/sld:Localized[@lang='" + Locale.ITALIAN.toString() + "']",
-                doc);
-        assertXpathEvaluatesTo(
-                "titre",
-                "//sld:Abstract/sld:Localized[@lang='" + Locale.FRENCH.toString() + "']",
-                doc);
-        assertXpathEvaluatesTo(
-                "titre",
-                "//sld:Abstract/sld:Localized[@lang='" + Locale.CANADA_FRENCH.toString() + "']",
-                doc);
+        Source actual = Input.fromString(xml).build();
+        assertThat(
+                actual,
+                hasXPath("normalize-space(//sld:Abstract/text()[1])", equalTo("title"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:Abstract/sld:Localized[@lang='"
+                                        + Locale.ITALIAN.toString()
+                                        + "']",
+                                equalTo("titolo"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:Abstract/sld:Localized[@lang='"
+                                        + Locale.FRENCH.toString()
+                                        + "']",
+                                equalTo("titre"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:Abstract/sld:Localized[@lang='"
+                                        + Locale.CANADA_FRENCH.toString()
+                                        + "']",
+                                equalTo("titre"))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     @Test
-    public void testEncodeFunction() throws Exception {
+    public void testEncodeFunction() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
         PointSymbolizer ps = sb.createPointSymbolizer();
         ps.getGraphic().setSize(sb.getFilterFactory().function("random"));
@@ -1231,18 +1373,19 @@ public class SLDTransformerTest {
 
         String xml = transformer.transform(s);
         // System.out.println(xml);
-        Document doc = buildTestDocument(xml);
+        Source actual = Input.fromString(xml).build();
 
-        assertXpathEvaluatesTo(
-                "random",
-                "/sld:UserStyle/sld:FeatureTypeStyle/sld:Rule/sld:PointSymbolizer/sld:Graphic/sld:Size/ogc:Function/@name",
-                doc);
+        assertThat(
+                actual,
+                hasXPath(
+                                "/sld:UserStyle/sld:FeatureTypeStyle/sld:Rule/sld:PointSymbolizer/sld:Graphic/sld:Size/ogc:Function/@name",
+                                equalTo("random"))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     /** TextSymbolizer2 specific properties saved and laoded again must fit */
     @Test
-    public void textTextSymbolizer2_InAndOut()
-            throws TransformerException, SAXException, IOException, XpathException {
+    public void textTextSymbolizer2_InAndOut() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
 
         TextSymbolizer2 ts2 = (TextSymbolizer2) sf.createTextSymbolizer();
@@ -1261,11 +1404,23 @@ public class SLDTransformerTest {
         ts2.setOtherText(otherText);
 
         // A first check of the XML
-        Document doc = buildTestDocument(transformer.transform(ts2));
-        assertXpathEvaluatesTo("1", "count(/sld:TextSymbolizer/sld:Graphic)", doc);
-        assertXpathEvaluatesTo("1", "count(/sld:TextSymbolizer/sld:Snippet)", doc);
-        assertXpathEvaluatesTo("1", "count(/sld:TextSymbolizer/sld:OtherText)", doc);
-        assertXpathEvaluatesTo("1", "count(/sld:TextSymbolizer/sld:FeatureDescription)", doc);
+        Source actual = Input.fromString(transformer.transform(ts2)).build();
+        assertThat(
+                actual,
+                hasXPath("count(/sld:TextSymbolizer/sld:Graphic)", equalTo("1"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("count(/sld:TextSymbolizer/sld:Snippet)", equalTo("1"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("count(/sld:TextSymbolizer/sld:OtherText)", equalTo("1"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("count(/sld:TextSymbolizer/sld:FeatureDescription)", equalTo("1"))
+                        .withNamespaceContext(NAMESPACES));
 
         // Transform and reimport and compare
         String xml = transformer.transform(sb.createStyle(ts2));
@@ -1312,15 +1467,17 @@ public class SLDTransformerTest {
 
     /** Test that perpendicularOffset for LineSymbolizer is correctly exported and reimported */
     @Test
-    public void testLineSymbolizerWithPerpendicularOffset()
-            throws TransformerException, SAXException, IOException, XpathException {
+    public void testLineSymbolizerWithPerpendicularOffset() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
         LineSymbolizer ls = sb.createLineSymbolizer();
         ls.setPerpendicularOffset(ff.literal(0.77));
 
         // check XML
-        Document doc = buildTestDocument(transformer.transform(ls));
-        assertXpathEvaluatesTo("1", "count(/sld:LineSymbolizer/sld:PerpendicularOffset)", doc);
+        Source actual = Input.fromString(transformer.transform(ls)).build();
+        assertThat(
+                actual,
+                hasXPath("count(/sld:LineSymbolizer/sld:PerpendicularOffset)", equalTo("1"))
+                        .withNamespaceContext(NAMESPACES));
 
         // Transform, reimport and compare
         String xml = transformer.transform(sb.createStyle(ls));
@@ -1349,10 +1506,10 @@ public class SLDTransformerTest {
      * Make sure the FeatureTypeStyle Transformation element survives a SLD to Style to SLD round
      * trip.
      *
-     * @throws Exception if an error occurs
+     * @throws TransformerException if an error occurs
      */
     @Test
-    public void testFeatureTypeStyleTransformation() throws Exception {
+    public void testFeatureTypeStyleTransformation() throws TransformerException {
 
         String xml =
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
@@ -1407,7 +1564,7 @@ public class SLDTransformerTest {
     }
 
     @Test
-    public void testDynamicSymbolizer() throws Exception {
+    public void testDynamicSymbolizer() throws TransformerException, MalformedURLException {
         StyleBuilder sb = new StyleBuilder();
         String chartURI =
                 "http://chart?cht=p&chd=t:${100 * MALE / PERSONS},${100 * FEMALE / PERSONS}&chf=bg,s,FFFFFF00";
@@ -1419,12 +1576,14 @@ public class SLDTransformerTest {
 
         String xml = transformer.transform(s);
         // System.out.println(xml);
-        Document doc = buildTestDocument(xml);
+        Source actual = Input.fromString(xml).build();
 
-        assertXpathEvaluatesTo(
-                chartURI,
-                "/sld:UserStyle/sld:FeatureTypeStyle/sld:Rule/sld:PointSymbolizer/sld:Graphic/sld:ExternalGraphic/sld:OnlineResource/@xlink:href",
-                doc);
+        assertThat(
+                actual,
+                hasXPath(
+                                "/sld:UserStyle/sld:FeatureTypeStyle/sld:Rule/sld:PointSymbolizer/sld:Graphic/sld:ExternalGraphic/sld:OnlineResource/@xlink:href",
+                                equalTo(chartURI))
+                        .withNamespaceContext(NAMESPACES));
 
         SLDParser parser = new SLDParser(sf);
         parser.setInput(new StringReader(xml));
@@ -1443,7 +1602,7 @@ public class SLDTransformerTest {
     }
 
     @Test
-    public void testLocalUomPoint() throws Exception {
+    public void testLocalUomPoint() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
         PointSymbolizer ps = sb.createPointSymbolizer();
         ps.getGraphic().setSize(ff.literal("1m"));
@@ -1451,13 +1610,15 @@ public class SLDTransformerTest {
 
         String xml = transformer.transform(sld);
         // System.out.println(xml);
-        Document doc = buildTestDocument(xml);
+        Source actual = Input.fromString(xml).build();
 
-        assertXpathEvaluatesTo("1m", "//sld:Graphic/sld:Size", doc);
+        assertThat(
+                actual,
+                hasXPath("//sld:Graphic/sld:Size", equalTo("1m")).withNamespaceContext(NAMESPACES));
     }
 
     @Test
-    public void testLocalUomLine() throws Exception {
+    public void testLocalUomLine() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
         LineSymbolizer ls = sb.createLineSymbolizer();
         ls.getStroke().setWidth(ff.literal("1m"));
@@ -1465,16 +1626,18 @@ public class SLDTransformerTest {
 
         String xml = transformer.transform(sld);
         // System.out.println(xml);
-        Document doc = buildTestDocument(xml);
+        Source actual = Input.fromString(xml).build();
 
-        assertXpathEvaluatesTo(
-                "1m",
-                "//sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke-width']",
-                doc);
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke-width']",
+                                equalTo("1m"))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     @Test
-    public void testLocalUomText() throws Exception {
+    public void testLocalUomText() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
         TextSymbolizer ts = sb.createTextSymbolizer();
         ts.getFont().setSize(ff.literal("1m"));
@@ -1482,39 +1645,58 @@ public class SLDTransformerTest {
 
         String xml = transformer.transform(sld);
         // System.out.println(xml);
-        Document doc = buildTestDocument(xml);
+        Source actual = Input.fromString(xml).build();
 
-        assertXpathEvaluatesTo(
-                "1m", "//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name='font-size']", doc);
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name='font-size']",
+                                equalTo("1m"))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     @Test
-    public void testLabelMixedContent() throws Exception {
+    public void testLabelMixedContent() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
         TextSymbolizer ts = sb.createTextSymbolizer();
         ts.setLabel(ff.function("strConcat", ff.literal("abc"), ff.property("myProperty")));
         StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
 
         String xml = transformer.transform(sld);
-        Document doc = buildTestDocument(xml);
+        Source actual = Input.fromString(xml).build();
 
-        assertXpathEvaluatesTo("abc", "normalize-space(//sld:Label/text()[1])", doc);
-        assertXpathEvaluatesTo("ogc:PropertyName", "name(//sld:Label/*[1])", doc);
-        assertXpathEvaluatesTo("myProperty", "//sld:Label/*[1]/text()", doc);
+        assertThat(
+                actual,
+                hasXPath("normalize-space(//sld:Label/text()[1])", equalTo("abc"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("name(//sld:Label/*[1])", equalTo("ogc:PropertyName"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("//sld:Label/*[1]/text()", equalTo("myProperty"))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     @Test
-    public void testLabelCDataStart() throws Exception {
+    public void testLabelCDataStart() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
         TextSymbolizer ts = sb.createTextSymbolizer();
         ts.setLabel(ff.function("strConcat", ff.literal(" abc"), ff.property("myProperty")));
         StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
 
         String xml = transformer.transform(sld);
-        Document doc = buildTestDocument(xml);
+        Source actual = Input.fromString(xml).build();
 
-        assertXpathEvaluatesTo("abc", "normalize-space(//sld:Label/text()[1])", doc);
-        assertXpathEvaluatesTo("myProperty", "//sld:Label/ogc:PropertyName", doc);
+        assertThat(
+                actual,
+                hasXPath("normalize-space(//sld:Label/text()[1])", equalTo("abc"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("//sld:Label/ogc:PropertyName", equalTo("myProperty"))
+                        .withNamespaceContext(NAMESPACES));
 
         // normalize-space() strips indentation, but also CDATA whitespace, so we resort to string
         // comparisons here
@@ -1522,17 +1704,23 @@ public class SLDTransformerTest {
     }
 
     @Test
-    public void testLabelCDataEnd() throws Exception {
+    public void testLabelCDataEnd() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
         TextSymbolizer ts = sb.createTextSymbolizer();
         ts.setLabel(ff.function("strConcat", ff.literal("abc "), ff.property("myProperty")));
         StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
 
         String xml = transformer.transform(sld);
-        Document doc = buildTestDocument(xml);
+        Source actual = Input.fromString(xml).build();
 
-        assertXpathEvaluatesTo("abc", "normalize-space(//sld:Label/text()[1])", doc);
-        assertXpathEvaluatesTo("myProperty", "//sld:Label/ogc:PropertyName", doc);
+        assertThat(
+                actual,
+                hasXPath("normalize-space(//sld:Label/text()[1])", equalTo("abc"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("//sld:Label/ogc:PropertyName", equalTo("myProperty"))
+                        .withNamespaceContext(NAMESPACES));
 
         // normalize-space() strips indentation, but also CDATA whitespace, so we resort to string
         // comparisons here
@@ -1540,17 +1728,23 @@ public class SLDTransformerTest {
     }
 
     @Test
-    public void testLabelCDataMid() throws Exception {
+    public void testLabelCDataMid() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
         TextSymbolizer ts = sb.createTextSymbolizer();
         ts.setLabel(ff.function("strConcat", ff.literal("a  bc"), ff.property("myProperty")));
         StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
 
         String xml = transformer.transform(sld);
-        Document doc = buildTestDocument(xml);
+        Source actual = Input.fromString(xml).build();
 
-        assertXpathEvaluatesTo("a bc", "normalize-space(//sld:Label/text()[1])", doc);
-        assertXpathEvaluatesTo("myProperty", "//sld:Label/ogc:PropertyName", doc);
+        assertThat(
+                actual,
+                hasXPath("normalize-space(//sld:Label/text()[1])", equalTo("a bc"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("//sld:Label/ogc:PropertyName", equalTo("myProperty"))
+                        .withNamespaceContext(NAMESPACES));
 
         // normalize-space() strips indentation, but also CDATA whitespace, so we resort to string
         // comparisons here
@@ -1558,17 +1752,23 @@ public class SLDTransformerTest {
     }
 
     @Test
-    public void testLabelCDataNewline() throws Exception {
+    public void testLabelCDataNewline() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
         TextSymbolizer ts = sb.createTextSymbolizer();
         ts.setLabel(ff.function("strConcat", ff.literal("a \n bc"), ff.property("myProperty")));
         StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
 
         String xml = transformer.transform(sld);
-        Document doc = buildTestDocument(xml);
+        Source actual = Input.fromString(xml).build();
 
-        assertXpathEvaluatesTo("a bc", "normalize-space(//sld:Label/text()[1])", doc);
-        assertXpathEvaluatesTo("myProperty", "//sld:Label/ogc:PropertyName", doc);
+        assertThat(
+                actual,
+                hasXPath("normalize-space(//sld:Label/text()[1])", equalTo("a bc"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("//sld:Label/ogc:PropertyName", equalTo("myProperty"))
+                        .withNamespaceContext(NAMESPACES));
 
         // normalize-space() strips indentation, but also CDATA whitespace, so we resort to string
         // comparisons here
@@ -1576,7 +1776,7 @@ public class SLDTransformerTest {
     }
 
     @Test
-    public void testLabelNested() throws Exception {
+    public void testLabelNested() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
         TextSymbolizer ts = sb.createTextSymbolizer();
         ts.setLabel(
@@ -1587,11 +1787,20 @@ public class SLDTransformerTest {
         StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
 
         String xml = transformer.transform(sld);
-        Document doc = buildTestDocument(xml);
+        Source actual = Input.fromString(xml).build();
 
-        assertXpathEvaluatesTo("abc", "normalize-space(//sld:Label/text()[1])", doc);
-        assertXpathEvaluatesTo("myProperty", "//sld:Label/ogc:PropertyName", doc);
-        assertXpathEvaluatesTo("def", "normalize-space(//sld:Label/text()[2])", doc);
+        assertThat(
+                actual,
+                hasXPath("normalize-space(//sld:Label/text()[1])", equalTo("abc"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("//sld:Label/ogc:PropertyName", equalTo("myProperty"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("normalize-space(//sld:Label/text()[2])", equalTo("def"))
+                        .withNamespaceContext(NAMESPACES));
 
         // normalize-space() strips indentation, but also CDATA whitespace, so we resort to string
         // comparisons here
@@ -1601,7 +1810,7 @@ public class SLDTransformerTest {
 
     /** Test the transformation of an WellKnownName element that contains an expression. */
     @Test
-    public void testWellKnownNameWithExpression() throws Exception {
+    public void testWellKnownNameWithExpression() throws TransformerException {
 
         String originalStyleXml =
                 "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
@@ -1647,7 +1856,7 @@ public class SLDTransformerTest {
 
     /** Test the transformation of a stroke-dasharray element that contains expressions. */
     @Test
-    public void testStrokeDasharrayWithExpressions() throws Exception {
+    public void testStrokeDasharrayWithExpressions() throws TransformerException {
 
         String originalStyleXml =
                 "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
@@ -1725,7 +1934,7 @@ public class SLDTransformerTest {
      * Test the transformation of a stroke-dasharray element that contains only literal expressions.
      */
     @Test
-    public void testStrokeDasharrayWithOnlyLiteralExpressions() throws Exception {
+    public void testStrokeDasharrayWithOnlyLiteralExpressions() throws TransformerException {
 
         String originalStyleXml =
                 "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
@@ -1772,7 +1981,7 @@ public class SLDTransformerTest {
     }
 
     @Test
-    public void testAnchorPointInGraphic() throws Exception {
+    public void testAnchorPointInGraphic() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
 
         Graphic graphic = sb.createGraphic();
@@ -1784,16 +1993,28 @@ public class SLDTransformerTest {
         SLDTransformer st = new SLDTransformer();
         String xml = st.transform(graphic);
         // System.out.println(xml);
-        Document doc = buildTestDocument(xml);
+        Source actual = Input.fromString(xml).build();
 
-        assertXpathEvaluatesTo("10.0", "//sld:Graphic/sld:Displacement/sld:DisplacementX", doc);
-        assertXpathEvaluatesTo("10.0", "//sld:Graphic/sld:Displacement/sld:DisplacementY", doc);
-        assertXpathEvaluatesTo("1.0", "//sld:Graphic/sld:AnchorPoint/sld:AnchorPointX", doc);
-        assertXpathEvaluatesTo("0.3", "//sld:Graphic/sld:AnchorPoint/sld:AnchorPointY", doc);
+        assertThat(
+                actual,
+                hasXPath("//sld:Graphic/sld:Displacement/sld:DisplacementX", equalTo("10.0"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("//sld:Graphic/sld:Displacement/sld:DisplacementY", equalTo("10.0"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("//sld:Graphic/sld:AnchorPoint/sld:AnchorPointX", equalTo("1.0"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("//sld:Graphic/sld:AnchorPoint/sld:AnchorPointY", equalTo("0.3"))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     @Test
-    public void testFeatureTypeStyleOptions() throws Exception {
+    public void testFeatureTypeStyleOptions() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
         Style style = sb.createStyle(sb.createPolygonSymbolizer());
         FeatureTypeStyle fts = style.featureTypeStyles().get(0);
@@ -1802,11 +2023,16 @@ public class SLDTransformerTest {
         SLDTransformer st = new SLDTransformer();
         String xml = st.transform(style);
         // System.out.println(xml);
-        Document doc = buildTestDocument(xml);
+        Source actual = Input.fromString(xml).build();
 
-        assertXpathEvaluatesTo("1", "count(//sld:FeatureTypeStyle/sld:VendorOption)", doc);
-        assertXpathEvaluatesTo(
-                "value", "//sld:FeatureTypeStyle/sld:VendorOption[@name='key']", doc);
+        assertThat(
+                actual,
+                hasXPath("count(//sld:FeatureTypeStyle/sld:VendorOption)", equalTo("1"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("//sld:FeatureTypeStyle/sld:VendorOption[@name='key']", equalTo("value"))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     private Style validateWellKnownNameWithExpressionStyle(String xmlStyle) {
@@ -1879,7 +2105,7 @@ public class SLDTransformerTest {
     }
 
     @Test
-    public void testContrastEnhancement() throws Exception {
+    public void testContrastEnhancement() throws TransformerException {
         ContrastEnhancement ce = new ContrastEnhancementImpl();
         NormalizeContrastMethodStrategy normal = new NormalizeContrastMethodStrategy();
         normal.setAlgorithm(ff.literal("ClipToMinimumMaximum"));
@@ -1889,16 +2115,23 @@ public class SLDTransformerTest {
         SLDTransformer st = new SLDTransformer();
         String xml = st.transform(ce);
         // System.out.println(xml);
-        Document doc = buildTestDocument(xml);
-        assertXpathExists("//sld:ContrastEnhancement/sld:Normalize", doc);
-        assertXpathEvaluatesTo(
-                "false",
-                "//sld:ContrastEnhancement/sld:Normalize/sld:VendorOption[@name='p1']",
-                doc);
-        assertXpathEvaluatesTo(
-                "ClipToMinimumMaximum",
-                "//sld:ContrastEnhancement/sld:Normalize/sld:VendorOption[@name='algorithm']",
-                doc);
+        Source actual = Input.fromString(xml).build();
+        assertThat(
+                actual,
+                hasXPath("//sld:ContrastEnhancement/sld:Normalize", notNullValue(String.class))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:ContrastEnhancement/sld:Normalize/sld:VendorOption[@name='p1']",
+                                equalTo("false"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:ContrastEnhancement/sld:Normalize/sld:VendorOption[@name='algorithm']",
+                                equalTo("ClipToMinimumMaximum"))
+                        .withNamespaceContext(NAMESPACES));
 
         HistogramContrastMethodStrategy hist = new HistogramContrastMethodStrategy();
         ce.setMethod(hist);
@@ -1906,9 +2139,12 @@ public class SLDTransformerTest {
         String skeleton =
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?><sld:ContrastEnhancement xmlns=\"http://www.opengis.net/sld\" xmlns:sld=\"http://www.opengis.net/sld\" xmlns:ogc=\"http://www.opengis.net/ogc\" xmlns:gml=\"http://www.opengis.net/gml\"><sld:Histogram/></sld:ContrastEnhancement>";
         // System.out.println(xml);
-        Diff myDiff = new Diff(skeleton, xml);
+        Source expected = Input.fromString(skeleton).build();
+        actual = Input.fromString(xml).build();
+        Diff diff = DiffBuilder.compare(expected).withTest(actual).checkForSimilar().build();
 
-        assertTrue("test XML matches control skeleton XML " + myDiff, myDiff.similar());
+        Assert.assertFalse(diff.toString(), diff.hasDifferences());
+
         // assertXpathNotExists("//sld:ContrastEnhancement/sld:Histogram/sld:Algorithm",doc);
 
         LogarithmicContrastMethodStrategy log = new LogarithmicContrastMethodStrategy();
@@ -1916,41 +2152,53 @@ public class SLDTransformerTest {
         xml = st.transform(ce);
         // System.out.println(xml);
         skeleton = skeleton.replace("Histogram", "Logarithmic");
-        myDiff = new Diff(skeleton, xml);
+        expected = Input.fromString(skeleton).build();
+        actual = Input.fromString(xml).build();
+        diff = DiffBuilder.compare(expected).withTest(actual).checkForSimilar().build();
 
-        assertTrue("test XML matches control skeleton XML " + myDiff, myDiff.similar());
+        Assert.assertFalse(diff.toString(), diff.hasDifferences());
 
         ExponentialContrastMethodStrategy exp = new ExponentialContrastMethodStrategy();
         ce.setMethod(exp);
         xml = st.transform(ce);
         // System.out.println(xml);
         skeleton = skeleton.replace("Logarithmic", "Exponential");
-        myDiff = new Diff(skeleton, xml);
+        expected = Input.fromString(skeleton).build();
+        actual = Input.fromString(xml).build();
+        diff = DiffBuilder.compare(expected).withTest(actual).checkForSimilar().build();
 
-        assertTrue("test XML matches control skeleton XML " + myDiff, myDiff.similar());
+        Assert.assertFalse(diff.toString(), diff.hasDifferences());
     }
 
     @Test
-    public void testGammaValueExpressionContrastEnhancement() throws Exception {
+    public void testGammaValueExpressionContrastEnhancement() throws TransformerException {
         ContrastEnhancement ce = new ContrastEnhancementImpl();
         ce.setGammaValue(ff.add(ff.literal(1.0), ff.literal(0.5)));
         SLDTransformer st = new SLDTransformer();
         String xml = st.transform(ce);
         // System.out.println(xml);
-        Document doc = buildTestDocument(xml);
-        assertXpathExists("//sld:ContrastEnhancement/sld:GammaValue", doc);
-        assertXpathExists("//sld:ContrastEnhancement/sld:GammaValue/ogc:Add", doc);
+        Source actual = Input.fromString(xml).build();
+        assertThat(
+                actual,
+                hasXPath("//sld:ContrastEnhancement/sld:GammaValue", notNullValue(String.class)));
+        assertThat(
+                actual,
+                hasXPath(
+                        "//sld:ContrastEnhancement/sld:GammaValue/ogc:Add",
+                        notNullValue(String.class)));
 
-        String skeleton =
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><sld:ContrastEnhancement xmlns=\"http://www.opengis.net/sld\" xmlns:sld=\"http://www.opengis.net/sld\" xmlns:gml=\"http://www.opengis.net/gml\" xmlns:ogc=\"http://www.opengis.net/ogc\"><sld:GammaValue><ogc:Add><ogc:Literal>1.0</ogc:Literal><ogc:Literal>0.5</ogc:Literal></ogc:Add></sld:GammaValue></sld:ContrastEnhancement>";
+        Source expected =
+                Input.fromString(
+                                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><sld:ContrastEnhancement xmlns=\"http://www.opengis.net/sld\" xmlns:sld=\"http://www.opengis.net/sld\" xmlns:gml=\"http://www.opengis.net/gml\" xmlns:ogc=\"http://www.opengis.net/ogc\"><sld:GammaValue><ogc:Add><ogc:Literal>1.0</ogc:Literal><ogc:Literal>0.5</ogc:Literal></ogc:Add></sld:GammaValue></sld:ContrastEnhancement>")
+                        .build();
         // System.out.println(xml);
-        Diff myDiff = new Diff(skeleton, xml);
+        Diff diff = DiffBuilder.compare(expected).withTest(actual).checkForSimilar().build();
 
-        assertTrue("test XML matches control skeleton XML " + myDiff, myDiff.similar());
+        Assert.assertFalse(diff.toString(), diff.hasDifferences());
     }
 
     @Test
-    public void testMultipleFontsUniform() throws Exception {
+    public void testMultipleFontsUniform() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
         Font f1 = sb.createFont("Arial", 10);
         Font f2 = sb.createFont("Comic Sans MS", 10);
@@ -1959,27 +2207,40 @@ public class SLDTransformerTest {
         SLDTransformer st = new SLDTransformer();
         String xml = st.transform(ts);
         // System.out.println(xml);
-        Document doc = buildTestDocument(xml);
+        Source actual = Input.fromString(xml).build();
 
-        assertXpathEvaluatesTo("1", "count(//sld:TextSymbolizer/sld:Font)", doc);
-        assertXpathEvaluatesTo(
-                "2",
-                "count(//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name=\"font-family\"])",
-                doc);
-        assertXpathEvaluatesTo(
-                "Arial",
-                "//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name=\"font-family\"][1]",
-                doc);
-        assertXpathEvaluatesTo(
-                "Comic Sans MS",
-                "//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name=\"font-family\"][2]",
-                doc);
-        assertXpathEvaluatesTo(
-                "10.0", "//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name=\"font-size\"]", doc);
+        assertThat(
+                actual,
+                hasXPath("count(//sld:TextSymbolizer/sld:Font)", equalTo("1"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "count(//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name=\"font-family\"])",
+                                equalTo("2"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name=\"font-family\"][1]",
+                                equalTo("Arial"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name=\"font-family\"][2]",
+                                equalTo("Comic Sans MS"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name=\"font-size\"]",
+                                equalTo("10.0"))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     @Test
-    public void testMultipleFontsNotUniform() throws Exception {
+    public void testMultipleFontsNotUniform() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
         Font f1 = sb.createFont("Arial", 10);
         Font f2 = sb.createFont("Comic Sans MS", 12);
@@ -1988,32 +2249,47 @@ public class SLDTransformerTest {
         SLDTransformer st = new SLDTransformer();
         String xml = st.transform(ts);
         // System.out.println(xml);
-        Document doc = buildTestDocument(xml);
+        Source actual = Input.fromString(xml).build();
 
-        assertXpathEvaluatesTo("2", "count(//sld:TextSymbolizer/sld:Font)", doc);
+        assertThat(
+                actual,
+                hasXPath("count(//sld:TextSymbolizer/sld:Font)", equalTo("2"))
+                        .withNamespaceContext(NAMESPACES));
         // <sld:CssParameter name="font-family">Comic Sans MS</sld:CssParameter>
-        assertXpathEvaluatesTo(
-                "1",
-                "count(//sld:TextSymbolizer/sld:Font[1]/sld:CssParameter[@name=\"font-family\"])",
-                doc);
-        assertXpathEvaluatesTo(
-                "Arial",
-                "//sld:TextSymbolizer/sld:Font[1]/sld:CssParameter[@name=\"font-family\"][1]",
-                doc);
-        assertXpathEvaluatesTo(
-                "1",
-                "count(//sld:TextSymbolizer/sld:Font[2]/sld:CssParameter[@name=\"font-family\"])",
-                doc);
-        assertXpathEvaluatesTo(
-                "Comic Sans MS",
-                "//sld:TextSymbolizer/sld:Font[2]/sld:CssParameter[@name=\"font-family\"]",
-                doc);
-        assertXpathEvaluatesTo(
-                "10.0", "//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name=\"font-size\"]", doc);
+        assertThat(
+                actual,
+                hasXPath(
+                                "count(//sld:TextSymbolizer/sld:Font[1]/sld:CssParameter[@name=\"font-family\"])",
+                                equalTo("1"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:TextSymbolizer/sld:Font[1]/sld:CssParameter[@name=\"font-family\"][1]",
+                                equalTo("Arial"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "count(//sld:TextSymbolizer/sld:Font[2]/sld:CssParameter[@name=\"font-family\"])",
+                                equalTo("1"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:TextSymbolizer/sld:Font[2]/sld:CssParameter[@name=\"font-family\"]",
+                                equalTo("Comic Sans MS"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name=\"font-size\"]",
+                                equalTo("10.0"))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     @Test
-    public void testLineOffsetExpression() throws Exception {
+    public void testLineOffsetExpression() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
         LineSymbolizer ls = sb.createLineSymbolizer(Color.RED);
         ls.setPerpendicularOffset(ff.multiply(ff.property("a"), ff.literal(2)));
@@ -2022,17 +2298,25 @@ public class SLDTransformerTest {
         st.setIndentation(2);
         String xml = st.transform(ls);
         // System.out.println(xml);
-        Document doc = buildTestDocument(xml);
+        Source actual = Input.fromString(xml).build();
 
-        assertXpathEvaluatesTo(
-                "a", "//sld:LineSymbolizer/sld:PerpendicularOffset/ogc:Mul/ogc:PropertyName", doc);
-        assertXpathEvaluatesTo(
-                "2", "//sld:LineSymbolizer/sld:PerpendicularOffset/ogc:Mul/ogc:Literal", doc);
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:LineSymbolizer/sld:PerpendicularOffset/ogc:Mul/ogc:PropertyName",
+                                equalTo("a"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:LineSymbolizer/sld:PerpendicularOffset/ogc:Mul/ogc:Literal",
+                                equalTo("2"))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     /** See https://osgeo-org.atlassian.net/browse/GEOT-5613 */
     @Test
-    public void testDefaults() throws Exception {
+    public void testDefaults() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
         LineSymbolizer ls = sb.createLineSymbolizer(Color.BLACK);
 
@@ -2041,19 +2325,30 @@ public class SLDTransformerTest {
         st.setIndentation(2);
         String xml = st.transform(ls);
 
-        Document doc = buildTestDocument(xml);
+        Source actual = Input.fromString(xml).build();
 
-        assertXpathExists("//sld:LineSymbolizer/sld:Stroke", doc);
-        assertXpathEvaluatesTo(
-                "#000000", "//sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke']", doc);
+        assertThat(
+                actual,
+                hasXPath("//sld:LineSymbolizer/sld:Stroke", notNullValue(String.class))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke']",
+                                equalTo("#000000"))
+                        .withNamespaceContext(NAMESPACES));
 
         st.setExportDefaultValues(false);
         xml = st.transform(ls);
         // System.out.println(xml);
-        doc = buildTestDocument(xml);
+        actual = Input.fromString(xml).build();
 
-        assertXpathNotExists(
-                "//sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke']", doc);
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke']",
+                                notNullValue(String.class))
+                        .withNamespaceContext(NAMESPACES));
 
         st.setExportDefaultValues(true);
 
@@ -2061,27 +2356,53 @@ public class SLDTransformerTest {
 
         xml = st.transform(ps);
 
-        doc = buildTestDocument(xml);
+        actual = Input.fromString(xml).build();
 
-        assertXpathExists("//sld:PolygonSymbolizer/sld:Stroke", doc);
-        assertXpathEvaluatesTo(
-                "#000000",
-                "//sld:PolygonSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke']",
-                doc);
-        assertXpathExists("//sld:PolygonSymbolizer/sld:Fill", doc);
-        assertXpathEvaluatesTo(
-                "#808080", "//sld:PolygonSymbolizer/sld:Fill/sld:CssParameter[@name='fill']", doc);
+        assertThat(
+                actual,
+                hasXPath("//sld:PolygonSymbolizer/sld:Stroke", notNullValue(String.class))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:PolygonSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke']",
+                                equalTo("#000000"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("//sld:PolygonSymbolizer/sld:Fill", notNullValue(String.class))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:PolygonSymbolizer/sld:Fill/sld:CssParameter[@name='fill']",
+                                equalTo("#808080"))
+                        .withNamespaceContext(NAMESPACES));
 
         st.setExportDefaultValues(false);
         xml = st.transform(ps);
         // System.out.println(xml);
-        doc = buildTestDocument(xml);
-        assertXpathExists("//sld:PolygonSymbolizer/sld:Stroke", doc);
-        assertXpathNotExists(
-                "//sld:PolygonSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke']", doc);
-        assertXpathExists("//sld:PolygonSymbolizer/sld:Fill", doc);
-        assertXpathNotExists(
-                "//sld:PolygonSymbolizer/sld:Fill/sld:CssParameter[@name='fill']", doc);
+        actual = Input.fromString(xml).build();
+        assertThat(
+                actual,
+                hasXPath("//sld:PolygonSymbolizer/sld:Stroke", notNullValue(String.class))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "count(//sld:PolygonSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke'])",
+                                equalTo("0"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("//sld:PolygonSymbolizer/sld:Fill", notNullValue(String.class))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "count(//sld:PolygonSymbolizer/sld:Fill/sld:CssParameter[@name='fill'])",
+                                equalTo("0"))
+                        .withNamespaceContext(NAMESPACES));
 
         st.setExportDefaultValues(true);
         PointSymbolizer pos =
@@ -2089,36 +2410,72 @@ public class SLDTransformerTest {
 
         xml = st.transform(pos);
         // System.out.println(xml);
-        doc = buildTestDocument(xml);
-        assertXpathExists("//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Stroke", doc);
-        assertXpathEvaluatesTo(
-                "#000000",
-                "//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Stroke/sld:CssParameter[@name='stroke']",
-                doc);
-        assertXpathExists("//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Fill", doc);
-        assertXpathEvaluatesTo(
-                "#808080",
-                "//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Fill/sld:CssParameter[@name='fill']",
-                doc);
-        assertXpathExists("//sld:WellKnownName", doc);
+        actual = Input.fromString(xml).build();
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Stroke",
+                                notNullValue(String.class))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Stroke/sld:CssParameter[@name='stroke']",
+                                equalTo("#000000"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Fill",
+                                notNullValue(String.class))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Fill/sld:CssParameter[@name='fill']",
+                                equalTo("#808080"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("//sld:WellKnownName", notNullValue(String.class))
+                        .withNamespaceContext(NAMESPACES));
 
         st.setExportDefaultValues(false);
         xml = st.transform(pos);
         // System.out.println(xml);
-        doc = buildTestDocument(xml);
-        assertXpathExists("//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Stroke", doc);
-        assertXpathNotExists(
-                "//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Stroke/sld:CssParameter[@name='stroke']",
-                doc);
-        assertXpathExists("//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Fill", doc);
-        assertXpathNotExists(
-                "//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Fill/sld:CssParameter[@name='fill']",
-                doc);
-        assertXpathNotExists("//sld:WellKnownName", doc);
+        actual = Input.fromString(xml).build();
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Stroke",
+                                notNullValue(String.class))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "count(//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Stroke/sld:CssParameter[@name='stroke'])",
+                                equalTo("0"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Fill",
+                                notNullValue(String.class))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "count(//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Fill/sld:CssParameter[@name='fill'])",
+                                equalTo("0"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath("count(//sld:WellKnownName)", equalTo("0"))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     @Test
-    public void testWKTMarkAlongLine() throws Exception {
+    public void testWKTMarkAlongLine() throws TransformerException {
 
         String xml =
                 "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>"
@@ -2178,12 +2535,25 @@ public class SLDTransformerTest {
         st.setIndentation(2);
         String lineSymbolizerXML = st.transform(rule);
 
-        Document doc = buildTestDocument(lineSymbolizerXML);
-        assertXpathExists("//sld:LineSymbolizer/sld:VendorOption[@name='markAlongLine']", doc);
-        assertXpathExists(
-                "//sld:LineSymbolizer/sld:VendorOption[@name='markAlongLineScaleLimit']", doc);
-        assertXpathExists(
-                "//sld:LineSymbolizer/sld:VendorOption[@name='markAlongLineSimplify']", doc);
+        Source actual = Input.fromString(lineSymbolizerXML).build();
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:LineSymbolizer/sld:VendorOption[@name='markAlongLine']",
+                                notNullValue(String.class))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:LineSymbolizer/sld:VendorOption[@name='markAlongLineScaleLimit']",
+                                notNullValue(String.class))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:LineSymbolizer/sld:VendorOption[@name='markAlongLineSimplify']",
+                                notNullValue(String.class))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     private StyledLayerDescriptor buildSLDAroundSymbolizer(
@@ -2201,8 +2571,7 @@ public class SLDTransformerTest {
     }
 
     @Test
-    public void testEncodeBackgroundSolid()
-            throws IOException, SAXException, TransformerException, XpathException {
+    public void testEncodeBackgroundSolid() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
         Style style = sb.createStyle(sb.createLineSymbolizer());
         style.setBackground(sb.createFill(Color.RED));
@@ -2212,18 +2581,23 @@ public class SLDTransformerTest {
         st.setIndentation(2);
         String styleXML = st.transform(style);
 
-        Document doc = buildTestDocument(styleXML);
-        assertXpathEvaluatesTo(
-                "#FF0000", "//sld:UserStyle/sld:Background/sld:CssParameter[@name='fill']", doc);
-        assertXpathEvaluatesTo(
-                "1.0",
-                "//sld:UserStyle/sld:Background/sld:CssParameter[@name='fill-opacity']",
-                doc);
+        Source actual = Input.fromString(styleXML).build();
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:UserStyle/sld:Background/sld:CssParameter[@name='fill']",
+                                equalTo("#FF0000"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:UserStyle/sld:Background/sld:CssParameter[@name='fill-opacity']",
+                                equalTo("1.0"))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     @Test
-    public void testEncodeBackgroundGraphicFill()
-            throws IOException, SAXException, TransformerException, XpathException {
+    public void testEncodeBackgroundGraphicFill() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
         Style style = sb.createStyle(sb.createLineSymbolizer());
         Fill fill = sb.createFill();
@@ -2237,21 +2611,29 @@ public class SLDTransformerTest {
         st.setIndentation(2);
         String styleXML = st.transform(style);
 
-        Document doc = buildTestDocument(styleXML);
-        assertXpathEvaluatesTo(
-                "square",
-                "//sld:UserStyle/sld:Background/sld:GraphicFill/sld:Graphic/sld:Mark/sld:WellKnownName",
-                doc);
-        assertXpathExists(
-                "//sld:UserStyle/sld:Background/sld:GraphicFill/sld:Graphic/sld:Mark/sld:Fill",
-                doc);
-        assertXpathExists(
-                "//sld:UserStyle/sld:Background/sld:GraphicFill/sld:Graphic/sld:Mark/sld:Stroke",
-                doc);
+        Source actual = Input.fromString(styleXML).build();
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:UserStyle/sld:Background/sld:GraphicFill/sld:Graphic/sld:Mark/sld:WellKnownName",
+                                equalTo("square"))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:UserStyle/sld:Background/sld:GraphicFill/sld:Graphic/sld:Mark/sld:Fill",
+                                notNullValue(String.class))
+                        .withNamespaceContext(NAMESPACES));
+        assertThat(
+                actual,
+                hasXPath(
+                                "//sld:UserStyle/sld:Background/sld:GraphicFill/sld:Graphic/sld:Mark/sld:Stroke",
+                                notNullValue(String.class))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     @Test
-    public void testVendorOptionsRule() throws Exception {
+    public void testVendorOptionsRule() {
         String xml =
                 "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>"
                         + "<StyledLayerDescriptor version=\"1.0.0\" "
@@ -2299,7 +2681,7 @@ public class SLDTransformerTest {
     }
 
     @Test
-    public void testRasterVendorOption() throws Exception {
+    public void testRasterVendorOption() throws TransformerException {
         RasterSymbolizer rs = sf.createRasterSymbolizer();
         rs.getOptions().put("test", "value");
 
@@ -2308,8 +2690,10 @@ public class SLDTransformerTest {
         st.setIndentation(2);
         String xml = st.transform(rs);
 
-        Document doc = buildTestDocument(xml);
-        assertXpathEvaluatesTo(
-                "value", "/sld:RasterSymbolizer/sld:VendorOption[@name='test']", doc);
+        Source actual = Input.fromString(xml).build();
+        assertThat(
+                actual,
+                hasXPath("/sld:RasterSymbolizer/sld:VendorOption[@name='test']", equalTo("value"))
+                        .withNamespaceContext(NAMESPACES));
     }
 }

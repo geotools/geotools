@@ -1,8 +1,7 @@
 package org.geotools.gml3.v3_2;
 
 import java.util.HashMap;
-import org.custommonkey.xmlunit.SimpleNamespaceContext;
-import org.custommonkey.xmlunit.XMLUnit;
+import java.util.Map;
 import org.geotools.gml3.bindings.GML3MockData;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.test.XMLTestSupport;
@@ -12,10 +11,10 @@ import org.w3c.dom.Node;
 
 public abstract class GML32TestSupport extends XMLTestSupport {
 
+    protected static Map<String, String> NAMESPACES = new HashMap<>();
+
     static {
-        HashMap<String, String> namespaces = new HashMap<>();
-        namespaces.put("gml", GML.NAMESPACE);
-        XMLUnit.setXpathNamespaceContext(new SimpleNamespaceContext(namespaces));
+        NAMESPACES.put("gml", GML.NAMESPACE);
     }
 
     @Override

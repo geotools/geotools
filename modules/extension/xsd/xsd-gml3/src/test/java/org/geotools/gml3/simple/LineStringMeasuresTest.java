@@ -16,10 +16,11 @@
  */
 package org.geotools.gml3.simple;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.xmlunit.matchers.EvaluateXPathMatcher.hasXPath;
 
-import org.custommonkey.xmlunit.XMLUnit;
-import org.custommonkey.xmlunit.XpathEngine;
+import javax.xml.transform.Source;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.gml3.GML;
 import org.junit.Test;
@@ -27,6 +28,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 import org.w3c.dom.Document;
+import org.xmlunit.builder.Input;
 
 /** Test that linestring containing coordinates with measurements are correctly encoded. */
 public final class LineStringMeasuresTest extends GeometryEncoderTestSupport {
@@ -39,8 +41,11 @@ public final class LineStringMeasuresTest extends GeometryEncoderTestSupport {
         LineStringEncoder encoder = new LineStringEncoder(gtEncoder, "gml", GML.NAMESPACE);
         Document document = encode(encoder, geometry, "line");
         // check that we got the expected result
-        XpathEngine xpath = XMLUnit.newXpathEngine();
-        assertEquals("0 1 -1.5 3 4 -2.5", xpath.evaluate("//gml:posList", document));
+        Source actual = Input.fromDocument(document).build();
+        assertThat(
+                actual,
+                hasXPath("//gml:posList", equalTo("0 1 -1.5 3 4 -2.5"))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     @Test
@@ -52,8 +57,10 @@ public final class LineStringMeasuresTest extends GeometryEncoderTestSupport {
         LineStringEncoder encoder = new LineStringEncoder(gtEncoder, "gml", GML.NAMESPACE);
         Document document = encode(encoder, geometry, false, "line");
         // check that we got the expected result
-        XpathEngine xpath = XMLUnit.newXpathEngine();
-        assertEquals("0 1 3 4", xpath.evaluate("//gml:posList", document));
+        Source actual = Input.fromDocument(document).build();
+        assertThat(
+                actual,
+                hasXPath("//gml:posList", equalTo("0 1 3 4")).withNamespaceContext(NAMESPACES));
     }
 
     @Test
@@ -64,9 +71,11 @@ public final class LineStringMeasuresTest extends GeometryEncoderTestSupport {
         PointEncoder encoder = new PointEncoder(gtEncoder, "gml", GML.NAMESPACE);
         Document document = encode(encoder, geometry, "line");
         // check that we got the expected result
-        XpathEngine xpath = XMLUnit.newXpathEngine();
         // print(document);
-        assertEquals("0 1 -1.5", xpath.evaluate("//gml:pos", document));
+        Source actual = Input.fromDocument(document).build();
+        assertThat(
+                actual,
+                hasXPath("//gml:pos", equalTo("0 1 -1.5")).withNamespaceContext(NAMESPACES));
     }
 
     @Test
@@ -77,9 +86,9 @@ public final class LineStringMeasuresTest extends GeometryEncoderTestSupport {
         PointEncoder encoder = new PointEncoder(gtEncoder, "gml", GML.NAMESPACE);
         Document document = encode(encoder, geometry, false, "line");
         // check that we got the expected result
-        XpathEngine xpath = XMLUnit.newXpathEngine();
         // print(document);
-        assertEquals("0 1", xpath.evaluate("//gml:pos", document));
+        Source actual = Input.fromDocument(document).build();
+        assertThat(actual, hasXPath("//gml:pos", equalTo("0 1")).withNamespaceContext(NAMESPACES));
     }
 
     @Test
@@ -91,8 +100,11 @@ public final class LineStringMeasuresTest extends GeometryEncoderTestSupport {
         LineStringEncoder encoder = new LineStringEncoder(gtEncoder, "gml", GML.NAMESPACE);
         Document document = encode(encoder, geometry, "line");
         // check that we got the expected result
-        XpathEngine xpath = XMLUnit.newXpathEngine();
-        assertEquals("0 1 10 -1.5 3 4 15 -2.5", xpath.evaluate("//gml:posList", document));
+        Source actual = Input.fromDocument(document).build();
+        assertThat(
+                actual,
+                hasXPath("//gml:posList", equalTo("0 1 10 -1.5 3 4 15 -2.5"))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     @Test
@@ -104,8 +116,11 @@ public final class LineStringMeasuresTest extends GeometryEncoderTestSupport {
         LineStringEncoder encoder = new LineStringEncoder(gtEncoder, "gml", GML.NAMESPACE);
         Document document = encode(encoder, geometry, false, "line");
         // check that we got the expected result
-        XpathEngine xpath = XMLUnit.newXpathEngine();
-        assertEquals("0 1 10 3 4 15", xpath.evaluate("//gml:posList", document));
+        Source actual = Input.fromDocument(document).build();
+        assertThat(
+                actual,
+                hasXPath("//gml:posList", equalTo("0 1 10 3 4 15"))
+                        .withNamespaceContext(NAMESPACES));
     }
 
     @Test
@@ -116,9 +131,11 @@ public final class LineStringMeasuresTest extends GeometryEncoderTestSupport {
         PointEncoder encoder = new PointEncoder(gtEncoder, "gml", GML.NAMESPACE);
         Document document = encode(encoder, geometry, "line");
         // check that we got the expected result
-        XpathEngine xpath = XMLUnit.newXpathEngine();
         // print(document);
-        assertEquals("0 1 10 -1.5", xpath.evaluate("//gml:pos", document));
+        Source actual = Input.fromDocument(document).build();
+        assertThat(
+                actual,
+                hasXPath("//gml:pos", equalTo("0 1 10 -1.5")).withNamespaceContext(NAMESPACES));
     }
 
     @Test
@@ -129,8 +146,9 @@ public final class LineStringMeasuresTest extends GeometryEncoderTestSupport {
         PointEncoder encoder = new PointEncoder(gtEncoder, "gml", GML.NAMESPACE);
         Document document = encode(encoder, geometry, false, "line");
         // check that we got the expected result
-        XpathEngine xpath = XMLUnit.newXpathEngine();
         // print(document);
-        assertEquals("0 1 10", xpath.evaluate("//gml:pos", document));
+        Source actual = Input.fromDocument(document).build();
+        assertThat(
+                actual, hasXPath("//gml:pos", equalTo("0 1 10")).withNamespaceContext(NAMESPACES));
     }
 }

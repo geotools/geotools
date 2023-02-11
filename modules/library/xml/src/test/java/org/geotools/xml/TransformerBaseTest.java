@@ -17,84 +17,115 @@
 
 package org.geotools.xml;
 
-import java.io.FileNotFoundException;
 import java.io.StringWriter;
+import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
 import org.junit.Assert;
 import org.junit.Test;
+import org.xmlunit.builder.DiffBuilder;
+import org.xmlunit.builder.Input;
+import org.xmlunit.diff.Diff;
 
 public class TransformerBaseTest {
 
     @Test
-    public void testUnbufferedUsageNoErrors() throws FileNotFoundException, TransformerException {
-        String expected =
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><test:integers xmlns=\"http://geotools.org/test\" xmlns:test=\"http://geotools.org/test\"><test:integer>1</test:integer><test:integer>2</test:integer><test:integer>3</test:integer><test:integer>4</test:integer><test:integer>5</test:integer><test:integer>6</test:integer><test:integer>7</test:integer><test:integer>8</test:integer><test:integer>9</test:integer><test:integer>10</test:integer></test:integers>";
+    public void testUnbufferedUsageNoErrors() throws TransformerException {
+        Source expected =
+                Input.fromString(
+                                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><test:integers xmlns=\"http://geotools.org/test\" xmlns:test=\"http://geotools.org/test\"><test:integer>1</test:integer><test:integer>2</test:integer><test:integer>3</test:integer><test:integer>4</test:integer><test:integer>5</test:integer><test:integer>6</test:integer><test:integer>7</test:integer><test:integer>8</test:integer><test:integer>9</test:integer><test:integer>10</test:integer></test:integers>")
+                        .build();
         ExampleTransformer tx = new ExampleTransformer(0, 0, false);
-        String actual = tx.transform(10);
-        Assert.assertEquals(expected, actual);
+        Source actual = Input.fromString(tx.transform(10)).build();
+
+        Diff diff = DiffBuilder.compare(expected).withTest(actual).checkForSimilar().build();
+
+        Assert.assertFalse(diff.toString(), diff.hasDifferences());
     }
 
     @Test
-    public void testUnbufferedUsageOneError() throws FileNotFoundException, TransformerException {
+    public void testUnbufferedUsageOneError() {
         StringWriter w = new StringWriter();
         try {
             ExampleTransformer tx = new ExampleTransformer(0, 10, false);
             tx.transform(10, w);
             Assert.fail("Should have thrown an exception before reaching this point");
         } catch (TransformerException e) {
-            String expected =
-                    "<?xml version=\"1.0\" encoding=\"UTF-8\"?><test:integers xmlns=\"http://geotools.org/test\" xmlns:test=\"http://geotools.org/test\"><test:integer>1</test:integer><test:integer>2</test:integer><test:integer>3</test:integer><test:integer>4</test:integer><test:integer>5</test:integer><test:integer>6</test:integer><test:integer>7</test:integer><test:integer>8</test:integer><test:integer>9</test:integer><test:integer>10</test:integer>";
-            String actual = w.toString();
-            Assert.assertEquals(expected, actual);
+            Source expected =
+                    Input.fromString(
+                                    "<?xml version=\"1.0\" encoding=\"UTF-8\"?><test:integers xmlns=\"http://geotools.org/test\" xmlns:test=\"http://geotools.org/test\"><test:integer>1</test:integer><test:integer>2</test:integer><test:integer>3</test:integer><test:integer>4</test:integer><test:integer>5</test:integer><test:integer>6</test:integer><test:integer>7</test:integer><test:integer>8</test:integer><test:integer>9</test:integer><test:integer>10</test:integer></test:integers>")
+                            .build();
+            Source actual = Input.fromString(w.toString() + "</test:integers>").build();
+
+            Diff diff = DiffBuilder.compare(expected).withTest(actual).checkForSimilar().build();
+
+            Assert.assertFalse(diff.toString(), diff.hasDifferences());
         }
     }
 
     @Test
-    public void testBufferedUsageNoErrors() throws FileNotFoundException, TransformerException {
-        String expected =
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><test:integers xmlns=\"http://geotools.org/test\" xmlns:test=\"http://geotools.org/test\"><test:integer>1</test:integer><test:integer>2</test:integer><test:integer>3</test:integer><test:integer>4</test:integer><test:integer>5</test:integer><test:integer>6</test:integer><test:integer>7</test:integer><test:integer>8</test:integer><test:integer>9</test:integer><test:integer>10</test:integer></test:integers>";
+    public void testBufferedUsageNoErrors() throws TransformerException {
+        Source expected =
+                Input.fromString(
+                                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><test:integers xmlns=\"http://geotools.org/test\" xmlns:test=\"http://geotools.org/test\"><test:integer>1</test:integer><test:integer>2</test:integer><test:integer>3</test:integer><test:integer>4</test:integer><test:integer>5</test:integer><test:integer>6</test:integer><test:integer>7</test:integer><test:integer>8</test:integer><test:integer>9</test:integer><test:integer>10</test:integer></test:integers>")
+                        .build();
         ExampleTransformer tx = new ExampleTransformer(1, 0, false);
-        String actual = tx.transform(10);
-        Assert.assertEquals(expected, actual);
+        Source actual = Input.fromString(tx.transform(10)).build();
+
+        Diff diff = DiffBuilder.compare(expected).withTest(actual).checkForSimilar().build();
+
+        Assert.assertFalse(diff.toString(), diff.hasDifferences());
     }
 
     @Test
-    public void testBufferedUsageOneError() throws FileNotFoundException, TransformerException {
+    public void testBufferedUsageOneError() {
         StringWriter w = new StringWriter();
         try {
             ExampleTransformer tx = new ExampleTransformer(1, 10, false);
             tx.transform(10, w);
             Assert.fail("Should have thrown an exception before reaching this point!");
         } catch (TransformerException e) {
-            String expected =
-                    "<?xml version=\"1.0\" encoding=\"UTF-8\"?><test:integers xmlns=\"http://geotools.org/test\" xmlns:test=\"http://geotools.org/test\"><test:integer>1</test:integer><test:integer>2</test:integer><test:integer>3</test:integer><test:integer>4</test:integer><test:integer>5</test:integer><test:integer>6</test:integer><test:integer>7</test:integer><test:integer>8</test:integer><test:integer>9</test:integer>";
-            String actual = w.toString();
-            Assert.assertEquals(expected, actual);
+            Source expected =
+                    Input.fromString(
+                                    "<?xml version=\"1.0\" encoding=\"UTF-8\"?><test:integers xmlns=\"http://geotools.org/test\" xmlns:test=\"http://geotools.org/test\"><test:integer>1</test:integer><test:integer>2</test:integer><test:integer>3</test:integer><test:integer>4</test:integer><test:integer>5</test:integer><test:integer>6</test:integer><test:integer>7</test:integer><test:integer>8</test:integer><test:integer>9</test:integer></test:integers>")
+                            .build();
+            Source actual = Input.fromString(w.toString() + "</test:integers>").build();
+
+            Diff diff = DiffBuilder.compare(expected).withTest(actual).checkForSimilar().build();
+
+            Assert.assertFalse(diff.toString(), diff.hasDifferences());
         }
     }
 
     @Test
-    public void testBufferedUsageIgnoringOneError()
-            throws FileNotFoundException, TransformerException {
+    public void testBufferedUsageIgnoringOneError() throws TransformerException {
         ExampleTransformer tx = new ExampleTransformer(1, 10, true);
-        String expected =
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><test:integers xmlns=\"http://geotools.org/test\" xmlns:test=\"http://geotools.org/test\"><test:integer>1</test:integer><test:integer>2</test:integer><test:integer>3</test:integer><test:integer>4</test:integer><test:integer>5</test:integer><test:integer>6</test:integer><test:integer>7</test:integer><test:integer>8</test:integer><test:integer>9</test:integer></test:integers>";
-        String actual = tx.transform(10);
-        Assert.assertEquals(expected, actual);
+        Source expected =
+                Input.fromString(
+                                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><test:integers xmlns=\"http://geotools.org/test\" xmlns:test=\"http://geotools.org/test\"><test:integer>1</test:integer><test:integer>2</test:integer><test:integer>3</test:integer><test:integer>4</test:integer><test:integer>5</test:integer><test:integer>6</test:integer><test:integer>7</test:integer><test:integer>8</test:integer><test:integer>9</test:integer></test:integers>")
+                        .build();
+        Source actual = Input.fromString(tx.transform(10)).build();
+
+        Diff diff = DiffBuilder.compare(expected).withTest(actual).checkForSimilar().build();
+
+        Assert.assertFalse(diff.toString(), diff.hasDifferences());
     }
 
     @Test
-    public void testBufferedUsageIgnoringMultipleErrors()
-            throws FileNotFoundException, TransformerException {
+    public void testBufferedUsageIgnoringMultipleErrors() throws TransformerException {
         ExampleTransformer tx = new ExampleTransformer(1, 2, true);
-        String expected =
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><test:integers xmlns=\"http://geotools.org/test\" xmlns:test=\"http://geotools.org/test\"><test:integer>1</test:integer><test:integer>3</test:integer><test:integer>5</test:integer><test:integer>7</test:integer><test:integer>9</test:integer></test:integers>";
-        String actual = tx.transform(10);
-        Assert.assertEquals(expected, actual);
+        Source expected =
+                Input.fromString(
+                                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><test:integers xmlns=\"http://geotools.org/test\" xmlns:test=\"http://geotools.org/test\"><test:integer>1</test:integer><test:integer>3</test:integer><test:integer>5</test:integer><test:integer>7</test:integer><test:integer>9</test:integer></test:integers>")
+                        .build();
+        Source actual = Input.fromString(tx.transform(10)).build();
+
+        Diff diff = DiffBuilder.compare(expected).withTest(actual).checkForSimilar().build();
+
+        Assert.assertFalse(diff.toString(), diff.hasDifferences());
     }
 
     @Test
-    public void testPassingInNull() throws FileNotFoundException, TransformerException {
+    public void testPassingInNull() throws TransformerException {
         ExampleTransformer tx = new ExampleTransformer(0, 0, true);
         try {
             tx.transform(null);

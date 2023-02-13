@@ -33,6 +33,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -542,7 +543,7 @@ public class ShapefileDumperTest {
         SimpleFeatureCollection centroids =
                 getFeaturesFromShapefile(ALL_TYPES_MULTI_COLUMN + "centroid");
         assertEquals(4, centroids.size());
-        assertEquals(Set.of("f001", "f002", "f003", "f006"), getNames(centroids));
+        assertEquals(setOf("f001", "f002", "f003", "f006"), getNames(centroids));
         checkTypeStructure(centroids.getSchema(), Point.class, "name");
         SimpleFeature firstCentroid = DataUtilities.first(centroids);
         assertEquals("f001", firstCentroid.getAttribute("name"));
@@ -552,7 +553,7 @@ public class ShapefileDumperTest {
         SimpleFeatureCollection geomPolygons =
                 getFeaturesFromShapefile(ALL_TYPES_MULTI_COLUMN + "geomPolygon");
         assertEquals(2, geomPolygons.size());
-        assertEquals(Set.of("f001", "f002"), getNames(geomPolygons));
+        assertEquals(setOf("f001", "f002"), getNames(geomPolygons));
         checkTypeStructure(geomPolygons.getSchema(), MultiPolygon.class, "name");
         SimpleFeature firstPolygon = DataUtilities.first(geomPolygons);
         assertEquals("f001", firstPolygon.getAttribute("name"));
@@ -564,7 +565,7 @@ public class ShapefileDumperTest {
         SimpleFeatureCollection geomLines =
                 getFeaturesFromShapefile(ALL_TYPES_MULTI_COLUMN + "geomLine");
         assertEquals(2, geomLines.size());
-        assertEquals(Set.of("f003", "f004"), getNames(geomLines));
+        assertEquals(setOf("f003", "f004"), getNames(geomLines));
         checkTypeStructure(geomLines.getSchema(), MultiLineString.class, "name");
         SimpleFeature firstLine = DataUtilities.first(geomLines);
         assertEquals("f003", firstLine.getAttribute("name"));
@@ -590,6 +591,10 @@ public class ShapefileDumperTest {
         SimpleFeature firstNull = DataUtilities.first(geomNull);
         assertEquals("f005", firstNull.getAttribute("name"));
         assertNull(firstNull.getDefaultGeometry());
+    }
+
+    private Set<String> setOf(String... values) {
+        return new HashSet<>(Arrays.asList(values));
     }
 
     private static Set<Object> getNames(SimpleFeatureCollection geomLines) {

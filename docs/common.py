@@ -27,12 +27,12 @@ import datetime
 extensions = ['sphinx.ext.todo','sphinx.ext.extlinks']
 
 extlinks = { 
-    'wiki': ('https://github.com/geotools/geotools/wiki/%s',''),
-    'website': ('http://geotools.org/%s',''),
-    'geoserver': ('https://docs.geoserver.org/maintain/en/user/%s',''),
-    'developer': ('https://docs.geotools.org/latest/developer/%s',''),
-    'user': ('https://docs.geotools.org/maintenance/userguide/%s',''),
-    'api': ('https://docs.geotools.org/maintenance/javadocs',''),
+    'wiki': ('https://github.com/geotools/geotools/wiki/%s',None),
+    'website': ('http://geotools.org/%s',None),
+    'geoserver': ('https://docs.geoserver.org/maintain/en/user/%s',None),
+    'developer': ('https://docs.geotools.org/latest/developer/%s',None),
+    'user': ('https://docs.geotools.org/maintenance/userguide/%s',None),
+    'api': ('https://docs.geotools.org/maintenance/javadocs',None),
     'geot': ('https://osgeo-org.atlassian.net/browse/GEOT-%s','GEOT-')
 }
 

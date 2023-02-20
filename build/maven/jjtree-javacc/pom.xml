@@ -13,7 +13,7 @@
   <parent>
     <groupId>org.geotools.maven</groupId>
     <artifactId>maven</artifactId>
-    <version>25-SNAPSHOT</version>
+    <version>25.7</version>
   </parent>
 
   <!-- =========================================================== -->

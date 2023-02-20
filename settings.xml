@@ -1,0 +1,32 @@
+<settings>
+  <servers>
+    <server>
+      <id>nexus</id>
+      <username>gsbuild</username>
+      <password>dEp6Zrszpee4sL2e</password>
+    </server>
+    <server>
+        <id>osgeo-docker</id>
+        <username>gsbuild</username>
+        <password>dEp6Zrszpee4sL2e</password>
+    </server>
+  </servers>
+  
+  <profiles>
+    <profile>
+      <id>useosgeonexus</id>
+      <repositories>
+        <repository>
+          <id>nexus</id>
+          <name>OSGEO Nexus</name>
+          <url>https://repo.osgeo.org/repository/geotools-releases</url>
+        </repository>
+      </repositories>
+    </profile>
+  </profiles>
+  
+  <activeProfiles>
+    <activeProfile>useosgeonexus</activeProfile>
+  </activeProfiles>
+  
+</settings>

@@ -103,7 +103,11 @@ public class FilterTransformerTest {
 
         Source actual = Input.fromString(output).build();
 
-        Diff diff = DiffBuilder.compare(expected).withTest(actual).checkForSimilar().build();
+        Diff diff = DiffBuilder.compare(expected)
+                .withTest(actual)
+                .checkForSimilar()
+                .withNamespaceContext(NAMESPACES)
+                .build();
 
         Assert.assertFalse(diff.toString(), diff.hasDifferences());
     }
@@ -159,7 +163,11 @@ public class FilterTransformerTest {
         Assert.assertNotNull("got xml", out);
         Source actual = Input.fromString(out).build();
 
-        Diff diff = DiffBuilder.compare(expected).withTest(actual).checkForSimilar().build();
+        Diff diff = DiffBuilder.compare(expected)
+                .withTest(actual)
+                .checkForSimilar()
+                .withNamespaceContext(NAMESPACES)
+                .build();
 
         Assert.assertFalse(diff.toString(), diff.hasDifferences());
     }

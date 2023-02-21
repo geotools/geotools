@@ -18,7 +18,6 @@ package org.geotools.xml.filter;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.xmlunit.matchers.EvaluateXPathMatcher.hasXPath;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,6 +26,7 @@ import java.util.Map;
 import javax.xml.transform.Source;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.referencing.CRS;
+import org.hamcrest.Matcher;
 import org.junit.Assert;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
@@ -38,6 +38,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xmlunit.builder.DiffBuilder;
 import org.xmlunit.builder.Input;
 import org.xmlunit.diff.Diff;
+import org.xmlunit.matchers.EvaluateXPathMatcher;
 
 public class FilterTransformerTest {
 
@@ -125,8 +126,7 @@ public class FilterTransformerTest {
         Source actual = Input.fromString(output).build();
         assertThat(
                 actual,
-                hasXPath("//gml:Point/@srsName", equalTo("EPSG:4326"))
-                        .withNamespaceContext(NAMESPACES));
+                hasXPath("//gml:Point/@srsName", equalTo("EPSG:4326")));
     }
 
     @Test
@@ -142,8 +142,7 @@ public class FilterTransformerTest {
         Source actual = Input.fromString(output).build();
         assertThat(
                 actual,
-                hasXPath("//gml:Point/@srsName", equalTo("urn:ogc:def:crs:EPSG::4326"))
-                        .withNamespaceContext(NAMESPACES));
+                hasXPath("//gml:Point/@srsName", equalTo("urn:ogc:def:crs:EPSG::4326")));
     }
 
     @Test
@@ -170,5 +169,20 @@ public class FilterTransformerTest {
                 .build();
 
         Assert.assertFalse(diff.toString(), diff.hasDifferences());
+    }
+
+    /**
+     * Simply a wrapper around {@link EvaluateXPathMatcher#hasXPath(String, Matcher)} that
+     * sets the static namespaces here, so that by omitting them from the assertions used in the tests
+     * above, those assertions are more compact and hopefully more readable.
+     *
+     * @param xPath the xpath to evaluate
+     * @param valueMatcher the result of the xpath evaluation to match
+     *
+     * @return an XPath Matcher
+     */
+    private static EvaluateXPathMatcher hasXPath(String xPath, Matcher<String> valueMatcher) {
+        EvaluateXPathMatcher evaluateXPathMatcher = EvaluateXPathMatcher.hasXPath(xPath, valueMatcher);
+        return evaluateXPathMatcher.withNamespaceContext(NAMESPACES);
     }
 }

@@ -104,11 +104,12 @@ public class FilterTransformerTest {
 
         Source actual = Input.fromString(output).build();
 
-        Diff diff = DiffBuilder.compare(expected)
-                .withTest(actual)
-                .checkForSimilar()
-                .withNamespaceContext(NAMESPACES)
-                .build();
+        Diff diff =
+                DiffBuilder.compare(expected)
+                        .withTest(actual)
+                        .checkForSimilar()
+                        .withNamespaceContext(NAMESPACES)
+                        .build();
 
         Assert.assertFalse(diff.toString(), diff.hasDifferences());
     }
@@ -124,9 +125,7 @@ public class FilterTransformerTest {
         Filter filter = ff.overlaps(ff.property("geom"), ff.literal(point));
         String output = transform.transform(filter);
         Source actual = Input.fromString(output).build();
-        assertThat(
-                actual,
-                hasXPath("//gml:Point/@srsName", equalTo("EPSG:4326")));
+        assertThat(actual, hasXPath("//gml:Point/@srsName", equalTo("EPSG:4326")));
     }
 
     @Test
@@ -140,9 +139,7 @@ public class FilterTransformerTest {
         Filter filter = ff.overlaps(ff.property("geom"), ff.literal(point));
         String output = transform.transform(filter);
         Source actual = Input.fromString(output).build();
-        assertThat(
-                actual,
-                hasXPath("//gml:Point/@srsName", equalTo("urn:ogc:def:crs:EPSG::4326")));
+        assertThat(actual, hasXPath("//gml:Point/@srsName", equalTo("urn:ogc:def:crs:EPSG::4326")));
     }
 
     @Test
@@ -162,27 +159,28 @@ public class FilterTransformerTest {
         Assert.assertNotNull("got xml", out);
         Source actual = Input.fromString(out).build();
 
-        Diff diff = DiffBuilder.compare(expected)
-                .withTest(actual)
-                .checkForSimilar()
-                .withNamespaceContext(NAMESPACES)
-                .build();
+        Diff diff =
+                DiffBuilder.compare(expected)
+                        .withTest(actual)
+                        .checkForSimilar()
+                        .withNamespaceContext(NAMESPACES)
+                        .build();
 
         Assert.assertFalse(diff.toString(), diff.hasDifferences());
     }
 
     /**
-     * Simply a wrapper around {@link EvaluateXPathMatcher#hasXPath(String, Matcher)} that
-     * sets the static namespaces here, so that by omitting them from the assertions used in the tests
-     * above, those assertions are more compact and hopefully more readable.
+     * Simply a wrapper around {@link EvaluateXPathMatcher#hasXPath(String, Matcher)} that sets the
+     * static namespaces here, so that by omitting them from the assertions used in the tests above,
+     * those assertions are more compact and hopefully more readable.
      *
      * @param xPath the xpath to evaluate
      * @param valueMatcher the result of the xpath evaluation to match
-     *
      * @return an XPath Matcher
      */
     private static EvaluateXPathMatcher hasXPath(String xPath, Matcher<String> valueMatcher) {
-        EvaluateXPathMatcher evaluateXPathMatcher = EvaluateXPathMatcher.hasXPath(xPath, valueMatcher);
+        EvaluateXPathMatcher evaluateXPathMatcher =
+                EvaluateXPathMatcher.hasXPath(xPath, valueMatcher);
         return evaluateXPathMatcher.withNamespaceContext(NAMESPACES);
     }
 }

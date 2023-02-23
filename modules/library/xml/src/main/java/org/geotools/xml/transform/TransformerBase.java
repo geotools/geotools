@@ -900,12 +900,26 @@ public abstract class TransformerBase {
                 }
             }
             try {
-                String ns = (prefix == null) ? XMLConstants.NULL_NS_URI : nsSupport.getURI(prefix);
+                String ns;
+                String qn;
+                String parts[] = element.split(":");
+                if (parts.length == 2) {
+                    // there is a prefix in the element name already, so try and process it
+                    String elemPrefix = parts[0];
+                    ns = nsSupport.getURI(elemPrefix);
+                    qn = element;
+                    element = parts[1];
+                } else {
+                    // fallback to adding a possible static prefix and namespace
+                    ns = (prefix == null) ? XMLConstants.NULL_NS_URI : nsSupport.getURI(prefix);
+                    qn = (prefix == null) ? element : (prefix + ":" + element);
+                }
+
                 if (ns == null) {
                     ns = XMLConstants.NULL_NS_URI;
                 }
-                String el = (prefix == null) ? element : (prefix + ":" + element);
-                contentHandler.startElement(ns, element, el, atts);
+
+                contentHandler.startElement(ns, element, qn, atts);
             } catch (Exception e) {
                 throw new RuntimeException("Error transforming start of element: " + element, e);
             }

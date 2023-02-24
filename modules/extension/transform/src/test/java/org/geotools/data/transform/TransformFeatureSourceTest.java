@@ -66,6 +66,33 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
     }
 
     @Test
+    public void testGetDescription() throws Exception {
+        SimpleFeatureSource transformed = transformWithSelectionAndDescription();
+        SimpleFeatureType schema = transformed.getSchema();
+        assertEquals("the state name", getDescription(schema, "state_name"));
+        assertEquals("the geometry", getDescription(schema, null));
+        assertEquals("the number of persons", getDescription(schema, "persons"));
+    }
+
+    private String getDescription(SimpleFeatureType schema, String attributeName) {
+        AttributeDescriptor descriptor = null;
+        if (attributeName != null) {
+            descriptor = schema.getDescriptor(attributeName);
+        } else {
+            descriptor = schema.getGeometryDescriptor();
+        }
+
+        if (descriptor == null) {
+            return null;
+        }
+        AttributeType type = descriptor.getType();
+        if (type == null) {
+            return null;
+        }
+        return type.getDescription().toString();
+    }
+
+    @Test
     public void testQueryCapabilities() throws Exception {
         SimpleFeatureSource transformed = transformWithSelection();
         QueryCapabilities caps = transformed.getQueryCapabilities();

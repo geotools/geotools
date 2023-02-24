@@ -102,7 +102,7 @@ public class AttributeTypeBuilder {
     /** restrictions */
     protected List<Filter> restrictions;
     /** string description */
-    protected String description;
+    protected InternationalString description;
     /** identifiable flag */
     protected boolean isIdentifiable = false;
     /** bound java class */
@@ -222,7 +222,7 @@ public class AttributeTypeBuilder {
             restrictions().addAll(type.getRestrictions());
         }
 
-        description = type.getDescription() != null ? type.getDescription().toString() : null;
+        description = type.getDescription();
         isIdentifiable = type.isIdentified();
         binding = type.getBinding();
         superType = type.getSuper();
@@ -267,6 +267,10 @@ public class AttributeTypeBuilder {
     }
 
     public void setDescription(String description) {
+        this.description = description != null ? new SimpleInternationalString(description) : null;
+    }
+
+    public void setDescription(InternationalString description) {
         this.description = description;
     }
 
@@ -467,7 +471,7 @@ public class AttributeTypeBuilder {
     }
 
     private InternationalString description() {
-        return description != null ? new SimpleInternationalString(description) : null;
+        return description;
     }
 
     /**

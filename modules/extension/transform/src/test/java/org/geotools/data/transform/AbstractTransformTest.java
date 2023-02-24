@@ -13,6 +13,7 @@ import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.logging.Logging;
 import org.junit.BeforeClass;
 import org.opengis.filter.FilterFactory2;
@@ -60,6 +61,24 @@ public abstract class AbstractTransformTest {
         SimpleFeatureSource transformed =
                 TransformFactory.transform(states, "states_mini", definitions);
         return transformed;
+    }
+
+    SimpleFeatureSource transformWithSelectionAndDescription(SimpleFeatureSource states)
+            throws IOException {
+        List<Definition> definitions = new ArrayList<>();
+        definitions.add(new Definition("the_geom", new SimpleInternationalString("the geometry")));
+        definitions.add(
+                new Definition("state_name", new SimpleInternationalString("the state name")));
+        definitions.add(
+                new Definition("persons", new SimpleInternationalString("the number of persons")));
+
+        SimpleFeatureSource transformed =
+                TransformFactory.transform(states, "states_described", definitions);
+        return transformed;
+    }
+
+    SimpleFeatureSource transformWithSelectionAndDescription() throws IOException {
+        return transformWithSelectionAndDescription(STATES);
     }
 
     SimpleFeatureSource transformWithRename() throws Exception {

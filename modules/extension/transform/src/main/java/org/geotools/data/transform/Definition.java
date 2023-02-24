@@ -29,6 +29,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.util.InternationalString;
 
 /**
  * Defines a transformed attribute to be used in {@link TransformFeatureSource}
@@ -44,6 +45,8 @@ public class Definition {
 
     CoordinateReferenceSystem crs;
 
+    InternationalString description;
+
     static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
 
     /**
@@ -54,6 +57,15 @@ public class Definition {
      */
     public Definition(String name) {
         this(name, null, null);
+    }
+    /**
+     * Creates a new property definition with a description
+     *
+     * @param name The property name
+     * @param description The property description
+     */
+    public Definition(String name, InternationalString description) {
+        this(name, null, null, null, description);
     }
 
     /**
@@ -90,6 +102,26 @@ public class Definition {
      */
     public Definition(
             String name, Expression source, Class binding, CoordinateReferenceSystem crs) {
+        this(name, source, binding, crs, null);
+    }
+
+    /**
+     * Creates a new transformed property
+     *
+     * @param name The property name
+     * @param source The expression generating the property
+     * @param binding The property type. Optional, the store will try to figure out the type from
+     *     the expression in case it's missing
+     * @param crs The coordinate reference system of the property, to be used only for geometry
+     *     properties
+     * @param description The property description
+     */
+    public Definition(
+            String name,
+            Expression source,
+            Class binding,
+            CoordinateReferenceSystem crs,
+            InternationalString description) {
         this.name = name;
         if (source == null) {
             this.expression = TransformFeatureSource.FF.property(name);
@@ -98,6 +130,7 @@ public class Definition {
         }
         this.binding = binding;
         this.crs = crs;
+        this.description = description;
     }
 
     public String getName() {
@@ -110,6 +143,10 @@ public class Definition {
 
     public Class getBinding() {
         return binding;
+    }
+
+    public InternationalString getDescription() {
+        return description;
     }
 
     /**
@@ -168,6 +205,10 @@ public class Definition {
             ab.setCRS(computedCRS);
         }
 
+        if (description != null) {
+            ab.setDescription(description);
+        }
+
         return ab.buildDescriptor(name);
     }
 
@@ -179,6 +220,10 @@ public class Definition {
     public AttributeDescriptor getAttributeDescriptor(SimpleFeatureType originalSchema) {
         AttributeTypeBuilder ab = new AttributeTypeBuilder();
         ExpressionTypeEvaluator typeEvaluator = new ExpressionTypeEvaluator(originalSchema);
+
+        if (description != null) {
+            ab.setDescription(description);
+        }
 
         if (binding != null) {
 
@@ -207,6 +252,9 @@ public class Definition {
                 } else {
                     ab.init(descriptor);
                     ab.setName(name);
+                    if (description != null) {
+                        ab.setDescription(description);
+                    }
                     return ab.buildDescriptor(name);
                 }
             } else {
@@ -264,6 +312,7 @@ public class Definition {
         result = prime * result + ((crs == null) ? 0 : crs.hashCode());
         result = prime * result + ((expression == null) ? 0 : expression.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((description == null) ? 0 : description.hashCode());
         return result;
     }
 
@@ -285,6 +334,9 @@ public class Definition {
         if (name == null) {
             if (other.name != null) return false;
         } else if (!name.equals(other.name)) return false;
+        if (description == null) {
+            if (other.description != null) return false;
+        } else if (!description.equals(other.description)) return false;
         return true;
     }
 
@@ -298,6 +350,8 @@ public class Definition {
                 + crs
                 + ", expression="
                 + expression
+                + ", description="
+                + description
                 + "]";
     }
 }

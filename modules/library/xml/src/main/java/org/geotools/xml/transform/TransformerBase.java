@@ -902,7 +902,7 @@ public abstract class TransformerBase {
             try {
                 String ns;
                 String qn;
-                String parts[] = element.split(":");
+                String[] parts = element.split(":");
                 if (parts.length == 2) {
                     // there is a prefix in the element name already, so try and process it
                     String elemPrefix = parts[0];

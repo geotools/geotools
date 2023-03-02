@@ -15,7 +15,7 @@
   <!-- =========================================================== -->
   <groupId>org.geotools</groupId>
   <artifactId>geotools</artifactId>
-  <version>27.4</version>
+  <version>27.4.01</version>
   <packaging>pom</packaging>
   <name>GeoTools</name>
 
@@ -2641,7 +2641,7 @@
           <uniqueVersion>false</uniqueVersion>
           <id>geosolutions</id>
           <url>ftp://demo.geo-solutions.it</url>
-         </repository>
+        </repository>
       </distributionManagement>
     </profile>
   </profiles>

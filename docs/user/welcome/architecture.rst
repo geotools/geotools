@@ -14,7 +14,7 @@ GeoTools Library
 The GeoTools library forms a software "stack" with each jar building on the ideas
 and concepts defined in the previous one.
 
-.. image:: /images/geotools.png
+.. image:: /docs/user/images/geotools.png
 
 Each layer of the "stack" is built on the ones below it:
 
@@ -111,7 +111,7 @@ GeoTools Extensions
 
 We have gone a bit further and implemented some interesting "extensions" on top of the GeoTools library. These extensions provide additional capabilities that are built on top of GeoTools using the spatial facilities of the library.
 
-.. image:: /images/extension.png
+.. image:: /docs/user/images/extension.png
 
 The extensions are independent of each other offering and may be of use in your application. Here is a brief listing of the extensions at the time of writing.
 

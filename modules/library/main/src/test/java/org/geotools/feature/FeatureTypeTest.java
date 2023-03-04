@@ -165,32 +165,17 @@ public class FeatureTypeTest extends DataTestCase {
 
         assertEquals(
                 "Ancestors of A, nearest first",
-                new ArrayList<FeatureType>() {
-                    {
-                        add(BasicFeatureTypes.FEATURE);
-                    }
-                },
+                List.of(BasicFeatureTypes.FEATURE),
                 FeatureTypes.getAncestors(typeA));
 
         assertEquals(
                 "Ancestors of B, nearest first",
-                new ArrayList<FeatureType>() {
-                    {
-                        add(typeA);
-                        add(BasicFeatureTypes.FEATURE);
-                    }
-                },
+                List.of(typeA, BasicFeatureTypes.FEATURE),
                 FeatureTypes.getAncestors(typeB));
 
         assertEquals(
                 "Ancestors of C, nearest first",
-                new ArrayList<FeatureType>() {
-                    {
-                        add(typeB);
-                        add(typeA);
-                        add(BasicFeatureTypes.FEATURE);
-                    }
-                },
+                List.of(typeB, typeA, BasicFeatureTypes.FEATURE),
                 FeatureTypes.getAncestors(typeC));
     }
 

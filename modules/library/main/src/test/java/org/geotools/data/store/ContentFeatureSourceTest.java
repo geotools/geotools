@@ -20,7 +20,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import org.geotools.data.DataStore;
 import org.geotools.data.EmptyFeatureReader;
@@ -106,11 +105,7 @@ public class ContentFeatureSourceTest {
                     @SuppressWarnings("serial")
                     @Override
                     protected List<Name> createTypeNames() throws IOException {
-                        return new ArrayList<Name>() {
-                            {
-                                add(TYPENAME);
-                            }
-                        };
+                        return List.of(TYPENAME);
                     }
 
                     @Override

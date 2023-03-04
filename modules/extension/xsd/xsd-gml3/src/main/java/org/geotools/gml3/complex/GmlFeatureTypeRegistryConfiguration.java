@@ -16,9 +16,10 @@
  */
 package org.geotools.gml3.complex;
 
+import static java.util.Map.entry;
+
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.xml.namespace.QName;
@@ -231,18 +232,14 @@ public class GmlFeatureTypeRegistryConfiguration implements FeatureTypeRegistryC
      */
     @SuppressWarnings("serial")
     private static final Map<QName, Class<? extends Configuration>>
-            SUPPORTED_GML_KNOWN_TYPE_TO_CONFIGURATION_MAP //
-            =
-                    new LinkedHashMap<QName, Class<? extends Configuration>>() {
-                        {
+            SUPPORTED_GML_KNOWN_TYPE_TO_CONFIGURATION_MAP =
+                    Map.ofEntries(
                             // GML 3.1
-                            put(GML.AbstractFeatureType, GMLConfiguration.class);
+                            entry(GML.AbstractFeatureType, GMLConfiguration.class),
                             // GML 3.2
-                            put(
+                            entry(
                                     org.geotools.gml3.v3_2.GML.AbstractFeatureType,
-                                    org.geotools.gml3.v3_2.GMLConfiguration.class);
-                        }
-                    };
+                                    org.geotools.gml3.v3_2.GMLConfiguration.class));
 
     public static Configuration findGmlConfiguration(Configuration configuration) {
         SchemaIndex index = null;

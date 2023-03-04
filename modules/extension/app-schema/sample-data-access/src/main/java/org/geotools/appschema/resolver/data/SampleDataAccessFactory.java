@@ -21,7 +21,6 @@ import java.awt.RenderingHints.Key;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFactory;
@@ -54,12 +53,8 @@ public class SampleDataAccessFactory implements DataAccessFactory {
 
     /** The connection parameters required to use this factory. */
     @SuppressWarnings("serial")
-    public static final HashMap<String, Serializable> PARAMS =
-            new HashMap<String, Serializable>() {
-                {
-                    put(SampleDataAccessFactory.DBTYPE.key, SampleDataAccessFactory.DBTYPE_STRING);
-                }
-            };
+    public static final Map<String, Serializable> PARAMS =
+            Map.of(SampleDataAccessFactory.DBTYPE.key, SampleDataAccessFactory.DBTYPE_STRING);
 
     /**
      * Are these parameters for us?

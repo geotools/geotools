@@ -17,6 +17,7 @@
 
 package org.geotools.appschema.filter;
 
+import static java.util.Map.entry;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
@@ -99,13 +100,8 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
     @Test
     public void testRecodeFunction() throws IOException {
         final Map<String, String> VALUE_MAP =
-                new HashMap<String, String>() {
-                    {
-                        put("sc.1", "a");
-                        put("sc.2", "b");
-                        put("sc.3", "c");
-                    }
-                };
+                Map.ofEntries(entry("sc.1", "a"), entry("sc.2", "b"), entry("sc.3", "c"));
+
         try (FeatureIterator<Feature> features = exCollection.features()) {
             while (features.hasNext()) {
                 Feature feature = features.next();
@@ -139,13 +135,11 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
     @Test
     public void testCategorizeFunction() {
         final Map<String, String> VALUE_MAP =
-                new HashMap<String, String>() {
-                    {
-                        put("sc.1", "missing value");
-                        put("sc.2", "a valid value");
-                        put("sc.3", "a valid value");
-                    }
-                };
+                Map.ofEntries(
+                        entry("sc.1", "missing value"),
+                        entry("sc.2", "a valid value"),
+                        entry("sc.3", "a valid value"));
+
         try (FeatureIterator<Feature> features = exCollection.features()) {
             while (features.hasNext()) {
                 Feature feature = features.next();
@@ -191,13 +185,10 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
     @Test
     public void testVocabFunctionInMappingFile() {
         final Map<String, String> VALUE_MAP =
-                new HashMap<String, String>() {
-                    {
-                        put("sc.1", "urn:cgi:classifier:CGI:SimpleLithology:2008:gravel");
-                        put("sc.2", "urn:cgi:classifier:CGI:SimpleLithology:2008:diamictite");
-                        put("sc.3", "urn:cgi:classifier:CGI:SimpleLithology:2008:sediment");
-                    }
-                };
+                Map.ofEntries(
+                        entry("sc.1", "urn:cgi:classifier:CGI:SimpleLithology:2008:gravel"),
+                        entry("sc.2", "urn:cgi:classifier:CGI:SimpleLithology:2008:diamictite"),
+                        entry("sc.3", "urn:cgi:classifier:CGI:SimpleLithology:2008:sediment"));
         try (FeatureIterator<Feature> features = exCollection.features()) {
             while (features.hasNext()) {
                 Feature feature = features.next();
@@ -223,13 +214,11 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
     public void testVocabFunctionInMappingFileWithConfigParent() {
         @SuppressWarnings("serial")
         final Map<String, String> expectedValues =
-                new HashMap<String, String>() {
-                    {
-                        put("sc.1", "urn:cgi:classifier:CGI:SimpleLithology:2008:gravel");
-                        put("sc.2", "urn:cgi:classifier:CGI:SimpleLithology:2008:diamictite");
-                        put("sc.3", "urn:cgi:classifier:CGI:SimpleLithology:2008:sediment");
-                    }
-                };
+                Map.ofEntries(
+                        entry("sc.1", "urn:cgi:classifier:CGI:SimpleLithology:2008:gravel"),
+                        entry("sc.2", "urn:cgi:classifier:CGI:SimpleLithology:2008:diamictite"),
+                        entry("sc.3", "urn:cgi:classifier:CGI:SimpleLithology:2008:sediment"));
+
         try (FeatureIterator<Feature> features = exCollection.features()) {
             while (features.hasNext()) {
                 Feature feature = features.next();

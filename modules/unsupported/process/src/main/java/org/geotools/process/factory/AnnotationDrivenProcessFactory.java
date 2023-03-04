@@ -69,18 +69,15 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
     InternationalString title;
 
     private static Map<Class, Class> PRIMITIVE_MAPPER =
-            new HashMap<Class, Class>() {
-                {
-                    put(boolean.class, Boolean.class);
-                    put(char.class, Character.class);
-                    put(byte.class, Byte.class);
-                    put(short.class, Short.class);
-                    put(int.class, Integer.class);
-                    put(long.class, Long.class);
-                    put(double.class, Double.class);
-                    put(float.class, Float.class);
-                }
-            };
+            Map.of(
+                    boolean.class, Boolean.class,
+                    char.class, Character.class,
+                    byte.class, Byte.class,
+                    short.class, Short.class,
+                    int.class, Integer.class,
+                    long.class, Long.class,
+                    double.class, Double.class,
+                    float.class, Float.class);
 
     public AnnotationDrivenProcessFactory(InternationalString title, String namespace) {
         this.namespace = namespace;

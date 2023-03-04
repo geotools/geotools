@@ -17,6 +17,8 @@
  */
 package org.h2gis.geotools;
 
+import static java.util.Map.entry;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
@@ -28,7 +30,6 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -89,53 +90,47 @@ public class H2GISDialect extends BasicSQLDialect {
 
     // geometry type to class map
     static final Map<String, Class> TYPE_TO_CLASS_MAP =
-            new HashMap<String, Class>() {
-                {
-                    put("GEOMETRY", Geometry.class);
-                    put("POINT", Point.class);
-                    put("POINTM", Point.class);
-                    put("POINTZ", Point.class);
-                    put("POINTZM", Point.class);
-                    put("LINESTRING", LineString.class);
-                    put("LINESTRINGM", LineString.class);
-                    put("LINESTRINGZ", LineString.class);
-                    put("LINESTRINGZM", LineString.class);
-                    put("POLYGON", Polygon.class);
-                    put("POLYGONM", Polygon.class);
-                    put("POLYGONZ", Polygon.class);
-                    put("POLYGONZM", Polygon.class);
-                    put("MULTIPOINT", MultiPoint.class);
-                    put("MULTIPOINTM", MultiPoint.class);
-                    put("MULTIPOINTZ", MultiPoint.class);
-                    put("MULTIPOINTZM", MultiPoint.class);
-                    put("MULTILINESTRING", MultiLineString.class);
-                    put("MULTILINESTRINGM", MultiLineString.class);
-                    put("MULTILINESTRINGZ", MultiLineString.class);
-                    put("MULTILINESTRINGZM", MultiLineString.class);
-                    put("MULTIPOLYGON", MultiPolygon.class);
-                    put("MULTIPOLYGONM", MultiPolygon.class);
-                    put("MULTIPOLYGONZ", MultiPolygon.class);
-                    put("MULTIPOLYGONZM", MultiPolygon.class);
-                    put("GEOMETRYCOLLECTION", GeometryCollection.class);
-                    put("BYTEA", byte[].class);
-                }
-            };
+            Map.ofEntries(
+                    entry("GEOMETRY", Geometry.class),
+                    entry("POINT", Point.class),
+                    entry("POINTM", Point.class),
+                    entry("POINTZ", Point.class),
+                    entry("POINTZM", Point.class),
+                    entry("LINESTRING", LineString.class),
+                    entry("LINESTRINGM", LineString.class),
+                    entry("LINESTRINGZ", LineString.class),
+                    entry("LINESTRINGZM", LineString.class),
+                    entry("POLYGON", Polygon.class),
+                    entry("POLYGONM", Polygon.class),
+                    entry("POLYGONZ", Polygon.class),
+                    entry("POLYGONZM", Polygon.class),
+                    entry("MULTIPOINT", MultiPoint.class),
+                    entry("MULTIPOINTM", MultiPoint.class),
+                    entry("MULTIPOINTZ", MultiPoint.class),
+                    entry("MULTIPOINTZM", MultiPoint.class),
+                    entry("MULTILINESTRING", MultiLineString.class),
+                    entry("MULTILINESTRINGM", MultiLineString.class),
+                    entry("MULTILINESTRINGZ", MultiLineString.class),
+                    entry("MULTILINESTRINGZM", MultiLineString.class),
+                    entry("MULTIPOLYGON", MultiPolygon.class),
+                    entry("MULTIPOLYGONM", MultiPolygon.class),
+                    entry("MULTIPOLYGONZ", MultiPolygon.class),
+                    entry("MULTIPOLYGONZM", MultiPolygon.class),
+                    entry("GEOMETRYCOLLECTION", GeometryCollection.class),
+                    entry("BYTEA", byte[].class));
 
     // geometry class to type map
     static final Map<Class<?>, String> CLASS_TO_TYPE_MAP =
-            new HashMap<Class<?>, String>() {
-                {
-                    put(Geometry.class, "GEOMETRY");
-                    put(Point.class, "POINT");
-                    put(LineString.class, "LINESTRING");
-                    put(Polygon.class, "POLYGON");
-                    put(MultiPoint.class, "MULTIPOINT");
-                    put(MultiLineString.class, "MULTILINESTRING");
-                    put(MultiPolygon.class, "MULTIPOLYGON");
-                    put(GeometryCollection.class, "GEOMETRYCOLLECTION");
-                    put(LinearRing.class, "LINEARRING");
-                }
-            };
+            Map.of(
+                    Geometry.class, "GEOMETRY",
+                    Point.class, "POINT",
+                    LineString.class, "LINESTRING",
+                    Polygon.class, "POLYGON",
+                    MultiPoint.class, "MULTIPOINT",
+                    MultiLineString.class, "MULTILINESTRING",
+                    MultiPolygon.class, "MULTIPOLYGON",
+                    GeometryCollection.class, "GEOMETRYCOLLECTION",
+                    LinearRing.class, "LINEARRING");
 
     boolean functionEncodingEnabled = true;
     // Since H2GIS 2.0

@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
@@ -169,12 +170,7 @@ public class UniqueVisitorTest {
 
     @SuppressWarnings("unchecked")
     private void addValues(Set set, Object... values) {
-        LinkedList list =
-                new LinkedList() {
-                    {
-                        for (Object val : values) add(val);
-                    }
-                };
+        LinkedList list = Arrays.stream(values).collect(Collectors.toCollection(LinkedList::new));
         set.add(list);
     }
 }

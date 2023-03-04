@@ -20,6 +20,7 @@ package org.geotools.data.complex.config;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.feature.type.ComplexFeatureTypeFactoryImpl;
 import org.geotools.data.complex.feature.type.ComplexTypeProxy;
@@ -73,12 +74,7 @@ public class NonFeatureTypeProxy extends ComplexTypeProxy implements FeatureType
         descriptor.getUserData().putAll(originalTarget.getUserData());
         mapping.setTargetFeature(descriptor);
         // smuggle FEATURE_LINK descriptor
-        descriptors =
-                new ArrayList<PropertyDescriptor>() {
-                    {
-                        add(ComplexFeatureConstants.FEATURE_CHAINING_LINK);
-                    }
-                };
+        descriptors = new ArrayList<>(List.of(ComplexFeatureConstants.FEATURE_CHAINING_LINK));
         if (subject instanceof ComplexType) {
             descriptors.addAll(((ComplexType) subject).getDescriptors());
         }

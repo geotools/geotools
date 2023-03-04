@@ -16,6 +16,8 @@
  */
 package org.geotools.data.oracle;
 
+import static java.util.Map.entry;
+
 import java.io.IOException;
 import java.sql.Array;
 import java.sql.Connection;
@@ -145,16 +147,13 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     }
 
     static final Map<String, Class> TYPES_TO_CLASSES =
-            new HashMap<String, Class>() {
-                {
-                    put("CHAR", String.class);
-                    put("NCHAR", String.class);
-                    put("NVARCHAR", String.class);
-                    put("NVARCHAR2", String.class);
-                    put("DATE", java.sql.Date.class);
-                    put("TIMESTAMP", java.sql.Timestamp.class);
-                }
-            };
+            Map.ofEntries(
+                    entry("CHAR", String.class),
+                    entry("NCHAR", String.class),
+                    entry("NVARCHAR", String.class),
+                    entry("NVARCHAR2", String.class),
+                    entry("DATE", java.sql.Date.class),
+                    entry("TIMESTAMP", java.sql.Timestamp.class));
 
     /** Whether to use only primary filters for BBOX filters */
     boolean looseBBOXEnabled = false;

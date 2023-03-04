@@ -91,6 +91,7 @@ import org.xml.sax.EntityResolver;
  * @author Jody Garnett
  * @author Martin Desruisseaux
  */
+@SuppressWarnings("ErrorProne.BanJNDI")
 public final class GeoTools {
 
     /** Properties about this geotools build */

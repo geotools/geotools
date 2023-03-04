@@ -52,7 +52,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -1036,23 +1035,13 @@ public class NetCDFMosaicReaderTest {
             // specify time
             ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
             final Date timeD = parseTimeStamp("2013-01-01T00:00:00.000");
-            time.setValue(
-                    new ArrayList<Date>() {
-                        {
-                            add(timeD);
-                        }
-                    });
+            time.setValue(List.of(timeD));
             GeneralParameterValue[] params = {time, NO_DEFERRED_LOADING_PARAM};
             GridCoverage2D coverage1 = reader.read(params);
             assertNotData(coverage1, -999d);
             // Specify a new time (Check if two times returns two different coverages)
             final Date timeD2 = parseTimeStamp("2013-01-08T00:00:00.000");
-            time.setValue(
-                    new ArrayList<Date>() {
-                        {
-                            add(timeD2);
-                        }
-                    });
+            time.setValue(List.of(timeD2));
             params = new GeneralParameterValue[] {time, NO_DEFERRED_LOADING_PARAM};
             GridCoverage2D coverage2 = reader.read(params);
             assertNotData(coverage2, -999d);
@@ -1556,20 +1545,10 @@ public class NetCDFMosaicReaderTest {
         for (ParameterDescriptor<List> param : params) {
             if (param.getName().getCode().equalsIgnoreCase("RUNTIME")) {
                 dateValue = param.createValue();
-                dateValue.setValue(
-                        new ArrayList<String>() {
-                            {
-                                add(selectedRuntime);
-                            }
-                        });
+                dateValue.setValue(List.of(selectedRuntime));
             } else if (param.getName().getCode().equalsIgnoreCase("NUMSIGMA")) {
                 sigmaValue = param.createValue();
-                sigmaValue.setValue(
-                        new ArrayList<String>() {
-                            {
-                                add(selectedSigma);
-                            }
-                        });
+                sigmaValue.setValue(List.of(selectedSigma));
             }
         }
         // Test the output coverage

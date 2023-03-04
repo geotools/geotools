@@ -9,8 +9,8 @@
  */
 package org.geotools.feature;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.AttributeTypeImpl;
@@ -141,13 +141,8 @@ public class FakeTypes {
                         /* isNillable: */ false,
                         /* defaultValue: */ null);
 
-        public static ArrayList<PropertyDescriptor> MINENAMETYPE_SCHEMA =
-                new ArrayList<PropertyDescriptor>() {
-                    {
-                        add(ISPREFERRED_DESCRIPTOR);
-                        add(mineNAME_DESCRIPTOR);
-                    }
-                };
+        public static List<PropertyDescriptor> MINENAMETYPE_SCHEMA =
+                List.of(ISPREFERRED_DESCRIPTOR, mineNAME_DESCRIPTOR);
 
         // (3)
         public static final ComplexType MINENAMETYPE_TYPE =
@@ -170,12 +165,8 @@ public class FakeTypes {
                         /* isNillable: */ false,
                         /* defaultValue: */ null);
 
-        public static ArrayList<PropertyDescriptor> MINENAMEPROPERTYTYPE_SCHEMA =
-                new ArrayList<PropertyDescriptor>() {
-                    {
-                        add(MINENAME_DESCRIPTOR);
-                    }
-                };
+        public static List<PropertyDescriptor> MINENAMEPROPERTYTYPE_SCHEMA =
+                List.of(MINENAME_DESCRIPTOR);
 
         // (5)
         public static final ComplexType MINENAMEPROPERTYTYPE_TYPE =
@@ -198,13 +189,7 @@ public class FakeTypes {
                         /* isNillable: */ false,
                         /* defaultValue: */ null);
 
-        public static ArrayList<PropertyDescriptor> MINETYPE_SCHEMA =
-                new ArrayList<PropertyDescriptor>() {
-                    {
-                        add(MINEmineNAME_DESCRIPTOR);
-                    }
-                };
-
+        public static List<PropertyDescriptor> MINETYPE_SCHEMA = List.of(MINEmineNAME_DESCRIPTOR);
         // (7)
         public static final FeatureType MINETYPE_TYPE =
                 new FeatureTypeImpl(

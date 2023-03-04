@@ -16,6 +16,7 @@
  */
 package org.geotools.imageio.netcdf;
 
+import static java.util.Map.entry;
 import static tech.units.indriya.AbstractUnit.ONE;
 
 import java.io.IOException;
@@ -56,13 +57,10 @@ public class NetCDFUnitFormat {
 
     /** Hard coded replacements for common operations */
     private static final Map<String, String> CONTENT_REPLACEMENTS =
-            new LinkedHashMap<String, String>() {
-                {
-                    put(" ", "*");
-                    put("-", "^-");
-                    put(".", "*");
-                }
-            };
+            Map.ofEntries(
+                    entry(" ", "*"), //
+                    entry("-", "^-"),
+                    entry(".", "*"));
 
     static {
         reset();

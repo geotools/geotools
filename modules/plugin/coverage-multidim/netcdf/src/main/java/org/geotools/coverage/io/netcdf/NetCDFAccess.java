@@ -25,7 +25,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +38,6 @@ import org.geotools.coverage.io.impl.DefaultFileCoverageAccess;
 import org.geotools.coverage.io.impl.DefaultFileDriver;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DefaultServiceInfo;
-import org.geotools.data.Parameter;
 import org.geotools.data.Repository;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.util.NullProgressListener;
@@ -80,11 +78,7 @@ public class NetCDFAccess extends DefaultFileCoverageAccess
         super(
                 driver,
                 EnumSet.of(AccessType.READ_ONLY),
-                new HashMap<String, Parameter<?>>() {
-                    {
-                        put(DefaultFileDriver.URL.key, DefaultFileDriver.URL);
-                    }
-                },
+                Map.of(DefaultFileDriver.URL.key, DefaultFileDriver.URL),
                 source,
                 additionalParameters);
 

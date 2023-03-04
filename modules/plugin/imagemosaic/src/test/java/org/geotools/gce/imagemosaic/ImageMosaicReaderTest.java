@@ -995,12 +995,7 @@ public class ImageMosaicReaderTest {
         final SimpleDateFormat formatD = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         formatD.setTimeZone(TimeZone.getTimeZone("GMT"));
         final Date timeD = formatD.parse("2004-02-01T00:00:00.000Z");
-        time.setValue(
-                new ArrayList<Date>() {
-                    {
-                        add(timeD);
-                    }
-                });
+        time.setValue(List.of(timeD));
 
         // Test the output coverage
         TestUtils.checkCoverage(
@@ -1010,14 +1005,10 @@ public class ImageMosaicReaderTest {
         // Test the output coverage
         reader = getReader(timeURL, format);
         time.setValue(
-                new ArrayList<DateRange>() {
-                    {
-                        add(
-                                new DateRange(
-                                        formatD.parse("2004-02-01T00:00:00.000Z"),
-                                        formatD.parse("2004-03-01T00:00:00.000Z")));
-                    }
-                });
+                List.of(
+                        new DateRange(
+                                formatD.parse("2004-02-01T00:00:00.000Z"),
+                                formatD.parse("2004-03-01T00:00:00.000Z"))));
         TestUtils.checkCoverage(
                 reader, new GeneralParameterValue[] {gg, useJai, time}, "time test");
 
@@ -1072,12 +1063,7 @@ public class ImageMosaicReaderTest {
         final SimpleDateFormat formatD = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         formatD.setTimeZone(TimeZone.getTimeZone("GMT"));
         final Date timeD = formatD.parse("2008-10-31T00:00:00.000Z");
-        time.setValue(
-                new ArrayList<Date>() {
-                    {
-                        add(timeD);
-                    }
-                });
+        time.setValue(List.of(timeD));
 
         // specify additional Dimensions
         Set<ParameterDescriptor<List>> params = reader.getDynamicParameters();
@@ -1091,22 +1077,12 @@ public class ImageMosaicReaderTest {
                 ParameterValue<List<String>> value = (ParameterValue) param.createValue();
 
                 dateValue = value;
-                dateValue.setValue(
-                        new ArrayList<String>() {
-                            {
-                                add(selectedDate);
-                            }
-                        });
+                dateValue.setValue(List.of(selectedDate));
             } else if (param.getName().getCode().equalsIgnoreCase("DEPTH")) {
                 @SuppressWarnings("unchecked")
                 ParameterValue<List<String>> value = (ParameterValue) param.createValue();
                 depthValue = value;
-                depthValue.setValue(
-                        new ArrayList<String>() {
-                            {
-                                add(selectedWaveLength);
-                            }
-                        });
+                depthValue.setValue(List.of(selectedWaveLength));
             }
         }
         assertNotNull(depthValue);
@@ -1177,20 +1153,10 @@ public class ImageMosaicReaderTest {
             // specify time
             final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
             final Date timeD = parseTimeStamp("2008-11-01T00:00:00.000Z");
-            time.setValue(
-                    new ArrayList<Date>() {
-                        {
-                            add(timeD);
-                        }
-                    });
+            time.setValue(List.of(timeD));
 
             final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
-            elevation.setValue(
-                    new ArrayList<Double>() {
-                        {
-                            add(34d); // Elevation
-                        }
-                    });
+            elevation.setValue(List.of(34d));
 
             // specify additional Dimensions
             Set<ParameterDescriptor<List>> params = reader.getDynamicParameters();
@@ -1203,22 +1169,12 @@ public class ImageMosaicReaderTest {
                     @SuppressWarnings("unchecked")
                     ParameterValue<List<String>> value = (ParameterValue) param.createValue();
                     dateValue = value;
-                    dateValue.setValue(
-                            new ArrayList<String>() {
-                                {
-                                    add(selectedDate);
-                                }
-                            });
+                    dateValue.setValue(List.of(selectedDate));
                 } else if (param.getName().getCode().equalsIgnoreCase("WAVELENGTH")) {
                     @SuppressWarnings("unchecked")
                     ParameterValue<List<String>> value = (ParameterValue) param.createValue();
                     waveLength = value;
-                    waveLength.setValue(
-                            new ArrayList<String>() {
-                                {
-                                    add(selectedWaveLength);
-                                }
-                            });
+                    waveLength.setValue(List.of(selectedWaveLength));
                 }
             }
             assertNotNull(waveLength);
@@ -1487,20 +1443,10 @@ public class ImageMosaicReaderTest {
         // specify time
         final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
         final Date timeD = parseTimeStamp("2008-11-01T00:00:00.000Z");
-        time.setValue(
-                new ArrayList<Date>() {
-                    {
-                        add(timeD);
-                    }
-                });
+        time.setValue(List.of(timeD));
 
         final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
-        elevation.setValue(
-                new ArrayList<Double>() {
-                    {
-                        add(34d); // Elevation
-                    }
-                });
+        elevation.setValue(List.of(34d));
 
         // specify additional Dimensions
         Set<ParameterDescriptor<List>> params = reader.getDynamicParameters();
@@ -1513,22 +1459,12 @@ public class ImageMosaicReaderTest {
                 @SuppressWarnings("unchecked")
                 ParameterValue<List<String>> value = (ParameterValue) param.createValue();
                 dateValue = value;
-                dateValue.setValue(
-                        new ArrayList<String>() {
-                            {
-                                add(selectedDate);
-                            }
-                        });
+                dateValue.setValue(List.of(selectedDate));
             } else if (param.getName().getCode().equalsIgnoreCase("WAVELENGTH")) {
                 @SuppressWarnings("unchecked")
                 ParameterValue<List<String>> value = (ParameterValue) param.createValue();
                 waveLength = value;
-                waveLength.setValue(
-                        new ArrayList<String>() {
-                            {
-                                add(selectedWaveLength);
-                            }
-                        });
+                waveLength.setValue(List.of(selectedWaveLength));
             }
         }
         assertNotNull(waveLength);
@@ -1699,12 +1635,7 @@ public class ImageMosaicReaderTest {
         useJai.setValue(false);
 
         final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
-        elevation.setValue(
-                new ArrayList<Double>() {
-                    {
-                        add(34d); // Elevation
-                    }
-                });
+        elevation.setValue(List.of(34d));
 
         // specify additional Dimensions
         Set<ParameterDescriptor<List>> params = reader.getDynamicParameters();
@@ -1715,12 +1646,7 @@ public class ImageMosaicReaderTest {
                 @SuppressWarnings("unchecked")
                 ParameterValue<List<String>> value = (ParameterValue) param.createValue();
                 waveLength = value;
-                waveLength.setValue(
-                        new ArrayList<String>() {
-                            {
-                                add(selectedWaveLength);
-                            }
-                        });
+                waveLength.setValue(List.of(selectedWaveLength));
             }
         }
         assertNotNull(waveLength);
@@ -2489,12 +2415,7 @@ public class ImageMosaicReaderTest {
         final SimpleDateFormat formatD = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         formatD.setTimeZone(TimeZone.getTimeZone("GMT"));
         final Date timeD = formatD.parse("2008-10-31T00:00:00.000Z");
-        time.setValue(
-                new ArrayList<Date>() {
-                    {
-                        add(timeD);
-                    }
-                });
+        time.setValue(List.of(timeD));
 
         // specify additional Dimensions
         Set<ParameterDescriptor<List>> params = reader.getDynamicParameters();
@@ -2505,20 +2426,10 @@ public class ImageMosaicReaderTest {
         for (ParameterDescriptor<List> param : params) {
             if (param.getName().getCode().equalsIgnoreCase("DATE")) {
                 dateValue = param.createValue();
-                dateValue.setValue(
-                        new ArrayList<String>() {
-                            {
-                                add(selectedDate);
-                            }
-                        });
+                dateValue.setValue(List.of(selectedDate));
             } else if (param.getName().getCode().equalsIgnoreCase("DEPTH")) {
                 depthValue = param.createValue();
-                depthValue.setValue(
-                        new ArrayList<String>() {
-                            {
-                                add(selectedWaveLength);
-                            }
-                        });
+                depthValue.setValue(List.of(selectedWaveLength));
             }
         }
         assertNotNull(depthValue);
@@ -3904,20 +3815,10 @@ public class ImageMosaicReaderTest {
         for (ParameterDescriptor<List> param : params) {
             if (param.getName().getCode().equalsIgnoreCase("DAT")) {
                 dateValue = param.createValue();
-                dateValue.setValue(
-                        new ArrayList<String>() {
-                            {
-                                add(selectedDate);
-                            }
-                        });
+                dateValue.setValue(List.of(selectedDate));
             } else if (param.getName().getCode().equalsIgnoreCase("DEPTH")) {
                 depthValue = param.createValue();
-                depthValue.setValue(
-                        new ArrayList<String>() {
-                            {
-                                add(selectedWaveLength);
-                            }
-                        });
+                depthValue.setValue(List.of(selectedWaveLength));
             }
         }
         // Test the output coverage

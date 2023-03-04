@@ -16,6 +16,8 @@
  */
 package org.geotools.styling.css;
 
+import static java.util.Map.entry;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -178,102 +180,80 @@ public class CssTranslator {
 
     @SuppressWarnings("serial")
     static final Map<String, String> POLYGON_VENDOR_OPTIONS =
-            new HashMap<String, String>() {
-                {
-                    put("graphic-margin", "graphic-margin");
-                    put("fill-label-obstacle", "labelObstacle");
-                    put("fill-random", "random");
-                    put("fill-random-seed", "random-seed");
-                    put("fill-random-tile-size", "random-tile-size");
-                    put("fill-random-symbol-count", "random-symbol-count");
-                    put("fill-random-space-around", "random-space-around");
-                    put("fill-random-rotation", "random-rotation");
-                    put("fill-composite", "composite");
-                }
-            };
+            Map.ofEntries(
+                    entry("graphic-margin", "graphic-margin"),
+                    entry("fill-label-obstacle", "labelObstacle"),
+                    entry("fill-random", "random"),
+                    entry("fill-random-seed", "random-seed"),
+                    entry("fill-random-tile-size", "random-tile-size"),
+                    entry("fill-random-symbol-count", "random-symbol-count"),
+                    entry("fill-random-space-around", "random-space-around"),
+                    entry("fill-random-rotation", "random-rotation"),
+                    entry("fill-composite", "composite"));
 
     @SuppressWarnings("serial")
     static final Map<String, String> TEXT_VENDOR_OPTIONS =
-            new HashMap<String, String>() {
-                {
-                    put("label-padding", TextSymbolizer.SPACE_AROUND_KEY);
-                    put("label-group", TextSymbolizer.GROUP_KEY);
-                    put("label-max-displacement", TextSymbolizer.MAX_DISPLACEMENT_KEY);
-                    put("label-min-group-distance", TextSymbolizer.MIN_GROUP_DISTANCE_KEY);
-                    put("label-repeat", TextSymbolizer.LABEL_REPEAT_KEY);
-                    put("label-all-group", TextSymbolizer.LABEL_ALL_GROUP_KEY);
-                    put("label-remove-overlaps", TextSymbolizer.REMOVE_OVERLAPS_KEY);
-                    put("label-allow-overruns", TextSymbolizer.ALLOW_OVERRUNS_KEY);
-                    put("label-follow-line", TextSymbolizer.FOLLOW_LINE_KEY);
-                    put("label-underline-text", TextSymbolizer.UNDERLINE_TEXT_KEY);
-                    put("label-strikethrough-text", TextSymbolizer.STRIKETHROUGH_TEXT_KEY);
-                    put("label-char-spacing", TextSymbolizer.CHAR_SPACING_KEY);
-                    put("label-word-spacing", TextSymbolizer.WORD_SPACING_KEY);
-                    put("label-max-angle-delta", TextSymbolizer.MAX_ANGLE_DELTA_KEY);
-                    put("label-auto-wrap", TextSymbolizer.AUTO_WRAP_KEY);
-                    put("label-force-ltr", TextSymbolizer.FORCE_LEFT_TO_RIGHT_KEY);
-                    put("label-conflict-resolution", TextSymbolizer.CONFLICT_RESOLUTION_KEY);
-                    put("label-fit-goodness", TextSymbolizer.GOODNESS_OF_FIT_KEY);
-                    put("label-kerning", TextSymbolizer.KERNING_KEY);
-                    put("label-polygon-align", TextSymbolizer.POLYGONALIGN_KEY);
-                    put("label-partials", TextSymbolizer.PARTIALS_KEY);
-                    put("label-displacement-mode", TextSymbolizer.DISPLACEMENT_MODE_KEY);
-                    put("shield-resize", TextSymbolizer.GRAPHIC_RESIZE_KEY);
-                    put("shield-margin", TextSymbolizer.GRAPHIC_MARGIN_KEY);
-                    put("shield-placement", TextSymbolizer.GRAPHIC_PLACEMENT_KEY);
-                    put("font-shrink-size-min", TextSymbolizer.FONT_SHRINK_SIZE_MIN);
-                }
-            };
+            Map.ofEntries(
+                    entry("label-padding", TextSymbolizer.SPACE_AROUND_KEY),
+                    entry("label-group", TextSymbolizer.GROUP_KEY),
+                    entry("label-max-displacement", TextSymbolizer.MAX_DISPLACEMENT_KEY),
+                    entry("label-min-group-distance", TextSymbolizer.MIN_GROUP_DISTANCE_KEY),
+                    entry("label-repeat", TextSymbolizer.LABEL_REPEAT_KEY),
+                    entry("label-all-group", TextSymbolizer.LABEL_ALL_GROUP_KEY),
+                    entry("label-remove-overlaps", TextSymbolizer.REMOVE_OVERLAPS_KEY),
+                    entry("label-allow-overruns", TextSymbolizer.ALLOW_OVERRUNS_KEY),
+                    entry("label-follow-line", TextSymbolizer.FOLLOW_LINE_KEY),
+                    entry("label-underline-text", TextSymbolizer.UNDERLINE_TEXT_KEY),
+                    entry("label-strikethrough-text", TextSymbolizer.STRIKETHROUGH_TEXT_KEY),
+                    entry("label-char-spacing", TextSymbolizer.CHAR_SPACING_KEY),
+                    entry("label-word-spacing", TextSymbolizer.WORD_SPACING_KEY),
+                    entry("label-max-angle-delta", TextSymbolizer.MAX_ANGLE_DELTA_KEY),
+                    entry("label-auto-wrap", TextSymbolizer.AUTO_WRAP_KEY),
+                    entry("label-force-ltr", TextSymbolizer.FORCE_LEFT_TO_RIGHT_KEY),
+                    entry("label-conflict-resolution", TextSymbolizer.CONFLICT_RESOLUTION_KEY),
+                    entry("label-fit-goodness", TextSymbolizer.GOODNESS_OF_FIT_KEY),
+                    entry("label-kerning", TextSymbolizer.KERNING_KEY),
+                    entry("label-polygon-align", TextSymbolizer.POLYGONALIGN_KEY),
+                    entry("label-partials", TextSymbolizer.PARTIALS_KEY),
+                    entry("label-displacement-mode", TextSymbolizer.DISPLACEMENT_MODE_KEY),
+                    entry("shield-resize", TextSymbolizer.GRAPHIC_RESIZE_KEY),
+                    entry("shield-margin", TextSymbolizer.GRAPHIC_MARGIN_KEY),
+                    entry("shield-placement", TextSymbolizer.GRAPHIC_PLACEMENT_KEY),
+                    entry("font-shrink-size-min", TextSymbolizer.FONT_SHRINK_SIZE_MIN));
 
     @SuppressWarnings("serial")
     static final Map<String, String> LINE_VENDOR_OPTIONS =
-            new HashMap<String, String>() {
-                {
-                    put("stroke-label-obstacle", "labelObstacle");
-                    put("stroke-composite", "composite");
-                }
-            };
+            Map.ofEntries(
+                    entry("stroke-label-obstacle", "labelObstacle"),
+                    entry("stroke-composite", "composite"));
 
     @SuppressWarnings("serial")
     static final Map<String, String> POINT_VENDOR_OPTIONS =
-            new HashMap<String, String>() {
-                {
-                    put("mark-label-obstacle", "labelObstacle");
-                    put("mark-composite", "composite");
-                }
-            };
+            Map.ofEntries(
+                    entry("mark-label-obstacle", "labelObstacle"),
+                    entry("mark-composite", "composite"));
 
     @SuppressWarnings("serial")
     static final Map<String, String> RASTER_VENDOR_OPTIONS =
-            new HashMap<String, String>() {
-                {
-                    put("raster-composite", "composite");
-                    put("raster-label-fi", "labelInFeatureInfo");
-                    put("raster-label-name", "labelAttributeName");
-                }
-            };
+            Map.ofEntries(
+                    entry("raster-composite", "composite"),
+                    entry("raster-label-fi", "labelInFeatureInfo"),
+                    entry("raster-label-name", "labelAttributeName"));
 
     @SuppressWarnings("serial")
     static final Map<String, String> CONTRASTENHANCMENT_VENDOR_OPTIONS =
-            new HashMap<String, String>() {
-                {
-                    put("raster-contrast-enhancement-algorithm", "algorithm");
-
-                    put("raster-contrast-enhancement-min", "minValue");
-                    put("raster-contrast-enhancement-max", "maxValue");
-
-                    put("raster-contrast-enhancement-normalizationfactor", "normalizationFactor");
-                    put("raster-contrast-enhancement-correctionfactor", "correctionFactor");
+            Map.ofEntries(
+                    entry("raster-contrast-enhancement-algorithm", "algorithm"),
+                    entry("raster-contrast-enhancement-min", "minValue"),
+                    entry("raster-contrast-enhancement-max", "maxValue"),
+                    entry("raster-contrast-enhancement-normalizationfactor", "normalizationFactor"),
+                    entry("raster-contrast-enhancement-correctionfactor", "correctionFactor"),
                     // short forms for lazy people
-                    put("rce-algorithm", "algorithm");
-
-                    put("rce-min", "minValue");
-                    put("rce-max", "maxValue");
-
-                    put("rce-normalizationfactor", "normalizationFactor");
-                    put("rce-correctionfactor", "correctionFactor");
-                }
-            };
+                    entry("rce-algorithm", "algorithm"),
+                    entry("rce-min", "minValue"),
+                    entry("rce-max", "maxValue"),
+                    entry("rce-normalizationfactor", "normalizationFactor"),
+                    entry("rce-correctionfactor", "correctionFactor"));
 
     /** Limits how many output rules we are going to generate */
     int maxCombinations = MAX_OUTPUT_RULES_DEFAULT;

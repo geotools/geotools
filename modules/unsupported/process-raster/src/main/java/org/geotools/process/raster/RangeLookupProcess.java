@@ -25,6 +25,7 @@ import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.media.jai.RenderedOp;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.CoverageFactoryFinder;
@@ -191,12 +192,8 @@ public class RangeLookupProcess implements RasterProcess {
                 new GridSampleDimension("classification", new Category[] {Category.NODATA}, null);
         final GridCoverageFactory factory =
                 CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
-        HashMap<String, Object> properties =
-                new HashMap<String, Object>() {
-                    {
-                        put(NoDataContainer.GC_NODATA, new NoDataContainer(0d));
-                    }
-                };
+        Map<String, Object> properties =
+                new HashMap<>(Map.of(NoDataContainer.GC_NODATA, new NoDataContainer(0d)));
         org.geotools.coverage.util.CoverageUtilities.setROIProperty(properties, worker.getROI());
         final GridCoverage2D output =
                 factory.create(

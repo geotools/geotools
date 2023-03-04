@@ -16,7 +16,8 @@
  */
 package org.geotools.styling.visitor;
 
-import java.util.HashMap;
+import static java.util.Map.entry;
+
 import java.util.Map;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
@@ -143,11 +144,8 @@ enum RescalingMode {
      * object
      */
     final Map<Unit, String> UNIT_SYMBOLS =
-            new HashMap<Unit, String>() {
-                {
-                    put(Units.PIXEL, "px");
-                    put(USCustomary.FOOT, "ft");
-                    put(SI.METRE, "m");
-                }
-            };
+            Map.ofEntries(
+                    entry(Units.PIXEL, "px"), //
+                    entry(USCustomary.FOOT, "ft"),
+                    entry(SI.METRE, "m"));
 }

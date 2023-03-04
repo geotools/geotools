@@ -17,6 +17,7 @@
 
 package org.geotools.data.complex;
 
+import static java.util.Map.entry;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -113,48 +114,36 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
      * mappedFeaturePropertyFile.properties
      */
     static final Map<String, String> mfToGuMap =
-            new HashMap<String, String>() {
-                {
-                    put("mf1", "gu.25699");
-                    put("mf2", "gu.25678");
-                    put("mf3", "gu.25678");
-                    put("mf4", "gu.25682");
-                }
-            };
+            Map.ofEntries(
+                    entry("mf1", "gu.25699"),
+                    entry("mf2", "gu.25678"),
+                    entry("mf3", "gu.25678"),
+                    entry("mf4", "gu.25682"));
 
     /**
      * Map of compositional part values to geological unit objects based on geologicUnit.properties
      */
     static final Map<String, String> guToCpMap =
-            new HashMap<String, String>() {
-                {
-                    put("gu.25699", "cp.167775491936278899");
-                    put("gu.25678", "cp.167775491936278844;cp.167775491936278856");
-                    put("gu.25682", "cp.167775491936278812");
-                }
-            };
+            Map.ofEntries(
+                    entry("gu.25699", "cp.167775491936278899"),
+                    entry("gu.25678", "cp.167775491936278844;cp.167775491936278856"),
+                    entry("gu.25682", "cp.167775491936278812"));
 
     /** Map of exposure colour values to geological unit objects based on geologicUnit.properties */
     static final Map<String, String> guToExposureColorMap =
-            new HashMap<String, String>() {
-                {
-                    put("gu.25699", "Blue");
-                    put("gu.25678", "Yellow;Blue");
-                    put("gu.25682", "Red");
-                }
-            };
+            Map.ofEntries(
+                    entry("gu.25699", "Blue"),
+                    entry("gu.25678", "Yellow;Blue"),
+                    entry("gu.25682", "Red"));
 
     /**
      * Map of out crop character values to geological unit objects based on geologicUnit.properties
      */
     static Map<String, String> guToOutcropCharacterMap =
-            new HashMap<String, String>() {
-                {
-                    put("gu.25699", "x");
-                    put("gu.25678", "x;y");
-                    put("gu.25682", "z");
-                }
-            };
+            Map.ofEntries(
+                    entry("gu.25699", "x"), //
+                    entry("gu.25678", "x;y"), //
+                    entry("gu.25682", "z"));
 
     private static final String schemaBase = "/test-data/";
 
@@ -656,15 +645,12 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
     @Test
     public void testMultiValuedPropertiesByRef() throws Exception {
         final String MF_PREFIX = "urn:cgi:feature:MappedFeature:";
-        final String OCCURENCE = "occurrence";
+        final String OCCURRENCE = "occurrence";
         final Map<String, String> guToOccurrenceMap =
-                new HashMap<String, String>() {
-                    {
-                        put("gu.25699", "mf1");
-                        put("gu.25678", "mf2;mf3");
-                        put("gu.25682", "mf4");
-                    }
-                };
+                Map.ofEntries(
+                        entry("gu.25699", "mf1"),
+                        entry("gu.25678", "mf2;mf3"),
+                        entry("gu.25682", "mf4"));
 
         ArrayList<String> processedFeatureIds = new ArrayList<>();
 
@@ -673,7 +659,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
                 Feature guFeature = guIterator.next();
                 String guId = guFeature.getIdentifier().toString();
                 String[] mfIds = guToOccurrenceMap.get(guId).split(";");
-                Collection<Property> properties = guFeature.getProperties(OCCURENCE);
+                Collection<Property> properties = guFeature.getProperties(OCCURRENCE);
 
                 assertEquals(mfIds.length, properties.size());
 

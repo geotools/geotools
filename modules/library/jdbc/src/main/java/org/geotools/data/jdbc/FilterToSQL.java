@@ -16,6 +16,7 @@
  */
 package org.geotools.data.jdbc;
 
+import static java.util.Map.entry;
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import java.io.IOException;
@@ -26,7 +27,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -168,23 +168,20 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
 
     /** Conversion factor from common units to meter */
     private static final Map<String, Double> UNITS_MAP =
-            new HashMap<String, Double>() {
-                {
-                    put("kilometers", 1000.0);
-                    put("kilometer", 1000.0);
-                    put("km", 1000.0);
-                    put("m", 1.0);
-                    put("meter", 1.0);
-                    put("mm", 0.001);
-                    put("millimeter", 0.001);
-                    put("mi", 1609.344);
-                    put("miles", 1609.344);
-                    put("nm", 1852d);
-                    put("feet", 0.3048);
-                    put("ft", 0.3048);
-                    put("in", 0.0254);
-                }
-            };
+            Map.ofEntries(
+                    entry("kilometers", 1000.0),
+                    entry("kilometer", 1000.0),
+                    entry("km", 1000.0),
+                    entry("m", 1.0),
+                    entry("meter", 1.0),
+                    entry("mm", 0.001),
+                    entry("millimeter", 0.001),
+                    entry("mi", 1609.344),
+                    entry("miles", 1609.344),
+                    entry("nm", 1852d),
+                    entry("feet", 0.3048),
+                    entry("ft", 0.3048),
+                    entry("in", 0.0254));
 
     /** error message for exceptions */
     protected static final String IO_ERROR = "io problem writing filter";

@@ -24,9 +24,9 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -192,25 +192,11 @@ public class AppSchemaDataAccessRegistryTest extends AppSchemaTestSupport {
         dsParams.put("directory", URLs.urlToFile(url).getPath());
         ds.setParams(dsParams);
         config = new AppSchemaDataAccessDTO();
-        config.setSourceDataStores(
-                new ArrayList<SourceDataStore>() {
-                    {
-                        add(ds);
-                    }
-                });
+        config.setSourceDataStores(List.of(ds));
         config.setBaseSchemasUrl(url.toExternalForm());
-        config.setNamespaces(
-                new HashMap<String, String>() {
-                    {
-                        put("gsml", GSMLNS);
-                    }
-                });
+        config.setNamespaces(Map.of("gsml", GSMLNS));
         config.setTargetSchemasUris(
-                new ArrayList<String>() {
-                    {
-                        add("http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd");
-                    }
-                });
+                List.of("http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd"));
         config.setCatalog("mappedPolygons.oasis.xml");
 
         /** Create mock TypeMapping objects to be set inside config in the test cases */

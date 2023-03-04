@@ -35,7 +35,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.TimeZone;
@@ -710,14 +709,11 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         // specify time
         final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
         time.setValue(
-                new ArrayList<DateRange>() {
-                    {
-                        add(
-                                new DateRange(
-                                        formatD.parse("2004-01-01T00:00:00.000Z"),
-                                        formatD.parse("2004-07-01T00:00:00.000Z")));
-                    }
-                });
+                List.of(
+                        new DateRange(
+                                formatD.parse("2004-01-01T00:00:00.000Z"),
+                                formatD.parse("2004-07-01T00:00:00.000Z"))));
+
         // Testing output coverage for level 0
         TestUtils.checkCoverage(
                 reader.getImageMosaicReaderForLevel(0),
@@ -799,14 +795,10 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         // specify time
         final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
         time.setValue(
-                new ArrayList<DateRange>() {
-                    {
-                        add(
-                                new DateRange(
-                                        formatD.parse("2004-01-01T00:00:00.000Z"),
-                                        formatD.parse("2004-07-01T00:00:00.000Z")));
-                    }
-                });
+                List.of(
+                        new DateRange(
+                                formatD.parse("2004-01-01T00:00:00.000Z"),
+                                formatD.parse("2004-07-01T00:00:00.000Z"))));
         // Testing output coverage for level 0
         TestUtils.checkCoverage(
                 reader.getImageMosaicReaderForLevel(0),

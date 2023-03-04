@@ -16,6 +16,8 @@
  */
 package org.geotools.data.postgis;
 
+import static java.util.Map.entry;
+
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.sql.Connection;
@@ -29,8 +31,6 @@ import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -90,88 +90,76 @@ public class PostGISDialect extends BasicSQLDialect {
 
     // geometry type to class map
     static final Map<String, Class> TYPE_TO_CLASS_MAP =
-            new HashMap<String, Class>() {
-                {
-                    put("GEOMETRY", Geometry.class);
-                    put("GEOGRAPHY", Geometry.class);
-                    put("POINT", Point.class);
-                    put("POINTM", Point.class);
-                    put("LINESTRING", LineString.class);
-                    put("LINESTRINGM", LineString.class);
-                    put("POLYGON", Polygon.class);
-                    put("POLYGONM", Polygon.class);
-                    put("MULTIPOINT", MultiPoint.class);
-                    put("MULTIPOINTM", MultiPoint.class);
-                    put("MULTILINESTRING", MultiLineString.class);
-                    put("MULTILINESTRINGM", MultiLineString.class);
-                    put("MULTIPOLYGON", MultiPolygon.class);
-                    put("MULTIPOLYGONM", MultiPolygon.class);
-                    put("GEOMETRYCOLLECTION", GeometryCollection.class);
-                    put("GEOMETRYCOLLECTIONM", GeometryCollection.class);
-                    put("COMPOUNDCURVE", CompoundCurve.class);
-                    put("MULTICURVE", MultiCurve.class);
-                    put("CURVEPOLYGON", CurvePolygon.class);
-                    put("CIRCULARSTRING", CircularString.class);
-                    put("MULTISURFACE", MultiSurface.class);
-                    put("BYTEA", byte[].class);
-                }
-            };
+            Map.ofEntries(
+                    entry("GEOMETRY", Geometry.class),
+                    entry("GEOGRAPHY", Geometry.class),
+                    entry("POINT", Point.class),
+                    entry("POINTM", Point.class),
+                    entry("LINESTRING", LineString.class),
+                    entry("LINESTRINGM", LineString.class),
+                    entry("POLYGON", Polygon.class),
+                    entry("POLYGONM", Polygon.class),
+                    entry("MULTIPOINT", MultiPoint.class),
+                    entry("MULTIPOINTM", MultiPoint.class),
+                    entry("MULTILINESTRING", MultiLineString.class),
+                    entry("MULTILINESTRINGM", MultiLineString.class),
+                    entry("MULTIPOLYGON", MultiPolygon.class),
+                    entry("MULTIPOLYGONM", MultiPolygon.class),
+                    entry("GEOMETRYCOLLECTION", GeometryCollection.class),
+                    entry("GEOMETRYCOLLECTIONM", GeometryCollection.class),
+                    entry("COMPOUNDCURVE", CompoundCurve.class),
+                    entry("MULTICURVE", MultiCurve.class),
+                    entry("CURVEPOLYGON", CurvePolygon.class),
+                    entry("CIRCULARSTRING", CircularString.class),
+                    entry("MULTISURFACE", MultiSurface.class),
+                    entry("BYTEA", byte[].class));
 
     // simple type to class map
     static final Map<String, Class> SIMPLE_TYPE_TO_CLASS_MAP =
-            new HashMap<String, Class>() {
-                {
-                    put("INT2", Short.class);
-                    put("INT4", Integer.class);
-                    put("INT8", Long.class);
-                    put("FLOAT4", Float.class);
-                    put("FLOAT8", Double.class);
-                    put("BOOL", Boolean.class);
-                    put("VARCHAR", String.class);
-                    put("DATE", java.sql.Date.class);
-                    put("TIME", java.sql.Time.class);
-                    put("TIMESTAMP", java.sql.Timestamp.class);
-                    put("TIMESTAMPZ", java.sql.Timestamp.class);
-                    put("TIMESTAMPTZ", java.sql.Timestamp.class);
-                }
-            };
+            Map.ofEntries(
+                    entry("INT2", Short.class),
+                    entry("INT4", Integer.class),
+                    entry("INT8", Long.class),
+                    entry("FLOAT4", Float.class),
+                    entry("FLOAT8", Double.class),
+                    entry("BOOL", Boolean.class),
+                    entry("VARCHAR", String.class),
+                    entry("DATE", java.sql.Date.class),
+                    entry("TIME", java.sql.Time.class),
+                    entry("TIMESTAMP", java.sql.Timestamp.class),
+                    entry("TIMESTAMPZ", java.sql.Timestamp.class),
+                    entry("TIMESTAMPTZ", java.sql.Timestamp.class));
 
     // geometry types that will not contain curves (we map to curved types
     // if the db type is supposed to contain curves, that leaves out
     // geometry and geometry collection as potential curve containers)
     static final Set<Class> NON_CURVED_GEOMETRY_CLASSES =
-            new HashSet<Class>() {
-                {
-                    add(Point.class);
-                    add(MultiPoint.class);
-                    add(LineString.class);
-                    add(LinearRing.class);
-                    add(MultiLineString.class);
-                    add(Polygon.class);
-                    add(MultiPolygon.class);
-                }
-            };
+            Set.of(
+                    Point.class,
+                    MultiPoint.class,
+                    LineString.class,
+                    LinearRing.class,
+                    MultiLineString.class,
+                    Polygon.class,
+                    MultiPolygon.class);
 
     // geometry class to type map
     static final Map<Class, String> CLASS_TO_TYPE_MAP =
-            new HashMap<Class, String>() {
-                {
-                    put(Geometry.class, "GEOMETRY");
-                    put(Point.class, "POINT");
-                    put(LineString.class, "LINESTRING");
-                    put(Polygon.class, "POLYGON");
-                    put(MultiPoint.class, "MULTIPOINT");
-                    put(MultiLineString.class, "MULTILINESTRING");
-                    put(MultiPolygon.class, "MULTIPOLYGON");
-                    put(GeometryCollection.class, "GEOMETRYCOLLECTION");
-                    put(CircularString.class, "CIRCULARSTRING");
-                    put(CircularRing.class, "CIRCULARSTRING");
-                    put(MultiCurve.class, "MULTICURVE");
-                    put(CompoundCurve.class, "COMPOUNDCURVE");
-                    put(CompoundRing.class, "COMPOUNDCURVE");
-                    put(byte[].class, "BYTEA");
-                }
-            };
+            Map.ofEntries(
+                    entry(Geometry.class, "GEOMETRY"),
+                    entry(Point.class, "POINT"),
+                    entry(LineString.class, "LINESTRING"),
+                    entry(Polygon.class, "POLYGON"),
+                    entry(MultiPoint.class, "MULTIPOINT"),
+                    entry(MultiLineString.class, "MULTILINESTRING"),
+                    entry(MultiPolygon.class, "MULTIPOLYGON"),
+                    entry(GeometryCollection.class, "GEOMETRYCOLLECTION"),
+                    entry(CircularString.class, "CIRCULARSTRING"),
+                    entry(CircularRing.class, "CIRCULARSTRING"),
+                    entry(MultiCurve.class, "MULTICURVE"),
+                    entry(CompoundCurve.class, "COMPOUNDCURVE"),
+                    entry(CompoundRing.class, "COMPOUNDCURVE"),
+                    entry(byte[].class, "BYTEA"));
 
     private GeometryColumnEncoder geometryColumnEncoder;
 

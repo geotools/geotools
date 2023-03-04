@@ -25,9 +25,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1026,22 +1024,18 @@ public class AppSchemaDataAccessConfigurator {
      */
     @SuppressWarnings("serial")
     private static final List<String> SAFE_DATASTORE_PARAMS =
-            Collections.unmodifiableList(
-                    new ArrayList<String>() {
-                        {
-                            add("url"); // shapefile
-                            add("directory"); // propertyfile
-                            add("namespace"); // just about everything
-                            add("dbtype"); // jdbc
-                            add("jndiReferenceName"); // jdni
-                            // these are all various jdbc options
-                            add("host");
-                            add("port");
-                            add("database");
-                            add("schema");
-                            add("user");
-                        }
-                    });
+            List.of(
+                    "url", // shapefile
+                    "directory", // propertyfile
+                    "namespace", // just about everything
+                    "dbtype", // jdbc
+                    "jndiReferenceName", // jdni
+                    // these are all various jdbc options
+                    "host",
+                    "port",
+                    "database",
+                    "schema",
+                    "user");
 
     /**
      * Return datastore params filtered to include only known-safe parameters. We cannot try to find

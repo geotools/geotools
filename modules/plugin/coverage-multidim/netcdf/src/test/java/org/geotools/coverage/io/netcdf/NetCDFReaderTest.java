@@ -25,7 +25,6 @@ import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
@@ -354,20 +353,10 @@ public class NetCDFReaderTest extends Assert {
                         new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 formatD.setTimeZone(TimeZone.getTimeZone("GMT"));
                 final Date timeD = formatD.parse("2012-04-01T00:00:00.000Z");
-                time.setValue(
-                        new ArrayList<Date>() {
-                            {
-                                add(timeD);
-                            }
-                        });
+                time.setValue(List.of(timeD));
 
                 final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
-                elevation.setValue(
-                        new ArrayList<Double>() {
-                            {
-                                add(450d); // Elevation
-                            }
-                        });
+                elevation.setValue(List.of(450d));
 
                 GeneralParameterValue[] values = {gg, time, elevation};
                 GridCoverage2D coverage = reader.read(coverageName, values);
@@ -602,20 +591,10 @@ public class NetCDFReaderTest extends Assert {
                         new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 formatD.setTimeZone(TimeZone.getTimeZone("GMT"));
                 final Date timeD = formatD.parse("2012-04-01T00:00:00.000Z");
-                time.setValue(
-                        new ArrayList<Date>() {
-                            {
-                                add(timeD);
-                            }
-                        });
+                time.setValue(List.of(timeD));
 
                 final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
-                elevation.setValue(
-                        new ArrayList<Double>() {
-                            {
-                                add(450d); // Elevation
-                            }
-                        });
+                elevation.setValue(List.of(450d));
 
                 GeneralParameterValue[] values =
                         coverageName.equalsIgnoreCase("O3")
@@ -746,20 +725,10 @@ public class NetCDFReaderTest extends Assert {
                         new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 formatD.setTimeZone(TimeZone.getTimeZone("GMT"));
                 final Date timeD = formatD.parse("2012-04-01T00:00:00.000Z");
-                time.setValue(
-                        new ArrayList<Date>() {
-                            {
-                                add(timeD);
-                            }
-                        });
+                time.setValue(List.of(timeD));
 
                 final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
-                elevation.setValue(
-                        new ArrayList<Double>() {
-                            {
-                                add(450d); // Elevation
-                            }
-                        });
+                elevation.setValue(List.of(450d));
 
                 GeneralParameterValue[] values =
                         coverageName.equalsIgnoreCase("O3")
@@ -863,12 +832,7 @@ public class NetCDFReaderTest extends Assert {
                 for (ParameterDescriptor<List> param : params) {
                     if (param.getName().getCode().equalsIgnoreCase("NUMSIGMA")) {
                         sigmaValue = param.createValue();
-                        sigmaValue.setValue(
-                                new ArrayList<String>() {
-                                    {
-                                        add(selectedSigma);
-                                    }
-                                });
+                        sigmaValue.setValue(List.of(selectedSigma));
                     }
                 }
 
@@ -1250,20 +1214,10 @@ public class NetCDFReaderTest extends Assert {
                 Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
                 calendar.set(0, 0, 16, 0, 0, 0);
                 calendar.set(Calendar.MILLISECOND, 0);
-                time.setValue(
-                        new ArrayList<Date>() {
-                            {
-                                add(calendar.getTime());
-                            }
-                        });
+                time.setValue(List.of(calendar.getTime()));
 
                 final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
-                elevation.setValue(
-                        new ArrayList<Double>() {
-                            {
-                                add(50d); // Elevation
-                            }
-                        });
+                elevation.setValue(List.of(50d));
 
                 GeneralParameterValue[] values = {time, elevation};
                 GridCoverage2D coverage = reader.read(coverageName, values);
@@ -1431,12 +1385,7 @@ public class NetCDFReaderTest extends Assert {
             for (ParameterDescriptor param : params) {
                 if (param.getName().getCode().equalsIgnoreCase("NEW")) {
                     new_ = param.createValue();
-                    new_.setValue(
-                            new ArrayList() {
-                                {
-                                    add(Double.valueOf(newDomainValues[11]));
-                                }
-                            });
+                    new_.setValue(List.of(Double.valueOf(newDomainValues[11])));
                 }
             }
 

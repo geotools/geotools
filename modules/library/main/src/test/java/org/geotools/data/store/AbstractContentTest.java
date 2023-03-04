@@ -17,9 +17,10 @@
 package org.geotools.data.store;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
@@ -47,13 +48,8 @@ public abstract class AbstractContentTest {
     /** The list of features on which paging is tested. */
     @SuppressWarnings("serial")
     List<SimpleFeature> FEATURES =
-            new ArrayList<SimpleFeature>() {
-                {
-                    add(buildFeature("mock.3"));
-                    add(buildFeature("mock.1"));
-                    add(buildFeature("mock.2"));
-                }
-            };
+            Stream.of(buildFeature("mock.3"), buildFeature("mock.1"), buildFeature("mock.2"))
+                    .collect(Collectors.toList());
 
     /** Build the test type. */
     protected static SimpleFeatureType buildType() {
@@ -81,11 +77,7 @@ public abstract class AbstractContentTest {
         @SuppressWarnings("serial")
         @Override
         protected List<Name> createTypeNames() throws IOException {
-            return new ArrayList<Name>() {
-                {
-                    add(TYPENAME);
-                }
-            };
+            return List.of(TYPENAME);
         }
 
         /**

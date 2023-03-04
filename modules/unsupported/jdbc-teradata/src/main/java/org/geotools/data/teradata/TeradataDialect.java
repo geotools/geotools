@@ -31,7 +31,6 @@ import java.sql.Types;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -82,34 +81,27 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
     static final String SPATIAL_INDEX = "org.geotools.data.teradata.spatialIndex";
 
     static final Map<String, Class<?>> TYPE_TO_CLASS =
-            new HashMap<String, Class<?>>() {
-                {
-                    put("GEOMETRY", Geometry.class);
-                    put("POINT", Point.class);
-                    put("LINESTRING", LineString.class);
-                    put("POLYGON", Polygon.class);
-
-                    put("MULTIPOINT", MultiPoint.class);
-                    put("MULTILINESTRING", MultiLineString.class);
-                    put("MULTIPOLYGON", MultiPolygon.class);
-                    put("GEOMETRYCOLLECTION", GeometryCollection.class);
-                    put("GEOSEQUENCE", Geometry.class);
-                }
-            };
+            Map.of(
+                    "GEOMETRY", Geometry.class,
+                    "POINT", Point.class,
+                    "LINESTRING", LineString.class,
+                    "POLYGON", Polygon.class,
+                    "MULTIPOINT", MultiPoint.class,
+                    "MULTILINESTRING", MultiLineString.class,
+                    "MULTIPOLYGON", MultiPolygon.class,
+                    "GEOMETRYCOLLECTION", GeometryCollection.class,
+                    "GEOSEQUENCE", Geometry.class);
 
     static final Map<Class<?>, String> CLASS_TO_TYPE =
-            new HashMap<Class<?>, String>() {
-                {
-                    put(Geometry.class, "GEOMETRY");
-                    put(Point.class, "POINT");
-                    put(LineString.class, "LINESTRING");
-                    put(Polygon.class, "POLYGON");
-                    put(MultiPoint.class, "MULTIPOINT");
-                    put(MultiLineString.class, "MULTILINESTRING");
-                    put(MultiPolygon.class, "MULTIPOLYGON");
-                    put(GeometryCollection.class, "GEOMETRYCOLLECTION");
-                }
-            };
+            Map.of(
+                    Geometry.class, "GEOMETRY",
+                    Point.class, "POINT",
+                    LineString.class, "LINESTRING",
+                    Polygon.class, "POLYGON",
+                    MultiPoint.class, "MULTIPOINT",
+                    MultiLineString.class, "MULTILINESTRING",
+                    MultiPolygon.class, "MULTIPOLYGON",
+                    GeometryCollection.class, "GEOMETRYCOLLECTION");
 
     /** loose bbox flag */
     boolean looseBBOXEnabled = false;

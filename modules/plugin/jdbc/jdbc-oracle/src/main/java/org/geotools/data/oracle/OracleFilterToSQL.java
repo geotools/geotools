@@ -18,7 +18,6 @@ package org.geotools.data.oracle;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.geotools.data.oracle.filter.FilterFunction_sdonn;
@@ -89,19 +88,16 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
 
     /** Contains filter type to SDO_RELATE mask type mappings */
     private static final Map<Class<?>, String> SDO_RELATE_MASK_MAP =
-            new HashMap<Class<?>, String>() {
-                {
-                    put(Contains.class, "contains");
-                    put(Crosses.class, "overlapbdydisjoint");
-                    put(Equals.class, "equal");
-                    put(Overlaps.class, "overlapbdyintersect");
-                    put(Touches.class, "touch");
-                    put(Within.class, "inside");
-                    put(Disjoint.class, "disjoint");
-                    put(BBOX.class, "anyinteract");
-                    put(Intersects.class, "anyinteract");
-                }
-            };
+            Map.of(
+                    Contains.class, "contains",
+                    Crosses.class, "overlapbdydisjoint",
+                    Equals.class, "equal",
+                    Overlaps.class, "overlapbdyintersect",
+                    Touches.class, "touch",
+                    Within.class, "inside",
+                    Disjoint.class, "disjoint",
+                    BBOX.class, "anyinteract",
+                    Intersects.class, "anyinteract");
 
     /** The whole world in WGS84 */
     private static final Envelope WORLD = new Envelope(-179.99, 179.99, -89.99, 89.99);
@@ -111,20 +107,18 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
      * the same result?
      */
     private static final Map<String, String> INVERSE_OPERATOR_MAP =
-            new HashMap<String, String>() {
-                {
+            Map.of(
+
                     // asymmetric operators, op2 = !op
-                    put("contains", "inside");
-                    put("inside", "contains");
+                    "contains", "inside",
+                    "inside", "contains",
                     // symmetric operators, op2 = op
-                    put("overlapbdydisjoint", "overlapbdydisjoint");
-                    put("overlapbdyintersect", "overlapbdyintersect");
-                    put("touch", "touch");
-                    put("equal", "equal");
-                    put("anyinteract", "anyinteract");
-                    put("disjoint", "disjoint");
-                }
-            };
+                    "overlapbdydisjoint", "overlapbdydisjoint",
+                    "overlapbdyintersect", "overlapbdyintersect",
+                    "touch", "touch",
+                    "equal", "equal",
+                    "anyinteract", "anyinteract",
+                    "disjoint", "disjoint");
 
     /** Whether BBOX should be encoded as just a primary filter or primary+secondary */
     protected boolean looseBBOXEnabled;
@@ -558,22 +552,19 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
      * SDO_UNIT;"
      */
     private static final Map<String, String> UNITS_MAP =
-            new HashMap<String, String>() {
-                {
-                    put("metre", "m");
-                    put("meters", "m");
-                    put("kilometers", "km");
-                    put("mi", "Mile");
-                    put("miles", "Mile");
-                    put("NM", "naut_mile");
-                    put("feet", "foot");
-                    put("ft", "foot");
-                    put("in", "inch");
-                }
-            };
+            Map.of(
+                    "metre", "m",
+                    "meters", "m",
+                    "kilometers", "km",
+                    "mi", "Mile",
+                    "miles", "Mile",
+                    "NM", "naut_mile",
+                    "feet", "foot",
+                    "ft", "foot",
+                    "in", "inch");
 
     private static String getSDOUnitFromOGCUnit(String ogcUnit) {
-        Object sdoUnit = UNITS_MAP.get(ogcUnit);
+        Object sdoUnit = ogcUnit != null ? UNITS_MAP.get(ogcUnit) : null;
         return sdoUnit != null ? sdoUnit.toString() : ogcUnit;
     }
 

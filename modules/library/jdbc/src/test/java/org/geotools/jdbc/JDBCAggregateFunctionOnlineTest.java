@@ -30,6 +30,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.geotools.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.visitor.AverageVisitor;
@@ -771,12 +772,8 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
 
     @SuppressWarnings("unchecked")
     private void addValues(Set set, Object... values) {
-        LinkedList list =
-                new LinkedList() {
-                    {
-                        for (Object val : values) add(val);
-                    }
-                };
+        LinkedList<Object> list =
+                Arrays.stream(values).collect(Collectors.toCollection(LinkedList::new));
         set.add(list);
     }
 

@@ -111,25 +111,22 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
 
     /** Conversion factor from common units to meter */
     private static final Map<String, Double> UNITS_MAP =
-            new HashMap<String, Double>() {
-                {
-                    put("kilometers", 1000.0);
-                    put("kilometer", 1000.0);
-                    put("meters", 1.0);
-                    put("meter", 1.0);
-                    put("mm", 0.001);
-                    put("millimeter", 0.001);
-                    put("mi", 1609.344);
-                    put("statute miles", 1609.344);
-                    put("miles", 1609.344);
-                    put("mile", 1609.344);
-                    put("nautical miles", 1852.0);
-                    put("NM", 1852d);
-                    put("feet", 0.3048);
-                    put("ft", 0.3048);
-                    put("in", 0.0254);
-                }
-            };
+            Map.ofEntries(
+                    Map.entry("kilometers", 1000.0),
+                    Map.entry("kilometer", 1000.0),
+                    Map.entry("meters", 1.0),
+                    Map.entry("meter", 1.0),
+                    Map.entry("mm", 0.001),
+                    Map.entry("millimeter", 0.001),
+                    Map.entry("mi", 1609.344),
+                    Map.entry("statute miles", 1609.344),
+                    Map.entry("miles", 1609.344),
+                    Map.entry("mile", 1609.344),
+                    Map.entry("nautical miles", 1852.0),
+                    Map.entry("NM", 1852d),
+                    Map.entry("feet", 0.3048),
+                    Map.entry("ft", 0.3048),
+                    Map.entry("in", 0.0254));
 
     boolean functionEncodingEnabled = false;
 

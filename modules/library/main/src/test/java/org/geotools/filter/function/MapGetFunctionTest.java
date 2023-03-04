@@ -16,8 +16,9 @@
  */
 package org.geotools.filter.function;
 
+import static java.util.Map.entry;
+
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
@@ -71,14 +72,11 @@ public class MapGetFunctionTest {
                             Integer.valueOf(1),
                             line(new int[] {1, 1, 2, 2, 4, 2, 5, 1}),
                             "object1",
-                            new HashMap<String, Object>() {
-                                {
-                                    put("name", "firstObject");
-                                    put("valid", false);
-                                    put("score", 100);
-                                    put("key1", "value1");
-                                }
-                            }
+                            Map.ofEntries(
+                                    entry("name", "firstObject"),
+                                    entry("valid", false),
+                                    entry("score", 100),
+                                    entry("key1", "value1"))
                         },
                         "sample.s1");
 
@@ -89,14 +87,11 @@ public class MapGetFunctionTest {
                             Integer.valueOf(2),
                             line(new int[] {3, 0, 3, 2, 3, 3, 3, 4}),
                             "object2",
-                            new HashMap<String, Object>() {
-                                {
-                                    put("name", "secondObject");
-                                    put("valid", true);
-                                    put("score", 50);
-                                    put("key1", 10);
-                                }
-                            }
+                            Map.ofEntries(
+                                    entry("name", "secondObject"),
+                                    entry("valid", true),
+                                    entry("score", 50),
+                                    entry("key1", 10))
                         },
                         "sample.s2");
 
@@ -107,13 +102,10 @@ public class MapGetFunctionTest {
                             Integer.valueOf(2),
                             line(new int[] {3, 2, 4, 2, 5, 3}),
                             "object3",
-                            new HashMap<String, Object>() {
-                                {
-                                    put("name", "thirdObject");
-                                    put("score", 70);
-                                    put("key1", true);
-                                }
-                            }
+                            Map.ofEntries(
+                                    entry("name", "thirdObject"),
+                                    entry("score", 70),
+                                    entry("key1", true))
                         },
                         "sample.s3");
     }

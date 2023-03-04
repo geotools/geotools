@@ -18,7 +18,6 @@
 package org.geotools.appschema.resolver.data;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import org.geotools.data.DataAccess;
 import org.geotools.data.FeatureSource;
@@ -93,12 +92,9 @@ public class SampleDataAccess implements DataAccess<FeatureType, Feature> {
      */
     @Override
     public List<Name> getNames() throws IOException {
-        return new ArrayList<Name>() {
-            {
-                add(SampleDataAccessData.MAPPEDFEATURE_TYPE_NAME);
-                add(SampleDataAccessData.GEOLOGICUNIT_TYPE_NAME);
-            }
-        };
+        return List.of(
+                SampleDataAccessData.MAPPEDFEATURE_TYPE_NAME,
+                SampleDataAccessData.GEOLOGICUNIT_TYPE_NAME);
     }
 
     /**

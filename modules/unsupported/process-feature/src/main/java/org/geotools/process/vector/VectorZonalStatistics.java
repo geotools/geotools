@@ -17,7 +17,6 @@
  */
 package org.geotools.process.vector;
 
-import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -132,16 +131,13 @@ public class VectorZonalStatistics implements VectorProcess {
     /** An iterator computing statistics as we go */
     static class ZonalStatisticsIterator implements SimpleFeatureIterator {
         Set<AggregationFunction> FUNCTIONS =
-                new HashSet<AggregationFunction>() {
-                    {
-                        add(AggregationFunction.Count);
-                        add(AggregationFunction.Max);
-                        add(AggregationFunction.Min);
-                        add(AggregationFunction.Sum);
-                        add(AggregationFunction.Average);
-                        add(AggregationFunction.StdDev);
-                    }
-                };
+                Set.of(
+                        AggregationFunction.Count,
+                        AggregationFunction.Max,
+                        AggregationFunction.Min,
+                        AggregationFunction.Sum,
+                        AggregationFunction.Average,
+                        AggregationFunction.StdDev);
 
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 

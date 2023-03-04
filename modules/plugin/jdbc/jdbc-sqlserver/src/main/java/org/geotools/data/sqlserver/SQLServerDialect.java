@@ -16,6 +16,8 @@
  */
 package org.geotools.data.sqlserver;
 
+import static java.util.Map.entry;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -100,40 +102,34 @@ public class SQLServerDialect extends BasicSQLDialect {
     private String tableHints;
 
     static final Map<String, Class> TYPE_TO_CLASS_MAP =
-            new HashMap<String, Class>() {
-                {
-                    put("GEOMETRY", Geometry.class);
-                    put("GEOGRAPHY", Geometry.class);
-                    put("POINT", Point.class);
-                    put("POINTM", Point.class);
-                    put("LINESTRING", LineString.class);
-                    put("LINESTRINGM", LineString.class);
-                    put("POLYGON", Polygon.class);
-                    put("POLYGONM", Polygon.class);
-                    put("MULTIPOINT", MultiPoint.class);
-                    put("MULTIPOINTM", MultiPoint.class);
-                    put("MULTILINESTRING", MultiLineString.class);
-                    put("MULTILINESTRINGM", MultiLineString.class);
-                    put("MULTIPOLYGON", MultiPolygon.class);
-                    put("MULTIPOLYGONM", MultiPolygon.class);
-                    put("GEOMETRYCOLLECTION", GeometryCollection.class);
-                    put("GEOMETRYCOLLECTIONM", GeometryCollection.class);
-                }
-            };
+            Map.ofEntries(
+                    entry("GEOMETRY", Geometry.class),
+                    entry("GEOGRAPHY", Geometry.class),
+                    entry("POINT", Point.class),
+                    entry("POINTM", Point.class),
+                    entry("LINESTRING", LineString.class),
+                    entry("LINESTRINGM", LineString.class),
+                    entry("POLYGON", Polygon.class),
+                    entry("POLYGONM", Polygon.class),
+                    entry("MULTIPOINT", MultiPoint.class),
+                    entry("MULTIPOINTM", MultiPoint.class),
+                    entry("MULTILINESTRING", MultiLineString.class),
+                    entry("MULTILINESTRINGM", MultiLineString.class),
+                    entry("MULTIPOLYGON", MultiPolygon.class),
+                    entry("MULTIPOLYGONM", MultiPolygon.class),
+                    entry("GEOMETRYCOLLECTION", GeometryCollection.class),
+                    entry("GEOMETRYCOLLECTIONM", GeometryCollection.class));
 
     static final Map<Class, String> CLASS_TO_TYPE_MAP =
-            new HashMap<Class, String>() {
-                {
-                    put(Geometry.class, "GEOMETRY");
-                    put(Point.class, "POINT");
-                    put(LineString.class, "LINESTRING");
-                    put(Polygon.class, "POLYGON");
-                    put(MultiPoint.class, "MULTIPOINT");
-                    put(MultiLineString.class, "MULTILINESTRING");
-                    put(MultiPolygon.class, "MULTIPOLYGON");
-                    put(GeometryCollection.class, "GEOMETRYCOLLECTION");
-                }
-            };
+            Map.of(
+                    Geometry.class, "GEOMETRY",
+                    Point.class, "POINT",
+                    LineString.class, "LINESTRING",
+                    Polygon.class, "POLYGON",
+                    MultiPoint.class, "MULTIPOINT",
+                    MultiLineString.class, "MULTILINESTRING",
+                    MultiPolygon.class, "MULTIPOLYGON",
+                    GeometryCollection.class, "GEOMETRYCOLLECTION");
 
     public SQLServerDialect(JDBCDataStore dataStore) {
         super(dataStore);

@@ -17,7 +17,6 @@
 
 package org.geotools.appschema.resolver.data;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -91,12 +90,7 @@ public class SampleDataAccessData {
 
     /** The schema of the sample feature type. */
     private static final List<PropertyDescriptor> MAPPEDFEATURE_TYPE_SCHEMA =
-            new ArrayList<PropertyDescriptor>() {
-                {
-                    add(SPECIFICATION_DESCRIPTOR);
-                    add(SHAPE_DESCRIPTOR);
-                }
-            };
+            List.of(SPECIFICATION_DESCRIPTOR, SHAPE_DESCRIPTOR);
 
     /** The qualified name of the sample feature type. */
     public static final Name MAPPEDFEATURE_TYPE_NAME = new NameImpl(NAMESPACE_URI, "MappedFeature");
@@ -128,23 +122,17 @@ public class SampleDataAccessData {
             final Geometry shape) {
 
         final Collection<Property> specificationFeatureProperties =
-                new ArrayList<Property>() {
-                    {
-                        add(
-                                new AttributeImpl(
-                                        specificationDescription,
-                                        new AttributeDescriptorImpl(
-                                                XSSchema.STRING_TYPE,
-                                                new NameImpl(
-                                                        "http://www.opengis.net/gml",
-                                                        "description"),
-                                                0,
-                                                1,
-                                                false,
-                                                null),
-                                        null));
-                    }
-                };
+                List.of(
+                        new AttributeImpl(
+                                specificationDescription,
+                                new AttributeDescriptorImpl(
+                                        XSSchema.STRING_TYPE,
+                                        new NameImpl("http://www.opengis.net/gml", "description"),
+                                        0,
+                                        1,
+                                        false,
+                                        null),
+                                null));
         final Feature specificationFeature =
                 new FeatureImpl(
                         specificationFeatureProperties,
@@ -152,40 +140,25 @@ public class SampleDataAccessData {
                         new FeatureIdImpl(id + ".spec"));
 
         Collection<Property> properties =
-                new ArrayList<Property>() {
-                    {
+                List.of(
                         // FIXME: should be GMLSchema.STRINGORREFTYPE_TYPE, but that is a
                         // complexType with
                         // simpleContent, not currently supported
-                        add(
-                                new AttributeImpl(
-                                        description,
-                                        new AttributeDescriptorImpl(
-                                                XSSchema.STRING_TYPE,
-                                                new NameImpl(
-                                                        "http://www.opengis.net/gml",
-                                                        "description"),
-                                                0,
-                                                1,
-                                                false,
-                                                null),
-                                        null));
-                        add(
-                                new ComplexAttributeImpl(
-                                        new ArrayList<Property>() {
-                                            {
-                                                add(specificationFeature);
-                                            }
-                                        },
-                                        SPECIFICATION_DESCRIPTOR,
-                                        null));
-                        add(
-                                new AttributeImpl(
-                                        shape,
-                                        SHAPE_DESCRIPTOR,
-                                        null)); // FIXME should be Geometry*
-                    }
-                };
+                        new AttributeImpl(
+                                description,
+                                new AttributeDescriptorImpl(
+                                        XSSchema.STRING_TYPE,
+                                        new NameImpl("http://www.opengis.net/gml", "description"),
+                                        0,
+                                        1,
+                                        false,
+                                        null),
+                                null),
+                        new ComplexAttributeImpl(
+                                List.of(specificationFeature), SPECIFICATION_DESCRIPTOR, null),
+                        new AttributeImpl(
+                                shape, SHAPE_DESCRIPTOR, null)); // FIXME should be Geometry*
+
         return new FeatureImpl(properties, MAPPEDFEATURE_TYPE, new FeatureIdImpl(id));
     }
 
@@ -195,28 +168,23 @@ public class SampleDataAccessData {
      * @return list of sample features
      */
     public static List<Feature> createMappedFeatures() {
-        return new ArrayList<Feature>() {
-            {
+        return List.of(
                 // Two sample MappedFeature from an old British Geological Survey test suite.
                 // See also mappedPolygons.properties and GeoSciMLTest.java in app-schema module.
-                add(
-                        createMappedFeature(
-                                "mf1",
-                                "651",
-                                "GUNTHORPE FORMATION",
-                                "Gunthorpe specification description",
-                                readGeometry(
-                                        "POLYGON((-1.2 52.5,-1.2 52.6,-1.1 52.6,-1.1 52.5,-1.2 52.5))")));
-                add(
-                        createMappedFeature(
-                                "mf2",
-                                "269",
-                                "MERCIA MUDSTONE GROUP",
-                                "Mercia specification description",
-                                readGeometry(
-                                        "POLYGON((-1.3 52.5,-1.3 52.6,-1.2 52.6,-1.2 52.5,-1.3 52.5))")));
-            }
-        };
+                createMappedFeature(
+                        "mf1",
+                        "651",
+                        "GUNTHORPE FORMATION",
+                        "Gunthorpe specification description",
+                        readGeometry(
+                                "POLYGON((-1.2 52.5,-1.2 52.6,-1.1 52.6,-1.1 52.5,-1.2 52.5))")),
+                createMappedFeature(
+                        "mf2",
+                        "269",
+                        "MERCIA MUDSTONE GROUP",
+                        "Mercia specification description",
+                        readGeometry(
+                                "POLYGON((-1.3 52.5,-1.3 52.6,-1.2 52.6,-1.2 52.5,-1.3 52.5))")));
     }
 
     /**

@@ -17,6 +17,8 @@
 package org.geotools.gml3;
 
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathEvaluatesTo;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -25,6 +27,7 @@ import java.util.Map;
 import org.custommonkey.xmlunit.SimpleNamespaceContext;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.geotools.data.DataUtilities;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gml2.SrsSyntax;
@@ -39,9 +42,12 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.Name;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.Attributes;
 
 public class GML3EncodingTest {
 
@@ -215,5 +221,22 @@ public class GML3EncodingTest {
 
         Document dom = XMLUnit.buildControlDocument(result);
         assertXpathEvaluatesTo("One  test", "//test:data", dom);
+    }
+
+    @Test
+    public void testEncodeFeatureMemberAttributes() throws Exception {
+        SimpleFeature feature = GML3MockData.feature();
+        Map<Name, Object> attributesMap = new HashMap<>();
+        attributesMap.put(new NameImpl("example"), "123");
+        feature.getUserData().put(Attributes.class, attributesMap);
+        GMLConfiguration configuration = new GMLConfiguration();
+
+        Encoder encoder = new Encoder(configuration);
+        Document dom = encoder.encodeAsDOM(feature, GML.featureMember);
+        Node featureNode = dom.getDocumentElement().getFirstChild();
+        assertTrue(featureNode instanceof Element);
+        Element featureElement = (Element) featureNode;
+        assertTrue(featureElement.hasAttribute("example"));
+        assertFalse(dom.getDocumentElement().hasAttribute("example"));
     }
 }

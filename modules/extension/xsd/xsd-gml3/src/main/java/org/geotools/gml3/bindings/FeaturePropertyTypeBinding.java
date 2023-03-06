@@ -139,8 +139,6 @@ public class FeaturePropertyTypeBinding extends AbstractComplexBinding {
         if (object instanceof ComplexAttribute) {
             ComplexAttribute complex = (ComplexAttribute) object;
             checkXlinkHref(complex);
-            GML3EncodingUtils.encodeClientProperties(complex, value);
-            GML3EncodingUtils.encodeSimpleContent(complex, document, value);
         }
         return value;
     }

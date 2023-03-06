@@ -18,7 +18,9 @@ package org.geotools.wfs.v2_0;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import net.opengis.wfs.FeatureCollectionType;
 import net.opengis.wfs.WfsFactory;
 import net.opengis.wfs20.Wfs20Factory;
@@ -42,10 +44,13 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
+import org.opengis.feature.type.Name;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.Attributes;
 
 public class WFSFeatureCollectionEncodingTest {
 
@@ -327,5 +332,35 @@ public class WFSFeatureCollectionEncodingTest {
                 .setPadWithZeros(true);
         configuration.getProperties().add(org.geotools.gml2.GMLConfiguration.OPTIMIZED_ENCODING);
         return new Encoder(configuration);
+    }
+
+    /** This test checks the Feature attributes are not pulled into the parent wfs:member */
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testEncodeFeatureMemberAttributes() throws Exception {
+        Map<Name, Object> attributesMap = new HashMap<>();
+        attributesMap.put(new NameImpl("example"), "123");
+
+        SimpleFeatureBuilder feature = new SimpleFeatureBuilder(store.getSchema("feature"));
+        feature.add("id1");
+        feature.add(new GeometryFactory().createPoint(new Coordinate(0, 0)));
+        feature.add(0);
+        feature.featureUserData(Attributes.class, attributesMap);
+
+        WFSConfiguration configuration = new WFSConfiguration();
+        Encoder e = new Encoder(configuration);
+        e.getNamespaces().declarePrefix("geotools", "http://geotools.org");
+        e.setIndenting(true);
+
+        Document doc = e.encodeAsDOM(feature.buildFeature("id1"), WFS.member);
+        // check the parent member element doesnt pull the attribute from feature
+        Assert.assertFalse(doc.getDocumentElement().hasAttribute("example"));
+        // Check the attribute contains the attribute
+        NodeList nodeList = doc.getDocumentElement().getElementsByTagName("geotools:feature");
+        Assert.assertTrue(nodeList.getLength() > 0);
+        Node item = nodeList.item(0);
+        Assert.assertTrue(item instanceof Element);
+        Element featureEl = (Element) item;
+        Assert.assertTrue(featureEl.hasAttribute("example"));
     }
 }

@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>extension</artifactId>
-    <version>29-SNAPSHOT</version>
+    <version>30-SNAPSHOT</version>
   </parent>
 
   <groupId>org.geotools</groupId>

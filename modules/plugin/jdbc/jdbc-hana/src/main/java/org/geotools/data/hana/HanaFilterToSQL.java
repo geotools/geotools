@@ -231,9 +231,8 @@ public class HanaFilterToSQL extends PreparedFilterToSQL {
                 out.write(", 'meter'");
             } else {
                 out.write(Double.toString(filter.getDistance()));
-                out.write(", '");
-                out.write(filter.getDistanceUnits());
-                out.write("'");
+                out.write(", ");
+                out.write(HanaUtil.toStringLiteral(filter.getDistanceUnits()));
             }
             out.write(")");
             if ((filter instanceof DWithin) != swapped) {

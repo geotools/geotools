@@ -69,7 +69,7 @@ public class WFSContentComplexFeatureCollection
     /** Making a feature collection based on a request for a type without any filter. */
     public WFSContentComplexFeatureCollection(
             GetFeatureRequest request, FeatureType schema, QName name, WFSClient client) {
-        this(request, schema, name, Filter.INCLUDE, client);
+        this(request, schema, name, null, client);
     }
 
     /** Making a feature collection based on a request for a type with a filter. */
@@ -99,6 +99,7 @@ public class WFSContentComplexFeatureCollection
                 return new ComplexFeatureIteratorImpl(parser);
             } else {
                 ComplexGetFeatureResponse response = client.issueComplexRequest(request);
+                response.getParser().setFilter(filter);
                 return response.features();
             }
         } catch (IOException e) {

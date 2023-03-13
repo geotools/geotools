@@ -35,9 +35,9 @@ import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.xml.sax.helpers.NamespaceSupport;
 
 /**
  * WFS returning complex feature source
@@ -50,19 +50,20 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  */
 public class WFSContentComplexFeatureSourceTest {
 
+    private static final String NS =
+            "http://skjema.geonorge.no/SOSI/produktspesifikasjon/StedsnavnForVanligBruk/20181115";
+
+    private static final String PREFIX = "app";
+
     private static final String STED = "Sted";
 
-    private static final Name STED_NAME =
-            new NameImpl(
-                    "http://skjema.geonorge.no/SOSI/produktspesifikasjon/StedsnavnForVanligBruk/20181115",
-                    STED);
+    private static final Name STED_NAME = new NameImpl(NS, STED);
 
-    private static final QName REMOTE_STED_NAME =
-            new QName(STED_NAME.getNamespaceURI(), STED_NAME.getLocalPart(), "app");
+    private static final QName REMOTE_STED_NAME = new QName(NS, STED, PREFIX);
 
     private static final String GEOM_FIELD_NAME = "posisjon";
 
-    private static FilterFactory ff = CommonFactoryFinder.getFilterFactory2();
+    private static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 
     private static final String DEFAULT_SRS = "urn:ogc:def:crs:EPSG::4258";
 
@@ -95,6 +96,40 @@ public class WFSContentComplexFeatureSourceTest {
         try (FeatureIterator<Feature> features = collection.features()) {
             Assert.assertTrue(features.hasNext());
             Assert.assertNotNull(features.next());
+        }
+    }
+
+    /**
+     * Expects a call for the full FILTER. The filter of subCollection is done while parsing.
+     *
+     * <p>Should handle two consequent calls on the same FeatureCollection.
+     */
+    @Test
+    public void testGetSubcollectionWithFilter() throws Exception {
+        final WFSClient client = createWFSClient(false);
+        final WFSContentDataAccess dataAccess = createDataAccess(client);
+
+        WFSContentComplexFeatureSource featureSource =
+                new WFSContentComplexFeatureSource(STED_NAME, client, dataAccess);
+
+        FeatureCollection<FeatureType, Feature> collection = featureSource.getFeatures(FILTER);
+        NamespaceSupport ns = new NamespaceSupport();
+        ns.declarePrefix(PREFIX, NS);
+
+        Filter correctFilter = ff.equals(ff.property("app:stedsnummer", ns), ff.literal(1));
+        try (FeatureIterator<Feature> features =
+                collection.subCollection(correctFilter).features()) {
+            Assert.assertTrue(features.hasNext());
+        }
+
+        Filter wrongFilter = ff.equal(ff.property("app:stedsnummer", ns), ff.literal(2));
+        try (FeatureIterator<Feature> features = collection.subCollection(wrongFilter).features()) {
+            Assert.assertFalse(features.hasNext());
+        }
+
+        try (FeatureIterator<Feature> features =
+                collection.subCollection(Filter.INCLUDE).features()) {
+            Assert.assertTrue(features.hasNext());
         }
     }
 

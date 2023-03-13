@@ -18,9 +18,9 @@ package org.geotools.gml3;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.xmlunit.matchers.EvaluateXPathMatcher.hasXPath;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.xmlunit.matchers.EvaluateXPathMatcher.hasXPath;
 
 import java.math.BigDecimal;
 import java.util.Date;

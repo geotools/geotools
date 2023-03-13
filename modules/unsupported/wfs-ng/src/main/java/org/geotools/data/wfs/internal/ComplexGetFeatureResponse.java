@@ -43,7 +43,16 @@ public class ComplexGetFeatureResponse extends WFSResponse {
         this.parser = parser;
     }
 
-    /** Should only be called once. Call close() after use. */
+    /**
+     * The parser that will be used to extract features from the http response.
+     *
+     * <p>Should only be called before calling {@link #features()}
+     */
+    public XmlComplexFeatureParser getParser() {
+        return this.parser;
+    }
+
+    /** Should only be called once. Call {@link FeatureIterator#close()} after use. */
     public FeatureIterator<Feature> features() {
         return new ComplexFeatureIteratorImpl(parser);
     }

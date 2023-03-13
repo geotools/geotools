@@ -136,6 +136,11 @@ public class XmlComplexFeatureParser extends XmlFeatureParser<FeatureType, Featu
         this.filter = filter;
     }
 
+    /** Sets a filter that is evaluated against the returned features. */
+    public void setFilter(Filter filter) {
+        this.filter = filter;
+    }
+
     /** Search for and parse the next feature. */
     @Override
     public Feature parse() throws IOException {

@@ -37,7 +37,7 @@ public class YsldRepresenter extends Representer {
     UomMapper uomMapper;
 
     public YsldRepresenter(UomMapper uomMapper) {
-        super();
+        super(new DumperOptions());
         this.multiRepresenters.put(Color.class, new RepresentColor());
         this.multiRepresenters.put(Unit.class, new RepresentUom());
         this.multiRepresenters.put(Tuple.class, new RepresentTuple());

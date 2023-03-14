@@ -106,7 +106,7 @@ import org.opengis.style.Mark;
 import org.opengis.style.PointPlacement;
 import org.opengis.style.RasterSymbolizer;
 import org.opengis.style.SelectedChannelType;
-import org.yaml.snakeyaml.constructor.ConstructorException;
+import org.yaml.snakeyaml.composer.ComposerException;
 
 @SuppressWarnings("unchecked") // unchecked generics array creation due to Hamcrest
 public class YsldParseTest {
@@ -2338,8 +2338,8 @@ public class YsldParseTest {
             String yaml = "!!java.util.Date\n" + "date: 25\n" + "month: 12\n" + "year: 2016";
             Ysld.parse(yaml);
             fail("Expected parsing to fail");
-        } catch (ConstructorException e) {
-            assertThat(e.getMessage(), containsString("could not determine a constructor"));
+        } catch (ComposerException e) {
+            assertThat(e.getMessage(), containsString("Global tag is not allowed"));
         }
     }
 

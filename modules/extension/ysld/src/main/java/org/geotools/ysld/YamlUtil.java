@@ -17,6 +17,7 @@
 package org.geotools.ysld;
 
 import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 import org.yaml.snakeyaml.representer.Representer;
@@ -29,10 +30,10 @@ public class YamlUtil {
     }
 
     public static Yaml getSafeYaml(DumperOptions dumperOptions) {
-        return getSafeYaml(new Representer(), dumperOptions);
+        return getSafeYaml(new Representer(dumperOptions), dumperOptions);
     }
 
     public static Yaml getSafeYaml(Representer representer, DumperOptions dumperOptions) {
-        return new Yaml(new SafeConstructor(), representer, dumperOptions);
+        return new Yaml(new SafeConstructor(new LoaderOptions()), representer, dumperOptions);
     }
 }

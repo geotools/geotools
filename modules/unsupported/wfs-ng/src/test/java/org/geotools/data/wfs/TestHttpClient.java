@@ -57,7 +57,8 @@ public class TestHttpClient extends MockHttpClient {
         this.targetUrl = url;
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         IOUtils.copy(postContent, out);
-        String strippedPostContent = out.toString().replaceAll("handle=\"(.*?)\"", "");
+        String strippedPostContent =
+                out.toString().replaceAll("handle=\"(.*?)\"", "").replaceAll("\\r\\n?", "\n");
 
         return super.post(
                 url, new ByteArrayInputStream(strippedPostContent.getBytes()), postContentType);
@@ -66,7 +67,11 @@ public class TestHttpClient extends MockHttpClient {
     @Override
     public void expectPost(
             URL url, String postContent, String postContentType, HTTPResponse response) {
-        String strippedPostContent = postContent.toString().replaceAll("handle=\"(.*?)\"", "");
+        String strippedPostContent =
+                postContent
+                        .toString()
+                        .replaceAll("handle=\"(.*?)\"", "")
+                        .replaceAll("\\r\\n?", "\n");
         super.expectPost(url, strippedPostContent, postContentType, response);
     }
 }

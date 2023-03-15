@@ -229,6 +229,27 @@ public class WebMapTileServerTest {
         assertNotNull(tileRequest.getFinalURL());
     }
 
+    @Test
+    public void testGetTileWithMissingOperationaMetadata() throws Exception {
+        WebMapTileServer server =
+                new WebMapTileServer(
+                        new URL("https://basemaps.linz.govt.nz/"),
+                        WMTSTestUtils.createCapabilities("linz_basemaps_capabilities.xml"));
+
+        GetTileRequest request = server.createGetTileRequest(false);
+        request.setLayer(server.getCapabilities().getLayer("aerial"));
+        request.setTileMatrixSet("EPSG:3857");
+        request.setTileMatrix("11");
+        request.setFormat("image/png");
+        request.setStyle("default");
+        request.setTileCol(1034);
+        request.setTileRow(98);
+        String finalUrl = request.getFinalURL().toExternalForm();
+        assertEquals(
+                "https://basemaps.linz.govt.nz/v1/tiles/aerial/EPSG%3A3857/11/1034/98.png?api=c01fs6b2h1d6n21skpfda8r9nas",
+                finalUrl);
+    }
+
     private static class CheckHeadersHttpClient extends AbstractHttpClient {
 
         @Override

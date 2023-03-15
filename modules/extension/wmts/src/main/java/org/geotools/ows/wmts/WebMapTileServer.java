@@ -265,12 +265,11 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
 
     /** The URL for RESTful can't be established at this point, but it can't be null either. */
     private URL findGetTileURL(OperationType operation) {
-        if (operation == null) {
-            return null;
-        }
         switch (type) {
             case KVP:
-                return operation.getGet() != null ? operation.getGet() : serverURL;
+                return operation != null && operation.getGet() != null
+                        ? operation.getGet()
+                        : serverURL;
             case REST:
                 return serverURL;
             default:

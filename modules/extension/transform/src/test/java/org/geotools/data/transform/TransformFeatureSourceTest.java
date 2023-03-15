@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.ResourceInfo;
@@ -237,6 +238,14 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
         expected = transformed.getCount(new Query("usa", CQL.toFilter("name = 'Illinois'")));
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testFidFilterRename() throws Exception {
+        SimpleFeatureSource transformed = transformWithRename();
+        SimpleFeatureCollection fc = transformed.getFeatures(FF.id(FF.featureId("usa.1")));
+        assertEquals(1, fc.size());
+        assertEquals("Illinois", DataUtilities.first(fc).getAttribute("name"));
     }
 
     @Test

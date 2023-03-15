@@ -126,7 +126,8 @@ class Transformer {
         if (sample == null) {
             throw new IllegalStateException(
                     "Cannot compute the target feature type from the "
-                            + "definitions by static analysis, and the source does not have any feature "
+                            + "definitions by static analysis, and the source does not have any "
+                            + "feature "
                             + "that we can use as a sample to compute the target type dynamically");
         }
 
@@ -225,7 +226,9 @@ class Transformer {
      * original data
      */
     Filter transformFilter(Filter filter) {
-        TransformFilterVisitor transformer = new TransformFilterVisitor(expressions);
+        TransformFilterVisitor transformer =
+                new TransformFilterVisitor(
+                        source.getSchema().getTypeName(), name.getLocalPart(), expressions);
         return (Filter) filter.accept(transformer, null);
     }
 
@@ -234,7 +237,9 @@ class Transformer {
      * the original data
      */
     Expression transformExpression(Expression expression) {
-        TransformFilterVisitor transformer = new TransformFilterVisitor(expressions);
+        TransformFilterVisitor transformer =
+                new TransformFilterVisitor(
+                        source.getSchema().getTypeName(), name.getLocalPart(), expressions);
         return (Expression) expression.accept(transformer, null);
     }
 

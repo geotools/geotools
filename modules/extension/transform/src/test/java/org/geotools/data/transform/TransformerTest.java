@@ -53,4 +53,17 @@ public class TransformerTest extends AbstractTransformTest {
         assertEquals(10, transformedQuery.getStartIndex().intValue());
         assertEquals(5, transformedQuery.getMaxFeatures());
     }
+
+    @Test
+    public void testTransformFids() throws Exception {
+        TransformFeatureSource transformedSource = (TransformFeatureSource) transformWithRename();
+
+        Query query = new Query(Query.ALL);
+        query.setFilter(FF.id(FF.featureId("usa.1")));
+
+        Query transformedQuery = transformedSource.transformer.transformQuery(query);
+        assertNotNull(transformedQuery);
+        assertNotNull(transformedQuery.getFilter());
+        assertEquals(FF.id(FF.featureId("states.1")), transformedQuery.getFilter());
+    }
 }

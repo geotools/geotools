@@ -422,7 +422,7 @@ public class FeatureTypes {
         for (int i = 0; i < schema.getDescriptors().size(); i++) {
             if (schema.getDescriptor(i) instanceof GeometryDescriptor) {
                 GeometryDescriptor descr = (GeometryDescriptor) schema.getDescriptor(i);
-                if (!crs.equals(descr.getCoordinateReferenceSystem())
+                if (!CRS.equalsIgnoreMetadata(crs, descr.getCoordinateReferenceSystem())
                         && CRS.isCompatible(descr.getCoordinateReferenceSystem(), crs, false)) {
                     return true;
                 }

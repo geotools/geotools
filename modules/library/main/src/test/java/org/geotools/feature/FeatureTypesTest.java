@@ -9,6 +9,9 @@ import java.util.Arrays;
 import java.util.List;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Assert;
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
@@ -20,6 +23,8 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /** Test FeatureTypes utility class abilities to inspect FeatureType data structure. */
 public class FeatureTypesTest {
@@ -189,5 +194,40 @@ public class FeatureTypesTest {
         builder.addRestriction(restriction);
         builder.setBinding(String.class);
         return builder.buildDescriptor("attribute");
+    }
+
+    @Test
+    public void testShouldNotReproject() throws FactoryException {
+        CoordinateReferenceSystem wgs84FromConstant = DefaultGeographicCRS.WGS84;
+        String crsDefinition =
+                "GEOGCS[\"WGS84(DD)\",DATUM[\"WGS84\",SPHEROID[\"WGS84\", 6378137.0, 298.257223563]],"
+                        + "PRIMEM[\"Greenwich\", 0.0],UNIT[\"degree\", 0.017453292519943295],AXIS[\"Geodetic longitude\", "
+                        + "EAST],AXIS[\"Geodetic latitude\",NORTH],AUTHORITY[\"EPSG\",\"4326\"]]";
+        CoordinateReferenceSystem fromWKT =
+                ReferencingFactoryFinder.getCRSFactory(null).createFromWKT(crsDefinition);
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName("NoLength");
+        builder.setCRS(fromWKT);
+        builder.add("name", String.class);
+        builder.add("geom", Point.class, fromWKT);
+        SimpleFeatureType ft = builder.buildFeatureType();
+        // check the util method result
+        boolean shouldReproject = FeatureTypes.shouldReproject(ft, wgs84FromConstant);
+        Assert.assertFalse(shouldReproject);
+    }
+
+    @Test
+    public void testShouldReproject() throws FactoryException {
+        CoordinateReferenceSystem wgs84FromConstant = DefaultGeographicCRS.WGS84;
+        CoordinateReferenceSystem mercatorCRS = CRS.decode("EPSG:3857");
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName("NoLength");
+        builder.setCRS(mercatorCRS);
+        builder.add("name", String.class);
+        builder.add("geom", Point.class, mercatorCRS);
+        SimpleFeatureType ft = builder.buildFeatureType();
+        // check the util method result
+        boolean shouldReproject = FeatureTypes.shouldReproject(ft, wgs84FromConstant);
+        Assert.assertTrue(shouldReproject);
     }
 }

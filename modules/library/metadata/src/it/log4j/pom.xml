@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.geotools.tutorial</groupId>
   <artifactId>log4j</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>C105.27.4.01</version>
   <packaging>jar</packaging>
   <name>GeoTools Log4j Integration Example</name>
   <properties>

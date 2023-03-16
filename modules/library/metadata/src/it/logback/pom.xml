@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.geotools.tutorial</groupId>
   <artifactId>logback</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>C105.27.4.01</version>
   <packaging>jar</packaging>
   <name>GeoTools Logback Integration Example</name>
   <properties>

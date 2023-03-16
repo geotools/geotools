@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.geotools</groupId>
     <artifactId>tutorial</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>C105.27.4.01</version>
     <packaging>jar</packaging>
     <name>tutorial</name>
     <url>http://maven.apache.org</url>

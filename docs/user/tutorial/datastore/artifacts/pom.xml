@@ -4,7 +4,7 @@
 
  <groupId>org.geotools.tutorial</groupId>
  <artifactId>csv</artifactId>
- <version>0.0.1-SNAPSHOT</version>
+ <version>C105.27.4.01</version>
  <packaging>jar</packaging>
 
  <name>CSV DataStore</name>

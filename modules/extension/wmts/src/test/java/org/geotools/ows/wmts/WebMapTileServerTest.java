@@ -37,6 +37,7 @@ import org.geotools.http.AbstractHttpClient;
 import org.geotools.http.HTTPResponse;
 import org.geotools.http.MockHttpClient;
 import org.geotools.http.MockHttpResponse;
+import org.geotools.ows.ServiceException;
 import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wmts.WMTSSpecification.GetSingleTileRequest;
 import org.geotools.ows.wmts.model.TileMatrixSet;
@@ -51,6 +52,8 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.tile.Tile;
 import org.junit.Assert;
 import org.junit.Test;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /** @author Emanuele Tajariol (etj at geo-solutions dot it) */
@@ -319,6 +322,34 @@ public class WebMapTileServerTest {
         Assert.assertEquals(
                 "https://sgx.geodatenzentrum.de/wmts_topplus_open/tile/1.0.0/web_light/default/EU_EPSG_25832_TOPPLUS/05/79/111.png",
                 tile.getUrl().toExternalForm());
+    }
+
+    @Test
+    public void testGetTile()
+            throws ServiceException, IOException, NoSuchAuthorityCodeException, FactoryException {
+        URL url =
+                new URL(
+                        "https://sgx.geodatenzentrum.de/wmts_basemapde_schummerung/1.0.0/WMTSCapabilities.xml");
+        WebMapTileServer wmts = new WebMapTileServer(url);
+        WMTSCapabilities capabilities = wmts.getCapabilities();
+        WMTSLayer layer = capabilities.getLayer("de_basemapde_web_raster_hillshade");
+        TileMatrixSet matrixSet = capabilities.getMatrixSet("GLOBAL_WEBMERCATOR");
+
+        GetTileRequest request = wmts.createGetTileRequest(false);
+        request.setLayer(layer);
+        CoordinateReferenceSystem requestCrs = matrixSet.getCoordinateReferenceSystem();
+        request.setCRS(requestCrs);
+        request.setFormat(layer.getFormats().get(0));
+        request.setTileMatrixSet(matrixSet.getIdentifier());
+        request.setTileMatrix("11");
+        request.setTileRow(693);
+        request.setTileCol(1094);
+        URL finalUrl = request.getFinalURL();
+
+        String expected =
+                "https://sgx.geodatenzentrum.de/wmts_basemapde_schummerung/tile/1.0.0/de_basemapde_web_raster_hillshade/default/GLOBAL_WEBMERCATOR/11/693/1094.png";
+
+        Assert.assertEquals(expected, finalUrl.toExternalForm());
     }
 
     private WebMapTileServer createServer(URL serverUrl, String resourceName) throws Exception {

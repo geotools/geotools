@@ -16,7 +16,6 @@
  */
 package org.geotools.data.geojson;
 
-import com.bedatadriven.jackson.datatype.jts.JtsModule;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -50,6 +49,7 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.n52.jackson.datatype.jts.JtsModule;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.GeometryType;
@@ -103,7 +103,7 @@ public class GeoJSONWriter implements AutoCloseable {
     private boolean inArray = false;
 
     private boolean encodeFeatureCollectionCRS = false;
-    private final JtsModule module;
+
     private NumberFormat formatter = NumberFormat.getNumberInstance(Locale.ENGLISH);
     private boolean notWritenBbox = true;
     private boolean singleFeature = false;
@@ -123,9 +123,7 @@ public class GeoJSONWriter implements AutoCloseable {
         } catch (FactoryException e) {
             throw new RuntimeException("CRS factory not found in GeoJSONDatastore writer", e);
         }
-        mapper = new ObjectMapper();
-        module = new JtsModule(maxDecimals);
-        mapper.registerModule(module);
+        mapper = ObjectMapperFactory.getDefaultMapper(maxDecimals);
 
         if (outputStream instanceof BufferedOutputStream) {
             this.out = outputStream;
@@ -271,6 +269,8 @@ public class GeoJSONWriter implements AutoCloseable {
                                     mapper.getSerializerProvider(),
                                     mapper.getSerializationConfig(),
                                     mapper.getSerializerFactory()) {
+                                private static final long serialVersionUID = -890719419034427451L;
+
                                 @Override
                                 public DefaultSerializerProvider createInstance(
                                         SerializationConfig config, SerializerFactory jsf) {
@@ -447,7 +447,7 @@ public class GeoJSONWriter implements AutoCloseable {
      */
     public void setMaxDecimals(int number) {
         maxDecimals = number;
-        module.setMaxDecimals(number);
+        mapper = ObjectMapperFactory.getDefaultMapper(number);
     }
 
     /** Encodes the whole feature collection onto the output */

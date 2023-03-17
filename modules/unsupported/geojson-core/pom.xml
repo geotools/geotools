@@ -36,6 +36,11 @@
     </dependency>
 
     <dependency>
+      <groupId>org.n52.jackson</groupId>
+      <artifactId>jackson-datatype-jts</artifactId>
+      <version>1.2.10</version>
+    </dependency>
+    <dependency>
       <groupId>org.easymock</groupId>
       <artifactId>easymock</artifactId>
       <scope>test</scope>

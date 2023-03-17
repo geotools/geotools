@@ -16,8 +16,8 @@
  */
 package org.geotools.data.geojson;
 
-import com.bedatadriven.jackson.datatype.jts.JtsModule;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.n52.jackson.datatype.jts.JtsModule;
 
 /**
  * Support class providing {@link com.fasterxml.jackson.databind.ObjectMapper} instances configured
@@ -41,6 +41,13 @@ class ObjectMapperFactory {
      * @return
      */
     public static ObjectMapper getDefaultMapper() {
+        return DEFAULT_MAPPER;
+    }
+
+    public static ObjectMapper getDefaultMapper(int maxDecimals) {
+        // I can't work out how to deregister a module from the mapper so make a new one.
+        DEFAULT_MAPPER = new ObjectMapper();
+        DEFAULT_MAPPER.registerModule(new JtsModule(maxDecimals));
         return DEFAULT_MAPPER;
     }
 }

@@ -13,7 +13,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>modules</artifactId>
-    <version>C105.27.4.02</version>
+    <version>C105.27.4.03</version>
   </parent>
 
   <!-- =========================================================== -->

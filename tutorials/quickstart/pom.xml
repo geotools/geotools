@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.geotools.tutorial</groupId>
   <artifactId>quickstart</artifactId>
-  <version>C105.27.4.02</version>
+  <version>C105.27.4.03</version>
   <packaging>jar</packaging>
   <name>GeoTools Quickstart</name>
   <url>http://maven.apache.org</url>

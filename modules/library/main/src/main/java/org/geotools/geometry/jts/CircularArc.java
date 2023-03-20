@@ -293,6 +293,12 @@ public class CircularArc {
                 double k1 = -(mx - sx) / (my - sy);
                 double k2 = -(ex - sx) / (ey - sy);
 
+                /* Check collinearity */
+                if (abs((k1 - k2)) < EPS) {
+                    radius = COLLINEARS;
+                    return;
+                }
+
                 centerX = (midY2 - midY1 - k2 * midX2 + k1 * midX1) / (k1 - k2);
                 centerY = midY1 + k1 * (midY2 - midY1 - k2 * midX2 + k2 * midX1) / (k1 - k2);
 

@@ -98,6 +98,23 @@ public class CircularArcTest {
         assertEquals(envelopeFrom(arc), arc.getEnvelope());
         assertEquals(0, arc.getEnvelope().getArea(), 0d);
     }
+    
+    @Test
+    public void testCalCenter() {
+        CircularArc arc = new CircularArc(3.8576532966E7, 2544522.8998000007, 3.8576533116106E7, 2544523.27624, 3.85765334913E7, 2544523.338199999);
+        Coordinate center = arc.getCenter();
+        // Compare center point
+        assertEquals(new Coordinate(3.857653336096849E7, 2544522.960453221), center);
+
+        // Linearize the arc
+        double[] linearizedCoords = arc.linearize(0.01);
+        final GrowableOrdinateArray gar = new GrowableOrdinateArray();
+        gar.addAll(linearizedCoords);
+        GeometryFactory gf = new GeometryFactory();
+        LineString line = new LineString(gar.toCoordinateSequence(gf), gf);
+        // Output linearized wkt
+        System.out.println(line.toText());
+    }
 
     @Test
     public void testMinuscule() {

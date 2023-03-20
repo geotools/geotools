@@ -269,8 +269,6 @@ public class CircularArc {
 
     private void initializeCenterRadius() {
         if (Double.isNaN(radius)) {
-            double temp, bc, cd, determinate;
-
             final double sx = controlPoints[0];
             final double sy = controlPoints[1];
             final double mx = controlPoints[2];
@@ -285,19 +283,18 @@ public class CircularArc {
 
                 radius = sqrt((centerX - sx) * (centerX - sx) + (centerY - sy) * (centerY - sy));
             } else {
-                temp = mx * mx + my * my;
-                bc = (sx * sx + sy * sy - temp) / 2.0;
-                cd = (temp - ex * ex - ey * ey) / 2.0;
-                determinate = (sx - mx) * (my - ey) - (mx - ex) * (sy - my);
+                /* Find the center and radius of the circle through the intersection point of the perpendicular line between two points */
 
-                /* Check collinearity */
-                if (abs(determinate) < EPS) {
-                    radius = COLLINEARS;
-                    return;
-                }
-                determinate = 1.0 / determinate;
-                centerX = (bc * (my - ey) - cd * (sy - my)) * determinate;
-                centerY = ((sx - mx) * cd - (mx - ex) * bc) * determinate;
+                double midX1 = (mx + sx) / 2.0;
+                double midY1 = (my + sy) / 2.0;
+                double midX2 = (ex + sx) / 2.0;
+                double midY2 = (ey + sy) / 2.0;
+
+                double k1 = -(mx - sx) / (my - sy);
+                double k2 = -(ex - sx) / (ey - sy);
+
+                centerX = (midY2 - midY1 - k2 * midX2 + k1 * midX1) / (k1 - k2);
+                centerY = midY1 + k1 * (midY2 - midY1 - k2 * midX2 + k2 * midX1) / (k1 - k2);
 
                 radius = sqrt((centerX - sx) * (centerX - sx) + (centerY - sy) * (centerY - sy));
             }

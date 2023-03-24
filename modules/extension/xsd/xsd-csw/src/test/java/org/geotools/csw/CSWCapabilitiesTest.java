@@ -6,14 +6,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.xmlunit.matchers.EvaluateXPathMatcher.hasXPath;
 
 import java.io.StringReader;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.xml.transform.Source;
 import net.opengis.cat.csw20.CapabilitiesType;
 import net.opengis.cat.csw20.Csw20Factory;
 import net.opengis.cat.csw20.GetCapabilitiesType;
@@ -30,6 +27,7 @@ import net.opengis.ows10.ServiceIdentificationType;
 import net.opengis.ows10.ServiceProviderType;
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.gml2.GML;
+import org.geotools.test.xml.XmlTestSupport;
 import org.geotools.xsd.Encoder;
 import org.geotools.xsd.EncoderDelegate;
 import org.geotools.xsd.Parser;
@@ -45,21 +43,20 @@ import org.opengis.filter.capability.SpatialCapabilities;
 import org.opengis.filter.capability.SpatialOperators;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.helpers.AttributesImpl;
-import org.xmlunit.builder.Input;
 
-public class CSWCapabilitiesTest {
+public class CSWCapabilitiesTest extends XmlTestSupport {
 
     private static final String RIM_NAMESPACE = "urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0";
 
-    private static Map<String, String> NAMESPACES = new HashMap<>();
-
-    static {
-        NAMESPACES.put("csw", CSW.NAMESPACE);
-        NAMESPACES.put("ows", OWS.NAMESPACE);
-        NAMESPACES.put("rim", RIM_NAMESPACE);
-    }
-
     Parser parser = new Parser(new CSWConfiguration());
+
+    @Override
+    protected Map<String, String> getNamespaces() {
+        return namespaces(
+                Namespace("csw", CSW.NAMESPACE),
+                Namespace("ows", OWS.NAMESPACE),
+                Namespace("rim", RIM_NAMESPACE));
+    }
 
     @Test
     public void testParseCapabilitiesRequest() throws Exception {
@@ -220,20 +217,15 @@ public class CSWCapabilitiesTest {
         encoder.getNamespaces().declarePrefix("gml", GML.NAMESPACE);
         String encoded = encoder.encodeAsString(caps, CSW.Capabilities);
 
-        // System.out.println(encoded);
-
-        Source actual = Input.fromString(encoded).build();
         assertThat(
-                actual,
+                encoded,
                 hasXPath(
-                                "/csw:Capabilities/ows:OperationsMetadata/rim:Slot/@rim:test",
-                                equalTo("test"))
-                        .withNamespaceContext(NAMESPACES));
+                        "/csw:Capabilities/ows:OperationsMetadata/rim:Slot/@rim:test",
+                        equalTo("test")));
         assertThat(
-                actual,
+                encoded,
                 hasXPath(
-                                "/csw:Capabilities/ows:OperationsMetadata/rim:Slot",
-                                equalTo("test content"))
-                        .withNamespaceContext(NAMESPACES));
+                        "/csw:Capabilities/ows:OperationsMetadata/rim:Slot",
+                        equalTo("test content")));
     }
 }

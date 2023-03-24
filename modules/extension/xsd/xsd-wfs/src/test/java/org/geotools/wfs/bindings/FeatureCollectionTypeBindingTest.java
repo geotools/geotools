@@ -21,6 +21,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.net.URL;
+import java.util.Map;
 import net.opengis.wfs.FeatureCollectionType;
 import net.opengis.wfs.WfsFactory;
 import org.geotools.feature.DefaultFeatureCollection;
@@ -49,11 +50,14 @@ public class FeatureCollectionTypeBindingTest extends WFSTestSupport {
     }
 
     @Override
+    protected Map<String, String> getNamespaces() {
+        return namespaces(Namespace("geotools", "http://geotools.org"));
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     @Test
     public void testEncode() throws Exception {
-
-        namespaceMappings.put("geotools", "http://geotools.org");
 
         DefaultFeatureCollection features = new DefaultFeatureCollection(null, null);
 

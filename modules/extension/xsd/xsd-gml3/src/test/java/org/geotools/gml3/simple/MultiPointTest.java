@@ -18,15 +18,12 @@ package org.geotools.gml3.simple;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.xmlunit.matchers.EvaluateXPathMatcher.hasXPath;
 
-import javax.xml.transform.Source;
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.gml3.GML;
 import org.junit.Test;
 import org.locationtech.jts.geom.MultiPoint;
 import org.w3c.dom.Document;
-import org.xmlunit.builder.Input;
 
 public class MultiPointTest extends GeometryEncoderTestSupport {
     @Test
@@ -34,33 +31,24 @@ public class MultiPointTest extends GeometryEncoderTestSupport {
         MultiPointEncoder encoder = new MultiPointEncoder(gtEncoder, "gml", GML.NAMESPACE);
         MultiPoint geometry = (MultiPoint) new WKTReader2().read("MULTIPOINT(0 0, 1 1)");
         Document doc = encode(encoder, geometry, "points");
-        // print(doc);
-        Source actual = Input.fromDocument(doc).build();
         assertThat(
-                actual,
-                hasXPath("/gml:MultiPoint/gml:pointMember[1]/gml:Point/gml:pos", equalTo("0 0"))
-                        .withNamespaceContext(NAMESPACES));
+                doc,
+                hasXPath("/gml:MultiPoint/gml:pointMember[1]/gml:Point/gml:pos", equalTo("0 0")));
         assertThat(
-                actual,
-                hasXPath("/gml:MultiPoint/gml:pointMember[2]/gml:Point/gml:pos", equalTo("1 1"))
-                        .withNamespaceContext(NAMESPACES));
+                doc,
+                hasXPath("/gml:MultiPoint/gml:pointMember[2]/gml:Point/gml:pos", equalTo("1 1")));
         // ids
+        assertThat(doc, hasXPath("/gml:MultiPoint/@gml:id", equalTo("points")));
         assertThat(
-                actual,
-                hasXPath("/gml:MultiPoint/@gml:id", equalTo("points"))
-                        .withNamespaceContext(NAMESPACES));
-        assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "/gml:MultiPoint/gml:pointMember[1]/gml:Point/@gml:id",
-                                equalTo("points.1"))
-                        .withNamespaceContext(NAMESPACES));
+                        "/gml:MultiPoint/gml:pointMember[1]/gml:Point/@gml:id",
+                        equalTo("points.1")));
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "/gml:MultiPoint/gml:pointMember[2]/gml:Point/@gml:id",
-                                equalTo("points.2"))
-                        .withNamespaceContext(NAMESPACES));
+                        "/gml:MultiPoint/gml:pointMember[2]/gml:Point/@gml:id",
+                        equalTo("points.2")));
     }
 
     /** no encode gml:id test */
@@ -70,10 +58,9 @@ public class MultiPointTest extends GeometryEncoderTestSupport {
         MultiPoint geometry = (MultiPoint) new WKTReader2().read("MULTIPOINT(0 0, 1 1)");
         Document doc = encode(encoder, geometry, "points");
 
-        Source actual = Input.fromDocument(doc).build();
         assertThat(
-                actual,
-                hasXPath("count(//gml:MultiPoint/gml:pointMember/gml:Point/@gml:id)", equalTo("0"))
-                        .withNamespaceContext(NAMESPACES));
+                doc,
+                hasXPath(
+                        "count(//gml:MultiPoint/gml:pointMember/gml:Point/@gml:id)", equalTo("0")));
     }
 }

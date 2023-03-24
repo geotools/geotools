@@ -19,15 +19,12 @@ package org.geotools.gml3.v3_2.bindings;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.xmlunit.matchers.EvaluateXPathMatcher.hasXPath;
 
-import javax.xml.transform.Source;
 import org.geotools.gml3.bindings.GML3MockData;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.gml3.v3_2.GML32TestSupport;
 import org.junit.Test;
 import org.w3c.dom.Document;
-import org.xmlunit.builder.Input;
 
 public class LinearRingTypeBindingTest extends GML32TestSupport {
     //    public void testPos() throws Exception {
@@ -61,11 +58,7 @@ public class LinearRingTypeBindingTest extends GML32TestSupport {
 
         assertEquals("gml:LinearRing", d.getDocumentElement().getNodeName());
 
-        Source actual = Input.fromDocument(d).build();
-        assertThat(
-                actual,
-                hasXPath("/gml:LinearRing/gml:posList", notNullValue(String.class))
-                        .withNamespaceContext(NAMESPACES));
+        assertThat(d, hasXPath("/gml:LinearRing/gml:posList", notNullValue(String.class)));
 
         // print(d);
     }

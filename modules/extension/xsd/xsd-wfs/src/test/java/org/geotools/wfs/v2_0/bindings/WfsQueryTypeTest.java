@@ -24,12 +24,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.xmlunit.matchers.EvaluateXPathMatcher.hasXPath;
 
-import java.util.HashMap;
 import java.util.Map;
 import javax.xml.namespace.QName;
-import javax.xml.transform.Source;
 import net.opengis.wfs20.QueryType;
 import net.opengis.wfs20.Wfs20Factory;
 import org.geotools.factory.CommonFactoryFinder;
@@ -41,15 +38,12 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.sort.SortOrder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.xmlunit.builder.Input;
 
 public class WfsQueryTypeTest extends WFSTestSupport {
 
-    private static Map<String, String> NAMESPACES = new HashMap<>();
-
-    static {
-        NAMESPACES.put("wfs", WFS.NAMESPACE);
-        NAMESPACES.put("fes", FES.NAMESPACE);
+    @Override
+    protected Map<String, String> getNamespaces() {
+        return namespaces(Namespace("wfs", WFS.NAMESPACE), Namespace("fes", FES.NAMESPACE));
     }
 
     @Test
@@ -73,34 +67,23 @@ public class WfsQueryTypeTest extends WFSTestSupport {
         assertNotEquals(attr.indexOf(tmp), -1);
         assertEquals(attr.length(), attr.indexOf(tmp) + tmp.length()); // 8 == ":theType".length
 
-        Source actual = Input.fromDocument(doc).build();
+        assertThat(doc, hasXPath("//wfs:Query", notNullValue(String.class)));
+        assertThat(doc, hasXPath("//wfs:Query/fes:SortBy", notNullValue(String.class)));
         assertThat(
-                actual,
-                hasXPath("//wfs:Query", notNullValue(String.class))
-                        .withNamespaceContext(NAMESPACES));
+                doc,
+                hasXPath("//wfs:Query/fes:SortBy/fes:SortProperty", notNullValue(String.class)));
         assertThat(
-                actual,
-                hasXPath("//wfs:Query/fes:SortBy", notNullValue(String.class))
-                        .withNamespaceContext(NAMESPACES));
-        assertThat(
-                actual,
-                hasXPath("//wfs:Query/fes:SortBy/fes:SortProperty", notNullValue(String.class))
-                        .withNamespaceContext(NAMESPACES));
-        assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//wfs:Query/fes:SortBy/fes:SortProperty/fes:ValueReference",
-                                notNullValue(String.class))
-                        .withNamespaceContext(NAMESPACES));
+                        "//wfs:Query/fes:SortBy/fes:SortProperty/fes:ValueReference",
+                        notNullValue(String.class)));
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//wfs:Query/fes:SortBy/fes:SortProperty/fes:ValueReference",
-                                equalTo("myProperty"))
-                        .withNamespaceContext(NAMESPACES));
+                        "//wfs:Query/fes:SortBy/fes:SortProperty/fes:ValueReference",
+                        equalTo("myProperty")));
         assertThat(
-                actual,
-                hasXPath("//wfs:Query/fes:SortBy/fes:SortProperty/fes:SortOrder", equalTo("ASC"))
-                        .withNamespaceContext(NAMESPACES));
+                doc,
+                hasXPath("//wfs:Query/fes:SortBy/fes:SortProperty/fes:SortOrder", equalTo("ASC")));
     }
 }

@@ -18,16 +18,13 @@ package org.geotools.gml3.simple;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.xmlunit.matchers.EvaluateXPathMatcher.hasXPath;
 
-import javax.xml.transform.Source;
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.gml3.GML;
 import org.junit.Test;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.io.ParseException;
 import org.w3c.dom.Document;
-import org.xmlunit.builder.Input;
 
 /**
  * Unit test for GeometryCollectionEncoder
@@ -47,50 +44,34 @@ public class GeometryCollectionEncoderTest extends GeometryEncoderTestSupport {
                                                 + " (180 200, 160 180), POINT (19 19), POINT (20 10))");
         Document doc = encode(gce, geometry, "feature.1");
         // XMLTestSupport.print(doc);
-        Source actual = Input.fromDocument(doc).build();
+        assertThat(doc, hasXPath("count(//gml:LineString)", equalTo("1")));
+        assertThat(doc, hasXPath("count(//gml:Point)", equalTo("2")));
+        assertThat(doc, hasXPath("count(//gml:MultiGeometry)", equalTo("1")));
         assertThat(
-                actual,
-                hasXPath("count(//gml:LineString)", equalTo("1")).withNamespaceContext(NAMESPACES));
-        assertThat(
-                actual,
-                hasXPath("count(//gml:Point)", equalTo("2")).withNamespaceContext(NAMESPACES));
-        assertThat(
-                actual,
-                hasXPath("count(//gml:MultiGeometry)", equalTo("1"))
-                        .withNamespaceContext(NAMESPACES));
-        assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//gml:MultiGeometry/gml:geometryMember/gml:LineString/gml:posList",
-                                equalTo("180 200 160 180"))
-                        .withNamespaceContext(NAMESPACES));
+                        "//gml:MultiGeometry/gml:geometryMember/gml:LineString/gml:posList",
+                        equalTo("180 200 160 180")));
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//gml:MultiGeometry/gml:geometryMember/gml:Point/gml:pos",
-                                equalTo("19 19"))
-                        .withNamespaceContext(NAMESPACES));
+                        "//gml:MultiGeometry/gml:geometryMember/gml:Point/gml:pos",
+                        equalTo("19 19")));
+        assertThat(doc, hasXPath("//gml:MultiGeometry/@gml:id", equalTo("feature.1")));
         assertThat(
-                actual,
-                hasXPath("//gml:MultiGeometry/@gml:id", equalTo("feature.1"))
-                        .withNamespaceContext(NAMESPACES));
-        assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//gml:MultiGeometry/gml:geometryMember[1]/gml:LineString/@gml:id",
-                                equalTo("feature.1.1"))
-                        .withNamespaceContext(NAMESPACES));
+                        "//gml:MultiGeometry/gml:geometryMember[1]/gml:LineString/@gml:id",
+                        equalTo("feature.1.1")));
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//gml:MultiGeometry/gml:geometryMember[2]/gml:Point/@gml:id",
-                                equalTo("feature.1.2"))
-                        .withNamespaceContext(NAMESPACES));
+                        "//gml:MultiGeometry/gml:geometryMember[2]/gml:Point/@gml:id",
+                        equalTo("feature.1.2")));
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//gml:MultiGeometry/gml:geometryMember[3]/gml:Point/@gml:id",
-                                equalTo("feature.1.3"))
-                        .withNamespaceContext(NAMESPACES));
+                        "//gml:MultiGeometry/gml:geometryMember[3]/gml:Point/@gml:id",
+                        equalTo("feature.1.3")));
     }
 }

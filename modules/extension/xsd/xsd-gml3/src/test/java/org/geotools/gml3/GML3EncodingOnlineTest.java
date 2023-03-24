@@ -42,14 +42,6 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class GML3EncodingOnlineTest {
 
-    //    @Before
-    //    public void setUp() throws Exception {
-    //
-    //        Map<String, String> namespaces = new HashMap<>();
-    //        namespaces.put("test", TEST.TestFeature.getNamespaceURI());
-    //        XMLUnit.setXpathNamespaceContext(new SimpleNamespaceContext(namespaces));
-    //    }
-
     boolean isOffline() throws Exception {
         // this test will only run if network is available
         URL url = new URL("http://schemas.opengis.net");

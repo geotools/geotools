@@ -19,11 +19,9 @@ package org.geotools.gml3;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.util.HashMap;
 import java.util.Map;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.test.XMLTestSupport;
-import org.junit.Before;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -73,21 +71,14 @@ import org.w3c.dom.NodeList;
 
 public abstract class GML3TestSupport extends XMLTestSupport {
 
-    protected static Map<String, String> NAMESPACES = new HashMap<>();
-
-    static {
-        NAMESPACES.put("xs", "http://www.w3.org/2001/XMLSchema");
-        NAMESPACES.put("xsd", "http://www.w3.org/2001/XMLSchema");
-        NAMESPACES.put("gml", "http://www.opengis.net/gml");
-        NAMESPACES.put("xlink", "http://www.w3.org/1999/xlink");
-        NAMESPACES.put("xsi", "http://www.w3.org/2001/XMLSchema-instance");
-    }
-
     @Override
-    @Before
-    public void setUp() throws Exception {
-        super.setUp();
-        registerNamespaceMapping("gml", "http://www.opengis.net/gml");
+    protected Map<String, String> getNamespaces() {
+        return namespaces(
+                Namespace("xs", "http://www.w3.org/2001/XMLSchema"),
+                Namespace("xsd", "http://www.w3.org/2001/XMLSchema"),
+                Namespace("gml", "http://www.opengis.net/gml"),
+                Namespace("xlink", "http://www.w3.org/1999/xlink"),
+                Namespace("xsi", "http://www.w3.org/2001/XMLSchema-instance"));
     }
 
     /*

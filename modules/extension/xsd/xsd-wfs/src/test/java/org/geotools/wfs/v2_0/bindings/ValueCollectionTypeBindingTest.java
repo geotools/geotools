@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import javax.xml.namespace.QName;
 import net.opengis.wfs20.ValueCollectionType;
@@ -36,7 +37,6 @@ import org.geotools.gml3.v3_2.GML;
 import org.geotools.wfs.PropertyValueCollection;
 import org.geotools.wfs.v2_0.WFS;
 import org.geotools.wfs.v2_0.WFSTestSupport;
-import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.WKTReader;
@@ -52,11 +52,8 @@ public class ValueCollectionTypeBindingTest extends WFSTestSupport {
     private FilterFactory2 filterFac = CommonFactoryFinder.getFilterFactory2();
 
     @Override
-    @Before
-    public void setUp() throws Exception {
-        super.setUp();
-
-        registerNamespaceMapping("gt", "http://geotools.org");
+    protected Map<String, String> getNamespaces() {
+        return namespaces(Namespace("gt", "http://geotools.org"));
     }
 
     @Test

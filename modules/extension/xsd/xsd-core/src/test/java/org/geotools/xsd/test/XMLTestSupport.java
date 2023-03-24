@@ -31,6 +31,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.eclipse.xsd.XSDSchema;
+import org.geotools.test.xml.XmlTestSupport;
 import org.geotools.xsd.Binding;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.DOMParser;
@@ -139,16 +140,13 @@ import org.xml.sax.helpers.NamespaceSupport;
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  */
-public abstract class XMLTestSupport {
+public abstract class XMLTestSupport extends XmlTestSupport {
     /** Logging instance */
     protected static Logger logger =
             org.geotools.util.logging.Logging.getLogger(XMLTestSupport.class);
 
     /** the instance document */
     protected Document document;
-
-    /** additional namespace mappings */
-    protected Map<String, String> namespaceMappings;
 
     /** Creates an empty xml document. */
     @Before
@@ -157,20 +155,6 @@ public abstract class XMLTestSupport {
         docFactory.setNamespaceAware(true);
 
         document = docFactory.newDocumentBuilder().newDocument();
-        namespaceMappings = new HashMap<>();
-    }
-
-    /**
-     * Registers a namespace mapping.
-     *
-     * <p>This mapping will be included in the "namespace context" of both the parser and the
-     * encoder.
-     *
-     * @param prefix The prefix of the namespace, not <code>null</code>.
-     * @param uri The uri of the namespace, not <code>null</code>.
-     */
-    protected void registerNamespaceMapping(String prefix, String uri) {
-        namespaceMappings.put(prefix, uri);
     }
 
     /**
@@ -203,10 +187,9 @@ public abstract class XMLTestSupport {
 
         // register additional namespaces
         root.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-        for (Map.Entry<String, String> stringStringEntry : namespaceMappings.entrySet()) {
-            Map.Entry mapping = (Map.Entry) stringStringEntry;
-            String prefix = (String) mapping.getKey();
-            String uri = (String) mapping.getValue();
+        for (Map.Entry<String, String> namespace : getNamespaces().entrySet()) {
+            String prefix = namespace.getKey();
+            String uri = namespace.getValue();
 
             root.setAttribute("xmlns:" + prefix, uri);
         }
@@ -277,10 +260,9 @@ public abstract class XMLTestSupport {
         Encoder encoder = new Encoder(configuration, schema);
 
         // additional namespaces
-        for (Map.Entry<String, String> stringStringEntry : namespaceMappings.entrySet()) {
-            Map.Entry mapping = (Map.Entry) stringStringEntry;
-            String prefix = (String) mapping.getKey();
-            String uri = (String) mapping.getValue();
+        for (Map.Entry<String, String> namespace : getNamespaces().entrySet()) {
+            String prefix = namespace.getKey();
+            String uri = namespace.getValue();
 
             encoder.getNamespaces().declarePrefix(prefix, uri);
         }

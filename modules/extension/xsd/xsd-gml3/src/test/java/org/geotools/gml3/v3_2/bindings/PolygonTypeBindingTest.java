@@ -20,16 +20,13 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.xmlunit.matchers.EvaluateXPathMatcher.hasXPath;
 
-import javax.xml.transform.Source;
 import org.geotools.gml3.bindings.GML3MockData;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.gml3.v3_2.GML32TestSupport;
 import org.junit.Test;
 import org.locationtech.jts.geom.Polygon;
 import org.w3c.dom.Document;
-import org.xmlunit.builder.Input;
 
 public class PolygonTypeBindingTest extends GML32TestSupport {
     //    public void testNoInterior() throws Exception {
@@ -51,14 +48,9 @@ public class PolygonTypeBindingTest extends GML32TestSupport {
 
         assertEquals("gml:Polygon", dom.getDocumentElement().getNodeName());
 
-        Source actual = Input.fromDocument(dom).build();
+        assertThat(dom, hasXPath("/gml:Polygon/gml:exterior", notNullValue(String.class)));
         assertThat(
-                actual,
-                hasXPath("/gml:Polygon/gml:exterior", notNullValue(String.class))
-                        .withNamespaceContext(NAMESPACES));
-        assertThat(
-                actual,
-                hasXPath("/gml:Polygon/gml:exterior/gml:LinearRing", notNullValue(String.class))
-                        .withNamespaceContext(NAMESPACES));
+                dom,
+                hasXPath("/gml:Polygon/gml:exterior/gml:LinearRing", notNullValue(String.class)));
     }
 }

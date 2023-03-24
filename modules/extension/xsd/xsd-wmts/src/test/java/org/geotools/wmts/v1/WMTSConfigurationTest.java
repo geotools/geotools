@@ -22,7 +22,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.xmlunit.matchers.EvaluateXPathMatcher.hasXPath;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,7 +33,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -45,6 +43,7 @@ import net.opengis.wmts.v_1.ContentsType;
 import net.opengis.wmts.v_1.LayerType;
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.gml2.GML;
+import org.geotools.test.xml.XmlTestSupport;
 import org.geotools.util.logging.Logging;
 import org.geotools.wmts.WMTS;
 import org.geotools.wmts.WMTSConfiguration;
@@ -57,20 +56,19 @@ import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-import org.xmlunit.builder.Input;
 
 /** @author Emanuele Tajariol (etj at geo-solutions dot it) */
-public class WMTSConfigurationTest {
+public class WMTSConfigurationTest extends XmlTestSupport {
 
     static final Logger LOGGER = Logging.getLogger(WMTSConfigurationTest.class);
 
-    private static Map<String, String> NAMESPACES = new HashMap<>();
-
-    static {
-        NAMESPACES.put("xlink", "http://www.w3.org/1999/xlink");
-        NAMESPACES.put("xsi", "http://www.w3.org/2001/XMLSchema-instance");
-        NAMESPACES.put("ows", "http://www.opengis.net/ows/1.1");
-        NAMESPACES.put("wmts", "http://www.opengis.net/wmts/1.0");
+    @Override
+    protected Map<String, String> getNamespaces() {
+        return namespaces(
+                Namespace("xlink", "http://www.w3.org/1999/xlink"),
+                Namespace("xsi", "http://www.w3.org/2001/XMLSchema-instance"),
+                Namespace("ows", "http://www.opengis.net/ows/1.1"),
+                Namespace("wmts", "http://www.opengis.net/wmts/1.0"));
     }
 
     @Test
@@ -194,36 +192,29 @@ public class WMTSConfigurationTest {
         encoder.getNamespaces().declarePrefix("xlink", XLINK.NAMESPACE);
         Document doc = encoder.encodeAsDOM(caps, WMTS.Capabilities);
 
-        Source actual = Input.fromDocument(doc).build();
-        assertThat(
-                actual,
-                hasXPath("count(//wmts:Contents/wmts:Layer)", equalTo("519"))
-                        .withNamespaceContext(NAMESPACES));
+        assertThat(doc, hasXPath("count(//wmts:Contents/wmts:Layer)", equalTo("519")));
 
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "count(//wmts:Contents/wmts:Layer[ows:Identifier='AMSR2_Snow_Water_Equivalent'])",
-                                equalTo("1"))
-                        .withNamespaceContext(NAMESPACES));
+                        "count(//wmts:Contents/wmts:Layer[ows:Identifier='AMSR2_Snow_Water_Equivalent'])",
+                        equalTo("1")));
 
         /////////////////////////////////////
         // Check the layer/wmts:Style values
         /////////////////////////////////////
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "count(//wmts:Contents/wmts:Layer[ows:Identifier='AMSR2_Snow_Water_Equivalent']/wmts:Style[ows:Identifier='default'])",
-                                equalTo("1"))
-                        .withNamespaceContext(NAMESPACES));
+                        "count(//wmts:Contents/wmts:Layer[ows:Identifier='AMSR2_Snow_Water_Equivalent']/wmts:Style[ows:Identifier='default'])",
+                        equalTo("1")));
 
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "count(//wmts:Contents/wmts:Layer[ows:Identifier='AMSR2_Snow_Water_Equivalent']/wmts:Style/wmts:LegendURL"
-                                        + "[@width='125'][@height='130'][@format='image/png'][@xlink:href='https://some-url?some-parameter=value3&another-parameter=value4'])",
-                                equalTo("1"))
-                        .withNamespaceContext(NAMESPACES));
+                        "count(//wmts:Contents/wmts:Layer[ows:Identifier='AMSR2_Snow_Water_Equivalent']/wmts:Style/wmts:LegendURL"
+                                + "[@width='125'][@height='130'][@format='image/png'][@xlink:href='https://some-url?some-parameter=value3&another-parameter=value4'])",
+                        equalTo("1")));
 
         /////////////////////////////////////
         // Check the layer/wmts:MetadataURL values
@@ -259,285 +250,243 @@ public class WMTSConfigurationTest {
         // Checking the layer/wmts:ResourceURL
         /////////////////////////////////////
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "count(//wmts:Contents/wmts:Layer[ows:Identifier='AMSR2_Snow_Water_Equivalent']/wmts:ResourceURL[@resourceType='tile']"
-                                        + "[@format='image/png']"
-                                        + "[@template='https://gibs.earthdata.nasa.gov/wmts/epsg4326/best/AMSR2_Snow_Water_Equivalent/default/{Time}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png'])",
-                                equalTo("1"))
-                        .withNamespaceContext(NAMESPACES));
+                        "count(//wmts:Contents/wmts:Layer[ows:Identifier='AMSR2_Snow_Water_Equivalent']/wmts:ResourceURL[@resourceType='tile']"
+                                + "[@format='image/png']"
+                                + "[@template='https://gibs.earthdata.nasa.gov/wmts/epsg4326/best/AMSR2_Snow_Water_Equivalent/default/{Time}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png'])",
+                        equalTo("1")));
 
         /////////////////////////////////////
         // Checking the service metadata URL
         /////////////////////////////////////
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "count(//wmts:ServiceMetadataURL[@xlink:href='https://gibs.earthdata.nasa.gov/wmts/epsg4326/best/1.0.0/WMTSCapabilities.xml'])",
-                                equalTo("1"))
-                        .withNamespaceContext(NAMESPACES));
+                        "count(//wmts:ServiceMetadataURL[@xlink:href='https://gibs.earthdata.nasa.gov/wmts/epsg4326/best/1.0.0/WMTSCapabilities.xml'])",
+                        equalTo("1")));
 
         /////////////////////////////////////
         // Check the wmts:dimension values
         /////////////////////////////////////
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "count(//wmts:Contents/wmts:Layer[ows:Identifier='AMSR2_Snow_Water_Equivalent']/wmts:Dimension[ows:Identifier='time'])",
-                                equalTo("1"))
-                        .withNamespaceContext(NAMESPACES));
+                        "count(//wmts:Contents/wmts:Layer[ows:Identifier='AMSR2_Snow_Water_Equivalent']/wmts:Dimension[ows:Identifier='time'])",
+                        equalTo("1")));
 
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "count(//wmts:Contents/wmts:Layer[ows:Identifier='AMSR2_Snow_Water_Equivalent']/wmts:Dimension[ows:Identifier='time'])",
-                                equalTo("1"))
-                        .withNamespaceContext(NAMESPACES));
+                        "count(//wmts:Contents/wmts:Layer[ows:Identifier='AMSR2_Snow_Water_Equivalent']/wmts:Dimension[ows:Identifier='time'])",
+                        equalTo("1")));
 
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//wmts:Contents/wmts:Layer[ows:Identifier='AMSR2_Snow_Water_Equivalent']/wmts:Dimension/ows:Title[text()]",
-                                equalTo("Title for a Dimension element"))
-                        .withNamespaceContext(NAMESPACES));
+                        "//wmts:Contents/wmts:Layer[ows:Identifier='AMSR2_Snow_Water_Equivalent']/wmts:Dimension/ows:Title[text()]",
+                        equalTo("Title for a Dimension element")));
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//wmts:Contents/wmts:Layer[ows:Identifier='AMSR2_Snow_Water_Equivalent']/wmts:Dimension/ows:Abstract[text()]",
-                                equalTo("Abstract for a Dimension element"))
-                        .withNamespaceContext(NAMESPACES));
+                        "//wmts:Contents/wmts:Layer[ows:Identifier='AMSR2_Snow_Water_Equivalent']/wmts:Dimension/ows:Abstract[text()]",
+                        equalTo("Abstract for a Dimension element")));
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//wmts:Contents/wmts:Layer[ows:Identifier='AMSR2_Snow_Water_Equivalent']/wmts:Dimension/ows:Identifier[text()]",
-                                equalTo("time"))
-                        .withNamespaceContext(NAMESPACES));
+                        "//wmts:Contents/wmts:Layer[ows:Identifier='AMSR2_Snow_Water_Equivalent']/wmts:Dimension/ows:Identifier[text()]",
+                        equalTo("time")));
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//wmts:Contents/wmts:Layer[ows:Identifier='AMSR2_Snow_Water_Equivalent']/wmts:Dimension/wmts:Default[text()]",
-                                equalTo("2017-06-16"))
-                        .withNamespaceContext(NAMESPACES));
+                        "//wmts:Contents/wmts:Layer[ows:Identifier='AMSR2_Snow_Water_Equivalent']/wmts:Dimension/wmts:Default[text()]",
+                        equalTo("2017-06-16")));
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//wmts:Contents/wmts:Layer[ows:Identifier='AMSR2_Snow_Water_Equivalent']/wmts:Dimension/wmts:Current[text()]",
-                                equalTo("false"))
-                        .withNamespaceContext(NAMESPACES));
+                        "//wmts:Contents/wmts:Layer[ows:Identifier='AMSR2_Snow_Water_Equivalent']/wmts:Dimension/wmts:Current[text()]",
+                        equalTo("false")));
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//wmts:Contents/wmts:Layer[ows:Identifier='AMSR2_Snow_Water_Equivalent']/wmts:Dimension/wmts:Value[text()]",
-                                equalTo("2015-07-30/2017-06-16/P1D"))
-                        .withNamespaceContext(NAMESPACES));
+                        "//wmts:Contents/wmts:Layer[ows:Identifier='AMSR2_Snow_Water_Equivalent']/wmts:Dimension/wmts:Value[text()]",
+                        equalTo("2015-07-30/2017-06-16/P1D")));
 
         // Check one of the TileMatrices and that it has the right values set
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "count(//wmts:Contents/wmts:TileMatrixSet[ows:Identifier[text()='31.25m']])",
-                                equalTo("1"))
-                        .withNamespaceContext(NAMESPACES));
+                        "count(//wmts:Contents/wmts:TileMatrixSet[ows:Identifier[text()='31.25m']])",
+                        equalTo("1")));
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//wmts:Contents/wmts:TileMatrixSet[ows:Identifier[text()='31.25m']]/ows:Abstract[text()]",
-                                equalTo("Abstract for the Tile Matrix Set"))
-                        .withNamespaceContext(NAMESPACES));
+                        "//wmts:Contents/wmts:TileMatrixSet[ows:Identifier[text()='31.25m']]/ows:Abstract[text()]",
+                        equalTo("Abstract for the Tile Matrix Set")));
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//wmts:Contents/wmts:TileMatrixSet[ows:Identifier[text()='31.25m']]/ows:Title[text()]",
-                                equalTo("Title for 31.25m TileMatrixSet"))
-                        .withNamespaceContext(NAMESPACES));
+                        "//wmts:Contents/wmts:TileMatrixSet[ows:Identifier[text()='31.25m']]/ows:Title[text()]",
+                        equalTo("Title for 31.25m TileMatrixSet")));
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//wmts:Contents/wmts:TileMatrixSet[ows:Identifier[text()='31.25m']]/ows:SupportedCRS[text()]",
-                                equalTo("urn:ogc:def:crs:OGC:1.3:CRS84"))
-                        .withNamespaceContext(NAMESPACES));
+                        "//wmts:Contents/wmts:TileMatrixSet[ows:Identifier[text()='31.25m']]/ows:SupportedCRS[text()]",
+                        equalTo("urn:ogc:def:crs:OGC:1.3:CRS84")));
 
         // Check that the TileMatrixSet keywords have been set and that they are correct
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "count(//wmts:Contents/wmts:TileMatrixSet[ows:Identifier[text()='31.25m']]/ows:Keywords/ows:Keyword)",
-                                equalTo("1"))
-                        .withNamespaceContext(NAMESPACES));
+                        "count(//wmts:Contents/wmts:TileMatrixSet[ows:Identifier[text()='31.25m']]/ows:Keywords/ows:Keyword)",
+                        equalTo("1")));
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "count(//wmts:Contents/wmts:TileMatrixSet[ows:Identifier[text()='31.25m']]/ows:Keywords/ows:Keyword[text()=\"3125mKeyword\"])",
-                                equalTo("1"))
-                        .withNamespaceContext(NAMESPACES));
+                        "count(//wmts:Contents/wmts:TileMatrixSet[ows:Identifier[text()='31.25m']]/ows:Keywords/ows:Keyword[text()=\"3125mKeyword\"])",
+                        equalTo("1")));
 
         // Check each tilematrix has the right values set
         for (int i = 1; i <= 12; i++) {
 
             assertThat(
-                    actual,
+                    doc,
                     hasXPath(
-                                    "count(//wmts:Contents/wmts:TileMatrixSet[ows:Identifier[text()=\"31.25m\"]]/wmts:TileMatrix["
-                                            + i
-                                            + "]/ows:Keywords/ows:Keyword)",
-                                    equalTo("1"))
-                            .withNamespaceContext(NAMESPACES));
+                            "count(//wmts:Contents/wmts:TileMatrixSet[ows:Identifier[text()=\"31.25m\"]]/wmts:TileMatrix["
+                                    + i
+                                    + "]/ows:Keywords/ows:Keyword)",
+                            equalTo("1")));
 
             assertThat(
-                    actual,
+                    doc,
                     hasXPath(
-                                    "count(//wmts:Contents/wmts:TileMatrixSet[ows:Identifier[text()=\"31.25m\"]]/wmts:TileMatrix["
-                                            + i
-                                            + "]/ows:Abstract[text()=\"Abstract for grid "
-                                            + (i - 1)
-                                            + "\"])",
-                                    equalTo("1"))
-                            .withNamespaceContext(NAMESPACES));
+                            "count(//wmts:Contents/wmts:TileMatrixSet[ows:Identifier[text()=\"31.25m\"]]/wmts:TileMatrix["
+                                    + i
+                                    + "]/ows:Abstract[text()=\"Abstract for grid "
+                                    + (i - 1)
+                                    + "\"])",
+                            equalTo("1")));
 
             assertThat(
-                    actual,
+                    doc,
                     hasXPath(
-                                    "count(//wmts:Contents/wmts:TileMatrixSet[ows:Identifier[text()=\"31.25m\"]]/wmts:TileMatrix["
-                                            + i
-                                            + "]/ows:Title[text()=\"Grid Title "
-                                            + (i - 1)
-                                            + "\"])",
-                                    equalTo("1"))
-                            .withNamespaceContext(NAMESPACES));
+                            "count(//wmts:Contents/wmts:TileMatrixSet[ows:Identifier[text()=\"31.25m\"]]/wmts:TileMatrix["
+                                    + i
+                                    + "]/ows:Title[text()=\"Grid Title "
+                                    + (i - 1)
+                                    + "\"])",
+                            equalTo("1")));
 
             assertThat(
-                    actual,
+                    doc,
                     hasXPath(
-                                    "count(//wmts:Contents/wmts:TileMatrixSet[ows:Identifier[text()=\"31.25m\"]]/wmts:TileMatrix["
-                                            + i
-                                            + "]/ows:Keywords/ows:Keyword[text()=\"Keyword"
-                                            + (i - 1)
-                                            + "\"])",
-                                    equalTo("1"))
-                            .withNamespaceContext(NAMESPACES));
+                            "count(//wmts:Contents/wmts:TileMatrixSet[ows:Identifier[text()=\"31.25m\"]]/wmts:TileMatrix["
+                                    + i
+                                    + "]/ows:Keywords/ows:Keyword[text()=\"Keyword"
+                                    + (i - 1)
+                                    + "\"])",
+                            equalTo("1")));
         }
 
         /////////////////////////////////////
         // Check the wmts:Themes element
         /////////////////////////////////////
-        assertThat(
-                actual,
-                hasXPath("count(//wmts:Themes/wmts:Theme)", equalTo("1"))
-                        .withNamespaceContext(NAMESPACES));
+        assertThat(doc, hasXPath("count(//wmts:Themes/wmts:Theme)", equalTo("1")));
 
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//wmts:Themes/wmts:Theme[ows:Identifier[text()='Foundation']]/ows:Title[text()]",
-                                equalTo("Foundation"))
-                        .withNamespaceContext(NAMESPACES));
+                        "//wmts:Themes/wmts:Theme[ows:Identifier[text()='Foundation']]/ows:Title[text()]",
+                        equalTo("Foundation")));
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//wmts:Themes/wmts:Theme[ows:Identifier[text()='Foundation']]/ows:Abstract[text()]",
-                                equalTo("World reference data"))
-                        .withNamespaceContext(NAMESPACES));
+                        "//wmts:Themes/wmts:Theme[ows:Identifier[text()='Foundation']]/ows:Abstract[text()]",
+                        equalTo("World reference data")));
+
+        assertThat(doc, hasXPath("count(//wmts:Themes/wmts:Theme/wmts:Theme)", equalTo("2")));
 
         assertThat(
-                actual,
-                hasXPath("count(//wmts:Themes/wmts:Theme/wmts:Theme)", equalTo("2"))
-                        .withNamespaceContext(NAMESPACES));
+                doc,
+                hasXPath(
+                        "//wmts:Themes/wmts:Theme/wmts:Theme[ows:Identifier[text()='DEM']]/ows:Title[text()]",
+                        equalTo("Digital Elevation Model")));
+        assertThat(
+                doc,
+                hasXPath(
+                        "//wmts:Themes/wmts:Theme/wmts:Theme[ows:Identifier[text()='DEM']]/wmts:LayerRef[text()]",
+                        equalTo("etopo2")));
 
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//wmts:Themes/wmts:Theme/wmts:Theme[ows:Identifier[text()='DEM']]/ows:Title[text()]",
-                                equalTo("Digital Elevation Model"))
-                        .withNamespaceContext(NAMESPACES));
+                        "//wmts:Themes/wmts:Theme/wmts:Theme[ows:Identifier[text()='AdmBoundaries']]/ows:Title[text()]",
+                        equalTo("Administrative Boundaries")));
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//wmts:Themes/wmts:Theme/wmts:Theme[ows:Identifier[text()='DEM']]/wmts:LayerRef[text()]",
-                                equalTo("etopo2"))
-                        .withNamespaceContext(NAMESPACES));
-
-        assertThat(
-                actual,
-                hasXPath(
-                                "//wmts:Themes/wmts:Theme/wmts:Theme[ows:Identifier[text()='AdmBoundaries']]/ows:Title[text()]",
-                                equalTo("Administrative Boundaries"))
-                        .withNamespaceContext(NAMESPACES));
-        assertThat(
-                actual,
-                hasXPath(
-                                "//wmts:Themes/wmts:Theme/wmts:Theme[ows:Identifier[text()='AdmBoundaries']]/wmts:LayerRef[text()]",
-                                equalTo("AdminBoundaries"))
-                        .withNamespaceContext(NAMESPACES));
+                        "//wmts:Themes/wmts:Theme/wmts:Theme[ows:Identifier[text()='AdmBoundaries']]/wmts:LayerRef[text()]",
+                        equalTo("AdminBoundaries")));
 
         /////////////////////////////////////
         // ServiceProvider Section
         /////////////////////////////////////
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//ows:ServiceProvider/ows:ProviderName[text()]",
-                                equalTo("National Aeronautics and Space Administration"))
-                        .withNamespaceContext(NAMESPACES));
+                        "//ows:ServiceProvider/ows:ProviderName[text()]",
+                        equalTo("National Aeronautics and Space Administration")));
 
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "count(//ows:ServiceProvider/ows:ProviderSite[@xlink:href=\"https://earthdata.nasa.gov/\"])",
-                                equalTo("1"))
-                        .withNamespaceContext(NAMESPACES));
+                        "count(//ows:ServiceProvider/ows:ProviderSite[@xlink:href=\"https://earthdata.nasa.gov/\"])",
+                        equalTo("1")));
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//ows:ServiceContact/ows:IndividualName[text()]",
-                                equalTo("ServiceContact IndividualName"))
-                        .withNamespaceContext(NAMESPACES));
+                        "//ows:ServiceContact/ows:IndividualName[text()]",
+                        equalTo("ServiceContact IndividualName")));
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//ows:ServiceContact/ows:PositionName[text()]",
-                                equalTo("ServiceContact PositionName"))
-                        .withNamespaceContext(NAMESPACES));
+                        "//ows:ServiceContact/ows:PositionName[text()]",
+                        equalTo("ServiceContact PositionName")));
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//ows:ServiceContact/ows:ContactInfo/ows:Address/ows:DeliveryPoint[text()]",
-                                equalTo("ContactInfo Address DeliveryPoint"))
-                        .withNamespaceContext(NAMESPACES));
+                        "//ows:ServiceContact/ows:ContactInfo/ows:Address/ows:DeliveryPoint[text()]",
+                        equalTo("ContactInfo Address DeliveryPoint")));
 
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//ows:ServiceContact/ows:ContactInfo/ows:Address/ows:City[text()]",
-                                equalTo("ContactInfo Address City"))
-                        .withNamespaceContext(NAMESPACES));
+                        "//ows:ServiceContact/ows:ContactInfo/ows:Address/ows:City[text()]",
+                        equalTo("ContactInfo Address City")));
 
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//ows:ServiceContact/ows:ContactInfo/ows:Address/ows:AdministrativeArea[text()]",
-                                equalTo("ContactInfo Address AdministrativeArea"))
-                        .withNamespaceContext(NAMESPACES));
+                        "//ows:ServiceContact/ows:ContactInfo/ows:Address/ows:AdministrativeArea[text()]",
+                        equalTo("ContactInfo Address AdministrativeArea")));
 
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//ows:ServiceContact/ows:ContactInfo/ows:Address/ows:PostalCode[text()]",
-                                equalTo("ContactInfo Address PostalCode"))
-                        .withNamespaceContext(NAMESPACES));
+                        "//ows:ServiceContact/ows:ContactInfo/ows:Address/ows:PostalCode[text()]",
+                        equalTo("ContactInfo Address PostalCode")));
 
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//ows:ServiceContact/ows:ContactInfo/ows:Address/ows:Country[text()]",
-                                equalTo("ContactInfo Address Country"))
-                        .withNamespaceContext(NAMESPACES));
+                        "//ows:ServiceContact/ows:ContactInfo/ows:Address/ows:Country[text()]",
+                        equalTo("ContactInfo Address Country")));
 
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//ows:ServiceContact/ows:ContactInfo/ows:Address/ows:ElectronicMailAddress[text()]",
-                                equalTo("ContactInfo Address ElectronicMailAddress"))
-                        .withNamespaceContext(NAMESPACES));
+                        "//ows:ServiceContact/ows:ContactInfo/ows:Address/ows:ElectronicMailAddress[text()]",
+                        equalTo("ContactInfo Address ElectronicMailAddress")));
     }
 
     /** Utility method to print out a dom. */

@@ -29,7 +29,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
-import javax.xml.transform.Source;
 import org.apache.commons.io.IOUtils;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -46,6 +45,7 @@ import org.geotools.http.AbstractHttpClient;
 import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
+import org.geotools.test.xml.XmlTestSupport;
 import org.geotools.util.factory.GeoTools;
 import org.junit.Assert;
 import org.junit.Test;
@@ -55,11 +55,9 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.FeatureId;
-import org.xmlunit.builder.DiffBuilder;
-import org.xmlunit.builder.Input;
 import org.xmlunit.diff.Diff;
 
-public class TinyOwsTest {
+public class TinyOwsTest extends XmlTestSupport {
 
     private Name typeName = new NameImpl("http://www.tinyows.org/", "comuni_comuni11");
 
@@ -109,10 +107,7 @@ public class TinyOwsTest {
         String control = IOUtils.toString(url(expectedXmlResource), UTF_8);
         control = control.replace("${getfeature.handle}", newRequestHandle());
 
-        Source expected = Input.fromString(control).build();
-        Source actual = Input.fromString(actualXml).build();
-        Diff diff = DiffBuilder.compare(expected).withTest(actual).checkForSimilar().build();
-
+        Diff diff = diffSimilar(control, actualXml);
         Assert.assertFalse(diff.toString(), diff.hasDifferences());
     }
 

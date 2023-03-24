@@ -19,15 +19,12 @@ package org.geotools.gml3.simple;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.xmlunit.matchers.EvaluateXPathMatcher.hasXPath;
 
-import javax.xml.transform.Source;
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.gml3.GML;
 import org.junit.Test;
 import org.locationtech.jts.geom.Polygon;
 import org.w3c.dom.Document;
-import org.xmlunit.builder.Input;
 
 public class CurvePolygonEncoderTest extends GeometryEncoderTestSupport {
     @Test
@@ -41,31 +38,20 @@ public class CurvePolygonEncoderTest extends GeometryEncoderTestSupport {
         Document doc = encode(encoder, geometry);
         // XMLTestSupport.print(doc);
 
-        Source actual = Input.fromDocument(doc).build();
-        assertThat(
-                actual,
-                hasXPath("count(//gml:Polygon)", equalTo("1")).withNamespaceContext(NAMESPACES));
-        assertThat(
-                actual,
-                hasXPath("count(//gml:Polygon/gml:exterior)", equalTo("1"))
-                        .withNamespaceContext(NAMESPACES));
-        assertThat(
-                actual,
-                hasXPath("count(//gml:Polygon/gml:interior)", equalTo("0"))
-                        .withNamespaceContext(NAMESPACES));
+        assertThat(doc, hasXPath("count(//gml:Polygon)", equalTo("1")));
+        assertThat(doc, hasXPath("count(//gml:Polygon/gml:exterior)", equalTo("1")));
+        assertThat(doc, hasXPath("count(//gml:Polygon/gml:interior)", equalTo("0")));
         String ext1 = "//gml:Polygon/gml:exterior/gml:Ring/gml:curveMember[1]";
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                ext1 + "/gml:Curve/gml:segments/gml:ArcString/@interpolation",
-                                equalTo("circularArc3Points"))
-                        .withNamespaceContext(NAMESPACES));
+                        ext1 + "/gml:Curve/gml:segments/gml:ArcString/@interpolation",
+                        equalTo("circularArc3Points")));
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                ext1 + "/gml:Curve/gml:segments/gml:ArcString/gml:posList",
-                                equalTo("-10 0 -8 2 -6 0 -8 -2 -10 0"))
-                        .withNamespaceContext(NAMESPACES));
+                        ext1 + "/gml:Curve/gml:segments/gml:ArcString/gml:posList",
+                        equalTo("-10 0 -8 2 -6 0 -8 -2 -10 0")));
     }
 
     @Test
@@ -79,45 +65,32 @@ public class CurvePolygonEncoderTest extends GeometryEncoderTestSupport {
         Document doc = encode(encoder, geometry);
         // XMLTestSupport.print(doc);
 
-        Source actual = Input.fromDocument(doc).build();
-        assertThat(
-                actual,
-                hasXPath("count(//gml:Polygon)", equalTo("1")).withNamespaceContext(NAMESPACES));
-        assertThat(
-                actual,
-                hasXPath("count(//gml:Polygon/gml:exterior)", equalTo("1"))
-                        .withNamespaceContext(NAMESPACES));
-        assertThat(
-                actual,
-                hasXPath("count(//gml:Polygon/gml:interior)", equalTo("1"))
-                        .withNamespaceContext(NAMESPACES));
+        assertThat(doc, hasXPath("count(//gml:Polygon)", equalTo("1")));
+        assertThat(doc, hasXPath("count(//gml:Polygon/gml:exterior)", equalTo("1")));
+        assertThat(doc, hasXPath("count(//gml:Polygon/gml:interior)", equalTo("1")));
         String ext1 = "//gml:Polygon/gml:exterior/gml:Ring/gml:curveMember[1]";
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                ext1 + "/gml:Curve/gml:segments/gml:ArcString/@interpolation",
-                                equalTo("circularArc3Points"))
-                        .withNamespaceContext(NAMESPACES));
+                        ext1 + "/gml:Curve/gml:segments/gml:ArcString/@interpolation",
+                        equalTo("circularArc3Points")));
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                ext1 + "/gml:Curve/gml:segments/gml:ArcString/gml:posList",
-                                equalTo("-7 -8 -5 -6 -3 -8 -5 -10 -7 -8"))
-                        .withNamespaceContext(NAMESPACES));
+                        ext1 + "/gml:Curve/gml:segments/gml:ArcString/gml:posList",
+                        equalTo("-7 -8 -5 -6 -3 -8 -5 -10 -7 -8")));
 
         String int1 = "//gml:Polygon/gml:interior/gml:Ring/gml:curveMember[1]";
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                int1 + "/gml:Curve/gml:segments/gml:ArcString/@interpolation",
-                                equalTo("circularArc3Points"))
-                        .withNamespaceContext(NAMESPACES));
+                        int1 + "/gml:Curve/gml:segments/gml:ArcString/@interpolation",
+                        equalTo("circularArc3Points")));
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                int1 + "/gml:Curve/gml:segments/gml:ArcString/gml:posList",
-                                equalTo("-6 -8 -5 -7 -4 -8 -5 -9 -6 -8"))
-                        .withNamespaceContext(NAMESPACES));
+                        int1 + "/gml:Curve/gml:segments/gml:ArcString/gml:posList",
+                        equalTo("-6 -8 -5 -7 -4 -8 -5 -9 -6 -8")));
     }
 
     @Test
@@ -132,49 +105,33 @@ public class CurvePolygonEncoderTest extends GeometryEncoderTestSupport {
         Document doc = encode(encoder, geometry);
         // XMLTestSupport.print(doc);
 
-        Source actual = Input.fromDocument(doc).build();
-        assertThat(
-                actual,
-                hasXPath("count(//gml:Polygon)", equalTo("1")).withNamespaceContext(NAMESPACES));
-        assertThat(
-                actual,
-                hasXPath("count(//gml:Polygon/gml:exterior)", equalTo("1"))
-                        .withNamespaceContext(NAMESPACES));
-        assertThat(
-                actual,
-                hasXPath("count(//gml:Polygon/gml:interior)", equalTo("1"))
-                        .withNamespaceContext(NAMESPACES));
+        assertThat(doc, hasXPath("count(//gml:Polygon)", equalTo("1")));
+        assertThat(doc, hasXPath("count(//gml:Polygon/gml:exterior)", equalTo("1")));
+        assertThat(doc, hasXPath("count(//gml:Polygon/gml:interior)", equalTo("1")));
         String ext1 = "//gml:Polygon/gml:exterior/gml:Ring/gml:curveMember[1]";
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                ext1 + "/gml:Curve/gml:segments/gml:ArcString/@interpolation",
-                                equalTo("circularArc3Points"))
-                        .withNamespaceContext(NAMESPACES));
+                        ext1 + "/gml:Curve/gml:segments/gml:ArcString/@interpolation",
+                        equalTo("circularArc3Points")));
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                ext1 + "/gml:Curve/gml:segments/gml:ArcString/gml:posList",
-                                equalTo("0 0 2 0 2 1 2 3 4 3"))
-                        .withNamespaceContext(NAMESPACES));
+                        ext1 + "/gml:Curve/gml:segments/gml:ArcString/gml:posList",
+                        equalTo("0 0 2 0 2 1 2 3 4 3")));
         String ext2 = "//gml:Polygon/gml:exterior/gml:Ring/gml:curveMember[2]";
-        assertThat(
-                actual,
-                hasXPath(ext2 + "/gml:LineString/gml:posList", equalTo("4 3 4 5 1 4 0 0"))
-                        .withNamespaceContext(NAMESPACES));
+        assertThat(doc, hasXPath(ext2 + "/gml:LineString/gml:posList", equalTo("4 3 4 5 1 4 0 0")));
 
         String int1 = "//gml:Polygon/gml:interior/gml:Ring/gml:curveMember[1]";
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                int1 + "/gml:Curve/gml:segments/gml:ArcString/@interpolation",
-                                equalTo("circularArc3Points"))
-                        .withNamespaceContext(NAMESPACES));
+                        int1 + "/gml:Curve/gml:segments/gml:ArcString/@interpolation",
+                        equalTo("circularArc3Points")));
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                int1 + "/gml:Curve/gml:segments/gml:ArcString/gml:posList",
-                                equalTo("1.7 1 1.4 0.4 1.6 0.4 1.6 0.5 1.7 1"))
-                        .withNamespaceContext(NAMESPACES));
+                        int1 + "/gml:Curve/gml:segments/gml:ArcString/gml:posList",
+                        equalTo("1.7 1 1.4 0.4 1.6 0.4 1.6 0.5 1.7 1")));
     }
 }

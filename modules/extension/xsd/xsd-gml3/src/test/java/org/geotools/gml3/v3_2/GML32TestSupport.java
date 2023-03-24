@@ -1,6 +1,5 @@
 package org.geotools.gml3.v3_2;
 
-import java.util.HashMap;
 import java.util.Map;
 import org.geotools.gml3.bindings.GML3MockData;
 import org.geotools.xsd.Configuration;
@@ -11,10 +10,9 @@ import org.w3c.dom.Node;
 
 public abstract class GML32TestSupport extends XMLTestSupport {
 
-    protected static Map<String, String> NAMESPACES = new HashMap<>();
-
-    static {
-        NAMESPACES.put("gml", GML.NAMESPACE);
+    @Override
+    protected Map<String, String> getNamespaces() {
+        return namespaces(Namespace("gml", GML.NAMESPACE));
     }
 
     @Override
@@ -35,8 +33,6 @@ public abstract class GML32TestSupport extends XMLTestSupport {
     public void setUp() throws Exception {
         super.setUp();
         GML3MockData.setGML(GML.getInstance());
-
-        registerNamespaceMapping("gml", GML.NAMESPACE);
     }
 
     @After

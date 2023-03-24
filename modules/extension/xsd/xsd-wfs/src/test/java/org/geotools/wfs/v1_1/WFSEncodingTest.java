@@ -2,14 +2,11 @@ package org.geotools.wfs.v1_1;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.xmlunit.matchers.EvaluateXPathMatcher.hasXPath;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import javax.xml.namespace.QName;
-import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
 import net.opengis.wfs.DeleteElementType;
 import net.opengis.wfs.InsertElementType;
@@ -19,6 +16,7 @@ import net.opengis.wfs.WfsFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
+import org.geotools.test.xml.XmlTestSupport;
 import org.geotools.xs.XSSchema;
 import org.geotools.xsd.Encoder;
 import org.junit.Test;
@@ -34,17 +32,16 @@ import org.opengis.feature.type.FeatureTypeFactory;
 import org.opengis.filter.FilterFactory2;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
-import org.xmlunit.builder.Input;
 
-public class WFSEncodingTest {
+public class WFSEncodingTest extends XmlTestSupport {
 
-    private static Map<String, String> NAMESPACES = new HashMap<>();
-
-    static {
-        NAMESPACES.put("xlink", "http://www.w3.org/1999/xlink");
-        NAMESPACES.put("wfs", "http://www.opengis.net/wfs");
-        NAMESPACES.put("gml", "http://www.opengis.net/gml");
-        NAMESPACES.put("ogc", "http://www.opengis.net/ogc");
+    @Override
+    protected Map<String, String> getNamespaces() {
+        return namespaces(
+                Namespace("xlink", "http://www.w3.org/1999/xlink"),
+                Namespace("wfs", "http://www.opengis.net/wfs"),
+                Namespace("gml", "http://www.opengis.net/gml"),
+                Namespace("ogc", "http://www.opengis.net/ogc"));
     }
 
     @Test
@@ -67,23 +64,10 @@ public class WFSEncodingTest {
         Encoder encoder = new Encoder(new WFSConfiguration());
         // System.out.println(encoder.encodeAsString(update, WFS.Update));
         Document doc = encoder.encodeAsDOM(update, WFS.Update);
-        Source actual = Input.fromDocument(doc).build();
-        assertThat(
-                actual,
-                hasXPath("//wfs:Update/@typeName", equalTo("mn:mytypename"))
-                        .withNamespaceContext(NAMESPACES));
-        assertThat(
-                actual,
-                hasXPath("//wfs:Update/wfs:Property/wfs:Name", equalTo("mn:myproperty"))
-                        .withNamespaceContext(NAMESPACES));
-        assertThat(
-                actual,
-                hasXPath("//wfs:Update/wfs:Property/wfs:Value", equalTo("myvalue"))
-                        .withNamespaceContext(NAMESPACES));
-        assertThat(
-                actual,
-                hasXPath("//wfs:Update/ogc:Filter/ogc:FeatureId/@fid", equalTo("someid"))
-                        .withNamespaceContext(NAMESPACES));
+        assertThat(doc, hasXPath("//wfs:Update/@typeName", equalTo("mn:mytypename")));
+        assertThat(doc, hasXPath("//wfs:Update/wfs:Property/wfs:Name", equalTo("mn:myproperty")));
+        assertThat(doc, hasXPath("//wfs:Update/wfs:Property/wfs:Value", equalTo("myvalue")));
+        assertThat(doc, hasXPath("//wfs:Update/ogc:Filter/ogc:FeatureId/@fid", equalTo("someid")));
 
         // try with numeric value
         propertyType.setValue(100.25);
@@ -91,11 +75,7 @@ public class WFSEncodingTest {
         encoder = new Encoder(new WFSConfiguration());
         // System.out.println(encoder.encodeAsString(update, WFS.Update));
         doc = encoder.encodeAsDOM(update, WFS.Update);
-        actual = Input.fromDocument(doc).build();
-        assertThat(
-                actual,
-                hasXPath("//wfs:Update/wfs:Property/wfs:Value", equalTo("100.25"))
-                        .withNamespaceContext(NAMESPACES));
+        assertThat(doc, hasXPath("//wfs:Update/wfs:Property/wfs:Value", equalTo("100.25")));
 
         // try with geometry
         Coordinate insideCoord = new Coordinate(5.2, 7.5);
@@ -106,19 +86,16 @@ public class WFSEncodingTest {
         encoder = new Encoder(new WFSConfiguration());
         // System.out.println(encoder.encodeAsString(update, WFS.Update));
         doc = encoder.encodeAsDOM(update, WFS.Update);
-        actual = Input.fromDocument(doc).build();
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//wfs:Update/wfs:Property/wfs:Value/gml:Point/gml:coord/gml:X",
-                                equalTo("5.2"))
-                        .withNamespaceContext(NAMESPACES));
+                        "//wfs:Update/wfs:Property/wfs:Value/gml:Point/gml:coord/gml:X",
+                        equalTo("5.2")));
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//wfs:Update/wfs:Property/wfs:Value/gml:Point/gml:coord/gml:Y",
-                                equalTo("7.5"))
-                        .withNamespaceContext(NAMESPACES));
+                        "//wfs:Update/wfs:Property/wfs:Value/gml:Point/gml:coord/gml:Y",
+                        equalTo("7.5")));
     }
 
     @Test
@@ -148,17 +125,12 @@ public class WFSEncodingTest {
         Encoder encoder = new Encoder(new WFSConfiguration());
         // System.out.println(encoder.encodeAsString(insert, WFS.Insert));
         Document doc = encoder.encodeAsDOM(insert, WFS.Insert);
-        Source actual = Input.fromDocument(doc).build();
         assertThat(
-                actual,
+                doc,
                 hasXPath(
-                                "//wfs:Insert/wfs:dummyFeatureType/wfs:dummyAttribute",
-                                equalTo("dummyValue"))
-                        .withNamespaceContext(NAMESPACES));
-        assertThat(
-                actual,
-                hasXPath("//wfs:Insert/wfs:dummyFeatureType/@gml:id", equalTo("dummyId"))
-                        .withNamespaceContext(NAMESPACES));
+                        "//wfs:Insert/wfs:dummyFeatureType/wfs:dummyAttribute",
+                        equalTo("dummyValue")));
+        assertThat(doc, hasXPath("//wfs:Insert/wfs:dummyFeatureType/@gml:id", equalTo("dummyId")));
     }
 
     @Test
@@ -172,10 +144,6 @@ public class WFSEncodingTest {
         Encoder encoder = new Encoder(new WFSConfiguration());
         // System.out.println(encoder.encodeAsString(delete, WFS.Delete));
         Document doc = encoder.encodeAsDOM(delete, WFS.Delete);
-        Source actual = Input.fromDocument(doc).build();
-        assertThat(
-                actual,
-                hasXPath("//wfs:Delete/ogc:Filter/ogc:FeatureId/@fid", equalTo("someid"))
-                        .withNamespaceContext(NAMESPACES));
+        assertThat(doc, hasXPath("//wfs:Delete/ogc:Filter/ogc:FeatureId/@fid", equalTo("someid")));
     }
 }

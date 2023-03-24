@@ -4,36 +4,33 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertThrows;
-import static org.xmlunit.matchers.EvaluateXPathMatcher.hasXPath;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
-import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.test.xml.XmlTestSupport;
 import org.geotools.util.factory.Hints;
 import org.junit.Test;
 import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.xmlunit.builder.Input;
 
-public class FeatureTransformerTest {
+public class FeatureTransformerTest extends XmlTestSupport {
 
-    private static Map<String, String> NAMESPACES = new HashMap<>();
-
-    static {
-        NAMESPACES.put("xlink", "http://www.w3.org/1999/xlink");
-        NAMESPACES.put("wfs", "http://www.opengis.net/wfs");
-        NAMESPACES.put("gml", "http://www.opengis.net/gml");
-        NAMESPACES.put("gt", "http://www.geotools.org");
+    @Override
+    protected Map<String, String> getNamespaces() {
+        return namespaces(
+                Namespace("xlink", "http://www.w3.org/1999/xlink"),
+                Namespace("wfs", "http://www.opengis.net/wfs"),
+                Namespace("gml", "http://www.opengis.net/gml"),
+                Namespace("gt", "http://www.geotools.org"));
     }
 
     @Test
@@ -47,19 +44,11 @@ public class FeatureTransformerTest {
         String result = bos.toString();
         // System.out.println(result);
 
-        Source actual = Input.fromString(result).build();
+        assertThat(result, hasXPath("count(//wfs:FeatureCollection)", equalTo("1")));
         assertThat(
-                actual,
-                hasXPath("count(//wfs:FeatureCollection)", equalTo("1"))
-                        .withNamespaceContext(NAMESPACES));
-        assertThat(
-                actual,
-                hasXPath("/wfs:FeatureCollection/gml:boundedBy/gml:null", equalTo("unknown"))
-                        .withNamespaceContext(NAMESPACES));
-        assertThat(
-                actual,
-                hasXPath("count(//gml:featureMember)", equalTo("0"))
-                        .withNamespaceContext(NAMESPACES));
+                result,
+                hasXPath("/wfs:FeatureCollection/gml:boundedBy/gml:null", equalTo("unknown")));
+        assertThat(result, hasXPath("count(//gml:featureMember)", equalTo("0")));
     }
 
     @Test
@@ -82,16 +71,8 @@ public class FeatureTransformerTest {
         tx.transform(fc, bos);
         String result = bos.toString();
 
-        // System.out.println(result);
-
-        Source actual = Input.fromString(result).build();
-        assertThat(
-                actual,
-                hasXPath("count(//wfs:FeatureCollection)", equalTo("1"))
-                        .withNamespaceContext(NAMESPACES));
-        assertThat(
-                actual,
-                hasXPath("//gt:data", equalTo("One  test")).withNamespaceContext(NAMESPACES));
+        assertThat(result, hasXPath("count(//wfs:FeatureCollection)", equalTo("1")));
+        assertThat(result, hasXPath("//gt:data", equalTo("One  test")));
     }
 
     /**
@@ -125,15 +106,8 @@ public class FeatureTransformerTest {
             tx.transform(fc, bos);
             String result = bos.toString();
 
-            Source actual = Input.fromString(result).build();
-            assertThat(
-                    actual,
-                    hasXPath("count(//wfs:FeatureCollection)", equalTo("1"))
-                            .withNamespaceContext(NAMESPACES));
-            assertThat(
-                    actual,
-                    hasXPath("//gt:dia", equalTo("1982-12-03T00:00:00Z"))
-                            .withNamespaceContext(NAMESPACES));
+            assertThat(result, hasXPath("count(//wfs:FeatureCollection)", equalTo("1")));
+            assertThat(result, hasXPath("//gt:dia", equalTo("1982-12-03T00:00:00Z")));
 
         } finally {
             System.getProperties().remove("org.geotools.dateTimeFormatHandling");
@@ -172,15 +146,8 @@ public class FeatureTransformerTest {
             tx.transform(fc, bos);
             String result = bos.toString();
 
-            Source actual = Input.fromString(result).build();
-            assertThat(
-                    actual,
-                    hasXPath("count(//wfs:FeatureCollection)", equalTo("1"))
-                            .withNamespaceContext(NAMESPACES));
-            assertThat(
-                    actual,
-                    hasXPath("//gt:dia", equalTo("1982-12-03T00:00:00"))
-                            .withNamespaceContext(NAMESPACES));
+            assertThat(result, hasXPath("count(//wfs:FeatureCollection)", equalTo("1")));
+            assertThat(result, hasXPath("//gt:dia", equalTo("1982-12-03T00:00:00")));
         } finally {
             System.getProperties().remove("org.geotools.dateTimeFormatHandling");
             TimeZone.setDefault(defaultTimeZone);

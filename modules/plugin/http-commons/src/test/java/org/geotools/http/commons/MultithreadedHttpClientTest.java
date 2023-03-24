@@ -16,14 +16,7 @@
  */
 package org.geotools.http.commons;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
@@ -79,6 +72,25 @@ public class MultithreadedHttpClientTest {
         }
         // check we intercepted the request with our "proxy"
         wireMockProxyRule.verify(getRequestedFor(urlEqualTo("/fred")));
+    }
+
+    @Test
+    public void testWithBasicAuthProvided() throws Exception {
+        wireMockRule.addStubMapping(
+                stubFor(
+                        get(urlEqualTo("/testba"))
+                                .withBasicAuth("flup", "top")
+                                .willReturn(
+                                        aResponse()
+                                                .withStatus(200)
+                                                .withHeader("Content-Type", "text/xml")
+                                                .withBody("<ok>authorized</ok>"))));
+
+        try (MultithreadedHttpClient toTest = new MultithreadedHttpClient()) {
+            toTest.setUser("flup");
+            toTest.setPassword("top");
+            toTest.get(new URL("http://localhost:" + wireMockRule.port() + "/testba"));
+        }
     }
 
     /** Verifies that the nonProxyConfig is used when a GET is executed, matching a nonProxyHost. */

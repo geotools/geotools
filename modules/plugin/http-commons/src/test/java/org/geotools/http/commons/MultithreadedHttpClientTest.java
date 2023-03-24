@@ -81,6 +81,25 @@ public class MultithreadedHttpClientTest {
         wireMockProxyRule.verify(getRequestedFor(urlEqualTo("/fred")));
     }
 
+    @Test
+    public void testWithBasicAuthProvided() throws Exception {
+        wireMockRule.addStubMapping(
+                stubFor(
+                        get(urlEqualTo("/testba"))
+                                .withBasicAuth("flup", "top")
+                                .willReturn(
+                                        aResponse()
+                                                .withStatus(200)
+                                                .withHeader("Content-Type", "text/xml")
+                                                .withBody("<ok>authorized</ok>"))));
+
+        try (MultithreadedHttpClient toTest = new MultithreadedHttpClient()) {
+            toTest.setUser("flup");
+            toTest.setPassword("top");
+            toTest.get(new URL("http://localhost:" + wireMockRule.port() + "/testba"));
+        }
+    }
+
     /** Verifies that the nonProxyConfig is used when a GET is executed, matching a nonProxyHost. */
     @Test
     public void testGetWithMatchingNonProxyHost() throws HttpException, IOException {

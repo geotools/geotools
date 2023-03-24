@@ -16,10 +16,13 @@
  */
 package org.geotools.http.commons;
 
+import static org.apache.http.auth.AuthScope.ANY;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -28,11 +31,13 @@ import java.util.zip.GZIPInputStream;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpException;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.Credentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.AuthCache;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
@@ -42,6 +47,8 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.auth.BasicScheme;
+import org.apache.http.impl.client.BasicAuthCache;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -162,6 +169,13 @@ public class MultithreadedHttpClient extends AbstractHttpClient
         HttpResponse resp;
         if (credsProvider != null) {
             localContext.setCredentialsProvider(credsProvider);
+            // see https://stackoverflow.com/a/21592593
+            AuthCache authCache = new BasicAuthCache();
+            URI target = method.getURI();
+            authCache.put(
+                    new HttpHost(target.getHost(), target.getPort(), target.getScheme()),
+                    new BasicScheme());
+            localContext.setAuthCache(authCache);
             resp = client.execute(method, localContext);
         } else {
             resp = client.execute(method);
@@ -228,7 +242,7 @@ public class MultithreadedHttpClient extends AbstractHttpClient
 
     private void resetCredentials() {
         if (user != null && password != null) {
-            AuthScope authscope = AuthScope.ANY;
+            AuthScope authscope = ANY;
             Credentials credentials = new UsernamePasswordCredentials(user, password);
             // TODO - check if this works for all types of auth or do we need to look it up?
             credsProvider = new BasicCredentialsProvider();

@@ -29,6 +29,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import org.geotools.data.ows.URLCheckers;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.logging.Logging;
@@ -64,6 +65,10 @@ public class ImageGraphicFactory implements ExternalGraphicFactory, GraphicCache
         if (location == null)
             throw new IllegalArgumentException(
                     "The provided expression cannot be evaluated to a URL");
+
+        // validate the icon can actually be fetched, it may go to a random
+        // local filesystem location, or a remote server
+        URLCheckers.confirm(location);
 
         // get the image from the cache, or load it
         BufferedImage image = imageCache.get(location);

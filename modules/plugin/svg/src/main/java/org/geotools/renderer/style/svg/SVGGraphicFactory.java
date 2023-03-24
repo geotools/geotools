@@ -38,6 +38,7 @@ import java.util.stream.Collectors;
 import javax.swing.Icon;
 import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
 import org.apache.batik.util.XMLResourceDescriptor;
+import org.geotools.data.ows.URLCheckers;
 import org.geotools.renderer.style.ExternalGraphicFactory;
 import org.geotools.renderer.style.GraphicCache;
 import org.geotools.util.CanonicalSet;
@@ -114,6 +115,11 @@ public class SVGGraphicFactory implements Factory, ExternalGraphicFactory, Graph
                 svgUri = svgfile.substring(0, idx);
             }
         }
+
+        // validate the icon can actually be fetched, it may go to a random
+        // local filesystem location, or a remote server
+        URLCheckers.confirm(svgUri);
+
         Document doc = f.createDocument(svgUri);
         Map<String, String> parameters = getParametersFromUrl(svgfile);
         if (!parameters.isEmpty() || hasParameters(doc.getDocumentElement())) {

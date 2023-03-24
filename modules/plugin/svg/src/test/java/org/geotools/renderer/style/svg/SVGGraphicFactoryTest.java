@@ -18,6 +18,8 @@ package org.geotools.renderer.style.svg;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
 
 import java.awt.RenderingHints.Key;
 import java.io.IOException;
@@ -33,10 +35,14 @@ import javax.swing.Icon;
 import org.apache.batik.bridge.TextNode;
 import org.apache.batik.gvt.CompositeGraphicsNode;
 import org.apache.batik.gvt.GraphicsNode;
+import org.geotools.data.ows.MockURLChecker;
+import org.geotools.data.ows.URLCheckerException;
+import org.geotools.data.ows.URLCheckers;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.renderer.style.GraphicCache;
 import org.geotools.util.PreventLocalEntityResolver;
 import org.geotools.util.factory.Hints;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,6 +58,11 @@ public class SVGGraphicFactoryTest {
     public void setUp() throws Exception {
 
         ff = CommonFactoryFinder.getFilterFactory(null);
+    }
+
+    @After
+    public void cleanupCheckers() {
+        URLCheckers.reset();
     }
 
     @Test
@@ -217,5 +228,25 @@ public class SVGGraphicFactoryTest {
             // clear the cache
             RenderableSVGCache.glyphCache.clear();
         }
+    }
+
+    @Test
+    public void testURLCheckerAllowed() throws Exception {
+        URLCheckers.register(new MockURLChecker(u -> u.contains("gradient-pixels")));
+
+        SVGGraphicFactory svg = new SVGGraphicFactory();
+        URL url = SVGGraphicFactory.class.getResource("gradient-pixels.svg");
+        assertNotNull(svg.getIcon(null, ff.literal(url), "image/svg", -1));
+    }
+
+    @Test
+    public void testURLCheckerDisallowed() throws Exception {
+        URLCheckers.register(new MockURLChecker("nope", u -> false));
+
+        SVGGraphicFactory svg = new SVGGraphicFactory();
+        URL url = SVGGraphicFactory.class.getResource("gradient-pixels.svg");
+        assertThrows(
+                URLCheckerException.class,
+                () -> svg.getIcon(null, ff.literal(url), "image/svg", -1));
     }
 }

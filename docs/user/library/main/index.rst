@@ -50,3 +50,4 @@ The ``gt-main`` module is responsible for:
    datastore
    repository
    sld
+   urlchecker

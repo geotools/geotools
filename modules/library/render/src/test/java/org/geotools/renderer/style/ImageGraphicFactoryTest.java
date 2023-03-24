@@ -16,10 +16,17 @@
  */
 package org.geotools.renderer.style;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
+
 import java.net.URL;
 import javax.swing.Icon;
+import org.geotools.data.ows.MockURLChecker;
+import org.geotools.data.ows.URLCheckerException;
+import org.geotools.data.ows.URLCheckers;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.renderer.lite.StreamingRenderer;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,6 +41,11 @@ public class ImageGraphicFactoryTest {
     public void setUp() throws Exception {
         image = new ImageGraphicFactory();
         ff = CommonFactoryFinder.getFilterFactory(null);
+    }
+
+    @After
+    public void cleanupCheckers() {
+        URLCheckers.reset();
     }
 
     /** Check that at least the well known png and jpeg formats are supported */
@@ -88,5 +100,23 @@ public class ImageGraphicFactoryTest {
         ((GraphicCache) image).clearCache();
 
         Assert.assertTrue(image.imageCache.isEmpty());
+    }
+
+    @Test
+    public void testURLCheckerAllowed() throws Exception {
+        URLCheckers.register(new MockURLChecker(u -> u.contains("test.png")));
+
+        URL u = this.getClass().getResource("test-data/test.png");
+        assertNotNull(image.getIcon(null, ff.literal(u), "image/png", -1));
+    }
+
+    @Test
+    public void testURLCheckerDisallowed() throws Exception {
+        URLCheckers.register(new MockURLChecker("nope", u -> false));
+
+        URL u = this.getClass().getResource("test-data/test.png");
+        assertThrows(
+                URLCheckerException.class,
+                () -> image.getIcon(null, ff.literal(u), "image/png", -1));
     }
 }

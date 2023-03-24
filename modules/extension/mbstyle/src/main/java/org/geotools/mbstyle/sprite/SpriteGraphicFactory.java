@@ -34,6 +34,7 @@ import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import org.geotools.data.ows.URLCheckers;
 import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPClientFinder;
 import org.geotools.http.HTTPResponse;
@@ -112,6 +113,10 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory, GraphicCach
 
         URL loc = url.evaluate(feature, URL.class);
         URL baseUrl = parseBaseUrl(loc);
+
+        // validate the icon can actually be fetched, it may go to a random
+        // local filesystem location, or a remote server
+        URLCheckers.confirm(loc);
 
         Map<String, String> paramsMap = parseFragmentParams(loc);
         String iconName = paramsMap.get("icon");

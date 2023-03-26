@@ -295,4 +295,46 @@ public class CircularArcTest {
         CoordinateArraySequence cs = new CoordinateArraySequence(coords);
         return new LineString(cs, new GeometryFactory());
     }
+
+    @Test
+    public void testGeot7333() {
+        // Correctly rounded center and radius computed with an arbitrary precision library
+        Coordinate CENTER = new Coordinate(3.85765333609684929e+07, 2.54452296045322483e+06);
+        double RADIUS = 3.99598457401221629e-01;
+
+        // We test 3 permutations of the control points to cover all branches in the center
+        // computation routine.
+        CircularArc arc1 =
+                new CircularArc(
+                        3.8576532966E7,
+                        2544522.8998000007,
+                        3.8576533116106E7,
+                        2544523.27624,
+                        3.85765334913E7,
+                        2544523.338199999);
+        assertCoordinateEquals(CENTER, arc1.getCenter());
+        assertEquals(RADIUS, arc1.getRadius(), 5e-9);
+
+        CircularArc arc2 =
+                new CircularArc(
+                        3.8576532966E7,
+                        2544522.8998000007,
+                        3.85765334913E7,
+                        2544523.338199999,
+                        3.8576533116106E7,
+                        2544523.27624);
+        assertCoordinateEquals(CENTER, arc2.getCenter());
+        assertEquals(RADIUS, arc2.getRadius(), 5e-9);
+
+        CircularArc arc3 =
+                new CircularArc(
+                        3.8576533116106E7,
+                        2544523.27624,
+                        3.8576532966E7,
+                        2544522.8998000007,
+                        3.85765334913E7,
+                        2544523.338199999);
+        assertCoordinateEquals(CENTER, arc3.getCenter());
+        assertEquals(RADIUS, arc3.getRadius(), 5e-9);
+    }
 }

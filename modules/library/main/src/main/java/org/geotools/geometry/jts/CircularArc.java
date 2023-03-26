@@ -24,6 +24,9 @@ import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
 
 import java.util.Arrays;
+import org.ejml.data.DMatrixRMaj;
+import org.ejml.dense.row.decomposition.lu.LUDecompositionAlt_DDRM;
+import org.ejml.dense.row.linsol.lu.LinearSolverLu_DDRM;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 
@@ -36,6 +39,8 @@ import org.locationtech.jts.geom.Envelope;
 public class CircularArc {
 
     static final double EPS = 1.0e-12;
+
+    static final double MAXCOND = 2.0e4;
 
     public static final double COLLINEARS = Double.POSITIVE_INFINITY;
 
@@ -269,8 +274,6 @@ public class CircularArc {
 
     private void initializeCenterRadius() {
         if (Double.isNaN(radius)) {
-            double temp, bc, cd, determinate;
-
             final double sx = controlPoints[0];
             final double sy = controlPoints[1];
             final double mx = controlPoints[2];
@@ -282,24 +285,151 @@ public class CircularArc {
             if (equals(sx, ex) && equals(sy, ey)) {
                 centerX = sx + (mx - sx) / 2.0;
                 centerY = sy + (my - sy) / 2.0;
-
-                radius = sqrt((centerX - sx) * (centerX - sx) + (centerY - sy) * (centerY - sy));
             } else {
-                temp = mx * mx + my * my;
-                bc = (sx * sx + sy * sy - temp) / 2.0;
-                cd = (temp - ex * ex - ey * ey) / 2.0;
-                determinate = (sx - mx) * (my - ey) - (mx - ex) * (sy - my);
+                // Let <a, b> be the dot product of the two-dimensional vectors a and b. Given three
+                // distinct points p1, p2, p3 located on a circle, we can find the center c of the
+                // circle by solving the following over-determined system of equations:
+                //   <p1-p2, c> = 0.5*<p1-p2, p1+p2>    (1)
+                //   <p1-p3, c> = 0.5*<p1-p3, p1+p3>    (2)
+                //   <p2-p3, c> = 0.5*<p2-p3, p2+p3>    (3)
+                // The equations express that the vector from the center to the midpoint of a
+                // triangle side must be perpendicular to the triangle side.
+                //
+                // We select the two equations that result in the 2x2 matrix with the best
+                // condition. The matrix condition number k of a 2x2 matrix
+                //   | a b |
+                //   | c d |
+                // is
+                //   k = (1 + sqrt(1 - R^2))/R
+                // with
+                //   R = 2|det(A)|/tr(A^T*A) = 2|ad - bc|/(a^2 + b^2 + c^2 + d^2)
+                // where
+                //   0 <= R <= 1
+                // Hence a larger R results in a better (smaller) condition number.
+                //
+                // Independent of the two equations selected, 2|det(A)| is always
+                //   2|det(A)| = 2|(x1(y2-y3) - x2(y1-y3) + x3(y1-y2))|
+                //
+                // Hence we have the best-conditioned system if we select the two equations so that
+                // a^2 + b^2 + c^2 + d^2 is as small as possible.
 
-                /* Check collinearity */
-                if (abs(determinate) < EPS) {
+                // Compute the matrix row candidates
+                final double dx12 = sx - mx;
+                final double dy12 = sy - my;
+                final double dx13 = sx - ex;
+                final double dy13 = sy - ey;
+                final double dx23 = mx - ex;
+                final double dy23 = my - ey;
+
+                // Compute the square sums of the row candidates
+                final double sqs1 = dx12 * dx12 + dy12 * dy12;
+                final double sqs2 = dx13 * dx13 + dy13 * dy13;
+                final double sqs3 = dx23 * dx23 + dy23 * dy23;
+
+                DMatrixRMaj A;
+                DMatrixRMaj b;
+                double sqs; // a^2 + b^2 + c^2 + d^2
+                if ((sqs1 <= sqs3) && (sqs2 <= sqs3)) {
+                    // Take equations (1) and (2)
+                    A = new DMatrixRMaj(2, 2, true, dx12, dy12, dx13, dy13);
+                    b =
+                            new DMatrixRMaj(
+                                    2,
+                                    1,
+                                    true,
+                                    0.5 * (dx12 * (sx + mx) + dy12 * (sy + my)),
+                                    0.5 * (dx13 * (sx + ex) + dy13 * (sy + ey)));
+                    sqs = sqs1 + sqs2;
+                } else if ((sqs1 <= sqs2) && (sqs3 <= sqs2)) {
+                    // Take equations (1) and (3)
+                    A = new DMatrixRMaj(2, 2, true, dx12, dy12, dx23, dy23);
+                    b =
+                            new DMatrixRMaj(
+                                    2,
+                                    1,
+                                    true,
+                                    0.5 * (dx12 * (sx + mx) + dy12 * (sy + my)),
+                                    0.5 * (dx23 * (mx + ex) + dy23 * (my + ey)));
+                    sqs = sqs1 + sqs3;
+                } else {
+                    // Take equations (2) and (3)
+                    A = new DMatrixRMaj(2, 2, true, dx13, dy13, dx23, dy23);
+                    b =
+                            new DMatrixRMaj(
+                                    2,
+                                    1,
+                                    true,
+                                    0.5 * (dx13 * (sx + ex) + dy13 * (sy + ey)),
+                                    0.5 * (dx23 * (mx + ex) + dy23 * (my + ey)));
+                    sqs = sqs2 + sqs3;
+                }
+
+                LUDecompositionAlt_DDRM lu = new LUDecompositionAlt_DDRM();
+                LinearSolverLu_DDRM solver = new LinearSolverLu_DDRM(lu);
+                if (!solver.setA(A)) {
                     radius = COLLINEARS;
                     return;
                 }
-                determinate = 1.0 / determinate;
-                centerX = (bc * (my - ey) - cd * (sy - my)) * determinate;
-                centerY = ((sx - mx) * cd - (mx - ex) * bc) * determinate;
 
-                radius = sqrt((centerX - sx) * (centerX - sx) + (centerY - sy) * (centerY - sy));
+                // If the control points are nearly collinear, a slight move of a control point will
+                // cause a large move of the center. Looking at the equation system we are about to
+                // solve
+                //   Ax = b
+                // we can observe this behavior if the condition number is high. A high condition
+                // number means that small changes in b lead to large changes in x. We know that
+                //   R = 2|det(A)|/tr(A^T*A) = 2|ad - bc|/(a^2 + b^2 + c^2 + d^2)
+                // and we already have a^2 + b^2 + c^2 + d^2 in sqs, we just need the determinant to
+                // compute R.
+                final double R = 2.0 * abs(lu.computeDeterminant().getReal()) / sqs;
+
+                // From R we can now compute the condition number k. When generating random
+                // collinear points with double precision, the points are basically never perfectly
+                // collinear due to the limited precision of double precision numbers. In such
+                // cases, the matrix condition number usually is > 2*10^4.
+                final double k = (1.0 + sqrt(1.0 - R * R)) / R;
+                if (k > MAXCOND) {
+                    radius = COLLINEARS;
+                    return;
+                }
+
+                DMatrixRMaj x = new DMatrixRMaj(2, 1);
+                solver.solve(b, x);
+
+                centerX = x.get(0);
+                centerY = x.get(1);
+            }
+
+            // As the center has to be snapped on the floating point grid, the distance of the
+            // center to the control points can be different. We use the median of the three
+            // distances as radius.
+            final double rsx = centerX - sx;
+            final double rsy = centerY - sy;
+            final double rs = sqrt(rsx * rsx + rsy * rsy);
+
+            final double rmx = centerX - mx;
+            final double rmy = centerY - my;
+            final double rm = sqrt(rmx * rmx + rmy * rmy);
+
+            final double rex = centerX - ex;
+            final double rey = centerY - ey;
+            final double re = sqrt(rex * rex + rey * rey);
+
+            if (rs <= rm) {
+                if (rm <= re) {
+                    radius = rm; // rs <= rm <= re
+                } else if (rs <= re) {
+                    radius = re; // rs <= re <  rm
+                } else {
+                    radius = rs; // re <  rs <= rm
+                }
+            } else {
+                if (rs <= re) {
+                    radius = rs; // rm <  rs <= re
+                } else if (rm <= re) {
+                    radius = re; // rm <= re <  rs
+                } else {
+                    radius = rm; // re <  rm <  rs
+                }
             }
         }
     }

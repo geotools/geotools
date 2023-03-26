@@ -238,6 +238,11 @@
       <version>1.6</version>
     </dependency>
     <dependency>
+      <groupId>org.ejml</groupId>
+      <artifactId>ejml-ddense</artifactId>
+      <!-- The version number is specified in the parent POM. -->
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <!-- The version number is specified in the parent POM. -->

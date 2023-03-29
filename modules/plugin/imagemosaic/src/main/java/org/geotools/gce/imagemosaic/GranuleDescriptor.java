@@ -153,10 +153,9 @@ public class GranuleDescriptor {
                     new VectorBinarizeDescriptor(),
                     new VectorBinarizeRIF(),
                     Registry.JAI_TOOLS_PRODUCT);
-        } catch (Exception e) {
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.log(Level.FINE, e.getLocalizedMessage());
-            }
+        } catch (Throwable e) {
+            LOGGER.log(Level.SEVERE, "Error setting up GranuleDescriptor", e);
+            throw new RuntimeException("Error setting up GranuleDescriptor.", e);
         }
     }
 
@@ -339,7 +338,7 @@ public class GranuleDescriptor {
         }
     }
 
-    private static PAMParser pamParser = PAMParser.getInstance();
+    private static PAMParser pamParser;
 
     ReferencedEnvelope granuleBBOX;
 
@@ -641,7 +640,16 @@ public class GranuleDescriptor {
         final File file = URLs.urlToFile(granuleUrl);
         final String path = file.getCanonicalPath();
         final File auxFile = new File(path + AUXFILE_EXT);
-        if (auxFile.exists()) pamDataset = pamParser.parsePAM(auxFile);
+        if (auxFile.exists()) {
+            if (pamParser == null) {
+                try {
+                    pamParser = PAMParser.getInstance();
+                } catch (Throwable e) {
+                    throw new RuntimeException("Couldn't initialize PAM parser.", e);
+                }
+            }
+            pamDataset = pamParser.parsePAM(auxFile);
+        }
     }
 
     public GranuleDescriptor(

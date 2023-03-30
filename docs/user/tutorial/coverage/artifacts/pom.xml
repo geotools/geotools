@@ -54,7 +54,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <geotools.version>29-SNAPSHOT</geotools.version>
+        <geotools.version>29.0</geotools.version>
     </properties>
 
     <repositories>

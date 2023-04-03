@@ -37,6 +37,32 @@
     <xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
   </xs:complexType>
 
+  <xs:complexType name="CodeStringType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="code" type="xs:string"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="MeasurementCodeType">
+    <xs:complexContent>
+      <xs:extension base="gml:AbstractFeatureType">
+        <xs:sequence>
+          <xs:element name="name" type="ms:CodeStringType"/>
+          <xs:element name="unit" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+      <xs:attribute name="codename" type="xs:string"/>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="MeasurementCodePropertyType">
+    <xs:sequence>
+      <xs:element ref="ms:MeasurementCode"/>
+    </xs:sequence>
+    <xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </xs:complexType>
+
   <xs:element name="Measurement" type="ms:MeasurementType" substitutionGroup="gml:AbstractFeature"/>
+  <xs:element name="MeasurementCode" type="ms:MeasurementCodeType" substitutionGroup="gml:AbstractFeature"/>
 
 </xs:schema>

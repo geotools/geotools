@@ -120,5 +120,45 @@
                 </AttributeMapping>
             </attributeMappings>
         </FeatureTypeMapping>
+        <FeatureTypeMapping>
+            <mappingName>measurementsCode</mappingName>
+            <sourceDataStore>measurementsDefaultGeometry</sourceDataStore>
+            <sourceType>measurementsDefaultGeometry</sourceType>
+            <targetElement>ms:MeasurementCode</targetElement>
+            <attributeMappings>
+                <AttributeMapping>
+                    <targetAttribute>ms:MeasurementCode</targetAttribute>
+                    <idExpression>
+                        <OCQL>ID</OCQL>
+                    </idExpression>
+                    <ClientProperty>
+                        <name>codename</name>
+                        <value>strConcat(NAME, '-code')</value>
+                    </ClientProperty>
+                </AttributeMapping>
+                <AttributeMapping>
+                    <targetAttribute>ms:name</targetAttribute>
+                    <sourceExpression>
+                        <OCQL>NAME</OCQL>
+                    </sourceExpression>
+                    <ClientProperty>
+                        <name>code</name>
+                        <value>strConcat(NAME, '-code')</value>
+                    </ClientProperty>
+                </AttributeMapping>
+                <AttributeMapping>
+                    <targetAttribute>ms:unit</targetAttribute>
+                    <sourceExpression>
+                        <OCQL>UNIT</OCQL>
+                    </sourceExpression>
+                </AttributeMapping>
+                <AttributeMapping>
+                    <targetAttribute>FEATURE_LINK[1]</targetAttribute>
+                    <sourceExpression>
+                        <OCQL>STATION</OCQL>
+                    </sourceExpression>
+                </AttributeMapping>
+            </attributeMappings>
+        </FeatureTypeMapping>
     </typeMappings>
 </as:AppSchemaDataAccess>

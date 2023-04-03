@@ -1,6 +1,7 @@
 package org.geotools.data.complex;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -9,8 +10,17 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import javax.xml.namespace.NamespaceContext;
+import javax.xml.transform.TransformerException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 import org.geotools.appschema.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
@@ -19,6 +29,9 @@ import org.geotools.data.complex.feature.type.Types;
 import org.geotools.data.complex.util.ComplexFeatureConstants;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
+import org.geotools.gml3.GML;
+import org.geotools.gml3.GMLConfiguration;
+import org.geotools.xsd.Encoder;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
@@ -30,6 +43,11 @@ import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 import org.xml.sax.helpers.NamespaceSupport;
 
 public class DefaultGeometryTest {
@@ -41,6 +59,8 @@ public class DefaultGeometryTest {
     static final Name STATION_FEATURE_TYPE = Types.typeName(STATIONS_NS, "StationType");
 
     static final Name STATION_FEATURE = Types.typeName(STATIONS_NS, "Station");
+    static final Name STATION_WITH_MEASUREMENTS_CODE_FEATURE =
+            Types.typeName(STATIONS_NS, "StationWithMeasurementCode");
 
     static final Name STATION_NO_DEFAULT_GEOM_MAPPING = Types.typeName("stationsNoDefaultGeometry");
 
@@ -66,6 +86,7 @@ public class DefaultGeometryTest {
     static final Name MEASUREMENT_FEATURE_TYPE = Types.typeName(MEASUREMENTS_NS, "MeasurementType");
 
     static final Name MEASUREMENT_FEATURE = Types.typeName(MEASUREMENTS_NS, "Measurement");
+    static final Name MEASUREMENT_CODE_FEATURE = Types.typeName(MEASUREMENTS_NS, "MeasurementCode");
 
     static final Name MEASUREMENT_MANY_TO_ONE_MAPPING = Types.typeName("measurementsManyToOne");
 
@@ -78,6 +99,7 @@ public class DefaultGeometryTest {
     private static AppSchemaDataAccess stationsDataAccess;
 
     private static AppSchemaDataAccess measurementsDataAccess;
+    private static final XPath XPATH = buildXPath();
 
     public DefaultGeometryTest() {
         namespaces.declarePrefix("st", STATIONS_NS);
@@ -121,6 +143,9 @@ public class DefaultGeometryTest {
         assertNotNull(ft);
         assertEquals(MEASUREMENT_FEATURE_TYPE, ft.getName());
         assertNotNull(measurementsDataAccess.getSchema(MEASUREMENT_MANY_TO_ONE_MAPPING));
+
+        ft = measurementsDataAccess.getSchema(MEASUREMENT_CODE_FEATURE);
+        assertNotNull(ft);
     }
 
     private static AppSchemaDataAccess loadDataAccess(String mappingFile) throws IOException {
@@ -356,6 +381,101 @@ public class DefaultGeometryTest {
                         "Error setting default geometry value: multiple values were found",
                         re.getMessage());
             }
+        }
+    }
+
+    /** Tests GML encoding of client properties doesn't affect parent containers. */
+    @Test
+    public void testGMLEncodingProperties() throws IOException {
+        FeatureSource fs =
+                stationsDataAccess.getFeatureSource(STATION_WITH_MEASUREMENTS_CODE_FEATURE);
+        GMLConfiguration gml31Config = new GMLConfiguration();
+        Encoder encoder = new Encoder(gml31Config);
+        // filter for station with id "st.1"
+        Id filter = ff.id(ff.featureId("st.1"));
+        FeatureCollection fc = fs.getFeatures(filter);
+        assertEquals(1, size(fc));
+        try (FeatureIterator it = fc.features()) {
+            Feature station1 = it.next();
+            assertEquals("st.1", station1.getIdentifier().toString());
+            Document dom = encoder.encodeAsDOM(station1, GML.featureMember);
+
+            List<Element> measurements =
+                    getElementsFromDocumentUsingXpath(
+                            dom, "//st:StationWithMeasurementCode/st:measurements");
+            assertFalse(measurements.isEmpty());
+            assertFalse(measurements.get(0).hasAttribute("codename"));
+
+            measurements =
+                    getElementsFromDocumentUsingXpath(
+                            dom,
+                            "//st:StationWithMeasurementCode/st:measurements/ms:MeasurementCode");
+            assertFalse(measurements.isEmpty());
+            assertTrue(measurements.get(0).hasAttribute("codename"));
+            assertFalse(measurements.get(0).hasAttribute("code"));
+
+            List<Element> names =
+                    getElementsFromDocumentUsingXpath(
+                            dom,
+                            "//st:StationWithMeasurementCode/st:measurements/ms:MeasurementCode/ms:name");
+            assertFalse(names.isEmpty());
+            assertTrue(names.get(0).hasAttribute("code"));
+
+        } catch (TransformerException | SAXException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    protected static XPath buildXPath() {
+        XPath xpath = XPathFactory.newInstance().newXPath();
+        xpath.setNamespaceContext(new SimpleNamespaceContext());
+        return xpath;
+    }
+
+    private List<Element> getElementsFromDocumentUsingXpath(
+            Document document, String xpathExpression) {
+        try {
+            NodeList nodes =
+                    (NodeList) XPATH.evaluate(xpathExpression, document, XPathConstants.NODESET);
+            // filter to have only Elements
+            List<Element> elements = new ArrayList<>();
+            for (int i = 0; i < nodes.getLength(); i++) {
+                Node node = nodes.item(i);
+                if (node instanceof Element) {
+                    elements.add((Element) node);
+                }
+            }
+            return elements;
+        } catch (XPathExpressionException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /** NamespaceContext implementation with basic namespaces */
+    static class SimpleNamespaceContext implements NamespaceContext {
+        private Map<String, String> namespaces = new HashMap<>();
+
+        public SimpleNamespaceContext() {
+            namespaces.put("gml", "http://www.opengis.net/gml");
+            namespaces.put("xlink", "http://www.w3.org/1999/xlink");
+            namespaces.put("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+            namespaces.put("st", "http://www.stations.org/1.0");
+            namespaces.put("ms", "http://www.measurements.org/1.0");
+        }
+
+        @Override
+        public String getNamespaceURI(String prefix) {
+            return namespaces.get(prefix);
+        }
+
+        @Override
+        public String getPrefix(String namespaceURI) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public Iterator<String> getPrefixes(String namespaceURI) {
+            throw new UnsupportedOperationException();
         }
     }
 }

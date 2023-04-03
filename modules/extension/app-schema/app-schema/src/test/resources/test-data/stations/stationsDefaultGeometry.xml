@@ -248,5 +248,46 @@
                 </AttributeMapping>
             </attributeMappings>
         </FeatureTypeMapping>
+        <FeatureTypeMapping>
+            <mappingName>stationsCode</mappingName>
+            <sourceDataStore>stationsDefaultGeometry</sourceDataStore>
+            <sourceType>stationsDefaultGeometry</sourceType>
+            <targetElement>st:StationWithMeasurementCode</targetElement>
+            <defaultGeometry>st:location/st:position</defaultGeometry>
+            <attributeMappings>
+                <AttributeMapping>
+                    <targetAttribute>st:StationWithMeasurementCode</targetAttribute>
+                    <idExpression>
+                        <OCQL>ID</OCQL>
+                    </idExpression>
+                </AttributeMapping>
+                <AttributeMapping>
+                    <targetAttribute>st:name</targetAttribute>
+                    <sourceExpression>
+                        <OCQL>NAME</OCQL>
+                    </sourceExpression>
+                </AttributeMapping>
+                <AttributeMapping>
+                    <targetAttribute>st:location/st:name</targetAttribute>
+                    <sourceExpression>
+                        <OCQL>LOCATION</OCQL>
+                    </sourceExpression>
+                </AttributeMapping>
+                <AttributeMapping>
+                    <targetAttribute>st:location/st:position</targetAttribute>
+                    <sourceExpression>
+                        <OCQL>ST_POSITION</OCQL>
+                    </sourceExpression>
+                </AttributeMapping>
+                <AttributeMapping>
+                    <targetAttribute>st:measurements</targetAttribute>
+                    <sourceExpression>
+                        <OCQL>ID</OCQL>
+                        <linkElement>measurementsCode</linkElement>
+                        <linkField>FEATURE_LINK[1]</linkField>
+                    </sourceExpression>
+                </AttributeMapping>
+            </attributeMappings>
+        </FeatureTypeMapping>
     </typeMappings>
 </as:AppSchemaDataAccess>

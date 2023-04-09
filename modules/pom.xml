@@ -41,7 +41,6 @@
     <module>ogc</module>
     <module>plugin</module>
     <module>extension</module>
-    <module>test-support</module>
     <module>unsupported</module>
   </modules>
 

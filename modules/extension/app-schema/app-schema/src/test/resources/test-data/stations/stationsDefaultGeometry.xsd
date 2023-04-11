@@ -56,10 +56,22 @@
       <xs:element name="position" type="gml:GeometryPropertyType"/>
     </xs:sequence>
   </xs:complexType>
+  <xs:complexType name="StationWithMeasurementCodeType">
+    <xs:complexContent>
+      <xs:extension base="gml:AbstractFeatureType">
+        <xs:sequence>
+          <xs:element name="name" type="xs:string"/>
+          <xs:element name="location" type="st:Location"/>
+          <xs:element name="measurements" type="ms:MeasurementCodePropertyType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
 
   <xs:element name="Station" type="st:StationType" substitutionGroup="gml:AbstractFeature"/>
   <xs:element name="StationNoGeometry" type="st:StationNoGeometryType" substitutionGroup="gml:AbstractFeature"/>
   <xs:element name="StationWithGeometryProperty" type="st:StationWithGeometryPropertyType" substitutionGroup="gml:AbstractFeature"/>
   <xs:element name="StationWithMeasurements" type="st:StationWithMeasurementsType" substitutionGroup="gml:AbstractFeature"/>
+  <xs:element name="StationWithMeasurementCode" type="st:StationWithMeasurementCodeType" substitutionGroup="gml:AbstractFeature"/>
 
 </xs:schema>

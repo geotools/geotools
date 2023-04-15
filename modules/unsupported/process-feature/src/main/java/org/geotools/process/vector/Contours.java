@@ -45,6 +45,11 @@ import org.opengis.util.ProgressListener;
 
 public class Contours {
 
+    private enum PointType {
+        Point,
+        MultiPoint
+    };
+
     private static final GeometryFactory GF = new GeometryFactory();
 
     private double[] levels;
@@ -61,16 +66,16 @@ public class Contours {
         }
         ArrayList<Coordinate> coords = new ArrayList<>();
 
-        String ptype = "POINT";
+        PointType ptype = PointType.Point;
         if (MultiPoint.class.equals(
                 features.getSchema().getGeometryDescriptor().getType().getBinding())) {
-            ptype = "MULTI";
+            ptype = PointType.MultiPoint;
         }
         try (SimpleFeatureIterator itr = (SimpleFeatureIterator) features.features()) {
             while (itr.hasNext()) {
                 SimpleFeature f = itr.next();
                 ArrayList<Point> points = new ArrayList<>();
-                if (ptype == "POINT") {
+                if (ptype == PointType.Point) {
                     points.add((Point) f.getDefaultGeometry());
                 } else {
                     MultiPoint mp = (MultiPoint) f.getDefaultGeometry();

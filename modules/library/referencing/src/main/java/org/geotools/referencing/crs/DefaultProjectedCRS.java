@@ -27,6 +27,7 @@ import javax.measure.quantity.Length;
 import org.geotools.referencing.operation.DefaultOperationMethod;
 import org.geotools.referencing.operation.DefiningConversion;
 import org.geotools.referencing.wkt.Formatter;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.GeneralParameterValue;
@@ -250,6 +251,7 @@ public class DefaultProjectedCRS extends AbstractDerivedCRS implements Projected
      * @return The name of the WKT element type, which is {@code "PROJCS"}.
      */
     @Override
+    @SuppressFBWarnings("ES_COMPARING_STRINGS_WITH_EQ")
     protected String formatWKT(final Formatter formatter) {
         final Ellipsoid ellipsoid = ((GeodeticDatum) datum).getEllipsoid();
         @SuppressWarnings("unchecked") // Formatter.setLinearUnit(...) will do the check for us.

@@ -21,6 +21,7 @@ import org.geotools.data.util.NullProgressListener;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.swing.data.JFileDataStoreChooser;
+import org.geotools.util.SuppressFBWarnings;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -34,6 +35,7 @@ import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 
+@SuppressFBWarnings("DMI_RANDOM_USED_ONLY_ONCE")
 public class SnapToLine {
 
     public static void main(String[] args) throws Exception {

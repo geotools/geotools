@@ -445,8 +445,11 @@ public class SLDInlineFeatureParser {
         return null;
     }
 
-    public synchronized int getUID() {
-        return uniqueNumber++;
+    public int getUID() {
+        // use a static lock to protect a static variable
+        synchronized (SLDInlineFeatureParser.class) {
+            return uniqueNumber++;
+        }
     }
 
     /**

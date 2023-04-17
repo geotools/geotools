@@ -154,8 +154,7 @@ public class GranuleDescriptor {
                     new VectorBinarizeRIF(),
                     Registry.JAI_TOOLS_PRODUCT);
         } catch (Throwable e) {
-            LOGGER.log(Level.SEVERE, "Error setting up GranuleDescriptor", e);
-            throw new RuntimeException("Error setting up GranuleDescriptor.", e);
+            LOGGER.log(Level.SEVERE, "Error when registering RIF for GranuleDescriptor.", e);
         }
     }
 

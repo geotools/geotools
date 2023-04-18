@@ -216,8 +216,8 @@ You can create new features and add them to this ``FeatureCollection`` as needed
   DefaultFeatureCollection featureCollection = new DefaultFeatureCollection("internal",TYPE);
   WKTReader2 wkt = new WKTReader2();
   
-  featureCollection.add( SimpleFeatureBuilder.build( TYPE, new Object[]{ wkt.read("POINT(1,2)"), "name1"}, null) );
-  featureCollection.add( SimpleFeatureBuilder.build( TYPE, new Object[]{ wkt.read("POINT(4,4)"), "name2"}, null) );
+  featureCollection.add( SimpleFeatureBuilder.build( TYPE, new Object[]{ wkt.read("POINT(1 2)"), "name1"}, null) );
+  featureCollection.add( SimpleFeatureBuilder.build( TYPE, new Object[]{ wkt.read("POINT(4 4)"), "name2"}, null) );
 
 To FeatureSource
 ''''''''''''''''
@@ -278,8 +278,8 @@ These implementations of SimpleFeatureCollection will each offer different perfo
     WKTReader2 wkt = new WKTReader2();
     
     ArrayList<SimpleFeature> list = new ArrayList<SimpleFeature>();
-    list.add( SimpleFeatureBuilder.build( TYPE, new Object[]{ wkt.read("POINT(1,2)"), "name1"}, null) );
-    list.add( SimpleFeatureBuilder.build( TYPE, new Object[]{ wkt.read("POINT(4,4)"), "name2"}, null) );
+    list.add( SimpleFeatureBuilder.build( TYPE, new Object[]{ wkt.read("POINT(1 2)"), "name1"}, null) );
+    list.add( SimpleFeatureBuilder.build( TYPE, new Object[]{ wkt.read("POINT(4 4)"), "name2"}, null) );
     
     SimpleFeatureCollection collection = new ListFeatureCollection(TYPE,list);
     
@@ -307,8 +307,8 @@ These implementations of SimpleFeatureCollection will each offer different perfo
     WKTReader2 wkt = new WKTReader2();
     
     SimpleFeatureCollection collection = new SpatialIndexFeatureCollection();
-    collection.add( SimpleFeatureBuilder.build( TYPE, new Object[]{ wkt.read("POINT(1,2)"), "name1"} ));
-    collection.add( SimpleFeatureBuilder.build( TYPE, new Object[]{ wkt.read("POINT(4,4)"), "name1"} ));
+    collection.add( SimpleFeatureBuilder.build( TYPE, new Object[]{ wkt.read("POINT(1 2)"), "name1"} ));
+    collection.add( SimpleFeatureBuilder.build( TYPE, new Object[]{ wkt.read("POINT(4 4)"), "name1"} ));
     
     // Fast spatial Access
     SimpleFeatureSource source = DataUtilities.source( collection );

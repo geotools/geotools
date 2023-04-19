@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
-import org.apache.commons.collections4.CollectionUtils;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDFactory;
 import org.eclipse.xsd.XSDParticle;
@@ -43,10 +42,6 @@ import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.Property;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.AttributeType;
-import org.opengis.feature.type.ComplexType;
-import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.identity.Identifier;
@@ -407,34 +402,12 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
                 Property prop = complex.getProperties().iterator().next();
                 checkXlinkHref(prop, complex);
             }
-            // encode client properties and simple content only if the object is not a feature
-            // container
-            if (CollectionUtils.isEmpty(complex.getValue())
-                    || !hasFeatureTypeChild(complex.getDescriptor())) {
-                GML3EncodingUtils.encodeClientProperties(complex, value);
-                GML3EncodingUtils.encodeSimpleContent(complex, document, value);
-            }
+            GML3EncodingUtils.encodeClientProperties(complex, value);
+            GML3EncodingUtils.encodeSimpleContent(complex, document, value);
         } else if (!isPlaceholderObject(object) && !(object instanceof Collection)) {
             GML3EncodingUtils.encodeAsText(document, value, object);
         }
         return value;
-    }
-
-    /** Checks if the complex attribute has a feature type as unique child. */
-    private boolean hasFeatureTypeChild(AttributeDescriptor descriptor) {
-        if (descriptor != null && descriptor.getType() instanceof ComplexType) {
-            ComplexType type = (ComplexType) descriptor.getType();
-            Collection<PropertyDescriptor> descriptors = type.getDescriptors();
-            if (descriptors.size() == 1) {
-                PropertyDescriptor pd = descriptors.iterator().next();
-                if (pd instanceof AttributeDescriptor) {
-                    AttributeDescriptor ad = (AttributeDescriptor) pd;
-                    AttributeType attributeType = ad.getType();
-                    return (attributeType instanceof FeatureType && !attributeType.isAbstract());
-                }
-            }
-        }
-        return false;
     }
 
     /**

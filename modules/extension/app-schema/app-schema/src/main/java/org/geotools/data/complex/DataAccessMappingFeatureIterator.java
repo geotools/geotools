@@ -760,17 +760,6 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             Collection<Object> cobjs = (Collection<Object>) values;
             for (Object singleVal : cobjs) {
                 ArrayList<Object> valueList = new ArrayList<>();
-                // copy client properties from input features if they're complex features
-                // wrapped in app-schema data access
-                if (singleVal instanceof Attribute) {
-                    // copy client properties from input features if they're complex features
-                    // wrapped in app-schema data access
-                    final Map<Name, Expression> valueProperties =
-                            getClientProperties((Attribute) singleVal);
-                    if (!valueProperties.isEmpty()) {
-                        clientPropsMappings.putAll(valueProperties);
-                    }
-                }
                 Map<Name, Expression> clientProperties = clientPropsMappings;
                 if (!isNestedFeature) {
                     if (singleVal instanceof Attribute) {

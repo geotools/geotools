@@ -1,0 +1,44 @@
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:gml="http://www.opengis.net/gml/3.2"
+           xmlns:ms="http://www.measurements.org/1.0"
+           targetNamespace="http://www.measurements.org/1.0"
+           elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+  <xs:import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
+
+  <xs:complexType name="SampledAreaType">
+    <xs:sequence>
+      <xs:element name="code" type="xs:string"/>
+      <xs:element name="geometry" type="gml:GeometryPropertyType"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SampledAreaPropertyType">
+    <xs:sequence>
+      <xs:element name="SampledArea" type="ms:SampledAreaType" />
+    </xs:sequence>
+    <xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </xs:complexType>
+
+  <xs:complexType name="CodeStringType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="code" type="xs:string"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="MeasurementCodeType">
+        <xs:sequence>
+          <xs:element name="name" type="ms:CodeStringType"/>
+          <xs:element name="unit" type="xs:string"/>
+        </xs:sequence>
+      <xs:attribute name="codename" type="xs:string"/>
+  </xs:complexType>
+  <xs:complexType name="MeasurementCodePropertyType">
+    <xs:sequence>
+      <xs:element ref="ms:MeasurementCode"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="MeasurementCode" type="ms:MeasurementCodeType"/>
+
+</xs:schema>

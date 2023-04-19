@@ -313,8 +313,7 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
     }
 
     public GetFeatureRequest createGetFeatureRequest() {
-        WFSStrategy strategy = getStrategy();
-        return new GetFeatureRequest(config, strategy);
+        return new GetFeatureRequest(config, getStrategy(), getHTTPClient());
     }
 
     @Override

@@ -172,7 +172,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
         try {
             return new WrappingFeatureIterator(featureSource.getReader(query));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 

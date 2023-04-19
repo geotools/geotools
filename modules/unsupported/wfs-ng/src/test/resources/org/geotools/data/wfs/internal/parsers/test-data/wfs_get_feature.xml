@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wfs:FeatureCollection xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:no.niva.aquamonitor="http://www.aquamonitor.no/"
+    xmlns:wfs="http://www.opengis.net/wfs/2.0"
+    xmlns:gml="http://www.opengis.net/gml/3.2"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" numberMatched="2" numberReturned="2" timeStamp="2023-05-28T13:35:19.009Z" 
+    xsi:schemaLocation="http://www.aquamonitor.no/ https://aquamonitor.niva.no/geoserver/no.niva.aquamonitor/Mjosovervak_stations/wfs?service=WFS&amp;version=2.0.0&amp;request=DescribeFeatureType&amp;typeName=no.niva.aquamonitor%3AMjosovervak_stations">
+    <wfs:member>
+        <no.niva.aquamonitor:Mjosovervak_stations gml:id="1">
+            <no.niva.aquamonitor:the_geom>
+                <gml:Point srsName="urn:ogc:def:crs:EPSG::4326" srsDimension="2" gml:id="1.the_geom">
+                    <gml:pos>60.21619496 11.35360276</gml:pos>
+                </gml:Point>
+            </no.niva.aquamonitor:the_geom>
+            <no.niva.aquamonitor:SAMPLE_POINT_ID>64862</no.niva.aquamonitor:SAMPLE_POINT_ID>
+            <no.niva.aquamonitor:LATITUDE>60.21619496</no.niva.aquamonitor:LATITUDE>
+            <no.niva.aquamonitor:LONGITUDE>11.35360276</no.niva.aquamonitor:LONGITUDE>
+            <no.niva.aquamonitor:PROJECT_ID>1098</no.niva.aquamonitor:PROJECT_ID>
+            <no.niva.aquamonitor:PROJECT_NAME>Mjøsa overvåking</no.niva.aquamonitor:PROJECT_NAME>
+            <no.niva.aquamonitor:STATION_ID>10183</no.niva.aquamonitor:STATION_ID>
+            <no.niva.aquamonitor:STATION_TYPE_ID>2</no.niva.aquamonitor:STATION_TYPE_ID>
+            <no.niva.aquamonitor:STATION_TYPE>Elv</no.niva.aquamonitor:STATION_TYPE>
+            <no.niva.aquamonitor:STATION_CODE>Glomma3</no.niva.aquamonitor:STATION_CODE>
+            <no.niva.aquamonitor:STATION_NAME>Svanfoss</no.niva.aquamonitor:STATION_NAME>
+            <no.niva.aquamonitor:FULL_STATION_NAME>Glomma3 - Svanfoss</no.niva.aquamonitor:FULL_STATION_NAME>
+        </no.niva.aquamonitor:Mjosovervak_stations>
+    </wfs:member>
+    <wfs:member>
+        <no.niva.aquamonitor:Mjosovervak_stations gml:id="2">
+            <no.niva.aquamonitor:the_geom>
+                <gml:Point srsName="urn:ogc:def:crs:EPSG::4326" srsDimension="2" gml:id="2.the_geom">
+                    <gml:pos>60.99095785 10.57465386</gml:pos>
+                </gml:Point>
+            </no.niva.aquamonitor:the_geom>
+            <no.niva.aquamonitor:SAMPLE_POINT_ID>15143</no.niva.aquamonitor:SAMPLE_POINT_ID>
+            <no.niva.aquamonitor:LATITUDE>60.99095785</no.niva.aquamonitor:LATITUDE>
+            <no.niva.aquamonitor:LONGITUDE>10.57465386</no.niva.aquamonitor:LONGITUDE>
+            <no.niva.aquamonitor:PROJECT_ID>1098</no.niva.aquamonitor:PROJECT_ID>
+            <no.niva.aquamonitor:PROJECT_NAME>Mjøsa overvåking</no.niva.aquamonitor:PROJECT_NAME>
+            <no.niva.aquamonitor:STATION_ID>31342</no.niva.aquamonitor:STATION_ID>
+            <no.niva.aquamonitor:STATION_TYPE_ID>1</no.niva.aquamonitor:STATION_TYPE_ID>
+            <no.niva.aquamonitor:STATION_TYPE>Innsjø</no.niva.aquamonitor:STATION_TYPE>
+            <no.niva.aquamonitor:STATION_CODE>M071</no.niva.aquamonitor:STATION_CODE>
+            <no.niva.aquamonitor:STATION_NAME>Brøttum</no.niva.aquamonitor:STATION_NAME>
+            <no.niva.aquamonitor:FULL_STATION_NAME>M071 - Brøttum</no.niva.aquamonitor:FULL_STATION_NAME>
+        </no.niva.aquamonitor:Mjosovervak_stations>
+    </wfs:member>
+</wfs:FeatureCollection>

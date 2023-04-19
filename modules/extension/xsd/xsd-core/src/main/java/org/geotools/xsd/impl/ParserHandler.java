@@ -617,12 +617,16 @@ public class ParserHandler extends DefaultHandler2 {
                             schemas[i / 2] =
                                     Schemas.parse(location, locators, resolvers, uriHandlers);
                         } catch (Exception e) {
-                            String msg = "Error parsing: " + location;
+                            String msg =
+                                    "Error loading schema for namespace: "
+                                            + namespace
+                                            + " at location: "
+                                            + location;
                             logger.warning(msg);
 
                             if (isStrict()) {
                                 // strict mode, throw exception
-                                throw (SAXException) new SAXException(msg).initCause(e);
+                                throw new SAXException(msg, e);
                             }
                         }
                     }

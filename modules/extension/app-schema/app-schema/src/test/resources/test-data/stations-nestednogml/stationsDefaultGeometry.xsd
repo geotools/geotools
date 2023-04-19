@@ -1,0 +1,32 @@
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:gml="http://www.opengis.net/gml/3.2"
+           xmlns:st="http://www.stations.org/1.0"
+           xmlns:ms="http://www.measurements.org/1.0"
+           targetNamespace="http://www.stations.org/1.0"
+           elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+  <xs:import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
+  <xs:import namespace="http://www.measurements.org/1.0" schemaLocation="measurementsDefaultGeometry.xsd"/>
+
+
+  <xs:complexType name="Location">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="position" type="gml:GeometryPropertyType"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="StationWithMeasurementCodeType">
+    <xs:complexContent>
+      <xs:extension base="gml:AbstractFeatureType">
+        <xs:sequence>
+          <xs:element name="name" type="xs:string"/>
+          <xs:element name="location" type="st:Location"/>
+          <xs:element name="measurements" type="ms:MeasurementCodePropertyType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="StationWithMeasurementCode" type="st:StationWithMeasurementCodeType" substitutionGroup="gml:AbstractFeature"/>
+
+</xs:schema>

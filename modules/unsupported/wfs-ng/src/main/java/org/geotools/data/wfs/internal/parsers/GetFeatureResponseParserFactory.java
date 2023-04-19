@@ -106,8 +106,17 @@ public class GetFeatureResponseParserFactory extends AbstractGetFeatureResponseP
         } else if (request.getStrategy().getVersion().equals(Versions.v1_0_0.toString())) {
             config = new WFSConfiguration_1_0();
         }
-        return new PullParserFeatureReader(
-                config, in, queryType, request.getStrategy().getConfig().getAxisOrder());
+        if (request.getHTTPClient() != null) {
+            return new PullParserFeatureReader(
+                    config,
+                    in,
+                    queryType,
+                    request.getStrategy().getConfig().getAxisOrder(),
+                    request.getHTTPClient());
+        } else {
+            return new PullParserFeatureReader(
+                    config, in, queryType, request.getStrategy().getConfig().getAxisOrder());
+        }
     }
 
     @Override

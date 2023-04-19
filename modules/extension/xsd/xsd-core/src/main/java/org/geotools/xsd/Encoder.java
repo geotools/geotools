@@ -1025,7 +1025,7 @@ public class Encoder {
                 try {
                     ((EncoderDelegate) next).encode(handler);
                 } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    throw new RuntimeException("Error encoding object to xml-element", e);
                 }
             } else {
                 if (next instanceof ComplexAttribute

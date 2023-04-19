@@ -25,6 +25,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import org.eclipse.emf.ecore.resource.URIHandler;
 import org.geotools.xsd.impl.ElementHandler;
 import org.geotools.xsd.impl.NodeImpl;
 import org.geotools.xsd.impl.ParserHandler;
@@ -64,6 +65,17 @@ public class PullParser {
 
     public void setContextCustomizer(ContextCustomizer contextCustomizer) {
         handler.setContextCustomizer(contextCustomizer);
+    }
+
+    /** Sets if the parsing should be strict or not */
+    public void setStrict(boolean strict) {
+        this.handler.setStrict(strict);
+    }
+
+    /** Changes the URIHandler for this parser */
+    public void setURIHandler(URIHandler uriHandler) {
+        this.handler.getURIHandlers().clear();
+        this.handler.getURIHandlers().add(uriHandler);
     }
 
     public Object parse() throws XMLStreamException, IOException, SAXException {

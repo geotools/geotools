@@ -72,6 +72,10 @@ public class H2DataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
                 "INSERT INTO \"lake\" (\"id\",\"geom\",\"name\") VALUES ( 0,"
                         + "ST_GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
                         + "'muddy')");
+
+        // Add column comments
+        String sql = "COMMENT ON COLUMN \"lake\".\"name\" IS 'This is a text column'";
+        run(sql);
     }
 
     @Override

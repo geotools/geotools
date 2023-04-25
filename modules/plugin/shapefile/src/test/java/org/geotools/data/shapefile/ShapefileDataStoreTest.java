@@ -977,7 +977,8 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     }
 
     @Test
-    @SuppressWarnings("PMD.UnusedVariable") // we really mean to just open the writer and close it
+    // we really mean to just open the writer and close it
+    @SuppressWarnings({"PMD.UnusedVariable", "PMD.EmptyControlStatement"})
     public void testWriteShapefileWithNoRecords() throws Exception {
         SimpleFeatureType featureType = DataUtilities.createType("whatever", "a:Polygon,b:String");
 

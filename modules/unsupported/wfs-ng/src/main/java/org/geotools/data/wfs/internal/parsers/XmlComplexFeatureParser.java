@@ -272,7 +272,7 @@ public class XmlComplexFeatureParser extends XmlFeatureParser<FeatureType, Featu
      *     that represent an attribute that belongs in the complexType specified. Returns null once
      *     there are no more elements in the complex type you're trying to parse.
      */
-    @SuppressWarnings("PMD.EmptyWhileStmt")
+    @SuppressWarnings({"PMD.EmptyControlStatement"})
     private ReturnAttribute parseNextAttribute(ComplexType complexType)
             throws XMLStreamException, IOException {
 

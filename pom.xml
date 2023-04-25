@@ -535,9 +535,9 @@
     <jacoco.version>0.8.7</jacoco.version>
     <lint>deprecation,unchecked</lint>
     <maven.jacoco.plugin.version>0.8.2</maven.jacoco.plugin.version>
-    <maven.pmd.plugin.version>3.14.0</maven.pmd.plugin.version>
+    <maven.pmd.plugin.version>3.20.0</maven.pmd.plugin.version>
     <pmd.skip>false</pmd.skip>
-    <pmd.version>6.42.0</pmd.version>
+    <pmd.version>6.55.0</pmd.version>
     <pom.fmt.action>sort</pom.fmt.action>
     <pom.fmt.skip>${spotless.apply.skip}</pom.fmt.skip>
     <qa>false</qa>
@@ -2402,7 +2402,6 @@
               <failurePriority>3</failurePriority>
               <minimumPriority>3</minimumPriority>
               <verbose>true</verbose>
-              <printFailingErrors>true</printFailingErrors>
               <includeTests>true</includeTests>
               <excludeRoots>
                 <excludeRoot>target/generated-sources</excludeRoot>

@@ -54,7 +54,7 @@ public class YamlParser {
      * @return The root {@link YamlParseHandler}, once it has finished handling the parsed {@link
      *     YamlObject}..
      */
-    @SuppressWarnings("PMD.EmptyWhileStmt")
+    @SuppressWarnings("PMD.EmptyControlStatement")
     public <T extends YamlParseHandler> T parse(T root, Map<String, Object> hints)
             throws IOException {
         Object parsed = YamlUtil.getSafeYaml().load(yaml);

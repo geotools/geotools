@@ -43,9 +43,10 @@ GeoTools ruleset. See https://pmd.github.io/latest/pmd_userdocs_understanding_ru
   <rule ref="category/java/bestpractices.xml/AvoidPrintStackTrace" />
   <rule ref="category/java/bestpractices.xml/MissingOverride" />
   <rule ref="category/java/bestpractices.xml/UseStandardCharsets" />
-  <rule ref="category/java/bestpractices.xml/PrimitiveWrapperInstantiation" />  
-  <rule ref="category/java/performance.xml/UseArrayListInsteadOfVector" />
+  <rule ref="category/java/bestpractices.xml/PrimitiveWrapperInstantiation" /> 
+  <rule ref="category/java/bestpractices.xml/UseCollectionIsEmpty" /> 
 
+  <rule ref="category/java/codestyle.xml/EmptyControlStatement"/>
   <rule ref="category/java/codestyle.xml/ExtendsObject"/>
   <rule ref="category/java/codestyle.xml/ForLoopShouldBeWhileLoop"/>
   <rule ref="category/java/codestyle.xml/UnnecessaryFullyQualifiedName"/>
@@ -57,6 +58,7 @@ GeoTools ruleset. See https://pmd.github.io/latest/pmd_userdocs_understanding_ru
   <rule ref="category/java/codestyle.xml/IdenticalCatchBranches" />
   <rule ref="category/java/codestyle.xml/UseShortArrayInitializer" />
   <rule ref="category/java/codestyle.xml/UnnecessaryImport" />
+
   <rule ref="category/java/errorprone.xml/AvoidDecimalLiteralsInBigDecimalConstructor"/>
   <rule ref="category/java/errorprone.xml/AvoidMultipleUnaryOperators"/>
   <rule ref="category/java/errorprone.xml/AvoidUsingOctalValues"/>
@@ -64,15 +66,6 @@ GeoTools ruleset. See https://pmd.github.io/latest/pmd_userdocs_understanding_ru
   <rule ref="category/java/errorprone.xml/CheckSkipResult"/>
   <rule ref="category/java/errorprone.xml/ClassCastExceptionWithToArray"/>
   <rule ref="category/java/errorprone.xml/DontUseFloatTypeForLoopIndices"/>
-  <rule ref="category/java/errorprone.xml/EmptyFinallyBlock"/>
-  <rule ref="category/java/errorprone.xml/EmptyIfStmt"/>
-  <rule ref="category/java/errorprone.xml/EmptyInitializer"/>
-  <rule ref="category/java/errorprone.xml/EmptyStatementBlock"/>
-  <rule ref="category/java/errorprone.xml/EmptyStatementNotInLoop"/>
-  <rule ref="category/java/errorprone.xml/EmptySwitchStatements"/>
-  <rule ref="category/java/errorprone.xml/EmptySynchronizedBlock"/>
-  <rule ref="category/java/errorprone.xml/EmptyTryBlock"/>
-  <rule ref="category/java/errorprone.xml/EmptyWhileStmt"/>
   <rule ref="category/java/errorprone.xml/JumbledIncrementer"/>
   <rule ref="category/java/errorprone.xml/MisplacedNullCheck"/>
   <rule ref="category/java/errorprone.xml/OverrideBothEqualsAndHashcode"/>
@@ -82,16 +75,18 @@ GeoTools ruleset. See https://pmd.github.io/latest/pmd_userdocs_understanding_ru
   <rule ref="category/java/errorprone.xml/UnusedNullCheckInEquals"/>
   <rule ref="category/java/errorprone.xml/UselessOperationOnImmutable"/>
   <rule ref="category/java/errorprone.xml/CloseResource">
-
     <properties>
       <!-- When calling the store to close, PMD wants the full prefix before the call to the method to match, so let's try to use common var names for store ... -->
         <property name="closeTargets" value="releaseConnection,store.releaseConnection,closeQuietly,closeConnection,closeSafe,store.closeSafe,dataStore.closeSafe,getDataStore().closeSafe,close,closeResultSet,closeStmt"/>
 	<property name="allowedResourceTypes" value="java.io.ByteArrayOutputStream|java.io.ByteArrayInputStream|java.io.StringWriter|java.io.CharArrayWriter|java.util.stream.Stream|java.util.stream.IntStream|java.util.stream.LongStream|java.util.stream.DoubleStream|java.io.StringReader" />	    
     </properties>
   </rule>
+
   <rule ref="category/java/multithreading.xml/AvoidThreadGroup"/>
   <rule ref="category/java/multithreading.xml/DontCallThreadRun"/>
   <rule ref="category/java/multithreading.xml/DoubleCheckedLocking"/>
+
+  <rule ref="category/java/performance.xml/UseArrayListInsteadOfVector" />
   <rule ref="category/java/performance.xml/BigIntegerInstantiation"/>
   <rule ref="category/java/performance.xml/StringInstantiation"/>
   <rule name="wildcards" language="java" message="No Wildcard Imports" class="net.sourceforge.pmd.lang.rule.XPathRule">
@@ -108,7 +103,7 @@ GeoTools ruleset. See https://pmd.github.io/latest/pmd_userdocs_understanding_ru
       </property>
     </properties>
  </rule>
- <rule ref="category/java/bestpractices.xml/UseCollectionIsEmpty" />
+ 
   <rule ref="category/java/design.xml/CognitiveComplexity">
     <properties>
       <property name="reportLevel" value="140"/>

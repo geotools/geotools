@@ -260,6 +260,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
     }
 
     @Test(expected = Exception.class)
+    @SuppressWarnings("PMD.EmptyControlStatement")
     public void testGetFeaturesWithInvalidQuery() throws Exception {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         PropertyIsEqualTo f = ff.equals(ff.property("invalidAttribute"), ff.literal(5));

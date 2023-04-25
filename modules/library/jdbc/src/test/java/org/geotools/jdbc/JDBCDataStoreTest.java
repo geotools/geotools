@@ -227,6 +227,7 @@ public class JDBCDataStoreTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.EmptyControlStatement")
     public void testGetConnectionAutocommit() throws Exception {
 
         JDBCMockObjectFactory jdbcMock = new JDBCMockObjectFactory();

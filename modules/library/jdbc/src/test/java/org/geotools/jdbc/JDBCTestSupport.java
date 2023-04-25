@@ -60,7 +60,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  */
-@SuppressWarnings("PMD.EmptyInitializer")
+@SuppressWarnings({"PMD.EmptyInitializer", "PMD.EmptyControlStatement"})
 public abstract class JDBCTestSupport extends OnlineTestSupport {
 
     static final Logger LOGGER = Logging.getLogger(JDBCTestSupport.class);

@@ -188,10 +188,11 @@ public final class GeoTools {
 
     /**
      * The {@linkplain System#getProperty(String) system property} key for the default value to be
-     * assigned to the {@link Hints# ENTITY_RESOLVER} hint.
+     * assigned to the {@link Hints# FORCE_SRS_STYLE} hint.
      *
      * <p>GML Encoding in geotools forces http://www.opengis.net/gml/srs/epsg.xml# syntax on CRS
-     * that are East\North oriented or have no orientation. This property prevents this behaviour.
+     * that are East\North oriented or have no orientation (such as 1D CRS). This property prevents
+     * this behaviour.
      *
      * <blockquote>
      *

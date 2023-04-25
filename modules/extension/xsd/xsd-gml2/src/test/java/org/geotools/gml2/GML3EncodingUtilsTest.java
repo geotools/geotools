@@ -44,4 +44,19 @@ public class GML3EncodingUtilsTest {
         System.clearProperty(GeoTools.FORCE_SRS_STYLE);
         Hints.removeSystemDefault(Hints.FORCE_SRS_STYLE);
     }
+
+    @Test
+    public void testNoForceSrs() throws NoSuchAuthorityCodeException, FactoryException {
+        System.setProperty(GeoTools.FORCE_SRS_STYLE, "false");
+        Hints.putSystemDefault(Hints.FORCE_SRS_STYLE, false);
+
+        CoordinateReferenceSystem crs = CRS.decode("epsg:5730");
+
+        assertEquals(
+                "http://www.opengis.net/gml/srs/epsg.xml#5730",
+                GML2EncodingUtils.toURI(crs, SrsSyntax.OGC_HTTP_URI));
+
+        System.clearProperty(GeoTools.FORCE_SRS_STYLE);
+        Hints.removeSystemDefault(Hints.FORCE_SRS_STYLE);
+    }
 }

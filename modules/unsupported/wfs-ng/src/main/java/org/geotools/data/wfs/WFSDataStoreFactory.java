@@ -131,9 +131,8 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
      * @return the HttpClient instance
      */
     public HTTPClient getHttpClient(final Map<String, ?> params) throws IOException {
-        final URL capabilitiesURL = URL.lookUp(params);
         final WFSConfig config = WFSConfig.fromParams(params);
-        if (config.isUseHttpConnectionPooling() && isHttp(capabilitiesURL)) {
+        if (config.isUseHttpConnectionPooling()) {
             HTTPClient client = HTTPClientFinder.createClient(HTTPConnectionPooling.class);
 
             client.setReadTimeout(config.getTimeoutMillis() / 1000);
@@ -144,10 +143,6 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
         } else {
             return HTTPClientFinder.createClient();
         }
-    }
-
-    private static boolean isHttp(java.net.URL capabilitiesURL) {
-        return capabilitiesURL.getProtocol().toLowerCase().matches("http(s)?");
     }
 
     @Override

@@ -26,7 +26,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.zip.GZIPInputStream;
 import org.geotools.util.Base64;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
@@ -37,66 +36,19 @@ import org.geotools.util.logging.Logging;
  *
  * @author groldan
  */
-public class SimpleHttpClient implements HTTPClient, HTTPProxy {
+public class SimpleHttpClient extends AbstractHttpClient implements HTTPProxy {
 
     private static final Logger LOGGER = Logging.getLogger(SimpleHttpClient.class);
 
     private static final int DEFAULT_TIMEOUT = 30; // 30 seconds
 
-    private String user;
-
-    private String password;
-
-    private int connectTimeout = DEFAULT_TIMEOUT;
-
-    private int readTimeout = DEFAULT_TIMEOUT;
-
-    private boolean tryGzip = true;
-
     /**
      * A SimpleHttpClient should be initiated by a call to
      * HTTPFactoryFinder.getHttpClientFactory().getClient();
      */
-    public SimpleHttpClient() {}
-
-    @Override
-    public String getUser() {
-        return user;
-    }
-
-    @Override
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @Override
-    public int getConnectTimeout() {
-        return connectTimeout;
-    }
-
-    @Override
-    public void setConnectTimeout(int connectTimeout) {
-        this.connectTimeout = connectTimeout;
-    }
-
-    @Override
-    public int getReadTimeout() {
-        return readTimeout;
-    }
-
-    @Override
-    public void setReadTimeout(int readTimeout) {
-        this.readTimeout = readTimeout;
+    public SimpleHttpClient() {
+        this.connectTimeout = DEFAULT_TIMEOUT;
+        this.readTimeout = DEFAULT_TIMEOUT;
     }
 
     /** @see org.geotools.data.ows.HTTPClient#get(java.net.URL) */
@@ -109,6 +61,9 @@ public class SimpleHttpClient implements HTTPClient, HTTPProxy {
     public HTTPResponse get(URL url, Map<String, String> headers) throws IOException {
         if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, "URL is " + url);
 
+        if (isFile(url)) {
+            return this.createFileResponse(url);
+        }
         URLConnection connection = openConnection(url);
         if (connection instanceof HttpURLConnection) {
             ((HttpURLConnection) connection).setRequestMethod("GET");
@@ -133,7 +88,7 @@ public class SimpleHttpClient implements HTTPClient, HTTPProxy {
 
         connection.connect();
 
-        return new SimpleHTTPResponse(connection);
+        return new DefaultHttpResponse(connection);
     }
 
     /**
@@ -165,7 +120,7 @@ public class SimpleHttpClient implements HTTPClient, HTTPProxy {
             outputStream.flush();
         }
 
-        return new SimpleHTTPResponse(connection);
+        return new DefaultHttpResponse(connection);
     }
 
     private URLConnection openConnection(URL finalURL) throws IOException {
@@ -195,98 +150,11 @@ public class SimpleHttpClient implements HTTPClient, HTTPProxy {
         return connection;
     }
 
-    public static class SimpleHTTPResponse implements HTTPResponse {
+    @Deprecated
+    public static class SimpleHTTPResponse extends DefaultHttpResponse {
 
-        private URLConnection connection;
-
-        private InputStream responseStream;
-
-        @SuppressWarnings("PMD.CloseResource") // stream kept as field
         public SimpleHTTPResponse(final URLConnection connection) throws IOException {
-            this.connection = connection;
-            InputStream inputStream = null;
-            try {
-                inputStream = connection.getInputStream();
-                final String contentEncoding = connection.getContentEncoding();
-
-                if (contentEncoding != null
-                        && connection.getContentEncoding().indexOf("gzip") != -1) {
-                    inputStream = new GZIPInputStream(inputStream);
-                }
-            } catch (Exception e) {
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-                throw e;
-            }
-            responseStream = inputStream;
+            super(connection);
         }
-
-        /** @see org.geotools.data.ows.HTTPResponse#dispose() */
-        @Override
-        public void dispose() {
-            if (responseStream != null) {
-                try {
-                    responseStream.close();
-                } catch (IOException e) {
-                    // ignore
-                }
-                responseStream = null;
-            }
-            if (connection != null) {
-                if (connection instanceof HttpURLConnection) {
-                    ((HttpURLConnection) connection).disconnect();
-                }
-                connection = null;
-            }
-        }
-
-        /** @see org.geotools.data.ows.HTTPResponse#getContentType() */
-        @Override
-        public String getContentType() {
-            return connection.getContentType();
-        }
-
-        @Override
-        public String getResponseHeader(String headerName) {
-            return connection.getHeaderField(headerName);
-        }
-
-        /** @see org.geotools.data.ows.HTTPResponse#getResponseStream() */
-        @Override
-        public InputStream getResponseStream() throws IOException {
-            return responseStream;
-        }
-
-        /** @see org.geotools.data.ows.HTTPResponse#getResponseCharset() */
-        @Override
-        public String getResponseCharset() {
-            String contentType = getContentType();
-            if (null == contentType) {
-                return null;
-            }
-            String[] split = contentType.split(";");
-
-            for (int i = 1; i < split.length; i++) {
-                String[] mimeParam = split[i].split("=");
-                if (mimeParam.length == 2 && "charset".equalsIgnoreCase(mimeParam[0])) {
-                    String charset = mimeParam[1];
-                    return charset.trim();
-                }
-            }
-            return null;
-        }
-    }
-
-    /** @see org.geotools.data.ows.HTTPClient#setTryGzip(boolean) */
-    @Override
-    public void setTryGzip(boolean tryGZIP) {
-        this.tryGzip = tryGZIP;
-    }
-
-    /** @see org.geotools.data.ows.HTTPClient#isTryGzip() */
-    @Override
-    public boolean isTryGzip() {
-        return tryGzip;
     }
 }

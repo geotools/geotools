@@ -25,6 +25,8 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import org.geotools.data.DataStore;
@@ -34,6 +36,7 @@ import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.http.HTTPClient;
 import org.geotools.http.SimpleHttpClient;
 import org.geotools.http.commons.MultithreadedHttpClient;
+import org.geotools.test.TestData;
 import org.geotools.util.Version;
 import org.junit.After;
 import org.junit.Before;
@@ -49,12 +52,16 @@ public class WFSDataStoreFactoryTest {
     public void setUp() throws Exception {
         dsf = new WFSDataStoreFactory();
         params = new HashMap<>();
+        Files.copy(
+                TestData.openStream(dsf, "tinyows/GetCapabilities.xml"),
+                Paths.get("GetCapabilities.xml"));
     }
 
     @After
     public void tearDown() throws Exception {
         dsf = null;
         params = null;
+        Files.deleteIfExists(Paths.get("GetCapabilities.xml"));
     }
 
     @Test
@@ -108,9 +115,6 @@ public class WFSDataStoreFactoryTest {
      */
     private WFSDataStore testCreateDataStore(
             final String capabilitiesFile, final Version expectedVersion) throws IOException {
-
-        Map<String, Serializable> params = new HashMap<>();
-        params.put("TESTING", Boolean.TRUE);
 
         final URL capabilitiesUrl = getClass().getResource("test-data/" + capabilitiesFile);
         if (capabilitiesUrl == null) {
@@ -184,12 +188,12 @@ public class WFSDataStoreFactoryTest {
 
     @Test
     public void testHttpPoolingTrueWithHttp() throws IOException {
+        WFSDataStoreFactory factory = new WFSDataStoreFactory();
         params.put(WFSDataStoreFactory.USE_HTTP_CONNECTION_POOLING.key, true);
         params.put(
                 WFSDataStoreFactory.URL.key,
                 new URL("http://someserver.example.org/wfs?request=GetCapabilities"));
-        assertTrue(
-                new WFSDataStoreFactory().getHttpClient(params) instanceof MultithreadedHttpClient);
+        assertTrue(factory.getHttpClient(params) instanceof MultithreadedHttpClient);
     }
 
     @Test
@@ -203,8 +207,9 @@ public class WFSDataStoreFactoryTest {
 
     @Test
     public void testHttpPoolingTrueWithFile() throws IOException {
+        WFSDataStoreFactory factory = new WFSDataStoreFactory();
         params.put(WFSDataStoreFactory.USE_HTTP_CONNECTION_POOLING.key, true);
-        params.put(WFSDataStoreFactory.URL.key, new URL("file://some/file"));
-        assertTrue(new WFSDataStoreFactory().getHttpClient(params) instanceof SimpleHttpClient);
+        params.put(WFSDataStoreFactory.URL.key, new URL("file:GetCapabilities.xml"));
+        assertTrue(factory.getHttpClient(params) instanceof MultithreadedHttpClient);
     }
 }

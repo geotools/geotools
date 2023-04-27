@@ -31,7 +31,6 @@ import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFactory;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Parameter;
-import org.geotools.data.wfs.internal.Loggers;
 import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.http.HTTPClient;
@@ -599,17 +598,13 @@ public class WFSDataAccessFactory implements DataAccessFactory {
         if (!canProcess) {
             return false;
         }
+
         try {
             URL url = URL.lookUp(params);
-            if (!"http".equalsIgnoreCase(url.getProtocol())
-                    && !"https".equalsIgnoreCase(url.getProtocol())) {
-                if (!Boolean.TRUE.equals(params.get("TESTING"))) {
-                    Loggers.MODULE.finest("Can't process non http or https GetCapabilities URLs");
-                    return false; // must be http or https since we use
-                    // SimpleHTTPClient class
-                }
+            if (url == null) {
+                return false;
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             return false;
         }
 

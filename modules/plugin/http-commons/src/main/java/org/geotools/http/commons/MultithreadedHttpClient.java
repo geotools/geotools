@@ -53,6 +53,7 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.geotools.data.ows.AbstractOpenWebService;
+import org.geotools.http.AbstractHttpClient;
 import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPConnectionPooling;
 import org.geotools.http.HTTPProxy;
@@ -73,17 +74,12 @@ import org.geotools.util.factory.GeoTools;
  * @author awaterme
  * @see AbstractOpenWebService#setHttpClient(HTTPClient)
  */
-public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPooling, HTTPProxy {
+public class MultithreadedHttpClient extends AbstractHttpClient
+        implements HTTPConnectionPooling, HTTPProxy {
 
     private final PoolingHttpClientConnectionManager connectionManager;
 
     private HttpClient client;
-
-    private String user;
-
-    private String password;
-
-    private boolean tryGzip = true;
 
     private RequestConfig connectionConfig;
 
@@ -117,11 +113,6 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
             builder.setDefaultCredentialsProvider(credsProvider);
         }
         return builder;
-    }
-
-    @Deprecated
-    public HttpClient createHttpClient() {
-        return builder().build();
     }
 
     @Override
@@ -202,6 +193,10 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
 
     @Override
     public HTTPResponse get(URL url, Map<String, String> headers) throws IOException {
+
+        if (isFile(url)) {
+            return createFileResponse(url);
+        }
         HttpGet getMethod = new HttpGet(url.toExternalForm());
         getMethod.setConfig(connectionConfig);
 
@@ -234,24 +229,14 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
     }
 
     @Override
-    public String getUser() {
-        return user;
-    }
-
-    @Override
     public void setUser(String user) {
-        this.user = user;
+        super.setUser(user);
         resetCredentials();
     }
 
     @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
     public void setPassword(String password) {
-        this.password = password;
+        super.setPassword(password);
         resetCredentials();
     }
 
@@ -302,6 +287,11 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
     public void setMaxConnections(final int maxConnections) {
         connectionManager.setDefaultMaxPerRoute(maxConnections);
         connectionManager.setMaxTotal(maxConnections);
+    }
+
+    @Override
+    public void close() {
+        this.connectionManager.shutdown();
     }
 
     static class HttpMethodResponse implements HTTPResponse {
@@ -370,22 +360,5 @@ public class MultithreadedHttpClient implements HTTPClient, HTTPConnectionPoolin
             final Header encoding = methodResponse.getEntity().getContentEncoding();
             return encoding == null ? null : encoding.getValue();
         }
-    }
-
-    /** @see org.geotools.data.ows.HTTPClient#setTryGzip(boolean) */
-    @Override
-    public void setTryGzip(boolean tryGZIP) {
-        this.tryGzip = tryGZIP;
-    }
-
-    /** @see org.geotools.data.ows.HTTPClient#isTryGzip() */
-    @Override
-    public boolean isTryGzip() {
-        return tryGzip;
-    }
-
-    @Override
-    public void close() {
-        this.connectionManager.shutdown();
     }
 }

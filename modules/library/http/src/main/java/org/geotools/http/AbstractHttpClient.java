@@ -19,6 +19,7 @@ package org.geotools.http;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLConnection;
 
 /**
  * A base class for HTTPClient, that implements everything except the get and post methods.
@@ -87,6 +88,16 @@ public abstract class AbstractHttpClient implements HTTPClient {
     @Override
     public boolean isTryGzip() {
         return tryGzip;
+    }
+
+    protected boolean isFile(URL url) {
+        return "file".equalsIgnoreCase(url.getProtocol());
+    }
+
+    protected HTTPResponse createFileResponse(URL url) throws IOException {
+        URLConnection connection = url.openConnection();
+        connection.connect();
+        return new DefaultHttpResponse(connection);
     }
 
     @Override

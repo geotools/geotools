@@ -1,8 +1,10 @@
 package org.geotools.wfs.v1_0;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import java.io.IOException;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import javax.xml.namespace.QName;
 import javax.xml.transform.TransformerException;
@@ -11,16 +13,12 @@ import net.opengis.wfs.InsertElementType;
 import net.opengis.wfs.PropertyType;
 import net.opengis.wfs.UpdateElementType;
 import net.opengis.wfs.WfsFactory;
-import org.custommonkey.xmlunit.SimpleNamespaceContext;
-import org.custommonkey.xmlunit.XMLAssert;
-import org.custommonkey.xmlunit.XMLUnit;
-import org.custommonkey.xmlunit.exceptions.XpathException;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
+import org.geotools.test.xml.XmlTestSupport;
 import org.geotools.xs.XSSchema;
 import org.geotools.xsd.Encoder;
-import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -35,22 +33,20 @@ import org.opengis.filter.FilterFactory2;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-public class WFSEncodingTest {
+public class WFSEncodingTest extends XmlTestSupport {
 
-    @Before
-    public void setup() {
-        Map<String, String> namespaces = new HashMap<>();
-        namespaces.put("xlink", "http://www.w3.org/1999/xlink");
-        namespaces.put("wfs", "http://www.opengis.net/wfs");
-        namespaces.put("gml", "http://www.opengis.net/gml");
-        namespaces.put("ogc", "http://www.opengis.net/ogc");
-        XMLUnit.setXpathNamespaceContext(new SimpleNamespaceContext(namespaces));
+    @Override
+    protected Map<String, String> getNamespaces() {
+        return namespaces(
+                Namespace("xlink", "http://www.w3.org/1999/xlink"),
+                Namespace("wfs", "http://www.opengis.net/wfs"),
+                Namespace("gml", "http://www.opengis.net/gml"),
+                Namespace("ogc", "http://www.opengis.net/ogc"));
     }
 
     @Test
     @SuppressWarnings("unchecked")
-    public void encodeUpdate()
-            throws IOException, SAXException, TransformerException, XpathException {
+    public void encodeUpdate() throws IOException, SAXException, TransformerException {
         WfsFactory wfsfac = WfsFactory.eINSTANCE;
         FilterFactory2 filterfac = CommonFactoryFinder.getFilterFactory2();
         GeometryFactory geomfac = new GeometryFactory(new PrecisionModel(10));
@@ -68,12 +64,11 @@ public class WFSEncodingTest {
         Encoder encoder = new Encoder(new WFSConfiguration_1_0());
         // System.out.println(encoder.encodeAsString(update, WFS.Update));
         Document doc = encoder.encodeAsDOM(update, WFS.Update);
-        XMLAssert.assertXpathEvaluatesTo("mn:mytypename", "//wfs:Update/@typeName", doc);
-        XMLAssert.assertXpathEvaluatesTo(
-                "mn:myproperty", "//wfs:Update/wfs:Property/wfs:Name", doc);
-        XMLAssert.assertXpathEvaluatesTo("myvalue", "//wfs:Update/wfs:Property/wfs:Value", doc);
-        XMLAssert.assertXpathEvaluatesTo(
-                "someid", "//wfs:Update/ogc:Filter/ogc:FeatureId/@fid", doc);
+
+        assertThat(doc, hasXPath("//wfs:Update/@typeName", equalTo("mn:mytypename")));
+        assertThat(doc, hasXPath("//wfs:Update/wfs:Property/wfs:Name", equalTo("mn:myproperty")));
+        assertThat(doc, hasXPath("//wfs:Update/wfs:Property/wfs:Value", equalTo("myvalue")));
+        assertThat(doc, hasXPath("//wfs:Update/ogc:Filter/ogc:FeatureId/@fid", equalTo("someid")));
 
         // try with numeric value
         propertyType.setValue(100.25);
@@ -81,7 +76,8 @@ public class WFSEncodingTest {
         encoder = new Encoder(new WFSConfiguration_1_0());
         // System.out.println(encoder.encodeAsString(update, WFS.Update));
         doc = encoder.encodeAsDOM(update, WFS.Update);
-        XMLAssert.assertXpathEvaluatesTo("100.25", "//wfs:Update/wfs:Property/wfs:Value", doc);
+
+        assertThat(doc, hasXPath("//wfs:Update/wfs:Property/wfs:Value", equalTo("100.25")));
 
         // try with geometry
         Coordinate insideCoord = new Coordinate(5.2, 7.5);
@@ -92,16 +88,22 @@ public class WFSEncodingTest {
         encoder = new Encoder(new WFSConfiguration_1_0());
         // System.out.println(encoder.encodeAsString(update, WFS.Update));
         doc = encoder.encodeAsDOM(update, WFS.Update);
-        XMLAssert.assertXpathEvaluatesTo(
-                "5.2", "//wfs:Update/wfs:Property/wfs:Value/gml:Point/gml:coord/gml:X", doc);
-        XMLAssert.assertXpathEvaluatesTo(
-                "7.5", "//wfs:Update/wfs:Property/wfs:Value/gml:Point/gml:coord/gml:Y", doc);
+
+        assertThat(
+                doc,
+                hasXPath(
+                        "//wfs:Update/wfs:Property/wfs:Value/gml:Point/gml:coord/gml:X",
+                        equalTo("5.2")));
+        assertThat(
+                doc,
+                hasXPath(
+                        "//wfs:Update/wfs:Property/wfs:Value/gml:Point/gml:coord/gml:Y",
+                        equalTo("7.5")));
     }
 
     @Test
     @SuppressWarnings("unchecked")
-    public void encodeInsert()
-            throws IOException, SAXException, TransformerException, XpathException {
+    public void encodeInsert() throws IOException, SAXException, TransformerException {
         WfsFactory wfsfac = WfsFactory.eINSTANCE;
         FeatureFactory ff = CommonFactoryFinder.getFeatureFactory(null);
         FeatureTypeFactory ftf = new FeatureTypeFactoryImpl();
@@ -126,14 +128,17 @@ public class WFSEncodingTest {
         Encoder encoder = new Encoder(new WFSConfiguration_1_0());
         // System.out.println(encoder.encodeAsString(insert, WFS.Insert));
         Document doc = encoder.encodeAsDOM(insert, WFS.Insert);
-        XMLAssert.assertXpathEvaluatesTo("dummyId", "//wfs:Insert/wfs:dummyFeatureType/@fid", doc);
-        XMLAssert.assertXpathEvaluatesTo(
-                "dummyValue", "//wfs:Insert/wfs:dummyFeatureType/wfs:dummyAttribute", doc);
+
+        assertThat(doc, hasXPath("//wfs:Insert/wfs:dummyFeatureType/@fid", equalTo("dummyId")));
+        assertThat(
+                doc,
+                hasXPath(
+                        "//wfs:Insert/wfs:dummyFeatureType/wfs:dummyAttribute",
+                        equalTo("dummyValue")));
     }
 
     @Test
-    public void encodeDelete()
-            throws IOException, SAXException, TransformerException, XpathException {
+    public void encodeDelete() throws IOException, SAXException, TransformerException {
         WfsFactory wfsfac = WfsFactory.eINSTANCE;
         FilterFactory2 filterfac = CommonFactoryFinder.getFilterFactory2();
 
@@ -143,7 +148,7 @@ public class WFSEncodingTest {
         Encoder encoder = new Encoder(new WFSConfiguration_1_0());
         // System.out.println(encoder.encodeAsString(delete, WFS.Delete));
         Document doc = encoder.encodeAsDOM(delete, WFS.Delete);
-        XMLAssert.assertXpathEvaluatesTo(
-                "someid", "//wfs:Delete/ogc:Filter/ogc:FeatureId/@fid", doc);
+
+        assertThat(doc, hasXPath("//wfs:Delete/ogc:Filter/ogc:FeatureId/@fid", equalTo("someid")));
     }
 }

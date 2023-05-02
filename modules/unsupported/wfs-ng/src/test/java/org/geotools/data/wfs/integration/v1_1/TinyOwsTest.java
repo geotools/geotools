@@ -30,7 +30,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import org.apache.commons.io.IOUtils;
-import org.custommonkey.xmlunit.XMLAssert;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -46,7 +45,9 @@ import org.geotools.http.AbstractHttpClient;
 import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
+import org.geotools.test.xml.XmlTestSupport;
 import org.geotools.util.factory.GeoTools;
+import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.Name;
@@ -54,9 +55,9 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.FeatureId;
-import org.xml.sax.SAXException;
+import org.xmlunit.diff.Diff;
 
-public class TinyOwsTest {
+public class TinyOwsTest extends XmlTestSupport {
 
     private Name typeName = new NameImpl("http://www.tinyows.org/", "comuni_comuni11");
 
@@ -105,12 +106,9 @@ public class TinyOwsTest {
     private void assertXMLEqual(String expectedXmlResource, String actualXml) throws IOException {
         String control = IOUtils.toString(url(expectedXmlResource), UTF_8);
         control = control.replace("${getfeature.handle}", newRequestHandle());
-        try {
-            XMLAssert.assertXMLEqual(control, actualXml);
-        } catch (SAXException e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            throw new IOException(e);
-        }
+
+        Diff diff = diffSimilar(control, actualXml);
+        Assert.assertFalse(diff.toString(), diff.hasDifferences());
     }
 
     @Test

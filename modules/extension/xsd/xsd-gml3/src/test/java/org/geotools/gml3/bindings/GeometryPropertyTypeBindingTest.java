@@ -16,10 +16,10 @@
  */
 package org.geotools.gml3.bindings;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 
-import org.custommonkey.xmlunit.XMLUnit;
-import org.custommonkey.xmlunit.XpathEngine;
 import org.geotools.geometry.jts.CurvedGeometryFactory;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.gml3.GML;
@@ -62,14 +62,13 @@ public class GeometryPropertyTypeBindingTest extends GML3TestSupport {
                                         new double[] {1, 1, 2, 2, 3, 1, 5, 5, 7, 3}));
 
         Document dom = encode(curve, GML.geometryMember);
-        // print(dom);
-        XpathEngine xpath = XMLUnit.newXpathEngine();
         String basePath = "/gml:geometryMember/gml:Curve/gml:segments/gml:ArcString";
-        assertEquals(
-                1,
-                xpath.getMatchingNodes(basePath + "[@interpolation='circularArc3Points']", dom)
-                        .getLength());
-        assertEquals("1 1 2 2 3 1 5 5 7 3", xpath.evaluate(basePath + "/gml:posList", dom));
+        assertThat(
+                dom,
+                hasXPath(
+                        "count(" + basePath + "[@interpolation='circularArc3Points'])",
+                        equalTo("1")));
+        assertThat(dom, hasXPath(basePath + "/gml:posList", equalTo("1 1 2 2 3 1 5 5 7 3")));
     }
 
     @Test
@@ -77,8 +76,6 @@ public class GeometryPropertyTypeBindingTest extends GML3TestSupport {
         Geometry geometry = new WKTReader().read("POINT(1.234 5.678)");
 
         Document dom = encode(geometry, GML.geometryMember);
-        // print(dom);
-        XpathEngine xpath = XMLUnit.newXpathEngine();
-        assertEquals("1.23 5.68", xpath.evaluate("/gml:geometryMember/gml:Point/gml:pos", dom));
+        assertThat(dom, hasXPath("/gml:geometryMember/gml:Point/gml:pos", equalTo("1.23 5.68")));
     }
 }

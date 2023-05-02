@@ -17,7 +17,8 @@
 
 package org.geotools.gml3.simple;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.gml3.GML;
@@ -36,40 +37,40 @@ public class MultiCurveEncoderTest extends GeometryEncoderTestSupport {
                                 "MULTICURVE((100 100, 120 120), COMPOUNDCURVE(CIRCULARSTRING(0 0, 2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0)))");
         Document doc = encode(encoder, geometry);
         // XMLTestSupport.print(doc);
-        assertEquals(1, xpath.getMatchingNodes("//gml:MultiCurve", doc).getLength());
-        assertEquals(
-                2, xpath.getMatchingNodes("//gml:MultiCurve/gml:curveMember", doc).getLength());
-        assertEquals(
-                "100 100 120 120",
-                xpath.evaluate(
-                        "//gml:MultiCurve/gml:curveMember[1]/gml:LineString/gml:posList", doc));
-        assertEquals(
-                2,
-                xpath.getMatchingNodes(
-                                "//gml:MultiCurve/gml:curveMember[2]/gml:Curve/gml:segments/*", doc)
-                        .getLength());
+        assertThat(doc, hasXPath("count(//gml:MultiCurve)", equalTo("1")));
+        assertThat(doc, hasXPath("count(//gml:MultiCurve/gml:curveMember)", equalTo("2")));
+        assertThat(
+                doc,
+                hasXPath(
+                        "//gml:MultiCurve/gml:curveMember[1]/gml:LineString/gml:posList",
+                        equalTo("100 100 120 120")));
+        assertThat(
+                doc,
+                hasXPath(
+                        "count(//gml:MultiCurve/gml:curveMember[2]/gml:Curve/gml:segments/*)",
+                        equalTo("2")));
 
-        assertEquals(
-                "circularArc3Points",
-                xpath.evaluate(
+        assertThat(
+                doc,
+                hasXPath(
                         "/gml:MultiCurve/gml:curveMember[2]/gml:Curve/gml:segments/gml:ArcString/@interpolation",
-                        doc));
-        assertEquals(
-                "0 0 2 0 2 1 2 3 4 3",
-                xpath.evaluate(
+                        equalTo("circularArc3Points")));
+        assertThat(
+                doc,
+                hasXPath(
                         "/gml:MultiCurve/gml:curveMember[2]/gml:Curve/gml:segments/gml:ArcString/gml:posList",
-                        doc));
+                        equalTo("0 0 2 0 2 1 2 3 4 3")));
 
-        assertEquals(
-                "linear",
-                xpath.evaluate(
+        assertThat(
+                doc,
+                hasXPath(
                         "/gml:MultiCurve/gml:curveMember[2]/gml:Curve/gml:segments/gml:LineStringSegment/@interpolation",
-                        doc));
-        assertEquals(
-                "4 3 4 5 1 4 0 0",
-                xpath.evaluate(
+                        equalTo("linear")));
+        assertThat(
+                doc,
+                hasXPath(
                         "/gml:MultiCurve/gml:curveMember[2]/gml:Curve/gml:segments/gml:LineStringSegment/gml:posList",
-                        doc));
+                        equalTo("4 3 4 5 1 4 0 0")));
     }
 
     @Test
@@ -82,29 +83,29 @@ public class MultiCurveEncoderTest extends GeometryEncoderTestSupport {
                                 "MULTICURVE((105 105, 125 125), CIRCULARSTRING(-10 0, -8 2, -6 0, -8 -2, -10 0))");
         Document doc = encode(encoder, geometry);
         // XMLTestSupport.print(doc);
-        assertEquals(1, xpath.getMatchingNodes("//gml:MultiCurve", doc).getLength());
-        assertEquals(
-                2, xpath.getMatchingNodes("//gml:MultiCurve/gml:curveMember", doc).getLength());
-        assertEquals(
-                "105 105 125 125",
-                xpath.evaluate(
-                        "//gml:MultiCurve/gml:curveMember[1]/gml:LineString/gml:posList", doc));
-        assertEquals(
-                1,
-                xpath.getMatchingNodes(
-                                "//gml:MultiCurve/gml:curveMember[2]/gml:Curve/gml:segments/*", doc)
-                        .getLength());
+        assertThat(doc, hasXPath("count(//gml:MultiCurve)", equalTo("1")));
+        assertThat(doc, hasXPath("count(//gml:MultiCurve/gml:curveMember)", equalTo("2")));
+        assertThat(
+                doc,
+                hasXPath(
+                        "//gml:MultiCurve/gml:curveMember[1]/gml:LineString/gml:posList",
+                        equalTo("105 105 125 125")));
+        assertThat(
+                doc,
+                hasXPath(
+                        "count(//gml:MultiCurve/gml:curveMember[2]/gml:Curve/gml:segments/*)",
+                        equalTo("1")));
 
-        assertEquals(
-                "circularArc3Points",
-                xpath.evaluate(
+        assertThat(
+                doc,
+                hasXPath(
                         "/gml:MultiCurve/gml:curveMember[2]/gml:Curve/gml:segments/gml:ArcString/@interpolation",
-                        doc));
-        assertEquals(
-                "-10 0 -8 2 -6 0 -8 -2 -10 0",
-                xpath.evaluate(
+                        equalTo("circularArc3Points")));
+        assertThat(
+                doc,
+                hasXPath(
                         "/gml:MultiCurve/gml:curveMember[2]/gml:Curve/gml:segments/gml:ArcString/gml:posList",
-                        doc));
+                        equalTo("-10 0 -8 2 -6 0 -8 -2 -10 0")));
     }
 
     @Test
@@ -114,22 +115,21 @@ public class MultiCurveEncoderTest extends GeometryEncoderTestSupport {
         Geometry geometry = new WKTReader2().read("MULTILINESTRING((105 105, 125 125))");
         Document doc = encode(encoder, geometry, "multi");
         // XMLTestSupport.print(doc);
-        assertEquals(1, xpath.getMatchingNodes("//gml:MultiLineString", doc).getLength());
-        assertEquals(
-                1,
-                xpath.getMatchingNodes("//gml:MultiLineString/gml:lineStringMember", doc)
-                        .getLength());
-        assertEquals(
-                "105 105 125 125",
-                xpath.evaluate(
+        assertThat(doc, hasXPath("count(//gml:MultiLineString)", equalTo("1")));
+        assertThat(
+                doc, hasXPath("count(//gml:MultiLineString/gml:lineStringMember)", equalTo("1")));
+        assertThat(
+                doc,
+                hasXPath(
                         "//gml:MultiLineString/gml:lineStringMember[1]/gml:LineString/gml:posList",
-                        doc));
+                        equalTo("105 105 125 125")));
 
         // geometry ids
-        assertEquals("multi", xpath.evaluate("/gml:MultiLineString/@gml:id", doc));
-        assertEquals(
-                "multi.1",
-                xpath.evaluate(
-                        "/gml:MultiLineString/gml:lineStringMember/gml:LineString/@gml:id", doc));
+        assertThat(doc, hasXPath("/gml:MultiLineString/@gml:id", equalTo("multi")));
+        assertThat(
+                doc,
+                hasXPath(
+                        "/gml:MultiLineString/gml:lineStringMember/gml:LineString/@gml:id",
+                        equalTo("multi.1")));
     }
 }

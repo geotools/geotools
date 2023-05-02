@@ -21,21 +21,16 @@ import static org.junit.Assert.assertEquals;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.TransformerException;
-import org.custommonkey.xmlunit.SimpleNamespaceContext;
-import org.custommonkey.xmlunit.XMLUnit;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gml.producer.FeatureTransformer;
-import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -61,17 +56,6 @@ import org.xml.sax.helpers.XMLFilterImpl;
  * @author Burkhard Strauss
  */
 public class GMLFilterFeatureTest {
-
-    @Before
-    public void before() {
-
-        final Map<String, String> namespaces = new HashMap<>();
-        namespaces.put("xlink", "http://www.w3.org/1999/xlink");
-        namespaces.put("wfs", "http://www.opengis.net/wfs");
-        namespaces.put("gml", "http://www.opengis.net/gml");
-        namespaces.put("gt", "http://www.geotools.org");
-        XMLUnit.setXpathNamespaceContext(new SimpleNamespaceContext(namespaces));
-    }
 
     @Test
     public void test()

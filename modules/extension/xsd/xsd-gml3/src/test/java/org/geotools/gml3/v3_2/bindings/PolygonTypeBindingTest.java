@@ -16,10 +16,11 @@
  */
 package org.geotools.gml3.v3_2.bindings;
 
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import org.custommonkey.xmlunit.XMLAssert;
 import org.geotools.gml3.bindings.GML3MockData;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.gml3.v3_2.GML32TestSupport;
@@ -46,7 +47,10 @@ public class PolygonTypeBindingTest extends GML32TestSupport {
         Document dom = encode(GML3MockData.polygon(), GML.Polygon);
 
         assertEquals("gml:Polygon", dom.getDocumentElement().getNodeName());
-        XMLAssert.assertXpathExists("/gml:Polygon/gml:exterior", dom);
-        XMLAssert.assertXpathExists("/gml:Polygon/gml:exterior/gml:LinearRing", dom);
+
+        assertThat(dom, hasXPath("/gml:Polygon/gml:exterior", notNullValue(String.class)));
+        assertThat(
+                dom,
+                hasXPath("/gml:Polygon/gml:exterior/gml:LinearRing", notNullValue(String.class)));
     }
 }

@@ -16,7 +16,8 @@
  */
 package org.geotools.gml3.v3_2.bindings;
 
-import static org.custommonkey.xmlunit.XMLAssert.assertXpathExists;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 
 import org.geotools.gml3.bindings.GML3MockData;
@@ -53,6 +54,7 @@ public class LineStringTypeBindingTest extends GML32TestSupport {
         Document d = encode(line, GML.LineString);
 
         assertEquals("gml:LineString", d.getDocumentElement().getNodeName());
-        assertXpathExists("/gml:LineString/gml:posList", d);
+
+        assertThat(d, hasXPath("/gml:LineString/gml:posList", notNullValue(String.class)));
     }
 }

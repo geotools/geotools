@@ -1,41 +1,36 @@
 package org.geotools.gml.producer;
 
-import static org.custommonkey.xmlunit.XMLAssert.assertXpathEvaluatesTo;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertThrows;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 import javax.xml.transform.TransformerException;
-import org.custommonkey.xmlunit.SimpleNamespaceContext;
-import org.custommonkey.xmlunit.XMLUnit;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.test.xml.XmlTestSupport;
 import org.geotools.util.factory.Hints;
-import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.w3c.dom.Document;
 
-public class FeatureTransformerTest {
+public class FeatureTransformerTest extends XmlTestSupport {
 
-    @Before
-    public void setup() {
-        Map<String, String> namespaces = new HashMap<>();
-        namespaces.put("xlink", "http://www.w3.org/1999/xlink");
-        namespaces.put("wfs", "http://www.opengis.net/wfs");
-        namespaces.put("gml", "http://www.opengis.net/gml");
-        namespaces.put("gt", "http://www.geotools.org");
-        XMLUnit.setXpathNamespaceContext(new SimpleNamespaceContext(namespaces));
+    @Override
+    protected Map<String, String> getNamespaces() {
+        return namespaces(
+                Namespace("xlink", "http://www.w3.org/1999/xlink"),
+                Namespace("wfs", "http://www.opengis.net/wfs"),
+                Namespace("gml", "http://www.opengis.net/gml"),
+                Namespace("gt", "http://www.geotools.org"));
     }
 
     @Test
@@ -49,10 +44,11 @@ public class FeatureTransformerTest {
         String result = bos.toString();
         // System.out.println(result);
 
-        Document dom = XMLUnit.buildControlDocument(result);
-        assertXpathEvaluatesTo("1", "count(//wfs:FeatureCollection)", dom);
-        assertXpathEvaluatesTo("unknown", "/wfs:FeatureCollection/gml:boundedBy/gml:null", dom);
-        assertXpathEvaluatesTo("0", "count(//gml:featureMember)", dom);
+        assertThat(result, hasXPath("count(//wfs:FeatureCollection)", equalTo("1")));
+        assertThat(
+                result,
+                hasXPath("/wfs:FeatureCollection/gml:boundedBy/gml:null", equalTo("unknown")));
+        assertThat(result, hasXPath("count(//gml:featureMember)", equalTo("0")));
     }
 
     @Test
@@ -75,11 +71,8 @@ public class FeatureTransformerTest {
         tx.transform(fc, bos);
         String result = bos.toString();
 
-        // System.out.println(result);
-
-        Document dom = XMLUnit.buildControlDocument(result);
-        assertXpathEvaluatesTo("1", "count(//wfs:FeatureCollection)", dom);
-        assertXpathEvaluatesTo("One  test", "//gt:data", dom);
+        assertThat(result, hasXPath("count(//wfs:FeatureCollection)", equalTo("1")));
+        assertThat(result, hasXPath("//gt:data", equalTo("One  test")));
     }
 
     /**
@@ -112,9 +105,10 @@ public class FeatureTransformerTest {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             tx.transform(fc, bos);
             String result = bos.toString();
-            Document dom = XMLUnit.buildControlDocument(result);
-            assertXpathEvaluatesTo("1", "count(//wfs:FeatureCollection)", dom);
-            assertXpathEvaluatesTo("1982-12-03T00:00:00Z", "//gt:dia", dom);
+
+            assertThat(result, hasXPath("count(//wfs:FeatureCollection)", equalTo("1")));
+            assertThat(result, hasXPath("//gt:dia", equalTo("1982-12-03T00:00:00Z")));
+
         } finally {
             System.getProperties().remove("org.geotools.dateTimeFormatHandling");
             TimeZone.setDefault(defaultTimeZone);
@@ -151,9 +145,9 @@ public class FeatureTransformerTest {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             tx.transform(fc, bos);
             String result = bos.toString();
-            Document dom = XMLUnit.buildControlDocument(result);
-            assertXpathEvaluatesTo("1", "count(//wfs:FeatureCollection)", dom);
-            assertXpathEvaluatesTo("1982-12-03T00:00:00", "//gt:dia", dom);
+
+            assertThat(result, hasXPath("count(//wfs:FeatureCollection)", equalTo("1")));
+            assertThat(result, hasXPath("//gt:dia", equalTo("1982-12-03T00:00:00")));
         } finally {
             System.getProperties().remove("org.geotools.dateTimeFormatHandling");
             TimeZone.setDefault(defaultTimeZone);

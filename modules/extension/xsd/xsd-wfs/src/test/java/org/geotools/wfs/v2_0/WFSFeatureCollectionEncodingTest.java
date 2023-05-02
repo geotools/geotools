@@ -24,7 +24,6 @@ import java.util.Map;
 import net.opengis.wfs.FeatureCollectionType;
 import net.opengis.wfs.WfsFactory;
 import net.opengis.wfs20.Wfs20Factory;
-import org.custommonkey.xmlunit.XMLAssert;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.FeatureCollection;
@@ -144,7 +143,7 @@ public class WFSFeatureCollectionEncodingTest {
                         .getNamedItem("gml:id")
                         .getNodeValue());
 
-        XMLAssert.assertEquals(2, d.getElementsByTagName("geotools:feature").getLength());
+        Assert.assertEquals(2, d.getElementsByTagName("geotools:feature").getLength());
 
         Assert.assertNotNull(
                 ((Element) d.getElementsByTagName("geotools:feature").item(0))
@@ -192,7 +191,7 @@ public class WFSFeatureCollectionEncodingTest {
                         .getNamedItem("gml:id")
                         .getNodeValue());
 
-        XMLAssert.assertEquals(2, d.getElementsByTagName("geotools:feature").getLength());
+        Assert.assertEquals(2, d.getElementsByTagName("geotools:feature").getLength());
 
         Assert.assertNotNull(
                 ((Element) d.getElementsByTagName("geotools:feature").item(0))

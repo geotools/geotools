@@ -19,12 +19,12 @@ package org.geotools.gml2.bindings;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.Map;
 import org.geotools.gml2.GML;
 import org.geotools.gml2.TEST;
 import org.geotools.gml2.TestConfiguration;
 import org.geotools.xsd.Binding;
 import org.geotools.xsd.Configuration;
-import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
@@ -32,16 +32,15 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class GMLAbstractFeatureTypeBindingTest extends GMLTestSupport {
+
     @Override
-    protected Configuration createConfiguration() {
-        return new TestConfiguration();
+    protected Map<String, String> getNamespaces() {
+        return namespaces(Namespace("test", TEST.NAMESPACE));
     }
 
     @Override
-    @Before
-    public void setUp() throws Exception {
-        super.setUp();
-        registerNamespaceMapping("test", TEST.NAMESPACE);
+    protected Configuration createConfiguration() {
+        return new TestConfiguration();
     }
 
     @Test

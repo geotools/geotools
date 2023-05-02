@@ -16,7 +16,8 @@
  */
 package org.geotools.gml3.v3_2.bindings;
 
-import static org.custommonkey.xmlunit.XMLAssert.assertXpathExists;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 
 import org.geotools.gml3.bindings.GML3MockData;
@@ -56,7 +57,8 @@ public class LinearRingTypeBindingTest extends GML32TestSupport {
         Document d = encode(GML3MockData.linearRing(), GML.LinearRing);
 
         assertEquals("gml:LinearRing", d.getDocumentElement().getNodeName());
-        assertXpathExists("/gml:LinearRing/gml:posList", d);
+
+        assertThat(d, hasXPath("/gml:LinearRing/gml:posList", notNullValue(String.class)));
 
         // print(d);
     }

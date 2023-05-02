@@ -16,7 +16,8 @@
  */
 package org.geotools.gml3.simple;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.gml3.GML;
@@ -30,8 +31,7 @@ public class Point3DTest extends GeometryEncoderTestSupport {
         PointEncoder encoder = new PointEncoder(gtEncoder, "gml", GML.NAMESPACE);
         Point geometry = (Point) new WKTReader2().read("POINT(0 0 50)");
         Document doc = encode(encoder, geometry);
-        // print(doc);
-        assertEquals("0 0 50", xpath.evaluate("//gml:pos", doc));
+        assertThat(doc, hasXPath("//gml:pos", equalTo("0 0 50")));
     }
 
     @Test
@@ -39,15 +39,15 @@ public class Point3DTest extends GeometryEncoderTestSupport {
         PointEncoder encoder = new PointEncoder(gtEncoder, "gml", GML.NAMESPACE);
         Point geometry = (Point) new WKTReader2().read("POINT(21396814.969 0 50)");
         Document doc = encode(encoder, geometry, true, null, 4, true, false);
-        assertEquals("21396814.969 0 50", xpath.evaluate("//gml:pos", doc));
+        assertThat(doc, hasXPath("//gml:pos", equalTo("21396814.969 0 50")));
 
         doc = encode(encoder, geometry, true, null, 2, true, false);
-        assertEquals("21396814.97 0 50", xpath.evaluate("//gml:pos", doc));
+        assertThat(doc, hasXPath("//gml:pos", equalTo("21396814.97 0 50")));
 
         doc = encode(encoder, geometry, true, null, 4, true, true);
-        assertEquals("21396814.9690 0.0000 50.0000", xpath.evaluate("//gml:pos", doc));
+        assertThat(doc, hasXPath("//gml:pos", equalTo("21396814.9690 0.0000 50.0000")));
 
         doc = encode(encoder, geometry, true, null, 4, false, false);
-        assertEquals("2.1396814969E7 0 50", xpath.evaluate("//gml:pos", doc));
+        assertThat(doc, hasXPath("//gml:pos", equalTo("2.1396814969E7 0 50")));
     }
 }

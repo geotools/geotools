@@ -17,18 +17,18 @@
 
 package org.geotools.wfs.v2_0.bindings;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.util.HashMap;
+import java.util.Map;
 import javax.xml.namespace.QName;
 import net.opengis.wfs20.QueryType;
 import net.opengis.wfs20.Wfs20Factory;
-import org.custommonkey.xmlunit.SimpleNamespaceContext;
-import org.custommonkey.xmlunit.XMLAssert;
-import org.custommonkey.xmlunit.XMLUnit;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.wfs.v2_0.WFS;
@@ -40,6 +40,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class WfsQueryTypeTest extends WFSTestSupport {
+
+    @Override
+    protected Map<String, String> getNamespaces() {
+        return namespaces(Namespace("wfs", WFS.NAMESPACE), Namespace("fes", FES.NAMESPACE));
+    }
+
     @Test
     public void testEncode() throws Exception {
         QName typeName = new QName("http://www.test.com/query", "theType");
@@ -61,18 +67,23 @@ public class WfsQueryTypeTest extends WFSTestSupport {
         assertNotEquals(attr.indexOf(tmp), -1);
         assertEquals(attr.length(), attr.indexOf(tmp) + tmp.length()); // 8 == ":theType".length
 
-        HashMap<String, String> m = new HashMap<>();
-        m.put("wfs", WFS.NAMESPACE);
-        m.put("fes", FES.NAMESPACE);
-        XMLUnit.setXpathNamespaceContext(new SimpleNamespaceContext(m));
-        XMLAssert.assertXpathExists("//wfs:Query", doc);
-        XMLAssert.assertXpathExists("//wfs:Query/fes:SortBy", doc);
-        XMLAssert.assertXpathExists("//wfs:Query/fes:SortBy/fes:SortProperty", doc);
-        XMLAssert.assertXpathExists(
-                "//wfs:Query/fes:SortBy/fes:SortProperty/fes:ValueReference", doc);
-        XMLAssert.assertXpathEvaluatesTo(
-                "myProperty", "//wfs:Query/fes:SortBy/fes:SortProperty/fes:ValueReference", doc);
-        XMLAssert.assertXpathEvaluatesTo(
-                "ASC", "//wfs:Query/fes:SortBy/fes:SortProperty/fes:SortOrder", doc);
+        assertThat(doc, hasXPath("//wfs:Query", notNullValue(String.class)));
+        assertThat(doc, hasXPath("//wfs:Query/fes:SortBy", notNullValue(String.class)));
+        assertThat(
+                doc,
+                hasXPath("//wfs:Query/fes:SortBy/fes:SortProperty", notNullValue(String.class)));
+        assertThat(
+                doc,
+                hasXPath(
+                        "//wfs:Query/fes:SortBy/fes:SortProperty/fes:ValueReference",
+                        notNullValue(String.class)));
+        assertThat(
+                doc,
+                hasXPath(
+                        "//wfs:Query/fes:SortBy/fes:SortProperty/fes:ValueReference",
+                        equalTo("myProperty")));
+        assertThat(
+                doc,
+                hasXPath("//wfs:Query/fes:SortBy/fes:SortProperty/fes:SortOrder", equalTo("ASC")));
     }
 }

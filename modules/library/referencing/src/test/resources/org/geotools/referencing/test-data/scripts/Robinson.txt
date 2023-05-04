@@ -72,3 +72,28 @@ target pt = (-180, 90)
 
 source pt = (-17005833.33, 0.00)
 target pt = (-180, 0)
+
+////////////////////////////////////////////
+// Robinson with false easting
+
+set _robinson_fe_ = PROJCS["Robinson", _WGS84_, PROJECTION["Robinson"], PARAMETER["false_easting", 1000.0], PARAMETER["false_northing", 2000.0], UNIT["m", 1.0], AXIS["Easting", EAST], AXIS["Northing", NORTH]]
+
+source crs = _WGS84_
+target crs = _robinson_fe_
+test tolerance = (1, 1)
+
+source pt = (0, 0)
+target pt = (1000, 2000)
+
+source pt = (10, 10)
+target pt = (941422.59,  1071519.16)
+
+source crs = _robinson_fe_
+target crs = _WGS84_
+test tolerance = (0.0001, 0.0001)
+
+source pt = (1000, 2000)
+target pt = (0, 0)
+
+source pt = (2721933.27, 3210557.61)
+target pt = (30, 30)

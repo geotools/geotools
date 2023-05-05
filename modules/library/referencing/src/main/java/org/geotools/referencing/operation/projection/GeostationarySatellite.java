@@ -326,11 +326,23 @@ public abstract class GeostationarySatellite extends MapProjection {
                 createDescriptor(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.OGC, "satellite_height"),
+                            new NamedIdentifier(Citations.ESRI, "Height"),
                         },
                         35785831, // default
                         0.0, // minimum
                         Double.POSITIVE_INFINITY, // maximum
                         SI.METRE);
+
+        // The ESRI version of the projection has an additional parameter "Option" which is ignored.
+        static final ParameterDescriptor OPTION =
+                createDescriptor(
+                        new NamedIdentifier[] {
+                            new NamedIdentifier(Citations.ESRI, "Option"),
+                        },
+                        0, // default
+                        0, // minimum
+                        Double.POSITIVE_INFINITY, // maximum
+                        null);
 
         static final ParameterDescriptorGroup PARAMETERS =
                 createDescriptorGroup(
@@ -344,7 +356,8 @@ public abstract class GeostationarySatellite extends MapProjection {
                             CENTRAL_MERIDIAN,
                             SATELLITE_HEIGHT,
                             FALSE_EASTING,
-                            FALSE_NORTHING
+                            FALSE_NORTHING,
+                            OPTION,
                         });
 
         public Provider() {

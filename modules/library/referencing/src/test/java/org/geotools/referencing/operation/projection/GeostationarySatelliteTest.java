@@ -61,6 +61,20 @@ public class GeostationarySatelliteTest {
                     + "    PARAMETER[\"false_northing\",0],"
                     + "    UNIT[\"meter\", 1]]";
 
+    public static final String esriGeosWKT =
+            "PROJCS[\"unknown\","
+                    + "  GEOGCS[\"GCS_unknown\","
+                    + "    DATUM[\"D_WGS_1984\","
+                    + "      SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],"
+                    + "    PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],"
+                    + "    PROJECTION[\"Geostationary_Satellite\"],"
+                    + "    PARAMETER[\"False_Easting\",0.0],"
+                    + "    PARAMETER[\"False_Northing\",0.0],"
+                    + "    PARAMETER[\"Longitude_Of_Center\",0.0],"
+                    + "    PARAMETER[\"Height\",35785863.0],"
+                    + "    PARAMETER[\"Option\",0.0],"
+                    + "    UNIT[\"Meter\",1.0]]";
+
     static CoordinateReferenceSystem sphericalGeosCRS;
     static MathTransform sphericalGeosToGeog;
     static MathTransform geogToSphericalGeos;
@@ -68,6 +82,10 @@ public class GeostationarySatelliteTest {
     static CoordinateReferenceSystem ellipsoidalGeosCRS;
     static MathTransform ellipsoidalGeosToGeog;
     static MathTransform geogToEllipsoidalGeos;
+
+    static CoordinateReferenceSystem esriGeosCRS;
+    static MathTransform esriGeosToGeog;
+    static MathTransform geogToEsriGeos;
 
     @BeforeClass
     public static void setupClass() throws FactoryException, TransformException {
@@ -84,6 +102,14 @@ public class GeostationarySatelliteTest {
                         CRS.getProjectedCRS(ellipsoidalGeosCRS).getBaseCRS(),
                         true);
         geogToEllipsoidalGeos = ellipsoidalGeosToGeog.inverse();
+
+        esriGeosCRS = CRS.parseWKT(esriGeosWKT);
+        esriGeosToGeog =
+                CRS.findMathTransform(
+                        esriGeosCRS,
+                        CRS.getProjectedCRS(esriGeosCRS).getBaseCRS(),
+                        true);
+        geogToEsriGeos = esriGeosToGeog.inverse();
     }
 
     @Test
@@ -100,6 +126,14 @@ public class GeostationarySatelliteTest {
                 CRS.getMapProjection(ellipsoidalGeosCRS).getParameterValues();
         double satelliteHeight = parameters.parameter("satellite_height").doubleValue();
         assertThat(satelliteHeight, is(35785831.0));
+    }
+
+    @Test
+    public void testEsriWKTParameters() {
+        ParameterValueGroup parameters =
+            CRS.getMapProjection(esriGeosCRS).getParameterValues();
+        double satelliteHeight = parameters.parameter("satellite_height").doubleValue();
+        assertThat(satelliteHeight, is(35785863.0));
     }
 
     @Test

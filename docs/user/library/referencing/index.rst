@@ -71,23 +71,22 @@ Contents
    transform
    calculator
 
+EPSG core providers (choose only one to prevent conflict):
+
+.. toctree::
+   :maxdepth: 1
+   
+   hsql
+   postgresql
+   wkt
+
+
 Plugins:
 
 .. toctree::
    :maxdepth: 1
    
    extension
-
-EPSG plugins (choose only one to prevent conflict):
-
-.. toctree::
-   :maxdepth: 1
-   
-   hsql
-   access
-   postgresql
-   wkt
-   3d
-   extension
+   iau
 
 

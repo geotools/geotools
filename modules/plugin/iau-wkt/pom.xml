@@ -12,7 +12,7 @@
 
   <parent>
     <groupId>org.geotools</groupId>
-    <artifactId>modules</artifactId>
+    <artifactId>plugin</artifactId>
     <version>30-SNAPSHOT</version>
   </parent>
 
@@ -20,11 +20,12 @@
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
   <groupId>org.geotools</groupId>
-  <artifactId>plugin</artifactId>
-  <packaging>pom</packaging>
-  <name>Geotools plugins</name>
-  <description>GeoTools plug-ins provide additional services to the core library
-    using ServiceLocator.</description>
+  <artifactId>gt-iau-wkt</artifactId>
+  <packaging>jar</packaging>
+  <name>IAU 2015 authority factory</name>
+
+  <description>Contains IAU defined CRSs for planetary bodies. 
+    This is meant as an addition to the EPSG database.</description>
 
   <licenses>
     <license>
@@ -35,33 +36,26 @@
   </licenses>
 
   <!-- =========================================================== -->
-  <!--     Modules included in the build                           -->
+  <!--     Dependency Management                                   -->
   <!-- =========================================================== -->
-  <modules>
-    <module>arcgrid</module>
-    <module>charts</module>
-    <module>coverage-multidim</module>
-    <module>csv</module>
-    <module>epsg-extension</module>
-    <module>epsg-hsql</module>
-    <module>epsg-postgresql</module>
-    <module>epsg-wkt</module>
-    <module>feature-pregeneralized</module>
-    <module>geopkg</module>
-    <module>geotiff</module>
-    <module>grassraster</module>
-    <module>http-commons</module>
-    <module>iau-wkt</module>
-    <module>image</module>
-    <module>imagemosaic</module>
-    <module>imageio-ext-gdal</module>
-    <module>imagepyramid</module>
-    <module>jdbc</module>
-    <module>jp2k</module>
-    <module>mongodb</module>
-    <module>property</module>
-    <module>shapefile</module>
-    <module>svg</module>
-  </modules>
+  <dependencies>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-referencing</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-epsg-hsql</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-main</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
 </project>

@@ -157,6 +157,20 @@ public final class Citations {
         GEOTOOLS = c;
     }
 
+    /**
+     * The <A HREF="https://www.iau.org">IAU</A> organisation.
+     *
+     * @see ResponsiblePartyImpl#IAU
+     */
+    public static final Citation IAU;
+
+    static {
+        final CitationImpl c = new CitationImpl(ResponsiblePartyImpl.IAU);
+        c.addAuthority("IAU", true);
+        c.freeze();
+        IAU = c;
+    }
+
     ///////////////////////////////////////////////////////////////////////
     ////////                                                       ////////
     ////////              S P E C I F I C A T I O N S              ////////

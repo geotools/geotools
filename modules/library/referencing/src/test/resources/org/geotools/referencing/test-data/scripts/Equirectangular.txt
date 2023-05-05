@@ -1,0 +1,71 @@
+// Test points for the Robinson projection
+//
+// (C) 2023, Open Source Geospatial Foundation (OSGeo)
+//
+// The following test points were calculated with libproj4 utility "cs2cs" 
+// proj -v +proj=eqc +ellps=sphere
+//
+// --------------------------------------------------------------------------
+// How to run this script:
+//
+//    chdir org/geotools/referencing/test-data/scripts
+//    java -ea org.geotools.referencing.ScriptRunner Equirectangular.txt
+//
+// A test is performed every time a "target pt" statement occurs. If the target point computed
+// by Geotools is different from the target point declared in this script by an amount greater
+// than the value specified in the last "test tolerance" statement, then a failure is reported.
+// Inverse transforms are tested if java assertions are enabled.
+// If some test fails, "print" statements can be added in this script for debugging purpose:
+//
+//    print crs            (prints the source and target CRS, and the transform between them)
+//    print pts            (prints the source and target points, and their transformed points)
+
+
+// CRS used for the test 
+set _SPHERE_ = GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]]
+set _eqc_ = PROJCS["Equirectangular", _SPHERE_, PROJECTION["Equirectangular"], UNIT["m", 1.0], AXIS["Easting", EAST], AXIS["Northing", NORTH]]
+set _eqc_dle_ = PROJCS["Equirectangular", _SPHERE_, PROJECTION["Equirectangular"], PARAMETER["longitude_of_center",180], UNIT["m", 1.0], AXIS["Easting", EAST], AXIS["Northing", NORTH]]
+set _eqc_sp_ = PROJCS["Equirectangular", _SPHERE_, PROJECTION["Equirectangular"], PARAMETER["standard_parallel_1",45], UNIT["m", 1.0], AXIS["Easting", EAST], AXIS["Northing", NORTH]]
+
+
+////////////////////////////////////////////
+// Simple case, Plate Carree, no origins
+
+source crs = _SPHERE_
+target crs = _eqc_
+test tolerance = (0.01, 0.01)
+
+source pt = (0, 0)
+target pt = (0, 0)
+
+source pt = (2, 47)
+target pt = (222389.75, 5226159.09)
+
+source pt = (20, 20)
+target pt = (2223897.49, 2223897.49)
+
+////////////////////////////////////////////
+// Center on east dateline
+
+source crs = _SPHERE_
+target crs = _eqc_dle_
+test tolerance = (0.01, 0.01)
+
+source pt = (0, 0)
+target pt = (-20015077.37, 0)
+
+source pt = (180, 0)
+target pt = (0, 0)
+
+////////////////////////////////////////////
+// Standard parallel at 45°
+
+source crs = _SPHERE_
+target crs = _eqc_sp_
+test tolerance = (0.01, 0.01)
+
+source pt = (0, 0)
+target pt = (0, 0)
+
+source pt = (20, 20)
+target pt = (1572532.99, 2223897.49)

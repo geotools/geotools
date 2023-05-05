@@ -276,6 +276,13 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
                         "EPSG", new Hints(Hints.CRS_AUTHORITY_FACTORY, type)));
     }
 
+    protected static final <T extends AbstractAuthorityFactory> T getFactory(
+            String authority, final Class<T> type) {
+        return type.cast(
+                ReferencingFactoryFinder.getCRSAuthorityFactory(
+                        authority, new Hints(Hints.CRS_AUTHORITY_FACTORY, type)));
+    }
+
     /**
      * Prints a list of codes that duplicate the ones provided by {@link ThreadedEpsgFactory}. This
      * is used for implementation of {@linkplain #main main method} in order to check the content of

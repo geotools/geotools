@@ -33,7 +33,6 @@ In addition several modules contain code made available to us under a different 
 * :doc:`gt-main </library/main/index>` (BSD License)
 * :doc:`gt-xsd-core </extension/xsd/core>` (Apache License)
 * :doc:`gt-brewer </extension/brewer/index>` (Apache License)
-* :doc:`gt-referencing3d </library/referencing/3d>` (some code available from NASA for unlimited distribution) 
 
 Contributions to the GeoTools codebase use a `contributor license agreement <https://www.osgeo.org/about/licenses/>`__ to assign copyright to the `Open Source Geospatial Foundation <https://www.osgeo.org>`__. Some government members are required to place code contributions into the public domain, these contributions are then added to the library by an individual.
 

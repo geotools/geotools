@@ -101,6 +101,15 @@ public class OnLineResourceImpl extends MetadataEntity implements OnLineResource
         r.freeze();
     }
 
+    /** The online resources for <A HREF="https://www.iau.org">IAU</A>. */
+    public static final OnLineResource IAU;
+
+    static {
+        final OnLineResourceImpl r;
+        IAU = r = new OnLineResourceImpl("https://www.iau.org");
+        r.freeze();
+    }
+
     /** The online resources for <A HREF="http://www.oracle.com">Oracle</A>. */
     public static final OnLineResource ORACLE;
 

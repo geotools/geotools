@@ -109,6 +109,19 @@ public class ContactImpl extends MetadataEntity implements Contact {
     }
 
     /**
+     * Contact informations for <A HREF="https://www.iau.org">IAU</A>.
+     *
+     * @see OnLineResourceImpl#IAU
+     */
+    public static final Contact IAU;
+
+    static {
+        final ContactImpl c = new ContactImpl(OnLineResourceImpl.IAU);
+        c.freeze();
+        IAU = c;
+    }
+
+    /**
      * Contact informations for <A HREF="http://www.oracle.com">Oracle</A>.
      *
      * @see OnLineResourceImpl#ORACLE

@@ -189,6 +189,21 @@ public class ResponsiblePartyImpl extends MetadataEntity implements ResponsibleP
     }
 
     /**
+     * The <A HREF="https://www.iau.org/">IAU</A> responsible party.
+     *
+     * @see ContactImpl#IAU
+     */
+    public static ResponsibleParty IAU;
+
+    static {
+        final ResponsiblePartyImpl r = new ResponsiblePartyImpl(Role.OWNER);
+        r.setOrganisationName(new SimpleInternationalString("IAU"));
+        r.setContactInfo(ContactImpl.IAU);
+        r.freeze();
+        IAU = r;
+    }
+
+    /**
      * The <A HREF="http://www.oracle.com">Oracle</A> responsible party.
      *
      * @see ContactImpl#ORACLE

@@ -272,6 +272,7 @@ public class EquidistantCylindrical extends MapProjection {
                         new NamedIdentifier[] {
                             new NamedIdentifier(
                                     Citations.EPSG, "Equidistant Cylindrical (Spherical)"),
+                            new NamedIdentifier(Citations.EPSG, "Equirectangular"),
                             new NamedIdentifier(Citations.ESRI, "Equidistant_Cylindrical"),
                             new NamedIdentifier(
                                     Citations.GEOTOOLS,
@@ -310,6 +311,7 @@ public class EquidistantCylindrical extends MapProjection {
         @Override
         protected MathTransform createMathTransform(final ParameterValueGroup parameters)
                 throws ParameterNotFoundException, FactoryException {
+
             return new EquidistantCylindrical(parameters) {
                 @Override
                 public ParameterDescriptorGroup getParameterDescriptors() {

@@ -359,4 +359,10 @@ public final class ScriptTest {
     public void testEqualEarth() throws Exception {
         runScript("scripts/EqualEarth.txt");
     }
+
+    /** Run "Equirectangular.txt". */
+    @Test
+    public void testEquirectangular() throws Exception {
+        runScript("scripts/Equirectangular.txt");
+    }
 }

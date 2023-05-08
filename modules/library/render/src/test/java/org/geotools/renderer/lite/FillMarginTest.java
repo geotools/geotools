@@ -134,4 +134,23 @@ public class FillMarginTest {
                 image,
                 100);
     }
+
+    @Test
+    public void testMarkMarginAndRotation() throws Exception {
+        Style style = RendererBaseTest.loadStyle(this, "margin/mark-margin-and-rotation.sld");
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(bfs, style));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+
+        BufferedImage image =
+                RendererBaseTest.showRender("MarkMarginRotation", renderer, TIME, bounds);
+        ImageAssert.assertEquals(
+                new File(
+                        "./src/test/resources/org/geotools/renderer/lite/test-data/margin/markMarginRotation.png"),
+                image,
+                100);
+    }
 }

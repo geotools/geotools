@@ -1558,4 +1558,26 @@ public class GeoTiffReaderTest {
         assertTrue(value.isPresent());
         return value.get();
     }
+
+    @Test
+    public void testIAUCode() throws Exception {
+        File viking = org.geotools.TestData.copy(this, "geotiff/viking.tif");
+        final AbstractGridFormat format = new GeoTiffFormat();
+        GeoTiffReader reader = (GeoTiffReader) format.getReader(viking);
+        assertNotNull(reader);
+        CoordinateReferenceSystem crs = reader.getCoordinateReferenceSystem();
+
+        // it's Mars
+        assertThat(crs, CoreMatchers.instanceOf(GeographicCRS.class));
+        GeographicCRS gcs = (GeographicCRS) crs;
+        assertEquals("Mars (2015) - Sphere / Ocentric", crs.getName().getCode());
+        assertEquals(3396190, gcs.getDatum().getEllipsoid().getSemiMajorAxis(), 0d);
+
+        // it's 49900
+        CoordinateReferenceSystem expected = CRS.decode("IAU:49900");
+        assertTrue(CRS.equalsIgnoreMetadata(expected, crs));
+
+        // and can be looked up as such
+        assertEquals("IAU:49900", CRS.lookupIdentifier(crs, true));
+    }
 }

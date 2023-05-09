@@ -58,11 +58,14 @@ import java.awt.geom.AffineTransform;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffGCSCodes;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
+import org.geotools.util.logging.Logging;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -92,6 +95,8 @@ import org.w3c.dom.NodeList;
  */
 public final class GeoTiffIIOMetadataDecoder {
 
+    static final Logger LOGGER = Logging.getLogger(GeoTiffIIOMetadataDecoder.class);
+
     private final IIOMetadata iioMetadata;
 
     private final Map<Integer, GeoKeyEntry> geoKeys;
@@ -111,6 +116,8 @@ public final class GeoTiffIIOMetadataDecoder {
     private final double noData;
 
     private final AffineTransform modelTransformation;
+
+    private final GeographicCitation geographicCitation;
 
     /**
      * The constructor builds a metadata adapter for the image metadata root IIOMetadataNode.
@@ -168,6 +175,19 @@ public final class GeoTiffIIOMetadataDecoder {
         tiePoints = calculateTiePoints(rootNode);
         noData = calculateNoData(rootNode);
         modelTransformation = calculateModelTransformation(rootNode);
+        geographicCitation = calculateGeographicCitation();
+    }
+
+    private GeographicCitation calculateGeographicCitation() {
+        // this key may not be actually needed, be tolerant parsing it for backwards compatibility
+        try {
+            String citation = getGeoKey(GeoTiffGCSCodes.GeogCitationGeoKey);
+            if (citation == null) return null;
+            return new GeographicCitation(citation);
+        } catch (Exception e) {
+            LOGGER.log(Level.FINE, "Failed to parse GeogCitationGeoKey", e);
+            return null;
+        }
     }
 
     /**
@@ -194,6 +214,15 @@ public final class GeoTiffIIOMetadataDecoder {
     /** Gets the number of GeoKeys in the geokeys directory. */
     public int getNumGeoKeys() {
         return geoKeyDirTagsNum;
+    }
+
+    /**
+     * Returns the {@link GeoTiffGCSCodes#GeogCitationGeoKey} value, parsed into its components.
+     *
+     * @return
+     */
+    public GeographicCitation getGeographicCitation() {
+        return geographicCitation;
     }
 
     /**

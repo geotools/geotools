@@ -32,6 +32,7 @@ import java.util.regex.Pattern;
 import org.bson.types.ObjectId;
 import org.geotools.data.mongodb.complex.JsonSelectAllFunction;
 import org.geotools.data.mongodb.complex.JsonSelectFunction;
+import org.geotools.data.util.DistanceBufferUtil;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.util.Converters;
 import org.locationtech.jts.geom.Envelope;
@@ -521,7 +522,23 @@ public abstract class AbstractFilterToMongo implements FilterVisitor, Expression
 
     @Override
     public Object visit(DWithin filter, Object extraData) {
-        throw new UnsupportedOperationException();
+        BasicDBObject output = asDBObject(extraData);
+
+        Object e1 = filter.getExpression1().accept(this, Geometry.class);
+
+        Geometry geometry = filter.getExpression2().evaluate(null, Geometry.class);
+        double distanceInMeters = DistanceBufferUtil.getDistanceInMeters(filter);
+
+        DBObject geometryDBObject = geometryBuilder.toObject(geometry);
+        DBObject dbo =
+                BasicDBObjectBuilder.start()
+                        .push("$near")
+                        .add("$geometry", geometryDBObject)
+                        .add("$maxDistance", distanceInMeters)
+                        .get();
+
+        output.put((String) e1, dbo);
+        return output;
     }
 
     @Override

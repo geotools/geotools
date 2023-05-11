@@ -1123,30 +1123,30 @@ public class SLDStyleFactory {
                 if (LOGGER.isLoggable(Level.FINER)) {
                     LOGGER.finer("got an image in graphic fill");
                 }
+                if (margin != null) {
+                    // apply the margin around the image
+                    int extraY = margin[0] + margin[2];
+                    int extraX = margin[1] + margin[3];
+                    int type =
+                            image.getType() == 0 ? BufferedImage.TYPE_4BYTE_ABGR : image.getType();
+                    BufferedImage imageWithMargin =
+                            new BufferedImage(
+                                    image.getWidth() + extraX, image.getHeight() + extraY, type);
+                    int tx = margin[1];
+                    int ty = margin[0];
+                    AffineTransform at = AffineTransform.getTranslateInstance(tx, ty);
+                    Graphics2D graphics = imageWithMargin.createGraphics();
+                    graphics.drawRenderedImage(image, at);
+                    graphics.dispose();
+
+                    image = imageWithMargin;
+                }
             } else {
                 if (LOGGER.isLoggable(Level.FINER)) {
                     LOGGER.finer("going for the mark from graphic fill");
                 }
 
-                image = markToTilableImage(gr, feature, mark, shape);
-            }
-
-            if (margin != null) {
-                // apply the margin around the image
-                int extraY = margin[0] + margin[2];
-                int extraX = margin[1] + margin[3];
-                int type = image.getType() == 0 ? BufferedImage.TYPE_4BYTE_ABGR : image.getType();
-                BufferedImage imageWithMargin =
-                        new BufferedImage(
-                                image.getWidth() + extraX, image.getHeight() + extraY, type);
-                int tx = margin[1];
-                int ty = margin[0];
-                AffineTransform at = AffineTransform.getTranslateInstance(tx, ty);
-                Graphics2D graphics = imageWithMargin.createGraphics();
-                graphics.drawRenderedImage(image, at);
-                graphics.dispose();
-
-                image = imageWithMargin;
+                image = markToTilableImage(gr, feature, mark, shape, margin);
             }
         }
 
@@ -1162,7 +1162,7 @@ public class SLDStyleFactory {
     }
 
     private BufferedImage markToTilableImage(
-            org.geotools.styling.Graphic gr, Object feature, Mark mark, Shape shape) {
+            org.geotools.styling.Graphic gr, Object feature, Mark mark, Shape shape, int[] margin) {
         Rectangle2D shapeBounds = shape.getBounds2D();
 
         // The aspect ratio is the relation between the width and height of
@@ -1219,19 +1219,36 @@ public class SLDStyleFactory {
         g2d.setRenderingHints(renderingHints);
         double rotation =
                 Math.toRadians(evalToDouble(gr.getRotation(), feature, 0.0)); // fix for GEOS-6217
+        if (margin == null) {
+            margin = new int[] {0, 0, 0, 0};
+        }
         for (int i = -1; i < 2; i++) {
+            double marginX = 0;
+            if (i == -1) {
+                marginX -= (margin[1] + margin[3]);
+            } else if (i == 1) {
+                marginX += (margin[1] + margin[3]);
+            }
             for (int j = -1; j < 2; j++) {
-                double tx = sizeX * (repeat / 2.0) + sizeX * i;
-                double ty = sizeY * (repeat / 2.0) + sizeY * j;
+                double marginY = 0;
+                if (j == -1) {
+                    marginY -= (margin[0] + margin[2]);
+                } else if (j == 1) {
+                    marginY += (margin[0] + margin[2]);
+                }
+                double tx = sizeX * (repeat / 2.0) + sizeX * i + marginX;
+                double ty = sizeY * (repeat / 2.0) + sizeY * j + marginY;
                 fillDrawMark(g2d, tx, ty, mark, size, rotation, feature);
             }
         }
         g2d.dispose();
 
-        int iSizeX = (int) Math.floor(sizeX);
-        int iSizeY = (int) Math.floor(sizeY);
+        int iSizeX = (int) Math.floor(sizeX + margin[1] + margin[3]);
+        int iSizeY = (int) Math.floor(sizeY + margin[0] + margin[2]);
+        int upperLeftX = (int) Math.floor(sizeX - margin[3]);
+        int upperLeftY = (int) Math.floor(sizeY - margin[0]);
         // updated to use the new sizes
-        image = image.getSubimage(iSizeX, iSizeY, Math.max(iSizeX, 1), Math.max(iSizeY, 1));
+        image = image.getSubimage(upperLeftX, upperLeftY, Math.max(iSizeX, 1), Math.max(iSizeY, 1));
         return image;
     }
 

@@ -17,11 +17,14 @@
 package org.geotools.gce.imagemosaic;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.net.URL;
+import javax.imageio.spi.ImageReaderSpi;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
 import org.geotools.util.URLs;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
@@ -62,5 +65,19 @@ public class GranuleDescriptorTest {
                 assertEquals(10, granuleBBOX.getMaximum(1), 0d);
             };
         };
+    }
+
+    /**
+     * Testing the ImageReaderSpi coming out of {@link CatalogConfigurationBean#suggestedSPI()}.
+     * Usually used when initializing GranuleDescriptor. ClassName put into
+     * CatalogConfigurationBean.setSuggestedSPI should be part of the classpath.
+     */
+    @Test
+    public void testSuggestedImageReaderSPI() throws Exception {
+        CatalogConfigurationBean config = new CatalogConfigurationBean();
+        config.setSuggestedSPI("it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi");
+
+        ImageReaderSpi readerSpi = config.suggestedSPI();
+        assertNotNull("suggestedSPI wasn't found", readerSpi);
     }
 }

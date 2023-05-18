@@ -18,6 +18,8 @@ package org.geotools.gce.imagemosaic.catalog;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
+import java.util.Objects;
+import java.util.logging.Logger;
 import javax.imageio.spi.IIORegistry;
 import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.spi.ImageReaderSpi;
@@ -27,9 +29,12 @@ import org.geotools.gce.imagemosaic.PathType;
 import org.geotools.gce.imagemosaic.SourceSPIProviderFactory;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.util.Utilities;
+import org.geotools.util.logging.Logging;
 
 /** Catalog configuration. */
 public class CatalogConfigurationBean {
+
+    private static final Logger LOGGER = Logging.getLogger(CatalogConfigurationBean.class);
 
     /** The typename to use for the mosaic index */
     private String typeName;
@@ -119,16 +124,25 @@ public class CatalogConfigurationBean {
 
     public ImageReaderSpi suggestedSPI() {
         if (suggestedSPI == null) return null;
-        if (resolvedSuggestedSPI == null) resolvedSuggestedSPI = getImageReaderSpi(suggestedSPI);
+        if (resolvedSuggestedSPI == null) {
+            resolvedSuggestedSPI = lookupImageReaderSpi(suggestedSPI);
+            if (resolvedSuggestedSPI == null) {
+                LOGGER.info(
+                        "The suggested imageReaderSPI: "
+                                + suggestedSPI
+                                + " wasn't found at the classpath.");
+            }
+        }
         return resolvedSuggestedSPI;
     }
 
-    static ImageReaderSpi getImageReaderSpi(String className) {
+    static ImageReaderSpi lookupImageReaderSpi(String className) {
+        Objects.requireNonNull(className);
         Iterator<ImageReaderSpi> serviceProviders =
                 IIORegistry.lookupProviders(ImageReaderSpi.class);
         while (serviceProviders.hasNext()) {
             ImageReaderSpi serviceProvider = serviceProviders.next();
-            if (serviceProvider.getClass().getName() == className) {
+            if (className.equals(serviceProvider.getClass().getName())) {
                 return serviceProvider;
             }
         }

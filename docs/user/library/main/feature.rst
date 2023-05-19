@@ -169,9 +169,10 @@ DataUtilities
   
   final SimpleFeatureType FLAG = DataUtilities.createType("Flag","Location:Point,Name:String");
 
-You can define the Coordinate Reference System using::
+You can define the Coordinate Reference System using the following (authority is optional, should be specified if it's not ``EPSG``)::
   
-  final SimpleFeatureType FLAG = DataUtilities.createType("Flags","geom:MultiPoint:srid=4326,Name:String");
+  SimpleFeatureType FLAG = DataUtilities.createType("Flags","geom:MultiPoint:srid=4326,Name:String");
+  SimpleFeatureType FLAG_IAU = DataUtilities.createType("Flags","geom:Point:authority:IAU;srid=49900,Name:String");
 
 You can also ask for the String representation of a ``FeatureType``::
   

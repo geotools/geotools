@@ -45,9 +45,10 @@ FeatureType Creation
     
     SimpleFeatureType schema = DataUtilities.createType("EDGE", "edge:Polygon,name:String,timestamp:java.util.Date");
   
-  If you need to set the coordinate reference system as well::
+  If you need to set the coordinate reference system as well (with optional CRS authority, if not using ``EPSG``)::
     
     SimpleFeatureType lineType = DataUtilities.createType("LINE", "centerline:LineString:srid=32615,name:\"\",id:0");
+    SimpleFeatureType marsLineType = DataUtilities.createType("LINE", "marsPath:LineString:authority:IAU;srid=49900,name:\"\",id:0");
 
   If you are into names spaces that can be handled as well::
   

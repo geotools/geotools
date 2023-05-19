@@ -1844,17 +1844,21 @@ public class DataUtilities {
      *
      *     <ul>
      *       <li><code>nillable</code>
+     *       <li><code>authority=<#></code>
      *       <li><code>srid=<#></code>
      *     </ul>
      *
      * <li>You may indicate the default Geometry with an astrix: "*geom:Geometry".
-     * <li>You may also indicate the srid (used to look up a EPSG code): "*point:Point:3226
+     * <li>You may also indicate the srid (used to look up a EPSG code): "*point:Point:3226"
+     * <li>The CRS authority can be specified using the <code>authority</code> hint, if it's not
+     *     EPSG (the default): "*point:Point:authority=IAUsrid=49900"
      *
      *     <p>Examples:
      *
      *     <ul>
      *       <li><code>name:"",age:0,geom:Geometry,centroid:Point,url:java.io.URL"</code>
      *       <li><code>id:String,polygonProperty:Polygon:srid=32615</code>
+     *       <li><code>id:String,polygonProperty:Polygon:authority=IAU;srid=1000</code>
      *       <li><code>identifier:UUID,location:Point,*area:MultiPolygon,created:Date</code>
      *       <li><code>uuid:UUID,name:String,description:String,time:java.sql.Timestamp</code>
      *     </ul>
@@ -1934,9 +1938,19 @@ public class DataUtilities {
             buf.append(typeMap(type.getType().getBinding()));
             if (type instanceof GeometryDescriptor) {
                 GeometryDescriptor gd = (GeometryDescriptor) type;
-                int srid = toSRID(gd.getCoordinateReferenceSystem());
-                if (srid != -1) {
-                    buf.append(":srid=" + srid);
+                Map.Entry<Citation, Integer> code = lookupCode(gd.getCoordinateReferenceSystem());
+                if (code != null) {
+                    Citation authority = code.getKey();
+                    Integer srid = code.getValue();
+                    if (authority == null
+                            || authority.getIdentifiers().isEmpty()
+                            || isEPSG(authority)) {
+                        buf.append(":srid=" + srid);
+                    } else {
+                        String authorityCode =
+                                authority.getIdentifiers().iterator().next().getCode();
+                        buf.append(":authority=" + authorityCode + ";srid=" + srid);
+                    }
                 }
             }
             buf.append(",");
@@ -1944,29 +1958,41 @@ public class DataUtilities {
         buf.delete(buf.length() - 1, buf.length()); // remove last ","
         return buf.toString();
     }
+
+    private static boolean isEPSG(Citation authority) {
+        // straightforward but does not always work
+        if (Citations.EPSG.equals(authority)) return true;
+        // a bit more laborious but should work
+        return authority.getIdentifiers().stream().anyMatch(id -> id.getCode().equals("EPSG"));
+    }
+
     /**
      * Quickly review provided crs checking for an "EPSG:SRID" reference identifier.
      *
      * <p>
      *
      * @see CRS#lookupEpsgCode(CoordinateReferenceSystem, boolean) for full search
-     * @return srid or -1 if not found
+     * @return an authority/srid pair, or null if not found
      */
-    private static int toSRID(CoordinateReferenceSystem crs) {
-        if (crs == null || crs.getIdentifiers() == null) {
-            return -1; // not found
+    private static Map.Entry<Citation, Integer> lookupCode(CoordinateReferenceSystem crs) {
+        Set<ReferenceIdentifier> identifiers;
+        if (crs == null || (identifiers = crs.getIdentifiers()) == null || identifiers.isEmpty()) {
+            return null; // not found
         }
-        for (ReferenceIdentifier id : crs.getIdentifiers()) {
+        // search for EPSG:#### code, if there is one
+        for (ReferenceIdentifier id : identifiers) {
             Citation authority = id.getAuthority();
             if (authority != null && authority.getTitle().equals(Citations.EPSG.getTitle())) {
                 try {
-                    return Integer.parseInt(id.getCode());
+                    return Map.entry(authority, Integer.parseInt(id.getCode()));
                 } catch (NumberFormatException nanException) {
                     continue;
                 }
             }
         }
-        return -1;
+        // otherwise pick the first authority available
+        ReferenceIdentifier id = identifiers.iterator().next();
+        return Map.entry(id.getAuthority(), Integer.parseInt(id.getCode()));
     }
 
     /**
@@ -2569,6 +2595,8 @@ public class DataUtilities {
             boolean nillable = true;
             CoordinateReferenceSystem crs = null;
 
+            int srid = -1;
+            String authority = "EPSG";
             if (hint != null) {
                 StringTokenizer st = new StringTokenizer(hint, ";");
                 while (st.hasMoreTokens()) {
@@ -2581,17 +2609,22 @@ public class DataUtilities {
                     if (h.equals("nillable")) {
                         nillable = true;
                     }
+                    if (h.startsWith("authority=")) {
+                        authority = h.split("=")[1];
+                    }
                     // spatial reference identifier
                     if (h.startsWith("srid=")) {
-                        String srid = h.split("=")[1];
-                        Integer.parseInt(srid);
-                        try {
-                            crs = CRS.decode("EPSG:" + srid);
-                        } catch (Exception e) {
-                            String msg = "Error decoding srs: " + srid;
-                            throw new SchemaException(msg, e);
-                        }
+                        String value = h.split("=")[1];
+                        srid = Integer.parseInt(value);
                     }
+                }
+            }
+            if (srid != -1) {
+                try {
+                    crs = CRS.decode(authority + ":" + srid);
+                } catch (Exception e) {
+                    String msg = "Error decoding srs: " + srid;
+                    throw new SchemaException(msg, e);
                 }
             }
 

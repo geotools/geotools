@@ -867,6 +867,16 @@ public class DataUtilitiesTest extends DataTestCase {
     }
 
     @Test
+    public void testSpecCRSAuthority() throws Exception {
+        String spec = "id:String,polygonProperty:Polygon:authority=CRS;srid=84";
+        SimpleFeatureType ft = DataUtilities.createType("testType", spec);
+        String spec2 = DataUtilities.encodeType(ft);
+        // System.out.println("BEFORE:"+spec);
+        // System.out.println(" AFTER:"+spec2);
+        Assert.assertEquals(spec, spec2);
+    }
+
+    @Test
     public void testAllGeometryTypes() throws Exception {
         List<Class<?>> bindings =
                 Arrays.asList(

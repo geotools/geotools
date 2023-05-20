@@ -1844,14 +1844,14 @@ public class DataUtilities {
      *
      *     <ul>
      *       <li><code>nillable</code>
-     *       <li><code>authority=<#></code>
-     *       <li><code>srid=<#></code>
+     *       <li><code>authority=text</code>
+     *       <li><code>srid=number</code>
      *     </ul>
      *
      * <li>You may indicate the default Geometry with an astrix: "*geom:Geometry".
      * <li>You may also indicate the srid (used to look up a EPSG code): "*point:Point:3226"
      * <li>The CRS authority can be specified using the <code>authority</code> hint, if it's not
-     *     EPSG (the default): "*point:Point:authority=IAUsrid=49900"
+     *     EPSG (the default): "*point:Point:authority=IAU;srid=49900"
      *
      *     <p>Examples:
      *

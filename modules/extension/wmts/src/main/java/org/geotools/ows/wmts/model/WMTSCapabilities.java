@@ -330,20 +330,29 @@ public class WMTSCapabilities extends Capabilities {
     }
 
     private WMTSLayer parseLayer(LayerType layerType) {
-        String title = ((LanguageStringType) layerType.getTitle().get(0)).getValue();
-        WMTSLayer layer = new WMTSLayer(title);
-        layer.setName(layerType.getIdentifier().getValue());
 
-        // The Abstract is of Type LanguageStringType, not String.
-        StringBuilder sb = new StringBuilder();
-        for (Object line : layerType.getAbstract()) {
-            if (line instanceof LanguageStringType) {
-                sb.append(((LanguageStringType) line).getValue());
-            } else {
-                sb.append(line);
-            }
-        } // end of for
-        layer.set_abstract(sb.toString());
+        String name = layerType.getIdentifier().getValue();
+        String title =
+                layerType.getTitle().size() > 0
+                        ? ((LanguageStringType) layerType.getTitle().get(0)).getValue()
+                        : name;
+
+        WMTSLayer layer = new WMTSLayer(title);
+        layer.setName(name);
+
+        // The Abstract is of Type LanguageStringType, not String. We're choosing the first one.
+        if (layerType.getAbstract().size() > 0) {
+            StringBuilder sb = new StringBuilder();
+            for (Object line : layerType.getAbstract()) {
+                if (line instanceof LanguageStringType) {
+                    sb.append(((LanguageStringType) line).getValue());
+                    break;
+                } else {
+                    sb.append(line);
+                }
+            } // end of for
+            layer.set_abstract(sb.toString());
+        }
 
         EList<TileMatrixSetLinkType> tmsLinks = layerType.getTileMatrixSetLink();
         for (TileMatrixSetLinkType linkType : tmsLinks) {

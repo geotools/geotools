@@ -22,6 +22,8 @@ import org.geotools.data.mongodb.complex.JsonSelectFunction;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.visitor.ClientTransactionAccessor;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.PropertyIsLike;
@@ -84,7 +86,7 @@ public class MongoFilterSplitter extends PostPreProcessFilterSplittingVisitor {
         Expression expression2 = filter.getExpression2();
         if (filter instanceof DWithin
                 && expression2 != null
-                && expression2.toString().toUpperCase().startsWith("POINT")) {
+                && expression2.evaluate(null, Geometry.class) instanceof Point) {
             if (mongoCollectionMeta != null
                     && StringUtils.equalsAny(
                             mongoCollectionMeta

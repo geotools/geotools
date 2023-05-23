@@ -327,6 +327,23 @@ public class WMTSCapabilitiesTest {
         Assert.assertNotNull(tileServer);
     }
 
+    /**
+     * Testing WMTSCapabilities parseLayer and it's support for missing Title, multiple Title
+     * elements with different xml:lang, and multiple abstracts.
+     */
+    @Test
+    public void testMultilanguageCapabilities() throws Exception {
+        WMTSCapabilities capabilities = createCapabilities("multilang.getcapa.xml");
+        WMTSLayer layer = capabilities.getLayer("plz");
+        Assert.assertEquals("Post Code", layer.getTitle());
+
+        WMTSLayer layer2 = capabilities.getLayer("isolines");
+        Assert.assertEquals("isolines", layer2.getTitle());
+
+        WMTSLayer layer3 = capabilities.getLayer("overlay-all");
+        Assert.assertEquals("Map overlay with all layers.", layer3.get_abstract());
+    }
+
     protected WebMapTileServer getCustomWMS(URL featureURL)
             throws SAXException, URISyntaxException, IOException {
         return new WebMapTileServer(featureURL);

@@ -16,8 +16,7 @@
  */
 package org.geotools.data.util;
 
-import static java.util.Map.entry;
-
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,20 +39,23 @@ public class DistanceBufferUtil {
             org.geotools.util.logging.Logging.getLogger(DistanceBufferUtil.class);
 
     private static final Map<String, Double> UNITS_MAP =
-            Map.ofEntries(
-                    entry("kilometers", 1000.0),
-                    entry("kilometer", 1000.0),
-                    entry("km", 1000.0),
-                    entry("m", 1.0),
-                    entry("meter", 1.0),
-                    entry("mm", 0.001),
-                    entry("millimeter", 0.001),
-                    entry("mi", 1609.344),
-                    entry("miles", 1609.344),
-                    entry("nm", 1852d),
-                    entry("feet", 0.3048),
-                    entry("ft", 0.3048),
-                    entry("in", 0.0254));
+            new HashMap<String, Double>() {
+                {
+                    put("kilometers", 1000.0);
+                    put("kilometer", 1000.0);
+                    put("km", 1000.0);
+                    put("m", 1.0);
+                    put("meter", 1.0);
+                    put("mm", 0.001);
+                    put("millimeter", 0.001);
+                    put("mi", 1609.344);
+                    put("miles", 1609.344);
+                    put("nm", 1852d);
+                    put("feet", 0.3048);
+                    put("ft", 0.3048);
+                    put("in", 0.0254);
+                }
+            };
 
     public static double getDistanceInNativeUnits(
             DistanceBufferOperator operator, Integer currentSRID) {

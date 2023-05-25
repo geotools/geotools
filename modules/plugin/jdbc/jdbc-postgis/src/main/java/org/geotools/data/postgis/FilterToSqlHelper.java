@@ -33,6 +33,7 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.postgis.filter.FilterFunction_pgNearest;
+import org.geotools.data.util.DistanceBufferUtil;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.LengthFunction;
@@ -269,11 +270,7 @@ class FilterToSqlHelper {
         double distance;
         if (isCurrentGeography()) {
             // need the value in meters
-            if (delegate instanceof PostgisPSFilterToSql) {
-                distance = ((PostgisPSFilterToSql) delegate).getDistanceInMeters(operator);
-            } else {
-                distance = ((PostgisFilterToSQL) delegate).getDistanceInMeters(operator);
-            }
+            distance = DistanceBufferUtil.getDistanceInMeters(operator);
         } else {
             // need the value in native units
             if (delegate instanceof PostgisPSFilterToSql) {

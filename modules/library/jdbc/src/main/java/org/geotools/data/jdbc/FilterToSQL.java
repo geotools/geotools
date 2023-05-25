@@ -34,9 +34,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.measure.Unit;
-import javax.measure.UnitConverter;
-import javax.measure.quantity.Length;
+import org.geotools.data.util.DistanceBufferUtil;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.FunctionImpl;
@@ -51,11 +49,9 @@ import org.geotools.jdbc.JoinId;
 import org.geotools.jdbc.JoinPropertyName;
 import org.geotools.jdbc.PrimaryKey;
 import org.geotools.jdbc.PrimaryKeyColumn;
-import org.geotools.referencing.CRS;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
 import org.geotools.util.factory.Hints;
-import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -124,11 +120,8 @@ import org.opengis.filter.temporal.TContains;
 import org.opengis.filter.temporal.TEquals;
 import org.opengis.filter.temporal.TOverlaps;
 import org.opengis.parameter.Parameter;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.temporal.Instant;
 import org.opengis.temporal.Period;
-import si.uom.SI;
 
 /**
  * Encodes a filter into a SQL WHERE statement. It should hopefully be generic enough that any SQL
@@ -165,23 +158,6 @@ import si.uom.SI;
  *
  */
 public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
-
-    /** Conversion factor from common units to meter */
-    private static final Map<String, Double> UNITS_MAP =
-            Map.ofEntries(
-                    entry("kilometers", 1000.0),
-                    entry("kilometer", 1000.0),
-                    entry("km", 1000.0),
-                    entry("m", 1.0),
-                    entry("meter", 1.0),
-                    entry("mm", 0.001),
-                    entry("millimeter", 0.001),
-                    entry("mi", 1609.344),
-                    entry("miles", 1609.344),
-                    entry("nm", 1852d),
-                    entry("feet", 0.3048),
-                    entry("ft", 0.3048),
-                    entry("in", 0.0254));
 
     /** error message for exceptions */
     protected static final String IO_ERROR = "io problem writing filter";
@@ -2133,74 +2109,12 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     }
 
     /**
-     * Converts the distance of the operator in meters, or returns the current value if there is no
-     * units distance
-     */
-    protected double getDistanceInMeters(DistanceBufferOperator operator) {
-        double distance = operator.getDistance();
-        String units = operator.getDistanceUnits();
-        // no units or no SRID, no party, return value as-is
-        if (units == null || UNITS_MAP.get(units.toLowerCase()) == null) {
-            return distance;
-        }
-
-        double factor = UNITS_MAP.get(units.toLowerCase());
-        return distance * factor;
-    }
-
-    /**
      * Rough evaluation of distance in the units of the current SRID, assuming that the SRID maps to
      * a known EPSG code. Will use a rather imprecise transformation for distances over degrees, but
      * better than nothing.
      */
     protected double getDistanceInNativeUnits(DistanceBufferOperator operator) {
-        if (currentSRID == null) {
-            return operator.getDistance();
-        }
-        try {
-            CoordinateReferenceSystem crs = CRS.getHorizontalCRS(CRS.decode("EPSG:" + currentSRID));
-            double distanceMeters = getDistanceInMeters(operator);
-            if (crs instanceof GeographicCRS) {
-                double sizeDegree = 110574.2727;
-                Coordinate center = getReferenceGeometryCentroid(operator);
-                if (center != null) {
-                    double cosLat = Math.cos(Math.PI * center.y / 180.0);
-                    double latAdjustment = Math.sqrt(1 + cosLat * cosLat) / Math.sqrt(2.0);
-                    sizeDegree *= latAdjustment;
-                }
-
-                return distanceMeters / sizeDegree;
-            } else {
-                @SuppressWarnings("unchecked")
-                Unit<Length> unit = (Unit<Length>) crs.getCoordinateSystem().getAxis(0).getUnit();
-                if (unit == null) {
-                    return distanceMeters;
-                } else {
-                    UnitConverter converter = SI.METRE.getConverterTo(unit);
-                    return converter.convert(distanceMeters);
-                }
-            }
-        } catch (Exception e) {
-            LOGGER.log(
-                    Level.FINE,
-                    "Failed to turn the distance of spatial "
-                            + "filter into native units, using it as a pure number instead",
-                    e);
-            // tried, fall back on pure value
-            return operator.getDistance();
-        }
-    }
-
-    /** Returns the center of the reference geometry of the distance buffer operator, in case */
-    protected Coordinate getReferenceGeometryCentroid(DistanceBufferOperator operator) {
-        Geometry geom = operator.getExpression1().evaluate(null, Geometry.class);
-        if (geom == null) {
-            geom = operator.getExpression2().evaluate(null, Geometry.class);
-        }
-        if (geom == null) {
-            return null;
-        }
-        return geom.getCentroid().getCoordinate();
+        return DistanceBufferUtil.getDistanceInNativeUnits(operator, currentSRID);
     }
 
     @Override

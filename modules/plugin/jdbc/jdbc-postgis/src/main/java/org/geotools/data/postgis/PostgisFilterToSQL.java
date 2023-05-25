@@ -167,11 +167,6 @@ public class PostgisFilterToSQL extends FilterToSQL {
     }
 
     @Override
-    public double getDistanceInMeters(DistanceBufferOperator operator) {
-        return super.getDistanceInMeters(operator);
-    }
-
-    @Override
     public double getDistanceInNativeUnits(DistanceBufferOperator operator) {
         return super.getDistanceInNativeUnits(operator);
     }

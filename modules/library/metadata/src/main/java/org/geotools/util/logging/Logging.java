@@ -41,7 +41,7 @@ import org.geotools.util.XArray;
  * following once at application startup:
  *
  * <pre>
- * <code>Logging.GEOTOOLS.setLoggerFactory}("org.geotools.util.logging.CommonsLoggerFactory");</code>
+ * <code>Logging.GEOTOOLS.setLoggerFactory("org.geotools.util.logging.CommonsLoggerFactory");</code>
  * </pre>
  *
  * @since 2.4

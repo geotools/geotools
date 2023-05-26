@@ -49,6 +49,7 @@ import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.spatial.BBOX;
+import org.opengis.filter.spatial.DWithin;
 import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Within;
 
@@ -208,6 +209,32 @@ public class FilterToMongoTest {
         Assert.assertNotNull(filterIntersectsCrsPropertiesName);
         Assert.assertEquals(
                 "urn:x-mongodb:crs:strictwinding:EPSG:4326", filterIntersectsCrsPropertiesName);
+    }
+
+    @Test
+    public void testDWithin() {
+        DWithin dwithin = ff.dwithin(ff.property("geom"), getPointParameter(), 1, "kilometers");
+        BasicDBObject obj = (BasicDBObject) dwithin.accept(filterToMongo, null);
+        Assert.assertNotNull(obj);
+
+        BasicDBObject filterDWithin = (BasicDBObject) obj.get("geometry");
+        Assert.assertNotNull(filterDWithin);
+
+        BasicDBObject near = (BasicDBObject) filterDWithin.get("$near");
+        Assert.assertNotNull(near);
+
+        Double maxDistance = (Double) near.get("$maxDistance");
+        Assert.assertEquals(1000d, maxDistance, 00.1);
+
+        BasicDBObject geometry = (BasicDBObject) near.get("$geometry");
+        Assert.assertNotNull(geometry);
+
+        BasicDBList coordinates = new BasicDBList();
+        coordinates.add(10d);
+        coordinates.add(10d);
+
+        Assert.assertEquals("Point", geometry.get("type"));
+        Assert.assertEquals(coordinates, geometry.get("coordinates"));
     }
 
     @Test
@@ -422,6 +449,10 @@ public class FilterToMongoTest {
             new Coordinate(10.0, 10.0),
         };
         return ff.literal(new GeometryFactory().createPolygon(coordinates));
+    }
+
+    private Literal getPointParameter() {
+        return ff.literal(new GeometryFactory().createPoint(new Coordinate(10.0, 10.0)));
     }
 
     private void testIntersectMongoQuery(BasicDBObject mongoQuery) {

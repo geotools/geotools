@@ -724,7 +724,7 @@ public final class GeoTools {
      * <p>In addition, the {@linkplain #getDefaultHints default hints} are initialized to the
      * specified {@code hints}.
      *
-     * <p>Invoking this method is <strong>not</strong> required fpr the GeoTools library to
+     * <p>Invoking this method is <strong>not</strong> required for the GeoTools library to
      * function. It is just a convenience method for overwriting select Java and GeoTools default
      * settings. Supplying these defaults is not desirable in all settings, such as writing test
      * cases.

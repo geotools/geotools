@@ -41,6 +41,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.logging.Level;
@@ -62,9 +63,11 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureReader;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.data.simple.SimpleFeatureWriter;
+import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureTypes;
+import org.geotools.feature.collection.DecoratingSimpleFeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.Geometries;
@@ -650,6 +653,29 @@ public class GeoPackageTest {
     }
 
     @Test
+    public void testSpatialIndexNullGeometries() throws Exception {
+        ShapefileDataStore shp = new ShapefileDataStore(setUpShapefile());
+
+        // insert half of the points with null geometry
+        FeatureEntry entry = new FeatureEntry();
+        ContentFeatureCollection features = shp.getFeatureSource().getFeatures();
+        try (SimpleFeatureIterator fi = features.features();
+                SimpleFeatureIterator fiNulls = new OddEvenNullIterator(fi, features)) {
+            geopkg.add(entry, DataUtilities.collection(fiNulls));
+        }
+
+        assertFalse(geopkg.hasSpatialIndex(entry));
+
+        // would have gone NPE before the fix here
+        geopkg.createSpatialIndex(entry);
+
+        assertTrue(geopkg.hasSpatialIndex(entry));
+
+        Set<Identifier> ids = geopkg.searchSpatialIndex(entry, 0d, 0d, 1e7, 1e7);
+        assertEquals(features.size() / 2, ids.size());
+    }
+
+    @Test
     public void testSpatialIndexWithSpecificTypeName() throws Exception {
         List<String> featureTypeNamesToTest =
                 Arrays.asList(
@@ -1228,5 +1254,29 @@ public class GeoPackageTest {
 
         assertEquals(coordinate.x, coordinateYX.y, 0);
         assertEquals(coordinate.y, coordinateYX.x, 0);
+    }
+
+    /**
+     * Iterate over the features, creating clones that have null geometries for odd entries and
+     * non-null geometries for even entries
+     */
+    private static class OddEvenNullIterator extends DecoratingSimpleFeatureIterator {
+        private final ContentFeatureCollection features;
+        int counter;
+
+        public OddEvenNullIterator(SimpleFeatureIterator fi, ContentFeatureCollection features) {
+            super(fi);
+            this.features = features;
+            counter = 0;
+        }
+
+        @Override
+        public SimpleFeature next() throws NoSuchElementException {
+            SimpleFeatureBuilder fb = new SimpleFeatureBuilder(features.getSchema());
+            SimpleFeature feature = super.next();
+            fb.init(feature);
+            if (counter++ % 2 == 0) fb.set("the_geom", null);
+            return fb.buildFeature(feature.getID());
+        }
     }
 }

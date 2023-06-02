@@ -2,7 +2,7 @@ CREATE VIRTUAL TABLE "rtree_${t}_${c}" USING rtree(id, minx, maxx, miny, maxy);
 
 INSERT OR REPLACE INTO "rtree_${t}_${c}"
   SELECT "${i}", ST_MinX("${c}"), ST_MaxX("${c}"), ST_MinY("${c}"), ST_MaxY("${c}") FROM "${t}"
-  WHERE NOT ST_IsEmpty("${c}");
+  WHERE "${c}" NOT NULL AND NOT ST_IsEmpty("${c}");
 
 -- Conditions: Insertion of non-empty geometry
 --   Actions   : Insert record into rtree 

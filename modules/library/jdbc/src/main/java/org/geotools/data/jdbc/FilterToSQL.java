@@ -16,7 +16,6 @@
  */
 package org.geotools.data.jdbc;
 
-import static java.util.Map.entry;
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import java.io.IOException;
@@ -132,24 +131,24 @@ import org.opengis.temporal.Period;
  * GeometryFilter visit method. Then add the filter types supported to the capabilities by
  * overriding the {{@link #createFilterCapabilities()} method.
  *
- * <p>This version was ported from the original to support org.opengis.filter type Filters.
+ * <p>The output Writer can be provided either through the constructor, or with a {@link
+ * #setWriter(Writer)}. It must be provided before a call to encode.
+ *
+ * <p><b>Note</b> that the class isn't thread-safe and a new object should be created for each call
+ * to any of the encode functions.
  *
  * @author originally by Chris Holmes, TOPP
  * @author ported by Saul Farber, MassGIS
- * @task REVISIT: need to figure out exceptions, we're currently eating io errors, which is bad.
- *     Probably need a generic visitor exception.
  */
 /*
  * TODO: Use the new FilterCapabilities.  This may fall out of using the new
  * PrePostFilterSplitter code.
  *
- * TODO: Use the new Geometry classes from org.opengis.  Not sure
- * when this will be required, but it's on the horizon here.
  *
  * Non Javadoc comments:
  *
  * Note that the old method allowed us to write WAY fewer methods, as we didn't
- * need to cover all the cases with exlpicit methods (as the new
+ * need to cover all the cases with explicit methods (as the new
  * org.opengis.filter.FilterVisitor and ExpressionVisitor methods require
  * us to do).
  *

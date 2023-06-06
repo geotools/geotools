@@ -233,9 +233,11 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
     /** @return */
     private IOFileFilter createDefaultGranuleExclusionFilter() {
         final IOFileFilter specialWildCardFileFilter =
-                new WildcardFileFilter(
-                        configHandler.getRunConfiguration().getParameter(Prop.WILDCARD),
-                        IOCase.INSENSITIVE);
+                WildcardFileFilter.builder()
+                        .setWildcards(
+                                configHandler.getRunConfiguration().getParameter(Prop.WILDCARD))
+                        .setIoCase(IOCase.INSENSITIVE)
+                        .get();
         IOFileFilter dirFilter =
                 FileFilterUtils.and(
                         FileFilterUtils.directoryFileFilter(), HiddenFileFilter.VISIBLE);

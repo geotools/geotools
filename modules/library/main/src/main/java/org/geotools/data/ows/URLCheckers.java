@@ -17,18 +17,26 @@
 package org.geotools.data.ows;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.geotools.util.factory.FactoryCreator;
 import org.geotools.util.factory.FactoryRegistry;
 import org.geotools.util.factory.GeoTools;
+import org.geotools.util.logging.Logging;
 
 /**
  * Scans for all available URLChecker implementations, allows to register new ones, and provides a
  * convenient method to apply them on a given location.
  */
 public class URLCheckers {
+    protected static final Logger LOGGER = Logging.getLogger(URLCheckers.class);
 
     /** The service registry for {@link URLCheckers}. Will be initialized only when first needed. */
     private static FactoryRegistry registry;
@@ -99,9 +107,69 @@ public class URLCheckers {
     }
 
     /**
-     * Confirm the location against all enabled URLChecker
+     * Normalize location removing current directory {@code .} and parent directory {@code ..}
+     * names.
      *
-     * @param location String(URI/URI/path) to evaluate using all available URLCheckers
+     * <p>Normalization uses {@link URI#normalize()} for URI and URL locations. Path locations are
+     * normalized using {@link Path#normalize()}.
+     *
+     * <p>This normalization method forces empty hostname {@code file:///path} representation to
+     * provide a consistent location to check. RFC 8089 supports both empty hostname {@code
+     * file:///path} and {@code file:/path} no hostname as references to the same absolute path.
+     *
+     * <p>Keep in mind that file paths are standardized to {@code /} on linux and {@code \\} on
+     * windows.
+     *
+     * @param location String(URI/URI/path)
+     * @return normalized location, removing redundant {@code .} and {@code ..} path names if
+     *     required
+     */
+    public static String normalize(String location) {
+        if (location.indexOf('.') == -1) {
+            return location;
+        }
+        if (location.indexOf(':') != -1) {
+            try {
+                URI uri = new URI(location);
+                URI normal = uri.normalize();
+                if (normal.getScheme().equalsIgnoreCase("file") && normal.getHost() == null) {
+                    // Standardize on empty hostname representation supported by RFC 8089
+                    // Although file:/path is valid normalize as file:///path representation
+                    normal =
+                            new URI(
+                                    normal.getScheme(),
+                                    normal.getUserInfo(),
+                                    "",
+                                    normal.getPort(),
+                                    normal.getPath(),
+                                    normal.getQuery(),
+                                    normal.getFragment());
+                }
+                return normal.toString();
+            } catch (URISyntaxException e) {
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine("URI.normalize() not available for location: " + location);
+                }
+            }
+        }
+        if (location.indexOf('/') != -1 || location.indexOf('\\') != -1) {
+            try {
+                Path path = Paths.get(location);
+                return path.normalize().toString();
+            } catch (InvalidPathException invalid) {
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine("Path.normalize() not available for location: " + location);
+                }
+            }
+        }
+        return location;
+    }
+
+    /**
+     * Confirm the location against all enabled URLChecker.
+     *
+     * @param location String(URI/URI/path) to be normalized and evaluated using all available
+     *     URLCheckers
      * @throws URLCheckerException if the location is not allowed for use
      */
     public static void confirm(String location) throws URLCheckerException {
@@ -109,12 +177,15 @@ public class URLCheckers {
         List<URLChecker> checkers = getEnabledURLCheckers();
         // no enabled checkers, the system is not configured... don't do anything
         if (checkers.isEmpty()) return;
+
+        String normalized = normalize(location);
+
         // evaluate using all available implementations
         for (URLChecker urlChecker : checkers) {
-            if (urlChecker.confirm(location)) return;
+            if (urlChecker.confirm(normalized)) return;
         }
-        // no URLChecker evaluated the passed URL/URI
+        // no URLChecker evaluated the passed URL/URI/Path
         throw new URLCheckerException(
-                "Evaluation Failure: " + location + " was not accepted by external URL checks");
+                "Evaluation Failure: '" + location + "' was not accepted by external URL checks");
     }
 }

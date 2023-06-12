@@ -17,8 +17,10 @@
 package org.geotools.data.ows;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 
+import java.io.File;
 import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Test;
@@ -72,18 +74,98 @@ public class URLCheckersTest {
         MockURLChecker gsChecker =
                 new MockURLChecker(
                         "enabled", true, s -> s.matches("https?://www.geoserver.org/.*")) {};
+
+        MockURLChecker apiChecker =
+                new MockURLChecker(
+                        "enabled",
+                        true,
+                        s -> s.matches("^https?://localhost:8080/geoserver/ows\\?.*$")) {};
+
+        MockURLChecker owsChecker =
+                new MockURLChecker(
+                        "enabled",
+                        true,
+                        s ->
+                                s.matches(
+                                        "^https?://localhost:8080/geoserver/(\\w+/)?ows((\\?\\!\\\\.\\\\./).)*(\\\\?.*)?$")) {};
+
         URLCheckers.register(fileChecker);
         URLCheckers.register(gtChecker);
         URLCheckers.register(gsChecker);
+        URLCheckers.register(apiChecker);
+        URLCheckers.register(owsChecker);
 
         // invalid references
         assertThrows(URLCheckerException.class, () -> URLCheckers.confirm("http://google.com"));
         assertThrows(URLCheckerException.class, () -> URLCheckers.confirm("http://nyt.com"));
         assertThrows(URLCheckerException.class, () -> URLCheckers.confirm("file:///tmp"));
+        assertThrows(
+                URLCheckerException.class,
+                () -> URLCheckers.confirm("http://localhost/geoserver/styles/grass_mark.png"));
+        assertThrows(
+                URLCheckerException.class,
+                () -> URLCheckers.confirm("http://localhost:8080/geoserver/ows/.."));
 
         // valid references
         URLCheckers.confirm("https://www.geoserver.org/logo.png");
         URLCheckers.confirm("http://www.geotools.org/sld.xsd");
         URLCheckers.confirm("file:///data/dem.tif");
+        URLCheckers.confirm("http://localhost:8080/geoserver/ows?");
+        URLCheckers.confirm("http://localhost:8080/geoserver/styles/../ows?");
+        URLCheckers.confirm(
+                "http://localhost:8080/geoserver/ows?SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.3.0");
+        URLCheckers.confirm(
+                "https://localhost:8080/geoserver/ne/ows?SERVICE=WFS&REQUEST=GetCapabilities&VERSION=1.1.0");
+
+        // valid normalization
+        URLCheckers.confirm("file:///data/../data/dem.tif");
+        URLCheckers.confirm("file:/data/../data/dem.tif");
+        URLCheckers.confirm("file:///data/./dem.tif");
+        URLCheckers.confirm("file:/data/./dem.tif");
+
+        // invalid normalization
+        assertThrows(URLCheckerException.class, () -> URLCheckers.confirm("file:///tmp"));
+        assertThrows(URLCheckerException.class, () -> URLCheckers.confirm("file:///data/../tmp"));
+    }
+
+    @Test
+    public void testNormalization() {
+        assertEquals("file:///data/dem.tif", URLCheckers.normalize("file:///data/../data/dem.tif"));
+
+        assertEquals("file:///data/dem.tif", URLCheckers.normalize("file:/data/dem.tif"));
+
+        assertEquals("file:///base/file", URLCheckers.normalize("file:///base/folder/../file"));
+
+        assertEquals(
+                "http://localhost:8080/geoserver/styles/icon.png",
+                URLCheckers.normalize("http://localhost:8080/geoserver/styles/icon.png"));
+
+        assertEquals(
+                "http://localhost:8080/geoserver/www/icon.png",
+                URLCheckers.normalize("http://localhost:8080/geoserver/styles/../www/icon.png"));
+
+        assertEquals(
+                "http://localhost:8080/geoserver/styles/icon.png",
+                URLCheckers.normalize("http://localhost:8080/geoserver/styles/./icon.png"));
+
+        assertEquals(
+                String.join(File.separator, "", "base", "folder", "file"),
+                URLCheckers.normalize("/base/folder/./file"));
+
+        assertEquals(
+                String.join(File.separator, "", "file"),
+                URLCheckers.normalize("/base/folder/../../file"));
+
+        assertEquals("file", URLCheckers.normalize("folder/../file"));
+
+        assertEquals(
+                String.join(File.separator, "..", "file"),
+                URLCheckers.normalize("folder/../../file"));
+
+        assertEquals(
+                "http://example.net/api?ignore=..",
+                URLCheckers.normalize("http://example.net/api?ignore=.."));
+
+        assertEquals("C:\\directory\\file", URLCheckers.normalize("C:\\directory\\file"));
     }
 }

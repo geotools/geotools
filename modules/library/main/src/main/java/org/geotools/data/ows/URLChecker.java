@@ -41,7 +41,10 @@ public interface URLChecker {
      * available, the location will be allowed if at least one URLChecker can confirm it is
      * permitted for use.
      *
-     * @param location Location expressed as URL, URI or path.
+     * <p>Location is normalized to remove all redundant {@code .} and {@code ..} path names, and
+     * provide absolute file references using empty host name {@code file:///path} approach.
+     *
+     * @param location Location expressed as normalized URL, URI or path.
      * @return {@code true} indicates the URLChecker can confirm the location is allowed for use,
      *     {@code false} indicates the URLChecker is unable to confirm.
      */

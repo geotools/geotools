@@ -1325,7 +1325,7 @@ public class GeoPackage implements Closeable {
             try (PreparedStatement st =
                     cx.prepareStatement(
                             format(
-                                    "CREATE TABLE %s ("
+                                    "CREATE TABLE \"%s\" ("
                                             + "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
                                             + "zoom_level INTEGER NOT NULL,"
                                             + "tile_column INTEGER NOT NULL,"
@@ -1339,7 +1339,7 @@ public class GeoPackage implements Closeable {
             try (PreparedStatement st =
                     cx.prepareStatement(
                             format(
-                                    "create index %s_zyx_idx on %s(zoom_level, tile_column, tile_row);",
+                                    "CREATE INDEX \"%s_zyx_idx\" ON \"%s\"(zoom_level, tile_column, tile_row);",
                                     e.getTableName(), e.getTableName()))) {
                 st.execute();
             }
@@ -1365,7 +1365,7 @@ public class GeoPackage implements Closeable {
                         prepare(
                                         cx,
                                         format(
-                                                "INSERT INTO %s (zoom_level, tile_column,"
+                                                "INSERT INTO \"%s\" (zoom_level, tile_column,"
                                                         + " tile_row, tile_data) VALUES (?,?,?,?)",
                                                 entry.getTableName()))
                                 .set(tile.getZoom())
@@ -1525,37 +1525,30 @@ public class GeoPackage implements Closeable {
      * @param zoom the zoom level
      * @param isMax true for max boundary, false for min boundary
      * @param isRow true for rows, false for columns
-     * @return the min/max column/row of the zoom level available in the data
+     * @return the min/max column/row of the zoom level available in the data, or 0 if no matching
+     *     zoom_level is present
      */
     public int getTileBound(TileEntry entry, int zoom, boolean isMax, boolean isRow)
             throws IOException {
         try {
-
-            int tileBounds = -1;
-
-            StringBuffer sql =
-                    new StringBuffer(
-                            "SELECT "
-                                    + (isMax ? "MAX" : "MIN")
-                                    + "( "
-                                    + (isRow ? "tile_row" : "tile_column")
-                                    + ") FROM ");
-            sql.append(entry.getTableName());
-            sql.append(" WHERE zoom_level == ");
-            sql.append(zoom);
+            String sql =
+                    format(
+                            "SELECT %s(%s) FROM \"%s\" WHERE zoom_level == ?",
+                            isMax ? "MAX" : "MIN",
+                            isRow ? "tile_row" : "tile_column",
+                            entry.getTableName());
 
             try (Connection cx = connPool.getConnection();
-                    Statement st = cx.createStatement();
-                    ResultSet rs = st.executeQuery(sql.toString())) {
+                    PreparedStatement st = prepare(cx, sql).set(zoom).statement();
+                    ResultSet rs = st.executeQuery()) {
                 if (!rs.next()) {
                     throw new SQLException(
                             "Could not compute tile bounds, query did not return any record");
                 }
-                tileBounds = rs.getInt(1);
+                // NB: this returns 0 if zoom_level does not exist, rather than, say -1.
+                // We could change this behaviour by checking if the result is null
+                return rs.getInt(1);
             }
-
-            return tileBounds;
-
         } catch (SQLException e) {
             throw new IOException(e);
         }

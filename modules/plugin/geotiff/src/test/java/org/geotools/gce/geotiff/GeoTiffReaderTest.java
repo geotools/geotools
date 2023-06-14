@@ -191,7 +191,6 @@ public class GeoTiffReaderTest {
     }
     /** Test for reading bad/strange geotiff files */
     @Test
-    //    @Ignore
     public void testReaderBadGeotiff()
             throws IllegalArgumentException, IOException, FactoryException {
 
@@ -269,6 +268,20 @@ public class GeoTiffReaderTest {
         coverage1.dispose(true);
         coverage2.dispose(true);
         coverage3.dispose(true);
+
+        //
+        // user-defined with citation containing esri pe string wkt
+        // esri_pe.tif
+        final File userDefined = TestData.file(GeoTiffReaderTest.class, "esri_pe_string.tif");
+        assertTrue(format.accepts(userDefined));
+        reader = (GeoTiffReader) format.getReader(userDefined);
+
+        crs = reader.getCoordinateReferenceSystem();
+        assertEquals("RD_New", crs.getName().getCode());
+
+        coverage = reader.read(null);
+        crs = coverage.getCoordinateReferenceSystem();
+        assertEquals("RD_New", crs.getName().getCode());
     }
 
     /** Test for reading geotiff files */
@@ -285,8 +298,9 @@ public class GeoTiffReaderTest {
         for (int i = 0; i < numFiles; i++) {
             StringBuilder buffer = new StringBuilder();
             final String path = files[i].getAbsolutePath().toLowerCase();
-            if (!path.endsWith("tif") && !path.endsWith("tiff") || path.contains("no_crs"))
-                continue;
+            if (!path.endsWith("tif") && !path.endsWith("tiff")
+                    || path.contains("no_crs")
+                    || path.contains("esri_pe_string")) continue;
 
             buffer.append(files[i].getAbsolutePath()).append("\n");
             Object o;

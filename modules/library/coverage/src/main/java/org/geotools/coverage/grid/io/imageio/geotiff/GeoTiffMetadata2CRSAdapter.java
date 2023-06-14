@@ -52,6 +52,7 @@ import org.geotools.measure.Units;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.CitationImpl;
+import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.crs.DefaultProjectedCRS;
@@ -176,6 +177,7 @@ public final class GeoTiffMetadata2CRSAdapter {
         // the first thing to check is the Model Type.
         // is it "Projected" or is it "Geographic"?
         // "Geocentric" is not supported.
+        // "User-defined" only supported if citation is WKT
         switch (getGeoKeyAsInt(GeoTiffConstants.GTModelTypeGeoKey, metadata)) {
             case GeoTiffPCSCodes.ModelTypeProjected:
                 return createProjectedCoordinateReferenceSystem(metadata);
@@ -183,9 +185,24 @@ public final class GeoTiffMetadata2CRSAdapter {
             case GeoTiffGCSCodes.ModelTypeGeographic:
                 return createGeographicCoordinateReferenceSystem(metadata);
 
+            case GeoTiffGCSCodes.ModelTypeUserDefined:
+                String citation = metadata.getGeoKey(GeoTiffPCSCodes.PCSCitationGeoKey);
+                if (citation != null) {
+                    if (citation.startsWith("ESRI PE String =")) {
+                        String wkt = citation.substring(17);
+                        try {
+                            return CRS.parseWKT(wkt);
+                        } catch (FactoryException unavailable) {
+                            throw new UnsupportedOperationException(
+                                    "GeoTiffMetadata2CRSAdapter::createCoordinateSystem: User-defined requires citation of form 'ESRI PE String = <wkt>'");
+                        }
+                    }
+                }
+
             default:
                 throw new UnsupportedOperationException(
-                        "GeoTiffMetadata2CRSAdapter::createCoordinateSystem:Only Geographic & Projected Systems are supported.  ");
+                        "GeoTiffMetadata2CRSAdapter::createCoordinateSystem:Only Geographic & Projected Systems are supported."
+                                + "User-defined partially supported with citation of form 'ESRI PE String = <wkt>'");
         }
     }
 

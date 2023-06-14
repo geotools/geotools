@@ -166,6 +166,8 @@ public final class GeoTiffGCSCodes {
      */
     public static final int GTCitationGeoKey = 1026;
 
+    public static final int ModelTypeUserDefined = 32767;
+
     public static final int ModelTypeGeocentric = 3;
 
     public static final int ModelTypeGeographic = 2;

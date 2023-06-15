@@ -175,7 +175,7 @@ public class GeoPackageTest {
     void assertTableExists(String table) throws Exception {
         try (Connection cx = geopkg.getDataSource().getConnection();
                 Statement st = cx.createStatement()) {
-            st.execute(String.format("SELECT count(*) FROM %s;", table));
+            st.execute(String.format("SELECT count(*) FROM \"%s\";", table));
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -724,14 +724,18 @@ public class GeoPackageTest {
         return builder.buildFeatureType();
     }
 
-    @Test
-    public void testCreateTileEntry() throws Exception {
+    private TileEntry createTileEntry(String tableName) {
         TileEntry e = new TileEntry();
-        e.setTableName("foo");
+        e.setTableName(tableName);
         e.setBounds(new ReferencedEnvelope(-180, 180, -90, 90, DefaultGeographicCRS.WGS84));
         e.getTileMatricies().add(new TileMatrix(0, 1, 1, 256, 256, 0.1, 0.1));
         e.getTileMatricies().add(new TileMatrix(1, 2, 2, 256, 256, 0.1, 0.1));
+        return e;
+    }
 
+    @Test
+    public void testCreateTileEntry() throws Exception {
+        TileEntry e = createTileEntry("foo");
         geopkg.create(e);
         assertTileEntry(e);
 
@@ -749,20 +753,18 @@ public class GeoPackageTest {
         try (TileReader r = geopkg.reader(e, null, null, null, null, null, null)) {
             assertTiles(tiles, r);
         }
+
+        // check tile bounds
+        assertEquals(0, geopkg.getTileBound(e, 0, true, true));
+        assertEquals(1, geopkg.getTileBound(e, 1, true, true));
+        assertEquals(0, geopkg.getTileBound(e, 2, true, true));
     }
 
     @Test
     public void testIndependentTileMatrix() throws Exception {
-        TileEntry e = new TileEntry();
-        e.setTableName("foo");
-        e.setBounds(new ReferencedEnvelope(-10, 10, -10, 10, DefaultGeographicCRS.WGS84));
-        e.setTileMatrixSetBounds(
-                new ReferencedEnvelope(-180, 180, -90, 90, DefaultGeographicCRS.WGS84));
-        e.getTileMatricies().add(new TileMatrix(0, 1, 1, 256, 256, 0.1, 0.1));
-        e.getTileMatricies().add(new TileMatrix(1, 2, 2, 256, 256, 0.1, 0.1));
-
+        TileEntry e = createTileEntry("foo");
+        e.setTileMatrixSetBounds(e.getBounds());
         geopkg.create(e);
-
         assertContentEntry(e);
 
         try (Connection cx = geopkg.getDataSource().getConnection();
@@ -1166,6 +1168,44 @@ public class GeoPackageTest {
 
         DataColumnConstraint constraint = ext.getConstraint(constraintName);
         assertEquals(range, constraint);
+    }
+
+    private void assertTileEntryWithName(String name) throws Exception {
+        TileEntry tileEntry = createTileEntry(name);
+        geopkg.create(tileEntry);
+        assertTableExists(name);
+        assertTileEntry(tileEntry);
+    }
+
+    private void assertFeatureEntryWithName(String name) throws Exception {
+        FeatureEntry featureEntry = new FeatureEntry();
+        featureEntry.setTableName(name);
+        featureEntry.setDataType(Entry.DataType.Feature);
+        featureEntry.setBounds(
+                new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:2000", true)));
+        featureEntry.setSrid(2000);
+
+        SimpleFeatureType schema =
+                DataUtilities.createType(name + "_schema", "the_geom:Geometry,name:String");
+        SimpleFeature feature =
+                SimpleFeatureBuilder.build(schema, new Object[] {null, name}, name + ".1");
+        MemoryFeatureCollection features = new MemoryFeatureCollection(schema);
+        features.add(feature);
+
+        geopkg.add(featureEntry, features);
+        geopkg.createSpatialIndex(featureEntry);
+        assertTableExists(name);
+        assertTableExists(name + "_schema");
+        assertTrue("Spatial index exists", geopkg.hasSpatialIndex(featureEntry));
+    }
+
+    @Test
+    public void testTableNaming() throws Exception {
+        // Test for inadvisable-but-supported entry names which carry over into
+        // table and index names that are required to be suitably quoted
+        String entryName = "with-hyphens and spaces";
+        assertTileEntryWithName(entryName);
+        assertFeatureEntryWithName(entryName);
     }
 
     private void createBugSites() throws Exception {

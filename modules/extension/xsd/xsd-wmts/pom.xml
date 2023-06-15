@@ -80,7 +80,7 @@
       <groupId>org.geotools</groupId>
       <artifactId>gt-sample-data</artifactId>
       <version>${project.version}</version>
-      <scope>version</scope>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.xmlunit</groupId>

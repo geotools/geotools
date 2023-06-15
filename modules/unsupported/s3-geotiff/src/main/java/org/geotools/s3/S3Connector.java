@@ -16,12 +16,13 @@
  */
 package org.geotools.s3;
 
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.AnonymousAWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.S3ClientOptions;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -117,10 +118,13 @@ public class S3Connector {
             Properties prop = readProperties(s3Alias);
 
             s3 =
-                    new AmazonS3Client(
-                            new BasicAWSCredentials(
-                                    prop.getProperty(s3Alias + ".s3.user"),
-                                    prop.getProperty(s3Alias + ".s3.password")));
+                    AmazonS3ClientBuilder.standard()
+                            .withCredentials(
+                                    new AWSStaticCredentialsProvider(
+                                            new BasicAWSCredentials(
+                                                    prop.getProperty(s3Alias + ".s3.user"),
+                                                    prop.getProperty(s3Alias + ".s3.password"))))
+                            .build();
 
             final S3ClientOptions clientOptions =
                     S3ClientOptions.builder().setPathStyleAccess(true).build();
@@ -133,10 +137,14 @@ public class S3Connector {
 
             // aws cli client
         } else if (useAnon) {
-            s3 = new AmazonS3Client(new AnonymousAWSCredentials());
+            s3 =
+                    AmazonS3ClientBuilder.standard()
+                            .withCredentials(
+                                    new AWSStaticCredentialsProvider(new AnonymousAWSCredentials()))
+                            .build();
             s3.setRegion(Region.getRegion(region));
         } else {
-            s3 = new AmazonS3Client();
+            s3 = AmazonS3ClientBuilder.defaultClient();
             s3.setRegion(Region.getRegion(region));
         }
 

@@ -31,6 +31,8 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.Filter;
+import org.opengis.filter.Id;
 import org.wololo.flatgeobuf.HeaderMeta;
 
 public class FlatGeobufFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
@@ -82,9 +84,12 @@ public class FlatGeobufFeatureReader implements FeatureReader<SimpleFeatureType,
             skipNBytes(inputStream, headerMeta.offset);
         }
 
+        Filter filter = q.getFilter();
         Envelope bbox = new ReferencedEnvelope();
-        if (q != null && q.getFilter() != null) {
-            bbox = (Envelope) q.getFilter().accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, bbox);
+        Id id = null;
+        if (q != null && filter != null) {
+            bbox = (Envelope) filter.accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, bbox);
+            if (filter instanceof Id) id = (Id) filter;
         }
         if (bbox == null
                 || bbox.isNull()
@@ -92,18 +97,26 @@ public class FlatGeobufFeatureReader implements FeatureReader<SimpleFeatureType,
                 || Double.isInfinite(bbox.getHeight())) {
             bbox = null;
         }
-
-        it =
-                FeatureCollectionConversions.deserialize(inputStream, headerMeta, featureType, bbox)
-                        .iterator();
+        if (bbox != null)
+            it =
+                    FeatureCollectionConversions.deserialize(
+                                    inputStream, headerMeta, featureType, bbox)
+                            .iterator();
+        else if (id != null) {
+            it =
+                    FeatureCollectionConversions.deserialize(inputStream, headerMeta, featureType)
+                            .iterator();
+        } else {
+            it =
+                    FeatureCollectionConversions.deserialize(inputStream, headerMeta, featureType)
+                            .iterator();
+        }
     }
 
     public static void skipNBytes(InputStream stream, long skip) throws IOException {
         long actual = 0;
         long remaining = skip;
-        while (actual < remaining) {
-            remaining -= stream.skip(remaining);
-        }
+        while (actual < remaining) remaining -= stream.skip(remaining);
     }
 
     @Override
@@ -130,9 +143,7 @@ public class FlatGeobufFeatureReader implements FeatureReader<SimpleFeatureType,
         if (nextFeature != null) {
             return true;
         } else {
-            if (isEmpty) {
-                return false;
-            }
+            if (isEmpty) return false;
             if (it.hasNext()) {
                 nextFeature = it.next();
                 return true;

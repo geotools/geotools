@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import org.geotools.data.DataStore;
@@ -33,6 +34,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
+import org.opengis.filter.identity.Identifier;
 import org.wololo.flatgeobuf.HeaderMeta;
 
 public class FlatGeobufFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
@@ -103,14 +105,30 @@ public class FlatGeobufFeatureReader implements FeatureReader<SimpleFeatureType,
                                     inputStream, headerMeta, featureType, bbox)
                             .iterator();
         else if (id != null) {
+            long[] fids = extractSortedFids(id);
             it =
-                    FeatureCollectionConversions.deserialize(inputStream, headerMeta, featureType)
+                    FeatureCollectionConversions.deserialize(
+                                    inputStream, headerMeta, featureType, fids)
                             .iterator();
         } else {
             it =
                     FeatureCollectionConversions.deserialize(inputStream, headerMeta, featureType)
                             .iterator();
         }
+    }
+
+    private static long[] extractSortedFids(Id id) {
+        long[] fids = id.getIdentifiers().stream().mapToLong(i -> extractFid(i)).toArray();
+        Arrays.sort(fids);
+        return fids;
+    }
+
+    private static long extractFid(Identifier i) {
+        String idStr = i.getID().toString();
+        int dotIndex = idStr.indexOf(".", 0);
+        String idPart = idStr.substring(dotIndex + 1);
+        long fid = Long.parseLong(idPart);
+        return fid;
     }
 
     public static void skipNBytes(InputStream stream, long skip) throws IOException {

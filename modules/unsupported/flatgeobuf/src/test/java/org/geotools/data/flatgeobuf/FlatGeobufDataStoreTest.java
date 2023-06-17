@@ -864,6 +864,24 @@ public class FlatGeobufDataStoreTest {
     }
 
     @Test
+    public void readCountriesFids() throws IOException {
+        SimpleFeatureSource featureSource = getFeatureSource("countries");
+        SimpleFeatureType schema = featureSource.getSchema();
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        Filter filter = ff.id(ff.featureId("countries.3"), ff.featureId("countries.45"));
+        Query query = new Query(schema.getTypeName(), filter);
+        SimpleFeatureCollection featureCollection = featureSource.getFeatures(query);
+        try (SimpleFeatureIterator it = featureCollection.features()) {
+            int count = 0;
+            while (it.hasNext()) {
+                it.next();
+                count++;
+            }
+            assertEquals(2, count);
+        }
+    }
+
+    @Test
     public void readCountriesWithNullIntersection() throws IOException {
         SimpleFeatureSource featureSource = getFeatureSource("countries");
         SimpleFeatureType schema = featureSource.getSchema();

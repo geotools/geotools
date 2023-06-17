@@ -62,7 +62,7 @@ public class FeatureCollectionConversionsTest {
                         .getResource("org/geotools/data/flatgeobuf/countries.fgb");
         File file = Paths.get(url.toURI()).toFile();
         try (InputStream stream = new FileInputStream(file)) {
-            long[] fids = new long[] {0, 1, 2, 45, 46, 178};
+            long[] fids = {0, 1, 2, 45, 46, 178};
             Iterator<SimpleFeature> it =
                     FeatureCollectionConversions.deserialize(stream, fids).iterator();
             SimpleFeature simpleFeature = it.next();

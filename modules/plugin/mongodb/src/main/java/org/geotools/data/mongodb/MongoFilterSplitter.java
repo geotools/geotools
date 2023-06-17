@@ -34,7 +34,6 @@ import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
 
-
 public class MongoFilterSplitter extends PostPreProcessFilterSplittingVisitor {
 
     private MongoCollectionMeta mongoCollectionMeta;

@@ -53,7 +53,6 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 
-
 public class FilterToMongoTest {
 
     static final String DATE_LITERAL = "2015-07-01T00:00:00.000+01:00";

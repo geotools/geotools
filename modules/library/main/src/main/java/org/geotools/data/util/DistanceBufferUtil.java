@@ -30,9 +30,6 @@ import org.geotools.api.referencing.crs.GeographicCRS;
 import org.geotools.referencing.CRS;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
-import org.geotools.referencing.CRS;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
 import si.uom.SI;
 
 /** Utility class for DistanceBufferOperations */

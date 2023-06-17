@@ -21,11 +21,7 @@ import com.google.flatbuffers.FlatBufferBuilder;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
 import org.geotools.data.memory.MemoryFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -105,60 +101,6 @@ public class FeatureCollectionConversions {
         LittleEndianDataInputStream data = new LittleEndianDataInputStream(stream);
         Iterable<SimpleFeature> it = new ReadFidsIterable(fb, fids, headerMeta, data);
         return it;
-    }
-
-    static class Pair<T, U> {
-        public T first;
-        public U second;
-
-        public Pair(T first, U second) {
-            this.first = first;
-            this.second = second;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Pair<?, ?> pair = (Pair<?, ?>) o;
-            return Objects.equals(first, pair.first) && Objects.equals(second, pair.second);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(first, second);
-        }
-    }
-
-    static List<Pair<Integer, Integer>> generateLevelBounds(int numItems, int nodeSize) {
-        if (nodeSize < 2) throw new RuntimeException("Node size must be at least 2");
-        if (numItems == 0) throw new RuntimeException("Number of items must be greater than 0");
-
-        // number of nodes per level in bottom-up order
-        int n = numItems;
-        int numNodes = n;
-        ArrayList<Integer> levelNumNodes = new ArrayList<Integer>();
-        levelNumNodes.add(n);
-        do {
-            n = (n + nodeSize - 1) / nodeSize;
-            numNodes += n;
-            levelNumNodes.add(n);
-        } while (n != 1);
-
-        // offsets per level in reversed storage order (top-down)
-        ArrayList<Integer> levelOffsets = new ArrayList<Integer>();
-        n = numNodes;
-        for (int size : levelNumNodes) {
-            levelOffsets.add(n - size);
-            n -= size;
-        }
-        List<Pair<Integer, Integer>> levelBounds = new LinkedList<>();
-        // bounds per level in reversed storage order (top-down)
-        for (int i = 0; i < levelNumNodes.size(); i++)
-            levelBounds.add(
-                    new Pair<Integer, Integer>(
-                            levelOffsets.get(i), levelOffsets.get(i) + levelNumNodes.get(i)));
-        return levelBounds;
     }
 
     public static Iterable<SimpleFeature> deserialize(

@@ -9,8 +9,8 @@
   <groupId>org.geotools</groupId>
   <artifactId>gt-flatgeobuf</artifactId>
   <packaging>jar</packaging>
-  <name>Flatgeobuf DataStore</name>
-  <description>A flatgeobuf DataStore</description>
+  <name>FlatGeobuf DataStore</name>
+  <description>A FlatGeobuf DataStore</description>
   <dependencies>
     <dependency>
       <groupId>org.geotools</groupId>

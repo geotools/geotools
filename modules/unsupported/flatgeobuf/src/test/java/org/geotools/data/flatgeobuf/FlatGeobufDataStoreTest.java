@@ -890,7 +890,7 @@ public class FlatGeobufDataStoreTest {
         Query query = new Query(schema.getTypeName(), filter);
         SimpleFeatureCollection featureCollection = featureSource.getFeatures(query);
         try (SimpleFeatureIterator it = featureCollection.features()) {
-            assertEquals(false, it.hasNext());
+            assertFalse(it.hasNext());
         }
     }
 
@@ -904,7 +904,7 @@ public class FlatGeobufDataStoreTest {
         SimpleFeatureCollection featureCollection = featureSource.getFeatures(query);
         try (SimpleFeatureIterator it = featureCollection.features()) {
             while (it.hasNext()) {
-                assertEquals(false, it.hasNext());
+                assertFalse(it.hasNext());
             }
         }
     }

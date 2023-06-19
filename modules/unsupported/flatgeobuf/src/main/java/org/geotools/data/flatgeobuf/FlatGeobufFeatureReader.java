@@ -105,7 +105,13 @@ public class FlatGeobufFeatureReader implements FeatureReader<SimpleFeatureType,
                                     inputStream, headerMeta, featureType, bbox)
                             .iterator();
         else if (id != null) {
-            long[] fids = extractSortedFids(id);
+            long featuresCount = headerMeta.featuresCount;
+            long[] fids =
+                    id.getIdentifiers().stream()
+                            .mapToLong(i -> extractFid(i))
+                            .filter(l -> l >= 0 && l < featuresCount)
+                            .toArray();
+            Arrays.sort(fids);
             it =
                     FeatureCollectionConversions.deserialize(
                                     inputStream, headerMeta, featureType, fids)
@@ -117,17 +123,15 @@ public class FlatGeobufFeatureReader implements FeatureReader<SimpleFeatureType,
         }
     }
 
-    private static long[] extractSortedFids(Id id) {
-        long[] fids = id.getIdentifiers().stream().mapToLong(i -> extractFid(i)).toArray();
-        Arrays.sort(fids);
-        return fids;
-    }
-
     private static long extractFid(Identifier i) {
+        long fid = -1;
         String idStr = i.getID().toString();
         int dotIndex = idStr.indexOf(".", 0);
         String idPart = idStr.substring(dotIndex + 1);
-        long fid = Long.parseLong(idPart);
+        try {
+            fid = Long.parseLong(idPart);
+        } catch (NumberFormatException e) {
+        }
         return fid;
     }
 

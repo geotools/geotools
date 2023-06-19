@@ -26,8 +26,6 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.DataUtilities;
@@ -883,7 +881,7 @@ public class FlatGeobufDataStoreTest {
         }
     }
 
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void readCountriesFidsInvalid() throws IOException {
         SimpleFeatureSource featureSource = getFeatureSource("countries");
         SimpleFeatureType schema = featureSource.getSchema();
@@ -892,13 +890,11 @@ public class FlatGeobufDataStoreTest {
         Query query = new Query(schema.getTypeName(), filter);
         SimpleFeatureCollection featureCollection = featureSource.getFeatures(query);
         try (SimpleFeatureIterator it = featureCollection.features()) {
-            while (it.hasNext()) {
-                it.next();
-            }
+            assertEquals(false, it.hasNext());
         }
     }
 
-    @Test(expected = NoSuchElementException.class)
+    @Test
     public void readCountriesFidsOutOfBounds() throws IOException {
         SimpleFeatureSource featureSource = getFeatureSource("countries");
         SimpleFeatureType schema = featureSource.getSchema();
@@ -908,7 +904,7 @@ public class FlatGeobufDataStoreTest {
         SimpleFeatureCollection featureCollection = featureSource.getFeatures(query);
         try (SimpleFeatureIterator it = featureCollection.features()) {
             while (it.hasNext()) {
-                it.next();
+                assertEquals(false, it.hasNext());
             }
         }
     }

@@ -26,6 +26,8 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
+
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.DataUtilities;
@@ -878,6 +880,36 @@ public class FlatGeobufDataStoreTest {
                 count++;
             }
             assertEquals(2, count);
+        }
+    }
+
+    @Test(expected = NumberFormatException.class)
+    public void readCountriesFidsInvalid() throws IOException {
+        SimpleFeatureSource featureSource = getFeatureSource("countries");
+        SimpleFeatureType schema = featureSource.getSchema();
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        Filter filter = ff.id(ff.featureId("countries.noreallong"));
+        Query query = new Query(schema.getTypeName(), filter);
+        SimpleFeatureCollection featureCollection = featureSource.getFeatures(query);
+        try (SimpleFeatureIterator it = featureCollection.features()) {
+            while (it.hasNext()) {
+                it.next();
+            }
+        }
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void readCountriesFidsOutOfBounds() throws IOException {
+        SimpleFeatureSource featureSource = getFeatureSource("countries");
+        SimpleFeatureType schema = featureSource.getSchema();
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        Filter filter = ff.id(ff.featureId("countries.2349873589"));
+        Query query = new Query(schema.getTypeName(), filter);
+        SimpleFeatureCollection featureCollection = featureSource.getFeatures(query);
+        try (SimpleFeatureIterator it = featureCollection.features()) {
+            while (it.hasNext()) {
+                it.next();
+            }
         }
     }
 

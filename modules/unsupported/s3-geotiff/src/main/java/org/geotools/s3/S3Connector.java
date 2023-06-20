@@ -139,14 +139,11 @@ public class S3Connector {
             s3 =
                     AmazonS3ClientBuilder.standard()
                             .withCredentials(
-                                    new AWSStaticCredentialsProvider(new AnonymousAWSCredentials())
-                            )
+                                    new AWSStaticCredentialsProvider(new AnonymousAWSCredentials()))
                             .withRegion(region)
                             .build();
         } else {
-            s3 = AmazonS3ClientBuilder.standard()
-                         .withRegion(region)
-                         .build();
+            s3 = AmazonS3ClientBuilder.standard().withRegion(region).build();
         }
 
         return s3;

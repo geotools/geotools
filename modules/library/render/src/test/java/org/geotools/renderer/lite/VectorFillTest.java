@@ -184,6 +184,11 @@ public class VectorFillTest {
     }
 
     @Test
+    public void testDot() throws Exception {
+        testParametricMark("dot", "shape://dot");
+    }
+
+    @Test
     public void testTimes() throws Exception {
         testParametricMark("times", "shape://times");
     }

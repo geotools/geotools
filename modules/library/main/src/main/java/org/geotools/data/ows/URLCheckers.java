@@ -19,12 +19,14 @@ package org.geotools.data.ows;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.geotools.util.factory.FactoryCreator;
 import org.geotools.util.factory.FactoryRegistry;
@@ -37,6 +39,10 @@ import org.geotools.util.logging.Logging;
  */
 public class URLCheckers {
     protected static final Logger LOGGER = Logging.getLogger(URLCheckers.class);
+
+    /** Regular expression to find escaped periods/slashes in the URI before the query/fragment. */
+    private static final Pattern ILLEGAL_ESCAPES =
+            Pattern.compile("^[^?#]*%2[ef].*$", Pattern.CASE_INSENSITIVE);
 
     /** The service registry for {@link URLCheckers}. Will be initialized only when first needed. */
     private static FactoryRegistry registry;
@@ -128,6 +134,7 @@ public class URLCheckers {
         if (location.indexOf('.') == -1) {
             return location;
         }
+        boolean error = false;
         if (location.indexOf(':') != -1) {
             try {
                 URI uri = new URI(location);
@@ -147,6 +154,7 @@ public class URLCheckers {
                 }
                 return normal.toString();
             } catch (URISyntaxException e) {
+                error = true;
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine("URI.normalize() not available for location: " + location);
                 }
@@ -157,10 +165,14 @@ public class URLCheckers {
                 Path path = Paths.get(location);
                 return path.normalize().toString();
             } catch (InvalidPathException invalid) {
+                error = true;
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine("Path.normalize() not available for location: " + location);
                 }
             }
+        }
+        if (error) {
+            throw new URLCheckerException("Unable to normalize location: " + location);
         }
         return location;
     }
@@ -178,6 +190,17 @@ public class URLCheckers {
         // no enabled checkers, the system is not configured... don't do anything
         if (checkers.isEmpty()) return;
 
+        if (location.indexOf('%') != -1) {
+            try {
+                URLDecoder.decode(location, "UTF-8");
+            } catch (Exception e) {
+                throw new URLCheckerException("The location could not be URL decoded: " + location);
+            }
+            if (ILLEGAL_ESCAPES.matcher(location).matches()) {
+                throw new URLCheckerException(
+                        "The location contains escape sequences that are not allowed: " + location);
+            }
+        }
         String normalized = normalize(location);
 
         // evaluate using all available implementations

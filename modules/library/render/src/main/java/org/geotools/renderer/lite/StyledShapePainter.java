@@ -32,10 +32,13 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.URI;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Icon;
+import org.geotools.data.ows.URLCheckerException;
+import org.geotools.data.ows.URLCheckers;
 import org.geotools.geometry.jts.Decimator;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.image.io.ImageIOExt;
@@ -410,6 +413,15 @@ public class StyledShapePainter {
             GraphicalSymbol symbol = symbolIter.next();
 
             if (symbol instanceof ExternalGraphic) {
+                ExternalGraphic graphic = (ExternalGraphic) symbol;
+                URI uri = graphic.getOnlineResource().getLinkage();
+                try {
+                    URLCheckers.confirm(uri);
+                } catch (URLCheckerException e) {
+                    LOGGER.log(Level.FINE, "Error occurred evaluating external graphic legend", e);
+                    continue;
+                }
+
                 float[] coords = new float[2];
                 PathIterator iter = getPathIterator(shape);
                 iter.currentSegment(coords);
@@ -421,14 +433,10 @@ public class StyledShapePainter {
                 AlphaComposite composite =
                         AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity);
 
-                ExternalGraphic graphic = (ExternalGraphic) symbol;
-
                 while (!(iter.isDone())) {
                     iter.currentSegment(coords);
                     try {
-                        BufferedImage image =
-                                ImageIOExt.readBufferedImage(
-                                        graphic.getOnlineResource().getLinkage().toURL());
+                        BufferedImage image = ImageIOExt.readBufferedImage(uri.toURL());
                         if ((symbolScale > 0.0) && (symbolScale != 1.0)) {
                             int w = (int) (image.getWidth() / symbolScale);
                             int h = (int) (image.getHeight() / symbolScale);

@@ -23,6 +23,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.net.URL;
 import javax.imageio.ImageIO;
+import org.geotools.data.ows.MockURLChecker;
+import org.geotools.data.ows.URLCheckers;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.Decimator;
 import org.geotools.geometry.jts.JTSFactoryFinder;
@@ -36,6 +38,7 @@ import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.GeoTools;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
@@ -45,6 +48,11 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.referencing.operation.MathTransform;
 
 public class StyledShapePainterTest {
+
+    @After
+    public void cleanupCheckers() {
+        URLCheckers.reset();
+    }
 
     @Test
     public void testGraphicLegendNullLegend() throws Exception {
@@ -95,6 +103,26 @@ public class StyledShapePainterTest {
 
         // Ensure painted legend matches image from file
         Assert.assertTrue(imagesIdentical(paintedImage, testImage));
+    }
+
+    @Test
+    public void testGraphicLegendURLCheckerAllowed() throws Exception {
+        URLCheckers.register(new MockURLChecker(u -> u.contains("icon64.png")));
+        testGraphicLegend();
+    }
+
+    @Test
+    public void testGraphicLegendURLCheckerDisallowed() throws Exception {
+        URLCheckers.register(new MockURLChecker(u -> false));
+
+        // Get graphic legend from style
+        Style style = RendererBaseTest.loadStyle(this, "testGraphicLegend.sld");
+        Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        GraphicLegend legend = (GraphicLegend) rule.getLegend();
+
+        // The painter has nothing to paint if the URL check fails so passing in a null graphics and
+        // shape won't throw an exception here
+        new StyledShapePainter().paint(null, null, legend, 1, false);
     }
 
     @Test

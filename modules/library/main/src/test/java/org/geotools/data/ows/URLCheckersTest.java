@@ -19,8 +19,10 @@ package org.geotools.data.ows;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assume.assumeTrue;
 
 import java.io.File;
+import org.apache.commons.lang3.SystemUtils;
 import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Test;
@@ -59,6 +61,31 @@ public class URLCheckersTest {
         // reset and check has been removed
         URLCheckers.reset();
         assertThat(URLCheckers.getEnabledURLCheckers(), Matchers.empty());
+    }
+
+    @Test
+    public void testBlockedEscapeSequences() {
+        URLCheckers.register(new MockURLChecker(s -> true));
+
+        // invalid escape sequences should not be okay
+        assertThrows(URLCheckerException.class, () -> URLCheckers.confirm("file:///foo?%"));
+        assertThrows(URLCheckerException.class, () -> URLCheckers.confirm("file:///foo#%"));
+
+        // escaped period/slash in the path should not be okay
+        assertThrows(URLCheckerException.class, () -> URLCheckers.confirm("file:///foo/%2e%2e"));
+        assertThrows(URLCheckerException.class, () -> URLCheckers.confirm("file:///foo/%2E%2E"));
+        assertThrows(URLCheckerException.class, () -> URLCheckers.confirm("file:///foo%2f.."));
+        assertThrows(URLCheckerException.class, () -> URLCheckers.confirm("file:///foo%2F.."));
+
+        // escaped period/slash in the query/fragment should be okay
+        URLCheckers.confirm("file:///foo?/%2e%2e");
+        URLCheckers.confirm("file:///foo?/%2E%2E");
+        URLCheckers.confirm("file:///foo?%2f..");
+        URLCheckers.confirm("file:///foo?%2F..");
+        URLCheckers.confirm("file:///foo#/%2e%2e");
+        URLCheckers.confirm("file:///foo#/%2E%2E");
+        URLCheckers.confirm("file:///foo#%2f..");
+        URLCheckers.confirm("file:///foo#%2F..");
     }
 
     @Test
@@ -126,6 +153,22 @@ public class URLCheckersTest {
         // invalid normalization
         assertThrows(URLCheckerException.class, () -> URLCheckers.confirm("file:///tmp"));
         assertThrows(URLCheckerException.class, () -> URLCheckers.confirm("file:///data/../tmp"));
+    }
+
+    @Test
+    public void testNormalizationError() {
+        // normalization can only fail this way on Windows
+        assumeTrue(SystemUtils.IS_OS_WINDOWS);
+        assertThrows(URLCheckerException.class, () -> URLCheckers.normalize("file:///a/../b?\\"));
+        assertThrows(URLCheckerException.class, () -> URLCheckers.normalize("file:///a/../b?\""));
+        assertThrows(URLCheckerException.class, () -> URLCheckers.normalize("file:///a/../b?<"));
+        assertThrows(URLCheckerException.class, () -> URLCheckers.normalize("file:///a/../b?>"));
+        assertThrows(URLCheckerException.class, () -> URLCheckers.normalize("file:///a/../b?|"));
+        assertThrows(URLCheckerException.class, () -> URLCheckers.normalize("file:///a/../b#\\"));
+        assertThrows(URLCheckerException.class, () -> URLCheckers.normalize("file:///a/../b#\""));
+        assertThrows(URLCheckerException.class, () -> URLCheckers.normalize("file:///a/../b#<"));
+        assertThrows(URLCheckerException.class, () -> URLCheckers.normalize("file:///a/../b#>"));
+        assertThrows(URLCheckerException.class, () -> URLCheckers.normalize("file:///a/../b#|"));
     }
 
     @Test

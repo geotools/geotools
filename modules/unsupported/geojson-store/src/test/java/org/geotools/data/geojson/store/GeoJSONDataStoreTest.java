@@ -19,6 +19,7 @@ package org.geotools.data.geojson.store;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.StringStartsWith.startsWith;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
@@ -167,5 +168,21 @@ public class GeoJSONDataStoreTest {
             }
         }
         assertEquals(1, cnt);
+    }
+
+    @Test
+    public void testEmptyFeatures() throws IOException {
+        URL url = TestData.url(GeoJSONDataStore.class, "empty-featureCollection.json");
+
+        GeoJSONDataStore fds = new GeoJSONDataStore(url);
+        String type = fds.getNames().get(0).getLocalPart();
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                fds.getFeatureReader(new Query(type), null)) {
+            // No Feature to read, also no NullPointer exception
+            assertFalse(reader.hasNext());
+            SimpleFeatureType schema = reader.getFeatureType();
+            assertNotNull(schema);
+            assertEquals(0, reader.getFeatureType().getAttributeCount());
+        }
     }
 }

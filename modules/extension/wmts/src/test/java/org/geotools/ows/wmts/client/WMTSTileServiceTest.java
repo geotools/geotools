@@ -41,6 +41,7 @@ import org.geotools.tile.Tile.RenderState;
 import org.junit.Assert;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 
@@ -114,6 +115,8 @@ public class WMTSTileServiceTest {
         double scale = denominator / 4;
         ReferencedEnvelope requestEnvelope =
                 new ReferencedEnvelope(7.1, 12.1, 61.4, 64.6, CRS.decode("EPSG:4326", true));
+        ReferencedEnvelope requestEnvelope32633 =
+                requestEnvelope.transform(CRS.decode("EPSG:32633"), false);
 
         Set<Tile> tiles = service.findTilesInExtent(requestEnvelope, scale, false, MAX_TILES);
         Assert.assertFalse("Tiles shouldn't be empty.", tiles.isEmpty());
@@ -123,12 +126,31 @@ public class WMTSTileServiceTest {
                 tiles.stream()
                         .map(tile -> tile.getTileIdentifier())
                         .anyMatch(identifier -> identifier.getX() > 1 || identifier.getY() < 2));
+        Assert.assertTrue(
+                "Tiles should intersect requested envelope",
+                tiles.stream()
+                        .map(tile -> tile.getExtent())
+                        .allMatch(
+                                tileExtent ->
+                                        tileExtent.intersects((Envelope) requestEnvelope32633)));
 
         ReferencedEnvelope requestEnvelope2 =
                 new ReferencedEnvelope(12.5, 15.3, 64.3, 66.0, CRS.decode("EPSG:4326", true));
+        ReferencedEnvelope requestEnvelope326332 =
+                requestEnvelope2.transform(CRS.decode("EPSG:32633"), false);
         Set<Tile> tiles2 = service.findTilesInExtent(requestEnvelope2, scale, false, MAX_TILES);
         Assert.assertFalse("Tiles shouldn't be empty.", tiles2.isEmpty());
-        Assert.assertEquals("There should be two tiles.", 2, tiles2.size());
+        Assert.assertEquals(
+                "There should be only one tile. Due to defined limits in tile matrix set",
+                1,
+                tiles2.size());
+        Assert.assertTrue(
+                "Tiles should intersect requested envelope",
+                tiles2.stream()
+                        .map(tile -> tile.getExtent())
+                        .allMatch(
+                                tileExtent ->
+                                        tileExtent.intersects((Envelope) requestEnvelope326332)));
     }
 
     private WMTSTileService createWMTSTileService() throws Exception {

@@ -110,8 +110,8 @@ public class WMTSTileFactory extends TileFactory {
         long xTile = origxTile;
         long yTile = origyTile;
 
-        if (xTile >= limits.getMaxcol()) xTile = limits.getMaxcol() - 1;
-        if (yTile >= limits.getMaxrow()) yTile = limits.getMaxrow() - 1;
+        if (xTile >= limits.getMaxcol()) xTile = limits.getMaxcol();
+        if (yTile >= limits.getMaxrow()) yTile = limits.getMaxrow();
 
         if (xTile < limits.getMincol()) xTile = limits.getMincol();
         if (yTile < limits.getMinrow()) yTile = limits.getMinrow();

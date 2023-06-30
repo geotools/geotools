@@ -327,9 +327,7 @@ public class WebMapTileServerTest {
     @Test
     public void testGetTile()
             throws ServiceException, IOException, NoSuchAuthorityCodeException, FactoryException {
-        URL url =
-                new URL(
-                        "https://sgx.geodatenzentrum.de/wmts_basemapde_schummerung/1.0.0/WMTSCapabilities.xml");
+        URL url = new URL("http://sgx.geodatenzentrum.de/wmts_basemapde_schummerung");
         WebMapTileServer wmts = new WebMapTileServer(url);
         WMTSCapabilities capabilities = wmts.getCapabilities();
         WMTSLayer layer = capabilities.getLayer("de_basemapde_web_raster_hillshade");

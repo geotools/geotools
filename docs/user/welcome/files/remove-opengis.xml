@@ -16,8 +16,8 @@
         <replace dir="." summary="yes">
           <include name="**/*.java"/>
           <replacefilter>
-            <replacetoken>import org.opengis.</replacetoken>
-            <replacevalue>import org.geotools.api.</replacevalue>
+            <replacetoken>org.opengis.</replacetoken>
+            <replacevalue>org.geotools.api.</replacevalue>
           </replacefilter>
         </replace>
         

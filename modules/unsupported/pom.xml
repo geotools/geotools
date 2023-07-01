@@ -102,12 +102,6 @@
       </modules>
     </profile>
     <profile>
-      <id>feature-aggreate</id>
-      <modules>
-        <module>feature-aggreate</module>
-      </modules>
-    </profile>
-    <profile>
       <id>ogcapi</id>
       <modules>
         <module>ogcapi-client</module>

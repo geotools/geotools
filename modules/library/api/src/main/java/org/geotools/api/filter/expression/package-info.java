@@ -20,10 +20,10 @@
  * </ul>
  *
  * <P ALIGN="justify">An <CITE>expression</CITE> can be formed using the elements:
- * {@link org.opengis.filter.expression.Add}, {@link org.opengis.filter.expression.Subtract},
- * {@link org.opengis.filter.expression.Multiply}, {@link org.opengis.filter.expression.Divide},
- * {@link org.opengis.filter.expression.PropertyName}, {@link org.opengis.filter.expression.Literal}
- * and {@link org.opengis.filter.expression.Function}. They all belong to the substitution group
+ * {@link org.geotools.api.filter.expression.Add}, {@link org.geotools.api.filter.expression.Subtract},
+ * {@link org.geotools.api.filter.expression.Multiply}, {@link org.geotools.api.filter.expression.Divide},
+ * {@link org.geotools.api.filter.expression.PropertyName}, {@link org.geotools.api.filter.expression.Literal}
+ * and {@link org.geotools.api.filter.expression.Function}. They all belong to the substitution group
  * expression which means that any of them can be used wherever an expression is called for. In addition,
  * the combinations of these elements are themselves expressions and can be used wherever an expression is
  * called for.</P>
@@ -36,18 +36,18 @@
  * <H3>Literals</H3>
  * <P ALIGN="justify">A literal value is any part of a statement or expression that is to
  * be used exactly as it is specified, rather than as a variable or other element. The
- * {@link org.opengis.filter.expression.Literal} element is used to encode literal scalar
+ * {@link org.geotools.api.filter.expression.Literal} element is used to encode literal scalar
  * and geometric values.</P>
  *
  * <H3>Functions</H3>
  * <P ALIGN="justify">A function is a named procedure that performs a distinct computation.
  * A function may accept zero or more arguments as input and generates a single result. A
  * function is composed of the name of the function, encoded using the attribute name, and
- * zero or more arguments contained within the {@link org.opengis.filter.expression.Function}
- * element. The arguments themselves are {@linkplain org.opengis.filter.expression.Expression expressions}.</P>
+ * zero or more arguments contained within the {@link org.geotools.api.filter.expression.Function}
+ * element. The arguments themselves are {@linkplain org.geotools.api.filter.expression.Expression expressions}.</P>
  *
  * <h3>Data Access<h3>
- * <P ALIGN="justify">Data access is acomplished by means of {@link org.opengis.filter.expression.PropertyName}
+ * <P ALIGN="justify">Data access is acomplished by means of {@link org.geotools.api.filter.expression.PropertyName}
  * expressions. These Expressions are independent of the data being queried and form the foundation of
  * a, very simple, general query language offering independence specific bindings to
  * Feature, Metadata and Record data structures.

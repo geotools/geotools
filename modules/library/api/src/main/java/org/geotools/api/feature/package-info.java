@@ -8,7 +8,7 @@
  *    All Rights Reserved. http://www.opengis.org/legal/
  */
 /**
- * Representation a {@linkplain org.opengis.feature.Feature features} on a map. A {{Feature}} may
+ * Representation a {@linkplain org.geotools.api.feature.Feature features} on a map. A {{Feature}} may
  * represent a single item or a {{FeatureCollection}} of many things. Features with common
  * properties may be categorised into a {{FeatureType}}, forming a dynamic type system similar to
  * those introduced into other aspects of computer science.
@@ -120,7 +120,7 @@
  *
  * <H4>Filter</H4>
  *
- * <P ALIGN="justify">Our {{@linkplain org.opengis.filter.Filter filter}} constructs are used to
+ * <P ALIGN="justify">Our {{@linkplain org.geotools.api.filter.Filter filter}} constructs are used to
  * partition values into sets. We have deliberately defined Filter to work on more than just Feature
  * instances, allowing us to use these ideas to capture restrictions on individual attribute values.
  *
@@ -149,4 +149,4 @@
  * source of identification, in the example above it would facilitate "joining" both datasets to
  * predict repair costs for each of the proposed routes.
  */
-package org.opengis.feature;
+package org.geotools.api.feature;

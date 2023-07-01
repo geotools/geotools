@@ -43,9 +43,9 @@ jobs:
         git clone https://github.com/geoserver/geoserver.git geoserver
     - name: Apply org.opengis removal scripts
       run: |
-        cd geowebcache/geowebcache
+        cd ~/geowebcache/geowebcache
         ant -noinput -buildfile ~/geotools/docs/user/welcome/files/remove-opengis.xml
-        cd ../../geoserver/src
+        cd ~/geoserver/src
         ant -noinput -buildfile ~/geotools/docs/user/welcome/files/remove-opengis.xml
     - name: Build GeoWebCache with tests
       run: |

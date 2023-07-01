@@ -8,8 +8,6 @@ ISO 19107 Geometry
 
 The ``gt-opengis`` project provides interfaces for ISO Geometry interfaces, we make use of them day in and day out for transforming ``DirectPositions`` as described in the referencing module.
 
-ISO 19107 also defines ``TransfineSet`` of which GeoTools has currently no implementation for.
-
 * What about JTS Topology Suite?
   
   As mentioned in the introduction GeoTools makes use JTS Topology Suite (a representation of
@@ -18,25 +16,7 @@ ISO 19107 also defines ``TransfineSet`` of which GeoTools has currently no imple
   Although the entire library is not using ISO Geometry yet; this does not prevent you from going there in your own application.
   Just be sure to include one of the module mentioned above before you start.
 
-* What is ``TransfiniteSet``
   
-  A ``TransfiniteSet`` is the same thing as a JTS Geometry near as I can tell.
-  
-  From email - thanks Sunburned Surveyor and Bryce:
-    
-    I'm a little confused about the purpose of ``TransfiniteSet``. Either this class is a little
-    too abstract for my purposes or I need more explanation in the Javadoc comments. :]
-    
-    I don't think so. ``TransfiniteSet`` is JTS. It just uses some different terminology (from set
-    theory). A circle is what? The set of all points exactly radius "r" from a center point.
-    If you ask ``circle.contains(pointA)``, you'll get a ``true`` if and only if ``pointA`` is
-    exactly ``circle.radius`` away from ``circle.center``.
-    
-    A curve is the set of all points which lie along the curve. "Is ``pointA`` on the curve?" is
-    exactly the same as asking ``curve.contains(pointA)``? Same thing different words.
-    
-    19107 was written by math geeks.
-
 ISO Geometry from WKT
 ^^^^^^^^^^^^^^^^^^^^^
 

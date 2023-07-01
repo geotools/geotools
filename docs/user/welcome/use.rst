@@ -54,13 +54,9 @@ Interfaces for Concepts and Ideas
 
 Formally these interfaces come from three locations:
 
-* ``gt-opengis`` - interfaces backed by ISO and OGC standards (as explained in the Use of Standards page).
 * JTS Topology Suite - geometry library implementing the Simple Features for SQL (SFSQL) OGC standard.
 * ``gt-main`` - interfaces provided by GeoTools.
 
-We also have one stalled work in progress:
-
-* ``gt-opengis`` has a set of ISO19107 geometry interfaces (anyone interested in curves and 3D?)
 
 These interfaces represent spatial concepts and data structures in your application and are suitable
 for use in method signatures.

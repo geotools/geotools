@@ -1,8 +1,128 @@
-<project name="remove-opengis" default="test" basedir=".">
+<?xml version="1.0" encoding="utf-8"?>
+<project name="remove-opengis" default="update" basedir=".">
+    
+    <target name="update"
+        description="Update Java project replacing references to org.opengis package">
+        
+        <!-- bulk repalce * imports, may require more than one * import -->
+        <replace dir="." summary="yes">
+          <include name="**/*.java"/>
+          <replacefilter>
+            <replacetoken>import org.opengis.annotation.*;</replacetoken>
+            <replacevalue>// documentation annotations no-longer available</replacevalue>
+          </replacefilter>
+        </replace>
+        
+        <replace dir="." summary="yes">
+          <include name="**/*.java"/>
+          <replacefilter>
+            <replacetoken>import org.opengis.</replacetoken>
+            <replacevalue>import org.geotools.api.</replacevalue>
+          </replacefilter>
+        </replace>
+        
+        
+        <!--                                                       -->
+        <!-- COVERAGE                                              -->
+        <!--                                                       -->
+        <!--
+        <replacefilter>
+          <replacetoken>import org.opengis.coverage.*;</replacetoken>
+          <replacevalue>import org.geotools.coverage.*;</replacevalue>
+        </replacefilter>
+        <replacefilter>
+          <replacetoken>import org.opengis.coverage.grid.*;</replacetoken>
+          <replacevalue>import org.geotools.coverage.grid.*;</replacevalue>
+        </replacefilter>
+        <replacefilter>
+          <replacetoken>import org.opengis.coverage.processing.*;</replacetoken>
+          <replacevalue>import org.geotools.coverage.processing.*;</replacevalue>
+        </replacefilter>
+        <replacefilter>
+          <replacetoken>import org.opengis.coverage.processing.GridCoverageProcessor;</replacetoken>
+          <replacevalue>// GridCoverageProcessor removed used CoverageProcessor</replacevalue>
+        </replacefilter>
+        <replacefilter>
+          <replacetoken>org.opengis.coverage.processing.Operation</replacetoken>
+          <replacevalue>org.geotools.coverage.processing.Operation</replacevalue>
+        </replacefilter>
+        -->
 
-    <target name="test">
-        <!-- Show the property -->
-        <echo message="Testing testing"/>
+        <!--                                                       -->
+        <!-- FEATURE                                               -->
+        <!--                                                       -->
+        <!--
+        <replacefilter>
+          <replacetoken>import org.opengis.feature.*;</replacetoken>
+          <replacevalue>import org.geotools.feature.*;</replacevalue>
+        </replacefilter>
+        
+        
+        <replacefilter>
+          <replacetoken>import org.opengis.feature.simple.*;</replacetoken>
+          <replacevalue>import org.geotools.feature.simple.*;</replacevalue>
+        </replacefilter>
+        <replacefilter>
+          <replacetoken>org.opengis.feature.simple.SimpleFeature</replacetoken>
+          <replacevalue>org.geotools.feature.simple.SimpleFeature</replacevalue>
+        </replacefilter>
+        <replacefilter>
+          <replacetoken>org.opengis.feature.simple.SimpleFeatureType</replacetoken>
+          <replacevalue>org.geotools.feature.simple.SimpleFeatureType</replacevalue>
+        </replacefilter>
+        
+        <replacefilter>
+          <replacetoken>import org.opengis.feature.type.*;</replacetoken>
+          <replacevalue>import org.geotools.feature.type.*;</replacevalue>
+        </replacefilter>
+        <replacefilter>
+          <replacetoken>org.opengis.feature.type.AssociationDescriptor</replacetoken>
+          <replacevalue>org.geotools.feature.type.AssociationDescriptor</replacevalue>
+        </replacefilter>
+        <replacefilter>
+          <replacetoken>org.opengis.feature.type.AssociationType</replacetoken>
+          <replacevalue>org.geotools.feature.type.AssociationType</replacevalue>
+        </replacefilter>
+        <replacefilter>
+          <replacetoken>org.opengis.feature.type.AttributeDescriptor</replacetoken>
+          <replacevalue>org.geotools.feature.type.AttributeDescriptor</replacevalue>
+        </replacefilter>
+        <replacefilter>
+          <replacetoken>org.opengis.feature.type.AttributeType</replacetoken>
+          <replacevalue>org.geotools.feature.type.AttributeType</replacevalue>
+        </replacefilter>
+        <replacefilter>
+          <replacetoken>org.opengis.feature.type.ComplexType</replacetoken>
+          <replacevalue>org.geotools.feature.type.ComplexType</replacevalue>
+        </replacefilter>
+        -->
+
+        <!--                                                       -->
+        <!-- FILTER                                                -->
+        <!--                                                       -->
+        <!--
+        <replacefilter>
+          <replacetoken>import org.opengis.filter.*;</replacetoken>
+          <replacevalue>import org.geotools.filter.*;</replacevalue>
+        </replacefilter>
+        
+        <replacefilter>
+          <replacetoken>import org.opengis.filter.*;</replacetoken>
+          <replacevalue>import org.geotools.filter.*;</replacevalue>
+        </replacefilter>
+        
+        
+        <replace dir="." summary="yes">
+          <include name="**/*.java"/>
+          <replacefilter>
+            <replacetoken>import org.opengis.style.*;</replacetoken>
+            <replacevalue>import org.geotools.styling.*;</replacevalue>
+          </replacefilter>
+        </replace>
+        -->
+        
+        <echo>Your project has been updated to remove references to org.opengis<echo>
+        <echo>You may have unsued imports to clean up, but we believe your project will compile!</echo>
     </target>
-
+    
 </project>

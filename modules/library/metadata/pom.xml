@@ -90,7 +90,7 @@
     <!-- NOTE: The metadata module does not depend on JTS. -->
     <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-opengis</artifactId>
+      <artifactId>gt-api</artifactId>
       <version>${project.version}</version>
     </dependency>
     <!--

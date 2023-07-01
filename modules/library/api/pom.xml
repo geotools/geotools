@@ -20,18 +20,13 @@
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
   <groupId>org.geotools</groupId>
-  <artifactId>gt-opengis</artifactId>
+  <artifactId>gt-api</artifactId>
   <packaging>jar</packaging>
-  <name>Open GIS Interfaces</name>
+  <name>GeoTools Interfaces</name>
 
   <description>Standard interfaces implemented throughout the library.</description>
 
   <licenses>
-    <license>
-      <name>OGC copyright</name>
-      <url>http://www.opengis.org/legal/</url>
-      <distribution>repo</distribution>
-    </license>
     <license>
       <name>Lesser General Public License (LGPL)</name>
       <url>http://www.gnu.org/copyleft/lesser.txt</url>
@@ -150,7 +145,7 @@
   </contributors>
 
   <properties>
-    <moduleIdentifier>org.geotools.opengis</moduleIdentifier>
+    <moduleIdentifier>org.geotools.api</moduleIdentifier>
   </properties>
 
   <!-- =========================================================== -->
@@ -161,7 +156,6 @@
     <dependency>
       <groupId>commons-pool</groupId>
       <artifactId>commons-pool</artifactId>
-      <!-- The version number is specified in the parent POM. -->
     </dependency>
 
     <dependency>
@@ -179,7 +173,6 @@
       <!-- Required for ImageParameterDescriptor test. -->
       <groupId>javax.media</groupId>
       <artifactId>jai_codec</artifactId>
-      <!-- The version number is specified in the parent POM. -->
       <scope>test</scope>
     </dependency>
 

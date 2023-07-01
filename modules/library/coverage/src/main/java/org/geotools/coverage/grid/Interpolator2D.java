@@ -30,13 +30,13 @@ import javax.media.jai.InterpolationNearest;
 import javax.media.jai.ROI;
 import javax.media.jai.iterator.RectIter;
 import javax.media.jai.iterator.RectIterFactory;
-import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.api.coverage.CannotEvaluateException;
 import org.geotools.api.coverage.PointOutsideCoverageException;
 import org.geotools.api.metadata.spatial.PixelOrientation;
 import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.coverage.util.CoverageUtilities;
 
 /**
  * A grid coverage using an {@linkplain Interpolation interpolation} for evaluating points. This

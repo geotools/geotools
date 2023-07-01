@@ -26,6 +26,7 @@ import javax.xml.namespace.QName;
 import net.opengis.wfs20.FeatureCollectionType;
 import net.opengis.wfs20.Wfs20Factory;
 import org.eclipse.emf.ecore.EObject;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollection;
@@ -36,7 +37,6 @@ import org.geotools.wfs.v2_0.WFS;
 import org.geotools.xsd.EMFUtils;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.geotools.api.feature.simple.SimpleFeature;
 
 public class WFSParsingUtils {
 

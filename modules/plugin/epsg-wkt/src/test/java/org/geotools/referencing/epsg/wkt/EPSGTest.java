@@ -21,6 +21,8 @@ package org.geotools.referencing.epsg.wkt;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.Set;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.NamedIdentifier;
@@ -28,8 +30,6 @@ import org.geotools.test.TestData;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.geotools.api.metadata.citation.Citation;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * These EPSG support.

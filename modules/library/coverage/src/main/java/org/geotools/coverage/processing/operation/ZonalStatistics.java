@@ -33,6 +33,14 @@ import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.ROI;
 import javax.media.jai.ROIShape;
 import javax.media.jai.RenderedOp;
+import org.geotools.api.coverage.processing.OperationNotFoundException;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.metadata.spatial.PixelOrientation;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.util.InternationalString;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.BaseStatisticsOperationJAI;
 import org.geotools.coverage.processing.CoverageProcessingException;
@@ -48,14 +56,6 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.util.AffineTransformation;
 import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
-import org.geotools.api.coverage.processing.OperationNotFoundException;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.metadata.spatial.PixelOrientation;
-import org.geotools.api.parameter.ParameterNotFoundException;
-import org.geotools.api.parameter.ParameterValueGroup;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.api.referencing.operation.MathTransform;
-import org.geotools.api.util.InternationalString;
 
 /**
  * This operation is similar to the {@link ZonalStats} operation but implements a new version of the

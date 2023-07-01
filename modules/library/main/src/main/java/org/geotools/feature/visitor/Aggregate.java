@@ -16,12 +16,12 @@
  */
 package org.geotools.feature.visitor;
 
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FunctionExpression;
 import org.geotools.util.Converters;
 import org.locationtech.jts.geom.Geometry;
-import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.expression.Expression;
 
 /**
  * Aggregate functions defined for use with the GeoTools library.

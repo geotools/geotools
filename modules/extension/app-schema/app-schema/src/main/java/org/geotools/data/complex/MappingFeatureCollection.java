@@ -20,6 +20,12 @@ package org.geotools.data.complex;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.FeatureVisitor;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.sort.SortBy;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -30,12 +36,6 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.FeatureVisitor;
-import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.sort.SortBy;
-import org.geotools.api.util.ProgressListener;
 
 /**
  * {@link FeatureCollection} for a {@link MappingFeatureIterator}.

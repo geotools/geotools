@@ -126,6 +126,12 @@ import javax.media.jai.operator.RescaleDescriptor;
 import javax.media.jai.operator.SubtractDescriptor;
 import javax.media.jai.operator.XorConstDescriptor;
 import javax.media.jai.registry.RenderedRegistryMode;
+import org.geotools.api.coverage.processing.OperationNotFoundException;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.geotools.api.referencing.operation.MathTransformFactory;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.image.io.ImageIOExt;
@@ -140,12 +146,6 @@ import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.geotools.api.coverage.processing.OperationNotFoundException;
-import org.geotools.api.referencing.FactoryException;
-import org.geotools.api.referencing.operation.MathTransform;
-import org.geotools.api.referencing.operation.MathTransform2D;
-import org.geotools.api.referencing.operation.MathTransformFactory;
-import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * Helper methods for applying JAI operations on an image. The image is specified at {@linkplain

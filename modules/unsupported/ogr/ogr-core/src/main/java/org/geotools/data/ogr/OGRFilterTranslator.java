@@ -16,10 +16,6 @@
  */
 package org.geotools.data.ogr;
 
-import org.geotools.filter.FilterCapabilities;
-import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
-import org.geotools.filter.visitor.SimplifyingFilterVisitor;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.Filter;
@@ -43,6 +39,10 @@ import org.geotools.api.filter.spatial.Intersects;
 import org.geotools.api.filter.spatial.Overlaps;
 import org.geotools.api.filter.spatial.Touches;
 import org.geotools.api.filter.spatial.Within;
+import org.geotools.filter.FilterCapabilities;
+import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
+import org.geotools.filter.visitor.SimplifyingFilterVisitor;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Helper which translates the GeoTools filters into the filter bits that OGR understands

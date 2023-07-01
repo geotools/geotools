@@ -22,11 +22,11 @@ import java.util.logging.Level;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import org.geotools.TestData;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.junit.Assert;
 import org.junit.Test;
-import org.geotools.api.feature.simple.SimpleFeature;
 
 public class GMLInheritanceTest {
 

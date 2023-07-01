@@ -21,6 +21,9 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.logging.Handler;
 import java.util.logging.Level;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -29,9 +32,6 @@ import org.geotools.jdbc.JDBCViewOnlineTest;
 import org.geotools.jdbc.JDBCViewTestSetup;
 import org.geotools.util.logging.Logging;
 import org.junit.Test;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.spatial.BBOX;
 
 public class TeradataViewOnlineTest extends JDBCViewOnlineTest {
 

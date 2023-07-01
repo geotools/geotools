@@ -21,12 +21,6 @@ package org.geotools.filter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.expression.AddImpl;
-import org.geotools.filter.expression.DivideImpl;
-import org.geotools.filter.expression.MultiplyImpl;
-import org.geotools.filter.expression.SubtractImpl;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.expression.BinaryExpression;
@@ -34,6 +28,12 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.expression.AddImpl;
+import org.geotools.filter.expression.DivideImpl;
+import org.geotools.filter.expression.MultiplyImpl;
+import org.geotools.filter.expression.SubtractImpl;
+import org.locationtech.jts.geom.Geometry;
 import org.xml.sax.Attributes;
 
 /**

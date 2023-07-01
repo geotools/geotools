@@ -21,7 +21,8 @@ import java.util.Queue;
 import org.geotools.api.util.InternationalString;
 
 /**
- * Default Implementation of {@link org.geotools.api.util.ProgressListener} that does retain exceptions.
+ * Default Implementation of {@link org.geotools.api.util.ProgressListener} that does retain
+ * exceptions.
  *
  * <p>We do not put particular attention on the management of canceled, started, completed, this is
  * a default implementation.

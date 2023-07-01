@@ -16,8 +16,8 @@
  */
 package org.geotools.data.oracle;
 
-import org.geotools.jdbc.JDBCNativeFilterOnlineTest;
 import org.geotools.api.filter.NativeFilter;
+import org.geotools.jdbc.JDBCNativeFilterOnlineTest;
 
 public final class OracleNativeFilterOnlineTest extends JDBCNativeFilterOnlineTest {
 

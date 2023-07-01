@@ -16,8 +16,8 @@
  */
 package org.geotools.renderer;
 
-import org.geotools.map.Layer;
 import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.map.Layer;
 
 /**
  * A RenderListener is notified each time a feature is rendered and each time an error occurs during

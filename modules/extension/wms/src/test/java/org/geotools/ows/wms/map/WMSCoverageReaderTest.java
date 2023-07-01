@@ -14,6 +14,8 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -32,8 +34,6 @@ import org.geotools.util.factory.Hints;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
-import org.geotools.api.parameter.GeneralParameterValue;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 public class WMSCoverageReaderTest {
 

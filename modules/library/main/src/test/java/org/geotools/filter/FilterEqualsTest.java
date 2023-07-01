@@ -20,14 +20,6 @@ import static org.junit.Assert.assertNotEquals;
 
 import java.util.Collections;
 import java.util.logging.Logger;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.SchemaException;
-import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.filter.expression.AddImpl;
-import org.geotools.filter.expression.SubtractImpl;
-import org.geotools.filter.identity.FeatureIdImpl;
-import org.junit.Assert;
-import org.junit.Test;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory2;
@@ -36,6 +28,14 @@ import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.spatial.Disjoint;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.SchemaException;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.filter.expression.AddImpl;
+import org.geotools.filter.expression.SubtractImpl;
+import org.geotools.filter.identity.FeatureIdImpl;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * Unit test for testing filters equals method.

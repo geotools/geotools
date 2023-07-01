@@ -17,10 +17,10 @@
 package org.geotools.se.v1_1.bindings;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.style.OverlapBehavior;
 import org.geotools.se.v1_1.SE;
 import org.geotools.xsd.AbstractSimpleBinding;
 import org.geotools.xsd.InstanceComponent;
-import org.geotools.api.style.OverlapBehavior;
 
 /**
  * Binding object for the element http://www.opengis.net/se:OverlapBehavior.

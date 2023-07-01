@@ -21,9 +21,9 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
+import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.geotools.api.filter.capability.FunctionName;
 
 /**
  * Applies unit to pixel rescaling around expressions whose native unit cannot be determined in a

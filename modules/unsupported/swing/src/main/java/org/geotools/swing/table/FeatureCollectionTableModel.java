@@ -22,10 +22,10 @@ import java.util.Arrays;
 import java.util.List;
 import javax.swing.SwingWorker;
 import javax.swing.table.AbstractTableModel;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.util.NullProgressListener;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.util.NullProgressListener;
 
 /**
  * A Swing {@code TableModel} to retrieve attribute values from each feature in a feature collection

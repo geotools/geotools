@@ -23,8 +23,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.util.factory.Hints;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.PropertyName;
@@ -32,6 +30,8 @@ import org.geotools.api.filter.identity.ResourceId;
 import org.geotools.api.filter.identity.Version;
 import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.util.factory.Hints;
 
 /**
  * Encapsulates a request for data, typically as:

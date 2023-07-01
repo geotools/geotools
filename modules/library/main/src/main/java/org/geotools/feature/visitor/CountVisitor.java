@@ -16,9 +16,9 @@
  */
 package org.geotools.feature.visitor;
 
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.visitor.SumVisitor.SumResult;
-import org.geotools.api.feature.simple.SimpleFeature;
 
 /**
  * Determines the number of features in the collection

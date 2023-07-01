@@ -21,7 +21,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.FeatureFactory;
 import org.geotools.api.feature.Property;
@@ -29,6 +28,7 @@ import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.feature.type.PropertyDescriptor;
+import org.geotools.factory.CommonFactoryFinder;
 
 /**
  * The complex feature builder allows the construction of features by progressively appending their

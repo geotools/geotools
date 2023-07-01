@@ -20,13 +20,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assume.assumeTrue;
 
 import java.sql.Connection;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
 import org.junit.Test;
-import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.spatial.BBOX;
 
 /** @author Stefan Uhrig, SAP SE */
 public class HanaColumnWoSridConstraintOnlineTest extends JDBCTestSupport {

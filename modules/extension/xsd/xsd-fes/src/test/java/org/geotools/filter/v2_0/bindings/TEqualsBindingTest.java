@@ -8,12 +8,6 @@ import java.util.Iterator;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
-import org.geotools.filter.FilterFactoryImpl;
-import org.geotools.filter.v2_0.FES;
-import org.geotools.filter.v2_0.FESTestSupport;
-import org.geotools.xsd.Configuration;
-import org.geotools.xsd.Encoder;
-import org.junit.Test;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.MultiValuedFilter.MatchAction;
@@ -21,6 +15,12 @@ import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.temporal.TEquals;
 import org.geotools.api.temporal.Period;
+import org.geotools.filter.FilterFactoryImpl;
+import org.geotools.filter.v2_0.FES;
+import org.geotools.filter.v2_0.FESTestSupport;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.Encoder;
+import org.junit.Test;
 import org.w3c.dom.Document;
 
 public class TEqualsBindingTest extends FESTestSupport {

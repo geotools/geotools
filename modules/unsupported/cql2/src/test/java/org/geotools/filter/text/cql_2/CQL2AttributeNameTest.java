@@ -17,9 +17,9 @@
 package org.geotools.filter.text.cql_2;
 
 import org.geootols.filter.text.cql_2.CQL2;
+import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.filter.text.cql2.CQLAttributeNameTest;
 import org.geotools.filter.text.cql2.CQLException;
-import org.geotools.api.filter.expression.PropertyName;
 
 /**
  * This test required no changes, could be folded in the CQL family one. Findings:

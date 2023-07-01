@@ -18,9 +18,9 @@ package org.geotools.filter;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
-import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.filter.capability.FunctionNameImpl;
 
 /**
  * Takes an AttributeExpression, and computes the length of the data for the attribute.

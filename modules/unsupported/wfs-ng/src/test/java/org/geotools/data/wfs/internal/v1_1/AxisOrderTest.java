@@ -26,6 +26,11 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 import javax.xml.namespace.QName;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.identity.FeatureId;
+import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -45,11 +50,6 @@ import org.geotools.referencing.CRS;
 import org.geotools.test.TestData;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.identity.FeatureId;
-import org.geotools.api.filter.spatial.BBOX;
 
 /**
  * Tests axis order flipping handling.

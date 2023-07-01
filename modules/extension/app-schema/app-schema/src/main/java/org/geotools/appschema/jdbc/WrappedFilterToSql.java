@@ -19,11 +19,11 @@ package org.geotools.appschema.jdbc;
 
 import java.io.StringWriter;
 import java.io.Writer;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.jdbc.FilterToSQLException;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.expression.Expression;
 
 /** Wraps a filter to SQL encoder allowing us to write directly to the output stream. */
 public final class WrappedFilterToSql {

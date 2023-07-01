@@ -16,8 +16,8 @@
  */
 package org.geotools.filter.expression;
 
-import org.geotools.util.factory.Hints;
 import org.geotools.api.feature.Attribute;
+import org.geotools.util.factory.Hints;
 
 public class ThisPropertyAccessorFactory implements PropertyAccessorFactory {
 

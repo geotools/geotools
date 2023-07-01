@@ -18,11 +18,11 @@ package org.geotools.filter.v1_1;
 
 import java.util.List;
 import javax.xml.namespace.QName;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.sort.SortBy;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.sort.SortBy;
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:SortByType.

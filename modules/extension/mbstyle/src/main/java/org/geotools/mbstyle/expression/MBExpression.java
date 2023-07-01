@@ -20,14 +20,14 @@ package org.geotools.mbstyle.expression;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.json.simple.JSONArray;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.expression.Expression;
 
 /**
  * The value for any layout property, paint property, or filter may be specified as an expression.

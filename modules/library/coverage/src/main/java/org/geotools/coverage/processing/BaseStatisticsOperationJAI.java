@@ -30,6 +30,12 @@ import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.ROIShape;
 import javax.media.jai.StatisticsOpImage;
 import javax.media.jai.registry.RenderedRegistryMode;
+import org.geotools.api.metadata.spatial.PixelOrientation;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
@@ -45,12 +51,6 @@ import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Polygon;
-import org.geotools.api.metadata.spatial.PixelOrientation;
-import org.geotools.api.parameter.ParameterDescriptor;
-import org.geotools.api.parameter.ParameterValueGroup;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.api.referencing.operation.MathTransform;
-import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * This class is the root class for the Statistics operations based on {@link JAI}'s {@link

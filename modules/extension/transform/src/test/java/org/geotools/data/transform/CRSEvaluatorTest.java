@@ -5,6 +5,12 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
 import java.io.File;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.referencing.CRS;
@@ -12,12 +18,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.WKTReader;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.expression.Function;
-import org.geotools.api.filter.expression.Literal;
-import org.geotools.api.filter.expression.PropertyName;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 public class CRSEvaluatorTest {
 

@@ -21,6 +21,12 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.awt.geom.AffineTransform;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.Property;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.referencing.FactoryException;
 import org.geotools.feature.NameImpl;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.styling.Symbolizer;
@@ -29,12 +35,6 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.mockito.Mockito;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.Property;
-import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.feature.type.GeometryDescriptor;
-import org.geotools.api.feature.type.Name;
-import org.geotools.api.referencing.FactoryException;
 
 public class RenderableFeatureTest {
 

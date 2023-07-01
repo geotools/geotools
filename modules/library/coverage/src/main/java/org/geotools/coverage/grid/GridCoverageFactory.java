@@ -30,6 +30,13 @@ import javax.media.jai.ImageFunction;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.util.CaselessStringKey;
+import org.geotools.api.coverage.SampleDimensionType;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.cs.AxisDirection;
+import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.image.ImageWorker;
@@ -39,13 +46,6 @@ import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.factory.AbstractFactory;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.coverage.SampleDimensionType;
-import org.geotools.api.coverage.grid.GridCoverage;
-import org.geotools.api.coverage.grid.GridEnvelope;
-import org.geotools.api.geometry.Envelope;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.api.referencing.cs.AxisDirection;
-import org.geotools.api.referencing.operation.MathTransform;
 
 /**
  * A factory for {@linkplain GridCoverage2D grid coverage} objects. This factory expects various

@@ -25,6 +25,10 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.filter.And;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
@@ -38,10 +42,6 @@ import org.geotools.styling.css.util.UnboundSimplifyingFilterVisitor;
 import org.geotools.util.NumberRange;
 import org.geotools.util.Range;
 import org.geotools.util.logging.Logging;
-import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.filter.And;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
 
 /**
  * Represents the current coverage of the scale/filter domain, and has helper methods to add {@link

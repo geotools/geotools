@@ -16,6 +16,7 @@
  */
 package org.geotools.data.shapefile.shp;
 
+import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.algorithm.Orientation;
@@ -31,7 +32,6 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.geotools.api.feature.type.GeometryDescriptor;
 
 /**
  * A collection of utility methods for use with JTS and the shapefile package.

@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.gce.pgraster.PGRasterConfig.TimeConfig;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -35,7 +36,6 @@ import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * A raster column of a table in a postgis raster database, obtained from the obtained from the

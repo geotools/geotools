@@ -21,12 +21,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 
 import java.io.ByteArrayInputStream;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.PropertyIsLike;
 import org.geotools.xsd.Binding;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Parser;
 import org.junit.Test;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.PropertyIsLike;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;

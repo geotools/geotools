@@ -13,6 +13,10 @@ import java.io.InvalidClassException;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.geotools.ExceptionChecker;
+import org.geotools.api.feature.Attribute;
+import org.geotools.api.feature.ComplexAttribute;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.Property;
 import org.geotools.data.complex.feature.wrapper.FeatureWrapper;
 import org.geotools.feature.AttributeImpl;
 import org.geotools.feature.ComplexAttributeImpl;
@@ -22,10 +26,6 @@ import org.geotools.filter.identity.FeatureIdImpl;
 import org.geotools.filter.identity.GmlObjectIdImpl;
 import org.junit.Assert;
 import org.junit.Test;
-import org.geotools.api.feature.Attribute;
-import org.geotools.api.feature.ComplexAttribute;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.Property;
 
 public class FeatureWrapperTest {
     private static Feature getFeature() {

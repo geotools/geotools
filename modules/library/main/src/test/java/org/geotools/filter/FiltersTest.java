@@ -25,15 +25,15 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.util.Arrays;
-import org.geotools.factory.CommonFactoryFinder;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.Or;
 import org.geotools.api.filter.PropertyIsLike;
+import org.geotools.factory.CommonFactoryFinder;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 public class FiltersTest {
 

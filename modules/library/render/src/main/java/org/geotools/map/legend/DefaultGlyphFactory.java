@@ -18,13 +18,13 @@ package org.geotools.map.legend;
 
 import java.awt.Color;
 import javax.swing.Icon;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.FeatureType;
 import org.geotools.map.Layer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.SLD;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.feature.type.FeatureType;
 
 public class DefaultGlyphFactory implements GlyphFactory {
 

@@ -24,12 +24,12 @@ import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import javax.media.jai.Interpolation;
 import javax.media.jai.InterpolationNearest;
+import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.Viewer;
 import org.geotools.util.factory.Hints;
 import org.junit.Before;
 import org.junit.Test;
-import org.geotools.api.parameter.ParameterValueGroup;
 
 /**
  * Tests the "filtered subsample" operation.

@@ -8,11 +8,11 @@ import java.io.StringReader;
 import javax.xml.namespace.QName;
 import net.opengis.wfs20.LockFeatureType;
 import net.opengis.wfs20.QueryType;
+import org.geotools.api.filter.Id;
 import org.geotools.wfs.v2_0.WFSConfiguration;
 import org.geotools.wfs.v2_0.WFSTestSupport;
 import org.geotools.xsd.Parser;
 import org.junit.Test;
-import org.geotools.api.filter.Id;
 
 public class LockFeatureTypeBindingTest extends WFSTestSupport {
 

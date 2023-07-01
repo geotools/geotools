@@ -24,14 +24,14 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.logging.Logger;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.expression.PropertyAccessor;
-import org.geotools.filter.expression.SimpleFeaturePropertyAccessorFactory;
-import org.geotools.filter.identity.FeatureIdImpl;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.FilterVisitor;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.identity.Identifier;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.expression.PropertyAccessor;
+import org.geotools.filter.expression.SimpleFeaturePropertyAccessorFactory;
+import org.geotools.filter.identity.FeatureIdImpl;
 
 /**
  * Defines a ID filter, which holds a list of IDs ( usually feature id;s ). This filter stores a

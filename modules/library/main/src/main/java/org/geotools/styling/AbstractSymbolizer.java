@@ -20,9 +20,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.factory.CommonFactoryFinder;
 
 public abstract class AbstractSymbolizer implements Symbolizer {
     protected String name;

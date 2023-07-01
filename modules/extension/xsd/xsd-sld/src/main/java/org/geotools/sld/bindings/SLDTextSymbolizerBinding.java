@@ -17,6 +17,8 @@
 package org.geotools.sld.bindings;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.sld.CssParameter;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
@@ -29,8 +31,6 @@ import org.geotools.styling.TextSymbolizer2;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.filter.expression.PropertyName;
 import org.picocontainer.MutablePicoContainer;
 
 /**

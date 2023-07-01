@@ -16,8 +16,6 @@
  */
 package org.geotools.data.transform;
 
-import org.geotools.referencing.CRS;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.GeometryDescriptor;
@@ -32,6 +30,8 @@ import org.geotools.api.filter.expression.NilExpression;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.expression.Subtract;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.referencing.CRS;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Evaluates the CRS of an expression returning geometries by static analysis if possible

@@ -23,6 +23,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.RenderingHints;
 import java.sql.Connection;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.spatial.DWithin;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -41,12 +47,6 @@ import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.expression.Literal;
-import org.geotools.api.filter.expression.PropertyName;
-import org.geotools.api.filter.spatial.DWithin;
 
 public class PostgisGeographyOnlineTest extends JDBCGeographyOnlineTest {
 

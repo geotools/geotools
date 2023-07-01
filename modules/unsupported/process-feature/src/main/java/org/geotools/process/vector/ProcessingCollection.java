@@ -18,13 +18,13 @@
 package org.geotools.process.vector;
 
 import java.util.UUID;
-import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.collection.BaseFeatureCollection;
-import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.sort.SortBy;
+import org.geotools.feature.FeatureIterator;
+import org.geotools.feature.collection.BaseFeatureCollection;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
  * Abstract base class to ease the implementation of a streaming processing collection, that is, one

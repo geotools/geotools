@@ -29,13 +29,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.visitor.Aggregate;
-import org.geotools.feature.visitor.GroupByVisitor;
-import org.geotools.filter.DefaultExpression;
-import org.geotools.filter.FunctionExpression;
-import org.geotools.util.factory.GeoTools;
 import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Divide;
@@ -44,6 +37,13 @@ import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.Subtract;
 import org.geotools.api.util.ProgressListener;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.visitor.Aggregate;
+import org.geotools.feature.visitor.GroupByVisitor;
+import org.geotools.filter.DefaultExpression;
+import org.geotools.filter.FunctionExpression;
+import org.geotools.util.factory.GeoTools;
 
 /**
  * Parent for classifiers which break a feature collection into the specified number of classes.

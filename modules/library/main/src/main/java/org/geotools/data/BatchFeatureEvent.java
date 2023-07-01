@@ -20,11 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.identity.FeatureIdImpl;
-import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.util.WeakHashSet;
-import org.geotools.util.logging.Logging;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.filter.And;
@@ -32,6 +27,11 @@ import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.identity.Identifier;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.identity.FeatureIdImpl;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.WeakHashSet;
+import org.geotools.util.logging.Logging;
 
 /**
  * Provide batch notification on Commit / Rollback.

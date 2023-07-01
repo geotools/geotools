@@ -17,13 +17,13 @@
 package org.geotools.renderer.lite.gridcoverage2d;
 
 import java.util.List;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.util.InternationalString;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleVisitor;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.coverage.grid.GridCoverage;
-import org.geotools.api.util.InternationalString;
 
 /**
  * This class implements an adapter to allow a {@link CoverageProcessingNode} to feed itself by

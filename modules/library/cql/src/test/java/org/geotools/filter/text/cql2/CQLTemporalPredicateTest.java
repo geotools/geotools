@@ -21,15 +21,15 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.temporal.Before;
 import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.commons.Language;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.filter.expression.Literal;
-import org.geotools.api.filter.temporal.Before;
 
 /**
  * Test for Temporal Predicate

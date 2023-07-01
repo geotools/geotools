@@ -20,6 +20,8 @@ package org.geotools.swing.tool;
 import java.awt.geom.AffineTransform;
 import java.lang.ref.WeakReference;
 import java.util.logging.Logger;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.map.Layer;
 import org.geotools.map.MapBoundsEvent;
@@ -28,8 +30,6 @@ import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.util.logging.Logging;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.api.referencing.operation.MathTransform;
 
 /**
  * Abstract base class for helper classes used by {@linkplain InfoTool} to query features in map

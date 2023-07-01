@@ -22,6 +22,9 @@ package org.geotools.xml.styling;
  */
 import java.util.Map;
 import javax.naming.OperationNotSupportedException;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.ContrastMethod;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.ContrastEnhancementImpl;
@@ -48,9 +51,6 @@ import org.geotools.xml.styling.sldComplexTypes2._OnlineResource;
 import org.geotools.xml.styling.sldComplexTypes2._PointPlacement;
 import org.geotools.xml.styling.sldComplexTypes2._PolygonSymbolizer;
 import org.geotools.xml.styling.sldComplexTypes2._Rule;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.style.ContrastMethod;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

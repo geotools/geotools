@@ -16,9 +16,9 @@
  */
 package org.geotools.filter.function;
 
+import org.geotools.api.filter.expression.Function;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.styling.Symbolizer;
-import org.geotools.api.filter.expression.Function;
 
 /**
  * This interface can be implemented by geometry transformation functions that whish to be used in

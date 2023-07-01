@@ -20,12 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.util.factory.GeoTools;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.StyleVisitor;
 import org.geotools.api.util.Cloneable;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.util.factory.GeoTools;
 
 /**
  * Provides a Java representation of an SLD TextSymbolizer that defines how text symbols should be

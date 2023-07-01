@@ -18,6 +18,9 @@ package org.geotools.renderer.lite.gridcoverage2d;
 
 import java.awt.Rectangle;
 import java.util.logging.Logger;
+import org.geotools.api.coverage.Coverage;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.geometry.Envelope2D;
@@ -25,9 +28,6 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.util.logging.Logging;
-import org.geotools.api.coverage.Coverage;
-import org.geotools.api.geometry.Envelope;
-import org.geotools.api.referencing.operation.MathTransform2D;
 
 /**
  * Helper class used to reduce a {@link Coverage} {@link GridGeometry2D} to be completely inside a

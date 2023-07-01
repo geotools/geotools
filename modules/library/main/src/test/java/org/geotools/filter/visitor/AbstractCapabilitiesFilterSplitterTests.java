@@ -21,13 +21,6 @@ import static org.junit.Assert.assertEquals;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import org.geotools.data.DataUtilities;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.SchemaException;
-import org.geotools.filter.Capabilities;
-import org.geotools.filter.IllegalFilterException;
-import org.geotools.filter.function.FilterFunction_geometryType;
-import org.locationtech.jts.geom.Envelope;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Id;
@@ -45,6 +38,13 @@ import org.geotools.api.geometry.complex.Complex;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.data.DataUtilities;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.SchemaException;
+import org.geotools.filter.Capabilities;
+import org.geotools.filter.IllegalFilterException;
+import org.geotools.filter.function.FilterFunction_geometryType;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * @author Jesse

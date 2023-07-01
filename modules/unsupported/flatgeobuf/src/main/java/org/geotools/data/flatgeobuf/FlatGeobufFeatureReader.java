@@ -22,6 +22,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.DataStore;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
@@ -29,8 +31,6 @@ import org.geotools.data.store.ContentState;
 import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.locationtech.jts.geom.Envelope;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.wololo.flatgeobuf.HeaderMeta;
 
 public class FlatGeobufFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {

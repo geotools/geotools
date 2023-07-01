@@ -17,13 +17,13 @@
 package org.geotools.se.v1_1.bindings;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.style.Description;
 import org.geotools.se.v1_1.SE;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.UomOgcMapping;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.geotools.api.style.Description;
 
 /**
  * Binding object for the type http://www.opengis.net/se:SymbolizerType.

@@ -26,10 +26,10 @@ import java.util.Map;
 import org.apache.batik.gvt.CompositeGraphicsNode;
 import org.apache.batik.gvt.GraphicsNode;
 import org.apache.batik.gvt.ShapeNode;
-import org.geotools.geometry.jts.TransformedShape;
-import org.geotools.renderer.style.MarkFactory;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.geometry.jts.TransformedShape;
+import org.geotools.renderer.style.MarkFactory;
 
 public class SVGMarkFactory implements MarkFactory {
 

@@ -22,10 +22,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import org.geotools.data.Transaction.State;
-import org.geotools.util.SuppressFBWarnings;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.data.Transaction.State;
+import org.geotools.util.SuppressFBWarnings;
 
 /**
  * Provides In-Process FeatureLocking support for DataStore implementations.

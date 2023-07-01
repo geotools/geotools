@@ -24,6 +24,8 @@ import java.net.URL;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.AttributeType;
 import org.geotools.appschema.resolver.xml.AppSchemaConfiguration;
 import org.geotools.xml.resolver.SchemaCatalog;
 import org.geotools.xml.resolver.SchemaResolver;
@@ -31,8 +33,6 @@ import org.geotools.xsd.Binding;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.SchemaIndex;
 import org.geotools.xsd.Schemas;
-import org.geotools.api.feature.type.AttributeDescriptor;
-import org.geotools.api.feature.type.AttributeType;
 
 /**
  * Parses an application schema given by a gtxml {@link Configuration} into a set of {@link

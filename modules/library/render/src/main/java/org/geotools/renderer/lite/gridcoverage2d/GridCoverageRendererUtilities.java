@@ -37,6 +37,17 @@ import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.metadata.spatial.PixelOrientation;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.CoordinateOperation;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -64,17 +75,6 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.util.AffineTransformation;
-import org.geotools.api.coverage.grid.GridCoverage;
-import org.geotools.api.coverage.grid.GridEnvelope;
-import org.geotools.api.geometry.BoundingBox;
-import org.geotools.api.metadata.spatial.PixelOrientation;
-import org.geotools.api.parameter.ParameterValueGroup;
-import org.geotools.api.referencing.FactoryException;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.api.referencing.operation.CoordinateOperation;
-import org.geotools.api.referencing.operation.MathTransform;
-import org.geotools.api.referencing.operation.MathTransform2D;
-import org.geotools.api.referencing.operation.TransformException;
 
 /** @author Simone Giannecchini, GeoSolutions */
 public final class GridCoverageRendererUtilities {

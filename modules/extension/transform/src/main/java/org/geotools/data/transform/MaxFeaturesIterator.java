@@ -17,8 +17,8 @@
 package org.geotools.data.transform;
 
 import java.util.NoSuchElementException;
-import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.data.simple.SimpleFeatureIterator;
 
 /**
  * A simple wrapper that limits the number of features returned by a given {@link

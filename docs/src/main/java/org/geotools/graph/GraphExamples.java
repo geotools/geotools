@@ -12,6 +12,8 @@
 package org.geotools.graph;
 
 import java.util.Iterator;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.FeatureVisitor;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.graph.build.line.BasicLineGraphGenerator;
@@ -25,8 +27,6 @@ import org.geotools.graph.traverse.basic.BasicGraphTraversal;
 import org.geotools.graph.traverse.basic.SimpleGraphWalker;
 import org.geotools.graph.traverse.standard.BreadthFirstIterator;
 import org.geotools.util.SuppressFBWarnings;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.FeatureVisitor;
 
 public class GraphExamples {
 

@@ -18,9 +18,9 @@ package org.geotools.styling;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.util.Utilities;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.style.StyleVisitor;
+import org.geotools.util.Utilities;
 
 /**
  * A simple implementation of the color map interface.

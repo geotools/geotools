@@ -16,11 +16,11 @@
  */
 package org.geotools.coverage.util;
 
-import org.geotools.filter.FunctionExpressionImpl;
-import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.VolatileFunction;
+import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
 
 /**
  * Function to identify if a feature is a wrapped coverage or not

@@ -21,10 +21,10 @@ import static org.junit.Assert.assertNotEquals;
 
 import javax.measure.Unit;
 import javax.measure.quantity.Time;
+import org.geotools.api.temporal.IntervalLength;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.geotools.api.temporal.IntervalLength;
 import si.uom.SI;
 
 /** @author Mehdi Sidhoum (Geomatys) */

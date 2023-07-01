@@ -19,11 +19,11 @@ package org.geotools.coverage.grid;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.io.Serializable;
+import org.geotools.api.coverage.grid.GridGeometry;
+import org.geotools.api.util.Cloneable;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
-import org.geotools.api.coverage.grid.GridGeometry;
-import org.geotools.api.util.Cloneable;
 
 /**
  * A simple grid geometry holding the grid range as a {@linkplain Rectangle rectangle} and the

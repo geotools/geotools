@@ -17,10 +17,10 @@
 
 package org.geotools.filter.text.ecql;
 
+import org.geotools.api.filter.Filter;
 import org.geotools.filter.text.commons.Language;
 import org.geotools.filter.text.cql2.CQLBetweenPredicateTest;
 import org.junit.Test;
-import org.geotools.api.filter.Filter;
 
 /**
  * Test case for between predicate with expressions

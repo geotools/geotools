@@ -17,6 +17,10 @@
 package org.geotools.map;
 
 import java.io.IOException;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureListener;
 import org.geotools.data.FeatureSource;
@@ -26,10 +30,6 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.styling.Style;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.geometry.Envelope;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Layer responsible for rendering vector information provided by a FeatureSource.

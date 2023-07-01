@@ -20,9 +20,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
 import org.geotools.api.util.InternationalString;
 import org.geotools.api.util.ProgressListener;
+import org.junit.Test;
 
 /**
  * Test suite for {@link SubProgressListener}

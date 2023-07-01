@@ -1,5 +1,9 @@
 package org.geotools.filter.function;
 
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -8,10 +12,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.WKTReader;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.filter.expression.Function;
-import org.geotools.api.filter.expression.Literal;
 
 /**
  * Unit tests for FilterFunction_intersects3D

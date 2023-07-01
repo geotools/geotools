@@ -22,14 +22,14 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.geotools.mbstyle.expression.MBExpression;
-import org.json.simple.JSONArray;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.api.style.SemanticType;
+import org.geotools.mbstyle.expression.MBExpression;
+import org.json.simple.JSONArray;
 
 /**
  * MBFilter json wrapper, allowing conversion to a GeoTools Filter.

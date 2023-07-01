@@ -19,8 +19,8 @@ package org.geotools.filter;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import org.geotools.util.Converters;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.util.Converters;
 
 /**
  * Support for Multi-valued properties when comparing

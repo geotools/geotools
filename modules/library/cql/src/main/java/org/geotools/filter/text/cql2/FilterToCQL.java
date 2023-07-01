@@ -17,7 +17,6 @@
 package org.geotools.filter.text.cql2;
 
 import java.util.logging.Logger;
-import org.geotools.filter.text.commons.FilterToTextUtil;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.ExcludeFilter;
 import org.geotools.api.filter.FilterVisitor;
@@ -62,6 +61,7 @@ import org.geotools.api.filter.temporal.OverlappedBy;
 import org.geotools.api.filter.temporal.TContains;
 import org.geotools.api.filter.temporal.TEquals;
 import org.geotools.api.filter.temporal.TOverlaps;
+import org.geotools.filter.text.commons.FilterToTextUtil;
 
 /**
  * This is a utility class used by CQL.encode( Filter ) method to do the hard work.

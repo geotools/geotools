@@ -18,14 +18,14 @@
 package org.h2gis.geotools;
 
 import java.io.IOException;
-import org.geotools.filter.FilterCapabilities;
-import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.spatial.BinarySpatialOperator;
 import org.geotools.api.filter.spatial.DistanceBufferOperator;
+import org.geotools.filter.FilterCapabilities;
+import org.geotools.jdbc.PreparedFilterToSQL;
 
 /**
  * jdbc-h2gis is an extension to connect H2GIS a spatial library that brings spatial support to the

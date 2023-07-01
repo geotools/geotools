@@ -16,8 +16,8 @@
  */
 package org.h2gis.geotools;
 
-import org.junit.jupiter.api.Test;
 import org.geotools.api.filter.PropertyIsLike;
+import org.junit.jupiter.api.Test;
 
 public class H2GISFilterToSQLTest {
 

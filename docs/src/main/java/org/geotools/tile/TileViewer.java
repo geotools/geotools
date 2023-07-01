@@ -14,6 +14,8 @@ package org.geotools.tile;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.data.FileDataStore;
@@ -39,8 +41,6 @@ import org.geotools.tile.impl.osm.OSMTileIdentifier;
 import org.geotools.tile.util.AsyncTileLayer;
 import org.geotools.tile.util.TileLayer;
 import org.geotools.util.SuppressFBWarnings;
-import org.geotools.api.referencing.FactoryException;
-import org.geotools.api.referencing.operation.TransformException;
 
 @SuppressFBWarnings("DLS_DEAD_LOCAL_STORE")
 public class TileViewer {

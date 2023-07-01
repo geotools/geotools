@@ -18,6 +18,13 @@
 package org.geotools.swing.tool;
 
 import java.util.Collection;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.feature.type.PropertyDescriptor;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
@@ -32,13 +39,6 @@ import org.geotools.map.Layer;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.type.GeometryDescriptor;
-import org.geotools.api.feature.type.Name;
-import org.geotools.api.feature.type.PropertyDescriptor;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Helper class used by {@linkplain InfoTool} to query vector features in a {@linkplain

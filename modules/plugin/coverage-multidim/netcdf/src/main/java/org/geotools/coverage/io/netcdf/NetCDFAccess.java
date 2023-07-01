@@ -30,6 +30,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.coverage.grid.io.FileSetManager;
 import org.geotools.coverage.io.CoverageAccess;
 import org.geotools.coverage.io.CoverageSource;
@@ -49,8 +51,6 @@ import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.geotools.api.feature.type.Name;
-import org.geotools.api.util.ProgressListener;
 
 /**
  * {@link CoverageAccess} implementation for NetCDF Data format.

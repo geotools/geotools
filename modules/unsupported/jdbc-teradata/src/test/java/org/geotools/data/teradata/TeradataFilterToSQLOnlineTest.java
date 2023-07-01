@@ -1,11 +1,11 @@
 package org.geotools.data.teradata;
 
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
 import org.junit.Test;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory;
 
 /** @author Ian Schneider <ischneider@opengeo.org> */
 public class TeradataFilterToSQLOnlineTest extends JDBCTestSupport {

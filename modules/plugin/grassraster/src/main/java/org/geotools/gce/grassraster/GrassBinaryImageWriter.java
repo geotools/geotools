@@ -24,9 +24,9 @@ import javax.imageio.ImageTypeSpecifier;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.metadata.IIOMetadata;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.gce.grassraster.core.GrassBinaryRasterWriteHandler;
 import org.geotools.gce.grassraster.spi.GrassBinaryImageWriterSpi;
-import org.geotools.api.util.ProgressListener;
 
 /** @author Andrea Antonello - www.hydrologis.com */
 public class GrassBinaryImageWriter extends ImageWriter {

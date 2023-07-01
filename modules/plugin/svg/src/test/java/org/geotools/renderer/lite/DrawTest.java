@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -44,7 +45,6 @@ import org.geotools.util.logging.Logging;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.geotools.api.feature.simple.SimpleFeature;
 
 public class DrawTest {
     private static final Logger LOGGER = Logging.getLogger(DrawTest.class);

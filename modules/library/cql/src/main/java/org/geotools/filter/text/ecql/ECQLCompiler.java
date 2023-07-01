@@ -18,15 +18,6 @@ package org.geotools.filter.text.ecql;
 
 import java.io.StringReader;
 import java.util.List;
-import org.geotools.filter.IllegalFilterException;
-import org.geotools.filter.text.commons.IToken;
-import org.geotools.filter.text.commons.Result;
-import org.geotools.filter.text.commons.TokenAdapter;
-import org.geotools.filter.text.cql2.CQLException;
-import org.geotools.filter.text.generated.parsers.ECQLParser;
-import org.geotools.filter.text.generated.parsers.Node;
-import org.geotools.filter.text.generated.parsers.ParseException;
-import org.geotools.filter.text.generated.parsers.TokenMgrError;
 import org.geotools.api.filter.BinaryComparisonOperator;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
@@ -38,6 +29,15 @@ import org.geotools.api.filter.spatial.DistanceBufferOperator;
 import org.geotools.api.filter.temporal.After;
 import org.geotools.api.filter.temporal.Before;
 import org.geotools.api.filter.temporal.During;
+import org.geotools.filter.IllegalFilterException;
+import org.geotools.filter.text.commons.IToken;
+import org.geotools.filter.text.commons.Result;
+import org.geotools.filter.text.commons.TokenAdapter;
+import org.geotools.filter.text.cql2.CQLException;
+import org.geotools.filter.text.generated.parsers.ECQLParser;
+import org.geotools.filter.text.generated.parsers.Node;
+import org.geotools.filter.text.generated.parsers.ParseException;
+import org.geotools.filter.text.generated.parsers.TokenMgrError;
 
 /**
  * ECQLCompiler

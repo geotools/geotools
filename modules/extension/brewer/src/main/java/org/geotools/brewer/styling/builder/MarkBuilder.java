@@ -16,8 +16,8 @@
  */
 package org.geotools.brewer.styling.builder;
 
-import org.geotools.styling.Mark;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.styling.Mark;
 
 public class MarkBuilder extends AbstractStyleBuilder<Mark> {
     StrokeBuilder strokeBuilder = new StrokeBuilder(this).unset();

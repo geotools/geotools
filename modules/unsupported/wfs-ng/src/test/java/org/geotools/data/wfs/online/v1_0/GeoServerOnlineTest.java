@@ -20,6 +20,8 @@ package org.geotools.data.wfs.online.v1_0;
 import static org.geotools.data.wfs.WFSTestData.GEOS_STATES_11;
 
 import java.util.Collections;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
 import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.data.wfs.online.AbstractWfsDataStoreOnlineTest;
 import org.geotools.factory.CommonFactoryFinder;
@@ -28,8 +30,6 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
 
 public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
 

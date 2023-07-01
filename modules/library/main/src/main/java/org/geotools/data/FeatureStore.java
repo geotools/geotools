@@ -18,12 +18,12 @@ package org.geotools.data;
 
 import java.io.IOException;
 import java.util.List;
-import org.geotools.feature.FeatureCollection;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.identity.FeatureId;
+import org.geotools.feature.FeatureCollection;
 
 /**
  * This interface extends {@code FeatureSource}, adding methods to add and remove features and to

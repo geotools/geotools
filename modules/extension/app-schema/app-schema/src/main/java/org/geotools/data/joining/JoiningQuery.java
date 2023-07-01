@@ -21,10 +21,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import org.geotools.data.Query;
-import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.sort.SortBy;
+import org.geotools.data.Query;
+import org.geotools.data.complex.FeatureTypeMapping;
 
 /**
  * Special Query that includes joining information

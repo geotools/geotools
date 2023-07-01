@@ -22,12 +22,12 @@ import java.util.Locale;
 import javax.media.jai.EnumeratedParameter;
 import javax.media.jai.Interpolation;
 import javax.media.jai.KernelJAI;
+import org.geotools.api.util.InternationalString;
 import org.geotools.coverage.AbstractCoverage;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.parameter.ParameterWriter;
-import org.geotools.api.util.InternationalString;
 
 /**
  * Format grid coverage operation parameters in a tabular format.

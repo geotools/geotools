@@ -21,6 +21,15 @@ import java.awt.image.RenderedImage;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.coverage.grid.GridGeometry;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.api.util.Cloneable;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.PixelTranslation;
 import org.geotools.metadata.i18n.ErrorKeys;
@@ -33,15 +42,6 @@ import org.geotools.referencing.util.CRSUtilities;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
-import org.geotools.api.coverage.grid.GridEnvelope;
-import org.geotools.api.coverage.grid.GridGeometry;
-import org.geotools.api.geometry.Envelope;
-import org.geotools.api.geometry.MismatchedDimensionException;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.api.referencing.datum.PixelInCell;
-import org.geotools.api.referencing.operation.MathTransform;
-import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.api.util.Cloneable;
 
 /**
  * Describes the valid range of grid coordinates and the math transform to transform grid

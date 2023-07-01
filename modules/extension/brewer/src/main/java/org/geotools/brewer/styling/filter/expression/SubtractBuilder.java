@@ -16,10 +16,10 @@
  */
 package org.geotools.brewer.styling.filter.expression;
 
-import org.geotools.brewer.styling.builder.Builder;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.expression.Subtract;
+import org.geotools.brewer.styling.builder.Builder;
+import org.geotools.factory.CommonFactoryFinder;
 
 public class SubtractBuilder implements Builder<Subtract> {
 

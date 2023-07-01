@@ -17,6 +17,8 @@
 
 package org.geotools.appschema.resolver.data;
 
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.FeatureSource;
@@ -24,8 +26,6 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.junit.Assert;
 import org.junit.Test;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.type.FeatureType;
 
 /**
  * Test for {@link org.geotools.appschema.resolver.data.SampleDataAccess}.

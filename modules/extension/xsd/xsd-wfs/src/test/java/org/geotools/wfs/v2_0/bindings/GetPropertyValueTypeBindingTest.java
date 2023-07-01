@@ -23,9 +23,9 @@ import java.net.URI;
 import javax.xml.namespace.QName;
 import net.opengis.wfs20.GetPropertyValueType;
 import net.opengis.wfs20.QueryType;
+import org.geotools.api.filter.Id;
 import org.geotools.wfs.v2_0.WFSTestSupport;
 import org.junit.Test;
-import org.geotools.api.filter.Id;
 
 public class GetPropertyValueTypeBindingTest extends WFSTestSupport {
     @Test

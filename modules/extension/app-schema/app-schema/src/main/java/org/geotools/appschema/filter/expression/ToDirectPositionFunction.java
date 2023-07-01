@@ -19,11 +19,6 @@ package org.geotools.appschema.filter.expression;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.capability.FunctionNameImpl;
-import org.geotools.geometry.DirectPosition1D;
-import org.geotools.geometry.DirectPosition2D;
-import org.geotools.referencing.CRS;
 import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
@@ -34,6 +29,11 @@ import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.capability.FunctionNameImpl;
+import org.geotools.geometry.DirectPosition1D;
+import org.geotools.geometry.DirectPosition2D;
+import org.geotools.referencing.CRS;
 
 /**
  * This function converts double values to DirectPosition geometry type. This is needed when the

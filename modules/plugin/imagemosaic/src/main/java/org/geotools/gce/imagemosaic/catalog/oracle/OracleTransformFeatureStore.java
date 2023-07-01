@@ -18,14 +18,14 @@ package org.geotools.gce.imagemosaic.catalog.oracle;
 
 import java.io.IOException;
 import java.util.List;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.Name;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataStore;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.data.transform.Definition;
 import org.geotools.data.transform.TransformFeatureStore;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.feature.type.Name;
 
 public class OracleTransformFeatureStore extends TransformFeatureStore {
 

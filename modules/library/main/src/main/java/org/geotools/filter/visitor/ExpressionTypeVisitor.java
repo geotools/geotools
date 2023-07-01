@@ -23,7 +23,6 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.geotools.filter.function.FilterFunction_if_then_else;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.filter.capability.FunctionName;
@@ -38,6 +37,7 @@ import org.geotools.api.filter.expression.Multiply;
 import org.geotools.api.filter.expression.NilExpression;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.expression.Subtract;
+import org.geotools.filter.function.FilterFunction_if_then_else;
 
 /**
  * Returns the output type of the visited expression, taking into account functions output types,

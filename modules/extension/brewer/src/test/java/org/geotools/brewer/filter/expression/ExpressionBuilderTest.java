@@ -19,11 +19,11 @@ package org.geotools.brewer.filter.expression;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.brewer.styling.filter.expression.ExpressionBuilder;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Test;
-import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.expression.Expression;
 
 /**
  * ExpressionBuilder is the main entry point from a fluent programming point of view. We will mostly

@@ -18,8 +18,8 @@ package org.geotools.brewer.styling.builder;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.styling.ColorReplacement;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.styling.ColorReplacement;
 
 public class ColorReplacementBuilder extends AbstractStyleBuilder<ColorReplacement> {
     private Expression propertyName;

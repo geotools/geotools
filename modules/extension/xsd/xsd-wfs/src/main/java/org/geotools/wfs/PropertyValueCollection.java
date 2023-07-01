@@ -25,14 +25,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.AttributeTypeBuilder;
-import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.NameImpl;
-import org.geotools.feature.type.FeatureTypeFactoryImpl;
-import org.geotools.gml3.v3_2.GML;
-import org.geotools.xs.XS;
 import org.geotools.api.feature.Attribute;
 import org.geotools.api.feature.ComplexAttribute;
 import org.geotools.api.feature.Feature;
@@ -44,6 +36,14 @@ import org.geotools.api.feature.type.FeatureTypeFactory;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.feature.type.Schema;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.AttributeTypeBuilder;
+import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
+import org.geotools.feature.NameImpl;
+import org.geotools.feature.type.FeatureTypeFactoryImpl;
+import org.geotools.gml3.v3_2.GML;
+import org.geotools.xs.XS;
 
 /**
  * Wrapping feature collection used by GetPropertyValue operation.

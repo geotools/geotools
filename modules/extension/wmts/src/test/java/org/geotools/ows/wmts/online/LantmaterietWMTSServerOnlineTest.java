@@ -26,6 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.http.DelegateHTTPClient;
 import org.geotools.http.HTTPClientFinder;
@@ -39,9 +42,6 @@ import org.geotools.referencing.CRS;
 import org.geotools.tile.Tile;
 import org.junit.Assert;
 import org.junit.Test;
-import org.geotools.api.referencing.FactoryException;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.api.referencing.operation.TransformException;
 
 public class LantmaterietWMTSServerOnlineTest extends WMTSOnlineTestCase {
 

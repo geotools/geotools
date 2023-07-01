@@ -21,14 +21,14 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.xml.namespace.QName;
 import org.eclipse.xsd.XSDSchema;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.feature.type.Schema;
 import org.geotools.gml2.ReferencingDirectiveLeakPreventer;
 import org.geotools.gml2.SubstitutionGroupLeakPreventer;
 import org.geotools.gml3.smil.SMIL20;
 import org.geotools.gml3.smil.SMIL20LANG;
 import org.geotools.xlink.XLINK;
 import org.geotools.xsd.XSD;
-import org.geotools.api.feature.type.Name;
-import org.geotools.api.feature.type.Schema;
 
 /**
  * This interface contains the qualified names of all the types,elements, and attributes in the

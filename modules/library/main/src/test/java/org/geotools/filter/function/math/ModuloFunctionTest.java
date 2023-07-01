@@ -16,12 +16,12 @@
  */
 package org.geotools.filter.function.math;
 
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Function;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.expression.Function;
 
 public class ModuloFunctionTest {
 

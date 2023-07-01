@@ -17,7 +17,6 @@
 package org.geotools.feature;
 
 import java.util.Collection;
-import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.GeometryAttribute;
 import org.geotools.api.feature.Property;
@@ -26,6 +25,7 @@ import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.GeometryType;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.api.geometry.BoundingBox;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
  * Temptative implementation of Feature.

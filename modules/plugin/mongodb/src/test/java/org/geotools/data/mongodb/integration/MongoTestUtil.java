@@ -33,15 +33,15 @@ import java.net.UnknownHostException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import org.geotools.TestData;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.GeometryAttribute;
+import org.geotools.api.feature.Property;
 import org.geotools.data.mongodb.MongoGeometryBuilder;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.GeometryAttribute;
-import org.geotools.api.feature.Property;
 
 /** @author tkunicki@boundlessgeo.com */
 @SuppressWarnings("deprecation") // DB was replaced by MongoDatabase but API is not the same

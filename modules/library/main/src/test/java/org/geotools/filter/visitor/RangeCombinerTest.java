@@ -21,14 +21,14 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
-import org.geotools.data.DataUtilities;
-import org.geotools.factory.CommonFactoryFinder;
-import org.junit.Before;
-import org.junit.Test;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.data.DataUtilities;
+import org.geotools.factory.CommonFactoryFinder;
+import org.junit.Before;
+import org.junit.Test;
 
 public class RangeCombinerTest {
 

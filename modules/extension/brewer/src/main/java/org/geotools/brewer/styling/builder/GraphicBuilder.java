@@ -20,13 +20,13 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.GraphicalSymbol;
 import org.geotools.metadata.iso.citation.OnLineResourceImpl;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.Mark;
 import org.geotools.styling.Symbol;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.style.GraphicalSymbol;
 
 public class GraphicBuilder extends AbstractStyleBuilder<org.geotools.api.style.Graphic> {
     List<Builder<? extends Symbol>> symbols = new ArrayList<>();

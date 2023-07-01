@@ -27,13 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
-import org.geotools.data.Query;
-import org.geotools.feature.AttributeTypeBuilder;
-import org.geotools.feature.NameImpl;
-import org.geotools.feature.type.BasicFeatureTypes;
-import org.geotools.feature.type.FeatureTypeFactoryImpl;
-import org.geotools.referencing.CRS;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.AttributeType;
@@ -45,6 +38,13 @@ import org.geotools.api.feature.type.Schema;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.util.InternationalString;
+import org.geotools.data.Query;
+import org.geotools.feature.AttributeTypeBuilder;
+import org.geotools.feature.NameImpl;
+import org.geotools.feature.type.BasicFeatureTypes;
+import org.geotools.feature.type.FeatureTypeFactoryImpl;
+import org.geotools.referencing.CRS;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * A builder for simple feature types.

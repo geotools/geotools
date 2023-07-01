@@ -23,6 +23,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.Set;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Filter;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureListener;
@@ -36,11 +41,6 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCFeatureSource;
 import org.geotools.jdbc.JDBCFeatureStore;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.type.AttributeDescriptor;
-import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.feature.type.Name;
-import org.geotools.api.filter.Filter;
 
 /**
  * A FeatureSource that uses a {@linkplain org.geotools.data.complex.FeatureTypeMapping} to perform

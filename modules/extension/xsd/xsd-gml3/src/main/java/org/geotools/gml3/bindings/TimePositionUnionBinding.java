@@ -19,13 +19,13 @@ package org.geotools.gml3.bindings;
 import java.sql.Timestamp;
 import java.util.Date;
 import javax.xml.namespace.QName;
+import org.geotools.api.temporal.Position;
 import org.geotools.gml3.GML;
 import org.geotools.temporal.object.DefaultPosition;
 import org.geotools.xs.bindings.XSDateBinding;
 import org.geotools.xs.bindings.XSDateTimeBinding;
 import org.geotools.xsd.AbstractSimpleBinding;
 import org.geotools.xsd.InstanceComponent;
-import org.geotools.api.temporal.Position;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:TimePositionUnion.

@@ -18,9 +18,9 @@
 package org.geotools.styling;
 
 import java.awt.Color;
-import org.geotools.filter.ConstantExpression;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.StyleVisitor;
+import org.geotools.filter.ConstantExpression;
 
 /**
  * The Fill object encapsulates the graphical-symbolization parameters for areas of geometries.

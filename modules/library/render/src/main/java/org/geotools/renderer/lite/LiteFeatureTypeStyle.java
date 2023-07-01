@@ -19,12 +19,12 @@ package org.geotools.renderer.lite;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.util.List;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.sort.SortBy;
 import org.geotools.data.util.ScreenMap;
 import org.geotools.map.Layer;
 import org.geotools.renderer.crs.ProjectionHandler;
 import org.geotools.styling.Rule;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.filter.sort.SortBy;
 
 /**
  * This is a simple class that contains the information needed to render a layer.

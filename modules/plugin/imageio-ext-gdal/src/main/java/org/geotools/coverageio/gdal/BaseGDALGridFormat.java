@@ -23,6 +23,11 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.spi.ImageReaderSpi;
+import org.geotools.api.coverage.grid.Format;
+import org.geotools.api.coverage.grid.GridCoverageReader;
+import org.geotools.api.coverage.grid.GridCoverageWriter;
+import org.geotools.api.parameter.GeneralParameterDescriptor;
+import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
@@ -30,11 +35,6 @@ import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.ParameterGroup;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.coverage.grid.Format;
-import org.geotools.api.coverage.grid.GridCoverageReader;
-import org.geotools.api.coverage.grid.GridCoverageWriter;
-import org.geotools.api.parameter.GeneralParameterDescriptor;
-import org.geotools.api.parameter.GeneralParameterValue;
 
 /**
  * A Base abstract class implementing {@link Format}, to be extended by Formats leveraging on GDAL.

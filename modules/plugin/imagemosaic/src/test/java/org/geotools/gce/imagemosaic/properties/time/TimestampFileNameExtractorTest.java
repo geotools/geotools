@@ -26,6 +26,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Set;
 import java.util.TimeZone;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.SchemaException;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
@@ -33,8 +35,6 @@ import org.geotools.gce.imagemosaic.properties.PropertiesCollectorFinder;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.junit.Before;
 import org.junit.Test;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.feature.simple.SimpleFeatureType;
 
 public class TimestampFileNameExtractorTest {
 

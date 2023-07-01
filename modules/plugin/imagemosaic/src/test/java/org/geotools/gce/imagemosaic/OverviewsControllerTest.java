@@ -29,6 +29,12 @@ import javax.imageio.ImageReadParam;
 import javax.imageio.spi.ImageReaderSpi;
 import junit.framework.JUnit4TestAdapter;
 import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.DecimationPolicy;
@@ -47,12 +53,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.geotools.api.coverage.grid.GridEnvelope;
-import org.geotools.api.geometry.MismatchedDimensionException;
-import org.geotools.api.referencing.FactoryException;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.api.referencing.datum.PixelInCell;
-import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * Testing {@link OverviewsController}.

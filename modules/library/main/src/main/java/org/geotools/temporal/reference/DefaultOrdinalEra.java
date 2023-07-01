@@ -18,9 +18,9 @@ package org.geotools.temporal.reference;
 
 import java.util.Collection;
 import java.util.Date;
-import org.geotools.util.Utilities;
 import org.geotools.api.temporal.OrdinalEra;
 import org.geotools.api.util.InternationalString;
+import org.geotools.util.Utilities;
 
 /** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultOrdinalEra implements OrdinalEra {

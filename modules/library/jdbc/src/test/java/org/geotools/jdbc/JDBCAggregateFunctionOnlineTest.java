@@ -16,12 +16,12 @@
  */
 package org.geotools.jdbc;
 
+import static org.geotools.api.filter.sort.SortOrder.ASCENDING;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeTrue;
-import static org.geotools.api.filter.sort.SortOrder.ASCENDING;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -31,6 +31,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.visitor.AverageVisitor;
@@ -50,12 +56,6 @@ import org.geotools.filter.function.FilterFunction_area;
 import org.geotools.util.Converters;
 import org.junit.Before;
 import org.junit.Test;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.filter.expression.PropertyName;
 
 public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
 

@@ -18,13 +18,13 @@ package org.geotools.styling.css.util;
 
 import java.util.HashSet;
 import java.util.Set;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.expression.VolatileFunction;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.function.FilterFunction_property;
 import org.geotools.filter.visitor.DefaultFilterVisitor;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.filter.expression.PropertyName;
-import org.geotools.api.filter.expression.VolatileFunction;
 
 /**
  * A subclass of {@link FilterAttributeExtractor} that computes a specificity score for the filter.

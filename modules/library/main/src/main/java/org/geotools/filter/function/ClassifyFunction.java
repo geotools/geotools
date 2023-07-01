@@ -18,10 +18,10 @@ package org.geotools.filter.function;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
-import org.geotools.filter.FunctionExpressionImpl;
-import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Literal;
+import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
 
 public class ClassifyFunction extends FunctionExpressionImpl {
 

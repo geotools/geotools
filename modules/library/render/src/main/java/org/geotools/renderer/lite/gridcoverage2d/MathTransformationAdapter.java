@@ -18,10 +18,10 @@ package org.geotools.renderer.lite.gridcoverage2d;
 
 import it.geosolutions.jaiext.piecewise.MathTransformation;
 import it.geosolutions.jaiext.piecewise.Position;
-import org.geotools.renderer.i18n.ErrorKeys;
-import org.geotools.renderer.i18n.Errors;
 import org.geotools.api.referencing.operation.MathTransform1D;
 import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.renderer.i18n.ErrorKeys;
+import org.geotools.renderer.i18n.Errors;
 
 /**
  * Adapter class for {@link MathTransform1D}.

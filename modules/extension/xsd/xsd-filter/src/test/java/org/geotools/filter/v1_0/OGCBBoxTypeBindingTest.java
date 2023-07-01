@@ -19,14 +19,14 @@ package org.geotools.filter.v1_0;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml2.GML;
 import org.geotools.referencing.CRS;
 import org.geotools.xsd.Binding;
 import org.junit.Test;
-import org.geotools.api.filter.expression.PropertyName;
-import org.geotools.api.filter.spatial.BBOX;
 import org.w3c.dom.Document;
 
 public class OGCBBoxTypeBindingTest extends FilterTestSupport {

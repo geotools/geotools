@@ -18,17 +18,17 @@
 package org.geotools.data.util;
 
 import java.util.Collection;
+import org.geotools.api.feature.Attribute;
+import org.geotools.api.feature.ComplexAttribute;
+import org.geotools.api.feature.GeometryAttribute;
+import org.geotools.api.feature.Property;
+import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.feature.AttributeImpl;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.feature.Attribute;
-import org.geotools.api.feature.ComplexAttribute;
-import org.geotools.api.feature.GeometryAttribute;
-import org.geotools.api.feature.Property;
-import org.geotools.api.filter.identity.FeatureId;
 
 /**
  * This converter retrieves the values out of attributes.

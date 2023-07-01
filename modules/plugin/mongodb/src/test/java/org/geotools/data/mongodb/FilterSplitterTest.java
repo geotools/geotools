@@ -18,13 +18,13 @@
 /** @author hans.yperman@vliz.be */
 package org.geotools.data.mongodb;
 
+import org.geotools.api.filter.Filter;
 import org.geotools.data.mongodb.geojson.GeoJSONMongoTestSetup;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.text.ecql.ECQL;
 import org.junit.Assert;
 import org.junit.Test;
-import org.geotools.api.filter.Filter;
 
 public class FilterSplitterTest extends MongoTestSupport {
 

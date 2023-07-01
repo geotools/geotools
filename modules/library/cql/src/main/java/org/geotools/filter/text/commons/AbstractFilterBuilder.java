@@ -27,15 +27,6 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.geotools.filter.IllegalFilterException;
-import org.geotools.filter.text.cql2.CQLException;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.io.WKTReader;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
@@ -62,6 +53,15 @@ import org.geotools.api.filter.temporal.Before;
 import org.geotools.api.filter.temporal.During;
 import org.geotools.api.filter.temporal.TEquals;
 import org.geotools.api.temporal.Period;
+import org.geotools.filter.IllegalFilterException;
+import org.geotools.filter.text.cql2.CQLException;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.io.WKTReader;
 
 /**
  * This abstract class provides the common behavior to build the filters for the related semantic
@@ -249,7 +249,8 @@ public abstract class AbstractFilterBuilder {
         final String ESCAPE = "\\";
 
         try {
-            org.geotools.api.filter.expression.Expression pattern = this.resultStack.popExpression();
+            org.geotools.api.filter.expression.Expression pattern =
+                    this.resultStack.popExpression();
             org.geotools.api.filter.expression.Expression expr = this.resultStack.popExpression();
 
             PropertyIsLike f =
@@ -270,7 +271,8 @@ public abstract class AbstractFilterBuilder {
      */
     public PropertyIsNull buildPropertyIsNull() throws CQLException {
         try {
-            org.geotools.api.filter.expression.Expression property = this.resultStack.popExpression();
+            org.geotools.api.filter.expression.Expression property =
+                    this.resultStack.popExpression();
 
             PropertyIsNull filter = filterFactory.isNull(property);
 
@@ -904,7 +906,8 @@ public abstract class AbstractFilterBuilder {
      */
     public org.geotools.api.filter.expression.Literal buildDurationExpression(final IToken token) {
         String duration = token.toString();
-        org.geotools.api.filter.expression.Literal literalDuration = filterFactory.literal(duration);
+        org.geotools.api.filter.expression.Literal literalDuration =
+                filterFactory.literal(duration);
 
         return literalDuration;
     }

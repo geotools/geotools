@@ -17,10 +17,6 @@
 
 package org.geotools.filter.text.cql2;
 
-import org.geotools.filter.text.commons.CompilerUtil;
-import org.geotools.filter.text.commons.Language;
-import org.junit.Assert;
-import org.junit.Test;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.expression.Add;
 import org.geotools.api.filter.expression.Divide;
@@ -28,6 +24,10 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Multiply;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.expression.Subtract;
+import org.geotools.filter.text.commons.CompilerUtil;
+import org.geotools.filter.text.commons.Language;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * Expression Test

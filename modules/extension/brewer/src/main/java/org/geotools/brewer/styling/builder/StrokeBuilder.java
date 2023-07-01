@@ -18,9 +18,9 @@ package org.geotools.brewer.styling.builder;
 
 import java.awt.Color;
 import java.util.List;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.styling.Stroke;
 import org.geotools.util.Converters;
-import org.geotools.api.filter.expression.Expression;
 
 public class StrokeBuilder extends AbstractStyleBuilder<Stroke> {
     Expression color;

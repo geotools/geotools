@@ -22,11 +22,11 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Map;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFactory;
 import org.geotools.data.Parameter;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.type.FeatureType;
 
 /**
  * Sample implementation of a {@link DataAccessFactory} for testing.

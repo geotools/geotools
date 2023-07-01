@@ -24,6 +24,7 @@ import java.awt.Color;
 import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.io.IOUtils;
+import org.geotools.api.style.GraphicalSymbol;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
@@ -41,7 +42,6 @@ import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Parser;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.geotools.api.style.GraphicalSymbol;
 import org.xml.sax.SAXException;
 
 public class SLDTest {

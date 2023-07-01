@@ -23,11 +23,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import org.geotools.referencing.CRS;
 import org.geotools.api.metadata.Identifier;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.referencing.CRS;
 
 /**
  * Provides miscellaneous utility methods for use with WMSs.

@@ -17,9 +17,9 @@
 package org.geotools.filter.text.cql_2;
 
 import org.geootols.filter.text.cql_2.CQL2;
+import org.geotools.api.filter.Filter;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQLNullPredicateTest;
-import org.geotools.api.filter.Filter;
 
 /** <code>IS NULL</code> seems have same syntax and behavior in CQL2 */
 public class CQL2NullPredicateTest extends ECQLNullPredicateTest {

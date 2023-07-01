@@ -17,13 +17,13 @@
  */
 package org.geotools.process.vector;
 
-import org.geotools.data.DataUtilities;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.feature.collection.SortedSimpleFeatureCollection;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.sort.SortBy;
+import org.geotools.data.DataUtilities;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SortedSimpleFeatureCollection;
 
 /**
  * The simple feature version of {@link ProcessingCollection}. Please see the base class for further

@@ -22,15 +22,15 @@ import static org.junit.Assert.assertEquals;
 import java.io.File;
 import java.util.Collections;
 import java.util.Map;
+import org.geotools.api.filter.And;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCDataStore;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
-import org.geotools.api.filter.And;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.spatial.BBOX;
 
 public class GeoPkgDialectTest {
 

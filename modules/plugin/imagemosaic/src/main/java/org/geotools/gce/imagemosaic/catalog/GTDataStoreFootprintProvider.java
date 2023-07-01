@@ -21,6 +21,10 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterVisitor;
+import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.coverage.grid.io.footprint.FootprintGeometryProvider;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
@@ -30,10 +34,6 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterVisitor;
-import org.geotools.api.filter.expression.PropertyName;
 
 /**
  * A {@link FootprintGeometryProvider} matching the current feature with the geometry of one feature

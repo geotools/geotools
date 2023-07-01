@@ -27,6 +27,16 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.tuple.Pair;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.And;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.sort.SortBy;
+import org.geotools.api.filter.sort.SortOrder;
+import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.api.filter.temporal.BinaryTemporalOperator;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterAttributeExtractor;
@@ -39,16 +49,6 @@ import org.geotools.stac.client.STACConformance;
 import org.geotools.stac.client.SearchQuery;
 import org.geotools.util.DateRange;
 import org.locationtech.jts.geom.Envelope;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.filter.And;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.sort.SortBy;
-import org.geotools.api.filter.sort.SortOrder;
-import org.geotools.api.filter.spatial.BBOX;
-import org.geotools.api.filter.temporal.BinaryTemporalOperator;
-import org.geotools.api.referencing.FactoryException;
-import org.geotools.api.referencing.operation.TransformException;
 
 /** Builds a {@link org.geotools.stac.client.SearchQuery} from a GeoTools Query */
 class SearchQueryBuilder {

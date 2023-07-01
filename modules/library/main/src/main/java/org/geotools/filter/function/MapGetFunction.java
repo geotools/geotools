@@ -19,13 +19,13 @@ package org.geotools.filter.function;
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import java.util.Map;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.VolatileFunction;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.util.Converters;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.capability.FunctionName;
-import org.geotools.api.filter.expression.VolatileFunction;
 
 /** Extracts a value from a map given the map name and the needed key as parameters */
 public class MapGetFunction extends FunctionExpressionImpl implements VolatileFunction {

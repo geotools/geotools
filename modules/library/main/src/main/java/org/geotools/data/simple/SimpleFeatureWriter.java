@@ -16,9 +16,9 @@
  */
 package org.geotools.data.simple;
 
-import org.geotools.data.FeatureWriter;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.data.FeatureWriter;
 
 /** FeatureWriter for updating SimpleFeature content. */
 public interface SimpleFeatureWriter extends FeatureWriter<SimpleFeatureType, SimpleFeature> {}

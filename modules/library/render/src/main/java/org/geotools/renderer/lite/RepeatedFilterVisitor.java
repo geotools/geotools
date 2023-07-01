@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-import org.geotools.filter.visitor.DefaultFilterVisitor;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.NativeFilter;
@@ -70,6 +69,7 @@ import org.geotools.api.filter.temporal.OverlappedBy;
 import org.geotools.api.filter.temporal.TContains;
 import org.geotools.api.filter.temporal.TEquals;
 import org.geotools.api.filter.temporal.TOverlaps;
+import org.geotools.filter.visitor.DefaultFilterVisitor;
 
 /**
  * Collects and returns expressions that do repeat in the given filter/express, used to locate which

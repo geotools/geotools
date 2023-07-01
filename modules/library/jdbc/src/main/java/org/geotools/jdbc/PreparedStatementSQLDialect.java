@@ -32,10 +32,10 @@ import java.sql.Types;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.geotools.util.Converters;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.util.Converters;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * SQL dialect which uses prepared statements for database interaction.

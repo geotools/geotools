@@ -18,13 +18,13 @@ package org.geotools.filter.v1_0;
 
 import java.util.List;
 import javax.xml.namespace.QName;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.Or;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 import org.geotools.xsd.filter.FilterParsingUtils;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.Or;
 
 /**
  * Binding object for the element http://www.opengis.net/ogc:Or.

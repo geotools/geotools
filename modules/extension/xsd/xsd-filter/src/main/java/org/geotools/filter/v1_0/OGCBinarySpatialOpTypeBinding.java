@@ -20,11 +20,11 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.eclipse.xsd.XSDElementDeclaration;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.spatial.BinarySpatialOperator;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.geotools.api.filter.expression.Function;
-import org.geotools.api.filter.spatial.BinarySpatialOperator;
 import org.picocontainer.MutablePicoContainer;
 
 /**

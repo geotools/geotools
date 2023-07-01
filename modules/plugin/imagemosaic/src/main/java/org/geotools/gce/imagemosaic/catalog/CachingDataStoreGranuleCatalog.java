@@ -25,6 +25,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.data.Query;
@@ -39,7 +40,6 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
-import org.geotools.api.feature.simple.SimpleFeature;
 
 /**
  * This class simply builds an SRTREE spatial index in memory for fast indexed geometric queries.

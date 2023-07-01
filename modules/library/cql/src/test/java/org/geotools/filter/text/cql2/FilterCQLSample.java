@@ -23,10 +23,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.temporal.object.DefaultInstant;
-import org.geotools.temporal.object.DefaultPeriod;
-import org.geotools.temporal.object.DefaultPosition;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
@@ -46,6 +42,10 @@ import org.geotools.api.filter.temporal.During;
 import org.geotools.api.filter.temporal.TEquals;
 import org.geotools.api.temporal.Instant;
 import org.geotools.api.temporal.Period;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.temporal.object.DefaultInstant;
+import org.geotools.temporal.object.DefaultPeriod;
+import org.geotools.temporal.object.DefaultPosition;
 
 /**
  * Filter Sample Factory

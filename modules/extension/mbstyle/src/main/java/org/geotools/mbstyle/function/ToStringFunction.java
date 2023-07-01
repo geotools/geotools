@@ -17,9 +17,9 @@
 package org.geotools.mbstyle.function;
 
 import java.awt.Color;
+import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.geotools.api.filter.capability.FunctionName;
 
 /**
  * Converts the input value to a string. If the input is null, the result is "null". If the input is

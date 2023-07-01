@@ -25,17 +25,17 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import javax.media.jai.iterator.RectIter;
 import javax.media.jai.iterator.RectIterFactory;
+import org.geotools.api.coverage.Coverage;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.coverage.grid.GridGeometry;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.Viewer;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.test.TestData;
-import org.geotools.api.coverage.Coverage;
-import org.geotools.api.coverage.grid.GridCoverage;
-import org.geotools.api.coverage.grid.GridGeometry;
-import org.geotools.api.geometry.Envelope;
-import org.geotools.api.referencing.operation.MathTransform;
 
 /**
  * Base class for tests on {@link AbstractCoverage} subclasses.

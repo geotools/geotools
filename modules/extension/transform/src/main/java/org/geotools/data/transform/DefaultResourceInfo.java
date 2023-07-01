@@ -21,11 +21,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.Set;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.ResourceInfo;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.api.feature.type.Name;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * A default implementaiton of a {@link ResourceInfo} based solely on the information that can be

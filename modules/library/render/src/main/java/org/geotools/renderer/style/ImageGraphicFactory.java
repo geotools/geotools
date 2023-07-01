@@ -29,12 +29,12 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.data.ows.URLCheckers;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.logging.Logging;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.filter.expression.Expression;
 
 /**
  * External graphic factory accepting an Expression that can be evaluated to a URL pointing to a

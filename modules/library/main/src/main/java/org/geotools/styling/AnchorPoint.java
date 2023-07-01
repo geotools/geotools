@@ -16,8 +16,8 @@
  */
 package org.geotools.styling;
 
-import org.geotools.filter.ConstantExpression;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.filter.ConstantExpression;
 
 /**
  * An AnchorPoint identifies the location inside a label or graphic to use as an "anchor" for

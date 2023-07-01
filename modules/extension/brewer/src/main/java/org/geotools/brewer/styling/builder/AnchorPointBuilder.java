@@ -16,8 +16,8 @@
  */
 package org.geotools.brewer.styling.builder;
 
-import org.geotools.styling.AnchorPoint;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.styling.AnchorPoint;
 
 /**
  * AnchorPoint allows you specify which part of a graphic indicates the location.

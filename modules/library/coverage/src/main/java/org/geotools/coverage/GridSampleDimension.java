@@ -27,6 +27,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.logging.Logger;
 import javax.measure.Unit;
+import org.geotools.api.coverage.ColorInterpretation;
+import org.geotools.api.coverage.SampleDimension;
+import org.geotools.api.coverage.SampleDimensionType;
+import org.geotools.api.util.InternationalString;
 import org.geotools.image.util.ColorUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
@@ -39,10 +43,6 @@ import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.Utilities;
 import org.geotools.util.XArray;
 import org.geotools.util.logging.Logging;
-import org.geotools.api.coverage.ColorInterpretation;
-import org.geotools.api.coverage.SampleDimension;
-import org.geotools.api.coverage.SampleDimensionType;
-import org.geotools.api.util.InternationalString;
 
 /**
  * Describes the data values for a coverage as a list of {@linkplain Category categories}. For a
@@ -67,8 +67,8 @@ import org.geotools.api.util.InternationalString;
  *
  * <p>While this class can be used with arbitrary {@linkplain org.geotools.api.coverage.Coverage
  * coverage}, the primary target for this implementation is {@linkplain
- * org.geotools.api.coverage.grid.GridCoverage grid coverage} storing their sample values as integers.
- * This explain the "{@code Grid}" prefix in the class name.
+ * org.geotools.api.coverage.grid.GridCoverage grid coverage} storing their sample values as
+ * integers. This explain the "{@code Grid}" prefix in the class name.
  *
  * @since 2.1
  * @version $Id$

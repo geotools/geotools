@@ -24,9 +24,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiFunction;
 import org.apache.commons.lang3.tuple.Pair;
-import org.geotools.filter.function.InFunction;
-import org.geotools.filter.visitor.DuplicatingFilterVisitor;
-import org.geotools.util.Converters;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
@@ -61,6 +58,9 @@ import org.geotools.api.filter.spatial.Intersects;
 import org.geotools.api.filter.spatial.Overlaps;
 import org.geotools.api.filter.spatial.Touches;
 import org.geotools.api.filter.spatial.Within;
+import org.geotools.filter.function.InFunction;
+import org.geotools.filter.visitor.DuplicatingFilterVisitor;
+import org.geotools.util.Converters;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**

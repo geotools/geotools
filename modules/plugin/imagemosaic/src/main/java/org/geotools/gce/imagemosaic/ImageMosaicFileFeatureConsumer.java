@@ -26,6 +26,7 @@ import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
 import org.apache.commons.io.FilenameUtils;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridFormatFinder;
@@ -34,7 +35,6 @@ import org.geotools.gce.imagemosaic.acceptors.GranuleAcceptor;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.feature.simple.SimpleFeature;
 
 /**
  * An {@link ImageMosaicElementConsumer} which handles a provided {@link SimpleFeature} by

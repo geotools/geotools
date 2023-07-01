@@ -28,6 +28,17 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.measure.Unit;
 import org.apache.commons.io.FileUtils;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.DerivedCRS;
+import org.geotools.api.referencing.crs.GeographicCRS;
+import org.geotools.api.referencing.crs.ProjectedCRS;
+import org.geotools.api.referencing.datum.Ellipsoid;
+import org.geotools.api.referencing.datum.GeodeticDatum;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.Projection;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.io.netcdf.crs.NetCDFCRSAuthorityFactory;
@@ -51,17 +62,6 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.geotools.api.coverage.grid.GridEnvelope;
-import org.geotools.api.parameter.ParameterValueGroup;
-import org.geotools.api.referencing.FactoryException;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.api.referencing.crs.DerivedCRS;
-import org.geotools.api.referencing.crs.GeographicCRS;
-import org.geotools.api.referencing.crs.ProjectedCRS;
-import org.geotools.api.referencing.datum.Ellipsoid;
-import org.geotools.api.referencing.datum.GeodeticDatum;
-import org.geotools.api.referencing.operation.MathTransform;
-import org.geotools.api.referencing.operation.Projection;
 
 /**
  * Testing NetCDF Projection management machinery

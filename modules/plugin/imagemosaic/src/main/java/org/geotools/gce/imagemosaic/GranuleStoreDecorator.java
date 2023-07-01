@@ -17,14 +17,14 @@
 package org.geotools.gce.imagemosaic;
 
 import java.io.IOException;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.Filter;
 import org.geotools.coverage.grid.io.GranuleStore;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.filter.Filter;
 
 /**
  * Plain delegating base class for {@link GranuleStore} decorators. Meant to allow easier/clearer

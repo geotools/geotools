@@ -19,9 +19,9 @@ package org.geotools.filter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import org.geotools.feature.NameImpl;
 import org.geotools.api.feature.Property;
 import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.feature.NameImpl;
 
 /**
  * Abstract implementation for Filter.
@@ -97,7 +97,9 @@ public abstract class FilterAbstract implements org.geotools.api.filter.Filter {
      * @return value or null
      */
     protected Object eval(
-            org.geotools.api.filter.expression.Expression expression, Object object, Class<?> context) {
+            org.geotools.api.filter.expression.Expression expression,
+            Object object,
+            Class<?> context) {
         if (expression == null) return null;
         return expression.evaluate(object, context);
     }

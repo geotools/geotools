@@ -16,10 +16,10 @@
  */
 package org.geotools.renderer.lite;
 
+import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.geotools.api.filter.capability.FunctionName;
 
 /** A very simple NoOp function for testing purposes */
 public class NoOpFunction extends FunctionExpressionImpl {

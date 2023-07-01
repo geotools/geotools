@@ -20,18 +20,18 @@ import java.io.IOException;
 import java.io.Writer;
 import java.sql.Time;
 import java.sql.Timestamp;
-import org.geotools.data.jdbc.FilterToSQLException;
-import org.geotools.filter.FilterCapabilities;
-import org.geotools.jdbc.PreparedFilterToSQL;
-import org.geotools.jdbc.PrimaryKeyColumn;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.api.filter.spatial.BinarySpatialOperator;
+import org.geotools.data.jdbc.FilterToSQLException;
+import org.geotools.filter.FilterCapabilities;
+import org.geotools.jdbc.PreparedFilterToSQL;
+import org.geotools.jdbc.PrimaryKeyColumn;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 
 /** @author ian */
 public class GeoPkgFilterToSQL extends PreparedFilterToSQL {

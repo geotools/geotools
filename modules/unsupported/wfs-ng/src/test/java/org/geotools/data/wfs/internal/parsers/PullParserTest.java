@@ -23,6 +23,9 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import javax.xml.namespace.QName;
 import org.geotools.TestData;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.FeatureType;
 import org.geotools.data.wfs.internal.GetParser;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.http.HTTPClient;
@@ -36,9 +39,6 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.feature.type.FeatureType;
 
 public class PullParserTest extends AbstractGetFeatureParserTest {
 

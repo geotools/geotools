@@ -18,11 +18,11 @@ package org.geotools.data.store;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
-import org.geotools.data.FeatureReader;
-import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.api.feature.IllegalAttributeException;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.data.FeatureReader;
+import org.geotools.data.simple.SimpleFeatureIterator;
 
 /**
  * An iterator wrapper for a FeatureReader<SimpleFeatureType, SimpleFeature> - for use with an

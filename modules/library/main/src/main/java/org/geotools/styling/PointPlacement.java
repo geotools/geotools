@@ -17,8 +17,8 @@
  */
 package org.geotools.styling;
 
-import org.geotools.filter.ConstantExpression;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.filter.ConstantExpression;
 
 /**
  * A PointPlacement specifies how a text label is positioned relative to a geometric point.

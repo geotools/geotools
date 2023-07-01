@@ -24,10 +24,10 @@ import java.util.GregorianCalendar;
 import java.util.TimeZone;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import org.geotools.api.temporal.Instant;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.temporal.Instant;
 
 /**
  * Converter factory which created converting between the various temporal types.

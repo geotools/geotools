@@ -17,11 +17,11 @@
 package org.geotools.data.wfs;
 
 import java.io.IOException;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.store.DiffContentFeatureWriter;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.feature.simple.SimpleFeatureType;
 
 public class WFSFeatureWriter extends DiffContentFeatureWriter {
 

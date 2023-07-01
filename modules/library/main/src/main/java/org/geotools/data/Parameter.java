@@ -18,9 +18,9 @@ package org.geotools.data;
 
 import java.util.Collections;
 import java.util.Map;
+import org.geotools.api.util.InternationalString;
 import org.geotools.referencing.CRS;
 import org.geotools.util.SimpleInternationalString;
-import org.geotools.api.util.InternationalString;
 
 /**
  * A Parameter defines information about a valid process parameter.

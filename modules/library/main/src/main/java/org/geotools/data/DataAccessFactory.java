@@ -24,12 +24,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-import org.geotools.util.KVP;
-import org.geotools.util.SimpleInternationalString;
-import org.geotools.util.factory.Factory;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.util.InternationalString;
+import org.geotools.util.KVP;
+import org.geotools.util.SimpleInternationalString;
+import org.geotools.util.factory.Factory;
 
 /**
  * Constructs a live DataAccess from a set of connection parameters.

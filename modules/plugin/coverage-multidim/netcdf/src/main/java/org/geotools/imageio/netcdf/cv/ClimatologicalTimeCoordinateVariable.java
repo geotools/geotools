@@ -24,18 +24,18 @@ import java.util.GregorianCalendar;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.imageio.Identification;
-import org.geotools.imageio.netcdf.utilities.NetCDFCRSUtilities;
-import org.geotools.imageio.netcdf.utilities.NetCDFTimeUtilities;
-import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
-import org.geotools.temporal.object.DefaultPosition;
-import org.geotools.util.SimpleInternationalString;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.TemporalCRS;
 import org.geotools.api.referencing.cs.AxisDirection;
 import org.geotools.api.referencing.cs.TimeCS;
 import org.geotools.api.referencing.datum.TemporalDatum;
 import org.geotools.api.temporal.Position;
+import org.geotools.imageio.Identification;
+import org.geotools.imageio.netcdf.utilities.NetCDFCRSUtilities;
+import org.geotools.imageio.netcdf.utilities.NetCDFTimeUtilities;
+import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
+import org.geotools.temporal.object.DefaultPosition;
+import org.geotools.util.SimpleInternationalString;
 import ucar.nc2.dataset.CoordinateAxis;
 
 /** A {@link CoordinateVariable} used to wrap Coordinates expressing climatological time */

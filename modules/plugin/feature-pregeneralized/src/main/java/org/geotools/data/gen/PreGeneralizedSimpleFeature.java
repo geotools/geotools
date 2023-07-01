@@ -23,9 +23,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.geotools.feature.AttributeImpl;
-import org.geotools.feature.GeometryAttributeImpl;
-import org.geotools.feature.NameImpl;
 import org.geotools.api.feature.GeometryAttribute;
 import org.geotools.api.feature.IllegalAttributeException;
 import org.geotools.api.feature.Property;
@@ -37,6 +34,9 @@ import org.geotools.api.feature.type.Name;
 import org.geotools.api.feature.type.PropertyDescriptor;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.api.geometry.BoundingBox;
+import org.geotools.feature.AttributeImpl;
+import org.geotools.feature.GeometryAttributeImpl;
+import org.geotools.feature.NameImpl;
 
 /**
  * @author Christian Mueller

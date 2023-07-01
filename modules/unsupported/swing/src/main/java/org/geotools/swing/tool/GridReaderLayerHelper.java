@@ -18,6 +18,12 @@ package org.geotools.swing.tool;
 
 import java.awt.Rectangle;
 import java.lang.ref.WeakReference;
+import org.geotools.api.coverage.PointOutsideCoverageException;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -29,12 +35,6 @@ import org.geotools.map.GridReaderLayer;
 import org.geotools.map.Layer;
 import org.geotools.parameter.Parameter;
 import org.geotools.util.SuppressFBWarnings;
-import org.geotools.api.coverage.PointOutsideCoverageException;
-import org.geotools.api.coverage.grid.GridEnvelope;
-import org.geotools.api.geometry.DirectPosition;
-import org.geotools.api.parameter.GeneralParameterValue;
-import org.geotools.api.referencing.datum.PixelInCell;
-import org.geotools.api.referencing.operation.MathTransform;
 
 /**
  * Helper class used by {@linkplain InfoTool} to query values in a {@linkplain

@@ -40,6 +40,8 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputAdapter;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.Layer;
@@ -58,8 +60,6 @@ import org.geotools.swing.event.MapPaneEvent;
 import org.geotools.swing.event.MapPaneKeyHandler;
 import org.geotools.swing.event.MapPaneListener;
 import org.geotools.swing.tool.CursorTool;
-import org.geotools.api.geometry.Envelope;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Base class for Swing map panes. It extends Swing's {@code JPanel} class and handles window sizing

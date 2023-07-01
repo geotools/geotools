@@ -25,6 +25,10 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -36,10 +40,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.io.WKTWriter;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.expression.Expression;
 
 /**
  * Unit tests for WindBarbs factory

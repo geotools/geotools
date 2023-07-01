@@ -17,6 +17,8 @@
  */
 package org.geotools.process.vector;
 
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.collection.ClippedFeatureCollection;
@@ -28,8 +30,6 @@ import org.geotools.referencing.CRS;
 import org.geotools.util.factory.GeoTools;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
-import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.spatial.BBOX;
 
 /**
  * Modified version that can preserve Z values after the clip

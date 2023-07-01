@@ -18,14 +18,14 @@ package org.geotools.filter.function;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.FunctionExpressionImpl;
-import org.geotools.filter.capability.FunctionNameImpl;
-import org.geotools.util.Converters;
 import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.expression.VolatileFunction;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
+import org.geotools.util.Converters;
 
 /**
  * Extracts a property from a feature, taking the property name as a parameter

@@ -27,6 +27,10 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import org.geotools.api.feature.type.AttributeType;
+import org.geotools.api.feature.type.ComplexType;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.FeatureSource;
@@ -43,10 +47,6 @@ import org.geotools.xsd.SchemaIndex;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.geotools.api.feature.type.AttributeType;
-import org.geotools.api.feature.type.ComplexType;
-import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.feature.type.Name;
 
 /**
  * This is to ensure we have a working GeologicUnit configuration test.

@@ -18,9 +18,9 @@
 package org.geotools.filter.function;
 
 import java.util.Date;
+import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.geotools.api.filter.capability.FunctionName;
 
 /**
  * Return the current time as a Date. When evaluated directly, it returns a new value at each

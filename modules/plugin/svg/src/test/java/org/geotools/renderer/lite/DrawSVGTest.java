@@ -34,6 +34,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.batik.svggen.SVGGeneratorContext;
 import org.apache.batik.svggen.SVGGraphics2D;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -47,7 +48,6 @@ import org.geotools.util.logging.Logging;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.geotools.api.feature.simple.SimpleFeature;
 import org.w3c.dom.Document;
 
 public class DrawSVGTest {

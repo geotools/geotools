@@ -19,12 +19,12 @@ package org.geotools.coverage.io.range.impl;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.util.InternationalString;
 import org.geotools.coverage.io.range.FieldType;
 import org.geotools.coverage.io.range.RangeType;
 import org.geotools.feature.NameImpl;
 import org.geotools.util.SimpleInternationalString;
-import org.geotools.api.feature.type.Name;
-import org.geotools.api.util.InternationalString;
 
 /**
  * Default implementation of {@link RangeType}

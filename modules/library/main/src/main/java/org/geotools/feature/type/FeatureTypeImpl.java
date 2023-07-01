@@ -18,7 +18,6 @@ package org.geotools.feature.type;
 
 import java.util.Collection;
 import java.util.List;
-import org.geotools.util.Utilities;
 import org.geotools.api.feature.type.AttributeType;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.GeometryDescriptor;
@@ -28,6 +27,7 @@ import org.geotools.api.feature.type.PropertyDescriptor;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.util.InternationalString;
+import org.geotools.util.Utilities;
 
 /**
  * Base implementation of FeatureType.

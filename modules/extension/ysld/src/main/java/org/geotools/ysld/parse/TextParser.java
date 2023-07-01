@@ -17,6 +17,7 @@
  */
 package org.geotools.ysld.parse;
 
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
@@ -30,7 +31,6 @@ import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
-import org.geotools.api.filter.FilterFactory;
 
 /** Handles parsing a Ysld "text" symbolizer property into a {@link Symbolizer} object. */
 public class TextParser extends SymbolizerParser<TextSymbolizer> {

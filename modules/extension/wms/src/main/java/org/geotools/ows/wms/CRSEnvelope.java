@@ -16,14 +16,14 @@
  */
 package org.geotools.ows.wms;
 
-import org.geotools.geometry.GeneralDirectPosition;
-import org.geotools.ows.wms.request.AbstractGetMapRequest;
-import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.Envelope;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.ows.wms.request.AbstractGetMapRequest;
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultEngineeringCRS;
 
 /**
  * A pair of coordinates and a reference system that represents a section of the Earth.

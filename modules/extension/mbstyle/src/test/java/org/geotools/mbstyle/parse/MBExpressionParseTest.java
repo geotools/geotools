@@ -26,6 +26,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.mbstyle.expression.MBColor;
@@ -40,9 +43,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Before;
 import org.junit.Test;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.filter.expression.Function;
 
 public class MBExpressionParseTest {
     Map<String, JSONObject> testLayersById = new HashMap<>();

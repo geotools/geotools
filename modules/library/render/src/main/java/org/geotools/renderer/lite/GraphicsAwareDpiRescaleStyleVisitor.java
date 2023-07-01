@@ -16,6 +16,7 @@
  */
 package org.geotools.renderer.lite;
 
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.renderer.style.GraphicStyle2D;
 import org.geotools.renderer.style.IconStyle2D;
@@ -27,7 +28,6 @@ import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.visitor.DpiRescaleStyleVisitor;
 import org.geotools.util.Range;
-import org.geotools.api.filter.expression.Expression;
 
 /**
  * This class extends {@link DpiRescaleStyleVisitor} to add support for rescaling external graphics

@@ -23,13 +23,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import org.geotools.api.feature.type.Name;
 import org.geotools.feature.NameImpl;
 import org.geotools.imageio.netcdf.NetCDFImageReader;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
 import org.geotools.imageio.netcdf.VariableAdapter;
 import org.geotools.test.TestData;
 import org.junit.Test;
-import org.geotools.api.feature.type.Name;
 
 /**
  * @author Niels Charlier

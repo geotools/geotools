@@ -22,10 +22,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.HashSet;
-import org.geotools.feature.DefaultFeatureCollection;
-import org.junit.Test;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.feature.DefaultFeatureCollection;
+import org.junit.Test;
 
 /**
  * Do aggregate functions actually work?

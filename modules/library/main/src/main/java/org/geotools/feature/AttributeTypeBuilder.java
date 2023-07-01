@@ -20,11 +20,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.geotools.data.DataUtilities;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.util.Classes;
-import org.geotools.util.SimpleInternationalString;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.AttributeType;
 import org.geotools.api.feature.type.FeatureTypeFactory;
@@ -35,6 +30,11 @@ import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.util.InternationalString;
+import org.geotools.data.DataUtilities;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.util.Classes;
+import org.geotools.util.SimpleInternationalString;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Builder for attribute types and descriptors.

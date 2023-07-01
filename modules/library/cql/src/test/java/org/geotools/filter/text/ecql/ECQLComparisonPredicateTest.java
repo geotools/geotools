@@ -23,13 +23,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
-import org.geotools.filter.AndImpl;
-import org.geotools.filter.NotImpl;
-import org.geotools.filter.text.commons.Language;
-import org.geotools.filter.text.cql2.CQLComparisonPredicateTest;
-import org.geotools.filter.text.cql2.CQLException;
-import org.junit.Assert;
-import org.junit.Test;
 import org.geotools.api.filter.BinaryComparisonOperator;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.PropertyIsBetween;
@@ -40,6 +33,13 @@ import org.geotools.api.filter.PropertyIsLessThan;
 import org.geotools.api.filter.PropertyIsLessThanOrEqualTo;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.filter.AndImpl;
+import org.geotools.filter.NotImpl;
+import org.geotools.filter.text.commons.Language;
+import org.geotools.filter.text.cql2.CQLComparisonPredicateTest;
+import org.geotools.filter.text.cql2.CQLException;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * ECQL Comparison Predicate Test Case.

@@ -4,6 +4,10 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.util.logging.Logger;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.spatial.Beyond;
+import org.geotools.api.filter.spatial.DWithin;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
@@ -12,10 +16,6 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.expression.PropertyName;
-import org.geotools.api.filter.spatial.Beyond;
-import org.geotools.api.filter.spatial.DWithin;
 
 public abstract class JDBCDistanceFiltersTest extends JDBCTestSupport {
 

@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.coverage.io.CoverageAccess;
 import org.geotools.coverage.io.FileDriver;
 import org.geotools.data.Parameter;
@@ -33,7 +34,6 @@ import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.geotools.api.util.ProgressListener;
 
 /**
  * Base class extending {@link DefaultDriver} leveraging on URLs.

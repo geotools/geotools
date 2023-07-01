@@ -17,14 +17,14 @@
 package org.geotools.coverage.processing.operation;
 
 import javax.media.jai.operator.BandSelectDescriptor; // For javadoc
+import org.geotools.api.coverage.Coverage;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.coverage.processing.Operation2D;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.coverage.Coverage;
-import org.geotools.api.parameter.ParameterDescriptor;
-import org.geotools.api.parameter.ParameterValueGroup;
 
 /**
  * Chooses <var>N</var> {@linkplain org.geotools.coverage.GridSampleDimension sample dimensions}

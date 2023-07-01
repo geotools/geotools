@@ -20,13 +20,6 @@ package org.geotools.data.mongodb;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.geotools.data.Query;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.BinaryLogicOperator;
@@ -43,6 +36,13 @@ import org.geotools.api.filter.PropertyIsNull;
 import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.filter.sort.SortOrder;
 import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.data.Query;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 
 public abstract class MongoFeatureSourceTest extends MongoTestSupport {
 

@@ -17,10 +17,10 @@
 package org.geotools.filter.v2_0.bindings;
 
 import javax.xml.namespace.QName;
-import org.geotools.filter.v2_0.FES;
-import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.api.filter.BinaryComparisonOperator;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.filter.v2_0.FES;
+import org.geotools.xsd.AbstractComplexBinding;
 
 /**
  * <pre>

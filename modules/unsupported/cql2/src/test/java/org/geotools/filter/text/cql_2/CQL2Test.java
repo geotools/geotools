@@ -22,15 +22,6 @@ import static org.junit.Assert.assertEquals;
 import java.awt.Color;
 import java.util.List;
 import org.geootols.filter.text.cql_2.CQL2;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.FilterFactoryImpl;
-import org.geotools.filter.IsNullImpl;
-import org.geotools.filter.text.cql2.CQL;
-import org.geotools.filter.text.cql2.CQLException;
-import org.geotools.filter.text.ecql.FilterECQLSample;
-import org.hamcrest.CoreMatchers;
-import org.junit.Assert;
-import org.junit.Test;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
@@ -51,6 +42,15 @@ import org.geotools.api.filter.spatial.Intersects;
 import org.geotools.api.filter.temporal.After;
 import org.geotools.api.filter.temporal.Before;
 import org.geotools.api.filter.temporal.During;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.FilterFactoryImpl;
+import org.geotools.filter.IsNullImpl;
+import org.geotools.filter.text.cql2.CQL;
+import org.geotools.filter.text.cql2.CQLException;
+import org.geotools.filter.text.ecql.FilterECQLSample;
+import org.hamcrest.CoreMatchers;
+import org.junit.Assert;
+import org.junit.Test;
 
 /** Changes since ECQL: see the other tests, nothing new here. */
 public class CQL2Test {

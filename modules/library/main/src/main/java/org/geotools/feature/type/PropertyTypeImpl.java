@@ -20,12 +20,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.geotools.util.Classes;
-import org.geotools.util.Utilities;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.feature.type.PropertyType;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.util.InternationalString;
+import org.geotools.util.Classes;
+import org.geotools.util.Utilities;
 
 public abstract class PropertyTypeImpl implements PropertyType {
 

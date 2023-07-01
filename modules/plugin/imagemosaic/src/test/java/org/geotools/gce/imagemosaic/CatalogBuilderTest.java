@@ -26,6 +26,8 @@ import java.io.InputStream;
 import java.net.InetAddress;
 import java.util.Properties;
 import javax.media.jai.PlanarImage;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValue;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -42,8 +44,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.geotools.api.parameter.GeneralParameterValue;
-import org.geotools.api.parameter.ParameterValue;
 
 /**
  * Testing {@link CatalogBuilder} and its related subclasses.

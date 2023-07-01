@@ -3,10 +3,10 @@ package org.geotools.data.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import org.geotools.api.feature.type.Name;
 import org.geotools.feature.NameImpl;
 import org.geotools.util.Converters;
 import org.junit.Test;
-import org.geotools.api.feature.type.Name;
 
 public class NameConverterTest {
 

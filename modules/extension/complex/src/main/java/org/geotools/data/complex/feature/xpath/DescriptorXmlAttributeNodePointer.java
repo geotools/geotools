@@ -22,11 +22,11 @@ import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.eclipse.xsd.XSDAttributeDeclaration;
 import org.eclipse.xsd.XSDElementDeclaration;
-import org.geotools.xsd.Schemas;
 import org.geotools.api.feature.type.ComplexType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.feature.type.PropertyDescriptor;
 import org.geotools.api.feature.type.PropertyType;
+import org.geotools.xsd.Schemas;
 
 /**
  * Special node pointer for an XML-attribute inside an attribute.

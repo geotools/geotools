@@ -23,13 +23,13 @@ import it.geosolutions.jaiext.classifier.LinearColorMap.LinearColorMapType;
 import it.geosolutions.jaiext.classifier.LinearColorMapElement;
 import java.util.HashMap;
 import java.util.Map;
+import org.geotools.api.filter.FilterFactory2;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.styling.ColorMapEntry;
 import org.geotools.styling.ColorMapEntryImpl;
 import org.junit.Before;
 import org.junit.Test;
-import org.geotools.api.filter.FilterFactory2;
 
 public class SLDColorMapBuilderTest {
     private SLDColorMapBuilder builder;

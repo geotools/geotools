@@ -20,11 +20,11 @@ package org.geotools.kml.v22.bindings;
 
 import java.util.Map;
 import javax.xml.namespace.QName;
+import org.geotools.api.feature.type.Name;
 import org.geotools.kml.v22.KML;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.geotools.api.feature.type.Name;
 
 /**
  * Binding object for the type http://www.opengis.net/kml/2.2:DataType.

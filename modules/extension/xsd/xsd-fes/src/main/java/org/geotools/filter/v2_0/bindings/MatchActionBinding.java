@@ -17,9 +17,9 @@
 package org.geotools.filter.v2_0.bindings;
 
 import org.apache.commons.lang3.StringUtils;
+import org.geotools.api.filter.MultiValuedFilter.MatchAction;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.xsd.EnumSimpleBinding;
-import org.geotools.api.filter.MultiValuedFilter.MatchAction;
 
 /** Binding for encoding {@link MatchAction} enum values. */
 public class MatchActionBinding extends EnumSimpleBinding {

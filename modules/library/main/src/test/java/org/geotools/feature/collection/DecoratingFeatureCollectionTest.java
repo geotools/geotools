@@ -18,15 +18,15 @@ package org.geotools.feature.collection;
 
 import java.io.IOException;
 import org.easymock.EasyMock;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.FeatureVisitor;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.filter.FilterFactory2;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.junit.Test;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.FeatureVisitor;
-import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.filter.FilterFactory2;
 
 public class DecoratingFeatureCollectionTest {
 

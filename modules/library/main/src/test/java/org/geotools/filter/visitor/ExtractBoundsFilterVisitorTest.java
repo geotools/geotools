@@ -3,6 +3,10 @@ package org.geotools.filter.visitor;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.temporal.Instant;
+import org.geotools.api.temporal.Period;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.temporal.TemporalFilterTestSupport;
 import org.junit.Test;
@@ -11,10 +15,6 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.temporal.Instant;
-import org.geotools.api.temporal.Period;
 
 public class ExtractBoundsFilterVisitorTest extends TemporalFilterTestSupport {
 

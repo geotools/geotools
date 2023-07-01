@@ -20,15 +20,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.SchemaException;
-import org.geotools.filter.function.EnvFunction;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.PrecisionModel;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.Or;
@@ -41,6 +32,15 @@ import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.spatial.DWithin;
 import org.geotools.api.filter.spatial.Equals;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.SchemaException;
+import org.geotools.filter.function.EnvFunction;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.PrecisionModel;
 
 /**
  * Unit test for filters. Note that this unit test does not encompass all of filter package, just

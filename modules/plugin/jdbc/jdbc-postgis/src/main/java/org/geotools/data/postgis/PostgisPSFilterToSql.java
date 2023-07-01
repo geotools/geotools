@@ -17,8 +17,6 @@
 package org.geotools.data.postgis;
 
 import java.io.IOException;
-import org.geotools.filter.FilterCapabilities;
-import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.filter.BinaryComparisonOperator;
 import org.geotools.api.filter.PropertyIsBetween;
@@ -29,6 +27,8 @@ import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.spatial.BinarySpatialOperator;
 import org.geotools.api.filter.spatial.DistanceBufferOperator;
+import org.geotools.filter.FilterCapabilities;
+import org.geotools.jdbc.PreparedFilterToSQL;
 
 public class PostgisPSFilterToSql extends PreparedFilterToSQL {
 

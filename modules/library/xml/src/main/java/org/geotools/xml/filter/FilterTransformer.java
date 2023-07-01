@@ -18,10 +18,6 @@ package org.geotools.xml.filter;
 
 import java.util.Set;
 import javax.xml.transform.TransformerException;
-import org.geotools.gml.producer.GeometryTransformer;
-import org.geotools.xml.transform.TransformerBase;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.ExcludeFilter;
 import org.geotools.api.filter.Filter;
@@ -75,6 +71,10 @@ import org.geotools.api.filter.temporal.OverlappedBy;
 import org.geotools.api.filter.temporal.TContains;
 import org.geotools.api.filter.temporal.TEquals;
 import org.geotools.api.filter.temporal.TOverlaps;
+import org.geotools.gml.producer.GeometryTransformer;
+import org.geotools.xml.transform.TransformerBase;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.helpers.AttributesImpl;
 
@@ -545,7 +545,8 @@ public class FilterTransformer extends TransformerBase {
             atts.addAttribute("", "name", "name", "", expression.getName());
             start(type, atts);
 
-            for (org.geotools.api.filter.expression.Expression parameter : expression.getParameters()) {
+            for (org.geotools.api.filter.expression.Expression parameter :
+                    expression.getParameters()) {
                 parameter.accept(this, extraData);
             }
             end(type);

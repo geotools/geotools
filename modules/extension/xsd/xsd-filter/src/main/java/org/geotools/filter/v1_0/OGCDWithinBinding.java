@@ -17,13 +17,13 @@
 package org.geotools.filter.v1_0;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.spatial.DWithin;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.filter.spatial.DWithin;
 
 /**
  * Binding object for the element http://www.opengis.net/ogc:DWithin.

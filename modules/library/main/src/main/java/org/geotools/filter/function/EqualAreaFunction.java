@@ -18,15 +18,15 @@ package org.geotools.filter.function;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.visitor.EqualAreaListVisitor;
-import org.geotools.feature.visitor.FeatureCalc;
-import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.visitor.EqualAreaListVisitor;
+import org.geotools.feature.visitor.FeatureCalc;
+import org.geotools.filter.capability.FunctionNameImpl;
 
 /**
  * Breaks a SimpleFeatureCollection into classes with (roughtly) equal total items area in each

@@ -35,6 +35,16 @@ import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 import javax.media.jai.operator.MosaicDescriptor;
+import org.geotools.api.coverage.Coverage;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.metadata.spatial.PixelOrientation;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -70,16 +80,6 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.PrecisionModel;
 import org.locationtech.jts.geom.TopologyException;
 import org.locationtech.jts.geom.prep.PreparedGeometryFactory;
-import org.geotools.api.coverage.Coverage;
-import org.geotools.api.coverage.grid.GridCoverage;
-import org.geotools.api.geometry.Envelope;
-import org.geotools.api.metadata.spatial.PixelOrientation;
-import org.geotools.api.parameter.ParameterDescriptor;
-import org.geotools.api.parameter.ParameterValue;
-import org.geotools.api.parameter.ParameterValueGroup;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.api.referencing.datum.PixelInCell;
-import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * The crop operation is responsible for selecting geographic subarea of the source coverage. The
@@ -547,7 +547,8 @@ public class Crop extends Operation2D {
                             JTS.getEnvelope2D(
                                     intersection.getEnvelopeInternal(),
                                     cropEnvelope.getCoordinateReferenceSystem());
-                    GeneralEnvelope ge = new GeneralEnvelope((org.geotools.api.geometry.Envelope) e2d);
+                    GeneralEnvelope ge =
+                            new GeneralEnvelope((org.geotools.api.geometry.Envelope) e2d);
                     cropEnvelope.setEnvelope(ge);
                 } catch (TopologyException e) {
                     // in case the intersection fail, accept using intersection(cropEnvelope,

@@ -27,6 +27,7 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import org.geotools.api.filter.FilterFactory2;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
@@ -43,7 +44,6 @@ import org.geotools.styling.Symbolizer;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
-import org.geotools.api.filter.FilterFactory2;
 
 public class FillTest {
     private static final long TIME = 40000;

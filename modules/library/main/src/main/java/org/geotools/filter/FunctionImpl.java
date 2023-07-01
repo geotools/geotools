@@ -23,10 +23,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.capability.FunctionNameImpl;
-import org.geotools.filter.expression.ExpressionAbstract;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
@@ -34,6 +30,10 @@ import org.geotools.api.filter.expression.ExpressionVisitor;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.parameter.Parameter;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.capability.FunctionNameImpl;
+import org.geotools.filter.expression.ExpressionAbstract;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Default implementation of a Function; you may extend this class to implement specific

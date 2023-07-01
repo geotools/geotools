@@ -12,6 +12,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import org.geotools.api.feature.FeatureVisitor;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
@@ -32,10 +36,6 @@ import org.geotools.referencing.CRS;
 import org.geotools.util.logging.Logging;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.geotools.api.feature.FeatureVisitor;
-import org.geotools.api.feature.type.Name;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.util.ProgressListener;
 
 public class TransformFeatureCollectionTest {
 

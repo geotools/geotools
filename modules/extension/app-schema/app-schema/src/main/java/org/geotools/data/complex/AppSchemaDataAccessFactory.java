@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFactory;
 import org.geotools.data.DataStore;
@@ -38,8 +40,6 @@ import org.geotools.data.complex.config.AppSchemaDataAccessDTO;
 import org.geotools.data.complex.config.DataAccessMap;
 import org.geotools.data.complex.config.XMLConfigDigester;
 import org.geotools.util.logging.Logging;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.type.FeatureType;
 
 /**
  * DataStoreFactory for ComplexDataStore.

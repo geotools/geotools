@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import javax.media.jai.RenderedOp;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValue;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -39,8 +41,6 @@ import org.geotools.test.TestData;
 import org.geotools.xml.styling.SLDParser;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
-import org.geotools.api.parameter.GeneralParameterValue;
-import org.geotools.api.parameter.ParameterValue;
 
 public class JiffleProcessTest {
 

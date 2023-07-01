@@ -20,6 +20,10 @@ package org.geotools.ows.wmts.map;
 import static org.junit.Assert.assertEquals;
 
 import java.net.URL;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.ows.wmts.WMTSTestUtils;
@@ -31,10 +35,6 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
 import org.junit.Assert;
 import org.junit.Test;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.parameter.GeneralParameterValue;
-import org.geotools.api.parameter.ParameterValue;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 public class WMTSMapLayerTest {
 

@@ -21,6 +21,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.NilExpression;
 import org.geotools.data.DataTestCase;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.styling.Graphic;
@@ -31,8 +33,6 @@ import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
 import org.junit.Test;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.expression.NilExpression;
 
 public class MetaBufferEstimatorTest extends DataTestCase {
 

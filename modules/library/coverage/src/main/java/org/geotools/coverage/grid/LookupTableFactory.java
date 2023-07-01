@@ -24,9 +24,9 @@ import java.awt.image.DataBuffer;
 import java.util.Arrays;
 import java.util.Map;
 import javax.media.jai.LookupTableJAI;
-import org.geotools.util.WeakValueHashMap;
 import org.geotools.api.referencing.operation.MathTransform1D;
 import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.util.WeakValueHashMap;
 
 /**
  * A factory for {@link LookupTableJAI} objects built from an array of {@link MathTransform1D}. This

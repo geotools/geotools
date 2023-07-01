@@ -17,6 +17,10 @@
 package org.geotools.data.geojson.store;
 
 import java.io.IOException;
+import org.geotools.api.feature.FeatureVisitor;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.Filter;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.geojson.GeoJSONReader;
@@ -25,10 +29,6 @@ import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.locationtech.jts.geom.Geometry;
-import org.geotools.api.feature.FeatureVisitor;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.filter.Filter;
 
 public class GeoJSONFeatureSource extends ContentFeatureSource {
     /** Should we read just the first feature to extract the Schema */

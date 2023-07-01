@@ -17,10 +17,10 @@
 package org.geotools.data;
 
 import java.util.EventObject;
-import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.filter.Filter;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
  * Represents all events triggered by DataStore instances (typically change events).

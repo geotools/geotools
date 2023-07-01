@@ -18,10 +18,10 @@ package org.geotools.gce.imagemosaic;
 
 import java.util.Date;
 import java.util.Iterator;
+import org.geotools.api.feature.Feature;
 import org.geotools.util.DateRange;
 import org.geotools.util.Range;
 import org.geotools.util.Utilities;
-import org.geotools.api.feature.Feature;
 
 /**
  * Generates a list of compact DateRanges from a collection

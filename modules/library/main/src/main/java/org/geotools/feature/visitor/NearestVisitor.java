@@ -20,10 +20,10 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import org.geotools.util.Converters;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.feature.type.PropertyDescriptor;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.util.Converters;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Finds the nearest value to the provided one in the attribute domain.

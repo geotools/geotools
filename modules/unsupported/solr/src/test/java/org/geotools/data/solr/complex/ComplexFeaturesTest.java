@@ -35,6 +35,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.Property;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.FeatureSource;
@@ -49,10 +53,6 @@ import org.junit.AfterClass;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.Property;
-import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.feature.type.Name;
 
 /**
  * This class contains the integration tests (online tests) for the integration between App-Schema

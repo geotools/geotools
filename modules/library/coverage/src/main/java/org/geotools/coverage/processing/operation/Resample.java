@@ -20,6 +20,18 @@ import java.awt.Dimension;
 import javax.media.jai.Interpolation;
 import javax.media.jai.operator.AffineDescriptor;
 import javax.media.jai.operator.WarpDescriptor;
+import org.geotools.api.coverage.Coverage;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.coverage.grid.GridGeometry;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.processing.CannotReprojectException;
@@ -36,18 +48,6 @@ import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.geotools.api.coverage.Coverage;
-import org.geotools.api.coverage.grid.GridCoverage;
-import org.geotools.api.coverage.grid.GridEnvelope;
-import org.geotools.api.coverage.grid.GridGeometry;
-import org.geotools.api.geometry.Envelope;
-import org.geotools.api.parameter.ParameterDescriptor;
-import org.geotools.api.parameter.ParameterValueGroup;
-import org.geotools.api.referencing.FactoryException;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.api.referencing.datum.PixelInCell;
-import org.geotools.api.referencing.operation.MathTransform;
-import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * Resample a grid coverage using a different grid geometry. This operation provides the following
@@ -72,9 +72,9 @@ import org.geotools.api.referencing.operation.TransformException;
  *
  * <p><strong>Geotools extension:</strong><br>
  * The {@code "Resample"} operation use the default {@link
- * org.geotools.api.referencing.operation.CoordinateOperationFactory} for creating a transformation from
- * the source to the destination coordinate reference systems. If a custom factory is desired, it
- * may be supplied as a rendering hint with the {@link
+ * org.geotools.api.referencing.operation.CoordinateOperationFactory} for creating a transformation
+ * from the source to the destination coordinate reference systems. If a custom factory is desired,
+ * it may be supplied as a rendering hint with the {@link
  * org.geotools.util.factory.Hints#COORDINATE_OPERATION_FACTORY} key. Rendering hints can be
  * supplied to {@link org.geotools.coverage.processing.DefaultProcessor} at construction time.
  *

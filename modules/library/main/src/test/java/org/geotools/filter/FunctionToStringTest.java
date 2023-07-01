@@ -25,6 +25,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.measure.Unit;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.parameter.Parameter;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.CategorizeFunction;
 import org.geotools.filter.function.Classifier;
@@ -44,11 +49,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
-import org.geotools.api.filter.capability.FunctionName;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.filter.expression.Function;
-import org.geotools.api.filter.expression.Literal;
-import org.geotools.api.parameter.Parameter;
 
 /**
  * Test that all functions in the DefaultFunctionFactory have the toString() method implemented.

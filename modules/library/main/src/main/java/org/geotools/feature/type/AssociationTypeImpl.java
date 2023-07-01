@@ -17,12 +17,12 @@
 package org.geotools.feature.type;
 
 import java.util.List;
-import org.geotools.util.Utilities;
 import org.geotools.api.feature.type.AssociationType;
 import org.geotools.api.feature.type.AttributeType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.util.InternationalString;
+import org.geotools.util.Utilities;
 
 public class AssociationTypeImpl extends PropertyTypeImpl implements AssociationType {
 

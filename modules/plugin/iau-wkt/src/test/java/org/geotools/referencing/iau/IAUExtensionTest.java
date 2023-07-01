@@ -26,18 +26,18 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.Set;
-import org.geotools.metadata.iso.citation.Citations;
-import org.geotools.referencing.NamedIdentifier;
-import org.geotools.referencing.ReferencingFactoryFinder;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
 import org.geotools.api.metadata.Identifier;
 import org.geotools.api.metadata.citation.Citation;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.IdentifiedObject;
 import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.referencing.NamedIdentifier;
+import org.geotools.referencing.ReferencingFactoryFinder;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 
 public class IAUExtensionTest {
 

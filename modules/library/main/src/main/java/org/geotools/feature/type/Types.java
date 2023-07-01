@@ -25,8 +25,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
-import org.geotools.feature.NameImpl;
-import org.geotools.util.Converters;
 import org.geotools.api.feature.Attribute;
 import org.geotools.api.feature.ComplexAttribute;
 import org.geotools.api.feature.IllegalAttributeException;
@@ -39,6 +37,8 @@ import org.geotools.api.feature.type.Name;
 import org.geotools.api.feature.type.PropertyDescriptor;
 import org.geotools.api.feature.type.PropertyType;
 import org.geotools.api.filter.Filter;
+import org.geotools.feature.NameImpl;
+import org.geotools.util.Converters;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**

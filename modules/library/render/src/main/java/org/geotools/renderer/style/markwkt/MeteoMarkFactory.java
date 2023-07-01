@@ -25,10 +25,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.renderer.style.MarkFactory;
-import org.geotools.renderer.util.ExplicitBoundsShape;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.renderer.style.MarkFactory;
+import org.geotools.renderer.util.ExplicitBoundsShape;
 
 /**
  * Adds to the well-known shapes some symbols the weathermen may find useful.

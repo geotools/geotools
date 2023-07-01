@@ -18,9 +18,9 @@
 package org.geotools.data.complex;
 
 import java.util.NoSuchElementException;
-import org.geotools.feature.FeatureIterator;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.filter.Filter;
+import org.geotools.feature.FeatureIterator;
 
 /**
  * An extension to {@linkplain org.geotools.data.complex.DataAccessMappingFeatureIterator} where

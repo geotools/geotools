@@ -19,8 +19,6 @@ package org.geotools.data.complex.feature.type;
 
 import java.util.Collection;
 import java.util.List;
-import org.geotools.feature.type.FeatureTypeFactoryImpl;
-import org.geotools.feature.type.FeatureTypeImpl;
 import org.geotools.api.feature.type.AttributeType;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.GeometryDescriptor;
@@ -28,6 +26,8 @@ import org.geotools.api.feature.type.Name;
 import org.geotools.api.feature.type.PropertyDescriptor;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.util.InternationalString;
+import org.geotools.feature.type.FeatureTypeFactoryImpl;
+import org.geotools.feature.type.FeatureTypeImpl;
 
 /**
  * A specialisation of {@link FeatureTypeFactoryImpl} that returns {@link UniqueNameFeatureTypeImpl}

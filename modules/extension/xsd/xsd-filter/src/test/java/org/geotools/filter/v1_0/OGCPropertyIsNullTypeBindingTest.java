@@ -19,9 +19,9 @@ package org.geotools.filter.v1_0;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import org.geotools.api.filter.PropertyIsNull;
 import org.geotools.xsd.Binding;
 import org.junit.Test;
-import org.geotools.api.filter.PropertyIsNull;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

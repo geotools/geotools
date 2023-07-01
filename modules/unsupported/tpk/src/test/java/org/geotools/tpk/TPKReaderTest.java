@@ -23,6 +23,7 @@ import static org.junit.Assert.assertEquals;
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
+import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -30,7 +31,6 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.parameter.Parameter;
 import org.junit.Test;
-import org.geotools.api.parameter.GeneralParameterValue;
 
 public class TPKReaderTest {
 

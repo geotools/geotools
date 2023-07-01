@@ -21,6 +21,7 @@ import static org.junit.Assert.assertThrows;
 
 import java.net.URL;
 import javax.swing.Icon;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.ows.MockURLChecker;
 import org.geotools.data.ows.URLCheckerException;
 import org.geotools.data.ows.URLCheckers;
@@ -30,7 +31,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.geotools.api.filter.FilterFactory;
 
 public class ImageGraphicFactoryTest {
 

@@ -24,6 +24,9 @@ import java.io.File;
 import java.util.Map;
 import java.util.Random;
 import javax.media.jai.TiledImage;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -40,9 +43,6 @@ import org.jaitools.imageutils.ImageUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.geotools.api.geometry.DirectPosition;
-import org.geotools.api.referencing.datum.PixelInCell;
-import org.geotools.api.referencing.operation.MathTransform;
 
 /**
  * Unit tests for GridReaderLayerHelper.

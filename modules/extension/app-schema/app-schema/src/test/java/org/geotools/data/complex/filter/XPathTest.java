@@ -26,6 +26,11 @@ import javax.xml.namespace.QName;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.util.XSDResourceFactoryImpl;
+import org.geotools.api.feature.ComplexAttribute;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.ComplexType;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
 import org.geotools.data.complex.config.AppSchemaFeatureTypeRegistry;
 import org.geotools.data.complex.feature.type.Types;
 import org.geotools.data.complex.util.EmfComplexFeatureReader;
@@ -39,11 +44,6 @@ import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.xsd.SchemaIndex;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.geotools.api.feature.ComplexAttribute;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.type.ComplexType;
-import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.feature.type.Name;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**

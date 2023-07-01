@@ -20,14 +20,14 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.filter.FunctionExpressionImpl;
-import org.geotools.filter.LiteralExpressionImpl;
-import org.geotools.filter.capability.FunctionNameImpl;
-import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.ExpressionVisitor;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.filter.LiteralExpressionImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
+import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 
 /**
  * Builds a list via iteration. An index property name, a count (number of iterations) and an

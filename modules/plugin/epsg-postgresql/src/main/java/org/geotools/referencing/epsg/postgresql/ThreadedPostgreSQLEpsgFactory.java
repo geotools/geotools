@@ -94,8 +94,8 @@ import org.postgresql.ds.common.BaseDataSource;
  *
  * <p>The database version is given in the {@linkplain
  * org.geotools.api.metadata.citation.Citation#getEdition edition attribute} of the {@linkplain
- * org.geotools.api.referencing.AuthorityFactory#getAuthority authority}. The postgreSQL database should
- * be read only.
+ * org.geotools.api.referencing.AuthorityFactory#getAuthority authority}. The postgreSQL database
+ * should be read only.
  *
  * <p>Just having this class accessible in the classpath, together with the registration in the
  * {@code META-INF/services/} directory, is sufficient to get a working EPSG authority factory

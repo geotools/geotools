@@ -19,18 +19,18 @@ package org.geotools.referencing.epsg.esri;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
-import org.geotools.metadata.iso.citation.Citations;
-import org.geotools.referencing.CRS;
-import org.geotools.referencing.NamedIdentifier;
-import org.geotools.referencing.factory.epsg.FactoryUsingWKT;
-import org.junit.Assert;
-import org.junit.Test;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.ReferenceIdentifier;
 import org.geotools.api.referencing.crs.CRSAuthorityFactory;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.crs.GeographicCRS;
 import org.geotools.api.referencing.crs.ProjectedCRS;
+import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.NamedIdentifier;
+import org.geotools.referencing.factory.epsg.FactoryUsingWKT;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * Tests {@link FactoryUsingWKT} as a fallback after the default factory. This method performs the

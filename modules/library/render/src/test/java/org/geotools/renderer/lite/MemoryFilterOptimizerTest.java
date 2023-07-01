@@ -29,14 +29,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.geotools.data.DataTestCase;
-import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.filter.function.FilterFunction_strConcat;
-import org.geotools.filter.function.InFunction;
-import org.geotools.renderer.lite.MemoryFilterOptimizer.IndexPropertyName;
-import org.junit.Test;
-import org.mockito.Mockito;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.And;
@@ -46,6 +38,14 @@ import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.data.DataTestCase;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.filter.function.FilterFunction_strConcat;
+import org.geotools.filter.function.InFunction;
+import org.geotools.renderer.lite.MemoryFilterOptimizer.IndexPropertyName;
+import org.junit.Test;
+import org.mockito.Mockito;
 
 public class MemoryFilterOptimizerTest extends DataTestCase {
 

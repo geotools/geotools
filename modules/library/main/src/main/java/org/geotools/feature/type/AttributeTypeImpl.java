@@ -17,11 +17,11 @@
 package org.geotools.feature.type;
 
 import java.util.List;
-import org.geotools.util.Classes;
 import org.geotools.api.feature.type.AttributeType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.util.InternationalString;
+import org.geotools.util.Classes;
 
 /**
  * Base class for attribute types.

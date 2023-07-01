@@ -20,9 +20,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.data.simple.SimpleFeatureCollection;
 
 /**
  * Determines the standard deviation.

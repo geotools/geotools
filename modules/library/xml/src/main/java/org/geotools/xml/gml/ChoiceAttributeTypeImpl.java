@@ -17,13 +17,13 @@
 package org.geotools.xml.gml;
 
 import java.util.List;
-import org.geotools.data.DataUtilities;
-import org.geotools.feature.type.AttributeTypeImpl;
-import org.geotools.util.SimpleInternationalString;
 import org.geotools.api.feature.type.AttributeType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.util.InternationalString;
+import org.geotools.data.DataUtilities;
+import org.geotools.feature.type.AttributeTypeImpl;
+import org.geotools.util.SimpleInternationalString;
 
 /**
  * Created for GML generated FeatureTypes. Represents a Choice type.

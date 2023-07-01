@@ -31,6 +31,7 @@ import org.assertj.swing.driver.FrameDriver;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.edt.GuiQuery;
 import org.assertj.swing.fixture.FrameFixture;
+import org.geotools.api.geometry.Envelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.swing.testutils.GraphicsTestBase;
 import org.geotools.swing.testutils.GraphicsTestRunner;
@@ -39,7 +40,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.geotools.api.geometry.Envelope;
 
 /**
  * Unit tests for MapPaneKeyHandler. Requires graphics environment.

@@ -18,12 +18,12 @@ package org.geotools.vectormosaic;
 
 import static org.junit.Assert.assertEquals;
 
+import org.geotools.api.filter.Filter;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
-import org.geotools.api.filter.Filter;
 
 public class VectorMosaicFeatureSourceTest extends VectorMosaicTest {
 

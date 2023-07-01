@@ -19,6 +19,10 @@ package org.geotools.coverage.io.netcdf.crs;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.measure.Unit;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.ProjectedCRS;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.Projection;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.referencing.crs.DefaultDerivedCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -35,10 +39,6 @@ import org.geotools.referencing.operation.projection.Stereographic;
 import org.geotools.referencing.operation.projection.TransverseMercator;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.util.logging.Logging;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.api.referencing.crs.ProjectedCRS;
-import org.geotools.api.referencing.operation.MathTransform;
-import org.geotools.api.referencing.operation.Projection;
 
 /**
  * Enum used to represent different coordinate reference systems stored within a NetCDF dataset.

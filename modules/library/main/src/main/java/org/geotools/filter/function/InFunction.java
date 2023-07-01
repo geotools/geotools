@@ -21,12 +21,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.util.Converters;
-import org.geotools.api.filter.capability.FunctionName;
-import org.geotools.api.filter.expression.Expression;
 
 /**
  * The function checks whether a candidate value is contained in an arbitrary long list of user

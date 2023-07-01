@@ -16,8 +16,8 @@
  */
 package org.geotools.brewer.styling.builder;
 
-import org.geotools.styling.Halo;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.styling.Halo;
 
 public class HaloBuilder extends AbstractStyleBuilder<org.geotools.api.style.Halo> {
     Expression radius;

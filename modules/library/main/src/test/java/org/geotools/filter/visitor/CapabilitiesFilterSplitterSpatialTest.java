@@ -16,7 +16,6 @@
  */
 package org.geotools.filter.visitor;
 
-import org.junit.Test;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.api.filter.spatial.Beyond;
@@ -30,6 +29,7 @@ import org.geotools.api.filter.spatial.Overlaps;
 import org.geotools.api.filter.spatial.Touches;
 import org.geotools.api.filter.spatial.Within;
 import org.geotools.api.geometry.Geometry;
+import org.junit.Test;
 
 /**
  * @author Jesse

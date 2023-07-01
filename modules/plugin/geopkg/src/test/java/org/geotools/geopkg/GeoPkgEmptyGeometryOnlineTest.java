@@ -19,6 +19,8 @@ package org.geotools.geopkg;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Transaction;
@@ -29,8 +31,6 @@ import org.geotools.jdbc.JDBCEmptyGeometryTestSetup;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.WKTReader;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.feature.simple.SimpleFeatureType;
 
 public class GeoPkgEmptyGeometryOnlineTest extends JDBCEmptyGeometryOnlineTest {
 

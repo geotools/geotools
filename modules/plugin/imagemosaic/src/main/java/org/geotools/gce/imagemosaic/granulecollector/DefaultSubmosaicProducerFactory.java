@@ -22,12 +22,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.geotools.api.filter.Filter;
 import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.gce.imagemosaic.MergeBehavior;
 import org.geotools.gce.imagemosaic.RasterLayerRequest;
 import org.geotools.gce.imagemosaic.RasterLayerResponse;
 import org.geotools.gce.imagemosaic.RasterManager;
-import org.geotools.api.filter.Filter;
 
 /**
  * Create SubmosaicProducer based on whether the request was for a stacked mosaic with additional

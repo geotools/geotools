@@ -34,6 +34,8 @@ import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.data.ows.URLCheckers;
 import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPClientFinder;
@@ -49,8 +51,6 @@ import org.geotools.util.logging.Logging;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.filter.expression.Expression;
 
 /**
  * Implementation of an {@link ExternalGraphicFactory} that takes the address of a Mapbox-style

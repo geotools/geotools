@@ -22,7 +22,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
-import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.PropertyDescriptor;
@@ -52,6 +51,7 @@ import org.geotools.api.filter.expression.VolatileFunction;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.api.filter.identity.GmlObjectId;
 import org.geotools.api.filter.identity.Identifier;
+import org.geotools.filter.FilterAttributeExtractor;
 
 /**
  * Takes a filter and returns a simplified, equivalent one. At the moment the filter:

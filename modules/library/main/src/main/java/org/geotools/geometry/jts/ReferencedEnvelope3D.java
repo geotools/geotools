@@ -16,13 +16,6 @@
  */
 package org.geotools.geometry.jts;
 
-import org.geotools.geometry.DirectPosition3D;
-import org.geotools.geometry.GeneralEnvelope;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
-import org.geotools.referencing.CRS;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.geometry.BoundingBox3D;
 import org.geotools.api.geometry.DirectPosition;
@@ -33,6 +26,13 @@ import org.geotools.api.referencing.operation.CoordinateOperation;
 import org.geotools.api.referencing.operation.CoordinateOperationFactory;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.geometry.DirectPosition3D;
+import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.referencing.CRS;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * A 3D envelope associated with a {@linkplain CoordinateReferenceSystem coordinate reference
@@ -656,8 +656,9 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
      * Creates a new envelope from an existing bounding box.
      *
      * <p>NOTE: if the bounding box is empty, the resulting ReferencedEnvelope will not be. In case
-     * this is needed use {@link #create(org.geotools.api.geometry.Envelope, CoordinateReferenceSystem)
-     * ReferencedEnvelope.create(bbox, bbox.getCoordinateReferenceSystem())}
+     * this is needed use {@link #create(org.geotools.api.geometry.Envelope,
+     * CoordinateReferenceSystem) ReferencedEnvelope.create(bbox,
+     * bbox.getCoordinateReferenceSystem())}
      *
      * @param bbox The bounding box to initialize from.
      * @throws MismatchedDimensionException if the CRS dimension is not valid.

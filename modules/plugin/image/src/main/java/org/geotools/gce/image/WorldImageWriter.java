@@ -36,6 +36,12 @@ import java.util.Set;
 import javax.imageio.stream.ImageOutputStream;
 import javax.media.jai.JAI;
 import javax.media.jai.ParameterBlockJAI;
+import org.geotools.api.coverage.grid.Format;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.coverage.grid.GridCoverageWriter;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverageWriter;
 import org.geotools.coverage.util.CoverageUtilities;
@@ -45,12 +51,6 @@ import org.geotools.image.io.ImageIOExt;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.coverage.grid.Format;
-import org.geotools.api.coverage.grid.GridCoverage;
-import org.geotools.api.coverage.grid.GridCoverageWriter;
-import org.geotools.api.parameter.GeneralParameterValue;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * Writes a GridCoverage to a raster image file and an accompanying world file. The destination

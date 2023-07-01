@@ -20,14 +20,14 @@ package org.geotools.filter.text.ecql;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import org.geotools.filter.text.cql2.CQLException;
-import org.junit.Assert;
-import org.junit.Test;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.Or;
 import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.filter.text.cql2.CQLException;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * Test for IN Predicate

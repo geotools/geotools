@@ -6,13 +6,13 @@ import java.io.FileReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.data.FeatureSource;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.geojson.feature.FeatureJSON;
 import org.geotools.geojson.geom.GeometryJSON;
 import org.locationtech.jts.geom.Geometry;
-import org.geotools.api.feature.simple.SimpleFeature;
 
 @SuppressWarnings({"PMD.SystemPrintln", "PMD.CloseResource"})
 public class Benchmark {

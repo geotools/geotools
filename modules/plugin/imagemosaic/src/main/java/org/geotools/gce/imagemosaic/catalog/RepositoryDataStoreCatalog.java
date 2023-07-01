@@ -21,6 +21,9 @@ import java.net.MalformedURLException;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
@@ -28,9 +31,6 @@ import org.geotools.data.Repository;
 import org.geotools.feature.NameImpl;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.feature.type.Name;
 
 /**
  * A catalog fetching the backing GeoTools data store from a {@link Repository} on demand

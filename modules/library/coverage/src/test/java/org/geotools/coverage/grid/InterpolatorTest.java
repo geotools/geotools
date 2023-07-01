@@ -34,6 +34,8 @@ import javax.media.jai.BorderExtender;
 import javax.media.jai.Interpolation;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROIShape;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.geometry.Envelope;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
@@ -41,8 +43,6 @@ import org.geotools.util.factory.Hints;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
-import org.geotools.api.coverage.grid.GridEnvelope;
-import org.geotools.api.geometry.Envelope;
 
 /**
  * Tests the {@link Interpolator2D} implementation.

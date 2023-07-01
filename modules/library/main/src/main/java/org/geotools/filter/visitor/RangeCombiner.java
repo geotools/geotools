@@ -20,8 +20,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.geotools.filter.FilterAttributeExtractor;
-import org.geotools.util.Range;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.filter.BinaryComparisonOperator;
 import org.geotools.api.filter.BinaryLogicOperator;
@@ -37,6 +35,8 @@ import org.geotools.api.filter.PropertyIsNotEqualTo;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.filter.FilterAttributeExtractor;
+import org.geotools.util.Range;
 
 /**
  * Utility class used by {@link SimplifyingFilterVisitor} to combine range based filters. This class
@@ -219,7 +219,8 @@ abstract class RangeCombiner {
                 } else {
                     otherFilters.add(f);
                 }
-            } else if (f instanceof org.geotools.api.filter.And || f instanceof org.geotools.api.filter.Or) {
+            } else if (f instanceof org.geotools.api.filter.And
+                    || f instanceof org.geotools.api.filter.Or) {
                 BinaryLogicOperator logic = (BinaryLogicOperator) f;
                 List<Filter> children = logic.getChildren();
                 RangeCombiner subCombiner;

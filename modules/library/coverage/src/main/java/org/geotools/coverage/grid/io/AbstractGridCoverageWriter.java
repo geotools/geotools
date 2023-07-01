@@ -20,10 +20,10 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.stream.ImageOutputStream;
+import org.geotools.api.coverage.grid.GridCoverageWriter;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.geotools.api.coverage.grid.GridCoverageWriter;
 
 /**
  * An {@link AbstractGridCoverageWriter} is the base class for all {@link GridCoverageWriter}
@@ -98,7 +98,9 @@ public abstract class AbstractGridCoverageWriter implements GridCoverageWriter {
         throw new UnsupportedOperationException("Unsupported method");
     }
 
-    /** @see org.geotools.api.coverage.grid.GridCoverageWriter#setCurrentSubname(java.lang.String) */
+    /**
+     * @see org.geotools.api.coverage.grid.GridCoverageWriter#setCurrentSubname(java.lang.String)
+     */
     @Override
     public void setCurrentSubname(String name) throws IOException {
         throw new UnsupportedOperationException("Unsupported method");

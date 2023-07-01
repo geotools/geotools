@@ -19,8 +19,6 @@ package org.geotools.filter.v1_0;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.geotools.xsd.Binding;
-import org.junit.Test;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.BinaryLogicOperator;
 import org.geotools.api.filter.FilterFactory;
@@ -28,6 +26,8 @@ import org.geotools.api.filter.Or;
 import org.geotools.api.filter.PropertyIsBetween;
 import org.geotools.api.filter.PropertyIsLike;
 import org.geotools.api.filter.PropertyIsNull;
+import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

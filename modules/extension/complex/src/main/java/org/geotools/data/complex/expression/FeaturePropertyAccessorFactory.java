@@ -25,12 +25,6 @@ import java.util.regex.Pattern;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
-import org.geotools.data.complex.feature.xpath.AttributeNodePointer;
-import org.geotools.data.complex.feature.xpath.AttributeNodePointerFactory;
-import org.geotools.filter.expression.PropertyAccessor;
-import org.geotools.filter.expression.PropertyAccessorFactory;
-import org.geotools.util.factory.Hints;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.feature.Attribute;
 import org.geotools.api.feature.ComplexAttribute;
 import org.geotools.api.feature.Feature;
@@ -43,6 +37,12 @@ import org.geotools.api.feature.type.ComplexType;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.feature.type.PropertyDescriptor;
+import org.geotools.data.complex.feature.xpath.AttributeNodePointer;
+import org.geotools.data.complex.feature.xpath.AttributeNodePointerFactory;
+import org.geotools.filter.expression.PropertyAccessor;
+import org.geotools.filter.expression.PropertyAccessorFactory;
+import org.geotools.util.factory.Hints;
+import org.locationtech.jts.geom.Geometry;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**

@@ -18,9 +18,9 @@ package org.geotools.filter.v1_0;
 
 import static org.junit.Assert.assertEquals;
 
+import org.geotools.api.filter.expression.Function;
 import org.geotools.xsd.Binding;
 import org.junit.Test;
-import org.geotools.api.filter.expression.Function;
 import org.w3c.dom.Document;
 
 public class OGCFunctionTypeBindingTest extends FilterTestSupport {

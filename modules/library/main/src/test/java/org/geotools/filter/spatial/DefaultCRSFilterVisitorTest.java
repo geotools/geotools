@@ -18,15 +18,15 @@ package org.geotools.filter.spatial;
 
 import static org.junit.Assert.assertEquals;
 
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.referencing.CRS;
 import org.junit.Test;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.expression.Literal;
-import org.geotools.api.filter.spatial.BBOX;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 public class DefaultCRSFilterVisitorTest {
 

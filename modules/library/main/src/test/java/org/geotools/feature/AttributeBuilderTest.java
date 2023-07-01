@@ -10,11 +10,11 @@
 package org.geotools.feature;
 
 import org.geotools.ExceptionChecker;
+import org.geotools.api.feature.Attribute;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.geotools.api.feature.Attribute;
 
 public class AttributeBuilderTest {
 

@@ -23,12 +23,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
+import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.util.NullProgressListener;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.visitor.CalcResult;
 import org.geotools.feature.visitor.FeatureCalc;
-import org.geotools.api.filter.capability.FunctionName;
 
 public abstract class AbstractQuantityClassificationFunction extends ClassificationFunction {
 

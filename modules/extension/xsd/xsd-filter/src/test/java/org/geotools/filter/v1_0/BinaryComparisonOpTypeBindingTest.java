@@ -19,8 +19,6 @@ package org.geotools.filter.v1_0;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import org.geotools.xsd.Binding;
-import org.junit.Test;
 import org.geotools.api.filter.BinaryComparisonOperator;
 import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.PropertyIsGreaterThan;
@@ -28,6 +26,8 @@ import org.geotools.api.filter.PropertyIsGreaterThanOrEqualTo;
 import org.geotools.api.filter.PropertyIsLessThan;
 import org.geotools.api.filter.PropertyIsLessThanOrEqualTo;
 import org.geotools.api.filter.PropertyIsNotEqualTo;
+import org.geotools.xsd.Binding;
+import org.junit.Test;
 import org.w3c.dom.Document;
 
 public class BinaryComparisonOpTypeBindingTest extends FilterTestSupport {

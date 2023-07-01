@@ -21,6 +21,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ServiceLoader;
 import org.apache.commons.digester.Digester;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.data.DataAccess;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -29,9 +32,6 @@ import org.geotools.data.complex.DataAccessMappingFeatureIterator;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.config.AppSchemaDataAccessDTO;
 import org.geotools.data.complex.config.SourceDataStore;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.filter.expression.PropertyName;
 
 /**
  * This interface allows data stores to take advantage of certain App-Schema extension points

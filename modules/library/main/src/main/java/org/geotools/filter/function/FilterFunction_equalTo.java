@@ -20,14 +20,14 @@ package org.geotools.filter.function;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.FunctionExpressionImpl;
-import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.MultiValuedFilter.MatchAction;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
 
 public class FilterFunction_equalTo extends FunctionExpressionImpl {
     private static FilterFactory2 ff;

@@ -24,6 +24,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
 import java.util.Map.Entry;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.DirectPosition2D;
@@ -35,7 +36,6 @@ import org.geotools.swing.testutils.TestDataUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
-import org.geotools.api.feature.simple.SimpleFeature;
 
 /**
  * Unit tests for FeatureLayerHelper.

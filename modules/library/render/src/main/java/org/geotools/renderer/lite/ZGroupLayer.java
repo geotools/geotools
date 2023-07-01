@@ -28,6 +28,14 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.stream.Stream;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.PropertyDescriptor;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.sort.SortBy;
+import org.geotools.api.filter.sort.SortOrder;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.sort.SortedFeatureReader;
 import org.geotools.data.util.DefaultProgressListener;
@@ -43,14 +51,6 @@ import org.geotools.styling.Fill;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
-import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.feature.type.PropertyDescriptor;
-import org.geotools.api.filter.expression.PropertyName;
-import org.geotools.api.filter.sort.SortBy;
-import org.geotools.api.filter.sort.SortOrder;
-import org.geotools.api.referencing.FactoryException;
-import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.api.util.ProgressListener;
 
 /**
  * A special layer owning multiple feature sources and styles, all in the same z-group

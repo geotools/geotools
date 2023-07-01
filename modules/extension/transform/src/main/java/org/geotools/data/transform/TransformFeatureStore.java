@@ -22,17 +22,17 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.geotools.data.FeatureReader;
-import org.geotools.data.Transaction;
-import org.geotools.data.simple.SimpleFeatureStore;
-import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.identity.FeatureId;
+import org.geotools.data.FeatureReader;
+import org.geotools.data.Transaction;
+import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
 
 /**
  * A transforming feature store, will transform on the fly all attempts to write so that the

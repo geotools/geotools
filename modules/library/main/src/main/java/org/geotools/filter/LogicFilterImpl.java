@@ -71,7 +71,8 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract {
      * @throws IllegalFilterException Does not conform to logic filter structure
      * @task REVISIT: make all filters immutable. This should return a new filter.
      */
-    public final void addFilter(org.geotools.api.filter.Filter filter) throws IllegalFilterException {
+    public final void addFilter(org.geotools.api.filter.Filter filter)
+            throws IllegalFilterException {
         // reset
         cachedHash = 0;
         if (this instanceof Not && children.size() != 0) {

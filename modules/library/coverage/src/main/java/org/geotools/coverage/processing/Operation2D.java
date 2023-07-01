@@ -18,6 +18,12 @@ package org.geotools.coverage.processing;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.geotools.api.parameter.InvalidParameterValueException;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.IdentifiedObject;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -29,12 +35,6 @@ import org.geotools.referencing.NamedIdentifier;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.parameter.InvalidParameterValueException;
-import org.geotools.api.parameter.ParameterDescriptor;
-import org.geotools.api.parameter.ParameterDescriptorGroup;
-import org.geotools.api.parameter.ParameterNotFoundException;
-import org.geotools.api.parameter.ParameterValueGroup;
-import org.geotools.api.referencing.IdentifiedObject;
 
 /**
  * An operation working on {@link GridCoverage2D} sources.

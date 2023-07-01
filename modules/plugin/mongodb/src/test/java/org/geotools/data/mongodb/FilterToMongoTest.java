@@ -26,18 +26,6 @@ import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import java.math.BigInteger;
 import java.util.Date;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.locationtech.jts.algorithm.Orientation;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Point;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.Not;
@@ -52,6 +40,18 @@ import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.api.filter.spatial.DWithin;
 import org.geotools.api.filter.spatial.Intersects;
 import org.geotools.api.filter.spatial.Within;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.locationtech.jts.algorithm.Orientation;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 
 public class FilterToMongoTest {
 

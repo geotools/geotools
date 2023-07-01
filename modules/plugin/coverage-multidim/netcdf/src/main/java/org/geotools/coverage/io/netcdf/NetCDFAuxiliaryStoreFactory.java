@@ -24,6 +24,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import javax.xml.bind.JAXBException;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Filter;
 import org.geotools.coverage.io.catalog.DataStoreConfiguration;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
@@ -36,10 +40,6 @@ import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.imageio.netcdf.AncillaryFileManager;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.feature.type.Name;
-import org.geotools.api.filter.Filter;
 
 /**
  * Creates a vector store that publishes the index information of the NetCDF Store. This way the

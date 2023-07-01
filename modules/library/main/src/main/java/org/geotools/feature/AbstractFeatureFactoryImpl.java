@@ -17,8 +17,6 @@
 package org.geotools.feature;
 
 import java.util.Collection;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.simple.SimpleFeatureImpl;
 import org.geotools.api.feature.Association;
 import org.geotools.api.feature.Attribute;
 import org.geotools.api.feature.ComplexAttribute;
@@ -37,6 +35,8 @@ import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.geometry.coordinate.GeometryFactory;
 import org.geotools.api.referencing.crs.CRSFactory;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.simple.SimpleFeatureImpl;
 
 /**
  * Factory for creating instances of the Attribute family of classes.

@@ -23,6 +23,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.net.URL;
 import javax.imageio.ImageIO;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.Decimator;
 import org.geotools.geometry.jts.JTSFactoryFinder;
@@ -41,8 +43,6 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.referencing.operation.MathTransform;
 
 public class StyledShapePainterTest {
 

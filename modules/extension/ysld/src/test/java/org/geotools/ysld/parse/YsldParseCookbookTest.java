@@ -28,6 +28,8 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.ContrastMethod;
 import org.geotools.filter.Filters;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.text.ecql.ECQL;
@@ -52,8 +54,6 @@ import org.geotools.styling.TextSymbolizer;
 import org.geotools.ysld.TestUtils;
 import org.geotools.ysld.YsldTests;
 import org.junit.Test;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.style.ContrastMethod;
 
 public class YsldParseCookbookTest {
 

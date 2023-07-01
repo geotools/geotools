@@ -18,13 +18,13 @@ package org.geotools.filter.v2_0.bindings;
 
 import javax.xml.namespace.QName;
 import net.opengis.fes20.MeasureType;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.FilterFactory2;
 import org.geotools.filter.v1_0.DistanceUnits;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.FilterFactory2;
 
 /**
  * Binding object for the type http://www.opengis.net/fes/2.0:MeasureType.

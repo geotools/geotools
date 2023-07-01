@@ -21,6 +21,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collections;
+import org.geotools.api.feature.GeometryAttribute;
+import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.feature.type.GeometryType;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.referencing.FactoryException;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.GeometryAttributeImpl;
 import org.geotools.feature.NameImpl;
@@ -35,11 +40,6 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.util.GeometricShapeFactory;
-import org.geotools.api.feature.GeometryAttribute;
-import org.geotools.api.feature.type.GeometryDescriptor;
-import org.geotools.api.feature.type.GeometryType;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.referencing.FactoryException;
 
 /**
  * This tests <a href="https://osgeo-org.atlassian.net/browse/GEOT-5401">[GEOT-5401] FastBBOX should

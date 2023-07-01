@@ -17,8 +17,8 @@
 package org.geotools.styling;
 
 import java.util.Arrays;
-import org.geotools.util.Utilities;
 import org.geotools.api.filter.Filter;
+import org.geotools.util.Utilities;
 
 public class FeatureTypeConstraintImpl implements FeatureTypeConstraint, Cloneable {
     /** the feature type name */

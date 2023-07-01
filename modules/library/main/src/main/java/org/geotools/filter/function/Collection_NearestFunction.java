@@ -23,15 +23,15 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.util.NullProgressListener;
 import org.geotools.feature.visitor.NearestVisitor;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.geotools.api.filter.capability.FunctionName;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.filter.expression.Literal;
 
 /**
  * Finds the nearest value to the provided one in the attribute domain.

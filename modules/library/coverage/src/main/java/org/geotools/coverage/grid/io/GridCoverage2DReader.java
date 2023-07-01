@@ -24,10 +24,6 @@ import java.net.URL;
 import java.util.List;
 import java.util.Set;
 import javax.media.jai.ImageLayout;
-import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.data.ResourceInfo;
-import org.geotools.data.ServiceInfo;
-import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.api.coverage.grid.Format;
 import org.geotools.api.coverage.grid.GridCoverageReader;
 import org.geotools.api.coverage.grid.GridEnvelope;
@@ -36,6 +32,10 @@ import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.datum.PixelInCell;
 import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.data.ResourceInfo;
+import org.geotools.data.ServiceInfo;
+import org.geotools.geometry.GeneralEnvelope;
 
 /**
  * Provides access to named GridCoverage2D (along with any context information) from a persistent

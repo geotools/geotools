@@ -16,12 +16,12 @@
  */
 package org.geotools.filter;
 
-import org.geotools.factory.CommonFactoryFinder;
-import org.junit.Assert;
-import org.junit.Test;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsGreaterThan;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.factory.CommonFactoryFinder;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class FilterFactoryBeforeTest {
 

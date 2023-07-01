@@ -24,6 +24,10 @@ import static org.junit.Assume.assumeFalse;
 
 import java.io.IOException;
 import java.util.logging.Logger;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.expression.Function;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentFeatureSource;
@@ -31,10 +35,6 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
 import org.junit.Test;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.PropertyIsEqualTo;
-import org.geotools.api.filter.expression.Function;
 
 public class PostGISHStoreOnlineTest extends JDBCTestSupport {
 

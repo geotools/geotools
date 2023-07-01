@@ -3,15 +3,15 @@ package org.geotools.jdbc;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.Not;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Test;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.Not;
 
 public abstract class JDBCThreeValuedLogicOnlineTest extends JDBCTestSupport {
 

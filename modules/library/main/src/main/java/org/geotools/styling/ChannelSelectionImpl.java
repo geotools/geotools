@@ -16,8 +16,8 @@
  */
 package org.geotools.styling;
 
-import org.geotools.util.Utilities;
 import org.geotools.api.style.StyleVisitor;
+import org.geotools.util.Utilities;
 
 /**
  * ChannelSelectionImpl

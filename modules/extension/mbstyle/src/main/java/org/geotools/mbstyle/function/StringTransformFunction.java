@@ -17,14 +17,14 @@
 package org.geotools.mbstyle.function;
 
 import java.util.List;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.data.Parameter;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.text.Text;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.capability.FunctionName;
-import org.geotools.api.filter.expression.Expression;
 
 /**
  * Function that takes an input and applies a text transformation (one of "lowercase", "uppercase",

@@ -18,12 +18,12 @@ package org.geotools.temporal.reference;
 
 import java.util.Collection;
 import java.util.Set;
-import org.geotools.util.Utilities;
 import org.geotools.api.metadata.extent.Extent;
 import org.geotools.api.referencing.ReferenceIdentifier;
 import org.geotools.api.temporal.TemporalReferenceSystem;
 import org.geotools.api.util.GenericName;
 import org.geotools.api.util.InternationalString;
+import org.geotools.util.Utilities;
 
 /** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultTemporalReferenceSystem implements TemporalReferenceSystem {

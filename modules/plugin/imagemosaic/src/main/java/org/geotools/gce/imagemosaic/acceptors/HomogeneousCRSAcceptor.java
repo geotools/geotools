@@ -19,11 +19,11 @@ package org.geotools.gce.imagemosaic.acceptors;
 
 import java.io.File;
 import java.io.IOException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.gce.imagemosaic.ImageMosaicConfigHandler;
 import org.geotools.gce.imagemosaic.MosaicConfigurationBean;
 import org.geotools.referencing.CRS;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Check for homogeneous CRS in the upcoming granule.

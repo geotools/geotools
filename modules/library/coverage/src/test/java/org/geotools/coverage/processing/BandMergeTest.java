@@ -24,14 +24,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.media.jai.PlanarImage;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.Viewer;
 import org.geotools.image.ImageWorker;
 import org.junit.Test;
-import org.geotools.api.geometry.Envelope;
-import org.geotools.api.parameter.ParameterValueGroup;
-import org.geotools.api.referencing.operation.TransformException;
 
 /** Tests the BandMerge operation. */
 public final class BandMergeTest extends GridProcessingTestBase {

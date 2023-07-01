@@ -16,8 +16,8 @@
  */
 package org.geotools.coverage.grid.io;
 
-import org.geotools.filter.function.RenderingTransformation;
 import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.filter.function.RenderingTransformation;
 
 /**
  * Marks a {@link RenderingTransformation} that is able to perform its own data read from a {@link

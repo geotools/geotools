@@ -17,11 +17,11 @@
 package org.geotools.referencing.iau;
 
 import java.net.URL;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.factory.epsg.FactoryUsingWKT;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.metadata.citation.Citation;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Extends the EPSG database with {@linkplain CoordinateReferenceSystem Coordinate Reference

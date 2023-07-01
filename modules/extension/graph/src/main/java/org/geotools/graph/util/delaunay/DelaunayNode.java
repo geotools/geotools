@@ -17,8 +17,8 @@
 package org.geotools.graph.util.delaunay;
 
 import java.util.Objects;
-import org.geotools.graph.structure.line.BasicXYNode;
 import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.graph.structure.line.BasicXYNode;
 
 /** @author jfc173 */
 public class DelaunayNode extends BasicXYNode {

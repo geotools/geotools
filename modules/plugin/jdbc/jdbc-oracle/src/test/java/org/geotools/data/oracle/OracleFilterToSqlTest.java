@@ -22,15 +22,6 @@ import static org.junit.Assume.assumeTrue;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import org.geotools.data.jdbc.FilterToSQLException;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.jdbc.JDBCDataStore;
-import org.junit.Before;
-import org.junit.Test;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Polygon;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory2;
@@ -41,6 +32,15 @@ import org.geotools.api.filter.spatial.Crosses;
 import org.geotools.api.filter.spatial.DWithin;
 import org.geotools.api.filter.spatial.Intersects;
 import org.geotools.api.filter.spatial.Overlaps;
+import org.geotools.data.jdbc.FilterToSQLException;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.jdbc.JDBCDataStore;
+import org.junit.Before;
+import org.junit.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Polygon;
 
 public class OracleFilterToSqlTest {
 

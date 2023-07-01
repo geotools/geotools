@@ -25,6 +25,8 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.Filter;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.jdbc.datasource.ManageableDataSource;
@@ -32,8 +34,6 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.junit.Before;
 import org.junit.Test;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.filter.Filter;
 
 public class H2LinkedTableTest {
     H2DataStoreFactory factory;

@@ -19,14 +19,14 @@ package org.geotools.filter;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.function.FilterFunction_property;
-import org.geotools.filter.visitor.DefaultFilterVisitor;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.expression.VolatileFunction;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.function.FilterFunction_property;
+import org.geotools.filter.visitor.DefaultFilterVisitor;
 
 /**
  * A simple visitor that extracts every attribute used by a filter or an expression

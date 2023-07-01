@@ -20,9 +20,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.filter.capability.SpatialCapabilities;
 import org.geotools.xsd.Binding;
 import org.junit.Test;
-import org.geotools.api.filter.capability.SpatialCapabilities;
 import org.w3c.dom.Document;
 
 public class Spatial_CapabilitiesTypeBindingTest extends FilterCapabilitiesTestSupport {

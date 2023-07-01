@@ -17,9 +17,9 @@
 package org.geotools.filter.text.cql_2;
 
 import org.geootols.filter.text.cql_2.CQL2;
+import org.geotools.api.filter.Filter;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQLBooleanValueExpressionTest;
-import org.geotools.api.filter.Filter;
 
 /** No changes here, base examples are also valid CQL2 */
 public class CQL2BooleanValueExpressionTest extends ECQLBooleanValueExpressionTest {

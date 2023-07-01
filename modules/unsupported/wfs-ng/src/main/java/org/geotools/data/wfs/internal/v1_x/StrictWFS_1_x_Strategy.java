@@ -62,6 +62,10 @@ import net.opengis.wfs.UpdateElementType;
 import net.opengis.wfs.WFSCapabilitiesType;
 import net.opengis.wfs.WfsFactory;
 import org.eclipse.emf.ecore.EObject;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.capability.FilterCapabilities;
+import org.geotools.api.filter.sort.SortBy;
 import org.geotools.data.wfs.WFSServiceInfo;
 import org.geotools.data.wfs.internal.AbstractWFSStrategy;
 import org.geotools.data.wfs.internal.DescribeFeatureTypeRequest;
@@ -86,10 +90,6 @@ import org.geotools.data.wfs.internal.WFSStrategy;
 import org.geotools.util.Version;
 import org.geotools.wfs.v1_0.WFS;
 import org.geotools.xsd.Configuration;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.capability.FilterCapabilities;
-import org.geotools.api.filter.sort.SortBy;
 
 /** */
 public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {

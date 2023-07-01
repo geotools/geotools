@@ -21,15 +21,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import org.geotools.filter.text.commons.CompilerUtil;
-import org.geotools.filter.text.commons.Language;
-import org.geotools.filter.text.cql2.CQLException;
-import org.geotools.filter.text.cql2.CQLGeoOperationTest;
-import org.geotools.referencing.CRS;
-import org.junit.Test;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.Polygon;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
@@ -41,6 +32,15 @@ import org.geotools.api.filter.spatial.Intersects;
 import org.geotools.api.filter.spatial.Overlaps;
 import org.geotools.api.filter.spatial.Touches;
 import org.geotools.api.referencing.FactoryException;
+import org.geotools.filter.text.commons.CompilerUtil;
+import org.geotools.filter.text.commons.Language;
+import org.geotools.filter.text.cql2.CQLException;
+import org.geotools.filter.text.cql2.CQLGeoOperationTest;
+import org.geotools.referencing.CRS;
+import org.junit.Test;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Polygon;
 
 /**
  * ECQL Geo Operation Test

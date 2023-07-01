@@ -22,6 +22,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.geotools.api.style.Style;
 import org.geotools.mbstyle.layer.MBLayer;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBStyleParser;
@@ -30,7 +31,6 @@ import org.geotools.styling.NamedLayer;
 import org.geotools.styling.StyledLayer;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.json.simple.parser.ParseException;
-import org.geotools.api.style.Style;
 
 /**
  * MapBox Style facade offering utility methods for quickly working with JSON and converting to

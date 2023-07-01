@@ -21,6 +21,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.ContrastMethod;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.SemanticType;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBObjectParser;
@@ -30,10 +34,6 @@ import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.text.Text;
 import org.json.simple.JSONObject;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.style.ContrastMethod;
-import org.geotools.api.style.Rule;
-import org.geotools.api.style.SemanticType;
 
 public class RasterMBLayer extends MBLayer {
 

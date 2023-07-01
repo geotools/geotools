@@ -17,12 +17,6 @@
 package org.geotools.filter.spatial;
 
 import java.util.List;
-import org.geotools.filter.function.BoundedByFunction;
-import org.geotools.filter.visitor.DuplicatingFilterVisitor;
-import org.geotools.geometry.jts.JTS;
-import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.referencing.CRS;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.filter.BinaryComparisonOperator;
@@ -51,6 +45,12 @@ import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.filter.function.BoundedByFunction;
+import org.geotools.filter.visitor.DuplicatingFilterVisitor;
+import org.geotools.geometry.jts.JTS;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.CRS;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Returns a clone of the provided filter where all geometries and bboxes have been reprojected to

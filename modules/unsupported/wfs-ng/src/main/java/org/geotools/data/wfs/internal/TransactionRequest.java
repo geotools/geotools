@@ -26,9 +26,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import javax.xml.namespace.QName;
-import org.geotools.feature.NameImpl;
-import org.geotools.http.HTTPResponse;
-import org.geotools.referencing.CRS;
 import org.geotools.api.feature.GeometryAttribute;
 import org.geotools.api.feature.Property;
 import org.geotools.api.feature.simple.SimpleFeature;
@@ -36,6 +33,9 @@ import org.geotools.api.feature.type.GeometryType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.feature.NameImpl;
+import org.geotools.http.HTTPResponse;
+import org.geotools.referencing.CRS;
 
 public class TransactionRequest extends WFSRequest {
 

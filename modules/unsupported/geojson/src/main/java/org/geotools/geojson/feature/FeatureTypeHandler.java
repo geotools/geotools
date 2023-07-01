@@ -22,15 +22,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.geojson.DelegatingHandler;
-import org.geotools.geojson.IContentHandler;
-import org.json.simple.parser.ParseException;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.geojson.DelegatingHandler;
+import org.geotools.geojson.IContentHandler;
+import org.json.simple.parser.ParseException;
 
 /**
  * Obtains a complete feature type from GeoJSON by parsing beyond first feature and finding

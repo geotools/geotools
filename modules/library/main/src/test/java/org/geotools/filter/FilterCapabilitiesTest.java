@@ -17,10 +17,6 @@
 package org.geotools.filter;
 
 import java.util.logging.Logger;
-import org.geotools.factory.CommonFactoryFinder;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.Not;
@@ -31,6 +27,10 @@ import org.geotools.api.filter.PropertyIsGreaterThan;
 import org.geotools.api.filter.PropertyIsLessThan;
 import org.geotools.api.filter.PropertyIsLike;
 import org.geotools.api.filter.PropertyIsNull;
+import org.geotools.factory.CommonFactoryFinder;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Unit test for FilterCapabilities.

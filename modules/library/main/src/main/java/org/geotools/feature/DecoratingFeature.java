@@ -19,7 +19,6 @@ package org.geotools.feature;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.feature.GeometryAttribute;
 import org.geotools.api.feature.IllegalAttributeException;
 import org.geotools.api.feature.Property;
@@ -29,6 +28,7 @@ import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.api.geometry.BoundingBox;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Base class for feature decorators.

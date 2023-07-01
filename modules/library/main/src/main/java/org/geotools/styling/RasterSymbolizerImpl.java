@@ -20,12 +20,12 @@ package org.geotools.styling;
 
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.util.factory.GeoTools;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.OverlapBehavior;
 import org.geotools.api.style.StyleVisitor;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.util.factory.GeoTools;
 
 /**
  * Default implementation of RasterSymbolizer.
@@ -312,7 +312,8 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
      * @param contrastEnhancement the contrastEnhancement
      */
     @Override
-    public void setContrastEnhancement(org.geotools.api.style.ContrastEnhancement contrastEnhancement) {
+    public void setContrastEnhancement(
+            org.geotools.api.style.ContrastEnhancement contrastEnhancement) {
         if (this.contrastEnhancement == contrastEnhancement) {
             return;
         }

@@ -17,11 +17,6 @@
 package org.geotools.filter.text.cql2;
 
 import java.util.List;
-import org.geotools.filter.function.FilterFunction_relatePattern;
-import org.geotools.filter.function.FilterFunction_strConcat;
-import org.geotools.filter.text.ecql.ECQL;
-import org.junit.Assert;
-import org.junit.Test;
 import org.geotools.api.filter.ExcludeFilter;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.IncludeFilter;
@@ -33,6 +28,11 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.filter.function.FilterFunction_relatePattern;
+import org.geotools.filter.function.FilterFunction_strConcat;
+import org.geotools.filter.text.ecql.ECQL;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * Test the extensions in CQL.

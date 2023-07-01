@@ -23,8 +23,8 @@ import org.apache.commons.jxpath.ri.compiler.NodeTest;
 import org.apache.commons.jxpath.ri.compiler.NodeTypeTest;
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
-import org.geotools.feature.type.Types;
 import org.geotools.api.feature.type.ComplexType;
+import org.geotools.feature.type.Types;
 
 /**
  * Special node pointer for {@link org.geotools.feature.FeatureType}.

@@ -21,8 +21,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.api.coverage.grid.Format;
+import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 
 /**
  * Implementation of the {@link Format} service provider interface for EHdr files.

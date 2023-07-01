@@ -16,8 +16,8 @@
  */
 package org.geotools.coverage.processing;
 
-import org.geotools.coverage.GridSampleDimension;
 import org.geotools.api.coverage.processing.OperationNotFoundException;
+import org.geotools.coverage.GridSampleDimension;
 
 /**
  * Common super-class for filter operation. The following is adapted from OpenGIS specification:

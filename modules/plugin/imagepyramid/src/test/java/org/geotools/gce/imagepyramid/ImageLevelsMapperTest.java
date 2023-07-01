@@ -32,6 +32,12 @@ import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Properties;
 import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.InvalidParameterValueException;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -40,12 +46,6 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.test.TestData;
 import org.geotools.util.URLs;
 import org.junit.Test;
-import org.geotools.api.coverage.grid.GridEnvelope;
-import org.geotools.api.geometry.MismatchedDimensionException;
-import org.geotools.api.parameter.GeneralParameterValue;
-import org.geotools.api.parameter.InvalidParameterValueException;
-import org.geotools.api.parameter.ParameterValue;
-import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 
 /** Test the resolutionLevel-to-ImageMosaicReader mapping machinery. */
 public class ImageLevelsMapperTest extends AbstractPyramidTest {

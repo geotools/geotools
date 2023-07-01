@@ -18,12 +18,12 @@
 package org.geotools.mbstyle.parse;
 
 import java.util.Set;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.mbstyle.parse.MBFunction.FunctionCategory;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
-import org.geotools.api.filter.expression.Expression;
 
 public class MBStyleTestUtils {
     public static Matcher<MBFunction> categories(Matcher<? super Set<FunctionCategory>> matcher) {

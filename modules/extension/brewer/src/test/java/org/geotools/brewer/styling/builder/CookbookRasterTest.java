@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import org.geotools.api.style.ContrastMethod;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.ColorMapEntry;
@@ -14,7 +15,6 @@ import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.ShadedRelief;
 import org.geotools.styling.Style;
 import org.junit.Test;
-import org.geotools.api.style.ContrastMethod;
 
 public class CookbookRasterTest extends AbstractStyleTest {
 

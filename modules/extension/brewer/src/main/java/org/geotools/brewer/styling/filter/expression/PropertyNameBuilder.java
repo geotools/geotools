@@ -16,11 +16,11 @@
  */
 package org.geotools.brewer.styling.filter.expression;
 
-import org.geotools.brewer.styling.builder.Builder;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.brewer.styling.builder.Builder;
+import org.geotools.factory.CommonFactoryFinder;
 
 public class PropertyNameBuilder implements Builder<PropertyName> {
     protected FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);

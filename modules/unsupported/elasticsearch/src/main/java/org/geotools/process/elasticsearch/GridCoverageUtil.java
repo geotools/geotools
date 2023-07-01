@@ -19,14 +19,14 @@ package org.geotools.process.elasticsearch;
 import com.github.davidmoten.geo.GeoHash;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.Operations;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.api.geometry.Envelope;
-import org.geotools.api.parameter.ParameterValueGroup;
 
 class GridCoverageUtil {
 

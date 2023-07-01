@@ -22,6 +22,7 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
+import org.geotools.api.filter.Filter;
 import org.geotools.data.wfs.WFSTestData.MutableWFSConfig;
 import org.geotools.data.wfs.internal.DescribeFeatureTypeRequest;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
@@ -30,7 +31,6 @@ import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.data.wfs.internal.WFSRequest;
 import org.geotools.ows.ServiceException;
 import org.geotools.util.logging.Logging;
-import org.geotools.api.filter.Filter;
 
 /**
  * Test client for WFS

@@ -16,8 +16,8 @@
  */
 package org.geotools.brewer.styling.builder;
 
-import org.geotools.styling.Displacement;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.styling.Displacement;
 
 public class DisplacementBuilder extends AbstractStyleBuilder<Displacement> {
     private Expression x = null;

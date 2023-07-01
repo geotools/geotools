@@ -21,15 +21,15 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.visitor.DuplicatingFilterVisitor;
-import org.geotools.util.Utilities;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.metadata.citation.OnLineResource;
 import org.geotools.api.style.GraphicLegend;
 import org.geotools.api.style.Rule;
 import org.geotools.api.style.StyleVisitor;
 import org.geotools.api.util.Cloneable;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.visitor.DuplicatingFilterVisitor;
+import org.geotools.util.Utilities;
 
 /**
  * Provides the default implementation of Rule.

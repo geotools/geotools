@@ -16,11 +16,11 @@
  */
 package org.geotools.filter.function;
 
-import org.geotools.data.Query;
 import org.geotools.api.coverage.grid.GridCoverageReader;
 import org.geotools.api.coverage.grid.GridGeometry;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.data.Query;
 
 /**
  * An interface to be implemented by processes or by filter functions meant to be integrated as

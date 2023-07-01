@@ -24,17 +24,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.geotools.feature.GeometryAttributeImpl;
-import org.geotools.feature.type.AttributeDescriptorImpl;
-import org.geotools.feature.type.Types;
-import org.geotools.geometry.jts.JTS;
-import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
-import org.geotools.util.Converters;
-import org.geotools.util.SuppressFBWarnings;
-import org.geotools.util.Utilities;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.feature.GeometryAttribute;
 import org.geotools.api.feature.IllegalAttributeException;
 import org.geotools.api.feature.Property;
@@ -49,6 +38,17 @@ import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.api.filter.identity.Identifier;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.feature.GeometryAttributeImpl;
+import org.geotools.feature.type.AttributeDescriptorImpl;
+import org.geotools.feature.type.Types;
+import org.geotools.geometry.jts.JTS;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
+import org.geotools.util.Converters;
+import org.geotools.util.SuppressFBWarnings;
+import org.geotools.util.Utilities;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * An implementation of {@link SimpleFeature} geared towards speed and backed by an Object[].

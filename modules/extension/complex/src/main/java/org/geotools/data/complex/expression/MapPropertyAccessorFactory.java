@@ -19,10 +19,10 @@ package org.geotools.data.complex.expression;
 
 import java.util.Map;
 import org.apache.commons.jxpath.JXPathContext;
+import org.geotools.api.feature.IllegalAttributeException;
 import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.PropertyAccessorFactory;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.feature.IllegalAttributeException;
 
 /**
  * A {@link PropertyAccessorFactory} that returns a {@link PropertyAccessor} capable of evaluating

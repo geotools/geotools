@@ -22,13 +22,6 @@ import java.util.Map;
 import javax.imageio.ImageWriteParam;
 import javax.media.jai.Interpolation;
 import javax.media.jai.InterpolationNearest;
-import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
-import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
-import org.geotools.parameter.DefaultParameterDescriptor;
-import org.geotools.referencing.factory.epsg.CartesianAuthorityFactory;
-import org.geotools.util.factory.GeoTools;
-import org.geotools.util.factory.Hints;
 import org.geotools.api.coverage.grid.Format;
 import org.geotools.api.coverage.grid.GridCoverageReader;
 import org.geotools.api.coverage.grid.GridCoverageWriter;
@@ -37,6 +30,13 @@ import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.util.ProgressListener;
+import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
+import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
+import org.geotools.parameter.DefaultParameterDescriptor;
+import org.geotools.referencing.factory.epsg.CartesianAuthorityFactory;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 
 /**
  * AbstractGridFormat is a convenience class so subclasses only need to populate a Map class and set

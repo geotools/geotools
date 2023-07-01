@@ -18,8 +18,8 @@
 package org.geotools.process.gs;
 
 import java.util.Iterator;
-import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.data.simple.SimpleFeatureIterator;
 
 /**
  * An iterator wrapping a {@link SimpleFeatureIterator} and exposing its close method.

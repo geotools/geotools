@@ -17,11 +17,11 @@
 package org.geotools.data.simple;
 
 import java.io.IOException;
-import org.geotools.data.FeatureSource;
-import org.geotools.data.Query;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
+import org.geotools.data.FeatureSource;
+import org.geotools.data.Query;
 
 /** FeatureSource explicitly working with SimpleFeatureCollection. */
 public interface SimpleFeatureSource extends FeatureSource<SimpleFeatureType, SimpleFeature> {

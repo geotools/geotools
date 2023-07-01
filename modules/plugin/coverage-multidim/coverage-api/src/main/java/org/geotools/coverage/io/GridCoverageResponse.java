@@ -16,10 +16,10 @@
  */
 package org.geotools.coverage.io;
 
+import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
-import org.geotools.api.coverage.grid.GridCoverage;
 
 /**
  * An interface implementing {@link GridCoverage} with add of temporal extent and vertical extent

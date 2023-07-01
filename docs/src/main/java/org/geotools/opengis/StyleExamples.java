@@ -15,8 +15,6 @@ import java.awt.Color;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.metadata.iso.citation.OnLineResourceImpl;
 import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.AnchorPoint;
@@ -26,6 +24,8 @@ import org.geotools.api.style.Graphic;
 import org.geotools.api.style.GraphicalSymbol;
 import org.geotools.api.style.PointSymbolizer;
 import org.geotools.api.style.Stroke;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.metadata.iso.citation.OnLineResourceImpl;
 
 public class StyleExamples {
 

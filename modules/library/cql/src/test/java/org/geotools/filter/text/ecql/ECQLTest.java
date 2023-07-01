@@ -21,15 +21,6 @@ import static org.junit.Assert.assertSame;
 
 import java.awt.Color;
 import java.util.List;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.FilterFactoryImpl;
-import org.geotools.filter.IsNullImpl;
-import org.geotools.filter.function.FilterFunction_relatePattern;
-import org.geotools.filter.function.PropertyExistsFunction;
-import org.geotools.filter.text.cql2.CQL;
-import org.geotools.filter.text.cql2.CQLException;
-import org.junit.Assert;
-import org.junit.Test;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.ExcludeFilter;
 import org.geotools.api.filter.Filter;
@@ -52,6 +43,15 @@ import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.spatial.DistanceBufferOperator;
 import org.geotools.api.filter.spatial.Intersects;
 import org.geotools.api.filter.temporal.Before;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.FilterFactoryImpl;
+import org.geotools.filter.IsNullImpl;
+import org.geotools.filter.function.FilterFunction_relatePattern;
+import org.geotools.filter.function.PropertyExistsFunction;
+import org.geotools.filter.text.cql2.CQL;
+import org.geotools.filter.text.cql2.CQLException;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * ECQL Test Case.

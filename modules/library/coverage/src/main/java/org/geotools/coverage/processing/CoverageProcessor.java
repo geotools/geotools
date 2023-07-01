@@ -38,6 +38,15 @@ import javax.media.jai.JAI;
 import javax.media.jai.OperationDescriptor;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.TileCache;
+import org.geotools.api.coverage.Coverage;
+import org.geotools.api.coverage.processing.Operation;
+import org.geotools.api.coverage.processing.OperationNotFoundException;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.util.InternationalString;
 import org.geotools.coverage.AbstractCoverage;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.Interpolator2D;
@@ -55,15 +64,6 @@ import org.geotools.util.Utilities;
 import org.geotools.util.factory.FactoryRegistry;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.geotools.api.coverage.Coverage;
-import org.geotools.api.coverage.processing.Operation;
-import org.geotools.api.coverage.processing.OperationNotFoundException;
-import org.geotools.api.parameter.GeneralParameterValue;
-import org.geotools.api.parameter.ParameterDescriptorGroup;
-import org.geotools.api.parameter.ParameterNotFoundException;
-import org.geotools.api.parameter.ParameterValue;
-import org.geotools.api.parameter.ParameterValueGroup;
-import org.geotools.api.util.InternationalString;
 
 /**
  * Base class for {@linkplain Coverage coverage} processor implementations.

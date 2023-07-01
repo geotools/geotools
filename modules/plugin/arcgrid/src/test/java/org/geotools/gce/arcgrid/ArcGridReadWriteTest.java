@@ -29,16 +29,16 @@ import java.net.URL;
 import java.util.Random;
 import javax.media.jai.ImageLayout;
 import org.geotools.TestData;
+import org.geotools.api.coverage.grid.GridCoverageReader;
+import org.geotools.api.coverage.grid.GridCoverageWriter;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.factory.Hints;
 import org.junit.Test;
-import org.geotools.api.coverage.grid.GridCoverageReader;
-import org.geotools.api.coverage.grid.GridCoverageWriter;
-import org.geotools.api.parameter.GeneralParameterValue;
-import org.geotools.api.parameter.ParameterValueGroup;
 
 /**
  * Test reading and writing arcgrid grid coverages.

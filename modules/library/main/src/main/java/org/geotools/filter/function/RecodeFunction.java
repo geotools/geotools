@@ -23,15 +23,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.FilterAttributeExtractor;
-import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.ExpressionVisitor;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.FilterAttributeExtractor;
+import org.geotools.filter.capability.FunctionNameImpl;
 
 /**
  * This is an implemenation of the Recode function as defined by the OGC Symbology Encoding (SE) 1.1

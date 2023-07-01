@@ -19,6 +19,7 @@ package org.geotools.xml.filter;
 // Java Topology Suite dependencies
 
 import java.util.logging.Logger;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.filter.AbstractFilter;
 import org.geotools.filter.DefaultExpression;
 import org.geotools.filter.ExpressionSAXParser;
@@ -30,7 +31,6 @@ import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.LogicSAXParser;
 import org.geotools.gml.GMLHandlerJTS;
 import org.locationtech.jts.geom.Geometry;
-import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.XMLFilterImpl;

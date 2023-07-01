@@ -20,11 +20,11 @@ import java.awt.Color;
 import java.io.Serializable;
 import java.util.Arrays;
 import javax.measure.Unit;
+import org.geotools.api.referencing.operation.MathTransform1D;
+import org.geotools.api.util.Cloneable;
 import org.geotools.util.Classes;
 import org.geotools.util.NumberRange;
 import org.geotools.util.Utilities;
-import org.geotools.api.referencing.operation.MathTransform1D;
-import org.geotools.api.util.Cloneable;
 
 /**
  * Argument type for {@link DefaultProcessor} operations for specifying the range, colors and units

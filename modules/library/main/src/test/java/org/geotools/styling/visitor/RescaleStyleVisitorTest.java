@@ -21,6 +21,8 @@ import static org.junit.Assert.assertNotNull;
 
 import java.awt.Color;
 import java.util.Arrays;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.style.SemanticType;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.IllegalFilterException;
@@ -42,8 +44,6 @@ import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.junit.Before;
 import org.junit.Test;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.style.SemanticType;
 import si.uom.SI;
 
 /**

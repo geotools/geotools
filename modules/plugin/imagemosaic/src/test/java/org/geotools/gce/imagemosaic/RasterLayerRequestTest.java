@@ -19,6 +19,9 @@ package org.geotools.gce.imagemosaic;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValue;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
@@ -26,9 +29,6 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.test.TestData;
 import org.junit.Test;
-import org.geotools.api.geometry.Envelope;
-import org.geotools.api.parameter.GeneralParameterValue;
-import org.geotools.api.parameter.ParameterValue;
 
 public class RasterLayerRequestTest {
 

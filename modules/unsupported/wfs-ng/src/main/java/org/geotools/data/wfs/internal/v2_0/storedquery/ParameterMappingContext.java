@@ -19,11 +19,11 @@ package org.geotools.data.wfs.internal.v2_0.storedquery;
 
 import java.util.Collections;
 import java.util.Map;
+import org.geotools.api.filter.Filter;
 import org.geotools.data.wfs.internal.FeatureTypeInfo;
 import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.locationtech.jts.geom.Envelope;
-import org.geotools.api.filter.Filter;
 
 /**
  * The property expression evaluation context for stored query parameter mappings. To see how these

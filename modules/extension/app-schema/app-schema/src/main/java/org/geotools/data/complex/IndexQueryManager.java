@@ -18,6 +18,13 @@ package org.geotools.data.complex;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.filter.BinaryLogicOperator;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.Or;
+import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.appschema.util.IndexQueryUtils;
 import org.geotools.data.Query;
 import org.geotools.data.complex.filter.IndexCombinedFilterTransformerVisitor;
@@ -27,13 +34,6 @@ import org.geotools.data.util.FeatureStreams;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.filter.Filters;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.filter.BinaryLogicOperator;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.Or;
-import org.geotools.api.filter.identity.FeatureId;
 
 /**
  * Manages unrolled Query indexes and partial indexes

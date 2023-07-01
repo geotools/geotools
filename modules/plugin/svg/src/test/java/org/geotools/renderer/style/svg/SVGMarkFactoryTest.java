@@ -26,12 +26,12 @@ import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
 import java.net.URL;
 import java.util.Arrays;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.TransformedShape;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.junit.Before;
 import org.junit.Test;
-import org.geotools.api.filter.FilterFactory;
 
 public class SVGMarkFactoryTest {
 

@@ -19,16 +19,16 @@ package org.geotools.xml.filter;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.xml.XMLHandlerHints;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.PropertyIsNull;
 import org.geotools.api.filter.identity.FeatureId;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.xml.XMLHandlerHints;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 public class FilterEncodingPreProcessorTest {
     @Before

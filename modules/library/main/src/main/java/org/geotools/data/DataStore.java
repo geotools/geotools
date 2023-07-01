@@ -17,11 +17,11 @@
 package org.geotools.data;
 
 import java.io.IOException;
-import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
+import org.geotools.data.simple.SimpleFeatureSource;
 
 /**
  * This represents a physical source of feature data, such as a shapefiles or database, where the

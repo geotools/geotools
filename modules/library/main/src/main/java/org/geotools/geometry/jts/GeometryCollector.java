@@ -18,6 +18,7 @@ package org.geotools.geometry.jts;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -29,7 +30,6 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.impl.PackedCoordinateSequence;
 import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * A stateful geometry collector that will add all geometries into a single resulting geometry

@@ -16,8 +16,8 @@
  */
 package org.geotools.data.h2;
 
-import org.junit.Test;
 import org.geotools.api.filter.PropertyIsLike;
+import org.junit.Test;
 
 public class H2FilterToSQLTest {
 

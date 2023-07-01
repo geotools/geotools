@@ -15,6 +15,8 @@ import java.awt.Rectangle;
 import java.io.File;
 import java.net.URL;
 import javax.imageio.ImageIO;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -27,8 +29,6 @@ import org.geotools.ows.wmts.model.WMTSLayer;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.api.parameter.GeneralParameterValue;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Uses the WMTSCoverageReader to write a mosaicked image of tiles covering a given extent.

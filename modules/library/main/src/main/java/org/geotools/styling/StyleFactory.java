@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Set;
 import javax.measure.Unit;
 import javax.swing.Icon;
-import org.geotools.util.factory.Factory;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.Id;
@@ -31,6 +30,7 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.metadata.citation.OnLineResource;
 import org.geotools.api.style.ContrastMethod;
 import org.geotools.api.util.InternationalString;
+import org.geotools.util.factory.Factory;
 
 /** Abstract base class for implementing style factories. */
 public interface StyleFactory extends Factory, org.geotools.api.style.StyleFactory {
@@ -493,7 +493,9 @@ public interface StyleFactory extends Factory, org.geotools.api.style.StyleFacto
     /** */
     @Override
     Mark mark(
-            Expression wellKnownName, org.geotools.api.style.Fill fill, org.geotools.api.style.Stroke stroke);
+            Expression wellKnownName,
+            org.geotools.api.style.Fill fill,
+            org.geotools.api.style.Stroke stroke);
     /** */
     @Override
     Mark mark(

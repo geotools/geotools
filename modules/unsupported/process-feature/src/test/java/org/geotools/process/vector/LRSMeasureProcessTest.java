@@ -18,6 +18,8 @@ package org.geotools.process.vector;
 
 import java.io.File;
 import java.io.IOException;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
 import org.geotools.data.DataStore;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -33,8 +35,6 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.type.FeatureType;
 
 public class LRSMeasureProcessTest {
     private DataStore featureSource;

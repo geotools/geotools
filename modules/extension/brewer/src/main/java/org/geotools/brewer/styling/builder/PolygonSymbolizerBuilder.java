@@ -18,8 +18,8 @@ package org.geotools.brewer.styling.builder;
 
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
-import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.styling.PolygonSymbolizer;
 
 public class PolygonSymbolizerBuilder extends SymbolizerBuilder<PolygonSymbolizer> {
     StrokeBuilder stroke = new StrokeBuilder(this).unset();

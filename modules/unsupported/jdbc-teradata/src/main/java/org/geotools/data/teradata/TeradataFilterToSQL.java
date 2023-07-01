@@ -20,13 +20,6 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.filter.FilterCapabilities;
-import org.geotools.jdbc.PreparedFilterToSQL;
-import org.geotools.jdbc.PrimaryKeyColumn;
-import org.geotools.jdbc.SQLDialect;
-import org.geotools.util.logging.Logging;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.spatial.BBOX;
@@ -42,6 +35,13 @@ import org.geotools.api.filter.spatial.Intersects;
 import org.geotools.api.filter.spatial.Overlaps;
 import org.geotools.api.filter.spatial.Touches;
 import org.geotools.api.filter.spatial.Within;
+import org.geotools.filter.FilterCapabilities;
+import org.geotools.jdbc.PreparedFilterToSQL;
+import org.geotools.jdbc.PrimaryKeyColumn;
+import org.geotools.jdbc.SQLDialect;
+import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 
 public class TeradataFilterToSQL extends PreparedFilterToSQL {
 

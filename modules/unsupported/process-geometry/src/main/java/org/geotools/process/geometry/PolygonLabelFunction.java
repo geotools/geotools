@@ -19,15 +19,15 @@
 package org.geotools.process.geometry;
 
 import java.util.List;
-import org.geotools.filter.capability.FunctionNameImpl;
-import org.geotools.util.Converters;
-import org.locationtech.jts.awt.PointShapeFactory.Point;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.ExpressionVisitor;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
+import org.geotools.filter.capability.FunctionNameImpl;
+import org.geotools.util.Converters;
+import org.locationtech.jts.awt.PointShapeFactory.Point;
+import org.locationtech.jts.geom.Geometry;
 
 public class PolygonLabelFunction implements Function {
     static FunctionName NAME =

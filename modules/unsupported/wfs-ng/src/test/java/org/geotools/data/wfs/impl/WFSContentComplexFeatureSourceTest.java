@@ -17,6 +17,12 @@ import java.io.ByteArrayOutputStream;
 import java.net.URL;
 import javax.xml.namespace.QName;
 import org.geotools.TestData;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.Query;
 import org.geotools.data.wfs.TestHttpClient;
 import org.geotools.data.wfs.TestWFSClient;
@@ -31,12 +37,6 @@ import org.geotools.http.MockHttpResponse;
 import org.geotools.referencing.CRS;
 import org.junit.Assert;
 import org.junit.Test;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.feature.type.Name;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**

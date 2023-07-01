@@ -19,13 +19,6 @@ package org.geotools.factory;
 // J2SE dependencies
 
 import java.util.Map;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
-import org.geotools.referencing.ReferencingFactoryFinder;
-import org.geotools.util.Classes;
-import org.geotools.util.factory.FactoryNotFoundException;
-import org.geotools.util.factory.FactoryRegistryException;
-import org.geotools.util.factory.Hints;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.geometry.coordinate.GeometryFactory;
 import org.geotools.api.geometry.primitive.PrimitiveFactory;
@@ -40,6 +33,13 @@ import org.geotools.api.referencing.datum.DatumFactory;
 import org.geotools.api.referencing.operation.CoordinateOperationAuthorityFactory;
 import org.geotools.api.referencing.operation.CoordinateOperationFactory;
 import org.geotools.api.util.NameFactory;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.util.Classes;
+import org.geotools.util.factory.FactoryNotFoundException;
+import org.geotools.util.factory.FactoryRegistryException;
+import org.geotools.util.factory.Hints;
 
 /**
  * Defines a common abstraction for getting the different factories. This default implementation

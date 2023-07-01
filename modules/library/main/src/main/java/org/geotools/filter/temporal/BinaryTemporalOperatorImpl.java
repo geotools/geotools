@@ -9,13 +9,13 @@
  */
 package org.geotools.filter.temporal;
 
-import org.geotools.filter.visitor.OperatorNameFilterVisitor;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.temporal.BinaryTemporalOperator;
 import org.geotools.api.temporal.Instant;
 import org.geotools.api.temporal.Period;
 import org.geotools.api.temporal.RelativePosition;
 import org.geotools.api.temporal.TemporalPrimitive;
+import org.geotools.filter.visitor.OperatorNameFilterVisitor;
 
 public abstract class BinaryTemporalOperatorImpl implements BinaryTemporalOperator {
 

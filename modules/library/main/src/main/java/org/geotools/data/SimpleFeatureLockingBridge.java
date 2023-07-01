@@ -17,10 +17,10 @@
 package org.geotools.data;
 
 import java.io.IOException;
-import org.geotools.data.simple.SimpleFeatureLocking;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
+import org.geotools.data.simple.SimpleFeatureLocking;
 
 /**
  * Bridges between {@link FeatureLocking<SimpleFeatureType, SimpleFeature>} and {@link

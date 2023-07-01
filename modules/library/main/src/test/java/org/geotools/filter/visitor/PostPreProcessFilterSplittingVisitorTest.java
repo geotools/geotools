@@ -22,12 +22,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.FilterCapabilities;
-import org.geotools.filter.function.FilterFunction_geometryType;
-import org.geotools.filter.function.JsonPointerFunction;
-import org.junit.Before;
-import org.junit.Test;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
@@ -39,6 +33,12 @@ import org.geotools.api.filter.PropertyIsLike;
 import org.geotools.api.filter.PropertyIsNull;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.FilterCapabilities;
+import org.geotools.filter.function.FilterFunction_geometryType;
+import org.geotools.filter.function.JsonPointerFunction;
+import org.junit.Before;
+import org.junit.Test;
 
 public class PostPreProcessFilterSplittingVisitorTest
         extends AbstractPostPreProcessFilterSplittingVisitorTests {

@@ -23,10 +23,6 @@ import java.util.Date;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.geometry.jts.JTS;
-import org.locationtech.jts.densify.Densifier;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.filter.Filter;
@@ -48,6 +44,10 @@ import org.geotools.api.filter.temporal.EndedBy;
 import org.geotools.api.filter.temporal.Ends;
 import org.geotools.api.filter.temporal.TContains;
 import org.geotools.api.temporal.Period;
+import org.geotools.geometry.jts.JTS;
+import org.locationtech.jts.densify.Densifier;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Encodes a OGC expression into a SOLR query syntax

@@ -19,9 +19,9 @@ package org.geotools.feature.visitor;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.geotools.api.feature.simple.SimpleFeatureType;
 
 @RunWith(Parameterized.class)
 public class MedianVisitorTest<T> extends VisitorTestCase<T, T> {

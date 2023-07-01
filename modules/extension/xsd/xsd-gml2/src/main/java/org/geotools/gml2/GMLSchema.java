@@ -21,6 +21,11 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.AttributeType;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.feature.type.PropertyDescriptor;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.AttributeTypeImpl;
@@ -40,11 +45,6 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.type.AttributeType;
-import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.feature.type.Name;
-import org.geotools.api.feature.type.PropertyDescriptor;
 
 public class GMLSchema extends SchemaImpl {
     /**

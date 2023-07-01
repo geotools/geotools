@@ -18,9 +18,9 @@ package org.geotools.mbstyle.function;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
+import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.geotools.api.filter.capability.FunctionName;
 
 /** Returns "bold" or "normal" based on the font name */
 public class MapBoxFontWeightFunction extends FunctionImpl {

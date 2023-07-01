@@ -17,13 +17,13 @@
 package org.geotools.se.v1_1.bindings;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.style.Description;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDRuleBinding;
 import org.geotools.styling.Rule;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.geotools.api.style.Description;
 
 /**
  * Binding object for the element http://www.opengis.net/se:Rule.

@@ -41,6 +41,7 @@ import javax.media.jai.Histogram;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 import org.apache.commons.io.FilenameUtils;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.gce.imagemosaic.GranuleDescriptor;
 import org.geotools.gce.imagemosaic.GranuleDescriptor.GranuleLoadingResult;
@@ -56,7 +57,6 @@ import org.geotools.image.ImageWorker;
 import org.geotools.util.URLs;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
-import org.geotools.api.feature.simple.SimpleFeature;
 
 /** Basic submosaic producer. Accepts all granules and mosaics without any real special handling */
 public class BaseSubmosaicProducer implements SubmosaicProducer {

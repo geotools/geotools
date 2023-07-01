@@ -15,16 +15,16 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
-import org.geotools.data.FeatureSource;
-import org.geotools.data.wfs.WFSDataStoreFactory;
-import org.geotools.data.wfs.impl.WFSContentDataAccess;
-import org.geotools.data.wfs.impl.WFSDataAccessFactory;
-import org.geotools.feature.FeatureIterator;
 import org.geotools.api.feature.ComplexAttribute;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.Property;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.Name;
+import org.geotools.data.FeatureSource;
+import org.geotools.data.wfs.WFSDataStoreFactory;
+import org.geotools.data.wfs.impl.WFSContentDataAccess;
+import org.geotools.data.wfs.impl.WFSDataAccessFactory;
+import org.geotools.feature.FeatureIterator;
 
 /**
  * Read the contents of a WFS with complex structure.

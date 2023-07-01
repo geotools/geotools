@@ -1,5 +1,6 @@
 package org.geotools.filter.function;
 
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -8,7 +9,6 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
-import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /** Fixture capturing a lot of cut-and-paste data that has collected in our function testing */
 public class FunctionTestFixture {

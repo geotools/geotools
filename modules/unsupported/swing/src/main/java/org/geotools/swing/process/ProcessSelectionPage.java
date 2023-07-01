@@ -35,11 +35,11 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.util.InternationalString;
 import org.geotools.process.ProcessFactory;
 import org.geotools.process.Processors;
 import org.geotools.swing.wizard.JPage;
-import org.geotools.api.feature.type.Name;
-import org.geotools.api.util.InternationalString;
 
 /**
  * This page is responsible for making a process selection widget that moves onto to the selected

@@ -18,6 +18,11 @@ package org.geotools.data.wfs;
 
 import java.io.IOException;
 import javax.xml.namespace.QName;
+import org.geotools.api.feature.FeatureVisitor;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Filter;
 import org.geotools.data.FeatureEvent;
 import org.geotools.data.FeatureEvent.Type;
 import org.geotools.data.FeatureReader;
@@ -31,11 +36,6 @@ import org.geotools.data.store.ContentFeatureStore;
 import org.geotools.data.store.ContentState;
 import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.api.feature.FeatureVisitor;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.feature.type.Name;
-import org.geotools.api.filter.Filter;
 
 class WFSFeatureStore extends ContentFeatureStore {
 

@@ -17,10 +17,10 @@
 package org.geotools.se.v1_1.bindings;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDFillBinding;
 import org.geotools.styling.StyleFactory;
-import org.geotools.api.filter.FilterFactory;
 
 /**
  * Binding object for the element http://www.opengis.net/se:Fill.

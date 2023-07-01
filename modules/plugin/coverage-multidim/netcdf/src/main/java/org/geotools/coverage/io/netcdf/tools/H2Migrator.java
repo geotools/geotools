@@ -45,6 +45,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.xml.bind.JAXBException;
 import org.apache.commons.io.FilenameUtils;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalog;
 import org.geotools.coverage.io.catalog.DataStoreConfiguration;
@@ -70,7 +71,6 @@ import org.geotools.jdbc.Index;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
-import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /** Converts NetCDF slice H2 indexes towards a centralized database approach */
 public class H2Migrator {

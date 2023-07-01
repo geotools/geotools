@@ -23,6 +23,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.style.GraphicFill;
+import org.geotools.api.style.SemanticType;
+import org.geotools.api.style.Symbolizer;
 import org.geotools.filter.function.RecodeFunction;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.parse.MBFilter;
@@ -39,11 +44,6 @@ import org.geotools.styling.Stroke;
 import org.geotools.text.Text;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.filter.expression.Literal;
-import org.geotools.api.style.GraphicFill;
-import org.geotools.api.style.SemanticType;
-import org.geotools.api.style.Symbolizer;
 
 /**
  * MBLayer wrapper for "line" layers.

@@ -19,8 +19,8 @@ package org.geotools.filter;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.geotools.util.Converters;
 import org.geotools.api.filter.expression.BinaryExpression;
+import org.geotools.util.Converters;
 
 /**
  * Holds a mathematical relationship between two expressions. Note that the sub expressions must be

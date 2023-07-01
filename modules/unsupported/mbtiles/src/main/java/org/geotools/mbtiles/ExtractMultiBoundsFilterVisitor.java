@@ -22,11 +22,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
-import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
-import org.locationtech.jts.geom.Envelope;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.Or;
+import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * A subclass of ExtractBoundsFilterVisitor that can return either an Envelope or a list of disjoint

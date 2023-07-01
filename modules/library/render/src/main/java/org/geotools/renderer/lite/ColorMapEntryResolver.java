@@ -16,12 +16,12 @@
  */
 package org.geotools.renderer.lite;
 
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.renderer.style.ExpressionExtractor;
 import org.geotools.styling.ColorMapEntry;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.filter.expression.Literal;
 
 /**
  * Simple support class created with the intention of expanding env function in raster symbolizer

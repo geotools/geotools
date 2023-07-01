@@ -16,11 +16,11 @@
  */
 package org.geotools.filter.spatial;
 
-import org.geotools.filter.CartesianDistanceFilter;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.filter.FilterVisitor;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.spatial.DWithin;
+import org.geotools.filter.CartesianDistanceFilter;
+import org.locationtech.jts.geom.Geometry;
 
 public class DWithinImpl extends CartesianDistanceFilter implements DWithin {
 

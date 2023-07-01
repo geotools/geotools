@@ -21,10 +21,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.geootols.filter.text.cql_2.CQL2;
-import org.geotools.filter.text.cql2.CQLException;
-import org.junit.Test;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Polygon;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.spatial.Contains;
@@ -36,6 +32,10 @@ import org.geotools.api.filter.spatial.Overlaps;
 import org.geotools.api.filter.spatial.Touches;
 import org.geotools.api.filter.spatial.Within;
 import org.geotools.api.referencing.FactoryException;
+import org.geotools.filter.text.cql2.CQLException;
+import org.junit.Test;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Polygon;
 
 /**
  * Spatial comparsion operators have changed significantly:

@@ -17,6 +17,8 @@
 package org.geotools.process.raster;
 
 import java.util.List;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -28,8 +30,6 @@ import org.geotools.process.factory.DescribeResult;
 import org.geotools.process.raster.MarchingSquaresVectorizer.ImageLoadingType;
 import org.geotools.util.Range;
 import org.locationtech.jts.geom.Geometry;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.util.ProgressListener;
 
 /**
  * A process to extract footprint from a raster. Result is returned as a {@linkplain

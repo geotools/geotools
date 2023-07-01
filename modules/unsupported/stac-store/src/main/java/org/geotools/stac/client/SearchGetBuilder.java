@@ -30,8 +30,8 @@ import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import org.apache.http.client.utils.URIBuilder;
 import org.geootols.filter.text.cql_2.CQL2;
-import org.geotools.filter.text.cqljson.CQL2Json;
 import org.geotools.api.filter.Filter;
+import org.geotools.filter.text.cqljson.CQL2Json;
 
 /** Builds a Search GET URL based on the landing page and {@link SearchQuery} specification */
 class SearchGetBuilder {

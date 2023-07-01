@@ -26,6 +26,7 @@ import java.util.List;
 import javax.imageio.ImageReader;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.spi.ImageReaderSpi;
+import org.geotools.api.feature.type.Name;
 import org.geotools.coverage.grid.io.FileSetManager;
 import org.geotools.coverage.io.CoverageSourceDescriptor;
 import org.geotools.coverage.io.catalog.CoverageSlice;
@@ -37,7 +38,6 @@ import org.geotools.data.Repository;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.feature.type.Name;
 
 /**
  * @author Daniele Romagnoli, GeoSolutions SAS

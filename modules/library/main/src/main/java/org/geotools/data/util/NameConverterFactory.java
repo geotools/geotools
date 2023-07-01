@@ -16,11 +16,11 @@
  */
 package org.geotools.data.util;
 
+import org.geotools.api.feature.type.Name;
 import org.geotools.feature.NameImpl;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.feature.type.Name;
 
 /**
  * ConverterFactory for handling Name conversions.

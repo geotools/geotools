@@ -39,12 +39,12 @@ import javax.imageio.stream.FileImageInputStream;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.RenderedOp;
 import org.geotools.TestData;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.util.ComponentColorModelJAI;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.geotools.api.referencing.operation.TransformException;
 
 /** @author Simone Giannecchini, GeoSolutions */
 public class TestLinearClassifier extends Assert {

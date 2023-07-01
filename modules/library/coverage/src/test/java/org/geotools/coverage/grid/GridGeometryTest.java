@@ -26,6 +26,14 @@ import static org.junit.Assert.fail;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.coverage.grid.GridGeometry;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.metadata.spatial.PixelOrientation;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.NoninvertibleTransformException;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
@@ -38,14 +46,6 @@ import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.junit.Assert;
 import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
-import org.geotools.api.coverage.grid.GridEnvelope;
-import org.geotools.api.coverage.grid.GridGeometry;
-import org.geotools.api.geometry.DirectPosition;
-import org.geotools.api.metadata.spatial.PixelOrientation;
-import org.geotools.api.referencing.datum.PixelInCell;
-import org.geotools.api.referencing.operation.MathTransform;
-import org.geotools.api.referencing.operation.NoninvertibleTransformException;
-import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * Test the {@link GridGeometry} implementation.

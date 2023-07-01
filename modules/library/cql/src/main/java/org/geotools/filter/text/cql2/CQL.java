@@ -22,12 +22,12 @@ import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.List;
 import javax.xml.transform.TransformerException;
-import org.geotools.filter.text.commons.CompilerUtil;
-import org.geotools.filter.text.commons.ExpressionToText;
-import org.geotools.xml.filter.FilterTransformer;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.filter.text.commons.CompilerUtil;
+import org.geotools.filter.text.commons.ExpressionToText;
+import org.geotools.xml.filter.FilterTransformer;
 
 /**
  * Utility class to parse <b>CQL</b> predicates and expressions to GeoAPI {@link Filter}s and {@link

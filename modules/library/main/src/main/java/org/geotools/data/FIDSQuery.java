@@ -19,11 +19,11 @@ package org.geotools.data;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
-import org.geotools.util.factory.GeoTools;
-import org.geotools.util.factory.Hints;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 
 /**
  * Implementation for Query.FIDS.

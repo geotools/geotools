@@ -22,6 +22,10 @@ import java.awt.image.RenderedImage;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.NullOpImage;
 import javax.media.jai.OpImage;
+import org.geotools.api.coverage.Coverage;
+import org.geotools.api.coverage.SampleDimension;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -34,10 +38,6 @@ import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.util.Classes;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.coverage.Coverage;
-import org.geotools.api.coverage.SampleDimension;
-import org.geotools.api.coverage.grid.GridCoverage;
-import org.geotools.api.parameter.ParameterValueGroup;
 
 /**
  * Operation applied only on image's colors. This operation work only for source image using an

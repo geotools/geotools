@@ -21,6 +21,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.apache.commons.digester.Digester;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.sort.SortBy;
+import org.geotools.api.filter.sort.SortOrder;
 import org.geotools.appschema.filter.FilterFactoryImplReportInvalidProperty;
 import org.geotools.data.DataAccess;
 import org.geotools.data.Query;
@@ -41,13 +48,6 @@ import org.geotools.data.solr.SolrDataStore;
 import org.geotools.data.solr.SolrFeatureSource;
 import org.geotools.filter.expression.AbstractExpressionVisitor;
 import org.geotools.util.Converters;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.filter.expression.PropertyName;
-import org.geotools.api.filter.sort.SortBy;
-import org.geotools.api.filter.sort.SortOrder;
 
 /**
  * This class covers \ uses the available App-Schema extension points to make Apache Solr usable in

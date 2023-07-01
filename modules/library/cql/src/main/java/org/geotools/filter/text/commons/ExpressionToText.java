@@ -30,13 +30,6 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import org.geotools.filter.text.ecql.ECQL;
-import org.geotools.referencing.CRS;
-import org.geotools.util.Converters;
-import org.geotools.util.factory.Hints;
-import org.geotools.util.logging.Logging;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.io.WKTWriter;
 import org.geotools.api.filter.expression.Add;
 import org.geotools.api.filter.expression.Divide;
 import org.geotools.api.filter.expression.Expression;
@@ -51,6 +44,13 @@ import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.temporal.Instant;
 import org.geotools.api.temporal.Period;
+import org.geotools.filter.text.ecql.ECQL;
+import org.geotools.referencing.CRS;
+import org.geotools.util.Converters;
+import org.geotools.util.factory.Hints;
+import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.WKTWriter;
 
 /**
  * This class is responsible to convert an expression to a CQL/ECQL valid expression.

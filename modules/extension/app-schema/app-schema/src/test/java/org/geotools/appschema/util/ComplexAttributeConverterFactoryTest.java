@@ -24,6 +24,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import org.geotools.api.feature.Attribute;
+import org.geotools.api.feature.ComplexAttribute;
+import org.geotools.api.feature.GeometryAttribute;
+import org.geotools.api.feature.Property;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.data.complex.util.ComplexFeatureConstants;
 import org.geotools.data.util.ComplexAttributeConverterFactory;
 import org.geotools.feature.AttributeImpl;
@@ -43,12 +49,6 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.PrecisionModel;
-import org.geotools.api.feature.Attribute;
-import org.geotools.api.feature.ComplexAttribute;
-import org.geotools.api.feature.GeometryAttribute;
-import org.geotools.api.feature.Property;
-import org.geotools.api.feature.type.AttributeDescriptor;
-import org.geotools.api.filter.identity.FeatureId;
 
 /**
  * Tests for {@link ComplexAttributeConverterFactory}.

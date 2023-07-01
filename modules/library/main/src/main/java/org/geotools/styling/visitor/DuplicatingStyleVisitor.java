@@ -25,6 +25,12 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.stream.Collectors;
 import javax.swing.Icon;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.Description;
+import org.geotools.api.style.ExternalMark;
+import org.geotools.api.style.GraphicalSymbol;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.styling.AnchorPoint;
@@ -70,12 +76,6 @@ import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 import org.geotools.styling.UserLayer;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.style.Description;
-import org.geotools.api.style.ExternalMark;
-import org.geotools.api.style.GraphicalSymbol;
 
 /**
  * Creates a deep copy of a Style, this class is *NOT THREAD SAFE*.

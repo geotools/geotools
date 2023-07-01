@@ -16,11 +16,11 @@
  */
 package org.geotools.filter;
 
-import org.geotools.util.Converters;
 import org.geotools.api.filter.FilterVisitor;
 import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
+import org.geotools.util.Converters;
 
 /** @author jdeolive TODO: rename this class to IsEqualToImpl */
 public class IsEqualsToImpl extends MultiCompareFilterImpl implements PropertyIsEqualTo {

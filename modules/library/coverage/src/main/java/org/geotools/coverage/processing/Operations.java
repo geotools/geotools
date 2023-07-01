@@ -23,12 +23,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import javax.media.jai.Interpolation;
 import javax.media.jai.Warp;
-import org.geotools.coverage.processing.operation.Crop;
-import org.geotools.coverage.processing.operation.Resample;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
-import org.geotools.util.factory.Hints;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.coverage.Coverage;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.coverage.grid.GridGeometry;
@@ -40,6 +34,12 @@ import org.geotools.api.parameter.ParameterNotFoundException;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.coverage.processing.operation.Crop;
+import org.geotools.coverage.processing.operation.Resample;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.util.factory.Hints;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Convenience, type-safe, methods for applying some common operations on {@linkplain Coverage

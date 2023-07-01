@@ -19,6 +19,7 @@ package org.geotools.ysld.encode;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import org.geotools.api.style.ContrastMethod;
 import org.geotools.styling.ChannelSelection;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.ColorMapEntry;
@@ -27,7 +28,6 @@ import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.SelectedChannelType;
 import org.geotools.ysld.Band;
 import org.geotools.ysld.Tuple;
-import org.geotools.api.style.ContrastMethod;
 
 /** Encodes a {@link RasterSymbolizer} as YSLD. */
 public class RasterSymbolizerEncoder extends SymbolizerEncoder<RasterSymbolizer> {

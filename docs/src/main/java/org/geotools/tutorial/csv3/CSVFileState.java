@@ -20,9 +20,9 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.net.URI;
 import org.apache.commons.io.FilenameUtils;
-import org.geotools.referencing.CRS;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.referencing.CRS;
 
 // docs start CSVFileState
 /** Details from comma separated value file. */

@@ -17,9 +17,6 @@
 package org.geotools.stac.store;
 
 import java.util.Date;
-import org.geotools.filter.visitor.NullFilterVisitor;
-import org.geotools.util.DateRange;
-import org.geotools.util.Range;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.BinaryComparisonOperator;
 import org.geotools.api.filter.ExcludeFilter;
@@ -66,6 +63,9 @@ import org.geotools.api.filter.temporal.OverlappedBy;
 import org.geotools.api.filter.temporal.TContains;
 import org.geotools.api.filter.temporal.TEquals;
 import org.geotools.api.filter.temporal.TOverlaps;
+import org.geotools.filter.visitor.NullFilterVisitor;
+import org.geotools.util.DateRange;
+import org.geotools.util.Range;
 
 /**
  * Returns a {@link DateRange} if the filter is equivalent to a date range on the "datetime"

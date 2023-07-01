@@ -19,6 +19,7 @@ package org.geotools.renderer.lite;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Collections;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -30,7 +31,6 @@ import org.geotools.styling.Style;
 import org.geotools.styling.TextSymbolizer;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.geotools.api.filter.FilterFactory;
 
 /** Tests labels underling. */
 public class LabelUnderlineTest extends AbstractLabelLineTest {

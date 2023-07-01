@@ -17,9 +17,9 @@
 package org.geotools.filter;
 
 import java.util.List;
-import org.geotools.util.factory.Factory;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
+import org.geotools.util.factory.Factory;
 
 /**
  * Quick Function implementation for direct use as a factory.

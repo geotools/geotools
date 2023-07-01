@@ -19,10 +19,10 @@ package org.geotools.data.vpf.util;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.vpf.io.RowField;
 import org.geotools.data.vpf.io.TableRow;
 import org.geotools.util.logging.Logging;
-import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /*
  * PrimitiveDataFactory.java

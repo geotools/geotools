@@ -20,11 +20,11 @@ package org.geotools.gml3.bindings;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import org.geotools.api.feature.ComplexAttribute;
 import org.geotools.gml3.ComplexAttributeTestSupport;
 import org.geotools.gml3.GML;
 import org.geotools.measure.Measure;
 import org.junit.Test;
-import org.geotools.api.feature.ComplexAttribute;
 import org.w3c.dom.Document;
 
 public class MeasureTypeBindingTest extends ComplexAttributeTestSupport {

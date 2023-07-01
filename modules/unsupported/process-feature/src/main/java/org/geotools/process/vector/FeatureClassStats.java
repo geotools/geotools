@@ -23,6 +23,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.PropertyDescriptor;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -44,10 +48,6 @@ import org.geotools.util.logging.Logging;
 import org.jaitools.numeric.Range;
 import org.jaitools.numeric.Statistic;
 import org.jaitools.numeric.StreamingSampleStats;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.type.PropertyDescriptor;
-import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.util.ProgressListener;
 
 /**
  * Process that classifies vector data into "classes" using one of the following methods:

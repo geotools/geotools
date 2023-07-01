@@ -18,11 +18,11 @@ package org.geotools.gml2;
 
 import java.io.InputStream;
 import javax.xml.namespace.QName;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.xsd.StreamingParser;
 import org.junit.Assert;
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
-import org.geotools.api.feature.simple.SimpleFeature;
 
 public class GMLFeatureStreamingTest {
     @Test

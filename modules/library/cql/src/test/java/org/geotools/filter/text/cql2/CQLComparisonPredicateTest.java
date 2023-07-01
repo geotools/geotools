@@ -17,11 +17,6 @@
 
 package org.geotools.filter.text.cql2;
 
-import org.geotools.filter.text.commons.CompilerUtil;
-import org.geotools.filter.text.commons.Language;
-import org.geotools.filter.text.ecql.ECQLComparisonPredicateTest;
-import org.junit.Assert;
-import org.junit.Test;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.Or;
@@ -30,6 +25,11 @@ import org.geotools.api.filter.PropertyIsLessThan;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.filter.text.commons.CompilerUtil;
+import org.geotools.filter.text.commons.Language;
+import org.geotools.filter.text.ecql.ECQLComparisonPredicateTest;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * Unit Test for Comparison Predicate

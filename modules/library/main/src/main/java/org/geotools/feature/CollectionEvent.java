@@ -17,10 +17,10 @@
 package org.geotools.feature;
 
 import java.util.EventObject;
-import org.geotools.data.FeatureEvent;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.type.FeatureType;
+import org.geotools.data.FeatureEvent;
 
 /**
  * A simple event object to represent all events triggered by FeatureCollection instances (typically

@@ -34,6 +34,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.coverage.io.CoverageAccess;
 import org.geotools.coverage.io.Driver;
 import org.geotools.coverage.io.FileDriver;
@@ -41,7 +42,6 @@ import org.geotools.coverage.io.impl.DefaultFileDriver;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.util.ProgressListener;
 
 /** NetCDF Driver */
 public class NetCDFDriver extends DefaultFileDriver implements FileDriver, Driver {

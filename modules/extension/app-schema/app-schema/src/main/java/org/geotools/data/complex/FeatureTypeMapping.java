@@ -24,6 +24,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import javax.xml.namespace.QName;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.appschema.util.IndexQueryUtils;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.complex.feature.type.Types;
@@ -33,13 +40,6 @@ import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.geotools.data.joining.JoiningNestedAttributeMapping;
 import org.geotools.gml3.GML;
 import org.geotools.xlink.XLINK;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.feature.type.AttributeDescriptor;
-import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.feature.type.Name;
-import org.geotools.api.filter.expression.Expression;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**

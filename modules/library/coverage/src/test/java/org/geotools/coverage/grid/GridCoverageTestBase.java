@@ -41,6 +41,8 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.measure.MetricPrefix;
 import javax.media.jai.RasterFactory;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.CoverageTestBase;
@@ -50,8 +52,6 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.coverage.grid.GridCoverage;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import si.uom.SI;
 
 /**

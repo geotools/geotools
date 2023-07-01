@@ -23,6 +23,9 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Collections;
 import javax.xml.namespace.QName;
+import org.geotools.api.feature.type.AttributeType;
+import org.geotools.api.feature.type.FeatureTypeFactory;
+import org.geotools.api.feature.type.GeometryType;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.feature.type.SchemaImpl;
@@ -34,9 +37,6 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.geotools.api.feature.type.AttributeType;
-import org.geotools.api.feature.type.FeatureTypeFactory;
-import org.geotools.api.feature.type.GeometryType;
 
 /**
  * Schema containing a set of "simple" types.

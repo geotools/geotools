@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.metadata.citation.Address;
 import org.geotools.data.ows.OperationType;
 import org.geotools.ows.wms.CRSEnvelope;
 import org.geotools.ows.wmts.WMTSSpecification;
@@ -29,7 +30,6 @@ import org.geotools.ows.wmts.WebMapTileServer;
 import org.geotools.util.logging.Logging;
 import org.junit.Assert;
 import org.junit.Test;
-import org.geotools.api.metadata.citation.Address;
 import org.xml.sax.SAXException;
 
 public class WMTSCapabilitiesTest {

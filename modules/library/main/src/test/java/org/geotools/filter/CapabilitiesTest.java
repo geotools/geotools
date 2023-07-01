@@ -20,12 +20,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.temporal.object.DefaultInstant;
-import org.geotools.temporal.object.DefaultPeriod;
-import org.geotools.temporal.object.DefaultPosition;
-import org.junit.Assert;
-import org.junit.Test;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory2;
@@ -35,6 +29,12 @@ import org.geotools.api.filter.temporal.After;
 import org.geotools.api.filter.temporal.BegunBy;
 import org.geotools.api.temporal.Instant;
 import org.geotools.api.temporal.Period;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.temporal.object.DefaultInstant;
+import org.geotools.temporal.object.DefaultPeriod;
+import org.geotools.temporal.object.DefaultPosition;
+import org.junit.Assert;
+import org.junit.Test;
 import wiremock.com.google.common.collect.Lists;
 
 /**

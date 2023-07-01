@@ -19,12 +19,12 @@ package org.geotools.mbstyle.function;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONArray;
-import org.geotools.api.filter.capability.FunctionName;
-import org.geotools.api.filter.expression.Expression;
 
 /**
  * Takes an object as an argument and returns the color value if possible. Evaluates string in the

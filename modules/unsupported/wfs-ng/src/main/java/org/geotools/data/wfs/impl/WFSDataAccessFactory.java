@@ -27,6 +27,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFactory;
 import org.geotools.data.DataUtilities;
@@ -40,8 +42,6 @@ import org.geotools.util.KVP;
 import org.geotools.util.PreventLocalEntityResolver;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.xml.XMLHandlerHints;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.type.FeatureType;
 import org.xml.sax.EntityResolver;
 
 /**

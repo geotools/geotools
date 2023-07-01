@@ -18,10 +18,6 @@ package org.geotools.data.informix;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import org.geotools.data.jdbc.FilterToSQL;
-import org.geotools.filter.FilterCapabilities;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.LinearRing;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
@@ -38,6 +34,10 @@ import org.geotools.api.filter.spatial.Intersects;
 import org.geotools.api.filter.spatial.Overlaps;
 import org.geotools.api.filter.spatial.Touches;
 import org.geotools.api.filter.spatial.Within;
+import org.geotools.data.jdbc.FilterToSQL;
+import org.geotools.filter.FilterCapabilities;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LinearRing;
 
 /**
  * Encodes a filter into a SQL WHERE statement using Informix-appropriate syntax.

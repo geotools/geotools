@@ -25,14 +25,14 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.PropertyDescriptor;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.junit.Assert;
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.feature.type.PropertyDescriptor;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Tests for {@link SimpleFeatureImpl}.

@@ -20,11 +20,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.renderer.style.ShapeMarkFactory;
 import org.geotools.renderer.style.WellKnownMarkFactory;
 import org.junit.Test;
-import org.geotools.api.filter.FilterFactory;
 
 public class LineFillerTest {
 

@@ -10,6 +10,7 @@ import static org.junit.Assert.assertTrue;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.JTS;
@@ -29,7 +30,6 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /** Test streaming renderer handling of 3D data (that must be transformed via WGS84). */
 public class GeographicTransformPointTest {

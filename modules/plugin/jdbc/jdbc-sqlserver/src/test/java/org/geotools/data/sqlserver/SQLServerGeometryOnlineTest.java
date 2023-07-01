@@ -18,6 +18,7 @@ package org.geotools.data.sqlserver;
 
 import static org.junit.Assert.assertEquals;
 
+import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.jdbc.JDBCGeometryOnlineTest;
 import org.geotools.jdbc.JDBCGeometryTestSetup;
 import org.geotools.referencing.CRS;
@@ -30,7 +31,6 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.geotools.api.feature.type.GeometryDescriptor;
 
 /** @author DamianoG */
 public class SQLServerGeometryOnlineTest extends JDBCGeometryOnlineTest {

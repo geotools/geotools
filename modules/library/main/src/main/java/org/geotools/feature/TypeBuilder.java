@@ -24,8 +24,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import org.geotools.feature.type.Types;
-import org.geotools.referencing.CRS;
 import org.geotools.api.feature.type.AssociationDescriptor;
 import org.geotools.api.feature.type.AssociationType;
 import org.geotools.api.feature.type.AttributeDescriptor;
@@ -42,6 +40,8 @@ import org.geotools.api.feature.type.Schema;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.util.InternationalString;
+import org.geotools.feature.type.Types;
+import org.geotools.referencing.CRS;
 
 /**
  * Makes building types easier by maintaining state.

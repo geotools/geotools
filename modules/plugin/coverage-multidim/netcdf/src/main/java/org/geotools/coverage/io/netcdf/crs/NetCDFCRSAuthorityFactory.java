@@ -19,11 +19,11 @@ package org.geotools.coverage.io.netcdf.crs;
 import java.io.File;
 import java.net.URL;
 import java.util.logging.Level;
+import org.geotools.api.referencing.crs.CRSAuthorityFactory;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.referencing.factory.epsg.FactoryUsingWKT;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.referencing.crs.CRSAuthorityFactory;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * A factory providing NetCDF/GRIB custom {@link CoordinateReferenceSystem} instances with the

@@ -14,9 +14,9 @@ package org.geotools.render;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
-import org.geotools.renderer.style.MarkFactory;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.renderer.style.MarkFactory;
 
 class SplatMarkFactory implements MarkFactory {
 

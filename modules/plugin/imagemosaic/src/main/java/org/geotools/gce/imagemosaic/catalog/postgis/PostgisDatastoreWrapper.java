@@ -19,13 +19,13 @@ package org.geotools.gce.imagemosaic.catalog.postgis;
 import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.DataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.data.transform.Definition;
 import org.geotools.gce.imagemosaic.catalog.oracle.DataStoreWrapper;
 import org.geotools.gce.imagemosaic.catalog.oracle.FeatureTypeMapper;
-import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /**
  * Specific Postgis implementation for a {@link DataStoreWrapper} By default, Postgresql identifiers

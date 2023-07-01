@@ -24,14 +24,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.visitor.AbstractSearchFilterVisitor;
-import org.geotools.filter.visitor.DefaultFilterVisitor;
-import org.geotools.filter.visitor.DuplicatingFilterVisitor;
-import org.geotools.util.Converters;
-import org.geotools.util.Utilities;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.BinaryLogicOperator;
@@ -46,6 +38,14 @@ import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.Multiply;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.expression.Subtract;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.visitor.AbstractSearchFilterVisitor;
+import org.geotools.filter.visitor.DefaultFilterVisitor;
+import org.geotools.filter.visitor.DuplicatingFilterVisitor;
+import org.geotools.util.Converters;
+import org.geotools.util.Utilities;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Utility class for working with Filters & Expression.
@@ -150,7 +150,8 @@ public class Filters {
      *
      * @return And
      */
-    public static Filter and(org.geotools.api.filter.FilterFactory ff, Filter filter1, Filter filter2) {
+    public static Filter and(
+            org.geotools.api.filter.FilterFactory ff, Filter filter1, Filter filter2) {
         ArrayList<Filter> list = new ArrayList<>(2);
         if (filter1 instanceof And) {
             And some = (And) filter1;
@@ -198,7 +199,8 @@ public class Filters {
      * Safe version of FilterFactory *or* that is willing to combine filter1 and filter2 correctly
      * in the even either of them is already an Or filter.
      */
-    public static Filter or(org.geotools.api.filter.FilterFactory ff, Filter filter1, Filter filter2) {
+    public static Filter or(
+            org.geotools.api.filter.FilterFactory ff, Filter filter1, Filter filter2) {
         ArrayList<Filter> list = new ArrayList<>();
         if (filter1 instanceof Or) {
             Or some = (Or) filter1;
@@ -251,7 +253,8 @@ public class Filters {
      * @see ExpressionType
      * @return ExpressionType constant.
      */
-    public static short getExpressionType(org.geotools.api.filter.expression.Expression experssion) {
+    public static short getExpressionType(
+            org.geotools.api.filter.expression.Expression experssion) {
         if (experssion == null) return 0;
         else if (experssion instanceof PropertyName) return ExpressionType.ATTRIBUTE;
         else if (experssion instanceof Function) return ExpressionType.FUNCTION;
@@ -582,8 +585,8 @@ public class Filters {
 
     /**
      * Removes the targetFilter from the baseFilter if the baseFilter is a group filter (And or Or).
-     * See {@link #removeFilter(org.geotools.api.filter.Filter, org.geotools.api.filter.Filter)} for details,
-     * except this method includes the option to not recurse into child filters.
+     * See {@link #removeFilter(org.geotools.api.filter.Filter, org.geotools.api.filter.Filter)} for
+     * details, except this method includes the option to not recurse into child filters.
      *
      * @param recurse true if the method should descend into child group filters looking for the
      *     target

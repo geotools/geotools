@@ -16,6 +16,12 @@
  */
 package org.geotools.feature;
 
+import org.geotools.api.feature.GeometryAttribute;
+import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.feature.type.GeometryType;
+import org.geotools.api.filter.identity.Identifier;
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.Utilities;
 import org.locationtech.jts.geom.Geometry;
@@ -23,12 +29,6 @@ import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
-import org.geotools.api.feature.GeometryAttribute;
-import org.geotools.api.feature.type.GeometryDescriptor;
-import org.geotools.api.feature.type.GeometryType;
-import org.geotools.api.filter.identity.Identifier;
-import org.geotools.api.geometry.BoundingBox;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * TODO: rename to GeometricAttribute Provides ...TODO summary sentence

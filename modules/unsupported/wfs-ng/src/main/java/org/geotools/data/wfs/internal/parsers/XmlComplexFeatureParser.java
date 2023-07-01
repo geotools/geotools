@@ -29,18 +29,6 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
-import org.geotools.data.DataSourceException;
-import org.geotools.data.complex.feature.type.Types;
-import org.geotools.data.complex.util.ComplexFeatureConstants;
-import org.geotools.data.wfs.internal.WFSStrategy;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.AttributeBuilder;
-import org.geotools.feature.AttributeImpl;
-import org.geotools.feature.ComplexFeatureBuilder;
-import org.geotools.feature.LenientFeatureFactoryImpl;
-import org.geotools.feature.NameImpl;
-import org.geotools.feature.type.AttributeDescriptorImpl;
-import org.geotools.gml3.GML;
 import org.geotools.api.feature.Attribute;
 import org.geotools.api.feature.ComplexAttribute;
 import org.geotools.api.feature.Feature;
@@ -55,6 +43,18 @@ import org.geotools.api.feature.type.PropertyDescriptor;
 import org.geotools.api.feature.type.PropertyType;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
+import org.geotools.data.DataSourceException;
+import org.geotools.data.complex.feature.type.Types;
+import org.geotools.data.complex.util.ComplexFeatureConstants;
+import org.geotools.data.wfs.internal.WFSStrategy;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.AttributeBuilder;
+import org.geotools.feature.AttributeImpl;
+import org.geotools.feature.ComplexFeatureBuilder;
+import org.geotools.feature.LenientFeatureFactoryImpl;
+import org.geotools.feature.NameImpl;
+import org.geotools.feature.type.AttributeDescriptorImpl;
+import org.geotools.gml3.GML;
 
 /**
  * Parses complex features from a WFS response input stream.

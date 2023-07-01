@@ -23,6 +23,10 @@ import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import javax.measure.Unit;
+import org.geotools.api.coverage.ColorInterpretation;
+import org.geotools.api.coverage.SampleDimensionType;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.util.InternationalString;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
@@ -31,10 +35,6 @@ import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.NumberRange;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.coverage.ColorInterpretation;
-import org.geotools.api.coverage.SampleDimensionType;
-import org.geotools.api.coverage.grid.GridCoverage;
-import org.geotools.api.util.InternationalString;
 
 /**
  * Describes the band values for a grid coverage.

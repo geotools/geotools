@@ -21,10 +21,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.function.EnvFunction;
 import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.function.EnvFunction;
 
 /**
  * A {@link ConnectionLifecycleListener} that executes custom SQL commands on connection grab and

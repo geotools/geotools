@@ -20,6 +20,7 @@ package org.geotools.filter.function;
 import com.google.re2j.Pattern;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
+import org.geotools.api.filter.FilterFactory2;
 import org.geotools.factory.CommonFactoryFinder;
 import org.locationtech.jts.algorithm.MinimumBoundingCircle;
 import org.locationtech.jts.algorithm.MinimumDiameter;
@@ -30,7 +31,6 @@ import org.locationtech.jts.geom.OctagonalEnvelope;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.WKTReader;
-import org.geotools.api.filter.FilterFactory2;
 
 /** @author David Blasby (The Open Planning Project) */
 public class StaticGeometry {

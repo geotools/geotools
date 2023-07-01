@@ -23,10 +23,10 @@ import java.util.WeakHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.EventListenerList;
-import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
+import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
  * This class is used by DataStore implementations to provide FeatureListener support for the

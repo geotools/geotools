@@ -25,6 +25,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.FilterFactory2;
 import org.geotools.data.Transaction;
 import org.geotools.data.joining.JoiningQuery;
 import org.geotools.data.oracle.OracleDialect;
@@ -39,8 +41,6 @@ import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PrimaryKey;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.filter.FilterFactory2;
 
 public class JoiningJDBCFeatureSourceTest {
 

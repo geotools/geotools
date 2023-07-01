@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.LinkedList;
 import java.util.List;
+import org.geotools.api.geometry.DirectPosition;
 import org.geotools.data.vpf.VPFLogger;
 import org.geotools.data.vpf.ifc.DataTypesDefinition;
 import org.geotools.data.vpf.ifc.FileConstants;
@@ -28,7 +29,6 @@ import org.geotools.data.vpf.ifc.VPFRow;
 import org.geotools.data.vpf.util.DataUtils;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralDirectPosition;
-import org.geotools.api.geometry.DirectPosition;
 
 /**
  * VPFInputStream.java Created: Mon Feb 24 22:39:57 2003

@@ -18,6 +18,12 @@ package org.geotools.data.oracle;
 
 import static org.junit.Assert.assertEquals;
 
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.api.filter.spatial.DWithin;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
@@ -30,12 +36,6 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
-import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.expression.Literal;
-import org.geotools.api.filter.expression.PropertyName;
-import org.geotools.api.filter.spatial.BBOX;
-import org.geotools.api.filter.spatial.DWithin;
 
 public class OracleSpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest {
 

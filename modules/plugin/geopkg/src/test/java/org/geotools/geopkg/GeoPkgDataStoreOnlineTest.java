@@ -16,10 +16,10 @@
  */
 package org.geotools.geopkg;
 
-import org.geotools.jdbc.JDBCDataStoreOnlineTest;
-import org.geotools.referencing.CRS;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.jdbc.JDBCDataStoreOnlineTest;
+import org.geotools.referencing.CRS;
 
 public class GeoPkgDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
 

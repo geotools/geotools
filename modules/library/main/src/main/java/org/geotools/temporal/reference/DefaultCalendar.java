@@ -18,13 +18,6 @@ package org.geotools.temporal.reference;
 
 import java.util.Collection;
 import java.util.GregorianCalendar;
-import org.geotools.metadata.iso.citation.Citations;
-import org.geotools.referencing.NamedIdentifier;
-import org.geotools.temporal.object.DefaultCalendarDate;
-import org.geotools.temporal.object.DefaultDateAndTime;
-import org.geotools.temporal.object.DefaultJulianDate;
-import org.geotools.util.SimpleInternationalString;
-import org.geotools.util.Utilities;
 import org.geotools.api.metadata.extent.Extent;
 import org.geotools.api.referencing.ReferenceIdentifier;
 import org.geotools.api.temporal.Calendar;
@@ -35,6 +28,13 @@ import org.geotools.api.temporal.ClockTime;
 import org.geotools.api.temporal.DateAndTime;
 import org.geotools.api.temporal.JulianDate;
 import org.geotools.api.temporal.TemporalCoordinateSystem;
+import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.referencing.NamedIdentifier;
+import org.geotools.temporal.object.DefaultCalendarDate;
+import org.geotools.temporal.object.DefaultDateAndTime;
+import org.geotools.temporal.object.DefaultJulianDate;
+import org.geotools.util.SimpleInternationalString;
+import org.geotools.util.Utilities;
 
 /** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultCalendar extends DefaultTemporalReferenceSystem implements Calendar {

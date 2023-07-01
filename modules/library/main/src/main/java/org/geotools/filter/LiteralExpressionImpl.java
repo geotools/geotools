@@ -18,11 +18,11 @@ package org.geotools.filter;
 
 import static org.geotools.filter.Filters.getExpressionType;
 
+import org.geotools.api.filter.expression.ExpressionVisitor;
+import org.geotools.api.filter.expression.Literal;
 import org.geotools.util.Converters;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
-import org.geotools.api.filter.expression.ExpressionVisitor;
-import org.geotools.api.filter.expression.Literal;
 
 /**
  * Defines an expression that holds a literal for return.

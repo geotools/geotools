@@ -22,6 +22,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.geotools.api.feature.FeatureVisitor;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.expression.ExpressionVisitor;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.sort.SortOrder;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Repository;
@@ -40,13 +47,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
-import org.geotools.api.feature.FeatureVisitor;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.expression.ExpressionVisitor;
-import org.geotools.api.filter.expression.PropertyName;
-import org.geotools.api.filter.sort.SortOrder;
 import org.xml.sax.helpers.NamespaceSupport;
 
 public abstract class AbstractPreGeneralizedFeatureSourceTest {

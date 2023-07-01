@@ -16,8 +16,8 @@
  */
 package org.geotools.data.simple;
 
-import org.geotools.feature.FeatureIterator;
 import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.feature.FeatureIterator;
 
 /**
  * Streaming access to simple features, required to {@link #close()} after use.

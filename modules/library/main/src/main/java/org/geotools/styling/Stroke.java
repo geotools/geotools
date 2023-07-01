@@ -18,8 +18,8 @@ package org.geotools.styling;
 
 import java.util.Collections;
 import java.util.List;
-import org.geotools.filter.ConstantExpression;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.filter.ConstantExpression;
 
 /**
  * The Stroke object encapsulates the graphical-symbolization parameters for linear geometries.

@@ -18,13 +18,13 @@
 
 package org.geotools.geometry.iso;
 
-import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.PositionFactory;
 import org.geotools.api.geometry.Precision;
 import org.geotools.api.geometry.coordinate.PointArray;
 import org.geotools.api.geometry.coordinate.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 
 public class MockPositionFactory implements PositionFactory {
 

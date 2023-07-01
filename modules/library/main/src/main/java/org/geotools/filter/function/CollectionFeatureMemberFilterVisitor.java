@@ -16,8 +16,8 @@
  */
 package org.geotools.filter.function;
 
-import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 
 /**
  * Replace "featureMembers/ * /ATTRIBUTE" change with "ATTRIBUTE"

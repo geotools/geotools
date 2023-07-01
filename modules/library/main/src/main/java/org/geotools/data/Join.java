@@ -19,10 +19,10 @@ package org.geotools.data;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.factory.CommonFactoryFinder;
 
 /**
  * Represents the joining of two feature types within a {@link Query}.

@@ -17,9 +17,9 @@
 package org.geotools.brewer.styling.builder;
 
 import java.util.List;
-import org.geotools.styling.GraphicLegend;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.styling.GraphicLegend;
 
 public class GraphicLegendBuilder extends AbstractStyleBuilder<GraphicLegend> {
     private List<GraphicalSymbol> symbols;

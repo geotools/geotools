@@ -17,9 +17,9 @@
 package org.geotools.coverage.io;
 
 import java.util.Map;
+import org.geotools.api.feature.type.Name;
 import org.geotools.data.Parameter;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.feature.type.Name;
 
 /**
  * @author Simone Giannecchini, GeoSolutions

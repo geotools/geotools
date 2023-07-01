@@ -28,6 +28,8 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.MissingResourceException;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
 import org.geotools.renderer.i18n.ErrorKeys;
 import org.geotools.renderer.i18n.Errors;
 import org.geotools.renderer.style.ExpressionExtractor;
@@ -35,8 +37,6 @@ import org.geotools.styling.ColorMap;
 import org.geotools.styling.ColorMapEntry;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.util.SuppressFBWarnings;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.filter.expression.Literal;
 
 /**
  * Builder facility for creating a {@link LinearColorMap} using elements from {@link

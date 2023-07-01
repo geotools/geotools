@@ -19,16 +19,16 @@ package org.geotools.filter.visitor;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.visitor.IdCollectorFilterVisitor;
-import org.geotools.feature.visitor.IdFinderFilterVisitor;
-import org.junit.Assert;
-import org.junit.Test;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.FilterVisitor;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.visitor.IdCollectorFilterVisitor;
+import org.geotools.feature.visitor.IdFinderFilterVisitor;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * This test checks that our filter visitor examples on the wiki are in working order.

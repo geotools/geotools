@@ -19,11 +19,11 @@ package org.geotools.filter.function.color;
 import static org.junit.Assert.assertEquals;
 
 import java.awt.Color;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Function;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.Converters;
 import org.junit.Test;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.expression.Function;
 
 public class ColorFunctionsTest {
 

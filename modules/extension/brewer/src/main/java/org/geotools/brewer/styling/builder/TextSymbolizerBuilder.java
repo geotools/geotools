@@ -20,13 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.styling.Font;
 import org.geotools.styling.LabelPlacement;
 import org.geotools.styling.LinePlacement;
 import org.geotools.styling.PointPlacement;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
-import org.geotools.api.filter.expression.Expression;
 
 public class TextSymbolizerBuilder extends SymbolizerBuilder<TextSymbolizer> {
     FillBuilder fill = new FillBuilder(this).unset();

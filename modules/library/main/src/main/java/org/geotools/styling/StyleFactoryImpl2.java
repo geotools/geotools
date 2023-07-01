@@ -25,8 +25,6 @@ import java.util.Set;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import javax.swing.Icon;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.util.factory.GeoTools;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory2;
@@ -46,6 +44,8 @@ import org.geotools.api.style.GraphicalSymbol;
 import org.geotools.api.style.OverlapBehavior;
 import org.geotools.api.style.SemanticType;
 import org.geotools.api.util.InternationalString;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.util.factory.GeoTools;
 
 /**
  * Factory for creating Styles; based on the GeoAPI StyleFactory interface.
@@ -562,7 +562,8 @@ public class StyleFactoryImpl2 implements org.geotools.api.style.StyleFactory {
 
     @Override
     public SelectedChannelTypeImpl selectedChannelType(
-            Expression channelName, org.geotools.api.style.ContrastEnhancement contrastEnhancement) {
+            Expression channelName,
+            org.geotools.api.style.ContrastEnhancement contrastEnhancement) {
         SelectedChannelTypeImpl selectedChannelType = new SelectedChannelTypeImpl(filterFactory);
         selectedChannelType.setChannelName(channelName);
         selectedChannelType.setContrastEnhancement(contrastEnhancement);

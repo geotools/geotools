@@ -18,10 +18,10 @@ package org.geotools.filter;
 
 import static org.junit.Assert.fail;
 
-import org.geotools.factory.CommonFactoryFinder;
-import org.junit.Test;
 import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.PropertyIsLike;
+import org.geotools.factory.CommonFactoryFinder;
+import org.junit.Test;
 
 public class LikeFilterImplTest {
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();

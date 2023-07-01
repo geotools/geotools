@@ -18,6 +18,8 @@ package org.geotools.sld.bindings;
 
 import java.util.List;
 import javax.xml.namespace.QName;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.util.InternationalString;
 import org.geotools.sld.CssParameter;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.Rule;
@@ -26,8 +28,6 @@ import org.geotools.styling.Symbolizer;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.util.InternationalString;
 import org.picocontainer.MutablePicoContainer;
 
 /**

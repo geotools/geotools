@@ -17,8 +17,8 @@
 
 package org.geotools.appschema.filter;
 
-import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.api.feature.Attribute;
+import org.geotools.filter.FunctionExpressionImpl;
 
 public class IDFunctionExpression extends FunctionExpressionImpl {
     public IDFunctionExpression() {

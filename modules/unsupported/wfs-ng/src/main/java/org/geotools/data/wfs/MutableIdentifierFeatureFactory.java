@@ -17,16 +17,16 @@
 package org.geotools.data.wfs;
 
 import java.util.Collection;
-import org.geotools.feature.AbstractFeatureFactoryImpl;
-import org.geotools.feature.FeatureImpl;
-import org.geotools.feature.simple.SimpleFeatureImpl;
-import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.filter.FilterFactory2;
+import org.geotools.feature.AbstractFeatureFactoryImpl;
+import org.geotools.feature.FeatureImpl;
+import org.geotools.feature.simple.SimpleFeatureImpl;
+import org.geotools.filter.FilterFactoryImpl;
 
 /**
  * If only {@link AbstractFeatureFactoryImpl}'s filter factory were setteable this class wouldn't be

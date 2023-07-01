@@ -26,16 +26,16 @@ import javax.media.jai.JAI;
 import javax.media.jai.OperationRegistry;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.registry.RIFRegistry;
+import org.geotools.api.coverage.processing.OperationNotFoundException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.util.InternationalString;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.BaseStatisticsOperationJAI;
 import org.geotools.util.logging.Logging;
 import org.jaitools.media.jai.zonalstats.ZonalStatsDescriptor;
 import org.jaitools.media.jai.zonalstats.ZonalStatsRIF;
 import org.jaitools.numeric.Statistic;
-import org.geotools.api.coverage.processing.OperationNotFoundException;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.api.referencing.operation.MathTransform;
-import org.geotools.api.util.InternationalString;
 
 /**
  * This operation simply wraps Jai-tools Zonalstats operations described by {@link

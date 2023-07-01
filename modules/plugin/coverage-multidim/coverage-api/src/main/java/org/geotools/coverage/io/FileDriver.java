@@ -21,8 +21,8 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
-import org.geotools.util.factory.Hints;
 import org.geotools.api.util.ProgressListener;
+import org.geotools.util.factory.Hints;
 
 /** @author Simone Giannecchini, GeoSolutions */
 public interface FileDriver extends Driver {

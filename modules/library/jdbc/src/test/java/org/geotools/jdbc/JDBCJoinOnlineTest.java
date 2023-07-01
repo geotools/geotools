@@ -26,14 +26,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import org.geotools.data.DataUtilities;
-import org.geotools.data.Join;
-import org.geotools.data.Join.Type;
-import org.geotools.data.Query;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.data.store.ContentDataStore;
-import org.junit.Test;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
@@ -42,6 +34,14 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.api.filter.sort.SortOrder;
+import org.geotools.data.DataUtilities;
+import org.geotools.data.Join;
+import org.geotools.data.Join.Type;
+import org.geotools.data.Query;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.store.ContentDataStore;
+import org.junit.Test;
 
 public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
 

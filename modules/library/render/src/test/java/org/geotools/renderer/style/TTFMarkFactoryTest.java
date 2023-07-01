@@ -17,13 +17,13 @@
 package org.geotools.renderer.style;
 
 import java.awt.Shape;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.test.TestData;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.geotools.api.filter.FilterFactory;
 
 public class TTFMarkFactoryTest {
     private TTFMarkFactory ttf;

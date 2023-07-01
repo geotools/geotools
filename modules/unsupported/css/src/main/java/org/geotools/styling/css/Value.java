@@ -24,15 +24,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.Parameter;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.NameImpl;
-import org.geotools.api.feature.type.Name;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.expression.Expression;
 
 /**
  * A value for a CSS property. Values can be several things, including from literals, expressions,
@@ -426,7 +426,8 @@ abstract class Value {
                 arguments.add(ex);
             }
 
-            org.geotools.api.filter.expression.Expression[] argsArray = toExpressionArray(arguments);
+            org.geotools.api.filter.expression.Expression[] argsArray =
+                    toExpressionArray(arguments);
             return FF.function(name, argsArray);
         }
 

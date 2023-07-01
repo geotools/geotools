@@ -17,10 +17,10 @@
 package org.geotools.filter.function;
 
 import java.util.Collection;
-import org.geotools.filter.FunctionExpressionImpl;
-import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
 
 /**
  * Takes an AttributeExpression, and computes the node count for the attribute.

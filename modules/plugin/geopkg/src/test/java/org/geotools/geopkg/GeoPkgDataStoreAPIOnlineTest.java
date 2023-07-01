@@ -22,6 +22,8 @@ import static org.junit.Assert.assertTrue;
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.util.Collections;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -33,8 +35,6 @@ import org.geotools.util.factory.Hints;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.LineString;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.filter.FilterFactory;
 
 public class GeoPkgDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
 

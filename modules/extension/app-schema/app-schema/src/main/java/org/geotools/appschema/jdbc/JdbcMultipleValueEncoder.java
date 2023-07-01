@@ -18,6 +18,9 @@ package org.geotools.appschema.jdbc;
 
 import java.io.IOException;
 import java.io.Writer;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.ExpressionVisitor;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.config.JdbcMultipleValue;
 import org.geotools.data.jdbc.FilterToSQL;
@@ -26,9 +29,6 @@ import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.filter.expression.ExpressionVisitor;
 
 /** Visitor that encode a JDBC multivalued mapping to SQL. */
 public final class JdbcMultipleValueEncoder extends DuplicatingFilterVisitor {

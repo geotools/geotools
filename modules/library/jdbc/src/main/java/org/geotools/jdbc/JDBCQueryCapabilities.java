@@ -16,12 +16,12 @@
  */
 package org.geotools.jdbc;
 
-import org.geotools.data.QueryCapabilities;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.filter.sort.SortOrder;
+import org.geotools.data.QueryCapabilities;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * A default QueryCapabilities implementation for JDBCFeatureSource.

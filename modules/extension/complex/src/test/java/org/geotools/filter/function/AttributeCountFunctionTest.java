@@ -19,6 +19,14 @@ package org.geotools.filter.function;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.Property;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.feature.type.PropertyDescriptor;
+import org.geotools.api.filter.FilterFactory2;
 import org.geotools.data.complex.expression.FeaturePropertyAccessorFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.AttributeImpl;
@@ -32,14 +40,6 @@ import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.util.factory.Hints;
 import org.junit.Before;
 import org.junit.Test;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.Property;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.feature.type.AttributeDescriptor;
-import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.feature.type.Name;
-import org.geotools.api.feature.type.PropertyDescriptor;
-import org.geotools.api.filter.FilterFactory2;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**

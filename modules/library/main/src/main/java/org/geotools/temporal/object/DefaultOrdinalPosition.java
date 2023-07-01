@@ -16,11 +16,11 @@
  */
 package org.geotools.temporal.object;
 
-import org.geotools.util.Utilities;
 import org.geotools.api.temporal.IndeterminateValue;
 import org.geotools.api.temporal.OrdinalEra;
 import org.geotools.api.temporal.OrdinalPosition;
 import org.geotools.api.temporal.TemporalReferenceSystem;
+import org.geotools.util.Utilities;
 
 /**
  * A data type that shall be used for identifying temporal position within an ordinal temporal

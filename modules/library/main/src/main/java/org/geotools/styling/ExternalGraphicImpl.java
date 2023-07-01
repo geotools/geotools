@@ -26,13 +26,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.swing.Icon;
-import org.geotools.metadata.iso.citation.OnLineResourceImpl;
-import org.geotools.util.Utilities;
 import org.geotools.api.metadata.citation.OnLineResource;
 import org.geotools.api.style.ColorReplacement;
 import org.geotools.api.style.GraphicalSymbol;
 import org.geotools.api.style.StyleVisitor;
 import org.geotools.api.util.Cloneable;
+import org.geotools.metadata.iso.citation.OnLineResourceImpl;
+import org.geotools.util.Utilities;
 
 /**
  * @author Ian Turton, CCG
@@ -263,7 +263,8 @@ public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
         } else if (item instanceof ExternalGraphicImpl) {
             return item;
         } else if (item instanceof org.geotools.api.style.ExternalGraphic) {
-            org.geotools.api.style.ExternalGraphic graphic = (org.geotools.api.style.ExternalGraphic) item;
+            org.geotools.api.style.ExternalGraphic graphic =
+                    (org.geotools.api.style.ExternalGraphic) item;
             ExternalGraphicImpl copy = new ExternalGraphicImpl();
             copy.colorReplacements().addAll(graphic.getColorReplacements());
             copy.setFormat(graphic.getFormat());

@@ -22,12 +22,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import javax.xml.namespace.QName;
-import org.geotools.geopkg.wps.GeoPackageProcessRequest;
-import org.geotools.xsd.Binding;
-import org.junit.Test;
 import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.geopkg.wps.GeoPackageProcessRequest;
+import org.geotools.xsd.Binding;
+import org.junit.Test;
 
 public class GeopkgtypeBindingTest extends GPKGTestSupport {
     @Test

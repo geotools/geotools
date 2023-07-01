@@ -16,9 +16,9 @@
  */
 package org.geotools.styling.css;
 
-import org.geotools.filter.visitor.AbstractFilterVisitor;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.Not;
+import org.geotools.filter.visitor.AbstractFilterVisitor;
 
 /**
  * Computes a "complexity" of a filter by counting how many simple filters are in it

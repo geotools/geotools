@@ -17,13 +17,13 @@
 package org.geotools.filter.text.cql_2;
 
 import org.geootols.filter.text.cql_2.CQL2;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.Not;
 import org.geotools.filter.LikeFilterImpl;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQLLikePredicateTest;
 import org.junit.Assert;
 import org.junit.Test;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.Not;
 
 /**
  * Like works the same as in (E)CQL, but ILIKE does not exist, replaced by the CASEI function. TODO:

@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.Map;
 import java.util.TimeZone;
 import javax.xml.transform.TransformerException;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
@@ -19,8 +21,6 @@ import org.geotools.test.xml.XmlTestSupport;
 import org.geotools.util.factory.Hints;
 import org.junit.Test;
 import org.locationtech.jts.io.WKTReader;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.feature.simple.SimpleFeatureType;
 
 public class FeatureTransformerTest extends XmlTestSupport {
 

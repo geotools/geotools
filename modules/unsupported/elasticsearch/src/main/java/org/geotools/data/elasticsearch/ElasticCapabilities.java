@@ -18,11 +18,6 @@ package org.geotools.data.elasticsearch;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.geotools.filter.Capabilities;
-import org.geotools.filter.capability.FilterCapabilitiesImpl;
-import org.geotools.filter.capability.TemporalCapabilitiesImpl;
-import org.geotools.filter.capability.TemporalOperatorImpl;
-import org.geotools.filter.visitor.IsFullySupportedFilterVisitor;
 import org.geotools.api.filter.ExcludeFilter;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.Id;
@@ -54,6 +49,11 @@ import org.geotools.api.filter.temporal.OverlappedBy;
 import org.geotools.api.filter.temporal.TContains;
 import org.geotools.api.filter.temporal.TEquals;
 import org.geotools.api.filter.temporal.TOverlaps;
+import org.geotools.filter.Capabilities;
+import org.geotools.filter.capability.FilterCapabilitiesImpl;
+import org.geotools.filter.capability.TemporalCapabilitiesImpl;
+import org.geotools.filter.capability.TemporalOperatorImpl;
+import org.geotools.filter.visitor.IsFullySupportedFilterVisitor;
 
 /**
  * Custom {@link Capabilities} supporting temporal capabilities and operators. Uses a custom {@link

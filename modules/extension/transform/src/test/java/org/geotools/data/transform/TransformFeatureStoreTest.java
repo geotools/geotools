@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.io.FileUtils;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.Filter;
 import org.geotools.data.CollectionFeatureReader;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
@@ -22,8 +24,6 @@ import org.geotools.filter.text.ecql.ECQL;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.io.WKTReader;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.filter.Filter;
 
 public class TransformFeatureStoreTest extends AbstractTransformTest {
 

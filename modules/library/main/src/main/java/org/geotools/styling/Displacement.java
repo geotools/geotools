@@ -16,9 +16,9 @@
  */
 package org.geotools.styling;
 
-import org.geotools.filter.ConstantExpression;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.StyleVisitor;
+import org.geotools.filter.ConstantExpression;
 
 /**
  * A Displacement gives X and Y offset displacements to use for rendering a text label near a point.

@@ -16,6 +16,7 @@
  */
 package org.geotools.factory;
 
+import org.geotools.api.feature.FeatureFactory;
 import org.geotools.feature.AbstractFeatureFactoryImpl;
 import org.geotools.feature.LenientFeatureFactoryImpl;
 import org.geotools.feature.ValidatingFeatureFactoryImpl;
@@ -23,7 +24,6 @@ import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.junit.Assert;
 import org.junit.Test;
-import org.geotools.api.feature.FeatureFactory;
 
 public class CommonFactoryFinderTest {
 

@@ -18,12 +18,12 @@ package org.geotools.styling;
 
 // OpenGIS dependencies
 
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.util.Utilities;
-import org.geotools.util.factory.GeoTools;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.util.Cloneable;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.util.Utilities;
+import org.geotools.util.factory.GeoTools;
 
 /**
  * Direct implementation of AnchorPoint.

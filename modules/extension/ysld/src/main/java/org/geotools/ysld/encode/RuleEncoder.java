@@ -18,6 +18,7 @@
 package org.geotools.ysld.encode;
 
 import java.util.Optional;
+import org.geotools.api.filter.Filter;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.styling.FeatureTypeStyle;
@@ -26,7 +27,6 @@ import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.StyleFactory;
 import org.geotools.ysld.Tuple;
-import org.geotools.api.filter.Filter;
 
 /** Encodes a {@link Rule} as YSLD. Delegates to {@link SymbolizersEncoder}. */
 public class RuleEncoder extends YsldEncodeHandler<Rule> {

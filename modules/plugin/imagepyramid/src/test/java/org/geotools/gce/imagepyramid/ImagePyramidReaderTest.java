@@ -42,6 +42,12 @@ import javax.imageio.ImageIO;
 import javax.media.jai.PlanarImage;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.InvalidParameterValueException;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -57,12 +63,6 @@ import org.geotools.util.DateRange;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 import org.junit.Test;
-import org.geotools.api.coverage.grid.GridEnvelope;
-import org.geotools.api.geometry.MismatchedDimensionException;
-import org.geotools.api.parameter.GeneralParameterValue;
-import org.geotools.api.parameter.InvalidParameterValueException;
-import org.geotools.api.parameter.ParameterValue;
-import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 
 /**
  * Testing {@link ImagePyramidReader}.

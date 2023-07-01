@@ -18,10 +18,6 @@ package org.geotools.filter.v1_0;
 
 import java.util.Collections;
 import javax.xml.namespace.QName;
-import org.geotools.filter.v1_1.OGC;
-import org.geotools.xsd.AbstractComplexBinding;
-import org.geotools.xsd.ElementInstance;
-import org.geotools.xsd.Node;
 import org.geotools.api.filter.BinaryComparisonOperator;
 import org.geotools.api.filter.BinaryLogicOperator;
 import org.geotools.api.filter.Filter;
@@ -30,6 +26,10 @@ import org.geotools.api.filter.Not;
 import org.geotools.api.filter.PropertyIsNull;
 import org.geotools.api.filter.identity.Identifier;
 import org.geotools.api.filter.spatial.BinarySpatialOperator;
+import org.geotools.filter.v1_1.OGC;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Binding object for the element http://www.opengis.net/ogc:Not.

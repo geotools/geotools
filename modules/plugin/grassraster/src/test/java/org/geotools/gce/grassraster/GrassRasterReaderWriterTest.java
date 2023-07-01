@@ -23,6 +23,10 @@ import java.io.IOException;
 import java.net.URL;
 import javax.media.jai.iterator.RectIter;
 import javax.media.jai.iterator.RectIterFactory;
+import org.geotools.api.coverage.grid.GridCoverageReader;
+import org.geotools.api.coverage.grid.GridCoverageWriter;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Envelope;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -31,10 +35,6 @@ import org.geotools.gce.grassraster.format.GrassCoverageFormatFactory;
 import org.geotools.util.URLs;
 import org.junit.Assert;
 import org.junit.Test;
-import org.geotools.api.coverage.grid.GridCoverageReader;
-import org.geotools.api.coverage.grid.GridCoverageWriter;
-import org.geotools.api.geometry.DirectPosition;
-import org.geotools.api.geometry.Envelope;
 
 /**
  * Test the grass raster reader abd writer.

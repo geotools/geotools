@@ -20,8 +20,8 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import org.geotools.util.Converters;
 import org.geotools.api.parameter.Parameter;
+import org.geotools.util.Converters;
 
 /**
  * Annotates static method parameters for publication by {@link StaticMethodsProcessFactory}.

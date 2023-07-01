@@ -24,6 +24,8 @@ import java.awt.image.DataBufferFloat;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.util.stream.IntStream;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.elasticsearch.ElasticLayerConfiguration;
 import org.geotools.data.elasticsearch.ElasticTestSupport;
@@ -34,8 +36,6 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Before;
 import org.junit.Test;
-import org.geotools.api.geometry.Envelope;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 public class GeoHashGridProcessIT extends ElasticTestSupport {
 

@@ -19,10 +19,6 @@ package org.geotools.filter.v2_0.bindings;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.namespace.QName;
-import org.geotools.filter.v2_0.FES;
-import org.geotools.gml3.v3_2.GML;
-import org.geotools.xsd.Node;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
@@ -31,6 +27,10 @@ import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.spatial.BinarySpatialOperator;
 import org.geotools.api.filter.spatial.DistanceBufferOperator;
 import org.geotools.api.filter.temporal.BinaryTemporalOperator;
+import org.geotools.filter.v2_0.FES;
+import org.geotools.gml3.v3_2.GML;
+import org.geotools.xsd.Node;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Utility class for FES bindings.

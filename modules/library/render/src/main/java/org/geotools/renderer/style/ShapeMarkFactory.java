@@ -24,9 +24,9 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.Map;
-import org.geotools.renderer.util.ExplicitBoundsShape;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.renderer.util.ExplicitBoundsShape;
 
 public class ShapeMarkFactory implements MarkFactory {
 

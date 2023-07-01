@@ -32,10 +32,10 @@ import java.net.URI;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FilenameUtils;
-import org.geotools.referencing.CRS;
-import org.geotools.util.logging.Logging;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.referencing.CRS;
+import org.geotools.util.logging.Logging;
 
 /** Details from comma separated value file. */
 public class CSVFileState {

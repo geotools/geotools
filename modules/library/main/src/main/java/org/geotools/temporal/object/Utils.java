@@ -23,8 +23,6 @@ import java.util.Date;
 import java.util.TimeZone;
 import java.util.logging.Logger;
 import javax.measure.Unit;
-import org.geotools.measure.Units;
-import org.geotools.temporal.reference.DefaultTemporalCoordinateSystem;
 import org.geotools.api.temporal.CalendarDate;
 import org.geotools.api.temporal.DateAndTime;
 import org.geotools.api.temporal.Duration;
@@ -32,6 +30,8 @@ import org.geotools.api.temporal.JulianDate;
 import org.geotools.api.temporal.OrdinalPosition;
 import org.geotools.api.temporal.TemporalCoordinate;
 import org.geotools.api.temporal.TemporalCoordinateSystem;
+import org.geotools.measure.Units;
+import org.geotools.temporal.reference.DefaultTemporalCoordinateSystem;
 import si.uom.SI;
 
 /**

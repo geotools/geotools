@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import org.geotools.TestData;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
@@ -59,7 +60,6 @@ import org.json.simple.parser.JSONParser;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.geotools.api.filter.FilterFactory;
 
 // import org.geotools.gce.geotiff.GeoTiffReader;
 

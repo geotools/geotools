@@ -17,13 +17,13 @@
 package org.geotools.swing;
 
 import java.awt.geom.AffineTransform;
+import org.geotools.api.geometry.Envelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;
 import org.geotools.swing.event.MapMouseEventDispatcher;
 import org.geotools.swing.event.MapMouseListener;
 import org.geotools.swing.event.MapPaneListener;
 import org.geotools.swing.tool.CursorTool;
-import org.geotools.api.geometry.Envelope;
 
 /**
  * Defines the core map pane methods.

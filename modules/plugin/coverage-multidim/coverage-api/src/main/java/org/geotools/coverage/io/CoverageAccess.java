@@ -21,12 +21,12 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.coverage.io.metadata.MetadataNode;
 import org.geotools.data.Parameter;
 import org.geotools.data.ServiceInfo;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.feature.type.Name;
-import org.geotools.api.util.ProgressListener;
 
 /**
  * Represents a Physical storage of coverage data (that we have a connection to).

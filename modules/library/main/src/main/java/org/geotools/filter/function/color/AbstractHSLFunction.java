@@ -21,9 +21,9 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 import java.awt.Color;
 import java.util.Iterator;
 import java.util.List;
+import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.geotools.api.filter.capability.FunctionName;
 
 /**
  * Base for lesscss.org HSL color manipulation functions

@@ -21,11 +21,11 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 import net.opengis.wps10.ProcessDescriptionType;
+import org.geotools.api.util.InternationalString;
 import org.geotools.data.Parameter;
 import org.geotools.process.Process;
 import org.geotools.process.impl.SingleProcessFactory;
 import org.geotools.text.Text;
-import org.geotools.api.util.InternationalString;
 
 /**
  * This class acts as a ProcessFactory for any process. It handles converting related bean

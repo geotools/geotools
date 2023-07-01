@@ -29,9 +29,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import org.geotools.api.feature.type.Name;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.NameImpl;
-import org.geotools.api.feature.type.Name;
 
 /**
  * Default Repository implementation allows GeoTools to manage your DataStores.

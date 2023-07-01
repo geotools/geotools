@@ -19,10 +19,10 @@ package org.geotools.filter.function;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.geotools.factory.CommonFactoryFinder;
-import org.junit.Test;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Function;
+import org.geotools.factory.CommonFactoryFinder;
+import org.junit.Test;
 
 public class JsonArrayContainsFunctionTest {
 

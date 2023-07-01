@@ -29,6 +29,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.coverage.grid.GridCoverageReader;
+import org.geotools.api.coverage.grid.GridGeometry;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.util.InternationalString;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.data.Parameter;
 import org.geotools.data.Query;
 import org.geotools.process.Process;
@@ -38,12 +44,6 @@ import org.geotools.process.RenderingProcess;
 import org.geotools.util.Converters;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.logging.Logging;
-import org.geotools.api.coverage.grid.GridCoverageReader;
-import org.geotools.api.coverage.grid.GridGeometry;
-import org.geotools.api.feature.type.Name;
-import org.geotools.api.parameter.GeneralParameterValue;
-import org.geotools.api.util.InternationalString;
-import org.geotools.api.util.ProgressListener;
 
 /**
  * A process factory that uses annotations to determine much of the metadata needed to describe a

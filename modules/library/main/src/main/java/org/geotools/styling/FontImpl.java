@@ -22,11 +22,11 @@ package org.geotools.styling;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.util.Utilities;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.StyleVisitor;
 import org.geotools.api.util.Cloneable;
+import org.geotools.util.Utilities;
 
 /**
  * Provides a Java representation of the Font element of an SLD.

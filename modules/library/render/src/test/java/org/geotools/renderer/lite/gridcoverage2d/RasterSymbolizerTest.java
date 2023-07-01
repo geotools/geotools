@@ -45,6 +45,9 @@ import javax.media.jai.ROIShape;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.RenderedOp;
 import javax.xml.transform.TransformerException;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.style.ContrastMethod;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
@@ -82,9 +85,6 @@ import org.geotools.util.factory.GeoTools;
 import org.geotools.xml.styling.SLDParser;
 import org.junit.Assert;
 import org.junit.Test;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.referencing.datum.PixelInCell;
-import org.geotools.api.style.ContrastMethod;
 
 /** @author Simone Giannecchini, GeoSolutions. */
 public class RasterSymbolizerTest extends org.junit.Assert {

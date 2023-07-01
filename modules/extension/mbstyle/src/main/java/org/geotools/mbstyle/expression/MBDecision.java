@@ -17,9 +17,9 @@
 
 package org.geotools.mbstyle.expression;
 
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.json.simple.JSONArray;
-import org.geotools.api.filter.expression.Expression;
 
 /**
  * The expressions in this section can be used to add conditional logic to your styles. For example,

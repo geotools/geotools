@@ -20,15 +20,15 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.logging.Logger;
 import javax.naming.OperationNotSupportedException;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.PropertyIsLike;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.xml.DocumentWriter;
 import org.geotools.xml.filter.FilterSchema;
 import org.junit.Test;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.Id;
-import org.geotools.api.filter.PropertyIsLike;
 
 /**
  * For now just writes the expression built.

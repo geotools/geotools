@@ -17,14 +17,6 @@
 package org.geotools.geometry.jts;
 
 import java.awt.geom.Rectangle2D;
-import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.GeneralEnvelope;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
-import org.geotools.referencing.CRS;
-import org.geotools.util.Classes;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
@@ -36,11 +28,20 @@ import org.geotools.api.referencing.operation.CoordinateOperation;
 import org.geotools.api.referencing.operation.CoordinateOperationFactory;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.referencing.CRS;
+import org.geotools.util.Classes;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * A JTS envelope associated with a {@linkplain CoordinateReferenceSystem coordinate reference
  * system}. In addition, this JTS envelope also implements the GeoAPI {@linkplain
- * org.geotools.api.geometry.coordinate.Envelope envelope} interface for interoperability with GeoAPI.
+ * org.geotools.api.geometry.coordinate.Envelope envelope} interface for interoperability with
+ * GeoAPI.
  *
  * @since 2.2
  * @version $Id$
@@ -227,8 +228,9 @@ public class ReferencedEnvelope extends Envelope
      * Creates a new envelope from an existing bounding box.
      *
      * <p>NOTE: if the bounding box is empty, the resulting ReferencedEnvelope will not be. In case
-     * this is needed use {@link #create(org.geotools.api.geometry.Envelope, CoordinateReferenceSystem)
-     * ReferencedEnvelope.create(bbox, bbox.getCoordinateReferenceSystem())}
+     * this is needed use {@link #create(org.geotools.api.geometry.Envelope,
+     * CoordinateReferenceSystem) ReferencedEnvelope.create(bbox,
+     * bbox.getCoordinateReferenceSystem())}
      *
      * @param bbox The bounding box to initialize from.
      * @throws MismatchedDimensionException if the CRS dimension is not valid.

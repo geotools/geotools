@@ -26,10 +26,10 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.junit.Test;
-import org.geotools.api.feature.simple.SimpleFeatureType;
 
 public abstract class OGRDataStoreFactoryTest extends TestCaseSupport {
 

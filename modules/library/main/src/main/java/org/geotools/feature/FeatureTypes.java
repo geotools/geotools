@@ -29,18 +29,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.feature.simple.SimpleFeatureTypeImpl;
-import org.geotools.filter.IllegalFilterException;
-import org.geotools.filter.LengthFunction;
-import org.geotools.geometry.jts.JTS;
-import org.geotools.referencing.CRS;
-import org.geotools.util.Utilities;
-import org.geotools.util.factory.FactoryRegistryException;
-import org.geotools.util.logging.Logging;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.feature.IllegalAttributeException;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
@@ -66,6 +54,18 @@ import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeImpl;
+import org.geotools.filter.IllegalFilterException;
+import org.geotools.filter.LengthFunction;
+import org.geotools.geometry.jts.JTS;
+import org.geotools.referencing.CRS;
+import org.geotools.util.Utilities;
+import org.geotools.util.factory.FactoryRegistryException;
+import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Utility methods for working against the FeatureType interface.

@@ -14,6 +14,9 @@ import java.sql.Statement;
 import java.util.Arrays;
 import java.util.logging.Handler;
 import java.util.logging.Level;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -27,9 +30,6 @@ import org.geotools.util.logging.Logging;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.WKTReader;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.spatial.BBOX;
 
 /**
  * Test the LOB workaround and triggers directly.

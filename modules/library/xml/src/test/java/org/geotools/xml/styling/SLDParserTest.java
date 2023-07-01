@@ -35,6 +35,9 @@ import java.util.Locale;
 import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.ContrastMethod;
+import org.geotools.api.style.GraphicalSymbol;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.ExternalGraphic;
@@ -49,9 +52,6 @@ import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.Symbolizer;
 import org.junit.Test;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.style.ContrastMethod;
-import org.geotools.api.style.GraphicalSymbol;
 import org.xml.sax.InputSource;
 
 public class SLDParserTest {

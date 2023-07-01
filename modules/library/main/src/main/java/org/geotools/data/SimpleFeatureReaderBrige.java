@@ -18,9 +18,9 @@ package org.geotools.data;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
-import org.geotools.data.simple.SimpleFeatureReader;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.data.simple.SimpleFeatureReader;
 
 /**
  * Bridges between {@link FeatureReader<SimpleFeatureType, SimpleFeature>} and {@link

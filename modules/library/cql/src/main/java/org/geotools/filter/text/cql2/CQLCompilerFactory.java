@@ -17,9 +17,9 @@
 
 package org.geotools.filter.text.cql2;
 
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.filter.text.commons.AbstractCompilerFactory;
 import org.geotools.filter.text.commons.ICompiler;
-import org.geotools.api.filter.FilterFactory;
 
 /**
  * Provides an implementation of CQLCompiler

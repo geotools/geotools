@@ -16,11 +16,11 @@
  */
 package org.geotools.data.simple;
 
-import org.geotools.feature.FeatureCollection;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.sort.SortBy;
+import org.geotools.feature.FeatureCollection;
 
 /**
  * Access to "simple" Feature content where each feature has the same SimpleFeatureType.

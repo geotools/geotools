@@ -20,10 +20,6 @@ import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.util.ConverterFactory;
-import org.geotools.util.Converters;
-import org.geotools.util.factory.Hints;
-import org.geotools.util.logging.Logging;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.filter.And;
@@ -81,6 +77,10 @@ import org.geotools.api.filter.temporal.OverlappedBy;
 import org.geotools.api.filter.temporal.TContains;
 import org.geotools.api.filter.temporal.TEquals;
 import org.geotools.api.filter.temporal.TOverlaps;
+import org.geotools.util.ConverterFactory;
+import org.geotools.util.Converters;
+import org.geotools.util.factory.Hints;
+import org.geotools.util.logging.Logging;
 
 /**
  * Encodes a compliant filter to the "restricted where" syntax supported by OGR:

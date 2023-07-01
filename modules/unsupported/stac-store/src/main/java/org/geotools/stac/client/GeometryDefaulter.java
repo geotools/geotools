@@ -16,9 +16,9 @@
  */
 package org.geotools.stac.client;
 
-import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 
 /**
  * GeoTools code uses the empty string to mean the default geometry, but a STAC API won't know about

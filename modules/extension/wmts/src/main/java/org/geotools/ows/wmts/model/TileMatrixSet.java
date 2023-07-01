@@ -18,11 +18,11 @@ package org.geotools.ows.wmts.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.ows.wms.CRSEnvelope;
-import org.geotools.referencing.CRS;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.ows.wms.CRSEnvelope;
+import org.geotools.referencing.CRS;
 
 /**
  * The geometry of the tiled space.

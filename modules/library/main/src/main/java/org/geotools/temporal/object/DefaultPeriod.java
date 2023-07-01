@@ -17,10 +17,10 @@
 package org.geotools.temporal.object;
 
 import java.util.Date;
-import org.geotools.util.Utilities;
 import org.geotools.api.temporal.Instant;
 import org.geotools.api.temporal.Period;
 import org.geotools.api.temporal.RelativePosition;
+import org.geotools.util.Utilities;
 
 /**
  * A one-dimensional geometric primitive that represent extent in time.

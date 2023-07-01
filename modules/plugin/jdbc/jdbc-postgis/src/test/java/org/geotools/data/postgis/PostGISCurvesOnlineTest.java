@@ -21,6 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.geometry.jts.CircularRing;
 import org.geotools.jdbc.JDBCCurvesTest;
 import org.geotools.jdbc.JDBCCurvesTestSetup;
@@ -29,7 +30,6 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Polygon;
-import org.geotools.api.feature.simple.SimpleFeature;
 
 public class PostGISCurvesOnlineTest extends JDBCCurvesTest {
 

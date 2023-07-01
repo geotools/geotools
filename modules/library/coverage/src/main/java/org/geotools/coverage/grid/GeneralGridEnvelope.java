@@ -21,14 +21,14 @@ import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.io.Serializable;
 import java.util.Arrays;
-import org.geotools.geometry.PixelTranslation;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
-import org.geotools.util.Classes;
 import org.geotools.api.coverage.grid.GridCoordinates;
 import org.geotools.api.coverage.grid.GridEnvelope;
 import org.geotools.api.geometry.Envelope;
 import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.geometry.PixelTranslation;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.util.Classes;
 
 /**
  * Defines a range of grid coverage coordinates.
@@ -215,8 +215,8 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
      * specify {@link PixelInCell#CELL_CORNER}.
      *
      * <p>The convention is specified as a {@link PixelInCell} code instead than the more detailed
-     * {@link org.geotools.api.metadata.spatial.PixelOrientation} because the latter is restricted to the
-     * two-dimensional case while the former can be used for any number of dimensions.
+     * {@link org.geotools.api.metadata.spatial.PixelOrientation} because the latter is restricted
+     * to the two-dimensional case while the former can be used for any number of dimensions.
      *
      * @param envelope The envelope to use for initializing this grid envelope.
      * @param anchor Whatever envelope coordinates map to pixel center or pixel corner. Should be
@@ -263,8 +263,8 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
      * specify {@link PixelInCell#CELL_CORNER}.
      *
      * <p>The convention is specified as a {@link PixelInCell} code instead than the more detailed
-     * {@link org.geotools.api.metadata.spatial.PixelOrientation} because the latter is restricted to the
-     * two-dimensional case while the former can be used for any number of dimensions.
+     * {@link org.geotools.api.metadata.spatial.PixelOrientation} because the latter is restricted
+     * to the two-dimensional case while the former can be used for any number of dimensions.
      *
      * @param envelope The envelope to use for initializing this grid envelope.
      * @param anchor Whatever envelope coordinates map to pixel center or pixel corner. Should be

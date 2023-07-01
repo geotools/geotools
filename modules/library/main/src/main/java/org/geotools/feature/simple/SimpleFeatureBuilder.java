@@ -21,11 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-import org.geotools.data.DataUtilities;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.FeatureBuilder;
-import org.geotools.feature.type.Types;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.FeatureFactory;
 import org.geotools.api.feature.IllegalAttributeException;
@@ -35,6 +30,11 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.Name;
+import org.geotools.data.DataUtilities;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.FeatureBuilder;
+import org.geotools.feature.type.Types;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * A builder for features.

@@ -18,8 +18,8 @@ package org.geotools.brewer.styling.builder;
 
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
-import org.geotools.styling.PointSymbolizer;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.styling.PointSymbolizer;
 
 public class PointSymbolizerBuilder extends SymbolizerBuilder<PointSymbolizer> {
     Expression geometry;

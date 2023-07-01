@@ -17,18 +17,18 @@
 
 package org.geotools.filter.text.cql2;
 
-import org.geotools.filter.text.commons.CompilerUtil;
-import org.geotools.filter.text.commons.Language;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.locationtech.jts.geom.Point;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.spatial.Beyond;
 import org.geotools.api.filter.spatial.DWithin;
 import org.geotools.api.filter.spatial.DistanceBufferOperator;
+import org.geotools.filter.text.commons.CompilerUtil;
+import org.geotools.filter.text.commons.Language;
+import org.junit.Assert;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.locationtech.jts.geom.Point;
 
 /**
  * Test RelGeo Operations

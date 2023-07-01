@@ -18,6 +18,10 @@ package org.geotools.data.hana;
 
 import static org.junit.Assert.assertEquals;
 
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.api.filter.spatial.Intersects;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
@@ -28,10 +32,6 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
-import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.spatial.BBOX;
-import org.geotools.api.filter.spatial.Intersects;
 
 /** @author Stefan Uhrig, SAP SE */
 public class HanaSpatialFilterOnViewOnlineTest extends JDBCTestSupport {

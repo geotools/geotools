@@ -18,13 +18,13 @@ package org.geotools.data.complex.filter;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.BinaryLogicOperator;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Or;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 
 /**
  * Duplicates Filter replacing mixed-indexed operator with combined ID IN clause + remaining filters

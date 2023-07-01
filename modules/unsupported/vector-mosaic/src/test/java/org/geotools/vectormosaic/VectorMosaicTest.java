@@ -21,6 +21,7 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import org.geotools.api.filter.FilterFactory2;
 import org.geotools.data.DataStore;
 import org.geotools.data.DefaultRepository;
 import org.geotools.data.property.PropertyDataStore;
@@ -29,7 +30,6 @@ import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Before;
-import org.geotools.api.filter.FilterFactory2;
 
 public class VectorMosaicTest {
     public static DefaultRepository REPOSITORY;

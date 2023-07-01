@@ -23,6 +23,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.GraphicFill;
+import org.geotools.api.style.SemanticType;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBFormatException;
@@ -36,9 +39,6 @@ import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.Rule;
 import org.geotools.text.Text;
 import org.json.simple.JSONObject;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.style.GraphicFill;
-import org.geotools.api.style.SemanticType;
 
 /**
  * MBLayer wrapper for "fill extrusion" representing extruded (3D) polygon.

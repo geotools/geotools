@@ -16,7 +16,6 @@
  */
 package org.geotools.data.transform;
 
-import org.geotools.filter.function.FilterFunction_Convert;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.GeometryDescriptor;
@@ -33,6 +32,7 @@ import org.geotools.api.filter.expression.NilExpression;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.expression.Subtract;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.filter.function.FilterFunction_Convert;
 
 /**
  * Utility class that tries to figure out the resulting type of an expression against a given

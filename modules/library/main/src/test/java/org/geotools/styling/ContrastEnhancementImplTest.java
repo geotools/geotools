@@ -17,13 +17,13 @@
 package org.geotools.styling;
 
 import java.util.Map;
-import org.geotools.factory.CommonFactoryFinder;
-import org.junit.Assert;
-import org.junit.Test;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.style.ContrastMethod;
+import org.geotools.factory.CommonFactoryFinder;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * The ContrastEnhancementImpl UnitTest

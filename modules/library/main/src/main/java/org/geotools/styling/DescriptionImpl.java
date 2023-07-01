@@ -16,8 +16,8 @@
  */
 package org.geotools.styling;
 
-import org.geotools.util.SimpleInternationalString;
 import org.geotools.api.util.InternationalString;
+import org.geotools.util.SimpleInternationalString;
 
 public class DescriptionImpl implements Description {
     private InternationalString title;

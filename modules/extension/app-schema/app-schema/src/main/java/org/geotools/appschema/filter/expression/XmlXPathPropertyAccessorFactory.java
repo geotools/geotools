@@ -18,13 +18,13 @@
 package org.geotools.appschema.filter.expression;
 
 import java.util.List;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.IllegalAttributeException;
 import org.geotools.appschema.util.XmlXpathUtilites;
 import org.geotools.data.complex.xml.XmlXpathFilterData;
 import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.PropertyAccessorFactory;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.IllegalAttributeException;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**

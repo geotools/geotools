@@ -28,12 +28,12 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.geometry.jts.LiteShape;
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.renderer.style.MarkFactory;
 import org.geotools.util.SoftValueHashMap;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.filter.expression.Expression;
 
 /**
  * Factory to produce marks based on WKT representation of symbols. WKT geometries may be defined

@@ -23,12 +23,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
-import org.junit.After;
-import org.junit.Test;
 import org.geotools.api.feature.IllegalAttributeException;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
+import org.junit.After;
+import org.junit.Test;
 
 /**
  * Test FilteredFeatureReader for conformance.

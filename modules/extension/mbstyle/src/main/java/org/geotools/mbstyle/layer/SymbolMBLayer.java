@@ -41,6 +41,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.SemanticType;
+import org.geotools.api.style.Symbolizer;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.function.FontAlternativesFunction;
 import org.geotools.mbstyle.function.FontAttributesExtractor;
@@ -74,11 +79,6 @@ import org.geotools.styling.TextSymbolizer2;
 import org.geotools.text.Text;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.filter.expression.Literal;
-import org.geotools.api.style.GraphicalSymbol;
-import org.geotools.api.style.SemanticType;
-import org.geotools.api.style.Symbolizer;
 
 /**
  * A symbol.

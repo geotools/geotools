@@ -21,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.net.URL;
+import org.geotools.api.filter.Filter;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
@@ -31,7 +32,6 @@ import org.geotools.data.wfs.integration.IntegrationTestWFSClient;
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.http.HTTPResponse;
 import org.junit.Test;
-import org.geotools.api.filter.Filter;
 import org.xml.sax.SAXException;
 
 public class XXEProtectionTest {

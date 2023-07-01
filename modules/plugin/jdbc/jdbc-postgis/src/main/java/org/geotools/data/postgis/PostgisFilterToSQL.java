@@ -18,13 +18,6 @@ package org.geotools.data.postgis;
 
 import java.io.IOException;
 import java.util.Date;
-import org.geotools.data.jdbc.FilterToSQL;
-import org.geotools.filter.FilterCapabilities;
-import org.geotools.filter.function.JsonArrayContainsFunction;
-import org.geotools.filter.function.JsonPointerFunction;
-import org.geotools.jdbc.JDBCDataStore;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.LinearRing;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.filter.BinaryComparisonOperator;
 import org.geotools.api.filter.PropertyIsBetween;
@@ -35,6 +28,13 @@ import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.spatial.BinarySpatialOperator;
 import org.geotools.api.filter.spatial.DistanceBufferOperator;
+import org.geotools.data.jdbc.FilterToSQL;
+import org.geotools.filter.FilterCapabilities;
+import org.geotools.filter.function.JsonArrayContainsFunction;
+import org.geotools.filter.function.JsonPointerFunction;
+import org.geotools.jdbc.JDBCDataStore;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LinearRing;
 
 public class PostgisFilterToSQL extends FilterToSQL {
 

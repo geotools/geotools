@@ -19,12 +19,12 @@ package org.geotools.filter.function;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Before;
-import org.junit.Test;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.PropertyName;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Test class for {@link InFunction}.

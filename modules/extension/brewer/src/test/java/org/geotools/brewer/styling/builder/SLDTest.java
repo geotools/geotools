@@ -3,6 +3,7 @@ package org.geotools.brewer.styling.builder;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.geotools.api.filter.PropertyIsGreaterThan;
 import org.geotools.styling.FeatureTypeConstraint;
 import org.geotools.styling.NamedLayer;
 import org.geotools.styling.NamedStyle;
@@ -10,7 +11,6 @@ import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.UserLayer;
 import org.junit.Test;
-import org.geotools.api.filter.PropertyIsGreaterThan;
 
 public class SLDTest extends AbstractStyleTest {
 

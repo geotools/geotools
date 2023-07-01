@@ -20,16 +20,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.FunctionFactory;
-import org.junit.Before;
-import org.junit.Test;
 import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.FunctionFactory;
+import org.junit.Before;
+import org.junit.Test;
 
 /** @author ian */
 public class PolygonLabelFunctionFactoryTest {

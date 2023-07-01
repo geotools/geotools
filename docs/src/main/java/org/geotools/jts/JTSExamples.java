@@ -11,9 +11,9 @@
  */
 package org.geotools.jts;
 
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.geometry.jts.JTS;
 import org.locationtech.jts.geom.Coordinate;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 public class JTSExamples {
 

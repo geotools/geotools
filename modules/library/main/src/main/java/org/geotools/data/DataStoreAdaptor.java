@@ -19,11 +19,11 @@ package org.geotools.data;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
+import org.geotools.data.simple.SimpleFeatureSource;
 
 /**
  * Available via {@link DataUtilities#dataStore(SimpleFeatureSource)} methods.

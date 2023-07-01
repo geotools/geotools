@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.geotools.api.referencing.FactoryException;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.http.HTTPResponse;
@@ -26,7 +27,6 @@ import org.geotools.util.logging.Logging;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.internal.util.collections.Sets;
-import org.geotools.api.referencing.FactoryException;
 
 public class WMSGetFeatureInfoTest {
 

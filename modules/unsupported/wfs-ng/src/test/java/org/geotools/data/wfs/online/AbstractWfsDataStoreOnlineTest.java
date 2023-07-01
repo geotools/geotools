@@ -30,6 +30,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.FilterVisitor;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.ResourceInfo;
@@ -50,17 +61,6 @@ import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.test.OnlineTestSupport;
 import org.geotools.util.logging.Logging;
 import org.junit.Test;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.feature.type.GeometryDescriptor;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.FilterVisitor;
-import org.geotools.api.filter.Id;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.filter.spatial.BBOX;
-import org.geotools.api.geometry.BoundingBox;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /** Online tests only run if {@link #serverUrl} can be reached, and fixture file wfs is found */
 public abstract class AbstractWfsDataStoreOnlineTest extends OnlineTestSupport {

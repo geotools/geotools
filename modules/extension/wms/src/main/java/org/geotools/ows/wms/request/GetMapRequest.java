@@ -18,10 +18,10 @@ package org.geotools.ows.wms.request;
 
 import java.awt.Dimension;
 import java.util.Properties;
+import org.geotools.api.geometry.Envelope;
 import org.geotools.data.ows.Request;
 import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wms.StyleImpl;
-import org.geotools.api.geometry.Envelope;
 
 /**
  * Construct a WMS getMap request.

@@ -19,15 +19,15 @@ package org.geotools.renderer.lite;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.geotools.data.DataTestCase;
-import org.geotools.factory.CommonFactoryFinder;
-import org.junit.Test;
-import org.mockito.Mockito;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.PropertyIsGreaterThanOrEqualTo;
 import org.geotools.api.filter.expression.Function;
+import org.geotools.data.DataTestCase;
+import org.geotools.factory.CommonFactoryFinder;
+import org.junit.Test;
+import org.mockito.Mockito;
 
 public class FilterMemoizerTest extends DataTestCase {
 

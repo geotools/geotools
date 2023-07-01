@@ -12,11 +12,11 @@ package org.geotools.feature;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.geotools.ExceptionChecker;
-import org.junit.Assert;
-import org.junit.Test;
 import org.geotools.api.feature.Attribute;
 import org.geotools.api.feature.ComplexAttribute;
 import org.geotools.api.feature.Feature;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class ComplexFeatureBuilderTest {
     private static ComplexAttribute getAMineNameProperty(String name, boolean isPreferred) {

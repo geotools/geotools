@@ -25,14 +25,14 @@ import org.eclipse.xsd.XSDContentTypeCategory;
 import org.eclipse.xsd.XSDDerivationMethod;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDTypeDefinition;
-import org.geotools.util.logging.Logging;
-import org.geotools.xs.XSSchema;
 import org.geotools.api.feature.type.AttributeType;
 import org.geotools.api.feature.type.ComplexType;
 import org.geotools.api.feature.type.GeometryType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.feature.type.PropertyDescriptor;
 import org.geotools.api.feature.type.PropertyType;
+import org.geotools.util.logging.Logging;
+import org.geotools.xs.XSSchema;
 
 /**
  * This is a set of utility methods used when <b>implementing</b> types.

@@ -25,15 +25,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.geotools.data.elasticsearch.ElasticAttribute.ElasticGeometryType;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.geometry.jts.JTS;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateFilter;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.spatial4j.shape.SpatialRelation;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
@@ -48,6 +39,15 @@ import org.geotools.api.filter.spatial.DistanceBufferOperator;
 import org.geotools.api.filter.spatial.Intersects;
 import org.geotools.api.filter.spatial.Within;
 import org.geotools.api.geometry.BoundingBox;
+import org.geotools.data.elasticsearch.ElasticAttribute.ElasticGeometryType;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.geometry.jts.JTS;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateFilter;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.spatial4j.shape.SpatialRelation;
 
 class FilterToElasticHelper {
 

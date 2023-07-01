@@ -24,6 +24,10 @@ import java.awt.image.ColorModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import javax.media.jai.PlanarImage;
+import org.geotools.api.coverage.ColorInterpretation;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
@@ -31,10 +35,6 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.Viewer;
 import org.geotools.image.ImageWorker;
 import org.junit.Test;
-import org.geotools.api.coverage.ColorInterpretation;
-import org.geotools.api.geometry.Envelope;
-import org.geotools.api.parameter.ParameterValueGroup;
-import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * Tests the SelectSampleDimension operation.

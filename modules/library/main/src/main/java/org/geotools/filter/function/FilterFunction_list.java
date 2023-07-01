@@ -23,10 +23,10 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import org.geotools.filter.FunctionExpressionImpl;
-import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
 
 /**
  * A simple function that creates a list of values of any number of arguments

@@ -26,6 +26,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import javax.xml.namespace.QName;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
 import org.geotools.data.ComplexTestData;
 import org.geotools.data.complex.feature.type.UniqueNameFeatureTypeFactoryImpl;
 import org.geotools.data.complex.util.XPathUtil;
@@ -33,9 +36,6 @@ import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.xlink.XLINK;
 import org.junit.Test;
-import org.geotools.api.feature.type.AttributeDescriptor;
-import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.feature.type.Name;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**

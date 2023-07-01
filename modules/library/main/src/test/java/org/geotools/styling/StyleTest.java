@@ -7,8 +7,6 @@ import static org.junit.Assert.assertSame;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.factory.CommonFactoryFinder;
-import org.junit.Test;
 import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.AnchorPoint;
@@ -16,6 +14,8 @@ import org.geotools.api.style.Displacement;
 import org.geotools.api.style.Graphic;
 import org.geotools.api.style.GraphicalSymbol;
 import org.geotools.api.style.StyleVisitor;
+import org.geotools.factory.CommonFactoryFinder;
+import org.junit.Test;
 
 /**
  * Test the various Impl classes; many of these provide public api that is used by StyleImplFactory.
@@ -24,9 +24,9 @@ import org.geotools.api.style.StyleVisitor;
  *
  * <ul>
  *   <li>Testing any methods not hit by StyleFactoryImpl and SLDParsing
- *   <li>Going over the "cast" methods used to promote org.geotools.api.styling instances to a StyleImpl
- *       if required. These are used to ensure that any set methods can handle a org.geotools.api.styling
- *       instances.
+ *   <li>Going over the "cast" methods used to promote org.geotools.api.styling instances to a
+ *       StyleImpl if required. These are used to ensure that any set methods can handle a
+ *       org.geotools.api.styling instances.
  * </ul>
  */
 public class StyleTest {

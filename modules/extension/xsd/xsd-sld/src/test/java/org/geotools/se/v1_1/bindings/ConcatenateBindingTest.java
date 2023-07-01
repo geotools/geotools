@@ -18,9 +18,9 @@ package org.geotools.se.v1_1.bindings;
 
 import static org.junit.Assert.assertEquals;
 
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.se.v1_1.SETestSupport;
 import org.junit.Test;
-import org.geotools.api.filter.expression.Expression;
 
 public class ConcatenateBindingTest extends SETestSupport {
     @Test

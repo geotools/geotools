@@ -47,6 +47,12 @@ import javax.media.jai.RasterFormatTag;
 import javax.media.jai.TileCache;
 import javax.media.jai.iterator.RandomIter;
 import javax.media.jai.operator.ConstantDescriptor;
+import org.geotools.api.metadata.spatial.PixelOrientation;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.NoninvertibleTransformException;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -56,12 +62,6 @@ import org.geotools.referencing.CRS;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.metadata.spatial.PixelOrientation;
-import org.geotools.api.referencing.FactoryException;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.api.referencing.operation.MathTransform;
-import org.geotools.api.referencing.operation.NoninvertibleTransformException;
-import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * A RenderedImage that provides values coming from a source GridCoverage2D, with a backing grid

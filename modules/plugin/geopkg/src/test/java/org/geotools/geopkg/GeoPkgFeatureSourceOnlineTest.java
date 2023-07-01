@@ -18,12 +18,12 @@ package org.geotools.geopkg;
 
 import static org.junit.Assert.assertEquals;
 
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.PropertyIsLike;
 import org.geotools.data.Query;
 import org.geotools.jdbc.JDBCFeatureSourceOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.junit.Test;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.PropertyIsLike;
 
 public class GeoPkgFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
 

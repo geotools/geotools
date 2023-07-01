@@ -23,9 +23,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 import javax.xml.crypto.Data;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.IllegalFilterException;
-import org.geotools.xml.XMLHandlerHints;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.BinaryComparisonOperator;
 import org.geotools.api.filter.BinaryLogicOperator;
@@ -76,6 +73,9 @@ import org.geotools.api.filter.temporal.OverlappedBy;
 import org.geotools.api.filter.temporal.TContains;
 import org.geotools.api.filter.temporal.TEquals;
 import org.geotools.api.filter.temporal.TOverlaps;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.IllegalFilterException;
+import org.geotools.xml.XMLHandlerHints;
 
 /**
  * Prepares a filter for XML encoded for interoperability with another system. It will behave

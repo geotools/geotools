@@ -28,6 +28,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.ows.AbstractOpenWebService;
@@ -56,8 +58,6 @@ import org.geotools.ows.wms.xml.WMSSchema;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.xml.XMLHandlerHints;
-import org.geotools.api.referencing.FactoryException;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * WebMapServer is a class representing a WMS. It is used to access the Capabilities document and

@@ -16,12 +16,12 @@
  */
 package org.geotools.filter.expression;
 
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.expression.Expression;
 
 public class AddImplTest {
 

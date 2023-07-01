@@ -24,6 +24,10 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.data.wfs.internal.GetParser;
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
@@ -35,10 +39,6 @@ import org.geotools.xsd.PullParser;
 import org.geotools.xsd.impl.ParserHandler.ContextCustomizer;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.api.referencing.operation.TransformException;
 import org.xml.sax.SAXException;
 
 /**

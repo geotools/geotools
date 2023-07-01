@@ -17,10 +17,10 @@
 
 package org.geotools.mbstyle.expression;
 
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.geotools.api.filter.expression.Expression;
 
 /**
  * The expressions in this section are provided for the purpose of testing for and converting

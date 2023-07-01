@@ -19,10 +19,10 @@ package org.geotools.data.store;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
-import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.locationtech.jts.geom.Envelope;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.locationtech.jts.geom.Envelope;
 
 public class EmptyFeatureCollection extends DataFeatureCollection {
 

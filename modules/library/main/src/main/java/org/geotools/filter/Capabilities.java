@@ -18,18 +18,6 @@ package org.geotools.filter;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.geotools.filter.capability.ArithmeticOperatorsImpl;
-import org.geotools.filter.capability.ComparisonOperatorsImpl;
-import org.geotools.filter.capability.FilterCapabilitiesImpl;
-import org.geotools.filter.capability.FunctionNameImpl;
-import org.geotools.filter.capability.FunctionsImpl;
-import org.geotools.filter.capability.OperatorImpl;
-import org.geotools.filter.capability.SpatialOperatorImpl;
-import org.geotools.filter.capability.SpatialOperatorsImpl;
-import org.geotools.filter.capability.TemporalOperatorImpl;
-import org.geotools.filter.visitor.IsFullySupportedFilterVisitor;
-import org.geotools.filter.visitor.IsSupportedFilterVisitor;
-import org.geotools.filter.visitor.OperatorNameFilterVisitor;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.Id;
@@ -78,6 +66,18 @@ import org.geotools.api.filter.temporal.OverlappedBy;
 import org.geotools.api.filter.temporal.TContains;
 import org.geotools.api.filter.temporal.TEquals;
 import org.geotools.api.filter.temporal.TOverlaps;
+import org.geotools.filter.capability.ArithmeticOperatorsImpl;
+import org.geotools.filter.capability.ComparisonOperatorsImpl;
+import org.geotools.filter.capability.FilterCapabilitiesImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
+import org.geotools.filter.capability.FunctionsImpl;
+import org.geotools.filter.capability.OperatorImpl;
+import org.geotools.filter.capability.SpatialOperatorImpl;
+import org.geotools.filter.capability.SpatialOperatorsImpl;
+import org.geotools.filter.capability.TemporalOperatorImpl;
+import org.geotools.filter.visitor.IsFullySupportedFilterVisitor;
+import org.geotools.filter.visitor.IsSupportedFilterVisitor;
+import org.geotools.filter.visitor.OperatorNameFilterVisitor;
 
 /**
  * Allows for easier interaction with FilterCapabilities.

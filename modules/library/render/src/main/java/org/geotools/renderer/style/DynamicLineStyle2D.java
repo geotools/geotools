@@ -21,10 +21,10 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Paint;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Stroke;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.styling.LineSymbolizer;
+import org.geotools.styling.Stroke;
 
 /**
  * A dynamic line style, that will compute its parameters each time they are requested instead of

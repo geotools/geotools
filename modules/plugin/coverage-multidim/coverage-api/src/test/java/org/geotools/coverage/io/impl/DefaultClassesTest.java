@@ -32,6 +32,7 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import org.geotools.api.feature.type.Name;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.io.CoverageAccess.AccessType;
@@ -47,7 +48,6 @@ import org.geotools.util.NumberRange;
 import org.geotools.util.factory.Hints;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.geotools.api.feature.type.Name;
 
 /** @author Nicola Lagomarsini Geosolutions */
 public class DefaultClassesTest {

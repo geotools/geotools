@@ -23,6 +23,9 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Color;
 import java.io.File;
 import java.net.URL;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Add;
+import org.geotools.api.filter.expression.Function;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.styling.Graphic;
@@ -35,9 +38,6 @@ import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.test.TestData;
 import org.junit.Test;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.expression.Add;
-import org.geotools.api.filter.expression.Function;
 
 public class RenderingBufferExtractorTest {
     StyleBuilder sb = new StyleBuilder();

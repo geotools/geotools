@@ -21,10 +21,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.Set;
-import org.geotools.feature.TypeBuilder;
-import org.geotools.referencing.CRS;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.Point;
 import org.geotools.api.feature.type.AttributeType;
 import org.geotools.api.feature.type.ComplexType;
 import org.geotools.api.feature.type.FeatureType;
@@ -33,6 +29,10 @@ import org.geotools.api.feature.type.GeometryType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.feature.TypeBuilder;
+import org.geotools.referencing.CRS;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Point;
 
 /**
  * @author Gabriel Roldan (Axios Engineering)

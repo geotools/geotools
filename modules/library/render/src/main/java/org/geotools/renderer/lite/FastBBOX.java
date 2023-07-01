@@ -16,9 +16,6 @@
  */
 package org.geotools.renderer.lite;
 
-import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.filter.BinaryComparisonOperator;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.FilterVisitor;
@@ -27,6 +24,9 @@ import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.api.filter.spatial.BinarySpatialOperator;
 import org.geotools.api.geometry.BoundingBox;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * A fast envelope vs envelope bbox used in rendering operations. To be removed one we have an

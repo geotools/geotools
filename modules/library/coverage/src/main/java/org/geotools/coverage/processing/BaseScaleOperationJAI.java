@@ -26,6 +26,11 @@ import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import javax.media.jai.OperationDescriptor;
 import javax.media.jai.PlanarImage;
+import org.geotools.api.coverage.processing.OperationNotFoundException;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.util.InternationalString;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -33,11 +38,6 @@ import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
-import org.geotools.api.coverage.processing.OperationNotFoundException;
-import org.geotools.api.parameter.ParameterDescriptorGroup;
-import org.geotools.api.referencing.datum.PixelInCell;
-import org.geotools.api.referencing.operation.MathTransform;
-import org.geotools.api.util.InternationalString;
 
 /**
  * Base class for providing capabilities to scale {@link GridCoverage2D} objects using JAI scale

@@ -18,7 +18,6 @@ package org.geotools.data.sqlserver;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.geotools.filter.visitor.DefaultFilterVisitor;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
@@ -34,6 +33,7 @@ import org.geotools.api.filter.spatial.Intersects;
 import org.geotools.api.filter.spatial.Overlaps;
 import org.geotools.api.filter.spatial.Touches;
 import org.geotools.api.filter.spatial.Within;
+import org.geotools.filter.visitor.DefaultFilterVisitor;
 
 /**
  * Extracts property names involved in spatial filters

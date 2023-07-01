@@ -18,15 +18,15 @@ package org.geotools.styling.css.selector;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.styling.css.util.FilterSpecificityExtractor;
 import org.geotools.styling.css.util.UnboundSimplifyingFilterVisitor;
-import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
 
 public class Data extends Selector {
 

@@ -22,15 +22,15 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.SemanticType;
 import org.geotools.brewer.styling.filter.IdBuilder;
 import org.geotools.feature.NameImpl;
 import org.geotools.styling.Description;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Rule;
-import org.geotools.api.feature.type.Name;
-import org.geotools.api.filter.Id;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.style.SemanticType;
 
 public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeStyle> {
     String name;

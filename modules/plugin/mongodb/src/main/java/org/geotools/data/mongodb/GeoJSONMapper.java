@@ -22,12 +22,12 @@ import static org.geotools.data.mongodb.MongoDataStore.KEY_collection;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import java.util.logging.Logger;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.Name;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.feature.type.Name;
 
 /**
  * Maps a collection containing valid GeoJSON.

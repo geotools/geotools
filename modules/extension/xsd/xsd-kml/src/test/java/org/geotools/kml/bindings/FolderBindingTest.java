@@ -6,12 +6,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 import java.util.Map;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.kml.Folder;
 import org.geotools.kml.v22.KML;
 import org.geotools.kml.v22.KMLTestSupport;
 import org.geotools.xsd.Binding;
 import org.junit.Test;
-import org.geotools.api.feature.simple.SimpleFeature;
 
 public class FolderBindingTest extends KMLTestSupport {
     @Test

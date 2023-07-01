@@ -27,11 +27,11 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.data.vpf.file.VPFFile;
 import org.geotools.data.vpf.file.VPFFileFactory;
 import org.geotools.data.vpf.ifc.VPFCoverageIfc;
 import org.geotools.feature.SchemaException;
-import org.geotools.api.feature.simple.SimpleFeature;
 
 /**
  * A VPF coverage. This class constructs and contains both feature classes and feature types.

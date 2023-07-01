@@ -22,9 +22,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import org.geotools.filter.Capabilities;
-import org.junit.Before;
-import org.junit.Test;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.Or;
@@ -32,6 +29,9 @@ import org.geotools.api.filter.PropertyIsBetween;
 import org.geotools.api.filter.PropertyIsLike;
 import org.geotools.api.filter.PropertyIsNull;
 import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.filter.Capabilities;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author Jesse

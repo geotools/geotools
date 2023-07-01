@@ -21,13 +21,13 @@ import static org.junit.Assert.assertNotEquals;
 
 import java.util.Calendar;
 import java.util.Date;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 import org.geotools.api.temporal.Duration;
 import org.geotools.api.temporal.Instant;
 import org.geotools.api.temporal.Position;
 import org.geotools.api.temporal.TemporalGeometricPrimitive;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultTemporalGeometricPrimitiveTest {

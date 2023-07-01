@@ -21,6 +21,8 @@ import java.awt.RenderingHints;
 import java.awt.image.RenderedImage;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.ExtremaDescriptor;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.image.ImageWorker;
@@ -31,8 +33,6 @@ import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.renderer.i18n.Errors;
-import org.geotools.api.parameter.ParameterValueGroup;
-import org.geotools.api.util.ProgressListener;
 
 /**
  * A transparency holes-dashes filling process

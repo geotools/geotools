@@ -19,6 +19,9 @@ package org.geotools.data.wfs.internal.parsers;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.FeatureType;
 import org.geotools.data.wfs.internal.ComplexGetFeatureResponse;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.GetParser;
@@ -26,9 +29,6 @@ import org.geotools.data.wfs.internal.WFSRequest;
 import org.geotools.data.wfs.internal.WFSResponse;
 import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.feature.type.FeatureType;
 
 /**
  * Creating GetFeatureResponse parsers that can treat featureType that don't extend

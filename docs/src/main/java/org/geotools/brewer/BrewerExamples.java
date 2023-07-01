@@ -15,6 +15,10 @@ import java.awt.Color;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.brewer.color.ColorBrewer;
 import org.geotools.brewer.color.StyleGenerator;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -24,10 +28,6 @@ import org.geotools.filter.function.ExplicitClassifier;
 import org.geotools.filter.function.RangedClassifier;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.util.SuppressFBWarnings;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.expression.Function;
-import org.geotools.api.filter.expression.PropertyName;
 
 @SuppressFBWarnings("DLS_DEAD_LOCAL_STORE")
 public class BrewerExamples {

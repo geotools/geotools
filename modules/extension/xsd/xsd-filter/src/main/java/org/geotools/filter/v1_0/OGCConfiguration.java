@@ -16,10 +16,10 @@
  */
 package org.geotools.filter.v1_0;
 
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.gml2.GMLConfiguration;
 import org.geotools.xsd.Configuration;
-import org.geotools.api.filter.FilterFactory;
 import org.picocontainer.MutablePicoContainer;
 
 /**

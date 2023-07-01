@@ -21,12 +21,12 @@ package org.geotools.brewer.styling.filter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import org.geotools.brewer.styling.builder.Builder;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.identity.Identifier;
+import org.geotools.brewer.styling.builder.Builder;
+import org.geotools.factory.CommonFactoryFinder;
 
 /** FilterBuilder acting as a simple wrapper around an Expression. */
 public class IdBuilder<P> implements Builder<Id> {

@@ -18,12 +18,12 @@ package org.geotools.coverage.grid;
 
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
-import org.geotools.geometry.Envelope2D;
-import org.geotools.geometry.PixelTranslation;
 import org.geotools.api.coverage.grid.GridEnvelope;
 import org.geotools.api.geometry.Envelope;
 import org.geotools.api.referencing.datum.PixelInCell;
 import org.geotools.api.util.Cloneable;
+import org.geotools.geometry.Envelope2D;
+import org.geotools.geometry.PixelTranslation;
 
 /**
  * Defines a range of two-dimensional grid coverage coordinates. This implementation extends {@link
@@ -85,8 +85,8 @@ public class GridEnvelope2D extends Rectangle implements GridEnvelope, Cloneable
      * specify {@link PixelInCell#CELL_CORNER}.
      *
      * <p>The convention is specified as a {@link PixelInCell} code instead than the more detailed
-     * {@link org.geotools.api.metadata.spatial.PixelOrientation} because the latter is restricted to the
-     * two-dimensional case while the former can be used for any number of dimensions.
+     * {@link org.geotools.api.metadata.spatial.PixelOrientation} because the latter is restricted
+     * to the two-dimensional case while the former can be used for any number of dimensions.
      *
      * @param envelope The envelope to use for initializing this grid envelope.
      * @param anchor Whatever envelope coordinates map to pixel center or pixel corner. Should be
@@ -130,8 +130,8 @@ public class GridEnvelope2D extends Rectangle implements GridEnvelope, Cloneable
      * specify {@link PixelInCell#CELL_CORNER}.
      *
      * <p>The convention is specified as a {@link PixelInCell} code instead than the more detailed
-     * {@link org.geotools.api.metadata.spatial.PixelOrientation} because the latter is restricted to the
-     * two-dimensional case while the former can be used for any number of dimensions.
+     * {@link org.geotools.api.metadata.spatial.PixelOrientation} because the latter is restricted
+     * to the two-dimensional case while the former can be used for any number of dimensions.
      *
      * @param envelope The envelope to use for initializing this grid envelope.
      * @param anchor Whatever envelope coordinates map to pixel center or pixel corner. Should be

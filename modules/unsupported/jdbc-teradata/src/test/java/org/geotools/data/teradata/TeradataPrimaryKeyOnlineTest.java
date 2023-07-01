@@ -19,6 +19,8 @@ package org.geotools.data.teradata;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -30,8 +32,6 @@ import org.geotools.jdbc.NonIncrementingPrimaryKeyColumn;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.feature.simple.SimpleFeatureType;
 
 public class TeradataPrimaryKeyOnlineTest extends JDBCPrimaryKeyOnlineTest {
 

@@ -16,14 +16,14 @@
  */
 package org.geotools.geometry.jts.coordinatesequence;
 
-import org.geotools.geometry.jts.CoordinateSequenceTransformer;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.impl.PackedCoordinateSequence;
 import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.geometry.jts.CoordinateSequenceTransformer;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.impl.PackedCoordinateSequence;
 
 /**
  * A JTS CoordinateSequenceTransformer which transforms the values in place.
@@ -130,7 +130,9 @@ public class InPlaceCoordinateSequenceTransformer implements CoordinateSequenceT
             sequence.setOrdinate(offset, arg0, arg1);
         }
 
-        /** @see org.geotools.api.geometry.coordinate.DirectPosition#getCoordinateReferenceSystem() */
+        /**
+         * @see org.geotools.api.geometry.coordinate.DirectPosition#getCoordinateReferenceSystem()
+         */
         @Override
         public CoordinateReferenceSystem getCoordinateReferenceSystem() {
             // TODO implement method body

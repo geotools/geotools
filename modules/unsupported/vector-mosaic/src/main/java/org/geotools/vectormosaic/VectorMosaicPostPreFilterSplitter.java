@@ -19,8 +19,6 @@ package org.geotools.vectormosaic;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.geotools.filter.FilterAttributeExtractor;
-import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.filter.BinaryComparisonOperator;
@@ -34,6 +32,8 @@ import org.geotools.api.filter.PropertyIsNull;
 import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.api.filter.spatial.BinarySpatialOperator;
 import org.geotools.api.filter.temporal.BinaryTemporalOperator;
+import org.geotools.filter.FilterAttributeExtractor;
+import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 
 public class VectorMosaicPostPreFilterSplitter extends PostPreProcessFilterSplittingVisitor {
     private Set<String> attributeNames = new HashSet<>();

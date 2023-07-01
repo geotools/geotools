@@ -7,15 +7,15 @@ package org.geotools.coverage.grid;
 import java.awt.Rectangle;
 import java.io.IOException;
 import javax.imageio.ImageReadParam;
-import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
-import org.geotools.coverage.grid.io.OverviewPolicy;
-import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.api.coverage.grid.Format;
 import org.geotools.api.coverage.grid.GridEnvelope;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
+import org.geotools.coverage.grid.io.OverviewPolicy;
+import org.geotools.geometry.GeneralEnvelope;
 
 /**
  * A Mock Class to access methods for AbstractGridCoverage2DReader class Intially intended for

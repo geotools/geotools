@@ -22,14 +22,14 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.awt.Color;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.mbstyle.layer.LineMBLayer;
 import org.geotools.mbstyle.layer.SymbolMBLayer;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.filter.expression.Function;
 
 /** Individual parsing tests. */
 public class MBObjectParserTest {

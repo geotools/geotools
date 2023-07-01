@@ -18,8 +18,6 @@ package org.geotools.styling.css.util;
 
 import java.util.Date;
 import java.util.List;
-import org.geotools.filter.visitor.DefaultFilterVisitor;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.filter.BinaryComparisonOperator;
 import org.geotools.api.filter.PropertyIsBetween;
 import org.geotools.api.filter.PropertyIsEqualTo;
@@ -66,6 +64,8 @@ import org.geotools.api.filter.temporal.TContains;
 import org.geotools.api.filter.temporal.TEquals;
 import org.geotools.api.filter.temporal.TOverlaps;
 import org.geotools.api.parameter.Parameter;
+import org.geotools.filter.visitor.DefaultFilterVisitor;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Applies duck typing to properties in filters, aggregating the types found in the {@link

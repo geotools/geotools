@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.Set;
 import javax.media.jai.Interpolation;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
@@ -21,8 +23,6 @@ import org.geotools.ows.wmts.request.GetTileRequest;
 import org.geotools.parameter.Parameter;
 import org.geotools.test.OnlineTestCase;
 import org.geotools.tile.Tile;
-import org.geotools.api.parameter.GeneralParameterValue;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 public abstract class WMTSOnlineTestCase extends OnlineTestCase {
 

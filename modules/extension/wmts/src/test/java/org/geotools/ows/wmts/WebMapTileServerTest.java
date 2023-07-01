@@ -31,6 +31,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import org.geotools.TestData;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.http.AbstractHttpClient;
@@ -52,9 +55,6 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.tile.Tile;
 import org.junit.Assert;
 import org.junit.Test;
-import org.geotools.api.referencing.FactoryException;
-import org.geotools.api.referencing.NoSuchAuthorityCodeException;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /** @author Emanuele Tajariol (etj at geo-solutions dot it) */
 public class WebMapTileServerTest {

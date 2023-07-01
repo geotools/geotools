@@ -25,18 +25,18 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.data.Parameter;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.capability.FunctionNameImpl;
-import org.geotools.text.Text;
-import org.geotools.util.Converters;
-import org.geotools.util.KVP;
 import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.ExpressionVisitor;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
+import org.geotools.data.Parameter;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.capability.FunctionNameImpl;
+import org.geotools.text.Text;
+import org.geotools.util.Converters;
+import org.geotools.util.KVP;
 
 /**
  * This is an implemenation of the Interpolate function as defined by OGC Symbology Encoding (SE)

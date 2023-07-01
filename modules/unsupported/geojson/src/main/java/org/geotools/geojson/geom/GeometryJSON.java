@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import org.geotools.api.geometry.BoundingBox;
 import org.geotools.geojson.GeoJSONUtil;
 import org.geotools.geojson.IContentHandler;
 import org.json.simple.JSONAware;
@@ -40,7 +41,6 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.geotools.api.geometry.BoundingBox;
 
 /**
  * Reads and writes geometry objects to and from geojson.

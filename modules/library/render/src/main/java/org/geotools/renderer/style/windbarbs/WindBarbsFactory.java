@@ -25,12 +25,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.renderer.style.MarkFactory;
 import org.geotools.renderer.style.windbarbs.WindBarb.WindBarbDefinition;
 import org.geotools.util.SoftValueHashMap;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.filter.expression.Expression;
 
 /**
  * Factory to produce WindBarbs. Urls for wind barbs are in the form:

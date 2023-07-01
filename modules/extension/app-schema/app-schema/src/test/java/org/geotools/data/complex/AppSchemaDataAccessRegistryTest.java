@@ -30,6 +30,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.DataSourceException;
@@ -44,9 +47,6 @@ import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.util.URLs;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.feature.type.Name;
 
 /**
  * This tests AppSchemaDataAccessRegistry class. When an appschema data access is created, it would

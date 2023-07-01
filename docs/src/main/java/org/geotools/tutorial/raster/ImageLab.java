@@ -21,6 +21,8 @@ import java.util.List;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.style.ContrastMethod;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
@@ -50,8 +52,6 @@ import org.geotools.swing.data.JParameterListWizard;
 import org.geotools.swing.wizard.JWizard;
 import org.geotools.util.KVP;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.style.ContrastMethod;
 
 public class ImageLab {
 

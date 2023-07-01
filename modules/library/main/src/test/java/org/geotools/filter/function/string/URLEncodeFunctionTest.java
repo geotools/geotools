@@ -21,10 +21,10 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 import java.util.List;
-import org.geotools.factory.CommonFactoryFinder;
-import org.junit.Test;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.factory.CommonFactoryFinder;
+import org.junit.Test;
 
 /**
  * The URLEncodeFunction UnitTest

@@ -22,13 +22,6 @@ import static org.hamcrest.Matchers.is;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.IllegalFilterException;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.util.factory.GeoTools;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.NativeFilter;
@@ -41,6 +34,13 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.IllegalFilterException;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.util.factory.GeoTools;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**

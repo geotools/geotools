@@ -21,15 +21,15 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.IllegalFilterException;
-import org.geotools.geometry.jts.GeometryBuilder;
-import org.junit.Test;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.MultiValuedFilter.MatchAction;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.IllegalFilterException;
+import org.geotools.geometry.jts.GeometryBuilder;
+import org.junit.Test;
 
 /**
  * Unit test for LiteralDemultiplyingFilter.

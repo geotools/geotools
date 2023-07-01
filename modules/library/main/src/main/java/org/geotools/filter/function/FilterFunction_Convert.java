@@ -18,11 +18,11 @@ package org.geotools.filter.function;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
+import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.util.Converter;
 import org.geotools.util.Converters;
-import org.geotools.api.filter.capability.FunctionName;
 
 /**
  * Applies the available {@link Converter} to turn the value into the desired target class

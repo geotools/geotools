@@ -16,8 +16,8 @@
  */
 package org.geotools.styling;
 
-import org.geotools.util.Utilities;
 import org.geotools.api.util.Cloneable;
+import org.geotools.util.Utilities;
 
 public class ExtentImpl implements Extent, Cloneable {
     private String name;

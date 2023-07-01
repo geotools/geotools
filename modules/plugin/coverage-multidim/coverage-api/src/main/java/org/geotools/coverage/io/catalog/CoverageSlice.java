@@ -16,9 +16,9 @@
  */
 package org.geotools.coverage.io.catalog;
 
-import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.geometry.BoundingBox;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /** A slice coverageDescriptor represents a feature in the {@link CoverageSlicesCatalog}. */
 public class CoverageSlice {

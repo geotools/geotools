@@ -23,15 +23,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.geotools.feature.GeometryAttributeImpl;
-import org.geotools.feature.type.AttributeDescriptorImpl;
-import org.geotools.filter.identity.FeatureIdImpl;
-import org.geotools.geometry.jts.JTS;
-import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.util.Converters;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.feature.GeometryAttribute;
 import org.geotools.api.feature.Property;
 import org.geotools.api.feature.simple.SimpleFeature;
@@ -42,6 +33,15 @@ import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.feature.GeometryAttributeImpl;
+import org.geotools.feature.type.AttributeDescriptorImpl;
+import org.geotools.filter.identity.FeatureIdImpl;
+import org.geotools.geometry.jts.JTS;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.util.Converters;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 
 public class MongoDBObjectFeature implements SimpleFeature {
 

@@ -26,12 +26,12 @@ import javax.media.jai.InterpolationBicubic;
 import javax.media.jai.InterpolationBilinear;
 import javax.media.jai.InterpolationNearest;
 import org.geotools.TestData;
+import org.geotools.api.coverage.grid.GridCoverageReader;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.geotools.api.coverage.grid.GridCoverageReader;
 
 public class AffineProcessTest {
 

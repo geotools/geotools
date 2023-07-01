@@ -18,10 +18,10 @@ package org.geotools.styling;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.ContrastMethod;
+import org.geotools.factory.CommonFactoryFinder;
 
 /**
  * Provide an abstract base class for ContrastMethodStrategies which hold the actual implementations

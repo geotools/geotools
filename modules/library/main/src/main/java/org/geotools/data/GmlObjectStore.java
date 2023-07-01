@@ -17,8 +17,8 @@
 package org.geotools.data;
 
 import java.io.IOException;
-import org.geotools.util.factory.Hints;
 import org.geotools.api.filter.identity.GmlObjectId;
+import org.geotools.util.factory.Hints;
 
 /**
  * Interface providing lookup operations for gml objects.

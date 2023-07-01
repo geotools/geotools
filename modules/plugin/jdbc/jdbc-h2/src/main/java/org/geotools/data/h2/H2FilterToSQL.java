@@ -19,12 +19,6 @@ package org.geotools.data.h2;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import org.geotools.data.jdbc.FilterToSQL;
-import org.geotools.filter.FilterCapabilities;
-import org.geotools.jdbc.SQLDialect;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.LinearRing;
 import org.geotools.api.filter.NativeFilter;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
@@ -42,6 +36,12 @@ import org.geotools.api.filter.spatial.Intersects;
 import org.geotools.api.filter.spatial.Overlaps;
 import org.geotools.api.filter.spatial.Touches;
 import org.geotools.api.filter.spatial.Within;
+import org.geotools.data.jdbc.FilterToSQL;
+import org.geotools.filter.FilterCapabilities;
+import org.geotools.jdbc.SQLDialect;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LinearRing;
 
 public class H2FilterToSQL extends FilterToSQL {
 

@@ -19,13 +19,13 @@ package org.geotools.data;
 import java.awt.RenderingHints;
 import java.io.IOException;
 import java.util.Set;
-import org.geotools.feature.FeatureCollection;
-import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.util.factory.Hints;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
+import org.geotools.feature.FeatureCollection;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.factory.Hints;
 
 /**
  * This class provides a high-level API for operations on feature data. Typically, when working with

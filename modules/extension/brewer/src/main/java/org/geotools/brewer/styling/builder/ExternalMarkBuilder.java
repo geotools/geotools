@@ -17,8 +17,8 @@
 package org.geotools.brewer.styling.builder;
 
 import javax.swing.Icon;
-import org.geotools.styling.ExternalMark;
 import org.geotools.api.metadata.citation.OnLineResource;
+import org.geotools.styling.ExternalMark;
 
 public class ExternalMarkBuilder extends AbstractStyleBuilder<ExternalMark> {
     private Icon inline;

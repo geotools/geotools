@@ -28,6 +28,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.logging.Logger;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.referencing.ReferenceIdentifier;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.ows.wms.xml.Attribution;
 import org.geotools.ows.wms.xml.Dimension;
@@ -36,10 +40,6 @@ import org.geotools.ows.wms.xml.MetadataURL;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.logging.Logging;
-import org.geotools.api.geometry.Envelope;
-import org.geotools.api.referencing.ReferenceIdentifier;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * Nested list of zero or more map Layers offered by this server. It contains only fields for
@@ -441,8 +441,8 @@ public class Layer implements Comparable<Layer> {
      * Accumulates all of the styles specified for this layer and all styles inherited from its
      * ancestors. No duplicates are returned.
      *
-     * <p>The List that is returned is of type List<org.geotools.api.layer.Style>. Before 2.2-RC0 it was
-     * of type List<java.lang.String>.
+     * <p>The List that is returned is of type List<org.geotools.api.layer.Style>. Before 2.2-RC0 it
+     * was of type List<java.lang.String>.
      *
      * @return List of all styles for this layer and its ancestors
      */

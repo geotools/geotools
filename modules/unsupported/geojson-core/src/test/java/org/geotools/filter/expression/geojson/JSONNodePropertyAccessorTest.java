@@ -23,6 +23,8 @@ import com.fasterxml.jackson.databind.node.TextNode;
 import java.net.URL;
 import java.util.Date;
 import java.util.Scanner;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.geojson.GeoJSONReader;
 import org.geotools.data.geojson.GeoJSONReaderTest;
 import org.geotools.filter.expression.PropertyAccessor;
@@ -31,8 +33,6 @@ import org.geotools.test.TestData;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.feature.simple.SimpleFeatureType;
 
 public class JSONNodePropertyAccessorTest {
 

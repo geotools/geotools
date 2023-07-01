@@ -22,13 +22,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import org.geotools.filter.capability.FunctionNameImpl;
-import org.geotools.util.Converters;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.ExpressionVisitor;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
+import org.geotools.filter.capability.FunctionNameImpl;
+import org.geotools.util.Converters;
 
 /**
  * StringTemplate function, applies a regular expression with capturing groups, and them uses the

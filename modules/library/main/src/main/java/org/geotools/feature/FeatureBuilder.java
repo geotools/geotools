@@ -17,12 +17,12 @@
 package org.geotools.feature;
 
 import java.rmi.server.UID;
-import org.geotools.filter.identity.FeatureIdImpl;
-import org.geotools.util.Converters;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.FeatureFactory;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.PropertyDescriptor;
+import org.geotools.filter.identity.FeatureIdImpl;
+import org.geotools.util.Converters;
 
 /**
  * This class provides some common functionality for builders and defines an abstraction for Feature

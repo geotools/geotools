@@ -29,9 +29,6 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
 import java.util.TimeZone;
-import org.geotools.data.geojson.GeoJSONWriter;
-import org.geotools.util.Converters;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.filter.expression.Add;
 import org.geotools.api.filter.expression.BinaryExpression;
 import org.geotools.api.filter.expression.Divide;
@@ -45,6 +42,9 @@ import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.expression.Subtract;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.temporal.Period;
+import org.geotools.data.geojson.GeoJSONWriter;
+import org.geotools.util.Converters;
+import org.locationtech.jts.geom.Geometry;
 
 /** This class is responsible to convert an expression to a CQL2-JSON expression. */
 public class ExpressionToCQL2Json implements ExpressionVisitor {

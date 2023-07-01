@@ -17,12 +17,12 @@
 package org.geotools.renderer.style;
 
 import java.util.List;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.VolatileFunction;
 import org.geotools.styling.Font;
 import org.geotools.styling.StyleVisitor;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.filter.expression.VolatileFunction;
 
 /**
  * A simple visitor whose purpose is to extract the set of attributes used by a Style, that is,

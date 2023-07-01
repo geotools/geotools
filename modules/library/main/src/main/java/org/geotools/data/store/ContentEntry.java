@@ -19,10 +19,10 @@ package org.geotools.data.store;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
+import org.geotools.api.feature.type.Name;
 import org.geotools.data.FeatureEvent;
 import org.geotools.data.FeatureListener;
 import org.geotools.data.Transaction;
-import org.geotools.api.feature.type.Name;
 
 /**
  * An entry for a type or feature source provided by a DataStore.

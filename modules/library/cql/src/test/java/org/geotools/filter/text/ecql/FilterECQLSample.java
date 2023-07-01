@@ -18,7 +18,6 @@ package org.geotools.filter.text.ecql;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Not;
@@ -30,6 +29,7 @@ import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.expression.Subtract;
+import org.geotools.factory.CommonFactoryFinder;
 
 /**
  * Filter Samples for ECQL language

@@ -42,11 +42,11 @@ import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.ROI;
 import javax.media.jai.RenderedOp;
 import org.geotools.TestData;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.image.ImageWorker;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.geotools.api.referencing.operation.TransformException;
 
 /** @author Simone Giannecchini, GeoSolutions. */
 public class TestPiecewise {

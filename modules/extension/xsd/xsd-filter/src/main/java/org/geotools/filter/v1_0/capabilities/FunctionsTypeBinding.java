@@ -17,12 +17,12 @@
 package org.geotools.filter.v1_0.capabilities;
 
 import javax.xml.namespace.QName;
-import org.geotools.xsd.AbstractComplexBinding;
-import org.geotools.xsd.ElementInstance;
-import org.geotools.xsd.Node;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.capability.Functions;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:FunctionsType.

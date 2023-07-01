@@ -26,6 +26,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import org.geotools.api.feature.type.Name;
 import org.geotools.data.Parameter;
 import org.geotools.process.ProcessFactory;
 import org.geotools.swing.wizard.JDoubleField;
@@ -34,7 +35,6 @@ import org.geotools.swing.wizard.JGeometryField;
 import org.geotools.swing.wizard.JPage;
 import org.geotools.swing.wizard.ParamField;
 import org.locationtech.jts.geom.Geometry;
-import org.geotools.api.feature.type.Name;
 
 /**
  * This page is responsible making a user interface based on the provided ProcessFactory.

@@ -16,8 +16,8 @@
  */
 package org.geotools.gml;
 
-import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.xml.sax.helpers.XMLFilterImpl;
 
 /** @author Darren Edmonds */

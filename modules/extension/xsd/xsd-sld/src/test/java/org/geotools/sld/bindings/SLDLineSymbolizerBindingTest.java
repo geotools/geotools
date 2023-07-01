@@ -19,9 +19,9 @@ package org.geotools.sld.bindings;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import org.geotools.api.filter.expression.Function;
 import org.geotools.styling.LineSymbolizer;
 import org.junit.Test;
-import org.geotools.api.filter.expression.Function;
 
 public class SLDLineSymbolizerBindingTest extends SLDTestSupport {
     @Test

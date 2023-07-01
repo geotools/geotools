@@ -16,12 +16,12 @@
  */
 package org.geotools.filter;
 
-import org.geotools.util.ConverterFactory;
-import org.geotools.util.Converters;
-import org.geotools.util.factory.Hints;
 import org.geotools.api.filter.MultiValuedFilter;
 import org.geotools.api.filter.MultiValuedFilter.MatchAction;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.util.ConverterFactory;
+import org.geotools.util.Converters;
+import org.geotools.util.factory.Hints;
 
 /**
  * Abstract implementation for binary filters.

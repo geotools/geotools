@@ -16,14 +16,14 @@
  */
 package org.geotools.geometry.iso.text;
 
+import org.geotools.api.geometry.PositionFactory;
+import org.geotools.api.geometry.primitive.Curve;
+import org.geotools.api.geometry.primitive.Point;
 import org.geotools.geometry.iso.MockGeometryFactory;
 import org.geotools.geometry.iso.MockPositionFactory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.geotools.api.geometry.PositionFactory;
-import org.geotools.api.geometry.primitive.Curve;
-import org.geotools.api.geometry.primitive.Point;
 
 public class WKTParserTest {
     // TODO: POLYGON ((280 380, 280 200, 60 200, 60 380, 180 220, 280 380),(40 160, 260 160, 240 60,

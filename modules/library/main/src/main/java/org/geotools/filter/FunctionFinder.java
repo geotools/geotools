@@ -22,14 +22,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.NameImpl;
-import org.geotools.util.factory.Hints;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.NameImpl;
+import org.geotools.util.factory.Hints;
 
 /**
  * Isolate function lookup code from Factory implementation(s).

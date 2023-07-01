@@ -17,13 +17,13 @@
 package org.geotools.temporal.reference;
 
 import java.util.Collection;
-import org.geotools.util.Utilities;
 import org.geotools.api.temporal.Calendar;
 import org.geotools.api.temporal.CalendarDate;
 import org.geotools.api.temporal.CalendarEra;
 import org.geotools.api.temporal.JulianDate;
 import org.geotools.api.temporal.Period;
 import org.geotools.api.util.InternationalString;
+import org.geotools.util.Utilities;
 
 /** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultCalendarEra implements CalendarEra {

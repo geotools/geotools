@@ -16,8 +16,8 @@
  */
 package org.geotools.brewer.styling.builder;
 
-import org.geotools.styling.ShadedRelief;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.styling.ShadedRelief;
 
 public class ShadedReliefBuilder extends AbstractStyleBuilder<ShadedRelief> {
     private Expression factor;

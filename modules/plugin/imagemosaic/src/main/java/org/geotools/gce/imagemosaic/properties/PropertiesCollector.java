@@ -24,8 +24,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageReader;
-import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 
 public abstract class PropertiesCollector {
 

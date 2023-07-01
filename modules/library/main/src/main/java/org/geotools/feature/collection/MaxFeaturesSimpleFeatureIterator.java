@@ -16,8 +16,8 @@
  */
 package org.geotools.feature.collection;
 
-import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.data.simple.SimpleFeatureIterator;
 
 /**
  * SimpleFeatureIterator wrapper which can use a start and end bounds to cap the number of returned

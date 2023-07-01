@@ -19,9 +19,9 @@ package org.geotools.feature.collection;
 import java.io.Closeable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import org.geotools.api.feature.Feature;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.api.feature.Feature;
 
 /**
  * A feature iterator that completely delegates to a normal Iterator, simply allowing Java 1.4 code

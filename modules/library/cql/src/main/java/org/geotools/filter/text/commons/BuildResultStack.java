@@ -19,17 +19,17 @@ package org.geotools.filter.text.commons;
 import java.util.Date;
 import java.util.EmptyStackException;
 import java.util.Stack;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.temporal.Period;
+import org.geotools.api.temporal.Position;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.temporal.object.DefaultInstant;
 import org.geotools.temporal.object.DefaultPeriod;
 import org.geotools.temporal.object.DefaultPosition;
 import org.geotools.util.SuppressFBWarnings;
 import org.locationtech.jts.geom.Geometry;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.expression.Literal;
-import org.geotools.api.filter.expression.PropertyName;
-import org.geotools.api.temporal.Period;
-import org.geotools.api.temporal.Position;
 
 /**
  * Holds the results of the building process in a stack

@@ -17,13 +17,13 @@
 package org.geotools.data.complex;
 
 import java.util.List;
-import org.geotools.data.FeatureSource;
-import org.geotools.data.complex.config.MultipleValue;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.FeatureType;
+import org.geotools.data.FeatureSource;
+import org.geotools.data.complex.config.MultipleValue;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**

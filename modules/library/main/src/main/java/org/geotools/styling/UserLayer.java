@@ -17,8 +17,8 @@
 package org.geotools.styling;
 
 import java.util.List;
-import org.geotools.data.DataStore;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.data.DataStore;
 
 /**
  * A UserLayer allows a user-defined layer to be built from WFS and WCS data.

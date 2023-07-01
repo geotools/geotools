@@ -22,6 +22,10 @@ import static org.junit.Assert.assertFalse;
 import java.net.URL;
 import java.util.List;
 import org.geotools.TestData;
+import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Function;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
@@ -30,10 +34,6 @@ import org.geotools.feature.NameImpl;
 import org.geotools.process.feature.BufferFeatureCollectionFactory;
 import org.junit.Test;
 import org.locationtech.jts.geom.MultiPolygon;
-import org.geotools.api.feature.type.GeometryDescriptor;
-import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.capability.FunctionName;
-import org.geotools.api.filter.expression.Function;
 
 public class ProcessFunctionTest {
 

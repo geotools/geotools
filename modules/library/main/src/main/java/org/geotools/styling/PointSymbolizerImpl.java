@@ -18,9 +18,9 @@ package org.geotools.styling;
 
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
-import org.geotools.util.SimpleInternationalString;
 import org.geotools.api.style.StyleVisitor;
 import org.geotools.api.util.Cloneable;
+import org.geotools.util.SimpleInternationalString;
 
 /**
  * Provides a Java representation of the PointSymbolizer. This defines how points are to be

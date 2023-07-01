@@ -30,14 +30,14 @@ import javax.media.jai.JAI;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.HistogramDescriptor;
-import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.coverage.processing.BaseStatisticsOperationJAI;
-import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.api.coverage.processing.OperationNotFoundException;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.util.InternationalString;
+import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.processing.BaseStatisticsOperationJAI;
+import org.geotools.coverage.util.CoverageUtilities;
 
 /**
  * * This operation simply wraps JAI Histogram operations described by {@link HistogramDescriptor}

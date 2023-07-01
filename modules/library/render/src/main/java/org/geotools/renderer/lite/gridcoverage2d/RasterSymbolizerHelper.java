@@ -24,6 +24,8 @@ import java.awt.image.SampleModel;
 import java.util.HashMap;
 import java.util.Map;
 import javax.media.jai.ROI;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -39,8 +41,6 @@ import org.geotools.styling.ShadedRelief;
 import org.geotools.styling.StyleVisitor;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.coverage.grid.GridCoverage;
-import org.geotools.api.filter.expression.Expression;
 
 /**
  * A helper class for rendering {@link GridCoverage} objects. It supports almost all

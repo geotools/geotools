@@ -17,9 +17,6 @@
 package org.geotools.coverage.processing;
 
 import java.io.Serializable;
-import org.geotools.util.Classes;
-import org.geotools.util.Utilities;
-import org.geotools.util.factory.Hints;
 import org.geotools.api.coverage.Coverage;
 import org.geotools.api.coverage.processing.Operation;
 import org.geotools.api.filter.identity.Identifier;
@@ -28,6 +25,9 @@ import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.util.InternationalString;
+import org.geotools.util.Classes;
+import org.geotools.util.Utilities;
+import org.geotools.util.factory.Hints;
 
 /**
  * Provides descriptive information for a {@linkplain Coverage coverage} processing operation. The

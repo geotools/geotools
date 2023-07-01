@@ -18,8 +18,6 @@
 
 package org.geotools.brewer.styling.filter.expression;
 
-import org.geotools.brewer.styling.builder.Builder;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Add;
 import org.geotools.api.filter.expression.Divide;
@@ -29,6 +27,8 @@ import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.Multiply;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.expression.Subtract;
+import org.geotools.brewer.styling.builder.Builder;
+import org.geotools.factory.CommonFactoryFinder;
 
 /** ExpressionBuilder acting as a simple wrapper around an Expression. */
 public class ExpressionBuilder implements Builder<Expression> {

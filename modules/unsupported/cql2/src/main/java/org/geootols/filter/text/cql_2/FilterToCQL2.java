@@ -18,8 +18,6 @@ package org.geootols.filter.text.cql_2;
 
 import java.util.Iterator;
 import java.util.List;
-import org.geotools.filter.text.commons.ExpressionToText;
-import org.geotools.filter.text.commons.FilterToTextUtil;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.ExcludeFilter;
 import org.geotools.api.filter.Filter;
@@ -69,6 +67,8 @@ import org.geotools.api.filter.temporal.TContains;
 import org.geotools.api.filter.temporal.TEquals;
 import org.geotools.api.filter.temporal.TOverlaps;
 import org.geotools.api.geometry.BoundingBox;
+import org.geotools.filter.text.commons.ExpressionToText;
+import org.geotools.filter.text.commons.FilterToTextUtil;
 
 /**
  * This class is responsible to transform a filter to an ECQL predicate.

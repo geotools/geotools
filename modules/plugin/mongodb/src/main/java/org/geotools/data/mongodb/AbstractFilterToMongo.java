@@ -30,13 +30,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 import org.bson.types.ObjectId;
-import org.geotools.data.mongodb.complex.JsonSelectAllFunction;
-import org.geotools.data.mongodb.complex.JsonSelectFunction;
-import org.geotools.data.util.DistanceBufferUtil;
-import org.geotools.filter.FilterAttributeExtractor;
-import org.geotools.util.Converters;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.BinaryComparisonOperator;
 import org.geotools.api.filter.ExcludeFilter;
@@ -92,6 +85,13 @@ import org.geotools.api.filter.temporal.OverlappedBy;
 import org.geotools.api.filter.temporal.TContains;
 import org.geotools.api.filter.temporal.TEquals;
 import org.geotools.api.filter.temporal.TOverlaps;
+import org.geotools.data.mongodb.complex.JsonSelectAllFunction;
+import org.geotools.data.mongodb.complex.JsonSelectFunction;
+import org.geotools.data.util.DistanceBufferUtil;
+import org.geotools.filter.FilterAttributeExtractor;
+import org.geotools.util.Converters;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Abstract visitor responsible for generating a BasicDBObject to use as a MongoDB query.

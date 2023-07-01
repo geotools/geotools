@@ -19,12 +19,12 @@ package org.geotools.data.transform;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import org.geotools.filter.identity.FeatureIdImpl;
-import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.identity.FeatureId;
+import org.geotools.filter.identity.FeatureIdImpl;
+import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 
 /**
  * Visits a filter and expands the transforming expressions into it

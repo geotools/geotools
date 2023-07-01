@@ -24,6 +24,7 @@ import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.data.DataTestCase;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -31,7 +32,6 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.collection.FilteredIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.junit.Test;
-import org.geotools.api.feature.simple.SimpleFeature;
 
 public class MemoryFeatureCollectionTest extends DataTestCase {
     private MemoryFeatureCollection roads;

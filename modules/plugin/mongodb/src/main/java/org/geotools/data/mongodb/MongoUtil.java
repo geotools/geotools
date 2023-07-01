@@ -54,10 +54,10 @@ import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
-import org.geotools.data.mongodb.data.SchemaStoreDirectory;
-import org.geotools.http.HTTPClient;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.Name;
+import org.geotools.data.mongodb.data.SchemaStoreDirectory;
+import org.geotools.http.HTTPClient;
 
 /** @author tkunicki@boundlessgeo.com */
 public class MongoUtil {

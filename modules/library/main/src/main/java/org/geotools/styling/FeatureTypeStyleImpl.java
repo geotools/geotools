@@ -23,7 +23,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.geotools.util.Utilities;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.expression.Expression;
@@ -32,6 +31,7 @@ import org.geotools.api.style.FeatureTypeStyle;
 import org.geotools.api.style.SemanticType;
 import org.geotools.api.style.StyleVisitor;
 import org.geotools.api.util.Cloneable;
+import org.geotools.util.Utilities;
 
 /**
  * Implementation of Feature Type Style; care is taken to ensure everything is mutable.

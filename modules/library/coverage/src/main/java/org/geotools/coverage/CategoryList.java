@@ -27,6 +27,7 @@ import java.util.Comparator;
 import java.util.Locale;
 import java.util.Objects;
 import javax.measure.Unit;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
@@ -36,7 +37,6 @@ import org.geotools.util.AbstractInternationalString;
 import org.geotools.util.Classes;
 import org.geotools.util.NumberRange;
 import org.geotools.util.Utilities;
-import org.geotools.api.util.InternationalString;
 
 /**
  * An immutable list of categories. Categories are sorted by their sample values. Overlapping ranges
@@ -401,8 +401,8 @@ class CategoryList extends AbstractList<Category> implements Comparator<Category
      * Returns the range of values in this category list. This is the union of the range of values
      * of every categories, excluding {@code NaN} values. A {@link NumberRange} object give more
      * informations than {@link org.geotools.api.CV_SampleDimension#getMinimum} and {@link
-     * org.geotools.api.CV_SampleDimension#getMaximum} since it contains also the type (integer, float,
-     * etc.) and inclusion/exclusion informations.
+     * org.geotools.api.CV_SampleDimension#getMaximum} since it contains also the type (integer,
+     * float, etc.) and inclusion/exclusion informations.
      *
      * @return The range of values. May be {@code null} if this category list has no quantitative
      *     category.

@@ -14,6 +14,9 @@ package org.geotools.tutorial.coverage;
 
 import java.io.File;
 import java.io.IOException;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
@@ -25,9 +28,6 @@ import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.Arguments;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.geometry.Envelope;
-import org.geotools.api.parameter.ParameterValueGroup;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Simple tiling of a coverage based simply on the number vertical/horizontal tiles desired and

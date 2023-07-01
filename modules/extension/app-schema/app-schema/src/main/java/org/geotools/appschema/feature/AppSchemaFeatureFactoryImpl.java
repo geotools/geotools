@@ -19,13 +19,6 @@ package org.geotools.appschema.feature;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import org.geotools.feature.AttributeImpl;
-import org.geotools.feature.ComplexAttributeImpl;
-import org.geotools.feature.FeatureImpl;
-import org.geotools.feature.GeometryAttributeImpl;
-import org.geotools.feature.ValidatingFeatureFactoryImpl;
-import org.geotools.feature.type.GeometryDescriptorImpl;
-import org.geotools.feature.type.GeometryTypeImpl;
 import org.geotools.api.feature.Attribute;
 import org.geotools.api.feature.ComplexAttribute;
 import org.geotools.api.feature.Feature;
@@ -40,6 +33,13 @@ import org.geotools.api.feature.type.GeometryType;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.api.filter.identity.GmlObjectId;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.feature.AttributeImpl;
+import org.geotools.feature.ComplexAttributeImpl;
+import org.geotools.feature.FeatureImpl;
+import org.geotools.feature.GeometryAttributeImpl;
+import org.geotools.feature.ValidatingFeatureFactoryImpl;
+import org.geotools.feature.type.GeometryDescriptorImpl;
+import org.geotools.feature.type.GeometryTypeImpl;
 
 /**
  * {@link FeatureFactory} that:

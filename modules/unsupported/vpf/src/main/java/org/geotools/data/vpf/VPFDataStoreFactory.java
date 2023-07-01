@@ -31,13 +31,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.vpf.file.VPFFile;
 import org.geotools.data.vpf.file.VPFFileFactory;
 import org.geotools.data.vpf.ifc.FileConstants;
 import org.geotools.feature.SchemaException;
-import org.geotools.api.feature.simple.SimpleFeature;
 
 /**
  * Class VPFDataSourceFactory.java is responsible for constructing appropriate VPFDataStore

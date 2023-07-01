@@ -18,14 +18,14 @@ package org.geotools.data.transform;
 
 import java.io.IOException;
 import java.util.logging.Logger;
-import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.util.logging.Logging;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.FeatureIterator;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.util.logging.Logging;
 
 /**
  * A transforming iterator based on a user provided {@link SimpleFeatureIterator}

@@ -19,6 +19,11 @@ package org.geotools.renderer.style;
 import java.net.MalformedURLException;
 import java.util.Collections;
 import java.util.Set;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.style.GraphicalSymbol;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.ChannelSelection;
@@ -55,11 +60,6 @@ import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 import org.geotools.styling.UserLayer;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.filter.expression.Literal;
-import org.geotools.api.filter.expression.PropertyName;
-import org.geotools.api.style.GraphicalSymbol;
 
 /**
  * A simple visitor whose purpose is to extract the set of attributes used by a Style, that is,

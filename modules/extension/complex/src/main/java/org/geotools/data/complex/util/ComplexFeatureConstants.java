@@ -17,15 +17,15 @@
 
 package org.geotools.data.complex.util;
 
+import org.geotools.api.feature.Property;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.feature.type.PropertyDescriptor;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.Types;
 import org.geotools.util.factory.Hints;
 import org.geotools.xlink.XLINK;
 import org.geotools.xs.XSSchema;
-import org.geotools.api.feature.Property;
-import org.geotools.api.feature.type.Name;
-import org.geotools.api.feature.type.PropertyDescriptor;
 
 /**
  * This is just a compilation of constants and static methods used in app-schema module.

@@ -19,9 +19,9 @@ package org.geotools.filter.v1_0.capabilities;
 import static org.junit.Assert.assertEquals;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.xsd.Binding;
 import org.junit.Test;
-import org.geotools.api.filter.capability.FunctionName;
 import org.w3c.dom.Document;
 
 public class Function_NamesTypeBindingTest extends FilterCapabilitiesTestSupport {

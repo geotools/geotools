@@ -22,10 +22,10 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 
 import java.awt.Color;
+import org.geotools.api.filter.FilterFactory2;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Before;
 import org.junit.Test;
-import org.geotools.api.filter.FilterFactory2;
 
 /**
  * Test cases for the SLD utility class

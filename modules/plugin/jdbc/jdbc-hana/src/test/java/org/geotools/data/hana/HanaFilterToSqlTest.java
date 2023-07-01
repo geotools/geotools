@@ -18,12 +18,12 @@ package org.geotools.data.hana;
 
 import static org.junit.Assert.assertEquals;
 
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.spatial.DWithin;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.spatial.DWithin;
 
 /** @author Stefan Uhrig, SAP SE */
 public class HanaFilterToSqlTest {

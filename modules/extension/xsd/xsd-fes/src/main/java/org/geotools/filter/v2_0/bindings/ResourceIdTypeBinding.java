@@ -18,14 +18,14 @@ package org.geotools.filter.v2_0.bindings;
 
 import java.util.Date;
 import javax.xml.namespace.QName;
-import org.geotools.filter.v2_0.FES;
-import org.geotools.xsd.AbstractComplexBinding;
-import org.geotools.xsd.ElementInstance;
-import org.geotools.xsd.Node;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.api.filter.identity.ResourceId;
 import org.geotools.api.filter.identity.Version;
+import org.geotools.filter.v2_0.FES;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 public class ResourceIdTypeBinding extends AbstractComplexBinding {
 

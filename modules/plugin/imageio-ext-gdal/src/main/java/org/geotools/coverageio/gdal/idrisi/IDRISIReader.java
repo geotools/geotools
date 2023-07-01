@@ -18,12 +18,12 @@ package org.geotools.coverageio.gdal.idrisi;
 
 import it.geosolutions.imageio.plugins.idrisi.IDRISIImageReaderSpi;
 import java.util.logging.Logger;
+import org.geotools.api.coverage.grid.Format;
+import org.geotools.api.coverage.grid.GridCoverageReader;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverageio.gdal.BaseGDALGridCoverage2DReader;
 import org.geotools.data.DataSourceException;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.coverage.grid.Format;
-import org.geotools.api.coverage.grid.GridCoverageReader;
 
 /**
  * This class can read a RST data source and create a {@link GridCoverage2D} from the data.

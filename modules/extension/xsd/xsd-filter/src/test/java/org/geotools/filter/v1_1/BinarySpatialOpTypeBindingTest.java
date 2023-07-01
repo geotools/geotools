@@ -19,8 +19,6 @@ package org.geotools.filter.v1_1;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import org.geotools.gml3.GML;
-import org.junit.Test;
 import org.geotools.api.filter.spatial.Beyond;
 import org.geotools.api.filter.spatial.BinarySpatialOperator;
 import org.geotools.api.filter.spatial.Contains;
@@ -33,6 +31,8 @@ import org.geotools.api.filter.spatial.Intersects;
 import org.geotools.api.filter.spatial.Overlaps;
 import org.geotools.api.filter.spatial.Touches;
 import org.geotools.api.filter.spatial.Within;
+import org.geotools.gml3.GML;
+import org.junit.Test;
 import org.w3c.dom.Document;
 
 public class BinarySpatialOpTypeBindingTest extends FilterTestSupport {

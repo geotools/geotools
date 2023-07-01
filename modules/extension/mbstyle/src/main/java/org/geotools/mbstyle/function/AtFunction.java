@@ -18,10 +18,10 @@ package org.geotools.mbstyle.function;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
+import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.json.simple.JSONArray;
-import org.geotools.api.filter.capability.FunctionName;
 
 /** Returns the value in a JSONArray at a given index. */
 public class AtFunction extends FunctionExpressionImpl {

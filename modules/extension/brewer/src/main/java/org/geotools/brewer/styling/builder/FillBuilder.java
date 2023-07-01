@@ -17,9 +17,9 @@
 package org.geotools.brewer.styling.builder;
 
 import java.awt.Color;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.styling.Fill;
 import org.geotools.util.Converters;
-import org.geotools.api.filter.expression.Expression;
 
 public class FillBuilder extends AbstractStyleBuilder<org.geotools.api.style.Fill> {
     Expression color;

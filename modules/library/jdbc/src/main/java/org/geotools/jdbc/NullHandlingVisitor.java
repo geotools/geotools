@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.PropertyDescriptor;
 import org.geotools.api.filter.And;
@@ -39,6 +38,7 @@ import org.geotools.api.filter.PropertyIsNotEqualTo;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 
 /**
  * Amends the differences between our in-memory two-valued logic and the database own three-valued

@@ -16,6 +16,11 @@
  */
 package org.geotools.data.wfs;
 
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.locationtech.jts.geom.Coordinate;
@@ -31,11 +36,6 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.impl.CoordinateArraySequence;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.expression.Literal;
-import org.geotools.api.filter.spatial.BBOX;
-import org.geotools.api.geometry.BoundingBox;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Returns a clone of the provided filter where all geometries and bboxes have inverted coordinates

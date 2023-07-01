@@ -19,17 +19,17 @@ package org.geotools.feature.visitor;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.visitor.AverageVisitor.AverageResult;
-import org.geotools.feature.visitor.CountVisitor.CountResult;
-import org.geotools.filter.IllegalFilterException;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.visitor.AverageVisitor.AverageResult;
+import org.geotools.feature.visitor.CountVisitor.CountResult;
+import org.geotools.filter.IllegalFilterException;
 
 /**
  * Calculates the Sum of an attribute (of a FeatureVisitor)

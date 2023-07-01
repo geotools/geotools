@@ -29,6 +29,7 @@ import java.util.Set;
 import javax.media.jai.JAI;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.operator.BandSelectDescriptor;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.process.ProcessException;
@@ -43,7 +44,6 @@ import org.jaitools.media.jai.zonalstats.ZonalStats;
 import org.jaitools.media.jai.zonalstats.ZonalStatsDescriptor;
 import org.jaitools.numeric.Range;
 import org.jaitools.numeric.Statistic;
-import org.geotools.api.util.ProgressListener;
 
 /**
  * Process that classifies vector data into "classes" using one of the following methods:

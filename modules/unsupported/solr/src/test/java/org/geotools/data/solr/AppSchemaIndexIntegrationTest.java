@@ -19,6 +19,10 @@ package org.geotools.data.solr;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
 import org.geotools.data.complex.TotalIndexedMappingFeatureIterator;
 import org.geotools.data.complex.feature.type.Types;
 import org.geotools.data.util.FeatureStreams;
@@ -26,10 +30,6 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.junit.Test;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
 
 /**
  * AppSchema Index online test, using Solr as index and Postgresql as dataSource

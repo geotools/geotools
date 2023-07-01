@@ -19,10 +19,10 @@ package org.geotools.filter.v1_1.capabilities;
 import static org.junit.Assert.assertEquals;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.filter.capability.Operator;
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.xsd.Binding;
 import org.junit.Test;
-import org.geotools.api.filter.capability.Operator;
 import org.w3c.dom.Document;
 
 /**

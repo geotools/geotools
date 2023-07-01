@@ -23,9 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.util.logging.Logging;
-import org.geotools.api.feature.simple.SimpleFeature;
 
 /** @author Niels Charlier */
 class ResolutionExtractor extends PropertiesCollector {

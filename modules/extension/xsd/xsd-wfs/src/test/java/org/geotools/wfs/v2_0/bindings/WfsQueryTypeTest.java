@@ -29,13 +29,13 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 import net.opengis.wfs20.QueryType;
 import net.opengis.wfs20.Wfs20Factory;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.sort.SortOrder;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.wfs.v2_0.WFS;
 import org.geotools.wfs.v2_0.WFSTestSupport;
 import org.junit.Test;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.sort.SortOrder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

@@ -20,10 +20,10 @@ package org.geotools.filter;
 
 import java.util.Date;
 import java.util.logging.Logger;
-import org.geotools.util.Converters;
 import org.geotools.api.filter.FilterVisitor;
 import org.geotools.api.filter.PropertyIsLessThanOrEqualTo;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.util.Converters;
 
 /**
  * Defines a comparison filter (can be a math comparison or generic equals). This filter implements

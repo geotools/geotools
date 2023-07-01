@@ -19,15 +19,15 @@ package org.geotools.ows.wmts.map;
 import java.awt.Color;
 import javax.media.jai.Interpolation;
 import javax.media.jai.InterpolationNearest;
-import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.geometry.GeneralEnvelope;
-import org.geotools.renderer.lite.gridcoverage2d.GridCoverageRendererUtilities;
 import org.geotools.api.geometry.Envelope;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.renderer.lite.gridcoverage2d.GridCoverageRendererUtilities;
 
 /** This class is used to centralize the handling of generic raster read params used in WMTS. */
 class WMTSReadParameters {

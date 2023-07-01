@@ -19,13 +19,13 @@ package org.geotools.data;
 import java.awt.RenderingHints.Key;
 import java.io.IOException;
 import java.util.Set;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
  * Bridges between {@link FeatureSource<SimpleFeatureType, SimpleFeature>} and {@link

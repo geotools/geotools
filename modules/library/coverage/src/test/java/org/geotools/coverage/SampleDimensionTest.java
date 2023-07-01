@@ -18,10 +18,10 @@ package org.geotools.coverage;
 
 import static org.junit.Assert.assertEquals;
 
+import org.geotools.api.util.InternationalString;
 import org.geotools.util.SimpleInternationalString;
 import org.junit.Before;
 import org.junit.Test;
-import org.geotools.api.util.InternationalString;
 
 /**
  * Tests the {@link GridSampleDimension} implementation. Since {@code GridSampleDimension} rely on

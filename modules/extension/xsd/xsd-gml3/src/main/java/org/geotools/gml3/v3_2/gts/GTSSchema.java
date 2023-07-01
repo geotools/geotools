@@ -21,6 +21,9 @@ package org.geotools.gml3.v3_2.gts;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import org.geotools.api.feature.type.AttributeType;
+import org.geotools.api.feature.type.ComplexType;
+import org.geotools.api.feature.type.PropertyDescriptor;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.AbstractLazyAttributeTypeImpl;
 import org.geotools.feature.type.AbstractLazyComplexTypeImpl;
@@ -29,9 +32,6 @@ import org.geotools.feature.type.SchemaImpl;
 import org.geotools.gml3.v3_2.GMLSchema;
 import org.geotools.xlink.XLINKSchema;
 import org.geotools.xs.XSSchema;
-import org.geotools.api.feature.type.AttributeType;
-import org.geotools.api.feature.type.ComplexType;
-import org.geotools.api.feature.type.PropertyDescriptor;
 
 public class GTSSchema extends SchemaImpl {
 

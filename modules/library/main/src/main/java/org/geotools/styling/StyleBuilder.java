@@ -18,12 +18,6 @@ package org.geotools.styling;
 
 import java.awt.Color;
 import java.util.Arrays;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.NameImpl;
-import org.geotools.filter.IllegalFilterException;
-import org.geotools.util.factory.GeoTools;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.FilterFactory;
@@ -33,6 +27,12 @@ import org.geotools.api.filter.PropertyIsGreaterThan;
 import org.geotools.api.filter.PropertyIsLessThan;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.NameImpl;
+import org.geotools.filter.IllegalFilterException;
+import org.geotools.util.factory.GeoTools;
 
 /**
  * An utility class designed to ease style building with convenience methods.

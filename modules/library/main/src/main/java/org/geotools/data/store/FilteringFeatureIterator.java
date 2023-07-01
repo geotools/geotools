@@ -17,9 +17,9 @@
 package org.geotools.data.store;
 
 import java.util.NoSuchElementException;
-import org.geotools.feature.FeatureIterator;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.filter.Filter;
+import org.geotools.feature.FeatureIterator;
 
 /**
  * Decorates a FeatureIterator with one that filters content.

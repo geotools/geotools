@@ -18,9 +18,6 @@
 package org.geotools.referencing.crs;
 
 import java.util.Set;
-import org.geotools.metadata.iso.citation.CitationImpl;
-import org.geotools.metadata.iso.citation.Citations;
-import org.geotools.util.factory.AbstractFactory;
 import org.geotools.api.metadata.citation.Citation;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.IdentifiedObject;
@@ -37,6 +34,9 @@ import org.geotools.api.referencing.crs.ProjectedCRS;
 import org.geotools.api.referencing.crs.TemporalCRS;
 import org.geotools.api.referencing.crs.VerticalCRS;
 import org.geotools.api.util.InternationalString;
+import org.geotools.metadata.iso.citation.CitationImpl;
+import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.util.factory.AbstractFactory;
 
 /**
  * A disabled version of {@link EPSGCRSAuthorityFactory} that exists solely as a workaround for

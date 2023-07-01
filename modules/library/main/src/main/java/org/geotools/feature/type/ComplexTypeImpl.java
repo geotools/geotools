@@ -22,8 +22,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.geotools.feature.NameImpl;
-import org.geotools.util.Classes;
 import org.geotools.api.feature.Property;
 import org.geotools.api.feature.type.AttributeType;
 import org.geotools.api.feature.type.ComplexType;
@@ -31,6 +29,8 @@ import org.geotools.api.feature.type.Name;
 import org.geotools.api.feature.type.PropertyDescriptor;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.util.InternationalString;
+import org.geotools.feature.NameImpl;
+import org.geotools.util.Classes;
 
 /**
  * Base class for complex types.

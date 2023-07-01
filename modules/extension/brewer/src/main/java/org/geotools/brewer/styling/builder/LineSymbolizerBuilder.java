@@ -18,9 +18,9 @@ package org.geotools.brewer.styling.builder;
 
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Stroke;
-import org.geotools.api.filter.expression.Expression;
 
 public class LineSymbolizerBuilder extends SymbolizerBuilder<LineSymbolizer> {
     StrokeBuilder strokeBuilder = new StrokeBuilder(this);

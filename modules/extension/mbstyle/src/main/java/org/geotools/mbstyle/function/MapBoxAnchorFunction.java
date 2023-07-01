@@ -20,10 +20,10 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.mbstyle.layer.SymbolMBLayer;
-import org.geotools.api.filter.capability.FunctionName;
 
 public class MapBoxAnchorFunction extends FunctionExpressionImpl {
 

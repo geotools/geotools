@@ -20,8 +20,8 @@ package org.geotools.ysld.parse;
 import static org.junit.Assert.assertEquals;
 
 import java.awt.Color;
-import org.junit.Test;
 import org.geotools.api.filter.expression.Literal;
+import org.junit.Test;
 
 public class UtilTest {
     @Test

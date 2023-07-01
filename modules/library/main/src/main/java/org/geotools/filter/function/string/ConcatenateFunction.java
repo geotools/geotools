@@ -20,10 +20,10 @@ package org.geotools.filter.function.string;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.filter.FunctionImpl;
-import org.geotools.util.logging.Logging;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.filter.FunctionImpl;
+import org.geotools.util.logging.Logging;
 
 /**
  * The function concatenates strings.

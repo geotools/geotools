@@ -19,12 +19,12 @@ package org.geotools.filter.function;
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import java.util.Arrays;
+import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.data.Parameter;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.text.Text;
 import org.geotools.util.KVP;
-import org.geotools.api.filter.capability.FunctionName;
 
 /**
  * Filter function implementing the Symbology Encoding "StringPosition" function.

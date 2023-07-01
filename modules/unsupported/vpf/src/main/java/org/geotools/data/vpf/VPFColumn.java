@@ -31,12 +31,12 @@ import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_SHORT_INTEGER;
 import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_TEXT;
 import static org.geotools.data.vpf.ifc.DataTypesDefinition.DATA_TRIPLET_ID;
 
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.data.vpf.io.TripletId;
 import org.geotools.data.vpf.util.DataUtils;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.locationtech.jts.geom.Geometry;
-import org.geotools.api.feature.type.AttributeDescriptor;
-import org.geotools.api.feature.type.GeometryDescriptor;
 
 /**
  * A column in a VPF File.

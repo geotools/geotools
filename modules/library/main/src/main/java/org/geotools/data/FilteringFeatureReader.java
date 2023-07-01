@@ -18,11 +18,11 @@ package org.geotools.data;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
-import org.geotools.filter.visitor.BindingFilterVisitor;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.IllegalAttributeException;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.filter.Filter;
+import org.geotools.filter.visitor.BindingFilterVisitor;
 
 /**
  * Basic support for a FeatureReader<SimpleFeatureType, SimpleFeature> that does filtering. I think

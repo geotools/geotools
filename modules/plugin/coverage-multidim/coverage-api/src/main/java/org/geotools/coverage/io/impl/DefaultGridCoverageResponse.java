@@ -21,10 +21,6 @@ import java.awt.image.renderable.RenderableImage;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.coverage.io.GridCoverageResponse;
-import org.geotools.util.DateRange;
-import org.geotools.util.NumberRange;
 import org.geotools.api.coverage.CannotEvaluateException;
 import org.geotools.api.coverage.PointOutsideCoverageException;
 import org.geotools.api.coverage.SampleDimension;
@@ -35,6 +31,10 @@ import org.geotools.api.geometry.Envelope;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.util.Record;
 import org.geotools.api.util.RecordType;
+import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.io.GridCoverageResponse;
+import org.geotools.util.DateRange;
+import org.geotools.util.NumberRange;
 
 /**
  * Default GridCoverageResponse implementation.

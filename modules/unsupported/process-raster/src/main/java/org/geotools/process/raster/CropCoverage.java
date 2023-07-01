@@ -18,6 +18,9 @@
 package org.geotools.process.raster;
 
 import java.io.IOException;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.geometry.GeneralEnvelope;
@@ -29,9 +32,6 @@ import org.geotools.process.factory.DescribeResult;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
-import org.geotools.api.parameter.ParameterValueGroup;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.api.util.ProgressListener;
 
 /**
  * Crops the coverage along the specified

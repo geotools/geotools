@@ -18,11 +18,11 @@
 package org.geotools.gce.imagemosaic.granulecollector;
 
 import java.util.logging.Level;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.Filter;
 import org.geotools.gce.imagemosaic.GranuleDescriptor;
 import org.geotools.gce.imagemosaic.RasterLayerResponse;
 import org.geotools.util.Utilities;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.filter.Filter;
 
 /**
  * Class responsible for loading granules, mosaicking a group of granules, pre-processing them

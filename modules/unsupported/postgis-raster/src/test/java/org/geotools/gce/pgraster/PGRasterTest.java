@@ -13,13 +13,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 import org.apache.commons.dbcp.BasicDataSource;
+import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.parameter.Parameter;
 import org.geotools.test.OnlineTestCase;
 import org.geotools.test.TestData;
 import org.junit.Test;
-import org.geotools.api.parameter.GeneralParameterValue;
 
 public class PGRasterTest extends OnlineTestCase {
 

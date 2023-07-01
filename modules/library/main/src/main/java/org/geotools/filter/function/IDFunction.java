@@ -17,11 +17,11 @@
  */
 package org.geotools.filter.function;
 
-import org.geotools.filter.FunctionExpressionImpl;
-import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.api.feature.Attribute;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
 
 /**
  * Allow access to the value of Feature.getID() as an expression

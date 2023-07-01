@@ -18,11 +18,11 @@ package org.geotools.filter.v1_1.capabilities;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
+import org.geotools.api.filter.capability.GeometryOperand;
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.xs.bindings.XSQNameBinding;
 import org.geotools.xsd.AbstractSimpleBinding;
 import org.geotools.xsd.InstanceComponent;
-import org.geotools.api.filter.capability.GeometryOperand;
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:GeometryOperandType.

@@ -24,13 +24,13 @@ import java.awt.image.RenderedImage;
 import java.util.Map;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.operator.MultiplyConstDescriptor;
-import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.coverage.processing.OperationJAI;
-import org.geotools.util.NumberRange;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.util.InternationalString;
+import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.processing.OperationJAI;
+import org.geotools.util.NumberRange;
 
 /**
  * Multiplies every sample values of the source coverage by constants (one for each band). If the

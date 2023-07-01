@@ -16,8 +16,8 @@
  */
 package org.geotools.brewer.styling.builder;
 
-import org.geotools.styling.LinePlacement;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.styling.LinePlacement;
 
 public class LinePlacementBuilder extends AbstractStyleBuilder<LinePlacement> {
     private Expression offset;

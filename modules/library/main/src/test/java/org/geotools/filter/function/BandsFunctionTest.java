@@ -20,10 +20,10 @@ import static org.junit.Assert.assertEquals;
 
 import java.awt.image.BufferedImage;
 import org.easymock.EasyMock;
-import org.geotools.factory.CommonFactoryFinder;
-import org.junit.Test;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.filter.expression.Function;
+import org.geotools.factory.CommonFactoryFinder;
+import org.junit.Test;
 
 public class BandsFunctionTest {
 

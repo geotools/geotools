@@ -18,9 +18,9 @@ package org.geotools.coverage.processing;
 
 import java.util.Arrays;
 import javax.media.jai.operator.BinarizeDescriptor;
+import org.geotools.api.coverage.processing.OperationNotFoundException;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
-import org.geotools.api.coverage.processing.OperationNotFoundException;
 
 /**
  * Wraps any JAI operation producing a bilevel image. An example of such operation is {@link

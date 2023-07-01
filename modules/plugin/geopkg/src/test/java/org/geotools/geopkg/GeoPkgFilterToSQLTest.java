@@ -19,14 +19,14 @@ package org.geotools.geopkg;
 import static org.junit.Assert.assertEquals;
 
 import java.io.StringWriter;
+import org.geotools.api.feature.IllegalAttributeException;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.PropertyIsLike;
 import org.geotools.data.jdbc.SQLFilterTestSupport;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
 import org.junit.Before;
 import org.junit.Test;
-import org.geotools.api.feature.IllegalAttributeException;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.PropertyIsLike;
 
 public class GeoPkgFilterToSQLTest extends SQLFilterTestSupport {
 

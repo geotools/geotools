@@ -25,15 +25,15 @@ import java.util.Collection;
 import java.util.Map;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.operator.MultiplyDescriptor;
-import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.coverage.processing.BaseMathOperationJAI;
-import org.geotools.util.NumberRange;
 import org.geotools.api.parameter.InvalidParameterValueException;
 import org.geotools.api.parameter.ParameterNotFoundException;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.util.InternationalString;
+import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.processing.BaseMathOperationJAI;
+import org.geotools.util.NumberRange;
 
 /**
  * Create a new coverage as the multiplication of two source coverages by doing pixel by pixel

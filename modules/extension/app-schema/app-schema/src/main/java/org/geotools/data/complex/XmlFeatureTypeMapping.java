@@ -26,13 +26,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import org.geotools.data.FeatureSource;
-import org.geotools.data.complex.PathAttributeList.Pair;
-import org.geotools.data.complex.util.XPathUtil.Step;
-import org.geotools.data.complex.util.XPathUtil.StepList;
-import org.geotools.data.complex.xml.XmlFeatureSource;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.LiteralExpressionImpl;
 import org.geotools.api.feature.Attribute;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.AttributeDescriptor;
@@ -42,6 +35,13 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.data.FeatureSource;
+import org.geotools.data.complex.PathAttributeList.Pair;
+import org.geotools.data.complex.util.XPathUtil.Step;
+import org.geotools.data.complex.util.XPathUtil.StepList;
+import org.geotools.data.complex.xml.XmlFeatureSource;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.LiteralExpressionImpl;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**

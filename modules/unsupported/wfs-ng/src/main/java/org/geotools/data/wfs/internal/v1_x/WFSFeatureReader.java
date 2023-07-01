@@ -18,12 +18,12 @@ package org.geotools.data.wfs.internal.v1_x;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
-import org.geotools.data.FeatureReader;
-import org.geotools.data.wfs.internal.GetParser;
-import org.geotools.data.wfs.internal.parsers.EmfAppSchemaParser;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.FeatureType;
+import org.geotools.data.FeatureReader;
+import org.geotools.data.wfs.internal.GetParser;
+import org.geotools.data.wfs.internal.parsers.EmfAppSchemaParser;
 
 /**
  * Adapts a {@link GetParser<SimpleFeature>} to the geotools {@link FeatureReader} interface, being

@@ -16,10 +16,10 @@
  */
 package org.geotools.filter.expression.geojson;
 
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.geotools.api.feature.simple.SimpleFeature;
 
 public class JSONNodePropertyAccessorFactoryTest {
 

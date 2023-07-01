@@ -19,8 +19,8 @@ package org.geotools.xsd.complex;
 import java.util.Collection;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDTypeDefinition;
-import org.geotools.xsd.Configuration;
 import org.geotools.api.feature.type.Schema;
+import org.geotools.xsd.Configuration;
 
 /**
  * Configuration for a Complex Feature Type Registry (see gt-complex module), - tells the registry

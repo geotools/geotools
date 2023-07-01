@@ -20,8 +20,8 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Properties;
-import org.geotools.data.DataStore;
 import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.data.DataStore;
 
 /** Configuration for a vector mosaic. */
 public class VectorMosaicGranule implements Serializable, Closeable {

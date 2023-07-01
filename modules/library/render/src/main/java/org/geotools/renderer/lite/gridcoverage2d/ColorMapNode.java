@@ -28,6 +28,9 @@ import java.awt.image.RenderedImage;
 import java.util.HashMap;
 import java.util.Map;
 import javax.media.jai.RenderedOp;
+import org.geotools.api.coverage.SampleDimensionType;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.util.InternationalString;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -42,9 +45,6 @@ import org.geotools.styling.ColorMapEntry;
 import org.geotools.styling.StyleVisitor;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.coverage.SampleDimensionType;
-import org.geotools.api.coverage.grid.GridCoverage;
-import org.geotools.api.util.InternationalString;
 
 /**
  * This {@link CoverageProcessingNode} is responsible for visiting the supplied {@link

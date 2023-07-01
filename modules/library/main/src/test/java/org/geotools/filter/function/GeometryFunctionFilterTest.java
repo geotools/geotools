@@ -19,10 +19,10 @@ package org.geotools.filter.function;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import org.geotools.data.simple.SimpleFeatureIterator;
-import org.junit.Test;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.expression.Function;
+import org.geotools.data.simple.SimpleFeatureIterator;
+import org.junit.Test;
 
 public class GeometryFunctionFilterTest extends FunctionTestSupport {
 

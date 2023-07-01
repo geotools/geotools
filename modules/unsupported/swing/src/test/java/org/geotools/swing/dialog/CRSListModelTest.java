@@ -20,12 +20,12 @@ package org.geotools.swing.dialog;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Set;
+import org.geotools.api.referencing.crs.CRSAuthorityFactory;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.geotools.api.referencing.crs.CRSAuthorityFactory;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Unit tests for CRSListModel.

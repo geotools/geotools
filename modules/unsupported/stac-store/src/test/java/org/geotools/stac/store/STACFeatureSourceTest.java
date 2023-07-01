@@ -28,6 +28,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.And;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.geojson.GeoJSONReader;
@@ -46,12 +52,6 @@ import org.geotools.util.Converters;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.locationtech.jts.geom.Polygon;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.filter.And;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.PropertyIsEqualTo;
-import org.geotools.api.filter.spatial.BBOX;
 
 public class STACFeatureSourceTest extends AbstractSTACStoreTest {
 

@@ -19,6 +19,7 @@ package org.geotools.renderer.lite;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.util.HashMap;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
@@ -29,7 +30,6 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.WKTReader;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 public class RenderUtilitiesTest {
 

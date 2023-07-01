@@ -30,6 +30,7 @@ import javax.imageio.ImageIO;
 import javax.mail.internet.ContentType;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.StringBuilderWriter;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.brewer.styling.builder.NamedLayerBuilder;
 import org.geotools.brewer.styling.builder.StyleBuilder;
 import org.geotools.brewer.styling.builder.StyledLayerDescriptorBuilder;
@@ -66,7 +67,6 @@ import org.geotools.xml.styling.SLDTransformer;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * This test case assume you have a default GeoServer 2.2 installed on 127.0.0.1 (ie localhost).

@@ -31,6 +31,8 @@ import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValue;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -39,8 +41,6 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.geotools.api.parameter.GeneralParameterValue;
-import org.geotools.api.parameter.ParameterValue;
 
 /** Testing {@link GeoTiffReader} with COG data */
 public class GeoTiffReaderCogOnlineTest extends Assert {

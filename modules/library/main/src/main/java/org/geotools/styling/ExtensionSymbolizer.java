@@ -24,7 +24,8 @@ import org.geotools.api.filter.expression.Expression;
  *
  * <p>This facility is used to allow you to work on your "vendor specific" symbolizer.
  */
-public interface ExtensionSymbolizer extends org.geotools.api.style.ExtensionSymbolizer, Symbolizer {
+public interface ExtensionSymbolizer
+        extends org.geotools.api.style.ExtensionSymbolizer, Symbolizer {
 
     /**
      * Vendor specific name for your symbolizer.

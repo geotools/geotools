@@ -18,10 +18,10 @@ package org.geotools.filter;
 
 import java.util.Collection;
 import java.util.Collections;
-import org.geotools.util.Converters;
 import org.geotools.api.filter.FilterVisitor;
 import org.geotools.api.filter.PropertyIsBetween;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.util.Converters;
 
 /**
  * Straight implementation of GeoAPI interface.

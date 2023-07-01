@@ -17,17 +17,17 @@
 
 package org.geotools.filter.text.ecql;
 
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.Not;
+import org.geotools.api.filter.PropertyIsLike;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
 import org.geotools.filter.LikeFilterImpl;
 import org.geotools.filter.text.commons.Language;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.cql2.CQLLikePredicateTest;
 import org.junit.Assert;
 import org.junit.Test;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.Not;
-import org.geotools.api.filter.PropertyIsLike;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.filter.expression.Function;
 
 /**
  * Test for like predicate

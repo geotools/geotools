@@ -21,18 +21,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.StringWriter;
-import org.geotools.data.jdbc.FilterToSQLException;
-import org.geotools.data.jdbc.SQLFilterTestSupport;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.SchemaException;
-import org.geotools.filter.FilterCapabilities;
-import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
-import org.geotools.geometry.jts.ReferencedEnvelope3D;
-import org.geotools.referencing.CRS;
-import org.junit.Before;
-import org.junit.Test;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
 import org.geotools.api.feature.IllegalAttributeException;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory2;
@@ -45,6 +33,18 @@ import org.geotools.api.filter.spatial.Intersects;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.NoSuchAuthorityCodeException;
+import org.geotools.data.jdbc.FilterToSQLException;
+import org.geotools.data.jdbc.SQLFilterTestSupport;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.SchemaException;
+import org.geotools.filter.FilterCapabilities;
+import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
+import org.geotools.geometry.jts.ReferencedEnvelope3D;
+import org.geotools.referencing.CRS;
+import org.junit.Before;
+import org.junit.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
 
 public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
 

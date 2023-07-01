@@ -33,6 +33,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 import org.geotools.TestData;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
@@ -57,7 +58,6 @@ import org.json.simple.parser.JSONParser;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.geotools.api.filter.FilterFactory;
 
 /**
  * Tests for {@link SpriteGraphicFactory}.

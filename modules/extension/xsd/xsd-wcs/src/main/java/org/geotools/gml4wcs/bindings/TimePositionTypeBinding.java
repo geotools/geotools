@@ -19,13 +19,13 @@
 package org.geotools.gml4wcs.bindings;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.temporal.Position;
 import org.geotools.gml4wcs.GML;
 import org.geotools.temporal.object.DefaultPosition;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.geotools.api.temporal.Position;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

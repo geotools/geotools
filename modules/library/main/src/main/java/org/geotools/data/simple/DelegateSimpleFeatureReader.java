@@ -16,9 +16,9 @@
  */
 package org.geotools.data.simple;
 
-import org.geotools.data.collection.DelegateFeatureReader;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.data.collection.DelegateFeatureReader;
 
 public class DelegateSimpleFeatureReader
         extends DelegateFeatureReader<SimpleFeatureType, SimpleFeature>

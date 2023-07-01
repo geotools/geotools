@@ -19,12 +19,12 @@ package org.geotools.appschema.resolver.data;
 
 import java.io.IOException;
 import java.util.List;
-import org.geotools.data.DataAccess;
-import org.geotools.data.FeatureSource;
-import org.geotools.data.ServiceInfo;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.Name;
+import org.geotools.data.DataAccess;
+import org.geotools.data.FeatureSource;
+import org.geotools.data.ServiceInfo;
 
 /**
  * Sample implementation of {@link DataAccess} for testing. Create with {@link

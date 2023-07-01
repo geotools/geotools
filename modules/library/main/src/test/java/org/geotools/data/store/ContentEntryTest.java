@@ -22,11 +22,11 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.List;
+import org.geotools.api.feature.type.Name;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Transaction;
 import org.geotools.feature.NameImpl;
 import org.junit.Test;
-import org.geotools.api.feature.type.Name;
 
 /**
  * Test the behaviour of {@link ContentEntry}.

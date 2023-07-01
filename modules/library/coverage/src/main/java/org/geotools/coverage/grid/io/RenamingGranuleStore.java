@@ -17,11 +17,11 @@
 package org.geotools.coverage.grid.io;
 
 import java.io.IOException;
+import org.geotools.api.filter.Filter;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.store.ReTypingFeatureCollection;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.filter.Filter;
 
 /** Write supporting subclass of {@link RenamingGranuleSource} */
 public class RenamingGranuleStore extends RenamingGranuleSource implements GranuleStore {

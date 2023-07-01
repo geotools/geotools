@@ -23,6 +23,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
 import org.geotools.data.Parameter;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.FunctionFactory;
@@ -30,11 +35,6 @@ import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.process.ProcessFactory;
 import org.geotools.process.Processors;
 import org.geotools.process.RenderingProcess;
-import org.geotools.api.feature.type.Name;
-import org.geotools.api.filter.capability.FunctionName;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.filter.expression.Function;
-import org.geotools.api.filter.expression.Literal;
 
 /**
  * A bridge between the process world and the filter function world: any process returning a single

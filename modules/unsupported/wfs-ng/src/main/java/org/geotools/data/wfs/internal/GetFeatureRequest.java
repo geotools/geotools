@@ -19,11 +19,11 @@ package org.geotools.data.wfs.internal;
 import static org.geotools.data.wfs.internal.WFSOperationType.GET_FEATURE;
 
 import net.opengis.wfs20.StoredQueryDescriptionType;
-import org.geotools.http.HTTPClient;
-import org.geotools.util.factory.Hints;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.sort.SortBy;
+import org.geotools.http.HTTPClient;
+import org.geotools.util.factory.Hints;
 
 /** */
 public class GetFeatureRequest extends WFSRequest {

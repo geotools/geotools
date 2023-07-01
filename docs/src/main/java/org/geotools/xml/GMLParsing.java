@@ -21,12 +21,12 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.io.IOUtils;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.gml3.GMLConfiguration;
 import org.geotools.xsd.Parser;
 import org.geotools.xsd.StreamingParser;
-import org.geotools.api.feature.simple.SimpleFeature;
 import org.w3c.dom.Document;
 
 /**

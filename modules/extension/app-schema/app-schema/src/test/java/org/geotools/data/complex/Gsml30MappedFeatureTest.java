@@ -23,6 +23,10 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import org.geotools.api.feature.ComplexAttribute;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.FeatureSource;
@@ -35,10 +39,6 @@ import org.geotools.gml3.v3_2.gmd.GMD;
 import org.geotools.test.AppSchemaTestSupport;
 import org.junit.Assert;
 import org.junit.Test;
-import org.geotools.api.feature.ComplexAttribute;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.feature.type.Name;
 
 /**
  * Test app-schema with GeoSciML 3.0rc1, a GML 3.2 application schema.

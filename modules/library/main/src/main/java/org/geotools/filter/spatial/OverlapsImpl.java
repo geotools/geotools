@@ -16,12 +16,12 @@
  */
 package org.geotools.filter.spatial;
 
-import org.geotools.filter.GeometryFilterImpl;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.filter.FilterVisitor;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.spatial.Overlaps;
+import org.geotools.filter.GeometryFilterImpl;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 
 public class OverlapsImpl extends GeometryFilterImpl implements Overlaps {
 

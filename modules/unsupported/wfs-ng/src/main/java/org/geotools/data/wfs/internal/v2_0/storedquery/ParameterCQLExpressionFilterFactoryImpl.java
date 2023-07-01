@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.filter.FilterFactoryImpl;
 
 /**
  * Stored Query parameters may be configured as CQL expressions. This factory extends the basic CQL

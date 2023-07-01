@@ -11,16 +11,16 @@
  */
 package org.geotools.api;
 
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.locationtech.jts.geom.Envelope;
-import org.geotools.api.geometry.BoundingBox;
-import org.geotools.api.geometry.DirectPosition;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.api.referencing.operation.MathTransform;
 
 public class APIExamples {
 
@@ -233,7 +233,8 @@ public class APIExamples {
         // safely create ReferencedEnvelope from CRS, uses dimension to determine type
         env = ReferencedEnvelope.create(crs);
 
-        // safely create ReferencedEnvelope from org.geotools.api.geometry.Envelope, uses dimension in
+        // safely create ReferencedEnvelope from org.geotools.api.geometry.Envelope, uses dimension
+        // in
         // Envelope to determine type
         env = ReferencedEnvelope.create(opengis_env, crs);
 

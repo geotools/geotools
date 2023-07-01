@@ -20,11 +20,11 @@ package org.geotools.styling;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.ContrastMethod;
+import org.geotools.factory.CommonFactoryFinder;
 
 /**
  * The ContrastEnhancement object defines contrast enhancement for a channel of a false-color image

@@ -19,14 +19,14 @@ package org.geotools.data.vpf;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import org.geotools.data.FeatureReader;
-import org.geotools.data.store.ContentState;
-import org.geotools.data.vpf.file.VPFFile;
 import org.geotools.api.feature.IllegalAttributeException;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.Name;
+import org.geotools.data.FeatureReader;
+import org.geotools.data.store.ContentState;
+import org.geotools.data.vpf.file.VPFFile;
 
 /**
  * @author <a href="mailto:knuterik@onemap.org">Knut-Erik Johnsen</a>, Project OneMap

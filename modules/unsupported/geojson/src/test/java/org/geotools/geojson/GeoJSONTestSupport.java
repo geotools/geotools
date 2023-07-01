@@ -19,10 +19,10 @@ package org.geotools.geojson;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.util.Converters;
 import org.junit.Assert;
 import org.locationtech.jts.geom.Geometry;
-import org.geotools.api.feature.simple.SimpleFeature;
 
 public abstract class GeoJSONTestSupport {
 

@@ -17,16 +17,16 @@
 package org.geotools.data.memory;
 
 import java.io.IOException;
-import org.geotools.data.FeatureReader;
-import org.geotools.data.Query;
-import org.geotools.data.store.ContentEntry;
-import org.geotools.data.store.ContentFeatureSource;
-import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.api.feature.FeatureVisitor;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.data.FeatureReader;
+import org.geotools.data.Query;
+import org.geotools.data.store.ContentEntry;
+import org.geotools.data.store.ContentFeatureSource;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
  * Read access to feature content held in memory.

@@ -18,6 +18,7 @@
 package org.geotools.grid;
 
 import java.util.Collection;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -26,7 +27,6 @@ import org.geotools.grid.ortholine.OrthoLineBuilder;
 import org.geotools.grid.ortholine.OrthoLineDef;
 import org.geotools.grid.ortholine.OrthoLineFeatureBuilder;
 import org.geotools.referencing.CRS;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * A utility class to create line grids with basic attributes.

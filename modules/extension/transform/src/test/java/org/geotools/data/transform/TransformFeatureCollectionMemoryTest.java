@@ -21,6 +21,7 @@ import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
@@ -31,7 +32,6 @@ import org.geotools.data.store.FeatureCollectionWrapperTestSupport;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.text.ecql.ECQL;
 import org.junit.Test;
-import org.geotools.api.feature.simple.SimpleFeature;
 
 public class TransformFeatureCollectionMemoryTest extends FeatureCollectionWrapperTestSupport {
 

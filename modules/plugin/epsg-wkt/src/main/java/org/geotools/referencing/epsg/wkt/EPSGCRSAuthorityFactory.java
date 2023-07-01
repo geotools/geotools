@@ -26,12 +26,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.metadata.iso.citation.Citations;
-import org.geotools.referencing.ReferencingFactoryFinder;
-import org.geotools.util.Version;
-import org.geotools.util.factory.AbstractFactory;
-import org.geotools.util.factory.Hints;
-import org.geotools.util.logging.Logging;
 import org.geotools.api.metadata.citation.Citation;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.IdentifiedObject;
@@ -43,6 +37,12 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.crs.GeographicCRS;
 import org.geotools.api.referencing.crs.ProjectedCRS;
 import org.geotools.api.util.InternationalString;
+import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.util.Version;
+import org.geotools.util.factory.AbstractFactory;
+import org.geotools.util.factory.Hints;
+import org.geotools.util.logging.Logging;
 
 /**
  * Default implementation for a coordinate reference system authority factory backed by the EPSG
@@ -326,7 +326,8 @@ public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAutho
     }
 
     @Override
-    public org.geotools.api.referencing.crs.ImageCRS createImageCRS(String str) throws FactoryException {
+    public org.geotools.api.referencing.crs.ImageCRS createImageCRS(String str)
+            throws FactoryException {
         throw new FactoryException("Not implemented");
     }
 

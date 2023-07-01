@@ -20,10 +20,10 @@ import it.geosolutions.jaiext.classifier.ConstantColorMapElement;
 import it.geosolutions.jaiext.classifier.LinearColorMapElement;
 import it.geosolutions.jaiext.piecewise.DefaultPiecewiseTransform1DElement;
 import java.awt.Color;
-import org.geotools.renderer.i18n.ErrorKeys;
-import org.geotools.renderer.i18n.Errors;
 import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.renderer.i18n.ErrorKeys;
+import org.geotools.renderer.i18n.Errors;
 
 class ColorMapUtilities {
 

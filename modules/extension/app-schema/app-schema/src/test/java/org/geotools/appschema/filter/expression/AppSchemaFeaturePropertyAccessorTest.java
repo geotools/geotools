@@ -23,6 +23,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.URL;
+import org.geotools.api.feature.type.ComplexType;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.feature.type.PropertyDescriptor;
 import org.geotools.data.complex.config.AppSchemaFeatureTypeRegistry;
 import org.geotools.data.complex.expression.FeaturePropertyAccessorFactory;
 import org.geotools.data.complex.feature.type.Types;
@@ -32,10 +36,6 @@ import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.util.factory.Hints;
 import org.geotools.xsd.SchemaIndex;
 import org.junit.Test;
-import org.geotools.api.feature.type.ComplexType;
-import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.feature.type.Name;
-import org.geotools.api.feature.type.PropertyDescriptor;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**

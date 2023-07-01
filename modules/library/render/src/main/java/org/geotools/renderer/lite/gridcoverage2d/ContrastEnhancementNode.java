@@ -38,6 +38,10 @@ import java.util.Set;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import javax.media.jai.ROI;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.ContrastMethod;
+import org.geotools.api.util.InternationalString;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -56,10 +60,6 @@ import org.geotools.styling.NormalizeContrastMethodStrategy;
 import org.geotools.styling.StyleVisitor;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.coverage.grid.GridCoverage;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.style.ContrastMethod;
-import org.geotools.api.util.InternationalString;
 
 /**
  * This implementations of {@link CoverageProcessingNode} takes care of the {@link

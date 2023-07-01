@@ -18,7 +18,6 @@ package org.geotools.feature.type;
 
 import java.util.Collection;
 import java.util.List;
-import org.geotools.feature.simple.SimpleFeatureTypeImpl;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AssociationDescriptor;
 import org.geotools.api.feature.type.AssociationType;
@@ -37,6 +36,7 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.referencing.crs.CRSFactory;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.util.InternationalString;
+import org.geotools.feature.simple.SimpleFeatureTypeImpl;
 
 /**
  * This implementation is capable of creating a good default implementation of the Types used in the

@@ -17,13 +17,13 @@
 package org.geotools.temporal.reference;
 
 import java.util.Date;
-import org.geotools.temporal.object.DefaultTemporalCoordinate;
-import org.geotools.util.Utilities;
 import org.geotools.api.metadata.extent.Extent;
 import org.geotools.api.referencing.ReferenceIdentifier;
 import org.geotools.api.temporal.TemporalCoordinate;
 import org.geotools.api.temporal.TemporalCoordinateSystem;
 import org.geotools.api.util.InternationalString;
+import org.geotools.temporal.object.DefaultTemporalCoordinate;
+import org.geotools.util.Utilities;
 
 /** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultTemporalCoordinateSystem extends DefaultTemporalReferenceSystem

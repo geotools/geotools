@@ -18,9 +18,9 @@ package org.geotools.styling;
 
 import java.util.Collections;
 import java.util.List;
-import org.geotools.filter.ConstantExpression;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.filter.ConstantExpression;
 
 /**
  * A Graphic is a "graphical symbol" with an inherent shape, color(s), and possibly size.

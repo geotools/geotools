@@ -21,10 +21,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import org.geotools.api.filter.Filter;
 import org.geotools.styling.GraphicLegend;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Symbolizer;
-import org.geotools.api.filter.Filter;
 
 public class RuleBuilder extends AbstractStyleBuilder<Rule> {
     List<Symbolizer> symbolizers = new ArrayList<>();

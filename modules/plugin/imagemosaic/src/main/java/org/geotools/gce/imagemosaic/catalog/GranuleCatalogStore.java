@@ -18,6 +18,9 @@ package org.geotools.gce.imagemosaic.catalog;
 
 import java.io.IOException;
 import java.util.logging.Logger;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
 import org.geotools.coverage.grid.io.GranuleStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
@@ -28,9 +31,6 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.gce.imagemosaic.RasterManager;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
 
 /**
  * A {@link GranuleStore} implementation wrapping a {@link GranuleCatalog}.

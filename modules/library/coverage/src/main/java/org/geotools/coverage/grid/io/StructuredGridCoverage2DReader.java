@@ -18,8 +18,8 @@ package org.geotools.coverage.grid.io;
 
 import java.io.IOException;
 import java.util.List;
-import org.geotools.util.factory.Hints;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.util.factory.Hints;
 
 /**
  * A {@link GridCoverage2DReader} which exposes the underlying granule structure and allows to

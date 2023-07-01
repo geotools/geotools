@@ -20,13 +20,13 @@ package org.geotools.process.raster;
 import static org.junit.Assert.assertEquals;
 
 import java.util.logging.Logger;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.grid.GridCoordinates2D;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.process.ProcessException;
 import org.geotools.util.logging.Logging;
 import org.junit.Test;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * The tests for the AreaGridProcess

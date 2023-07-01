@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
-import org.geotools.util.logging.Logging;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.util.logging.Logging;
 
 /** Maps the solr index as a single layer. */
 public class SingleLayerMapper implements SolrLayerMapper {

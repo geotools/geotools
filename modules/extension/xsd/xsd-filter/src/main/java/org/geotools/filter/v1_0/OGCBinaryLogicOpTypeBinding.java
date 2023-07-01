@@ -19,9 +19,6 @@ package org.geotools.filter.v1_0;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.namespace.QName;
-import org.geotools.xsd.AbstractComplexBinding;
-import org.geotools.xsd.ElementInstance;
-import org.geotools.xsd.Node;
 import org.geotools.api.filter.BinaryComparisonOperator;
 import org.geotools.api.filter.BinaryLogicOperator;
 import org.geotools.api.filter.Filter;
@@ -34,6 +31,9 @@ import org.geotools.api.filter.PropertyIsNull;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.spatial.BinarySpatialOperator;
 import org.geotools.api.filter.temporal.BinaryTemporalOperator;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.picocontainer.MutablePicoContainer;
 
 /**

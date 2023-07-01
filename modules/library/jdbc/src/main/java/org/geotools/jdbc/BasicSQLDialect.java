@@ -21,10 +21,10 @@ import java.io.StringWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import org.geotools.data.jdbc.FilterToSQL;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.expression.Literal;
+import org.geotools.data.jdbc.FilterToSQL;
+import org.locationtech.jts.geom.Geometry;
 
 public abstract class BasicSQLDialect extends SQLDialect {
 

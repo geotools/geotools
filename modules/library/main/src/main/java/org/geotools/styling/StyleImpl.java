@@ -22,9 +22,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.util.Utilities;
 import org.geotools.api.style.Description;
 import org.geotools.api.util.Cloneable;
+import org.geotools.util.Utilities;
 
 /**
  * Implementation of style.

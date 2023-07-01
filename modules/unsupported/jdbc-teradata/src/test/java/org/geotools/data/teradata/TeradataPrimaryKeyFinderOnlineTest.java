@@ -19,12 +19,12 @@ package org.geotools.data.teradata;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.jdbc.JDBCFeatureStore;
 import org.geotools.jdbc.JDBCPrimaryKeyFinderOnlineTest;
 import org.geotools.jdbc.JDBCPrimaryKeyFinderTestSetup;
 import org.geotools.jdbc.NonIncrementingPrimaryKeyColumn;
-import org.geotools.api.feature.simple.SimpleFeature;
 
 public class TeradataPrimaryKeyFinderOnlineTest extends JDBCPrimaryKeyFinderOnlineTest {
 

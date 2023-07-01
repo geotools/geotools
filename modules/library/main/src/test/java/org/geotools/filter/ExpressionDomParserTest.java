@@ -28,10 +28,10 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.easymock.EasyMock;
-import org.junit.Test;
 import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
+import org.junit.Test;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 

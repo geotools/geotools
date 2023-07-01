@@ -22,6 +22,9 @@ import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Enumeration;
 import java.util.List;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
 import org.geotools.coverage.processing.operation.Interpolate;
 import org.geotools.filter.function.CategorizeFunction;
 import org.geotools.filter.function.RecodeFunction;
@@ -30,9 +33,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.filter.expression.Function;
 
 /**
  * MBFunction json wrapper, allowing conversion of function to a GeoTools Expression.

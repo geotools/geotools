@@ -19,6 +19,8 @@ package org.geotools.data.store;
 import java.io.IOException;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.Diff;
 import org.geotools.data.FeatureReader;
@@ -26,8 +28,6 @@ import org.geotools.data.FeatureWriter;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /**
  * A FeatureWriter that captures modifications against a FeatureReader.

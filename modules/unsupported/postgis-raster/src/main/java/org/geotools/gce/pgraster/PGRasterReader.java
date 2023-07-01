@@ -42,6 +42,9 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.imageio.ImageReadParam;
 import javax.media.jai.Interpolation;
+import org.geotools.api.coverage.grid.Format;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -62,9 +65,6 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.WKBReader;
 import org.locationtech.jts.io.WKBWriter;
-import org.geotools.api.coverage.grid.Format;
-import org.geotools.api.parameter.GeneralParameterValue;
-import org.geotools.api.referencing.operation.TransformException;
 
 /** PostGIS raster reader. */
 public class PGRasterReader extends AbstractGridCoverage2DReader {

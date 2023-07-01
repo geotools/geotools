@@ -17,13 +17,13 @@
 package org.geotools.renderer.lite.gridcoverage2d;
 
 import java.util.List;
+import org.geotools.api.coverage.Coverage;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.util.InternationalString;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.processing.CoverageProcessingException;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.coverage.Coverage;
-import org.geotools.api.coverage.grid.GridCoverage;
-import org.geotools.api.util.InternationalString;
 
 /**
  * Basic interface for Coverage Processing as used by SLD 1.0. The immediate goal here is to

@@ -42,11 +42,11 @@ import net.opengis.wps10.SupportedComplexDataInputType;
 import net.opengis.wps10.SupportedComplexDataType;
 import net.opengis.wps10.Wps10Factory;
 import org.eclipse.emf.common.util.EList;
+import org.geotools.api.util.InternationalString;
 import org.geotools.data.Parameter;
 import org.geotools.text.Text;
 import org.geotools.util.Converters;
 import org.locationtech.jts.geom.Geometry;
-import org.geotools.api.util.InternationalString;
 
 /**
  * Contains helpful static util methods for the WPS module

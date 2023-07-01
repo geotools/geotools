@@ -18,16 +18,16 @@ package org.geotools.styling.visitor;
 
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.visitor.SimplifyingFilterVisitor;
-import org.geotools.measure.Units;
-import org.geotools.util.Converters;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsNull;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.NilExpression;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.visitor.SimplifyingFilterVisitor;
+import org.geotools.measure.Units;
+import org.geotools.util.Converters;
 import si.uom.SI;
 import systems.uom.common.USCustomary;
 

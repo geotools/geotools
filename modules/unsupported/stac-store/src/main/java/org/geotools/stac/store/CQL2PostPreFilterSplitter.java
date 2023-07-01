@@ -17,15 +17,15 @@
 package org.geotools.stac.store;
 
 import java.util.List;
-import org.geotools.filter.FilterCapabilities;
-import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
-import org.geotools.stac.client.CQL2Conformance;
 import org.geotools.api.filter.BinaryComparisonOperator;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.api.filter.spatial.BinarySpatialOperator;
 import org.geotools.api.filter.temporal.BinaryTemporalOperator;
+import org.geotools.filter.FilterCapabilities;
+import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
+import org.geotools.stac.client.CQL2Conformance;
 
 /**
  * A post/pre splitter driven by the CQL2 conformance classes, and able to handle the

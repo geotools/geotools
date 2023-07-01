@@ -18,9 +18,9 @@ package org.geotools.filter.function;
 
 import static org.junit.Assert.assertTrue;
 
+import org.geotools.api.filter.expression.Function;
 import org.geotools.filter.FilterFactoryImpl;
 import org.junit.Test;
-import org.geotools.api.filter.expression.Function;
 
 public class ArrayFunctionTest {
     @Test

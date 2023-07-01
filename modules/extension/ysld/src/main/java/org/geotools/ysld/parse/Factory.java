@@ -17,10 +17,10 @@
  */
 package org.geotools.ysld.parse;
 
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
-import org.geotools.api.filter.FilterFactory;
 
 /**
  * Container class for instances of {@link StyleFactory}, {@link StyleBuilder}, and {@link

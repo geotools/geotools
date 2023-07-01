@@ -36,6 +36,9 @@ import net.opengis.wfs20.UpdateType;
 import net.opengis.wfs20.ValueReferenceType;
 import net.opengis.wfs20.Wfs20Factory;
 import org.eclipse.emf.common.util.EList;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.identity.Identifier;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -48,9 +51,6 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
-import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.Id;
-import org.geotools.api.filter.identity.Identifier;
 import org.w3c.dom.Document;
 
 public class TransactionTypeBindingTest extends WFSTestSupport {

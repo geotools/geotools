@@ -22,13 +22,13 @@ import static org.junit.Assert.assertNotNull;
 import it.geosolutions.jaiext.shadedrelief.ShadedReliefAlgorithm;
 import java.awt.image.RenderedImage;
 import javax.media.jai.PlanarImage;
-import org.geotools.coverage.grid.GridCoverage2D;
-import org.junit.Before;
-import org.junit.Test;
 import org.geotools.api.coverage.processing.OperationNotFoundException;
 import org.geotools.api.parameter.InvalidParameterValueException;
 import org.geotools.api.parameter.ParameterNotFoundException;
 import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.coverage.grid.GridCoverage2D;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests the ShadedRelief operation.

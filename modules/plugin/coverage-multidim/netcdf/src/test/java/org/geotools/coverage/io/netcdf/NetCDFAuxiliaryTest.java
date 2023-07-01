@@ -10,10 +10,10 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.DataStore;
 import org.geotools.test.TestData;
 import org.junit.Test;
-import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /*
  *    GeoTools - The Open Source Java GIS Toolkit

@@ -20,13 +20,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.Map;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
 import org.geotools.xsd.Configuration;
 import org.junit.Test;
-import org.geotools.api.feature.simple.SimpleFeature;
 import org.w3c.dom.Element;
 
 public class AbstractFeatureCollectionTypeBindingTest extends GML3TestSupport {

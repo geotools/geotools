@@ -17,10 +17,10 @@
 package org.geotools.data;
 
 import java.io.IOException;
-import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
+import org.geotools.data.simple.SimpleFeatureSource;
 
 /**
  * DataStore represents a single file of content.

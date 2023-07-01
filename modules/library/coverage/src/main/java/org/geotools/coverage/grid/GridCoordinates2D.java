@@ -17,9 +17,9 @@
 package org.geotools.coverage.grid;
 
 import java.awt.Point;
+import org.geotools.api.coverage.grid.GridCoordinates;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
-import org.geotools.api.coverage.grid.GridCoordinates;
 
 /**
  * Holds the set of two-dimensional grid coordinates that specifies the location of the {@linkplain

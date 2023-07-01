@@ -17,12 +17,12 @@
 package org.geotools.filter.text.ecql;
 
 import java.util.Set;
-import org.geotools.filter.text.cql2.CQLException;
-import org.junit.Assert;
-import org.junit.Test;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.Not;
+import org.geotools.filter.text.cql2.CQLException;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * Test for ID Predicate

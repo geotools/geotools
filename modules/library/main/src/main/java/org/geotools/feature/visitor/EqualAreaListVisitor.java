@@ -19,9 +19,9 @@ package org.geotools.feature.visitor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.data.simple.SimpleFeatureCollection;
 
 /**
  * Obtains the data needed for a Equal Area operation (classification of features into classes each

@@ -18,11 +18,11 @@ package org.geotools.brewer.styling.builder;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.DataStore;
 import org.geotools.styling.FeatureTypeConstraint;
 import org.geotools.styling.Style;
 import org.geotools.styling.UserLayer;
-import org.geotools.api.feature.simple.SimpleFeatureType;
 
 public class UserLayerBuilder extends AbstractSLDBuilder<UserLayer> {
 

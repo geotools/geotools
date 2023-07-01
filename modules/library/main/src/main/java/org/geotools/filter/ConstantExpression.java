@@ -19,11 +19,11 @@ package org.geotools.filter;
 import java.awt.Color;
 import java.math.BigDecimal;
 import java.util.Date;
-import org.geotools.util.Converters;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.expression.ExpressionVisitor;
 import org.geotools.api.filter.expression.Literal;
+import org.geotools.util.Converters;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * The Expression class is not immutable!

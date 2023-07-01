@@ -25,6 +25,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import org.apache.commons.jxpath.JXPathException;
+import org.geotools.api.feature.Attribute;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
 import org.geotools.appschema.feature.AppSchemaAttributeBuilder;
 import org.geotools.appschema.util.XmlXpathUtilites;
 import org.geotools.data.Query;
@@ -38,12 +44,6 @@ import org.geotools.data.complex.xml.XmlXpathFilterData;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.type.ComplexTypeImpl;
 import org.geotools.filter.LiteralExpressionImpl;
-import org.geotools.api.feature.Attribute;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.type.AttributeDescriptor;
-import org.geotools.api.feature.type.Name;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.filter.expression.Function;
 import org.xml.sax.Attributes;
 
 /**

@@ -21,6 +21,8 @@ import static org.junit.Assert.assertTrue;
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.sql.SQLException;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.sort.SortOrder;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -30,8 +32,6 @@ import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.util.factory.Hints;
 import org.junit.Test;
-import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.sort.SortOrder;
 
 public class GeoPkgFeatureStoreOnlineTest extends JDBCFeatureStoreOnlineTest {
 

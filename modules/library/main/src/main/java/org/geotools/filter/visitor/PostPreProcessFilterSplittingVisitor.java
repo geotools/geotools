@@ -23,9 +23,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 import java.util.logging.Logger;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.FilterCapabilities;
-import org.geotools.filter.IllegalFilterException;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.BinaryComparisonOperator;
@@ -87,6 +84,9 @@ import org.geotools.api.filter.temporal.OverlappedBy;
 import org.geotools.api.filter.temporal.TContains;
 import org.geotools.api.filter.temporal.TEquals;
 import org.geotools.api.filter.temporal.TOverlaps;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.FilterCapabilities;
+import org.geotools.filter.IllegalFilterException;
 
 /**
  * Determines what queries can be processed server side and which can be processed client side.

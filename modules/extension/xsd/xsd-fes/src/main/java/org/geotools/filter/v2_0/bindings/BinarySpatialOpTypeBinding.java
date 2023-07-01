@@ -17,6 +17,9 @@
 package org.geotools.filter.v2_0.bindings;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.spatial.BinarySpatialOperator;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.gml3.v3_2.GMLConfiguration;
@@ -24,9 +27,6 @@ import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.Encoder;
 import org.geotools.xsd.EncoderDelegate;
 import org.locationtech.jts.geom.Geometry;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.filter.expression.Literal;
-import org.geotools.api.filter.spatial.BinarySpatialOperator;
 
 /**
  * <pre>

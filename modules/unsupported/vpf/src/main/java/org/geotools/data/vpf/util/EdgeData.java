@@ -17,12 +17,12 @@
 package org.geotools.data.vpf.util;
 
 import java.util.HashMap;
+import org.geotools.api.geometry.DirectPosition;
 import org.geotools.data.vpf.VPFLogger;
 import org.geotools.data.vpf.io.RowField;
 import org.geotools.data.vpf.io.TripletId;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.geotools.api.geometry.DirectPosition;
 
 /*
  * EdgeData.java

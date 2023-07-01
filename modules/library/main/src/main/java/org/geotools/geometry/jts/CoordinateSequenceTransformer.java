@@ -16,9 +16,9 @@
  */
 package org.geotools.geometry.jts;
 
-import org.locationtech.jts.geom.CoordinateSequence;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
+import org.locationtech.jts.geom.CoordinateSequence;
 
 /**
  * Interface that should be implemented by classes able to apply the provided {@linkplain

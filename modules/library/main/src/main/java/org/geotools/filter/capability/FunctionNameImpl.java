@@ -19,10 +19,10 @@ package org.geotools.filter.capability;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.geotools.feature.NameImpl;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.parameter.Parameter;
+import org.geotools.feature.NameImpl;
 
 /**
  * Implementation of the FunctionName interface.

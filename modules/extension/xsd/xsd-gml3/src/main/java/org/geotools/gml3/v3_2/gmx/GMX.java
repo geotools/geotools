@@ -18,12 +18,12 @@ package org.geotools.gml3.v3_2.gmx;
 
 import java.util.Set;
 import javax.xml.namespace.QName;
+import org.geotools.api.feature.type.Schema;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.gml3.v3_2.gco.GCO;
 import org.geotools.gml3.v3_2.gmd.GMD;
 import org.geotools.xlink.XLINK;
 import org.geotools.xsd.XSD;
-import org.geotools.api.feature.type.Schema;
 
 /**
  * This interface contains the qualified names of all the types,elements, and attributes in the

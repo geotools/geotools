@@ -15,10 +15,10 @@ package org.geotools.appschema.filter.expression;
 
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
+import org.geotools.api.filter.FilterFactory2;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Assert;
 import org.junit.Test;
-import org.geotools.api.filter.FilterFactory2;
 
 /**
  * Test that {@link org.geotools.appschema.filter.expression.FormatDateTimezoneFunction} correctly

@@ -23,14 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
-import org.geotools.coverage.grid.io.DimensionDescriptor;
-import org.geotools.coverage.io.metadata.MetadataNode;
-import org.geotools.coverage.io.range.RangeType;
-import org.geotools.data.Parameter;
-import org.geotools.data.ResourceInfo;
-import org.geotools.referencing.CRS;
-import org.geotools.util.DateRange;
-import org.geotools.util.NumberRange;
 import org.geotools.api.coverage.grid.GridEnvelope;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.geometry.BoundingBox;
@@ -41,6 +33,14 @@ import org.geotools.api.referencing.crs.TemporalCRS;
 import org.geotools.api.referencing.crs.VerticalCRS;
 import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.api.util.ProgressListener;
+import org.geotools.coverage.grid.io.DimensionDescriptor;
+import org.geotools.coverage.io.metadata.MetadataNode;
+import org.geotools.coverage.io.range.RangeType;
+import org.geotools.data.Parameter;
+import org.geotools.data.ResourceInfo;
+import org.geotools.referencing.CRS;
+import org.geotools.util.DateRange;
+import org.geotools.util.NumberRange;
 
 /**
  * Allows read-only access to a Coverage.

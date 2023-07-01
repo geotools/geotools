@@ -27,10 +27,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 import org.geotools.api.filter.expression.Add;
 import org.geotools.api.filter.expression.Divide;
 import org.geotools.api.filter.expression.Expression;
@@ -41,6 +37,10 @@ import org.geotools.api.filter.expression.Multiply;
 import org.geotools.api.filter.expression.NilExpression;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.expression.Subtract;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author Gabriel Roldan, Axios Engineering

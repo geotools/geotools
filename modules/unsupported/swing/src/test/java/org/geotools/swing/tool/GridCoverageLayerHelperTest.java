@@ -23,6 +23,7 @@ import static org.junit.Assert.assertNotNull;
 import java.util.Map;
 import java.util.Random;
 import javax.media.jai.TiledImage;
+import org.geotools.api.geometry.DirectPosition;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -36,7 +37,6 @@ import org.jaitools.imageutils.ImageUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.geotools.api.geometry.DirectPosition;
 
 /**
  * Unit tests for GridCoverageLayerHelper.

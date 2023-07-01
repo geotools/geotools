@@ -19,11 +19,11 @@ package org.geotools.coverageio.gdal.ehdr;
 import it.geosolutions.imageio.plugins.ehdr.EsriHdrImageReaderSpi;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.coverage.grid.Format;
+import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.coverageio.gdal.BaseGDALGridFormat;
 import org.geotools.data.DataSourceException;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.coverage.grid.Format;
-import org.geotools.api.geometry.MismatchedDimensionException;
 
 /**
  * An implementation of {@link Format} for the Esri Hdr format.

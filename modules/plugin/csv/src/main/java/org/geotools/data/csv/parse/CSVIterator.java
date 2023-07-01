@@ -23,8 +23,8 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import org.geotools.data.csv.CSVFileState;
 import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.data.csv.CSVFileState;
 
 public class CSVIterator implements Iterator<SimpleFeature>, Closeable {
 

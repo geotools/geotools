@@ -19,12 +19,12 @@ package org.geotools.data.vpf;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.geotools.api.feature.type.Name;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.NameImpl;
-import org.geotools.api.feature.type.Name;
 
 /**
  * VPFFeature Source

@@ -27,13 +27,13 @@ import java.util.Map;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
+import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.util.ColorUtilities;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.parameter.ParameterValueGroup;
 
 /**
  * A grid coverage containing a subset of an other grid coverage's sample dimensions, and/or a

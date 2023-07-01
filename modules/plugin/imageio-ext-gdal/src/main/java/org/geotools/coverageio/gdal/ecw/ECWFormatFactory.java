@@ -19,9 +19,9 @@ package org.geotools.coverageio.gdal.ecw;
 import it.geosolutions.imageio.plugins.ecw.ECWImageReaderSpi;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.coverage.grid.Format;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverageio.BaseGridFormatFactorySPI;
-import org.geotools.api.coverage.grid.Format;
 
 /**
  * Implementation of the {@link Format} service provider interface for ECW files.

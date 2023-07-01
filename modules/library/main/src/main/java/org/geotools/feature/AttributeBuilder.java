@@ -22,11 +22,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import org.geotools.feature.type.AttributeDescriptorImpl;
-import org.geotools.feature.type.ComplexTypeImpl;
-import org.geotools.feature.type.Types;
-import org.geotools.geometry.jts.JTS;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.feature.Association;
 import org.geotools.api.feature.Attribute;
 import org.geotools.api.feature.ComplexAttribute;
@@ -44,6 +39,11 @@ import org.geotools.api.feature.type.GeometryType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.feature.type.PropertyDescriptor;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.feature.type.AttributeDescriptorImpl;
+import org.geotools.feature.type.ComplexTypeImpl;
+import org.geotools.feature.type.Types;
+import org.geotools.geometry.jts.JTS;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Builder for attributes.

@@ -17,9 +17,9 @@
 
 package org.geotools.swing.tool;
 
+import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.geometry.DirectPosition2D;
-import org.geotools.api.referencing.operation.MathTransform;
 
 /**
  * Contains static methods used by some {@code InfoToolHelper} classes.

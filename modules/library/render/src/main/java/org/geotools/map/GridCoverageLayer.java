@@ -17,13 +17,13 @@
 package org.geotools.map;
 
 import java.util.logging.Level;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.styling.Style;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Layer used to draw a raster {@link GridCoverage}.

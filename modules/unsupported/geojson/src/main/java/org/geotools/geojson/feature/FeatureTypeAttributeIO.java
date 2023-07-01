@@ -20,9 +20,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import org.geotools.geojson.GeoJSONUtil;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.geojson.GeoJSONUtil;
 
 public class FeatureTypeAttributeIO implements AttributeIO {
 

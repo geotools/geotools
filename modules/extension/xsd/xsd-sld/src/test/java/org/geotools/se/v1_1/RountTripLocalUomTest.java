@@ -2,11 +2,11 @@ package org.geotools.se.v1_1;
 
 import static org.junit.Assert.assertEquals;
 
-import org.geotools.measure.Units;
-import org.junit.Test;
 import org.geotools.api.style.PointSymbolizer;
 import org.geotools.api.style.PolygonSymbolizer;
 import org.geotools.api.style.TextSymbolizer;
+import org.geotools.measure.Units;
+import org.junit.Test;
 import si.uom.SI;
 
 public class RountTripLocalUomTest extends SETestSupport {

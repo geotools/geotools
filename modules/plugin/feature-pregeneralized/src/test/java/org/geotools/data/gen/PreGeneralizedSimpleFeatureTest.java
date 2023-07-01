@@ -21,6 +21,7 @@ import static org.junit.Assert.assertNotEquals;
 
 import java.io.IOException;
 import java.util.List;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.data.DataStore;
 import org.geotools.data.Query;
 import org.geotools.data.gen.info.GeneralizationInfos;
@@ -36,7 +37,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
-import org.geotools.api.feature.simple.SimpleFeature;
 
 public class PreGeneralizedSimpleFeatureTest {
 

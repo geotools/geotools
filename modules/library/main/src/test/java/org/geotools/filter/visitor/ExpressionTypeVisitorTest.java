@@ -20,10 +20,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import org.geotools.data.DataUtilities;
-import org.geotools.factory.CommonFactoryFinder;
-import org.junit.Before;
-import org.junit.Test;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Add;
@@ -32,6 +28,10 @@ import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Multiply;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.expression.Subtract;
+import org.geotools.data.DataUtilities;
+import org.geotools.factory.CommonFactoryFinder;
+import org.junit.Before;
+import org.junit.Test;
 
 public class ExpressionTypeVisitorTest {
 

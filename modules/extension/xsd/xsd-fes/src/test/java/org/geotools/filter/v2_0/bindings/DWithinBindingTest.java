@@ -3,6 +3,7 @@ package org.geotools.filter.v2_0.bindings;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import org.geotools.api.filter.spatial.DWithin;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.LiteralExpressionImpl;
 import org.geotools.filter.v1_1.FilterMockData;
@@ -12,7 +13,6 @@ import org.geotools.gml3.v3_2.GML;
 import org.geotools.xsd.Encoder;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
-import org.geotools.api.filter.spatial.DWithin;
 import org.w3c.dom.Document;
 
 public class DWithinBindingTest extends FESTestSupport {

@@ -19,13 +19,13 @@ package org.geotools.swing.testutils;
 
 import java.util.Collections;
 import java.util.List;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.Layer;
 import org.geotools.map.MapBoundsListener;
 import org.geotools.map.MapContent;
 import org.geotools.map.MapLayerListListener;
 import org.geotools.map.MapViewport;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Mock MapContent class for testing.

@@ -21,8 +21,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import org.geotools.util.Converters;
-import org.locationtech.jts.geom.Geometry;
 import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.api.filter.spatial.Beyond;
 import org.geotools.api.filter.spatial.BinarySpatialOperator;
@@ -34,6 +32,8 @@ import org.geotools.api.filter.spatial.Intersects;
 import org.geotools.api.filter.spatial.Overlaps;
 import org.geotools.api.filter.spatial.Touches;
 import org.geotools.api.filter.spatial.Within;
+import org.geotools.util.Converters;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Implements a geometry filter.

@@ -19,16 +19,16 @@ package org.geotools.appschema.resolver.data;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import org.geotools.data.DataUtilities;
-import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureIterator;
-import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.FeatureVisitor;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.util.ProgressListener;
+import org.geotools.data.DataUtilities;
+import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
  * Collection of features from a {@link SampleDataAccess}.

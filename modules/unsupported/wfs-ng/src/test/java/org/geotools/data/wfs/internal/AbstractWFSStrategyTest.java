@@ -18,6 +18,7 @@ import static org.geotools.data.wfs.WFSTestData.url;
 import java.io.IOException;
 import java.net.URL;
 import javax.xml.namespace.QName;
+import org.geotools.api.filter.Filter;
 import org.geotools.data.wfs.TestHttpResponse;
 import org.geotools.data.wfs.internal.v2_0.StrictWFS_2_0_Strategy;
 import org.geotools.filter.LikeFilterImpl;
@@ -26,7 +27,6 @@ import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 import org.junit.Assert;
 import org.junit.Test;
-import org.geotools.api.filter.Filter;
 import org.xml.sax.EntityResolver;
 
 /** @author Matthias Schulze - Landesamt für Digitalisierung, Breitband und Vermessung */

@@ -7,6 +7,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.util.List;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.Stroke;
 import org.geotools.filter.function.CategorizeFunction;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.Displacement;
@@ -19,12 +25,6 @@ import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
 import org.geotools.styling.TextSymbolizer;
 import org.junit.Test;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.expression.Function;
-import org.geotools.api.style.Fill;
-import org.geotools.api.style.GraphicalSymbol;
-import org.geotools.api.style.Mark;
-import org.geotools.api.style.Stroke;
 import si.uom.SI;
 
 public class CookbookPointTest extends AbstractStyleTest {

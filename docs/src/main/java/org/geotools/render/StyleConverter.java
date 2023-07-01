@@ -29,6 +29,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.xml.transform.TransformerException;
 import net.miginfocom.swing.MigLayout;
+import org.geotools.api.style.Style;
 import org.geotools.data.Parameter;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.StyleFactory;
@@ -41,7 +42,6 @@ import org.geotools.util.SuppressFBWarnings;
 import org.geotools.xml.styling.SLDParser;
 import org.geotools.xml.styling.SLDTransformer;
 import org.geotools.xsd.Encoder;
-import org.geotools.api.style.Style;
 
 /**
  * StyleConverter example used to demonstrate reading and writing of SLD and SE files.

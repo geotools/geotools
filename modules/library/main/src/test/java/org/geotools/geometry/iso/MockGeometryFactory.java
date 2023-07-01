@@ -18,7 +18,6 @@ package org.geotools.geometry.iso;
 
 import java.util.List;
 import java.util.Set;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.Envelope;
 import org.geotools.api.geometry.Geometry;
@@ -70,6 +69,7 @@ import org.geotools.api.geometry.primitive.SurfacePatch;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 
 /**
  * Quick implementation for testing purposes.

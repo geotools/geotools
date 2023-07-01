@@ -18,10 +18,10 @@ package org.geotools.mbstyle.function;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.filter.FunctionExpressionImpl;
-import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
 
 /**
  * MapBox Expression function that will return the expression evaluation result of the first

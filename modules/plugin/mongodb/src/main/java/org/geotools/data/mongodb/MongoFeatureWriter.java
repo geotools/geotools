@@ -20,9 +20,9 @@ package org.geotools.data.mongodb;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import java.io.IOException;
-import org.geotools.data.simple.SimpleFeatureWriter;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.data.simple.SimpleFeatureWriter;
 
 public class MongoFeatureWriter implements SimpleFeatureWriter {
 

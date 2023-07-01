@@ -36,6 +36,9 @@ import java.awt.image.SampleModel;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import org.geotools.api.coverage.ColorInterpretation;
+import org.geotools.api.coverage.SampleDimensionType;
+import org.geotools.api.util.InternationalString;
 import org.geotools.image.util.ColorUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
@@ -45,9 +48,6 @@ import org.geotools.util.AbstractInternationalString;
 import org.geotools.util.NumberRange;
 import org.geotools.util.Range;
 import org.geotools.util.SimpleInternationalString;
-import org.geotools.api.coverage.ColorInterpretation;
-import org.geotools.api.coverage.SampleDimensionType;
-import org.geotools.api.util.InternationalString;
 
 /**
  * Utility methods for choosing a {@linkplain SampleModel sample model} or a {@linkplain ColorModel

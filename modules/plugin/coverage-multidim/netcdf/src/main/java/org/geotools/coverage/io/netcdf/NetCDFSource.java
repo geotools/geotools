@@ -22,15 +22,15 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.referencing.ReferenceIdentifier;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.coverage.io.CoverageReadRequest;
 import org.geotools.coverage.io.CoverageResponse;
 import org.geotools.coverage.io.impl.DefaultCoverageSource;
 import org.geotools.imageio.netcdf.NetCDFImageReader;
 import org.geotools.parameter.DefaultParameterDescriptor;
-import org.geotools.api.feature.type.Name;
-import org.geotools.api.parameter.ParameterDescriptor;
-import org.geotools.api.referencing.ReferenceIdentifier;
-import org.geotools.api.util.ProgressListener;
 
 /**
  * Implementation of a coverage source for netcdf data

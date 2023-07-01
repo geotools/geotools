@@ -17,16 +17,16 @@
 package org.geotools.filter.v1_0;
 
 import java.io.ByteArrayInputStream;
-import org.geotools.xsd.Configuration;
-import org.geotools.xsd.Parser;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.spatial.DWithin;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.Parser;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 public class OGCFilterTest {
     Parser parser;

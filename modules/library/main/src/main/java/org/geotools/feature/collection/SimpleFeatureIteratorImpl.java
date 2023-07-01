@@ -17,8 +17,8 @@
 package org.geotools.feature.collection;
 
 import java.util.Collection;
-import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.data.simple.SimpleFeatureIterator;
 
 /**
  * A convenience class for wrapping a Collection Iterator up as a SimpleFeatureCollection.

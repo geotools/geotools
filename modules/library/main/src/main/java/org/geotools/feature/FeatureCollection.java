@@ -18,13 +18,13 @@ package org.geotools.feature;
 
 import java.io.IOException;
 import java.util.Collection;
-import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.FeatureVisitor;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.util.ProgressListener;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
  * Collection of features, often handled as a result set.

@@ -16,9 +16,9 @@
  */
 package org.geotools.filter.expression;
 
-import org.geotools.util.factory.Hints;
 import org.geotools.api.feature.Property;
 import org.geotools.api.feature.type.Name;
+import org.geotools.util.factory.Hints;
 
 /**
  * This class will *directly* access a Property with the name equal to xpath.

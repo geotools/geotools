@@ -20,12 +20,12 @@ package org.geotools.styling.css.util;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
+import org.geotools.api.filter.Filter;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.ecql.ECQL;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
-import org.geotools.api.filter.Filter;
 
 public class FilterTypeVisitorTest {
 

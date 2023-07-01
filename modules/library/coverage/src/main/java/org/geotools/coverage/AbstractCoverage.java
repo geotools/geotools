@@ -53,6 +53,18 @@ import javax.media.jai.PropertySourceImpl;
 import javax.media.jai.TiledImage;
 import javax.media.jai.iterator.RectIterFactory;
 import javax.media.jai.iterator.WritableRectIter;
+import org.geotools.api.coverage.CannotEvaluateException;
+import org.geotools.api.coverage.Coverage;
+import org.geotools.api.coverage.PointOutsideCoverageException;
+import org.geotools.api.coverage.SampleDimension;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.cs.AxisDirection;
+import org.geotools.api.referencing.cs.CoordinateSystem;
+import org.geotools.api.util.InternationalString;
+import org.geotools.api.util.Record;
+import org.geotools.api.util.RecordType;
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.image.ImageWorker;
@@ -66,18 +78,6 @@ import org.geotools.util.Classes;
 import org.geotools.util.LineWriter;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.logging.Logging;
-import org.geotools.api.coverage.CannotEvaluateException;
-import org.geotools.api.coverage.Coverage;
-import org.geotools.api.coverage.PointOutsideCoverageException;
-import org.geotools.api.coverage.SampleDimension;
-import org.geotools.api.geometry.DirectPosition;
-import org.geotools.api.geometry.Envelope;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.api.referencing.cs.AxisDirection;
-import org.geotools.api.referencing.cs.CoordinateSystem;
-import org.geotools.api.util.InternationalString;
-import org.geotools.api.util.Record;
-import org.geotools.api.util.RecordType;
 
 /**
  * Base class of all coverage type. The essential property of coverage is to be able to generate a
@@ -190,8 +190,8 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      * org.geotools.api.coverage.grid.GridGeometry#getGridToCRS gridToCRS} math transform.
      *
      * <p>Grid coverage can be accessed (re-projected) with new coordinate reference system with the
-     * {@link org.geotools.api.coverage.processing.GridCoverageProcessor} component. In this case, a new
-     * instance of a grid coverage is created.
+     * {@link org.geotools.api.coverage.processing.GridCoverageProcessor} component. In this case, a
+     * new instance of a grid coverage is created.
      *
      * @return The coordinate reference system used when accessing a coverage or grid coverage with
      *     the {@code evaluate(...)} methods.

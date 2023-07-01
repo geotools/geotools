@@ -18,10 +18,10 @@ package org.geotools.data.vpf.file;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
-import org.geotools.data.FeatureReader;
-import org.geotools.data.store.ContentState;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.data.FeatureReader;
+import org.geotools.data.store.ContentState;
 
 /**
  * A feature reader for the VPFFile object

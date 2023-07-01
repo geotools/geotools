@@ -29,6 +29,10 @@ import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
 import javax.measure.Unit;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
@@ -40,10 +44,6 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.NumberRange;
 import org.geotools.util.factory.GeoTools;
-import org.geotools.api.geometry.Envelope;
-import org.geotools.api.referencing.FactoryException;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * Helper class for the creation of {@link GridCoverage2D} instances. The only purpose of this

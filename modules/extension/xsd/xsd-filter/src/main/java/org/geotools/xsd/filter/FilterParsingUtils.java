@@ -22,9 +22,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import javax.xml.namespace.QName;
-import org.geotools.feature.NameImpl;
-import org.geotools.filter.FunctionFinder;
-import org.geotools.xsd.Node;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.BinaryComparisonOperator;
 import org.geotools.api.filter.BinaryLogicOperator;
@@ -39,6 +36,9 @@ import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.identity.Identifier;
 import org.geotools.api.filter.spatial.BinarySpatialOperator;
 import org.geotools.api.filter.temporal.BinaryTemporalOperator;
+import org.geotools.feature.NameImpl;
+import org.geotools.filter.FunctionFinder;
+import org.geotools.xsd.Node;
 
 /**
  * Convenience class for filter parsing.
@@ -162,7 +162,9 @@ public class FilterParsingUtils {
     }
 
     static Filter lookupExtendedOperator(
-            Name opName, List<Expression> expressions, org.geotools.api.filter.FilterFactory factory) {
+            Name opName,
+            List<Expression> expressions,
+            org.geotools.api.filter.FilterFactory factory) {
         FunctionFinder finder = new FunctionFinder(null);
         Function f = finder.findFunction(opName.getLocalPart(), expressions);
         return factory.equal(f, factory.literal(true), true);

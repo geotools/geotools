@@ -17,11 +17,11 @@
 package org.geotools.temporal.reference;
 
 import java.util.Collection;
-import org.geotools.util.Utilities;
 import org.geotools.api.metadata.extent.Extent;
 import org.geotools.api.referencing.ReferenceIdentifier;
 import org.geotools.api.temporal.OrdinalEra;
 import org.geotools.api.temporal.OrdinalReferenceSystem;
+import org.geotools.util.Utilities;
 
 /** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultOrdinalReferenceSystem extends DefaultTemporalReferenceSystem

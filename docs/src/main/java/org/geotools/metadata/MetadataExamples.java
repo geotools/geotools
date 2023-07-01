@@ -20,6 +20,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.metadata.citation.ResponsibleParty;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.iso.citation.CitationImpl;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.metadata.iso.citation.ResponsiblePartyImpl;
@@ -33,10 +37,6 @@ import org.geotools.util.ResourceInternationalString;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.Utilities;
-import org.geotools.api.metadata.citation.Citation;
-import org.geotools.api.metadata.citation.ResponsibleParty;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.api.util.InternationalString;
 
 @SuppressFBWarnings("DLS_DEAD_LOCAL_STORE")
 public class MetadataExamples {

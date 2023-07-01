@@ -16,10 +16,10 @@
  */
 package org.geotools.filter.expression;
 
-import org.geotools.filter.FunctionImpl;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.InternalFunction;
 import org.geotools.api.filter.expression.VolatileFunction;
+import org.geotools.filter.FunctionImpl;
 
 /**
  * A base class functions (i.e. anonymous inner classes) that are both {@link VolatileFunction

@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import org.geotools.api.feature.type.Name;
 import org.geotools.data.Parameter;
 import org.geotools.feature.NameImpl;
 import org.geotools.process.Processors;
@@ -19,7 +20,6 @@ import org.geotools.util.factory.FactoryIteratorProvider;
 import org.geotools.util.factory.GeoTools;
 import org.jaitools.numeric.Range;
 import org.junit.Test;
-import org.geotools.api.feature.type.Name;
 
 public class RasterProcessFactoryTest {
 

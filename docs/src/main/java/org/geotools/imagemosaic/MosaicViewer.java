@@ -14,6 +14,10 @@ package org.geotools.imagemosaic;
 import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.style.ContrastMethod;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
@@ -27,10 +31,6 @@ import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.swing.JMapFrame;
 import org.geotools.util.factory.Hints;
-import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.parameter.GeneralParameterValue;
-import org.geotools.api.parameter.ParameterValue;
-import org.geotools.api.style.ContrastMethod;
 
 /**
  * A simple viewer for a imageMosaic. You must provide your own mosaic. Which could simply be a

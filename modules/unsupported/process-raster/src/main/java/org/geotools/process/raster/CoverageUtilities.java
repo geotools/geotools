@@ -24,6 +24,12 @@ import java.awt.image.DataBuffer;
 import java.util.HashMap;
 import java.util.List;
 import javax.media.jai.ROI;
+import org.geotools.api.coverage.SampleDimensionType;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -41,12 +47,6 @@ import org.jaitools.numeric.Range;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
-import org.geotools.api.coverage.SampleDimensionType;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.geometry.DirectPosition;
-import org.geotools.api.geometry.Envelope;
-import org.geotools.api.geometry.MismatchedDimensionException;
-import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * A set of utilities methods for the Grid Coverage package. Those methods are not really rigorous;

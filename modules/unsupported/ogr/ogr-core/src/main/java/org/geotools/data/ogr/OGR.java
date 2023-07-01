@@ -17,8 +17,8 @@
 package org.geotools.data.ogr;
 
 import java.io.IOException;
-import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
  * Encapsulates calls to the OGR library.

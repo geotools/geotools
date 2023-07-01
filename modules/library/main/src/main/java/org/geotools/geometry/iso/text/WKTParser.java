@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import org.geotools.geometry.GeometryBuilder;
 import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.Geometry;
 import org.geotools.api.geometry.PositionFactory;
@@ -42,6 +41,7 @@ import org.geotools.api.geometry.primitive.PrimitiveFactory;
 import org.geotools.api.geometry.primitive.Ring;
 import org.geotools.api.geometry.primitive.Surface;
 import org.geotools.api.geometry.primitive.SurfaceBoundary;
+import org.geotools.geometry.GeometryBuilder;
 
 /**
  * This class is used to parse well known text (WKT) which describes an ISO 19107 Geometry. The

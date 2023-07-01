@@ -45,16 +45,6 @@ import java.util.logging.Logger;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import org.eclipse.emf.ecore.EObject;
-import org.geotools.data.wfs.internal.GetFeatureRequest.ResultType;
-import org.geotools.filter.Capabilities;
-import org.geotools.filter.visitor.CapabilitiesFilterSplitter;
-import org.geotools.filter.visitor.SimplifyingFilterVisitor;
-import org.geotools.util.Version;
-import org.geotools.wfs.v1_0.WFSConfiguration_1_0;
-import org.geotools.xml.XMLHandlerHints;
-import org.geotools.xml.filter.FilterCompliancePreProcessor;
-import org.geotools.xsd.Configuration;
-import org.geotools.xsd.Encoder;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.PropertyIsBetween;
@@ -75,6 +65,16 @@ import org.geotools.api.filter.capability.SpatialOperators;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.api.filter.identity.Identifier;
 import org.geotools.api.filter.spatial.Intersects;
+import org.geotools.data.wfs.internal.GetFeatureRequest.ResultType;
+import org.geotools.filter.Capabilities;
+import org.geotools.filter.visitor.CapabilitiesFilterSplitter;
+import org.geotools.filter.visitor.SimplifyingFilterVisitor;
+import org.geotools.util.Version;
+import org.geotools.wfs.v1_0.WFSConfiguration_1_0;
+import org.geotools.xml.XMLHandlerHints;
+import org.geotools.xml.filter.FilterCompliancePreProcessor;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.Encoder;
 
 /**
  * Base template-method class for {@link WFSStrategy} implementations that leverage the GeoTools

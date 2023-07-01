@@ -23,13 +23,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.geotools.feature.NameImpl;
 import org.geotools.api.feature.Property;
 import org.geotools.api.feature.type.ComplexType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.feature.type.PropertyDescriptor;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.util.InternationalString;
+import org.geotools.feature.NameImpl;
 
 /**
  * A replacement for {@link ComplexTypeImpl} with lazy evaluation of descriptors, to support
@@ -101,7 +101,10 @@ public abstract class AbstractLazyComplexTypeImpl extends AbstractLazyAttributeT
         return descriptors;
     }
 
-    /** @see org.geotools.api.feature.type.ComplexType#getDescriptor(org.geotools.api.feature.type.Name) */
+    /**
+     * @see
+     *     org.geotools.api.feature.type.ComplexType#getDescriptor(org.geotools.api.feature.type.Name)
+     */
     @Override
     public PropertyDescriptor getDescriptor(Name name) {
         requireDescriptors();

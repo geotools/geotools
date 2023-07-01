@@ -28,14 +28,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
-import org.geotools.appschema.filter.NestedAttributeExpression;
-import org.geotools.data.complex.AttributeMapping;
-import org.geotools.data.complex.FeatureTypeMapping;
-import org.geotools.data.complex.NestedAttributeMapping;
-import org.geotools.data.complex.spi.CustomImplementationsFinder;
-import org.geotools.data.complex.util.XPathUtil.Step;
-import org.geotools.data.complex.util.XPathUtil.StepList;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.And;
@@ -98,6 +90,14 @@ import org.geotools.api.filter.temporal.OverlappedBy;
 import org.geotools.api.filter.temporal.TContains;
 import org.geotools.api.filter.temporal.TEquals;
 import org.geotools.api.filter.temporal.TOverlaps;
+import org.geotools.appschema.filter.NestedAttributeExpression;
+import org.geotools.data.complex.AttributeMapping;
+import org.geotools.data.complex.FeatureTypeMapping;
+import org.geotools.data.complex.NestedAttributeMapping;
+import org.geotools.data.complex.spi.CustomImplementationsFinder;
+import org.geotools.data.complex.util.XPathUtil.Step;
+import org.geotools.data.complex.util.XPathUtil.StepList;
+import org.geotools.factory.CommonFactoryFinder;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
@@ -123,7 +123,8 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  * @since 2.4
  */
-public class UnmappingFilterVisitor implements org.geotools.api.filter.FilterVisitor, ExpressionVisitor {
+public class UnmappingFilterVisitor
+        implements org.geotools.api.filter.FilterVisitor, ExpressionVisitor {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(UnmappingFilterVisitor.class);
 

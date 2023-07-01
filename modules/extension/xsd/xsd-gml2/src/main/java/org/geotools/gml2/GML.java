@@ -21,10 +21,10 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.xml.namespace.QName;
 import org.eclipse.xsd.XSDSchema;
-import org.geotools.xlink.XLINK;
-import org.geotools.xsd.XSD;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.feature.type.Schema;
+import org.geotools.xlink.XLINK;
+import org.geotools.xsd.XSD;
 
 /**
  * This interface contains the qualified names of all the types in the http://www.opengis.net/gml

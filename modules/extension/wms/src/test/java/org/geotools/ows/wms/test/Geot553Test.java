@@ -18,6 +18,7 @@ package org.geotools.ows.wms.test;
 
 import java.io.IOException;
 import java.net.URL;
+import org.geotools.api.geometry.Envelope;
 import org.geotools.http.HTTPResponse;
 import org.geotools.http.MockHttpClient;
 import org.geotools.http.MockHttpResponse;
@@ -27,7 +28,6 @@ import org.geotools.referencing.CRS;
 import org.geotools.test.TestData;
 import org.junit.Assert;
 import org.junit.Test;
-import org.geotools.api.geometry.Envelope;
 
 public class Geot553Test {
 

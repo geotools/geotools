@@ -21,15 +21,15 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.FeatureType;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.GetParser;
 import org.geotools.data.wfs.internal.Versions;
 import org.geotools.data.wfs.internal.WFSRequest;
 import org.geotools.wfs.v1_0.WFSConfiguration_1_0;
 import org.geotools.xsd.Configuration;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.feature.type.FeatureType;
 
 /**
  * A WFS response parser factory for GetFeature requests in GML output formats.

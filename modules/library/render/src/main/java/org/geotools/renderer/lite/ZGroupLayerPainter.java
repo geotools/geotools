@@ -19,10 +19,10 @@ package org.geotools.renderer.lite;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import org.geotools.data.FeatureSource;
-import org.geotools.renderer.lite.StreamingRenderer.RenderableFeature;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.filter.sort.SortBy;
+import org.geotools.data.FeatureSource;
+import org.geotools.renderer.lite.StreamingRenderer.RenderableFeature;
 
 /**
  * Paints a group of {@link LiteFeatureTypeStyle} all associated with the same {@link FeatureSource}

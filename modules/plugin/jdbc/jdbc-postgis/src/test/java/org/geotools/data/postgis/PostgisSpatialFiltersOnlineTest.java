@@ -22,6 +22,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Function;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentFeatureCollection;
@@ -32,9 +35,6 @@ import org.geotools.jdbc.JDBCSpatialFiltersOnlineTest;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.expression.Function;
 
 public class PostgisSpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest {
 

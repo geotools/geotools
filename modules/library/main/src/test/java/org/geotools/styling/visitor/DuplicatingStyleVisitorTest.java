@@ -27,6 +27,14 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
 import javax.swing.Icon;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.style.ContrastMethod;
+import org.geotools.api.style.OverlapBehavior;
+import org.geotools.api.style.SemanticType;
+import org.geotools.api.util.Cloneable;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.IllegalFilterException;
@@ -65,14 +73,6 @@ import org.geotools.styling.UomOgcMapping;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.filter.expression.Function;
-import org.geotools.api.filter.expression.Literal;
-import org.geotools.api.style.ContrastMethod;
-import org.geotools.api.style.OverlapBehavior;
-import org.geotools.api.style.SemanticType;
-import org.geotools.api.util.Cloneable;
 
 /**
  * Unit test for DuplicatorStyleVisitor.

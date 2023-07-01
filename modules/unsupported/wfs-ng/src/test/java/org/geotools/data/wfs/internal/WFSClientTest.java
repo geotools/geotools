@@ -27,6 +27,9 @@ import java.util.Set;
 import java.util.logging.Level;
 import javax.xml.namespace.QName;
 import org.geotools.TestData;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Filter;
 import org.geotools.data.wfs.TestHttpClient;
 import org.geotools.data.wfs.TestWFSClient;
 import org.geotools.data.wfs.WFSServiceInfo;
@@ -48,9 +51,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
-import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.feature.type.Name;
-import org.geotools.api.filter.Filter;
 
 public class WFSClientTest {
 

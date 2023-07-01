@@ -19,13 +19,13 @@ package org.geotools.feature.visitor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import org.geotools.data.util.NullProgressListener;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.util.ProgressListener;
+import org.geotools.data.util.NullProgressListener;
+import org.geotools.factory.CommonFactoryFinder;
 
 /**
  * Helper class to help building a valid group by visitor.

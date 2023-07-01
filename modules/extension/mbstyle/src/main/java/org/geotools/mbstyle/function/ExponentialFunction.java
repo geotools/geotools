@@ -19,15 +19,15 @@ package org.geotools.mbstyle.function;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.data.Parameter;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.text.Text;
 import org.geotools.util.Converters;
-import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.filter.capability.FunctionName;
-import org.geotools.api.filter.expression.Expression;
 
 /**
  * Generate an output by interpolating between stops just less than and just greater than the

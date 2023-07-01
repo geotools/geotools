@@ -24,11 +24,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import org.opengis.util.MemberName;
-import org.opengis.util.Record;
-import org.opengis.util.RecordSchema;
-import org.opengis.util.RecordType;
-import org.opengis.util.TypeName;
+import org.geotools.api.util.MemberName;
+import org.geotools.api.util.Record;
+import org.geotools.api.util.RecordSchema;
+import org.geotools.api.util.RecordType;
+import org.geotools.api.util.TypeName;
 
 /**
  * The type definition of a {@linkplain Record record}. Used to provide a record of data type (in a
@@ -102,7 +102,7 @@ public class RecordTypeImpl implements RecordType {
      *
      * <code>
      * {@linkplain #getContainer()}.{@linkplain RecordSchema#getSchemaName
-     * getSchemaName()}.{@linkplain org.opengis.util.LocalName#scope scope()}
+     * getSchemaName()}.{@linkplain org.geotools.api.util.LocalName#scope scope()}
      * </code>
      *
      * </blockquote>

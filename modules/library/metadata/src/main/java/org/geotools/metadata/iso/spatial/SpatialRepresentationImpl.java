@@ -19,8 +19,8 @@
  */
 package org.geotools.metadata.iso.spatial;
 
+import org.geotools.api.metadata.spatial.SpatialRepresentation;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.metadata.spatial.SpatialRepresentation;
 
 /**
  * Method used to represent geographic information in the dataset.

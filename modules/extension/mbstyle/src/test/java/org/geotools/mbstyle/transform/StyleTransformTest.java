@@ -81,10 +81,10 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.GraphicalSymbol;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.GraphicalSymbol;
 
 /** Test parsing and transforming a Mapbox fill layer from json. */
 public class StyleTransformTest {

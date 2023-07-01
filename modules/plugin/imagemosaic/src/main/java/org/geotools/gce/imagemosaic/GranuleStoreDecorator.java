@@ -23,8 +23,8 @@ import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.factory.Hints;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.Filter;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.Filter;
 
 /**
  * Plain delegating base class for {@link GranuleStore} decorators. Meant to allow easier/clearer

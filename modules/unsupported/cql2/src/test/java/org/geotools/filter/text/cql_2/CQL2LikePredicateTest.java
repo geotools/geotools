@@ -22,8 +22,8 @@ import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQLLikePredicateTest;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.filter.Filter;
-import org.opengis.filter.Not;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.Not;
 
 /**
  * Like works the same as in (E)CQL, but ILIKE does not exist, replaced by the CASEI function. TODO:

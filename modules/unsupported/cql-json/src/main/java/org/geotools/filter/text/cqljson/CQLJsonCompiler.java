@@ -29,9 +29,9 @@ import org.geotools.filter.text.commons.IToken;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.io.ParseException;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Expression;
 
 public class CQLJsonCompiler implements ICompiler {
 

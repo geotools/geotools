@@ -27,7 +27,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.factory.Hints;
-import org.opengis.temporal.Instant;
+import org.geotools.api.temporal.Instant;
 
 /**
  * Converter factory which created converting between the various temporal types.

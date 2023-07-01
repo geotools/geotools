@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.opengis.filter.capability.FunctionName;
+import org.geotools.api.filter.capability.FunctionName;
 
 /**
  * Parses a date from a string given a certain pattern (specified in the format accepted by {@link

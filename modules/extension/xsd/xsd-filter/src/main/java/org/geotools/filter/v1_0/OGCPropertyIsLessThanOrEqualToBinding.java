@@ -20,9 +20,9 @@ import javax.xml.namespace.QName;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.PropertyIsLessThanOrEqualTo;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.PropertyIsLessThanOrEqualTo;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * Binding object for the element http://www.opengis.net/ogc:PropertyIsLessThanOrEqualTo.

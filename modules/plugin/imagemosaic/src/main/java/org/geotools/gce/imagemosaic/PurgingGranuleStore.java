@@ -52,11 +52,11 @@ import org.geotools.gce.imagemosaic.catalog.GranuleCatalogVisitor;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.Filter;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.NilExpression;
-import org.opengis.filter.expression.PropertyName;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.NilExpression;
+import org.geotools.api.filter.expression.PropertyName;
 
 /**
  * {@link GranuleStore} that purges a file data/metadata only if no coverage still refers to it (by

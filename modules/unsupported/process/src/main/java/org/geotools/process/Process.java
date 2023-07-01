@@ -19,7 +19,7 @@ package org.geotools.process;
 import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * A Process that returns a result and reports progress. Implementors define a single method called

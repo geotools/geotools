@@ -19,11 +19,11 @@ package org.geotools.data;
 import java.io.IOException;
 import java.util.List;
 import org.geotools.feature.FeatureCollection;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.Filter;
-import org.opengis.filter.identity.FeatureId;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.identity.FeatureId;
 
 /**
  * This interface extends {@code FeatureSource}, adding methods to add and remove features and to

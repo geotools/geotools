@@ -16,7 +16,7 @@
  */
 package org.geotools.styling;
 
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * A symbolizer describes how a feature should appear on a map.
@@ -65,7 +65,7 @@ import org.opengis.filter.expression.Expression;
  * @author James Macgill, CCG
  * @version $Id$
  */
-public interface LineSymbolizer extends org.opengis.style.LineSymbolizer, Symbolizer {
+public interface LineSymbolizer extends org.geotools.api.style.LineSymbolizer, Symbolizer {
     /**
      * Provides the graphical-symbolization parameter to use for the linear geometry.
      *
@@ -79,7 +79,7 @@ public interface LineSymbolizer extends org.opengis.style.LineSymbolizer, Symbol
      *
      * @param stroke The Stroke style to use when rendering lines.
      */
-    void setStroke(org.opengis.style.Stroke stroke);
+    void setStroke(org.geotools.api.style.Stroke stroke);
 
     /**
      * Define an offset to draw lines in parallel to the original geometry.

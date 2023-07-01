@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.geotools.xsd.Binding;
 import org.junit.Test;
-import org.opengis.filter.expression.Function;
+import org.geotools.api.filter.expression.Function;
 import org.w3c.dom.Document;
 
 public class OGCFunctionTypeBindingTest extends FilterTestSupport {

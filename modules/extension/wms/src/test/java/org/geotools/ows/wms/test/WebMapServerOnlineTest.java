@@ -33,7 +33,7 @@ import org.geotools.ows.wms.response.GetMapResponse;
 import org.geotools.referencing.CRS;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /** @author Richard Gould */
 public class WebMapServerOnlineTest extends WMSOnlineTestSupport {

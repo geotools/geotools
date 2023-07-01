@@ -36,8 +36,8 @@ import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.parameter.ParameterValueGroup;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.parameter.ParameterValueGroup;
 
 /**
  * This class wraps the "ZonalStats2" OperationJAI and executes the selected operation with the

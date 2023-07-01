@@ -19,7 +19,7 @@ package org.geotools.data.complex;
 
 import java.util.Iterator;
 import org.geotools.feature.FeatureIterator;
-import org.opengis.feature.Feature;
+import org.geotools.api.feature.Feature;
 
 /**
  * @author Russell Petty (GeoScience Victoria)

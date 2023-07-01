@@ -21,16 +21,16 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import org.opengis.style.ChannelSelection;
-import org.opengis.style.SelectedChannelType;
+import org.geotools.api.style.ChannelSelection;
+import org.geotools.api.style.SelectedChannelType;
 
 /** Enumeration for valid raster band values. */
 public enum Band {
     GRAY("gray") {
 
         @Override
-        public org.opengis.style.SelectedChannelType getFrom(
-                org.opengis.style.ChannelSelection sel) {
+        public org.geotools.api.style.SelectedChannelType getFrom(
+                org.geotools.api.style.ChannelSelection sel) {
             return sel.getGrayChannel();
         }
 
@@ -92,8 +92,8 @@ public enum Band {
             Collections.unmodifiableList(Arrays.asList(RED, GREEN, BLUE));
 
     /** Get the {@link SelectedChannelType} in sel that is represented by this band. */
-    public abstract org.opengis.style.SelectedChannelType getFrom(
-            org.opengis.style.ChannelSelection sel);
+    public abstract org.geotools.api.style.SelectedChannelType getFrom(
+            org.geotools.api.style.ChannelSelection sel);
 
     /** Set the {@link SelectedChannelType} in sel that is represented by this band to chan. */
     public abstract void setTo(

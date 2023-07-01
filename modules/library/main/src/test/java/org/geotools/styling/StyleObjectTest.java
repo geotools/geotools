@@ -26,10 +26,10 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
-import org.opengis.metadata.citation.OnLineResource;
-import org.opengis.util.Cloneable;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.metadata.citation.OnLineResource;
+import org.geotools.api.util.Cloneable;
 
 /**
  * Tests style cloning

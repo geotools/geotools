@@ -19,9 +19,9 @@ package org.geotools.data.mongodb;
 
 import org.geotools.data.QueryCapabilities;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.sort.SortBy;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.sort.SortBy;
 
 /** A QueryCapabilities implementation for a MongoSource. */
 class MongoQueryCapabilities extends QueryCapabilities {

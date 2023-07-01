@@ -22,9 +22,9 @@ import static org.junit.Assert.assertTrue;
 
 import au.com.objectix.jgridshift.GridShiftFile;
 import java.net.URL;
+import org.geotools.api.referencing.FactoryException;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.referencing.FactoryException;
 
 /**
  * Unit tests for {@link NTv2GridShiftFactory} public methods

@@ -19,7 +19,7 @@ package org.geotools.brewer.styling.builder;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.styling.PointSymbolizer;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 public class PointSymbolizerBuilder extends SymbolizerBuilder<PointSymbolizer> {
     Expression geometry;
@@ -97,7 +97,7 @@ public class PointSymbolizerBuilder extends SymbolizerBuilder<PointSymbolizer> {
         return this;
     }
 
-    public Builder<PointSymbolizer> reset(org.opengis.style.PointSymbolizer original) {
+    public Builder<PointSymbolizer> reset(org.geotools.api.style.PointSymbolizer original) {
         if (original == null) {
             return unset();
         } else if (original instanceof PointSymbolizer) {

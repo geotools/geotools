@@ -18,10 +18,10 @@ package org.geotools.geometry;
 
 import java.io.Serializable;
 import java.util.Objects;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.util.Cloneable;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.util.Cloneable;
 
 /**
  * Holds the coordinates for a one-dimensional position within some coordinate reference system.

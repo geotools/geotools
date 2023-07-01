@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import org.opengis.geometry.DirectPosition;
+import org.geotools.api.geometry.DirectPosition;
 
 /**
  * Generates TIN with respect to delaunay criterion. It means that there are no alien vertices in

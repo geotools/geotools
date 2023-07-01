@@ -17,12 +17,12 @@
 package org.geotools.referencing.operation.builder;
 
 import java.util.List;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.MismatchedReferenceSystemException;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.geometry.MismatchedReferenceSystemException;
 
 /**
- * Builds {@linkplain org.opengis.referencing.operation.MathTransform MathTransform} setup as
+ * Builds {@linkplain org.geotools.api.referencing.operation.MathTransform MathTransform} setup as
  * Similar transformation from a list of {@linkplain
  * org.geotools.referencing.operation.builder.MappedPosition MappedPosition}. The The calculation
  * uses least square method. The similar transform equation:

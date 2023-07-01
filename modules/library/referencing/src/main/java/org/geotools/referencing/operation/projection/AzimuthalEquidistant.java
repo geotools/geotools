@@ -34,18 +34,18 @@ import java.io.ObjectInputStream;
 import java.util.List;
 import net.sf.geographiclib.Geodesic;
 import net.sf.geographiclib.GeodesicData;
+import org.geotools.api.parameter.GeneralParameterDescriptor;
+import org.geotools.api.parameter.InvalidParameterNameException;
+import org.geotools.api.parameter.InvalidParameterValueException;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
-import org.opengis.parameter.GeneralParameterDescriptor;
-import org.opengis.parameter.InvalidParameterNameException;
-import org.opengis.parameter.InvalidParameterValueException;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.operation.MathTransform;
 
 /**
  * Azimuthal Equidistant projection.
@@ -472,7 +472,7 @@ public class AzimuthalEquidistant {
          *
          * @return {@link Spherical} or {@link Ellipsoidal} depending on the parameters.
          * @see
-         *     org.geotools.referencing.operation.MathTransformProvider#createMathTransform(org.opengis.parameter.ParameterValueGroup)
+         *     org.geotools.referencing.operation.MathTransformProvider#createMathTransform(org.geotools.api.parameter.ParameterValueGroup)
          */
         @Override
         protected MathTransform createMathTransform(ParameterValueGroup parameters)

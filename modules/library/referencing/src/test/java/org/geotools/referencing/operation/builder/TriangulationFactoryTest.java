@@ -20,9 +20,9 @@ import static org.junit.Assert.assertFalse;
 
 import java.util.List;
 import java.util.Random;
+import org.geotools.api.geometry.DirectPosition;
 import org.geotools.geometry.DirectPosition2D;
 import org.junit.Test;
-import org.opengis.geometry.DirectPosition;
 
 public final class TriangulationFactoryTest {
     /** Test (@link TringulationFactory). */

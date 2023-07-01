@@ -30,7 +30,7 @@ import org.geotools.util.factory.Hints;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 public class PostGIS3DOnlineTest extends JDBC3DOnlineTest {
 

@@ -20,10 +20,10 @@ import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.OverlapBehavior;
-import org.opengis.style.PolygonSymbolizer;
-import org.opengis.style.Symbolizer;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.OverlapBehavior;
+import org.geotools.api.style.PolygonSymbolizer;
+import org.geotools.api.style.Symbolizer;
 
 public class RasterSymbolizerBuilder extends SymbolizerBuilder<RasterSymbolizer> {
     private String name;

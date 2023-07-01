@@ -16,7 +16,7 @@
  */
 package org.geotools.xml.gml;
 
-import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.feature.type.GeometryType;
+import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.feature.type.GeometryType;
 
 public interface ChoiceGeometryType extends ChoiceAttributeType, GeometryType, GeometryDescriptor {}

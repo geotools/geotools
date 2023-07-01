@@ -17,17 +17,17 @@
 package org.geotools.referencing.operation.builder;
 
 import java.util.List;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.cs.CartesianCS;
+import org.geotools.api.referencing.datum.GeodeticDatum;
+import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.referencing.datum.BursaWolfParameters;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.operation.transform.GeocentricTranslation;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.cs.CartesianCS;
-import org.opengis.referencing.datum.GeodeticDatum;
-import org.opengis.referencing.operation.MathTransform;
 
 /**
- * Builds {@linkplain org.opengis.referencing.operation.MathTransform MathTransform} setup as
+ * Builds {@linkplain org.geotools.api.referencing.operation.MathTransform MathTransform} setup as
  * BursaWolf transformation from a list of {@linkplain
  * org.geotools.referencing.operation.builder.MappedPosition MappedPosition}. The calculation uses
  * least square method. Calculated parameters can be used for following operations:

@@ -21,7 +21,7 @@ import org.geotools.filter.v2_0.FES;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.filter.temporal.BinaryTemporalOperator;
+import org.geotools.api.filter.temporal.BinaryTemporalOperator;
 
 /**
  * Binding object for the type http://www.opengis.net/fes/2.0:BinaryTemporalOpType.

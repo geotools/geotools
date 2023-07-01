@@ -31,7 +31,7 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.collection.FilteredIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 public class MemoryFeatureCollectionTest extends DataTestCase {
     private MemoryFeatureCollection roads;

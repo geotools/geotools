@@ -18,8 +18,8 @@ package org.geotools.data;
 
 import java.io.Closeable;
 import java.io.IOException;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.FeatureType;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
 
 /**
  * Provides the ability to write Features information.

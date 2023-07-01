@@ -63,7 +63,7 @@ import java.util.Map;
  * @author James Macgill, CCG
  * @version $Id$
  */
-public interface ExternalGraphic extends org.opengis.style.ExternalGraphic, Symbol {
+public interface ExternalGraphic extends org.geotools.api.style.ExternalGraphic, Symbol {
     public static final ExternalGraphic[] EXTERNAL_GRAPHICS_EMPTY = new ExternalGraphic[0];
 
     /**

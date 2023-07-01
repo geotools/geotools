@@ -12,7 +12,7 @@ import org.geotools.wfs.v2_0.WFSConfiguration;
 import org.geotools.wfs.v2_0.WFSTestSupport;
 import org.geotools.xsd.Parser;
 import org.junit.Test;
-import org.opengis.filter.Id;
+import org.geotools.api.filter.Id;
 
 public class LockFeatureTypeBindingTest extends WFSTestSupport {
 

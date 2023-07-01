@@ -19,9 +19,9 @@
  */
 package org.geotools.metadata.iso.identification;
 
+import org.geotools.api.metadata.identification.RepresentativeFraction;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
-import org.opengis.metadata.identification.RepresentativeFraction;
 
 /**
  * A scale where {@linkplain #getDenominator denominator} = {@code 1 / scale}. This implementation

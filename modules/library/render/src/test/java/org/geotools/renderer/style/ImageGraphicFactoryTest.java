@@ -30,7 +30,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory;
+import org.geotools.api.filter.FilterFactory;
 
 public class ImageGraphicFactoryTest {
 

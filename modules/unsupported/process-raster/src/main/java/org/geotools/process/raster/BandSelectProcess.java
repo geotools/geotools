@@ -24,8 +24,8 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.opengis.coverage.SampleDimension;
-import org.opengis.parameter.ParameterValueGroup;
+import org.geotools.api.coverage.SampleDimension;
+import org.geotools.api.parameter.ParameterValueGroup;
 
 /**
  * Process calling the {@link SelectSampleDimension} operation. This process requires:

@@ -27,7 +27,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.test.TestData;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.geometry.Envelope;
+import org.geotools.api.geometry.Envelope;
 
 public class Geot553Test {
 

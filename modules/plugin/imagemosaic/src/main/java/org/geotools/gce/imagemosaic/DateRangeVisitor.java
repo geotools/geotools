@@ -21,7 +21,7 @@ import java.util.Iterator;
 import org.geotools.util.DateRange;
 import org.geotools.util.Range;
 import org.geotools.util.Utilities;
-import org.opengis.feature.Feature;
+import org.geotools.api.feature.Feature;
 
 /**
  * Generates a list of compact DateRanges from a collection

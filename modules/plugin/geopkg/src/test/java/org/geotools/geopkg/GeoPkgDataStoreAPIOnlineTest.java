@@ -33,8 +33,8 @@ import org.geotools.util.factory.Hints;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.LineString;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.FilterFactory;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.FilterFactory;
 
 public class GeoPkgDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
 

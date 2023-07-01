@@ -8,7 +8,7 @@ package net.opengis.wfs20;
 
 import javax.xml.namespace.QName;
 
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 import net.opengis.fes20.FilterType;
 

@@ -46,8 +46,8 @@ import org.geotools.image.util.ImageUtilities;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.operation.TransformException;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * A class doing the mosaic operation on top of a List of {@link MosaicElement}s.

@@ -21,7 +21,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.geotools.data.Query;
 import org.junit.Test;
-import org.opengis.filter.sort.SortOrder;
+import org.geotools.api.filter.sort.SortOrder;
 
 public class TransformerTest extends AbstractTransformTest {
 

@@ -20,7 +20,7 @@ import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.styling.css.CssRule;
 import org.geotools.styling.css.selector.AbstractSelectorVisitor;
 import org.geotools.styling.css.selector.Data;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /**
  * Guesses the structure of the feature type given the list of rules. Mostly used so that we can

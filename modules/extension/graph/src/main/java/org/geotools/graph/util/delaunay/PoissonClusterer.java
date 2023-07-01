@@ -24,8 +24,8 @@ import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
 import org.geotools.graph.structure.basic.BasicGraph;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.expression.Expression;
 
 /** @author jfc173 */
 public class PoissonClusterer {

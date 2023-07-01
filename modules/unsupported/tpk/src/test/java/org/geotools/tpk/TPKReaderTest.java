@@ -30,7 +30,7 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.parameter.Parameter;
 import org.junit.Test;
-import org.opengis.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.GeneralParameterValue;
 
 public class TPKReaderTest {
 

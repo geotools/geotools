@@ -30,12 +30,12 @@ import org.geotools.imageio.netcdf.utilities.NetCDFTimeUtilities;
 import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
 import org.geotools.temporal.object.DefaultPosition;
 import org.geotools.util.SimpleInternationalString;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.TemporalCRS;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.cs.TimeCS;
-import org.opengis.referencing.datum.TemporalDatum;
-import org.opengis.temporal.Position;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.TemporalCRS;
+import org.geotools.api.referencing.cs.AxisDirection;
+import org.geotools.api.referencing.cs.TimeCS;
+import org.geotools.api.referencing.datum.TemporalDatum;
+import org.geotools.api.temporal.Position;
 import ucar.nc2.dataset.CoordinateAxis;
 
 /** A {@link CoordinateVariable} used to wrap Coordinates expressing climatological time */

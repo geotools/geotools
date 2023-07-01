@@ -26,7 +26,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.util.ProgressListener;
 
 /** @author Martin Davis - OpenGeo */
 public class BarnesSurfaceProcessTest {

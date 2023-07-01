@@ -29,7 +29,7 @@ import org.geotools.styling.ColorMapEntry;
 import org.geotools.styling.ColorMapEntryImpl;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory2;
 
 public class SLDColorMapBuilderTest {
     private SLDColorMapBuilder builder;

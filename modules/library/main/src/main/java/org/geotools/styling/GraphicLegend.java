@@ -17,25 +17,25 @@
 package org.geotools.styling;
 
 import java.util.List;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.GraphicalSymbol;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.GraphicalSymbol;
 
 /**
  * Used to represent a Rule (or other construct) in a user interface or legend.
  *
  * @author Jody
  */
-public interface GraphicLegend extends org.opengis.style.GraphicLegend {
+public interface GraphicLegend extends org.geotools.api.style.GraphicLegend {
 
     @Override
     public AnchorPoint getAnchorPoint();
 
-    public void setAnchorPoint(org.opengis.style.AnchorPoint anchor);
+    public void setAnchorPoint(org.geotools.api.style.AnchorPoint anchor);
 
     @Override
     public Displacement getDisplacement();
 
-    public void setDisplacement(org.opengis.style.Displacement displacement);
+    public void setDisplacement(org.geotools.api.style.Displacement displacement);
 
     /**
      * This specifies the level of translucency to use when rendering the graphic.<br>

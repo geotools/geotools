@@ -22,8 +22,8 @@ import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.xsd.Encoder;
 import org.geotools.xsd.XSD;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 

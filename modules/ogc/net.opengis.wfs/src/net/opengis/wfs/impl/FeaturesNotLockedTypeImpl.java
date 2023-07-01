@@ -25,7 +25,7 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.ecore.util.InternalEList;
 
-import org.opengis.filter.identity.FeatureId;
+import org.geotools.api.filter.identity.FeatureId;
 
 /**
  * <!-- begin-user-doc -->

@@ -19,7 +19,7 @@
  */
 package org.geotools.metadata.iso.quality;
 
-import org.opengis.metadata.quality.Completeness;
+import org.geotools.api.metadata.quality.Completeness;
 
 /**
  * Presence and absence of features, their attributes and their relationships.

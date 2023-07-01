@@ -62,9 +62,9 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.WKBReader;
 import org.locationtech.jts.io.WKBWriter;
-import org.opengis.coverage.grid.Format;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.referencing.operation.TransformException;
+import org.geotools.api.coverage.grid.Format;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.referencing.operation.TransformException;
 
 /** PostGIS raster reader. */
 public class PGRasterReader extends AbstractGridCoverage2DReader {

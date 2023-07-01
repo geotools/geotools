@@ -21,12 +21,12 @@ package org.geotools.metadata.iso.spatial;
 
 import java.util.Collection;
 import java.util.List;
-import org.opengis.geometry.primitive.Point;
-import org.opengis.metadata.spatial.CellGeometry;
-import org.opengis.metadata.spatial.Dimension;
-import org.opengis.metadata.spatial.Georectified;
-import org.opengis.metadata.spatial.PixelOrientation;
-import org.opengis.util.InternationalString;
+import org.geotools.api.geometry.primitive.Point;
+import org.geotools.api.metadata.spatial.CellGeometry;
+import org.geotools.api.metadata.spatial.Dimension;
+import org.geotools.api.metadata.spatial.Georectified;
+import org.geotools.api.metadata.spatial.PixelOrientation;
+import org.geotools.api.util.InternationalString;
 
 /**
  * Grid whose cells are regularly spaced in a geographic (i.e., lat / long) or map coordinate system

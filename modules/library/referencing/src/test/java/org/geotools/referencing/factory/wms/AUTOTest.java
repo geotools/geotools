@@ -24,6 +24,10 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CRSAuthorityFactory;
+import org.geotools.api.referencing.crs.ProjectedCRS;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.operation.projection.AzimuthalEquidistant;
@@ -35,10 +39,6 @@ import org.geotools.referencing.operation.projection.PolarOrthographic;
 import org.geotools.referencing.operation.projection.Stereographic;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CRSAuthorityFactory;
-import org.opengis.referencing.crs.ProjectedCRS;
 
 /**
  * Tests {@link AutoCRSFactory}.

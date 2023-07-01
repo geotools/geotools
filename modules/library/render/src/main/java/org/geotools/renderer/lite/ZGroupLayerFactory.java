@@ -30,8 +30,8 @@ import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.sort.SortBy;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.sort.SortBy;
 
 /**
  * Builds {@link ZGroupLayer} instances from a MapContent using {@link

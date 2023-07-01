@@ -19,7 +19,7 @@
  */
 package org.geotools.metadata.iso.quality;
 
-import org.opengis.metadata.quality.ConceptualConsistency;
+import org.geotools.api.metadata.quality.ConceptualConsistency;
 
 /**
  * Adherence to rules of the conceptual schema.

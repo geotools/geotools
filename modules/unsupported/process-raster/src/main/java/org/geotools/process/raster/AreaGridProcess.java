@@ -31,8 +31,8 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
 
 /**
  * A process that build a regular cell grid where each pixel represents its effective area in the
@@ -142,9 +142,9 @@ public class AreaGridProcess implements RasterProcess {
             GridCoverage2D grid = coverageFactory.create("AreaGridCoverage", matrix, bounds);
             return grid;
 
-        } catch (org.opengis.referencing.FactoryException ef) {
+        } catch (org.geotools.api.referencing.FactoryException ef) {
             throw new ProcessException("Unable to create the target CRS", ef);
-        } catch (org.opengis.referencing.operation.TransformException et) {
+        } catch (org.geotools.api.referencing.operation.TransformException et) {
             throw new ProcessException("Unable to tranform the coordinate system", et);
         }
     }

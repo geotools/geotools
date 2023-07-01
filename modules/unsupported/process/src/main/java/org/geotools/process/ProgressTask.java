@@ -22,8 +22,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;
-import org.opengis.util.InternationalString;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.util.InternationalString;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * An implementation of the Progress interface.

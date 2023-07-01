@@ -20,8 +20,8 @@ import it.geosolutions.jaiext.piecewise.MathTransformation;
 import it.geosolutions.jaiext.piecewise.Position;
 import org.geotools.renderer.i18n.ErrorKeys;
 import org.geotools.renderer.i18n.Errors;
-import org.opengis.referencing.operation.MathTransform1D;
-import org.opengis.referencing.operation.TransformException;
+import org.geotools.api.referencing.operation.MathTransform1D;
+import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * Adapter class for {@link MathTransform1D}.
@@ -59,7 +59,7 @@ public class MathTransformationAdapter implements MathTransformation {
     /*
      * (non-Javadoc)
      *
-     * @see org.opengis.referencing.operation.MathTransform1D#derivative(double)
+     * @see org.geotools.api.referencing.operation.MathTransform1D#derivative(double)
      */
     @Override
     public double derivative(double value) throws TransformException {
@@ -71,7 +71,7 @@ public class MathTransformationAdapter implements MathTransformation {
     /*
      * (non-Javadoc)
      *
-     * @see org.opengis.referencing.operation.MathTransform1D#transform(double)
+     * @see org.geotools.api.referencing.operation.MathTransform1D#transform(double)
      */
     @Override
     public double transform(double value) {
@@ -83,7 +83,7 @@ public class MathTransformationAdapter implements MathTransformation {
     /*
      * (non-Javadoc)
      *
-     * @see org.opengis.referencing.operation.MathTransform#getSourceDimensions()
+     * @see org.geotools.api.referencing.operation.MathTransform#getSourceDimensions()
      */
     @Override
     public int getSourceDimensions() {
@@ -94,7 +94,7 @@ public class MathTransformationAdapter implements MathTransformation {
     /*
      * (non-Javadoc)
      *
-     * @see org.opengis.referencing.operation.MathTransform#getTargetDimensions()
+     * @see org.geotools.api.referencing.operation.MathTransform#getTargetDimensions()
      */
     @Override
     public int getTargetDimensions() {
@@ -105,7 +105,7 @@ public class MathTransformationAdapter implements MathTransformation {
     /*
      * (non-Javadoc)
      *
-     * @see org.opengis.referencing.operation.MathTransform#inverse()
+     * @see org.geotools.api.referencing.operation.MathTransform#inverse()
      */
     @Override
     public MathTransformation inverseTransform() {
@@ -116,7 +116,7 @@ public class MathTransformationAdapter implements MathTransformation {
     /*
      * (non-Javadoc)
      *
-     * @see org.opengis.referencing.operation.MathTransform#isIdentity()
+     * @see org.geotools.api.referencing.operation.MathTransform#isIdentity()
      */
     @Override
     public boolean isIdentity() {

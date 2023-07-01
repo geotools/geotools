@@ -52,9 +52,9 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.style.ExternalGraphic;
-import org.opengis.style.GraphicLegend;
-import org.opengis.style.GraphicalSymbol;
+import org.geotools.api.style.ExternalGraphic;
+import org.geotools.api.style.GraphicLegend;
+import org.geotools.api.style.GraphicalSymbol;
 
 /**
  * A simple class that knows how to paint a Shape object onto a Graphic given a Style2D. It's the

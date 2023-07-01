@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 import org.geotools.gml3.GML;
 import org.geotools.xsd.Binding;
 import org.junit.Test;
-import org.opengis.filter.identity.GmlObjectId;
+import org.geotools.api.filter.identity.GmlObjectId;
 import org.w3c.dom.Document;
 
 public class GmlObjectIdTypeBindingTest extends FilterTestSupport {

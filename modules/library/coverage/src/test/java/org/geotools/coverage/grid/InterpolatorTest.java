@@ -41,8 +41,8 @@ import org.geotools.util.factory.Hints;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.geometry.Envelope;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.geometry.Envelope;
 
 /**
  * Tests the {@link Interpolator2D} implementation.

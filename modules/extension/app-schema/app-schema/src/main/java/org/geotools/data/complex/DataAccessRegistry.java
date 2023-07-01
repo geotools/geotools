@@ -32,10 +32,10 @@ import org.geotools.data.FeatureSource;
 import org.geotools.data.Repository;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.identity.FeatureId;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.identity.FeatureId;
 
 /**
  * A registry that stores data access instances per application. This allows feature sources from

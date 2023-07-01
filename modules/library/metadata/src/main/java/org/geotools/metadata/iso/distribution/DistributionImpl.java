@@ -20,11 +20,11 @@
 package org.geotools.metadata.iso.distribution;
 
 import java.util.Collection;
+import org.geotools.api.metadata.distribution.DigitalTransferOptions;
+import org.geotools.api.metadata.distribution.Distribution;
+import org.geotools.api.metadata.distribution.Distributor;
+import org.geotools.api.metadata.distribution.Format;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.metadata.distribution.DigitalTransferOptions;
-import org.opengis.metadata.distribution.Distribution;
-import org.opengis.metadata.distribution.Distributor;
-import org.opengis.metadata.distribution.Format;
 
 /**
  * Information about the distributor of and options for obtaining the resource.

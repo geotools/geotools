@@ -31,7 +31,7 @@ import org.geotools.coverage.processing.operation.Warp;
 import org.geotools.util.factory.Hints;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.parameter.ParameterValueGroup;
+import org.geotools.api.parameter.ParameterValueGroup;
 
 /**
  * Tests the {@link Warp} operation.

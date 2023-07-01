@@ -22,10 +22,10 @@ import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.factory.GeoTools;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.OverlapBehavior;
-import org.opengis.style.StyleVisitor;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.OverlapBehavior;
+import org.geotools.api.style.StyleVisitor;
 
 /**
  * Default implementation of RasterSymbolizer.
@@ -268,7 +268,7 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
      * @param channel the channel selected
      */
     @Override
-    public void setChannelSelection(org.opengis.style.ChannelSelection channel) {
+    public void setChannelSelection(org.geotools.api.style.ChannelSelection channel) {
         if (this.channelSelection == channel) {
             return;
         }
@@ -289,7 +289,7 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
      * @param colorMap the ColorMap for the raster
      */
     @Override
-    public void setColorMap(org.opengis.style.ColorMap colorMap) {
+    public void setColorMap(org.geotools.api.style.ColorMap colorMap) {
         if (this.colorMap == colorMap) {
             return;
         }
@@ -312,7 +312,7 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
      * @param contrastEnhancement the contrastEnhancement
      */
     @Override
-    public void setContrastEnhancement(org.opengis.style.ContrastEnhancement contrastEnhancement) {
+    public void setContrastEnhancement(org.geotools.api.style.ContrastEnhancement contrastEnhancement) {
         if (this.contrastEnhancement == contrastEnhancement) {
             return;
         }
@@ -343,7 +343,7 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
      *     symbolizer an unexpected argument exception may be thrown by an implementing class.
      */
     @Override
-    public void setImageOutline(org.opengis.style.Symbolizer symbolizer) {
+    public void setImageOutline(org.geotools.api.style.Symbolizer symbolizer) {
         if (symbolizer == null) {
             this.symbolizer = null;
         } else if (symbolizer instanceof LineSymbolizer
@@ -408,7 +408,7 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
      * @param shadedRelief the shadedrelief object
      */
     @Override
-    public void setShadedRelief(org.opengis.style.ShadedRelief shadedRelief) {
+    public void setShadedRelief(org.geotools.api.style.ShadedRelief shadedRelief) {
         if (this.shadedRelief == shadedRelief) {
             return;
         }
@@ -443,15 +443,15 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
         return clone;
     }
 
-    static RasterSymbolizerImpl cast(org.opengis.style.Symbolizer symbolizer) {
+    static RasterSymbolizerImpl cast(org.geotools.api.style.Symbolizer symbolizer) {
         if (symbolizer == null) {
             return null;
         }
         if (symbolizer instanceof RasterSymbolizerImpl) {
             return (RasterSymbolizerImpl) symbolizer;
-        } else if (symbolizer instanceof org.opengis.style.RasterSymbolizer) {
-            org.opengis.style.RasterSymbolizer rasterSymbolizer =
-                    (org.opengis.style.RasterSymbolizer) symbolizer;
+        } else if (symbolizer instanceof org.geotools.api.style.RasterSymbolizer) {
+            org.geotools.api.style.RasterSymbolizer rasterSymbolizer =
+                    (org.geotools.api.style.RasterSymbolizer) symbolizer;
             RasterSymbolizerImpl copy = new RasterSymbolizerImpl();
             copy.setChannelSelection(rasterSymbolizer.getChannelSelection());
             copy.setColorMap(rasterSymbolizer.getColorMap());

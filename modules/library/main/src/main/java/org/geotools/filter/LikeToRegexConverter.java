@@ -19,7 +19,7 @@ package org.geotools.filter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.util.logging.Logging;
-import org.opengis.filter.PropertyIsLike;
+import org.geotools.api.filter.PropertyIsLike;
 
 /**
  * Helper class that takes a LikeFilter and generates the equivalent Java Pattern syntax

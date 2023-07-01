@@ -24,7 +24,7 @@ import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.renderer.label.LabelCacheImpl;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.util.NumberRange;
-import org.opengis.feature.Feature;
+import org.geotools.api.feature.Feature;
 
 /**
  * Allow multiple thread to modify LabelCache.

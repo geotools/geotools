@@ -19,7 +19,7 @@ import org.geotools.parameter.Parameter;
 import org.geotools.test.OnlineTestCase;
 import org.geotools.test.TestData;
 import org.junit.Test;
-import org.opengis.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.GeneralParameterValue;
 
 public class PGRasterTest extends OnlineTestCase {
 

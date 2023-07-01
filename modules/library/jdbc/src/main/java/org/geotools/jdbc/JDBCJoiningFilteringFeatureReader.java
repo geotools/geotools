@@ -22,8 +22,8 @@ import java.util.NoSuchElementException;
 import org.geotools.data.DelegatingFeatureReader;
 import org.geotools.data.FeatureReader;
 import org.geotools.jdbc.JoinInfo.JoinPart;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /**
  * Feature reader that wraps multiple feature readers in a joining / post filtered query.

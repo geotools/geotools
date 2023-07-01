@@ -36,7 +36,7 @@ import org.geotools.wfs.v2_0.WFS;
 import org.geotools.xsd.EMFUtils;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 public class WFSParsingUtils {
 

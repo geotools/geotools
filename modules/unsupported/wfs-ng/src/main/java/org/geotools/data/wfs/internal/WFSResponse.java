@@ -26,7 +26,7 @@ import org.geotools.data.ows.Response;
 import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.util.logging.Logging;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /**
  * A handle to a WFS response that contains the input stream to the actual contents and some well

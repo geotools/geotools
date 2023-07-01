@@ -41,11 +41,11 @@ import org.geotools.feature.collection.FilteringSimpleFeatureCollection;
 import org.geotools.feature.collection.MaxSimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.Filter;
-import org.opengis.filter.sort.SortBy;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.sort.SortBy;
 
 /**
  * This is a "port" of ContentFeatureSource to work with an iterator.
@@ -147,7 +147,7 @@ public class CollectionFeatureSource implements SimpleFeatureSource {
 
                         @Override
                         public boolean supportsSorting(
-                                org.opengis.filter.sort.SortBy[] sortAttributes) {
+                                org.geotools.api.filter.sort.SortBy[] sortAttributes) {
                             return true;
                         }
                     };

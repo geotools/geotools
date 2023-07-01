@@ -30,8 +30,8 @@ import org.geotools.gml3.v3_2.GML;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 import org.geotools.xsd.SchemaIndex;
-import org.opengis.feature.Attribute;
-import org.opengis.feature.type.AttributeType;
+import org.geotools.api.feature.Attribute;
+import org.geotools.api.feature.type.AttributeType;
 
 /**
  * Binding object for the type http://www.opengis.net/wfs/2.0:MemberPropertyType.

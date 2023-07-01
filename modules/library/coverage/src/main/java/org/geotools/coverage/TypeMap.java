@@ -16,17 +16,17 @@
  */
 package org.geotools.coverage;
 
-import static org.opengis.coverage.SampleDimensionType.REAL_32BITS;
-import static org.opengis.coverage.SampleDimensionType.REAL_64BITS;
-import static org.opengis.coverage.SampleDimensionType.SIGNED_16BITS;
-import static org.opengis.coverage.SampleDimensionType.SIGNED_32BITS;
-import static org.opengis.coverage.SampleDimensionType.SIGNED_8BITS;
-import static org.opengis.coverage.SampleDimensionType.UNSIGNED_16BITS;
-import static org.opengis.coverage.SampleDimensionType.UNSIGNED_1BIT;
-import static org.opengis.coverage.SampleDimensionType.UNSIGNED_2BITS;
-import static org.opengis.coverage.SampleDimensionType.UNSIGNED_32BITS;
-import static org.opengis.coverage.SampleDimensionType.UNSIGNED_4BITS;
-import static org.opengis.coverage.SampleDimensionType.UNSIGNED_8BITS;
+import static org.geotools.api.coverage.SampleDimensionType.REAL_32BITS;
+import static org.geotools.api.coverage.SampleDimensionType.REAL_64BITS;
+import static org.geotools.api.coverage.SampleDimensionType.SIGNED_16BITS;
+import static org.geotools.api.coverage.SampleDimensionType.SIGNED_32BITS;
+import static org.geotools.api.coverage.SampleDimensionType.SIGNED_8BITS;
+import static org.geotools.api.coverage.SampleDimensionType.UNSIGNED_16BITS;
+import static org.geotools.api.coverage.SampleDimensionType.UNSIGNED_1BIT;
+import static org.geotools.api.coverage.SampleDimensionType.UNSIGNED_2BITS;
+import static org.geotools.api.coverage.SampleDimensionType.UNSIGNED_32BITS;
+import static org.geotools.api.coverage.SampleDimensionType.UNSIGNED_4BITS;
+import static org.geotools.api.coverage.SampleDimensionType.UNSIGNED_8BITS;
 
 import java.awt.color.ColorSpace;
 import java.awt.image.ColorModel;
@@ -45,9 +45,9 @@ import org.geotools.util.AbstractInternationalString;
 import org.geotools.util.NumberRange;
 import org.geotools.util.Range;
 import org.geotools.util.SimpleInternationalString;
-import org.opengis.coverage.ColorInterpretation;
-import org.opengis.coverage.SampleDimensionType;
-import org.opengis.util.InternationalString;
+import org.geotools.api.coverage.ColorInterpretation;
+import org.geotools.api.coverage.SampleDimensionType;
+import org.geotools.api.util.InternationalString;
 
 /**
  * Utility methods for choosing a {@linkplain SampleModel sample model} or a {@linkplain ColorModel

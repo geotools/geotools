@@ -49,8 +49,8 @@ import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.opengis.feature.type.Name;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * {@link CoverageAccess} implementation for NetCDF Data format.

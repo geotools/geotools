@@ -31,7 +31,7 @@ import org.geotools.feature.NameImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.feature.type.Name;
+import org.geotools.api.feature.type.Name;
 
 public class HiddenDataAccessDisposalTest extends AbstractHiddenDataAccessDisposalTest {
 

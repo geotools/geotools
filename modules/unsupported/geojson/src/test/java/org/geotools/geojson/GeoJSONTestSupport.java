@@ -22,7 +22,7 @@ import java.util.List;
 import org.geotools.util.Converters;
 import org.junit.Assert;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 public abstract class GeoJSONTestSupport {
 

@@ -28,12 +28,12 @@ import javax.media.jai.operator.MultiplyDescriptor;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.BaseMathOperationJAI;
 import org.geotools.util.NumberRange;
-import org.opengis.parameter.InvalidParameterValueException;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.util.InternationalString;
+import org.geotools.api.parameter.InvalidParameterValueException;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.util.InternationalString;
 
 /**
  * Create a new coverage as the multiplication of two source coverages by doing pixel by pixel
@@ -71,8 +71,8 @@ import org.opengis.util.InternationalString;
  * </table>
  *
  * @since 8.x
- * @see org.geotools.coverage.processing.Operations#multiply(org.opengis.coverage.Coverage,
- *     org.opengis.coverage.Coverage)
+ * @see org.geotools.coverage.processing.Operations#multiply(org.geotools.api.coverage.Coverage,
+ *     org.geotools.api.coverage.Coverage)
  * @see Multiply
  */
 public class Multiply extends BaseMathOperationJAI {

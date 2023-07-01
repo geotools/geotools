@@ -29,12 +29,12 @@ import org.geotools.map.GridReaderLayer;
 import org.geotools.map.Layer;
 import org.geotools.parameter.Parameter;
 import org.geotools.util.SuppressFBWarnings;
-import org.opengis.coverage.PointOutsideCoverageException;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
+import org.geotools.api.coverage.PointOutsideCoverageException;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
 
 /**
  * Helper class used by {@linkplain InfoTool} to query values in a {@linkplain

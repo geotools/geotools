@@ -30,11 +30,11 @@ import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.AttributeInstance;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CompoundCRS;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.GeographicCRS;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CompoundCRS;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.GeographicCRS;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

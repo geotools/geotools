@@ -27,10 +27,10 @@ import org.geotools.styling.StyleFactory;
 import org.geotools.styling.Symbolizer;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.filter.Filter;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.PropertyName;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.PropertyName;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**

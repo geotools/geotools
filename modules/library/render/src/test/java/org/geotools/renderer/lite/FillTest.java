@@ -43,7 +43,7 @@ import org.geotools.styling.Symbolizer;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory2;
 
 public class FillTest {
     private static final long TIME = 40000;

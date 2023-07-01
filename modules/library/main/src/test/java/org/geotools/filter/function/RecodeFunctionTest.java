@@ -25,8 +25,8 @@ import java.awt.Color;
 import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
 
 /**
  * Test the Recode function against the Symbology Encoding 1.1 specs.

@@ -33,7 +33,7 @@ import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.util.ColorUtilities;
 import org.geotools.util.factory.Hints;
-import org.opengis.parameter.ParameterValueGroup;
+import org.geotools.api.parameter.ParameterValueGroup;
 
 /**
  * A grid coverage containing a subset of an other grid coverage's sample dimensions, and/or a

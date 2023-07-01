@@ -26,12 +26,12 @@ import java.util.Objects;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.ExpressionVisitor;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.ExpressionVisitor;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
 
 /**
  * This is an implemenation of the Recode function as defined by the OGC Symbology Encoding (SE) 1.1
@@ -169,7 +169,7 @@ public class RecodeFunction implements Function {
             // we are going to test our propertyNameExpression against the keyExpression
             // if they are equal we will return the valueExpression
             //
-            org.opengis.filter.Filter compareFilter = ff.equal(lookupExp, keyExpr, false);
+            org.geotools.api.filter.Filter compareFilter = ff.equal(lookupExp, keyExpr, false);
 
             if (compareFilter.evaluate(object)) {
                 return valueExpr.evaluate(object, context);
@@ -192,10 +192,10 @@ public class RecodeFunction implements Function {
         StringBuilder sb = new StringBuilder();
         sb.append(getName());
         sb.append("(");
-        List<org.opengis.filter.expression.Expression> params = getParameters();
+        List<org.geotools.api.filter.expression.Expression> params = getParameters();
         if (params != null) {
-            org.opengis.filter.expression.Expression exp;
-            for (Iterator<org.opengis.filter.expression.Expression> it = params.iterator();
+            org.geotools.api.filter.expression.Expression exp;
+            for (Iterator<org.geotools.api.filter.expression.Expression> it = params.iterator();
                     it.hasNext(); ) {
                 exp = it.next();
                 sb.append("[");

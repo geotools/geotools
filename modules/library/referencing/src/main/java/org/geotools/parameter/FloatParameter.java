@@ -21,13 +21,13 @@ package org.geotools.parameter;
 
 import java.net.URI;
 import javax.measure.Unit;
+import org.geotools.api.parameter.InvalidParameterTypeException;
+import org.geotools.api.parameter.InvalidParameterValueException;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterValue;
 import org.geotools.measure.Units;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
-import org.opengis.parameter.InvalidParameterTypeException;
-import org.opengis.parameter.InvalidParameterValueException;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterValue;
 
 /**
  * A parameter value as a floating point (double precision) number. This class provides the same

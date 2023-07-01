@@ -18,9 +18,9 @@ package org.geotools.styling;
 
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.StyleVisitor;
-import org.opengis.util.Cloneable;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.util.Cloneable;
 
 /**
  * Provides a representation of a LineSymbolizer in an SLD Document. A LineSymbolizer defines how a
@@ -77,7 +77,7 @@ public class LineSymbolizerImpl extends AbstractSymbolizer implements LineSymbol
      * @param stroke The Stroke style to use when rendering lines.
      */
     @Override
-    public void setStroke(org.opengis.style.Stroke stroke) {
+    public void setStroke(org.geotools.api.style.Stroke stroke) {
         if (this.stroke == stroke) {
             return;
         }
@@ -159,15 +159,15 @@ public class LineSymbolizerImpl extends AbstractSymbolizer implements LineSymbol
         return true;
     }
 
-    static LineSymbolizerImpl cast(org.opengis.style.Symbolizer symbolizer) {
+    static LineSymbolizerImpl cast(org.geotools.api.style.Symbolizer symbolizer) {
         if (symbolizer == null) {
             return null;
         }
         if (symbolizer instanceof LineSymbolizerImpl) {
             return (LineSymbolizerImpl) symbolizer;
-        } else if (symbolizer instanceof org.opengis.style.LineSymbolizer) {
-            org.opengis.style.LineSymbolizer lineSymbolizer =
-                    (org.opengis.style.LineSymbolizer) symbolizer;
+        } else if (symbolizer instanceof org.geotools.api.style.LineSymbolizer) {
+            org.geotools.api.style.LineSymbolizer lineSymbolizer =
+                    (org.geotools.api.style.LineSymbolizer) symbolizer;
             LineSymbolizerImpl copy = new LineSymbolizerImpl();
             copy.setDescription(lineSymbolizer.getDescription());
             copy.setGeometryPropertyName(lineSymbolizer.getGeometryPropertyName());

@@ -18,9 +18,9 @@ package org.geotools.temporal.object;
 
 import java.util.Collection;
 import org.geotools.util.Utilities;
-import org.opengis.temporal.Instant;
-import org.opengis.temporal.Period;
-import org.opengis.temporal.Position;
+import org.geotools.api.temporal.Instant;
+import org.geotools.api.temporal.Period;
+import org.geotools.api.temporal.Position;
 
 /**
  * A zero-dimensional geometric primitive that represents position in time, equivalent to a point in

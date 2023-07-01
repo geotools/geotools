@@ -26,10 +26,10 @@ import org.geotools.util.Converters;
 import org.geotools.util.DateRange;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.spatial.BBOX;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.spatial.BBOX;
 
 public class TimeRangeVisitorTest {
 

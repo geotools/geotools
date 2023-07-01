@@ -31,11 +31,11 @@ import org.geotools.test.TestData;
 import org.geotools.util.logging.Logging;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.coverage.grid.Format;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.operation.TransformException;
+import org.geotools.api.coverage.grid.Format;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * Test class for WorldImageWriter. This test tries to read, writer and re-read successive images

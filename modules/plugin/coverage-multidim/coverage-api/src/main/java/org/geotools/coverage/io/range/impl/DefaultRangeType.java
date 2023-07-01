@@ -23,8 +23,8 @@ import org.geotools.coverage.io.range.FieldType;
 import org.geotools.coverage.io.range.RangeType;
 import org.geotools.feature.NameImpl;
 import org.geotools.util.SimpleInternationalString;
-import org.opengis.feature.type.Name;
-import org.opengis.util.InternationalString;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.util.InternationalString;
 
 /**
  * Default implementation of {@link RangeType}

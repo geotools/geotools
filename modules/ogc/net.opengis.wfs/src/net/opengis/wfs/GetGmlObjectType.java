@@ -8,7 +8,7 @@ package net.opengis.wfs;
 
 import java.math.BigInteger;
 
-import org.opengis.filter.identity.GmlObjectId;
+import org.geotools.api.filter.identity.GmlObjectId;
 
 /**
  * <!-- begin-user-doc -->

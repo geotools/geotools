@@ -17,10 +17,10 @@ import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.locationtech.jts.geom.Envelope;
-import org.opengis.geometry.BoundingBox;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
 
 public class APIExamples {
 
@@ -28,7 +28,7 @@ public class APIExamples {
     private void exampleISOEnvelope() throws Exception {
         // exampleISOEnvelope start
         CoordinateReferenceSystem wsg84 = CRS.decode("EPSG:4326");
-        org.opengis.geometry.Envelope envelope = new ReferencedEnvelope(0, 10, 0, 20, wsg84);
+        org.geotools.api.geometry.Envelope envelope = new ReferencedEnvelope(0, 10, 0, 20, wsg84);
 
         double xMin = envelope.getMinimum(0);
         double yMin = envelope.getMinimum(1);
@@ -60,7 +60,7 @@ public class APIExamples {
     private void exampleBoundingBox() throws Exception {
         // exampleBoundingBox start
         CoordinateReferenceSystem wsg84 = CRS.decode("EPSG:4326");
-        org.opengis.geometry.BoundingBox bbox = new ReferencedEnvelope(0, 10, 0, 20, wsg84);
+        org.geotools.api.geometry.BoundingBox bbox = new ReferencedEnvelope(0, 10, 0, 20, wsg84);
 
         double xMin = bbox.getMinX();
         double yMin = bbox.getMinY();
@@ -221,7 +221,7 @@ public class APIExamples {
                 env; // can hold both regular ReferencedEnvelope as well as ReferencedEnvelope3D
         ReferencedEnvelope original = null; // can be instance of ReferencedEnvelope3D;
         CoordinateReferenceSystem crs = null; // can be 2D or 3D
-        org.opengis.geometry.Envelope opengis_env =
+        org.geotools.api.geometry.Envelope opengis_env =
                 null; // can be instance of ReferencedEnvelope(3D)
         org.locationtech.jts.geom.Envelope jts_env =
                 null; // can be instance of ReferencedEnvelope(3D)
@@ -233,7 +233,7 @@ public class APIExamples {
         // safely create ReferencedEnvelope from CRS, uses dimension to determine type
         env = ReferencedEnvelope.create(crs);
 
-        // safely create ReferencedEnvelope from org.opengis.geometry.Envelope, uses dimension in
+        // safely create ReferencedEnvelope from org.geotools.api.geometry.Envelope, uses dimension in
         // Envelope to determine type
         env = ReferencedEnvelope.create(opengis_env, crs);
 
@@ -241,7 +241,7 @@ public class APIExamples {
         // dimension in Envelope to determine type
         env = ReferencedEnvelope.create(jts_env, crs);
 
-        // safely reference org.opengis.geometry.Envelope as ReferencedEnvelope
+        // safely reference org.geotools.api.geometry.Envelope as ReferencedEnvelope
         // --> if it is a ReferencedEnvelope(3D), simply cast it; if not, create a conversion
         env = ReferencedEnvelope.reference(opengis_env);
 

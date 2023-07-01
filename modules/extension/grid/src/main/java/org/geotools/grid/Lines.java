@@ -26,7 +26,7 @@ import org.geotools.grid.ortholine.OrthoLineBuilder;
 import org.geotools.grid.ortholine.OrthoLineDef;
 import org.geotools.grid.ortholine.OrthoLineFeatureBuilder;
 import org.geotools.referencing.CRS;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * A utility class to create line grids with basic attributes.

@@ -36,18 +36,18 @@ import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.opengis.coverage.Coverage;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.coverage.grid.GridGeometry;
-import org.opengis.geometry.Envelope;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
+import org.geotools.api.coverage.Coverage;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.coverage.grid.GridGeometry;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * Resample a grid coverage using a different grid geometry. This operation provides the following
@@ -72,7 +72,7 @@ import org.opengis.referencing.operation.TransformException;
  *
  * <p><strong>Geotools extension:</strong><br>
  * The {@code "Resample"} operation use the default {@link
- * org.opengis.referencing.operation.CoordinateOperationFactory} for creating a transformation from
+ * org.geotools.api.referencing.operation.CoordinateOperationFactory} for creating a transformation from
  * the source to the destination coordinate reference systems. If a custom factory is desired, it
  * may be supplied as a rendering hint with the {@link
  * org.geotools.util.factory.Hints#COORDINATE_OPERATION_FACTORY} key. Rendering hints can be
@@ -107,14 +107,14 @@ import org.opengis.referencing.operation.TransformException;
  *   </tr>
  *   <tr>
  *     <td>{@code "CoordinateReferenceSystem"}</td>
- *     <td>{@link org.opengis.referencing.crs.CoordinateReferenceSystem}</td>
+ *     <td>{@link org.geotools.api.referencing.crs.CoordinateReferenceSystem}</td>
  *     <td>Same as source grid coverage</td>
  *     <td align="center">N/A</td>
  *     <td align="center">N/A</td>
  *   </tr>
  *   <tr>
  *     <td>{@code "GridGeometry"}</td>
- *     <td>{@link org.opengis.coverage.grid.GridGeometry}</td>
+ *     <td>{@link org.geotools.api.coverage.grid.GridGeometry}</td>
  *     <td>(automatic)</td>
  *     <td align="center">N/A</td>
  *     <td align="center">N/A</td>

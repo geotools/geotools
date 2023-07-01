@@ -28,7 +28,7 @@ import org.geotools.data.util.NullProgressListener;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.visitor.CalcResult;
 import org.geotools.feature.visitor.FeatureCalc;
-import org.opengis.filter.capability.FunctionName;
+import org.geotools.api.filter.capability.FunctionName;
 
 public abstract class AbstractQuantityClassificationFunction extends ClassificationFunction {
 

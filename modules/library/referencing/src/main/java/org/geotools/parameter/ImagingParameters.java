@@ -29,19 +29,19 @@ import javax.media.jai.ParameterList;
 import javax.media.jai.ParameterListDescriptor;
 import javax.media.jai.ParameterListImpl;
 import javax.media.jai.util.Range;
+import org.geotools.api.parameter.GeneralParameterDescriptor;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.InvalidParameterNameException;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.util.UnmodifiableArrayList;
 import org.geotools.util.Utilities;
-import org.opengis.parameter.GeneralParameterDescriptor;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.InvalidParameterNameException;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.parameter.ParameterValueGroup;
 
 /**
  * Wraps a JAI's {@link ParameterList}. Any change to a {@linkplain #parameter parameter value} in
@@ -72,7 +72,7 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
      * ParameterBlockJAI}. The {@linkplain ParameterBlockJAI#getSources sources} must be handled
      * separatly, because the source type for a JAI operator (typically {@link
      * java.awt.image.RenderedImage}) is not the same than the source type for a coverage operation
-     * (typically {@link org.opengis.coverage.GridCoverage}).
+     * (typically {@link org.geotools.api.coverage.GridCoverage}).
      */
     public final ParameterList parameters;
 

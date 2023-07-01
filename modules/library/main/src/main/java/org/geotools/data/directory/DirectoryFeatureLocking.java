@@ -20,7 +20,7 @@ import java.io.IOException;
 import org.geotools.data.FeatureLock;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureLocking;
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 public class DirectoryFeatureLocking extends DirectoryFeatureStore implements SimpleFeatureLocking {
 

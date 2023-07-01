@@ -23,8 +23,8 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.util.ProgressListener;
 
 /** @author ian */
 @DescribeProcess(title = "Contours", description = "Computes contours over the point features.")

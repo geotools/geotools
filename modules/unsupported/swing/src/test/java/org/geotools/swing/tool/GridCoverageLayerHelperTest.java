@@ -36,7 +36,7 @@ import org.jaitools.imageutils.ImageUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.opengis.geometry.DirectPosition;
+import org.geotools.api.geometry.DirectPosition;
 
 /**
  * Unit tests for GridCoverageLayerHelper.

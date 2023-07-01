@@ -31,11 +31,11 @@ import org.geotools.data.complex.IndexQueryManager.PartialIndexQueryManager;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.feature.FeatureCollection;
 import org.junit.Test;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.filter.And;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.filter.And;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
 
 /**
  * Tests PartialIndexQueryManager

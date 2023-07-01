@@ -18,13 +18,13 @@ package org.geotools.temporal.object;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.opengis.temporal.Duration;
-import org.opengis.temporal.Instant;
-import org.opengis.temporal.OrdinalReferenceSystem;
-import org.opengis.temporal.Period;
-import org.opengis.temporal.RelativePosition;
-import org.opengis.temporal.Separation;
-import org.opengis.temporal.TemporalGeometricPrimitive;
+import org.geotools.api.temporal.Duration;
+import org.geotools.api.temporal.Instant;
+import org.geotools.api.temporal.OrdinalReferenceSystem;
+import org.geotools.api.temporal.Period;
+import org.geotools.api.temporal.RelativePosition;
+import org.geotools.api.temporal.Separation;
+import org.geotools.api.temporal.TemporalGeometricPrimitive;
 
 /**
  * An abstract class with two subclasses for representing a temporal instant and a temporal period.

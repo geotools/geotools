@@ -23,7 +23,7 @@ import org.geotools.gml4wcs.GML;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.coverage.grid.GridEnvelope;
+import org.geotools.api.coverage.grid.GridEnvelope;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:GridLimitsType.

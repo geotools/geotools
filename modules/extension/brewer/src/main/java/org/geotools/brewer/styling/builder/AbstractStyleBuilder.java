@@ -20,8 +20,8 @@ import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.styling.Style;
-import org.opengis.filter.Filter;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.expression.Expression;
 
 abstract class AbstractStyleBuilder<T> extends AbstractSLDBuilder<T> {
 

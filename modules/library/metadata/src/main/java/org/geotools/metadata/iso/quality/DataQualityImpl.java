@@ -20,11 +20,11 @@
 package org.geotools.metadata.iso.quality;
 
 import java.util.Collection;
+import org.geotools.api.metadata.lineage.Lineage;
+import org.geotools.api.metadata.quality.DataQuality;
+import org.geotools.api.metadata.quality.Element;
+import org.geotools.api.metadata.quality.Scope;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.metadata.lineage.Lineage;
-import org.opengis.metadata.quality.DataQuality;
-import org.opengis.metadata.quality.Element;
-import org.opengis.metadata.quality.Scope;
 
 /**
  * Quality information for the data specified by a data quality scope.
@@ -44,14 +44,14 @@ public class DataQualityImpl extends MetadataEntity implements DataQuality {
     /**
      * Quantitative quality information for the data specified by the scope. Should be provided only
      * if {@linkplain Scope#getLevel scope level} is {@linkplain
-     * org.opengis.metadata.maintenance.ScopeCode#DATASET dataset}.
+     * org.geotools.api.metadata.maintenance.ScopeCode#DATASET dataset}.
      */
     private Collection<Element> reports;
 
     /**
      * Non-quantitative quality information about the lineage of the data specified by the scope.
      * Should be provided only if {@linkplain Scope#getLevel scope level} is {@linkplain
-     * org.opengis.metadata.maintenance.ScopeCode#DATASET dataset}.
+     * org.geotools.api.metadata.maintenance.ScopeCode#DATASET dataset}.
      */
     private Lineage lineage;
 
@@ -87,7 +87,7 @@ public class DataQualityImpl extends MetadataEntity implements DataQuality {
     /**
      * Quantitative quality information for the data specified by the scope. Should be provided only
      * if {@linkplain Scope#getLevel scope level} is {@linkplain
-     * org.opengis.metadata.maintenance.ScopeCode#DATASET dataset}.
+     * org.geotools.api.metadata.maintenance.ScopeCode#DATASET dataset}.
      */
     @Override
     public Collection<Element> getReports() {
@@ -97,7 +97,7 @@ public class DataQualityImpl extends MetadataEntity implements DataQuality {
     /**
      * Set the quantitative quality information for the data specified by the scope. Should be
      * provided only if {@linkplain Scope#getLevel scope level} is {@linkplain
-     * org.opengis.metadata.maintenance.ScopeCode#DATASET dataset}.
+     * org.geotools.api.metadata.maintenance.ScopeCode#DATASET dataset}.
      */
     public void setReports(final Collection<? extends Element> newValues) {
         reports = copyCollection(newValues, reports, Element.class);
@@ -106,7 +106,7 @@ public class DataQualityImpl extends MetadataEntity implements DataQuality {
     /**
      * Non-quantitative quality information about the lineage of the data specified by the scope.
      * Should be provided only if {@linkplain Scope#getLevel scope level} is {@linkplain
-     * org.opengis.metadata.maintenance.ScopeCode#DATASET dataset}.
+     * org.geotools.api.metadata.maintenance.ScopeCode#DATASET dataset}.
      */
     @Override
     public Lineage getLineage() {
@@ -116,7 +116,7 @@ public class DataQualityImpl extends MetadataEntity implements DataQuality {
     /**
      * Set the non-quantitative quality information about the lineage of the data specified by the
      * scope. Should be provided only if {@linkplain Scope#getLevel scope level} is {@linkplain
-     * org.opengis.metadata.maintenance.ScopeCode#DATASET dataset}.
+     * org.geotools.api.metadata.maintenance.ScopeCode#DATASET dataset}.
      */
     public void setLineage(final Lineage newValue) {
         checkWritePermission();

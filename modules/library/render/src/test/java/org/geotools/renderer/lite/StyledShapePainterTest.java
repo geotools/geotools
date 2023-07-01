@@ -41,8 +41,8 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.referencing.operation.MathTransform;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.referencing.operation.MathTransform;
 
 public class StyledShapePainterTest {
 

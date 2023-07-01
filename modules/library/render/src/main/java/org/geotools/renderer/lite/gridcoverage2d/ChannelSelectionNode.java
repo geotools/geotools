@@ -32,7 +32,7 @@ import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.StyleVisitor;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
-import org.opengis.util.InternationalString;
+import org.geotools.api.util.InternationalString;
 
 /**
  * {@link CoverageProcessingNode} that actually implement a {@link ChannelSelection} operation as

@@ -44,10 +44,10 @@ import org.geotools.util.logging.Logging;
 import org.jaitools.numeric.Range;
 import org.jaitools.numeric.Statistic;
 import org.jaitools.numeric.StreamingSampleStats;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.PropertyDescriptor;
-import org.opengis.filter.FilterFactory;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.PropertyDescriptor;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * Process that classifies vector data into "classes" using one of the following methods:

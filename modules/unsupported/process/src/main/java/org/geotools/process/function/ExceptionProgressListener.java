@@ -18,8 +18,8 @@ package org.geotools.process.function;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.opengis.util.InternationalString;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.util.InternationalString;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * A listener that will just keep track of exceptions

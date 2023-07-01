@@ -27,9 +27,9 @@ import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.expression.Function;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.expression.Function;
 
 public class FilterFunction_equalToTest {
     protected final GeometryFactory gf = JTSFactoryFinder.getGeometryFactory(null);

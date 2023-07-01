@@ -25,9 +25,9 @@ import org.geotools.temporal.reference.DefaultTemporalReferenceSystem;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.temporal.IndeterminateValue;
-import org.opengis.temporal.TemporalPosition;
-import org.opengis.temporal.TemporalReferenceSystem;
+import org.geotools.api.temporal.IndeterminateValue;
+import org.geotools.api.temporal.TemporalPosition;
+import org.geotools.api.temporal.TemporalReferenceSystem;
 
 /** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultTemporalPositionTest {

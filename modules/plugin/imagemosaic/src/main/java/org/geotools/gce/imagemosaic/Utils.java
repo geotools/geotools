@@ -121,16 +121,16 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.TopologyException;
 import org.locationtech.jts.operation.overlay.snap.GeometrySnapper;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.spatial.BBOX;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * Sparse utilities for the various mosaic classes. I use them to extract complex code from other
@@ -2481,7 +2481,7 @@ public class Utils {
         return JTS.toGeometry(sourceEnvelope);
     }
 
-    private static org.opengis.geometry.Envelope getCRSEnvelope(CoordinateReferenceSystem targetCRS)
+    private static org.geotools.api.geometry.Envelope getCRSEnvelope(CoordinateReferenceSystem targetCRS)
             throws FactoryException, NoSuchAuthorityCodeException {
         if (targetCRS.getDomainOfValidity() == null) {
             Integer code = CRS.lookupEpsgCode(targetCRS, true);
@@ -2489,7 +2489,7 @@ public class Utils {
                 CRS.decode("EPSG:" + code, CRS.getAxisOrder(targetCRS) != AxisOrder.NORTH_EAST);
             }
         }
-        org.opengis.geometry.Envelope envelope = CRS.getEnvelope(targetCRS);
+        org.geotools.api.geometry.Envelope envelope = CRS.getEnvelope(targetCRS);
         return envelope;
     }
 

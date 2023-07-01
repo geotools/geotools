@@ -40,13 +40,13 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.FeatureVisitor;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.Filter;
-import org.opengis.filter.expression.ExpressionVisitor;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.sort.SortOrder;
+import org.geotools.api.feature.FeatureVisitor;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.expression.ExpressionVisitor;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.sort.SortOrder;
 import org.xml.sax.helpers.NamespaceSupport;
 
 public abstract class AbstractPreGeneralizedFeatureSourceTest {

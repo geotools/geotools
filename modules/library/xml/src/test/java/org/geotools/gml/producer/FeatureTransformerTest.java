@@ -19,8 +19,8 @@ import org.geotools.test.xml.XmlTestSupport;
 import org.geotools.util.factory.Hints;
 import org.junit.Test;
 import org.locationtech.jts.io.WKTReader;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 public class FeatureTransformerTest extends XmlTestSupport {
 

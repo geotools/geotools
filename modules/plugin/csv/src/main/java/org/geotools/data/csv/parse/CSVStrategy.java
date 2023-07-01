@@ -27,8 +27,8 @@ import java.util.Map;
 import java.util.logging.Logger;
 import org.geotools.data.csv.CSVFileState;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 public abstract class CSVStrategy {
     /** logger */

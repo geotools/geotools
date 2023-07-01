@@ -24,7 +24,7 @@ import org.geotools.gml3.v3_2.gsr.GSR;
 import org.geotools.gml3.v3_2.gss.GSS;
 import org.geotools.gml3.v3_2.gts.GTS;
 import org.geotools.xsd.XSD;
-import org.opengis.feature.type.Schema;
+import org.geotools.api.feature.type.Schema;
 
 /**
  * This interface contains the qualified names of all the types,elements, and attributes in the

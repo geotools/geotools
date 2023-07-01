@@ -25,12 +25,12 @@ import javax.measure.quantity.Length;
 import net.sf.geographiclib.Geodesic;
 import net.sf.geographiclib.GeodesicData;
 import net.sf.geographiclib.GeodesicMask;
+import org.geotools.api.referencing.datum.Ellipsoid;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.wkt.Formatter;
 import org.geotools.util.Utilities;
-import org.opengis.referencing.datum.Ellipsoid;
 import si.uom.SI;
 
 /**

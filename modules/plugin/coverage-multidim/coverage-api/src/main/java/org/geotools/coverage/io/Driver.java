@@ -24,8 +24,8 @@ import org.geotools.data.Parameter;
 import org.geotools.util.factory.Factory;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.factory.OptionalFactory;
-import org.opengis.util.InternationalString;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.util.InternationalString;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * A driver adding the ability to work with a new coverage format or service.

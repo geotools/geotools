@@ -22,7 +22,7 @@ import org.geotools.metadata.i18n.Errors;
  * Thrown by {@link GeneralGridGeometry} when a grid geometry is in an invalid state. For example
  * this exception is thrown when {@link GeneralGridGeometry#getGridRange() getGridRange()} is
  * invoked while the grid geometry were built with a null {@link
- * org.opengis.coverage.grid.GridRange}.
+ * org.geotools.api.coverage.grid.GridRange}.
  *
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

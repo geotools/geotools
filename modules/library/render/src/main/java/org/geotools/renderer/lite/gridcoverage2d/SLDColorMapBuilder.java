@@ -35,8 +35,8 @@ import org.geotools.styling.ColorMap;
 import org.geotools.styling.ColorMapEntry;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.util.SuppressFBWarnings;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
 
 /**
  * Builder facility for creating a {@link LinearColorMap} using elements from {@link

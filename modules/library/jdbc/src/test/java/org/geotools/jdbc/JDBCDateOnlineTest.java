@@ -11,9 +11,9 @@ import java.util.TimeZone;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
 
 public abstract class JDBCDateOnlineTest extends JDBCTestSupport {
 

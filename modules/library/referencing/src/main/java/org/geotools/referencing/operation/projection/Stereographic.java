@@ -24,19 +24,19 @@ import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 
 import java.util.Objects;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.PlanarProjection;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.Utilities;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.PlanarProjection;
-import org.opengis.util.InternationalString;
 
 /**
  * Stereographic Projection. The directions starting from the central point are true, but the areas

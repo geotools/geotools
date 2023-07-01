@@ -18,7 +18,7 @@ package org.geotools.feature.collection;
 
 import java.util.NoSuchElementException;
 import org.geotools.feature.FeatureIterator;
-import org.opengis.feature.Feature;
+import org.geotools.api.feature.Feature;
 
 /**
  * A feature iterator that completely delegates to another FeatureIterator.

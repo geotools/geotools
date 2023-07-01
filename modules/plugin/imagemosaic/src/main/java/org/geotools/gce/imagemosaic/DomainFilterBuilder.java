@@ -24,8 +24,8 @@ import java.util.logging.Logger;
 import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.util.Range;
 import org.geotools.util.logging.Logging;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
 
 /** Helper class to build filters matching the provided dimension values */
 public class DomainFilterBuilder {

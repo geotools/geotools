@@ -43,11 +43,11 @@ import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.UserLayer;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Parser;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.GraphicalSymbol;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.GraphicalSymbol;
 
 public class StyleExamples {
 
@@ -134,7 +134,7 @@ public class StyleExamples {
         dotSymbols.add(sf.mark(ff.literal("circle"), null, null));
         Graphic dotGraphic = sf.graphic(dotSymbols, null, ff.literal(3), null, null, null);
         PointSymbolizer dotSymbolizer = sf.pointSymbolizer("dot", null, null, null, dotGraphic);
-        List<org.opengis.style.Symbolizer> symbolizers = new ArrayList<>();
+        List<org.geotools.api.style.Symbolizer> symbolizers = new ArrayList<>();
         symbolizers.add(dotSymbolizer);
         Filter other = null; // null will mark this rule as "other" accepting all remaining features
         Rule rule2 =

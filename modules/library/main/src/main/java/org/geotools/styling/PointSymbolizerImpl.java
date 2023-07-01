@@ -19,8 +19,8 @@ package org.geotools.styling;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.util.SimpleInternationalString;
-import org.opengis.style.StyleVisitor;
-import org.opengis.util.Cloneable;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.util.Cloneable;
 
 /**
  * Provides a Java representation of the PointSymbolizer. This defines how points are to be
@@ -68,7 +68,7 @@ public class PointSymbolizerImpl extends AbstractSymbolizer implements PointSymb
      * @param graphic New value of property graphic.
      */
     @Override
-    public void setGraphic(org.opengis.style.Graphic graphic) {
+    public void setGraphic(org.geotools.api.style.Graphic graphic) {
         if (this.graphic == graphic) {
             return;
         }
@@ -129,14 +129,14 @@ public class PointSymbolizerImpl extends AbstractSymbolizer implements PointSymb
         return true;
     }
 
-    static PointSymbolizerImpl cast(org.opengis.style.Symbolizer symbolizer) {
+    static PointSymbolizerImpl cast(org.geotools.api.style.Symbolizer symbolizer) {
         if (symbolizer == null) {
             return null;
         } else if (symbolizer instanceof PointSymbolizerImpl) {
             return (PointSymbolizerImpl) symbolizer;
-        } else if (symbolizer instanceof org.opengis.style.PointSymbolizer) {
-            org.opengis.style.PointSymbolizer pointSymbolizer =
-                    (org.opengis.style.PointSymbolizer) symbolizer;
+        } else if (symbolizer instanceof org.geotools.api.style.PointSymbolizer) {
+            org.geotools.api.style.PointSymbolizer pointSymbolizer =
+                    (org.geotools.api.style.PointSymbolizer) symbolizer;
             PointSymbolizerImpl copy = new PointSymbolizerImpl();
             copy.setDescription(pointSymbolizer.getDescription());
             copy.setGeometryPropertyName(pointSymbolizer.getGeometryPropertyName());

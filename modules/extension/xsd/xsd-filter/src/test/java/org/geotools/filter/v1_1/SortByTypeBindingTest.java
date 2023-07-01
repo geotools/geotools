@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.geotools.xsd.Binding;
 import org.junit.Test;
-import org.opengis.filter.sort.SortBy;
+import org.geotools.api.filter.sort.SortBy;
 import org.w3c.dom.Document;
 
 public class SortByTypeBindingTest extends FilterTestSupport {

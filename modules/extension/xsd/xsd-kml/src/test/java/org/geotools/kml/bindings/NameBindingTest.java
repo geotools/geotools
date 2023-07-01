@@ -12,7 +12,7 @@ import org.geotools.kml.v22.KML;
 import org.geotools.kml.v22.KMLTestSupport;
 import org.geotools.xsd.Binding;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 public class NameBindingTest extends KMLTestSupport {
     @Test

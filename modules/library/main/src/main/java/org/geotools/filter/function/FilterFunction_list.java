@@ -25,8 +25,8 @@ import java.util.Collection;
 import java.util.List;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * A simple function that creates a list of values of any number of arguments

@@ -19,9 +19,9 @@ package org.geotools.gce.imagemosaic.catalog.oracle;
 import java.util.List;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.transform.Definition;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.Name;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * A simple interface which provides FeatureType mapping information such as the name of the

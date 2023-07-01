@@ -29,7 +29,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 public class TileMatrix extends org.geotools.ows.wmts.model.TileMatrix {
     static JsonFactory factory = new JsonFactory();

@@ -23,7 +23,7 @@ import static org.junit.Assert.assertNull;
 import javax.xml.namespace.QName;
 import org.geotools.xsd.Binding;
 import org.junit.Test;
-import org.opengis.filter.capability.ComparisonOperators;
+import org.geotools.api.filter.capability.ComparisonOperators;
 import org.w3c.dom.Document;
 
 public class Comparison_OperatorsTypeBindingTest extends FilterCapabilitiesTestSupport {

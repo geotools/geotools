@@ -19,8 +19,8 @@ package org.geotools.mbstyle.expression;
 
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.json.simple.JSONArray;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
 
 /** A class to transform mapbox color expressions into GeoTools expressions. */
 public class MBColor extends MBExpression {

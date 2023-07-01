@@ -24,16 +24,16 @@ import java.util.Set;
 import javax.measure.Unit;
 import javax.swing.Icon;
 import org.geotools.util.factory.Factory;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.Filter;
-import org.opengis.filter.Id;
-import org.opengis.filter.expression.Expression;
-import org.opengis.metadata.citation.OnLineResource;
-import org.opengis.style.ContrastMethod;
-import org.opengis.util.InternationalString;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.metadata.citation.OnLineResource;
+import org.geotools.api.style.ContrastMethod;
+import org.geotools.api.util.InternationalString;
 
 /** Abstract base class for implementing style factories. */
-public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
+public interface StyleFactory extends Factory, org.geotools.api.style.StyleFactory {
 
     public TextSymbolizer createTextSymbolizer(
             Fill fill,
@@ -312,20 +312,20 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
     public ShadedRelief createShadedRelief(Expression reliefFactor);
 
     //
-    // Type Narrow org.opengis.StyleFactory
+    // Type Narrow org.geotools.api.StyleFactory
     //
     /** Indicate what part of a Graphic is used to mark the location. */
     @Override
     AnchorPoint anchorPoint(Expression x, Expression y);
     /** */
     @Override
-    ChannelSelection channelSelection(org.opengis.style.SelectedChannelType gray);
+    ChannelSelection channelSelection(org.geotools.api.style.SelectedChannelType gray);
     /** */
     @Override
     ChannelSelection channelSelection(
-            org.opengis.style.SelectedChannelType red,
-            org.opengis.style.SelectedChannelType green,
-            org.opengis.style.SelectedChannelType blue);
+            org.geotools.api.style.SelectedChannelType red,
+            org.geotools.api.style.SelectedChannelType green,
+            org.geotools.api.style.SelectedChannelType blue);
 
     /**
      * Wrap up a "Categorize" function using the provided expressions.
@@ -361,7 +361,7 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
     /** */
     @Override
     ContrastEnhancement contrastEnhancement(
-            Expression gamma, org.opengis.style.ContrastMethod method);
+            Expression gamma, org.geotools.api.style.ContrastMethod method);
 
     /** */
     @Override
@@ -376,12 +376,12 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
     ExternalGraphic externalGraphic(
             OnLineResource resource,
             String format,
-            Collection<org.opengis.style.ColorReplacement> replacements);
+            Collection<org.geotools.api.style.ColorReplacement> replacements);
 
     /** */
     @Override
     ExternalGraphic externalGraphic(
-            Icon inline, Collection<org.opengis.style.ColorReplacement> replacements);
+            Icon inline, Collection<org.geotools.api.style.ColorReplacement> replacements);
 
     /** */
     @Override
@@ -406,15 +406,15 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
     @Override
     FeatureTypeStyle featureTypeStyle(
             String name,
-            org.opengis.style.Description description,
+            org.geotools.api.style.Description description,
             Id definedFor,
             Set<Name> featureTypeNames,
-            Set<org.opengis.style.SemanticType> types,
-            List<org.opengis.style.Rule> rules);
+            Set<org.geotools.api.style.SemanticType> types,
+            List<org.geotools.api.style.Rule> rules);
 
     /** */
     @Override
-    Fill fill(org.opengis.style.GraphicFill fill, Expression color, Expression opacity);
+    Fill fill(org.geotools.api.style.GraphicFill fill, Expression color, Expression opacity);
 
     /** */
     @Override
@@ -422,47 +422,47 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
 
     @Override
     Graphic graphic(
-            List<org.opengis.style.GraphicalSymbol> symbols,
+            List<org.geotools.api.style.GraphicalSymbol> symbols,
             Expression opacity,
             Expression size,
             Expression rotation,
-            org.opengis.style.AnchorPoint anchor,
-            org.opengis.style.Displacement disp);
+            org.geotools.api.style.AnchorPoint anchor,
+            org.geotools.api.style.Displacement disp);
 
     /** */
     @Override
     Graphic graphicFill(
-            List<org.opengis.style.GraphicalSymbol> symbols,
+            List<org.geotools.api.style.GraphicalSymbol> symbols,
             Expression opacity,
             Expression size,
             Expression rotation,
-            org.opengis.style.AnchorPoint anchorPoint,
-            org.opengis.style.Displacement displacement);
+            org.geotools.api.style.AnchorPoint anchorPoint,
+            org.geotools.api.style.Displacement displacement);
 
     /** */
     @Override
     GraphicLegend graphicLegend(
-            List<org.opengis.style.GraphicalSymbol> symbols,
+            List<org.geotools.api.style.GraphicalSymbol> symbols,
             Expression opacity,
             Expression size,
             Expression rotation,
-            org.opengis.style.AnchorPoint anchorPoint,
-            org.opengis.style.Displacement displacement);
+            org.geotools.api.style.AnchorPoint anchorPoint,
+            org.geotools.api.style.Displacement displacement);
     /** */
     @Override
     Graphic graphicStroke(
-            List<org.opengis.style.GraphicalSymbol> symbols,
+            List<org.geotools.api.style.GraphicalSymbol> symbols,
             Expression opacity,
             Expression size,
             Expression rotation,
-            org.opengis.style.AnchorPoint anchorPoint,
-            org.opengis.style.Displacement displacement,
+            org.geotools.api.style.AnchorPoint anchorPoint,
+            org.geotools.api.style.Displacement displacement,
             Expression initialGap,
             Expression gap);
 
     /** */
     @Override
-    Halo halo(org.opengis.style.Fill fill, Expression radius);
+    Halo halo(org.geotools.api.style.Fill fill, Expression radius);
 
     /** */
     @Override
@@ -485,26 +485,26 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
     LineSymbolizer lineSymbolizer(
             String name,
             Expression geometry,
-            org.opengis.style.Description description,
+            org.geotools.api.style.Description description,
             Unit<?> unit,
-            org.opengis.style.Stroke stroke,
+            org.geotools.api.style.Stroke stroke,
             Expression offset);
 
     /** */
     @Override
     Mark mark(
-            Expression wellKnownName, org.opengis.style.Fill fill, org.opengis.style.Stroke stroke);
+            Expression wellKnownName, org.geotools.api.style.Fill fill, org.geotools.api.style.Stroke stroke);
     /** */
     @Override
     Mark mark(
-            org.opengis.style.ExternalMark externalMark,
-            org.opengis.style.Fill fill,
-            org.opengis.style.Stroke stroke);
+            org.geotools.api.style.ExternalMark externalMark,
+            org.geotools.api.style.Fill fill,
+            org.geotools.api.style.Stroke stroke);
     /** */
     @Override
     PointPlacement pointPlacement(
-            org.opengis.style.AnchorPoint anchor,
-            org.opengis.style.Displacement displacement,
+            org.geotools.api.style.AnchorPoint anchor,
+            org.geotools.api.style.Displacement displacement,
             Expression rotation);
     /**
      * Creation of a PointSymbolizer to describe how geometry can be rendered as a point.
@@ -520,9 +520,9 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
     PointSymbolizer pointSymbolizer(
             String name,
             Expression geometry,
-            org.opengis.style.Description description,
+            org.geotools.api.style.Description description,
             Unit<?> unit,
-            org.opengis.style.Graphic graphic);
+            org.geotools.api.style.Graphic graphic);
     /**
      * @param name handle used to refer to this symbolizer (machine readable)
      * @param geometry Expression used to extract the Geometry rendered; usually a PropertyName
@@ -533,11 +533,11 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
     PolygonSymbolizer polygonSymbolizer(
             String name,
             Expression geometry,
-            org.opengis.style.Description description,
+            org.geotools.api.style.Description description,
             Unit<?> unit,
-            org.opengis.style.Stroke stroke,
-            org.opengis.style.Fill fill,
-            org.opengis.style.Displacement displacement,
+            org.geotools.api.style.Stroke stroke,
+            org.geotools.api.style.Fill fill,
+            org.geotools.api.style.Displacement displacement,
             Expression offset);
     /**
      * @param name handle used to refer to this symbolizer (machine readable)
@@ -550,15 +550,15 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
     RasterSymbolizer rasterSymbolizer(
             String name,
             Expression geometry,
-            org.opengis.style.Description description,
+            org.geotools.api.style.Description description,
             Unit<?> unit,
             Expression opacity,
-            org.opengis.style.ChannelSelection channelSelection,
-            org.opengis.style.OverlapBehavior overlapsBehaviour,
-            org.opengis.style.ColorMap colorMap,
-            org.opengis.style.ContrastEnhancement contrast,
-            org.opengis.style.ShadedRelief shaded,
-            org.opengis.style.Symbolizer outline);
+            org.geotools.api.style.ChannelSelection channelSelection,
+            org.geotools.api.style.OverlapBehavior overlapsBehaviour,
+            org.geotools.api.style.ColorMap colorMap,
+            org.geotools.api.style.ContrastEnhancement contrast,
+            org.geotools.api.style.ShadedRelief shaded,
+            org.geotools.api.style.Symbolizer outline);
     /**
      * Used to represent a symbolizer intended for a vendor specific rendering process. This
      * facility should be used to control subject matter that is beyond the scope of the traditional
@@ -578,7 +578,7 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
     ExtensionSymbolizer extensionSymbolizer(
             String name,
             String geometry,
-            org.opengis.style.Description description,
+            org.geotools.api.style.Description description,
             Unit<?> unit,
             String extensionName,
             Map<String, Expression> parameters);
@@ -596,22 +596,22 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
     @Override
     Rule rule(
             String name,
-            org.opengis.style.Description description,
-            org.opengis.style.GraphicLegend legend,
+            org.geotools.api.style.Description description,
+            org.geotools.api.style.GraphicLegend legend,
             double min,
             double max,
-            List<org.opengis.style.Symbolizer> symbolizers,
+            List<org.geotools.api.style.Symbolizer> symbolizers,
             Filter filter);
 
     /** @return SelectedChannelType */
     @Override
     SelectedChannelType selectedChannelType(
-            Expression channelName, org.opengis.style.ContrastEnhancement contrastEnhancement);
+            Expression channelName, org.geotools.api.style.ContrastEnhancement contrastEnhancement);
 
     /** @return SelectedChannelType */
     @Override
     SelectedChannelType selectedChannelType(
-            String channelName, org.opengis.style.ContrastEnhancement contrastEnhancement);
+            String channelName, org.geotools.api.style.ContrastEnhancement contrastEnhancement);
 
     /** @return ShadedRelief */
     @Override
@@ -629,7 +629,7 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
 
     @Override
     Stroke stroke(
-            org.opengis.style.GraphicFill fill,
+            org.geotools.api.style.GraphicFill fill,
             Expression color,
             Expression opacity,
             Expression width,
@@ -640,7 +640,7 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
 
     @Override
     Stroke stroke(
-            org.opengis.style.GraphicStroke stroke,
+            org.geotools.api.style.GraphicStroke stroke,
             Expression color,
             Expression opacity,
             Expression width,
@@ -653,10 +653,10 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
     @Override
     Style style(
             String name,
-            org.opengis.style.Description description,
+            org.geotools.api.style.Description description,
             boolean isDefault,
-            List<org.opengis.style.FeatureTypeStyle> featureTypeStyles,
-            org.opengis.style.Symbolizer defaultSymbolizer);
+            List<org.geotools.api.style.FeatureTypeStyle> featureTypeStyles,
+            org.geotools.api.style.Symbolizer defaultSymbolizer);
     /**
      * Creation of a TextSymbolizer defining how labels are portrayed.
      *
@@ -675,13 +675,13 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
     TextSymbolizer textSymbolizer(
             String name,
             Expression geometry,
-            org.opengis.style.Description description,
+            org.geotools.api.style.Description description,
             Unit<?> unit,
             Expression label,
-            org.opengis.style.Font font,
-            org.opengis.style.LabelPlacement placement,
-            org.opengis.style.Halo halo,
-            org.opengis.style.Fill fill);
+            org.geotools.api.style.Font font,
+            org.geotools.api.style.LabelPlacement placement,
+            org.geotools.api.style.Halo halo,
+            org.geotools.api.style.Fill fill);
 
     /** @return a deep copy of the method */
     public ContrastMethod createContrastMethod(ContrastMethod method);

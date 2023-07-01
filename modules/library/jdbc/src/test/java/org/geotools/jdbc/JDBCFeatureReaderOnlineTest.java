@@ -27,9 +27,9 @@ import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.type.PropertyDescriptor;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.type.PropertyDescriptor;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 public abstract class JDBCFeatureReaderOnlineTest extends JDBCTestSupport {
 

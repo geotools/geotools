@@ -29,8 +29,8 @@ import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.renderer.style.MarkFactory;
 import org.geotools.renderer.style.windbarbs.WindBarb.WindBarbDefinition;
 import org.geotools.util.SoftValueHashMap;
-import org.opengis.feature.Feature;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * Factory to produce WindBarbs. Urls for wind barbs are in the form:
@@ -83,7 +83,7 @@ public class WindBarbsFactory implements MarkFactory {
      * Return a shape with the given url.
      *
      * @see org.geotools.renderer.style.MarkFactory#getShape(java.awt.Graphics2D,
-     *     org.opengis.filter.expression.Expression, org.opengis.feature.Feature)
+     *     org.geotools.api.filter.expression.Expression, org.geotools.api.feature.Feature)
      */
     @Override
     public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature) {

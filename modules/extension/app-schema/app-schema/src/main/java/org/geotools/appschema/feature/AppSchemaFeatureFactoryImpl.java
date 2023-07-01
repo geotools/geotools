@@ -26,20 +26,20 @@ import org.geotools.feature.GeometryAttributeImpl;
 import org.geotools.feature.ValidatingFeatureFactoryImpl;
 import org.geotools.feature.type.GeometryDescriptorImpl;
 import org.geotools.feature.type.GeometryTypeImpl;
-import org.opengis.feature.Attribute;
-import org.opengis.feature.ComplexAttribute;
-import org.opengis.feature.Feature;
-import org.opengis.feature.FeatureFactory;
-import org.opengis.feature.GeometryAttribute;
-import org.opengis.feature.Property;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.ComplexType;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.feature.type.GeometryType;
-import org.opengis.filter.identity.FeatureId;
-import org.opengis.filter.identity.GmlObjectId;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.feature.Attribute;
+import org.geotools.api.feature.ComplexAttribute;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.FeatureFactory;
+import org.geotools.api.feature.GeometryAttribute;
+import org.geotools.api.feature.Property;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.ComplexType;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.feature.type.GeometryType;
+import org.geotools.api.filter.identity.FeatureId;
+import org.geotools.api.filter.identity.GmlObjectId;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * {@link FeatureFactory} that:
@@ -59,7 +59,7 @@ public class AppSchemaFeatureFactoryImpl extends ValidatingFeatureFactoryImpl {
      * Create an attribute, even for null id.
      *
      * @see org.geotools.feature.AbstractFeatureFactoryImpl#createAttribute(java.lang.Object,
-     *     org.opengis.feature.type.AttributeDescriptor, java.lang.String)
+     *     org.geotools.api.feature.type.AttributeDescriptor, java.lang.String)
      */
     @Override
     public Attribute createAttribute(Object value, AttributeDescriptor descriptor, String id) {
@@ -71,8 +71,8 @@ public class AppSchemaFeatureFactoryImpl extends ValidatingFeatureFactoryImpl {
      *
      * @see
      *     org.geotools.feature.AbstractFeatureFactoryImpl#createGeometryAttribute(java.lang.Object,
-     *     org.opengis.feature.type.GeometryDescriptor, java.lang.String,
-     *     org.opengis.referencing.crs.CoordinateReferenceSystem)
+     *     org.geotools.api.feature.type.GeometryDescriptor, java.lang.String,
+     *     org.geotools.api.referencing.crs.CoordinateReferenceSystem)
      */
     @Override
     public GeometryAttribute createGeometryAttribute(
@@ -110,7 +110,7 @@ public class AppSchemaFeatureFactoryImpl extends ValidatingFeatureFactoryImpl {
      *
      * @see
      *     org.geotools.feature.AbstractFeatureFactoryImpl#createComplexAttribute(java.util.Collection,
-     *     org.opengis.feature.type.AttributeDescriptor, java.lang.String)
+     *     org.geotools.api.feature.type.AttributeDescriptor, java.lang.String)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -125,7 +125,7 @@ public class AppSchemaFeatureFactoryImpl extends ValidatingFeatureFactoryImpl {
      *
      * @see
      *     org.geotools.feature.AbstractFeatureFactoryImpl#createComplexAttribute(java.util.Collection,
-     *     org.opengis.feature.type.ComplexType, java.lang.String)
+     *     org.geotools.api.feature.type.ComplexType, java.lang.String)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -138,7 +138,7 @@ public class AppSchemaFeatureFactoryImpl extends ValidatingFeatureFactoryImpl {
      * Create a new feature, even for null value or id.
      *
      * @see org.geotools.feature.AbstractFeatureFactoryImpl#createFeature(java.util.Collection,
-     *     org.opengis.feature.type.AttributeDescriptor, java.lang.String)
+     *     org.geotools.api.feature.type.AttributeDescriptor, java.lang.String)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -150,7 +150,7 @@ public class AppSchemaFeatureFactoryImpl extends ValidatingFeatureFactoryImpl {
      * Create a new feature, even for null value or id.
      *
      * @see org.geotools.feature.AbstractFeatureFactoryImpl#createFeature(java.util.Collection,
-     *     org.opengis.feature.type.FeatureType, java.lang.String)
+     *     org.geotools.api.feature.type.FeatureType, java.lang.String)
      */
     @Override
     @SuppressWarnings("unchecked")

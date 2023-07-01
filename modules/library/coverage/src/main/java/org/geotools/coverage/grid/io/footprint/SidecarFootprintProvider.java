@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /**
  * A footprint provider looking for sidecar files (SHP, WKB, WKT, ...). By default, footprints are

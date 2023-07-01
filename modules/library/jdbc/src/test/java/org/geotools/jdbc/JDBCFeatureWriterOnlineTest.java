@@ -24,7 +24,7 @@ import java.util.List;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Transaction;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /**
  * JDBC {@link FeatureWriter}-implementation tampers with input-data.

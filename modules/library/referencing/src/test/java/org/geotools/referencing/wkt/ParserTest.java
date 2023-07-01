@@ -27,6 +27,14 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.HashSet;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.GeographicCRS;
+import org.geotools.api.referencing.cs.CartesianCS;
+import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ScriptRunner;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -36,14 +44,6 @@ import org.geotools.referencing.operation.DefaultMathTransformFactory;
 import org.geotools.referencing.operation.projection.CylindricalEqualArea;
 import org.geotools.test.TestData;
 import org.junit.Test;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.GeographicCRS;
-import org.opengis.referencing.cs.CartesianCS;
-import org.opengis.referencing.operation.MathTransform;
 
 /**
  * Tests the WKT {@link Parser} implementation.

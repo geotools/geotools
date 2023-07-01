@@ -17,7 +17,7 @@
 /**
  * {@linkplain org.geotools.metadata.iso.identification.IdentificationImpl Identification}
  * implementation. An explanation for this package is provided in the {@linkplain
- * org.opengis.metadata.identification OpenGIS&reg; javadoc}. The remaining discussion on this page
- * is specific to the Geotools implementation.
+ * org.geotools.api.metadata.identification OpenGIS&reg; javadoc}. The remaining discussion on this
+ * page is specific to the Geotools implementation.
  */
 package org.geotools.metadata.iso.identification;

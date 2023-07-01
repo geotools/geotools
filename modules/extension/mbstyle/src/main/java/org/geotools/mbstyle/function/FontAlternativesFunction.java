@@ -22,7 +22,7 @@ import java.util.List;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.renderer.style.FontCache;
-import org.opengis.filter.capability.FunctionName;
+import org.geotools.api.filter.capability.FunctionName;
 
 /**
  * Looks up all script specific alternatives for the given font name. See also {@link

@@ -20,36 +20,36 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import org.opengis.filter.And;
-import org.opengis.filter.BinaryLogicOperator;
-import org.opengis.filter.Filter;
-import org.opengis.filter.Id;
-import org.opengis.filter.Not;
-import org.opengis.filter.Or;
-import org.opengis.filter.PropertyIsBetween;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.PropertyIsGreaterThan;
-import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
-import org.opengis.filter.PropertyIsLessThan;
-import org.opengis.filter.PropertyIsLessThanOrEqualTo;
-import org.opengis.filter.PropertyIsLike;
-import org.opengis.filter.PropertyIsNotEqualTo;
-import org.opengis.filter.PropertyIsNull;
-import org.opengis.filter.expression.Add;
-import org.opengis.filter.expression.Divide;
-import org.opengis.filter.expression.Multiply;
-import org.opengis.filter.expression.Subtract;
-import org.opengis.filter.spatial.BBOX;
-import org.opengis.filter.spatial.Beyond;
-import org.opengis.filter.spatial.Contains;
-import org.opengis.filter.spatial.Crosses;
-import org.opengis.filter.spatial.DWithin;
-import org.opengis.filter.spatial.Disjoint;
-import org.opengis.filter.spatial.Equals;
-import org.opengis.filter.spatial.Intersects;
-import org.opengis.filter.spatial.Overlaps;
-import org.opengis.filter.spatial.Touches;
-import org.opengis.filter.spatial.Within;
+import org.geotools.api.filter.And;
+import org.geotools.api.filter.BinaryLogicOperator;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.Not;
+import org.geotools.api.filter.Or;
+import org.geotools.api.filter.PropertyIsBetween;
+import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.PropertyIsGreaterThan;
+import org.geotools.api.filter.PropertyIsGreaterThanOrEqualTo;
+import org.geotools.api.filter.PropertyIsLessThan;
+import org.geotools.api.filter.PropertyIsLessThanOrEqualTo;
+import org.geotools.api.filter.PropertyIsLike;
+import org.geotools.api.filter.PropertyIsNotEqualTo;
+import org.geotools.api.filter.PropertyIsNull;
+import org.geotools.api.filter.expression.Add;
+import org.geotools.api.filter.expression.Divide;
+import org.geotools.api.filter.expression.Multiply;
+import org.geotools.api.filter.expression.Subtract;
+import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.api.filter.spatial.Beyond;
+import org.geotools.api.filter.spatial.Contains;
+import org.geotools.api.filter.spatial.Crosses;
+import org.geotools.api.filter.spatial.DWithin;
+import org.geotools.api.filter.spatial.Disjoint;
+import org.geotools.api.filter.spatial.Equals;
+import org.geotools.api.filter.spatial.Intersects;
+import org.geotools.api.filter.spatial.Overlaps;
+import org.geotools.api.filter.spatial.Touches;
+import org.geotools.api.filter.spatial.Within;
 
 /**
  * Represents the Filter capabilities that are supported by a SQLEncoder
@@ -60,7 +60,7 @@ import org.opengis.filter.spatial.Within;
  * <p>This class is used as one big mask to detect filters that cannot be performed
  *
  * @author Chris Holmes, TOPP TODO: check if possible to deprecate @ deprecated use {@link
- *     org.opengis.filter.capability.FilterCapabilities}.
+ *     org.geotools.api.filter.capability.FilterCapabilities}.
  */
 public class FilterCapabilities {
     /** Mask for no operation */
@@ -245,8 +245,8 @@ public class FilterCapabilities {
      * @param type the Class that indicates the new support.
      */
     public void addType(Class type) {
-        if (org.opengis.filter.Filter.class.isAssignableFrom(type)
-                || org.opengis.filter.expression.Expression.class.isAssignableFrom(type)) {
+        if (org.geotools.api.filter.Filter.class.isAssignableFrom(type)
+                || org.geotools.api.filter.expression.Expression.class.isAssignableFrom(type)) {
             addType(FUNCTIONS);
             functions.add(type);
         }
@@ -259,8 +259,8 @@ public class FilterCapabilities {
      * @param type the Class that indicates the new support.
      */
     public void addType(Class type, boolean addFunctionType) {
-        if (org.opengis.filter.Filter.class.isAssignableFrom(type)
-                || org.opengis.filter.expression.Expression.class.isAssignableFrom(type)) {
+        if (org.geotools.api.filter.Filter.class.isAssignableFrom(type)
+                || org.geotools.api.filter.expression.Expression.class.isAssignableFrom(type)) {
             if (addFunctionType) addType(FUNCTIONS);
             functions.add(type);
         }
@@ -296,7 +296,7 @@ public class FilterCapabilities {
      * @param filter The Filter to be tested.
      * @return true if supported, false otherwise.
      */
-    public boolean supports(org.opengis.filter.Filter filter) {
+    public boolean supports(org.geotools.api.filter.Filter filter) {
         for (Class<?> function : functions) {
             if (function.isAssignableFrom(filter.getClass())) return true;
         }
@@ -322,7 +322,7 @@ public class FilterCapabilities {
      * @throws IllegalArgumentException If a null filter is passed in. As this function is recursive
      *     a null in a logic filter will also cause an error.
      */
-    public boolean fullySupports(org.opengis.filter.Filter filter) {
+    public boolean fullySupports(org.geotools.api.filter.Filter filter) {
         boolean supports = true;
 
         if (filter == null) {
@@ -431,10 +431,10 @@ public class FilterCapabilities {
      * </code>
      * </pre>
      */
-    private static short getFilterType(org.opengis.filter.Filter filter) {
+    private static short getFilterType(org.geotools.api.filter.Filter filter) {
         if (filter == null) return 0;
-        if (filter == org.opengis.filter.Filter.EXCLUDE) return FilterType.ALL;
-        if (filter == org.opengis.filter.Filter.INCLUDE) return FilterType.NONE;
+        if (filter == org.geotools.api.filter.Filter.EXCLUDE) return FilterType.ALL;
+        if (filter == org.geotools.api.filter.Filter.INCLUDE) return FilterType.NONE;
         if (filter instanceof PropertyIsBetween) return FilterType.BETWEEN;
         if (filter instanceof PropertyIsEqualTo) return FilterType.COMPARE_EQUALS;
         if (filter instanceof PropertyIsGreaterThan) return FilterType.COMPARE_GREATER_THAN;

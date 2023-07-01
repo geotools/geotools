@@ -62,15 +62,15 @@ import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.opengis.coverage.grid.Format;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.coverage.grid.GridCoverageWriter;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.referencing.ReferenceIdentifier;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.GeographicCRS;
-import org.opengis.referencing.crs.ProjectedCRS;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.coverage.grid.Format;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.coverage.grid.GridCoverageWriter;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.referencing.ReferenceIdentifier;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.GeographicCRS;
+import org.geotools.api.referencing.crs.ProjectedCRS;
+import org.geotools.api.util.ProgressListener;
 import org.w3c.dom.Node;
 
 /**
@@ -145,7 +145,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
     /*
      * (non-Javadoc)
      *
-     * @see org.opengis.coverage.grid.GridCoverageWriter#getFormat()
+     * @see org.geotools.api.coverage.grid.GridCoverageWriter#getFormat()
      */
     @Override
     public Format getFormat() {
@@ -155,8 +155,8 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
     /*
      * (non-Javadoc)
      *
-     * @see org.opengis.coverage.grid.GridCoverageWriter#write(org.opengis.coverage.grid.GridCoverage,
-     *      org.opengis.parameter.GeneralParameterValue[])
+     * @see org.geotools.api.coverage.grid.GridCoverageWriter#write(org.geotools.api.coverage.grid.GridCoverage,
+     *      org.geotools.api.parameter.GeneralParameterValue[])
      */
     @Override
     public void write(final GridCoverage gc, final GeneralParameterValue[] params)

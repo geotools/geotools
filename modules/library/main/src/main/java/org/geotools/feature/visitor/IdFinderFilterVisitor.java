@@ -17,7 +17,7 @@
 package org.geotools.feature.visitor;
 
 import org.geotools.filter.visitor.AbstractFinderFilterVisitor;
-import org.opengis.filter.Id;
+import org.geotools.api.filter.Id;
 
 /**
  * Quick check to see if an ID filter is found.

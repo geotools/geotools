@@ -22,8 +22,8 @@ import java.util.logging.Level;
 import org.geotools.referencing.factory.epsg.FactoryUsingWKT;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
-import org.opengis.referencing.crs.CRSAuthorityFactory;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.CRSAuthorityFactory;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * A factory providing NetCDF/GRIB custom {@link CoordinateReferenceSystem} instances with the

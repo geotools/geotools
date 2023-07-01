@@ -18,7 +18,7 @@ package org.geotools.referencing.factory;
 
 // OpenGIS dependencies
 
-import org.opengis.referencing.FactoryException;
+import org.geotools.api.referencing.FactoryException;
 
 /**
  * Thrown when a requested factory has not been found. This exception may be thrown by {@link

@@ -25,7 +25,7 @@ import net.opengis.wfs20.GetPropertyValueType;
 import net.opengis.wfs20.QueryType;
 import org.geotools.wfs.v2_0.WFSTestSupport;
 import org.junit.Test;
-import org.opengis.filter.Id;
+import org.geotools.api.filter.Id;
 
 public class GetPropertyValueTypeBindingTest extends WFSTestSupport {
     @Test

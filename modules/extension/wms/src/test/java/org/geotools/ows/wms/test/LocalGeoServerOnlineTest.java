@@ -66,7 +66,7 @@ import org.geotools.xml.styling.SLDTransformer;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * This test case assume you have a default GeoServer 2.2 installed on 127.0.0.1 (ie localhost).

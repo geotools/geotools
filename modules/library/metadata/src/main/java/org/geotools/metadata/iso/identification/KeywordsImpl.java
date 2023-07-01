@@ -20,11 +20,11 @@
 package org.geotools.metadata.iso.identification;
 
 import java.util.Collection;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.metadata.identification.KeywordType;
+import org.geotools.api.metadata.identification.Keywords;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.metadata.identification.KeywordType;
-import org.opengis.metadata.identification.Keywords;
-import org.opengis.util.InternationalString;
 
 /**
  * Keywords, their type and reference source.

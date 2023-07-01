@@ -27,7 +27,7 @@ import org.geotools.filter.text.cql2.CQLException;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.opengis.filter.expression.Literal;
+import org.geotools.api.filter.expression.Literal;
 
 /**
  * Builds Geometry

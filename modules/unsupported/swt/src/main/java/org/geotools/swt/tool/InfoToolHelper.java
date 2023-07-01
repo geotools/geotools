@@ -22,8 +22,8 @@ import java.util.logging.Logger;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
 
 /**
  * Abstract base class for helper classes used by {@code InfoTool} to query {@code MapLayers}.

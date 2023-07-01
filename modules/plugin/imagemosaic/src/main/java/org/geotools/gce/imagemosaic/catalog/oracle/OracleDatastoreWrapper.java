@@ -20,7 +20,7 @@ import java.io.IOException;
 import org.geotools.data.DataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /**
  * Specific Oracle implementation for a {@link DataStoreWrapper} Oracle DB has a couple of

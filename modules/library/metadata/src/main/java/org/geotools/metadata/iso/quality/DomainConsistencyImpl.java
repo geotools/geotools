@@ -19,7 +19,7 @@
  */
 package org.geotools.metadata.iso.quality;
 
-import org.opengis.metadata.quality.DomainConsistency;
+import org.geotools.api.metadata.quality.DomainConsistency;
 
 /**
  * Adherence of values to the value domains.

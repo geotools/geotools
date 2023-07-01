@@ -16,7 +16,7 @@
  */
 package org.geotools.styling;
 
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * A class to hold Channel information for use in ChannelSelction objects.
@@ -33,7 +33,7 @@ import org.opengis.filter.expression.Expression;
  *
  * @author iant
  */
-public interface SelectedChannelType extends org.opengis.style.SelectedChannelType {
+public interface SelectedChannelType extends org.geotools.api.style.SelectedChannelType {
 
     /**
      * Set the source channel name.
@@ -52,7 +52,7 @@ public interface SelectedChannelType extends org.opengis.style.SelectedChannelTy
     @Override
     public Expression getChannelName();
 
-    public void setContrastEnhancement(org.opengis.style.ContrastEnhancement enhancement);
+    public void setContrastEnhancement(org.geotools.api.style.ContrastEnhancement enhancement);
 
     @Override
     public ContrastEnhancement getContrastEnhancement();

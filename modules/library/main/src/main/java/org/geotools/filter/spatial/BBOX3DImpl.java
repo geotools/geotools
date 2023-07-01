@@ -21,13 +21,13 @@ import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.util.Converters;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.FilterVisitor;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.spatial.BBOX3D;
-import org.opengis.geometry.BoundingBox3D;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.FilterVisitor;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.spatial.BBOX3D;
+import org.geotools.api.geometry.BoundingBox3D;
 
 /**
  * A 3D BBOX Filter Implementation Supports filtering with BBOXes that have 3D coordinates including

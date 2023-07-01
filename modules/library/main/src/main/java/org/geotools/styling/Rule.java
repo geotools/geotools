@@ -19,9 +19,9 @@ package org.geotools.styling;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.opengis.filter.Filter;
-import org.opengis.metadata.citation.OnLineResource;
-import org.opengis.style.GraphicLegend;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.metadata.citation.OnLineResource;
+import org.geotools.api.style.GraphicLegend;
 
 /**
  * A rule is used to attach a condition to, and group, the individual symbolizers used for
@@ -71,7 +71,7 @@ import org.opengis.style.GraphicLegend;
  * &lt;/xsd:element&gt;
  * </code></pre>
  */
-public interface Rule extends org.opengis.style.Rule {
+public interface Rule extends org.geotools.api.style.Rule {
 
     /**
      * Sets the name of the rule.
@@ -94,7 +94,7 @@ public interface Rule extends org.opengis.style.Rule {
      *
      * @param description Human readable title and abstract.
      */
-    void setDescription(org.opengis.style.Description description);
+    void setDescription(org.geotools.api.style.Description description);
 
     /**
      * The smallest value for scale denominator at which symbolizers contained by this rule should

@@ -19,9 +19,9 @@ package org.geotools.coverage.io.range.impl;
 import java.util.Collections;
 import java.util.Set;
 import org.geotools.coverage.io.range.FieldType;
-import org.opengis.coverage.SampleDimension;
-import org.opengis.feature.type.Name;
-import org.opengis.util.InternationalString;
+import org.geotools.api.coverage.SampleDimension;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.util.InternationalString;
 
 public class DefaultFieldType implements FieldType {
     // private List<Axis<?, ?>> axes;

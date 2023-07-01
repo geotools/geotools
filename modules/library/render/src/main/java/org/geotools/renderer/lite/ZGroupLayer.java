@@ -43,14 +43,14 @@ import org.geotools.styling.Fill;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.PropertyDescriptor;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.sort.SortBy;
-import org.opengis.filter.sort.SortOrder;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.operation.TransformException;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.PropertyDescriptor;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.sort.SortBy;
+import org.geotools.api.filter.sort.SortOrder;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * A special layer owning multiple feature sources and styles, all in the same z-group
@@ -435,7 +435,7 @@ class ZGroupLayer extends Layer {
             StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
 
             // create a style that does nothing, but matching the "right" background
-            List<org.opengis.style.FeatureTypeStyle> featureTypeStyles = new ArrayList<>();
+            List<org.geotools.api.style.FeatureTypeStyle> featureTypeStyles = new ArrayList<>();
             style = sf.style(title, null, false, featureTypeStyles, null);
             style.setBackground(getBackgroundFromLayers());
 

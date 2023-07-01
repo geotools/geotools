@@ -33,11 +33,11 @@ import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
-import org.opengis.coverage.processing.OperationNotFoundException;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.util.InternationalString;
+import org.geotools.api.coverage.processing.OperationNotFoundException;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.util.InternationalString;
 
 /**
  * Base class for providing capabilities to scale {@link GridCoverage2D} objects using JAI scale

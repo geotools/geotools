@@ -2129,10 +2129,10 @@ public interface Csw20Package extends EPackage {
     int STRING_FEATURE_COUNT = 0;
 
     /**
-     * The meta object id for the '{@link org.opengis.filter.capability.FilterCapabilities <em>Filter Capabilities</em>}' class.
+     * The meta object id for the '{@link org.geotools.api.filter.capability.FilterCapabilities <em>Filter Capabilities</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see org.opengis.filter.capability.FilterCapabilities
+     * @see org.geotools.api.filter.capability.FilterCapabilities
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getFilterCapabilities()
      * @generated
      */
@@ -2148,10 +2148,10 @@ public interface Csw20Package extends EPackage {
     int FILTER_CAPABILITIES_FEATURE_COUNT = 0;
 
     /**
-     * The meta object id for the '{@link org.opengis.filter.Filter <em>Filter</em>}' class.
+     * The meta object id for the '{@link org.geotools.api.filter.Filter <em>Filter</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see org.opengis.filter.Filter
+     * @see org.geotools.api.filter.Filter
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getFilter()
      * @generated
      */
@@ -2167,10 +2167,10 @@ public interface Csw20Package extends EPackage {
     int FILTER_FEATURE_COUNT = 0;
 
     /**
-     * The meta object id for the '{@link org.opengis.filter.sort.SortBy <em>Sort By</em>}' class.
+     * The meta object id for the '{@link org.geotools.api.filter.sort.SortBy <em>Sort By</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see org.opengis.filter.sort.SortBy
+     * @see org.geotools.api.filter.sort.SortBy
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getSortBy()
      * @generated
      */
@@ -4232,34 +4232,34 @@ public interface Csw20Package extends EPackage {
     EClass getString();
 
     /**
-     * Returns the meta object for class '{@link org.opengis.filter.capability.FilterCapabilities <em>Filter Capabilities</em>}'.
+     * Returns the meta object for class '{@link org.geotools.api.filter.capability.FilterCapabilities <em>Filter Capabilities</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for class '<em>Filter Capabilities</em>'.
-     * @see org.opengis.filter.capability.FilterCapabilities
-     * @model instanceClass="org.opengis.filter.capability.FilterCapabilities"
+     * @see org.geotools.api.filter.capability.FilterCapabilities
+     * @model instanceClass="org.geotools.api.filter.capability.FilterCapabilities"
      * @generated
      */
     EClass getFilterCapabilities();
 
     /**
-     * Returns the meta object for class '{@link org.opengis.filter.Filter <em>Filter</em>}'.
+     * Returns the meta object for class '{@link org.geotools.api.filter.Filter <em>Filter</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for class '<em>Filter</em>'.
-     * @see org.opengis.filter.Filter
-     * @model instanceClass="org.opengis.filter.Filter"
+     * @see org.geotools.api.filter.Filter
+     * @model instanceClass="org.geotools.api.filter.Filter"
      * @generated
      */
     EClass getFilter();
 
     /**
-     * Returns the meta object for class '{@link org.opengis.filter.sort.SortBy <em>Sort By</em>}'.
+     * Returns the meta object for class '{@link org.geotools.api.filter.sort.SortBy <em>Sort By</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for class '<em>Sort By</em>'.
-     * @see org.opengis.filter.sort.SortBy
-     * @model instanceClass="org.opengis.filter.sort.SortBy"
+     * @see org.geotools.api.filter.sort.SortBy
+     * @model instanceClass="org.geotools.api.filter.sort.SortBy"
      * @generated
      */
     EClass getSortBy();
@@ -4669,7 +4669,7 @@ public interface Csw20Package extends EPackage {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for data type '<em>Sort By Array</em>'.
-     * @model instanceClass="org.opengis.filter.sort.SortBy[]"
+     * @model instanceClass="org.geotools.api.filter.sort.SortBy[]"
      * @generated
      */
     EDataType getSortByArray();
@@ -5981,30 +5981,30 @@ public interface Csw20Package extends EPackage {
         EClass STRING = eINSTANCE.getString();
 
         /**
-         * The meta object literal for the '{@link org.opengis.filter.capability.FilterCapabilities <em>Filter Capabilities</em>}' class.
+         * The meta object literal for the '{@link org.geotools.api.filter.capability.FilterCapabilities <em>Filter Capabilities</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see org.opengis.filter.capability.FilterCapabilities
+         * @see org.geotools.api.filter.capability.FilterCapabilities
          * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getFilterCapabilities()
          * @generated
          */
         EClass FILTER_CAPABILITIES = eINSTANCE.getFilterCapabilities();
 
         /**
-         * The meta object literal for the '{@link org.opengis.filter.Filter <em>Filter</em>}' class.
+         * The meta object literal for the '{@link org.geotools.api.filter.Filter <em>Filter</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see org.opengis.filter.Filter
+         * @see org.geotools.api.filter.Filter
          * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getFilter()
          * @generated
          */
         EClass FILTER = eINSTANCE.getFilter();
 
         /**
-         * The meta object literal for the '{@link org.opengis.filter.sort.SortBy <em>Sort By</em>}' class.
+         * The meta object literal for the '{@link org.geotools.api.filter.sort.SortBy <em>Sort By</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see org.opengis.filter.sort.SortBy
+         * @see org.geotools.api.filter.sort.SortBy
          * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getSortBy()
          * @generated
          */

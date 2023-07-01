@@ -39,7 +39,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 @SuppressWarnings("PMD.SimplifiableTestAssertion") // need equals with tolerance
 public class OrthographicProjectionHandlerFactoryTest {

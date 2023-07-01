@@ -29,7 +29,7 @@ import javax.media.jai.iterator.RectIter;
 import org.geotools.gce.grassraster.DummyProgressListener;
 import org.geotools.gce.grassraster.JGrassRegion;
 import org.geotools.util.SimpleInternationalString;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * Write compressed JGrass rasters to disk

@@ -33,9 +33,9 @@ import org.geotools.gml3.v3_2.gss.GSSSchema;
 import org.geotools.gml3.v3_2.gts.GTSSchema;
 import org.geotools.xlink.XLINKSchema;
 import org.geotools.xs.XSSchema;
-import org.opengis.feature.type.AttributeType;
-import org.opengis.feature.type.ComplexType;
-import org.opengis.feature.type.PropertyDescriptor;
+import org.geotools.api.feature.type.AttributeType;
+import org.geotools.api.feature.type.ComplexType;
+import org.geotools.api.feature.type.PropertyDescriptor;
 
 public class GMDSchema extends SchemaImpl {
 

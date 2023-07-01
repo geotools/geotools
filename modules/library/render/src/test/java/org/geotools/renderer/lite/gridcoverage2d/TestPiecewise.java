@@ -46,7 +46,7 @@ import org.geotools.image.ImageWorker;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.referencing.operation.TransformException;
+import org.geotools.api.referencing.operation.TransformException;
 
 /** @author Simone Giannecchini, GeoSolutions. */
 public class TestPiecewise {

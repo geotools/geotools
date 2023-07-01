@@ -21,7 +21,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.geotools.styling.PolygonSymbolizer;
 import org.junit.Test;
-import org.opengis.filter.expression.Function;
+import org.geotools.api.filter.expression.Function;
 
 public class SLDPolygonSymbolizerBindingTest extends SLDTestSupport {
     @Test

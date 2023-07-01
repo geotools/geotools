@@ -30,7 +30,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapBoundsEvent.Type;
 import org.geotools.referencing.CRS;
 import org.geotools.util.logging.Logging;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Represents the area of a map to be displayed, expressed in world coordinates and (optionally)

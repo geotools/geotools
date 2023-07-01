@@ -39,7 +39,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /**
  * {@link MultiLevelROI} implementation supporting Raster masking. Notice that actually it does not

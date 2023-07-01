@@ -17,7 +17,7 @@
 package org.geotools.referencing.factory.gridshift;
 
 import java.net.URL;
-import org.opengis.referencing.Factory;
+import org.geotools.api.referencing.Factory;
 
 /**
  * Provides a hook to locate grid shift files, such as NTv1, NTv2 and NADCON ones

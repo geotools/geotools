@@ -17,7 +17,7 @@
 package org.geotools.filter.function;
 
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
-import org.opengis.filter.expression.PropertyName;
+import org.geotools.api.filter.expression.PropertyName;
 
 /**
  * Replace "featureMembers/ * /ATTRIBUTE" change with "ATTRIBUTE"

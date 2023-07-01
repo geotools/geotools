@@ -28,10 +28,10 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.spatial.BBOX;
-import org.opengis.filter.spatial.Intersects;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.api.filter.spatial.Intersects;
 
 /** @author Stefan Uhrig, SAP SE */
 public class HanaSpatialFilterOnViewOnlineTest extends JDBCTestSupport {

@@ -31,7 +31,7 @@ import org.geotools.data.wfs.integration.IntegrationTestWFSClient;
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.http.HTTPResponse;
 import org.junit.Test;
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 import org.xml.sax.SAXException;
 
 public class XXEProtectionTest {

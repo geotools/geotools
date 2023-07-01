@@ -24,10 +24,10 @@ import java.util.Date;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.temporal.Duration;
-import org.opengis.temporal.Instant;
-import org.opengis.temporal.Position;
-import org.opengis.temporal.TemporalGeometricPrimitive;
+import org.geotools.api.temporal.Duration;
+import org.geotools.api.temporal.Instant;
+import org.geotools.api.temporal.Position;
+import org.geotools.api.temporal.TemporalGeometricPrimitive;
 
 /** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultTemporalGeometricPrimitiveTest {

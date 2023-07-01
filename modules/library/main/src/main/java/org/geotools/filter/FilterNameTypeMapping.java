@@ -20,8 +20,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import org.geotools.factory.CommonFactoryFinder;
-import org.opengis.filter.Filter;
-import org.opengis.filter.expression.Function;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.expression.Function;
 
 /**
  * A utility class for {@link FilterCapabilities} that assists in mapping between a filter or

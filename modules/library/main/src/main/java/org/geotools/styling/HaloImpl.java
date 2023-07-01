@@ -21,10 +21,10 @@ package org.geotools.styling;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.GeoTools;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.StyleVisitor;
-import org.opengis.util.Cloneable;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.util.Cloneable;
 
 /**
  * Direct implementation of Halo.
@@ -46,7 +46,7 @@ public class HaloImpl implements Halo, Cloneable {
      *
      * @return HaloImpl equal to the provided halo
      */
-    static HaloImpl cast(org.opengis.style.Halo halo) {
+    static HaloImpl cast(org.geotools.api.style.Halo halo) {
         if (halo == null) {
             return null;
         } else if (halo instanceof HaloImpl) {
@@ -101,7 +101,7 @@ public class HaloImpl implements Halo, Cloneable {
      * @param fill New value of property fill.
      */
     @Override
-    public void setFill(org.opengis.style.Fill fill) {
+    public void setFill(org.geotools.api.style.Fill fill) {
         this.fill = FillImpl.cast(fill);
     }
 

@@ -12,7 +12,7 @@ import org.geotools.gml3.v3_2.GML;
 import org.geotools.xsd.Encoder;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.filter.spatial.DWithin;
+import org.geotools.api.filter.spatial.DWithin;
 import org.w3c.dom.Document;
 
 public class DWithinBindingTest extends FESTestSupport {

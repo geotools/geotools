@@ -29,18 +29,18 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.PrecisionModel;
-import org.opengis.filter.Filter;
-import org.opengis.filter.Id;
-import org.opengis.filter.Or;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.PropertyIsLike;
-import org.opengis.filter.PropertyIsNull;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.spatial.DWithin;
-import org.opengis.filter.spatial.Equals;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.Or;
+import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.PropertyIsLike;
+import org.geotools.api.filter.PropertyIsNull;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.spatial.DWithin;
+import org.geotools.api.filter.spatial.Equals;
 
 /**
  * Unit test for filters. Note that this unit test does not encompass all of filter package, just
@@ -51,7 +51,7 @@ import org.opengis.filter.spatial.Equals;
 public class FilterAttributeExtractorTest {
     boolean set = false;
     FilterAttributeExtractor fae;
-    org.opengis.filter.FilterFactory2 fac;
+    org.geotools.api.filter.FilterFactory2 fac;
 
     /**
      * Sets up a schema and a test feature.
@@ -106,7 +106,7 @@ public class FilterAttributeExtractorTest {
         assertAttributeName(filter, "testString");
     }
 
-    private void assertAttributeName(org.opengis.filter.Filter filter, String... names) {
+    private void assertAttributeName(org.geotools.api.filter.Filter filter, String... names) {
         fae.clear();
         filter.accept(fae, null);
 

@@ -36,15 +36,15 @@ import org.geotools.gml.GMLFilterDocument;
 import org.geotools.gml.GMLFilterGeometry;
 import org.geotools.util.logging.Logging;
 import org.junit.Test;
-import org.opengis.filter.BinaryComparisonOperator;
-import org.opengis.filter.BinaryLogicOperator;
-import org.opengis.filter.Filter;
-import org.opengis.filter.Or;
-import org.opengis.filter.PropertyIsLike;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.spatial.BBOX;
-import org.opengis.filter.spatial.Intersects;
+import org.geotools.api.filter.BinaryComparisonOperator;
+import org.geotools.api.filter.BinaryLogicOperator;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.Or;
+import org.geotools.api.filter.PropertyIsLike;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.api.filter.spatial.Intersects;
 import org.xml.sax.InputSource;
 import org.xml.sax.helpers.ParserAdapter;
 import org.xml.sax.helpers.XMLFilterImpl;
@@ -360,10 +360,10 @@ public class FilterFilterTest {
 
     static class MyHandler extends XMLFilterImpl implements FilterHandler {
 
-        public List<org.opengis.filter.Filter> filters = new ArrayList<>();
+        public List<org.geotools.api.filter.Filter> filters = new ArrayList<>();
 
         @Override
-        public void filter(org.opengis.filter.Filter filter) {
+        public void filter(org.geotools.api.filter.Filter filter) {
             filters.add(filter);
         }
     }

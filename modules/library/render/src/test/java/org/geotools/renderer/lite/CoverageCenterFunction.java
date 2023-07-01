@@ -11,10 +11,10 @@ import org.geotools.filter.capability.FunctionNameImpl;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.geometry.Envelope;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.geometry.Envelope;
 
 /**
  * A test rendering transformation that returns the center of the provided coverage

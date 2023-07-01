@@ -16,7 +16,7 @@
  */
 package org.geotools.coverage.grid.io;
 
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 /**
  * Policy to be used while running a removal on {@link GranuleStore#removeGranules(Filter,

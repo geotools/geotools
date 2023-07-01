@@ -19,10 +19,10 @@ package org.geotools.metadata.math;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Locale;
+import org.geotools.api.util.Cloneable;
 import org.geotools.metadata.i18n.DescriptionKeys;
 import org.geotools.metadata.i18n.Descriptions;
 import org.geotools.util.TableWriter;
-import org.opengis.util.Cloneable;
 
 /**
  * Holds some statistics about a series of sample values. Given a series of sample values

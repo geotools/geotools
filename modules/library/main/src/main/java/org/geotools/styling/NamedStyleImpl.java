@@ -16,7 +16,7 @@
  */
 package org.geotools.styling;
 
-import org.opengis.style.StyleVisitor;
+import org.geotools.api.style.StyleVisitor;
 
 /**
  * A NamedStyle is used to refer to a style that has a name in a WMS.

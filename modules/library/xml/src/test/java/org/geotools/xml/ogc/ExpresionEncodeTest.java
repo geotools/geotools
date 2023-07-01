@@ -25,10 +25,10 @@ import org.geotools.filter.IllegalFilterException;
 import org.geotools.xml.DocumentWriter;
 import org.geotools.xml.filter.FilterSchema;
 import org.junit.Test;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.Id;
-import org.opengis.filter.PropertyIsLike;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.PropertyIsLike;
 
 /**
  * For now just writes the expression built.

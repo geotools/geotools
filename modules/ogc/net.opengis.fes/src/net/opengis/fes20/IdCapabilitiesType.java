@@ -9,7 +9,7 @@ package net.opengis.fes20;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
-import org.opengis.filter.capability.IdCapabilities;
+import org.geotools.api.filter.capability.IdCapabilities;
 
 /**
  * <!-- begin-user-doc -->

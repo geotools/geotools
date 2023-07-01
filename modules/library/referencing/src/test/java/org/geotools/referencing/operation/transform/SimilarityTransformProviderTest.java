@@ -2,12 +2,12 @@ package org.geotools.referencing.operation.transform;
 
 import static org.junit.Assert.assertEquals;
 
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.parameter.ParameterGroup;
 import org.geotools.referencing.operation.DefaultMathTransformFactory;
 import org.junit.Test;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * Tests {@link SimilarityTransformProvider}.

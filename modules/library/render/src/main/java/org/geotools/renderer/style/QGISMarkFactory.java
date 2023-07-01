@@ -25,8 +25,8 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Double;
 import java.util.logging.Logger;
 import org.geotools.renderer.util.ExplicitBoundsShape;
-import org.opengis.feature.Feature;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * Factory with additional "well known" marks for compatibility with other applications.

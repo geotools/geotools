@@ -39,8 +39,8 @@ import org.geotools.test.TestData;
 import org.geotools.xml.styling.SLDParser;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterValue;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValue;
 
 public class JiffleProcessTest {
 

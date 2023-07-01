@@ -19,7 +19,7 @@
  */
 package org.geotools.metadata.iso.quality;
 
-import org.opengis.metadata.quality.TemporalAccuracy;
+import org.geotools.api.metadata.quality.TemporalAccuracy;
 
 /**
  * Accuracy of the temporal attributes and temporal relationships of features.

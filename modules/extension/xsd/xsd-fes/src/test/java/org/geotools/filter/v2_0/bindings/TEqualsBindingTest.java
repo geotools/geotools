@@ -14,13 +14,13 @@ import org.geotools.filter.v2_0.FESTestSupport;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Encoder;
 import org.junit.Test;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.MultiValuedFilter.MatchAction;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.temporal.TEquals;
-import org.opengis.temporal.Period;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.MultiValuedFilter.MatchAction;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.temporal.TEquals;
+import org.geotools.api.temporal.Period;
 import org.w3c.dom.Document;
 
 public class TEqualsBindingTest extends FESTestSupport {

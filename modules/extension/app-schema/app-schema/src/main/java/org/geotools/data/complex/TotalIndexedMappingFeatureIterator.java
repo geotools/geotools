@@ -20,8 +20,8 @@ import java.io.IOException;
 import org.geotools.appschema.util.IndexQueryUtils;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
-import org.opengis.feature.Feature;
-import org.opengis.filter.Filter;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.filter.Filter;
 
 /**
  * MappingFeatureIterator for full index coverage case

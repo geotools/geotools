@@ -49,13 +49,13 @@ import org.geotools.renderer.lite.gridcoverage2d.GridCoverageRendererUtilities;
 import org.geotools.tile.Tile;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.opengis.coverage.grid.Format;
-import org.opengis.geometry.Envelope;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.operation.TransformException;
+import org.geotools.api.coverage.grid.Format;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.cs.AxisDirection;
+import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * A grid coverage readers backing onto a WMTS server by issuing GetTile requests

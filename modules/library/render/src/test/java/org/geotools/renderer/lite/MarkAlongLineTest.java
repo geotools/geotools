@@ -37,7 +37,7 @@ import org.geotools.test.TestData;
 import org.geotools.util.factory.GeoTools;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory2;
 
 /** @author ImranR */
 public class MarkAlongLineTest {

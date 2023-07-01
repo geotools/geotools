@@ -19,8 +19,8 @@ package org.geotools.referencing.operation.projection;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.geotools.api.referencing.operation.TransformException;
 import org.junit.Test;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * Tests the {@link NewZealandMapGrid} implementation.

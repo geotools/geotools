@@ -25,8 +25,8 @@ import java.util.logging.Logger;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.store.ContentState;
 import org.geotools.util.logging.Logging;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 class ElasticFeatureReaderScroll implements FeatureReader<SimpleFeatureType, SimpleFeature> {
 

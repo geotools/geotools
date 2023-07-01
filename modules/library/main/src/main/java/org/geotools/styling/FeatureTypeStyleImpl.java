@@ -24,14 +24,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.geotools.util.Utilities;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.Id;
-import org.opengis.filter.expression.Expression;
-import org.opengis.metadata.citation.OnLineResource;
-import org.opengis.style.FeatureTypeStyle;
-import org.opengis.style.SemanticType;
-import org.opengis.style.StyleVisitor;
-import org.opengis.util.Cloneable;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.metadata.citation.OnLineResource;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.SemanticType;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.util.Cloneable;
 
 /**
  * Implementation of Feature Type Style; care is taken to ensure everything is mutable.
@@ -78,14 +78,14 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
         rules = new ArrayList<>();
     }
 
-    public FeatureTypeStyleImpl(org.opengis.style.FeatureTypeStyle fts) {
+    public FeatureTypeStyleImpl(org.geotools.api.style.FeatureTypeStyle fts) {
         this.description = new DescriptionImpl(fts.getDescription());
         this.featureInstances = fts.getFeatureInstanceIDs();
         this.featureTypeNames = new LinkedHashSet<>(fts.featureTypeNames());
         this.name = fts.getName();
         this.rules = new ArrayList<>();
         if (fts.rules() != null) {
-            for (org.opengis.style.Rule rule : fts.rules()) {
+            for (org.geotools.api.style.Rule rule : fts.rules()) {
                 rules.add(RuleImpl.cast(rule)); // need to deep copy?
             }
         }

@@ -51,9 +51,9 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.PrecisionModel;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.PropertyIsLessThan;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.PropertyIsLessThan;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 public class UserLayerTest {
 

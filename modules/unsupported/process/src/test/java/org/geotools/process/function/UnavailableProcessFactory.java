@@ -9,8 +9,8 @@ import org.geotools.feature.NameImpl;
 import org.geotools.process.Process;
 import org.geotools.process.ProcessFactory;
 import org.geotools.text.Text;
-import org.opengis.feature.type.Name;
-import org.opengis.util.InternationalString;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.util.InternationalString;
 
 public class UnavailableProcessFactory implements ProcessFactory {
     final Name NAME = new NameImpl("test", "unavailable");

@@ -55,15 +55,15 @@ import org.geotools.util.Utilities;
 import org.geotools.util.factory.FactoryRegistry;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.opengis.coverage.Coverage;
-import org.opengis.coverage.processing.Operation;
-import org.opengis.coverage.processing.OperationNotFoundException;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.util.InternationalString;
+import org.geotools.api.coverage.Coverage;
+import org.geotools.api.coverage.processing.Operation;
+import org.geotools.api.coverage.processing.OperationNotFoundException;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.util.InternationalString;
 
 /**
  * Base class for {@linkplain Coverage coverage} processor implementations.

@@ -26,7 +26,7 @@ import org.eclipse.emf.ecore.util.EObjectValidator;
 import org.eclipse.emf.ecore.xml.type.XMLTypePackage;
 
 import org.eclipse.emf.ecore.xml.type.util.XMLTypeValidator;
-import org.opengis.coverage.grid.GridEnvelope;
+import org.geotools.api.coverage.grid.GridEnvelope;
 
 /**
  * <!-- begin-user-doc -->

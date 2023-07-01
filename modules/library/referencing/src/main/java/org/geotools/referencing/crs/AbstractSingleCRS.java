@@ -20,12 +20,12 @@
 package org.geotools.referencing.crs;
 
 import java.util.Map;
+import org.geotools.api.referencing.crs.SingleCRS;
+import org.geotools.api.referencing.cs.CoordinateSystem;
+import org.geotools.api.referencing.cs.CoordinateSystemAxis;
+import org.geotools.api.referencing.datum.Datum;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.wkt.Formatter;
-import org.opengis.referencing.crs.SingleCRS;
-import org.opengis.referencing.cs.CoordinateSystem;
-import org.opengis.referencing.cs.CoordinateSystemAxis;
-import org.opengis.referencing.datum.Datum;
 
 /**
  * Abstract coordinate reference system, consisting of a single {@linkplain CoordinateSystem

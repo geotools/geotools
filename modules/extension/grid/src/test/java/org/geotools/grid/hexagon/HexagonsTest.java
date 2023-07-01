@@ -27,7 +27,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.grid.GridElement;
 import org.geotools.grid.GridFeatureBuilder;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /**
  * Unit tests for the Hexagons class.

@@ -53,9 +53,9 @@ import org.geotools.gce.grassraster.core.color.JlsTokenizer;
 import org.geotools.gce.grassraster.metadata.GrassBinaryImageMetadata;
 import org.geotools.referencing.CRS;
 import org.geotools.util.SimpleInternationalString;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * Grass binary data input/ouput handler.

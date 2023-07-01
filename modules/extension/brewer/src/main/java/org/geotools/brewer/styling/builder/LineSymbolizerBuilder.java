@@ -20,7 +20,7 @@ import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Stroke;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 public class LineSymbolizerBuilder extends SymbolizerBuilder<LineSymbolizer> {
     StrokeBuilder strokeBuilder = new StrokeBuilder(this);
@@ -108,7 +108,7 @@ public class LineSymbolizerBuilder extends SymbolizerBuilder<LineSymbolizer> {
         return this;
     }
 
-    public LineSymbolizerBuilder reset(org.opengis.style.LineSymbolizer original) {
+    public LineSymbolizerBuilder reset(org.geotools.api.style.LineSymbolizer original) {
         if (original instanceof LineSymbolizer) {
             return reset((LineSymbolizer) original);
         }

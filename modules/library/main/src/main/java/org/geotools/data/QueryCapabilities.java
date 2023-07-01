@@ -17,8 +17,8 @@
 package org.geotools.data;
 
 import org.geotools.util.factory.Hints;
-import org.opengis.feature.Feature;
-import org.opengis.filter.sort.SortBy;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.filter.sort.SortBy;
 
 /**
  * Describes the query capabilities for a specific FeatureType, so client code can request which

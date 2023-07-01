@@ -16,14 +16,14 @@
  */
 package org.geotools.geometry;
 
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.MismatchedReferenceSystemException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.Envelope;
-import org.opengis.geometry.MismatchedReferenceSystemException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Base class for {@linkplain Envelope envelope} implementations. This base class provides default

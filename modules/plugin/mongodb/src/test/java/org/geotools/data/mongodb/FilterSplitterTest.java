@@ -24,7 +24,7 @@ import org.geotools.feature.NameImpl;
 import org.geotools.filter.text.ecql.ECQL;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 public class FilterSplitterTest extends MongoTestSupport {
 

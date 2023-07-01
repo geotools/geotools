@@ -42,8 +42,8 @@ import org.geotools.process.factory.DescribeResult;
 import org.geotools.renderer.i18n.Errors;
 import org.geotools.util.factory.GeoTools;
 import org.jaitools.numeric.Range;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * A raster reclassified process

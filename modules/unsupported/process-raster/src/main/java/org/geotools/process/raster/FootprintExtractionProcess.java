@@ -28,8 +28,8 @@ import org.geotools.process.factory.DescribeResult;
 import org.geotools.process.raster.MarchingSquaresVectorizer.ImageLoadingType;
 import org.geotools.util.Range;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * A process to extract footprint from a raster. Result is returned as a {@linkplain

@@ -17,11 +17,11 @@
 package org.geotools.temporal.object;
 
 import java.util.Date;
-import org.opengis.temporal.Instant;
-import org.opengis.temporal.Period;
-import org.opengis.temporal.RelativePosition;
-import org.opengis.temporal.TemporalOrder;
-import org.opengis.temporal.TemporalPrimitive;
+import org.geotools.api.temporal.Instant;
+import org.geotools.api.temporal.Period;
+import org.geotools.api.temporal.RelativePosition;
+import org.geotools.api.temporal.TemporalOrder;
+import org.geotools.api.temporal.TemporalPrimitive;
 
 /**
  * An abstract class that represents a non-decomposed element of geometry or topology of time.

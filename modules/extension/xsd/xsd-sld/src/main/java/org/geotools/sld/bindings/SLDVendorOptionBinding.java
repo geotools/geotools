@@ -21,7 +21,7 @@ import org.geotools.sld.CssParameter;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.filter.FilterFactory;
+import org.geotools.api.filter.FilterFactory;
 
 /**
  * Binding object for the element http://www.opengis.net/sld:VendorOption.

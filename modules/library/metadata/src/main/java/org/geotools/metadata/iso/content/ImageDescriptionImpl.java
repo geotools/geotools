@@ -19,9 +19,9 @@
  */
 package org.geotools.metadata.iso.content;
 
-import org.opengis.metadata.Identifier;
-import org.opengis.metadata.content.ImageDescription;
-import org.opengis.metadata.content.ImagingCondition;
+import org.geotools.api.metadata.Identifier;
+import org.geotools.api.metadata.content.ImageDescription;
+import org.geotools.api.metadata.content.ImagingCondition;
 
 /**
  * Information about an image's suitability for use.

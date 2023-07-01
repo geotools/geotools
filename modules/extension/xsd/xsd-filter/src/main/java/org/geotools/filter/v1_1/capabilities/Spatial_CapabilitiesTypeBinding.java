@@ -21,10 +21,10 @@ import org.geotools.filter.v1_1.OGC;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.capability.GeometryOperand;
-import org.opengis.filter.capability.SpatialCapabilities;
-import org.opengis.filter.capability.SpatialOperators;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.capability.GeometryOperand;
+import org.geotools.api.filter.capability.SpatialCapabilities;
+import org.geotools.api.filter.capability.SpatialOperators;
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:Spatial_CapabilitiesType.

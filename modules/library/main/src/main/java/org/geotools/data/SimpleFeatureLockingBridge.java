@@ -18,9 +18,9 @@ package org.geotools.data;
 
 import java.io.IOException;
 import org.geotools.data.simple.SimpleFeatureLocking;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.Filter;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.Filter;
 
 /**
  * Bridges between {@link FeatureLocking<SimpleFeatureType, SimpleFeature>} and {@link

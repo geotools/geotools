@@ -19,8 +19,8 @@ package org.geotools.data;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.NoSuchElementException;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.FeatureType;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
 
 /**
  * The low-level interface for reading Features. Will use the underlying AttributeReader and the

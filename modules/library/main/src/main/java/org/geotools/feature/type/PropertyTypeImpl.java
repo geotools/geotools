@@ -22,10 +22,10 @@ import java.util.List;
 import java.util.Map;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
-import org.opengis.feature.type.Name;
-import org.opengis.feature.type.PropertyType;
-import org.opengis.filter.Filter;
-import org.opengis.util.InternationalString;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.feature.type.PropertyType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.util.InternationalString;
 
 public abstract class PropertyTypeImpl implements PropertyType {
 

@@ -24,6 +24,20 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.IdentifiedObject;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
+import org.geotools.api.referencing.crs.CRSAuthorityFactory;
+import org.geotools.api.referencing.crs.CRSFactory;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.ConcatenatedOperation;
+import org.geotools.api.referencing.operation.Conversion;
+import org.geotools.api.referencing.operation.CoordinateOperation;
+import org.geotools.api.referencing.operation.CoordinateOperationFactory;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.api.referencing.operation.Transformation;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.TransformedDirectPosition;
 import org.geotools.metadata.iso.citation.Citations;
@@ -40,20 +54,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.IdentifiedObject;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.crs.CRSAuthorityFactory;
-import org.opengis.referencing.crs.CRSFactory;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.ConcatenatedOperation;
-import org.opengis.referencing.operation.Conversion;
-import org.opengis.referencing.operation.CoordinateOperation;
-import org.opengis.referencing.operation.CoordinateOperationFactory;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
-import org.opengis.referencing.operation.Transformation;
 
 /**
  * Tests the usage of {@link CoordinateOperationFactory} with the help of the EPSG database. Any
@@ -145,7 +145,7 @@ public class OperationFactoryTest {
         // Should contains exactly one transformations and an arbitrary number of conversions.
         Assert.assertTrue(operation instanceof ConcatenatedOperation);
         int count = 0;
-        for (org.opengis.referencing.operation.SingleOperation singleOperation :
+        for (org.geotools.api.referencing.operation.SingleOperation singleOperation :
                 ((ConcatenatedOperation) operation).getOperations()) {
             final CoordinateOperation op = (CoordinateOperation) singleOperation;
             if (op instanceof Transformation) {

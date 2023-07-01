@@ -46,10 +46,10 @@ import org.jaitools.numeric.Range;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.util.AffineTransformation;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.metadata.spatial.PixelOrientation;
-import org.opengis.util.InternationalString;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.metadata.spatial.PixelOrientation;
+import org.geotools.api.util.InternationalString;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * A process to extract contours based on values in a specified band of the input {@linkplain

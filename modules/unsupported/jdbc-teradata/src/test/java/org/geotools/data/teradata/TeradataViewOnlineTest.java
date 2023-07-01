@@ -29,9 +29,9 @@ import org.geotools.jdbc.JDBCViewOnlineTest;
 import org.geotools.jdbc.JDBCViewTestSetup;
 import org.geotools.util.logging.Logging;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.Filter;
-import org.opengis.filter.spatial.BBOX;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.spatial.BBOX;
 
 public class TeradataViewOnlineTest extends JDBCViewOnlineTest {
 

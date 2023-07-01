@@ -16,13 +16,13 @@
  */
 package org.geotools.geometry;
 
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Base class for {@linkplain DirectPosition direct position} implementations. This base class
@@ -42,7 +42,7 @@ public abstract class AbstractDirectPosition implements DirectPosition {
 
     /**
      * Returns always {@code this}, the direct position for this {@linkplain
-     * org.opengis.geometry.coordinate.Position position}.
+     * org.geotools.api.geometry.coordinate.Position position}.
      *
      * @since 2.5
      */

@@ -22,11 +22,11 @@ import java.util.Set;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.FilterFunction_property;
 import org.geotools.filter.visitor.DefaultFilterVisitor;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.expression.VolatileFunction;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.expression.VolatileFunction;
 
 /**
  * A simple visitor that extracts every attribute used by a filter or an expression
@@ -127,7 +127,7 @@ public class FilterAttributeExtractor extends DefaultFilterVisitor {
     }
 
     @Override
-    public Object visit(org.opengis.filter.expression.Function expression, Object data) {
+    public Object visit(org.geotools.api.filter.expression.Function expression, Object data) {
         if (expression instanceof VolatileFunction) {
             usingVolatileFunctions = true;
         }
@@ -135,7 +135,7 @@ public class FilterAttributeExtractor extends DefaultFilterVisitor {
             boolean foundLiteral = false;
             // dynamic property usage
             if (expression.getParameters() != null && expression.getParameters().size() > 0) {
-                org.opengis.filter.expression.Expression firstParam =
+                org.geotools.api.filter.expression.Expression firstParam =
                         expression.getParameters().get(0);
 
                 FilterAttributeExtractor secondary = new FilterAttributeExtractor();

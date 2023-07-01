@@ -39,11 +39,11 @@ import org.geotools.styling.Stroke;
 import org.geotools.text.Text;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
-import org.opengis.style.GraphicFill;
-import org.opengis.style.SemanticType;
-import org.opengis.style.Symbolizer;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.style.GraphicFill;
+import org.geotools.api.style.SemanticType;
+import org.geotools.api.style.Symbolizer;
 
 /**
  * MBLayer wrapper for "line" layers.
@@ -596,7 +596,7 @@ public class LineMBLayer extends MBLayer {
         symbolizers.add(ls);
 
         MBFilter filter = getFilter();
-        List<org.opengis.style.Rule> rules = new ArrayList<>();
+        List<org.geotools.api.style.Rule> rules = new ArrayList<>();
 
         Rule rule =
                 sf.rule(

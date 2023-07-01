@@ -17,7 +17,7 @@
 package org.geotools.data.wps;
 
 import java.net.URL;
-import org.opengis.util.InternationalString;
+import org.geotools.api.util.InternationalString;
 
 /**
  * Used to hold data regarding Processes. Used by the DescribeProcessResponse

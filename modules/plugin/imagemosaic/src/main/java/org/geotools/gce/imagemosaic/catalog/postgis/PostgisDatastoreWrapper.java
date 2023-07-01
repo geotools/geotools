@@ -25,7 +25,7 @@ import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.data.transform.Definition;
 import org.geotools.gce.imagemosaic.catalog.oracle.DataStoreWrapper;
 import org.geotools.gce.imagemosaic.catalog.oracle.FeatureTypeMapper;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /**
  * Specific Postgis implementation for a {@link DataStoreWrapper} By default, Postgresql identifiers

@@ -38,8 +38,8 @@ import org.geotools.test.TestData;
 import org.geotools.util.factory.Hints;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterValue;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValue;
 
 /**
  * Tests that a data set that contains a dimension with multiple bands is correctly handled. Is very

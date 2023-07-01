@@ -18,8 +18,8 @@ package org.geotools.brewer.styling.filter.expression;
 
 import org.geotools.brewer.styling.builder.Builder;
 import org.geotools.factory.CommonFactoryFinder;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Literal;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Literal;
 
 public class LiteralBuilder implements Builder<Literal> {
     protected FilterFactory ff = CommonFactoryFinder.getFilterFactory2(null);

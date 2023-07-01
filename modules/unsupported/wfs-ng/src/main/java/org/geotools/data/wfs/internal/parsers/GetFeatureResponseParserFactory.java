@@ -27,9 +27,9 @@ import org.geotools.data.wfs.internal.Versions;
 import org.geotools.data.wfs.internal.WFSRequest;
 import org.geotools.wfs.v1_0.WFSConfiguration_1_0;
 import org.geotools.xsd.Configuration;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.FeatureType;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.FeatureType;
 
 /**
  * A WFS response parser factory for GetFeature requests in GML output formats.

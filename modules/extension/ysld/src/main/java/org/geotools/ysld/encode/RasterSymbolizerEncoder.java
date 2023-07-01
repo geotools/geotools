@@ -27,7 +27,7 @@ import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.SelectedChannelType;
 import org.geotools.ysld.Band;
 import org.geotools.ysld.Tuple;
-import org.opengis.style.ContrastMethod;
+import org.geotools.api.style.ContrastMethod;
 
 /** Encodes a {@link RasterSymbolizer} as YSLD. */
 public class RasterSymbolizerEncoder extends SymbolizerEncoder<RasterSymbolizer> {

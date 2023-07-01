@@ -29,8 +29,8 @@ import org.geotools.geopkg.wps.GeoPackageProcessRequest.Overview;
 import org.geotools.xs.bindings.XSQNameBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.filter.Filter;
-import org.opengis.filter.sort.SortBy;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.sort.SortBy;
 
 /**
  * Binding object for the type http://www.opengis.net/gpkg:geopkgtype_features.

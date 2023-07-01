@@ -20,7 +20,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.opengis.filter.capability.FilterCapabilities;
+import org.geotools.api.filter.capability.FilterCapabilities;
 
 /**
  * <!-- begin-user-doc -->

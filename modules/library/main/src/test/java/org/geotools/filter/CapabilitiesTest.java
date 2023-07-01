@@ -26,15 +26,15 @@ import org.geotools.temporal.object.DefaultPeriod;
 import org.geotools.temporal.object.DefaultPosition;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.filter.And;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.spatial.Beyond;
-import org.opengis.filter.temporal.After;
-import org.opengis.filter.temporal.BegunBy;
-import org.opengis.temporal.Instant;
-import org.opengis.temporal.Period;
+import org.geotools.api.filter.And;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.spatial.Beyond;
+import org.geotools.api.filter.temporal.After;
+import org.geotools.api.filter.temporal.BegunBy;
+import org.geotools.api.temporal.Instant;
+import org.geotools.api.temporal.Period;
 import wiremock.com.google.common.collect.Lists;
 
 /**

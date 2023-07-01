@@ -30,7 +30,7 @@ import org.geotools.styling.NamedLayer;
 import org.geotools.styling.StyledLayer;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.json.simple.parser.ParseException;
-import org.opengis.style.Style;
+import org.geotools.api.style.Style;
 
 /**
  * MapBox Style facade offering utility methods for quickly working with JSON and converting to

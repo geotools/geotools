@@ -16,7 +16,7 @@
  */
 package org.geotools.filter.visitor;
 
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * The InterpolationPoints have to be specified in ascending order of Data. They define a graph of

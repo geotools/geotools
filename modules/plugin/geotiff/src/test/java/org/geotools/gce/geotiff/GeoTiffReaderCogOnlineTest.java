@@ -39,8 +39,8 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterValue;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValue;
 
 /** Testing {@link GeoTiffReader} with COG data */
 public class GeoTiffReaderCogOnlineTest extends Assert {

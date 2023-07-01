@@ -30,8 +30,8 @@ import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.util.factory.Hints;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.sort.SortOrder;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.sort.SortOrder;
 
 public class GeoPkgFeatureStoreOnlineTest extends JDBCFeatureStoreOnlineTest {
 

@@ -16,7 +16,7 @@
  */
 package org.geotools.styling;
 
-import org.opengis.style.GraphicalSymbol;
+import org.geotools.api.style.GraphicalSymbol;
 
 /**
  * A basic implementation of the StyleVisitor interface.
@@ -222,7 +222,7 @@ public class AbstractStyleVisitor implements StyleVisitor {
 
     @Override
     public void visit(ExternalGraphic exgr) {
-        // for (org.opengis.style.ColorReplacement cr : exgr.getColorReplacements()) {
+        // for (org.geotools.api.style.ColorReplacement cr : exgr.getColorReplacements()) {
         // cr.accept(visitor, extraData)
         // }
     }

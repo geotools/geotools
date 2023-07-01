@@ -20,11 +20,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.util.Cloneable;
 import org.geotools.util.Utilities;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.util.Cloneable;
 
 /**
  * Holds the coordinates for a three-dimensional position within some coordinate reference system.
@@ -93,7 +93,7 @@ public class DirectPosition3D implements DirectPosition, Serializable, Cloneable
 
     /**
      * Returns always {@code this}, the direct position for this {@linkplain
-     * org.opengis.geometry.coordinate.Position position}.
+     * org.geotools.api.geometry.coordinate.Position position}.
      */
     @Override
     public DirectPosition getDirectPosition() {

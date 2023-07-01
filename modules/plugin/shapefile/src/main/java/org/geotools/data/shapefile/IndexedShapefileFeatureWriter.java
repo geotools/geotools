@@ -30,7 +30,7 @@ import org.geotools.data.shapefile.files.FileWriter;
 import org.geotools.data.shapefile.files.ShpFileType;
 import org.geotools.data.shapefile.files.StorageFile;
 import org.geotools.util.URLs;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /**
  * A FeatureWriter for ShapefileDataStore. Uses a write and annotate technique to avoid buffering

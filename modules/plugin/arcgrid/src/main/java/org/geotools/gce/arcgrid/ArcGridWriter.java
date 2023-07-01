@@ -56,14 +56,14 @@ import org.geotools.parameter.Parameter;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
-import org.opengis.coverage.grid.Format;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.coverage.grid.GridCoverageWriter;
-import org.opengis.geometry.Envelope;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.cs.AxisDirection;
+import org.geotools.api.coverage.grid.Format;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.coverage.grid.GridCoverageWriter;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.cs.AxisDirection;
 
 /**
  * {@link ArcGridWriter} supports writing of an ArcGrid GridCoverage to a Desination object
@@ -160,7 +160,7 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
      * Creates a Format object describing the Arc Grid Format
      *
      * @return the format of the data source we will write to. (ArcGridFormat in this case)
-     * @see org.opengis.coverage.grid.GridCoverageWriter#getFormat()
+     * @see org.geotools.api.coverage.grid.GridCoverageWriter#getFormat()
      */
     @Override
     public Format getFormat() {
@@ -449,8 +449,8 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
      * this method shows an error. All other methods are using the geotools GridCoverage class
      *
      * @see
-     *     org.opengis.coverage.grid.GridCoverageWriter#write(org.opengis.coverage.grid.GridCoverage,
-     *     org.opengis.parameter.GeneralParameterValue[])
+     *     org.geotools.api.coverage.grid.GridCoverageWriter#write(org.geotools.api.coverage.grid.GridCoverage,
+     *     org.geotools.api.parameter.GeneralParameterValue[])
      */
     @Override
     public void write(GridCoverage coverage, GeneralParameterValue[] parameters)
@@ -535,7 +535,7 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
             throw new DataSourceException("The provided coverage is not a GridCoverage2D");
     }
 
-    /** @see org.opengis.coverage.grid.GridCoverageWriter#dispose() */
+    /** @see org.geotools.api.coverage.grid.GridCoverageWriter#dispose() */
     @Override
     public void dispose() {
 

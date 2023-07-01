@@ -8,8 +8,8 @@ import org.geotools.filter.v1_1.FilterMockData;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.filter.v2_0.FESTestSupport;
 import org.junit.Test;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
 import org.w3c.dom.Document;
 
 public class FunctionTypeBindingTest extends FESTestSupport {

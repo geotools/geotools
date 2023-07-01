@@ -22,8 +22,8 @@ import org.geotools.data.Parameter;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.text.Text;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * Function that takes an input value, and a default value. If the input value is null (or

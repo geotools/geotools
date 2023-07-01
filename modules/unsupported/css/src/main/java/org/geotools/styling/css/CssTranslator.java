@@ -91,11 +91,11 @@ import org.geotools.util.Converters;
 import org.geotools.util.Range;
 import org.geotools.util.logging.Logging;
 import org.geotools.xml.styling.SLDTransformer;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.Style;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.Style;
 
 /**
  * Transforms a GeoCSS into an equivalent GeoTools {@link Style} object
@@ -1443,7 +1443,7 @@ public class CssTranslator {
     }
 
     private String wrapColorMapAttribute(Expression expression) {
-        if (expression instanceof org.opengis.filter.expression.Literal) {
+        if (expression instanceof org.geotools.api.filter.expression.Literal) {
             // return expression as simple String
             return expression.toString();
         } else {
@@ -1645,11 +1645,11 @@ public class CssTranslator {
 
     /** Returns true if the expression is a constant value zero */
     private boolean isZero(Expression expression) {
-        if (!(expression instanceof org.opengis.filter.expression.Literal)) {
+        if (!(expression instanceof org.geotools.api.filter.expression.Literal)) {
             return false;
         }
-        org.opengis.filter.expression.Literal l =
-                (org.opengis.filter.expression.Literal) expression;
+        org.geotools.api.filter.expression.Literal l =
+                (org.geotools.api.filter.expression.Literal) expression;
         return l.evaluate(null, Double.class) == 0;
     }
 

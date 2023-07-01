@@ -26,8 +26,8 @@ import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.feature.Attribute;
-import org.opengis.filter.capability.FunctionName;
+import org.geotools.api.feature.Attribute;
+import org.geotools.api.filter.capability.FunctionName;
 
 /**
  * Function which wraps an instance of geometry in its associatd multi geometry type.
@@ -65,7 +65,7 @@ public class AsMultiGeometryFunctionExpression extends FunctionExpressionImpl {
             return null;
         }
         Attribute att = (Attribute) obj;
-        org.opengis.filter.expression.Expression arg = getParameters().get(0);
+        org.geotools.api.filter.expression.Expression arg = getParameters().get(0);
         Object value = arg.evaluate(att);
 
         if (value != null) {

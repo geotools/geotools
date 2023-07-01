@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.geotools.filter.FilterFactoryImpl;
 import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
-import org.opengis.filter.expression.Function;
+import org.geotools.api.filter.expression.Function;
 
 public class FilterFunction_toWKTTest {
 

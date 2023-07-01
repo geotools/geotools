@@ -31,8 +31,8 @@ import org.geotools.xsd.Binding;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.SchemaIndex;
 import org.geotools.xsd.Schemas;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.AttributeType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.AttributeType;
 
 /**
  * Parses an application schema given by a gtxml {@link Configuration} into a set of {@link

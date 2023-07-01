@@ -24,12 +24,12 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.visitor.AverageVisitor.AverageResult;
 import org.geotools.feature.visitor.CountVisitor.CountResult;
 import org.geotools.filter.IllegalFilterException;
-import org.opengis.feature.Feature;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * Calculates the Sum of an attribute (of a FeatureVisitor)

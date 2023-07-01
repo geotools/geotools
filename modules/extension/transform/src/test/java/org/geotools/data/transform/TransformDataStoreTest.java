@@ -13,7 +13,7 @@ import org.geotools.data.ServiceInfo;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.feature.type.Name;
+import org.geotools.api.feature.type.Name;
 
 public class TransformDataStoreTest extends AbstractTransformTest {
 

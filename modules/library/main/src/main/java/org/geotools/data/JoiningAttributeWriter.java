@@ -17,7 +17,7 @@
 package org.geotools.data;
 
 import java.io.IOException;
-import org.opengis.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.AttributeDescriptor;
 
 /**
  * Provides ...

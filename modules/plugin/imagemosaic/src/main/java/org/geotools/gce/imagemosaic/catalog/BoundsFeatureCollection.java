@@ -27,7 +27,7 @@ import org.geotools.feature.collection.DecoratingSimpleFeatureCollection;
 import org.geotools.feature.collection.DecoratingSimpleFeatureIterator;
 import org.geotools.gce.imagemosaic.GranuleDescriptor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /**
  * Feature collection decorating features with their native bounds, used wehen the {@link

@@ -13,8 +13,8 @@ import javax.xml.namespace.QName;
 
 import org.eclipse.emf.common.util.EList;
 
-import org.opengis.filter.Filter;
-import org.opengis.filter.sort.SortBy;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.sort.SortBy;
 
 import net.opengis.fes20.AbstractAdhocQueryExpressionType;
 

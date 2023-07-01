@@ -22,10 +22,10 @@ package org.geotools.metadata.iso.citation;
 import java.util.Collection;
 import java.util.Collections;
 import net.opengis.ows11.AddressType;
+import org.geotools.api.metadata.citation.Address;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.iso.MetadataEntity;
 import org.geotools.util.SimpleInternationalString;
-import org.opengis.metadata.citation.Address;
-import org.opengis.util.InternationalString;
 
 /**
  * Location of the responsible individual or organization.

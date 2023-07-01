@@ -17,9 +17,9 @@
 package org.geotools.filter;
 
 import java.util.List;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterVisitor;
-import org.opengis.filter.Or;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterVisitor;
+import org.geotools.api.filter.Or;
 
 /** @author jdeolive */
 public class OrImpl extends LogicFilterImpl implements Or {

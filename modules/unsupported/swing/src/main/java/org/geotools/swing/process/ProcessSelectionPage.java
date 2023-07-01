@@ -38,8 +38,8 @@ import javax.swing.tree.TreeSelectionModel;
 import org.geotools.process.ProcessFactory;
 import org.geotools.process.Processors;
 import org.geotools.swing.wizard.JPage;
-import org.opengis.feature.type.Name;
-import org.opengis.util.InternationalString;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.util.InternationalString;
 
 /**
  * This page is responsible for making a process selection widget that moves onto to the selected

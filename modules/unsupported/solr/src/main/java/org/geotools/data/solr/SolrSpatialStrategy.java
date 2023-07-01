@@ -25,7 +25,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 import org.locationtech.jts.io.WKTWriter;
-import org.opengis.feature.type.GeometryDescriptor;
+import org.geotools.api.feature.type.GeometryDescriptor;
 
 /**
  * Strategy interface for interacting with solr spatial types.

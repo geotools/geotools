@@ -18,11 +18,11 @@ package org.geotools.referencing.operation.transform;
 
 import java.awt.Shape;
 import java.awt.geom.Point2D;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.geotools.api.referencing.operation.Matrix;
+import org.geotools.api.referencing.operation.NoninvertibleTransformException;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.referencing.operation.matrix.XMatrix;
-import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.Matrix;
-import org.opengis.referencing.operation.NoninvertibleTransformException;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * Concatenated transform where both transforms are two-dimensional.

@@ -21,7 +21,7 @@ import java.util.List;
 import org.geotools.data.vpf.file.VPFFile;
 import org.geotools.data.vpf.readers.VPFGeometryFactory;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /**
  * @author <a href="mailto:jim@lomasoft.com">James Gambale</a>

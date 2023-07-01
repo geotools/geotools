@@ -35,9 +35,9 @@ import org.eclipse.xsd.util.XSDSchemaLocator;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.SchemaImpl;
 import org.geotools.xs.XS;
-import org.opengis.feature.type.AttributeType;
-import org.opengis.feature.type.Name;
-import org.opengis.feature.type.Schema;
+import org.geotools.api.feature.type.AttributeType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.feature.type.Schema;
 
 /**
  * Xml Schema for a particular namespace.

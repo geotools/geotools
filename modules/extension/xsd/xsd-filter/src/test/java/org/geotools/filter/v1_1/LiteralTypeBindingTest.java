@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
-import org.opengis.filter.expression.Literal;
+import org.geotools.api.filter.expression.Literal;
 import org.w3c.dom.Document;
 
 public class LiteralTypeBindingTest extends FilterTestSupport {

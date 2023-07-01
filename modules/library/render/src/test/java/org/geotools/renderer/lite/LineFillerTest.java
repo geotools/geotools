@@ -24,7 +24,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.renderer.style.ShapeMarkFactory;
 import org.geotools.renderer.style.WellKnownMarkFactory;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory;
+import org.geotools.api.filter.FilterFactory;
 
 public class LineFillerTest {
 

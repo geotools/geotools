@@ -17,12 +17,12 @@
 package org.geotools.util;
 
 import java.util.Set;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.util.GenericName;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.util.GenericName;
 
 /**
  * This is facade around several constructs used by GeoTools for internal caching.

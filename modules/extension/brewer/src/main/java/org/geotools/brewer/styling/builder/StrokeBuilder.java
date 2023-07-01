@@ -20,7 +20,7 @@ import java.awt.Color;
 import java.util.List;
 import org.geotools.styling.Stroke;
 import org.geotools.util.Converters;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 public class StrokeBuilder extends AbstractStyleBuilder<Stroke> {
     Expression color;
@@ -76,11 +76,11 @@ public class StrokeBuilder extends AbstractStyleBuilder<Stroke> {
 
     @Override
     public StrokeBuilder reset(Stroke original) {
-        return reset((org.opengis.style.Stroke) original);
+        return reset((org.geotools.api.style.Stroke) original);
     }
 
     /** Reset builder to provided original stroke. */
-    public StrokeBuilder reset(org.opengis.style.Stroke stroke) {
+    public StrokeBuilder reset(org.geotools.api.style.Stroke stroke) {
         if (stroke == null) {
             return unset();
         }

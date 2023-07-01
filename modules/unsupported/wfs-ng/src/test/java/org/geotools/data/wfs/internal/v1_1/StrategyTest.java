@@ -28,7 +28,7 @@ import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.GetFeatureRequest.ResultType;
 import org.geotools.ows.ServiceException;
 import org.junit.Test;
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 public class StrategyTest {
 

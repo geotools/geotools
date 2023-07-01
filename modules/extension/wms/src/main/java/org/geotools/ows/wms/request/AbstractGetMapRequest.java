@@ -33,10 +33,10 @@ import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.opengis.geometry.Envelope;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.TransformException;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.TransformException;
 
 /** @author Richard Gould */
 public abstract class AbstractGetMapRequest extends AbstractWMSRequest implements GetMapRequest {

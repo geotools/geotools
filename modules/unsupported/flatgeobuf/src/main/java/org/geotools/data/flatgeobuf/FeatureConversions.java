@@ -38,7 +38,7 @@ import java.time.OffsetDateTime;
 import java.time.OffsetTime;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.util.NIOUtilities;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.wololo.flatgeobuf.ColumnMeta;
 import org.wololo.flatgeobuf.GeometryConversions;
 import org.wololo.flatgeobuf.HeaderMeta;

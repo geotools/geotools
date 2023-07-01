@@ -17,9 +17,9 @@
 package org.geotools.temporal.object;
 
 import org.geotools.util.Utilities;
-import org.opengis.temporal.IndeterminateValue;
-import org.opengis.temporal.TemporalCoordinate;
-import org.opengis.temporal.TemporalReferenceSystem;
+import org.geotools.api.temporal.IndeterminateValue;
+import org.geotools.api.temporal.TemporalCoordinate;
+import org.geotools.api.temporal.TemporalReferenceSystem;
 
 /**
  * A data type that shall be used for identifying temporal position within a temporal coordinate

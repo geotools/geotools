@@ -80,8 +80,8 @@ import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.opengis.geometry.BoundingBox;
-import org.opengis.metadata.extent.GeographicBoundingBox;
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.metadata.extent.GeographicBoundingBox;
 
 /**
  * A set of static methods working on images. Some of those methods are useful, but not really

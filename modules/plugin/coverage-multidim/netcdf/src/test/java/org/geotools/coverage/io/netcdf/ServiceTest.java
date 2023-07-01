@@ -31,8 +31,8 @@ import org.geotools.imageio.netcdf.NetCDFImageReader;
 import org.geotools.test.TestData;
 import org.geotools.util.logging.Logging;
 import org.junit.Test;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 
 /**
  * Class for testing availability of NetCDF format factory

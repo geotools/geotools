@@ -23,7 +23,7 @@ import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.feature.FeatureFactory;
+import org.geotools.api.feature.FeatureFactory;
 
 public class CommonFactoryFinderTest {
 

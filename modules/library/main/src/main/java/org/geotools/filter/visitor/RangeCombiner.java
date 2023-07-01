@@ -22,21 +22,21 @@ import java.util.List;
 import java.util.Map;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.util.Range;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.filter.BinaryComparisonOperator;
-import org.opengis.filter.BinaryLogicOperator;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.PropertyIsBetween;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.PropertyIsGreaterThan;
-import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
-import org.opengis.filter.PropertyIsLessThan;
-import org.opengis.filter.PropertyIsLessThanOrEqualTo;
-import org.opengis.filter.PropertyIsNotEqualTo;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.filter.BinaryComparisonOperator;
+import org.geotools.api.filter.BinaryLogicOperator;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.PropertyIsBetween;
+import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.PropertyIsGreaterThan;
+import org.geotools.api.filter.PropertyIsGreaterThanOrEqualTo;
+import org.geotools.api.filter.PropertyIsLessThan;
+import org.geotools.api.filter.PropertyIsLessThanOrEqualTo;
+import org.geotools.api.filter.PropertyIsNotEqualTo;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
 
 /**
  * Utility class used by {@link SimplifyingFilterVisitor} to combine range based filters. This class
@@ -66,8 +66,8 @@ abstract class RangeCombiner {
 
         @Override
         protected void addFiltersToResults(List<Filter> results, Filter filter) {
-            if (filter instanceof org.opengis.filter.Or) {
-                results.addAll(((org.opengis.filter.Or) filter).getChildren());
+            if (filter instanceof org.geotools.api.filter.Or) {
+                results.addAll(((org.geotools.api.filter.Or) filter).getChildren());
             } else {
                 results.add(filter);
             }
@@ -93,8 +93,8 @@ abstract class RangeCombiner {
 
         @Override
         protected void addFiltersToResults(List<Filter> results, Filter filter) {
-            if (filter instanceof org.opengis.filter.And) {
-                results.addAll(((org.opengis.filter.And) filter).getChildren());
+            if (filter instanceof org.geotools.api.filter.And) {
+                results.addAll(((org.geotools.api.filter.And) filter).getChildren());
             } else {
                 results.add(filter);
             }
@@ -219,11 +219,11 @@ abstract class RangeCombiner {
                 } else {
                     otherFilters.add(f);
                 }
-            } else if (f instanceof org.opengis.filter.And || f instanceof org.opengis.filter.Or) {
+            } else if (f instanceof org.geotools.api.filter.And || f instanceof org.geotools.api.filter.Or) {
                 BinaryLogicOperator logic = (BinaryLogicOperator) f;
                 List<Filter> children = logic.getChildren();
                 RangeCombiner subCombiner;
-                if (logic instanceof org.opengis.filter.And) {
+                if (logic instanceof org.geotools.api.filter.And) {
                     subCombiner = new RangeCombiner.And(ff, featureType, children);
                 } else {
                     subCombiner = new RangeCombiner.Or(ff, featureType, children);

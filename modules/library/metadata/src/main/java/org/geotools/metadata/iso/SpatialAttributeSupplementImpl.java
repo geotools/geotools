@@ -20,8 +20,8 @@
 package org.geotools.metadata.iso;
 
 import java.util.Collection;
-import org.opengis.metadata.FeatureTypeList;
-import org.opengis.metadata.SpatialAttributeSupplement;
+import org.geotools.api.metadata.FeatureTypeList;
+import org.geotools.api.metadata.SpatialAttributeSupplement;
 
 /**
  * Spatial attributes in the application schema for the feature types.

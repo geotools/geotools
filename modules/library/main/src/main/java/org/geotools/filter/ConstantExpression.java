@@ -21,9 +21,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 import org.geotools.util.Converters;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.expression.ExpressionVisitor;
-import org.opengis.filter.expression.Literal;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.expression.ExpressionVisitor;
+import org.geotools.api.filter.expression.Literal;
 
 /**
  * The Expression class is not immutable!

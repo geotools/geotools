@@ -11,8 +11,8 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
 import org.eclipse.emf.ecore.util.FeatureMap;
-import org.opengis.filter.capability.ComparisonOperators;
-import org.opengis.filter.capability.Operator;
+import org.geotools.api.filter.capability.ComparisonOperators;
+import org.geotools.api.filter.capability.Operator;
 
 /**
  * <!-- begin-user-doc -->

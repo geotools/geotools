@@ -19,7 +19,7 @@ package org.geotools.brewer.styling.builder;
 import java.awt.Color;
 import org.geotools.styling.ColorMapEntry;
 import org.geotools.util.Converters;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 public class ColorMapEntryBuilder extends AbstractStyleBuilder<ColorMapEntry> {
 

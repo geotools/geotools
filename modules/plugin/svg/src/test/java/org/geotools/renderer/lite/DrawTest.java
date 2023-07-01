@@ -44,7 +44,7 @@ import org.geotools.util.logging.Logging;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 public class DrawTest {
     private static final Logger LOGGER = Logging.getLogger(DrawTest.class);

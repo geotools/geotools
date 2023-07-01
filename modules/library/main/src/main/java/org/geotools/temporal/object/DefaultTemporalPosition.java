@@ -21,9 +21,9 @@ import org.geotools.referencing.NamedIdentifier;
 import org.geotools.temporal.reference.DefaultTemporalReferenceSystem;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.Utilities;
-import org.opengis.temporal.IndeterminateValue;
-import org.opengis.temporal.TemporalPosition;
-import org.opengis.temporal.TemporalReferenceSystem;
+import org.geotools.api.temporal.IndeterminateValue;
+import org.geotools.api.temporal.TemporalPosition;
+import org.geotools.api.temporal.TemporalReferenceSystem;
 
 /**
  * Used for describing temporal positions referenced to other temporal reference systems.

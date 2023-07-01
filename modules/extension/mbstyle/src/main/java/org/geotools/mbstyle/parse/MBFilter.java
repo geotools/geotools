@@ -24,12 +24,12 @@ import java.util.List;
 import java.util.Set;
 import org.geotools.mbstyle.expression.MBExpression;
 import org.json.simple.JSONArray;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.identity.FeatureId;
-import org.opengis.style.SemanticType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.identity.FeatureId;
+import org.geotools.api.style.SemanticType;
 
 /**
  * MBFilter json wrapper, allowing conversion to a GeoTools Filter.

@@ -22,8 +22,8 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.spatial.DWithin;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.spatial.DWithin;
 
 /** @author Stefan Uhrig, SAP SE */
 public class HanaFilterToSqlTest {

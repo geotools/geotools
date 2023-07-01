@@ -28,8 +28,8 @@ import org.geotools.jdbc.JDBCFeatureCollectionOnlineTest;
 import org.geotools.jdbc.JDBCFeatureStore;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.junit.Test;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.filter.Filter;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.filter.Filter;
 
 public class OracleFeatureCollectionOnlineTest extends JDBCFeatureCollectionOnlineTest {
 

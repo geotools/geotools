@@ -8,10 +8,10 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.WKTReader;
-import org.opengis.feature.Feature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
 
 /**
  * Unit tests for FilterFunction_disjoint3D

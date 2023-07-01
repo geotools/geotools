@@ -24,7 +24,7 @@ import org.geotools.jdbc.JDBCFeatureStore;
 import org.geotools.jdbc.JDBCPrimaryKeyFinderOnlineTest;
 import org.geotools.jdbc.JDBCPrimaryKeyFinderTestSetup;
 import org.geotools.jdbc.NonIncrementingPrimaryKeyColumn;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 public class TeradataPrimaryKeyFinderOnlineTest extends JDBCPrimaryKeyFinderOnlineTest {
 

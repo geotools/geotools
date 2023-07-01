@@ -28,10 +28,10 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.SimpleFeaturePropertyAccessorFactory;
 import org.geotools.filter.identity.FeatureIdImpl;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.FilterVisitor;
-import org.opengis.filter.Id;
-import org.opengis.filter.identity.Identifier;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.FilterVisitor;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.identity.Identifier;
 
 /**
  * Defines a ID filter, which holds a list of IDs ( usually feature id;s ). This filter stores a
@@ -55,7 +55,7 @@ public class FidFilterImpl extends AbstractFilter implements Id {
 
     private Set<String> ids = new LinkedHashSet<>();
 
-    /** Constructor which takes {@link org.opengis.filter.identity.Identifier}, not String. */
+    /** Constructor which takes {@link org.geotools.api.filter.identity.Identifier}, not String. */
     protected FidFilterImpl(Set<? extends Identifier> fids) {
         // check these are really identifiers
         for (Object next : fids) {
@@ -69,19 +69,19 @@ public class FidFilterImpl extends AbstractFilter implements Id {
         }
     }
 
-    /** @see org.opengis.filter.Id#getIDs() */
+    /** @see org.geotools.api.filter.Id#getIDs() */
     @Override
     public Set<Object> getIDs() {
         return new HashSet<>(getFidsSet());
     }
 
-    /** @see org.opengis.filter.Id#getIdentifiers() */
+    /** @see org.geotools.api.filter.Id#getIdentifiers() */
     @Override
     public Set<Identifier> getIdentifiers() {
         return fids;
     }
 
-    /** @see org.opengis.filter.identity.FeatureId#setIDs(Set) */
+    /** @see org.geotools.api.filter.identity.FeatureId#setIDs(Set) */
     public void setIDs(Set ids) {
         fids = new HashSet<>();
         addAllFids(ids);

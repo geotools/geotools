@@ -29,9 +29,9 @@ import org.geotools.util.SimpleInternationalString;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.temporal.CalendarDate;
-import org.opengis.temporal.TemporalReferenceSystem;
-import org.opengis.util.InternationalString;
+import org.geotools.api.temporal.CalendarDate;
+import org.geotools.api.temporal.TemporalReferenceSystem;
+import org.geotools.api.util.InternationalString;
 
 /** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultCalendarDateTest {

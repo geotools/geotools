@@ -20,11 +20,11 @@
 package org.geotools.metadata.iso.lineage;
 
 import java.util.Collection;
+import org.geotools.api.metadata.lineage.Lineage;
+import org.geotools.api.metadata.lineage.ProcessStep;
+import org.geotools.api.metadata.lineage.Source;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.metadata.lineage.Lineage;
-import org.opengis.metadata.lineage.ProcessStep;
-import org.opengis.metadata.lineage.Source;
-import org.opengis.util.InternationalString;
 
 /**
  * Information about the events or source data used in constructing the data specified by the scope

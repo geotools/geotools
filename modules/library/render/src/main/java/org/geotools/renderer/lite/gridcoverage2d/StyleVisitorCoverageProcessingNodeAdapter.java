@@ -22,8 +22,8 @@ import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleVisitor;
 import org.geotools.util.factory.Hints;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.util.InternationalString;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.util.InternationalString;
 
 /**
  * This class implements an adapter to allow a {@link CoverageProcessingNode} to feed itself by

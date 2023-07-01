@@ -28,8 +28,8 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import org.geotools.feature.NameImpl;
 import org.geotools.util.factory.FactoryRegistry;
-import org.opengis.feature.type.Name;
-import org.opengis.util.InternationalString;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.util.InternationalString;
 
 /**
  * Annotation driven process factory; used to wrap up a bunch of Java beans as a single Process

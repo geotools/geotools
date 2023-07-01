@@ -17,14 +17,14 @@
 package org.geotools.referencing.operation.builder;
 
 import java.util.List;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.MismatchedReferenceSystemException;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.cs.CartesianCS;
+import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.geometry.MismatchedReferenceSystemException;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.cs.CartesianCS;
-import org.opengis.referencing.operation.MathTransform;
 
 /**
  * Builds {@linkplain MathTransform MathTransform} setup as Projective transformation from a list of

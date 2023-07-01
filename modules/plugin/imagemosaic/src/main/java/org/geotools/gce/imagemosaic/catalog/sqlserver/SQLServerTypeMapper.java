@@ -19,7 +19,7 @@ package org.geotools.gce.imagemosaic.catalog.sqlserver;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.gce.imagemosaic.catalog.oracle.AbstractFeatureTypeMapper;
 import org.geotools.gce.imagemosaic.catalog.oracle.DataStoreWrapper;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /**
  * Specific SQLServer implementation for a {@link DataStoreWrapper} By default, SQLServer

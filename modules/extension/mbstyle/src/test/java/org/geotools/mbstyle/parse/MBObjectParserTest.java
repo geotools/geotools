@@ -28,8 +28,8 @@ import org.geotools.mbstyle.layer.SymbolMBLayer;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
 
 /** Individual parsing tests. */
 public class MBObjectParserTest {

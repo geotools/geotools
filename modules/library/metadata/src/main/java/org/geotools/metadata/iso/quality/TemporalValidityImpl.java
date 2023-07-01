@@ -19,7 +19,7 @@
  */
 package org.geotools.metadata.iso.quality;
 
-import org.opengis.metadata.quality.TemporalValidity;
+import org.geotools.api.metadata.quality.TemporalValidity;
 
 /**
  * Validity of data specified by the scope with respect to time.

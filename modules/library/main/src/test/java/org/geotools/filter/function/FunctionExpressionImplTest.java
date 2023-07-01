@@ -6,7 +6,7 @@ import static org.junit.Assert.assertEquals;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.junit.Test;
-import org.opengis.filter.capability.FunctionName;
+import org.geotools.api.filter.capability.FunctionName;
 
 public class FunctionExpressionImplTest {
 

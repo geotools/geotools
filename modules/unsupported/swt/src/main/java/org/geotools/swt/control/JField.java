@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 import org.geotools.data.Parameter;
 import org.geotools.util.Converters;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Field that uses the converter API to hack away at a text representation of the provided value.

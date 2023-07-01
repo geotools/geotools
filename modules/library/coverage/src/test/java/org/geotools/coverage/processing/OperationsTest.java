@@ -29,7 +29,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.coverage.grid.GridCoverage;
+import org.geotools.api.coverage.grid.GridCoverage;
 
 /**
  * Tests JAI operation wrapped as {@link OperatorJAI}.

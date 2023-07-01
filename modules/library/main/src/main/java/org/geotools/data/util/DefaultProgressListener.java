@@ -18,10 +18,10 @@ package org.geotools.data.util;
 
 import java.util.LinkedList;
 import java.util.Queue;
-import org.opengis.util.InternationalString;
+import org.geotools.api.util.InternationalString;
 
 /**
- * Default Implementation of {@link org.opengis.util.ProgressListener} that does retain exceptions.
+ * Default Implementation of {@link org.geotools.api.util.ProgressListener} that does retain exceptions.
  *
  * <p>We do not put particular attention on the management of canceled, started, completed, this is
  * a default implementation.
@@ -30,7 +30,7 @@ import org.opengis.util.InternationalString;
  * @since 2.8
  */
 public class DefaultProgressListener extends NullProgressListener
-        implements org.opengis.util.ProgressListener {
+        implements org.geotools.api.util.ProgressListener {
 
     @Override
     public String toString() {
@@ -164,7 +164,7 @@ public class DefaultProgressListener extends NullProgressListener
     }
 
     /* (non-Javadoc)
-     * @see org.opengis.util.ProgressListener#getProgress()
+     * @see org.geotools.api.util.ProgressListener#getProgress()
      */
     @Override
     public float getProgress() {
@@ -172,7 +172,7 @@ public class DefaultProgressListener extends NullProgressListener
     }
 
     /* (non-Javadoc)
-     * @see org.opengis.util.ProgressListener#getTask()
+     * @see org.geotools.api.util.ProgressListener#getTask()
      */
     @Override
     public InternationalString getTask() {
@@ -180,7 +180,7 @@ public class DefaultProgressListener extends NullProgressListener
     }
 
     /* (non-Javadoc)
-     * @see org.opengis.util.ProgressListener#setTask(org.opengis.util.InternationalString)
+     * @see org.geotools.api.util.ProgressListener#setTask(org.geotools.api.util.InternationalString)
      */
     @Override
     public void setTask(InternationalString task) {

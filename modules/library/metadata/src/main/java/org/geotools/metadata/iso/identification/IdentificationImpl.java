@@ -20,19 +20,19 @@
 package org.geotools.metadata.iso.identification;
 
 import java.util.Collection;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.metadata.citation.ResponsibleParty;
+import org.geotools.api.metadata.constraint.Constraints;
+import org.geotools.api.metadata.distribution.Format;
+import org.geotools.api.metadata.identification.AggregateInformation;
+import org.geotools.api.metadata.identification.BrowseGraphic;
+import org.geotools.api.metadata.identification.Identification;
+import org.geotools.api.metadata.identification.Keywords;
+import org.geotools.api.metadata.identification.Progress;
+import org.geotools.api.metadata.identification.Usage;
+import org.geotools.api.metadata.maintenance.MaintenanceInformation;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.metadata.citation.ResponsibleParty;
-import org.opengis.metadata.constraint.Constraints;
-import org.opengis.metadata.distribution.Format;
-import org.opengis.metadata.identification.AggregateInformation;
-import org.opengis.metadata.identification.BrowseGraphic;
-import org.opengis.metadata.identification.Identification;
-import org.opengis.metadata.identification.Keywords;
-import org.opengis.metadata.identification.Progress;
-import org.opengis.metadata.identification.Usage;
-import org.opengis.metadata.maintenance.MaintenanceInformation;
-import org.opengis.util.InternationalString;
 
 /**
  * Basic information required to uniquely identify a resource or resources.

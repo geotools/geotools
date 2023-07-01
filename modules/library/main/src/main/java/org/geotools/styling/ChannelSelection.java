@@ -47,7 +47,7 @@ package org.geotools.styling;
  *
  * @author iant
  */
-public interface ChannelSelection extends org.opengis.style.ChannelSelection {
+public interface ChannelSelection extends org.geotools.api.style.ChannelSelection {
     /**
      * Set the RGB channels to be used
      *

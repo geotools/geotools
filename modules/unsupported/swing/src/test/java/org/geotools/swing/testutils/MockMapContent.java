@@ -25,7 +25,7 @@ import org.geotools.map.MapBoundsListener;
 import org.geotools.map.MapContent;
 import org.geotools.map.MapLayerListListener;
 import org.geotools.map.MapViewport;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Mock MapContent class for testing.

@@ -13,8 +13,8 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FunctionFinder;
 import org.junit.After;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Function;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Function;
 
 /**
  * Tests the property function

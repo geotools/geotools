@@ -23,7 +23,7 @@ import org.geotools.styling.StyleFactory;
 import org.geotools.styling.UserLayer;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /**
  * Binding object for the element http://www.opengis.net/sld:UserLayer.

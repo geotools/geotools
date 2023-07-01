@@ -22,7 +22,7 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.json.simple.JSONObject;
-import org.opengis.filter.capability.FunctionName;
+import org.geotools.api.filter.capability.FunctionName;
 
 /** Evaluate to TRUE if a JSONObject contains a given key value or FALSE if it does not. */
 public class HasFunction extends FunctionExpressionImpl {

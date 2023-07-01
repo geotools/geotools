@@ -68,12 +68,12 @@ import org.geotools.xml.XMLHandlerHints;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Encoder;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.identity.FeatureId;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.identity.FeatureId;
 import org.xml.sax.EntityResolver;
 
 public class IntegrationTestWFSClient extends WFSClient {

@@ -13,7 +13,7 @@ import org.geotools.styling.StyledLayerDescriptor;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
-import org.opengis.style.SemanticType;
+import org.geotools.api.style.SemanticType;
 
 public class MBFilterIntegrationTest {
 

@@ -18,10 +18,10 @@ package org.geotools.data;
 
 import java.io.IOException;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.Filter;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Filter;
 
 /**
  * This represents a physical source of feature data, such as a shapefiles or database, where the
@@ -29,7 +29,7 @@ import org.opengis.filter.Filter;
  * interface (which works at the more general {@code Feature} level).
  *
  * @see DataAccess
- * @see org.opengis.feature.Feature
+ * @see org.geotools.api.feature.Feature
  * @see SimpleFeature
  * @author Jody Garnett, Refractions Research
  * @version $Id$

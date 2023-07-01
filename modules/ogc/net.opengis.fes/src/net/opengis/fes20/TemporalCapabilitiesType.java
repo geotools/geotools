@@ -7,7 +7,7 @@
 package net.opengis.fes20;
 
 import org.eclipse.emf.ecore.EObject;
-import org.opengis.filter.capability.TemporalCapabilities;
+import org.geotools.api.filter.capability.TemporalCapabilities;
 
 /**
  * <!-- begin-user-doc -->

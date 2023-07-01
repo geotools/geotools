@@ -2767,7 +2767,7 @@ public interface Wcs20Package extends EPackage {
 	 * The meta object id for the '<em>Sort By</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.opengis.filter.sort.SortBy
+	 * @see org.geotools.api.filter.sort.SortBy
 	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getSortBy()
 	 * @generated
 	 */
@@ -2830,7 +2830,7 @@ public interface Wcs20Package extends EPackage {
 	 * The meta object id for the '<em>Filter</em>' data type.
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-	 * @see org.opengis.filter.Filter
+	 * @see org.geotools.api.filter.Filter
 	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getFilter()
 	 * @generated
 	 */
@@ -4396,12 +4396,12 @@ public interface Wcs20Package extends EPackage {
     EAttribute getSections_Section();
 
     /**
-	 * Returns the meta object for data type '{@link org.opengis.filter.sort.SortBy <em>Sort By</em>}'.
+	 * Returns the meta object for data type '{@link org.geotools.api.filter.sort.SortBy <em>Sort By</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for data type '<em>Sort By</em>'.
-	 * @see org.opengis.filter.sort.SortBy
-	 * @model instanceClass="org.opengis.filter.sort.SortBy"
+	 * @see org.geotools.api.filter.sort.SortBy
+	 * @model instanceClass="org.geotools.api.filter.sort.SortBy"
 	 * @generated
 	 */
 	EDataType getSortBy();
@@ -4461,12 +4461,12 @@ public interface Wcs20Package extends EPackage {
     EDataType getQName();
 
     /**
-	 * Returns the meta object for data type '{@link org.opengis.filter.Filter <em>Filter</em>}'.
+	 * Returns the meta object for data type '{@link org.geotools.api.filter.Filter <em>Filter</em>}'.
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * @return the meta object for data type '<em>Filter</em>'.
-	 * @see org.opengis.filter.Filter
-	 * @model instanceClass="org.opengis.filter.Filter"
+	 * @see org.geotools.api.filter.Filter
+	 * @model instanceClass="org.geotools.api.filter.Filter"
 	 * @generated
 	 */
     EDataType getFilter();
@@ -5733,7 +5733,7 @@ public interface Wcs20Package extends EPackage {
 		 * The meta object literal for the '<em>Sort By</em>' data type.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.opengis.filter.sort.SortBy
+		 * @see org.geotools.api.filter.sort.SortBy
 		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getSortBy()
 		 * @generated
 		 */
@@ -5793,7 +5793,7 @@ public interface Wcs20Package extends EPackage {
 		 * The meta object literal for the '<em>Filter</em>' data type.
 		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-		 * @see org.opengis.filter.Filter
+		 * @see org.geotools.api.filter.Filter
 		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getFilter()
 		 * @generated
 		 */

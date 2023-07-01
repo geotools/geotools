@@ -19,9 +19,9 @@ package org.geotools.referencing.operation.builder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.geometry.DirectPosition2D;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * A triangle, with special methods for use with RubberSheetTransform.

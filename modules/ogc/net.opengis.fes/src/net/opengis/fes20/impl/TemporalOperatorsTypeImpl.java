@@ -23,7 +23,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.opengis.filter.capability.TemporalOperator;
+import org.geotools.api.filter.capability.TemporalOperator;
 
 /**
  * <!-- begin-user-doc -->

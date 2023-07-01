@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.geotools.data.util.NullProgressListener;
 import org.geotools.process.ProcessFactory;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * Provide an implementation for a simple process (ie so quick and easy it is not going to need to

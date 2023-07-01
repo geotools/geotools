@@ -21,9 +21,9 @@ import java.util.Arrays;
 import java.util.List;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
-import org.opengis.filter.Filter;
-import org.opengis.filter.sort.SortBy;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.sort.SortBy;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Implementation for Query.FIDS.

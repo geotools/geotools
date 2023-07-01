@@ -18,7 +18,7 @@ package org.geotools.gce.imagemosaic.catalog;
 
 import java.util.NoSuchElementException;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /**
  * A feature iterator allowing to push back one feature (will be used to map the results of a join)

@@ -23,8 +23,8 @@ import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.spatial.BinarySpatialOperator;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.spatial.BinarySpatialOperator;
 import org.picocontainer.MutablePicoContainer;
 
 /**

@@ -18,13 +18,13 @@ package org.geotools.referencing.factory.epsg;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.geotools.api.referencing.AuthorityFactory;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.IdentifiedObject;
+import org.geotools.api.referencing.crs.CRSAuthorityFactory;
+import org.geotools.api.referencing.operation.CoordinateOperation; // For javadoc
+import org.geotools.api.referencing.operation.CoordinateOperationAuthorityFactory;
 import org.geotools.referencing.factory.IdentifiedObjectSet;
-import org.opengis.referencing.AuthorityFactory;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.IdentifiedObject;
-import org.opengis.referencing.crs.CRSAuthorityFactory;
-import org.opengis.referencing.operation.CoordinateOperation; // For javadoc
-import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
 
 /**
  * A lazy set of {@link CoordinateOperation} objects to be returned by the {@link

@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.mbstyle.layer.SymbolMBLayer;
-import org.opengis.filter.capability.FunctionName;
+import org.geotools.api.filter.capability.FunctionName;
 
 public class MapBoxAnchorFunction extends FunctionExpressionImpl {
 

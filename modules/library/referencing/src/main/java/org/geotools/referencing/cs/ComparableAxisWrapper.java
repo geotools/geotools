@@ -17,8 +17,8 @@
 package org.geotools.referencing.cs;
 
 import java.util.Arrays;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.cs.CoordinateSystemAxis;
+import org.geotools.api.referencing.cs.AxisDirection;
+import org.geotools.api.referencing.cs.CoordinateSystemAxis;
 
 /**
  * Wraps a {@linkplain CoordinateSystemAxis coordinate system axis} for comparaison purpose. The

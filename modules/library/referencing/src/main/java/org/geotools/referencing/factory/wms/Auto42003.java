@@ -18,7 +18,7 @@ package org.geotools.referencing.factory.wms;
 
 // OpenGIS dependencies
 
-import org.opengis.parameter.ParameterValueGroup;
+import org.geotools.api.parameter.ParameterValueGroup;
 
 /**
  * Auto Orthographic ({@code AUTO:42003}). In the notation below, "<code>${var}</code>" denotes a

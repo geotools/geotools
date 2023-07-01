@@ -24,7 +24,7 @@ import org.apache.commons.jxpath.ri.compiler.NodeTypeTest;
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.geotools.feature.type.Types;
-import org.opengis.feature.type.ComplexType;
+import org.geotools.api.feature.type.ComplexType;
 
 /**
  * Special node pointer for {@link org.geotools.feature.FeatureType}.

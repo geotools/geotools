@@ -19,9 +19,9 @@
  */
 package org.geotools.metadata.iso.spatial;
 
+import org.geotools.api.metadata.spatial.Dimension;
+import org.geotools.api.metadata.spatial.DimensionNameType;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.metadata.spatial.Dimension;
-import org.opengis.metadata.spatial.DimensionNameType;
 
 /**
  * Axis properties.

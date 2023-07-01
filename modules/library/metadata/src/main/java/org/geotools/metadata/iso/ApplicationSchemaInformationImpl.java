@@ -20,8 +20,8 @@
 package org.geotools.metadata.iso;
 
 import java.net.URI;
-import org.opengis.metadata.ApplicationSchemaInformation;
-import org.opengis.metadata.citation.Citation;
+import org.geotools.api.metadata.ApplicationSchemaInformation;
+import org.geotools.api.metadata.citation.Citation;
 
 /**
  * Information about the application schema used to build the dataset.

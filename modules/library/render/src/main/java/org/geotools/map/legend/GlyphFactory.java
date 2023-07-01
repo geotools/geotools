@@ -20,7 +20,7 @@ import java.awt.Color;
 import javax.swing.Icon;
 import org.geotools.map.Layer;
 import org.geotools.styling.Rule;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /**
  * Used to draw the little pictures that appear in a Legend.

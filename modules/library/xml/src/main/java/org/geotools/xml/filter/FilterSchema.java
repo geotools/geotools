@@ -67,7 +67,7 @@ import org.geotools.xml.schema.Schema;
 import org.geotools.xml.schema.SimpleType;
 import org.geotools.xml.schema.Type;
 import org.geotools.xml.schema.impl.AttributeGT;
-import org.opengis.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory2;
 
 /**
  * Schema for parsing filter content.

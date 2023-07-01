@@ -16,26 +16,26 @@
  */
 package org.geotools.geometry;
 
-import static org.opengis.metadata.spatial.PixelOrientation.CENTER;
-import static org.opengis.metadata.spatial.PixelOrientation.LOWER_LEFT;
-import static org.opengis.metadata.spatial.PixelOrientation.LOWER_RIGHT;
-import static org.opengis.metadata.spatial.PixelOrientation.UPPER_LEFT;
-import static org.opengis.metadata.spatial.PixelOrientation.UPPER_RIGHT;
-import static org.opengis.metadata.spatial.PixelOrientation.valueOf;
+import static org.geotools.api.metadata.spatial.PixelOrientation.CENTER;
+import static org.geotools.api.metadata.spatial.PixelOrientation.LOWER_LEFT;
+import static org.geotools.api.metadata.spatial.PixelOrientation.LOWER_RIGHT;
+import static org.geotools.api.metadata.spatial.PixelOrientation.UPPER_LEFT;
+import static org.geotools.api.metadata.spatial.PixelOrientation.UPPER_RIGHT;
+import static org.geotools.api.metadata.spatial.PixelOrientation.valueOf;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import org.geotools.api.metadata.spatial.PixelOrientation;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.operation.matrix.MatrixFactory;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.util.Utilities;
-import org.opengis.metadata.spatial.PixelOrientation;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.Matrix;
 
 /**
  * The translation to apply for different values of {@link PixelOrientation}.

@@ -21,8 +21,8 @@ import java.io.StringReader;
 import java.net.URI;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.referencing.CRS;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 // docs start CSVFileState
 /** Details from comma separated value file. */

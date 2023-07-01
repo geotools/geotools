@@ -28,7 +28,7 @@ import org.geotools.xsd.Configuration;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 import org.geotools.xsd.SchemaIndex;
-import org.opengis.feature.Feature;
+import org.geotools.api.feature.Feature;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

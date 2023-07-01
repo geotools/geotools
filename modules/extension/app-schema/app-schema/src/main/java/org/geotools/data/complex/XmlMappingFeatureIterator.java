@@ -38,12 +38,12 @@ import org.geotools.data.complex.xml.XmlXpathFilterData;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.type.ComplexTypeImpl;
 import org.geotools.filter.LiteralExpressionImpl;
-import org.opengis.feature.Attribute;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
+import org.geotools.api.feature.Attribute;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
 import org.xml.sax.Attributes;
 
 /**

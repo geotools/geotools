@@ -32,17 +32,17 @@ import org.geotools.util.Version;
 import org.geotools.util.factory.AbstractFactory;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.IdentifiedObject;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.ObjectFactory;
-import org.opengis.referencing.crs.CRSAuthorityFactory;
-import org.opengis.referencing.crs.CRSFactory;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.GeographicCRS;
-import org.opengis.referencing.crs.ProjectedCRS;
-import org.opengis.util.InternationalString;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.IdentifiedObject;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
+import org.geotools.api.referencing.ObjectFactory;
+import org.geotools.api.referencing.crs.CRSAuthorityFactory;
+import org.geotools.api.referencing.crs.CRSFactory;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.GeographicCRS;
+import org.geotools.api.referencing.crs.ProjectedCRS;
+import org.geotools.api.util.InternationalString;
 
 /**
  * Default implementation for a coordinate reference system authority factory backed by the EPSG
@@ -302,42 +302,42 @@ public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAutho
     }
 
     @Override
-    public org.opengis.referencing.crs.CompoundCRS createCompoundCRS(String str)
+    public org.geotools.api.referencing.crs.CompoundCRS createCompoundCRS(String str)
             throws FactoryException {
         throw new FactoryException("Not implemented");
     }
 
     @Override
-    public org.opengis.referencing.crs.DerivedCRS createDerivedCRS(String str)
+    public org.geotools.api.referencing.crs.DerivedCRS createDerivedCRS(String str)
             throws FactoryException {
         throw new FactoryException("Not implemented");
     }
 
     @Override
-    public org.opengis.referencing.crs.EngineeringCRS createEngineeringCRS(String str)
+    public org.geotools.api.referencing.crs.EngineeringCRS createEngineeringCRS(String str)
             throws FactoryException {
         throw new FactoryException("Not implemented");
     }
 
     @Override
-    public org.opengis.referencing.crs.GeocentricCRS createGeocentricCRS(String str)
+    public org.geotools.api.referencing.crs.GeocentricCRS createGeocentricCRS(String str)
             throws FactoryException {
         throw new FactoryException("Not implemented");
     }
 
     @Override
-    public org.opengis.referencing.crs.ImageCRS createImageCRS(String str) throws FactoryException {
+    public org.geotools.api.referencing.crs.ImageCRS createImageCRS(String str) throws FactoryException {
         throw new FactoryException("Not implemented");
     }
 
     @Override
-    public org.opengis.referencing.crs.TemporalCRS createTemporalCRS(String str)
+    public org.geotools.api.referencing.crs.TemporalCRS createTemporalCRS(String str)
             throws FactoryException {
         throw new FactoryException("Not implemented");
     }
 
     @Override
-    public org.opengis.referencing.crs.VerticalCRS createVerticalCRS(String str)
+    public org.geotools.api.referencing.crs.VerticalCRS createVerticalCRS(String str)
             throws FactoryException {
         throw new FactoryException("Not implemented");
     }

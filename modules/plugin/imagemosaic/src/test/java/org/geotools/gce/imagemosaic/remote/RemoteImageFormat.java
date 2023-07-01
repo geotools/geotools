@@ -25,8 +25,8 @@ import org.geotools.gce.image.WorldImageFormat;
 import org.geotools.gce.image.WorldImageReader;
 import org.geotools.gce.imagemosaic.RemoteTest;
 import org.geotools.util.factory.Hints;
-import org.opengis.coverage.grid.Format;
-import org.opengis.coverage.grid.GridCoverageWriter;
+import org.geotools.api.coverage.grid.Format;
+import org.geotools.api.coverage.grid.GridCoverageWriter;
 
 public class RemoteImageFormat extends AbstractGridFormat implements Format {
 

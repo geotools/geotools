@@ -34,7 +34,7 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.Hints;
 import org.junit.Test;
-import org.opengis.coverage.grid.GridCoverageReader;
+import org.geotools.api.coverage.grid.GridCoverageReader;
 
 /**
  * Title: TestArcGridClass

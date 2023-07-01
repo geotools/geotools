@@ -20,9 +20,9 @@
 package org.geotools.metadata.iso.citation;
 
 import java.util.Date;
+import org.geotools.api.metadata.citation.CitationDate;
+import org.geotools.api.metadata.citation.DateType;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.metadata.citation.CitationDate;
-import org.opengis.metadata.citation.DateType;
 
 /**
  * Reference date and event used to describe it.

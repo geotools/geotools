@@ -23,12 +23,12 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.ConstantExpression;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.GeoTools;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.AnchorPoint;
-import org.opengis.style.GraphicalSymbol;
-import org.opengis.style.StyleVisitor;
-import org.opengis.util.Cloneable;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.AnchorPoint;
+import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.util.Cloneable;
 
 /**
  * Direct implementation of Graphic.
@@ -87,7 +87,7 @@ public class GraphicImpl implements Graphic, Cloneable {
     }
 
     @Override
-    public void setAnchorPoint(org.opengis.style.AnchorPoint anchorPoint) {
+    public void setAnchorPoint(org.geotools.api.style.AnchorPoint anchorPoint) {
         this.anchor = AnchorPointImpl.cast(anchorPoint);
     }
 
@@ -161,7 +161,7 @@ public class GraphicImpl implements Graphic, Cloneable {
     }
 
     @Override
-    public void setDisplacement(org.opengis.style.Displacement offset) {
+    public void setDisplacement(org.geotools.api.style.Displacement offset) {
         this.displacement = DisplacementImpl.cast(offset);
     }
 
@@ -192,7 +192,7 @@ public class GraphicImpl implements Graphic, Cloneable {
 
     @Override
     public Object accept(StyleVisitor visitor, Object data) {
-        return visitor.visit((org.opengis.style.GraphicStroke) this, data);
+        return visitor.visit((org.geotools.api.style.GraphicStroke) this, data);
     }
 
     @Override
@@ -285,7 +285,7 @@ public class GraphicImpl implements Graphic, Cloneable {
         return false;
     }
 
-    static GraphicImpl cast(org.opengis.style.Graphic graphic) {
+    static GraphicImpl cast(org.geotools.api.style.Graphic graphic) {
         if (graphic == null) {
             return null;
         } else if (graphic instanceof GraphicImpl) {
@@ -296,9 +296,9 @@ public class GraphicImpl implements Graphic, Cloneable {
             copy.setDisplacement(graphic.getDisplacement());
             if (graphic.graphicalSymbols() != null) {
                 for (GraphicalSymbol item : graphic.graphicalSymbols()) {
-                    if (item instanceof org.opengis.style.ExternalGraphic) {
+                    if (item instanceof org.geotools.api.style.ExternalGraphic) {
                         copy.graphicalSymbols().add(ExternalGraphicImpl.cast(item));
-                    } else if (item instanceof org.opengis.style.Mark) {
+                    } else if (item instanceof org.geotools.api.style.Mark) {
                         copy.graphicalSymbols().add(MarkImpl.cast(item));
                     }
                 }

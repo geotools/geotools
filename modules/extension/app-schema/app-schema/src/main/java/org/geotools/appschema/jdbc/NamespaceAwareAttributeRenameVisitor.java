@@ -18,9 +18,9 @@ package org.geotools.appschema.jdbc;
 
 import org.geotools.appschema.filter.NestedAttributeExpression;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.PropertyName;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.PropertyName;
 
 /**
  * Renames the specified attribute to a new target name, preserving the namespace context.

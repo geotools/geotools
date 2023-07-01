@@ -26,9 +26,9 @@ import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.ExpressionVisitor;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.ExpressionVisitor;
 
 /** Visitor that encode a JDBC multivalued mapping to SQL. */
 public final class JdbcMultipleValueEncoder extends DuplicatingFilterVisitor {

@@ -6,7 +6,7 @@ package net.opengis.wfs.validation;
 
 import javax.xml.namespace.QName;
 
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 /**
  * A sample validator interface for {@link net.opengis.wfs.DeleteElementType}.

@@ -35,11 +35,11 @@ import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.Rule;
 import org.geotools.text.Text;
 import org.json.simple.JSONObject;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
-import org.opengis.style.Displacement;
-import org.opengis.style.GraphicFill;
-import org.opengis.style.SemanticType;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.style.Displacement;
+import org.geotools.api.style.GraphicFill;
+import org.geotools.api.style.SemanticType;
 
 /**
  * MBLayer wrapper for "Fill" layers.

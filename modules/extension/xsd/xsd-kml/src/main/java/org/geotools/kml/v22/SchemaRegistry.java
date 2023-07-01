@@ -20,7 +20,7 @@ package org.geotools.kml.v22;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 public class SchemaRegistry {
 

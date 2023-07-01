@@ -24,9 +24,9 @@ import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.geometry.Envelope;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Tests the creation of a grid coverage using floating point value.

@@ -20,10 +20,10 @@
 package org.geotools.referencing.operation;
 
 import java.util.Map;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.OperationMethod;
-import org.opengis.referencing.operation.Transformation;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.OperationMethod;
+import org.geotools.api.referencing.operation.Transformation;
 
 /**
  * An operation on coordinates that usually includes a change of Datum. The parameters of a

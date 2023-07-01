@@ -23,8 +23,8 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.styling.Style;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Layer used to draw a raster {@link GridCoverage2DReader}.

@@ -43,9 +43,9 @@ import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.style.ContrastMethod;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.style.ContrastMethod;
 
 /**
  * Tests rendering a GridCoverage2D object directly (ie. not via a coverage reader).

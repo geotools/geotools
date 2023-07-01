@@ -25,16 +25,16 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.io.GridCoverageResponse;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
-import org.opengis.coverage.CannotEvaluateException;
-import org.opengis.coverage.PointOutsideCoverageException;
-import org.opengis.coverage.SampleDimension;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.coverage.grid.GridGeometry;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.Envelope;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.util.Record;
-import org.opengis.util.RecordType;
+import org.geotools.api.coverage.CannotEvaluateException;
+import org.geotools.api.coverage.PointOutsideCoverageException;
+import org.geotools.api.coverage.SampleDimension;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.coverage.grid.GridGeometry;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.util.Record;
+import org.geotools.api.util.RecordType;
 
 /**
  * Default GridCoverageResponse implementation.

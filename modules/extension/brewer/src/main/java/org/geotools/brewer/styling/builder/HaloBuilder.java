@@ -17,9 +17,9 @@
 package org.geotools.brewer.styling.builder;
 
 import org.geotools.styling.Halo;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
-public class HaloBuilder extends AbstractStyleBuilder<org.opengis.style.Halo> {
+public class HaloBuilder extends AbstractStyleBuilder<org.geotools.api.style.Halo> {
     Expression radius;
 
     FillBuilder fill = new FillBuilder(this);
@@ -67,7 +67,7 @@ public class HaloBuilder extends AbstractStyleBuilder<org.opengis.style.Halo> {
      * @return current HaloBuilder for chaining operations
      */
     @Override
-    public HaloBuilder reset(org.opengis.style.Halo halo) {
+    public HaloBuilder reset(org.geotools.api.style.Halo halo) {
         if (halo == null) {
             return unset();
         }

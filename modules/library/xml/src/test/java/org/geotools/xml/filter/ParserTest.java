@@ -30,7 +30,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.opengis.feature.IllegalAttributeException;
+import org.geotools.api.feature.IllegalAttributeException;
 import org.xml.sax.helpers.ParserAdapter;
 
 /**
@@ -98,112 +98,112 @@ public class ParserTest extends FilterTestSupport {
 
     @Test
     public void test1() throws Exception {
-        org.opengis.filter.Filter test = parseDocument("test1.xml");
+        org.geotools.api.filter.Filter test = parseDocument("test1.xml");
         LOGGER.fine("filter: " + test.getClass().toString());
         LOGGER.fine("parsed: " + test.toString());
     }
 
     @Test
     public void test2() throws Exception {
-        org.opengis.filter.Filter test = parseDocument("test2.xml");
+        org.geotools.api.filter.Filter test = parseDocument("test2.xml");
         LOGGER.fine("filter: " + test.getClass().toString());
         LOGGER.fine("parsed: " + test.toString());
     }
 
     @Test
     public void test3a() throws Exception {
-        org.opengis.filter.Filter test = parseDocument("test3a.xml");
+        org.geotools.api.filter.Filter test = parseDocument("test3a.xml");
         LOGGER.fine("filter: " + test.getClass().toString());
         LOGGER.fine("parsed: " + test.toString());
     }
 
     @Test
     public void test3b() throws Exception {
-        org.opengis.filter.Filter test = parseDocument("test3b.xml");
+        org.geotools.api.filter.Filter test = parseDocument("test3b.xml");
         LOGGER.fine("filter: " + test.getClass().toString());
         LOGGER.fine("parsed: " + test.toString());
     }
 
     @Test
     public void test4() throws Exception {
-        org.opengis.filter.Filter test = parseDocument("test4.xml");
+        org.geotools.api.filter.Filter test = parseDocument("test4.xml");
         LOGGER.fine("filter: " + test.getClass().toString());
         LOGGER.fine("parsed: " + test.toString());
     }
 
     @Test
     public void test5() throws Exception {
-        org.opengis.filter.Filter test = parseDocument("test5.xml");
+        org.geotools.api.filter.Filter test = parseDocument("test5.xml");
         LOGGER.fine("filter: " + test.getClass().toString());
         LOGGER.fine("parsed: " + test.toString());
     }
 
     @Test
     public void test6() throws Exception {
-        org.opengis.filter.Filter test = parseDocument("test6.xml");
+        org.geotools.api.filter.Filter test = parseDocument("test6.xml");
         LOGGER.fine("filter: " + test.getClass().toString());
         LOGGER.fine("parsed: " + test.toString());
     }
 
     @Test
     public void test8() throws Exception {
-        org.opengis.filter.Filter test = parseDocument("test8.xml");
+        org.geotools.api.filter.Filter test = parseDocument("test8.xml");
         LOGGER.fine("filter: " + test.getClass().toString());
         LOGGER.fine("parsed: " + test.toString());
     }
 
     @Test
     public void test9() throws Exception {
-        org.opengis.filter.Filter test = parseDocument("test9.xml");
+        org.geotools.api.filter.Filter test = parseDocument("test9.xml");
         LOGGER.fine("filter: " + test.getClass().toString());
         LOGGER.fine("parsed: " + test.toString());
     }
 
     @Test
     public void test11() throws Exception {
-        org.opengis.filter.Filter test = parseDocument("test11.xml");
+        org.geotools.api.filter.Filter test = parseDocument("test11.xml");
         LOGGER.fine("filter: " + test.getClass().toString());
         LOGGER.fine("parsed: " + test.toString());
     }
 
     @Test
     public void test12() throws Exception {
-        org.opengis.filter.Filter test = parseDocument("test12.xml");
+        org.geotools.api.filter.Filter test = parseDocument("test12.xml");
         LOGGER.fine("filter: " + test.getClass().toString());
         LOGGER.fine("parsed: " + test.toString());
     }
 
     @Test
     public void test13() throws Exception {
-        org.opengis.filter.Filter test = parseDocument("test13.xml");
+        org.geotools.api.filter.Filter test = parseDocument("test13.xml");
         LOGGER.fine("filter: " + test.getClass().toString());
         LOGGER.fine("parsed: " + test.toString());
     }
 
     @Test
     public void test14() throws Exception {
-        org.opengis.filter.Filter test = parseDocument("test14.xml");
+        org.geotools.api.filter.Filter test = parseDocument("test14.xml");
         LOGGER.fine("filter: " + test.getClass().toString());
         LOGGER.fine("parsed: " + test.toString());
     }
 
     @Test
     public void test15() throws Exception {
-        org.opengis.filter.Filter test = parseDocument("test15.xml");
+        org.geotools.api.filter.Filter test = parseDocument("test15.xml");
         LOGGER.fine("filter: " + test.getClass().toString());
         LOGGER.fine("parsed: " + test.toString());
     }
 
     @Test
     public void test16() throws Exception {
-        org.opengis.filter.Filter test = parseDocument("test16.xml");
+        org.geotools.api.filter.Filter test = parseDocument("test16.xml");
         LOGGER.fine("filter: " + test.getClass().toString());
         LOGGER.fine("parsed: " + test.toString());
     }
 
     @Test
     public void test17() throws Exception {
-        org.opengis.filter.Filter test = parseDocument("test17.xml");
+        org.geotools.api.filter.Filter test = parseDocument("test17.xml");
         LOGGER.fine("filter: " + test.getClass().toString());
         LOGGER.fine("parsed: " + test.toString());
     }
@@ -217,21 +217,21 @@ public class ParserTest extends FilterTestSupport {
     some time soon...cholmes */
     @Test
     public void test18() throws Exception {
-        org.opengis.filter.Filter test = parseDocument("test18.xml");
+        org.geotools.api.filter.Filter test = parseDocument("test18.xml");
         LOGGER.fine("filter: " + test.getClass().toString());
         LOGGER.fine("parsed: " + test.toString());
     }
 
     @Test
     public void test19() throws Exception {
-        org.opengis.filter.Filter test = parseDocument("test19.xml");
+        org.geotools.api.filter.Filter test = parseDocument("test19.xml");
         LOGGER.fine("filter: " + test.getClass().toString());
         LOGGER.fine("parsed: " + test.toString());
     }
 
     @Test
     public void test20() throws Exception {
-        org.opengis.filter.Filter test = parseDocument("test20.xml");
+        org.geotools.api.filter.Filter test = parseDocument("test20.xml");
 
         LOGGER.fine("filter: " + test.getClass().toString());
         LOGGER.fine("parsed: " + test.toString());
@@ -243,7 +243,7 @@ public class ParserTest extends FilterTestSupport {
     //      LOGGER.fine("filter: " + test.getClass().toString());
     //      LOGGER.fine("parsed: " + test.toString());
     // }
-    public org.opengis.filter.Filter parseDocument(String uri) throws Exception {
+    public org.geotools.api.filter.Filter parseDocument(String uri) throws Exception {
         LOGGER.finest("about to create parser");
 
         // chains all the appropriate filters together (in correct order)

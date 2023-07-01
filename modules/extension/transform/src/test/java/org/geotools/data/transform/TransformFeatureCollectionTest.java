@@ -32,10 +32,10 @@ import org.geotools.referencing.CRS;
 import org.geotools.util.logging.Logging;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.opengis.feature.FeatureVisitor;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.Filter;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.feature.FeatureVisitor;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.util.ProgressListener;
 
 public class TransformFeatureCollectionTest {
 

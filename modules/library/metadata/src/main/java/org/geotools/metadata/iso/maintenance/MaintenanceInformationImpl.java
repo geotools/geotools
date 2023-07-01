@@ -21,14 +21,14 @@ package org.geotools.metadata.iso.maintenance;
 
 import java.util.Collection;
 import java.util.Date;
+import org.geotools.api.metadata.citation.ResponsibleParty;
+import org.geotools.api.metadata.maintenance.MaintenanceFrequency;
+import org.geotools.api.metadata.maintenance.MaintenanceInformation;
+import org.geotools.api.metadata.maintenance.ScopeCode;
+import org.geotools.api.metadata.maintenance.ScopeDescription;
+import org.geotools.api.temporal.PeriodDuration;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.metadata.citation.ResponsibleParty;
-import org.opengis.metadata.maintenance.MaintenanceFrequency;
-import org.opengis.metadata.maintenance.MaintenanceInformation;
-import org.opengis.metadata.maintenance.ScopeCode;
-import org.opengis.metadata.maintenance.ScopeDescription;
-import org.opengis.temporal.PeriodDuration;
-import org.opengis.util.InternationalString;
 
 /**
  * Information about the scope and frequency of updating.
@@ -122,8 +122,8 @@ public class MaintenanceInformationImpl extends MetadataEntity implements Mainte
     /**
      * Returns the maintenance period other than those defined.
      *
-     * @return The period, in milliseconds. @TODO: needs an implementation of org.opengis.temporal
-     *     modules to anntote this parameter.
+     * @return The period, in milliseconds. @TODO: needs an implementation of
+     *     org.geotools.api.temporal modules to anntote this parameter.
      */
     @Override
     public PeriodDuration getUserDefinedMaintenanceFrequency() {

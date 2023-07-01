@@ -19,7 +19,7 @@
  */
 package org.geotools.metadata.iso.quality;
 
-import org.opengis.metadata.quality.ThematicClassificationCorrectness;
+import org.geotools.api.metadata.quality.ThematicClassificationCorrectness;
 
 /**
  * Comparison of the classes assigned to features or their attributes to a universe of discourse.

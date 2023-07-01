@@ -20,11 +20,11 @@
 package org.geotools.referencing.cs;
 
 import java.util.Map;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.cs.AxisDirection;
+import org.geotools.api.referencing.cs.CoordinateSystemAxis;
+import org.geotools.api.referencing.cs.VerticalCS;
 import org.geotools.measure.Measure;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.cs.CoordinateSystemAxis;
-import org.opengis.referencing.cs.VerticalCS;
 
 /**
  * A one-dimensional coordinate system used to record the heights (or depths) of points. Such a

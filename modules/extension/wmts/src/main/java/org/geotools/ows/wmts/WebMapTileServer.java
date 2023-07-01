@@ -44,7 +44,7 @@ import org.geotools.ows.wmts.request.GetTileRequest;
 import org.geotools.ows.wmts.response.GetTileResponse;
 import org.geotools.referencing.CRS;
 import org.geotools.tile.Tile;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * WebMapTileServer is a class representing a WMTS.

@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
-import org.opengis.filter.expression.PropertyName;
+import org.geotools.api.filter.expression.PropertyName;
 import org.w3c.dom.Document;
 
 public class PropertyNameTypeBindingTest extends FilterTestSupport {

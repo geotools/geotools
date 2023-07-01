@@ -22,7 +22,7 @@ import org.geotools.xsd.StreamingParser;
 import org.junit.Assert;
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 public class GMLFeatureStreamingTest {
     @Test

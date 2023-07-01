@@ -28,7 +28,7 @@ import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.NameImpl;
 import org.geotools.stac.client.STACClient;
 import org.geotools.util.logging.Logging;
-import org.opengis.feature.type.Name;
+import org.geotools.api.feature.type.Name;
 
 /**
  * A {@link DataStore} implementation connecting to a <a

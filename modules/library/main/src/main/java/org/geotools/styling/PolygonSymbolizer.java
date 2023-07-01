@@ -16,7 +16,7 @@
  */
 package org.geotools.styling;
 
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * A symbolizer describes how a polygon feature should appear on a map.
@@ -67,7 +67,7 @@ import org.opengis.filter.expression.Expression;
  * @author James Macgill
  * @version $Id$
  */
-public interface PolygonSymbolizer extends org.opengis.style.PolygonSymbolizer, Symbolizer {
+public interface PolygonSymbolizer extends org.geotools.api.style.PolygonSymbolizer, Symbolizer {
 
     /** Pixels between each graphic of a polygon fill */
     public static String GRAPHIC_MARGIN_KEY = "graphic-margin";
@@ -87,7 +87,7 @@ public interface PolygonSymbolizer extends org.opengis.style.PolygonSymbolizer, 
      *
      * @param fill The Fill style to use when rendering the area.
      */
-    void setFill(org.opengis.style.Fill fill);
+    void setFill(org.geotools.api.style.Fill fill);
 
     /**
      * Provides the graphical-symbolization parameter to use for the outline of the Polygon.
@@ -102,7 +102,7 @@ public interface PolygonSymbolizer extends org.opengis.style.PolygonSymbolizer, 
      *
      * @param stroke The Stroke style to use when rendering lines.
      */
-    void setStroke(org.opengis.style.Stroke stroke);
+    void setStroke(org.geotools.api.style.Stroke stroke);
 
     /**
      * PerpendicularOffset works as defined for LineSymbolizer, allowing to draw polygons smaller or
@@ -122,5 +122,5 @@ public interface PolygonSymbolizer extends org.opengis.style.PolygonSymbolizer, 
     public Displacement getDisplacement();
 
     /** Provide x / y offset in pixels used to crate shadows. */
-    public void setDisplacement(org.opengis.style.Displacement displacement);
+    public void setDisplacement(org.geotools.api.style.Displacement displacement);
 }

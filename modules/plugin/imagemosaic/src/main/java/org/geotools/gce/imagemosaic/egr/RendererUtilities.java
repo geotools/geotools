@@ -26,8 +26,8 @@ import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.locationtech.jts.geom.Envelope;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.datum.PixelInCell;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.datum.PixelInCell;
 
 /**
  * This is a reduced copy of RenderUtilities found in the render module, to avoid adding a

@@ -20,10 +20,10 @@
 package org.geotools.metadata.iso.maintenance;
 
 import java.util.Set;
+import org.geotools.api.feature.type.AttributeType;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.metadata.maintenance.ScopeDescription;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.feature.type.AttributeType;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.metadata.maintenance.ScopeDescription;
 
 /**
  * Description of the class of information covered by the information.

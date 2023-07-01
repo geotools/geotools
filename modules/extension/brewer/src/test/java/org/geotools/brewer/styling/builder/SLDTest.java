@@ -10,7 +10,7 @@ import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.UserLayer;
 import org.junit.Test;
-import org.opengis.filter.PropertyIsGreaterThan;
+import org.geotools.api.filter.PropertyIsGreaterThan;
 
 public class SLDTest extends AbstractStyleTest {
 

@@ -26,8 +26,8 @@ import org.geotools.util.SimpleInternationalString;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.temporal.OrdinalEra;
-import org.opengis.util.InternationalString;
+import org.geotools.api.temporal.OrdinalEra;
+import org.geotools.api.util.InternationalString;
 
 /** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultOrdinalEraTest {

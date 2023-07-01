@@ -23,9 +23,9 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.spatial.BBOX;
-import org.opengis.referencing.FactoryException;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.api.referencing.FactoryException;
 
 public class ExtractMultiBoundsFilterVisitorTest {
     private static final String CRS = "EPSG:404000";

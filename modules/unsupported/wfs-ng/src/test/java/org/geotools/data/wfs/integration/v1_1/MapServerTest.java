@@ -39,7 +39,7 @@ import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 public class MapServerTest {
 

@@ -22,8 +22,8 @@ import it.geosolutions.jaiext.piecewise.DefaultPiecewiseTransform1DElement;
 import java.awt.Color;
 import org.geotools.renderer.i18n.ErrorKeys;
 import org.geotools.renderer.i18n.Errors;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.MismatchedDimensionException;
 
 class ColorMapUtilities {
 

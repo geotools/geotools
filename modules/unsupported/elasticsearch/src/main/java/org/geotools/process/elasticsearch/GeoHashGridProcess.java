@@ -32,12 +32,12 @@ import org.geotools.process.factory.DescribeResult;
 import org.geotools.process.vector.VectorProcess;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.opengis.coverage.grid.GridGeometry;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.spatial.BBOX;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.coverage.grid.GridGeometry;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.api.util.ProgressListener;
 
 @SuppressWarnings("unused")
 @DescribeProcess(

@@ -27,9 +27,9 @@ import java.util.StringTokenizer;
 import org.geotools.util.KVP;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Factory;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.util.InternationalString;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.util.InternationalString;
 
 /**
  * Constructs a live DataAccess from a set of connection parameters.

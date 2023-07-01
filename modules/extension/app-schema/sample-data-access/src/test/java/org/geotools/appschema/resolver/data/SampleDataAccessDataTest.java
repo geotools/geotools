@@ -20,7 +20,7 @@ package org.geotools.appschema.resolver.data;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.feature.Feature;
+import org.geotools.api.feature.Feature;
 
 /**
  * Test the test data created by {@link org.geotools.appschema.resolver.data.SampleDataAccessData}.

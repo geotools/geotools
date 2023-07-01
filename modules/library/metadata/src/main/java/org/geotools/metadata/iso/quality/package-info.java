@@ -16,7 +16,7 @@
  */
 /**
  * {@linkplain org.geotools.metadata.iso.quality.DataQualityImpl Data quality} implementation. An
- * explanation for this package is provided in the {@linkplain org.opengis.metadata.quality
+ * explanation for this package is provided in the {@linkplain org.geotools.api.metadata.quality
  * OpenGIS&reg; javadoc}. The remaining discussion on this page is specific to the Geotools
  * implementation.
  */

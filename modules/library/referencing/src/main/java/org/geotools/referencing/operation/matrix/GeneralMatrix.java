@@ -29,6 +29,10 @@ import java.util.Locale;
 import org.ejml.UtilEjml;
 import org.ejml.data.DMatrixRMaj;
 import org.ejml.dense.row.CommonOps_DDRM;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.cs.AxisDirection;
+import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.ContentFormatException;
@@ -36,10 +40,6 @@ import org.geotools.util.LineFormat;
 import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.Utilities;
 import org.geotools.util.XArray;
-import org.opengis.geometry.Envelope;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.operation.Matrix;
 
 /**
  * A two dimensional array of numbers. Row and column numbering begins with zero.

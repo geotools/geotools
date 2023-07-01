@@ -22,7 +22,7 @@ import java.awt.image.SampleModel;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.util.logging.Logging;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /** Simple image metadata for NetCDF */
 public class NetCDFImageMetadata extends CoreCommonImageMetadata {

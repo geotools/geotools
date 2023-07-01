@@ -16,7 +16,7 @@
  */
 package org.geotools.styling;
 
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 /** Abstract base class for implementing style factories. */
 public interface StyleFactory2 extends StyleFactory {

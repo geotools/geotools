@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.measure.Unit;
 import org.geotools.styling.ExtensionSymbolizer;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 public class ExtensionSymbolizerBuilder extends AbstractStyleBuilder<ExtensionSymbolizer> {
     private String name;

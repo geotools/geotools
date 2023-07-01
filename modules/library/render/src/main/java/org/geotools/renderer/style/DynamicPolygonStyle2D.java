@@ -22,7 +22,7 @@ import java.awt.Composite;
 import java.awt.Paint;
 import org.geotools.styling.Fill;
 import org.geotools.styling.PolygonSymbolizer;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /**
  * A dynamic polygon style, that will compute its parameters each time they are requested instead of

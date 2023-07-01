@@ -20,8 +20,8 @@ package org.geotools.brewer.styling.filter;
 
 import org.geotools.brewer.styling.builder.Builder;
 import org.geotools.factory.CommonFactoryFinder;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
 
 /** FilterBuilder acting as a simple wrapper around an Expression. */
 public class FilterBuilder implements Builder<Filter> {
@@ -50,7 +50,7 @@ public class FilterBuilder implements Builder<Filter> {
     @Override
     public FilterBuilder reset() {
         this.delegate = null;
-        this.filter = org.opengis.filter.Filter.EXCLUDE;
+        this.filter = org.geotools.api.filter.Filter.EXCLUDE;
         this.unset = false;
         return this;
     }

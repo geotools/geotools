@@ -21,9 +21,9 @@ import java.io.Serializable;
 import org.ejml.UtilEjml;
 import org.ejml.data.DMatrix3x3;
 import org.ejml.dense.fixed.CommonOps_DDF3;
+import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
-import org.opengis.referencing.operation.Matrix;
 
 /**
  * A matrix of fixed {@value #SIZE}&times;{@value #SIZE} size.

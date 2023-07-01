@@ -19,7 +19,7 @@ package org.geotools.process.feature;
 import java.util.Map;
 import org.geotools.data.Parameter;
 import org.geotools.text.Text;
-import org.opengis.util.InternationalString;
+import org.geotools.api.util.InternationalString;
 
 /**
  * Factory for process which buffers an entire feature collection.

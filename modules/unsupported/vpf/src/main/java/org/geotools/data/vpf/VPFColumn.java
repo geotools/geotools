@@ -35,8 +35,8 @@ import org.geotools.data.vpf.io.TripletId;
 import org.geotools.data.vpf.util.DataUtils;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.GeometryDescriptor;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.GeometryDescriptor;
 
 /**
  * A column in a VPF File.

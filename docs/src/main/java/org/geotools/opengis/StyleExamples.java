@@ -17,15 +17,15 @@ import java.util.ArrayList;
 import java.util.List;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.metadata.iso.citation.OnLineResourceImpl;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.AnchorPoint;
-import org.opengis.style.Displacement;
-import org.opengis.style.Fill;
-import org.opengis.style.Graphic;
-import org.opengis.style.GraphicalSymbol;
-import org.opengis.style.PointSymbolizer;
-import org.opengis.style.Stroke;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.AnchorPoint;
+import org.geotools.api.style.Displacement;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.PointSymbolizer;
+import org.geotools.api.style.Stroke;
 
 public class StyleExamples {
 
@@ -36,7 +36,7 @@ public class StyleExamples {
     private void styleFactoryExample() throws Exception {
         // styleFactoryExample start
         //
-        org.opengis.style.StyleFactory sf = CommonFactoryFinder.getStyleFactory();
+        org.geotools.api.style.StyleFactory sf = CommonFactoryFinder.getStyleFactory();
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 
         //

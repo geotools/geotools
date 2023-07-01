@@ -17,10 +17,10 @@
 package org.geotools.filter.function;
 
 import org.geotools.data.Query;
-import org.opengis.coverage.grid.GridCoverageReader;
-import org.opengis.coverage.grid.GridGeometry;
-import org.opengis.filter.expression.Function;
-import org.opengis.parameter.GeneralParameterValue;
+import org.geotools.api.coverage.grid.GridCoverageReader;
+import org.geotools.api.coverage.grid.GridGeometry;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.parameter.GeneralParameterValue;
 
 /**
  * An interface to be implemented by processes or by filter functions meant to be integrated as

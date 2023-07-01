@@ -308,7 +308,7 @@ public final class Classes {
      * <blockquote>
      *
      * <code>
-     * if (sameInterfaces(cs1, cs2, {@linkplain org.opengis.referencing.cs.CoordinateSystem}.class))
+     * if (sameInterfaces(cs1, cs2, {@linkplain org.geotools.api.referencing.cs.CoordinateSystem}.class))
      * </code>
      *
      * </blockquote>

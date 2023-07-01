@@ -16,7 +16,7 @@
  */
 package org.geotools.referencing.operation.builder;
 
-import org.opengis.referencing.FactoryException;
+import org.geotools.api.referencing.FactoryException;
 
 /**
  * Thrown when a required operation can't be performed because some information is missing or isn't

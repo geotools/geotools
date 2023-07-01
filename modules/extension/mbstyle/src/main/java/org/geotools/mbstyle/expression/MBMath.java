@@ -18,7 +18,7 @@ package org.geotools.mbstyle.expression;
 
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.json.simple.JSONArray;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 public class MBMath extends MBExpression {
 

@@ -59,7 +59,7 @@ import org.json.simple.parser.JSONParser;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory;
+import org.geotools.api.filter.FilterFactory;
 
 // import org.geotools.gce.geotiff.GeoTiffReader;
 

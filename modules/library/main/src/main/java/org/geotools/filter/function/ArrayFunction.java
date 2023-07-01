@@ -20,7 +20,7 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.opengis.filter.capability.FunctionName;
+import org.geotools.api.filter.capability.FunctionName;
 
 /**
  * Array creator function. Evaluates all the arguments in order and creates an array from them.

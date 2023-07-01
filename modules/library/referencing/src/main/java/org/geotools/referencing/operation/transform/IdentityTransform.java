@@ -18,15 +18,15 @@ package org.geotools.referencing.operation.transform;
 
 import java.awt.geom.AffineTransform;
 import java.io.Serializable;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.Matrix;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.referencing.operation.LinearTransform;
 import org.geotools.referencing.operation.matrix.MatrixFactory;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.Matrix;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * The identity transform. The data are only copied without any transformation. This class is used

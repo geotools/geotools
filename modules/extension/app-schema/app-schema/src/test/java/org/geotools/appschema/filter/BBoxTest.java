@@ -35,10 +35,10 @@ import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.test.AppSchemaTestSupport;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.spatial.BBOX;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.spatial.BBOX;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**

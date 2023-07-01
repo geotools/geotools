@@ -19,7 +19,7 @@ package org.geotools.referencing.operation.builder;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
-import org.opengis.geometry.DirectPosition;
+import org.geotools.api.geometry.DirectPosition;
 
 /**
  * A simple four-sided polygon.

@@ -41,7 +41,7 @@ import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Parser;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.opengis.style.GraphicalSymbol;
+import org.geotools.api.style.GraphicalSymbol;
 import org.xml.sax.SAXException;
 
 public class SLDTest {

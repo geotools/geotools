@@ -46,8 +46,8 @@ import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.swing.dialog.JExceptionReporter;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.SwingUtilities;
-import org.opengis.util.InternationalString;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.util.InternationalString;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * Reports progress of a lengthly operation in a window. This implementation can also format

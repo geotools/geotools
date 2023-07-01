@@ -27,7 +27,7 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.factory.GeoTools;
 import org.junit.Test;
-import org.opengis.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.MismatchedDimensionException;
 
 public class GridCoverageUtilTest {
 

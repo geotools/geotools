@@ -65,14 +65,14 @@ import org.geotools.styling.UomOgcMapping;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
-import org.opengis.style.ContrastMethod;
-import org.opengis.style.OverlapBehavior;
-import org.opengis.style.SemanticType;
-import org.opengis.util.Cloneable;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.style.ContrastMethod;
+import org.geotools.api.style.OverlapBehavior;
+import org.geotools.api.style.SemanticType;
+import org.geotools.api.util.Cloneable;
 
 /**
  * Unit test for DuplicatorStyleVisitor.

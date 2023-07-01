@@ -32,8 +32,8 @@ import org.geotools.image.ImageWorkerTest;
 import org.geotools.util.logging.Logging;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.util.InternationalString;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.util.InternationalString;
+import org.geotools.api.util.ProgressListener;
 
 /** @author Simone Giannecchini, GeoSolutions SAS */
 public class GridCoverageProgressAdapterTest extends Assert {

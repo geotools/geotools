@@ -19,7 +19,7 @@ import org.geotools.util.factory.FactoryIteratorProvider;
 import org.geotools.util.factory.GeoTools;
 import org.jaitools.numeric.Range;
 import org.junit.Test;
-import org.opengis.feature.type.Name;
+import org.geotools.api.feature.type.Name;
 
 public class RasterProcessFactoryTest {
 

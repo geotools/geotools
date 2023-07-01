@@ -22,8 +22,8 @@ package org.geotools.metadata.iso.citation;
 import java.util.Collection;
 import java.util.Collections;
 import net.opengis.ows11.TelephoneType;
+import org.geotools.api.metadata.citation.Telephone;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.metadata.citation.Telephone;
 
 /**
  * Telephone numbers for contacting the responsible individual or organization.

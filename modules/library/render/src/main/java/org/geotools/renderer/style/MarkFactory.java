@@ -18,8 +18,8 @@ package org.geotools.renderer.style;
 
 import java.awt.Graphics2D;
 import java.awt.Shape;
-import org.opengis.feature.Feature;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.filter.expression.Expression;
 
 /** Symbol handler for a Mark. */
 public interface MarkFactory {

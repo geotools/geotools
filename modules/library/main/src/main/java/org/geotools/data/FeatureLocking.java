@@ -18,9 +18,9 @@ package org.geotools.data;
 
 import java.io.IOException;
 import java.util.Set;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.filter.Filter;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.filter.Filter;
 
 /**
  * Provides Feature based locking.

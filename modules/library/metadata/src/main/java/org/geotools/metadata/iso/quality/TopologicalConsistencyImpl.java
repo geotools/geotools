@@ -19,7 +19,7 @@
  */
 package org.geotools.metadata.iso.quality;
 
-import org.opengis.metadata.quality.TopologicalConsistency;
+import org.geotools.api.metadata.quality.TopologicalConsistency;
 
 /**
  * Correctness of the explicitly encoded topological characteristics of the dataset as described by

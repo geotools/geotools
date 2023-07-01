@@ -25,7 +25,7 @@ import static org.junit.Assert.assertTrue;
 import javax.xml.namespace.QName;
 import org.geotools.xsd.Binding;
 import org.junit.Test;
-import org.opengis.filter.capability.ScalarCapabilities;
+import org.geotools.api.filter.capability.ScalarCapabilities;
 import org.w3c.dom.Document;
 
 public class Scalar_CapabilitiesTypeBindingTest extends FilterCapabilitiesTestSupport {

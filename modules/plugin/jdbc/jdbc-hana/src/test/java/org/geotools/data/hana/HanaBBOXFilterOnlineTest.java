@@ -25,10 +25,10 @@ import org.geotools.jdbc.JDBCTestSupport;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.spatial.BBOX;
-import org.opengis.filter.spatial.BBOX3D;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.api.filter.spatial.BBOX3D;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /** @author Stefan Uhrig, SAP SE */
 public class HanaBBOXFilterOnlineTest extends JDBCTestSupport {

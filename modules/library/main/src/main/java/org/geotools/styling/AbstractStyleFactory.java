@@ -21,7 +21,7 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
 import javax.swing.Icon;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 /** Abstract base class for implementing style factories. */
 public abstract class AbstractStyleFactory implements StyleFactory {

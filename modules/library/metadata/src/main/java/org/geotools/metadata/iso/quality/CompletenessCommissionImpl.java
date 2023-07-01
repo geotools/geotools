@@ -19,7 +19,7 @@
  */
 package org.geotools.metadata.iso.quality;
 
-import org.opengis.metadata.quality.CompletenessCommission;
+import org.geotools.api.metadata.quality.CompletenessCommission;
 
 /**
  * Excess data present in the dataset, as described by the scope.

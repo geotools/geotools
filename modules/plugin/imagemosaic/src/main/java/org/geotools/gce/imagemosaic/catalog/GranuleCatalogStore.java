@@ -28,9 +28,9 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.gce.imagemosaic.RasterManager;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
 
 /**
  * A {@link GranuleStore} implementation wrapping a {@link GranuleCatalog}.

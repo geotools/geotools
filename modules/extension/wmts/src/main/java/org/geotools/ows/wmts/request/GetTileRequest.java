@@ -24,7 +24,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wmts.model.WMTSLayer;
 import org.geotools.tile.Tile;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Construct a WMTS getTile request.

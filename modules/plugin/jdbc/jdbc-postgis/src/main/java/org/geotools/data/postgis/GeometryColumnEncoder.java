@@ -18,7 +18,7 @@ package org.geotools.data.postgis;
 
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.util.Version;
-import org.opengis.feature.type.GeometryDescriptor;
+import org.geotools.api.feature.type.GeometryDescriptor;
 
 public class GeometryColumnEncoder {
 

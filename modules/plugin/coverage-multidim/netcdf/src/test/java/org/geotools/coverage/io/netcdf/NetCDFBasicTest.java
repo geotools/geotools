@@ -55,10 +55,10 @@ import org.geotools.test.TestData;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.feature.Property;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.Filter;
+import org.geotools.api.feature.Property;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Filter;
 import ucar.nc2.Variable;
 import ucar.nc2.dataset.NetcdfDataset;
 

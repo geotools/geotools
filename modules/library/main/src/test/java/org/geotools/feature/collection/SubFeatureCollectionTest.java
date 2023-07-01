@@ -24,8 +24,8 @@ import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.junit.Test;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterVisitor;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterVisitor;
 
 public class SubFeatureCollectionTest extends DataTestCase {
     DefaultFeatureCollection features = new DefaultFeatureCollection(null, null);

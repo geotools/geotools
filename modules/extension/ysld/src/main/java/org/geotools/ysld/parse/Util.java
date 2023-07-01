@@ -34,9 +34,9 @@ import org.geotools.ysld.Colors;
 import org.geotools.ysld.Tuple;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.Ysld;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
 
 /** Parsing utilities */
 public class Util {

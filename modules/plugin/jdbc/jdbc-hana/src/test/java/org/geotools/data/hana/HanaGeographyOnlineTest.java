@@ -25,8 +25,8 @@ import org.geotools.jdbc.JDBCGeographyTestSetup;
 import org.geotools.jdbc.VirtualTable;
 import org.geotools.referencing.CRS;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.GeometryDescriptor;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.GeometryDescriptor;
 
 /** @author Stefan Uhrig, SAP SE */
 public class HanaGeographyOnlineTest extends JDBCGeographyOnlineTest {

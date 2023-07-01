@@ -19,10 +19,10 @@ package org.geotools.process.raster;
 
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.referencing.GeodeticCalculator;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.cs.CoordinateSystemAxis;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.cs.AxisDirection;
+import org.geotools.api.referencing.cs.CoordinateSystemAxis;
 
 /**
  * Used to calculate an estimate for the Grid Convergence Angle at a point within a 2D Coordinate

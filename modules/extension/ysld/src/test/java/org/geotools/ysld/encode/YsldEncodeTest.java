@@ -71,14 +71,14 @@ import org.geotools.ysld.Ysld;
 import org.geotools.ysld.parse.YsldParser;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
-import org.opengis.style.ChannelSelection;
-import org.opengis.style.ContrastMethod;
-import org.opengis.style.Graphic;
-import org.opengis.style.GraphicalSymbol;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.style.ChannelSelection;
+import org.geotools.api.style.ContrastMethod;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.GraphicalSymbol;
 import systems.uom.common.USCustomary;
 
 public class YsldEncodeTest {

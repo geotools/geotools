@@ -16,7 +16,7 @@
  */
 package org.geotools.filter.capability;
 
-import org.opengis.filter.capability.IdCapabilities;
+import org.geotools.api.filter.capability.IdCapabilities;
 
 /**
  * Implementation of the IdCapabilities interface.

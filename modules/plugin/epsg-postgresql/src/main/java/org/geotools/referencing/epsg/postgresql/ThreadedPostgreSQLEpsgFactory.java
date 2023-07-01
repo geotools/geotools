@@ -93,8 +93,8 @@ import org.postgresql.ds.common.BaseDataSource;
  * </TABLE>
  *
  * <p>The database version is given in the {@linkplain
- * org.opengis.metadata.citation.Citation#getEdition edition attribute} of the {@linkplain
- * org.opengis.referencing.AuthorityFactory#getAuthority authority}. The postgreSQL database should
+ * org.geotools.api.metadata.citation.Citation#getEdition edition attribute} of the {@linkplain
+ * org.geotools.api.referencing.AuthorityFactory#getAuthority authority}. The postgreSQL database should
  * be read only.
  *
  * <p>Just having this class accessible in the classpath, together with the registration in the

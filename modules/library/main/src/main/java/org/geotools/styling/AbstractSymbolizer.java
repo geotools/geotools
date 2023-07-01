@@ -21,8 +21,8 @@ import java.util.Map;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.factory.CommonFactoryFinder;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.PropertyName;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.PropertyName;
 
 public abstract class AbstractSymbolizer implements Symbolizer {
     protected String name;
@@ -62,7 +62,7 @@ public abstract class AbstractSymbolizer implements Symbolizer {
     }
 
     @Override
-    public void setDescription(org.opengis.style.Description description) {
+    public void setDescription(org.geotools.api.style.Description description) {
         this.description = DescriptionImpl.cast(description);
     }
 
@@ -110,7 +110,7 @@ public abstract class AbstractSymbolizer implements Symbolizer {
         if (geometryPropertyName == null) {
             geometry = null;
         } else {
-            org.opengis.filter.FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+            org.geotools.api.filter.FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
             geometry = ff.property(geometryPropertyName);
         }
     }

@@ -24,8 +24,8 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Literal;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Literal;
 
 public final class ExpressionToSolrTest {
 

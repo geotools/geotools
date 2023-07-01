@@ -27,7 +27,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.CoordinateSequenceFilter;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.filter.capability.FunctionName;
+import org.geotools.api.filter.capability.FunctionName;
 
 public class FilterFunction_offset extends FunctionExpressionImpl
         implements GeometryTransformation {

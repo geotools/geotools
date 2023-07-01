@@ -19,7 +19,7 @@ package org.geotools.styling;
 import java.util.Collections;
 import java.util.List;
 import org.geotools.filter.ConstantExpression;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * The Stroke object encapsulates the graphical-symbolization parameters for linear geometries.
@@ -74,7 +74,7 @@ import org.opengis.filter.expression.Expression;
  * @version $Id$
  * @author James Macgill
  */
-public interface Stroke extends org.opengis.style.Stroke {
+public interface Stroke extends org.geotools.api.style.Stroke {
     /**
      * Default Stroke capturing the defaults indicated by the standard.
      *
@@ -293,7 +293,7 @@ public interface Stroke extends org.opengis.style.Stroke {
      * This parameter indicates that a stipple-fill repeated graphic will be used and specifies the
      * fill graphic to use.
      */
-    void setGraphicFill(org.opengis.style.Graphic graphicFill);
+    void setGraphicFill(org.geotools.api.style.Graphic graphicFill);
 
     /**
      * This parameter indicates that a repeated-linear-graphic graphic stroke type will be used and
@@ -319,7 +319,7 @@ public interface Stroke extends org.opengis.style.Stroke {
      * images with no special mark-up, this line will be assumed to be the middle pixel row of the
      * image, starting from the first pixel column and ending at the last pixel column.
      */
-    void setGraphicStroke(org.opengis.style.Graphic graphicStroke);
+    void setGraphicStroke(org.geotools.api.style.Graphic graphicStroke);
 
     void accept(org.geotools.styling.StyleVisitor visitor);
 }
@@ -370,12 +370,12 @@ abstract class ConstantStroke implements Stroke {
     }
 
     @Override
-    public void setGraphicFill(org.opengis.style.Graphic graphicFill) {
+    public void setGraphicFill(org.geotools.api.style.Graphic graphicFill) {
         cannotModifyConstant();
     }
 
     @Override
-    public void setGraphicStroke(org.opengis.style.Graphic graphicStroke) {
+    public void setGraphicStroke(org.geotools.api.style.Graphic graphicStroke) {
         cannotModifyConstant();
     }
 
@@ -385,7 +385,7 @@ abstract class ConstantStroke implements Stroke {
     }
 
     @Override
-    public Object accept(org.opengis.style.StyleVisitor visitor, Object data) {
+    public Object accept(org.geotools.api.style.StyleVisitor visitor, Object data) {
         cannotModifyConstant();
         return null;
     }

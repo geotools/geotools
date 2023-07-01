@@ -30,10 +30,10 @@ import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.text.Text;
 import org.json.simple.JSONObject;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.ContrastMethod;
-import org.opengis.style.Rule;
-import org.opengis.style.SemanticType;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.ContrastMethod;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.SemanticType;
 
 public class RasterMBLayer extends MBLayer {
 

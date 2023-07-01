@@ -17,7 +17,7 @@
 package org.geotools.geojson.feature;
 
 import org.geotools.geojson.IContentHandler;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 public interface IFeatureCollectionHandler extends IContentHandler<SimpleFeature> {
 

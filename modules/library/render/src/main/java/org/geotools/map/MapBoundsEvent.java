@@ -19,7 +19,7 @@ package org.geotools.map;
 import java.util.EnumSet;
 import java.util.EventObject;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Event object for MapContext area of interest and coordinate system changes.

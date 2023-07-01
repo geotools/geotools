@@ -17,8 +17,8 @@
 package org.geotools.filter;
 
 import java.util.Objects;
-import org.opengis.filter.FilterVisitor;
-import org.opengis.filter.NativeFilter;
+import org.geotools.api.filter.FilterVisitor;
+import org.geotools.api.filter.NativeFilter;
 
 /**
  * Default implementation of a native filter that works like an holder for the native expression.

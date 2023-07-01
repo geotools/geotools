@@ -17,17 +17,17 @@
 package org.geotools.geometry;
 
 import java.util.Arrays;
+import org.geotools.api.geometry.PositionFactory;
+import org.geotools.api.geometry.Precision;
+import org.geotools.api.geometry.aggregate.AggregateFactory;
+import org.geotools.api.geometry.complex.ComplexFactory;
+import org.geotools.api.geometry.coordinate.GeometryFactory;
+import org.geotools.api.geometry.primitive.PrimitiveFactory;
 import org.geotools.util.factory.FactoryCreator;
 import org.geotools.util.factory.FactoryFinder;
 import org.geotools.util.factory.FactoryRegistry;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.factory.Hints;
-import org.opengis.geometry.PositionFactory;
-import org.opengis.geometry.Precision;
-import org.opengis.geometry.aggregate.AggregateFactory;
-import org.opengis.geometry.complex.ComplexFactory;
-import org.opengis.geometry.coordinate.GeometryFactory;
-import org.opengis.geometry.primitive.PrimitiveFactory;
 
 /**
  * Defines static methods used to access the application's default geometry factory implementations.

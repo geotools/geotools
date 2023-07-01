@@ -20,7 +20,7 @@ import java.util.Collection;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.geotools.xsd.Configuration;
-import org.opengis.feature.type.Schema;
+import org.geotools.api.feature.type.Schema;
 
 /**
  * Configuration for a Complex Feature Type Registry (see gt-complex module), - tells the registry

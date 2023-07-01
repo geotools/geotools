@@ -21,9 +21,9 @@ package org.geotools.styling;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.GeoTools;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.StyleVisitor;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.StyleVisitor;
 
 /**
  * Default implementation of ShadedRelief.
@@ -128,7 +128,7 @@ public class ShadedReliefImpl implements ShadedRelief {
         return false;
     }
 
-    static ShadedReliefImpl cast(org.opengis.style.ShadedRelief shadedRelief) {
+    static ShadedReliefImpl cast(org.geotools.api.style.ShadedRelief shadedRelief) {
         if (shadedRelief == null) {
             return null;
         } else if (shadedRelief instanceof ShadedReliefImpl) {

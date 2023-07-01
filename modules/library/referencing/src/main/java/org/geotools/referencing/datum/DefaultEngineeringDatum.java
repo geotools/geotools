@@ -21,10 +21,10 @@ package org.geotools.referencing.datum;
 
 import java.util.Collections;
 import java.util.Map;
+import org.geotools.api.referencing.datum.EngineeringDatum;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.wkt.Formatter;
-import org.opengis.referencing.datum.EngineeringDatum;
 
 /**
  * Defines the origin of an engineering coordinate reference system. An engineering datum is used in

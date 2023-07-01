@@ -17,7 +17,7 @@
 package org.geotools.vectormosaic;
 
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
-import org.opengis.filter.expression.PropertyName;
+import org.geotools.api.filter.expression.PropertyName;
 
 /**
  * Renames the specified attribute to a new target name

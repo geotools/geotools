@@ -17,7 +17,7 @@
  */
 package org.geotools.styling;
 
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * A Halo fills an extended area outside the glyphs of a rendered textlabel to make it easier to
@@ -59,7 +59,7 @@ import org.opengis.filter.expression.Expression;
  *
  * @author Ian Turton, CCG
  */
-public interface Halo extends org.opengis.style.Halo {
+public interface Halo extends org.geotools.api.style.Halo {
 
     /** Expression that represents the the distance the halo extends from the text */
     void setRadius(Expression radius);
@@ -73,7 +73,7 @@ public interface Halo extends org.opengis.style.Halo {
     Fill getFill();
 
     /** The fill (color) of the halo */
-    void setFill(org.opengis.style.Fill fill);
+    void setFill(org.geotools.api.style.Fill fill);
 
     void accept(org.geotools.styling.StyleVisitor visitor);
 }

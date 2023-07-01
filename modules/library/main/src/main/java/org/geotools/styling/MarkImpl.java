@@ -18,11 +18,11 @@ package org.geotools.styling;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.factory.GeoTools;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.GraphicalSymbol;
-import org.opengis.style.StyleVisitor;
-import org.opengis.util.Cloneable;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.util.Cloneable;
 
 /**
  * Default implementation of Mark.
@@ -120,7 +120,7 @@ public class MarkImpl implements Mark, Cloneable {
      * @param fill New value of property fill.
      */
     @Override
-    public void setFill(org.opengis.style.Fill fill) {
+    public void setFill(org.geotools.api.style.Fill fill) {
         this.fill = FillImpl.cast(fill);
     }
 
@@ -130,7 +130,7 @@ public class MarkImpl implements Mark, Cloneable {
      * @param stroke New value of property stroke.
      */
     @Override
-    public void setStroke(org.opengis.style.Stroke stroke) {
+    public void setStroke(org.geotools.api.style.Stroke stroke) {
         this.stroke = StrokeImpl.cast(stroke);
     }
 
@@ -279,7 +279,7 @@ public class MarkImpl implements Mark, Cloneable {
     }
 
     @Override
-    public void setExternalMark(org.opengis.style.ExternalMark external) {
+    public void setExternalMark(org.geotools.api.style.ExternalMark external) {
         this.external = ExternalMarkImpl.cast(external);
     }
 

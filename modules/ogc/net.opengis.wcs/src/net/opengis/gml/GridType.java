@@ -9,7 +9,7 @@ package net.opengis.gml;
 import java.math.BigInteger;
 
 import org.eclipse.emf.common.util.EList;
-import org.opengis.coverage.grid.GridEnvelope;
+import org.geotools.api.coverage.grid.GridEnvelope;
 
 import org.locationtech.jts.geom.Envelope;
 

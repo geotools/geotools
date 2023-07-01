@@ -56,8 +56,8 @@ import org.geotools.ows.wms.xml.WMSSchema;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.xml.XMLHandlerHints;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * WebMapServer is a class representing a WMS. It is used to access the Capabilities document and
@@ -205,7 +205,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
 
         LayerInfo(Layer layer) {
             this.layer = layer;
-            org.opengis.geometry.Envelope env = null;
+            org.geotools.api.geometry.Envelope env = null;
             CoordinateReferenceSystem crs = null;
 
             if (layer.getBoundingBoxes().isEmpty()) {

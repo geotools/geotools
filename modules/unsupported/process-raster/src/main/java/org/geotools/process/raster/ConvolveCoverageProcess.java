@@ -25,7 +25,7 @@ import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.jaitools.media.jai.kernel.KernelFactory;
-import org.opengis.parameter.ParameterValueGroup;
+import org.geotools.api.parameter.ParameterValueGroup;
 
 @DescribeProcess(
         title = "Convolve Coverage",

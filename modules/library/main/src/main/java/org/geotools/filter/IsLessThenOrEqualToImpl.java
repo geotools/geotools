@@ -16,9 +16,9 @@
  */
 package org.geotools.filter;
 
-import org.opengis.filter.FilterVisitor;
-import org.opengis.filter.PropertyIsLessThanOrEqualTo;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.FilterVisitor;
+import org.geotools.api.filter.PropertyIsLessThanOrEqualTo;
+import org.geotools.api.filter.expression.Expression;
 
 public class IsLessThenOrEqualToImpl extends MultiCompareFilterImpl
         implements PropertyIsLessThanOrEqualTo {

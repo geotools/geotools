@@ -49,7 +49,7 @@ public abstract class RasterLayer extends StyleLayer {
      * FetureSource representation of raster contents (in case a vector based renderer wishes to
      * draw a polygon outline).
      * <p>
-     * This method uses {@link DataUtilities#source(org.opengis.feature.simple.SimpleFeature[]) to
+     * This method uses {@link DataUtilities#source(org.geotools.api.feature.simple.SimpleFeature[]) to
      * wrap up the result of {@link #toFeatureCollection()}
      */
     @Override

@@ -24,9 +24,9 @@ import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.Encoder;
 import org.geotools.xsd.EncoderDelegate;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.spatial.BinarySpatialOperator;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.spatial.BinarySpatialOperator;
 
 /**
  * <pre>

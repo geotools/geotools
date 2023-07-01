@@ -31,10 +31,10 @@ import org.geotools.gce.grassraster.format.GrassCoverageFormatFactory;
 import org.geotools.util.URLs;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.coverage.grid.GridCoverageReader;
-import org.opengis.coverage.grid.GridCoverageWriter;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.Envelope;
+import org.geotools.api.coverage.grid.GridCoverageReader;
+import org.geotools.api.coverage.grid.GridCoverageWriter;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Envelope;
 
 /**
  * Test the grass raster reader abd writer.

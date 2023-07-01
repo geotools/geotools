@@ -18,9 +18,9 @@
 package org.geotools.filter.visitor;
 
 import java.util.SortedMap;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
 
 /**
  * Categorization: The transformation of continuous values to distinct values. This is for example

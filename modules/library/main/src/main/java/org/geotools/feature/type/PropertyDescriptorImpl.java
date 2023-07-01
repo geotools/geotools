@@ -20,9 +20,9 @@ import java.util.HashMap;
 import java.util.Map;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
-import org.opengis.feature.type.Name;
-import org.opengis.feature.type.PropertyDescriptor;
-import org.opengis.feature.type.PropertyType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.feature.type.PropertyDescriptor;
+import org.geotools.api.feature.type.PropertyType;
 
 public class PropertyDescriptorImpl implements PropertyDescriptor {
 

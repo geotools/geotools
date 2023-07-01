@@ -19,7 +19,7 @@ package org.geotools.brewer.styling.builder;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.styling.Font;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 public class FontBuilder extends AbstractStyleBuilder<Font> {
     boolean familiesSet = false;

@@ -27,7 +27,7 @@ import org.geotools.xsd.Binding;
 import org.geotools.xsd.Configuration;
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

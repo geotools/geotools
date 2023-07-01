@@ -24,7 +24,7 @@ import org.geotools.xs.XS;
 import org.geotools.xsd.Binding;
 import org.geotools.xsd.ComplexBinding;
 import org.geotools.xsd.SimpleBinding;
-import org.opengis.feature.ComplexAttribute;
+import org.geotools.api.feature.ComplexAttribute;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

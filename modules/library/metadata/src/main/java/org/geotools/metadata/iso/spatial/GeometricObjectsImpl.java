@@ -19,9 +19,9 @@
  */
 package org.geotools.metadata.iso.spatial;
 
+import org.geotools.api.metadata.spatial.GeometricObjectType;
+import org.geotools.api.metadata.spatial.GeometricObjects;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.metadata.spatial.GeometricObjectType;
-import org.opengis.metadata.spatial.GeometricObjects;
 
 /**
  * Number of objects, listed by geometric object type, used in the dataset.

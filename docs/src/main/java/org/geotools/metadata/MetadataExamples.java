@@ -33,10 +33,10 @@ import org.geotools.util.ResourceInternationalString;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.Utilities;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.metadata.citation.ResponsibleParty;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.util.InternationalString;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.metadata.citation.ResponsibleParty;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.util.InternationalString;
 
 @SuppressFBWarnings("DLS_DEAD_LOCAL_STORE")
 public class MetadataExamples {

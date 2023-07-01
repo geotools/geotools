@@ -18,8 +18,8 @@ package org.geotools.styling;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.StyleVisitor;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.StyleVisitor;
 
 /**
  * ExtensioSymbolizer capturing a vendor specific extension.
@@ -63,14 +63,14 @@ public class VendorSymbolizerImpl extends AbstractSymbolizer implements Extensio
         return true;
     }
 
-    static VendorSymbolizerImpl cast(org.opengis.style.Symbolizer symbolizer) {
+    static VendorSymbolizerImpl cast(org.geotools.api.style.Symbolizer symbolizer) {
         if (symbolizer == null) {
             return null;
         } else if (symbolizer instanceof VendorSymbolizerImpl) {
             return (VendorSymbolizerImpl) symbolizer;
-        } else if (symbolizer instanceof org.opengis.style.ExtensionSymbolizer) {
-            org.opengis.style.ExtensionSymbolizer extensionSymbolizer =
-                    (org.opengis.style.ExtensionSymbolizer) symbolizer;
+        } else if (symbolizer instanceof org.geotools.api.style.ExtensionSymbolizer) {
+            org.geotools.api.style.ExtensionSymbolizer extensionSymbolizer =
+                    (org.geotools.api.style.ExtensionSymbolizer) symbolizer;
             VendorSymbolizerImpl copy = new VendorSymbolizerImpl();
             copy.setDescription(extensionSymbolizer.getDescription());
             copy.setGeometryPropertyName(extensionSymbolizer.getGeometryPropertyName());

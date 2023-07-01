@@ -14,11 +14,11 @@ package org.geotools.tutorial.function;
 import java.util.Collections;
 import java.util.List;
 import org.geotools.util.Converters;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.ExpressionVisitor;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.ExpressionVisitor;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
 
 public abstract class AbstractFunction implements Function {
     protected final FunctionName name;

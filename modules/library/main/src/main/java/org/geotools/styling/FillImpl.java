@@ -19,10 +19,10 @@ package org.geotools.styling;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.GeoTools;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.StyleVisitor;
-import org.opengis.util.Cloneable;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.util.Cloneable;
 
 /**
  * @version $Id$
@@ -137,7 +137,7 @@ public class FillImpl implements Fill, Cloneable {
      * @param graphicFill New value of property graphic.
      */
     @Override
-    public void setGraphicFill(org.opengis.style.Graphic graphicFill) {
+    public void setGraphicFill(org.geotools.api.style.Graphic graphicFill) {
         if (this.graphicFill == graphicFill) return;
         this.graphicFill = GraphicImpl.cast(graphicFill);
     }
@@ -218,7 +218,7 @@ public class FillImpl implements Fill, Cloneable {
         return false;
     }
 
-    static FillImpl cast(org.opengis.style.Fill fill) {
+    static FillImpl cast(org.geotools.api.style.Fill fill) {
         if (fill == null) {
             return null;
         } else if (fill instanceof FillImpl) {

@@ -27,8 +27,8 @@ import java.util.List;
 import java.util.Map;
 import org.geotools.data.Parameter;
 import org.geotools.ysld.ProcessUtil;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
 
 /** Encodes a Rendering Transform, represented by an {@link Expression} as YSLD. */
 public class TransformEncoder extends YsldEncodeHandler<Expression> {

@@ -29,7 +29,7 @@ import org.geotools.coverage.grid.Viewer;
 import org.geotools.util.factory.Hints;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.parameter.ParameterValueGroup;
+import org.geotools.api.parameter.ParameterValueGroup;
 
 /**
  * Tests the "filtered subsample" operation.

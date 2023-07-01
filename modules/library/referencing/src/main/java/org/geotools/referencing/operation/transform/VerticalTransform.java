@@ -16,7 +16,7 @@
  */
 package org.geotools.referencing.operation.transform;
 
-import org.opengis.referencing.operation.TransformException;
+import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * Base class for transformations from a <cite>height above the ellipsoid</cite> to a <cite>height

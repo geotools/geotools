@@ -25,11 +25,11 @@ import static org.junit.Assert.fail;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import org.geotools.api.parameter.InvalidParameterValueException;
+import org.geotools.api.referencing.IdentifiedObject;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.iso.citation.CitationImpl;
 import org.junit.Test;
-import org.opengis.parameter.InvalidParameterValueException;
-import org.opengis.referencing.IdentifiedObject;
-import org.opengis.util.InternationalString;
 
 /**
  * Tests the creation of {@link AbstractIdentifiedObject} and a few subclasses.

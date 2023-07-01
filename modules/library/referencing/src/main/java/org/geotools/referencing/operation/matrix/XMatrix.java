@@ -16,7 +16,7 @@
  */
 package org.geotools.referencing.operation.matrix;
 
-import org.opengis.referencing.operation.Matrix;
+import org.geotools.api.referencing.operation.Matrix;
 
 /**
  * A matrix capable of some matrix operations. The basic {@link Matrix} interface is basically just

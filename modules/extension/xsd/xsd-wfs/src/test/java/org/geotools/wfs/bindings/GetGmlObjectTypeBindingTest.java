@@ -30,7 +30,7 @@ import org.geotools.wfs.WFS;
 import org.geotools.wfs.WFSTestSupport;
 import org.geotools.xsd.Binding;
 import org.junit.Test;
-import org.opengis.filter.identity.GmlObjectId;
+import org.geotools.api.filter.identity.GmlObjectId;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

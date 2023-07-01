@@ -22,10 +22,10 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.util.Converters;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.expression.VolatileFunction;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.expression.VolatileFunction;
 
 /**
  * Extracts a property from a feature, taking the property name as a parameter

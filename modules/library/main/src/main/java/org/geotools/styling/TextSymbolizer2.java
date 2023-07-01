@@ -16,7 +16,7 @@
  */
 package org.geotools.styling;
 
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 /** Contains label shield hack. */
 public interface TextSymbolizer2 extends TextSymbolizer {

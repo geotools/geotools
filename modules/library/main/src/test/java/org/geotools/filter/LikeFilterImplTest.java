@@ -20,8 +20,8 @@ import static org.junit.Assert.fail;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.PropertyIsLike;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.PropertyIsLike;
 
 public class LikeFilterImplTest {
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();

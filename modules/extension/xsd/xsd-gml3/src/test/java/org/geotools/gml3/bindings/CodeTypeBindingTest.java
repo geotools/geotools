@@ -23,7 +23,7 @@ import static org.junit.Assert.assertNotNull;
 import org.geotools.gml3.ComplexAttributeTestSupport;
 import org.geotools.gml3.GML;
 import org.junit.Test;
-import org.opengis.feature.ComplexAttribute;
+import org.geotools.api.feature.ComplexAttribute;
 import org.w3c.dom.Document;
 
 public class CodeTypeBindingTest extends ComplexAttributeTestSupport {

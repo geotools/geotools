@@ -37,9 +37,9 @@ import org.geotools.styling.Rule;
 import org.geotools.styling.Stroke;
 import org.geotools.text.Text;
 import org.json.simple.JSONObject;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.Displacement;
-import org.opengis.style.SemanticType;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.Displacement;
+import org.geotools.api.style.SemanticType;
 
 /**
  * A filled circle.
@@ -365,7 +365,7 @@ public class CircleMBLayer extends MBLayer {
 
         MBFilter filter = getFilter();
 
-        List<org.opengis.style.Rule> rules = new ArrayList<>();
+        List<org.geotools.api.style.Rule> rules = new ArrayList<>();
         Rule rule =
                 sf.rule(
                         getId(),

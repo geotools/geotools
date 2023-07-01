@@ -25,7 +25,7 @@ import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.cql2.FilterCQLSample;
 import org.geotools.filter.text.ecql.ECQLComparisonPredicateTest;
 import org.junit.Test;
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 /**
  * Several things changed here:

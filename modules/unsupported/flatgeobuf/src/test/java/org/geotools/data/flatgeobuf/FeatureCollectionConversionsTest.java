@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 import java.util.Iterator;
 import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 public class FeatureCollectionConversionsTest {
     @Test

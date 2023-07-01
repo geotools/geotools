@@ -28,12 +28,12 @@ import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.expression.Divide;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.expression.Divide;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
 
 /** @author Cory Horner, Refractions Research Inc. */
 public class JenksFunctionTest extends FunctionTestSupport {
@@ -132,7 +132,7 @@ public class JenksFunctionTest extends FunctionTestSupport {
         SimpleFeatureCollection myFeatureCollection = source.getFeatures();
 
         // run the quantile function
-        org.opengis.filter.expression.Expression function =
+        org.geotools.api.filter.expression.Expression function =
                 ff.function("Jenks", ff.property("value"), ff.literal(5));
         Classifier classifier = (Classifier) function.evaluate(myFeatureCollection);
 
@@ -173,7 +173,7 @@ public class JenksFunctionTest extends FunctionTestSupport {
         SimpleFeatureCollection myFeatureCollection = source.getFeatures();
 
         // run the quantile function
-        org.opengis.filter.expression.Expression function =
+        org.geotools.api.filter.expression.Expression function =
                 ff.function("Jenks", ff.property("value"), ff.literal(5));
         Classifier classifier = (Classifier) function.evaluate(myFeatureCollection);
         assertThat(classifier, CoreMatchers.instanceOf(RangedClassifier.class));

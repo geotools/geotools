@@ -20,10 +20,10 @@ import javax.xml.namespace.QName;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.capability.FilterCapabilities;
-import org.opengis.filter.capability.ScalarCapabilities;
-import org.opengis.filter.capability.SpatialCapabilities;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.capability.FilterCapabilities;
+import org.geotools.api.filter.capability.ScalarCapabilities;
+import org.geotools.api.filter.capability.SpatialCapabilities;
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:_Filter_Capabilities.

@@ -25,7 +25,7 @@ import org.geotools.xs.bindings.XSDateBinding;
 import org.geotools.xs.bindings.XSDateTimeBinding;
 import org.geotools.xsd.AbstractSimpleBinding;
 import org.geotools.xsd.InstanceComponent;
-import org.opengis.temporal.Position;
+import org.geotools.api.temporal.Position;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:TimePositionUnion.

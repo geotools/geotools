@@ -31,8 +31,8 @@ import org.geotools.feature.visitor.MinVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.Literal;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Literal;
 
 /**
  * Classification function for breaking a feature collection into edible chunks of "equal" size.

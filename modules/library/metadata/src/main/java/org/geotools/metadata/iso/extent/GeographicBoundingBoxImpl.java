@@ -26,12 +26,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.Locale;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.metadata.extent.GeographicBoundingBox;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Utilities;
-import org.opengis.geometry.Envelope;
-import org.opengis.metadata.extent.GeographicBoundingBox;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * Geographic position of the dataset. This is only an approximate so specifying the coordinate
@@ -125,10 +125,10 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
      *
      * <p>When coordinate transformation is required, the target geographic CRS is not necessarly
      * {@linkplain org.geotools.referencing.crs.DefaultGeographicCRS#WGS84 WGS84}. This method
-     * preserves the same {@linkplain org.opengis.referencing.datum.Ellipsoid ellipsoid} than in the
-     * envelope CRS when possible. This is because geographic bounding box are only approximative
-     * and the ISO specification do not mandates a particular CRS, so we avoid transformations that
-     * are not strictly necessary.
+     * preserves the same {@linkplain org.geotools.api.referencing.datum.Ellipsoid ellipsoid} than
+     * in the envelope CRS when possible. This is because geographic bounding box are only
+     * approximative and the ISO specification do not mandates a particular CRS, so we avoid
+     * transformations that are not strictly necessary.
      *
      * <p><strong>Note:</strong> This constructor is available only if the referencing module is on
      * the classpath.

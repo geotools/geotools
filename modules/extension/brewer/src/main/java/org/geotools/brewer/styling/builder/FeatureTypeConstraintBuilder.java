@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.geotools.styling.Extent;
 import org.geotools.styling.FeatureTypeConstraint;
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 public class FeatureTypeConstraintBuilder extends AbstractSLDBuilder<FeatureTypeConstraint> {
     private List<Extent> extents = new ArrayList<>();

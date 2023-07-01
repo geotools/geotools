@@ -18,7 +18,7 @@ import org.geotools.process.ProcessFactory;
 import org.geotools.process.impl.AbstractProcess;
 import org.geotools.text.Text;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * Process for adding a buffer around a geometry

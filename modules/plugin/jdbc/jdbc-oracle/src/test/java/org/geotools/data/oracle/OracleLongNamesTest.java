@@ -36,7 +36,7 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /** This is an Oracle specific test for Oracle 12c longer names support */
 public class OracleLongNamesTest extends JDBCTestSupport {

@@ -19,9 +19,9 @@ package org.geotools.data.complex.feature.xpath;
 
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
-import org.opengis.feature.Attribute;
-import org.opengis.feature.type.Name;
-import org.opengis.feature.type.PropertyDescriptor;
+import org.geotools.api.feature.Attribute;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.feature.type.PropertyDescriptor;
 
 /**
  * Special node iterator for {@link Attribute}.

@@ -20,14 +20,14 @@ import java.util.Collections;
 import java.util.Map;
 import org.geotools.referencing.CRS;
 import org.geotools.util.SimpleInternationalString;
-import org.opengis.util.InternationalString;
+import org.geotools.api.util.InternationalString;
 
 /**
  * A Parameter defines information about a valid process parameter.
  *
  * @author gdavis
  */
-public class Parameter<T> implements org.opengis.parameter.Parameter<T> {
+public class Parameter<T> implements org.geotools.api.parameter.Parameter<T> {
     /**
      * This is the key (ie machine readable text) used to represent this parameter in a
      * java.util.Map.

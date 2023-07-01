@@ -58,8 +58,8 @@ import org.geotools.swing.event.MapPaneEvent;
 import org.geotools.swing.event.MapPaneKeyHandler;
 import org.geotools.swing.event.MapPaneListener;
 import org.geotools.swing.tool.CursorTool;
-import org.opengis.geometry.Envelope;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Base class for Swing map panes. It extends Swing's {@code JPanel} class and handles window sizing

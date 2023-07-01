@@ -20,12 +20,12 @@
 package org.geotools.referencing.wkt;
 
 import java.util.prefs.Preferences;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.util.Classes;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.parameter.GeneralParameterValue;
 
 /**
  * Base class for all object formattable as <A
@@ -69,9 +69,9 @@ public class Formattable {
      * contains non-standard keywords. For example the <A
      * HREF="http://geoapi.sourceforge.net/snapshot/javadoc/org/opengis/referencing/doc-files/WKT.html">WKT
      * specification</A> do not defines any keyword for {@linkplain
-     * org.opengis.referencing.cs.CoordinateSystem coordinate system} objects. If this object is an
-     * instance of {@link org.geotools.referencing.cs.DefaultCartesianCS}, then the WKT will be
-     * formatted as <code>"CartesianCS[AXIS["</code>...<code>"], AXIS["</code>...<code>"],
+     * org.geotools.api.referencing.cs.CoordinateSystem coordinate system} objects. If this object
+     * is an instance of {@link org.geotools.referencing.cs.DefaultCartesianCS}, then the WKT will
+     * be formatted as <code>"CartesianCS[AXIS["</code>...<code>"], AXIS["</code>...<code>"],
      * </code><i>etc.</i><code>]"</code>.
      */
     @Override
@@ -224,7 +224,7 @@ public class Formattable {
         formatter.setInvalidWKT(type);
         Class[] interfaces = type.getInterfaces();
         for (final Class candidate : interfaces) {
-            if (candidate.getName().startsWith("org.opengis.referencing.")) {
+            if (candidate.getName().startsWith("org.geotools.api.referencing.")) {
                 type = candidate;
                 break;
             }

@@ -46,12 +46,12 @@ import org.geotools.util.Converters;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.And;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.spatial.BBOX;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.And;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.spatial.BBOX;
 
 public class STACFeatureSourceTest extends AbstractSTACStoreTest {
 

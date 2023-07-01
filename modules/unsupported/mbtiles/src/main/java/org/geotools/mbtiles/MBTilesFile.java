@@ -43,7 +43,7 @@ import org.geotools.jdbc.util.SqlUtil;
 import org.geotools.referencing.CRS;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 public class MBTilesFile implements AutoCloseable {
 

@@ -19,7 +19,7 @@
  */
 package org.geotools.metadata.iso.quality;
 
-import org.opengis.metadata.quality.FormatConsistency;
+import org.geotools.api.metadata.quality.FormatConsistency;
 
 /**
  * Degree to which data is stored in accordance with the physical structure of the dataset, as

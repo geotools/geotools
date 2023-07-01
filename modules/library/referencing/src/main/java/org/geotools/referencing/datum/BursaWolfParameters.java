@@ -22,6 +22,9 @@ package org.geotools.referencing.datum;
 import static java.lang.Double.doubleToLongBits;
 
 import java.io.Serializable;
+import org.geotools.api.referencing.datum.GeodeticDatum;
+import org.geotools.api.referencing.operation.Matrix;
+import org.geotools.api.util.Cloneable;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.operation.matrix.Matrix4;
@@ -29,9 +32,6 @@ import org.geotools.referencing.operation.matrix.XMatrix;
 import org.geotools.referencing.wkt.Formattable;
 import org.geotools.referencing.wkt.Formatter;
 import org.geotools.util.Utilities;
-import org.opengis.referencing.datum.GeodeticDatum;
-import org.opengis.referencing.operation.Matrix;
-import org.opengis.util.Cloneable;
 
 /**
  * Parameters for a geographic transformation between two datum. The Bursa Wolf parameters should be

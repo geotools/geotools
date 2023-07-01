@@ -21,8 +21,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.junit.Test;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 
 /**
  * Tests for {@link HTTP_URI_Parser}.

@@ -20,9 +20,9 @@
 package org.geotools.metadata.iso.identification;
 
 import java.net.URI;
+import org.geotools.api.metadata.identification.BrowseGraphic;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.metadata.identification.BrowseGraphic;
-import org.opengis.util.InternationalString;
 
 /**
  * Graphic that provides an illustration of the dataset (should include a legend for the graphic).

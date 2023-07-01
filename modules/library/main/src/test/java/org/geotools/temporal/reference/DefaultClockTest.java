@@ -27,12 +27,12 @@ import org.geotools.util.SimpleInternationalString;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.temporal.Calendar;
-import org.opengis.temporal.Clock;
-import org.opengis.temporal.ClockTime;
-import org.opengis.temporal.IndeterminateValue;
-import org.opengis.temporal.TemporalReferenceSystem;
-import org.opengis.util.InternationalString;
+import org.geotools.api.temporal.Calendar;
+import org.geotools.api.temporal.Clock;
+import org.geotools.api.temporal.ClockTime;
+import org.geotools.api.temporal.IndeterminateValue;
+import org.geotools.api.temporal.TemporalReferenceSystem;
+import org.geotools.api.util.InternationalString;
 
 /** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultClockTest {

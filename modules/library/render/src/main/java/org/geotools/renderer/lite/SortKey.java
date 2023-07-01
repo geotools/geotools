@@ -19,8 +19,8 @@ package org.geotools.renderer.lite;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.opengis.filter.sort.SortBy;
-import org.opengis.filter.sort.SortOrder;
+import org.geotools.api.filter.sort.SortBy;
+import org.geotools.api.filter.sort.SortOrder;
 
 /**
  * Sort key used to find the next feature to draw in a cross-layer z-ordering setup

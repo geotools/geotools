@@ -19,10 +19,10 @@ package org.geotools.referencing.operation.transform;
 import java.awt.geom.Point2D;
 import java.awt.image.RasterFormatException;
 import javax.media.jai.Warp;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
-import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * Wraps an arbitrary {@link MathTransform2D} into an image warp operation. This warp operation is

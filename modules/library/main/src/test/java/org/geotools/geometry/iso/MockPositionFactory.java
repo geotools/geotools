@@ -19,12 +19,12 @@
 package org.geotools.geometry.iso;
 
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.PositionFactory;
-import org.opengis.geometry.Precision;
-import org.opengis.geometry.coordinate.PointArray;
-import org.opengis.geometry.coordinate.Position;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.PositionFactory;
+import org.geotools.api.geometry.Precision;
+import org.geotools.api.geometry.coordinate.PointArray;
+import org.geotools.api.geometry.coordinate.Position;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 public class MockPositionFactory implements PositionFactory {
 

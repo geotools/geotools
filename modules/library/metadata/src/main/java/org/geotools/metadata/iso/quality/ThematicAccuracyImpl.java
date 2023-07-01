@@ -19,7 +19,7 @@
  */
 package org.geotools.metadata.iso.quality;
 
-import org.opengis.metadata.quality.ThematicAccuracy;
+import org.geotools.api.metadata.quality.ThematicAccuracy;
 
 /**
  * Accuracy of quantitative attributes and the correctness of non-quantitative attributes and of the

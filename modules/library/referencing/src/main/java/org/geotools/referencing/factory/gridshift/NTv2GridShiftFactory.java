@@ -25,6 +25,7 @@ import java.io.RandomAccessFile;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.referencing.FactoryException;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.factory.ReferencingFactory;
@@ -33,7 +34,6 @@ import org.geotools.util.URLs;
 import org.geotools.util.factory.AbstractFactory;
 import org.geotools.util.factory.BufferedFactory;
 import org.geotools.util.logging.Logging;
-import org.opengis.referencing.FactoryException;
 
 /**
  * Loads and caches NTv2 grid files. Thisthat incorporates a soft cache mechanism to keep grids in

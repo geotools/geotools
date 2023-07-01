@@ -22,10 +22,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 import org.geotools.feature.NameImpl;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.AttributeType;
-import org.opengis.feature.type.ComplexType;
-import org.opengis.feature.type.Name;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.AttributeType;
+import org.geotools.api.feature.type.ComplexType;
+import org.geotools.api.feature.type.Name;
 
 /**
  * Helper methods for dealing with Descriptor.

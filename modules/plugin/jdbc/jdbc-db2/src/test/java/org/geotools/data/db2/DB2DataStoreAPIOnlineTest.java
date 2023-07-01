@@ -19,7 +19,7 @@ package org.geotools.data.db2;
 import java.io.IOException;
 import org.geotools.jdbc.JDBCDataStoreAPIOnlineTest;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 public class DB2DataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
     @Override

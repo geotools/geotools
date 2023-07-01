@@ -7,7 +7,7 @@
 package net.opengis.wfs20;
 
 import org.eclipse.emf.ecore.EObject;
-import org.opengis.filter.expression.PropertyName;
+import org.geotools.api.filter.expression.PropertyName;
 
 /**
  * <!-- begin-user-doc -->

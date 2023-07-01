@@ -74,19 +74,19 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.Id;
-import org.opengis.filter.Not;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.spatial.Disjoint;
-import org.opengis.style.ContrastMethod;
-import org.opengis.style.GraphicalSymbol;
-import org.opengis.style.SemanticType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.Not;
+import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.spatial.Disjoint;
+import org.geotools.api.style.ContrastMethod;
+import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.SemanticType;
 
 /**
  * Try out our SLD parser and see how well it does.
@@ -805,7 +805,7 @@ public class SLDStyleTest {
         String type = (String) overlapExpr.evaluate(null);
         Assert.assertEquals("LATEST_ON_TOP", type);
 
-        org.opengis.style.OverlapBehavior overlapBehavior = rs.getOverlapBehavior();
+        org.geotools.api.style.OverlapBehavior overlapBehavior = rs.getOverlapBehavior();
         type = overlapBehavior.name();
         Assert.assertEquals("LATEST_ON_TOP", type);
 
@@ -860,7 +860,7 @@ public class SLDStyleTest {
         String type = (String) overlapExpr.evaluate(null);
         Assert.assertEquals("LATEST_ON_TOP", type);
 
-        org.opengis.style.OverlapBehavior overlapBehavior = rs.getOverlapBehavior();
+        org.geotools.api.style.OverlapBehavior overlapBehavior = rs.getOverlapBehavior();
         type = overlapBehavior.name();
         Assert.assertEquals("LATEST_ON_TOP", type);
 

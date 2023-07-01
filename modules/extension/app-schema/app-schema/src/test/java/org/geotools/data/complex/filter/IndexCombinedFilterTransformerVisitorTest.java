@@ -25,9 +25,9 @@ import java.util.List;
 import org.geotools.data.complex.IndexesTest;
 import org.geotools.data.complex.TestFeatureSource;
 import org.junit.Test;
-import org.opengis.filter.And;
-import org.opengis.filter.BinaryLogicOperator;
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.And;
+import org.geotools.api.filter.BinaryLogicOperator;
+import org.geotools.api.filter.Filter;
 
 /**
  * Tests org.geotools.data.complex.filter.IndexCombinedFilterTransformerVisitor

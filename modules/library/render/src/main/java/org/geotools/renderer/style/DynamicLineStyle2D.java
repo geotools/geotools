@@ -23,8 +23,8 @@ import java.awt.Composite;
 import java.awt.Paint;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Stroke;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * A dynamic line style, that will compute its parameters each time they are requested instead of

@@ -14,8 +14,8 @@ import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
-import org.opengis.geometry.MismatchedReferenceSystemException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.geometry.MismatchedReferenceSystemException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Test for ReferencedEnvelope3D

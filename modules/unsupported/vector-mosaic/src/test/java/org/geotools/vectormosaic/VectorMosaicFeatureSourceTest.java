@@ -23,7 +23,7 @@ import org.geotools.data.Query;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 public class VectorMosaicFeatureSourceTest extends VectorMosaicTest {
 

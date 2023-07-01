@@ -21,16 +21,16 @@ package org.geotools.metadata.iso.citation;
 
 import java.util.Collection;
 import java.util.Date;
+import org.geotools.api.metadata.Identifier;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.metadata.citation.CitationDate;
+import org.geotools.api.metadata.citation.PresentationForm;
+import org.geotools.api.metadata.citation.ResponsibleParty;
+import org.geotools.api.metadata.citation.Series;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.iso.IdentifierImpl;
 import org.geotools.metadata.iso.MetadataEntity;
 import org.geotools.util.SimpleInternationalString;
-import org.opengis.metadata.Identifier;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.metadata.citation.CitationDate;
-import org.opengis.metadata.citation.PresentationForm;
-import org.opengis.metadata.citation.ResponsibleParty;
-import org.opengis.metadata.citation.Series;
-import org.opengis.util.InternationalString;
 
 /**
  * Standardized resource reference.

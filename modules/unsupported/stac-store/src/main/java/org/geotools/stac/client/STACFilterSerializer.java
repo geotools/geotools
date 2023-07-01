@@ -23,7 +23,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import java.io.IOException;
 import org.geootols.filter.text.cql_2.CQL2;
 import org.geotools.filter.text.cqljson.CQL2Json;
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 public class STACFilterSerializer extends JsonSerializer<Filter> {
     @Override

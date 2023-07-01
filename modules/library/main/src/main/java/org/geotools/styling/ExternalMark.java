@@ -17,7 +17,7 @@
 package org.geotools.styling;
 
 import javax.swing.Icon;
-import org.opengis.metadata.citation.OnLineResource;
+import org.geotools.api.metadata.citation.OnLineResource;
 
 /**
  * Specify a mark using an image files (svg, png, gif) or using mark index a true type font file.
@@ -26,7 +26,7 @@ import org.opengis.metadata.citation.OnLineResource;
  * into a preferred order with the most specific (say SVG) followed by common formats (PNG, GIF) and
  * ending with an appropriate WellKnownName.
  */
-public interface ExternalMark extends org.opengis.style.ExternalMark {
+public interface ExternalMark extends org.geotools.api.style.ExternalMark {
 
     /**
      * Online resource defined by an URI.

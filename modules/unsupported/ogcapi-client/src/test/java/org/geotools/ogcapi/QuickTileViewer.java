@@ -56,7 +56,7 @@ import org.geotools.swing.JMapFrame;
 import org.geotools.util.URLs;
 import org.geotools.util.UnsupportedImplementationException;
 import org.geotools.util.logging.Logging;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.SAXException;
 
 public class QuickTileViewer {

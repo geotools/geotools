@@ -22,10 +22,10 @@ import org.geotools.filter.v2_0.FES;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.identity.FeatureId;
-import org.opengis.filter.identity.ResourceId;
-import org.opengis.filter.identity.Version;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.identity.FeatureId;
+import org.geotools.api.filter.identity.ResourceId;
+import org.geotools.api.filter.identity.Version;
 
 public class ResourceIdTypeBinding extends AbstractComplexBinding {
 

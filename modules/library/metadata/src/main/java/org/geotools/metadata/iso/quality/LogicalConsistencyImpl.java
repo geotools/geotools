@@ -19,7 +19,7 @@
  */
 package org.geotools.metadata.iso.quality;
 
-import org.opengis.metadata.quality.LogicalConsistency;
+import org.geotools.api.metadata.quality.LogicalConsistency;
 
 /**
  * Degree of adherence to logical rules of data structure, attribution and relationships (data

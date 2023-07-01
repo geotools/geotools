@@ -32,6 +32,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 import javax.measure.MetricPrefix;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.GeographicCRS;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
@@ -41,10 +45,6 @@ import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.test.TestData;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.GeographicCRS;
-import org.opengis.referencing.operation.TransformException;
 import si.uom.SI;
 
 /**

@@ -33,14 +33,14 @@ import org.geotools.util.SimpleInternationalString;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.temporal.CalendarDate;
-import org.opengis.temporal.CalendarEra;
-import org.opengis.temporal.IndeterminateValue;
-import org.opengis.temporal.Instant;
-import org.opengis.temporal.JulianDate;
-import org.opengis.temporal.Period;
-import org.opengis.temporal.TemporalReferenceSystem;
-import org.opengis.util.InternationalString;
+import org.geotools.api.temporal.CalendarDate;
+import org.geotools.api.temporal.CalendarEra;
+import org.geotools.api.temporal.IndeterminateValue;
+import org.geotools.api.temporal.Instant;
+import org.geotools.api.temporal.JulianDate;
+import org.geotools.api.temporal.Period;
+import org.geotools.api.temporal.TemporalReferenceSystem;
+import org.geotools.api.util.InternationalString;
 
 /** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultCalendarEraTest {
@@ -193,7 +193,7 @@ public class DefaultCalendarEraTest {
     /** Test of getDatingSystem method, of class DefaultCalendarEra. */
     @Test
     public void testGetDatingSystem() {
-        Collection<org.opengis.temporal.Calendar> result =
+        Collection<org.geotools.api.temporal.Calendar> result =
                 ((DefaultCalendarEra) calendarEra1).getDatingSystem();
         assertEquals(((DefaultCalendarEra) calendarEra2).getDatingSystem(), result);
     }

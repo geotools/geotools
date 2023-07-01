@@ -21,10 +21,10 @@ package org.geotools.styling;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.GeoTools;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.StyleVisitor;
-import org.opengis.util.Cloneable;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.util.Cloneable;
 
 /**
  * @author Ian Turton, CCG
@@ -137,7 +137,7 @@ public class DisplacementImpl implements Displacement, Cloneable {
     }
 
     /* (non-Javadoc)
-     * @see org.opengis.util.Cloneable#clone()
+     * @see org.geotools.api.util.Cloneable#clone()
      */
     @Override
     public Object clone() {
@@ -186,7 +186,7 @@ public class DisplacementImpl implements Displacement, Cloneable {
         return result;
     }
 
-    static DisplacementImpl cast(org.opengis.style.Displacement displacement) {
+    static DisplacementImpl cast(org.geotools.api.style.Displacement displacement) {
         if (displacement == null) {
             return null;
         } else if (displacement instanceof DisplacementImpl) {

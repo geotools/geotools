@@ -21,7 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 import org.geotools.filter.text.commons.ExpressionToText;
-import org.opengis.temporal.Period;
+import org.geotools.api.temporal.Period;
 
 /** Subclassed to handle the encoding of date literals */
 public class CQL2ExpressionToText extends ExpressionToText {

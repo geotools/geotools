@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Properties;
 import org.geotools.data.DataStore;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /** Configuration for a vector mosaic. */
 public class VectorMosaicGranule implements Serializable, Closeable {

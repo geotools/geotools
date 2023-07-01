@@ -22,7 +22,7 @@ import org.geotools.filter.v1_1.OGC;
 import org.geotools.xs.bindings.XSQNameBinding;
 import org.geotools.xsd.AbstractSimpleBinding;
 import org.geotools.xsd.InstanceComponent;
-import org.opengis.filter.capability.GeometryOperand;
+import org.geotools.api.filter.capability.GeometryOperand;
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:GeometryOperandType.

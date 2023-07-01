@@ -24,7 +24,7 @@ import org.geotools.filter.v2_0.FES;
 import org.geotools.xml.impl.DatatypeConverterImpl;
 import org.geotools.xsd.InstanceComponent;
 import org.geotools.xsd.SimpleBinding;
-import org.opengis.filter.identity.Version;
+import org.geotools.api.filter.identity.Version;
 
 /** Binding for FES 2.0 {@code VersionType} mapping to {@link Version} */
 public class VersionTypeBinding implements SimpleBinding {

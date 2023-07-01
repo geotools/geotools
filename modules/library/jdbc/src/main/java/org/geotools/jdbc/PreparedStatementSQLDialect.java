@@ -34,8 +34,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import org.geotools.util.Converters;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
 
 /**
  * SQL dialect which uses prepared statements for database interaction.

@@ -51,10 +51,10 @@ public class UnformattableObjectException extends UnsupportedOperationException 
      * Returns the type of the object that can't be formatted. This is often an OpenGIS interface
      * rather than the implementation class. For example if a engineering CRS uses different unit
      * for each axis, then this method may return <code>
-     * {@linkplain org.opengis.referencing.crs.CoordinateReferenceSystem}.class</code>. It doesn't
-     * mean that no CRS can be formatted; only that a particular instance of it can't. Other
-     * possible classes are {@link org.opengis.referencing.datum.ImageDatum}, {@link
-     * org.opengis.referencing.crs.ProjectedCRS}, <cite>etc</cite>.
+     * {@linkplain org.geotools.api.referencing.crs.CoordinateReferenceSystem}.class</code>. It
+     * doesn't mean that no CRS can be formatted; only that a particular instance of it can't. Other
+     * possible classes are {@link org.geotools.api.referencing.datum.ImageDatum}, {@link
+     * org.geotools.api.referencing.crs.ProjectedCRS}, <cite>etc</cite>.
      *
      * @since 2.4
      */

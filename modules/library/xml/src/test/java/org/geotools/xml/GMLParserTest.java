@@ -31,7 +31,7 @@ import org.geotools.xml.schema.Schema;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /** @author dzwiers www.refractions.net */
 public class GMLParserTest {

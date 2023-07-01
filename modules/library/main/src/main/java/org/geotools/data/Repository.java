@@ -17,7 +17,7 @@
 package org.geotools.data;
 
 import java.util.List;
-import org.opengis.feature.type.Name;
+import org.geotools.api.feature.type.Name;
 
 /**
  * An adapter interface allowing a hosting application to advertise DataStore instances to GeoTools.

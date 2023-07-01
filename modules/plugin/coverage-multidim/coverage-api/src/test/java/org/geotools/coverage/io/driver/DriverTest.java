@@ -36,9 +36,9 @@ import org.geotools.referencing.CRS;
 import org.geotools.util.SimpleInternationalString;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.feature.type.Name;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 public class DriverTest extends Assert {
 

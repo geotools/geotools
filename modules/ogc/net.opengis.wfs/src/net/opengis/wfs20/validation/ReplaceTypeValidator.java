@@ -6,7 +6,7 @@ package net.opengis.wfs20.validation;
 
 import org.eclipse.emf.common.util.EList;
 
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 /**
  * A sample validator interface for {@link net.opengis.wfs20.ReplaceType}.

@@ -29,8 +29,8 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
 
 public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
 

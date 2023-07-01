@@ -43,7 +43,7 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 /** Testing that granule collectors correctly get configured and initialized */
 public class DefaultSubmosaicProducerSPITest {

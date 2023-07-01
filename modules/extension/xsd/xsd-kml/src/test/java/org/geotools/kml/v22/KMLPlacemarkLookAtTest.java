@@ -23,7 +23,7 @@ import java.util.List;
 import org.geotools.xsd.Parser;
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 public class KMLPlacemarkLookAtTest extends KMLTestSupport {
     @Test

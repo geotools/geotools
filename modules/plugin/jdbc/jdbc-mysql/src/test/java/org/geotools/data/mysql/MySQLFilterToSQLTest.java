@@ -23,8 +23,8 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.PropertyIsEqualTo;
 
 public class MySQLFilterToSQLTest extends SQLFilterTestSupport {
 

@@ -16,9 +16,9 @@
  */
 package org.geotools.filter.capability;
 
-import org.opengis.filter.capability.ArithmeticOperators;
-import org.opengis.filter.capability.ComparisonOperators;
-import org.opengis.filter.capability.ScalarCapabilities;
+import org.geotools.api.filter.capability.ArithmeticOperators;
+import org.geotools.api.filter.capability.ComparisonOperators;
+import org.geotools.api.filter.capability.ScalarCapabilities;
 
 /**
  * Implementation of the ScalarCapabilities interface.

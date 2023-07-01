@@ -29,10 +29,10 @@ import org.geotools.data.QueryCapabilities;
 import org.geotools.data.ResourceInfo;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.Filter;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Filter;
 
 /**
  * {@link org.geotools.data.FeatureSource} for {@link SampleDataAccess}.
@@ -112,7 +112,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
     /**
      * Not yet implemented.
      *
-     * @see org.geotools.data.FeatureSource#getFeatures(org.opengis.filter.Filter)
+     * @see org.geotools.data.FeatureSource#getFeatures(org.geotools.api.filter.Filter)
      */
     @Override
     public FeatureCollection<FeatureType, Feature> getFeatures(Filter filter) throws IOException {

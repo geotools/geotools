@@ -21,8 +21,8 @@ import static org.junit.Assert.assertNull;
 
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.expression.Function;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.expression.Function;
 
 public class GeometryFunctionFilterTest extends FunctionTestSupport {
 

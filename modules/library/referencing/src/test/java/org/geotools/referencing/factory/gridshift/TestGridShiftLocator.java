@@ -7,10 +7,10 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
+import org.geotools.api.metadata.citation.Citation;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.util.factory.AbstractFactory;
 import org.geotools.util.logging.Logging;
-import org.opengis.metadata.citation.Citation;
 
 /** Test helper that can load compressed grids */
 public class TestGridShiftLocator extends AbstractFactory implements GridShiftLocator {

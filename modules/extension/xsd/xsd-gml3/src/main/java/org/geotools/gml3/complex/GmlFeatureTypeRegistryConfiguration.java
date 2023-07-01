@@ -40,8 +40,8 @@ import org.geotools.xsd.Configuration;
 import org.geotools.xsd.SchemaIndex;
 import org.geotools.xsd.Schemas;
 import org.geotools.xsd.complex.FeatureTypeRegistryConfiguration;
-import org.opengis.feature.type.Name;
-import org.opengis.feature.type.Schema;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.feature.type.Schema;
 
 /**
  * Feature Type Registry Configuration for GML. Depending on the schema type different version of

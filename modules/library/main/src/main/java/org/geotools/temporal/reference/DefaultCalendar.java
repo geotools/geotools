@@ -25,16 +25,16 @@ import org.geotools.temporal.object.DefaultDateAndTime;
 import org.geotools.temporal.object.DefaultJulianDate;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.Utilities;
-import org.opengis.metadata.extent.Extent;
-import org.opengis.referencing.ReferenceIdentifier;
-import org.opengis.temporal.Calendar;
-import org.opengis.temporal.CalendarDate;
-import org.opengis.temporal.CalendarEra;
-import org.opengis.temporal.Clock;
-import org.opengis.temporal.ClockTime;
-import org.opengis.temporal.DateAndTime;
-import org.opengis.temporal.JulianDate;
-import org.opengis.temporal.TemporalCoordinateSystem;
+import org.geotools.api.metadata.extent.Extent;
+import org.geotools.api.referencing.ReferenceIdentifier;
+import org.geotools.api.temporal.Calendar;
+import org.geotools.api.temporal.CalendarDate;
+import org.geotools.api.temporal.CalendarEra;
+import org.geotools.api.temporal.Clock;
+import org.geotools.api.temporal.ClockTime;
+import org.geotools.api.temporal.DateAndTime;
+import org.geotools.api.temporal.JulianDate;
+import org.geotools.api.temporal.TemporalCoordinateSystem;
 
 /** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultCalendar extends DefaultTemporalReferenceSystem implements Calendar {

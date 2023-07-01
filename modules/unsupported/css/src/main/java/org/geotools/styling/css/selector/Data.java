@@ -24,9 +24,9 @@ import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.styling.css.util.FilterSpecificityExtractor;
 import org.geotools.styling.css.util.UnboundSimplifyingFilterVisitor;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
 
 public class Data extends Selector {
 
@@ -44,7 +44,7 @@ public class Data extends Selector {
             featureType = selector.featureType;
         }
 
-        org.opengis.filter.And and = FF.and(filters);
+        org.geotools.api.filter.And and = FF.and(filters);
         SimplifyingFilterVisitor visitor;
         if (ctx instanceof SimplifyingFilterVisitor) {
             visitor = (SimplifyingFilterVisitor) ctx;

@@ -20,14 +20,14 @@ import java.io.Serializable;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
-import org.opengis.coverage.Coverage;
-import org.opengis.coverage.processing.Operation;
-import org.opengis.filter.identity.Identifier;
-import org.opengis.parameter.GeneralParameterDescriptor;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.util.InternationalString;
+import org.geotools.api.coverage.Coverage;
+import org.geotools.api.coverage.processing.Operation;
+import org.geotools.api.filter.identity.Identifier;
+import org.geotools.api.parameter.GeneralParameterDescriptor;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.util.InternationalString;
 
 /**
  * Provides descriptive information for a {@linkplain Coverage coverage} processing operation. The

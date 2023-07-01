@@ -18,8 +18,8 @@ package org.geotools.feature.collection;
 
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.FilteringFeatureIterator;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.Filter;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.Filter;
 
 /**
  * Extension of {@link FilteringFeatureIterator} that type narrows to {@link SimpleFeature}.

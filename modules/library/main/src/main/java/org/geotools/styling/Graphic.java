@@ -19,8 +19,8 @@ package org.geotools.styling;
 import java.util.Collections;
 import java.util.List;
 import org.geotools.filter.ConstantExpression;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.GraphicalSymbol;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.GraphicalSymbol;
 
 /**
  * A Graphic is a "graphical symbol" with an inherent shape, color(s), and possibly size.
@@ -77,9 +77,9 @@ import org.opengis.style.GraphicalSymbol;
  */
 public interface Graphic
         extends GraphicLegend,
-                org.opengis.style.Graphic,
-                org.opengis.style.GraphicFill,
-                org.opengis.style.GraphicStroke {
+                org.geotools.api.style.Graphic,
+                org.geotools.api.style.GraphicFill,
+                org.geotools.api.style.GraphicStroke {
     /**
      * A default Graphic instance.
      *
@@ -181,7 +181,7 @@ public interface Graphic
 
     /** Anchor point (expressed as an x/y percentage of the graphic size). */
     @Override
-    public void setAnchorPoint(org.opengis.style.AnchorPoint anchorPoint);
+    public void setAnchorPoint(org.geotools.api.style.AnchorPoint anchorPoint);
 
     /**
      * This specifies the level of translucency to use when rendering the graphic.<br>
@@ -225,7 +225,7 @@ public interface Graphic
 
     /** @param offset Amount to offset graphic */
     @Override
-    void setDisplacement(org.opengis.style.Displacement offset);
+    void setDisplacement(org.geotools.api.style.Displacement offset);
 
     /**
      * This parameter defines the rotation of a graphic in the clockwise direction about its centre
@@ -271,7 +271,7 @@ abstract class ConstantGraphic implements Graphic {
     }
 
     @Override
-    public void setDisplacement(org.opengis.style.Displacement offset) {
+    public void setDisplacement(org.geotools.api.style.Displacement offset) {
         cannotModifyConstant();
     }
 
@@ -329,8 +329,8 @@ abstract class ConstantGraphic implements Graphic {
     }
 
     @Override
-    public Object accept(org.opengis.style.StyleVisitor visitor, Object data) {
-        return visitor.visit((org.opengis.style.GraphicStroke) this, data);
+    public Object accept(org.geotools.api.style.StyleVisitor visitor, Object data) {
+        return visitor.visit((org.geotools.api.style.GraphicStroke) this, data);
     }
 
     @Override
@@ -349,7 +349,7 @@ abstract class ConstantGraphic implements Graphic {
     }
 
     @Override
-    public void setAnchorPoint(org.opengis.style.AnchorPoint anchorPoint) {
+    public void setAnchorPoint(org.geotools.api.style.AnchorPoint anchorPoint) {
         cannotModifyConstant();
     }
 

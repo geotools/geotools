@@ -23,7 +23,7 @@ import org.geotools.wfs.WFS;
 import org.geotools.xsd.AbstractComplexEMFBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 /**
  * Binding object for the type http://www.opengis.net/wfs:DeleteElementType.

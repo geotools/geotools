@@ -30,7 +30,7 @@ import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.data.wfs.internal.WFSRequest;
 import org.geotools.ows.ServiceException;
 import org.geotools.util.logging.Logging;
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 /**
  * Test client for WFS

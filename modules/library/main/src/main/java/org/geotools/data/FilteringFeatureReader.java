@@ -19,10 +19,10 @@ package org.geotools.data;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import org.geotools.filter.visitor.BindingFilterVisitor;
-import org.opengis.feature.Feature;
-import org.opengis.feature.IllegalAttributeException;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.filter.Filter;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.IllegalAttributeException;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.filter.Filter;
 
 /**
  * Basic support for a FeatureReader<SimpleFeatureType, SimpleFeature> that does filtering. I think

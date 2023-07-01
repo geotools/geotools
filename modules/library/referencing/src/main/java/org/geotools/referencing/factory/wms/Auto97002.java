@@ -16,8 +16,8 @@
  */
 package org.geotools.referencing.factory.wms;
 
+import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.referencing.datum.DefaultEllipsoid;
-import org.opengis.parameter.ParameterValueGroup;
 
 /**
  * Auto Stereographic ({@code AUTO:97002}). In the notation below, "<code>${var}</code>" denotes a

@@ -19,7 +19,7 @@ package org.geotools.appschema.filter;
 
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.FilterFactoryImpl;
-import org.opengis.filter.expression.PropertyName;
+import org.geotools.api.filter.expression.PropertyName;
 
 /** @author Niels Charlier (Curtin University of Technology) */
 public class FilterFactoryImplReportInvalidProperty extends FilterFactoryImpl {

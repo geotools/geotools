@@ -58,7 +58,7 @@ public interface FeaturesLockedType extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Feature Id</em>' attribute list.
 	 * @see net.opengis.wfs.WFSPackage#getFeaturesLockedType_FeatureId()
-	 * @model type="org.opengis.filter.identity.FeatureId" 
+	 * @model type="org.geotools.api.filter.identity.FeatureId" 
 	 */
 	EList getFeatureId();
 

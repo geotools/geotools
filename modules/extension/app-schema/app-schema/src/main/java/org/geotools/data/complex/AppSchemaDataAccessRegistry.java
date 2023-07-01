@@ -20,9 +20,9 @@ package org.geotools.data.complex;
 import java.io.IOException;
 import org.geotools.appschema.util.InterpolationProperties;
 import org.geotools.data.FeatureSource;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.Name;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
 
 /**
  * A registry that stores all app schema data access instances per application. This allows mappings

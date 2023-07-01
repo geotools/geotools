@@ -32,7 +32,7 @@ import org.geotools.util.DateRange;
 import org.geotools.util.DateTimeParser;
 import org.geotools.util.DateTimeParser.FormatAndPrecision;
 import org.geotools.util.logging.Logging;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /** @author Simone Giannecchini, GeoSolutions SAS */
 class TimestampFileNameExtractor extends RegExPropertiesCollector {

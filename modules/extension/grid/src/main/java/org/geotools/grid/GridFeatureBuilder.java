@@ -18,7 +18,7 @@
 package org.geotools.grid;
 
 import java.util.Map;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /**
  * Controls the creating of features representing grid elements during vector grid construction.

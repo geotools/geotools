@@ -35,10 +35,10 @@ import org.geotools.data.QueryCapabilities;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.junit.After;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.sort.SortBy;
-import org.opengis.filter.sort.SortOrder;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.sort.SortBy;
+import org.geotools.api.filter.sort.SortOrder;
 
 /**
  * Test the functionality of ShapefileDataStoreFactory; specifically the handling of connection

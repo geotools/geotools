@@ -31,8 +31,8 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.TransformException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * Tests the {@link GridCoverage2D} implementation.

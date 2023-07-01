@@ -28,8 +28,8 @@ import org.geotools.data.complex.util.XPathUtil;
 import org.geotools.data.mongodb.MongoFeatureStore;
 import org.geotools.feature.type.Types;
 import org.geotools.filter.ConstantExpression;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.expression.Expression;
 
 /** Custom nested attribute expressions builder for MongoDB. */
 public class MongoNestedAttributeExpressionFactory implements CustomAttributeExpressionFactory {

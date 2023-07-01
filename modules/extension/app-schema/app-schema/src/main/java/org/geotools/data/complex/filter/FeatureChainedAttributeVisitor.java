@@ -35,11 +35,11 @@ import org.geotools.data.joining.JoiningNestedAttributeMapping;
 import org.geotools.filter.visitor.DefaultExpressionVisitor;
 import org.geotools.util.logging.Logging;
 import org.geotools.xlink.XLINK;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.AttributeType;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.PropertyName;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.AttributeType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.PropertyName;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**

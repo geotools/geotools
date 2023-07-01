@@ -17,7 +17,7 @@
 /**
  * {@linkplain org.geotools.metadata.iso.maintenance.MaintenanceInformationImpl Maintenance
  * information} implementation. An explanation for this package is provided in the {@linkplain
- * org.opengis.metadata.constraint OpenGIS&reg; javadoc}. The remaining discussion on this page is
- * specific to the Geotools implementation.
+ * org.geotools.api.metadata.constraint OpenGIS&reg; javadoc}. The remaining discussion on this page
+ * is specific to the Geotools implementation.
  */
 package org.geotools.metadata.iso.maintenance;

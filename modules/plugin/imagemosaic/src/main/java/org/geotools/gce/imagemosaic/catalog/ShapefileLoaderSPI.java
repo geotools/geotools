@@ -28,7 +28,7 @@ import org.geotools.data.shapefile.files.ShpFileType;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.util.URLs;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 public class ShapefileLoaderSPI implements FootprintLoaderSpi {
 

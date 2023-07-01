@@ -43,7 +43,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 @SuppressWarnings("unchecked")
 public class STACClientEarthSearchOnlineTest extends AbstractSTACClientOnlineTest {

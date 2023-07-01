@@ -56,10 +56,10 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Expression;
 import si.uom.SI;
 import systems.uom.common.USCustomary;
 
@@ -632,7 +632,7 @@ public class UomRescaleStyleVisitorTest {
             LineSymbolizer rescaledLineSymb = (LineSymbolizer) visitor.getCopy();
 
             // tests results
-            org.opengis.style.Stroke rescaledStroke = rescaledLineSymb.getStroke();
+            org.geotools.api.style.Stroke rescaledStroke = rescaledLineSymb.getStroke();
             Expression rescaledWidth = rescaledStroke.getWidth();
             double rescaledWidthValue = rescaledWidth.evaluate(feature, Double.class);
             double expectedRescaledWidthValue =

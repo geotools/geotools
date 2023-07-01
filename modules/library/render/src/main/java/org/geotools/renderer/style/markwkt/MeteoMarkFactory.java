@@ -27,8 +27,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.renderer.style.MarkFactory;
 import org.geotools.renderer.util.ExplicitBoundsShape;
-import org.opengis.feature.Feature;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * Adds to the well-known shapes some symbols the weathermen may find useful.
@@ -129,7 +129,7 @@ public class MeteoMarkFactory implements MarkFactory {
      * Return a shape with the given url.
      *
      * @see org.geotools.renderer.style.MarkFactory#getShape(java.awt.Graphics2D,
-     * org.opengis.filter.expression.Expression, org.opengis.feature.Feature)
+     * org.geotools.api.filter.expression.Expression, org.geotools.api.feature.Feature)
      */
     @Override
     public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature)

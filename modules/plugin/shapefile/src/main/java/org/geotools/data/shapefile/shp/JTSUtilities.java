@@ -31,7 +31,7 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.feature.type.GeometryDescriptor;
+import org.geotools.api.feature.type.GeometryDescriptor;
 
 /**
  * A collection of utility methods for use with JTS and the shapefile package.

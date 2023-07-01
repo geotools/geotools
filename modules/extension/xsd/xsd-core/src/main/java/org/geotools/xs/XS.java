@@ -20,8 +20,8 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.xml.namespace.QName;
 import org.geotools.xsd.XSD;
-import org.opengis.feature.type.Name;
-import org.opengis.feature.type.Schema;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.feature.type.Schema;
 
 /**
  * This interface contains the qualified names of all the types in the

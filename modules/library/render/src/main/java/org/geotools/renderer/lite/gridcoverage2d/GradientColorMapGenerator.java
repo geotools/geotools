@@ -31,7 +31,7 @@ import org.geotools.styling.ColorMapImpl;
 import org.geotools.util.Converter;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.Utilities;
-import org.opengis.filter.FilterFactory;
+import org.geotools.api.filter.FilterFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

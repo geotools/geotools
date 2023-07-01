@@ -28,12 +28,12 @@ import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.expression.Divide;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.expression.Divide;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
 
 /** @author Cory Horner, Refractions Research Inc. */
 public class QuantileFunctionTest extends FunctionTestSupport {
@@ -109,7 +109,7 @@ public class QuantileFunctionTest extends FunctionTestSupport {
         SimpleFeatureCollection myFeatureCollection = DataUtilities.collection(myfeatures);
 
         // run the quantile function
-        org.opengis.filter.expression.Expression function =
+        org.geotools.api.filter.expression.Expression function =
                 ff.function("Quantile", ff.property("value"), ff.literal(5));
         Classifier classifier = (Classifier) function.evaluate(myFeatureCollection);
 
@@ -148,7 +148,7 @@ public class QuantileFunctionTest extends FunctionTestSupport {
         SimpleFeatureCollection myFeatureCollection = DataUtilities.collection(myfeatures);
 
         // run the quantile function
-        org.opengis.filter.expression.Expression function =
+        org.geotools.api.filter.expression.Expression function =
                 ff.function("Quantile", ff.property("value"), ff.literal(5));
         Classifier classifier = (Classifier) function.evaluate(myFeatureCollection);
         assertTrue(classifier instanceof RangedClassifier);
@@ -156,7 +156,7 @@ public class QuantileFunctionTest extends FunctionTestSupport {
 
     @Test
     public void testEvaluateWithStrings() throws Exception {
-        org.opengis.filter.expression.Expression function =
+        org.geotools.api.filter.expression.Expression function =
                 ff.function("Quantile", ff.property("group"), ff.literal(2));
         Classifier classifier = (Classifier) function.evaluate(featureCollection);
         assertNotNull(classifier);
@@ -271,7 +271,7 @@ public class QuantileFunctionTest extends FunctionTestSupport {
         }
 
         SimpleFeatureCollection myFeatureCollection = DataUtilities.collection(myfeatures);
-        org.opengis.filter.expression.Expression func2 =
+        org.geotools.api.filter.expression.Expression func2 =
                 ff.function("Quantile", ff.property("value"), ff.literal(6), ff.literal(true));
 
         Object value2 = func2.evaluate(myFeatureCollection);
@@ -299,7 +299,7 @@ public class QuantileFunctionTest extends FunctionTestSupport {
         }
 
         SimpleFeatureCollection myFeatureCollection = DataUtilities.collection(myfeatures);
-        org.opengis.filter.expression.Expression func =
+        org.geotools.api.filter.expression.Expression func =
                 ff.function("Quantile", ff.property("value"), ff.literal(5), ff.literal(true));
 
         Object value = func.evaluate(myFeatureCollection);
@@ -315,7 +315,7 @@ public class QuantileFunctionTest extends FunctionTestSupport {
 
     @Test
     public void testPercentagesConsistencyWithMoreClassThanIntervals() {
-        org.opengis.filter.expression.Expression func =
+        org.geotools.api.filter.expression.Expression func =
                 ff.function("Quantile", ff.property("foo"), ff.literal(10), ff.literal(true));
         Object value = func.evaluate(featureCollection);
         assertTrue(value instanceof RangedClassifier);

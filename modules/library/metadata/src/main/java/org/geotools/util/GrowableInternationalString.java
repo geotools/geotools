@@ -30,10 +30,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.logging.Logging;
-import org.opengis.util.InternationalString;
 
 /**
  * An implementation of international string using a {@linkplain Map map} of strings for different

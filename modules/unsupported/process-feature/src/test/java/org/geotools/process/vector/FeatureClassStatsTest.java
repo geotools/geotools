@@ -30,7 +30,7 @@ import org.geotools.process.vector.FeatureClassStats.Results;
 import org.jaitools.numeric.Statistic;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 public class FeatureClassStatsTest {
 

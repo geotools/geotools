@@ -32,10 +32,10 @@ import org.geotools.data.complex.NestedAttributeMapping;
 import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.geotools.factory.CommonFactoryFinder;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Expression;
 
 /** @author Fernando Miño - Geosolutions */
 public final class IndexQueryUtils {

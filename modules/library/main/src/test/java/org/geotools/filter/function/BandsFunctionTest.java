@@ -22,8 +22,8 @@ import java.awt.image.BufferedImage;
 import org.easymock.EasyMock;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Test;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.filter.expression.Function;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.filter.expression.Function;
 
 public class BandsFunctionTest {
 

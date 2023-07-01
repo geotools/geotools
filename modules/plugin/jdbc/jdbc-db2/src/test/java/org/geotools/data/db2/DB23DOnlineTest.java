@@ -23,7 +23,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.jdbc.JDBC3DOnlineTest;
 import org.geotools.jdbc.JDBC3DTestSetup;
 import org.geotools.util.factory.Hints;
-import org.opengis.filter.spatial.BBOX3D;
+import org.geotools.api.filter.spatial.BBOX3D;
 
 public class DB23DOnlineTest extends JDBC3DOnlineTest {
 

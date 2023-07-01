@@ -23,7 +23,7 @@ import org.geotools.swing.event.MapMouseEventDispatcher;
 import org.geotools.swing.event.MapMouseListener;
 import org.geotools.swing.event.MapPaneListener;
 import org.geotools.swing.tool.CursorTool;
-import org.opengis.geometry.Envelope;
+import org.geotools.api.geometry.Envelope;
 
 /**
  * Defines the core map pane methods.

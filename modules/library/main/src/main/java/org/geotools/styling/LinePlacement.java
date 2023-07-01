@@ -17,7 +17,7 @@
 
 package org.geotools.styling;
 
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * The "LinePlacement" specifies where and how a text label should be rendered relative to a line.
@@ -46,7 +46,7 @@ import org.opengis.filter.expression.Expression;
  *
  * @author Ian Turton, CCG
  */
-public interface LinePlacement extends org.opengis.style.LinePlacement, LabelPlacement {
+public interface LinePlacement extends org.geotools.api.style.LinePlacement, LabelPlacement {
 
     /** Correct method name violation from GeoAPI. */
     @Override

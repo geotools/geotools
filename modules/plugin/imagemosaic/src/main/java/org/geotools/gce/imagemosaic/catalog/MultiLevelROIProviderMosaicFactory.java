@@ -31,7 +31,7 @@ import org.geotools.coverage.grid.io.footprint.SidecarFootprintProvider;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 /**
  * Factory class used for returning a {@link MultiLevelROIProvider} based on the input footprint

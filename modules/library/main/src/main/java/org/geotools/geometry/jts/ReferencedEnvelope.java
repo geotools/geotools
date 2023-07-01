@@ -25,22 +25,22 @@ import org.geotools.referencing.CRS;
 import org.geotools.util.Classes;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
-import org.opengis.geometry.BoundingBox;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.geometry.MismatchedReferenceSystemException;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.cs.CoordinateSystem;
-import org.opengis.referencing.operation.CoordinateOperation;
-import org.opengis.referencing.operation.CoordinateOperationFactory;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.MismatchedReferenceSystemException;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.cs.CoordinateSystem;
+import org.geotools.api.referencing.operation.CoordinateOperation;
+import org.geotools.api.referencing.operation.CoordinateOperationFactory;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * A JTS envelope associated with a {@linkplain CoordinateReferenceSystem coordinate reference
  * system}. In addition, this JTS envelope also implements the GeoAPI {@linkplain
- * org.opengis.geometry.coordinate.Envelope envelope} interface for interoperability with GeoAPI.
+ * org.geotools.api.geometry.coordinate.Envelope envelope} interface for interoperability with GeoAPI.
  *
  * @since 2.2
  * @version $Id$
@@ -49,10 +49,10 @@ import org.opengis.referencing.operation.TransformException;
  * @author Simone Giannecchini
  * @see org.geotools.geometry.Envelope2D
  * @see org.geotools.geometry.GeneralEnvelope
- * @see org.opengis.metadata.extent.GeographicBoundingBox
+ * @see org.geotools.api.metadata.extent.GeographicBoundingBox
  */
 public class ReferencedEnvelope extends Envelope
-        implements org.opengis.geometry.Envelope, BoundingBox {
+        implements org.geotools.api.geometry.Envelope, BoundingBox {
 
     /** A ReferencedEnvelope containing "everything" */
     public static ReferencedEnvelope EVERYTHING =
@@ -227,7 +227,7 @@ public class ReferencedEnvelope extends Envelope
      * Creates a new envelope from an existing bounding box.
      *
      * <p>NOTE: if the bounding box is empty, the resulting ReferencedEnvelope will not be. In case
-     * this is needed use {@link #create(org.opengis.geometry.Envelope, CoordinateReferenceSystem)
+     * this is needed use {@link #create(org.geotools.api.geometry.Envelope, CoordinateReferenceSystem)
      * ReferencedEnvelope.create(bbox, bbox.getCoordinateReferenceSystem())}
      *
      * @param bbox The bounding box to initialize from.
@@ -247,14 +247,14 @@ public class ReferencedEnvelope extends Envelope
      * Creates a new envelope from an existing OGC envelope.
      *
      * <p>NOTE: if the envelope is empty, the resulting ReferencedEnvelope will not be. In case this
-     * is needed use {@link #create(org.opengis.geometry.Envelope, CoordinateReferenceSystem)
+     * is needed use {@link #create(org.geotools.api.geometry.Envelope, CoordinateReferenceSystem)
      * ReferencedEnvelope.create(envelope, envelope.getCoordinateReferenceSystem())}
      *
      * @param envelope The envelope to initialize from.
      * @throws MismatchedDimensionException if the CRS dimension is not valid.
      * @since 2.4
      */
-    public ReferencedEnvelope(final org.opengis.geometry.Envelope envelope)
+    public ReferencedEnvelope(final org.geotools.api.geometry.Envelope envelope)
             throws MismatchedDimensionException {
         super(
                 envelope.getMinimum(0),
@@ -590,7 +590,7 @@ public class ReferencedEnvelope extends Envelope
      * @return The transformed envelope.
      * @throws FactoryException if the math transform can't be determined.
      * @throws TransformException if at least one coordinate can't be transformed.
-     * @see CRS#transform(CoordinateOperation, org.opengis.geometry.Envelope)
+     * @see CRS#transform(CoordinateOperation, org.geotools.api.geometry.Envelope)
      */
     public ReferencedEnvelope transform(CoordinateReferenceSystem targetCRS, boolean lenient)
             throws TransformException, FactoryException {
@@ -611,7 +611,7 @@ public class ReferencedEnvelope extends Envelope
      * @return The transformed envelope.
      * @throws FactoryException if the math transform can't be determined.
      * @throws TransformException if at least one coordinate can't be transformed.
-     * @see CRS#transform(CoordinateOperation, org.opengis.geometry.Envelope)
+     * @see CRS#transform(CoordinateOperation, org.geotools.api.geometry.Envelope)
      * @since 2.3
      */
     public ReferencedEnvelope transform(
@@ -707,7 +707,7 @@ public class ReferencedEnvelope extends Envelope
      *     envlope's width and height
      * @return true if all bounding coordinates are equal within the set tolerance; false otherwise
      */
-    public boolean boundsEquals2D(final org.opengis.geometry.Envelope other, double eps) {
+    public boolean boundsEquals2D(final org.geotools.api.geometry.Envelope other, double eps) {
         eps *= 0.5 * (getWidth() + getHeight());
 
         double[] delta = new double[4];
@@ -796,10 +796,10 @@ public class ReferencedEnvelope extends Envelope
      * @param env The opgenis Envelope object
      * @return ReferencedEnvelope, ReferencedEnvelope3D if it is 3d,<br>
      *     results in a null/an empty envelope, if input envelope was a null/an empty envelope
-     * @see {@link #reference(org.opengis.geometry.Envelope)}
+     * @see {@link #reference(org.geotools.api.geometry.Envelope)}
      */
     public static ReferencedEnvelope create(
-            org.opengis.geometry.Envelope env, CoordinateReferenceSystem crs) {
+            org.geotools.api.geometry.Envelope env, CoordinateReferenceSystem crs) {
 
         if (env == null) {
             return null;
@@ -820,7 +820,7 @@ public class ReferencedEnvelope extends Envelope
      * @return ReferencedEnvelope, ReferencedEnvelope3D if it is 3d
      */
     public static ReferencedEnvelope create(ReferencedEnvelope env, CoordinateReferenceSystem crs) {
-        return create((org.opengis.geometry.Envelope) env, crs);
+        return create((org.geotools.api.geometry.Envelope) env, crs);
     }
     /**
      * Utility method to create a ReferencedEnvelope from an JTS Envelope class, supporting 2d as
@@ -892,7 +892,7 @@ public class ReferencedEnvelope extends Envelope
      * @param e The envelope.
      */
     public static ReferencedEnvelope reference(ReferencedEnvelope e) {
-        return reference((org.opengis.geometry.Envelope) e);
+        return reference((org.geotools.api.geometry.Envelope) e);
     }
 
     /**
@@ -904,7 +904,7 @@ public class ReferencedEnvelope extends Envelope
      *     results in a null/an empty envelope, if input envelope was a null/an empty envelope (by
      *     JTS Envelope definition: getMaximum(0) < getMinimum(0))
      */
-    public static ReferencedEnvelope reference(org.opengis.geometry.Envelope env) {
+    public static ReferencedEnvelope reference(org.geotools.api.geometry.Envelope env) {
 
         if (env == null) {
             return null;

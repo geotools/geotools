@@ -24,9 +24,9 @@ import java.util.ListIterator;
 import java.util.Set;
 import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.locationtech.jts.geom.Envelope;
-import org.opengis.filter.And;
-import org.opengis.filter.Filter;
-import org.opengis.filter.Or;
+import org.geotools.api.filter.And;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.Or;
 
 /**
  * A subclass of ExtractBoundsFilterVisitor that can return either an Envelope or a list of disjoint

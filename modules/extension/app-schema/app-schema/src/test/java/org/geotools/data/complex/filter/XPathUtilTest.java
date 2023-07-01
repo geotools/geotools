@@ -33,9 +33,9 @@ import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.xlink.XLINK;
 import org.junit.Test;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.Name;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**

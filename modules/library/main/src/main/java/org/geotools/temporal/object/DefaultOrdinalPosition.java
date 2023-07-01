@@ -17,10 +17,10 @@
 package org.geotools.temporal.object;
 
 import org.geotools.util.Utilities;
-import org.opengis.temporal.IndeterminateValue;
-import org.opengis.temporal.OrdinalEra;
-import org.opengis.temporal.OrdinalPosition;
-import org.opengis.temporal.TemporalReferenceSystem;
+import org.geotools.api.temporal.IndeterminateValue;
+import org.geotools.api.temporal.OrdinalEra;
+import org.geotools.api.temporal.OrdinalPosition;
+import org.geotools.api.temporal.TemporalReferenceSystem;
 
 /**
  * A data type that shall be used for identifying temporal position within an ordinal temporal

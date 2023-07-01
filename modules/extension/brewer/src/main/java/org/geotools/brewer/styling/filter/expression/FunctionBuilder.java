@@ -20,9 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 import org.geotools.brewer.styling.builder.Builder;
 import org.geotools.factory.CommonFactoryFinder;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
 
 public class FunctionBuilder implements Builder<Function> {
     public class ParamBuilder extends ChildExpressionBuilder<FunctionBuilder> {

@@ -39,8 +39,8 @@ import org.geotools.data.DataSourceException;
 import org.geotools.data.Parameter;
 import org.geotools.feature.NameImpl;
 import org.geotools.util.factory.Hints;
-import org.opengis.feature.type.Name;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * @author Simone Giannecchini, GeoSolutions

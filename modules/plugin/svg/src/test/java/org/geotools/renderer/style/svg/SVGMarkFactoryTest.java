@@ -31,7 +31,7 @@ import org.geotools.geometry.jts.TransformedShape;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory;
+import org.geotools.api.filter.FilterFactory;
 
 public class SVGMarkFactoryTest {
 

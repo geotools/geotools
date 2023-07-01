@@ -21,9 +21,9 @@ package org.geotools.referencing.cs;
 
 import java.util.Map;
 import javax.measure.Unit;
-import org.opengis.referencing.cs.AffineCS;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.cs.CoordinateSystemAxis;
+import org.geotools.api.referencing.cs.AffineCS;
+import org.geotools.api.referencing.cs.AxisDirection;
+import org.geotools.api.referencing.cs.CoordinateSystemAxis;
 import si.uom.SI;
 import tech.units.indriya.AbstractUnit;
 

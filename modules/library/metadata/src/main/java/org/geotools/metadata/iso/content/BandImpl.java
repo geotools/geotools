@@ -21,7 +21,7 @@ package org.geotools.metadata.iso.content;
 
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
-import org.opengis.metadata.content.Band;
+import org.geotools.api.metadata.content.Band;
 
 /**
  * Range of wavelengths in the electromagnetic spectrum.

@@ -23,7 +23,7 @@ import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.geotools.feature.NameImpl;
 import org.junit.Test;
-import org.opengis.feature.type.Name;
+import org.geotools.api.feature.type.Name;
 
 public class ContentDataStoreTest extends AbstractContentTest {
 
@@ -36,7 +36,7 @@ public class ContentDataStoreTest extends AbstractContentTest {
         MockContentDataStore store =
                 new MockContentDataStore() {
                     @Override
-                    protected java.util.List<org.opengis.feature.type.Name> createTypeNames()
+                    protected java.util.List<org.geotools.api.feature.type.Name> createTypeNames()
                             throws java.io.IOException {
                         creationCounter.incrementAndGet();
                         return super.createTypeNames();
@@ -58,7 +58,7 @@ public class ContentDataStoreTest extends AbstractContentTest {
         MockContentDataStore store =
                 new MockContentDataStore() {
                     @Override
-                    protected java.util.List<org.opengis.feature.type.Name> createTypeNames()
+                    protected java.util.List<org.geotools.api.feature.type.Name> createTypeNames()
                             throws java.io.IOException {
                         creationCounter.incrementAndGet();
                         return Arrays.asList(TYPENAME, TYPENAME2);

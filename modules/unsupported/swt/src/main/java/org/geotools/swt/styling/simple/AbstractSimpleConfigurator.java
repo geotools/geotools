@@ -33,7 +33,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.styling.SLD;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /**
  * This is here to save me some typing and ensure that the simple raster and feature configurators

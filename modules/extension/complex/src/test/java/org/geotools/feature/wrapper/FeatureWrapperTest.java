@@ -22,10 +22,10 @@ import org.geotools.filter.identity.FeatureIdImpl;
 import org.geotools.filter.identity.GmlObjectIdImpl;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.feature.Attribute;
-import org.opengis.feature.ComplexAttribute;
-import org.opengis.feature.Feature;
-import org.opengis.feature.Property;
+import org.geotools.api.feature.Attribute;
+import org.geotools.api.feature.ComplexAttribute;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.Property;
 
 public class FeatureWrapperTest {
     private static Feature getFeature() {

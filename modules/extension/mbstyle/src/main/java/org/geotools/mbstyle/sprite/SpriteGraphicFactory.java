@@ -49,8 +49,8 @@ import org.geotools.util.logging.Logging;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.opengis.feature.Feature;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * Implementation of an {@link ExternalGraphicFactory} that takes the address of a Mapbox-style

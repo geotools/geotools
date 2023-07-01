@@ -4341,7 +4341,7 @@ public interface Wfs20Package extends EPackage {
     /**
    * The meta object id for the '<em>Filter</em>' data type.
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * @see org.opengis.filter.Filter
+   * @see org.geotools.api.filter.Filter
    * @see net.opengis.wfs20.impl.Wfs20PackageImpl#getFilter()
    * @generated
    */
@@ -4359,7 +4359,7 @@ public interface Wfs20Package extends EPackage {
     /**
    * The meta object id for the '<em>Sort By</em>' data type.
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * @see org.opengis.filter.sort.SortBy
+   * @see org.geotools.api.filter.sort.SortBy
    * @see net.opengis.wfs20.impl.Wfs20PackageImpl#getSortBy()
    * @generated
    */
@@ -4386,7 +4386,7 @@ public interface Wfs20Package extends EPackage {
     /**
    * The meta object id for the '<em>Property Name</em>' data type.
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * @see org.opengis.filter.expression.PropertyName
+   * @see org.geotools.api.filter.expression.PropertyName
    * @see net.opengis.wfs20.impl.Wfs20PackageImpl#getPropertyName()
    * @generated
    */
@@ -4395,7 +4395,7 @@ public interface Wfs20Package extends EPackage {
     /**
    * The meta object id for the '<em>Feature Id</em>' data type.
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * @see org.opengis.filter.identity.FeatureId
+   * @see org.geotools.api.filter.identity.FeatureId
    * @see net.opengis.wfs20.impl.Wfs20PackageImpl#getFeatureId()
    * @generated
    */
@@ -7962,11 +7962,11 @@ public interface Wfs20Package extends EPackage {
     EDataType getMap();
 
     /**
-   * Returns the meta object for data type '{@link org.opengis.filter.Filter <em>Filter</em>}'.
+   * Returns the meta object for data type '{@link org.geotools.api.filter.Filter <em>Filter</em>}'.
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @return the meta object for data type '<em>Filter</em>'.
-   * @see org.opengis.filter.Filter
-   * @model instanceClass="org.opengis.filter.Filter"
+   * @see org.geotools.api.filter.Filter
+   * @model instanceClass="org.geotools.api.filter.Filter"
    * @generated
    */
     EDataType getFilter();
@@ -7982,11 +7982,11 @@ public interface Wfs20Package extends EPackage {
     EDataType getQName();
 
     /**
-   * Returns the meta object for data type '{@link org.opengis.filter.sort.SortBy <em>Sort By</em>}'.
+   * Returns the meta object for data type '{@link org.geotools.api.filter.sort.SortBy <em>Sort By</em>}'.
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @return the meta object for data type '<em>Sort By</em>'.
-   * @see org.opengis.filter.sort.SortBy
-   * @model instanceClass="org.opengis.filter.sort.SortBy"
+   * @see org.geotools.api.filter.sort.SortBy
+   * @model instanceClass="org.geotools.api.filter.sort.SortBy"
    * @generated
    */
     EDataType getSortBy();
@@ -8013,23 +8013,23 @@ public interface Wfs20Package extends EPackage {
     EDataType getFeatureCollection();
 
     /**
-   * Returns the meta object for data type '{@link org.opengis.filter.expression.PropertyName <em>Property Name</em>}'.
+   * Returns the meta object for data type '{@link org.geotools.api.filter.expression.PropertyName <em>Property Name</em>}'.
    * <!-- begin-user-doc --> <!--
      * end-user-doc -->
    * @return the meta object for data type '<em>Property Name</em>'.
-   * @see org.opengis.filter.expression.PropertyName
-   * @model instanceClass="org.opengis.filter.expression.PropertyName"
+   * @see org.geotools.api.filter.expression.PropertyName
+   * @model instanceClass="org.geotools.api.filter.expression.PropertyName"
    * @generated
    */
     EDataType getPropertyName();
 
     /**
-   * Returns the meta object for data type '{@link org.opengis.filter.identity.FeatureId <em>Feature Id</em>}'.
+   * Returns the meta object for data type '{@link org.geotools.api.filter.identity.FeatureId <em>Feature Id</em>}'.
    * <!-- begin-user-doc --> <!--
      * end-user-doc -->
    * @return the meta object for data type '<em>Feature Id</em>'.
-   * @see org.opengis.filter.identity.FeatureId
-   * @model instanceClass="org.opengis.filter.identity.FeatureId"
+   * @see org.geotools.api.filter.identity.FeatureId
+   * @model instanceClass="org.geotools.api.filter.identity.FeatureId"
    * @generated
    */
     EDataType getFeatureId();
@@ -10714,7 +10714,7 @@ public interface Wfs20Package extends EPackage {
         /**
      * The meta object literal for the '<em>Filter</em>' data type.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * @see org.opengis.filter.Filter
+     * @see org.geotools.api.filter.Filter
      * @see net.opengis.wfs20.impl.Wfs20PackageImpl#getFilter()
      * @generated
      */
@@ -10732,7 +10732,7 @@ public interface Wfs20Package extends EPackage {
         /**
      * The meta object literal for the '<em>Sort By</em>' data type.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * @see org.opengis.filter.sort.SortBy
+     * @see org.geotools.api.filter.sort.SortBy
      * @see net.opengis.wfs20.impl.Wfs20PackageImpl#getSortBy()
      * @generated
      */
@@ -10759,7 +10759,7 @@ public interface Wfs20Package extends EPackage {
         /**
      * The meta object literal for the '<em>Property Name</em>' data type.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * @see org.opengis.filter.expression.PropertyName
+     * @see org.geotools.api.filter.expression.PropertyName
      * @see net.opengis.wfs20.impl.Wfs20PackageImpl#getPropertyName()
      * @generated
      */
@@ -10768,7 +10768,7 @@ public interface Wfs20Package extends EPackage {
         /**
      * The meta object literal for the '<em>Feature Id</em>' data type.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * @see org.opengis.filter.identity.FeatureId
+     * @see org.geotools.api.filter.identity.FeatureId
      * @see net.opengis.wfs20.impl.Wfs20PackageImpl#getFeatureId()
      * @generated
      */

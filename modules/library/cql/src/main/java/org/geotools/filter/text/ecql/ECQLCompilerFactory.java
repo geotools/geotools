@@ -19,7 +19,7 @@ package org.geotools.filter.text.ecql;
 
 import org.geotools.filter.text.commons.AbstractCompilerFactory;
 import org.geotools.filter.text.commons.ICompiler;
-import org.opengis.filter.FilterFactory;
+import org.geotools.api.filter.FilterFactory;
 
 /**
  * Provides the implementation of {@link ECQLCompiler}

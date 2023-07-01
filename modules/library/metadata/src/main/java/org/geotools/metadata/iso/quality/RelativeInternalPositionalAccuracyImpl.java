@@ -19,7 +19,7 @@
  */
 package org.geotools.metadata.iso.quality;
 
-import org.opengis.metadata.quality.RelativeInternalPositionalAccuracy;
+import org.geotools.api.metadata.quality.RelativeInternalPositionalAccuracy;
 
 /**
  * Closeness of the relative positions of features in the scope to their respective relative

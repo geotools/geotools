@@ -36,8 +36,8 @@ import org.geotools.renderer.i18n.VocabularyKeys;
 import org.geotools.styling.SelectedChannelType;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.util.InternationalString;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.util.InternationalString;
 
 /**
  * This {@link CoverageProcessingNode} has been built for taking care of the band select operation

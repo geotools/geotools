@@ -25,14 +25,14 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.temporal.object.DefaultInstant;
 import org.geotools.temporal.object.DefaultPeriod;
 import org.geotools.temporal.object.DefaultPosition;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.MultiValuedFilter.MatchAction;
-import org.opengis.filter.identity.FeatureId;
-import org.opengis.filter.identity.Version;
-import org.opengis.filter.identity.Version.Action;
-import org.opengis.temporal.Instant;
-import org.opengis.temporal.Period;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.MultiValuedFilter.MatchAction;
+import org.geotools.api.filter.identity.FeatureId;
+import org.geotools.api.filter.identity.Version;
+import org.geotools.api.filter.identity.Version.Action;
+import org.geotools.api.temporal.Instant;
+import org.geotools.api.temporal.Period;
 
 public class FilterExamples {
 

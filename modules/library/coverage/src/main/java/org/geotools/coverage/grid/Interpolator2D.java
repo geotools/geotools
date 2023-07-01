@@ -31,12 +31,12 @@ import javax.media.jai.ROI;
 import javax.media.jai.iterator.RectIter;
 import javax.media.jai.iterator.RectIterFactory;
 import org.geotools.coverage.util.CoverageUtilities;
-import org.opengis.coverage.CannotEvaluateException;
-import org.opengis.coverage.PointOutsideCoverageException;
-import org.opengis.metadata.spatial.PixelOrientation;
-import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.NoninvertibleTransformException;
-import org.opengis.referencing.operation.TransformException;
+import org.geotools.api.coverage.CannotEvaluateException;
+import org.geotools.api.coverage.PointOutsideCoverageException;
+import org.geotools.api.metadata.spatial.PixelOrientation;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.geotools.api.referencing.operation.NoninvertibleTransformException;
+import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * A grid coverage using an {@linkplain Interpolation interpolation} for evaluating points. This

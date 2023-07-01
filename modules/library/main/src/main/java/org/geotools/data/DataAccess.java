@@ -19,9 +19,9 @@ package org.geotools.data;
 import java.io.IOException;
 import java.util.List;
 import org.geotools.feature.FeatureCollection;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.Name;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
 
 /**
  * This is the top-level interface for access to {@code FeatureData}.

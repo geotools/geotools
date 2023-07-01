@@ -22,8 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 import org.geotools.factory.CommonFactoryFinder;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
 
 /**
  * Processes messages from clients to create Logic Filters. Handles nested logic filters. Filters

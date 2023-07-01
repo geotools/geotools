@@ -20,7 +20,7 @@ import org.geotools.feature.NameImpl;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.factory.Hints;
-import org.opengis.feature.type.Name;
+import org.geotools.api.feature.type.Name;
 
 /**
  * ConverterFactory for handling Name conversions.

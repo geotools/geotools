@@ -20,9 +20,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import org.geotools.api.util.Cloneable;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
-import org.opengis.util.Cloneable;
 
 /**
  * A {@linkplain Collections#checkedList checked} and {@linkplain Collections#synchronizedList

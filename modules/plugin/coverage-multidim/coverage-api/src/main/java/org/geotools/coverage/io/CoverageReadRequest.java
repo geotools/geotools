@@ -33,13 +33,13 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
-import org.opengis.filter.Filter;
-import org.opengis.geometry.BoundingBox;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.TransformException;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * Request information from a {@link CoverageSource}.
@@ -113,8 +113,8 @@ public class CoverageReadRequest extends CoverageRequest {
 
     /**
      * @see org.geotools.coverage.io.CoverageReadRequest#setDomainSubset(java.awt.Rectangle,
-     *     org.opengis.referencing.operation.MathTransform2D,
-     *     org.opengis.referencing.crs.CoordinateReferenceSystem)
+     *     org.geotools.api.referencing.operation.MathTransform2D,
+     *     org.geotools.api.referencing.crs.CoordinateReferenceSystem)
      */
     public void setDomainSubset(
             final Rectangle rasterArea,
@@ -135,7 +135,7 @@ public class CoverageReadRequest extends CoverageRequest {
 
     /**
      * @see org.geotools.coverage.io.CoverageReadRequest#setDomainSubset(java.awt.Rectangle,
-     *     org.opengis.geometry.BoundingBox, org.opengis.referencing.datum.PixelInCell)
+     *     org.geotools.api.geometry.BoundingBox, org.geotools.api.referencing.datum.PixelInCell)
      */
     public void setDomainSubset(final Rectangle rasterArea, final ReferencedEnvelope worldArea) {
         // get input elements

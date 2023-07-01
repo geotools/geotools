@@ -3,11 +3,11 @@ package org.geotools.filter.v2_0.bindings;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.opengis.filter.identity.Version.Action.ALL;
-import static org.opengis.filter.identity.Version.Action.FIRST;
-import static org.opengis.filter.identity.Version.Action.LAST;
-import static org.opengis.filter.identity.Version.Action.NEXT;
-import static org.opengis.filter.identity.Version.Action.PREVIOUS;
+import static org.geotools.api.filter.identity.Version.Action.ALL;
+import static org.geotools.api.filter.identity.Version.Action.FIRST;
+import static org.geotools.api.filter.identity.Version.Action.LAST;
+import static org.geotools.api.filter.identity.Version.Action.NEXT;
+import static org.geotools.api.filter.identity.Version.Action.PREVIOUS;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,11 +18,11 @@ import org.geotools.filter.identity.ResourceIdImpl;
 import org.geotools.filter.v2_0.FESTestSupport;
 import org.geotools.xml.impl.DatatypeConverterImpl;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.Id;
-import org.opengis.filter.identity.Identifier;
-import org.opengis.filter.identity.ResourceId;
-import org.opengis.filter.identity.Version;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.identity.Identifier;
+import org.geotools.api.filter.identity.ResourceId;
+import org.geotools.api.filter.identity.Version;
 
 public class ResourceIdTypeBindingTest extends FESTestSupport {
     @Test

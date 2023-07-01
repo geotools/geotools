@@ -22,8 +22,8 @@ import org.geotools.feature.type.AttributeTypeImpl;
 import org.geotools.feature.type.ComplexTypeImpl;
 import org.geotools.feature.type.SchemaImpl;
 import org.geotools.xs.XSSchema;
-import org.opengis.feature.type.AttributeType;
-import org.opengis.feature.type.ComplexType;
+import org.geotools.api.feature.type.AttributeType;
+import org.geotools.api.feature.type.ComplexType;
 
 public class SMIL20Schema extends SchemaImpl {
     /**

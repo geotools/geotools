@@ -20,7 +20,7 @@ import org.geotools.process.Process;
 import org.geotools.process.impl.SingleProcessFactory;
 import org.geotools.text.Text;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.util.InternationalString;
+import org.geotools.api.util.InternationalString;
 
 /**
  * A Buffer process used on a geometry object.

@@ -83,8 +83,8 @@ import org.geotools.xml.styling.sldComplexTypes._ImageOutline;
 import org.geotools.xml.styling.sldComplexTypes._LATEST_ON_TOP;
 import org.geotools.xml.styling.sldComplexTypes._LabelPlacement;
 import org.geotools.xml.xLink.XLinkSchema;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Expression;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

@@ -19,9 +19,9 @@
  */
 package org.geotools.metadata.iso.extent;
 
+import org.geotools.api.metadata.extent.VerticalExtent;
+import org.geotools.api.referencing.crs.VerticalCRS;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.metadata.extent.VerticalExtent;
-import org.opengis.referencing.crs.VerticalCRS;
 
 /**
  * Vertical domain of dataset.

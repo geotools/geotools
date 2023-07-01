@@ -28,8 +28,8 @@ import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.Symbolizer;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.identity.FeatureId;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.identity.FeatureId;
 
 /** Created by Jochen Saalfeld <jochen.saalfeld@intevation.de> on 2/16/17. */
 public class MapStyles {

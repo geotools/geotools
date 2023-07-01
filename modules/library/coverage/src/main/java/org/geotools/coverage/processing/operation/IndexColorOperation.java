@@ -34,10 +34,10 @@ import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.util.Classes;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
-import org.opengis.coverage.Coverage;
-import org.opengis.coverage.SampleDimension;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.parameter.ParameterValueGroup;
+import org.geotools.api.coverage.Coverage;
+import org.geotools.api.coverage.SampleDimension;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.parameter.ParameterValueGroup;
 
 /**
  * Operation applied only on image's colors. This operation work only for source image using an

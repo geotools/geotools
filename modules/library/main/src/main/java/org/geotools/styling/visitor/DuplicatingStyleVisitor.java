@@ -70,12 +70,12 @@ import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 import org.geotools.styling.UserLayer;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.Description;
-import org.opengis.style.ExternalMark;
-import org.opengis.style.GraphicalSymbol;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.Description;
+import org.geotools.api.style.ExternalMark;
+import org.geotools.api.style.GraphicalSymbol;
 
 /**
  * Creates a deep copy of a Style, this class is *NOT THREAD SAFE*.

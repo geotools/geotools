@@ -28,23 +28,23 @@ import org.geotools.filter.Capabilities;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.function.FilterFunction_geometryType;
 import org.locationtech.jts.geom.Envelope;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.Id;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.capability.FilterCapabilities;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.identity.FeatureId;
-import org.opengis.geometry.Boundary;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.Geometry;
-import org.opengis.geometry.Precision;
-import org.opengis.geometry.TransfiniteSet;
-import org.opengis.geometry.complex.Complex;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.capability.FilterCapabilities;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.identity.FeatureId;
+import org.geotools.api.geometry.Boundary;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Geometry;
+import org.geotools.api.geometry.Precision;
+import org.geotools.api.geometry.TransfiniteSet;
+import org.geotools.api.geometry.complex.Complex;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * @author Jesse
@@ -252,7 +252,7 @@ public class AbstractCapabilitiesFilterSplitterTests {
         }
 
         @Override
-        public org.opengis.geometry.Envelope getEnvelope() {
+        public org.geotools.api.geometry.Envelope getEnvelope() {
             // TODO Auto-generated method stub
             return null;
         }

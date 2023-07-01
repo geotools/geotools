@@ -27,7 +27,7 @@ package org.geotools.styling;
  *
  * @author iant
  */
-public interface Symbol extends org.opengis.style.GraphicalSymbol {
+public interface Symbol extends org.geotools.api.style.GraphicalSymbol {
     public static final Symbol[] SYMBOLS_EMPTY = new Symbol[0];
 
     void accept(org.geotools.styling.StyleVisitor visitor);

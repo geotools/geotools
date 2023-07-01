@@ -4,9 +4,9 @@ import static org.junit.Assert.assertEquals;
 
 import org.geotools.measure.Units;
 import org.junit.Test;
-import org.opengis.style.PointSymbolizer;
-import org.opengis.style.PolygonSymbolizer;
-import org.opengis.style.TextSymbolizer;
+import org.geotools.api.style.PointSymbolizer;
+import org.geotools.api.style.PolygonSymbolizer;
+import org.geotools.api.style.TextSymbolizer;
 import si.uom.SI;
 
 public class RountTripLocalUomTest extends SETestSupport {

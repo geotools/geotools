@@ -63,9 +63,9 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.capability.FilterCapabilities;
-import org.opengis.filter.capability.Operator;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.capability.FilterCapabilities;
+import org.geotools.api.filter.capability.Operator;
 import org.w3c.dom.Document;
 
 public class WFS_2_0_0_ParsingTest {

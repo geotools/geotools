@@ -30,7 +30,7 @@ import org.geotools.styling.Style;
 import org.geotools.styling.TextSymbolizer;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory;
+import org.geotools.api.filter.FilterFactory;
 
 /** Tests labels underling. */
 public class LabelUnderlineTest extends AbstractLabelLineTest {

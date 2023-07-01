@@ -63,11 +63,11 @@ import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
 import org.jfree.fx.FXGraphics2D;
-import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * This class is going to Manage the Display of a Map based on a WFS Service. It should have some
@@ -196,7 +196,7 @@ public class FXMap extends Parent {
             Layer layer,
             int dimensionX,
             int dimensionY,
-            org.opengis.geometry.Envelope bounds)
+            org.geotools.api.geometry.Envelope bounds)
             throws NoSuchAuthorityCodeException, FactoryException {
 
         System.setProperty("org.geotools.referencing.forceXY", "true");

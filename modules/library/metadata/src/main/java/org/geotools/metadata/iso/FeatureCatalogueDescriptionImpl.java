@@ -21,10 +21,10 @@ package org.geotools.metadata.iso;
 
 import java.util.Collection;
 import java.util.Locale;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.metadata.content.FeatureCatalogueDescription;
+import org.geotools.api.util.GenericName;
 import org.geotools.metadata.iso.content.ContentInformationImpl;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.metadata.content.FeatureCatalogueDescription;
-import org.opengis.util.GenericName;
 
 /**
  * Location of the responsible individual or organization.

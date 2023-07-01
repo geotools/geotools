@@ -28,11 +28,11 @@ import org.geotools.util.factory.FactoryFinder;
 import org.geotools.util.factory.FactoryRegistry;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.factory.Hints;
-import org.opengis.feature.FeatureFactory;
-import org.opengis.feature.type.FeatureTypeFactory;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Function;
+import org.geotools.api.feature.FeatureFactory;
+import org.geotools.api.feature.type.FeatureTypeFactory;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Function;
 
 /**
  * Defines static methods used to access the application's default implementation for some common

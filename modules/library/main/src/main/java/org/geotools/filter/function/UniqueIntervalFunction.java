@@ -34,9 +34,9 @@ import org.geotools.feature.visitor.CalcResult;
 import org.geotools.feature.visitor.GroupByVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
 
 /**
  * Clone of EqualIntervalFunction for unique values

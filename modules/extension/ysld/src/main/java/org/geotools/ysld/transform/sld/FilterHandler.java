@@ -24,7 +24,7 @@ import javax.xml.stream.XMLStreamReader;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.impl.ParserHandler;
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;

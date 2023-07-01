@@ -36,14 +36,14 @@ import org.geotools.feature.visitor.GroupByVisitor;
 import org.geotools.filter.DefaultExpression;
 import org.geotools.filter.FunctionExpression;
 import org.geotools.util.factory.GeoTools;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.Divide;
-import org.opengis.filter.expression.ExpressionVisitor;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.Subtract;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Divide;
+import org.geotools.api.filter.expression.ExpressionVisitor;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.Subtract;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * Parent for classifiers which break a feature collection into the specified number of classes.
@@ -63,7 +63,7 @@ public abstract class ClassificationFunction extends DefaultExpression
     FunctionName name;
 
     /** function params * */
-    List<org.opengis.filter.expression.Expression> params = new ArrayList<>(2);
+    List<org.geotools.api.filter.expression.Expression> params = new ArrayList<>(2);
 
     Literal fallback;
 
@@ -73,7 +73,7 @@ public abstract class ClassificationFunction extends DefaultExpression
         this.name = name;
     }
 
-    /** @see org.opengis.filter.expression.Expression#accept(ExpressionVisitor, Object) */
+    /** @see org.geotools.api.filter.expression.Expression#accept(ExpressionVisitor, Object) */
     @Override
     public Object accept(ExpressionVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
@@ -112,13 +112,13 @@ public abstract class ClassificationFunction extends DefaultExpression
      * and literal expression).
      */
     @Override
-    public List<org.opengis.filter.expression.Expression> getParameters() {
+    public List<org.geotools.api.filter.expression.Expression> getParameters() {
         return params;
     }
 
     /** Sets the function parameters. */
     @Override
-    public void setParameters(List<org.opengis.filter.expression.Expression> params) {
+    public void setParameters(List<org.geotools.api.filter.expression.Expression> params) {
         this.params = params;
     }
 
@@ -136,7 +136,7 @@ public abstract class ClassificationFunction extends DefaultExpression
     }
 
     public void setClasses(int classes) {
-        org.opengis.filter.FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        org.geotools.api.filter.FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Literal expression = ff.literal(classes);
         getParameters().set(1, expression);
     }
@@ -229,10 +229,10 @@ public abstract class ClassificationFunction extends DefaultExpression
         StringBuilder sb = new StringBuilder();
         sb.append(getName());
         sb.append("(");
-        List<org.opengis.filter.expression.Expression> params = getParameters();
+        List<org.geotools.api.filter.expression.Expression> params = getParameters();
         if (params != null) {
-            org.opengis.filter.expression.Expression exp;
-            for (Iterator<org.opengis.filter.expression.Expression> it = params.iterator();
+            org.geotools.api.filter.expression.Expression exp;
+            for (Iterator<org.geotools.api.filter.expression.Expression> it = params.iterator();
                     it.hasNext(); ) {
                 exp = it.next();
                 sb.append("[");

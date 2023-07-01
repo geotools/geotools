@@ -16,6 +16,13 @@
  */
 package org.geotools.referencing.operation;
 
+import static org.geotools.api.referencing.cs.AxisDirection.DOWN;
+import static org.geotools.api.referencing.cs.AxisDirection.EAST;
+import static org.geotools.api.referencing.cs.AxisDirection.GEOCENTRIC_X;
+import static org.geotools.api.referencing.cs.AxisDirection.NORTH;
+import static org.geotools.api.referencing.cs.AxisDirection.SOUTH;
+import static org.geotools.api.referencing.cs.AxisDirection.UP;
+import static org.geotools.api.referencing.cs.AxisDirection.WEST;
 import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
 import static org.geotools.referencing.cs.DefaultCartesianCS.PROJECTED;
 import static org.junit.Assert.assertEquals;
@@ -23,18 +30,17 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.opengis.referencing.cs.AxisDirection.DOWN;
-import static org.opengis.referencing.cs.AxisDirection.EAST;
-import static org.opengis.referencing.cs.AxisDirection.GEOCENTRIC_X;
-import static org.opengis.referencing.cs.AxisDirection.NORTH;
-import static org.opengis.referencing.cs.AxisDirection.SOUTH;
-import static org.opengis.referencing.cs.AxisDirection.UP;
-import static org.opengis.referencing.cs.AxisDirection.WEST;
 
 import java.util.Random;
 import javax.measure.MetricPrefix;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.cs.AxisDirection;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.MathTransformFactory;
+import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.referencing.crs.DefaultProjectedCRS;
 import org.geotools.referencing.cs.AbstractCS;
 import org.geotools.referencing.cs.DefaultCartesianCS;
@@ -44,12 +50,6 @@ import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.operation.matrix.Matrix2;
 import org.geotools.referencing.operation.matrix.Matrix3;
 import org.junit.Test;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransformFactory;
-import org.opengis.referencing.operation.Matrix;
 import si.uom.SI;
 
 /**

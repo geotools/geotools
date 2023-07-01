@@ -19,7 +19,7 @@ package org.geotools.process.gs;
 
 import java.util.Iterator;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /**
  * An iterator wrapping a {@link SimpleFeatureIterator} and exposing its close method.

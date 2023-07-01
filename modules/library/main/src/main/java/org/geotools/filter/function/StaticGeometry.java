@@ -30,7 +30,7 @@ import org.locationtech.jts.geom.OctagonalEnvelope;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.WKTReader;
-import org.opengis.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory2;
 
 /** @author David Blasby (The Open Planning Project) */
 public class StaticGeometry {

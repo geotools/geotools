@@ -49,7 +49,7 @@ import java.util.List;
  * @version $Id$
  * @author James Macgill
  */
-public interface Style extends org.opengis.style.Style {
+public interface Style extends org.geotools.api.style.Style {
 
     void setName(String name);
 

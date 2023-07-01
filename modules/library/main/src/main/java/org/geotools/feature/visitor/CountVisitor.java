@@ -18,7 +18,7 @@ package org.geotools.feature.visitor;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.visitor.SumVisitor.SumResult;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /**
  * Determines the number of features in the collection
@@ -34,11 +34,11 @@ public class CountVisitor implements FeatureCalc {
     }
 
     public void visit(SimpleFeature feature) {
-        visit((org.opengis.feature.Feature) feature);
+        visit((org.geotools.api.feature.Feature) feature);
     }
 
     @Override
-    public void visit(org.opengis.feature.Feature feature) {
+    public void visit(org.geotools.api.feature.Feature feature) {
         if (count == null) {
             count = 0;
         }

@@ -59,12 +59,12 @@ import org.geotools.process.factory.DescribeResult;
 import org.geotools.util.NumberRange;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
-import org.opengis.coverage.SampleDimensionType;
-import org.opengis.coverage.grid.GridCoverageReader;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.coverage.SampleDimensionType;
+import org.geotools.api.coverage.grid.GridCoverageReader;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.util.ProgressListener;
 
 @DescribeProcess(title = "Jiffle map algebra", description = "Map algebra powered by Jiffle")
 public class JiffleProcess implements RasterProcess {

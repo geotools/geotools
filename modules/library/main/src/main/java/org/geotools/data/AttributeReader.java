@@ -17,7 +17,7 @@
 package org.geotools.data;
 
 import java.io.IOException;
-import org.opengis.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.AttributeDescriptor;
 
 /**
  * The low-level attribute reading API. An AttributeReader is responsible for reading a finite set

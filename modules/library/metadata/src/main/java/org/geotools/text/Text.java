@@ -19,10 +19,10 @@ package org.geotools.text;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
+import org.geotools.api.util.InternationalString;
 import org.geotools.util.GrowableInternationalString;
 import org.geotools.util.ResourceInternationalString;
 import org.geotools.util.SimpleInternationalString;
-import org.opengis.util.InternationalString;
 
 /**
  * Helper class for working with InternationalString and other forms of Text.

@@ -23,8 +23,8 @@ import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.Displacement;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.Displacement;
 
 /**
  * Binding object for the element http://www.opengis.net/se:PolygonSymbolizer.

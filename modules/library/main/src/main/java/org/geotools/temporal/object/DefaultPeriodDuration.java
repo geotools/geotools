@@ -18,8 +18,8 @@ package org.geotools.temporal.object;
 
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.Utilities;
-import org.opengis.temporal.PeriodDuration;
-import org.opengis.util.InternationalString;
+import org.geotools.api.temporal.PeriodDuration;
+import org.geotools.api.util.InternationalString;
 
 /**
  * Uses the format specified by ISO 8601 for exchanging information about the duration of a period.

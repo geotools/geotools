@@ -18,8 +18,8 @@ package org.geotools.data.wfs.internal;
 
 import java.io.IOException;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.FeatureType;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
 
 /**
  * Interface to return appropriate feature parser.

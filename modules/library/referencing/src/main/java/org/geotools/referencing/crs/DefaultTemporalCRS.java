@@ -26,12 +26,12 @@ import javax.measure.MetricPrefix;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
 import javax.measure.quantity.Time;
+import org.geotools.api.referencing.crs.TemporalCRS;
+import org.geotools.api.referencing.cs.TimeCS;
+import org.geotools.api.referencing.datum.TemporalDatum;
 import org.geotools.referencing.AbstractReferenceSystem;
 import org.geotools.referencing.cs.DefaultTimeCS;
 import org.geotools.referencing.datum.DefaultTemporalDatum;
-import org.opengis.referencing.crs.TemporalCRS;
-import org.opengis.referencing.cs.TimeCS;
-import org.opengis.referencing.datum.TemporalDatum;
 import si.uom.SI;
 
 /**

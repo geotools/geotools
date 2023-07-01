@@ -24,8 +24,8 @@ import java.util.Map;
 import java.util.Set;
 import org.geotools.data.Transaction.State;
 import org.geotools.util.SuppressFBWarnings;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /**
  * Provides In-Process FeatureLocking support for DataStore implementations.

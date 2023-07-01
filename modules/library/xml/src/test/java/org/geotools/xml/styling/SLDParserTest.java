@@ -49,9 +49,9 @@ import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.Symbolizer;
 import org.junit.Test;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.ContrastMethod;
-import org.opengis.style.GraphicalSymbol;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.ContrastMethod;
+import org.geotools.api.style.GraphicalSymbol;
 import org.xml.sax.InputSource;
 
 public class SLDParserTest {

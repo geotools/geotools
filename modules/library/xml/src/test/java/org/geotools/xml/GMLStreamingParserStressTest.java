@@ -26,8 +26,8 @@ import org.geotools.xml.gml.FCBuffer;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /** @author dzwiers www.refractions.net */
 public class GMLStreamingParserStressTest {

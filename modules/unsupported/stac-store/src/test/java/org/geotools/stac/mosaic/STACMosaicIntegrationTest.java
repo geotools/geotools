@@ -35,7 +35,7 @@ import org.geotools.util.factory.Hints;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.opengis.parameter.ParameterValue;
+import org.geotools.api.parameter.ParameterValue;
 
 /** Tests integration between STAC store and mosaic store */
 public class STACMosaicIntegrationTest extends AbstractSTACStoreTest {

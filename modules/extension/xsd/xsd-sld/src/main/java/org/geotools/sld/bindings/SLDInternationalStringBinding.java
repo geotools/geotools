@@ -22,7 +22,7 @@ import org.geotools.util.GrowableInternationalString;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.util.InternationalString;
+import org.geotools.api.util.InternationalString;
 import org.picocontainer.MutablePicoContainer;
 
 /**

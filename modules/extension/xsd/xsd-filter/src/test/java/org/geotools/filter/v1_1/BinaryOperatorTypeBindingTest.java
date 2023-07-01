@@ -20,11 +20,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
-import org.opengis.filter.expression.Add;
-import org.opengis.filter.expression.BinaryExpression;
-import org.opengis.filter.expression.Divide;
-import org.opengis.filter.expression.Multiply;
-import org.opengis.filter.expression.Subtract;
+import org.geotools.api.filter.expression.Add;
+import org.geotools.api.filter.expression.BinaryExpression;
+import org.geotools.api.filter.expression.Divide;
+import org.geotools.api.filter.expression.Multiply;
+import org.geotools.api.filter.expression.Subtract;
 import org.w3c.dom.Document;
 
 public class BinaryOperatorTypeBindingTest extends FilterTestSupport {

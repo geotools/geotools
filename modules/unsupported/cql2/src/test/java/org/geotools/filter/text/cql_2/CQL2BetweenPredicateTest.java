@@ -20,7 +20,7 @@ package org.geotools.filter.text.cql_2;
 import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQLBetweenPredicateTest;
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 /** Same as ECQL test case, can be merged back as-is. */
 public class CQL2BetweenPredicateTest extends ECQLBetweenPredicateTest {

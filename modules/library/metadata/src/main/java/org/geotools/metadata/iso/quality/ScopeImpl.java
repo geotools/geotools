@@ -20,11 +20,11 @@
 package org.geotools.metadata.iso.quality;
 
 import java.util.Collection;
+import org.geotools.api.metadata.extent.Extent;
+import org.geotools.api.metadata.maintenance.ScopeCode;
+import org.geotools.api.metadata.maintenance.ScopeDescription;
+import org.geotools.api.metadata.quality.Scope;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.metadata.extent.Extent;
-import org.opengis.metadata.maintenance.ScopeCode;
-import org.opengis.metadata.maintenance.ScopeDescription;
-import org.opengis.metadata.quality.Scope;
 
 /**
  * Description of the data specified by the scope.

@@ -17,8 +17,8 @@
 package org.geotools.styling;
 
 import java.util.Map;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.ContrastMethod;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.ContrastMethod;
 
 /**
  * The ContrastEnhancement object defines contrast enhancement for a channel of a false-color image
@@ -57,7 +57,7 @@ import org.opengis.style.ContrastMethod;
  *
  * @author iant
  */
-public interface ContrastEnhancement extends org.opengis.style.ContrastEnhancement {
+public interface ContrastEnhancement extends org.geotools.api.style.ContrastEnhancement {
     /** Used to set the contrast enhancement method used. */
     public void setMethod(ContrastMethod method);
 

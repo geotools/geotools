@@ -9,7 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import org.junit.Test;
-import org.opengis.feature.type.Name;
+import org.geotools.api.feature.type.Name;
 
 public class NameImplTest {
 

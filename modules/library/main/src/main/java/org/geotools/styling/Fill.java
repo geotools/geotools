@@ -19,8 +19,8 @@ package org.geotools.styling;
 
 import java.awt.Color;
 import org.geotools.filter.ConstantExpression;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.StyleVisitor;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.StyleVisitor;
 
 /**
  * The Fill object encapsulates the graphical-symbolization parameters for areas of geometries.
@@ -63,7 +63,7 @@ import org.opengis.style.StyleVisitor;
  * @author James Macgill, CCG
  * @version $Id$
  */
-public interface Fill extends org.opengis.style.Fill {
+public interface Fill extends org.geotools.api.style.Fill {
     static final Fill DEFAULT =
             new ConstantFill() {
                 private void cannotModifyConstant() {
@@ -183,7 +183,7 @@ public interface Fill extends org.opengis.style.Fill {
      * This parameter indicates that a stipple-fill repeated graphic will be used and specifies the
      * fill graphic to use.
      */
-    void setGraphicFill(org.opengis.style.Graphic graphicFill);
+    void setGraphicFill(org.geotools.api.style.Graphic graphicFill);
 
     void accept(org.geotools.styling.StyleVisitor visitor);
 }
@@ -208,7 +208,7 @@ abstract class ConstantFill implements Fill {
     }
 
     @Override
-    public void setGraphicFill(org.opengis.style.Graphic graphicFill) {
+    public void setGraphicFill(org.geotools.api.style.Graphic graphicFill) {
         cannotModifyConstant();
     }
 
@@ -218,7 +218,7 @@ abstract class ConstantFill implements Fill {
     }
 
     @Override
-    public Object accept(org.opengis.style.StyleVisitor visitor, Object data) {
+    public Object accept(org.geotools.api.style.StyleVisitor visitor, Object data) {
         cannotModifyConstant();
         return null;
     }

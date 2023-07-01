@@ -21,8 +21,8 @@ import java.util.logging.Logger;
 import org.geotools.coverageio.gdal.BaseGDALGridCoverage2DReader;
 import org.geotools.data.DataSourceException;
 import org.geotools.util.factory.Hints;
-import org.opengis.coverage.grid.Format;
-import org.opengis.coverage.grid.GridCoverageReader;
+import org.geotools.api.coverage.grid.Format;
+import org.geotools.api.coverage.grid.GridCoverageReader;
 
 /**
  * @author Mathew Wyatt, CSIRO Australia
@@ -55,7 +55,7 @@ public final class EnviHdrReader extends BaseGDALGridCoverage2DReader
         super(input, hints, worldFileExt, new ENVIHdrImageReaderSpi());
     }
 
-    /** @see org.opengis.coverage.grid.GridCoverageReader#getFormat() */
+    /** @see org.geotools.api.coverage.grid.GridCoverageReader#getFormat() */
     @Override
     public Format getFormat() {
         return new EnviHdrFormat();

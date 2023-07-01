@@ -16,11 +16,11 @@
  */
 package org.geotools.feature;
 
-import org.opengis.feature.Association;
-import org.opengis.feature.Attribute;
-import org.opengis.feature.type.AssociationDescriptor;
-import org.opengis.feature.type.AssociationType;
-import org.opengis.feature.type.AttributeType;
+import org.geotools.api.feature.Association;
+import org.geotools.api.feature.Attribute;
+import org.geotools.api.feature.type.AssociationDescriptor;
+import org.geotools.api.feature.type.AssociationType;
+import org.geotools.api.feature.type.AttributeType;
 
 public class AssociationImpl extends PropertyImpl implements Association {
 

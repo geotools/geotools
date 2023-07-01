@@ -21,8 +21,8 @@ import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.FeatureType;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
 
 /**
  * Test for {@link org.geotools.appschema.resolver.data.SampleDataAccessFactory}.

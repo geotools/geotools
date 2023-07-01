@@ -21,9 +21,9 @@ import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.cql2.CQLExpressionTest;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.filter.Filter;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.PropertyName;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.PropertyName;
 
 /** CQL2 allows $ to be part of an un-quoted identifier, which CQL/ECQL did not */
 public class CQL2ExpressionTest extends CQLExpressionTest {

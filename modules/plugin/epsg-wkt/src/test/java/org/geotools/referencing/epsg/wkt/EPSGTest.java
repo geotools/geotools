@@ -28,8 +28,8 @@ import org.geotools.test.TestData;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * These EPSG support.

@@ -19,7 +19,7 @@ package org.geotools.data.store;
 import java.util.Iterator;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.collection.DelegateFeatureIterator;
-import org.opengis.feature.Feature;
+import org.geotools.api.feature.Feature;
 
 /**
  * Iterator wrapper which caps the number of returned features.

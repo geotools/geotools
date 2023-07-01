@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /**
  * Encapsulates how documents of a solr index are mapped to feature types.

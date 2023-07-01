@@ -34,7 +34,7 @@ import org.geotools.swing.wizard.JGeometryField;
 import org.geotools.swing.wizard.JPage;
 import org.geotools.swing.wizard.ParamField;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.type.Name;
+import org.geotools.api.feature.type.Name;
 
 /**
  * This page is responsible making a user interface based on the provided ProcessFactory.

@@ -16,8 +16,8 @@ import org.geotools.referencing.CRS;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.logging.Logging;
 import org.junit.BeforeClass;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 public abstract class AbstractTransformTest {
 

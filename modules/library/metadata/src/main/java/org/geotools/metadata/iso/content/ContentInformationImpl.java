@@ -19,8 +19,8 @@
  */
 package org.geotools.metadata.iso.content;
 
+import org.geotools.api.metadata.content.ContentInformation;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.metadata.content.ContentInformation;
 
 /**
  * Description of the content of a dataset.

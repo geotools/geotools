@@ -19,13 +19,13 @@ package org.geotools.geometry;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.Arrays;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.util.Cloneable;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.SuppressFBWarnings;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.util.Cloneable;
 
 /**
  * Holds the coordinates for a position within some coordinate reference system. Since {@code
@@ -97,8 +97,8 @@ public class GeneralDirectPosition extends AbstractDirectPosition
     /**
      * Constructs a 2D position from the specified ordinates. Despite their name, the
      * (<var>x</var>,<var>y</var>) coordinates don't need to be oriented toward ({@linkplain
-     * org.opengis.referencing.cs.AxisDirection#EAST East}, {@linkplain
-     * org.opengis.referencing.cs.AxisDirection#NORTH North}). See the {@link DirectPosition2D}
+     * org.geotools.api.referencing.cs.AxisDirection#EAST East}, {@linkplain
+     * org.geotools.api.referencing.cs.AxisDirection#NORTH North}). See the {@link DirectPosition2D}
      * javadoc for details.
      *
      * @param x The first ordinate value.
@@ -111,9 +111,9 @@ public class GeneralDirectPosition extends AbstractDirectPosition
     /**
      * Constructs a 3D position from the specified ordinates. Despite their name, the
      * (<var>x</var>,<var>y</var>,<var>z</var>) coordinates don't need to be oriented toward
-     * ({@linkplain org.opengis.referencing.cs.AxisDirection#EAST East}, {@linkplain
-     * org.opengis.referencing.cs.AxisDirection#NORTH North}, {@linkplain
-     * org.opengis.referencing.cs.AxisDirection#UP Up}).
+     * ({@linkplain org.geotools.api.referencing.cs.AxisDirection#EAST East}, {@linkplain
+     * org.geotools.api.referencing.cs.AxisDirection#NORTH North}, {@linkplain
+     * org.geotools.api.referencing.cs.AxisDirection#UP Up}).
      *
      * @param x The first ordinate value.
      * @param y The second ordinate value.

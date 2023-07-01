@@ -16,8 +16,8 @@
  */
 package org.geotools.styling;
 
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.OverlapBehavior;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.OverlapBehavior;
 
 /**
  * The RasterSymbolizer describes how to render raster/matrix-coverage data (e.g., satellite photos,
@@ -120,7 +120,7 @@ import org.opengis.style.OverlapBehavior;
  *
  * @author Ian Turton, CCG
  */
-public interface RasterSymbolizer extends org.opengis.style.RasterSymbolizer, Symbolizer {
+public interface RasterSymbolizer extends org.geotools.api.style.RasterSymbolizer, Symbolizer {
     /**
      * sets the opacity for the coverage, it has the usual meaning.
      *
@@ -139,7 +139,7 @@ public interface RasterSymbolizer extends org.opengis.style.RasterSymbolizer, Sy
      *
      * @param channel the channel selected
      */
-    void setChannelSelection(org.opengis.style.ChannelSelection channel);
+    void setChannelSelection(org.geotools.api.style.ChannelSelection channel);
 
     /**
      * The ChannelSelection element specifies the false-color channel selection for a multi-spectral
@@ -198,7 +198,7 @@ public interface RasterSymbolizer extends org.opengis.style.RasterSymbolizer, Sy
      *
      * @param colorMap the ColorMap for the raster
      */
-    void setColorMap(org.opengis.style.ColorMap colorMap);
+    void setColorMap(org.geotools.api.style.ColorMap colorMap);
 
     /**
      * The ColorMap element defines either the colors of a palette-type raster source or the mapping
@@ -231,7 +231,7 @@ public interface RasterSymbolizer extends org.opengis.style.RasterSymbolizer, Sy
      *
      * @param ce the contrastEnhancement
      */
-    void setContrastEnhancement(org.opengis.style.ContrastEnhancement ce);
+    void setContrastEnhancement(org.geotools.api.style.ContrastEnhancement ce);
 
     /**
      * The ContrastEnhancement element defines contrast enhancement for a channel of a false-color
@@ -264,7 +264,7 @@ public interface RasterSymbolizer extends org.opengis.style.RasterSymbolizer, Sy
      *
      * @param relief the shadedrelief object
      */
-    void setShadedRelief(org.opengis.style.ShadedRelief relief);
+    void setShadedRelief(org.geotools.api.style.ShadedRelief relief);
 
     /**
      * The ShadedRelief element selects the application of relief shading (or ?hill shading?) to an
@@ -305,7 +305,7 @@ public interface RasterSymbolizer extends org.opengis.style.RasterSymbolizer, Sy
      * @param symbolizer the symbolizer to be used. If this is <B>not</B> a polygon or a line
      *     symbolizer an unexpected argument exception may be thrown by an implementing class.
      */
-    void setImageOutline(org.opengis.style.Symbolizer symbolizer);
+    void setImageOutline(org.geotools.api.style.Symbolizer symbolizer);
 
     /**
      * The ImageOutline element specifies that individual source rasters in a multi-raster set (such

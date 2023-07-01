@@ -18,8 +18,8 @@ package org.geotools.brewer.styling.filter.expression;
 
 import org.geotools.brewer.styling.builder.Builder;
 import org.geotools.factory.CommonFactoryFinder;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Add;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Add;
 
 public class AddBuilder implements Builder<Add> {
 

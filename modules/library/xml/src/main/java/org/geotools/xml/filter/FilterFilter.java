@@ -30,7 +30,7 @@ import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.LogicSAXParser;
 import org.geotools.gml.GMLHandlerJTS;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.XMLFilterImpl;

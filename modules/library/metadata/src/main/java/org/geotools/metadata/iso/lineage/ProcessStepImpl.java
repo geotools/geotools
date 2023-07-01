@@ -21,11 +21,11 @@ package org.geotools.metadata.iso.lineage;
 
 import java.util.Collection;
 import java.util.Date;
+import org.geotools.api.metadata.citation.ResponsibleParty;
+import org.geotools.api.metadata.lineage.ProcessStep;
+import org.geotools.api.metadata.lineage.Source;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.metadata.citation.ResponsibleParty;
-import org.opengis.metadata.lineage.ProcessStep;
-import org.opengis.metadata.lineage.Source;
-import org.opengis.util.InternationalString;
 
 /**
  * Description of the event, including related parameters or tolerances.

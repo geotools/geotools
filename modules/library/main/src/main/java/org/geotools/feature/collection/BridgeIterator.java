@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.FeatureIterator;
-import org.opengis.feature.Feature;
+import org.geotools.api.feature.Feature;
 
 /**
  * A closeable iterator wrapped around a provided feature iterator.

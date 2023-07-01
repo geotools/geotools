@@ -21,12 +21,12 @@ import java.util.List;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.GeoTools;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
-import org.opengis.style.StyleVisitor;
-import org.opengis.util.Cloneable;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.util.Cloneable;
 
 /**
  * Provides a Java representation of the Stroke object in an SLD document. A stroke defines how a
@@ -224,7 +224,7 @@ public class StrokeImpl implements Stroke, Cloneable {
      *     be used.
      */
     @Override
-    public void setGraphicFill(org.opengis.style.Graphic fillGraphic) {
+    public void setGraphicFill(org.geotools.api.style.Graphic fillGraphic) {
         if (this.fillGraphic == fillGraphic) {
             return;
         }
@@ -259,7 +259,7 @@ public class StrokeImpl implements Stroke, Cloneable {
      *     should be used.
      */
     @Override
-    public void setGraphicStroke(org.opengis.style.Graphic strokeGraphic) {
+    public void setGraphicStroke(org.geotools.api.style.Graphic strokeGraphic) {
         if (this.strokeGraphic == strokeGraphic) {
             return;
         }
@@ -550,7 +550,7 @@ public class StrokeImpl implements Stroke, Cloneable {
         return true;
     }
 
-    static StrokeImpl cast(org.opengis.style.Stroke stroke) {
+    static StrokeImpl cast(org.geotools.api.style.Stroke stroke) {
         if (stroke == null) {
             return null;
         } else if (stroke instanceof StrokeImpl) {

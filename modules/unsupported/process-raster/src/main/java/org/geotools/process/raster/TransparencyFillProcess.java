@@ -31,8 +31,8 @@ import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.renderer.i18n.Errors;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * A transparency holes-dashes filling process

@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.FeatureMap;
-import org.opengis.filter.Filter;
-import org.opengis.filter.sort.SortBy;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.sort.SortBy;
 
 /**
  * <!-- begin-user-doc -->
@@ -162,7 +162,7 @@ public interface GetCoverageType extends RequestBaseType {
     /**
      * Custom extension allowing to apply a sort to a coverage content (for readers that can do 
      * sorting, mostly StructuredCoverageGridReader ones).
-     * @model type="org.opengis.filter.sort.SortBy" containment="true"
+     * @model type="org.geotools.api.filter.sort.SortBy" containment="true"
      */
     EList<SortBy> getSortBy();
     

@@ -20,8 +20,8 @@
 package org.geotools.metadata.iso;
 
 import java.util.Collection;
-import org.opengis.metadata.PortrayalCatalogueReference;
-import org.opengis.metadata.citation.Citation;
+import org.geotools.api.metadata.PortrayalCatalogueReference;
+import org.geotools.api.metadata.citation.Citation;
 
 /**
  * Information identifying the portrayal catalogue used.

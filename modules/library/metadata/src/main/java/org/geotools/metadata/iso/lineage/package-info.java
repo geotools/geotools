@@ -16,7 +16,7 @@
  */
 /**
  * {@linkplain org.geotools.metadata.iso.lineage.LineageImpl Lineage} implementation. An explanation
- * for this package is provided in the {@linkplain org.opengis.metadata.lineage OpenGIS&reg;
+ * for this package is provided in the {@linkplain org.geotools.api.metadata.lineage OpenGIS&reg;
  * javadoc}. The remaining discussion on this page is specific to the Geotools implementation.
  */
 package org.geotools.metadata.iso.lineage;

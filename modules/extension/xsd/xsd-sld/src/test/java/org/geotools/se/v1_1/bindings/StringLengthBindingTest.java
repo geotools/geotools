@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.geotools.se.v1_1.SETestSupport;
 import org.junit.Test;
-import org.opengis.filter.expression.Function;
+import org.geotools.api.filter.expression.Function;
 
 public class StringLengthBindingTest extends SETestSupport {
     @Test

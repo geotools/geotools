@@ -32,11 +32,11 @@ import org.geotools.data.complex.filter.MultipleValueExtractor;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.visitor.CapabilitiesFilterSplitter;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.ExpressionVisitor;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.ExpressionVisitor;
 
 /** Implementation of the multivalued mappings API for JDBC based data sources. */
 public final class JdbcMultipleValue extends AttributeExpressionImpl implements MultipleValue {

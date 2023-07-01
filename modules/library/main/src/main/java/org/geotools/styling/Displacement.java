@@ -17,8 +17,8 @@
 package org.geotools.styling;
 
 import org.geotools.filter.ConstantExpression;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.StyleVisitor;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.StyleVisitor;
 
 /**
  * A Displacement gives X and Y offset displacements to use for rendering a text label near a point.
@@ -26,7 +26,7 @@ import org.opengis.style.StyleVisitor;
  * @author Ian Turton, CCG
  * @version $Id$
  */
-public interface Displacement extends org.opengis.style.Displacement {
+public interface Displacement extends org.geotools.api.style.Displacement {
     /** Default Displacement instance. */
     static final Displacement DEFAULT =
             new ConstantDisplacement() {

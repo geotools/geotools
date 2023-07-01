@@ -35,10 +35,10 @@ import org.geotools.feature.type.AbstractLazyAttributeTypeImpl;
 import org.geotools.feature.type.AbstractLazyComplexTypeImpl;
 import org.geotools.util.Utilities;
 import org.geotools.xsd.Schemas;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.AttributeType;
-import org.opengis.feature.type.ComplexType;
-import org.opengis.feature.type.PropertyDescriptor;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.AttributeType;
+import org.geotools.api.feature.type.ComplexType;
+import org.geotools.api.feature.type.PropertyDescriptor;
 
 /**
  * Schema generator that uses subclasses of {@link AbstractLazyAttributeTypeImpl} and

@@ -47,7 +47,7 @@ import org.geotools.util.NumberRange;
 import org.geotools.util.factory.Hints;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.opengis.feature.type.Name;
+import org.geotools.api.feature.type.Name;
 
 /** @author Nicola Lagomarsini Geosolutions */
 public class DefaultClassesTest {

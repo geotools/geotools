@@ -21,8 +21,8 @@ package org.geotools.feature;
 
 import java.util.List;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /** @author en */
 public class FeatureCollectionTest extends org.geotools.data.collection.FeatureCollectionTest {

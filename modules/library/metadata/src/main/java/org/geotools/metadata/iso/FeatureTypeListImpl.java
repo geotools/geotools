@@ -19,7 +19,7 @@
  */
 package org.geotools.metadata.iso;
 
-import org.opengis.metadata.FeatureTypeList;
+import org.geotools.api.metadata.FeatureTypeList;
 
 /**
  * List of names of feature types with the same spatial representation (same as spatial attributes).

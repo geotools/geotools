@@ -18,7 +18,7 @@ package org.geotools.styling;
 
 import java.util.List;
 import java.util.Map;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * A symbolizer describes how a feature should appear on a map.
@@ -72,7 +72,7 @@ import org.opengis.filter.expression.Expression;
  *
  * @author Ian Turton, CCG
  */
-public interface TextSymbolizer extends org.opengis.style.TextSymbolizer, Symbolizer {
+public interface TextSymbolizer extends org.geotools.api.style.TextSymbolizer, Symbolizer {
 
     /**
      * If true, geometries with the same labels are grouped and considered a single entity to be
@@ -373,7 +373,7 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer, Symbol
      * Set initial font used to render label. This will replace the initial entry in the {@link
      * #fonts()} list.
      */
-    public void setFont(org.opengis.style.Font font);
+    public void setFont(org.geotools.api.style.Font font);
 
     /**
      * A LabelPlacement specifies how a text element should be rendered relative to its geometric
@@ -386,7 +386,7 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer, Symbol
      * A LabelPlacement specifies how a text element should be rendered relative to its geometric
      * point or line.
      */
-    void setLabelPlacement(org.opengis.style.LabelPlacement labelPlacement);
+    void setLabelPlacement(org.geotools.api.style.LabelPlacement labelPlacement);
 
     /**
      * A halo fills an extended area outside the glyphs of a rendered text label to make the label
@@ -399,7 +399,7 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer, Symbol
      * A halo fills an extended area outside the glyphs of a rendered text label to make the label
      * easier to read over a background.
      */
-    void setHalo(org.opengis.style.Halo halo);
+    void setHalo(org.geotools.api.style.Halo halo);
 
     /** Returns the object that indicates how the text will be filled. */
     @Override
@@ -408,7 +408,7 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer, Symbol
     /**
      * Sets the object that indicates how the text will be filled. See {@link #getFill} for details.
      */
-    void setFill(org.opengis.style.Fill fill);
+    void setFill(org.geotools.api.style.Fill fill);
 
     /**
      * Priority -- null = use the default labeling priority Expression = an expression that

@@ -41,14 +41,14 @@ import org.geotools.data.wfs.internal.TransactionRequest.Update;
 import org.geotools.data.wfs.internal.TransactionResponse;
 import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.opengis.feature.Property;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.identity.FeatureId;
-import org.opengis.filter.identity.Identifier;
+import org.geotools.api.feature.Property;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.identity.FeatureId;
+import org.geotools.api.filter.identity.Identifier;
 
 class WFSRemoteTransactionState implements State {
 

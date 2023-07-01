@@ -17,10 +17,10 @@
 
 package org.geotools.referencing.factory;
 
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Version;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 
 /**
  * Split an HTTP URI into its parts for {@link HTTP_URI_AuthorityFactory}. Must be immutable so

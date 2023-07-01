@@ -29,7 +29,7 @@ import java.util.Set;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 public abstract class OGRDataStoreFactoryTest extends TestCaseSupport {
 

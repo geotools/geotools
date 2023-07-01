@@ -45,13 +45,13 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.WKTReader;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.PropertyIsGreaterThanOrEqualTo;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
 
 @RunWith(Enclosed.class)
 public class EqualAreaFunctionTest {
@@ -80,7 +80,7 @@ public class EqualAreaFunctionTest {
         public void testEmptyCollection() throws SchemaException, IOException {
             ListFeatureCollection empty =
                     new ListFeatureCollection(getSimplifiedStatesCollection().getSchema());
-            org.opengis.filter.expression.Expression function =
+            org.geotools.api.filter.expression.Expression function =
                     FF.function("EqualArea", PERSONS, FF.literal(5));
             assertNull(function.evaluate(empty));
         }
@@ -90,7 +90,7 @@ public class EqualAreaFunctionTest {
             ListFeatureCollection fc = getSimplifiedStatesCollection();
 
             // twice as many classes
-            org.opengis.filter.expression.Expression function =
+            org.geotools.api.filter.expression.Expression function =
                     FF.function("EqualArea", PERSONS, FF.literal(fc.size() * 2));
             RangedClassifier ranged = assertRangedClassifier(function.evaluate(fc));
 
@@ -120,7 +120,7 @@ public class EqualAreaFunctionTest {
             SimpleFeatureCollection myFeatureCollection = DataUtilities.collection(myfeatures);
 
             // run the equal area function
-            org.opengis.filter.expression.Expression function =
+            org.geotools.api.filter.expression.Expression function =
                     FF.function("EqualArea", FF.property("value"), FF.literal(5));
             RangedClassifier ranged =
                     assertRangedClassifier(function.evaluate(myFeatureCollection));
@@ -159,7 +159,7 @@ public class EqualAreaFunctionTest {
             SimpleFeatureCollection myFeatureCollection = DataUtilities.collection(myfeatures);
 
             // run the equal area function
-            org.opengis.filter.expression.Expression function =
+            org.geotools.api.filter.expression.Expression function =
                     FF.function("EqualArea", FF.property("value"), FF.literal(5));
             RangedClassifier ranged =
                     assertRangedClassifier(function.evaluate(myFeatureCollection));
@@ -206,7 +206,7 @@ public class EqualAreaFunctionTest {
                             "classification.test1" + 3);
             SimpleFeatureCollection myFeatureCollection = DataUtilities.collection(myfeatures);
             // run the equal area function
-            org.opengis.filter.expression.Expression function =
+            org.geotools.api.filter.expression.Expression function =
                     FF.function(
                             "EqualArea",
                             FF.property("value"),
@@ -250,7 +250,7 @@ public class EqualAreaFunctionTest {
             double totalArea = getTotalArea(fc, areaFunction);
             NumberRange<Double> minMax = getMinMax(fc, PERSONS);
 
-            org.opengis.filter.expression.Expression function =
+            org.geotools.api.filter.expression.Expression function =
                     FF.function("EqualArea", PERSONS, FF.literal(numClasses));
             RangedClassifier rangedClassifier = assertRangedClassifier(function.evaluate(fc));
 

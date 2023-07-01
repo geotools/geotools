@@ -43,7 +43,7 @@ import org.jaitools.media.jai.zonalstats.ZonalStats;
 import org.jaitools.media.jai.zonalstats.ZonalStatsDescriptor;
 import org.jaitools.numeric.Range;
 import org.jaitools.numeric.Statistic;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * Process that classifies vector data into "classes" using one of the following methods:

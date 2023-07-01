@@ -31,9 +31,9 @@ import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.jdbc.JDBCDateOnlineTest;
 import org.geotools.jdbc.JDBCDateTestSetup;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.identity.FeatureId;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.identity.FeatureId;
 
 public class SQLServerDateOnlineTest extends JDBCDateOnlineTest {
 

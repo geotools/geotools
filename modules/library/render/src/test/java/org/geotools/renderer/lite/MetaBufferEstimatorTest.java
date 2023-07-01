@@ -31,8 +31,8 @@ import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.NilExpression;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.NilExpression;
 
 public class MetaBufferEstimatorTest extends DataTestCase {
 

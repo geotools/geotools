@@ -17,7 +17,7 @@
 /**
  * {@linkplain org.geotools.metadata.iso.spatial.SpatialRepresentationImpl Spatial representation}
  * implementation. An explanation for this package is provided in the {@linkplain
- * org.opengis.metadata.spatial OpenGIS&reg; javadoc}. The remaining discussion on this page is
+ * org.geotools.api.metadata.spatial OpenGIS&reg; javadoc}. The remaining discussion on this page is
  * specific to the Geotools implementation.
  */
 package org.geotools.metadata.iso.spatial;

@@ -50,8 +50,8 @@ import org.geotools.swing.data.JParameterListWizard;
 import org.geotools.swing.wizard.JWizard;
 import org.geotools.util.KVP;
 import org.geotools.util.factory.Hints;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.style.ContrastMethod;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.style.ContrastMethod;
 
 public class ImageLab {
 

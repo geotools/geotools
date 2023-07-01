@@ -21,20 +21,20 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.MismatchedReferenceSystemException;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.geometry.MismatchedReferenceSystemException;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
 
 /**
  * Builds a RubberSheet transformation from a set of control points, defined as a List of
  * {@linkplain org.geotools.referencing.operation.builder.MappedPosition MappedPosition} objects,
  * and a quadrilateral delimiting the outer area of interest, defined as a List of four {@linkplain
- * org.opengis.geometry.DirectPosition DirectPosition} objects.
+ * org.geotools.api.geometry.DirectPosition DirectPosition} objects.
  *
  * <p>An explanation of the RubberSheet transformation algorithm can be seen <a href
  * ="http://planner.t.u-tokyo.ac.jp/member/fuse/rubber_sheeting.pdf">here</a>.

@@ -23,7 +23,7 @@ import java.sql.SQLException;
 
 /**
  * A metadata entity which implements (indirectly) metadata interfaces like {@link
- * org.opengis.metadata.MetaData}, {@link org.opengis.metadata.citation.Citation}, etc.
+ * org.geotools.api.metadata.MetaData}, {@link org.geotools.api.metadata.citation.Citation}, etc.
  *
  * <p>Any call to a method in a metadata interface is redirected toward the {@link #invoke} method.
  * This method use reflection in order to find the caller's method and class name. The class name is

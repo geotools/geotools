@@ -31,10 +31,10 @@ import org.geotools.geometry.DirectPosition2D;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.logging.Logging;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.coverage.grid.GridGeometry;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.coverage.grid.GridGeometry;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Base class for GeoTools implementation of grid coverage.
@@ -130,7 +130,7 @@ public abstract class AbstractGridCoverage extends AbstractCoverage implements G
     /**
      * Returns the source data for a grid coverage. If the {@code GridCoverage} was produced from an
      * underlying dataset, the returned list is an empty list. If the {@code GridCoverage} was
-     * produced using {@link org.opengis.coverage.grid.GridCoverageProcessor}, then it should return
+     * produced using {@link org.geotools.api.coverage.grid.GridCoverageProcessor}, then it should return
      * the source grid coverage of the one used as input to {@code GridCoverageProcessor}. In
      * general the {@code getSources()} method is intended to return the original {@code
      * GridCoverage} on which it depends. This is intended to allow applications to establish what

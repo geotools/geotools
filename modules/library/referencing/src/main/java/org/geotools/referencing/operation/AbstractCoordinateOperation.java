@@ -25,6 +25,24 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
+import org.geotools.api.metadata.extent.Extent;
+import org.geotools.api.metadata.quality.PositionalAccuracy;
+import org.geotools.api.metadata.quality.QuantitativeResult;
+import org.geotools.api.metadata.quality.Result;
+import org.geotools.api.referencing.IdentifiedObject;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.ConcatenatedOperation;
+import org.geotools.api.referencing.operation.ConicProjection;
+import org.geotools.api.referencing.operation.Conversion;
+import org.geotools.api.referencing.operation.CoordinateOperation;
+import org.geotools.api.referencing.operation.CylindricalProjection;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.Operation;
+import org.geotools.api.referencing.operation.PlanarProjection;
+import org.geotools.api.referencing.operation.Projection;
+import org.geotools.api.referencing.operation.Transformation;
+import org.geotools.api.util.InternationalString;
+import org.geotools.api.util.Record;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.quality.PositionalAccuracyImpl;
@@ -32,24 +50,6 @@ import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.crs.AbstractDerivedCRS;
 import org.geotools.referencing.wkt.Formatter;
 import org.geotools.util.Utilities;
-import org.opengis.metadata.extent.Extent;
-import org.opengis.metadata.quality.PositionalAccuracy;
-import org.opengis.metadata.quality.QuantitativeResult;
-import org.opengis.metadata.quality.Result;
-import org.opengis.referencing.IdentifiedObject;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.ConcatenatedOperation;
-import org.opengis.referencing.operation.ConicProjection;
-import org.opengis.referencing.operation.Conversion;
-import org.opengis.referencing.operation.CoordinateOperation;
-import org.opengis.referencing.operation.CylindricalProjection;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.Operation;
-import org.opengis.referencing.operation.PlanarProjection;
-import org.opengis.referencing.operation.Projection;
-import org.opengis.referencing.operation.Transformation;
-import org.opengis.util.InternationalString;
-import org.opengis.util.Record;
 import si.uom.SI;
 
 /**
@@ -163,22 +163,22 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject
      *     <th nowrap>Value given to</th>
      *   </tr>
      *   <tr>
-     *     <td nowrap>&nbsp;{@value org.opengis.referencing.operation.CoordinateOperation#OPERATION_VERSION_KEY}&nbsp;</td>
+     *     <td nowrap>&nbsp;{@value org.geotools.api.referencing.operation.CoordinateOperation#OPERATION_VERSION_KEY}&nbsp;</td>
      *     <td nowrap>&nbsp;{@link String}&nbsp;</td>
      *     <td nowrap>&nbsp;{@link #getOperationVersion}</td>
      *   </tr>
      *   <tr>
-     *     <td nowrap>&nbsp;{@value org.opengis.referencing.operation.CoordinateOperation#COORDINATE_OPERATION_ACCURACY_KEY}&nbsp;</td>
+     *     <td nowrap>&nbsp;{@value org.geotools.api.referencing.operation.CoordinateOperation#COORDINATE_OPERATION_ACCURACY_KEY}&nbsp;</td>
      *     <td nowrap>&nbsp;<code>{@linkplain PositionalAccuracy}[]</code>&nbsp;</td>
      *     <td nowrap>&nbsp;{@link #getCoordinateOperationAccuracy}</td>
      *   </tr>
      *   <tr>
-     *     <td nowrap>&nbsp;{@value org.opengis.referencing.operation.CoordinateOperation#DOMAIN_OF_VALIDITY_KEY}&nbsp;</td>
+     *     <td nowrap>&nbsp;{@value org.geotools.api.referencing.operation.CoordinateOperation#DOMAIN_OF_VALIDITY_KEY}&nbsp;</td>
      *     <td nowrap>&nbsp;{@link Extent}&nbsp;</td>
      *     <td nowrap>&nbsp;{@link #getDomainOfValidity}</td>
      *   </tr>
      *   <tr>
-     *     <td nowrap>&nbsp;{@value org.opengis.referencing.operation.CoordinateOperation#SCOPE_KEY}&nbsp;</td>
+     *     <td nowrap>&nbsp;{@value org.geotools.api.referencing.operation.CoordinateOperation#SCOPE_KEY}&nbsp;</td>
      *     <td nowrap>&nbsp;{@link String} or {@link InternationalString}&nbsp;</td>
      *     <td nowrap>&nbsp;{@link #getScope}</td>
      *   </tr>

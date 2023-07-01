@@ -18,8 +18,8 @@ package org.geotools.filter.text.commons;
 
 import java.security.InvalidParameterException;
 import java.util.Date;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Literal;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Literal;
 
 /**
  * Period is constructed in the parsing process. this has convenient method to deliver begin and end

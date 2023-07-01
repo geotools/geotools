@@ -27,8 +27,8 @@ import org.geotools.ows.wmts.model.WMTSLayer;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Uses the WMTSCoverageReader to write a mosaicked image of tiles covering a given extent.

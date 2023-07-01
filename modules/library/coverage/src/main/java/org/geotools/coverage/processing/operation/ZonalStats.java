@@ -32,10 +32,10 @@ import org.geotools.util.logging.Logging;
 import org.jaitools.media.jai.zonalstats.ZonalStatsDescriptor;
 import org.jaitools.media.jai.zonalstats.ZonalStatsRIF;
 import org.jaitools.numeric.Statistic;
-import org.opengis.coverage.processing.OperationNotFoundException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.util.InternationalString;
+import org.geotools.api.coverage.processing.OperationNotFoundException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.util.InternationalString;
 
 /**
  * This operation simply wraps Jai-tools Zonalstats operations described by {@link

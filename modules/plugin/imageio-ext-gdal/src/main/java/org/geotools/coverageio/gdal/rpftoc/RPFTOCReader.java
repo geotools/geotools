@@ -22,8 +22,8 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverageio.gdal.BaseGDALGridCoverage2DReader;
 import org.geotools.data.DataSourceException;
 import org.geotools.util.factory.Hints;
-import org.opengis.coverage.grid.Format;
-import org.opengis.coverage.grid.GridCoverageReader;
+import org.geotools.api.coverage.grid.Format;
+import org.geotools.api.coverage.grid.GridCoverageReader;
 
 /**
  * This class can read a RPFTOC data source and create a {@link GridCoverage2D} from the data.
@@ -54,7 +54,7 @@ public final class RPFTOCReader extends BaseGDALGridCoverage2DReader implements 
         super(input, hints, worldFileExt, new RPFTOCImageReaderSpi());
     }
 
-    /** @see org.opengis.coverage.grid.GridCoverageReader#getFormat() */
+    /** @see org.geotools.api.coverage.grid.GridCoverageReader#getFormat() */
     @Override
     public Format getFormat() {
         return new RPFTOCFormat();

@@ -20,9 +20,9 @@
 package org.geotools.metadata.iso.spatial;
 
 import java.util.List;
-import org.opengis.metadata.spatial.CellGeometry;
-import org.opengis.metadata.spatial.Dimension;
-import org.opengis.metadata.spatial.GridSpatialRepresentation;
+import org.geotools.api.metadata.spatial.CellGeometry;
+import org.geotools.api.metadata.spatial.Dimension;
+import org.geotools.api.metadata.spatial.GridSpatialRepresentation;
 
 /**
  * Basic information required to uniquely identify a resource or resources.

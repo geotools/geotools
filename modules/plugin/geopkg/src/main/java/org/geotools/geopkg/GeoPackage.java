@@ -75,16 +75,16 @@ import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.feature.type.PropertyDescriptor;
-import org.opengis.filter.Filter;
-import org.opengis.filter.identity.Identifier;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.ReferenceIdentifier;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.feature.type.PropertyDescriptor;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.identity.Identifier;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.ReferenceIdentifier;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.sqlite.Function;
 import org.sqlite.SQLiteConfig;
 
@@ -1058,7 +1058,7 @@ public class GeoPackage implements Closeable {
                 if (srid != null) {
                     CoordinateReferenceSystem crs = getCRS(srid);
                     if (crs != null) {
-                        org.opengis.geometry.Envelope env = CRS.getEnvelope(crs);
+                        org.geotools.api.geometry.Envelope env = CRS.getEnvelope(crs);
                         if (env != null) {
                             minx = env.getMinimum(0);
                             miny = env.getMinimum(1);
@@ -1164,7 +1164,7 @@ public class GeoPackage implements Closeable {
     }
 
     static ReferencedEnvelope findBounds(GridCoverage2D raster) {
-        org.opengis.geometry.Envelope e = raster.getEnvelope();
+        org.geotools.api.geometry.Envelope e = raster.getEnvelope();
         return new ReferencedEnvelope(
                 e.getMinimum(0),
                 e.getMaximum(0),

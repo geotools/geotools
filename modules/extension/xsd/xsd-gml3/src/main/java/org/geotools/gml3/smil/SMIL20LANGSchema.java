@@ -20,7 +20,7 @@ import java.util.Collections;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.ComplexTypeImpl;
 import org.geotools.feature.type.SchemaImpl;
-import org.opengis.feature.type.ComplexType;
+import org.geotools.api.feature.type.ComplexType;
 
 public class SMIL20LANGSchema extends SchemaImpl {
     /**

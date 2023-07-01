@@ -16,8 +16,8 @@
  */
 /**
  * {@linkplain org.geotools.metadata.iso.distribution.DistributionImpl Distribution} implementation.
- * An explanation for this package is provided in the {@linkplain org.opengis.metadata.distribution
- * OpenGIS&reg; javadoc}. The remaining discussion on this page is specific to the Geotools
- * implementation.
+ * An explanation for this package is provided in the {@linkplain
+ * org.geotools.api.metadata.distribution OpenGIS&reg; javadoc}. The remaining discussion on this
+ * page is specific to the Geotools implementation.
  */
 package org.geotools.metadata.iso.distribution;

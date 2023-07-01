@@ -18,7 +18,7 @@ package org.geotools.feature.collection;
 
 import java.util.NoSuchElementException;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /**
  * Access Feature content using Feature "Id".

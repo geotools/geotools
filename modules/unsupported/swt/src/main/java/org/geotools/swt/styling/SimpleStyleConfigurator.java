@@ -66,10 +66,10 @@ import org.geotools.swt.utils.Messages;
 import org.geotools.swt.utils.Utils;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.xml.styling.SLDTransformer;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.feature.type.PropertyDescriptor;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.feature.type.PropertyDescriptor;
 
 /**
  * Defines a "simple" StyleConfigurator for working with SLD documents.

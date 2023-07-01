@@ -40,9 +40,9 @@ import org.jaitools.numeric.Range;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.util.AffineTransformation;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.metadata.spatial.PixelOrientation;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.metadata.spatial.PixelOrientation;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * A process for raster to vector conversion. Regions of uniform value in an input {@linkplain

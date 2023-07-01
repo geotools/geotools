@@ -17,8 +17,8 @@
 package org.geotools.styling.visitor;
 
 import java.util.Map;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * This is a style visitor that will produce a copy of the provided style. The copy will be rescaled

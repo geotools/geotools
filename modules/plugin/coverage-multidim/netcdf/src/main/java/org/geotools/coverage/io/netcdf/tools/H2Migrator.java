@@ -70,7 +70,7 @@ import org.geotools.jdbc.Index;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /** Converts NetCDF slice H2 indexes towards a centralized database approach */
 public class H2Migrator {

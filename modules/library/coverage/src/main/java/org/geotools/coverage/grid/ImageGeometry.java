@@ -22,8 +22,8 @@ import java.io.Serializable;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
-import org.opengis.coverage.grid.GridGeometry;
-import org.opengis.util.Cloneable;
+import org.geotools.api.coverage.grid.GridGeometry;
+import org.geotools.api.util.Cloneable;
 
 /**
  * A simple grid geometry holding the grid range as a {@linkplain Rectangle rectangle} and the

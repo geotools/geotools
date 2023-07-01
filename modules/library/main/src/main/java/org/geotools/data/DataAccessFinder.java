@@ -28,8 +28,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.util.factory.FactoryCreator;
 import org.geotools.util.factory.FactoryRegistry;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.FeatureType;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
 
 /**
  * Enable programs to find all available DataAccess implementations, including the DataStore ones.

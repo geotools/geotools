@@ -21,12 +21,12 @@ package org.geotools.metadata.iso.spatial;
 
 import java.util.Collection;
 import java.util.List;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.metadata.spatial.CellGeometry;
-import org.opengis.metadata.spatial.Dimension;
-import org.opengis.metadata.spatial.Georeferenceable;
-import org.opengis.util.InternationalString;
-import org.opengis.util.Record;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.metadata.spatial.CellGeometry;
+import org.geotools.api.metadata.spatial.Dimension;
+import org.geotools.api.metadata.spatial.Georeferenceable;
+import org.geotools.api.util.InternationalString;
+import org.geotools.api.util.Record;
 
 /**
  * Grid with cells irregularly spaced in any given geographic/map projection coordinate system,

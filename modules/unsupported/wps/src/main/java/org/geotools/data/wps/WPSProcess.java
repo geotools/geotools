@@ -35,7 +35,7 @@ import org.geotools.data.wps.response.ExecuteProcessResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.process.ProcessFactory;
 import org.geotools.process.impl.AbstractProcess;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * This is a representation of a process built from the WPSFactory class. It is not a real process,

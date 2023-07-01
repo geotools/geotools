@@ -25,10 +25,10 @@ import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.Mark;
 import org.geotools.styling.Symbol;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.GraphicalSymbol;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.GraphicalSymbol;
 
-public class GraphicBuilder extends AbstractStyleBuilder<org.opengis.style.Graphic> {
+public class GraphicBuilder extends AbstractStyleBuilder<org.geotools.api.style.Graphic> {
     List<Builder<? extends Symbol>> symbols = new ArrayList<>();
 
     Expression opacity;
@@ -180,7 +180,7 @@ public class GraphicBuilder extends AbstractStyleBuilder<org.opengis.style.Graph
     }
 
     @Override
-    public GraphicBuilder reset(org.opengis.style.Graphic graphic) {
+    public GraphicBuilder reset(org.geotools.api.style.Graphic graphic) {
         if (graphic == null || graphic.graphicalSymbols().size() == 0) {
             return unset();
         }

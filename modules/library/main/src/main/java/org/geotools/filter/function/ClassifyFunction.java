@@ -20,8 +20,8 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.Literal;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Literal;
 
 public class ClassifyFunction extends FunctionExpressionImpl {
 
@@ -38,7 +38,7 @@ public class ClassifyFunction extends FunctionExpressionImpl {
     }
 
     public Classifier getClassifier(Object context) {
-        org.opengis.filter.expression.Expression expr = getParameters().get(1);
+        org.geotools.api.filter.expression.Expression expr = getParameters().get(1);
         if (expr instanceof Literal) {
             // this is not good practice! (but the other method doesn't work)
             Literal literal = (Literal) expr;
@@ -47,14 +47,14 @@ public class ClassifyFunction extends FunctionExpressionImpl {
         return expr.evaluate(context, Classifier.class);
     }
 
-    public org.opengis.filter.expression.Expression getExpression() {
+    public org.geotools.api.filter.expression.Expression getExpression() {
         return getParameters().get(0);
     }
 
     @Override
     public Object evaluate(Object feature) {
         Classifier classifier = getClassifier(feature);
-        org.opengis.filter.expression.Expression expression = getExpression();
+        org.geotools.api.filter.expression.Expression expression = getExpression();
         return Integer.valueOf(classifier.classify(expression, feature));
     }
 }

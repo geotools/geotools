@@ -19,8 +19,8 @@
  */
 package org.geotools.metadata.iso.extent;
 
+import org.geotools.api.metadata.extent.GeographicExtent;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.metadata.extent.GeographicExtent;
 
 /**
  * Base class for geographic area of the dataset.

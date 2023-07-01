@@ -23,21 +23,21 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
-import org.opengis.metadata.ApplicationSchemaInformation;
-import org.opengis.metadata.MetaData;
-import org.opengis.metadata.MetadataExtensionInformation;
-import org.opengis.metadata.PortrayalCatalogueReference;
-import org.opengis.metadata.citation.ResponsibleParty;
-import org.opengis.metadata.constraint.Constraints;
-import org.opengis.metadata.content.ContentInformation;
-import org.opengis.metadata.distribution.Distribution;
-import org.opengis.metadata.identification.CharacterSet;
-import org.opengis.metadata.identification.Identification;
-import org.opengis.metadata.maintenance.MaintenanceInformation;
-import org.opengis.metadata.maintenance.ScopeCode;
-import org.opengis.metadata.quality.DataQuality;
-import org.opengis.metadata.spatial.SpatialRepresentation;
-import org.opengis.referencing.ReferenceSystem;
+import org.geotools.api.metadata.ApplicationSchemaInformation;
+import org.geotools.api.metadata.MetaData;
+import org.geotools.api.metadata.MetadataExtensionInformation;
+import org.geotools.api.metadata.PortrayalCatalogueReference;
+import org.geotools.api.metadata.citation.ResponsibleParty;
+import org.geotools.api.metadata.constraint.Constraints;
+import org.geotools.api.metadata.content.ContentInformation;
+import org.geotools.api.metadata.distribution.Distribution;
+import org.geotools.api.metadata.identification.CharacterSet;
+import org.geotools.api.metadata.identification.Identification;
+import org.geotools.api.metadata.maintenance.MaintenanceInformation;
+import org.geotools.api.metadata.maintenance.ScopeCode;
+import org.geotools.api.metadata.quality.DataQuality;
+import org.geotools.api.metadata.spatial.SpatialRepresentation;
+import org.geotools.api.referencing.ReferenceSystem;
 
 /**
  * Root entity which defines metadata about a resource or resources.

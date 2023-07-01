@@ -23,7 +23,7 @@ import org.geotools.test.TestData;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory;
+import org.geotools.api.filter.FilterFactory;
 
 public class TTFMarkFactoryTest {
     private TTFMarkFactory ttf;

@@ -18,7 +18,7 @@ package org.geotools.brewer.styling.builder;
 
 import org.geotools.styling.Description;
 import org.geotools.util.SimpleInternationalString;
-import org.opengis.util.InternationalString;
+import org.geotools.api.util.InternationalString;
 
 public class DescriptionBuilder extends AbstractStyleBuilder<Description> {
 

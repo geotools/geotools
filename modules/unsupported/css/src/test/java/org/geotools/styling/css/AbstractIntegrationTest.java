@@ -41,7 +41,7 @@ import org.geotools.xsd.Parser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.opengis.style.Style;
+import org.geotools.api.style.Style;
 import org.parboiled.parserunners.ReportingParseRunner;
 import org.parboiled.support.ParsingResult;
 import org.xml.sax.SAXException;

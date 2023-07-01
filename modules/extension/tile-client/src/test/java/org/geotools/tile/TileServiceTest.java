@@ -23,7 +23,7 @@ import org.geotools.http.MockHttpClient;
 import org.geotools.tile.impl.ZoomLevel;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Tests for implemented function's of TileService

@@ -46,9 +46,9 @@ import org.jaitools.imageutils.ImageUtils;
 import org.jaitools.numeric.Range;
 import org.jaitools.numeric.Statistic;
 import org.junit.Test;
-import org.opengis.coverage.ColorInterpretation;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.datum.PixelInCell;
+import org.geotools.api.coverage.ColorInterpretation;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.datum.PixelInCell;
 
 public class CoverageClassStatsTest {
 

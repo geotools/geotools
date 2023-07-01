@@ -17,8 +17,8 @@
 package org.geotools.styling;
 
 import java.util.Map;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.ContrastMethod;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.ContrastMethod;
 
 /**
  * This interface defines the strategy that a ContrastEnhancement will use to execute the

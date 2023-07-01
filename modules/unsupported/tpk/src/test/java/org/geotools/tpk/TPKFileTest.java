@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 import org.geotools.util.URLs;
 import org.junit.Test;
-import org.opengis.geometry.Envelope;
+import org.geotools.api.geometry.Envelope;
 
 public class TPKFileTest {
 

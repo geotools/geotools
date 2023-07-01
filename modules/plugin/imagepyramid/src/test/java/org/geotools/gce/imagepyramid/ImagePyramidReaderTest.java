@@ -57,12 +57,12 @@ import org.geotools.util.DateRange;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 import org.junit.Test;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.InvalidParameterValueException;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.InvalidParameterValueException;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 
 /**
  * Testing {@link ImagePyramidReader}.

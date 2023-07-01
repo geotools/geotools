@@ -27,7 +27,7 @@ import org.geotools.data.Transaction;
 import org.geotools.jdbc.JDBCDataStoreOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 public class PostgisDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
 

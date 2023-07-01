@@ -22,7 +22,7 @@ import java.awt.image.SampleModel;
 import java.util.Arrays;
 import org.geotools.gce.imagemosaic.MosaicConfigurationBean;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Simple builder which builds the configuration bean of a mosaic configuration.

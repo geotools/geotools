@@ -24,7 +24,7 @@ import org.geotools.gml4wcs.GML;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.geometry.DirectPosition;
+import org.geotools.api.geometry.DirectPosition;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

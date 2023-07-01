@@ -22,7 +22,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.geotools.filter.v1_0.OGC;
 import org.junit.Test;
-import org.opengis.filter.PropertyIsLike;
+import org.geotools.api.filter.PropertyIsLike;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

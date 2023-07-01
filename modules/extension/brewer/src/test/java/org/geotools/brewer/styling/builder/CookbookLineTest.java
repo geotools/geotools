@@ -15,11 +15,11 @@ import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
 import org.geotools.styling.TextSymbolizer;
 import org.junit.Test;
-import org.opengis.filter.expression.Function;
-import org.opengis.style.Graphic;
-import org.opengis.style.GraphicalSymbol;
-import org.opengis.style.LinePlacement;
-import org.opengis.style.Mark;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.LinePlacement;
+import org.geotools.api.style.Mark;
 import si.uom.SI;
 
 public class CookbookLineTest extends AbstractStyleTest {

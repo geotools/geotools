@@ -18,7 +18,7 @@ package org.geotools.feature.collection;
 
 import java.util.Iterator;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /**
  * A feature iterator that completely delegates to a normal Iterator, simply allowing Java 1.4 code

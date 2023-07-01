@@ -21,7 +21,7 @@ import org.geotools.geopkg.wps.GeoPackageProcessRequest;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 public class OverviewBinding extends AbstractComplexBinding {
 

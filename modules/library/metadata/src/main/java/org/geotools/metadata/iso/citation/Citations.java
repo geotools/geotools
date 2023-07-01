@@ -22,14 +22,14 @@ package org.geotools.metadata.iso.citation;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Objects;
+import org.geotools.api.metadata.Identifier;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.metadata.citation.OnLineFunction;
+import org.geotools.api.metadata.citation.PresentationForm;
+import org.geotools.api.metadata.citation.ResponsibleParty;
+import org.geotools.api.metadata.citation.Role;
+import org.geotools.api.util.InternationalString;
 import org.geotools.util.SimpleInternationalString;
-import org.opengis.metadata.Identifier;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.metadata.citation.OnLineFunction;
-import org.opengis.metadata.citation.PresentationForm;
-import org.opengis.metadata.citation.ResponsibleParty;
-import org.opengis.metadata.citation.Role;
-import org.opengis.util.InternationalString;
 
 /**
  * A set of pre-defined constants and static methods working on {@linkplain Citation citations}.
@@ -258,13 +258,13 @@ public final class Citations {
      * "Authority name" {@linkplain Citation#getIdentifierTypes identifier type}.
      *
      * <p>This citation is used as an authority for {@linkplain
-     * org.opengis.referencing.crs.CoordinateReferenceSystem coordinate reference system}
-     * identifiers. When searching an {@linkplain org.opengis.referencing.crs.CRSAuthorityFactory
-     * CRS authority factory} on EPSG data, Geotools compares the {@code "EPSG"} string against the
-     * {@linkplain Citation#getIdentifiers identifiers} (or against the {@linkplain
-     * Citation#getTitle title} and {@linkplain Citation#getAlternateTitles alternate titles} if
-     * there is no identifier) using the {@link #identifierMatches(Citation,String)
-     * identifierMatches} method.
+     * org.geotools.api.referencing.crs.CoordinateReferenceSystem coordinate reference system}
+     * identifiers. When searching an {@linkplain
+     * org.geotools.api.referencing.crs.CRSAuthorityFactory CRS authority factory} on EPSG data,
+     * Geotools compares the {@code "EPSG"} string against the {@linkplain Citation#getIdentifiers
+     * identifiers} (or against the {@linkplain Citation#getTitle title} and {@linkplain
+     * Citation#getAlternateTitles alternate titles} if there is no identifier) using the {@link
+     * #identifierMatches(Citation,String) identifierMatches} method.
      *
      * @see ResponsiblePartyImpl#EPSG
      * @see #AUTO
@@ -292,13 +292,13 @@ public final class Citations {
      * 1.3.0.
      *
      * <p>This citation is used as an authority for {@linkplain
-     * org.opengis.referencing.crs.CoordinateReferenceSystem coordinate reference system}
-     * identifiers. When searching an {@linkplain org.opengis.referencing.crs.CRSAuthorityFactory
-     * CRS authority factory} on AUTO data, Geotools compares the {@code "AUTO"} string against the
-     * {@linkplain Citation#getIdentifiers identifiers} (or against the {@linkplain
-     * Citation#getTitle title} and {@linkplain Citation#getAlternateTitles alternate titles} if
-     * there is no identifier) using the {@link #identifierMatches(Citation,String)
-     * identifierMatches} method.
+     * org.geotools.api.referencing.crs.CoordinateReferenceSystem coordinate reference system}
+     * identifiers. When searching an {@linkplain
+     * org.geotools.api.referencing.crs.CRSAuthorityFactory CRS authority factory} on AUTO data,
+     * Geotools compares the {@code "AUTO"} string against the {@linkplain Citation#getIdentifiers
+     * identifiers} (or against the {@linkplain Citation#getTitle title} and {@linkplain
+     * Citation#getAlternateTitles alternate titles} if there is no identifier) using the {@link
+     * #identifierMatches(Citation,String) identifierMatches} method.
      *
      * @see <A HREF="http://www.opengeospatial.org/">Open Geospatial Consortium</A>
      * @see <A HREF="http://www.opengis.org/docs/01-068r3.pdf">WMS 1.1.1 specification</A>
@@ -341,13 +341,13 @@ public final class Citations {
      * and earlier.
      *
      * <p>This citation is used as an authority for {@linkplain
-     * org.opengis.referencing.crs.CoordinateReferenceSystem coordinate reference system}
-     * identifiers. When searching an {@linkplain org.opengis.referencing.crs.CRSAuthorityFactory
-     * CRS authority factory} on AUTO2 data, Geotools compares the {@code "AUTO2"} string against
-     * the {@linkplain Citation#getIdentifiers identifiers} (or against the {@linkplain
-     * Citation#getTitle title} and {@linkplain Citation#getAlternateTitles alternate titles} if
-     * there is no identifier) using the {@link #identifierMatches(Citation,String)
-     * identifierMatches} method.
+     * org.geotools.api.referencing.crs.CoordinateReferenceSystem coordinate reference system}
+     * identifiers. When searching an {@linkplain
+     * org.geotools.api.referencing.crs.CRSAuthorityFactory CRS authority factory} on AUTO2 data,
+     * Geotools compares the {@code "AUTO2"} string against the {@linkplain Citation#getIdentifiers
+     * identifiers} (or against the {@linkplain Citation#getTitle title} and {@linkplain
+     * Citation#getAlternateTitles alternate titles} if there is no identifier) using the {@link
+     * #identifierMatches(Citation,String) identifierMatches} method.
      *
      * @see <A HREF="http://www.opengeospatial.org/">Open Geospatial Consortium</A>
      * @see <A HREF="http://portal.opengis.org/files/?artifact_id=5316">WMS 1.3.0 specification</A>

@@ -29,7 +29,7 @@ import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
 import org.geotools.imageio.netcdf.VariableAdapter;
 import org.geotools.test.TestData;
 import org.junit.Test;
-import org.opengis.feature.type.Name;
+import org.geotools.api.feature.type.Name;
 
 /**
  * @author Niels Charlier

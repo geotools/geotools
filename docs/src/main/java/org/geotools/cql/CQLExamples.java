@@ -15,12 +15,12 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.logging.Logger;
 import org.geotools.filter.text.cql2.CQL;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.Filter;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.temporal.After;
-import org.opengis.filter.temporal.Before;
-import org.opengis.filter.temporal.During;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.temporal.After;
+import org.geotools.api.filter.temporal.Before;
+import org.geotools.api.filter.temporal.During;
 
 /**
  * This class gathers up the CQL examples shown in the sphinx documentation.

@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Map;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.tutorial.csv3.CSVFileState;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 // docs start CSVStrategy
 public abstract class CSVStrategy {

@@ -19,7 +19,7 @@ package org.geotools.data;
 import java.net.URI;
 import java.util.Set;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * This interface defines methods to convey information about some resource such as title, keywords,

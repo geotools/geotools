@@ -20,7 +20,7 @@ package org.geotools.data.wfs.internal.v2_0.storedquery;
 import java.io.Serializable;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 public class ParameterMappingExpressionValue implements ParameterMapping, Serializable {
     private String expressionLanguage;

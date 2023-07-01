@@ -16,7 +16,7 @@
  */
 /**
  * {@linkplain org.geotools.metadata.iso.constraint.ConstraintsImpl Constraints} implementation. An
- * explanation for this package is provided in the {@linkplain org.opengis.metadata.constraint
+ * explanation for this package is provided in the {@linkplain org.geotools.api.metadata.constraint
  * OpenGIS&reg; javadoc}. The remaining discussion on this page is specific to the Geotools
  * implementation.
  */

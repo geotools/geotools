@@ -19,10 +19,10 @@
  */
 package org.geotools.metadata.iso.content;
 
+import org.geotools.api.metadata.content.RangeDimension;
+import org.geotools.api.util.InternationalString;
+import org.geotools.api.util.MemberName;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.metadata.content.RangeDimension;
-import org.opengis.util.InternationalString;
-import org.opengis.util.MemberName;
 
 /**
  * Information on the range of each dimension of a cell measurement value.

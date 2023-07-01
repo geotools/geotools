@@ -18,7 +18,7 @@ package org.geotools.jdbc;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import org.opengis.feature.type.FeatureType;
+import org.geotools.api.feature.type.FeatureType;
 
 /**
  * A strategy object used by the {@link JDBCDataStore} to determine the {@link PrimaryKey} for a

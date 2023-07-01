@@ -30,10 +30,10 @@ import static java.lang.Math.hypot;
 import static java.lang.Math.sin;
 
 import java.awt.geom.Point2D;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterValueGroup;
 
 /**
  * The USGS equatorial case of the {@linkplain Stereographic stereographic} projection. This is a

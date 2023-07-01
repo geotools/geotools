@@ -48,7 +48,7 @@ import org.geotools.data.util.NullProgressListener;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * Utility class for Shapefile spatial indexing

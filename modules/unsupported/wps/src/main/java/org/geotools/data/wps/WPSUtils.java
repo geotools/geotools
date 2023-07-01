@@ -46,7 +46,7 @@ import org.geotools.data.Parameter;
 import org.geotools.text.Text;
 import org.geotools.util.Converters;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.util.InternationalString;
+import org.geotools.api.util.InternationalString;
 
 /**
  * Contains helpful static util methods for the WPS module

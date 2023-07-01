@@ -58,14 +58,14 @@ import org.geotools.styling.UomOgcMapping;
 import org.geotools.xsd.Parser;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Function;
-import org.opengis.style.ContrastMethod;
-import org.opengis.style.Displacement;
-import org.opengis.style.GraphicalSymbol;
-import org.opengis.style.OverlapBehavior;
-import org.opengis.style.Rule;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.style.ContrastMethod;
+import org.geotools.api.style.Displacement;
+import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.OverlapBehavior;
+import org.geotools.api.style.Rule;
 import org.picocontainer.MutablePicoContainer;
 
 public class SEExampleTest extends SETestSupport {

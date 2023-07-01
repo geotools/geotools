@@ -19,9 +19,9 @@ package org.geotools.brewer.styling.builder;
 import java.awt.Color;
 import org.geotools.styling.Fill;
 import org.geotools.util.Converters;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
-public class FillBuilder extends AbstractStyleBuilder<org.opengis.style.Fill> {
+public class FillBuilder extends AbstractStyleBuilder<org.geotools.api.style.Fill> {
     Expression color;
 
     Expression opacity;
@@ -114,7 +114,7 @@ public class FillBuilder extends AbstractStyleBuilder<org.opengis.style.Fill> {
     }
 
     @Override
-    public FillBuilder reset(org.opengis.style.Fill original) {
+    public FillBuilder reset(org.geotools.api.style.Fill original) {
         if (original == null) {
             return unset();
         }

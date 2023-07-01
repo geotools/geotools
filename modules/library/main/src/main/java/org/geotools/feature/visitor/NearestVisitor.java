@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.Optional;
 import org.geotools.util.Converters;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.type.PropertyDescriptor;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.feature.type.PropertyDescriptor;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * Finds the nearest value to the provided one in the attribute domain.
@@ -65,7 +65,7 @@ public class NearestVisitor implements FeatureCalc, FeatureAttributeVisitor {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public void visit(org.opengis.feature.Feature feature) {
+    public void visit(org.geotools.api.feature.Feature feature) {
         // bail out immediately if we have already found an exact match
         if (visited) {
             return;

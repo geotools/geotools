@@ -21,8 +21,8 @@ import java.sql.Connection;
 import java.util.NoSuchElementException;
 import org.geotools.data.DelegatingFeatureReader;
 import org.geotools.data.FeatureReader;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 public class JDBCClosingFeatureReader
         implements DelegatingFeatureReader<SimpleFeatureType, SimpleFeature> {

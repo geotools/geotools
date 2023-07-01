@@ -11,10 +11,10 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.temporal.Instant;
-import org.opengis.temporal.Period;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.temporal.Instant;
+import org.geotools.api.temporal.Period;
 
 public class ExtractBoundsFilterVisitorTest extends TemporalFilterTestSupport {
 

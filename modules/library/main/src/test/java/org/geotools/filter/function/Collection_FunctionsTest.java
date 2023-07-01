@@ -24,8 +24,8 @@ import static org.junit.Assert.assertNotNull;
 import java.util.HashSet;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.junit.Test;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.PropertyName;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.PropertyName;
 
 /**
  * Do aggregate functions actually work?

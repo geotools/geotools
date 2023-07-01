@@ -25,10 +25,10 @@ import org.geotools.filter.expression.PropertyAccessorFactory;
 import org.geotools.filter.expression.PropertyAccessors;
 import org.geotools.util.Converters;
 import org.geotools.util.factory.Hints;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.expression.ExpressionVisitor;
-import org.opengis.filter.expression.PropertyName;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.expression.ExpressionVisitor;
+import org.geotools.api.filter.expression.PropertyName;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
@@ -149,7 +149,7 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
     /**
      * Gets the path to the attribute to be evaluated by this expression.
      *
-     * <p>{@link org.opengis.filter.expression.PropertyName#getPropertyName()}
+     * <p>{@link org.geotools.api.filter.expression.PropertyName#getPropertyName()}
      */
     @Override
     public String getPropertyName() {

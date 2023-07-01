@@ -21,8 +21,8 @@ import java.util.List;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * Helper class that allows the extraction of CQL expressions out of a plain text string using

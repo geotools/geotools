@@ -7,11 +7,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import org.geotools.api.referencing.FactoryException;
 import org.geotools.referencing.factory.gridshift.NADCONGridShiftFactory;
 import org.geotools.referencing.factory.gridshift.NADConGridShift;
 import org.geotools.util.URLs;
 import org.junit.Test;
-import org.opengis.referencing.FactoryException;
 
 public class NADCONGridShiftFactoryTest {
 

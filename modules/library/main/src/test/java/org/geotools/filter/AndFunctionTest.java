@@ -20,7 +20,7 @@ import static org.junit.Assert.assertThrows;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.filter.expression.Function;
+import org.geotools.api.filter.expression.Function;
 
 /**
  * Unit test for AndFunction

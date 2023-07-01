@@ -34,7 +34,7 @@ import org.geotools.gce.imagemosaic.acceptors.GranuleAcceptor;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /**
  * An {@link ImageMosaicElementConsumer} which handles a provided {@link SimpleFeature} by

@@ -21,9 +21,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import org.geotools.data.util.NullProgressListener;
-import org.opengis.coverage.Coverage;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.coverage.Coverage;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.util.ProgressListener;
 
 /** @author Simone Giannecchini, GeoSolutions */
 public class CoverageResponse {

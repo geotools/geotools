@@ -44,11 +44,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
-import org.opengis.parameter.Parameter;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.parameter.Parameter;
 
 /**
  * Test that all functions in the DefaultFunctionFactory have the toString() method implemented.
@@ -56,7 +56,7 @@ import org.opengis.parameter.Parameter;
  * @author Rob Ward
  */
 public class FunctionToStringTest {
-    static org.opengis.filter.FilterFactory ff;
+    static org.geotools.api.filter.FilterFactory ff;
 
     private DefaultFunctionFactory functionFactory;
 
@@ -172,7 +172,7 @@ public class FunctionToStringTest {
                     parameters.add(null);
                 } else if (type == Geometry.class) {
                     parameters.add(null);
-                } else if (type == org.opengis.geometry.Geometry.class) {
+                } else if (type == org.geotools.api.geometry.Geometry.class) {
                     parameters.add(null);
                 } else if (type == LineString.class) {
                     parameters.add(null);

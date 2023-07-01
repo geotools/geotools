@@ -21,11 +21,11 @@ package org.geotools.metadata.iso.distribution;
 
 import java.util.Collection;
 import javax.measure.Unit;
+import org.geotools.api.metadata.distribution.Medium;
+import org.geotools.api.metadata.distribution.MediumFormat;
+import org.geotools.api.metadata.distribution.MediumName;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.metadata.distribution.Medium;
-import org.opengis.metadata.distribution.MediumFormat;
-import org.opengis.metadata.distribution.MediumName;
-import org.opengis.util.InternationalString;
 
 /**
  * Information about the media on which the resource can be distributed.

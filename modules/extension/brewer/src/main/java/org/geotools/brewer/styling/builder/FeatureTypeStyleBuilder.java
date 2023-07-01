@@ -27,10 +27,10 @@ import org.geotools.feature.NameImpl;
 import org.geotools.styling.Description;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Rule;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.Id;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.SemanticType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.SemanticType;
 
 public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeStyle> {
     String name;
@@ -158,7 +158,7 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
         if (unset) {
             return null;
         }
-        List<org.opengis.style.Rule> list = new ArrayList<>();
+        List<org.geotools.api.style.Rule> list = new ArrayList<>();
         for (RuleBuilder ruleBuilder : rules) {
             list.add(ruleBuilder.build());
         }

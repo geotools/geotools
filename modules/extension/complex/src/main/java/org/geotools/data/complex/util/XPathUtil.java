@@ -28,9 +28,9 @@ import javax.xml.namespace.QName;
 import org.geotools.feature.type.Types;
 import org.geotools.util.CheckedArrayList;
 import org.geotools.util.SuppressFBWarnings;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.Name;
-import org.opengis.util.Cloneable;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.util.Cloneable;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**

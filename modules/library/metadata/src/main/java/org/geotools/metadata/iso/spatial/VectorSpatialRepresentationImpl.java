@@ -20,9 +20,9 @@
 package org.geotools.metadata.iso.spatial;
 
 import java.util.Collection;
-import org.opengis.metadata.spatial.GeometricObjects;
-import org.opengis.metadata.spatial.TopologyLevel;
-import org.opengis.metadata.spatial.VectorSpatialRepresentation;
+import org.geotools.api.metadata.spatial.GeometricObjects;
+import org.geotools.api.metadata.spatial.TopologyLevel;
+import org.geotools.api.metadata.spatial.VectorSpatialRepresentation;
 
 /**
  * Information about the vector spatial objects in the dataset.

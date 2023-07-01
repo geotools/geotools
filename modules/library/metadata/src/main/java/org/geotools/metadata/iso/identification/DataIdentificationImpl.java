@@ -21,14 +21,14 @@ package org.geotools.metadata.iso.identification;
 
 import java.util.Collection;
 import java.util.Locale;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.metadata.extent.Extent;
-import org.opengis.metadata.identification.CharacterSet;
-import org.opengis.metadata.identification.DataIdentification;
-import org.opengis.metadata.identification.Resolution;
-import org.opengis.metadata.identification.TopicCategory;
-import org.opengis.metadata.spatial.SpatialRepresentationType;
-import org.opengis.util.InternationalString;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.metadata.extent.Extent;
+import org.geotools.api.metadata.identification.CharacterSet;
+import org.geotools.api.metadata.identification.DataIdentification;
+import org.geotools.api.metadata.identification.Resolution;
+import org.geotools.api.metadata.identification.TopicCategory;
+import org.geotools.api.metadata.spatial.SpatialRepresentationType;
+import org.geotools.api.util.InternationalString;
 
 /**
  * Information required to identify a dataset.

@@ -21,7 +21,7 @@ import org.geotools.gml3.GML;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.temporal.Instant;
+import org.geotools.api.temporal.Instant;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:TimeInstantPropertyType.

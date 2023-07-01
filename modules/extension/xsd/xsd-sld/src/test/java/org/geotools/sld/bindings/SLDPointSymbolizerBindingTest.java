@@ -21,7 +21,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.geotools.styling.PointSymbolizer;
 import org.junit.Test;
-import org.opengis.filter.expression.Function;
+import org.geotools.api.filter.expression.Function;
 
 public class SLDPointSymbolizerBindingTest extends SLDTestSupport {
     @Test

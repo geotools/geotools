@@ -20,12 +20,12 @@ import java.math.BigDecimal;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.expression.Expression;
 
 public class IsEqualsToImplTest {
 
-    org.opengis.filter.FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
+    org.geotools.api.filter.FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
 
     @Test
     public void testOperandsSameType() {

@@ -13,7 +13,7 @@ import java.util.Map;
 import org.geotools.data.DataStore;
 import org.geotools.test.TestData;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /*
  *    GeoTools - The Open Source Java GIS Toolkit

@@ -29,7 +29,7 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.filter.capability.FunctionName;
+import org.geotools.api.filter.capability.FunctionName;
 
 /**
  * Area of provided geometry.
@@ -49,7 +49,7 @@ public class AreaFunction extends FunctionExpressionImpl {
 
     @Override
     public Object evaluate(Object feature) {
-        org.opengis.filter.expression.Expression geom = getParameters().get(0);
+        org.geotools.api.filter.expression.Expression geom = getParameters().get(0);
         Geometry g = (Geometry) geom.evaluate(feature);
 
         return Double.valueOf(getArea(g));

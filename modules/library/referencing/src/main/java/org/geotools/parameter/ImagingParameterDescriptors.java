@@ -33,6 +33,18 @@ import javax.media.jai.ParameterListDescriptor;
 import javax.media.jai.RegistryElementDescriptor;
 import javax.media.jai.registry.RenderedRegistryMode;
 import javax.media.jai.util.Range;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.metadata.Identifier;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.metadata.citation.OnLineFunction;
+import org.geotools.api.metadata.citation.ResponsibleParty;
+import org.geotools.api.metadata.citation.Role;
+import org.geotools.api.parameter.InvalidParameterNameException;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.ReferenceIdentifier;
+import org.geotools.api.util.GenericName;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.CitationImpl;
@@ -44,18 +56,6 @@ import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.util.NameFactory;
 import org.geotools.util.Utilities;
 import org.geotools.util.XArray;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.metadata.Identifier;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.metadata.citation.OnLineFunction;
-import org.opengis.metadata.citation.ResponsibleParty;
-import org.opengis.metadata.citation.Role;
-import org.opengis.parameter.InvalidParameterNameException;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.ReferenceIdentifier;
-import org.opengis.util.GenericName;
-import org.opengis.util.InternationalString;
 
 /**
  * Wraps a JAI's {@link ParameterListDescriptor}. This adaptor is provided for interoperability with

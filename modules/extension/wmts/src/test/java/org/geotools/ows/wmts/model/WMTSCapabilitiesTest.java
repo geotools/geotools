@@ -29,7 +29,7 @@ import org.geotools.ows.wmts.WebMapTileServer;
 import org.geotools.util.logging.Logging;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.metadata.citation.Address;
+import org.geotools.api.metadata.citation.Address;
 import org.xml.sax.SAXException;
 
 public class WMTSCapabilitiesTest {

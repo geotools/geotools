@@ -25,6 +25,22 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
+import org.geotools.api.metadata.Identifier;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.referencing.AuthorityFactory;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.ConcatenatedOperation;
+import org.geotools.api.referencing.operation.CoordinateOperation;
+import org.geotools.api.referencing.operation.CoordinateOperationAuthorityFactory;
+import org.geotools.api.referencing.operation.CoordinateOperationFactory;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.MathTransformFactory;
+import org.geotools.api.referencing.operation.NoninvertibleTransformException;
+import org.geotools.api.referencing.operation.Operation;
+import org.geotools.api.referencing.operation.OperationMethod;
+import org.geotools.api.referencing.operation.SingleOperation;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
 import org.geotools.referencing.AbstractIdentifiedObject;
@@ -34,22 +50,6 @@ import org.geotools.referencing.factory.BackingStoreException;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.factory.OptionalFactory;
-import org.opengis.metadata.Identifier;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.referencing.AuthorityFactory;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.ConcatenatedOperation;
-import org.opengis.referencing.operation.CoordinateOperation;
-import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
-import org.opengis.referencing.operation.CoordinateOperationFactory;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransformFactory;
-import org.opengis.referencing.operation.NoninvertibleTransformException;
-import org.opengis.referencing.operation.Operation;
-import org.opengis.referencing.operation.OperationMethod;
-import org.opengis.referencing.operation.SingleOperation;
 
 /**
  * A {@linkplain CoordinateOperationFactory coordinate operation factory} extended with the extra
@@ -181,8 +181,8 @@ public class AuthorityBackedFactory extends DefaultCoordinateOperationFactory
      *
      * <p>Note that this method may be invoked recursively. For example no operation may be
      * available from the {@linkplain #getAuthorityFactory underlying authority factory} between two
-     * {@linkplain org.opengis.referencing.crs.CompoundCRS compound CRS}, but an operation may be
-     * available between two components of those compound CRS.
+     * {@linkplain org.geotools.api.referencing.crs.CompoundCRS compound CRS}, but an operation may
+     * be available between two components of those compound CRS.
      *
      * @param sourceCRS Input coordinate reference system.
      * @param targetCRS Output coordinate reference system.
@@ -294,8 +294,8 @@ public class AuthorityBackedFactory extends DefaultCoordinateOperationFactory
      *
      * <p>Note that this method may be invoked recursively. For example no operation may be
      * available from the {@linkplain #getAuthorityFactory underlying authority factory} between two
-     * {@linkplain org.opengis.referencing.crs.CompoundCRS compound CRS}, but an operation may be
-     * available between two components of those compound CRS.
+     * {@linkplain org.geotools.api.referencing.crs.CompoundCRS compound CRS}, but an operation may
+     * be available between two components of those compound CRS.
      *
      * @param sourceCRS Input coordinate reference system.
      * @param targetCRS Output coordinate reference system.

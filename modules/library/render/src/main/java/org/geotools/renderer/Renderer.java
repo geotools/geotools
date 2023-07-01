@@ -21,8 +21,8 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.styling.Style;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.FeatureType;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
 
 /**
  * Base interface for renderer. This is very much work in progress. <strong>Note: this interface

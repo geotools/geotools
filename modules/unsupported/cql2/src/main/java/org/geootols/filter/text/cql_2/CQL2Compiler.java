@@ -26,16 +26,16 @@ import org.geotools.filter.text.cql_2.parsers.CQL2Parser;
 import org.geotools.filter.text.cql_2.parsers.Node;
 import org.geotools.filter.text.cql_2.parsers.ParseException;
 import org.geotools.filter.text.cql_2.parsers.TokenMgrError;
-import org.opengis.filter.BinaryComparisonOperator;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.Not;
-import org.opengis.filter.Or;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.spatial.BinarySpatialOperator;
-import org.opengis.filter.temporal.After;
-import org.opengis.filter.temporal.Before;
-import org.opengis.filter.temporal.During;
+import org.geotools.api.filter.BinaryComparisonOperator;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.Not;
+import org.geotools.api.filter.Or;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.spatial.BinarySpatialOperator;
+import org.geotools.api.filter.temporal.After;
+import org.geotools.api.filter.temporal.Before;
+import org.geotools.api.filter.temporal.During;
 
 /**
  * CQL2 compiler
@@ -385,10 +385,10 @@ public class CQL2Compiler extends CQL2Parser implements org.geotools.filter.text
         return null;
     }
 
-    private org.opengis.filter.expression.BinaryExpression buildBinaryExpression(int nodeType)
+    private org.geotools.api.filter.expression.BinaryExpression buildBinaryExpression(int nodeType)
             throws CQLException {
 
-        org.opengis.filter.expression.BinaryExpression expr = null;
+        org.geotools.api.filter.expression.BinaryExpression expr = null;
 
         switch (nodeType) {
             case JJTADDNODE:

@@ -17,8 +17,8 @@
 package org.geotools.referencing.crs;
 
 import java.util.Map;
+import org.geotools.api.referencing.IdentifiedObject;
 import org.geotools.util.DerivedMap;
-import org.opengis.referencing.IdentifiedObject;
 
 /**
  * A map without the <code>"conversion."</code> prefix in front of property keys. This

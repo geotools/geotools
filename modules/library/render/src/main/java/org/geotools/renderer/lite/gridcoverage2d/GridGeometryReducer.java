@@ -25,9 +25,9 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.util.logging.Logging;
-import org.opengis.coverage.Coverage;
-import org.opengis.geometry.Envelope;
-import org.opengis.referencing.operation.MathTransform2D;
+import org.geotools.api.coverage.Coverage;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.referencing.operation.MathTransform2D;
 
 /**
  * Helper class used to reduce a {@link Coverage} {@link GridGeometry2D} to be completely inside a

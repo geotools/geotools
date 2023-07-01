@@ -22,7 +22,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 /**
- * Handles xml parse events for {@link org.opengis.filter.expression.Expression} elements (literals,
+ * Handles xml parse events for {@link org.geotools.api.filter.expression.Expression} elements (literals,
  * rendering transforms, and functions).
  */
 public class ExpressionHandler extends SldTransformHandler {

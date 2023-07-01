@@ -25,7 +25,7 @@ import org.geotools.data.Parameter;
 import org.geotools.process.Process;
 import org.geotools.process.impl.SingleProcessFactory;
 import org.geotools.text.Text;
-import org.opengis.util.InternationalString;
+import org.geotools.api.util.InternationalString;
 
 /**
  * This class acts as a ProcessFactory for any process. It handles converting related bean

@@ -26,7 +26,7 @@ import org.geotools.styling.LinePlacement;
 import org.geotools.styling.PointPlacement;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 public class TextSymbolizerBuilder extends SymbolizerBuilder<TextSymbolizer> {
     FillBuilder fill = new FillBuilder(this).unset();

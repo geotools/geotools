@@ -26,7 +26,7 @@ import org.geotools.feature.type.AttributeTypeImpl;
 import org.geotools.gml3.GML3TestSupport;
 import org.geotools.xlink.XLINK;
 import org.junit.Test;
-import org.opengis.feature.type.AttributeType;
+import org.geotools.api.feature.type.AttributeType;
 
 /**
  * Test ReferenceTypeBinding.

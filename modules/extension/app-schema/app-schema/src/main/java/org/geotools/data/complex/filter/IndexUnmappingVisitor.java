@@ -19,7 +19,7 @@ package org.geotools.data.complex.filter;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
-import org.opengis.filter.expression.PropertyName;
+import org.geotools.api.filter.expression.PropertyName;
 
 public class IndexUnmappingVisitor extends DuplicatingFilterVisitor {
 

@@ -38,9 +38,9 @@ import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.swt.utils.Messages;
 import org.geotools.util.factory.GeoTools;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * Allows editing/viewing of a Style Layer Descriptor "TextSymbolizer".

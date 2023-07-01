@@ -17,14 +17,14 @@
 package org.geotools.styling;
 
 import java.util.Map;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * Custom symbolizer support.
  *
  * <p>This facility is used to allow you to work on your "vendor specific" symbolizer.
  */
-public interface ExtensionSymbolizer extends org.opengis.style.ExtensionSymbolizer, Symbolizer {
+public interface ExtensionSymbolizer extends org.geotools.api.style.ExtensionSymbolizer, Symbolizer {
 
     /**
      * Vendor specific name for your symbolizer.

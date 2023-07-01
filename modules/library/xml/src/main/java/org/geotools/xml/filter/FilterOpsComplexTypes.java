@@ -50,40 +50,40 @@ import org.geotools.xml.schema.impl.SequenceGT;
 import org.geotools.xml.xsi.XSISimpleTypes;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.filter.And;
-import org.opengis.filter.BinaryComparisonOperator;
-import org.opengis.filter.BinaryLogicOperator;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.Id;
-import org.opengis.filter.Not;
-import org.opengis.filter.Or;
-import org.opengis.filter.PropertyIsBetween;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.PropertyIsGreaterThan;
-import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
-import org.opengis.filter.PropertyIsLessThan;
-import org.opengis.filter.PropertyIsLessThanOrEqualTo;
-import org.opengis.filter.PropertyIsLike;
-import org.opengis.filter.PropertyIsNotEqualTo;
-import org.opengis.filter.PropertyIsNull;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.identity.FeatureId;
-import org.opengis.filter.identity.Identifier;
-import org.opengis.filter.spatial.BBOX;
-import org.opengis.filter.spatial.Beyond;
-import org.opengis.filter.spatial.BinarySpatialOperator;
-import org.opengis.filter.spatial.Contains;
-import org.opengis.filter.spatial.Crosses;
-import org.opengis.filter.spatial.DWithin;
-import org.opengis.filter.spatial.Disjoint;
-import org.opengis.filter.spatial.DistanceBufferOperator;
-import org.opengis.filter.spatial.Equals;
-import org.opengis.filter.spatial.Intersects;
-import org.opengis.filter.spatial.Overlaps;
-import org.opengis.filter.spatial.Touches;
-import org.opengis.filter.spatial.Within;
+import org.geotools.api.filter.And;
+import org.geotools.api.filter.BinaryComparisonOperator;
+import org.geotools.api.filter.BinaryLogicOperator;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.Not;
+import org.geotools.api.filter.Or;
+import org.geotools.api.filter.PropertyIsBetween;
+import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.PropertyIsGreaterThan;
+import org.geotools.api.filter.PropertyIsGreaterThanOrEqualTo;
+import org.geotools.api.filter.PropertyIsLessThan;
+import org.geotools.api.filter.PropertyIsLessThanOrEqualTo;
+import org.geotools.api.filter.PropertyIsLike;
+import org.geotools.api.filter.PropertyIsNotEqualTo;
+import org.geotools.api.filter.PropertyIsNull;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.identity.FeatureId;
+import org.geotools.api.filter.identity.Identifier;
+import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.api.filter.spatial.Beyond;
+import org.geotools.api.filter.spatial.BinarySpatialOperator;
+import org.geotools.api.filter.spatial.Contains;
+import org.geotools.api.filter.spatial.Crosses;
+import org.geotools.api.filter.spatial.DWithin;
+import org.geotools.api.filter.spatial.Disjoint;
+import org.geotools.api.filter.spatial.DistanceBufferOperator;
+import org.geotools.api.filter.spatial.Equals;
+import org.geotools.api.filter.spatial.Intersects;
+import org.geotools.api.filter.spatial.Overlaps;
+import org.geotools.api.filter.spatial.Touches;
+import org.geotools.api.filter.spatial.Within;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotSupportedException;
@@ -114,7 +114,7 @@ public class FilterOpsComplexTypes {
      *       <p>
      */
     protected static void encodeFilter(
-            org.opengis.filter.Filter filter, PrintHandler output, Map<String, Object> hints)
+            org.geotools.api.filter.Filter filter, PrintHandler output, Map<String, Object> hints)
             throws OperationNotSupportedException, IOException {
         if (filter instanceof BinaryLogicOperator) {
             FilterType.elems[LOGIC_TYPE]
@@ -881,7 +881,7 @@ public class FilterOpsComplexTypes {
             try {
                 FilterFactory2 fac = CommonFactoryFinder.getFilterFactory2(null);
                 // LogicFilter filter=fac.createLogicFilter(FilterType.LOGIC_OR);
-                List<org.opengis.filter.Filter> filters = new ArrayList<>();
+                List<org.geotools.api.filter.Filter> filters = new ArrayList<>();
                 Set<Identifier> ids = new HashSet<>();
                 boolean isOnlyFids = true;
                 for (ElementValue elementValue : value) {
@@ -2562,7 +2562,7 @@ public class FilterOpsComplexTypes {
                 throw new SAXException("Expected AND or OR logic filter");
             }
             try {
-                ArrayList<org.opengis.filter.Filter> children = new ArrayList<>(value.length);
+                ArrayList<org.geotools.api.filter.Filter> children = new ArrayList<>(value.length);
                 Set<Identifier> ids = new HashSet<>(value.length);
                 boolean fidOnly = true;
 
@@ -2638,7 +2638,7 @@ public class FilterOpsComplexTypes {
             }
             BinaryLogicOperator lf = (BinaryLogicOperator) value;
             output.startElement(element.getNamespace(), element.getName(), null);
-            for (org.opengis.filter.Filter f : lf.getChildren()) {
+            for (org.geotools.api.filter.Filter f : lf.getChildren()) {
                 encodeFilter(f, output, hints);
             }
             output.endElement(element.getNamespace(), element.getName());

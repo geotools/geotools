@@ -21,7 +21,7 @@ import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-/** Handles xml parse events for {@link org.opengis.style.RasterSymbolizer} elements. */
+/** Handles xml parse events for {@link org.geotools.api.style.RasterSymbolizer} elements. */
 public class RasterSymbolizerHandler extends SymbolizerHandler {
     @Override
     public void element(XMLStreamReader xml, SldTransformContext context)

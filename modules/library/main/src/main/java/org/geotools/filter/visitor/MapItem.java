@@ -16,7 +16,7 @@
  */
 package org.geotools.filter.visitor;
 
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * This function recodes values from a property or expression into corresponding values of arbitrary

@@ -23,9 +23,9 @@ import org.geotools.temporal.object.DefaultPeriod;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.temporal.Instant;
-import org.opengis.temporal.Period;
-import org.opengis.temporal.Position;
+import org.geotools.api.temporal.Instant;
+import org.geotools.api.temporal.Period;
+import org.geotools.api.temporal.Position;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:TimePeriodType.

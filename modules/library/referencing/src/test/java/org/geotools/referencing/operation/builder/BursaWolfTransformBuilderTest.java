@@ -21,13 +21,13 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.referencing.datum.BursaWolfParameters;
 import org.geotools.referencing.operation.transform.GeocentricTranslation;
 import org.junit.Test;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.operation.TransformException;
 
 public final class BursaWolfTransformBuilderTest {
     /** Test {@link BursaWolfTransformBuilder}. */

@@ -18,15 +18,15 @@ package org.geotools.filter;
 
 import java.util.List;
 import org.geotools.util.factory.Factory;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
 
 /**
  * Quick Function implementation for direct use as a factory.
  * <p>
  * Functions are published as part of DefaultFuntionFactory using the following workflow:
  * <ul>
- * <li>Implementation listed with Service Provider Interface <code>org.opengis.filter.Function</code></li>
+ * <li>Implementation listed with Service Provider Interface <code>org.geotools.api.filter.Function</code></li>
  * <li>Object created using a no argument constructor (or a constructor that takes hints). {@link Factory#getImplementationHints()} used used to
  * review the hints that are supported by the function implementation.</li>
  * <li>{@link #setParameters(List)} is used to supply the argument expressions.</li>
@@ -36,7 +36,7 @@ import org.opengis.filter.expression.Literal;
  * All implements should be registered for service provider interface
  *
  * <pre>
- * org.opengis.filter.Function</code>
+ * org.geotools.api.filter.Function</code>
  * DefaultFunctionFactor.
  *
  * <p>
@@ -60,5 +60,5 @@ public interface FunctionExpression extends Factory, Function {
     void setFallbackValue(Literal fallback);
 
     /** Sets the Parameters for the function. */
-    void setParameters(List<org.opengis.filter.expression.Expression> parameters);
+    void setParameters(List<org.geotools.api.filter.expression.Expression> parameters);
 }

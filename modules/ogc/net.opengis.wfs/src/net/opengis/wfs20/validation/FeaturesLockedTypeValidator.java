@@ -8,7 +8,7 @@ import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.util.FeatureMap;
 
-import org.opengis.filter.identity.FeatureId;
+import org.geotools.api.filter.identity.FeatureId;
 
 /**
  * A sample validator interface for {@link net.opengis.wfs20.FeaturesLockedType}.

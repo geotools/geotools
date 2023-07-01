@@ -20,9 +20,9 @@
 package org.geotools.metadata.iso.constraint;
 
 import java.util.Collection;
+import org.geotools.api.metadata.constraint.Constraints;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.metadata.constraint.Constraints;
-import org.opengis.util.InternationalString;
 
 /**
  * Restrictions on the access and use of a resource or metadata.

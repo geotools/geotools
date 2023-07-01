@@ -20,12 +20,12 @@
 package org.geotools.util;
 
 import java.util.Objects;
-import org.opengis.util.MemberName;
-import org.opengis.util.TypeName;
+import org.geotools.api.util.MemberName;
+import org.geotools.api.util.TypeName;
 
 /**
- * The name to identify a member of a {@linkplain org.opengis.util.Record record}. This is typically
- * used as of a <code>Map<{@linkplain MemberName},{@linkplain TypeName}></code>.
+ * The name to identify a member of a {@linkplain org.geotools.api.util.Record record}. This is
+ * typically used as of a <code>Map<{@linkplain MemberName},{@linkplain TypeName}></code>.
  *
  * <p>It may be more simple to think of {@code MemberName} <em>as</em> a {@link java.util.Map.Entry}
  * - since it is both the "key" and the "value".

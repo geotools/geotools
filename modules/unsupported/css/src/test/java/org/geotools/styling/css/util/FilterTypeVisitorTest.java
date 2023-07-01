@@ -25,7 +25,7 @@ import org.geotools.filter.text.ecql.ECQL;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 public class FilterTypeVisitorTest {
 

@@ -28,7 +28,7 @@ import org.geotools.graph.structure.Node;
 import org.geotools.graph.structure.basic.BasicGraph;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /** @author jfc173 */
 public class AutoClustUtils {

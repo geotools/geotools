@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.opengis.filter.capability.FunctionName;
+import org.geotools.api.filter.capability.FunctionName;
 
 /**
  * Apply an expression to each item of a list, resulting in a new list. Provide a list and an

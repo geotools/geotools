@@ -21,11 +21,11 @@ package org.geotools.referencing.datum;
 
 import java.util.Collections;
 import java.util.Map;
+import org.geotools.api.referencing.datum.ImageDatum;
+import org.geotools.api.referencing.datum.PixelInCell;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.wkt.Formatter;
 import org.geotools.util.Utilities;
-import org.opengis.referencing.datum.ImageDatum;
-import org.opengis.referencing.datum.PixelInCell;
 
 /**
  * Defines the origin of an image coordinate reference system. An image datum is used in a local

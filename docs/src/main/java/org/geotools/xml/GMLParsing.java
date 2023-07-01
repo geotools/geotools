@@ -26,7 +26,7 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.gml3.GMLConfiguration;
 import org.geotools.xsd.Parser;
 import org.geotools.xsd.StreamingParser;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.w3c.dom.Document;
 
 /**

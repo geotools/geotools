@@ -19,10 +19,10 @@ package org.geotools.feature;
 import java.rmi.server.UID;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.geotools.util.Converters;
-import org.opengis.feature.Feature;
-import org.opengis.feature.FeatureFactory;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.PropertyDescriptor;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.FeatureFactory;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.PropertyDescriptor;
 
 /**
  * This class provides some common functionality for builders and defines an abstraction for Feature

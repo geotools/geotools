@@ -22,7 +22,7 @@ import org.geotools.sld.bindings.SLDNormalizeBinding;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.filter.FilterFactory;
+import org.geotools.api.filter.FilterFactory;
 
 /**
  * Binding object for the element http://www.opengis.net/se:Normalize.

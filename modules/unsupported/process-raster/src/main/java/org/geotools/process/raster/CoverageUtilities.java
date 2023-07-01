@@ -41,12 +41,12 @@ import org.jaitools.numeric.Range;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
-import org.opengis.coverage.SampleDimensionType;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.Envelope;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.operation.TransformException;
+import org.geotools.api.coverage.SampleDimensionType;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * A set of utilities methods for the Grid Coverage package. Those methods are not really rigorous;

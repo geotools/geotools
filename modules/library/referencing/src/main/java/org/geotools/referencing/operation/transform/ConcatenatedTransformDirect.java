@@ -16,9 +16,9 @@
  */
 package org.geotools.referencing.operation.transform;
 
-import org.opengis.geometry.DirectPosition;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * Concatenated transform where the transfert dimension is the same than source and target

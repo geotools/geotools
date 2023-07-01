@@ -17,17 +17,17 @@
 
 package org.geotools.referencing.factory;
 
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.util.factory.Hints;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 
 /**
  * Wraps {@linkplain AllAuthoritiesFactory all factories} in a {@code "urn:ogc:def"} name space. An
  * example of complete URN is {@code "urn:ogc:def:crs:EPSG:6.8:4326"}.
  *
  * <p>Users don't need to create an instance of this class, since one is automatically registered
- * for use in {@link org.opengis.referencing.ReferencingFactoryFinder}.
+ * for use in {@link org.geotools.api.referencing.ReferencingFactoryFinder}.
  *
  * @author Justin Deoliveira
  * @author Martin Desruisseaux

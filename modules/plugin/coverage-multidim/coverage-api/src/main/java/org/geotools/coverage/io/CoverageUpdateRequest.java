@@ -19,7 +19,7 @@ package org.geotools.coverage.io;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import org.opengis.coverage.Coverage;
+import org.geotools.api.coverage.Coverage;
 
 /**
  * @author Simone Giannecchini, GeoSolutions

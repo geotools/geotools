@@ -31,9 +31,9 @@ import org.geotools.coverage.io.metadata.MetadataNode;
 import org.geotools.coverage.io.range.RangeType;
 import org.geotools.data.Parameter;
 import org.geotools.data.ResourceInfo;
-import org.opengis.feature.type.Name;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * Default implementation of {@link CoverageSource}.

@@ -20,8 +20,8 @@ import javax.xml.namespace.QName;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.identity.GmlObjectId;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.identity.GmlObjectId;
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:GmlObjectIdType.

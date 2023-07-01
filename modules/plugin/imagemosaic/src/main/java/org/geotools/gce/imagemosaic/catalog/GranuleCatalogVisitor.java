@@ -17,7 +17,7 @@
 package org.geotools.gce.imagemosaic.catalog;
 
 import org.geotools.gce.imagemosaic.GranuleDescriptor;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /**
  * Simple interface for creating visitors to a {@link GranuleCatalog} implementation.

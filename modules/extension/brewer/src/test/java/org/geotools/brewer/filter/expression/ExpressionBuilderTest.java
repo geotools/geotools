@@ -22,8 +22,8 @@ import static org.junit.Assert.assertNull;
 import org.geotools.brewer.styling.filter.expression.ExpressionBuilder;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * ExpressionBuilder is the main entry point from a fluent programming point of view. We will mostly

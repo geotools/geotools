@@ -16,11 +16,11 @@
  */
 package org.geotools.referencing.factory.wms;
 
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.geotools.measure.Latitude;
 import org.geotools.measure.Longitude;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 
 /**
  * A code parsed by the {@link AutoCRSFactory} methods. The expected format is {@code

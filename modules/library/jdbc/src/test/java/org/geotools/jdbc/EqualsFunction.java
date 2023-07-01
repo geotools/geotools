@@ -19,7 +19,7 @@ package org.geotools.jdbc;
 
 import org.geotools.filter.FunctionImpl;
 import org.geotools.util.Converters;
-import org.opengis.filter.expression.PropertyName;
+import org.geotools.api.filter.expression.PropertyName;
 
 /**
  * A test function used for jdbc tests.

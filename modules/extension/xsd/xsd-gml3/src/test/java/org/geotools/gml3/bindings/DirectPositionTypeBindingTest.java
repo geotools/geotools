@@ -30,7 +30,7 @@ import org.locationtech.jts.geom.CoordinateXYM;
 import org.locationtech.jts.geom.CoordinateXYZM;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
-import org.opengis.geometry.DirectPosition;
+import org.geotools.api.geometry.DirectPosition;
 import org.w3c.dom.Document;
 
 public class DirectPositionTypeBindingTest extends GML3TestSupport {

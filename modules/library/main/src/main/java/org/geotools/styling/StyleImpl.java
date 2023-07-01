@@ -23,8 +23,8 @@ import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.util.Utilities;
-import org.opengis.style.Description;
-import org.opengis.util.Cloneable;
+import org.geotools.api.style.Description;
+import org.geotools.api.util.Cloneable;
 
 /**
  * Implementation of style.
@@ -203,7 +203,7 @@ public class StyleImpl implements org.geotools.styling.Style, Cloneable {
     }
 
     @Override
-    public Object accept(org.opengis.style.StyleVisitor visitor, Object extraData) {
+    public Object accept(org.geotools.api.style.StyleVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
 

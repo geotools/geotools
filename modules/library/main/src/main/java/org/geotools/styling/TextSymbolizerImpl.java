@@ -22,10 +22,10 @@ import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.factory.GeoTools;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.StyleVisitor;
-import org.opengis.util.Cloneable;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.util.Cloneable;
 
 /**
  * Provides a Java representation of an SLD TextSymbolizer that defines how text symbols should be
@@ -83,7 +83,7 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
      * @param fill New value of property fill.
      */
     @Override
-    public void setFill(org.opengis.style.Fill fill) {
+    public void setFill(org.geotools.api.style.Fill fill) {
         if (this.fill == fill) {
             return;
         }
@@ -101,7 +101,7 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
     }
 
     @Override
-    public void setFont(org.opengis.style.Font font) {
+    public void setFont(org.geotools.api.style.Font font) {
         if (this.fonts.size() == 1 && this.fonts.get(0) == font) {
             return; // no change
         }
@@ -138,7 +138,7 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
      * @param halo New value of property halo.
      */
     @Override
-    public void setHalo(org.opengis.style.Halo halo) {
+    public void setHalo(org.geotools.api.style.Halo halo) {
         if (this.halo == halo) {
             return;
         }
@@ -182,7 +182,7 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
      * @param labelPlacement New value of property labelPlacement.
      */
     @Override
-    public void setLabelPlacement(org.opengis.style.LabelPlacement labelPlacement) {
+    public void setLabelPlacement(org.geotools.api.style.LabelPlacement labelPlacement) {
         if (this.placement == labelPlacement) {
             return;
         }
@@ -290,14 +290,14 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
         this.otherText = otherText;
     }
 
-    static TextSymbolizerImpl cast(org.opengis.style.Symbolizer symbolizer) {
+    static TextSymbolizerImpl cast(org.geotools.api.style.Symbolizer symbolizer) {
         if (symbolizer == null) {
             return null;
         } else if (symbolizer instanceof TextSymbolizerImpl) {
             return (TextSymbolizerImpl) symbolizer;
         } else {
-            org.opengis.style.TextSymbolizer textSymbolizer =
-                    (org.opengis.style.TextSymbolizer) symbolizer;
+            org.geotools.api.style.TextSymbolizer textSymbolizer =
+                    (org.geotools.api.style.TextSymbolizer) symbolizer;
             TextSymbolizerImpl copy = new TextSymbolizerImpl();
             copy.setDescription(textSymbolizer.getDescription());
             copy.setFill(textSymbolizer.getFill());

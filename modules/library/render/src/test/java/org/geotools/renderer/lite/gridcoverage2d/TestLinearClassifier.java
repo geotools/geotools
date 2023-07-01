@@ -44,7 +44,7 @@ import org.geotools.image.util.ComponentColorModelJAI;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.referencing.operation.TransformException;
+import org.geotools.api.referencing.operation.TransformException;
 
 /** @author Simone Giannecchini, GeoSolutions */
 public class TestLinearClassifier extends Assert {

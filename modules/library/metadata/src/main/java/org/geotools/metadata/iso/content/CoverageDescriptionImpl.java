@@ -20,10 +20,10 @@
 package org.geotools.metadata.iso.content;
 
 import java.util.Collection;
-import org.opengis.metadata.content.CoverageContentType;
-import org.opengis.metadata.content.CoverageDescription;
-import org.opengis.metadata.content.RangeDimension;
-import org.opengis.util.RecordType;
+import org.geotools.api.metadata.content.CoverageContentType;
+import org.geotools.api.metadata.content.CoverageDescription;
+import org.geotools.api.metadata.content.RangeDimension;
+import org.geotools.api.util.RecordType;
 
 /**
  * Information about the content of a grid data cell.

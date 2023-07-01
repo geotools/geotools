@@ -18,7 +18,7 @@ package org.geotools.data.ows;
 
 import java.awt.Dimension;
 import java.net.URL;
-import org.opengis.metadata.citation.ResponsibleParty;
+import org.geotools.api.metadata.citation.ResponsibleParty;
 
 /**
  * This is a data model for the Open Web Service (OWS) metadata. This should be extended while

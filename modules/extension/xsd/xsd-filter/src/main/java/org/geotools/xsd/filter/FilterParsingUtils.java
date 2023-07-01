@@ -25,20 +25,20 @@ import javax.xml.namespace.QName;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.FunctionFinder;
 import org.geotools.xsd.Node;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.BinaryComparisonOperator;
-import org.opengis.filter.BinaryLogicOperator;
-import org.opengis.filter.Filter;
-import org.opengis.filter.Id;
-import org.opengis.filter.Not;
-import org.opengis.filter.PropertyIsBetween;
-import org.opengis.filter.PropertyIsLike;
-import org.opengis.filter.PropertyIsNull;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.identity.Identifier;
-import org.opengis.filter.spatial.BinarySpatialOperator;
-import org.opengis.filter.temporal.BinaryTemporalOperator;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.BinaryComparisonOperator;
+import org.geotools.api.filter.BinaryLogicOperator;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.Not;
+import org.geotools.api.filter.PropertyIsBetween;
+import org.geotools.api.filter.PropertyIsLike;
+import org.geotools.api.filter.PropertyIsNull;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.identity.Identifier;
+import org.geotools.api.filter.spatial.BinarySpatialOperator;
+import org.geotools.api.filter.temporal.BinaryTemporalOperator;
 
 /**
  * Convenience class for filter parsing.
@@ -102,7 +102,7 @@ public class FilterParsingUtils {
     }
 
     public static List<Filter> BinaryLogicOperator_getChildFilters(
-            Node node, org.opengis.filter.FilterFactory factory) {
+            Node node, org.geotools.api.filter.FilterFactory factory) {
         List<Filter> filters = node.getChildValues(Filter.class);
         if (filters.size() < 2) {
             // look for Id elements and turn them into fid filters
@@ -121,7 +121,7 @@ public class FilterParsingUtils {
     }
 
     public static List<Filter> parseExtendedOperators(
-            Node node, org.opengis.filter.FilterFactory factory) {
+            Node node, org.geotools.api.filter.FilterFactory factory) {
         List<Filter> extOps = new ArrayList<>();
 
         // TODO: this doesn't actually handle the case of an extended operator that does not take
@@ -162,7 +162,7 @@ public class FilterParsingUtils {
     }
 
     static Filter lookupExtendedOperator(
-            Name opName, List<Expression> expressions, org.opengis.filter.FilterFactory factory) {
+            Name opName, List<Expression> expressions, org.geotools.api.filter.FilterFactory factory) {
         FunctionFinder finder = new FunctionFinder(null);
         Function f = finder.findFunction(opName.getLocalPart(), expressions);
         return factory.equal(f, factory.literal(true), true);

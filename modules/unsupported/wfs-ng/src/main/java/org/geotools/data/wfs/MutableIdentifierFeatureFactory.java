@@ -21,12 +21,12 @@ import org.geotools.feature.AbstractFeatureFactoryImpl;
 import org.geotools.feature.FeatureImpl;
 import org.geotools.feature.simple.SimpleFeatureImpl;
 import org.geotools.filter.FilterFactoryImpl;
-import org.opengis.feature.Feature;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.filter.FilterFactory2;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.filter.FilterFactory2;
 
 /**
  * If only {@link AbstractFeatureFactoryImpl}'s filter factory were setteable this class wouldn't be

@@ -85,22 +85,22 @@ import org.geotools.util.Utilities;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.opengis.coverage.ColorInterpretation;
-import org.opengis.coverage.grid.Format;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.InvalidParameterNameException;
-import org.opengis.parameter.InvalidParameterValueException;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.CoordinateOperation;
-import org.opengis.referencing.operation.CoordinateOperationFactory;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
+import org.geotools.api.coverage.ColorInterpretation;
+import org.geotools.api.coverage.grid.Format;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.InvalidParameterNameException;
+import org.geotools.api.parameter.InvalidParameterValueException;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.CoordinateOperation;
+import org.geotools.api.referencing.operation.CoordinateOperationFactory;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * This class is a first attempt for providing a way to get more informations out of a single 2D
@@ -979,13 +979,13 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         return getMetadataNames();
     }
 
-    /** @see org.opengis.coverage.grid.GridCoverageReader#getMetadataNames() */
+    /** @see org.geotools.api.coverage.grid.GridCoverageReader#getMetadataNames() */
     @Override
     public String[] getMetadataNames() {
         return null;
     }
 
-    /** @see org.opengis.coverage.grid.GridCoverageReader#getMetadataValue(java.lang.String) */
+    /** @see org.geotools.api.coverage.grid.GridCoverageReader#getMetadataValue(java.lang.String) */
     @Override
     public String getMetadataValue(final String name) {
         return getMetadataValue(coverageName, name);
@@ -1000,7 +1000,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         return null;
     }
 
-    /** @see org.opengis.coverage.grid.GridCoverageReader#getGridCoverageCount() */
+    /** @see org.geotools.api.coverage.grid.GridCoverageReader#getGridCoverageCount() */
     @Override
     public int getGridCoverageCount() {
         return 1;

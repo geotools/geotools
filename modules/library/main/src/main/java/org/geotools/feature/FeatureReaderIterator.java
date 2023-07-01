@@ -22,8 +22,8 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import org.geotools.data.FeatureReader;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.FeatureType;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
 
 /**
  * An iterator that wraps around a FeatureReader.
@@ -78,7 +78,7 @@ public class FeatureReaderIterator<F extends Feature> implements Iterator<F>, Cl
                     new NoSuchElementException("Could not obtain the next feature:" + io);
             problem.initCause(io);
             throw problem;
-        } catch (org.opengis.feature.IllegalAttributeException create) {
+        } catch (org.geotools.api.feature.IllegalAttributeException create) {
             close();
             NoSuchElementException problem =
                     new NoSuchElementException("Could not create the next feature:" + create);

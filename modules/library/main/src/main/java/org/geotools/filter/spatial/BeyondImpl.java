@@ -18,9 +18,9 @@ package org.geotools.filter.spatial;
 
 import org.geotools.filter.CartesianDistanceFilter;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.filter.FilterVisitor;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.spatial.Beyond;
+import org.geotools.api.filter.FilterVisitor;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.spatial.Beyond;
 
 public class BeyondImpl extends CartesianDistanceFilter implements Beyond {
 

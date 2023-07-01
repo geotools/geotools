@@ -30,8 +30,8 @@ import org.geotools.swing.event.MapMouseEvent;
 import org.geotools.swing.event.MapPaneAdapter;
 import org.geotools.swing.event.MapPaneEvent;
 import org.geotools.swing.locale.LocaleUtils;
-import org.opengis.geometry.Envelope;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * A status bar item that displays the world coordinates of the mouse cursor position.

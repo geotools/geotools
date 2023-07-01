@@ -43,9 +43,9 @@ import org.geotools.swt.SwtMapPane;
 import org.geotools.swt.styling.SimpleStyleConfigurator;
 import org.geotools.swt.utils.ImageCache;
 import org.geotools.swt.utils.Utils;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.TransformException;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * A {@link TableViewer table viewer} for {@link Layer map layers}.

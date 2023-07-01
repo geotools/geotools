@@ -20,11 +20,11 @@
 package org.geotools.metadata.iso;
 
 import java.util.Collection;
-import org.opengis.metadata.Datatype;
-import org.opengis.metadata.ExtendedElementInformation;
-import org.opengis.metadata.Obligation;
-import org.opengis.metadata.citation.ResponsibleParty;
-import org.opengis.util.InternationalString;
+import org.geotools.api.metadata.Datatype;
+import org.geotools.api.metadata.ExtendedElementInformation;
+import org.geotools.api.metadata.Obligation;
+import org.geotools.api.metadata.citation.ResponsibleParty;
+import org.geotools.api.util.InternationalString;
 
 /**
  * New metadata element, not found in ISO 19115, which is required to describe geographic data.

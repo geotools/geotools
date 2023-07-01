@@ -18,9 +18,9 @@ package org.geotools.util;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import org.geotools.api.util.Cloneable;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
-import org.opengis.util.Cloneable;
 
 /**
  * A {@linkplain Collections#checkedMap checked} and {@linkplain Collections#synchronizedMap

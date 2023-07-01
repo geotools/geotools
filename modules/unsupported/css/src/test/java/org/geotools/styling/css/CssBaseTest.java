@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 import org.apache.commons.io.IOUtils;
 import org.geotools.styling.css.selector.PseudoClass;
 import org.geotools.util.logging.Logging;
-import org.opengis.style.Style;
+import org.geotools.api.style.Style;
 import org.parboiled.errors.ErrorUtils;
 import org.parboiled.support.ParseTreeUtils;
 import org.parboiled.support.ParsingResult;

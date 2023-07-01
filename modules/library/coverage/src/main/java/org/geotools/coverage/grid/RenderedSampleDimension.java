@@ -31,10 +31,10 @@ import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.NumberRange;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
-import org.opengis.coverage.ColorInterpretation;
-import org.opengis.coverage.SampleDimensionType;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.util.InternationalString;
+import org.geotools.api.coverage.ColorInterpretation;
+import org.geotools.api.coverage.SampleDimensionType;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.util.InternationalString;
 
 /**
  * Describes the band values for a grid coverage.

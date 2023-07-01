@@ -31,7 +31,7 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.opengis.coverage.grid.GridCoverageReader;
+import org.geotools.api.coverage.grid.GridCoverageReader;
 
 public class AffineProcessTest {
 

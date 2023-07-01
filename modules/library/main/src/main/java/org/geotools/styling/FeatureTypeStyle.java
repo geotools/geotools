@@ -18,8 +18,8 @@ package org.geotools.styling;
 
 import java.util.List;
 import java.util.Map;
-import org.opengis.filter.expression.Expression;
-import org.opengis.metadata.citation.OnLineResource;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.metadata.citation.OnLineResource;
 
 /**
  * How to style a feature type. This is introduced as a convenient package that can be used
@@ -58,7 +58,7 @@ import org.opengis.metadata.citation.OnLineResource;
  * @version $Id$
  * @author James Macgill, CCG
  */
-public interface FeatureTypeStyle extends org.opengis.style.FeatureTypeStyle {
+public interface FeatureTypeStyle extends org.geotools.api.style.FeatureTypeStyle {
 
     /** This option influences how multiple rules matching the same feature are evaluated */
     public static String KEY_EVALUATION_MODE = "ruleEvaluation";

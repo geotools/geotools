@@ -24,7 +24,7 @@ import org.geotools.util.SimpleInternationalString;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.util.InternationalString;
+import org.geotools.api.util.InternationalString;
 
 /**
  * Binding object for the element http://www.opengis.net/se:Description.

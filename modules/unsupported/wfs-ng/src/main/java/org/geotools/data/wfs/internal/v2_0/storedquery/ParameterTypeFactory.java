@@ -25,7 +25,7 @@ import net.opengis.wfs20.ParameterType;
 import net.opengis.wfs20.StoredQueryDescriptionType;
 import net.opengis.wfs20.Wfs20Factory;
 import org.geotools.data.wfs.internal.FeatureTypeInfo;
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 /**
  * Builds parameters to pass to the stored query. It selects a value for each parameter in the

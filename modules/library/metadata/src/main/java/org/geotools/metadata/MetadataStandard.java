@@ -27,7 +27,7 @@ import org.geotools.metadata.i18n.Errors;
  * Enumeration of some metadata standards. A standard is defined by a set of Java interfaces in a
  * specific package or subpackages. For example the {@linkplain #ISO_19115 ISO 19115} standard is
  * defined by <A HREF="http://geoapi.sourceforge.net">GeoAPI</A> interfaces in the {@link
- * org.opengis.metadata} package and subpackages.
+ * org.geotools.api.metadata} package and subpackages.
  *
  * <p>This class provides some methods operating on metadata instances through {@linkplain
  * java.lang.reflect Java reflection}. The following rules are assumed:
@@ -51,28 +51,30 @@ public final class MetadataStandard {
     /**
      * An instance working on ISO 19111 standard as defined by <A
      * HREF="http://geoapi.sourceforge.net">GeoAPI</A> interfaces in the {@link
-     * org.opengis.referencing} package and subpackages.
+     * org.geotools.api.referencing} package and subpackages.
      *
      * @since 2.5
      */
     public static final MetadataStandard ISO_19111 =
-            new MetadataStandard("org.opengis.referencing.");
+            new MetadataStandard("org.geotools.api.referencing.");
 
     /**
      * An instance working on ISO 19115 standard as defined by <A
      * HREF="http://geoapi.sourceforge.net">GeoAPI</A> interfaces in the {@link
-     * org.opengis.metadata} package and subpackages.
+     * org.geotools.api.metadata} package and subpackages.
      */
-    public static final MetadataStandard ISO_19115 = new MetadataStandard("org.opengis.metadata.");
+    public static final MetadataStandard ISO_19115 =
+            new MetadataStandard("org.geotools.api.metadata.");
 
     /**
      * An instance working on ISO 19119 standard as defined by <A
-     * HREF="http://geoapi.sourceforge.net">GeoAPI</A> interfaces in the {@link org.opengis.service}
-     * package and subpackages.
+     * HREF="http://geoapi.sourceforge.net">GeoAPI</A> interfaces in the {@link
+     * org.geotools.api.service} package and subpackages.
      *
      * @since 2.5
      */
-    public static final MetadataStandard ISO_19119 = new MetadataStandard("org.opengis.service.");
+    public static final MetadataStandard ISO_19119 =
+            new MetadataStandard("org.geotools.api.service.");
 
     /** The root packages for metadata interfaces. Must ends with {@code "."}. */
     private final String interfacePackage;
@@ -95,7 +97,7 @@ public final class MetadataStandard {
     /**
      * Creates a new instance working on implementation of interfaces defined in the specified
      * package. For the ISO 19115 standard reflected by GeoAPI interfaces, it should be the {@link
-     * org.opengis.metadata} package.
+     * org.geotools.api.metadata} package.
      *
      * @param interfacePackage The root package for metadata interfaces.
      */

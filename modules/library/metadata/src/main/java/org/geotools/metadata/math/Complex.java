@@ -17,7 +17,7 @@
 package org.geotools.metadata.math;
 
 import java.io.Serializable;
-import org.opengis.util.Cloneable;
+import org.geotools.api.util.Cloneable;
 
 /**
  * A simple class for the handling of complex numbers. This is not the purpose of this class to

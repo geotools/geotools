@@ -21,20 +21,20 @@ package org.geotools.referencing.datum;
 
 import java.util.Collections;
 import java.util.Map;
+import org.geotools.api.referencing.datum.VerticalDatum;
+import org.geotools.api.referencing.datum.VerticalDatumType;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.wkt.Formatter;
 import org.geotools.util.Utilities;
-import org.opengis.referencing.datum.VerticalDatum;
-import org.opengis.referencing.datum.VerticalDatumType;
 
 /**
  * A textual description and/or a set of parameters identifying a particular reference level surface
  * used as a zero-height surface. The description includes its position with respect to the Earth
  * for any of the height types recognized by this standard. There are several types of vertical
  * datums, and each may place constraints on the {@linkplain
- * org.opengis.referencing.cs.CoordinateSystemAxis coordinate system axis} with which it is combined
- * to create a {@linkplain org.opengis.referencing.crs.VerticalCRS vertical CRS}.
+ * org.geotools.api.referencing.cs.CoordinateSystemAxis coordinate system axis} with which it is
+ * combined to create a {@linkplain org.geotools.api.referencing.crs.VerticalCRS vertical CRS}.
  *
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

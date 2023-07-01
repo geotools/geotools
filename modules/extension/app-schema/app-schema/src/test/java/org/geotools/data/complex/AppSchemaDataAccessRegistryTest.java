@@ -44,9 +44,9 @@ import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.util.URLs;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.Name;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
 
 /**
  * This tests AppSchemaDataAccessRegistry class. When an appschema data access is created, it would

@@ -41,7 +41,7 @@ import org.geotools.coverage.io.impl.DefaultFileDriver;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.util.factory.Hints;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.util.ProgressListener;
 
 /** NetCDF Driver */
 public class NetCDFDriver extends DefaultFileDriver implements FileDriver, Driver {

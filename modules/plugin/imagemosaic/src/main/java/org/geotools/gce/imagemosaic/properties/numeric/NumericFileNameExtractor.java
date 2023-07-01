@@ -26,7 +26,7 @@ import org.geotools.gce.imagemosaic.properties.RegExPropertiesCollector;
 import org.geotools.util.Converter;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 abstract class NumericFileNameExtractor<N extends Number & Comparable<N>>
         extends RegExPropertiesCollector {

@@ -19,7 +19,7 @@ package org.geotools.styling;
 import org.geotools.feature.NameImpl;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.style.SemanticType;
+import org.geotools.api.style.SemanticType;
 
 /**
  * This test case captures the FeatureTypeStyleImpl.clone() issue GEOT-5397

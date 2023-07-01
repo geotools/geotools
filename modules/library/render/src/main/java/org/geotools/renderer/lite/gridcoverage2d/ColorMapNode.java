@@ -42,9 +42,9 @@ import org.geotools.styling.ColorMapEntry;
 import org.geotools.styling.StyleVisitor;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
-import org.opengis.coverage.SampleDimensionType;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.util.InternationalString;
+import org.geotools.api.coverage.SampleDimensionType;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.util.InternationalString;
 
 /**
  * This {@link CoverageProcessingNode} is responsible for visiting the supplied {@link

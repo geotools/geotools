@@ -22,9 +22,9 @@ import java.util.List;
 import org.geotools.data.DataAccess;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.ServiceInfo;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.Name;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
 
 /**
  * Sample implementation of {@link DataAccess} for testing. Create with {@link
@@ -39,7 +39,7 @@ public class SampleDataAccess implements DataAccess<FeatureType, Feature> {
     /**
      * Unsupported operation.
      *
-     * @see org.geotools.data.DataAccess#createSchema(org.opengis.feature.type.FeatureType)
+     * @see org.geotools.data.DataAccess#createSchema(org.geotools.api.feature.type.FeatureType)
      */
     @Override
     public void createSchema(FeatureType featureType) throws IOException {
@@ -56,7 +56,7 @@ public class SampleDataAccess implements DataAccess<FeatureType, Feature> {
         // do nothing
     }
 
-    /** @see org.geotools.data.DataAccess#getFeatureSource(org.opengis.feature.type.Name) */
+    /** @see org.geotools.data.DataAccess#getFeatureSource(org.geotools.api.feature.type.Name) */
     @Override
     public FeatureSource<FeatureType, Feature> getFeatureSource(Name typeName) throws IOException {
         if (typeName.equals(SampleDataAccessData.MAPPEDFEATURE_TYPE_NAME)) {
@@ -101,7 +101,7 @@ public class SampleDataAccess implements DataAccess<FeatureType, Feature> {
      * Return the feature type for supported type name. Only {@link
      * SampleDataAccessData.MAPPEDFEATURE_TYPE_NAME} is supported.
      *
-     * @see org.geotools.data.DataAccess#getSchema(org.opengis.feature.type.Name)
+     * @see org.geotools.data.DataAccess#getSchema(org.geotools.api.feature.type.Name)
      */
     @Override
     public FeatureType getSchema(Name name) throws IOException {
@@ -117,8 +117,8 @@ public class SampleDataAccess implements DataAccess<FeatureType, Feature> {
     /**
      * Unsupported operation.
      *
-     * @see org.geotools.data.DataAccess#updateSchema(org.opengis.feature.type.Name,
-     *     org.opengis.feature.type.FeatureType)
+     * @see org.geotools.data.DataAccess#updateSchema(org.geotools.api.feature.type.Name,
+     *     org.geotools.api.feature.type.FeatureType)
      */
     @Override
     public void updateSchema(Name typeName, FeatureType featureType) throws IOException {
@@ -128,7 +128,7 @@ public class SampleDataAccess implements DataAccess<FeatureType, Feature> {
     /**
      * Unsupported operation.
      *
-     * @see org.geotools.data.DataAccess#removeSchema(org.opengis.feature.type.Name)
+     * @see org.geotools.data.DataAccess#removeSchema(org.geotools.api.feature.type.Name)
      */
     @Override
     public void removeSchema(Name typeName) throws IOException {

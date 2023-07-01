@@ -19,7 +19,7 @@
  */
 package org.geotools.metadata.iso.quality;
 
-import org.opengis.metadata.quality.CompletenessOmission;
+import org.geotools.api.metadata.quality.CompletenessOmission;
 
 /**
  * Data absent from the dataset, as described by the scope.

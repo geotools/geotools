@@ -34,7 +34,7 @@ import org.geotools.gce.imagemosaic.catalog.oracle.DataStoreWrapper;
 import org.geotools.gce.imagemosaic.catalog.oracle.FeatureTypeMapper;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.SQLDialect;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /** Specific SQLServer implementation for a {@link DataStoreWrapper} */
 public class SQLServerDatastoreWrapper extends DataStoreWrapper {

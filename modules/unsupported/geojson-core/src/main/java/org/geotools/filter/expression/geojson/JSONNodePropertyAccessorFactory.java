@@ -27,8 +27,8 @@ import org.geotools.data.geojson.GeoJSONReader;
 import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.PropertyAccessorFactory;
 import org.geotools.util.factory.Hints;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /** Property Accessor Factory for {@link JsonNode} */
 public class JSONNodePropertyAccessorFactory implements PropertyAccessorFactory {

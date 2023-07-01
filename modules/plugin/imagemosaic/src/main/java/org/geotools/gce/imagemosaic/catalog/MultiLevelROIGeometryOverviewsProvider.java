@@ -32,7 +32,7 @@ import org.geotools.coverage.grid.io.footprint.SidecarFootprintProvider;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /**
  * A {@link MultiLevelROIProvider} implementation used for returning {@link

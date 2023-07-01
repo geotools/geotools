@@ -36,9 +36,9 @@ import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
-import org.opengis.style.GraphicalSymbol;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.style.GraphicalSymbol;
 
 /**
  * Visitor used for rescaling a Style given a map scale (e.g., meters per pixel) and taking into

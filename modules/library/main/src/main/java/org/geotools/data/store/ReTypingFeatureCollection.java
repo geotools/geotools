@@ -27,12 +27,12 @@ import org.geotools.feature.collection.DecoratingSimpleFeatureCollection;
 import org.geotools.feature.visitor.CountVisitor;
 import org.geotools.feature.visitor.FeatureAttributeVisitor;
 import org.geotools.filter.FilterAttributeExtractor;
-import org.opengis.feature.FeatureVisitor;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.PropertyName;
+import org.geotools.api.feature.FeatureVisitor;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.PropertyName;
 
 /**
  * SimpleFeatureCollection decorator which decorates a feature collection "re-typing" its schema

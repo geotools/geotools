@@ -24,7 +24,7 @@ import javax.media.jai.Interpolation;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.opengis.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.GeneralParameterValue;
 
 /** All of the information in a {@link PGRasterReader#read(GeneralParameterValue[])} request. */
 class ReadRequest {

@@ -26,8 +26,8 @@ import net.opengis.wfs.QueryType;
 import net.opengis.wfs.WfsFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.geotools.xs.bindings.XSQNameBinding;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.PropertyName;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.PropertyName;
 
 public class QueryTypeBinding extends org.geotools.wfs.bindings.QueryTypeBinding {
 

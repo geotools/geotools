@@ -20,8 +20,8 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
+import org.geotools.api.geometry.DirectPosition;
 import org.geotools.geometry.DirectPosition2D;
-import org.opengis.geometry.DirectPosition;
 
 /**
  * Simple polygons like three - sided (triangle) or four - sided (qadrilateral), that are used for

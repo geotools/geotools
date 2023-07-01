@@ -21,8 +21,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import org.opengis.filter.capability.ComparisonOperators;
-import org.opengis.filter.capability.Operator;
+import org.geotools.api.filter.capability.ComparisonOperators;
+import org.geotools.api.filter.capability.Operator;
 
 /**
  * Implementation of the ComparisonOperators interface.

@@ -64,7 +64,7 @@ package org.geotools.styling;
  * @author James Macgill
  * @version $Id$
  */
-public interface PointSymbolizer extends org.opengis.style.PointSymbolizer, Symbolizer {
+public interface PointSymbolizer extends org.geotools.api.style.PointSymbolizer, Symbolizer {
 
     /**
      * Boolean vendor option, defaults to true. If true, in case no specified mark or graphics can
@@ -82,5 +82,5 @@ public interface PointSymbolizer extends org.opengis.style.PointSymbolizer, Symb
     Graphic getGraphic();
 
     /** Provides the graphical-symbolization parameter to use for the point geometry. */
-    void setGraphic(org.opengis.style.Graphic graphic);
+    void setGraphic(org.geotools.api.style.Graphic graphic);
 }

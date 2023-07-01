@@ -17,7 +17,7 @@
 package org.geotools.brewer.styling.builder;
 
 import org.geotools.styling.SelectedChannelType;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 public class SelectedChannelTypeBuilder extends AbstractStyleBuilder<SelectedChannelType> {
 

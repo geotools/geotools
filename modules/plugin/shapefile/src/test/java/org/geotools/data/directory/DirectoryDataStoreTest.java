@@ -22,7 +22,7 @@ import org.geotools.util.URLs;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /**
  * This one checks proper wrapping and some api methods. For a test of proper listing and updates

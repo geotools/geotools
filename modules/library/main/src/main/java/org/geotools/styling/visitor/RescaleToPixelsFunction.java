@@ -23,7 +23,7 @@ import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.opengis.filter.capability.FunctionName;
+import org.geotools.api.filter.capability.FunctionName;
 
 /**
  * Applies unit to pixel rescaling around expressions whose native unit cannot be determined in a

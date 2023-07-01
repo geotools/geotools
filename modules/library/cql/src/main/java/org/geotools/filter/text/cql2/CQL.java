@@ -25,9 +25,9 @@ import javax.xml.transform.TransformerException;
 import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.commons.ExpressionToText;
 import org.geotools.xml.filter.FilterTransformer;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * Utility class to parse <b>CQL</b> predicates and expressions to GeoAPI {@link Filter}s and {@link

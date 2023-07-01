@@ -86,10 +86,10 @@ import org.geotools.data.wfs.internal.WFSStrategy;
 import org.geotools.util.Version;
 import org.geotools.wfs.v1_0.WFS;
 import org.geotools.xsd.Configuration;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.Filter;
-import org.opengis.filter.capability.FilterCapabilities;
-import org.opengis.filter.sort.SortBy;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.capability.FilterCapabilities;
+import org.geotools.api.filter.sort.SortBy;
 
 /** */
 public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {

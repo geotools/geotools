@@ -26,7 +26,7 @@ import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 import org.xml.sax.EntityResolver;
 
 /** @author Matthias Schulze - Landesamt für Digitalisierung, Breitband und Vermessung */
@@ -35,7 +35,7 @@ public class AbstractWFSStrategyTest {
     /**
      * Test method for {@link
      * org.geotools.data.wfs.internal.AbstractWFSStrategy#splitFilters(javax.xml.namespace.QName,
-     * org.opengis.filter.Filter)}.
+     * org.geotools.api.filter.Filter)}.
      */
     @Test
     public void testSplitFilters() throws IOException, ServiceException {
@@ -55,7 +55,7 @@ public class AbstractWFSStrategyTest {
         // String resource = "GetFeature_" + typeName.getLocalPart() + ".xml";
 
         // Filter filter = request.getFilter();
-        org.opengis.filter.expression.Expression expr =
+        org.geotools.api.filter.expression.Expression expr =
                 new LiteralExpressionImpl("searchedproperty");
         String pattern = "value*";
         String wildcardMulti = "*";

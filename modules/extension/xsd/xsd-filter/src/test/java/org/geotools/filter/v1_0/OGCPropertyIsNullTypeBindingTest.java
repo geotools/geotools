@@ -21,7 +21,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.geotools.xsd.Binding;
 import org.junit.Test;
-import org.opengis.filter.PropertyIsNull;
+import org.geotools.api.filter.PropertyIsNull;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

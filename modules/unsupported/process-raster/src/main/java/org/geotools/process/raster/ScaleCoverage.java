@@ -24,7 +24,7 @@ import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.opengis.parameter.ParameterValueGroup;
+import org.geotools.api.parameter.ParameterValueGroup;
 
 /**
  * Applies a generic scale and translate operation to a coverage

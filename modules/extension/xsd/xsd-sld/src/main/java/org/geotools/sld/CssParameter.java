@@ -16,7 +16,7 @@
  */
 package org.geotools.sld;
 
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * A Cascading Style Sheet parameter.

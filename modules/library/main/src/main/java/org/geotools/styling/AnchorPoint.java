@@ -17,7 +17,7 @@
 package org.geotools.styling;
 
 import org.geotools.filter.ConstantExpression;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * An AnchorPoint identifies the location inside a label or graphic to use as an "anchor" for
@@ -26,7 +26,7 @@ import org.opengis.filter.expression.Expression;
  * @author Ian Turton
  * @version $Id$
  */
-public interface AnchorPoint extends org.opengis.style.AnchorPoint {
+public interface AnchorPoint extends org.geotools.api.style.AnchorPoint {
     // TODO: add AnchorPoint to GeoAPI
     /**
      * get the x coordinate of the anchor point
@@ -58,7 +58,7 @@ public interface AnchorPoint extends org.opengis.style.AnchorPoint {
                 }
 
                 @Override
-                public Object accept(org.opengis.style.StyleVisitor visitor, Object data) {
+                public Object accept(org.geotools.api.style.StyleVisitor visitor, Object data) {
                     cannotModifyConstant();
                     return null;
                 }

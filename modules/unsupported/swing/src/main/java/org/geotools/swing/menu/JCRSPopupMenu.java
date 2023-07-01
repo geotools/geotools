@@ -27,7 +27,7 @@ import org.geotools.swing.dialog.JCRSChooser;
 import org.geotools.swing.dialog.JExceptionReporter;
 import org.geotools.swing.dialog.JTextReporter;
 import org.geotools.swing.locale.LocaleUtils;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * A pop-up menu that can be used with a {@code MapPane} for coordinate reference system operations.

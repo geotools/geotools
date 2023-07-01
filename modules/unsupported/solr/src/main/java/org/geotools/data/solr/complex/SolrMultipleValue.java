@@ -27,10 +27,10 @@ import org.geotools.appschema.filter.FilterFactoryImplReportInvalidProperty;
 import org.geotools.data.complex.AttributeMapping;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.config.MultipleValue;
-import org.opengis.feature.Feature;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.ExpressionVisitor;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.ExpressionVisitor;
 
 /** Allows Solr multivalued fields to be used in App-Schema mappings. */
 public final class SolrMultipleValue implements MultipleValue {

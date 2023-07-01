@@ -11,8 +11,8 @@ import org.geotools.filter.v2_0.FES;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Encoder;
 import org.junit.Test;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
 import org.w3c.dom.Document;
 
 public class NotBindingTest {

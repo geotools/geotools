@@ -26,8 +26,8 @@ import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.geotools.data.complex.util.ComplexFeatureConstants;
 import org.geotools.feature.type.Types;
-import org.opengis.feature.Attribute;
-import org.opengis.feature.ComplexAttribute;
+import org.geotools.api.feature.Attribute;
+import org.geotools.api.feature.ComplexAttribute;
 
 /**
  * Special node pointer for {@link org.geotools.feature.Feature}.

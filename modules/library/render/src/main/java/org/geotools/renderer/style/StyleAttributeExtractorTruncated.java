@@ -21,8 +21,8 @@ import org.geotools.styling.Font;
 import org.geotools.styling.StyleVisitor;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.VolatileFunction;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.VolatileFunction;
 
 /**
  * A simple visitor whose purpose is to extract the set of attributes used by a Style, that is,
@@ -62,7 +62,7 @@ public class StyleAttributeExtractorTruncated extends StyleAttributeExtractor
     }
 
     @Override
-    public Object visit(org.opengis.filter.expression.Function expression, Object data) {
+    public Object visit(org.geotools.api.filter.expression.Function expression, Object data) {
         usingVolatileFunctions |= (expression instanceof VolatileFunction);
         return super.visit(expression, data);
     };

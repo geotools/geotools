@@ -21,7 +21,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.FeatureIterator;
-import org.opengis.feature.Feature;
+import org.geotools.api.feature.Feature;
 
 /**
  * A convenience class for dealing with wrapping a Collection Iterator up as a FeatureIterator.

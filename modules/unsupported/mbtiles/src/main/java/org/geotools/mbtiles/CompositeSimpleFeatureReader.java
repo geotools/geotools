@@ -22,8 +22,8 @@ import java.util.NoSuchElementException;
 import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 import org.geotools.data.simple.SimpleFeatureReader;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /**
  * A reader providing features from a sequence of delagate readers provided by {@link

@@ -19,12 +19,12 @@ package org.geotools.filter;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.filter.PropertyIsNotEqualTo;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.PropertyIsNotEqualTo;
+import org.geotools.api.filter.expression.Expression;
 
 public class IsNotEqualToImpltest {
 
-    org.opengis.filter.FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
+    org.geotools.api.filter.FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
 
     @Test
     public void testOperandsSameType() {

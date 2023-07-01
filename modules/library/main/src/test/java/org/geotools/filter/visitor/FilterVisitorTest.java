@@ -24,11 +24,11 @@ import org.geotools.feature.visitor.IdCollectorFilterVisitor;
 import org.geotools.feature.visitor.IdFinderFilterVisitor;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.FilterVisitor;
-import org.opengis.filter.Id;
-import org.opengis.filter.expression.PropertyName;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterVisitor;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.expression.PropertyName;
 
 /**
  * This test checks that our filter visitor examples on the wiki are in working order.

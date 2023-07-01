@@ -18,8 +18,8 @@ package org.geotools.feature.visitor;
 
 import java.util.List;
 import java.util.Optional;
-import org.opengis.feature.FeatureVisitor;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.feature.FeatureVisitor;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * Extension of FeatureVisitor for visitors that require access to properties of the feature

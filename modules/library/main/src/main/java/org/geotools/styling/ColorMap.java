@@ -38,7 +38,7 @@ package org.geotools.styling;
  * match character values. Not all systems can support opacity in colormaps. The default opacity is
  * 1.0 (fully opaque). Defaults for quantity and label are system-dependent.
  */
-public interface ColorMap extends org.opengis.style.ColorMap {
+public interface ColorMap extends org.geotools.api.style.ColorMap {
 
     public static final int TYPE_RAMP = 1;
 

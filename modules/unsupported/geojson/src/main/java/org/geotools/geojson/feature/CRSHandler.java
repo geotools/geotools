@@ -21,8 +21,8 @@ import org.geotools.geojson.HandlerBase;
 import org.geotools.geojson.IContentHandler;
 import org.geotools.referencing.CRS;
 import org.json.simple.parser.ParseException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 public class CRSHandler extends HandlerBase implements IContentHandler<CoordinateReferenceSystem> {
 

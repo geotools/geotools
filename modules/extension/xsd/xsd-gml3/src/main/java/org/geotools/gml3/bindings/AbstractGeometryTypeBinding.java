@@ -26,7 +26,7 @@ import org.geotools.xsd.Configuration;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:AbstractGeometryType.

@@ -17,9 +17,9 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.temporal.object.DefaultInstant;
 import org.geotools.temporal.object.DefaultPeriod;
 import org.geotools.temporal.object.DefaultPosition;
-import org.opengis.filter.FilterFactory;
-import org.opengis.temporal.Instant;
-import org.opengis.temporal.Period;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.temporal.Instant;
+import org.geotools.api.temporal.Period;
 
 public class TemporalFilterTestSupport {
 

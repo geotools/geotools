@@ -28,7 +28,7 @@ import org.geotools.styling.Symbolizer;
 import org.geotools.ysld.Band;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
-import org.opengis.style.ContrastMethod;
+import org.geotools.api.style.ContrastMethod;
 
 /** Handles the parsing of a Ysld "raster" symbolizer property into a {@link Symbolizer} object. */
 public class RasterParser extends SymbolizerParser<RasterSymbolizer> {

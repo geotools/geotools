@@ -21,8 +21,8 @@ import org.geotools.ows.wmts.request.GetTileRequest;
 import org.geotools.parameter.Parameter;
 import org.geotools.test.OnlineTestCase;
 import org.geotools.tile.Tile;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 public abstract class WMTSOnlineTestCase extends OnlineTestCase {
 

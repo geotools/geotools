@@ -28,8 +28,8 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
 import org.geotools.swt.utils.Utils;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.referencing.operation.MathTransform;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.referencing.operation.MathTransform;
 
 /**
  * Helper class used by {@code InfoTool} to query {@code MapLayers} with raster feature data ({@code

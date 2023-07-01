@@ -20,9 +20,9 @@ import java.io.Serializable;
 import java.util.AbstractList;
 import java.util.Arrays;
 import java.util.RandomAccess;
+import org.geotools.api.util.Cloneable;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
-import org.opengis.util.Cloneable;
 
 /**
  * A list of unsigned integer values. This class packs the values in the minimal amount of bits

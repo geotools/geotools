@@ -21,7 +21,7 @@ import java.util.Collection;
 import java.util.List;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 @RunWith(Parameterized.class)
 public class MedianVisitorTest<T> extends VisitorTestCase<T, T> {

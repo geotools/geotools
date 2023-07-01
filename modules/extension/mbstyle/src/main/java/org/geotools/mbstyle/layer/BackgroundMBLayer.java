@@ -27,9 +27,9 @@ import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
 import org.json.simple.JSONObject;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.GraphicFill;
-import org.opengis.style.SemanticType;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.GraphicFill;
+import org.geotools.api.style.SemanticType;
 
 /**
  * The background color or pattern of the map.

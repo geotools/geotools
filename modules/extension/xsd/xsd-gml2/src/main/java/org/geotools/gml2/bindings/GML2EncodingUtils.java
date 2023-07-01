@@ -39,11 +39,11 @@ import org.geotools.util.logging.Logging;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.SchemaIndex;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.Feature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.metadata.Identifier;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.metadata.Identifier;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -65,7 +65,7 @@ public class GML2EncodingUtils {
             return null;
         }
 
-        for (org.opengis.referencing.ReferenceIdentifier referenceIdentifier :
+        for (org.geotools.api.referencing.ReferenceIdentifier referenceIdentifier :
                 crs.getIdentifiers()) {
             Identifier id = (Identifier) referenceIdentifier;
 

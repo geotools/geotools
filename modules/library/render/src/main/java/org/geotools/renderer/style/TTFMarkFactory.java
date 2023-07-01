@@ -34,8 +34,8 @@ import javax.swing.JLabel;
 import javax.swing.WindowConstants;
 import org.geotools.renderer.util.ExplicitBoundsShape;
 import org.geotools.styling.ExternalMark;
-import org.opengis.feature.Feature;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * This factory accepts mark paths in the <code>ttf://fontName#code</code> format, where fontName is

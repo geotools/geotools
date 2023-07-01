@@ -21,11 +21,11 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.net.URI;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.NoSuchIdentifierException;
+import org.geotools.api.referencing.operation.TransformException;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.NoSuchIdentifierException;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * Unit tests for {@link NTv2Transform} public methods

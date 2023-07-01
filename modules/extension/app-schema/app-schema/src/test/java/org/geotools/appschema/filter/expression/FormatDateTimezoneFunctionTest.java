@@ -18,7 +18,7 @@ import java.util.TimeZone;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory2;
 
 /**
  * Test that {@link org.geotools.appschema.filter.expression.FormatDateTimezoneFunction} correctly

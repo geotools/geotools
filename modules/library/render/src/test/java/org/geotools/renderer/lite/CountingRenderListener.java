@@ -1,7 +1,7 @@
 package org.geotools.renderer.lite;
 
 import org.geotools.renderer.RenderListener;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 public class CountingRenderListener implements RenderListener {
     public int features = 0;

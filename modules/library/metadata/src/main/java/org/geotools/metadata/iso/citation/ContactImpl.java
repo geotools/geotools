@@ -20,13 +20,13 @@
 package org.geotools.metadata.iso.citation;
 
 import net.opengis.ows11.ContactType;
+import org.geotools.api.metadata.citation.Address;
+import org.geotools.api.metadata.citation.Contact;
+import org.geotools.api.metadata.citation.OnLineResource;
+import org.geotools.api.metadata.citation.Telephone;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.iso.MetadataEntity;
 import org.geotools.util.SimpleInternationalString;
-import org.opengis.metadata.citation.Address;
-import org.opengis.metadata.citation.Contact;
-import org.opengis.metadata.citation.OnLineResource;
-import org.opengis.metadata.citation.Telephone;
-import org.opengis.util.InternationalString;
 
 /**
  * Information required to enable contact with the responsible person and/or organization.

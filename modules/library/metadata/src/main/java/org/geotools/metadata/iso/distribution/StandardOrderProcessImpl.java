@@ -20,9 +20,9 @@
 package org.geotools.metadata.iso.distribution;
 
 import java.util.Date;
+import org.geotools.api.metadata.distribution.StandardOrderProcess;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.metadata.distribution.StandardOrderProcess;
-import org.opengis.util.InternationalString;
 
 /**
  * Common ways in which the resource may be obtained or received, and related instructions and fee

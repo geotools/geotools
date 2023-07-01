@@ -25,9 +25,9 @@ import java.util.Date;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.temporal.Position;
-import org.opengis.temporal.TemporalPosition;
-import org.opengis.util.InternationalString;
+import org.geotools.api.temporal.Position;
+import org.geotools.api.temporal.TemporalPosition;
+import org.geotools.api.util.InternationalString;
 
 /** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultPositionTest {

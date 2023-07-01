@@ -74,11 +74,11 @@ import org.geotools.styling.TextSymbolizer2;
 import org.geotools.text.Text;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
-import org.opengis.style.GraphicalSymbol;
-import org.opengis.style.SemanticType;
-import org.opengis.style.Symbolizer;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.SemanticType;
+import org.geotools.api.style.Symbolizer;
 
 /**
  * A symbol.
@@ -1987,7 +1987,7 @@ public class SymbolMBLayer extends MBLayer {
         MBFilter filter = getFilter();
 
         // List of opengis rules here (needed for constructor)
-        List<org.opengis.style.Rule> rules = new ArrayList<>();
+        List<org.geotools.api.style.Rule> rules = new ArrayList<>();
         Rule rule =
                 sf.rule(
                         getId(),

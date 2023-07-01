@@ -32,9 +32,9 @@ import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.ysld.ProcessUtil;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
 
 /** Handles parsing a Ysld "transform" property into a transformation {@link Function} object. */
 public class TransformHandler extends YsldParseHandler {

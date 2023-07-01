@@ -19,7 +19,7 @@ package org.geotools.brewer.styling.builder;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.styling.PolygonSymbolizer;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 public class PolygonSymbolizerBuilder extends SymbolizerBuilder<PolygonSymbolizer> {
     StrokeBuilder stroke = new StrokeBuilder(this).unset();
@@ -94,7 +94,7 @@ public class PolygonSymbolizerBuilder extends SymbolizerBuilder<PolygonSymbolize
         return this;
     }
 
-    public PolygonSymbolizerBuilder reset(org.opengis.style.PolygonSymbolizer symbolizer) {
+    public PolygonSymbolizerBuilder reset(org.geotools.api.style.PolygonSymbolizer symbolizer) {
         if (symbolizer == null) {
             return unset();
         }

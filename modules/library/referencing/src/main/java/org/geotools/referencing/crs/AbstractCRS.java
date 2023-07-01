@@ -22,6 +22,10 @@ package org.geotools.referencing.crs;
 import java.util.HashMap;
 import java.util.Map;
 import javax.measure.Unit;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.cs.CoordinateSystem;
+import org.geotools.api.util.InternationalString;
 import org.geotools.measure.Measure;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.referencing.AbstractIdentifiedObject;
@@ -30,10 +34,6 @@ import org.geotools.referencing.cs.AbstractCS;
 import org.geotools.referencing.util.CRSUtilities;
 import org.geotools.referencing.wkt.Formatter;
 import org.geotools.util.UnsupportedImplementationException;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.cs.CoordinateSystem;
-import org.opengis.util.InternationalString;
 
 /**
  * Abstract coordinate reference system, usually defined by a coordinate system and a datum.

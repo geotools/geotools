@@ -25,8 +25,8 @@ import org.geotools.coverage.processing.Operations;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.opengis.geometry.Envelope;
-import org.opengis.parameter.ParameterValueGroup;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.parameter.ParameterValueGroup;
 
 class GridCoverageUtil {
 

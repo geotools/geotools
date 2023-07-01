@@ -17,7 +17,7 @@
 package org.geotools.metadata.math;
 
 import java.io.Serializable;
-import org.opengis.util.Cloneable;
+import org.geotools.api.util.Cloneable;
 
 /**
  * Equation of a plane in a three-dimensional space (<var>x</var>,<var>y</var>,<var>z</var>). The

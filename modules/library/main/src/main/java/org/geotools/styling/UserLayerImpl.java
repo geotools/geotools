@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Objects;
 import org.geotools.data.DataStore;
 import org.geotools.util.Utilities;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /**
  * DJB: on inlinefeature support: The inline features also lets you "sort of" make your WMS into a

@@ -20,14 +20,14 @@
 package org.geotools.metadata.iso.lineage;
 
 import java.util.Collection;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.metadata.extent.Extent;
+import org.geotools.api.metadata.identification.RepresentativeFraction;
+import org.geotools.api.metadata.lineage.ProcessStep;
+import org.geotools.api.metadata.lineage.Source;
+import org.geotools.api.referencing.ReferenceSystem;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.metadata.extent.Extent;
-import org.opengis.metadata.identification.RepresentativeFraction;
-import org.opengis.metadata.lineage.ProcessStep;
-import org.opengis.metadata.lineage.Source;
-import org.opengis.referencing.ReferenceSystem;
-import org.opengis.util.InternationalString;
 
 /**
  * Information about the source data used in creating the data specified by the scope.

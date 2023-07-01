@@ -19,7 +19,7 @@ import org.geotools.util.factory.FactoryCreator;
 import org.geotools.util.factory.FactoryFinder;
 import org.geotools.util.factory.FactoryRegistry;
 import org.geotools.util.factory.Hints;
-import org.opengis.filter.FilterFactory;
+import org.geotools.api.filter.FilterFactory;
 
 public class ExampleFinder extends FactoryFinder {
 

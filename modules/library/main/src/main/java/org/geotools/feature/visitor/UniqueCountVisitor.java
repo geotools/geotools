@@ -18,8 +18,8 @@ package org.geotools.feature.visitor;
 
 import java.util.Set;
 import org.geotools.filter.IllegalFilterException;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * Determines the number of unique features in the collection on the basis of the specified feature

@@ -19,9 +19,9 @@
  */
 package org.geotools.metadata.iso.quality;
 
-import org.opengis.metadata.citation.Citation;
-import org.opengis.metadata.quality.ConformanceResult;
-import org.opengis.util.InternationalString;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.metadata.quality.ConformanceResult;
+import org.geotools.api.util.InternationalString;
 
 /**
  * Information about the outcome of evaluating the obtained value (or set of values) against a

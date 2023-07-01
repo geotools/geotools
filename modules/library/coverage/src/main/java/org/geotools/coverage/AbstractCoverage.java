@@ -66,18 +66,18 @@ import org.geotools.util.Classes;
 import org.geotools.util.LineWriter;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.logging.Logging;
-import org.opengis.coverage.CannotEvaluateException;
-import org.opengis.coverage.Coverage;
-import org.opengis.coverage.PointOutsideCoverageException;
-import org.opengis.coverage.SampleDimension;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.Envelope;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.cs.CoordinateSystem;
-import org.opengis.util.InternationalString;
-import org.opengis.util.Record;
-import org.opengis.util.RecordType;
+import org.geotools.api.coverage.CannotEvaluateException;
+import org.geotools.api.coverage.Coverage;
+import org.geotools.api.coverage.PointOutsideCoverageException;
+import org.geotools.api.coverage.SampleDimension;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.cs.AxisDirection;
+import org.geotools.api.referencing.cs.CoordinateSystem;
+import org.geotools.api.util.InternationalString;
+import org.geotools.api.util.Record;
+import org.geotools.api.util.RecordType;
 
 /**
  * Base class of all coverage type. The essential property of coverage is to be able to generate a
@@ -187,10 +187,10 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      * This is the CRS used when accessing a coverage or grid coverage with the {@code
      * evaluate(...)} methods. This coordinate reference system is usually different than coordinate
      * system of the grid. It is the target coordinate reference system of the {@link
-     * org.opengis.coverage.grid.GridGeometry#getGridToCRS gridToCRS} math transform.
+     * org.geotools.api.coverage.grid.GridGeometry#getGridToCRS gridToCRS} math transform.
      *
      * <p>Grid coverage can be accessed (re-projected) with new coordinate reference system with the
-     * {@link org.opengis.coverage.processing.GridCoverageProcessor} component. In this case, a new
+     * {@link org.geotools.api.coverage.processing.GridCoverageProcessor} component. In this case, a new
      * instance of a grid coverage is created.
      *
      * @return The coordinate reference system used when accessing a coverage or grid coverage with

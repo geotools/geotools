@@ -27,7 +27,7 @@ import org.geotools.gce.imagemosaic.MergeBehavior;
 import org.geotools.gce.imagemosaic.RasterLayerRequest;
 import org.geotools.gce.imagemosaic.RasterLayerResponse;
 import org.geotools.gce.imagemosaic.RasterManager;
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 /**
  * Create SubmosaicProducer based on whether the request was for a stacked mosaic with additional

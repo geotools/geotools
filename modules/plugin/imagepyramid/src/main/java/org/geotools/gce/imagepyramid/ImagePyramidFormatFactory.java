@@ -20,7 +20,7 @@ import java.awt.RenderingHints;
 import java.util.Collections;
 import java.util.Map;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
-import org.opengis.coverage.grid.Format;
+import org.geotools.api.coverage.grid.Format;
 
 /**
  * Implementation of the GridCoverageFormat service provider interface for arc grid files.

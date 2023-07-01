@@ -20,8 +20,8 @@ import java.io.File;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.Utilities;
-import org.opengis.geometry.BoundingBox;
-import org.opengis.metadata.extent.GeographicBoundingBox;
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.metadata.extent.GeographicBoundingBox;
 
 /**
  * A class storing utilities methods and constants.

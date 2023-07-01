@@ -17,8 +17,8 @@
 package org.geotools.data.simple;
 
 import org.geotools.data.FeatureLocking;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /**
  * Used to lock feature content to protect against other threads (or depending on the source of data

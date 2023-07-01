@@ -26,8 +26,8 @@ import java.util.regex.Pattern;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.util.logging.Logging;
-import org.opengis.geometry.Envelope;
-import org.opengis.referencing.FactoryException;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.referencing.FactoryException;
 
 /** The well known contents of the metadata table */
 public class MBTilesMetadata {

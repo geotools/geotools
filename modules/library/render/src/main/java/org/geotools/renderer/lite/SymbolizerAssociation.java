@@ -17,8 +17,8 @@
 package org.geotools.renderer.lite;
 
 import org.geotools.util.factory.Hints;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
 
 /**
  * Cache of context information associated with the Symbolizer.

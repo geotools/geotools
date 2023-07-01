@@ -29,7 +29,7 @@ import org.geotools.feature.visitor.CountVisitor;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.opengis.filter.capability.FunctionName;
+import org.geotools.api.filter.capability.FunctionName;
 
 /**
  * Calculates the count value of an attribute for a given SimpleFeatureCollection and Expression.

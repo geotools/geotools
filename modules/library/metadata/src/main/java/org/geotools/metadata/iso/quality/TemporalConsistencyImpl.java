@@ -19,7 +19,7 @@
  */
 package org.geotools.metadata.iso.quality;
 
-import org.opengis.metadata.quality.TemporalConsistency;
+import org.geotools.api.metadata.quality.TemporalConsistency;
 
 /**
  * Correctness of ordered events or sequences, if reported.

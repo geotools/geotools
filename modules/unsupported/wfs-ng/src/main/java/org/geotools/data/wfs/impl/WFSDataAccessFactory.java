@@ -40,8 +40,8 @@ import org.geotools.util.KVP;
 import org.geotools.util.PreventLocalEntityResolver;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.xml.XMLHandlerHints;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.FeatureType;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
 import org.xml.sax.EntityResolver;
 
 /**

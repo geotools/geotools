@@ -22,8 +22,8 @@ import org.geotools.data.Query;
 import org.geotools.jdbc.JDBCFeatureSourceOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.PropertyIsLike;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.PropertyIsLike;
 
 public class GeoPkgFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
 

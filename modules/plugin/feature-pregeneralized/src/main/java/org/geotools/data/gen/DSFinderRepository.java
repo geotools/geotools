@@ -36,7 +36,7 @@ import org.geotools.data.DataStoreFinder;
 import org.geotools.data.Repository;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.util.logging.Logging;
-import org.opengis.feature.type.Name;
+import org.geotools.api.feature.type.Name;
 
 /**
  * Implementation of {@link Repository} This class interprets the data source name as a file name or

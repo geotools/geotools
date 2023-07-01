@@ -40,7 +40,7 @@ import org.geotools.feature.NameImpl;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
-import org.opengis.feature.type.Name;
+import org.geotools.api.feature.type.Name;
 
 /** A data store for an Elasticsearch index containing geo_point or geo_shape types. */
 public class ElasticDataStore extends ContentDataStore {

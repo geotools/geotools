@@ -39,7 +39,7 @@ import org.elasticsearch.client.RestClient;
 import org.geotools.data.DataStore;
 import org.geotools.data.store.ContentFeatureSource;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 public class ElasticDataStoreIT extends ElasticTestSupport {
 

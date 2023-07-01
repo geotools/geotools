@@ -30,10 +30,10 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterVisitor;
-import org.opengis.filter.expression.PropertyName;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterVisitor;
+import org.geotools.api.filter.expression.PropertyName;
 
 /**
  * A {@link FootprintGeometryProvider} matching the current feature with the geometry of one feature

@@ -38,12 +38,12 @@ import org.geotools.process.RenderingProcess;
 import org.geotools.util.Converters;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.logging.Logging;
-import org.opengis.coverage.grid.GridCoverageReader;
-import org.opengis.coverage.grid.GridGeometry;
-import org.opengis.feature.type.Name;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.util.InternationalString;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.coverage.grid.GridCoverageReader;
+import org.geotools.api.coverage.grid.GridGeometry;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.util.InternationalString;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * A process factory that uses annotations to determine much of the metadata needed to describe a

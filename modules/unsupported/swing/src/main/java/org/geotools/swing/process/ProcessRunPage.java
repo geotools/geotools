@@ -33,8 +33,8 @@ import org.geotools.swing.wizard.JPage;
 import org.geotools.swing.wizard.ParamField;
 import org.geotools.text.Text;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.type.Name;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * This page is responsible for actually executing the process with the given parameters and then

@@ -48,11 +48,11 @@ import org.geotools.xml.schema.impl.FacetGT;
 import org.geotools.xml.schema.impl.SequenceGT;
 import org.geotools.xml.xsi.XSISimpleTypes;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.BinaryExpression;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.BinaryExpression;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotSupportedException;
@@ -1308,7 +1308,7 @@ public class FilterComplexTypes {
                     element.getNamespace().toString(), "name", null, "string", me.getName());
             output.startElement(element.getNamespace(), element.getName(), ai);
 
-            for (org.opengis.filter.expression.Expression arg : me.getParameters()) {
+            for (org.geotools.api.filter.expression.Expression arg : me.getParameters()) {
                 elems[0].getType().encode(null, arg, output, hints);
             }
             output.endElement(element.getNamespace(), element.getName());

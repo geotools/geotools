@@ -26,20 +26,20 @@ import org.geotools.util.Classes;
 import org.geotools.util.factory.FactoryNotFoundException;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.factory.Hints;
-import org.opengis.filter.FilterFactory;
-import org.opengis.geometry.coordinate.GeometryFactory;
-import org.opengis.geometry.primitive.PrimitiveFactory;
-import org.opengis.metadata.citation.CitationFactory;
-import org.opengis.referencing.crs.CRSAuthorityFactory;
-import org.opengis.referencing.crs.CRSFactory;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.cs.CSAuthorityFactory;
-import org.opengis.referencing.cs.CSFactory;
-import org.opengis.referencing.datum.DatumAuthorityFactory;
-import org.opengis.referencing.datum.DatumFactory;
-import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
-import org.opengis.referencing.operation.CoordinateOperationFactory;
-import org.opengis.util.NameFactory;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.geometry.coordinate.GeometryFactory;
+import org.geotools.api.geometry.primitive.PrimitiveFactory;
+import org.geotools.api.metadata.citation.CitationFactory;
+import org.geotools.api.referencing.crs.CRSAuthorityFactory;
+import org.geotools.api.referencing.crs.CRSFactory;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.cs.CSAuthorityFactory;
+import org.geotools.api.referencing.cs.CSFactory;
+import org.geotools.api.referencing.datum.DatumAuthorityFactory;
+import org.geotools.api.referencing.datum.DatumFactory;
+import org.geotools.api.referencing.operation.CoordinateOperationAuthorityFactory;
+import org.geotools.api.referencing.operation.CoordinateOperationFactory;
+import org.geotools.api.util.NameFactory;
 
 /**
  * Defines a common abstraction for getting the different factories. This default implementation

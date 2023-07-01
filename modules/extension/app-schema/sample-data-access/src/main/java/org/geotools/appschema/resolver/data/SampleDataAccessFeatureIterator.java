@@ -20,7 +20,7 @@ package org.geotools.appschema.resolver.data;
 import java.util.Iterator;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.opengis.feature.Feature;
+import org.geotools.api.feature.Feature;
 
 /**
  * Decorator for Iterator&lt;Feature&gt; to provide a FeatureIterator&lt;Feature&gt; that adds a

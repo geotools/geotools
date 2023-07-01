@@ -21,7 +21,7 @@ import javax.xml.namespace.QName;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.xsd.AbstractComplexBinding;
-import org.opengis.filter.spatial.DistanceBufferOperator;
+import org.geotools.api.filter.spatial.DistanceBufferOperator;
 
 /**
  * Binding object for the type http://www.opengis.net/fes/2.0:DistanceBufferType.

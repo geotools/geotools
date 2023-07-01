@@ -28,9 +28,9 @@ import org.geotools.data.Repository;
 import org.geotools.feature.NameImpl;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.Name;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
 
 /**
  * A catalog fetching the backing GeoTools data store from a {@link Repository} on demand

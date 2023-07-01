@@ -22,7 +22,7 @@ import org.geotools.xsd.impl.AttributeImpl;
 import org.geotools.xsd.impl.NodeImpl;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 public class GML2ParsingUtilsTest {
     @Test

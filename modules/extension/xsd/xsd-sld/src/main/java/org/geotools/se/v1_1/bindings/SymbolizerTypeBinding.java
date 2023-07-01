@@ -23,7 +23,7 @@ import org.geotools.styling.UomOgcMapping;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.style.Description;
+import org.geotools.api.style.Description;
 
 /**
  * Binding object for the type http://www.opengis.net/se:SymbolizerType.

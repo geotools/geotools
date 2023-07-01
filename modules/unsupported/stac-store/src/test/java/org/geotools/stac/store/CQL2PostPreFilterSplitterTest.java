@@ -24,7 +24,7 @@ import java.util.List;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.ecql.ECQL;
 import org.junit.Test;
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 public class CQL2PostPreFilterSplitterTest {
 

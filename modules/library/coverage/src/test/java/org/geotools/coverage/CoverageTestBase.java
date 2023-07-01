@@ -31,11 +31,11 @@ import org.geotools.coverage.grid.Viewer;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.test.TestData;
-import org.opengis.coverage.Coverage;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.coverage.grid.GridGeometry;
-import org.opengis.geometry.Envelope;
-import org.opengis.referencing.operation.MathTransform;
+import org.geotools.api.coverage.Coverage;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.coverage.grid.GridGeometry;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.referencing.operation.MathTransform;
 
 /**
  * Base class for tests on {@link AbstractCoverage} subclasses.

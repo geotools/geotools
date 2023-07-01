@@ -25,8 +25,8 @@ import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.util.Converters;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * The function checks whether a candidate value is contained in an arbitrary long list of user

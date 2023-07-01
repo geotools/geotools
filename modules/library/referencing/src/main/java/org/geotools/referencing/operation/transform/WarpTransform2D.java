@@ -28,17 +28,17 @@ import java.util.TimeZone;
 import javax.media.jai.JAI;
 import javax.media.jai.Warp;
 import javax.media.jai.WarpPolynomial;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.parameter.Parameter;
 import org.geotools.parameter.ParameterGroup;
 import org.geotools.util.Utilities;
 import org.geotools.util.XArray;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.NoninvertibleTransformException;
 
 /**
  * Wraps an arbitrary {@link Warp} object as a {@linkplain MathTransform2D two-dimensional
@@ -390,7 +390,7 @@ public class WarpTransform2D extends AbstractMathTransform
      *
      * @param name The image or {@linkplain org.geotools.coverage.grid.GridCoverage2D coverage}
      *     name, or {@code null} in unknow. Used only for formatting error message if some {@link
-     *     org.opengis.referencing.operation.TransformException} are thrown by the supplied
+     *     org.geotools.api.referencing.operation.TransformException} are thrown by the supplied
      *     transform.
      * @param transform The transform to returns as an image warp.
      * @return The warp for the given transform.

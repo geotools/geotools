@@ -12,8 +12,8 @@ import org.geotools.xsd.PullParser;
 import org.geotools.xsd.StreamingParser;
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 public class KMLParsingTest extends KMLTestSupport {
     @Test

@@ -18,7 +18,7 @@
 package org.geotools.styling;
 
 import org.geotools.filter.ConstantExpression;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * A PointPlacement specifies how a text label is positioned relative to a geometric point.
@@ -49,7 +49,7 @@ import org.opengis.filter.expression.Expression;
  *
  * @author Ian Turton
  */
-public interface PointPlacement extends org.opengis.style.PointPlacement, LabelPlacement {
+public interface PointPlacement extends org.geotools.api.style.PointPlacement, LabelPlacement {
     /**
      * Returns the AnchorPoint which identifies the location inside a textlabel to use as an
      * "anchor" for positioning it relative to a point geometry.
@@ -65,7 +65,7 @@ public interface PointPlacement extends org.opengis.style.PointPlacement, LabelP
      *
      * @param anchorPoint relative to the original geometry
      */
-    void setAnchorPoint(org.opengis.style.AnchorPoint anchorPoint);
+    void setAnchorPoint(org.geotools.api.style.AnchorPoint anchorPoint);
 
     /**
      * Returns the Displacement which gives X and Y offset displacements to use for rendering a text
@@ -80,7 +80,7 @@ public interface PointPlacement extends org.opengis.style.PointPlacement, LabelP
      * sets the Displacement which gives X and Y offset displacements to use for rendering a text
      * label near a point.
      */
-    void setDisplacement(org.opengis.style.Displacement displacement);
+    void setDisplacement(org.geotools.api.style.Displacement displacement);
 
     /**
      * Returns the rotation of the label.
@@ -120,7 +120,7 @@ public interface PointPlacement extends org.opengis.style.PointPlacement, LabelP
                 }
 
                 @Override
-                public Object accept(org.opengis.style.StyleVisitor visitor, Object data) {
+                public Object accept(org.geotools.api.style.StyleVisitor visitor, Object data) {
                     cannotModifyConstant();
                     return null;
                 }

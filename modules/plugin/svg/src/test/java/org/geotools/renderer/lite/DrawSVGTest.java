@@ -47,7 +47,7 @@ import org.geotools.util.logging.Logging;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.w3c.dom.Document;
 
 public class DrawSVGTest {

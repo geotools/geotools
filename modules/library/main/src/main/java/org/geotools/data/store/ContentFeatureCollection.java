@@ -38,11 +38,11 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Point;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.filter.Filter;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.filter.Filter;
 
 /**
  * A FeatureCollection that completely delegates to a backing FetaureSource#getReader
@@ -125,7 +125,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
     // Visitors
     @Override
     public void accepts(
-            org.opengis.feature.FeatureVisitor visitor, org.opengis.util.ProgressListener progress)
+            org.geotools.api.feature.FeatureVisitor visitor, org.geotools.api.util.ProgressListener progress)
             throws IOException {
         featureSource.accepts(query, visitor, progress);
     }
@@ -319,7 +319,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
     }
 
     @Override
-    public SimpleFeatureCollection sort(org.opengis.filter.sort.SortBy sort) {
+    public SimpleFeatureCollection sort(org.geotools.api.filter.sort.SortBy sort) {
         Query query = new Query();
         query.setSortBy(sort);
 

@@ -30,7 +30,7 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
-import org.opengis.coverage.grid.GridCoverage;
+import org.geotools.api.coverage.grid.GridCoverage;
 
 /** Returns a constant image with the same data type, size and layout as the first source */
 public class ZeroImageNode extends BaseCoverageProcessingNode {

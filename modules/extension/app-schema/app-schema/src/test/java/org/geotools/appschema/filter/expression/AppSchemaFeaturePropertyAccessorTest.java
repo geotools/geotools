@@ -32,10 +32,10 @@ import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.util.factory.Hints;
 import org.geotools.xsd.SchemaIndex;
 import org.junit.Test;
-import org.opengis.feature.type.ComplexType;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.Name;
-import org.opengis.feature.type.PropertyDescriptor;
+import org.geotools.api.feature.type.ComplexType;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.feature.type.PropertyDescriptor;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**

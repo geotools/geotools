@@ -31,16 +31,16 @@ import org.geotools.data.ResourceInfo;
 import org.geotools.referencing.CRS;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.feature.type.Name;
-import org.opengis.geometry.BoundingBox;
-import org.opengis.geometry.Envelope;
-import org.opengis.geometry.TransfiniteSet;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.TemporalCRS;
-import org.opengis.referencing.crs.VerticalCRS;
-import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.TransfiniteSet;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.TemporalCRS;
+import org.geotools.api.referencing.crs.VerticalCRS;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * Allows read-only access to a Coverage.

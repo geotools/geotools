@@ -32,7 +32,7 @@ import org.geotools.styling.SLD;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.swt.utils.Messages;
-import org.opengis.style.GraphicalSymbol;
+import org.geotools.api.style.GraphicalSymbol;
 
 /**
  * Allows editing/viewing of a Style Layer Descriptor "Graphic".

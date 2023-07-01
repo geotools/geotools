@@ -20,8 +20,8 @@ import java.util.Map;
 import java.util.Set;
 import org.geotools.data.Parameter;
 import org.geotools.util.factory.OptionalFactory;
-import org.opengis.feature.type.Name;
-import org.opengis.util.InternationalString;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.util.InternationalString;
 
 /**
  * Used to describe the parameters needed for a group of Process, and for creating a Process to use.

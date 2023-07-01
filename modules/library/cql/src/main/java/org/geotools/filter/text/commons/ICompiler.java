@@ -18,8 +18,8 @@ package org.geotools.filter.text.commons;
 
 import java.util.List;
 import org.geotools.filter.text.cql2.CQLException;
-import org.opengis.filter.Filter;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * This interface presents the methods which will be implemented by the different compiles.

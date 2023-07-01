@@ -23,7 +23,7 @@ import org.geotools.styling.Rule;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.style.Description;
+import org.geotools.api.style.Description;
 
 /**
  * Binding object for the element http://www.opengis.net/se:Rule.

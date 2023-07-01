@@ -25,13 +25,13 @@ import java.util.logging.Logger;
 import javax.measure.Unit;
 import org.geotools.measure.Units;
 import org.geotools.temporal.reference.DefaultTemporalCoordinateSystem;
-import org.opengis.temporal.CalendarDate;
-import org.opengis.temporal.DateAndTime;
-import org.opengis.temporal.Duration;
-import org.opengis.temporal.JulianDate;
-import org.opengis.temporal.OrdinalPosition;
-import org.opengis.temporal.TemporalCoordinate;
-import org.opengis.temporal.TemporalCoordinateSystem;
+import org.geotools.api.temporal.CalendarDate;
+import org.geotools.api.temporal.DateAndTime;
+import org.geotools.api.temporal.Duration;
+import org.geotools.api.temporal.JulianDate;
+import org.geotools.api.temporal.OrdinalPosition;
+import org.geotools.api.temporal.TemporalCoordinate;
+import org.geotools.api.temporal.TemporalCoordinateSystem;
 import si.uom.SI;
 
 /**

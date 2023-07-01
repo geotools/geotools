@@ -7,8 +7,8 @@ import org.geotools.data.store.ReprojectingFeatureCollection;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.referencing.CRS;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * A rendering transformation that reprojects a feature collection

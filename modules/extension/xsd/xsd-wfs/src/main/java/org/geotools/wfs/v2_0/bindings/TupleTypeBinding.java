@@ -21,7 +21,7 @@ import org.geotools.wfs.v2_0.WFS;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.feature.Feature;
+import org.geotools.api.feature.Feature;
 
 /**
  * Binding object for the type http://www.opengis.net/wfs/2.0:TupleType.

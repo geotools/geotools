@@ -20,13 +20,13 @@
 package org.geotools.referencing.operation;
 
 import java.util.Map;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.Operation;
+import org.geotools.api.referencing.operation.PassThroughOperation;
 import org.geotools.referencing.operation.transform.PassThroughTransform;
 import org.geotools.referencing.wkt.Formatter;
 import org.geotools.util.UnsupportedImplementationException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.Operation;
-import org.opengis.referencing.operation.PassThroughOperation;
 
 /**
  * A pass-through operation specifies that a subset of a coordinate tuple is subject to a specific

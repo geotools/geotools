@@ -41,8 +41,8 @@ import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.geotools.util.Range;
 import org.geotools.util.URLs;
-import org.opengis.filter.sort.SortBy;
-import org.opengis.filter.sort.SortOrder;
+import org.geotools.api.filter.sort.SortBy;
+import org.geotools.api.filter.sort.SortOrder;
 
 /** {@link FileResourceInfo} implementation for NetCDF. */
 class NetCDFFileResourceInfo extends DefaultResourceInfo implements FileResourceInfo {

@@ -19,19 +19,19 @@ package org.geotools.referencing.wkt;
 import java.net.URI;
 import java.text.ParseException;
 import java.text.ParsePosition;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.NoSuchIdentifierException;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.MathTransformFactory;
+import org.geotools.api.referencing.operation.NoninvertibleTransformException;
+import org.geotools.api.referencing.operation.Operation;
+import org.geotools.api.referencing.operation.OperationMethod;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.ReferencingFactoryFinder;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchIdentifierException;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransformFactory;
-import org.opengis.referencing.operation.NoninvertibleTransformException;
-import org.opengis.referencing.operation.Operation;
-import org.opengis.referencing.operation.OperationMethod;
 
 /**
  * Parser for {@linkplain MathTransform math transform} <A
@@ -285,7 +285,7 @@ public class MathTransformParser extends AbstractParser {
 
     /**
      * Returns the operation method for the last math transform parsed. This is used by {@link
-     * Parser} in order to built {@link org.opengis.referencing.crs.DerivedCRS}.
+     * Parser} in order to built {@link org.geotools.api.referencing.crs.DerivedCRS}.
      */
     final OperationMethod getOperationMethod() {
         if (lastMethod == null) {

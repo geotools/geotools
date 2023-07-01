@@ -22,8 +22,8 @@ import org.geotools.data.util.ColorConverterFactory;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.text.Text;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * Generate a Color using {@link ColorConverterFactory}, the input is expected to be a String.

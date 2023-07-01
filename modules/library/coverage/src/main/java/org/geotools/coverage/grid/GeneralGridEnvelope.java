@@ -25,10 +25,10 @@ import org.geotools.geometry.PixelTranslation;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Classes;
-import org.opengis.coverage.grid.GridCoordinates;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.geometry.Envelope;
-import org.opengis.referencing.datum.PixelInCell;
+import org.geotools.api.coverage.grid.GridCoordinates;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.referencing.datum.PixelInCell;
 
 /**
  * Defines a range of grid coverage coordinates.
@@ -200,13 +200,13 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
     /**
      * Casts the specified envelope into a grid envelope. This is sometime useful after an envelope
      * has been transformed from "real world" coordinates to grid coordinates using the {@linkplain
-     * org.opengis.coverage.grid.GridGeometry#getGridToCRS grid to CRS} transform. The floating
+     * org.geotools.api.coverage.grid.GridGeometry#getGridToCRS grid to CRS} transform. The floating
      * point values are rounded toward the nearest integers.
      *
      * <p><strong>Notice that highest values are interpreted as non-inclusive</strong>
      *
      * <p><b>Anchor</b><br>
-     * According OpenGIS specification, {@linkplain org.opengis.coverage.grid.GridGeometry grid
+     * According OpenGIS specification, {@linkplain org.geotools.api.coverage.grid.GridGeometry grid
      * geometry} maps pixel's center. But envelopes typically encompass all pixels. This means that
      * grid coordinates (0,0) has an envelope starting at (-0.5, -0.5). In order to revert back such
      * envelope to a grid envelope, it is necessary to add 0.5 to every coordinates (including the
@@ -215,7 +215,7 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
      * specify {@link PixelInCell#CELL_CORNER}.
      *
      * <p>The convention is specified as a {@link PixelInCell} code instead than the more detailed
-     * {@link org.opengis.metadata.spatial.PixelOrientation} because the latter is restricted to the
+     * {@link org.geotools.api.metadata.spatial.PixelOrientation} because the latter is restricted to the
      * two-dimensional case while the former can be used for any number of dimensions.
      *
      * @param envelope The envelope to use for initializing this grid envelope.
@@ -225,8 +225,8 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
      *     convention (no offset will be added).
      * @throws IllegalArgumentException If {@code anchor} is not valid.
      * @see org.geotools.referencing.GeneralEnvelope#GeneralEnvelope(GridEnvelope, PixelInCell,
-     *     org.opengis.referencing.operation.MathTransform,
-     *     org.opengis.referencing.crs.CoordinateReferenceSystem)
+     *     org.geotools.api.referencing.operation.MathTransform,
+     *     org.geotools.api.referencing.crs.CoordinateReferenceSystem)
      */
     public GeneralGridEnvelope(final Envelope envelope, final PixelInCell anchor)
             throws IllegalArgumentException {
@@ -236,7 +236,7 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
     /**
      * Casts the specified envelope into a grid envelope. This is sometime useful after an envelope
      * has been transformed from "real world" coordinates to grid coordinates using the {@linkplain
-     * org.opengis.coverage.grid.GridGeometry#getGridToCRS grid to CRS} transform. The floating
+     * org.geotools.api.coverage.grid.GridGeometry#getGridToCRS grid to CRS} transform. The floating
      * point values are rounded toward the nearest integers.
      *
      * <p><b>Note about rounding mode</b><br>
@@ -254,7 +254,7 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
      * nearest integer} in this implementation.
      *
      * <p><b>Anchor</b><br>
-     * According OpenGIS specification, {@linkplain org.opengis.coverage.grid.GridGeometry grid
+     * According OpenGIS specification, {@linkplain org.geotools.api.coverage.grid.GridGeometry grid
      * geometry} maps pixel's center. But envelopes typically encompass all pixels. This means that
      * grid coordinates (0,0) has an envelope starting at (-0.5, -0.5). In order to revert back such
      * envelope to a grid envelope, it is necessary to add 0.5 to every coordinates (including the
@@ -263,7 +263,7 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
      * specify {@link PixelInCell#CELL_CORNER}.
      *
      * <p>The convention is specified as a {@link PixelInCell} code instead than the more detailed
-     * {@link org.opengis.metadata.spatial.PixelOrientation} because the latter is restricted to the
+     * {@link org.geotools.api.metadata.spatial.PixelOrientation} because the latter is restricted to the
      * two-dimensional case while the former can be used for any number of dimensions.
      *
      * @param envelope The envelope to use for initializing this grid envelope.
@@ -276,8 +276,8 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
      *     always inclusive.
      * @throws IllegalArgumentException If {@code anchor} is not valid.
      * @see org.geotools.referencing.GeneralEnvelope#GeneralEnvelope(GridEnvelope, PixelInCell,
-     *     org.opengis.referencing.operation.MathTransform,
-     *     org.opengis.referencing.crs.CoordinateReferenceSystem)
+     *     org.geotools.api.referencing.operation.MathTransform,
+     *     org.geotools.api.referencing.crs.CoordinateReferenceSystem)
      */
     public GeneralGridEnvelope(
             final Envelope envelope, final PixelInCell anchor, final boolean isHighIncluded)

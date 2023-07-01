@@ -21,7 +21,7 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.filter.capability.FunctionName;
+import org.geotools.api.filter.capability.FunctionName;
 
 /**
  * A FilterFunction that expects a Geometry and returns it's minimum bounding circle.

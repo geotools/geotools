@@ -26,22 +26,22 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import org.geotools.geometry.GeometryBuilder;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.Geometry;
-import org.opengis.geometry.PositionFactory;
-import org.opengis.geometry.aggregate.AggregateFactory;
-import org.opengis.geometry.aggregate.MultiPrimitive;
-import org.opengis.geometry.coordinate.GeometryFactory;
-import org.opengis.geometry.coordinate.LineString;
-import org.opengis.geometry.coordinate.Position;
-import org.opengis.geometry.primitive.Curve;
-import org.opengis.geometry.primitive.CurveSegment;
-import org.opengis.geometry.primitive.OrientableCurve;
-import org.opengis.geometry.primitive.Point;
-import org.opengis.geometry.primitive.PrimitiveFactory;
-import org.opengis.geometry.primitive.Ring;
-import org.opengis.geometry.primitive.Surface;
-import org.opengis.geometry.primitive.SurfaceBoundary;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Geometry;
+import org.geotools.api.geometry.PositionFactory;
+import org.geotools.api.geometry.aggregate.AggregateFactory;
+import org.geotools.api.geometry.aggregate.MultiPrimitive;
+import org.geotools.api.geometry.coordinate.GeometryFactory;
+import org.geotools.api.geometry.coordinate.LineString;
+import org.geotools.api.geometry.coordinate.Position;
+import org.geotools.api.geometry.primitive.Curve;
+import org.geotools.api.geometry.primitive.CurveSegment;
+import org.geotools.api.geometry.primitive.OrientableCurve;
+import org.geotools.api.geometry.primitive.Point;
+import org.geotools.api.geometry.primitive.PrimitiveFactory;
+import org.geotools.api.geometry.primitive.Ring;
+import org.geotools.api.geometry.primitive.Surface;
+import org.geotools.api.geometry.primitive.SurfaceBoundary;
 
 /**
  * This class is used to parse well known text (WKT) which describes an ISO 19107 Geometry. The
@@ -52,10 +52,10 @@ import org.opengis.geometry.primitive.SurfaceBoundary;
  * <p>The types in the WKT format, and their mappings:
  *
  * <ul>
- *   <li>POINT org.opengis.geometry.primitive.Point
- *   <li>LINESTRING org.opengis.geometry.primitive.Curve
- *   <li>POLYGON org.opengis.geometry.primitive.Surface
- *   <li>MULTIPOINT org.opengis.geometry.coordinate.aggregate.MultiPoint Note that there is no
+ *   <li>POINT org.geotools.api.geometry.primitive.Point
+ *   <li>LINESTRING org.geotools.api.geometry.primitive.Curve
+ *   <li>POLYGON org.geotools.api.geometry.primitive.Surface
+ *   <li>MULTIPOINT org.geotools.api.geometry.coordinate.aggregate.MultiPoint Note that there is no
  *       factory method for MultiPoint. <br>
  *       For now, to keep implementation-independance I'm returning it as a List
  *   <li>MULTILINESTRING no matching type in the GeoAPI interfaces Could also be returned as list.

@@ -31,10 +31,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
+import org.geotools.api.referencing.FactoryException;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.hsqldb.jdbc.JDBCDataSource;
-import org.opengis.referencing.FactoryException;
 
 /**
  * This utility class knows everything there is to know about the care and feeding of our pet EPSG
@@ -44,9 +44,9 @@ import org.opengis.referencing.FactoryException;
  * <p>The EPSG database can be downloaded from <A
  * HREF="http://www.epsg.org">http://www.epsg.org</A>. The SQL scripts (modified for the HSQL syntax
  * as <A HREF="doc-files/HSQL.html">explained here</A>) are bundled into this plugin. The database
- * version is given in the {@linkplain org.opengis.metadata.citation.Citation#getEdition edition
- * attribute} of the {@linkplain org.opengis.referencing.AuthorityFactory#getAuthority authority}.
- * The HSQL database is read only.
+ * version is given in the {@linkplain org.geotools.api.metadata.citation.Citation#getEdition
+ * edition attribute} of the {@linkplain org.geotools.api.referencing.AuthorityFactory#getAuthority
+ * authority}. The HSQL database is read only.
  *
  * <p>
  *

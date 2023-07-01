@@ -17,10 +17,10 @@
 package org.geotools.referencing.operation.projection;
 
 import java.util.Collection;
+import org.geotools.api.parameter.GeneralParameterDescriptor;
+import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.referencing.operation.MathTransformProvider; // For javadoc
-import org.opengis.parameter.GeneralParameterDescriptor;
-import org.opengis.parameter.ParameterDescriptor;
 
 /**
  * A parameter descriptor identical to the supplied one except for the default value. The

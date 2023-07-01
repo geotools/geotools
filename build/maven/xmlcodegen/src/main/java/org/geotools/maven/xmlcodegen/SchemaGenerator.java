@@ -56,18 +56,18 @@ import org.geotools.graph.util.graph.DirectedCycleDetector;
 import org.geotools.util.Utilities;
 import org.geotools.xsd.Schemas;
 import org.geotools.xs.XS;
-import org.opengis.feature.Attribute;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.AttributeType;
-import org.opengis.feature.type.ComplexType;
-import org.opengis.feature.type.FeatureTypeFactory;
-import org.opengis.feature.type.Name;
-import org.opengis.feature.type.PropertyDescriptor;
-import org.opengis.feature.type.Schema;
+import org.geotools.api.feature.Attribute;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.AttributeType;
+import org.geotools.api.feature.type.ComplexType;
+import org.geotools.api.feature.type.FeatureTypeFactory;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.feature.type.PropertyDescriptor;
+import org.geotools.api.feature.type.Schema;
 
 /**
  * Parses an XML schema to procuce an instance of
- * {@link org.opengis.feature.type.Schema}.
+ * {@link org.geotools.api.feature.type.Schema}.
  *
  *         <p>
  *

@@ -21,10 +21,10 @@ package org.geotools.styling;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.GeoTools;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.StyleVisitor;
-import org.opengis.util.Cloneable;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.util.Cloneable;
 
 /**
  * @author Ian Turton, CCG
@@ -71,7 +71,7 @@ public class PointPlacementImpl implements PointPlacement, Cloneable {
      * @param anchorPoint New value of property anchorPoint.
      */
     @Override
-    public void setAnchorPoint(org.opengis.style.AnchorPoint anchorPoint) {
+    public void setAnchorPoint(org.geotools.api.style.AnchorPoint anchorPoint) {
         if (this.anchorPoint == anchorPoint) {
             return;
         }
@@ -95,7 +95,7 @@ public class PointPlacementImpl implements PointPlacement, Cloneable {
      * @param displacement New value of property displacement.
      */
     @Override
-    public void setDisplacement(org.opengis.style.Displacement displacement) {
+    public void setDisplacement(org.geotools.api.style.Displacement displacement) {
         if (this.displacement == displacement) {
             return;
         }
@@ -191,14 +191,14 @@ public class PointPlacementImpl implements PointPlacement, Cloneable {
         return result;
     }
 
-    static PointPlacementImpl cast(org.opengis.style.LabelPlacement placement) {
+    static PointPlacementImpl cast(org.geotools.api.style.LabelPlacement placement) {
         if (placement == null) {
             return null;
         } else if (placement instanceof PointPlacementImpl) {
             return (PointPlacementImpl) placement;
-        } else if (placement instanceof org.opengis.style.PointPlacement) {
-            org.opengis.style.PointPlacement pointPlacement =
-                    (org.opengis.style.PointPlacement) placement;
+        } else if (placement instanceof org.geotools.api.style.PointPlacement) {
+            org.geotools.api.style.PointPlacement pointPlacement =
+                    (org.geotools.api.style.PointPlacement) placement;
             PointPlacementImpl copy = new PointPlacementImpl();
             copy.setAnchorPoint(AnchorPointImpl.cast(pointPlacement.getAnchorPoint()));
             copy.setDisplacement(DisplacementImpl.cast(pointPlacement.getDisplacement()));

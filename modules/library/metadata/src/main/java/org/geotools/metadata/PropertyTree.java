@@ -25,11 +25,11 @@ import java.util.Map;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
+import org.geotools.api.util.CodeList;
+import org.geotools.api.util.InternationalString;
 import org.geotools.util.Classes;
 import org.geotools.util.OptionalDependencies;
 import org.geotools.util.Utilities;
-import org.opengis.util.CodeList;
-import org.opengis.util.InternationalString;
 
 /**
  * Represents the metadata property as a tree made from {@linkplain TreeNode tree nodes}. Note that

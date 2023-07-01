@@ -28,9 +28,9 @@ import org.geotools.styling.Rule;
 import org.geotools.styling.StyleFactory2;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.style.SemanticType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.style.SemanticType;
 
 /**
  * MBLayer wrapper (around one of the MBStyle layers).

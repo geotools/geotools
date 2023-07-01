@@ -23,9 +23,9 @@ import org.geotools.feature.type.Types;
 import org.geotools.util.factory.Hints;
 import org.geotools.xlink.XLINK;
 import org.geotools.xs.XSSchema;
-import org.opengis.feature.Property;
-import org.opengis.feature.type.Name;
-import org.opengis.feature.type.PropertyDescriptor;
+import org.geotools.api.feature.Property;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.feature.type.PropertyDescriptor;
 
 /**
  * This is just a compilation of constants and static methods used in app-schema module.
@@ -84,9 +84,9 @@ public class ComplexFeatureConstants {
     /** Unpacks a value from an attribute container */
     public static Object unpack(Object value) {
 
-        if (value instanceof org.opengis.feature.ComplexAttribute) {
+        if (value instanceof org.geotools.api.feature.ComplexAttribute) {
             Property simpleContent =
-                    ((org.opengis.feature.ComplexAttribute) value).getProperty(SIMPLE_CONTENT);
+                    ((org.geotools.api.feature.ComplexAttribute) value).getProperty(SIMPLE_CONTENT);
             if (simpleContent == null) {
                 return null;
             } else {
@@ -94,8 +94,8 @@ public class ComplexFeatureConstants {
             }
         }
 
-        if (value instanceof org.opengis.feature.Attribute) {
-            return ((org.opengis.feature.Attribute) value).getValue();
+        if (value instanceof org.geotools.api.feature.Attribute) {
+            return ((org.geotools.api.feature.Attribute) value).getValue();
         }
 
         return value;

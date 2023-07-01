@@ -28,7 +28,7 @@ import java.util.Random;
 import org.geotools.util.Range;
 import org.geotools.util.XArray;
 import org.junit.Test;
-import org.opengis.referencing.operation.TransformException;
+import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * Tests the {@link CategoryList} implementation.

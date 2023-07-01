@@ -22,7 +22,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 import org.geotools.filter.FilterFactoryImpl;
 import org.junit.Test;
-import org.opengis.filter.expression.Function;
+import org.geotools.api.filter.expression.Function;
 import wiremock.com.google.common.collect.Lists;
 
 /**

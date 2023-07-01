@@ -19,9 +19,9 @@ package org.geotools.coverage.grid.io;
 import java.util.HashMap;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.util.factory.Hints;
-import org.opengis.coverage.grid.Format;
-import org.opengis.coverage.grid.GridCoverageWriter;
-import org.opengis.parameter.ParameterValueGroup;
+import org.geotools.api.coverage.grid.Format;
+import org.geotools.api.coverage.grid.GridCoverageWriter;
+import org.geotools.api.parameter.ParameterValueGroup;
 
 /**
  * This class can be used when a proper {@link Format} cannot be found for some input sources.

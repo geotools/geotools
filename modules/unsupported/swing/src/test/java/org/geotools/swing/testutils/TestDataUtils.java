@@ -31,8 +31,8 @@ import org.geotools.map.Layer;
 import org.geotools.styling.SLD;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Provides static methods to load and access test data, thus reducing duplicated code in test

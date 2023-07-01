@@ -20,11 +20,11 @@ package org.geotools.referencing.factory;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+import org.geotools.api.referencing.AuthorityFactory;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
 import org.geotools.util.Classes;
 import org.geotools.util.Version;
-import org.opengis.referencing.AuthorityFactory;
 
 /**
  * Split a URI into its {@link #type} and {@link #version} parts for {@link

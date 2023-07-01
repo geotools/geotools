@@ -25,10 +25,10 @@ import javax.media.jai.PlanarImage;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.coverage.processing.OperationNotFoundException;
-import org.opengis.parameter.InvalidParameterValueException;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterValueGroup;
+import org.geotools.api.coverage.processing.OperationNotFoundException;
+import org.geotools.api.parameter.InvalidParameterValueException;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValueGroup;
 
 /**
  * Tests the ShadedRelief operation.

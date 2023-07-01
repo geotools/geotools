@@ -45,8 +45,8 @@ import org.geotools.renderer.i18n.Vocabulary;
 import org.geotools.renderer.i18n.VocabularyKeys;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.util.InternationalString;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.util.InternationalString;
 
 /**
  * This {@link BandMergeNode} wraps a {@link JAI} {@link BandMergeDescriptor} operation for usage

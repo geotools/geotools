@@ -28,8 +28,8 @@ import java.util.Collections;
 import java.util.List;
 import org.geotools.feature.NameImpl;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.referencing.FactoryException;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.referencing.FactoryException;
 
 /**
  * @author tkunicki@boundlessgeo.com

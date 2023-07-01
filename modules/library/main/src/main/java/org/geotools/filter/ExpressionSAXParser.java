@@ -27,13 +27,13 @@ import org.geotools.filter.expression.DivideImpl;
 import org.geotools.filter.expression.MultiplyImpl;
 import org.geotools.filter.expression.SubtractImpl;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.BinaryExpression;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.BinaryExpression;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
 import org.xml.sax.Attributes;
 
 /**
@@ -379,7 +379,7 @@ public class ExpressionSAXParser {
      *     attribute, illegal expression thrown otherwise.
      * @throws IllegalFilterException if the current expression is not math, attribute, or literal.
      */
-    private static String setInitialState(org.opengis.filter.expression.Expression expression)
+    private static String setInitialState(org.geotools.api.filter.expression.Expression expression)
             throws IllegalFilterException {
         if (expression instanceof BinaryExpression) {
             return "leftValue";

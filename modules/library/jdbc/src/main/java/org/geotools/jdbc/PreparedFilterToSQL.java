@@ -27,10 +27,10 @@ import org.geotools.geometry.jts.JTS;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.filter.Id;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.identity.Identifier;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.identity.Identifier;
 
 /**
  * Extension of FilterToSQL intended for use with prepared statements.
@@ -129,7 +129,7 @@ public class PreparedFilterToSQL extends FilterToSQL {
 
     /**
      * When returning true, the {@link Literal} visit will turn {@link Envelope} objects (typically
-     * coming from {@link org.opengis.filter.spatial.BBOX} filters) into {@link Polygon}. Defaults
+     * coming from {@link org.geotools.api.filter.spatial.BBOX} filters) into {@link Polygon}. Defaults
      * to true, subclasses can override.
      */
     protected boolean convertEnvelopeToPolygon() {

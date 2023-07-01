@@ -7,9 +7,9 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.filter.v2_0.FESTestSupport;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.sort.SortBy;
-import org.opengis.filter.sort.SortOrder;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.sort.SortBy;
+import org.geotools.api.filter.sort.SortOrder;
 import org.w3c.dom.Document;
 
 public class SortByTypeBindingTest extends FESTestSupport {

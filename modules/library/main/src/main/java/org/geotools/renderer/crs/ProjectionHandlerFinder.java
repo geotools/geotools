@@ -28,8 +28,8 @@ import org.geotools.util.factory.FactoryRegistry;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Looks up the {@link ProjectionHandler} for the specified rendering area. WARNING: this API is not

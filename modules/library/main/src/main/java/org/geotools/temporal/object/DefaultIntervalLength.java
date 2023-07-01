@@ -18,7 +18,7 @@ package org.geotools.temporal.object;
 
 import javax.measure.Unit;
 import org.geotools.util.Utilities;
-import org.opengis.temporal.IntervalLength;
+import org.geotools.api.temporal.IntervalLength;
 
 /**
  * A data type for intervals of time which supports the expression of duration in terms of a

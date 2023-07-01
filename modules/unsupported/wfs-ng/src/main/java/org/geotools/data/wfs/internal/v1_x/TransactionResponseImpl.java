@@ -35,7 +35,7 @@ import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Parser;
-import org.opengis.filter.identity.FeatureId;
+import org.geotools.api.filter.identity.FeatureId;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.SAXException;
 

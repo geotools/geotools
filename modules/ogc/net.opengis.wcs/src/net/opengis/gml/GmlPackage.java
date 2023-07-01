@@ -1934,7 +1934,7 @@ public interface GmlPackage extends EPackage {
 	 * The meta object id for the '<em>Grid Envelope</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.opengis.coverage.grid.GridEnvelope
+	 * @see org.geotools.api.coverage.grid.GridEnvelope
 	 * @see net.opengis.gml.impl.GmlPackageImpl#getGridEnvelope()
 	 * @generated
 	 */
@@ -3274,12 +3274,12 @@ public interface GmlPackage extends EPackage {
 	EDataType getVectorTypeBase();
 
 	/**
-	 * Returns the meta object for data type '{@link org.opengis.coverage.grid.GridEnvelope <em>Grid Envelope</em>}'.
+	 * Returns the meta object for data type '{@link org.geotools.api.coverage.grid.GridEnvelope <em>Grid Envelope</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for data type '<em>Grid Envelope</em>'.
-	 * @see org.opengis.coverage.grid.GridEnvelope
-	 * @model instanceClass="org.opengis.coverage.grid.GridEnvelope"
+	 * @see org.geotools.api.coverage.grid.GridEnvelope
+	 * @model instanceClass="org.geotools.api.coverage.grid.GridEnvelope"
 	 * @generated
 	 */
 	EDataType getGridEnvelope();
@@ -4364,7 +4364,7 @@ public interface GmlPackage extends EPackage {
 		 * The meta object literal for the '<em>Grid Envelope</em>' data type.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.opengis.coverage.grid.GridEnvelope
+		 * @see org.geotools.api.coverage.grid.GridEnvelope
 		 * @see net.opengis.gml.impl.GmlPackageImpl#getGridEnvelope()
 		 * @generated
 		 */

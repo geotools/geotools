@@ -48,9 +48,9 @@ import org.geotools.styling.LogarithmicContrastMethodStrategy;
 import org.geotools.styling.NormalizeContrastMethodStrategy;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
-import org.opengis.filter.expression.Expression;
-import org.opengis.referencing.operation.TransformException;
-import org.opengis.style.ContrastMethod;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.api.style.ContrastMethod;
 
 /**
  * Starting with version 14.x, {@link ContrastEnhancement} can be customized to support different

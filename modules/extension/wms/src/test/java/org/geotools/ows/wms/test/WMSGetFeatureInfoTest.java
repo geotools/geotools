@@ -26,7 +26,7 @@ import org.geotools.util.logging.Logging;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.internal.util.collections.Sets;
-import org.opengis.referencing.FactoryException;
+import org.geotools.api.referencing.FactoryException;
 
 public class WMSGetFeatureInfoTest {
 

@@ -25,8 +25,8 @@ import org.geotools.coverage.io.metadata.MetadataNode;
 import org.geotools.data.Parameter;
 import org.geotools.data.ServiceInfo;
 import org.geotools.util.factory.Hints;
-import org.opengis.feature.type.Name;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * Represents a Physical storage of coverage data (that we have a connection to).

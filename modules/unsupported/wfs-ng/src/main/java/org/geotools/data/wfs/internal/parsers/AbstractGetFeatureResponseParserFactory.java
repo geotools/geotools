@@ -29,8 +29,8 @@ import org.geotools.data.wfs.internal.WFSResponse;
 import org.geotools.data.wfs.internal.WFSResponseFactory;
 import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.type.FeatureType;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.type.FeatureType;
 
 /**
  * An abstract WFS response parser factory for GetFeature requests in GML output formats. Treats

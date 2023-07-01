@@ -16,8 +16,8 @@
  */
 package org.geotools.styling;
 
-import org.opengis.filter.expression.Function;
-import org.opengis.style.StyleVisitor;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.style.StyleVisitor;
 
 /**
  * An implementation of ColorReplacement; this is a wrapper around an implementaiton of the "Recode"

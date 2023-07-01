@@ -55,11 +55,11 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.PropertyDescriptor;
-import org.opengis.filter.FilterFactory;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.style.ContrastMethod;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.PropertyDescriptor;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.style.ContrastMethod;
 
 /**
  * Utilities class.
@@ -78,10 +78,10 @@ public class Utils {
     /** The default {@link StyleBuilder} to use. */
     public static StyleBuilder sb = new StyleBuilder(styleFactory, filterFactory);
 
-    private static final Class<?> BASE_GRID_CLASS = org.opengis.coverage.grid.GridCoverage.class;
+    private static final Class<?> BASE_GRID_CLASS = org.geotools.api.coverage.grid.GridCoverage.class;
 
     private static final Class<?> BASE_READER_CLASS =
-            org.opengis.coverage.grid.GridCoverageReader.class;
+            org.geotools.api.coverage.grid.GridCoverageReader.class;
 
     /**
      * Sets the location of the shell to the center of the screen.

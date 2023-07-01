@@ -17,8 +17,8 @@
 package org.geotools.coverage.io.range;
 
 import java.util.Set;
-import org.opengis.feature.type.Name;
-import org.opengis.util.InternationalString;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.util.InternationalString;
 
 /**
  * Defines the fields (categories, measures, or values) in the range records available for each
@@ -30,9 +30,9 @@ import org.opengis.util.InternationalString;
  */
 public interface RangeType {
     /**
-     * Retrieves this {@link RangeType} {@link org.opengis.feature.type.Name}.
+     * Retrieves this {@link RangeType} {@link org.geotools.api.feature.type.Name}.
      *
-     * @return this {@link RangeType} {@link org.opengis.feature.type.Name}.
+     * @return this {@link RangeType} {@link org.geotools.api.feature.type.Name}.
      */
     public Name getName();
 
@@ -44,7 +44,7 @@ public interface RangeType {
     public InternationalString getDescription();
 
     /**
-     * Get the {@link FieldType} {@link org.opengis.feature.type.Name}s.
+     * Get the {@link FieldType} {@link org.geotools.api.feature.type.Name}s.
      *
      * @return List of {@link FieldType} names
      */

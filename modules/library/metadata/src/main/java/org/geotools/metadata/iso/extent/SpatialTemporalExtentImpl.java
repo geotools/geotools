@@ -21,8 +21,8 @@ package org.geotools.metadata.iso.extent;
 
 import java.util.Collection;
 import java.util.Date;
-import org.opengis.metadata.extent.GeographicExtent;
-import org.opengis.metadata.extent.SpatialTemporalExtent;
+import org.geotools.api.metadata.extent.GeographicExtent;
+import org.geotools.api.metadata.extent.SpatialTemporalExtent;
 
 /**
  * Boundary enclosing the dataset, expressed as the closed set of (<var>x</var>,<var>y</var>)

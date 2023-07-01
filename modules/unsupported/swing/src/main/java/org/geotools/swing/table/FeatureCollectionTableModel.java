@@ -24,8 +24,8 @@ import javax.swing.SwingWorker;
 import javax.swing.table.AbstractTableModel;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.util.NullProgressListener;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /**
  * A Swing {@code TableModel} to retrieve attribute values from each feature in a feature collection

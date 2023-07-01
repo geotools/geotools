@@ -23,10 +23,10 @@ import java.util.logging.Logger;
 import org.geotools.filter.visitor.AbstractFilterVisitor;
 import org.geotools.filter.visitor.DefaultExpressionVisitor;
 import org.geotools.util.logging.Logging;
-import org.opengis.filter.Filter;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.InternalFunction;
-import org.opengis.filter.expression.VolatileFunction;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.InternalFunction;
+import org.geotools.api.filter.expression.VolatileFunction;
 
 /**
  * A filter wrapper that stores the evaluation of results against the last input, if the next call

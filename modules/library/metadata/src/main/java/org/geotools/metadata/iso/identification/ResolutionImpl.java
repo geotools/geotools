@@ -19,9 +19,9 @@
  */
 package org.geotools.metadata.iso.identification;
 
+import org.geotools.api.metadata.identification.RepresentativeFraction;
+import org.geotools.api.metadata.identification.Resolution;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.metadata.identification.RepresentativeFraction;
-import org.opengis.metadata.identification.Resolution;
 
 /**
  * Level of detail expressed as a scale factor or a ground distance.

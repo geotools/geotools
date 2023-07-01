@@ -19,7 +19,7 @@ package org.geootols.filter.text.cql_2;
 
 import org.geotools.filter.text.commons.AbstractCompilerFactory;
 import org.geotools.filter.text.commons.ICompiler;
-import org.opengis.filter.FilterFactory;
+import org.geotools.api.filter.FilterFactory;
 
 /** Provides the implementation of {@link CQL2Compiler} */
 final class CQL2CompilerFactory extends AbstractCompilerFactory {

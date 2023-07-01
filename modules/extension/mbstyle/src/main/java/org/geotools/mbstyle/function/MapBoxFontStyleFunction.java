@@ -20,7 +20,7 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.opengis.filter.capability.FunctionName;
+import org.geotools.api.filter.capability.FunctionName;
 
 /** Returns "italic" or "normal" based on the font name */
 public class MapBoxFontStyleFunction extends FunctionImpl {

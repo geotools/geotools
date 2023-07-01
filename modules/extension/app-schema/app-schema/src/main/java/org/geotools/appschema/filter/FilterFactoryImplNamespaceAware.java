@@ -18,7 +18,7 @@
 package org.geotools.appschema.filter;
 
 import org.geotools.filter.FilterFactoryImpl;
-import org.opengis.filter.expression.PropertyName;
+import org.geotools.api.filter.expression.PropertyName;
 import org.xml.sax.helpers.NamespaceSupport;
 
 public class FilterFactoryImplNamespaceAware extends FilterFactoryImpl {

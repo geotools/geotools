@@ -23,7 +23,7 @@ import java.util.List;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.util.NumberRange;
-import org.opengis.feature.Feature;
+import org.geotools.api.feature.Feature;
 
 /**
  * Used to cache labels prior to their being drawn on the screen.

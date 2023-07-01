@@ -16,9 +16,9 @@
  */
 package org.geotools.styling;
 
-import org.opengis.util.InternationalString;
+import org.geotools.api.util.InternationalString;
 
-public interface Description extends org.opengis.style.Description {
+public interface Description extends org.geotools.api.style.Description {
 
     /**
      * Human readable title.

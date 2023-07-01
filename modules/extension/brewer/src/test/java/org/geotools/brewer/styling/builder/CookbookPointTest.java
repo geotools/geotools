@@ -19,12 +19,12 @@ import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
 import org.geotools.styling.TextSymbolizer;
 import org.junit.Test;
-import org.opengis.filter.Filter;
-import org.opengis.filter.expression.Function;
-import org.opengis.style.Fill;
-import org.opengis.style.GraphicalSymbol;
-import org.opengis.style.Mark;
-import org.opengis.style.Stroke;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.Stroke;
 import si.uom.SI;
 
 public class CookbookPointTest extends AbstractStyleTest {

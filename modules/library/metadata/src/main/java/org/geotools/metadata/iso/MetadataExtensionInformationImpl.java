@@ -20,9 +20,9 @@
 package org.geotools.metadata.iso;
 
 import java.util.Collection;
-import org.opengis.metadata.ExtendedElementInformation;
-import org.opengis.metadata.MetadataExtensionInformation;
-import org.opengis.metadata.citation.OnLineResource;
+import org.geotools.api.metadata.ExtendedElementInformation;
+import org.geotools.api.metadata.MetadataExtensionInformation;
+import org.geotools.api.metadata.citation.OnLineResource;
 
 /**
  * Information describing metadata extensions.

@@ -20,7 +20,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.text.cql2.CQLCompiler;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQLCompiler;
-import org.opengis.filter.FilterFactory;
+import org.geotools.api.filter.FilterFactory;
 
 /**
  * Creates the compiler required for the specific language.

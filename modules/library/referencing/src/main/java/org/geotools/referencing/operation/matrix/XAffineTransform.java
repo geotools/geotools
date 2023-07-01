@@ -337,7 +337,7 @@ public class XAffineTransform extends AffineTransform {
      * @param dest Rectangle in which to place the result. If null, a new rectangle will be created.
      * @return The direct transform of the {@code bounds} rectangle.
      * @see org.geotools.referencing.CRS#transform(
-     *     org.opengis.referencing.operation.MathTransform2D, Rectangle2D, Rectangle2D)
+     *     org.geotools.api.referencing.operation.MathTransform2D, Rectangle2D, Rectangle2D)
      */
     public static Rectangle2D transform(
             final AffineTransform transform, final Rectangle2D bounds, final Rectangle2D dest) {

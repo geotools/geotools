@@ -34,9 +34,9 @@ import java.util.Comparator;
 import java.util.ConcurrentModificationException;
 import java.util.NoSuchElementException;
 import java.util.SortedSet;
+import org.geotools.api.util.Cloneable;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
-import org.opengis.util.Cloneable;
 
 /**
  * An ordered set of ranges. {@code RangeSet} objects store an arbitrary number of {@linkplain Range

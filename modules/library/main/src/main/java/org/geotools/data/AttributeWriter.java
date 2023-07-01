@@ -17,7 +17,7 @@
 package org.geotools.data;
 
 import java.io.IOException;
-import org.opengis.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.AttributeDescriptor;
 
 /**
  * - Added hasNext to support the FeatureWriter API. - Changed order of writer parameters to match

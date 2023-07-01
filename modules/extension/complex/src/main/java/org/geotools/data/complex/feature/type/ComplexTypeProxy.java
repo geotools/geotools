@@ -19,10 +19,10 @@ package org.geotools.data.complex.feature.type;
 
 import java.util.Collection;
 import java.util.Map;
-import org.opengis.feature.Property;
-import org.opengis.feature.type.ComplexType;
-import org.opengis.feature.type.Name;
-import org.opengis.feature.type.PropertyDescriptor;
+import org.geotools.api.feature.Property;
+import org.geotools.api.feature.type.ComplexType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.feature.type.PropertyDescriptor;
 
 /**
  * @author Gabriel Roldan (Axios Engineering)

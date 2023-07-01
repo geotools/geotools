@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.EnvFunction;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * A {@link ConnectionLifecycleListener} that executes custom SQL commands on connection grab and

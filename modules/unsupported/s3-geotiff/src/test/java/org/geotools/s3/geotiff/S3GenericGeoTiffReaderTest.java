@@ -32,7 +32,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.opengis.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.GeneralParameterValue;
 
 /**
  * Tests the S3GeoTiffReader and S3ImageInputStream for use with an Amazon S3 Compatible object

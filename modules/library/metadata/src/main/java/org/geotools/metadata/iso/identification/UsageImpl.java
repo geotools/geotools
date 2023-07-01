@@ -21,10 +21,10 @@ package org.geotools.metadata.iso.identification;
 
 import java.util.Collection;
 import java.util.Date;
+import org.geotools.api.metadata.citation.ResponsibleParty;
+import org.geotools.api.metadata.identification.Usage;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.metadata.citation.ResponsibleParty;
-import org.opengis.metadata.identification.Usage;
-import org.opengis.util.InternationalString;
 
 /**
  * Brief description of ways in which the resource(s) is/are currently used.

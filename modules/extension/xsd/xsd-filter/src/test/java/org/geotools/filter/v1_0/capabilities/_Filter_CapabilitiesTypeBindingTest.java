@@ -23,7 +23,7 @@ import java.io.ByteArrayInputStream;
 import org.geotools.xsd.Binding;
 import org.geotools.xsd.Parser;
 import org.junit.Test;
-import org.opengis.filter.capability.FilterCapabilities;
+import org.geotools.api.filter.capability.FilterCapabilities;
 import org.w3c.dom.Document;
 
 public class _Filter_CapabilitiesTypeBindingTest extends FilterCapabilitiesTestSupport {

@@ -41,7 +41,7 @@ import org.geotools.data.mongodb.data.SchemaStoreDirectoryProvider;
 import org.geotools.feature.NameImpl;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /** @author tkunicki@boundlessgeo.com */
 public class MongoSchemaFileStoreTest extends MongoSchemaStoreTest<MongoSchemaFileStore> {

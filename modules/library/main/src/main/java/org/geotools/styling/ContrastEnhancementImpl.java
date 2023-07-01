@@ -21,10 +21,10 @@ package org.geotools.styling;
 import java.util.HashMap;
 import java.util.Map;
 import org.geotools.factory.CommonFactoryFinder;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.ContrastMethod;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.ContrastMethod;
 
 /**
  * The ContrastEnhancement object defines contrast enhancement for a channel of a false-color image
@@ -87,9 +87,9 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
         this.method = method;
     }
 
-    public ContrastEnhancementImpl(org.opengis.style.ContrastEnhancement contrastEnhancement) {
+    public ContrastEnhancementImpl(org.geotools.api.style.ContrastEnhancement contrastEnhancement) {
         filterFactory = CommonFactoryFinder.getFilterFactory2(null);
-        org.opengis.style.ContrastMethod meth = contrastEnhancement.getMethod();
+        org.geotools.api.style.ContrastMethod meth = contrastEnhancement.getMethod();
         if (meth != null) {
             this.method = ContrastMethod.valueOf(meth.name());
         }
@@ -130,7 +130,7 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
     }
 
     @Override
-    public Object accept(org.opengis.style.StyleVisitor visitor, Object extraData) {
+    public Object accept(org.geotools.api.style.StyleVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
 
@@ -139,7 +139,7 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
         visitor.visit(this);
     }
 
-    static ContrastEnhancementImpl cast(org.opengis.style.ContrastEnhancement enhancement) {
+    static ContrastEnhancementImpl cast(org.geotools.api.style.ContrastEnhancement enhancement) {
         if (enhancement == null) {
             return null;
         } else if (enhancement instanceof ContrastEnhancementImpl) {

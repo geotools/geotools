@@ -21,9 +21,9 @@ package org.geotools.styling;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.GeoTools;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
-import org.opengis.util.Cloneable;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.util.Cloneable;
 
 /**
  * Direct implementation of AnchorPoint.
@@ -41,7 +41,7 @@ public class AnchorPointImpl implements AnchorPoint, Cloneable {
     private Expression anchorPointX = null;
     private Expression anchorPointY = null;
 
-    static AnchorPointImpl cast(org.opengis.style.AnchorPoint anchor) {
+    static AnchorPointImpl cast(org.geotools.api.style.AnchorPoint anchor) {
         if (anchor == null) {
             return null;
         } else if (anchor instanceof AnchorPointImpl) {
@@ -136,7 +136,7 @@ public class AnchorPointImpl implements AnchorPoint, Cloneable {
     }
 
     @Override
-    public Object accept(org.opengis.style.StyleVisitor visitor, Object data) {
+    public Object accept(org.geotools.api.style.StyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 

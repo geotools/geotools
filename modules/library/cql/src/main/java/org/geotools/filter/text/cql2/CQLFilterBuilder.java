@@ -17,7 +17,7 @@
 package org.geotools.filter.text.cql2;
 
 import org.geotools.filter.text.commons.AbstractFilterBuilder;
-import org.opengis.filter.FilterFactory;
+import org.geotools.api.filter.FilterFactory;
 
 /**
  * Filter builder for CQL expressions.

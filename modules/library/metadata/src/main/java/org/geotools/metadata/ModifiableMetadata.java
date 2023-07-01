@@ -182,8 +182,8 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
      *   <li>Otherwise, if the object is a {@linkplain Collection collection}, then the content is
      *       copied into a new collection of similar type, with values replaced by their
      *       unmodifiable variant.
-     *   <li>Otherwise, if the object implements the {@link org.opengis.util.Cloneable} interface,
-     *       then a clone is returned.
+     *   <li>Otherwise, if the object implements the {@link org.geotools.api.util.Cloneable}
+     *       interface, then a clone is returned.
      *   <li>Otherwise, the object is assumed immutable and returned unchanged.
      * </ul>
      *
@@ -246,8 +246,8 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
         /*
          * CASE 4 - The object is cloneable.
          */
-        if (object instanceof org.opengis.util.Cloneable) {
-            return ((org.opengis.util.Cloneable) object).clone();
+        if (object instanceof org.geotools.api.util.Cloneable) {
+            return ((org.geotools.api.util.Cloneable) object).clone();
         }
         /*
          * CASE 5 - Any other case. The object is assumed immutable and returned unchanged.

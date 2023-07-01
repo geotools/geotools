@@ -19,8 +19,8 @@
  */
 package org.geotools.referencing.operation;
 
+import static org.geotools.api.referencing.IdentifiedObject.NAME_KEY;
 import static org.geotools.referencing.CRS.equalsIgnoreMetadata;
-import static org.opengis.referencing.IdentifiedObject.NAME_KEY;
 
 import java.awt.RenderingHints;
 import java.util.Collections;
@@ -29,6 +29,25 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
+import org.geotools.api.metadata.quality.PositionalAccuracy;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.IdentifiedObject;
+import org.geotools.api.referencing.ReferenceIdentifier;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.cs.CoordinateSystem;
+import org.geotools.api.referencing.operation.ConcatenatedOperation;
+import org.geotools.api.referencing.operation.Conversion;
+import org.geotools.api.referencing.operation.CoordinateOperation;
+import org.geotools.api.referencing.operation.CoordinateOperationFactory;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.MathTransformFactory;
+import org.geotools.api.referencing.operation.Matrix;
+import org.geotools.api.referencing.operation.NoninvertibleTransformException;
+import org.geotools.api.referencing.operation.Operation;
+import org.geotools.api.referencing.operation.OperationMethod;
+import org.geotools.api.referencing.operation.OperationNotFoundException;
+import org.geotools.api.referencing.operation.Transformation;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
@@ -45,25 +64,6 @@ import org.geotools.util.CanonicalSet;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
-import org.opengis.metadata.quality.PositionalAccuracy;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.IdentifiedObject;
-import org.opengis.referencing.ReferenceIdentifier;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.cs.CoordinateSystem;
-import org.opengis.referencing.operation.ConcatenatedOperation;
-import org.opengis.referencing.operation.Conversion;
-import org.opengis.referencing.operation.CoordinateOperation;
-import org.opengis.referencing.operation.CoordinateOperationFactory;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransformFactory;
-import org.opengis.referencing.operation.Matrix;
-import org.opengis.referencing.operation.NoninvertibleTransformException;
-import org.opengis.referencing.operation.Operation;
-import org.opengis.referencing.operation.OperationMethod;
-import org.opengis.referencing.operation.OperationNotFoundException;
-import org.opengis.referencing.operation.Transformation;
 
 /**
  * Base class for coordinate operation factories. This class provides helper methods for the
@@ -714,7 +714,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
             Class type = object.getClass();
             final Class[] interfaces = type.getInterfaces();
             for (final Class candidate : interfaces) {
-                if (candidate.getName().startsWith("org.opengis.referencing.")) {
+                if (candidate.getName().startsWith("org.geotools.api.referencing.")) {
                     type = candidate;
                     break;
                 }

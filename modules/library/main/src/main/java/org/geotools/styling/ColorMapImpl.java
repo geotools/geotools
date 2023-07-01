@@ -19,8 +19,8 @@ package org.geotools.styling;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.util.Utilities;
-import org.opengis.filter.expression.Function;
-import org.opengis.style.StyleVisitor;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.style.StyleVisitor;
 
 /**
  * A simple implementation of the color map interface.
@@ -134,7 +134,7 @@ public class ColorMapImpl implements ColorMap {
         return false;
     }
 
-    static ColorMapImpl cast(org.opengis.style.ColorMap colorMap) {
+    static ColorMapImpl cast(org.geotools.api.style.ColorMap colorMap) {
         if (colorMap == null) {
             return null;
         } else if (colorMap instanceof ColorMapImpl) {

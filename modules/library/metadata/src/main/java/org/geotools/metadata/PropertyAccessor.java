@@ -32,6 +32,8 @@ import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import org.geotools.api.annotation.UML;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.CheckedCollection;
@@ -39,8 +41,6 @@ import org.geotools.util.Classes;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.Utilities;
 import org.geotools.util.XArray;
-import org.opengis.annotation.UML;
-import org.opengis.util.InternationalString;
 
 /**
  * The getters declared in a GeoAPI interface, together with setters (if any) declared in the
@@ -321,8 +321,8 @@ final class PropertyAccessor {
 
     /**
      * Returns the prefix of the specified method name. If the method name don't starts with a
-     * prefix (for example {@link org.opengis.metadata.quality.ConformanceResult#pass()}), then this
-     * method returns an empty string.
+     * prefix (for example {@link org.geotools.api.metadata.quality.ConformanceResult#pass()}), then
+     * this method returns an empty string.
      */
     private static String prefix(final String name) {
         if (name.startsWith(GET)) {
@@ -438,7 +438,7 @@ final class PropertyAccessor {
 
     /**
      * Gets a value from the specified metadata. We do not expect any checked exception to be
-     * thrown, since {@code org.opengis.metadata} do not declare any.
+     * thrown, since {@code org.geotools.api.metadata} do not declare any.
      *
      * @param method The method to use for the query.
      * @param metadata The metadata object to query.

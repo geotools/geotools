@@ -82,9 +82,9 @@ import org.geotools.util.factory.GeoTools;
 import org.geotools.xml.styling.SLDParser;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.filter.expression.Expression;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.style.ContrastMethod;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.style.ContrastMethod;
 
 /** @author Simone Giannecchini, GeoSolutions. */
 public class RasterSymbolizerTest extends org.junit.Assert {

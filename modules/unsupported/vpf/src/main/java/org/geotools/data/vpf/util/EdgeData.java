@@ -22,7 +22,7 @@ import org.geotools.data.vpf.io.RowField;
 import org.geotools.data.vpf.io.TripletId;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.opengis.geometry.DirectPosition;
+import org.geotools.api.geometry.DirectPosition;
 
 /*
  * EdgeData.java

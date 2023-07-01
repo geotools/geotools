@@ -23,6 +23,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
+import org.geotools.api.referencing.FactoryException;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.LoggingKeys;
@@ -30,7 +31,6 @@ import org.geotools.metadata.i18n.Loggings;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.factory.OptionalFactory;
-import org.opengis.referencing.FactoryException;
 
 /**
  * A buffered authority factory which will defer the {@linkplain #createBackingStore creation of a

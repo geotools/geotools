@@ -6,10 +6,10 @@ import static org.junit.Assert.assertTrue;
 
 import org.geotools.filter.v2_0.FESTestSupport;
 import org.junit.Test;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.temporal.BegunBy;
-import org.opengis.temporal.Instant;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.temporal.BegunBy;
+import org.geotools.api.temporal.Instant;
 
 public class BegunByBindingTest extends FESTestSupport {
     @Test

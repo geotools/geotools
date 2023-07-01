@@ -25,9 +25,9 @@ import javax.xml.namespace.QName;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.GetParser;
 import org.geotools.data.wfs.internal.Versions;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.FeatureType;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.FeatureType;
 
 /**
  * A WFS response parser factory for GetFeature requests in GML output formats.

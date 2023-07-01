@@ -38,11 +38,11 @@ import org.geotools.test.TestData;
 import org.geotools.util.factory.Hints;
 import org.junit.AssumptionViolatedException;
 import org.junit.Test;
-import org.opengis.geometry.Envelope;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
 
 /**
  * @author Daniele Romagnoli, GeoSolutions

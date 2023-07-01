@@ -23,15 +23,15 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
 import org.geotools.feature.FeatureCollection;
 
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
-import org.opengis.filter.capability.FilterCapabilities;
+import org.geotools.api.filter.capability.FilterCapabilities;
 
-import org.opengis.filter.expression.Function;
+import org.geotools.api.filter.expression.Function;
 
-import org.opengis.filter.identity.FeatureId;
+import org.geotools.api.filter.identity.FeatureId;
 
-import org.opengis.filter.sort.SortBy;
+import org.geotools.api.filter.sort.SortBy;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->

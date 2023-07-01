@@ -56,8 +56,8 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 import org.geotools.data.mongodb.data.SchemaStoreDirectory;
 import org.geotools.http.HTTPClient;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.Name;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.Name;
 
 /** @author tkunicki@boundlessgeo.com */
 public class MongoUtil {

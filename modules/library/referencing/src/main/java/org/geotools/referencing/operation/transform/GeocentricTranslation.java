@@ -17,6 +17,13 @@
 package org.geotools.referencing.operation.transform;
 
 import java.util.Collections;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.Matrix;
+import org.geotools.api.referencing.operation.Transformation;
 import org.geotools.measure.Units;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
@@ -28,22 +35,15 @@ import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.datum.BursaWolfParameters;
 import org.geotools.referencing.operation.MathTransformProvider;
 import org.geotools.util.Utilities;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.Matrix;
-import org.opengis.referencing.operation.Transformation;
 import si.uom.NonSI;
 import si.uom.SI;
 
 /**
- * An affine transform applied on {@linkplain org.opengis.referencing.crs.GeocentricCRS geocentric}
- * coordinates. While "geocentric translation" is a little bit more restrictive name, it describes
- * the part which is common to all instances of this class. A rotation may also be performed in
- * addition of the translation, but the rotation sign is operation-dependent (EPSG 9606 and 9607
- * have opposite sign). This transform is used for the following operations:
+ * An affine transform applied on {@linkplain org.geotools.api.referencing.crs.GeocentricCRS
+ * geocentric} coordinates. While "geocentric translation" is a little bit more restrictive name, it
+ * describes the part which is common to all instances of this class. A rotation may also be
+ * performed in addition of the translation, but the rotation sign is operation-dependent (EPSG 9606
+ * and 9607 have opposite sign). This transform is used for the following operations:
  *
  * <p>
  *

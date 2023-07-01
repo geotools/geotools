@@ -6,7 +6,7 @@ import org.geotools.kml.v22.KML;
 import org.geotools.kml.v22.KMLTestSupport;
 import org.geotools.xsd.Binding;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 public class SchemaTypeBindingTest extends KMLTestSupport {
     @Test

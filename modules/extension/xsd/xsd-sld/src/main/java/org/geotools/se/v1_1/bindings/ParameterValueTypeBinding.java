@@ -19,7 +19,7 @@ package org.geotools.se.v1_1.bindings;
 import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDParameterValueTypeBinding;
-import org.opengis.filter.FilterFactory;
+import org.geotools.api.filter.FilterFactory;
 
 /**
  * Binding object for the type http://www.opengis.net/se:ParameterValueType.

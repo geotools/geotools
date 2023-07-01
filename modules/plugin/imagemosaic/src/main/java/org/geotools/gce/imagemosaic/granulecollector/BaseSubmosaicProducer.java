@@ -56,7 +56,7 @@ import org.geotools.image.ImageWorker;
 import org.geotools.util.URLs;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /** Basic submosaic producer. Accepts all granules and mosaics without any real special handling */
 public class BaseSubmosaicProducer implements SubmosaicProducer {

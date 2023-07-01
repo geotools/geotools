@@ -38,10 +38,10 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import org.geotools.api.metadata.MetaData;
+import org.geotools.api.util.CodeList;
+import org.geotools.api.util.InternationalString;
 import org.geotools.util.SimpleInternationalString;
-import org.opengis.metadata.MetaData;
-import org.opengis.util.CodeList;
-import org.opengis.util.InternationalString;
 
 /**
  * A connection to a metadata database. The metadata database can be created using one of the
@@ -52,7 +52,7 @@ import org.opengis.util.InternationalString;
  * <BLOCKQUOTE>
  *
  * <PRE>
- * import org.opengis.metadata.citation.{@linkplain org.opengis.metadata.citation.Telephone Telephone};
+ * import org.geotools.api.metadata.citation.{@linkplain org.geotools.api.metadata.citation.Telephone Telephone};
  * ...
  * Connection     connection = ...
  * MetadataSource source     = new MetadataSource(connection);
@@ -72,7 +72,7 @@ import org.opengis.util.InternationalString;
  */
 public class MetadataSource implements AutoCloseable {
     /** The package for metadata <strong>interfaces</strong> (not the implementation). */
-    final String metadataPackage = "org.opengis.metadata.";
+    final String metadataPackage = "org.geotools.api.metadata.";
 
     /** The connection to the database. */
     private final Connection connection;
@@ -97,8 +97,8 @@ public class MetadataSource implements AutoCloseable {
 
     /**
      * The map from GeoAPI names to ISO names. For example the GeoAPI {@link
-     * org.opengis.metadata.citation.Citation} interface maps to the ISO 19115 {@code CI_Citation}
-     * name.
+     * org.geotools.api.metadata.citation.Citation} interface maps to the ISO 19115 {@code
+     * CI_Citation} name.
      */
     private final Properties geoApiToIso = new Properties();
 
@@ -144,8 +144,8 @@ public class MetadataSource implements AutoCloseable {
      * by the specified identifier. Alternatively, this method can also returns a {@link CodeList}
      * element.
      *
-     * @param type The interface to implement (e.g. {@link org.opengis.metadata.citation.Citation}),
-     *     or the {@link CodeList}.
+     * @param type The interface to implement (e.g. {@link
+     *     org.geotools.api.metadata.citation.Citation}), or the {@link CodeList}.
      * @param identifier The identifier used in order to locate the record for the metadata entity
      *     to be created. This is usually the primary key of the record to search for.
      * @return An implementation of the required interface, or the code list element.

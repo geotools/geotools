@@ -17,6 +17,10 @@
 package org.geotools.referencing.operation.transform;
 
 import java.util.Arrays;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.MathTransformFactory;
+import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.ReferencingFactoryFinder;
@@ -26,10 +30,6 @@ import org.geotools.referencing.operation.matrix.MatrixFactory;
 import org.geotools.referencing.operation.matrix.XMatrix;
 import org.geotools.util.XArray;
 import org.geotools.util.factory.Hints;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransformFactory;
-import org.opengis.referencing.operation.Matrix;
 
 /**
  * An utility class for the separation of {@linkplain ConcatenatedTransform concatenation} of
@@ -58,9 +58,9 @@ import org.opengis.referencing.operation.Matrix;
  * @author Simone Giannecchini
  * @todo This class is specific to Geotools implementation; it is better to avoid it if you can. It
  *     could be generalized a bit if we perform the same operations on {@link
- *     org.opengis.referencing.operation.CoordinateOperation} interfaces instead of math transforms.
- *     We should revisit this issue after grid coverage API has been revisited (since grid coverage
- *     is a user of this class).
+ *     org.geotools.api.referencing.operation.CoordinateOperation} interfaces instead of math
+ *     transforms. We should revisit this issue after grid coverage API has been revisited (since
+ *     grid coverage is a user of this class).
  * @todo This class contains a set of static methods that could be factored out in some kind of
  *     {@code org.geotools.util.SortedIntegerSet} implementation.
  */

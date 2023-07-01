@@ -45,35 +45,35 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.PrecisionModel;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.And;
-import org.opengis.filter.Filter;
-import org.opengis.filter.Id;
-import org.opengis.filter.Or;
-import org.opengis.filter.PropertyIsBetween;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.PropertyIsGreaterThan;
-import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
-import org.opengis.filter.PropertyIsLessThan;
-import org.opengis.filter.PropertyIsLessThanOrEqualTo;
-import org.opengis.filter.PropertyIsLike;
-import org.opengis.filter.PropertyIsNull;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.ExpressionVisitor;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.identity.FeatureId;
-import org.opengis.filter.spatial.BBOX;
-import org.opengis.filter.spatial.Beyond;
-import org.opengis.filter.spatial.Contains;
-import org.opengis.filter.spatial.DWithin;
-import org.opengis.filter.spatial.Disjoint;
-import org.opengis.filter.spatial.Equals;
-import org.opengis.filter.spatial.Intersects;
-import org.opengis.filter.spatial.Within;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.And;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.Or;
+import org.geotools.api.filter.PropertyIsBetween;
+import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.PropertyIsGreaterThan;
+import org.geotools.api.filter.PropertyIsGreaterThanOrEqualTo;
+import org.geotools.api.filter.PropertyIsLessThan;
+import org.geotools.api.filter.PropertyIsLessThanOrEqualTo;
+import org.geotools.api.filter.PropertyIsLike;
+import org.geotools.api.filter.PropertyIsNull;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.ExpressionVisitor;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.identity.FeatureId;
+import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.api.filter.spatial.Beyond;
+import org.geotools.api.filter.spatial.Contains;
+import org.geotools.api.filter.spatial.DWithin;
+import org.geotools.api.filter.spatial.Disjoint;
+import org.geotools.api.filter.spatial.Equals;
+import org.geotools.api.filter.spatial.Intersects;
+import org.geotools.api.filter.spatial.Within;
 
 /**
  * Unit test for filters. Note that this unit test does not encompass all of filter package, just
@@ -95,7 +95,7 @@ public class FilterTest {
 
     boolean set = false;
 
-    org.opengis.filter.FilterFactory2 fac = CommonFactoryFinder.getFilterFactory2(null);
+    org.geotools.api.filter.FilterFactory2 fac = CommonFactoryFinder.getFilterFactory2(null);
 
     private Calendar calDateTime;
     private Calendar calTime;
@@ -278,7 +278,7 @@ public class FilterTest {
 
         // Test for false positive.
         Literal testLiteral = new LiteralExpressionImpl("test string data");
-        org.opengis.filter.Filter filter =
+        org.geotools.api.filter.Filter filter =
                 compare(PropertyIsEqualTo.class, testAttribute, testLiteral);
 
         // LOGGER.finer( filter.toString());
@@ -314,7 +314,7 @@ public class FilterTest {
             boolean test3)
             throws IllegalFilterException {
         Literal testLiteral = new LiteralExpressionImpl(Integer.valueOf(1001));
-        org.opengis.filter.Filter filter = compare(filterType, testAttribute, testLiteral);
+        org.geotools.api.filter.Filter filter = compare(filterType, testAttribute, testLiteral);
 
         // LOGGER.finer( filter.toString());
         // LOGGER.finer( "contains feature: " + filter.contains(testFeature));
@@ -343,7 +343,7 @@ public class FilterTest {
             boolean test3)
             throws IllegalFilterException {
         Literal testLiteral = new LiteralExpressionImpl("1001.0");
-        org.opengis.filter.Filter filter = compare(filterType, testAttribute, testLiteral);
+        org.geotools.api.filter.Filter filter = compare(filterType, testAttribute, testLiteral);
 
         // LOGGER.finer( filter.toString());
         // LOGGER.finer( "contains feature: " + filter.contains(testFeature));
@@ -372,7 +372,7 @@ public class FilterTest {
             boolean test3)
             throws IllegalFilterException {
         Literal testLiteral = new LiteralExpressionImpl(Double.valueOf(1001.0));
-        org.opengis.filter.Filter filter = compare(filterType, testAttribute, testLiteral);
+        org.geotools.api.filter.Filter filter = compare(filterType, testAttribute, testLiteral);
 
         // LOGGER.finer( filter.toString());
         // LOGGER.finer( "contains feature: " + filter.contains(testFeature));
@@ -410,7 +410,7 @@ public class FilterTest {
         calLocal.set(Calendar.DAY_OF_MONTH, calDateTime.get(Calendar.DAY_OF_MONTH) - 1);
         Literal testLiteral =
                 new LiteralExpressionImpl(new java.sql.Date(calLocal.getTimeInMillis()).toString());
-        org.opengis.filter.Filter filter = compare(filterType, testAttribute, testLiteral);
+        org.geotools.api.filter.Filter filter = compare(filterType, testAttribute, testLiteral);
 
         // LOGGER.finer( filter.toString());
         // LOGGER.finer( "contains feature: " + filter.contains(testFeature));
@@ -435,10 +435,10 @@ public class FilterTest {
     }
 
     /** Builds a filter that compares a and b: <code>a compare b</code> */
-    org.opengis.filter.Filter compare(
+    org.geotools.api.filter.Filter compare(
             Class filterType,
-            org.opengis.filter.expression.Expression a,
-            org.opengis.filter.expression.Expression b) {
+            org.geotools.api.filter.expression.Expression a,
+            org.geotools.api.filter.expression.Expression b) {
         if (filterType == PropertyIsLessThan.class) {
             return fac.less(a, b);
         } else if (filterType == PropertyIsLessThanOrEqualTo.class) {
@@ -472,7 +472,7 @@ public class FilterTest {
         calLocal.set(Calendar.HOUR_OF_DAY, calTime.get(Calendar.HOUR_OF_DAY) - 1);
         Literal testLiteral =
                 new LiteralExpressionImpl(new java.sql.Time(calLocal.getTimeInMillis()).toString());
-        org.opengis.filter.Filter filter = compare(filterType, testAttribute, testLiteral);
+        org.geotools.api.filter.Filter filter = compare(filterType, testAttribute, testLiteral);
 
         // LOGGER.finer( filter.toString());
         // LOGGER.finer( "contains feature: " + filter.contains(testFeature));
@@ -568,7 +568,7 @@ public class FilterTest {
         // Test for false positive.
         PropertyName testAttribute = new AttributeExpressionImpl(testSchema, "testString");
 
-        PropertyIsNull filter = fac.isNull(org.opengis.filter.expression.Expression.NIL);
+        PropertyIsNull filter = fac.isNull(org.geotools.api.filter.expression.Expression.NIL);
         Assert.assertTrue(filter.evaluate(testFeature));
 
         filter = fac.isNull(testAttribute);
@@ -591,7 +591,7 @@ public class FilterTest {
 
         PropertyIsNull nullFilter = fac.isNull(testAttribute);
 
-        org.opengis.filter.Filter notNullFilter = fac.not(nullFilter);
+        org.geotools.api.filter.Filter notNullFilter = fac.not(nullFilter);
 
         PropertyIsEqualTo compareFilter = fac.equals(testAttribute, fac.literal(10));
 
@@ -602,7 +602,7 @@ public class FilterTest {
         Assert.assertFalse(notNullFilter.evaluate(testFeature));
 
         // test AND
-        org.opengis.filter.Filter finalFilter = fac.and(notNullFilter, compareFilter);
+        org.geotools.api.filter.Filter finalFilter = fac.and(notNullFilter, compareFilter);
         try {
             Assert.assertFalse(finalFilter.evaluate(testFeature));
         } catch (NullPointerException e) {
@@ -1164,21 +1164,21 @@ public class FilterTest {
         object.intVal = 5;
         object.stringVal = "cinco";
 
-        org.opengis.filter.Filter f = fac.greater(fac.property("intVal"), fac.literal(3));
+        org.geotools.api.filter.Filter f = fac.greater(fac.property("intVal"), fac.literal(3));
 
         Assert.assertTrue(f.evaluate(object));
 
-        org.opengis.filter.Filter f2 =
+        org.geotools.api.filter.Filter f2 =
                 fac.and(f, fac.equals(fac.property("stringVal"), fac.literal("cinco")));
 
         Assert.assertTrue(f2.evaluate(object));
 
-        org.opengis.filter.Filter f3 =
+        org.geotools.api.filter.Filter f3 =
                 fac.and(f, fac.equals(fac.property("stringVal"), fac.literal("seis")));
 
         Assert.assertFalse(f3.evaluate(object));
 
-        org.opengis.filter.Filter f4 =
+        org.geotools.api.filter.Filter f4 =
                 fac.not(fac.and(f, fac.equals(fac.property("stringVal"), fac.literal("cinco"))));
 
         Assert.assertFalse(f4.evaluate(object));
@@ -1270,7 +1270,7 @@ public class FilterTest {
         }
 
         @Override
-        public List<org.opengis.filter.expression.Expression> getParameters() {
+        public List<org.geotools.api.filter.expression.Expression> getParameters() {
             return Collections.emptyList();
         }
 

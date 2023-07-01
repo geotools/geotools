@@ -36,6 +36,24 @@ import java.util.logging.LogRecord;
 import javax.measure.Unit;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Length;
+import org.geotools.api.metadata.Identifier;
+import org.geotools.api.referencing.AuthorityFactory;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.IdentifiedObject;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.datum.Datum;
+import org.geotools.api.referencing.datum.DatumFactory;
+import org.geotools.api.referencing.datum.Ellipsoid;
+import org.geotools.api.referencing.datum.EngineeringDatum;
+import org.geotools.api.referencing.datum.GeodeticDatum;
+import org.geotools.api.referencing.datum.ImageDatum;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.datum.PrimeMeridian;
+import org.geotools.api.referencing.datum.TemporalDatum;
+import org.geotools.api.referencing.datum.VerticalDatum;
+import org.geotools.api.referencing.datum.VerticalDatumType;
+import org.geotools.api.util.GenericName;
+import org.geotools.api.util.ScopedName;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
 import org.geotools.referencing.AbstractIdentifiedObject;
@@ -44,24 +62,6 @@ import org.geotools.referencing.datum.AbstractDatum;
 import org.geotools.util.LocalName;
 import org.geotools.util.NameFactory;
 import org.geotools.util.XArray;
-import org.opengis.metadata.Identifier;
-import org.opengis.referencing.AuthorityFactory;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.IdentifiedObject;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.datum.Datum;
-import org.opengis.referencing.datum.DatumFactory;
-import org.opengis.referencing.datum.Ellipsoid;
-import org.opengis.referencing.datum.EngineeringDatum;
-import org.opengis.referencing.datum.GeodeticDatum;
-import org.opengis.referencing.datum.ImageDatum;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.datum.PrimeMeridian;
-import org.opengis.referencing.datum.TemporalDatum;
-import org.opengis.referencing.datum.VerticalDatum;
-import org.opengis.referencing.datum.VerticalDatumType;
-import org.opengis.util.GenericName;
-import org.opengis.util.ScopedName;
 
 /**
  * A datum factory that add {@linkplain IdentifiedObject#getAlias aliases} to a datum name before to
@@ -71,7 +71,7 @@ import org.opengis.util.ScopedName;
  * them. Two datum with different names are considered incompatible, unless some datum shift method
  * are specified (e.g. {@linkplain org.geotools.referencing.datum.BursaWolfParameters Bursa-Wolf
  * parameters}). Unfortunatly, different softwares often use different names for the same datum,
- * which result in {@link org.opengis.referencing.operation.OperationNotFoundException} when
+ * which result in {@link org.geotools.api.referencing.operation.OperationNotFoundException} when
  * attempting to convert coordinates from one {@linkplain CoordinateReferenceSystem coordinate
  * reference system} to an other one. For example "<cite>Nouvelle Triangulation Française
  * (Paris)</cite>" and "<cite>NTF (Paris meridian)</cite>" are actually the same datum. This {@code

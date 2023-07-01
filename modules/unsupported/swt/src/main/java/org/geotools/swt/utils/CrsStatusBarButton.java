@@ -33,7 +33,7 @@ import org.geotools.swt.SwtMapPane;
 import org.geotools.swt.control.CRSChooserDialog;
 import org.geotools.swt.event.MapPaneAdapter;
 import org.geotools.swt.event.MapPaneEvent;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * The {@link CoordinateReferenceSystem} button to put on the statusbar.

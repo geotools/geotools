@@ -19,7 +19,7 @@
  */
 package org.geotools.referencing;
 
-import static org.opengis.referencing.IdentifiedObject.REMARKS_KEY;
+import static org.geotools.api.referencing.IdentifiedObject.REMARKS_KEY;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -29,6 +29,15 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+import org.geotools.api.metadata.Identifier;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.parameter.InvalidParameterValueException;
+import org.geotools.api.referencing.ReferenceIdentifier;
+import org.geotools.api.util.GenericName;
+import org.geotools.api.util.InternationalString;
+import org.geotools.api.util.LocalName;
+import org.geotools.api.util.NameSpace;
+import org.geotools.api.util.ScopedName;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.LoggingKeys;
@@ -38,15 +47,6 @@ import org.geotools.util.GrowableInternationalString;
 import org.geotools.util.Utilities;
 import org.geotools.util.WeakValueHashMap;
 import org.geotools.util.logging.Logging;
-import org.opengis.metadata.Identifier;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.parameter.InvalidParameterValueException;
-import org.opengis.referencing.ReferenceIdentifier;
-import org.opengis.util.GenericName;
-import org.opengis.util.InternationalString;
-import org.opengis.util.LocalName;
-import org.opengis.util.NameSpace;
-import org.opengis.util.ScopedName;
 
 /**
  * An identification of a CRS object. The main interface implemented by this class is {@link

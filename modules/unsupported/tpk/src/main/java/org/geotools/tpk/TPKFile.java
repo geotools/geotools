@@ -33,7 +33,7 @@ import java.util.zip.ZipFile;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.opengis.geometry.Envelope;
+import org.geotools.api.geometry.Envelope;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

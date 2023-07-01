@@ -17,7 +17,7 @@
 package org.geotools.filter.expression;
 
 import org.geotools.util.factory.Hints;
-import org.opengis.feature.Attribute;
+import org.geotools.api.feature.Attribute;
 
 public class ThisPropertyAccessorFactory implements PropertyAccessorFactory {
 

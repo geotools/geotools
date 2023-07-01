@@ -27,7 +27,7 @@ import org.geotools.image.util.ImageUtilities;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.parameter.ParameterWriter;
-import org.opengis.util.InternationalString;
+import org.geotools.api.util.InternationalString;
 
 /**
  * Format grid coverage operation parameters in a tabular format.

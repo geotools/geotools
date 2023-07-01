@@ -33,8 +33,8 @@ import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.process.elasticsearch.ElasticBucketVisitor;
 import org.geotools.util.factory.Hints;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.PropertyIsEqualTo;
 
 public class ElasticViewParametersFilterIT extends ElasticTestSupport {
 

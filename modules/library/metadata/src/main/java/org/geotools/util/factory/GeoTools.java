@@ -261,8 +261,8 @@ public final class GeoTools {
      * assigned to the {@link Hints#ENCODE_EWKT} hint.
      *
      * <p>This setting specifies if geometries with {@link
-     * org.opengis.referencing.crs.CoordinateReferenceSystem} in the user data shall be encoded as
-     * EWKT or not.
+     * org.geotools.api.referencing.crs.CoordinateReferenceSystem} in the user data shall be encoded
+     * as EWKT or not.
      *
      * @see Hints#ENCODE_EWKT
      * @see #getDefaultHints

@@ -25,8 +25,8 @@ import java.util.concurrent.CountDownLatch;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.tile.Tile;
 import org.geotools.tile.TileService;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.operation.TransformException;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * This Layer is an attempt to speed rendering by using a CountDownLatch and threads to render each

@@ -45,7 +45,7 @@ public class TestFilterHandler implements ContentHandler, FilterHandler {
      */
 
     /** Tracks tag we are currently inside */
-    private org.opengis.filter.Filter filter = null;
+    private org.geotools.api.filter.Filter filter = null;
 
     public TestFilterHandler() {}
 
@@ -140,7 +140,7 @@ public class TestFilterHandler implements ContentHandler, FilterHandler {
      * @param filter (OGC WFS) Filter from (SAX) filter..
      */
     @Override
-    public void filter(org.opengis.filter.Filter filter) {
+    public void filter(org.geotools.api.filter.Filter filter) {
 
         LOGGER.finer("found filter: " + filter.toString());
         this.filter = filter;
@@ -151,7 +151,7 @@ public class TestFilterHandler implements ContentHandler, FilterHandler {
      *
      * @return (OGC WFS) Filter from (SAX) filter..
      */
-    public org.opengis.filter.Filter getFilter() {
+    public org.geotools.api.filter.Filter getFilter() {
         return this.filter;
     }
 }

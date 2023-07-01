@@ -23,7 +23,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
-import org.opengis.filter.capability.GeometryOperand;
+import org.geotools.api.filter.capability.GeometryOperand;
 
 /**
  * <!-- begin-user-doc -->

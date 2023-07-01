@@ -14,9 +14,9 @@ import java.util.Collection;
 import org.geotools.ExceptionChecker;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.feature.Attribute;
-import org.opengis.feature.ComplexAttribute;
-import org.opengis.feature.Feature;
+import org.geotools.api.feature.Attribute;
+import org.geotools.api.feature.ComplexAttribute;
+import org.geotools.api.feature.Feature;
 
 public class ComplexFeatureBuilderTest {
     private static ComplexAttribute getAMineNameProperty(String name, boolean isPreferred) {

@@ -48,9 +48,9 @@ import org.geotools.xml.styling.sldComplexTypes2._OnlineResource;
 import org.geotools.xml.styling.sldComplexTypes2._PointPlacement;
 import org.geotools.xml.styling.sldComplexTypes2._PolygonSymbolizer;
 import org.geotools.xml.styling.sldComplexTypes2._Rule;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.ContrastMethod;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.ContrastMethod;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

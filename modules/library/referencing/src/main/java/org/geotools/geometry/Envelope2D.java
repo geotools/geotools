@@ -17,19 +17,19 @@
 package org.geotools.geometry;
 
 import java.awt.geom.Rectangle2D;
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.MismatchedReferenceSystemException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.cs.AxisDirection;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.api.util.Cloneable;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.util.Utilities;
-import org.opengis.geometry.BoundingBox;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.Envelope;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.geometry.MismatchedReferenceSystemException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.operation.TransformException;
-import org.opengis.util.Cloneable;
 
 /**
  * A two-dimensional envelope on top of {@link Rectangle2D}. This implementation is provided for
@@ -48,7 +48,7 @@ import org.opengis.util.Cloneable;
  * @author Martin Desruisseaux (IRD)
  * @see GeneralEnvelope
  * @see org.geotools.geometry.jts.ReferencedEnvelope
- * @see org.opengis.metadata.extent.GeographicBoundingBox
+ * @see org.geotools.api.metadata.extent.GeographicBoundingBox
  */
 public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envelope, Cloneable {
     /** Serial number for interoperability with different versions. */

@@ -18,14 +18,14 @@ package org.geotools.referencing.operation;
 
 import java.util.Collection;
 import java.util.Set;
-import org.opengis.metadata.extent.Extent;
-import org.opengis.metadata.quality.PositionalAccuracy;
-import org.opengis.referencing.ReferenceIdentifier;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.CoordinateOperation;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.util.GenericName;
-import org.opengis.util.InternationalString;
+import org.geotools.api.metadata.extent.Extent;
+import org.geotools.api.metadata.quality.PositionalAccuracy;
+import org.geotools.api.referencing.ReferenceIdentifier;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.CoordinateOperation;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.util.GenericName;
+import org.geotools.api.util.InternationalString;
 
 /**
  * Used by {@link AuthorityBackedFactory} when concanating operations, in case we're concatenating

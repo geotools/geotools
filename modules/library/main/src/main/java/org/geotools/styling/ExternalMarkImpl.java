@@ -17,8 +17,8 @@
 package org.geotools.styling;
 
 import javax.swing.Icon;
-import org.opengis.metadata.citation.OnLineResource;
-import org.opengis.style.StyleVisitor;
+import org.geotools.api.metadata.citation.OnLineResource;
+import org.geotools.api.style.StyleVisitor;
 
 /**
  * Default implementation of ExternalMark.
@@ -93,7 +93,7 @@ public class ExternalMarkImpl implements org.geotools.styling.ExternalMark {
         this.onlineResource = resource;
     }
 
-    static ExternalMarkImpl cast(org.opengis.style.ExternalMark mark) {
+    static ExternalMarkImpl cast(org.geotools.api.style.ExternalMark mark) {
         if (mark == null) {
             return null;
         } else if (mark instanceof ExternalMarkImpl) {

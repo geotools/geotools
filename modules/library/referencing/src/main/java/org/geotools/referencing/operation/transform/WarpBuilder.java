@@ -32,11 +32,11 @@ import java.util.logging.Logger;
 import javax.media.jai.Warp;
 import javax.media.jai.WarpAffine;
 import javax.media.jai.WarpGrid;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.util.logging.Logging;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * Builds {@link Warp} objects that approximate a specified {@link MathTransform} in a certain

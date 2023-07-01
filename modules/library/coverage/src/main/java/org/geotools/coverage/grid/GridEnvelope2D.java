@@ -20,10 +20,10 @@ import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.PixelTranslation;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.geometry.Envelope;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.util.Cloneable;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.util.Cloneable;
 
 /**
  * Defines a range of two-dimensional grid coverage coordinates. This implementation extends {@link
@@ -70,13 +70,13 @@ public class GridEnvelope2D extends Rectangle implements GridEnvelope, Cloneable
     /**
      * Casts the specified envelope into a grid envelope. This is sometime useful after an envelope
      * has been transformed from "real world" coordinates to grid coordinates using the {@linkplain
-     * org.opengis.coverage.grid.GridGeometry#getGridToCRS grid to CRS} transform. The floating
+     * org.geotools.api.coverage.grid.GridGeometry#getGridToCRS grid to CRS} transform. The floating
      * point values are rounded toward the nearest integers.
      *
      * <p><strong>Notice that highest values are interpreted as non-inclusive</strong>
      *
      * <p><b>Anchor</b><br>
-     * According OpenGIS specification, {@linkplain org.opengis.coverage.grid.GridGeometry grid
+     * According OpenGIS specification, {@linkplain org.geotools.api.coverage.grid.GridGeometry grid
      * geometry} maps pixel's center. But envelopes typically encompass all pixels. This means that
      * grid coordinates (0,0) has an envelope starting at (-0.5, -0.5). In order to revert back such
      * envelope to a grid envelope, it is necessary to add 0.5 to every coordinates (including the
@@ -85,7 +85,7 @@ public class GridEnvelope2D extends Rectangle implements GridEnvelope, Cloneable
      * specify {@link PixelInCell#CELL_CORNER}.
      *
      * <p>The convention is specified as a {@link PixelInCell} code instead than the more detailed
-     * {@link org.opengis.metadata.spatial.PixelOrientation} because the latter is restricted to the
+     * {@link org.geotools.api.metadata.spatial.PixelOrientation} because the latter is restricted to the
      * two-dimensional case while the former can be used for any number of dimensions.
      *
      * @param envelope The envelope to use for initializing this grid envelope.
@@ -103,7 +103,7 @@ public class GridEnvelope2D extends Rectangle implements GridEnvelope, Cloneable
     /**
      * Casts the specified envelope into a grid envelope. This is sometime useful after an envelope
      * has been transformed from "real world" coordinates to grid coordinates using the {@linkplain
-     * org.opengis.coverage.grid.GridGeometry#getGridToCRS grid to CRS} transform. The floating
+     * org.geotools.api.coverage.grid.GridGeometry#getGridToCRS grid to CRS} transform. The floating
      * point values are rounded toward the nearest integers.
      *
      * <p><b>Note about rounding mode</b><br>
@@ -121,7 +121,7 @@ public class GridEnvelope2D extends Rectangle implements GridEnvelope, Cloneable
      * nearest integer} in this implementation.
      *
      * <p><b>Anchor</b><br>
-     * According OpenGIS specification, {@linkplain org.opengis.coverage.grid.GridGeometry grid
+     * According OpenGIS specification, {@linkplain org.geotools.api.coverage.grid.GridGeometry grid
      * geometry} maps pixel's center. But envelopes typically encompass all pixels. This means that
      * grid coordinates (0,0) has an envelope starting at (-0.5, -0.5). In order to revert back such
      * envelope to a grid envelope, it is necessary to add 0.5 to every coordinates (including the
@@ -130,7 +130,7 @@ public class GridEnvelope2D extends Rectangle implements GridEnvelope, Cloneable
      * specify {@link PixelInCell#CELL_CORNER}.
      *
      * <p>The convention is specified as a {@link PixelInCell} code instead than the more detailed
-     * {@link org.opengis.metadata.spatial.PixelOrientation} because the latter is restricted to the
+     * {@link org.geotools.api.metadata.spatial.PixelOrientation} because the latter is restricted to the
      * two-dimensional case while the former can be used for any number of dimensions.
      *
      * @param envelope The envelope to use for initializing this grid envelope.

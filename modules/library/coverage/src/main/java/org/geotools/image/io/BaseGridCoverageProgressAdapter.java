@@ -18,7 +18,7 @@ package org.geotools.image.io;
 
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * Base class for GridCoverageProgressAdapter implementations to reporto progress about I/O

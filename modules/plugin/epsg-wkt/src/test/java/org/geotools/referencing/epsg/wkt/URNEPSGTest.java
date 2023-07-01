@@ -19,7 +19,7 @@ package org.geotools.referencing.epsg.wkt;
 import org.geotools.referencing.CRS;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 public class URNEPSGTest {
 

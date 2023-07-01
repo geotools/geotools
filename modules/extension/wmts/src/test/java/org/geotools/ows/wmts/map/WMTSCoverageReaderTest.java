@@ -62,7 +62,7 @@ import org.geotools.tile.Tile;
 import org.geotools.wmts.WMTSConfiguration;
 import org.geotools.xsd.Parser;
 import org.junit.Test;
-import org.opengis.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.GeneralParameterValue;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 

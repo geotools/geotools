@@ -22,10 +22,10 @@ package org.geotools.referencing.datum;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
+import org.geotools.api.referencing.datum.TemporalDatum;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.AbstractIdentifiedObject;
-import org.opengis.referencing.datum.TemporalDatum;
-import org.opengis.util.InternationalString;
 
 /**
  * A temporal datum defines the origin of a temporal coordinate reference system.

@@ -23,7 +23,7 @@ import org.geotools.data.wfs.internal.FeatureTypeInfo;
 import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.locationtech.jts.geom.Envelope;
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 /**
  * The property expression evaluation context for stored query parameter mappings. To see how these

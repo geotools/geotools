@@ -33,7 +33,7 @@ import net.opengis.fes20.SpatialOperatorType;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.filter.v2_0.FESTestSupport;
 import org.junit.Test;
-import org.opengis.filter.capability.Operator;
+import org.geotools.api.filter.capability.Operator;
 
 public class Filter_CapabilitiesBindingTest extends FESTestSupport {
     @Test

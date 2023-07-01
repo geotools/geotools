@@ -20,9 +20,9 @@
 package org.geotools.util;
 
 import java.util.Locale;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
-import org.opengis.util.InternationalString;
 
 /**
  * A {@linkplain String string} that has been internationalized into several {@linkplain Locale

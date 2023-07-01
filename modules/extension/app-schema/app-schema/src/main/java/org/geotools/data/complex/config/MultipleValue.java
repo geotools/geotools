@@ -19,8 +19,8 @@ package org.geotools.data.complex.config;
 import java.util.List;
 import org.geotools.data.complex.AttributeMapping;
 import org.geotools.data.complex.FeatureTypeMapping;
-import org.opengis.feature.Feature;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.filter.expression.Expression;
 
 /** Represents a mapping that can result in multiple values. */
 public interface MultipleValue extends Expression {

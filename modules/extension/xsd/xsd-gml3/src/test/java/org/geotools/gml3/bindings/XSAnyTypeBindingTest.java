@@ -37,12 +37,12 @@ import org.geotools.xsd.Configuration;
 import org.geotools.xsd.SchemaLocator;
 import org.geotools.xsd.XSD;
 import org.junit.Test;
-import org.opengis.feature.ComplexAttribute;
-import org.opengis.feature.Property;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.AttributeType;
-import org.opengis.feature.type.Name;
-import org.opengis.feature.type.PropertyDescriptor;
+import org.geotools.api.feature.ComplexAttribute;
+import org.geotools.api.feature.Property;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.AttributeType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.feature.type.PropertyDescriptor;
 import org.picocontainer.MutablePicoContainer;
 import org.w3c.dom.Document;
 

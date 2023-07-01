@@ -22,7 +22,7 @@ import org.geotools.sld.bindings.SLDGraphicStrokeBinding;
 import org.geotools.styling.Graphic;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * Binding object for the element http://www.opengis.net/se:GraphicStroke.

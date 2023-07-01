@@ -61,12 +61,12 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
 
 /**
  * Basic test for OGR data store capabilities against file data sources
@@ -723,7 +723,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         assertEquals(1, s.getTypeNames().length);
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Query query = new Query();
-        query.setSortBy(ff.sort("float", org.opengis.filter.sort.SortOrder.ASCENDING));
+        query.setSortBy(ff.sort("float", org.geotools.api.filter.sort.SortOrder.ASCENDING));
         SimpleFeatureCollection fc = s.getFeatureSource("junk").getFeatures(query);
         assertEquals(features.size(), fc.size());
         // Read

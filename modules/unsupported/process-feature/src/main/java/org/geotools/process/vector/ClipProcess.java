@@ -28,8 +28,8 @@ import org.geotools.referencing.CRS;
 import org.geotools.util.factory.GeoTools;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.spatial.BBOX;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.spatial.BBOX;
 
 /**
  * Modified version that can preserve Z values after the clip

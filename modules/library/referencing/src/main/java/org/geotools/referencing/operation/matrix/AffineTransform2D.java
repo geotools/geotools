@@ -17,10 +17,10 @@
 package org.geotools.referencing.operation.matrix;
 
 import java.awt.geom.AffineTransform;
+import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Utilities;
-import org.opengis.referencing.operation.Matrix;
 
 /**
  * An affine matrix of fixed {@value #SIZE}&times;{@value #SIZE} size. Here, the term "affine" means

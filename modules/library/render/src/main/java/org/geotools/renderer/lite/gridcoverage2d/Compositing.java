@@ -35,7 +35,7 @@ import org.geotools.image.ImageWorker;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.renderer.composite.BlendComposite;
 import org.geotools.renderer.composite.BlendComposite.BlendingMode;
-import org.opengis.coverage.grid.GridCoverage;
+import org.geotools.api.coverage.grid.GridCoverage;
 
 /**
  * A compositing element used in rendering.

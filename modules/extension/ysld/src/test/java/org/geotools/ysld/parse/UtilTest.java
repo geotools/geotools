@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.awt.Color;
 import org.junit.Test;
-import org.opengis.filter.expression.Literal;
+import org.geotools.api.filter.expression.Literal;
 
 public class UtilTest {
     @Test

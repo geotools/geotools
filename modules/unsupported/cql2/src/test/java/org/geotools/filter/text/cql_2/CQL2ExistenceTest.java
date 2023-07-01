@@ -23,7 +23,7 @@ import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.cql2.CQLExistenceTest;
 import org.geotools.filter.text.cql2.FilterCQLSample;
 import org.junit.Test;
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 /**
  * CQL2 has no "EXIST" operator (uh oh, so we cannot encode back a PropertyExists filter. See also

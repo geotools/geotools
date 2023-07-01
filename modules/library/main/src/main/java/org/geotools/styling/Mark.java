@@ -17,7 +17,7 @@
  */
 package org.geotools.styling;
 
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * A Mark element defines a "shape" which has coloring applied to it.
@@ -57,7 +57,7 @@ import org.opengis.filter.expression.Expression;
  * @author James Macgill
  * @version $Id$
  */
-public interface Mark extends org.opengis.style.Mark, Symbol {
+public interface Mark extends org.geotools.api.style.Mark, Symbol {
     public static final Mark[] MARKS_EMPTY = new Mark[0];
 
     /**
@@ -94,7 +94,7 @@ public interface Mark extends org.opengis.style.Mark, Symbol {
      *
      * @param stroke The Stroke definition to use when rendering the Mark.
      */
-    void setStroke(org.opengis.style.Stroke stroke);
+    void setStroke(org.geotools.api.style.Stroke stroke);
 
     /**
      * This parameter defines which fill style to use when rendering the Mark.
@@ -109,7 +109,7 @@ public interface Mark extends org.opengis.style.Mark, Symbol {
      *
      * @param fill the Fill definition to use when rendering the Mark.
      */
-    void setFill(org.opengis.style.Fill fill);
+    void setFill(org.geotools.api.style.Fill fill);
 
     /**
      * Mark defined by an external resource.
@@ -124,7 +124,7 @@ public interface Mark extends org.opengis.style.Mark, Symbol {
      *
      * @param externalMark Indicate an mark defined by an external resource
      */
-    void setExternalMark(org.opengis.style.ExternalMark externalMark);
+    void setExternalMark(org.geotools.api.style.ExternalMark externalMark);
 
     @Override
     void accept(org.geotools.styling.StyleVisitor visitor);

@@ -65,15 +65,15 @@ import org.geotools.util.SimpleInternationalString;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.filter.expression.Expression;
-import org.opengis.geometry.Envelope;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * A Process to rasterize vector features in an input FeatureCollection.
@@ -137,7 +137,7 @@ public class VectorToRasterProcess implements VectorProcess {
      *
      * @param features the feature collection to be (wholly or partially) rasterized
      * @param attribute source of values for the output grid: either a {@code String} for the name
-     *     of a numeric feature property or an {@code org.opengis.filter.expression.Expression} that
+     *     of a numeric feature property or an {@code org.geotools.api.filter.expression.Expression} that
      *     evaluates to a numeric value
      * @param gridDim size of the output raster
      * @param bounds bounds (world coordinates) of the output raster
@@ -420,7 +420,7 @@ public class VectorToRasterProcess implements VectorProcess {
         } else {
             throw new VectorToRasterException(
                     "value attribute must be a feature property name"
-                            + "or an org.opengis.filter.expression.Expression object");
+                            + "or an org.geotools.api.filter.expression.Expression object");
         }
 
         minAttValue = maxAttValue = null;

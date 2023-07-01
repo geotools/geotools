@@ -24,8 +24,8 @@ import org.geotools.data.Query;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.tutorial.csv3.parse.CSVIterator;
 import org.geotools.tutorial.csv3.parse.CSVStrategy;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /**
  * Iterator supporting writing of feature content.

@@ -55,7 +55,7 @@ public class SubProgressListener extends DelegateProgressListener {
      * @param amount amount of progress represented
      */
     public SubProgressListener(
-            org.opengis.util.ProgressListener progress, float start, float amount) {
+            org.geotools.api.util.ProgressListener progress, float start, float amount) {
         super(progress);
         this.start = start;
         this.amount = (amount > 0.0f) ? amount : 0.0f;
@@ -68,7 +68,7 @@ public class SubProgressListener extends DelegateProgressListener {
      * @param progress parent progress to notify as we get work done
      * @param amount amount of progress represented
      */
-    public SubProgressListener(org.opengis.util.ProgressListener progress, float amount) {
+    public SubProgressListener(org.geotools.api.util.ProgressListener progress, float amount) {
         this(progress, progress.getProgress(), amount);
     }
 

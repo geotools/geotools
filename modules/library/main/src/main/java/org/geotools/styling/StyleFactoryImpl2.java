@@ -27,25 +27,25 @@ import javax.measure.quantity.Length;
 import javax.swing.Icon;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.factory.GeoTools;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.Id;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.metadata.citation.OnLineResource;
-import org.opengis.style.ColorReplacement;
-import org.opengis.style.ContrastMethod;
-import org.opengis.style.Description;
-import org.opengis.style.ExternalMark;
-import org.opengis.style.GraphicFill;
-import org.opengis.style.GraphicLegend;
-import org.opengis.style.GraphicStroke;
-import org.opengis.style.GraphicalSymbol;
-import org.opengis.style.OverlapBehavior;
-import org.opengis.style.SemanticType;
-import org.opengis.util.InternationalString;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.metadata.citation.OnLineResource;
+import org.geotools.api.style.ColorReplacement;
+import org.geotools.api.style.ContrastMethod;
+import org.geotools.api.style.Description;
+import org.geotools.api.style.ExternalMark;
+import org.geotools.api.style.GraphicFill;
+import org.geotools.api.style.GraphicLegend;
+import org.geotools.api.style.GraphicStroke;
+import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.OverlapBehavior;
+import org.geotools.api.style.SemanticType;
+import org.geotools.api.util.InternationalString;
 
 /**
  * Factory for creating Styles; based on the GeoAPI StyleFactory interface.
@@ -56,7 +56,7 @@ import org.opengis.util.InternationalString;
  * @author Jody Garnett
  * @version $Id$
  */
-public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
+public class StyleFactoryImpl2 implements org.geotools.api.style.StyleFactory {
     private FilterFactory2 filterFactory;
 
     public StyleFactoryImpl2() {
@@ -73,7 +73,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
     }
 
     @Override
-    public ChannelSelection channelSelection(org.opengis.style.SelectedChannelType gray) {
+    public ChannelSelection channelSelection(org.geotools.api.style.SelectedChannelType gray) {
         ChannelSelectionImpl channelSelection = new ChannelSelectionImpl();
         channelSelection.setGrayChannel(gray);
         return channelSelection;
@@ -81,9 +81,9 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
 
     @Override
     public ChannelSelectionImpl channelSelection(
-            org.opengis.style.SelectedChannelType red,
-            org.opengis.style.SelectedChannelType green,
-            org.opengis.style.SelectedChannelType blue) {
+            org.geotools.api.style.SelectedChannelType red,
+            org.geotools.api.style.SelectedChannelType green,
+            org.geotools.api.style.SelectedChannelType blue) {
         ChannelSelectionImpl channelSelection = new ChannelSelectionImpl();
         channelSelection.setRGBChannels(red, green, blue);
         return channelSelection;
@@ -176,7 +176,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
             Id definedFor,
             Set<Name> featureTypeNames,
             Set<SemanticType> types,
-            List<org.opengis.style.Rule> rules) {
+            List<org.geotools.api.style.Rule> rules) {
         FeatureTypeStyleImpl featureTypeStyle = new FeatureTypeStyleImpl();
         featureTypeStyle.setName(name);
 
@@ -190,7 +190,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         featureTypeStyle.featureTypeNames().addAll(featureTypeNames);
         featureTypeStyle.semanticTypeIdentifiers().addAll(types);
 
-        for (org.opengis.style.Rule rule : rules) {
+        for (org.geotools.api.style.Rule rule : rules) {
             if (rule instanceof RuleImpl) {
                 featureTypeStyle.rules().add((RuleImpl) rule);
             } else {
@@ -227,8 +227,8 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
             Expression opacity,
             Expression size,
             Expression rotation,
-            org.opengis.style.AnchorPoint anchor,
-            org.opengis.style.Displacement disp) {
+            org.geotools.api.style.AnchorPoint anchor,
+            org.geotools.api.style.Displacement disp) {
 
         GraphicImpl graphic = new GraphicImpl(filterFactory);
         if (symbols != null) {
@@ -254,8 +254,8 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
             Expression opacity,
             Expression size,
             Expression rotation,
-            org.opengis.style.AnchorPoint anchorPoint,
-            org.opengis.style.Displacement displacement) {
+            org.geotools.api.style.AnchorPoint anchorPoint,
+            org.geotools.api.style.Displacement displacement) {
 
         GraphicImpl graphicFill = new GraphicImpl(filterFactory);
         if (symbols != null) {
@@ -282,8 +282,8 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
             Expression opacity,
             Expression size,
             Expression rotation,
-            org.opengis.style.AnchorPoint anchorPoint,
-            org.opengis.style.Displacement displacement) {
+            org.geotools.api.style.AnchorPoint anchorPoint,
+            org.geotools.api.style.Displacement displacement) {
         GraphicImpl graphicLegend = new GraphicImpl(filterFactory);
         if (symbols != null) {
             for (GraphicalSymbol graphicalSymbol : symbols) {
@@ -309,8 +309,8 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
             Expression opacity,
             Expression size,
             Expression rotation,
-            org.opengis.style.AnchorPoint anchorPoint,
-            org.opengis.style.Displacement displacement,
+            org.geotools.api.style.AnchorPoint anchorPoint,
+            org.geotools.api.style.Displacement displacement,
             Expression initialGap,
             Expression gap) {
         GraphicImpl graphicStroke = new GraphicImpl(filterFactory);
@@ -335,7 +335,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
     }
 
     @Override
-    public HaloImpl halo(org.opengis.style.Fill fill, Expression radius) {
+    public HaloImpl halo(org.geotools.api.style.Fill fill, Expression radius) {
         HaloImpl halo = new HaloImpl();
         halo.setFill(fill);
         halo.setRadius(radius);
@@ -369,7 +369,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
             Expression geometry,
             Description description,
             Unit<?> unit,
-            org.opengis.style.Stroke stroke,
+            org.geotools.api.style.Stroke stroke,
             Expression offset) {
         LineSymbolizerImpl copy = new LineSymbolizerImpl();
         copy.setDescription(description);
@@ -384,8 +384,8 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
     @Override
     public MarkImpl mark(
             Expression wellKnownName,
-            org.opengis.style.Fill fill,
-            org.opengis.style.Stroke stroke) {
+            org.geotools.api.style.Fill fill,
+            org.geotools.api.style.Stroke stroke) {
 
         MarkImpl mark = new MarkImpl(filterFactory, null);
         mark.setWellKnownName(wellKnownName);
@@ -398,8 +398,8 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
     @Override
     public MarkImpl mark(
             ExternalMark externalMark,
-            org.opengis.style.Fill fill,
-            org.opengis.style.Stroke stroke) {
+            org.geotools.api.style.Fill fill,
+            org.geotools.api.style.Stroke stroke) {
         MarkImpl mark = new MarkImpl();
         mark.setExternalMark(externalMark);
         mark.setFill(fill);
@@ -410,8 +410,8 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
 
     @Override
     public PointPlacementImpl pointPlacement(
-            org.opengis.style.AnchorPoint anchor,
-            org.opengis.style.Displacement displacement,
+            org.geotools.api.style.AnchorPoint anchor,
+            org.geotools.api.style.Displacement displacement,
             Expression rotation) {
         PointPlacementImpl pointPlacment = new PointPlacementImpl(filterFactory);
         pointPlacment.setAnchorPoint(anchor);
@@ -427,7 +427,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
             Expression geometry,
             Description description,
             Unit<?> unit,
-            org.opengis.style.Graphic graphic) {
+            org.geotools.api.style.Graphic graphic) {
         PointSymbolizerImpl copy = new PointSymbolizerImpl();
         copy.setDescription(description);
         copy.setGeometryPropertyName(((PropertyName) geometry).getPropertyName());
@@ -444,9 +444,9 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
             Expression geometry,
             Description description,
             Unit<?> unit,
-            org.opengis.style.Stroke stroke,
-            org.opengis.style.Fill fill,
-            org.opengis.style.Displacement displacement,
+            org.geotools.api.style.Stroke stroke,
+            org.geotools.api.style.Fill fill,
+            org.geotools.api.style.Displacement displacement,
             Expression offset) {
         PolygonSymbolizerImpl polygonSymbolizer = new PolygonSymbolizerImpl();
         polygonSymbolizer.setStroke(stroke);
@@ -468,12 +468,12 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
             Description description,
             Unit<?> unit,
             Expression opacity,
-            org.opengis.style.ChannelSelection channelSelection,
+            org.geotools.api.style.ChannelSelection channelSelection,
             OverlapBehavior overlapsBehaviour,
-            org.opengis.style.ColorMap colorMap,
-            org.opengis.style.ContrastEnhancement contrast,
-            org.opengis.style.ShadedRelief shaded,
-            org.opengis.style.Symbolizer outline) {
+            org.geotools.api.style.ColorMap colorMap,
+            org.geotools.api.style.ContrastEnhancement contrast,
+            org.geotools.api.style.ShadedRelief shaded,
+            org.geotools.api.style.Symbolizer outline) {
         RasterSymbolizerImpl rasterSymbolizer = new RasterSymbolizerImpl(filterFactory);
         rasterSymbolizer.setChannelSelection(channelSelection);
         rasterSymbolizer.setColorMap(colorMap);
@@ -515,19 +515,19 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return extension;
     }
 
-    static org.geotools.styling.Symbolizer cast(org.opengis.style.Symbolizer symbolizer) {
-        if (symbolizer instanceof org.opengis.style.PolygonSymbolizer) {
+    static org.geotools.styling.Symbolizer cast(org.geotools.api.style.Symbolizer symbolizer) {
+        if (symbolizer instanceof org.geotools.api.style.PolygonSymbolizer) {
             return PolygonSymbolizerImpl.cast(symbolizer);
-        } else if (symbolizer instanceof org.opengis.style.LineSymbolizer) {
+        } else if (symbolizer instanceof org.geotools.api.style.LineSymbolizer) {
             return LineSymbolizerImpl.cast(symbolizer);
-        } else if (symbolizer instanceof org.opengis.style.PointSymbolizer) {
+        } else if (symbolizer instanceof org.geotools.api.style.PointSymbolizer) {
             return PointSymbolizerImpl.cast(symbolizer);
-        } else if (symbolizer instanceof org.opengis.style.RasterSymbolizer) {
+        } else if (symbolizer instanceof org.geotools.api.style.RasterSymbolizer) {
             return RasterSymbolizerImpl.cast(symbolizer);
-        } else if (symbolizer instanceof org.opengis.style.TextSymbolizer) {
+        } else if (symbolizer instanceof org.geotools.api.style.TextSymbolizer) {
             return TextSymbolizerImpl.cast(symbolizer);
         }
-        // the day there is any implementation, handle org.opengis.style.ExtensionSymbolizer
+        // the day there is any implementation, handle org.geotools.api.style.ExtensionSymbolizer
         return null; // must be some new extension?
     }
 
@@ -538,7 +538,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
             GraphicLegend legend,
             double min,
             double max,
-            List<org.opengis.style.Symbolizer> symbolizers,
+            List<org.geotools.api.style.Symbolizer> symbolizers,
             Filter filter) {
         RuleImpl rule = new RuleImpl();
         rule.setName(name);
@@ -547,7 +547,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         rule.setMinScaleDenominator(min);
         rule.setMaxScaleDenominator(max);
         if (symbolizers != null) {
-            for (org.opengis.style.Symbolizer symbolizer : symbolizers) {
+            for (org.geotools.api.style.Symbolizer symbolizer : symbolizers) {
                 rule.symbolizers().add(cast(symbolizer));
             }
         }
@@ -562,7 +562,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
 
     @Override
     public SelectedChannelTypeImpl selectedChannelType(
-            Expression channelName, org.opengis.style.ContrastEnhancement contrastEnhancement) {
+            Expression channelName, org.geotools.api.style.ContrastEnhancement contrastEnhancement) {
         SelectedChannelTypeImpl selectedChannelType = new SelectedChannelTypeImpl(filterFactory);
         selectedChannelType.setChannelName(channelName);
         selectedChannelType.setContrastEnhancement(contrastEnhancement);
@@ -571,7 +571,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
 
     @Override
     public SelectedChannelTypeImpl selectedChannelType(
-            String channelName, org.opengis.style.ContrastEnhancement contrastEnhancement) {
+            String channelName, org.geotools.api.style.ContrastEnhancement contrastEnhancement) {
         SelectedChannelTypeImpl selectedChannelType = new SelectedChannelTypeImpl(filterFactory);
         selectedChannelType.setChannelName(channelName);
         selectedChannelType.setContrastEnhancement(contrastEnhancement);
@@ -656,14 +656,14 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
             String name,
             Description description,
             boolean isDefault,
-            List<org.opengis.style.FeatureTypeStyle> featureTypeStyles,
-            org.opengis.style.Symbolizer defaultSymbolizer) {
+            List<org.geotools.api.style.FeatureTypeStyle> featureTypeStyles,
+            org.geotools.api.style.Symbolizer defaultSymbolizer) {
         StyleImpl style = new StyleImpl();
         style.setName(name);
         style.setDescription(description);
         style.setDefault(isDefault);
         if (featureTypeStyles != null) {
-            for (org.opengis.style.FeatureTypeStyle featureTypeStyle : featureTypeStyles) {
+            for (org.geotools.api.style.FeatureTypeStyle featureTypeStyle : featureTypeStyles) {
                 style.featureTypeStyles().add(FeatureTypeStyleImpl.cast(featureTypeStyle));
             }
         }
@@ -679,10 +679,10 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
             Description description,
             Unit<?> unit,
             Expression label,
-            org.opengis.style.Font font,
-            org.opengis.style.LabelPlacement placement,
-            org.opengis.style.Halo halo,
-            org.opengis.style.Fill fill) {
+            org.geotools.api.style.Font font,
+            org.geotools.api.style.LabelPlacement placement,
+            org.geotools.api.style.Halo halo,
+            org.geotools.api.style.Fill fill) {
 
         TextSymbolizerImpl tSymb = new TextSymbolizerImpl(filterFactory);
         tSymb.setName(name);

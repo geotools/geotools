@@ -19,7 +19,7 @@
  */
 package org.geotools.metadata.iso.identification;
 
-import org.opengis.metadata.identification.ServiceIdentification;
+import org.geotools.api.metadata.identification.ServiceIdentification;
 
 /**
  * Identification of capabilities which a service provider makes available to a service user through

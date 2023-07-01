@@ -18,9 +18,9 @@ package org.geotools.data.oracle.filter;
 
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.VolatileFunction;
-import org.opengis.geometry.Geometry;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.VolatileFunction;
+import org.geotools.api.geometry.Geometry;
 
 /**
  * Oracle function SDO_NN to identify the nearest neighbors for a geometry

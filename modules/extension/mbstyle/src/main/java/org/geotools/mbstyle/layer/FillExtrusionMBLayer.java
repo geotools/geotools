@@ -36,9 +36,9 @@ import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.Rule;
 import org.geotools.text.Text;
 import org.json.simple.JSONObject;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.GraphicFill;
-import org.opengis.style.SemanticType;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.GraphicFill;
+import org.geotools.api.style.SemanticType;
 
 /**
  * MBLayer wrapper for "fill extrusion" representing extruded (3D) polygon.

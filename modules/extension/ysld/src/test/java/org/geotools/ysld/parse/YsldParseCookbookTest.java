@@ -52,8 +52,8 @@ import org.geotools.styling.TextSymbolizer;
 import org.geotools.ysld.TestUtils;
 import org.geotools.ysld.YsldTests;
 import org.junit.Test;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.ContrastMethod;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.ContrastMethod;
 
 public class YsldParseCookbookTest {
 

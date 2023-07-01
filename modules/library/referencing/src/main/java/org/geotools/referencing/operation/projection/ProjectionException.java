@@ -16,10 +16,10 @@
  */
 package org.geotools.referencing.operation.projection;
 
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.measure.Latitude;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * Thrown by {@link MapProjection} when a map projection failed.

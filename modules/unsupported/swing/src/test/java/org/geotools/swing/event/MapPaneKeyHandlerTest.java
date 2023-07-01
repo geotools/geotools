@@ -39,7 +39,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.opengis.geometry.Envelope;
+import org.geotools.api.geometry.Envelope;
 
 /**
  * Unit tests for MapPaneKeyHandler. Requires graphics environment.

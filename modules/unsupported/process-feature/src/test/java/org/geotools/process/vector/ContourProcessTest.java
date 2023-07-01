@@ -45,7 +45,7 @@ import org.geotools.util.logging.Logging;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.util.ProgressListener;
 
 /** @author ian */
 public class ContourProcessTest {

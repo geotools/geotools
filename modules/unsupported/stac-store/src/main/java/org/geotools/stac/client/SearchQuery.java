@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.Arrays;
 import java.util.List;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 /** Represents a STAC query used in search requests */
 public class SearchQuery {

@@ -27,7 +27,7 @@ import org.geotools.styling.StyleFactory;
 import org.geotools.styling.TextSymbolizer;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory2;
 import si.uom.SI;
 import systems.uom.common.USCustomary;
 

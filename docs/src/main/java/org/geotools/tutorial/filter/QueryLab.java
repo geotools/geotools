@@ -44,9 +44,9 @@ import org.geotools.swing.wizard.JWizard;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.filter.Filter;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.filter.Filter;
 
 /**
  * The Query Lab is an excuse to try out Filters and Expressions on your own data with a table to

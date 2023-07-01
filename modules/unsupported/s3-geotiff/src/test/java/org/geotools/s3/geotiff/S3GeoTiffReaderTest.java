@@ -28,7 +28,7 @@ import org.geotools.image.test.ImageAssert;
 import org.geotools.s3.S3ImageInputStreamImpl;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.opengis.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.GeneralParameterValue;
 
 /**
  * Tests for the S3GeoTiffReader and S3ImageInputStream. These are very basic and ignored for now

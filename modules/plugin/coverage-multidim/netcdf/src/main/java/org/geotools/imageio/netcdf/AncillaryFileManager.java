@@ -66,7 +66,7 @@ import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
-import org.opengis.feature.type.Name;
+import org.geotools.api.feature.type.Name;
 
 /**
  * A class used to store any auxiliary indexing information such as the low level indexer definition

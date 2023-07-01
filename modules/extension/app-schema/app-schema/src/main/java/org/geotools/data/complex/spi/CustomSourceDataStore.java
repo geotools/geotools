@@ -29,9 +29,9 @@ import org.geotools.data.complex.DataAccessMappingFeatureIterator;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.config.AppSchemaDataAccessDTO;
 import org.geotools.data.complex.config.SourceDataStore;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.filter.expression.PropertyName;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.filter.expression.PropertyName;
 
 /**
  * This interface allows data stores to take advantage of certain App-Schema extension points

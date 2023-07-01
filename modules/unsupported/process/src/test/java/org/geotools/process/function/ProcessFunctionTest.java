@@ -30,10 +30,10 @@ import org.geotools.feature.NameImpl;
 import org.geotools.process.feature.BufferFeatureCollectionFactory;
 import org.junit.Test;
 import org.locationtech.jts.geom.MultiPolygon;
-import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.Function;
+import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Function;
 
 public class ProcessFunctionTest {
 

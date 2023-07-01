@@ -21,11 +21,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.util.Cloneable;
 import org.geotools.util.Utilities;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.util.Cloneable;
 
 /**
  * Holds the coordinates for a two-dimensional position within some coordinate reference system.
@@ -35,8 +35,8 @@ import org.opengis.util.Cloneable;
  * <blockquote>
  *
  * This class inherits {@linkplain #x x} and {@linkplain #y y} fields. But despite their names, they
- * don't need to be oriented toward {@linkplain org.opengis.referencing.cs.AxisDirection#EAST East}
- * and {@linkplain org.opengis.referencing.cs.AxisDirection#NORTH North}. The
+ * don't need to be oriented toward {@linkplain org.geotools.api.referencing.cs.AxisDirection#EAST
+ * East} and {@linkplain org.geotools.api.referencing.cs.AxisDirection#NORTH North}. The
  * (<var>x</var>,<var>y</var>) axis can have any orientation and should be understood as
  * "<cite>ordinate 0</cite>" and "<cite>ordinate 1</cite>" values instead. This is not specific to
  * this implementation; in Java2D too, the visual axis orientation depend on the {@linkplain
@@ -44,7 +44,7 @@ import org.opengis.util.Cloneable;
  *
  * <p>The rational for avoiding axis orientation restriction is that other {@link DirectPosition}
  * implementation do not have such restriction, and it would be hard to generalize (what to do with
- * {@linkplain org.opengis.referencing.cs.AxisDirection#NORTH_EAST North-East} direction?).
+ * {@linkplain org.geotools.api.referencing.cs.AxisDirection#NORTH_EAST North-East} direction?).
  *
  * </blockquote>
  *
@@ -97,10 +97,10 @@ public class DirectPosition2D extends Point2D.Double
     /**
      * Constructs a 2D position from the specified ordinates. Despite their name, the
      * (<var>x</var>,<var>y</var>) coordinates don't need to be oriented toward ({@linkplain
-     * org.opengis.referencing.cs.AxisDirection#EAST East}, {@linkplain
-     * org.opengis.referencing.cs.AxisDirection#NORTH North}). Those parameter names simply match
-     * the {@linkplain #x x} and {@linkplain #y y} fields. See the {@linkplain DirectPosition2D
-     * class javadoc} for details.
+     * org.geotools.api.referencing.cs.AxisDirection#EAST East}, {@linkplain
+     * org.geotools.api.referencing.cs.AxisDirection#NORTH North}). Those parameter names simply
+     * match the {@linkplain #x x} and {@linkplain #y y} fields. See the {@linkplain
+     * DirectPosition2D class javadoc} for details.
      *
      * @param x The <var>x</var> value.
      * @param y The <var>y</var> value.
@@ -112,9 +112,9 @@ public class DirectPosition2D extends Point2D.Double
     /**
      * Constructs a 2D position from the specified ordinates in the specified CRS. Despite their
      * name, the (<var>x</var>,<var>y</var>) coordinates don't need to be oriented toward
-     * ({@linkplain org.opengis.referencing.cs.AxisDirection#EAST East}, {@linkplain
-     * org.opengis.referencing.cs.AxisDirection#NORTH North}). Those parameter names simply match
-     * the {@linkplain #x x} and {@linkplain #y y} fields. The actual axis orientations are
+     * ({@linkplain org.geotools.api.referencing.cs.AxisDirection#EAST East}, {@linkplain
+     * org.geotools.api.referencing.cs.AxisDirection#NORTH North}). Those parameter names simply
+     * match the {@linkplain #x x} and {@linkplain #y y} fields. The actual axis orientations are
      * determined by the specified CRS. See the {@linkplain DirectPosition2D class javadoc} for
      * details.
      *
@@ -150,7 +150,7 @@ public class DirectPosition2D extends Point2D.Double
 
     /**
      * Returns always {@code this}, the direct position for this {@linkplain
-     * org.opengis.geometry.coordinate.Position position}.
+     * org.geotools.api.geometry.coordinate.Position position}.
      *
      * @since 2.5
      */

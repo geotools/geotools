@@ -56,10 +56,10 @@ import org.geotools.styling.NormalizeContrastMethodStrategy;
 import org.geotools.styling.StyleVisitor;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.ContrastMethod;
-import org.opengis.util.InternationalString;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.ContrastMethod;
+import org.geotools.api.util.InternationalString;
 
 /**
  * This implementations of {@link CoverageProcessingNode} takes care of the {@link

@@ -48,14 +48,14 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.util.AffineTransformation;
 import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
-import org.opengis.coverage.processing.OperationNotFoundException;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.metadata.spatial.PixelOrientation;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.util.InternationalString;
+import org.geotools.api.coverage.processing.OperationNotFoundException;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.metadata.spatial.PixelOrientation;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.util.InternationalString;
 
 /**
  * This operation is similar to the {@link ZonalStats} operation but implements a new version of the
@@ -85,7 +85,7 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
      * @param parameters The {@link ParameterValueGroup} to be copied.
      * @return A copy of the provided {@link ParameterValueGroup} as a JAI block.
      * @see
-     *     org.geotools.coverage.processing.OperationJAI#prepareParameters(org.opengis.parameter.ParameterValueGroup)
+     *     org.geotools.coverage.processing.OperationJAI#prepareParameters(org.geotools.api.parameter.ParameterValueGroup)
      */
     @Override
     protected ParameterBlockJAI prepareParameters(final ParameterValueGroup parameters) {

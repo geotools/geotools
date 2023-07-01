@@ -37,7 +37,7 @@ import org.geotools.data.Repository;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.factory.Hints;
-import org.opengis.feature.type.Name;
+import org.geotools.api.feature.type.Name;
 
 /**
  * @author Daniele Romagnoli, GeoSolutions SAS

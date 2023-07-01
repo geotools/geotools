@@ -19,9 +19,9 @@
  */
 package org.geotools.metadata.iso.constraint;
 
-import org.opengis.metadata.constraint.Classification;
-import org.opengis.metadata.constraint.SecurityConstraints;
-import org.opengis.util.InternationalString;
+import org.geotools.api.metadata.constraint.Classification;
+import org.geotools.api.metadata.constraint.SecurityConstraints;
+import org.geotools.api.util.InternationalString;
 
 /**
  * Handling restrictions imposed on the resource for national security or similar security concerns.

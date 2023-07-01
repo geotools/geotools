@@ -14,7 +14,7 @@ package org.geotools.xml;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.gml.GMLHandlerFeature;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.xml.sax.helpers.XMLFilterImpl;
 
 // yourcode start

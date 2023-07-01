@@ -31,7 +31,7 @@ import org.geotools.data.store.FeatureCollectionWrapperTestSupport;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.text.ecql.ECQL;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 public class TransformFeatureCollectionMemoryTest extends FeatureCollectionWrapperTestSupport {
 

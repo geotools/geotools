@@ -30,7 +30,7 @@ import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.opengis.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.MathTransform;
 
 /**
  * This class is responsible for creating a world file from a {@link MathTransform} or {@link

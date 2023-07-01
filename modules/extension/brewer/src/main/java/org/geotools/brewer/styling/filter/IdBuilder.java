@@ -23,10 +23,10 @@ import java.util.HashSet;
 import java.util.List;
 import org.geotools.brewer.styling.builder.Builder;
 import org.geotools.factory.CommonFactoryFinder;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.Id;
-import org.opengis.filter.identity.Identifier;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.identity.Identifier;
 
 /** FilterBuilder acting as a simple wrapper around an Expression. */
 public class IdBuilder<P> implements Builder<Id> {
@@ -78,7 +78,7 @@ public class IdBuilder<P> implements Builder<Id> {
 
     @Override
     public IdBuilder<P> reset() {
-        this.filter = org.opengis.filter.Filter.EXCLUDE;
+        this.filter = org.geotools.api.filter.Filter.EXCLUDE;
         this.unset = false;
         return this;
     }

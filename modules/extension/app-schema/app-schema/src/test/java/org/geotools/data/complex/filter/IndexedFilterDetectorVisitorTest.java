@@ -24,8 +24,8 @@ import org.geotools.data.complex.TestFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.test.AppSchemaTestSupport;
 import org.junit.Test;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
 
 /**
  * Tests IndexedFilterDetectorVisitor

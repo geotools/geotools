@@ -21,7 +21,7 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.json.simple.JSONArray;
-import org.opengis.filter.capability.FunctionName;
+import org.geotools.api.filter.capability.FunctionName;
 
 /** Returns the value in a JSONArray at a given index. */
 public class AtFunction extends FunctionExpressionImpl {

@@ -38,14 +38,14 @@ import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.junit.Assert;
 import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.coverage.grid.GridGeometry;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.metadata.spatial.PixelOrientation;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.NoninvertibleTransformException;
-import org.opengis.referencing.operation.TransformException;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.coverage.grid.GridGeometry;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.metadata.spatial.PixelOrientation;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.NoninvertibleTransformException;
+import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * Test the {@link GridGeometry} implementation.
@@ -295,7 +295,7 @@ public final class GridGeometryTest extends GridCoverageTestBase {
         GridGeometry2D gg =
                 new GridGeometry2D(
                         new GridEnvelope2D(1000, 1000, 100, 100),
-                        (org.opengis.geometry.Envelope) bbox);
+                        (org.geotools.api.geometry.Envelope) bbox);
 
         GridGeometry2D canonical = gg.toCanonical();
         assertEquivalentCanonical(gg, canonical);

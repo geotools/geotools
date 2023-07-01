@@ -25,8 +25,8 @@ import org.geotools.graph.traverse.basic.BasicGraphTraversal;
 import org.geotools.graph.traverse.basic.SimpleGraphWalker;
 import org.geotools.graph.traverse.standard.BreadthFirstIterator;
 import org.geotools.util.SuppressFBWarnings;
-import org.opengis.feature.Feature;
-import org.opengis.feature.FeatureVisitor;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.FeatureVisitor;
 
 public class GraphExamples {
 

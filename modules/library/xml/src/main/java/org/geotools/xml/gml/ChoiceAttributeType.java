@@ -16,8 +16,8 @@
  */
 package org.geotools.xml.gml;
 
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.AttributeType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.AttributeType;
 
 /**
  * A temporary measure representing a choice between several bindings.

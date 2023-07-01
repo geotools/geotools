@@ -21,8 +21,8 @@ import org.geotools.filter.function.GeometryTransformationVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Function;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Function;
 
 public class GeometryFilterVisitorTest {
 
@@ -30,7 +30,7 @@ public class GeometryFilterVisitorTest {
 
     @Test
     public void testSimpleBuffer() {
-        org.opengis.filter.expression.Expression geomTx =
+        org.geotools.api.filter.expression.Expression geomTx =
                 ff.function("buffer", ff.property("the_geom"), ff.literal(2));
 
         ReferencedEnvelope re = new ReferencedEnvelope(0, 2, 0, 2, null);

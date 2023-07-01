@@ -27,10 +27,10 @@ import org.geotools.coverage.io.CoverageResponse;
 import org.geotools.coverage.io.impl.DefaultCoverageSource;
 import org.geotools.imageio.netcdf.NetCDFImageReader;
 import org.geotools.parameter.DefaultParameterDescriptor;
-import org.opengis.feature.type.Name;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.referencing.ReferenceIdentifier;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.referencing.ReferenceIdentifier;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * Implementation of a coverage source for netcdf data

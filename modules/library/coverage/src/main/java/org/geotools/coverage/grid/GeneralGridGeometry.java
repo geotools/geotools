@@ -33,15 +33,15 @@ import org.geotools.referencing.util.CRSUtilities;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.coverage.grid.GridGeometry;
-import org.opengis.geometry.Envelope;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
-import org.opengis.util.Cloneable;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.coverage.grid.GridGeometry;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.api.util.Cloneable;
 
 /**
  * Describes the valid range of grid coordinates and the math transform to transform grid
@@ -583,7 +583,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
     /**
      * Returns the transform from grid coordinates to real world earth coordinates. The transform is
      * often an affine transform. The coordinate reference system of the real world coordinates is
-     * given by {@link org.opengis.coverage.Coverage#getCoordinateReferenceSystem}.
+     * given by {@link org.geotools.api.coverage.Coverage#getCoordinateReferenceSystem}.
      *
      * <p><strong>Note:</strong> OpenGIS requires that the transform maps <em>pixel centers</em> to
      * real world coordinates. This is different from some other systems that map pixel's upper left
@@ -616,7 +616,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
      * @throws InvalidGridGeometryException if this grid geometry has no transform (i.e. <code>
      *     {@linkplain #isDefined isDefined}({@linkplain #GRID_TO_CRS_BITMASK})</code> returned
      *     {@code false}).
-     * @see GridGeometry2D#getGridToCRS(org.opengis.referencing.datum.PixelInCell)
+     * @see GridGeometry2D#getGridToCRS(org.geotools.api.referencing.datum.PixelInCell)
      * @since 2.3
      */
     public MathTransform getGridToCRS(final PixelInCell anchor)

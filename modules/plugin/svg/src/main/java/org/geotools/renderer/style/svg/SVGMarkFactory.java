@@ -28,8 +28,8 @@ import org.apache.batik.gvt.GraphicsNode;
 import org.apache.batik.gvt.ShapeNode;
 import org.geotools.geometry.jts.TransformedShape;
 import org.geotools.renderer.style.MarkFactory;
-import org.opengis.feature.Feature;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.filter.expression.Expression;
 
 public class SVGMarkFactory implements MarkFactory {
 

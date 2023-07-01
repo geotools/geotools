@@ -19,8 +19,8 @@ package org.geotools.filter.v2_0.bindings;
 import javax.xml.namespace.QName;
 import net.opengis.fes20.SortPropertyType;
 import org.geotools.filter.v2_0.FES;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.sort.SortBy;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.sort.SortBy;
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:SortPropertyType.

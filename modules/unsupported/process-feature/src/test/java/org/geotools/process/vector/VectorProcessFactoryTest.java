@@ -15,7 +15,7 @@ import org.geotools.process.factory.DescribeResult;
 import org.geotools.util.factory.FactoryIteratorProvider;
 import org.geotools.util.factory.GeoTools;
 import org.junit.Test;
-import org.opengis.feature.type.Name;
+import org.geotools.api.feature.type.Name;
 
 public class VectorProcessFactoryTest {
 

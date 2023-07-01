@@ -45,7 +45,7 @@ import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /** STACClient test using stored responses and a mock HTTPClient, can be run offline */
 @SuppressWarnings("unchecked")

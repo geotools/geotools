@@ -20,6 +20,22 @@ import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.util.Arrays;
 import javax.measure.Unit;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.MismatchedReferenceSystemException;
+import org.geotools.api.metadata.extent.GeographicBoundingBox;
+import org.geotools.api.parameter.InvalidParameterValueException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.cs.AxisDirection;
+import org.geotools.api.referencing.cs.CoordinateSystem;
+import org.geotools.api.referencing.cs.CoordinateSystemAxis;
+import org.geotools.api.referencing.cs.RangeMeaning;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.api.util.Cloneable;
 import org.geotools.geometry.util.XRectangle2D;
 import org.geotools.measure.Units;
 import org.geotools.metadata.i18n.ErrorKeys;
@@ -28,22 +44,6 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.Envelope;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.geometry.MismatchedReferenceSystemException;
-import org.opengis.metadata.extent.GeographicBoundingBox;
-import org.opengis.parameter.InvalidParameterValueException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.cs.CoordinateSystem;
-import org.opengis.referencing.cs.CoordinateSystemAxis;
-import org.opengis.referencing.cs.RangeMeaning;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
-import org.opengis.util.Cloneable;
 
 /**
  * A minimum bounding box or rectangle. Regardless of dimension, an {@code Envelope} can be
@@ -54,15 +54,15 @@ import org.opengis.util.Cloneable;
  * coordinates of an arbitrary dimension.
  *
  * <p><strong>Tip:</strong> The metadata package provides a {@link
- * org.opengis.metadata.extent.GeographicBoundingBox}, which can be used as a kind of envelope with
- * a coordinate reference system fixed to WGS 84 (EPSG:4326).
+ * org.geotools.api.metadata.extent.GeographicBoundingBox}, which can be used as a kind of envelope
+ * with a coordinate reference system fixed to WGS 84 (EPSG:4326).
  *
  * @since 2.0
  * @author Martin Desruisseaux (IRD)
  * @author Simone Giannecchini
  * @see Envelope2D
  * @see org.geotools.geometry.jts.ReferencedEnvelope
- * @see org.opengis.metadata.extent.GeographicBoundingBox
+ * @see org.geotools.api.metadata.extent.GeographicBoundingBox
  */
 public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Serializable {
     /** Serial number for interoperability with different versions. */
@@ -234,8 +234,8 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      * <cite>best effort</cite> basis - usually accurate for affine transforms.
      *
      * <p><b>Note:</b> The convention is specified as a {@link PixelInCell} code instead than the
-     * more detailled {@link org.opengis.metadata.spatial.PixelOrientation}, because the later is
-     * restricted to the two-dimensional case while the former can be used for any number of
+     * more detailled {@link org.geotools.api.metadata.spatial.PixelOrientation}, because the later
+     * is restricted to the two-dimensional case while the former can be used for any number of
      * dimensions.
      *
      * @param gridRange The grid range.
@@ -1102,7 +1102,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      * Compares to the specified envelope for equality up to the specified tolerance value. The
      * tolerance value {@code eps} can be either relative to the {@linkplain #getLength envelope
      * length} along each dimension or can be an absolute value (as for example some ground
-     * resolution of a {@linkplain org.opengis.coverage.grid.GridCoverage grid coverage}).
+     * resolution of a {@linkplain org.geotools.api.coverage.grid.GridCoverage grid coverage}).
      *
      * <p>If {@code relativeToLength} is set to {@code true}, the actual tolerance value for a given
      * dimension <var>i</var> is {@code eps}&times;{@code length} where {@code length} is the

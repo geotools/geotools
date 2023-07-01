@@ -18,11 +18,11 @@ package org.geotools.referencing.operation;
 
 // OpenGIS dependencies
 
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.operation.CoordinateOperation; // For javadoc
-import org.opengis.referencing.operation.CoordinateOperationFactory; // For javadoc
-import org.opengis.referencing.operation.OperationNotFoundException; // For javadoc
-import org.opengis.referencing.operation.TransformException;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.operation.CoordinateOperation; // For javadoc
+import org.geotools.api.referencing.operation.CoordinateOperationFactory; // For javadoc
+import org.geotools.api.referencing.operation.OperationNotFoundException; // For javadoc
+import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * Thrown when a transformation can't be performed because no path from {@linkplain

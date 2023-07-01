@@ -20,14 +20,14 @@
 package org.geotools.metadata.iso.extent;
 
 import java.util.Collection;
+import org.geotools.api.metadata.extent.BoundingPolygon;
+import org.geotools.api.metadata.extent.Extent;
+import org.geotools.api.metadata.extent.GeographicBoundingBox;
+import org.geotools.api.metadata.extent.GeographicExtent;
+import org.geotools.api.metadata.extent.TemporalExtent;
+import org.geotools.api.metadata.extent.VerticalExtent;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.metadata.extent.BoundingPolygon;
-import org.opengis.metadata.extent.Extent;
-import org.opengis.metadata.extent.GeographicBoundingBox;
-import org.opengis.metadata.extent.GeographicExtent;
-import org.opengis.metadata.extent.TemporalExtent;
-import org.opengis.metadata.extent.VerticalExtent;
-import org.opengis.util.InternationalString;
 
 /**
  * Information about spatial, vertical, and temporal extent. This interface has four optional

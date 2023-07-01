@@ -14,7 +14,7 @@ import org.geotools.image.test.ImageAssert;
 import org.geotools.parameter.Parameter;
 import org.geotools.util.URLs;
 import org.junit.Test;
-import org.opengis.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.GeneralParameterValue;
 
 public class MBTilesReaderTest {
 

@@ -12,7 +12,7 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.geojson.feature.FeatureJSON;
 import org.geotools.geojson.geom.GeometryJSON;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 @SuppressWarnings({"PMD.SystemPrintln", "PMD.CloseResource"})
 public class Benchmark {

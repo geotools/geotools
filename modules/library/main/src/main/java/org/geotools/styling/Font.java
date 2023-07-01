@@ -17,7 +17,7 @@
 package org.geotools.styling;
 
 import java.util.List;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * A system-independent object for holding SLD font information. This holds information on the text
@@ -26,7 +26,7 @@ import org.opengis.filter.expression.Expression;
  * @author Ian Turton, CCG
  * @version $Id$
  */
-public interface Font extends org.opengis.style.Font {
+public interface Font extends org.geotools.api.style.Font {
     /** default font-size value * */
     static final int DEFAULT_FONTSIZE = 10;
 

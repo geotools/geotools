@@ -17,7 +17,7 @@
 package org.geotools.feature;
 
 import java.io.Closeable;
-import org.opengis.feature.Feature;
+import org.geotools.api.feature.Feature;
 
 /**
  * Streaming access to features, required to {@link #close()} after use.

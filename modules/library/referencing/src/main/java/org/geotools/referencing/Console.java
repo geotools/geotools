@@ -26,6 +26,14 @@ import java.text.ParsePosition;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.StringTokenizer;
+import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.CoordinateOperationFactory;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.NoninvertibleTransformException;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.measure.Measure;
 import org.geotools.measure.UnitFormat;
@@ -39,14 +47,6 @@ import org.geotools.referencing.wkt.Parser;
 import org.geotools.referencing.wkt.Preprocessor;
 import org.geotools.util.Arguments;
 import org.geotools.util.TableWriter;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.CoordinateOperationFactory;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.NoninvertibleTransformException;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * A console for executing CRS operations from the command line. Instructions are read from the

@@ -70,16 +70,16 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.PrecisionModel;
 import org.locationtech.jts.geom.TopologyException;
 import org.locationtech.jts.geom.prep.PreparedGeometryFactory;
-import org.opengis.coverage.Coverage;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.geometry.Envelope;
-import org.opengis.metadata.spatial.PixelOrientation;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.TransformException;
+import org.geotools.api.coverage.Coverage;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.geometry.Envelope;
+import org.geotools.api.metadata.spatial.PixelOrientation;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * The crop operation is responsible for selecting geographic subarea of the source coverage. The
@@ -275,7 +275,7 @@ public class Crop extends Operation2D {
      * Applies a crop operation to a coverage.
      *
      * @see
-     *     org.geotools.coverage.processing.AbstractOperation#doOperation(org.opengis.parameter.ParameterValueGroup,
+     *     org.geotools.coverage.processing.AbstractOperation#doOperation(org.geotools.api.parameter.ParameterValueGroup,
      *     org.geotools.util.factory.Hints)
      */
     @Override
@@ -547,7 +547,7 @@ public class Crop extends Operation2D {
                             JTS.getEnvelope2D(
                                     intersection.getEnvelopeInternal(),
                                     cropEnvelope.getCoordinateReferenceSystem());
-                    GeneralEnvelope ge = new GeneralEnvelope((org.opengis.geometry.Envelope) e2d);
+                    GeneralEnvelope ge = new GeneralEnvelope((org.geotools.api.geometry.Envelope) e2d);
                     cropEnvelope.setEnvelope(ge);
                 } catch (TopologyException e) {
                     // in case the intersection fail, accept using intersection(cropEnvelope,

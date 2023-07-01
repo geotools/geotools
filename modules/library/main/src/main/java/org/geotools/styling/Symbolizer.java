@@ -20,8 +20,8 @@ package org.geotools.styling;
 import java.util.Map;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.PropertyName;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.PropertyName;
 
 /**
  * This is the parent interface of all Symbolizers.
@@ -48,7 +48,7 @@ import org.opengis.filter.expression.PropertyName;
  * @author James Macgill, CCG
  * @version $Id$
  */
-public interface Symbolizer extends org.opengis.style.Symbolizer {
+public interface Symbolizer extends org.geotools.api.style.Symbolizer {
     void accept(org.geotools.styling.StyleVisitor visitor);
 
     /**
@@ -80,7 +80,7 @@ public interface Symbolizer extends org.opengis.style.Symbolizer {
      *
      * @since SymbologyEncoding 1.1
      */
-    void setDescription(org.opengis.style.Description description);
+    void setDescription(org.geotools.api.style.Description description);
 
     /**
      * Name of symbolizer; not always human readable.

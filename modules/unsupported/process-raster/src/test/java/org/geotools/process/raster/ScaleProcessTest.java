@@ -47,7 +47,7 @@ import org.geotools.image.ImageWorker;
 import org.geotools.util.factory.GeoTools;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.opengis.coverage.grid.GridCoverageReader;
+import org.geotools.api.coverage.grid.GridCoverageReader;
 
 public class ScaleProcessTest {
 

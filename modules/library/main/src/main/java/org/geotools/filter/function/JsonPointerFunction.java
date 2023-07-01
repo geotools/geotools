@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.opengis.filter.capability.FunctionName;
+import org.geotools.api.filter.capability.FunctionName;
 
 /** Applies a JSON pointer on a given JSON string, extracting a value out of it */
 public class JsonPointerFunction extends FunctionExpressionImpl {

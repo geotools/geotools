@@ -19,10 +19,10 @@
  */
 package org.geotools.metadata.iso.citation;
 
+import org.geotools.api.metadata.citation.Series;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.iso.MetadataEntity;
 import org.geotools.util.SimpleInternationalString;
-import org.opengis.metadata.citation.Series;
-import org.opengis.util.InternationalString;
 
 /**
  * Information about the series, or aggregate dataset, to which a dataset belongs.

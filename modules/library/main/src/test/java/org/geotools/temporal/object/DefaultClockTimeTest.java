@@ -28,8 +28,8 @@ import org.geotools.temporal.reference.DefaultTemporalReferenceSystem;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.temporal.ClockTime;
-import org.opengis.temporal.TemporalReferenceSystem;
+import org.geotools.api.temporal.ClockTime;
+import org.geotools.api.temporal.TemporalReferenceSystem;
 
 /** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultClockTimeTest {

@@ -23,8 +23,8 @@ import org.geotools.data.complex.xml.XmlXpathFilterData;
 import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.PropertyAccessorFactory;
 import org.geotools.util.factory.Hints;
-import org.opengis.feature.Feature;
-import org.opengis.feature.IllegalAttributeException;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.IllegalAttributeException;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**

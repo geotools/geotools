@@ -21,7 +21,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.sort.SortedFeatureIterator;
 import org.geotools.util.factory.Hints;
-import org.opengis.filter.sort.SortBy;
+import org.geotools.api.filter.sort.SortBy;
 
 /**
  * A wrapper that will sort a feature collection using a size sensitive algorithm, in main memory

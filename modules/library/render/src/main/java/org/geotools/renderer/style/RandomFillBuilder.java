@@ -41,8 +41,8 @@ import org.geotools.styling.Symbolizer;
 import org.locationtech.jts.algorithm.MinimumDiameter;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.index.quadtree.Quadtree;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.operation.TransformException;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * Helper class that helps building (and caching) a texture fill built off a random symbol

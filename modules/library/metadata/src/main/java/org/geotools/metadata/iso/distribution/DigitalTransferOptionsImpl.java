@@ -20,11 +20,11 @@
 package org.geotools.metadata.iso.distribution;
 
 import java.util.Collection;
+import org.geotools.api.metadata.citation.OnLineResource;
+import org.geotools.api.metadata.distribution.DigitalTransferOptions;
+import org.geotools.api.metadata.distribution.Medium;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.metadata.citation.OnLineResource;
-import org.opengis.metadata.distribution.DigitalTransferOptions;
-import org.opengis.metadata.distribution.Medium;
-import org.opengis.util.InternationalString;
 
 /**
  * Technical means and media by which a resource is obtained from the distributor.

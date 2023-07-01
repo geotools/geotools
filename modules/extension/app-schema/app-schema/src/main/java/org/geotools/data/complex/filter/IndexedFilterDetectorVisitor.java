@@ -22,10 +22,10 @@ import java.util.stream.Collectors;
 import org.geotools.appschema.util.IndexQueryUtils;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.filter.visitor.DefaultFilterVisitor;
-import org.opengis.filter.And;
-import org.opengis.filter.BinaryLogicOperator;
-import org.opengis.filter.Filter;
-import org.opengis.filter.Or;
+import org.geotools.api.filter.And;
+import org.geotools.api.filter.BinaryLogicOperator;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.Or;
 
 /**
  * Detects which AND/OR filter (BinaryLogicOperator) is the parent operator of indexed filter(s).

@@ -10,8 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.WKTReader;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Function;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Function;
 
 public class FilterFunction_setCRSTest {
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();

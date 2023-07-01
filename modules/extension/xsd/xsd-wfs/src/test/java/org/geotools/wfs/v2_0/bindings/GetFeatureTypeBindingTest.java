@@ -16,10 +16,10 @@ import net.opengis.wfs20.ResultTypeType;
 import net.opengis.wfs20.StoredQueryType;
 import org.geotools.wfs.v2_0.WFSTestSupport;
 import org.junit.Test;
-import org.opengis.filter.Id;
-import org.opengis.filter.Not;
-import org.opengis.filter.spatial.DWithin;
-import org.opengis.filter.spatial.Disjoint;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.Not;
+import org.geotools.api.filter.spatial.DWithin;
+import org.geotools.api.filter.spatial.Disjoint;
 
 public class GetFeatureTypeBindingTest extends WFSTestSupport {
     @Test

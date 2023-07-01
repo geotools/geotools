@@ -19,7 +19,7 @@ package org.geotools.filter.text.commons;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.text.cql2.CQLException;
-import org.opengis.filter.FilterFactory;
+import org.geotools.api.filter.FilterFactory;
 
 /**
  * Provides the common behavior to make a compiler implementation

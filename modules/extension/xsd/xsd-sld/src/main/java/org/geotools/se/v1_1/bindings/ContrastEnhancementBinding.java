@@ -20,7 +20,7 @@ import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDContrastEnhancementBinding;
 import org.geotools.styling.StyleFactory;
-import org.opengis.filter.FilterFactory;
+import org.geotools.api.filter.FilterFactory;
 
 /**
  * Binding object for the element http://www.opengis.net/se:ContrastEnhancement.

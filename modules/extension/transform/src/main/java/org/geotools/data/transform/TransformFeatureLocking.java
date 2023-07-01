@@ -21,8 +21,8 @@ import java.util.List;
 import org.geotools.data.FeatureLock;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureLocking;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.Filter;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Filter;
 
 public class TransformFeatureLocking extends TransformFeatureStore implements SimpleFeatureLocking {
     private final SimpleFeatureLocking locking;

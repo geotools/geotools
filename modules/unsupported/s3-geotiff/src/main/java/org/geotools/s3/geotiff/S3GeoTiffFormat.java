@@ -34,7 +34,7 @@ import org.geotools.parameter.ParameterGroup;
 import org.geotools.s3.S3Connector;
 import org.geotools.s3.S3ImageInputStreamImpl;
 import org.geotools.util.factory.Hints;
-import org.opengis.parameter.GeneralParameterDescriptor;
+import org.geotools.api.parameter.GeneralParameterDescriptor;
 
 /**
  * Just a basic wrapper around GeoTiffFormat in order to support GeoTiff over S3. Hopefully this

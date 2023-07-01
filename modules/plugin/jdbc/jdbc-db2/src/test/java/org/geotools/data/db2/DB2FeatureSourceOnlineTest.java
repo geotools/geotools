@@ -18,7 +18,7 @@ package org.geotools.data.db2;
 
 import org.geotools.jdbc.JDBCFeatureSourceOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 public class DB2FeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
     @Override

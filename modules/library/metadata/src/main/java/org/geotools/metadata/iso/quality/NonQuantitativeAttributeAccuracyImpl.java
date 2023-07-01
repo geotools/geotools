@@ -19,7 +19,7 @@
  */
 package org.geotools.metadata.iso.quality;
 
-import org.opengis.metadata.quality.NonQuantitativeAttributeAccuracy;
+import org.geotools.api.metadata.quality.NonQuantitativeAttributeAccuracy;
 
 /**
  * Accuracy of non-quantitative attributes.

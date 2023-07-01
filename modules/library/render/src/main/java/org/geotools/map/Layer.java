@@ -32,8 +32,8 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.util.logging.Logging;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.style.FeatureTypeStyle;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.style.FeatureTypeStyle;
 
 /**
  * A Layer to be rendered.

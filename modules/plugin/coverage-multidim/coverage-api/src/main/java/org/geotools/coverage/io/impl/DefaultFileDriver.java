@@ -33,7 +33,7 @@ import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * Base class extending {@link DefaultDriver} leveraging on URLs.

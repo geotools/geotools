@@ -32,11 +32,11 @@ import org.geotools.feature.visitor.CountVisitor;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.feature.FeatureVisitor;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.feature.FeatureVisitor;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.util.ProgressListener;
 
 public class FilteringSimpleFeatureCollectionTest extends FeatureCollectionWrapperTestSupport {
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);

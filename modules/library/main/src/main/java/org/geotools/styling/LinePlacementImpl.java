@@ -20,10 +20,10 @@ import java.util.logging.Logger;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.GeoTools;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.StyleVisitor;
-import org.opengis.util.Cloneable;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.util.Cloneable;
 
 /**
  * Default implementation of LinePlacement.
@@ -50,7 +50,7 @@ public class LinePlacementImpl implements LinePlacement, Cloneable {
         this(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
     }
 
-    public LinePlacementImpl(org.opengis.style.LinePlacement placement) {
+    public LinePlacementImpl(org.geotools.api.style.LinePlacement placement) {
         this.gap = placement.getGap();
         this.initialGap = placement.getInitialGap();
         this.generalized = placement.isGeneralizeLine();
@@ -205,7 +205,7 @@ public class LinePlacementImpl implements LinePlacement, Cloneable {
         return result;
     }
 
-    static LinePlacementImpl cast(org.opengis.style.LabelPlacement placement) {
+    static LinePlacementImpl cast(org.geotools.api.style.LabelPlacement placement) {
         if (placement == null) {
             return null;
         } else if (placement instanceof LinePlacementImpl) {

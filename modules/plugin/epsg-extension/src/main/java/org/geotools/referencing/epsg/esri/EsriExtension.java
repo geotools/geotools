@@ -20,8 +20,8 @@ import java.net.URL;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.factory.epsg.FactoryUsingWKT;
 import org.geotools.util.factory.Hints;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.referencing.FactoryException;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.referencing.FactoryException;
 
 /**
  * Extends the EPSG database with {@linkplain CoordinateReferenceSystem Coordinate Reference

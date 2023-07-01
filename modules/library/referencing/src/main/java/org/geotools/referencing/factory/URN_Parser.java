@@ -18,10 +18,10 @@
 package org.geotools.referencing.factory;
 
 import org.apache.commons.lang3.StringUtils;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Version;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 
 /**
  * Split a URN into its {@link #type} and {@link #version} parts for {@link URN_AuthorityFactory}.

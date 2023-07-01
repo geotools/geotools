@@ -19,7 +19,7 @@
  */
 package org.geotools.metadata.iso.quality;
 
-import org.opengis.metadata.quality.GriddedDataPositionalAccuracy;
+import org.geotools.api.metadata.quality.GriddedDataPositionalAccuracy;
 
 /**
  * Closeness of gridded data position values to values accepted as or being true.

@@ -29,10 +29,10 @@ import org.geotools.util.SimpleInternationalString;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.temporal.IndeterminateValue;
-import org.opengis.temporal.OrdinalEra;
-import org.opengis.temporal.OrdinalPosition;
-import org.opengis.temporal.TemporalReferenceSystem;
+import org.geotools.api.temporal.IndeterminateValue;
+import org.geotools.api.temporal.OrdinalEra;
+import org.geotools.api.temporal.OrdinalPosition;
+import org.geotools.api.temporal.TemporalReferenceSystem;
 
 /** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultOrdinalPositionTest {

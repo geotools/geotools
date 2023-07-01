@@ -20,9 +20,9 @@ package org.geotools.data.solr;
 import java.util.Date;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.temporal.Period;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.temporal.Period;
 
 public class SolrTemporalTest extends SolrTestSupport {
 

@@ -22,8 +22,8 @@ import java.io.Writer;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.jdbc.FilterToSQLException;
-import org.opengis.filter.Filter;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.expression.Expression;
 
 /** Wraps a filter to SQL encoder allowing us to write directly to the output stream. */
 public final class WrappedFilterToSql {

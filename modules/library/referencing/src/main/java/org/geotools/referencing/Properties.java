@@ -23,12 +23,12 @@ import java.util.AbstractMap;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import org.geotools.api.referencing.IdentifiedObject;
+import org.geotools.api.referencing.ReferenceSystem;
+import org.geotools.api.referencing.datum.Datum;
+import org.geotools.api.referencing.operation.CoordinateOperation;
 import org.geotools.referencing.operation.AbstractCoordinateOperation;
 import org.geotools.util.MapEntry;
-import org.opengis.referencing.IdentifiedObject;
-import org.opengis.referencing.ReferenceSystem;
-import org.opengis.referencing.datum.Datum;
-import org.opengis.referencing.operation.CoordinateOperation;
 
 /**
  * An immutable map fetching all properties from the specified identified object. Calls to {@code

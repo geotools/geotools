@@ -37,8 +37,8 @@ import org.geotools.util.factory.GeoTools;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.spatial.BBOX;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.spatial.BBOX;
 
 public class ShapefileDescriptorLeakTest {
 

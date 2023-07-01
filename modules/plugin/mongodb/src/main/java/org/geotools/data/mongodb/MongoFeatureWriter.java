@@ -21,8 +21,8 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import java.io.IOException;
 import org.geotools.data.simple.SimpleFeatureWriter;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 public class MongoFeatureWriter implements SimpleFeatureWriter {
 

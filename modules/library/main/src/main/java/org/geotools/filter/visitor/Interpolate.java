@@ -18,8 +18,8 @@
 package org.geotools.filter.visitor;
 
 import java.util.List;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
 
 /**
  * Interpolation: Transformation of continuous values by a function defined on a number of nodes.

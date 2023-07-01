@@ -25,6 +25,12 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.cs.AxisDirection;
+import org.geotools.api.referencing.cs.CoordinateSystem;
+import org.geotools.api.referencing.cs.CoordinateSystemAxis;
+import org.geotools.api.referencing.operation.Matrix;
+import org.geotools.api.util.InternationalString;
 import org.geotools.measure.Measure;
 import org.geotools.measure.Units;
 import org.geotools.metadata.i18n.ErrorKeys;
@@ -35,12 +41,6 @@ import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.wkt.Formatter;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.cs.CoordinateSystem;
-import org.opengis.referencing.cs.CoordinateSystemAxis;
-import org.opengis.referencing.operation.Matrix;
-import org.opengis.util.InternationalString;
 import si.uom.NonSI;
 import si.uom.SI;
 
@@ -378,14 +378,14 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
      * method returns one of the predefined constants with axis in
      * (<var>longitude</var>,<var>latitude</var>) or (<var>X</var>,<var>Y</var>) order, and units in
      * degrees or metres. In some particular cases like {@linkplain
-     * org.opengis.referencing.cs.CartesianCS Cartesian CS}, this method may create a new instance
-     * on the fly. In every cases this method attempts to return a <A
+     * org.geotools.api.referencing.cs.CartesianCS Cartesian CS}, this method may create a new
+     * instance on the fly. In every cases this method attempts to return a <A
      * HREF="http://en.wikipedia.org/wiki/Right_hand_rule">right-handed</A> coordinate system, but
      * this is not garanteed.
      *
      * <p>This method is typically used together with {@link #swapAndScaleAxis swapAndScaleAxis} for
      * the creation of a transformation step before some {@linkplain
-     * org.opengis.referencing.operation.MathTransform math transform}. Example:
+     * org.geotools.api.referencing.operation.MathTransform math transform}. Example:
      *
      * <blockquote>
      *

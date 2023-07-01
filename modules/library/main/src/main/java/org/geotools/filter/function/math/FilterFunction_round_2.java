@@ -24,7 +24,7 @@ import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.util.Converters;
 import org.geotools.util.factory.Hints;
-import org.opengis.filter.capability.FunctionName;
+import org.geotools.api.filter.capability.FunctionName;
 
 public class FilterFunction_round_2 extends FunctionExpressionImpl {
     // public static FunctionName NAME = new FunctionNameImpl("round_2", "double");

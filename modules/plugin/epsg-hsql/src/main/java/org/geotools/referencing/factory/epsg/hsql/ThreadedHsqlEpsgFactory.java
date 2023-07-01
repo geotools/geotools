@@ -47,8 +47,9 @@ import org.hsqldb.jdbc.JDBCDataSource;
  * be downloaded from <A HREF="http://www.epsg.org">http://www.epsg.org</A>. The SQL scripts
  * (modified for the HSQL syntax as <A HREF="doc-files/HSQL.html">explained here</A>) are bundled
  * into this plugin. The database version is given in the {@linkplain
- * org.opengis.metadata.citation.Citation#getEdition edition attribute} of the {@linkplain
- * org.opengis.referencing.AuthorityFactory#getAuthority authority}. The HSQL database is read only.
+ * org.geotools.api.metadata.citation.Citation#getEdition edition attribute} of the {@linkplain
+ * org.geotools.api.referencing.AuthorityFactory#getAuthority authority}. The HSQL database is read
+ * only.
  *
  * <p>
  *

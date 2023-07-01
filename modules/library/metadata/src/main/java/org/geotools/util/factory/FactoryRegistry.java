@@ -39,6 +39,7 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
+import org.geotools.api.filter.Filter;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.LoggingKeys;
@@ -46,12 +47,12 @@ import org.geotools.metadata.i18n.Loggings;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
-import org.opengis.filter.Filter;
 
 /**
  * A registry for factories, organized by categories (usually by <strong>interface</strong>). For
- * example <code>{@linkplain org.opengis.referencing.crs.CRSFactory}.class</code> is a category, and
- * <code>{@linkplain org.opengis.referencing.operation.MathTransformFactory}.class</code> is another
+ * example <code>{@linkplain org.geotools.api.referencing.crs.CRSFactory}.class</code> is a
+ * category, and <code>
+ * {@linkplain org.geotools.api.referencing.operation.MathTransformFactory}.class</code> is another
  * category.
  *
  * <p>For each category, implementations are registered in a file placed in the {@code
@@ -316,7 +317,7 @@ public class FactoryRegistry {
      *     constructor. Usually an interface class (not the actual implementation class).
      * @param filter An optional filter, or {@code null} if none. This is used for example in order
      *     to select the first factory for some {@linkplain
-     *     org.opengis.referencing.AuthorityFactory#getAuthority authority}.
+     *     org.geotools.api.referencing.AuthorityFactory#getAuthority authority}.
      * @param hints A {@linkplain Hints map of hints}, or {@code null} if none.
      * @param key The key to use for looking for a user-provided instance in the hints, or {@code
      *     null} if none.

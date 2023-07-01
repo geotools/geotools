@@ -27,10 +27,10 @@ import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.swing.JMapFrame;
 import org.geotools.util.factory.Hints;
-import org.opengis.filter.FilterFactory;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.style.ContrastMethod;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.style.ContrastMethod;
 
 /**
  * A simple viewer for a imageMosaic. You must provide your own mosaic. Which could simply be a

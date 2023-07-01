@@ -14,7 +14,7 @@ import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.ShadedRelief;
 import org.geotools.styling.Style;
 import org.junit.Test;
-import org.opengis.style.ContrastMethod;
+import org.geotools.api.style.ContrastMethod;
 
 public class CookbookRasterTest extends AbstractStyleTest {
 

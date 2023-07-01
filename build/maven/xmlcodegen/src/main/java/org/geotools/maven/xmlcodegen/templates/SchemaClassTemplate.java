@@ -26,14 +26,14 @@ import javax.xml.transform.dom.*;
 import javax.xml.transform.stream.*; 
 import org.geotools.xml.*;
 import org.geotools.maven.xmlcodegen.*;
-import org.opengis.feature.type.Schema;
-import org.opengis.feature.type.AttributeType;
-import org.opengis.feature.type.Name;
+import org.geotools.api.feature.type.Schema;
+import org.geotools.api.feature.type.AttributeType;
+import org.geotools.api.feature.type.Name;
 import org.geotools.feature.NameImpl;
-import org.opengis.feature.type.ComplexType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.PropertyDescriptor;
-import org.opengis.feature.type.PropertyType;
+import org.geotools.api.feature.type.ComplexType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.PropertyDescriptor;
+import org.geotools.api.feature.type.PropertyType;
 import org.eclipse.xsd.*;
 
 public class SchemaClassTemplate
@@ -49,7 +49,7 @@ public class SchemaClassTemplate
 
   public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = "";
-  protected final String TEXT_2 = NL + NL + "import java.util.ArrayList;" + NL + "import java.util.Collections;" + NL + "import java.util.List;" + NL + "" + NL + "import org.opengis.feature.type.AttributeType;" + NL + "import org.opengis.feature.type.ComplexType;" + NL + "import org.opengis.feature.type.PropertyDescriptor;" + NL + "import org.opengis.filter.Filter;" + NL + "" + NL + "import org.geotools.feature.NameImpl;" + NL + "import org.geotools.feature.type.AttributeDescriptorImpl;" + NL + "import org.geotools.feature.type.AttributeTypeImpl;" + NL + "import org.geotools.feature.type.ComplexTypeImpl;" + NL + "import org.geotools.feature.type.SchemaImpl;" + NL;
+  protected final String TEXT_2 = NL + NL + "import java.util.ArrayList;" + NL + "import java.util.Collections;" + NL + "import java.util.List;" + NL + "" + NL + "import org.geotools.api.feature.type.AttributeType;" + NL + "import org.geotools.api.feature.type.ComplexType;" + NL + "import org.geotools.api.feature.type.PropertyDescriptor;" + NL + "import org.geotools.api.filter.Filter;" + NL + "" + NL + "import org.geotools.feature.NameImpl;" + NL + "import org.geotools.feature.type.AttributeDescriptorImpl;" + NL + "import org.geotools.feature.type.AttributeTypeImpl;" + NL + "import org.geotools.feature.type.ComplexTypeImpl;" + NL + "import org.geotools.feature.type.SchemaImpl;" + NL;
   protected final String TEXT_3 = NL + "import ";
   protected final String TEXT_4 = ";";
   protected final String TEXT_5 = NL + NL + "public class ";

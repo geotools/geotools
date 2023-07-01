@@ -20,8 +20,8 @@ import java.util.Arrays;
 import java.util.List;
 import org.geotools.appschema.util.IndexQueryUtils;
 import org.geotools.factory.CommonFactoryFinder;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
 
 /** @author Fernando Miño, Geosolutions */
 public abstract class IndexesTest {

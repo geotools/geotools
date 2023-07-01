@@ -39,7 +39,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /**
  * This class simply builds an SRTREE spatial index in memory for fast indexed geometric queries.

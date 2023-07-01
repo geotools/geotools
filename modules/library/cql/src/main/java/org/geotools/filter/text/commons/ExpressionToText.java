@@ -37,20 +37,20 @@ import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.WKTWriter;
-import org.opengis.filter.expression.Add;
-import org.opengis.filter.expression.Divide;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.ExpressionVisitor;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.Multiply;
-import org.opengis.filter.expression.NilExpression;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.expression.Subtract;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.temporal.Instant;
-import org.opengis.temporal.Period;
+import org.geotools.api.filter.expression.Add;
+import org.geotools.api.filter.expression.Divide;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.ExpressionVisitor;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.Multiply;
+import org.geotools.api.filter.expression.NilExpression;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.expression.Subtract;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.temporal.Instant;
+import org.geotools.api.temporal.Period;
 
 /**
  * This class is responsible to convert an expression to a CQL/ECQL valid expression.
@@ -117,7 +117,7 @@ public class ExpressionToText implements ExpressionVisitor {
     }
 
     /* (non-Javadoc)
-     * @see org.opengis.filter.expression.ExpressionVisitor#visit(org.opengis.filter.expression.NilExpression, java.lang.Object)
+     * @see org.geotools.api.filter.expression.ExpressionVisitor#visit(org.geotools.api.filter.expression.NilExpression, java.lang.Object)
      */
     @Override
     public Object visit(NilExpression expression, Object extraData) {
@@ -129,7 +129,7 @@ public class ExpressionToText implements ExpressionVisitor {
     }
 
     /* (non-Javadoc)
-     * @see org.opengis.filter.expression.ExpressionVisitor#visit(org.opengis.filter.expression.Add, java.lang.Object)
+     * @see org.geotools.api.filter.expression.ExpressionVisitor#visit(org.geotools.api.filter.expression.Add, java.lang.Object)
      */
     @Override
     public Object visit(Add expression, Object extraData) {
@@ -142,7 +142,7 @@ public class ExpressionToText implements ExpressionVisitor {
     }
 
     /* (non-Javadoc)
-     * @see org.opengis.filter.expression.ExpressionVisitor#visit(org.opengis.filter.expression.Divide, java.lang.Object)
+     * @see org.geotools.api.filter.expression.ExpressionVisitor#visit(org.geotools.api.filter.expression.Divide, java.lang.Object)
      */
     @Override
     public Object visit(Divide expression, Object extraData) {
@@ -163,7 +163,7 @@ public class ExpressionToText implements ExpressionVisitor {
     }
 
     /* (non-Javadoc)
-     * @see org.opengis.filter.expression.ExpressionVisitor#visit(org.opengis.filter.expression.Function, java.lang.Object)
+     * @see org.geotools.api.filter.expression.ExpressionVisitor#visit(org.geotools.api.filter.expression.Function, java.lang.Object)
      */
     @Override
     public Object visit(Function function, Object extraData) {
@@ -187,7 +187,7 @@ public class ExpressionToText implements ExpressionVisitor {
     }
 
     /* (non-Javadoc)
-     * @see org.opengis.filter.expression.ExpressionVisitor#visit(org.opengis.filter.expression.Literal, java.lang.Object)
+     * @see org.geotools.api.filter.expression.ExpressionVisitor#visit(org.geotools.api.filter.expression.Literal, java.lang.Object)
      */
     @Override
     public Object visit(Literal expression, Object extraData) {
@@ -269,7 +269,7 @@ public class ExpressionToText implements ExpressionVisitor {
     }
 
     /* (non-Javadoc)
-     * @see org.opengis.filter.expression.ExpressionVisitor#visit(org.opengis.filter.expression.Multiply, java.lang.Object)
+     * @see org.geotools.api.filter.expression.ExpressionVisitor#visit(org.geotools.api.filter.expression.Multiply, java.lang.Object)
      */
     @Override
     public Object visit(Multiply expression, Object extraData) {
@@ -281,7 +281,7 @@ public class ExpressionToText implements ExpressionVisitor {
     }
 
     /* (non-Javadoc)
-     * @see org.opengis.filter.expression.ExpressionVisitor#visit(org.opengis.filter.expression.PropertyName, java.lang.Object)
+     * @see org.geotools.api.filter.expression.ExpressionVisitor#visit(org.geotools.api.filter.expression.PropertyName, java.lang.Object)
      */
     @Override
     public Object visit(PropertyName expression, Object extraData) {
@@ -355,7 +355,7 @@ public class ExpressionToText implements ExpressionVisitor {
     }
 
     /* (non-Javadoc)
-     * @see org.opengis.filter.expression.ExpressionVisitor#visit(org.opengis.filter.expression.Subtract, java.lang.Object)
+     * @see org.geotools.api.filter.expression.ExpressionVisitor#visit(org.geotools.api.filter.expression.Subtract, java.lang.Object)
      */
     @Override
     public Object visit(Subtract expression, Object extraData) {

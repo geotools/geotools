@@ -23,7 +23,7 @@ import javax.media.jai.Histogram;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.parameter.ParameterValueGroup;
+import org.geotools.api.parameter.ParameterValueGroup;
 
 public class HistogramTest extends GridProcessingTestBase {
     /** The grid coverage to test. */

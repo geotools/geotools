@@ -35,9 +35,9 @@ import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.test.TestData;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Add;
-import org.opengis.filter.expression.Function;
+import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.expression.Add;
+import org.geotools.api.filter.expression.Function;
 
 public class RenderingBufferExtractorTest {
     StyleBuilder sb = new StyleBuilder();

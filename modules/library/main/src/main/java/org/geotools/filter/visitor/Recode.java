@@ -18,8 +18,8 @@
 package org.geotools.filter.visitor;
 
 import java.util.List;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
 
 /**
  * Recoding: Transformation of discrete values to any other values. This is needed when integers

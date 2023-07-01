@@ -38,8 +38,8 @@ import org.geotools.swt.utils.CursorManager;
 import org.geotools.swt.utils.Messages;
 import org.geotools.swt.utils.Utils;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.Feature;
-import org.opengis.feature.Property;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.Property;
 
 /**
  * A cursor tool to retrieve information about features that the user clicks on with the mouse.

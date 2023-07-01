@@ -23,8 +23,8 @@ import java.util.logging.Logger;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.logging.Logging;
 import org.junit.Test;
-import org.opengis.metadata.citation.Contact;
-import org.opengis.metadata.citation.ResponsibleParty;
+import org.geotools.api.metadata.citation.Contact;
+import org.geotools.api.metadata.citation.ResponsibleParty;
 
 public class WMTSServiceTest {
 

@@ -38,10 +38,10 @@ import org.geotools.styling.css.util.UnboundSimplifyingFilterVisitor;
 import org.geotools.util.NumberRange;
 import org.geotools.util.Range;
 import org.geotools.util.logging.Logging;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.filter.And;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.filter.And;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory2;
 
 /**
  * Represents the current coverage of the scale/filter domain, and has helper methods to add {@link
@@ -311,7 +311,7 @@ class DomainCoverage {
             if (prev == null) {
                 prev = ss;
             } else if (prev.scaleRange.equals(ss.scaleRange)) {
-                org.opengis.filter.Or or = FF.or(ss.filter, prev.filter);
+                org.geotools.api.filter.Or or = FF.or(ss.filter, prev.filter);
                 Filter simplified = simplify(or);
                 prev = new SLDSelector(prev.scaleRange, simplified);
             } else if (prev.scaleRange.getMaximum() == ss.scaleRange.getMinimum()
@@ -392,8 +392,8 @@ class DomainCoverage {
         boolean merged = false;
         for (SLDSelector existing : scaleDependentFilters) {
             if (existing.scaleRange.equals(range)) {
-                if (existing.filter instanceof org.opengis.filter.Or) {
-                    org.opengis.filter.Or or = (org.opengis.filter.Or) existing.filter;
+                if (existing.filter instanceof org.geotools.api.filter.Or) {
+                    org.geotools.api.filter.Or or = (org.geotools.api.filter.Or) existing.filter;
                     List<Filter> children = new ArrayList<>(or.getChildren());
                     children.add(filter);
                     existing.filter = simplify(FF.or(children));

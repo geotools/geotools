@@ -23,7 +23,7 @@ import java.util.Collections;
 import java.util.Map;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /**
  * A factory for VPFFileStore. The file store is a singleton and the factory acts as the container.

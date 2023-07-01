@@ -21,7 +21,7 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 import java.util.UUID;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.opengis.filter.capability.FunctionName;
+import org.geotools.api.filter.capability.FunctionName;
 
 /** Function that returns a random ID for a collection. */
 public final class CollectionIdFunction extends FunctionExpressionImpl {

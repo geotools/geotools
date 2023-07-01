@@ -35,10 +35,10 @@ import org.geotools.referencing.operation.projection.Stereographic;
 import org.geotools.referencing.operation.projection.TransverseMercator;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.util.logging.Logging;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.ProjectedCRS;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.Projection;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.ProjectedCRS;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.Projection;
 
 /**
  * Enum used to represent different coordinate reference systems stored within a NetCDF dataset.

@@ -18,7 +18,7 @@ package org.geotools.process.feature;
 
 import java.util.Map;
 import org.geotools.process.impl.AbstractProcess;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /**
  * A Process for feature collections.

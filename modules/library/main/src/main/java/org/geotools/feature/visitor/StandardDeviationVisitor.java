@@ -21,8 +21,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * Determines the standard deviation.
@@ -119,11 +119,11 @@ public class StandardDeviationVisitor implements FeatureCalc, FeatureAttributeVi
     }
 
     public void visit(SimpleFeature feature) {
-        visit((org.opengis.feature.Feature) feature);
+        visit((org.geotools.api.feature.Feature) feature);
     }
 
     @Override
-    public void visit(org.opengis.feature.Feature feature) {
+    public void visit(org.geotools.api.feature.Feature feature) {
         Object value = expr.evaluate(feature);
 
         if (value == null) {

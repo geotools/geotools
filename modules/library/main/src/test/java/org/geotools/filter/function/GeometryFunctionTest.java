@@ -22,7 +22,7 @@ import static org.junit.Assert.assertNull;
 import org.junit.Test;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
-import org.opengis.filter.expression.Function;
+import org.geotools.api.filter.expression.Function;
 
 public class GeometryFunctionTest extends FunctionTestSupport {
 

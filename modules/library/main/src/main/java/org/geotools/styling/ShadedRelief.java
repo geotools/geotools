@@ -16,7 +16,7 @@
  */
 package org.geotools.styling;
 
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * The ShadedRelief element selects the application of relief shading (or ?hill shading?) to an
@@ -45,7 +45,7 @@ import org.opengis.filter.expression.Expression;
  *
  * @author iant
  */
-public interface ShadedRelief extends org.opengis.style.ShadedRelief {
+public interface ShadedRelief extends org.geotools.api.style.ShadedRelief {
 
     /**
      * turns brightnessOnly on or off depending on value of flag.

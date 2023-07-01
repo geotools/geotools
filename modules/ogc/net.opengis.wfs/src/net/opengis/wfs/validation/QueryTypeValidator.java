@@ -12,7 +12,7 @@ import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.util.FeatureMap;
 
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 /**
  * A sample validator interface for {@link net.opengis.wfs.QueryType}.

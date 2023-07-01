@@ -16,8 +16,8 @@
  */
 package org.geotools.referencing.operation.builder;
 
+import org.geotools.api.geometry.DirectPosition;
 import org.geotools.geometry.DirectPosition2D;
-import org.opengis.geometry.DirectPosition;
 
 /**
  * DirectPosition associated with another DirectPosition.

@@ -24,7 +24,7 @@ import org.geotools.data.Transaction;
 import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.complex.util.ComplexFeatureConstants;
 import org.geotools.data.complex.util.XPathUtil.StepList;
-import org.opengis.feature.type.Name;
+import org.geotools.api.feature.type.Name;
 
 /**
  * A Feature iterator that operates over the FeatureSource of a {@linkplain

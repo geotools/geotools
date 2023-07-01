@@ -23,7 +23,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.opengis.filter.capability.SpatialOperator;
+import org.geotools.api.filter.capability.SpatialOperator;
 
 /**
  * <!-- begin-user-doc -->

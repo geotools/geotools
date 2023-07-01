@@ -26,7 +26,7 @@ import javax.xml.namespace.QName;
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.xsd.Binding;
 import org.junit.Test;
-import org.opengis.filter.capability.ArithmeticOperators;
+import org.geotools.api.filter.capability.ArithmeticOperators;
 import org.w3c.dom.Document;
 
 /**

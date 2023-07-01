@@ -34,8 +34,8 @@ import org.geotools.data.ServiceInfo;
 import org.geotools.data.util.NullProgressListener;
 import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.factory.Hints;
-import org.opengis.feature.type.Name;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * Default implementation of {@link CoverageAccess}.

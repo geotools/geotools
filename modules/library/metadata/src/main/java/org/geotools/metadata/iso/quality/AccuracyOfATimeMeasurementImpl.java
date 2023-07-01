@@ -19,7 +19,7 @@
  */
 package org.geotools.metadata.iso.quality;
 
-import org.opengis.metadata.quality.AccuracyOfATimeMeasurement;
+import org.geotools.api.metadata.quality.AccuracyOfATimeMeasurement;
 
 /**
  * Correctness of the temporal references of an item (reporting of error in time measurement).

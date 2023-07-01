@@ -23,8 +23,8 @@ import org.geotools.grid.GridElement;
 import org.geotools.grid.GridFeatureBuilder;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.LineString;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * A basic implementation of {@code LineFeatureBuilder} which will create a {@code

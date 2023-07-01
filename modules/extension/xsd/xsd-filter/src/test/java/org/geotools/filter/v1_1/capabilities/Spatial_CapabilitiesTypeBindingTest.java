@@ -23,7 +23,7 @@ import javax.xml.namespace.QName;
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.xsd.Binding;
 import org.junit.Test;
-import org.opengis.filter.capability.SpatialCapabilities;
+import org.geotools.api.filter.capability.SpatialCapabilities;
 import org.w3c.dom.Document;
 
 /**

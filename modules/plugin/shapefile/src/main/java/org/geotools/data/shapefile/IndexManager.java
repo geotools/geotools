@@ -49,8 +49,8 @@ import org.geotools.data.util.NullProgressListener;
 import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
-import org.opengis.filter.Id;
-import org.opengis.filter.identity.Identifier;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.identity.Identifier;
 
 /**
  * Manages the index files on behalf of the the {@link ShapefileDataStore}

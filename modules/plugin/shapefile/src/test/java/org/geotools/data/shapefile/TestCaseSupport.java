@@ -32,7 +32,7 @@ import org.junit.After;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
-import org.opengis.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory2;
 
 /**
  * Base class for test suite. This class is not abstract for the purpose of {@link

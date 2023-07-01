@@ -20,8 +20,8 @@ import java.util.Map;
 import org.geotools.data.complex.NestedAttributeMapping;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.util.XPathUtil;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.expression.Expression;
 import org.xml.sax.helpers.NamespaceSupport;
 
 public interface CustomMappingFactory {

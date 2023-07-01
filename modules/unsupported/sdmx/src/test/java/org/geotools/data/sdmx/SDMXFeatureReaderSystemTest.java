@@ -23,8 +23,8 @@ import org.geotools.data.Query;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.util.logging.Logging;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 public class SDMXFeatureReaderSystemTest {
 

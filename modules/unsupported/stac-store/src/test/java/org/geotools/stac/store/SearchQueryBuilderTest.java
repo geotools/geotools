@@ -28,8 +28,8 @@ import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.stac.client.SearchQuery;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.Filter;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.Filter;
 
 public class SearchQueryBuilderTest extends AbstractSTACStoreTest {
 

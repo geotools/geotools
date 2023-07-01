@@ -26,18 +26,18 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.parameter.GeneralParameterDescriptor;
+import org.geotools.api.parameter.InvalidParameterNameException;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.util.UnmodifiableArrayList;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.parameter.GeneralParameterDescriptor;
-import org.opengis.parameter.InvalidParameterNameException;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterValueGroup;
 
 /**
  * The definition of a group of related parameters used by an operation method.
@@ -182,8 +182,8 @@ public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor
     /**
      * Creates a new instance of {@linkplain ParameterGroup parameter value group} initialized with
      * the {@linkplain ParameterDescriptor#getDefaultValue default values}. The {@linkplain
-     * org.opengis.parameter.ParameterValueGroup#getDescriptor parameter value descriptor} for the
-     * created group will be {@code this} object.
+     * org.geotools.api.parameter.ParameterValueGroup#getDescriptor parameter value descriptor} for
+     * the created group will be {@code this} object.
      */
     @Override
     public ParameterValueGroup createValue() {
@@ -246,7 +246,7 @@ public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor
 
     /**
      * Returns the first parameter in this group for the specified {@linkplain
-     * org.opengis.metadata.Identifier#getCode identifier code}.
+     * org.geotools.api.metadata.Identifier#getCode identifier code}.
      *
      * @param name The case insensitive identifier code of the parameter to search for.
      * @return The parameter for the given identifier code.

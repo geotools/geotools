@@ -17,7 +17,7 @@
 package org.geotools.data.sort;
 
 import java.util.Comparator;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /**
  * Compares two feature based on their feature id

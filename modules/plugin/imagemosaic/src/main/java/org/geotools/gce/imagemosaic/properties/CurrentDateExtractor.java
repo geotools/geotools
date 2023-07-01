@@ -22,7 +22,7 @@ import java.net.URL;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /** Simple {@link PropertiesCollector} */
 class CurrentDateExtractor extends PropertiesCollector {

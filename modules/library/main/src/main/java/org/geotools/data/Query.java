@@ -25,13 +25,13 @@ import java.util.List;
 import java.util.Objects;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.factory.Hints;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.identity.ResourceId;
-import org.opengis.filter.identity.Version;
-import org.opengis.filter.sort.SortBy;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.identity.ResourceId;
+import org.geotools.api.filter.identity.Version;
+import org.geotools.api.filter.sort.SortBy;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Encapsulates a request for data, typically as:
@@ -674,7 +674,7 @@ public class Query {
      * <ul>
      * <li>{@link #setVersion(Date)}: "date: <i>dow mon dd hh:mm:ss zzz yyyy</i>"</li>
      * <li>{@link #setVersion(int)}: "<i>index</i>"</li>
-     * <li>{@link #setVersion(org.opengis.filter.identity.Version.Action)): "PREVIOUS", "LAST", "NEXT", "FIRST", "ALL" </li>
+     * <li>{@link #setVersion(org.geotools.api.filter.identity.Version.Action)): "PREVIOUS", "LAST", "NEXT", "FIRST", "ALL" </li>
      * <li>{@link #setVersion(Date, Date): "start: <i>dow mon dd hh:mm:ss zzz yyyy end: <i>dow mon dd hh:mm:ss zzz yyyy"</i>
      * </ul>
      * @return the version of the feature to return, or <code>null</code> for LAST.

@@ -27,7 +27,7 @@ import org.geotools.swing.event.MapPaneAdapter;
 import org.geotools.swing.event.MapPaneEvent;
 import org.geotools.swing.locale.LocaleUtils;
 import org.geotools.swing.menu.JCRSPopupMenu;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * A status bar item that displays the coordinate reference system name and provides a pop-up menu

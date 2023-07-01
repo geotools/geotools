@@ -24,7 +24,7 @@ import org.locationtech.jts.geom.Envelope;
 
 public class APIExamples {
 
-    /** OpenGIS Envelope Exampels (using ReferencedEnvelope) */
+    /** OpenGIS Envelope Examples (using ReferencedEnvelope) */
     private void exampleISOEnvelope() throws Exception {
         // exampleISOEnvelope start
         CoordinateReferenceSystem wsg84 = CRS.decode("EPSG:4326");

@@ -28,7 +28,7 @@ Since this tutorial has been written the result has been broken out into a disti
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv3/CSVDataStore.java
       :language: java
-      :start-after: import org.opengis.feature.type.Name;
+      :start-after: import org.geotools.api.feature.type.Name;
       :end-before: public Name getTypeName() {
 
 Using the ``CSVFileState`` to do work for us, the ``getTypeName()`` method to create ``Name`` is much simpler.
@@ -85,7 +85,7 @@ The ``CSVFeatureReader`` now delegates much of the functionality to a new class 
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv3/CSVFeatureReader.java
       :language: java
-      :start-after: import org.opengis.feature.simple.SimpleFeatureType;
+      :start-after: import org.geotools.api.feature.simple.SimpleFeatureType;
 
 ``CSVFeatureSource``
 ^^^^^^^^^^^^^^^^^^^^^
@@ -94,7 +94,7 @@ The ``CSVFeatureReader`` now delegates much of the functionality to a new class 
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv3/CSVFeatureSource.java
       :language: java
-      :start-after: import org.opengis.feature.simple.SimpleFeatureType;
+      :start-after: import org.geotools.api.feature.simple.SimpleFeatureType;
       :end-before: public CSVDataStore getDataStore() {
 
 The ``getBoundsInternal(Query query)`` method is now implemented by making use of the methods provided by ``ContentFeatureSource``. A new ``ReferencedEnvelope`` is created to store the bounds for this feature source. It uses the feature type (``getSchema()``) to determine the CRS (``getCoordinateReferenceSystem()``) - this information is used to construct the bounds for the feature. The ``FeatureReader`` is now created by using the ``Query`` and ``CSVStrategy`` - the ``getReader()`` method calls ``getReaderInternal(Query query)`` which shows how it is created. Finally, using the reader, the features are cycled through and included in the bounds in order to calculate the bounds for this entire datastore.
@@ -132,7 +132,7 @@ The ``buildFeatureType()`` method is now very simple using ``getSchema()`` to gr
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv3/CSVFeatureStore.java
       :language: java
-      :start-after: import org.opengis.feature.type.Name;
+      :start-after: import org.geotools.api.feature.type.Name;
 
 ``CSVFeatureWriter``
 ^^^^^^^^^^^^^^^^^^^^^
@@ -141,7 +141,7 @@ The ``CSVFeatureWriter`` handles the writing functionality for our ``CSVFeatureS
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv3/CSVFeatureWriter.java
       :language: java
-      :start-after: import org.opengis.feature.simple.SimpleFeatureType;
+      :start-after: import org.geotools.api.feature.simple.SimpleFeatureType;
       :end-before: public CSVFeatureWriter(CSVFileState csvFileState, CSVStrategy csvStrategy)
 
 The feature type we grab for writing is dependent on our strategy; therefore, we must feed ``CSVFeatureWriter`` our ``CSVStrategy`` and grab the feature type from it. We'll also get our iterator, which reads the file, from our ``CSVStrategy``. Finally, we'll set up a ``CSVWriter`` to write to a new file, temp, with the same headers from our current file.
@@ -178,7 +178,7 @@ The ``CSVIterator`` is a helper class primarily for ``CSVFeatureReader``. Much o
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv3/parse/CSVIterator.java
       :language: java
-      :start-after: import org.opengis.feature.simple.SimpleFeature;
+      :start-after: import org.geotools.api.feature.simple.SimpleFeature;
       :end-before: private SimpleFeature buildFeature(String[] csvRecord) {
 
 Because we're now using strategy objects to implement functionality, the ``readFeature()`` method no longer makes any assumptions about the nature of the data. It is delegated to the strategy to make such a decision. The resulting method is shorter, just passing what it reads off to builders to implement based on the strategy.
@@ -254,7 +254,7 @@ The ``CSVAttributesOnlyStrategy`` is the simplest implementation. It directly re
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv3/parse/CSVAttributesOnlyStrategy.java
       :language: java
-      :start-after: import org.opengis.feature.type.GeometryDescriptor;
+      :start-after: import org.geotools.api.feature.type.GeometryDescriptor;
 
 ``CSVLatLonStrategy``
 ^^^^^^^^^^^^^^^^^^^^^

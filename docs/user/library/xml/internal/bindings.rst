@@ -144,12 +144,12 @@ The default execution behavior is to execute after its "parent" binding has exec
    ===================================== ======================================================
    Element                               Interface
    ===================================== ======================================================
-   ``PropertyIsEqualTo``                 ``org.opengis.filter.PropertyIsEqualTo``
-   ``PropertyIsNotEqualTo``              ``org.opengis.filter.PropertyIsNotEqualTo``
-   ``PropertyIsLessThan``                ``org.opengis.filter.PropertyIsLessThan``
-   ``PropertyIsLessThanOrEqualTo``       ``org.opengis.filter.PropertyIsLessThanOrEqualTo``
-   ``PropertyIsGreaterThan``             ``org.opengis.filter.PropertyIsGreaterThan``
-   ``PropertyIsGreaterThanOrEqualTo``    ``org.opengis.filter.PropertyIsGreaterThanOrEqualTo``
+   ``PropertyIsEqualTo``                 ``org.geotools.api.filter.PropertyIsEqualTo``
+   ``PropertyIsNotEqualTo``              ``org.geotools.api.filter.PropertyIsNotEqualTo``
+   ``PropertyIsLessThan``                ``org.geotools.api.filter.PropertyIsLessThan``
+   ``PropertyIsLessThanOrEqualTo``       ``org.geotools.api.filter.PropertyIsLessThanOrEqualTo``
+   ``PropertyIsGreaterThan``             ``org.geotools.api.filter.PropertyIsGreaterThan``
+   ``PropertyIsGreaterThanOrEqualTo``    ``org.geotools.api.filter.PropertyIsGreaterThanOrEqualTo``
    ===================================== ======================================================
    
    All of the elements are of the same XML type "BinaryComparisonOpType", but each maps to a different Java interface, so it makes sense to have a specific binding for each element, instead of having a single binding for the type do the work.

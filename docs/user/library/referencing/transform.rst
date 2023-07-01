@@ -22,7 +22,7 @@ But let's say I'm a developer and I want to develop something that has no "offic
 
 **Authorities for Parameter and Classification Names**
 
-However, each name is always associated to an authority (or a "scope" in the context of scoped names). That said, the full name of "semi_major" is actually "OGC:semi_major", where "semi_major" is the ``LocalName`` (from the ``org.opengis.util`` package) and "OGC" is the scope. The mechanism is similar to fully qualified names in Java packages.
+However, each name is always associated to an authority (or a "scope" in the context of scoped names). That said, the full name of "semi_major" is actually "OGC:semi_major", where "semi_major" is the ``LocalName`` (from the ``org.geotools.api.util`` package) and "OGC" is the scope. The mechanism is similar to fully qualified names in Java packages.
 
 It should always be possible to know if a particular name is an OGC name or a GeoTIFF one: just look at the scope. For our own transformation, we use "GeoTools:" scope. If we find an official name from OGC later, we will add that "OGC:" scoped name.
 

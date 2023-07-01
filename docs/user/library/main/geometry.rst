@@ -99,12 +99,12 @@ ISO Geometry from WKT
    ====================== ========================================================
    WKT                    ISO Geometry
    ====================== ========================================================
-   ``POINT``              ``org.opengis.geometry.primitive.Point``
-   ``LINESTRING``         ``org.opengis.geometry.primitive.Curve``
-   ``LINEARRING``         ``org.opengis.geometry.primitive.Curve``
-   ``POLYGON``            ``org.opengis.geometry.primitive.Surface``
-   ``MULTIPOINT``         ``org.opengis.geometry.coordinate.aggregate.MultiPoint``
-   ``MULTILINESTRING``    ``org.opengis.geometry.aggregate.MultiPrimitive``
-   ``MULTIPOLYGON``       ``org.opengis.geometry.aggregate.MultiPrimitive``
-   ``GEOMETRYCOLLECTION`` ``org.opengis.geometry.aggregate.MultiPrimitive``
+   ``POINT``              ``org.geotools.api.geometry.primitive.Point``
+   ``LINESTRING``         ``org.geotools.api.geometry.primitive.Curve``
+   ``LINEARRING``         ``org.geotools.api.geometry.primitive.Curve``
+   ``POLYGON``            ``org.geotools.api.geometry.primitive.Surface``
+   ``MULTIPOINT``         ``org.geotools.api.geometry.coordinate.aggregate.MultiPoint``
+   ``MULTILINESTRING``    ``org.geotools.api.geometry.aggregate.MultiPrimitive``
+   ``MULTIPOLYGON``       ``org.geotools.api.geometry.aggregate.MultiPrimitive``
+   ``GEOMETRYCOLLECTION`` ``org.geotools.api.geometry.aggregate.MultiPrimitive``
    ====================== ========================================================

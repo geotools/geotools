@@ -34,8 +34,8 @@ ReferencedEnvelope
 ``ReferencedEnvelope`` is all of these:
 
 * ``org.locationtech.jts.geom.Envelope`` - as defined by the JTS Topology System ( a Simple Feature for SQL concept)
-* ``org.opengis.geometry.BoundingBox`` - 2D bounds as defined by the ISO 19107 Geometry
-* ``org.opengis.geometry.Envelope`` - captures 3D bounds as defined by ISO 19107 Geometry.
+* ``org.geotools.api.geometry.BoundingBox`` - 2D bounds as defined by the ISO 19107 Geometry
+* ``org.geotools.api.geometry.Envelope`` - captures 3D bounds as defined by ISO 19107 Geometry.
 
 Note that in order to support 3D bounds (and use a 3D Coordinate Reference System) we must create an instance of the child class ``ReferencedEnvelope3D`` (see below).
 
@@ -80,7 +80,7 @@ ReferencedEnvelope3D
 ``ReferencedEnvelope3D`` is all of these:
 
 * ``ReferencedEnvelope`` including all parent classes and interfaces
-* ``org.opengis.geometry.BoundingBox3D`` - 3D bounds as defined by the ISO 19107 Geometry
+* ``org.geotools.api.geometry.BoundingBox3D`` - 3D bounds as defined by the ISO 19107 Geometry
 
 This is the class to use when you want to represent a 3D bounds in GeoTools. The constructor expects the input in ``xMin,xMax,yMin,yMax,zMin,zMax`` order and expects a 3D CRS:
 

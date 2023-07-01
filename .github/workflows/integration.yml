@@ -50,9 +50,9 @@ jobs:
         cd ~
         find . -name "remove-opengis.xml"
         cd ~/geowebcache/geowebcache
-        ant -noinput -buildfile ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml
+        ant -d -v -noinput -buildfile ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml
         cd ~/geoserver/src
-        ant -noinput -buildfile ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml
+        ant -d -v -noinput -buildfile ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml
     - name: Build GeoWebCache with tests
       run: |
         export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"

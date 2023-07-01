@@ -29,6 +29,34 @@ The first step to upgrade: change the ``geotools.version`` of your dependencies 
         ....
     </dependencies>
 
+GeoTools 30.x
+-------------
+
+The ``gt-opengis`` module has been renamed, change your dependency to:
+
+.. code-block:: xml
+
+   <dependency>
+       <groupId>org.geotools</groupId>
+       <artifactId>gt-api</artifactId>
+       <version>${geotools.version}</version>
+   </dependency>
+
+The package ``org.opengis`` has changed ``org.geotools.api``.
+
+
+To aid in this transition an `Apache Ant <https://ant.apache.org>`__ script is provided:
+
+1. Download Ant script :download:`remove-opengis.xml <files/remove-opengis.xml>` included with this documentation.
+
+2. The default ``update`` target will update your Java code and ``META-INF/services``:
+
+   .. code-block:: bash
+    
+      ant -f remove-opengis.xml -p
+   
+3. At this end of this process you may need to re-run code formatters, or clean up unused imports.
+
 GeoTools 29.x
 -------------
 

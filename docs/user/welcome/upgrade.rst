@@ -50,10 +50,18 @@ To aid in this transition an `Apache Ant <https://ant.apache.org>`__ script is p
 1. Download Ant script :download:`remove-opengis.xml <files/remove-opengis.xml>` included with this documentation.
 
 2. The default ``update`` target will update your Java code and ``META-INF/services``:
+   
+   Copy this file into  your project directory and run:
+   
+   .. code-block:: bash
+      
+      ant -f remove-opengis.xml
+
+   Or use the absolute path for project.dir:
 
    .. code-block:: bash
     
-      ant -f remove-opengis.xml -p
+      ant -f remove-opengis.xml -Dproject.dir=(absolute path to your project directory)
    
 3. At this end of this process you may need to re-run code formatters, or clean up unused imports.
 
@@ -80,7 +88,7 @@ Log4JLoggingFactory migrated to Reload4J
 
 We have changed to testing ``Log4JLoggingFactory`` against `reload4j project <https://reload4j.qos.ch/>`__.
 
-The Log4J 1.2 API has been `retired from Apache<https://logging.apache.org/log4j/1.2/>`__`, and the API is now maintained by the Reload4J project:
+The Log4J 1.2 API has been `retired from Apache <https://logging.apache.org/log4j/1.2/>`__, and the API is now maintained by the Reload4J project:
 
 .. code-block:: xml
 

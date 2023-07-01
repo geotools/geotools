@@ -20,6 +20,7 @@
 package org.geotools.po;
 
 import javax.xml.bind.JAXBElement;
+import javax.xml.bind.annotation.XmlElementDecl;
 import javax.xml.bind.annotation.XmlRegistry;
 import javax.xml.namespace.QName;
 
@@ -66,11 +67,13 @@ public class ObjectFactory {
     }
 
     /** Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}} */
+    @XmlElementDecl(namespace = "http://www.geotools.org/po", name = "comment")
     public JAXBElement<String> createComment(String value) {
         return new JAXBElement<>(_Comment_QNAME, String.class, null, value);
     }
 
     /** Create an instance of {@link JAXBElement }{@code <}{@link PurchaseOrderType }{@code >}} */
+    @XmlElementDecl(namespace = "http://www.geotools.org/po", name = "purchaseOrder")
     public JAXBElement<PurchaseOrderType> createPurchaseOrder(PurchaseOrderType value) {
         return new JAXBElement<>(_PurchaseOrder_QNAME, PurchaseOrderType.class, null, value);
     }

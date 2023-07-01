@@ -22,6 +22,8 @@ package org.geotools.po;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -52,15 +54,19 @@ import javax.xml.datatype.XMLGregorianCalendar;
         propOrder = {"shipTo", "billTo", "comment", "items"})
 public class PurchaseOrderType {
 
+    @XmlElement(required = true)
     protected USAddress shipTo;
 
+    @XmlElement(required = true)
     protected USAddress billTo;
 
     protected String comment;
 
+    @XmlElement(required = true)
     protected Items items;
 
     @XmlAttribute(name = "orderDate")
+    @XmlSchemaType(name = "date")
     protected XMLGregorianCalendar orderDate;
 
     /**

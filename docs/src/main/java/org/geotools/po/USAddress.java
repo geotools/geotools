@@ -23,6 +23,8 @@ import java.math.BigDecimal;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -55,18 +57,24 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
         propOrder = {"name", "street", "city", "state", "zip"})
 public class USAddress {
 
+    @XmlElement(required = true)
     protected String name;
 
+    @XmlElement(required = true)
     protected String street;
 
+    @XmlElement(required = true)
     protected String city;
 
+    @XmlElement(required = true)
     protected String state;
 
+    @XmlElement(required = true)
     protected BigDecimal zip;
 
     @XmlAttribute(name = "country")
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+    @XmlSchemaType(name = "NMTOKEN")
     protected String country;
 
     /**

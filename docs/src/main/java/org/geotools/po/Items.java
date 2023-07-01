@@ -25,6 +25,8 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -130,14 +132,17 @@ public class Items {
             propOrder = {"productName", "quantity", "usPrice", "comment", "shipDate"})
     public static class Item {
 
+        @XmlElement(required = true)
         protected String productName;
 
         protected int quantity;
 
+        @XmlElement(name = "USPrice", required = true)
         protected BigDecimal usPrice;
 
         protected String comment;
 
+        @XmlSchemaType(name = "date")
         protected XMLGregorianCalendar shipDate;
 
         @XmlAttribute(name = "partNum", required = true)

@@ -27,8 +27,10 @@ package org.geotools.coverage.io.netcdf.cf;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -61,8 +63,10 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlRootElement(name = "entry")
 public class Entry {
 
+    @XmlElement(required = true)
     protected String description;
 
+    @XmlElement(name = "canonical_units", required = true)
     protected String canonicalUnits;
 
     protected String grib;
@@ -71,6 +75,7 @@ public class Entry {
     @XmlAttribute(name = "id", required = true)
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlID
+    @XmlSchemaType(name = "ID")
     protected String id;
 
     /**

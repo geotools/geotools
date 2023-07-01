@@ -19,6 +19,7 @@ package org.geotools.gce.imagemosaic.catalog.index;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -45,6 +46,7 @@ import javax.xml.bind.annotation.XmlType;
         propOrder = {"attribute"})
 public class AttributeType {
 
+    @XmlElement(required = true)
     protected String attribute;
 
     @XmlAttribute protected String collectorRef;

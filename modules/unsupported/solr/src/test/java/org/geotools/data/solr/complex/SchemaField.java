@@ -18,6 +18,7 @@ package org.geotools.data.solr.complex;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -65,6 +66,7 @@ public final class SchemaField implements Serializable {
 
         private List<SchemaField> fields;
 
+        @XmlElement(name = "field")
         public List<SchemaField> getFields() {
             return fields;
         }

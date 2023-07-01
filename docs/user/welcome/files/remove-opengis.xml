@@ -1,0 +1,8 @@
+<project name="remove-opengis" default="test" basedir=".">
+
+    <target name="test">
+        <!-- Show the property -->
+        <echo message="Testing testing"/>
+    </target>
+
+</project>

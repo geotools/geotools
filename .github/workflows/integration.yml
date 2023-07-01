@@ -41,6 +41,12 @@ jobs:
         echo "Checking out GeoServer"
         mkdir geoserver
         git clone https://github.com/geoserver/geoserver.git geoserver
+    - name: Apply org.opengis removal scripts
+      run: |
+        cd geowebcache/geowebcache
+        ant -noinput -buildfile ~/geotools/docs/user/welcome/files/remove-opengis.xml
+        cd ../../geoserver/src
+        ant -noinput -buildfile ~/geotools/docs/user/welcome/files/remove-opengis.xml
     - name: Build GeoWebCache with tests
       run: |
         export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"

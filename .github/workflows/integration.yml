@@ -6,6 +6,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
 
@@ -43,6 +47,8 @@ jobs:
         git clone https://github.com/geoserver/geoserver.git geoserver
     - name: Apply org.opengis removal scripts
       run: |
+        cd ~
+        find . -name "remove-opengis.xml"
         cd ~/geowebcache/geowebcache
         ant -noinput -buildfile ~/geotools/geotools/docs/user/welcome/files/remove-opengis.xml
         cd ~/geoserver/src

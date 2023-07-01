@@ -11,8 +11,6 @@ package org.opengis.filter.spatial;
 
 // Annotations
 
-import org.opengis.annotation.XmlElement;
-
 /**
  * Concrete {@linkplain DistanceBufferOperator distance buffer operator} that evaluates as true when
  * any part of the first geometry lies within the given distance of the second geometry.
@@ -21,7 +19,6 @@ import org.opengis.annotation.XmlElement;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0
  */
-@XmlElement("DWithin")
 public interface DWithin extends DistanceBufferOperator {
     /** Operator name used to check FilterCapabilities */
     public static String NAME = "DWithin";

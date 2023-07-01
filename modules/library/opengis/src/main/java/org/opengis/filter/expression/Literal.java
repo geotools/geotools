@@ -11,8 +11,6 @@ package org.opengis.filter.expression;
 
 // Annotations
 
-import org.opengis.annotation.XmlElement;
-
 /**
  * Instances of this interface provide a constant, literal value that can be used in expressions.
  *
@@ -31,7 +29,6 @@ import org.opengis.annotation.XmlElement;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0
  */
-@XmlElement("Literal")
 public interface Literal extends Expression {
     /** Returns the constant value held by this object. */
     Object getValue();

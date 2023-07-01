@@ -13,7 +13,6 @@ import static org.opengis.annotation.Obligation.MANDATORY;
 import static org.opengis.annotation.Specification.ISO_19107;
 
 import java.util.List;
-import org.opengis.annotation.Extension;
 import org.opengis.annotation.UML;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -110,7 +109,6 @@ public interface PrimitiveFactory {
      * @throws MismatchedDimensionException If geometric objects given in argument don't have the
      *     expected dimension.
      */
-    @Extension
     Point createPoint(double[] coordinates) throws MismatchedDimensionException;
 
     /**
@@ -190,7 +188,6 @@ public interface PrimitiveFactory {
      * @throws MismatchedDimensionException If geometric objects given in argument don't have the
      *     expected dimension.
      */
-    @Extension
     SurfaceBoundary createSurfaceBoundary(Ring exterior, List<Ring> interiors)
             throws MismatchedReferenceSystemException, MismatchedDimensionException;
 
@@ -222,7 +219,6 @@ public interface PrimitiveFactory {
      * @throws MismatchedDimensionException If geometric objects given in argument don't have the
      *     expected dimension.
      */
-    @Extension
     Ring createRing(List<OrientableCurve> curves)
             throws MismatchedReferenceSystemException, MismatchedDimensionException;
 }

@@ -13,7 +13,6 @@ import static org.opengis.annotation.Obligation.MANDATORY;
 import static org.opengis.annotation.Obligation.OPTIONAL;
 import static org.opengis.annotation.Specification.ISO_19107;
 
-import org.opengis.annotation.Association;
 import org.opengis.annotation.UML;
 import org.opengis.geometry.coordinate.GenericSurface;
 
@@ -48,7 +47,6 @@ public interface SurfacePatch extends GenericSurface {
      * @see CurveSegment#getCurve
      * @issue http://jira.codehaus.org/browse/GEO-63
      */
-    @Association("Segmentation")
     @UML(identifier = "surface", obligation = OPTIONAL, specification = ISO_19107)
     Surface getSurface();
 

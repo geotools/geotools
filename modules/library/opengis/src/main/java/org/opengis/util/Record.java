@@ -15,7 +15,6 @@ import static org.opengis.annotation.Specification.ISO_19103;
 
 import java.util.Map;
 import java.util.Set;
-import org.opengis.annotation.Extension;
 import org.opengis.annotation.UML;
 
 /**
@@ -80,6 +79,5 @@ public interface Record {
      * @param value The new value for the attribute.
      * @throws UnsupportedOperationException if this record is not modifiable.
      */
-    @Extension
     void set(MemberName name, Object value) throws UnsupportedOperationException;
 }

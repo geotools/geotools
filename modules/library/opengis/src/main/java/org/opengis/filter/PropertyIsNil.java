@@ -11,7 +11,6 @@ package org.opengis.filter;
 
 // OpenGIS direct dependencies
 
-import org.opengis.annotation.XmlElement;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -31,16 +30,13 @@ import org.opengis.filter.expression.Expression;
  * @see http://portal.opengeospatial.org/files/?artifact_id=39968
  * @since GeoAPI 2.0
  */
-@XmlElement("PropertyIsNil")
 public interface PropertyIsNil extends Filter {
     /** Operator name used to check FilterCapabilities */
     public static String NAME = "Nil";
 
     /** Returns the expression whose value will be checked for {@code null}. */
-    @XmlElement("expression")
     Expression getExpression();
 
     /** The nil reason. */
-    @XmlElement("nilReason")
     Object getNilReason();
 }

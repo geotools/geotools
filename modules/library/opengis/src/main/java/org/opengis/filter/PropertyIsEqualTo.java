@@ -11,8 +11,6 @@ package org.opengis.filter;
 
 // Annotations
 
-import org.opengis.annotation.XmlElement;
-
 /**
  * Filter operator that compares that its two sub-expressions are equal to each other.
  *
@@ -20,7 +18,6 @@ import org.opengis.annotation.XmlElement;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0
  */
-@XmlElement("PropertyIsEqualTo")
 public interface PropertyIsEqualTo extends BinaryComparisonOperator {
     /** Operator name used to check FilterCapabilities */
     public static String NAME = "EqualTo";

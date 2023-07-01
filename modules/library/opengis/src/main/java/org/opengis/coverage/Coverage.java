@@ -18,7 +18,6 @@ import java.awt.image.renderable.RenderableImage;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import org.opengis.annotation.Extension;
 import org.opengis.annotation.Specification;
 import org.opengis.annotation.UML;
 import org.opengis.geometry.DirectPosition;
@@ -357,7 +356,6 @@ public interface Coverage {
      * @throws UnsupportedOperationException if this optional operation is not supported.
      * @throws IndexOutOfBoundsException if {@code xAxis} or {@code yAxis} is out of bounds.
      */
-    @Extension
     RenderableImage getRenderableImage(int xAxis, int yAxis)
             throws UnsupportedOperationException, IndexOutOfBoundsException;
 }

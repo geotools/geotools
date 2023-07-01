@@ -10,8 +10,6 @@
 package org.opengis.style;
 
 import javax.swing.Icon;
-import org.opengis.annotation.Extension;
-import org.opengis.annotation.XmlElement;
 import org.opengis.metadata.citation.OnLineResource;
 
 /**
@@ -35,7 +33,6 @@ public interface ExternalMark {
      *
      * @return OnlineResource or null
      */
-    @XmlElement("OnlineResource")
     OnLineResource getOnlineResource();
 
     /**
@@ -46,7 +43,6 @@ public interface ExternalMark {
      *
      * @return InlineContent or null
      */
-    @XmlElement("InlineContent")
     Icon getInlineContent();
 
     /**
@@ -54,7 +50,6 @@ public interface ExternalMark {
      *
      * @return mime type
      */
-    @XmlElement("Format")
     String getFormat();
 
     /**
@@ -63,7 +58,6 @@ public interface ExternalMark {
      *
      * @return integer
      */
-    @XmlElement("MarkIndex")
     int getMarkIndex();
 
     /**
@@ -71,6 +65,5 @@ public interface ExternalMark {
      *
      * @param visitor the style visitor
      */
-    @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

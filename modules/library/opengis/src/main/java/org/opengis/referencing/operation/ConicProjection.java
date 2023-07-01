@@ -9,8 +9,6 @@
  */
 package org.opengis.referencing.operation;
 
-import org.opengis.annotation.Extension;
-
 /**
  * Base interface for conical map projections.
  *
@@ -24,5 +22,4 @@ import org.opengis.annotation.Extension;
  * @see <A HREF="http://mathworld.wolfram.com/ConicProjection.html">Conic projection on
  *     MathWorld</A>
  */
-@Extension
 public interface ConicProjection extends Projection {}

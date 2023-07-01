@@ -27,7 +27,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.geotools.filter.function.InFunction;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.util.Converters;
-import org.opengis.annotation.Extension;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -415,7 +414,6 @@ class MemoryFilterOptimizer extends DuplicatingFilterVisitor {
         }
 
         @Override
-        @Extension
         public Object evaluate(Object object) {
             if (object != lastFeature || lastContext != null) {
                 lastResult = delegate.evaluate(object);
@@ -426,7 +424,6 @@ class MemoryFilterOptimizer extends DuplicatingFilterVisitor {
         }
 
         @Override
-        @Extension
         @SuppressWarnings("unchecked")
         public <T> T evaluate(Object object, Class<T> context) {
             if (object != lastFeature || !Objects.equals(lastContext, context)) {
@@ -437,7 +434,6 @@ class MemoryFilterOptimizer extends DuplicatingFilterVisitor {
         }
 
         @Override
-        @Extension
         public Object accept(ExpressionVisitor visitor, Object extraData) {
             return delegate.accept(visitor, extraData);
         }

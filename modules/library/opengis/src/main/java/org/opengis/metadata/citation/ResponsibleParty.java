@@ -9,13 +9,11 @@
  */
 package org.opengis.metadata.citation;
 
-import static org.opengis.annotation.ComplianceLevel.CORE;
 import static org.opengis.annotation.Obligation.CONDITIONAL;
 import static org.opengis.annotation.Obligation.MANDATORY;
 import static org.opengis.annotation.Obligation.OPTIONAL;
 import static org.opengis.annotation.Specification.ISO_19115;
 
-import org.opengis.annotation.Profile;
 import org.opengis.annotation.UML;
 import org.opengis.util.InternationalString;
 
@@ -27,7 +25,6 @@ import org.opengis.util.InternationalString;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@Profile(level = CORE)
 @UML(identifier = "CI_ResponsibleParty", specification = ISO_19115)
 public interface ResponsibleParty {
     /**

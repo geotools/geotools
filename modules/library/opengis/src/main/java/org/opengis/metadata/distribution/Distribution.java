@@ -9,13 +9,11 @@
  */
 package org.opengis.metadata.distribution;
 
-import static org.opengis.annotation.ComplianceLevel.CORE;
 import static org.opengis.annotation.Obligation.CONDITIONAL;
 import static org.opengis.annotation.Obligation.OPTIONAL;
 import static org.opengis.annotation.Specification.ISO_19115;
 
 import java.util.Collection;
-import org.opengis.annotation.Profile;
 import org.opengis.annotation.UML;
 
 /**
@@ -25,7 +23,6 @@ import org.opengis.annotation.UML;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@Profile(level = CORE)
 @UML(identifier = "MD_Distribution", specification = ISO_19115)
 public interface Distribution {
     /**
@@ -33,7 +30,6 @@ public interface Distribution {
      *
      * @return Description of the format of the data to be distributed.
      */
-    @Profile(level = CORE)
     @UML(identifier = "distributionFormat", obligation = CONDITIONAL, specification = ISO_19115)
     Collection<? extends Format> getDistributionFormats();
 
@@ -51,7 +47,6 @@ public interface Distribution {
      *
      * @return Technical means and media by which a resource is obtained from the distributor.
      */
-    @Profile(level = CORE)
     @UML(identifier = "transferOptions", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends DigitalTransferOptions> getTransferOptions();
 }

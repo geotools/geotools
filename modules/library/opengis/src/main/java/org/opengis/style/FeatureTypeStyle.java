@@ -15,9 +15,7 @@ import static org.opengis.annotation.Specification.ISO_19117;
 
 import java.util.List;
 import java.util.Set;
-import org.opengis.annotation.Extension;
 import org.opengis.annotation.UML;
-import org.opengis.annotation.XmlElement;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Id;
 import org.opengis.filter.expression.Expression;
@@ -33,7 +31,6 @@ import org.opengis.metadata.citation.OnLineResource;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.2
  */
-@XmlElement("FeatureTypeStyle")
 @UML(identifier = "PF_FeaturePortrayal", specification = ISO_19117)
 public interface FeatureTypeStyle {
 
@@ -44,7 +41,6 @@ public interface FeatureTypeStyle {
      *
      * @return a name for this style.
      */
-    @XmlElement("Name")
     String getName();
 
     /**
@@ -52,7 +48,6 @@ public interface FeatureTypeStyle {
      *
      * @return Description with usual informations used for user interfaces.
      */
-    @XmlElement("Description")
     @UML(identifier = "description", obligation = OPTIONAL, specification = ISO_19117)
     Description getDescription();
 
@@ -77,7 +72,6 @@ public interface FeatureTypeStyle {
      *
      * @return the name of the feature type that this style is meant to act upon.
      */
-    @XmlElement("FeatureTypeName")
     @UML(identifier = "definedFor", obligation = OPTIONAL, specification = ISO_19117)
     Set<Name> featureTypeNames();
 
@@ -99,7 +93,6 @@ public interface FeatureTypeStyle {
      *
      * <p>
      */
-    @XmlElement("SemanticTypeIdentifier")
     Set<SemanticType> semanticTypeIdentifiers();
 
     /**
@@ -107,7 +100,6 @@ public interface FeatureTypeStyle {
      *
      * @return the list of rules. can not be null but can be empty.
      */
-    @XmlElement("Rule")
     @UML(identifier = "portrayalRule", obligation = MANDATORY, specification = ISO_19117)
     List<? extends Rule> rules();
 
@@ -118,7 +110,6 @@ public interface FeatureTypeStyle {
      *
      * @return OnlineResource or null
      */
-    @XmlElement("OnlineResource")
     OnLineResource getOnlineResource();
 
     /**
@@ -126,7 +117,6 @@ public interface FeatureTypeStyle {
      *
      * @return Transformation or null
      */
-    @XmlElement("Transformation")
     Expression getTransformation();
 
     /**
@@ -134,6 +124,5 @@ public interface FeatureTypeStyle {
      *
      * @param visitor the style visitor
      */
-    @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

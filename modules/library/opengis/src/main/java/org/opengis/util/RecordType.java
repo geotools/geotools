@@ -15,7 +15,6 @@ import static org.opengis.annotation.Specification.ISO_19103;
 
 import java.util.Map;
 import java.util.Set;
-import org.opengis.annotation.Extension;
 import org.opengis.annotation.UML;
 
 /**
@@ -83,7 +82,6 @@ public interface RecordType {
      *
      * <p>This method can be think as the equivalent of the Java {@link Class#getFields()} method.
      */
-    @Extension
     Set<MemberName> getMembers();
 
     /**
@@ -119,6 +117,5 @@ public interface RecordType {
      * <p>This method can be think as the equivalent of the Java {@link Class#isInstance(Object)}
      * method.
      */
-    @Extension
     boolean isInstance(Record record);
 }

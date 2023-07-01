@@ -9,12 +9,10 @@
  */
 package org.opengis.metadata.distribution;
 
-import static org.opengis.annotation.ComplianceLevel.CORE;
 import static org.opengis.annotation.Obligation.OPTIONAL;
 import static org.opengis.annotation.Specification.ISO_19115;
 
 import java.util.Collection;
-import org.opengis.annotation.Profile;
 import org.opengis.annotation.UML;
 import org.opengis.metadata.citation.OnLineResource;
 import org.opengis.util.InternationalString;
@@ -27,7 +25,6 @@ import org.opengis.util.InternationalString;
  * @author Cory Horner (Refractions Research)
  * @since GeoAPI 2.0
  */
-@Profile(level = CORE)
 @UML(identifier = "MD_DigitalTransferOptions", specification = ISO_19115)
 public interface DigitalTransferOptions {
     /**
@@ -54,7 +51,6 @@ public interface DigitalTransferOptions {
      *
      * @return Online sources from which the resource can be obtained.
      */
-    @Profile(level = CORE)
     @UML(identifier = "onLine", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends OnLineResource> getOnLines();
 

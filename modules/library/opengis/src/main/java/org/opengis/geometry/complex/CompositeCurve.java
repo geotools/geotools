@@ -13,7 +13,6 @@ import static org.opengis.annotation.Obligation.MANDATORY;
 import static org.opengis.annotation.Specification.ISO_19107;
 
 import java.util.List;
-import org.opengis.annotation.Association;
 import org.opengis.annotation.UML;
 import org.opengis.geometry.primitive.OrientableCurve;
 
@@ -47,7 +46,6 @@ public interface CompositeCurve extends Composite, OrientableCurve {
      * @issue http://jira.codehaus.org/browse/GEO-63
      */
     @Override
-    @Association("Composition")
     @UML(identifier = "generator", obligation = MANDATORY, specification = ISO_19107)
     List<OrientableCurve> getGenerators();
 }

@@ -9,8 +9,6 @@
  */
 package org.opengis.style;
 
-import org.opengis.annotation.Extension;
-import org.opengis.annotation.XmlElement;
 import org.opengis.filter.expression.Function;
 
 /**
@@ -31,7 +29,6 @@ import org.opengis.filter.expression.Function;
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.2
  */
-@XmlElement("ColorMap")
 public interface ColorMap {
 
     /** @return Interpolate or Categorize function */
@@ -42,6 +39,5 @@ public interface ColorMap {
      *
      * @param visitor the style visitor
      */
-    @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

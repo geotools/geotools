@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
-import org.opengis.annotation.Extension;
 import org.opengis.metadata.Identifier;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.util.GenericName;
@@ -95,5 +94,4 @@ import org.opengis.util.InternationalString;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@Extension
 public interface ObjectFactory extends Factory {}

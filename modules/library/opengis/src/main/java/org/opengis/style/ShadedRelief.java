@@ -9,8 +9,6 @@
  */
 package org.opengis.style;
 
-import org.opengis.annotation.Extension;
-import org.opengis.annotation.XmlElement;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -33,7 +31,6 @@ import org.opengis.filter.expression.Expression;
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.2
  */
-@XmlElement("ShadedRelief")
 public interface ShadedRelief {
 
     /**
@@ -41,7 +38,6 @@ public interface ShadedRelief {
      *
      * @return boolean brightnessOn.
      */
-    @XmlElement("BrightnessOnly")
     public boolean isBrightnessOnly();
 
     /**
@@ -51,7 +47,6 @@ public interface ShadedRelief {
      *
      * @return an expression which evaluates to a double.
      */
-    @XmlElement("ReliefFactor")
     public Expression getReliefFactor();
 
     /**
@@ -59,6 +54,5 @@ public interface ShadedRelief {
      *
      * @param visitor the style visitor
      */
-    @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

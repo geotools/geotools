@@ -11,7 +11,6 @@ package org.opengis.referencing.crs;
 
 import static org.opengis.annotation.Specification.ISO_19111;
 
-import org.opengis.annotation.Extension;
 import org.opengis.annotation.UML;
 import org.opengis.referencing.ReferenceSystem;
 import org.opengis.referencing.cs.CoordinateSystem;
@@ -68,6 +67,5 @@ public interface CoordinateReferenceSystem extends ReferenceSystem {
      *     compound CRS}).
      * @return The coordinate system.
      */
-    @Extension
     CoordinateSystem getCoordinateSystem();
 }

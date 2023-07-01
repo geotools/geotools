@@ -10,8 +10,6 @@
 
 package org.opengis.style;
 
-import org.opengis.annotation.Extension;
-import org.opengis.annotation.XmlElement;
 import org.opengis.util.InternationalString;
 
 /**
@@ -24,7 +22,6 @@ import org.opengis.util.InternationalString;
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.2
  */
-@XmlElement("Description")
 public interface Description {
 
     /**
@@ -34,7 +31,6 @@ public interface Description {
      *
      * @return the human readable title of this style.
      */
-    @XmlElement("Title")
     InternationalString getTitle();
 
     /**
@@ -43,7 +39,6 @@ public interface Description {
      *
      * @return a human readable, prose description of this style.
      */
-    @XmlElement("Abstract")
     InternationalString getAbstract();
 
     /**
@@ -51,6 +46,5 @@ public interface Description {
      *
      * @param visitor the style visitor
      */
-    @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

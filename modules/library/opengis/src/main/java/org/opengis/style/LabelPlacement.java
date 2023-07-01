@@ -9,9 +9,6 @@
  */
 package org.opengis.style;
 
-import org.opengis.annotation.Extension;
-import org.opengis.annotation.XmlElement;
-
 /**
  * The LabelPlacement element is used to position a label relative to a point, line string or
  * polygon.
@@ -22,7 +19,6 @@ import org.opengis.annotation.XmlElement;
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.2
  */
-@XmlElement("LabelPlacement")
 public interface LabelPlacement {
     /**
      * Calls the visit method of a StyleVisitor.
@@ -32,6 +28,5 @@ public interface LabelPlacement {
      *
      * @param visitor the style visitor
      */
-    @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

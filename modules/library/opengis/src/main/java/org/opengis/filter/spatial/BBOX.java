@@ -11,7 +11,6 @@ package org.opengis.filter.spatial;
 
 // Annotations
 
-import org.opengis.annotation.XmlElement;
 import org.opengis.geometry.BoundingBox;
 
 /**
@@ -24,7 +23,6 @@ import org.opengis.geometry.BoundingBox;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0
  */
-@XmlElement("BBOX")
 public interface BBOX extends BinarySpatialOperator {
     /** Operator name used to check FilterCapabilities */
     String NAME = "BBOX";

@@ -9,8 +9,6 @@
  */
 package org.opengis.filter.temporal;
 
-import org.opengis.annotation.XmlElement;
-
 /**
  * Filter operator that determines if another temporal object is located at the beginning of a
  * temporal object as defined by the Filter Encoding Specification.
@@ -30,7 +28,6 @@ import org.opengis.annotation.XmlElement;
  * @see http://portal.opengeospatial.org/files/?artifact_id=39968
  * @since 8.0
  */
-@XmlElement("BegunBy")
 public interface BegunBy extends BinaryTemporalOperator {
     /** Operator name */
     public static final String NAME = "BegunBy";

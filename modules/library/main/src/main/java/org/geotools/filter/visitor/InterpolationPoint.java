@@ -16,7 +16,6 @@
  */
 package org.geotools.filter.visitor;
 
-import org.opengis.annotation.XmlElement;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -34,7 +33,6 @@ import org.opengis.filter.expression.Expression;
  *     Implementation Specification 1.1.0</A>
  * @author Johann Sorel (Geomatys)
  */
-@XmlElement("InterpolationPoint")
 public interface InterpolationPoint {
 
     /**
@@ -45,7 +43,6 @@ public interface InterpolationPoint {
      *
      * @return Expression
      */
-    @XmlElement("Value")
     Expression getValue();
 
     /**
@@ -53,6 +50,5 @@ public interface InterpolationPoint {
      *
      * @return double
      */
-    @XmlElement("Data")
     double getData();
 }

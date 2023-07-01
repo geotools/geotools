@@ -13,7 +13,6 @@ import static org.opengis.annotation.Obligation.MANDATORY;
 import static org.opengis.annotation.Specification.ISO_19107;
 
 import java.util.List;
-import org.opengis.annotation.Association;
 import org.opengis.annotation.UML;
 import org.opengis.geometry.coordinate.GenericCurve;
 
@@ -62,7 +61,6 @@ public interface Curve extends OrientableCurve, GenericCurve {
      * @see Surface#getPatches
      * @issue http://jira.codehaus.org/browse/GEO-63
      */
-    @Association("Segmentation")
     @UML(identifier = "segment", obligation = MANDATORY, specification = ISO_19107)
     List<? extends CurveSegment> getSegments();
 
@@ -74,7 +72,6 @@ public interface Curve extends OrientableCurve, GenericCurve {
      * @issue http://jira.codehaus.org/browse/GEO-63
      */
     @Override
-    @Association("Oriented")
     @UML(identifier = "proxy", obligation = MANDATORY, specification = ISO_19107)
     OrientableCurve[] getProxy();
 }

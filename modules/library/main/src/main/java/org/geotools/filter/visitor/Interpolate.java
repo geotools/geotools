@@ -18,7 +18,6 @@
 package org.geotools.filter.visitor;
 
 import java.util.List;
-import org.opengis.annotation.XmlElement;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 
@@ -34,7 +33,6 @@ import org.opengis.filter.expression.Function;
  *     Implementation Specification 1.1.0</A>
  * @author Johann Sorel (Geomatys)
  */
-@XmlElement("Interpolate")
 public interface Interpolate extends Function {
 
     /**
@@ -42,7 +40,6 @@ public interface Interpolate extends Function {
      *
      * @return Expression
      */
-    @XmlElement("LookupValue")
     Expression getLookupValue();
 
     /** See {@link InterpolationPoint} for details. */
@@ -53,7 +50,6 @@ public interface Interpolate extends Function {
      *
      * @return LINEAR, COSINE or CUBIC.
      */
-    @XmlElement("Mode")
     Mode getMode();
 
     /**
@@ -61,6 +57,5 @@ public interface Interpolate extends Function {
      *
      * @return NUMERIC or COLOR
      */
-    @XmlElement("Method")
     Method getMethod();
 }

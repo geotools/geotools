@@ -9,9 +9,6 @@
  */
 package org.opengis.style;
 
-import org.opengis.annotation.Extension;
-import org.opengis.annotation.XmlElement;
-
 /**
  * The LegendGraphic element allow an optional explicit graphic symbolizer to do displayed in a
  * legend for the rule.
@@ -22,7 +19,6 @@ import org.opengis.annotation.XmlElement;
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.2
  */
-@XmlElement("LegendGraphic")
 public interface GraphicLegend extends Graphic {
 
     /**
@@ -31,6 +27,5 @@ public interface GraphicLegend extends Graphic {
      * @param visitor the style visitor
      */
     @Override
-    @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

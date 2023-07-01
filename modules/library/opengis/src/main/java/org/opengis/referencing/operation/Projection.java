@@ -9,8 +9,6 @@
  */
 package org.opengis.referencing.operation;
 
-import org.opengis.annotation.Extension;
-
 /**
  * A {@linkplain org.opengis.referencing.operation.Conversion conversion} transforming
  * (<var>longitude</var>,<var>latitude</var>) coordinates to cartesian coordinates
@@ -35,5 +33,4 @@ import org.opengis.annotation.Extension;
  * @see org.opengis.referencing.crs.ProjectedCRS
  * @see <A HREF="http://mathworld.wolfram.com/MapProjection.html">Map projections on MathWorld</A>
  */
-@Extension
 public interface Projection extends Conversion {}

@@ -9,7 +9,6 @@
  */
 package org.opengis.coverage;
 
-import org.opengis.annotation.Extension;
 import org.opengis.geometry.DirectPosition;
 
 /**
@@ -69,7 +68,6 @@ public class CannotEvaluateException extends RuntimeException {
      * @return The coverage, or {@code null} if unknown.
      * @since GeoAPÏ 2.2
      */
-    @Extension
     public Coverage getCoverage() {
         return coverage;
     }
@@ -80,7 +78,6 @@ public class CannotEvaluateException extends RuntimeException {
      * @param coverage The coverage, or {@code null} if unknown.
      * @since GeoAPÏ 2.2
      */
-    @Extension
     public void setCoverage(final Coverage coverage) {
         this.coverage = coverage;
     }

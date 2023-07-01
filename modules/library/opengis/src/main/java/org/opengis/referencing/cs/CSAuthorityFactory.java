@@ -12,7 +12,6 @@ package org.opengis.referencing.cs;
 import static org.opengis.annotation.Specification.OGC_01009;
 
 import javax.measure.Unit;
-import org.opengis.annotation.Extension;
 import org.opengis.annotation.UML;
 import org.opengis.referencing.AuthorityFactory;
 import org.opengis.referencing.FactoryException;
@@ -31,7 +30,6 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * @see org.opengis.referencing.crs.CRSAuthorityFactory
  * @see org.opengis.referencing.datum.DatumAuthorityFactory
  */
-@Extension
 public interface CSAuthorityFactory extends AuthorityFactory {
     /**
      * Returns an arbitrary {@linkplain CoordinateSystem coordinate system} from a code. If the

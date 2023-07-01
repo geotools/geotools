@@ -13,7 +13,6 @@ import static org.opengis.annotation.Obligation.MANDATORY;
 import static org.opengis.annotation.Specification.ISO_19123;
 
 import java.awt.Rectangle;
-import org.opengis.annotation.Extension;
 import org.opengis.annotation.UML;
 
 /**
@@ -42,7 +41,6 @@ public interface GridEnvelope {
      * @return The number of dimensions.
      * @since GeoAPI 2.2
      */
-    @Extension
     int getDimension();
 
     /**
@@ -82,7 +80,6 @@ public interface GridEnvelope {
      * @see Rectangle#y
      * @since GeoAPI 2.2
      */
-    @Extension
     int getLow(int dimension) throws IndexOutOfBoundsException;
 
     /**
@@ -104,7 +101,6 @@ public interface GridEnvelope {
      *     the {@linkplain #getDimension grid dimension}.
      * @since GeoAPI 2.2
      */
-    @Extension
     int getHigh(int dimension) throws IndexOutOfBoundsException;
 
     /**
@@ -127,6 +123,5 @@ public interface GridEnvelope {
      * @see Rectangle#height
      * @since GeoAPI 2.2
      */
-    @Extension
     int getSpan(int dimension) throws IndexOutOfBoundsException;
 }

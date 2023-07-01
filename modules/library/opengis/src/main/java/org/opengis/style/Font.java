@@ -10,9 +10,6 @@
 package org.opengis.style;
 
 import java.util.List;
-import org.opengis.annotation.Extension;
-import org.opengis.annotation.XmlElement;
-import org.opengis.annotation.XmlParameter;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -25,7 +22,6 @@ import org.opengis.filter.expression.Expression;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.2
  */
-@XmlElement("Font")
 public interface Font {
 
     // *************************************************************
@@ -39,7 +35,6 @@ public interface Font {
      *
      * @return live list of font family
      */
-    @XmlParameter("font-familly")
     List<Expression> getFamily();
 
     /**
@@ -48,7 +43,6 @@ public interface Font {
      *
      * @return Expression or Expression.NIL
      */
-    @XmlParameter("font-style")
     Expression getStyle();
 
     /**
@@ -57,7 +51,6 @@ public interface Font {
      *
      * @return Expression or or Expression.NIL
      */
-    @XmlParameter("font-weight")
     Expression getWeight();
 
     /**
@@ -67,7 +60,6 @@ public interface Font {
      *
      * @return Expression or null
      */
-    @XmlParameter("font-size")
     Expression getSize();
 
     /**
@@ -75,6 +67,5 @@ public interface Font {
      *
      * @param visitor the style visitor
      */
-    @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

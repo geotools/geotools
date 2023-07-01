@@ -11,8 +11,6 @@ package org.opengis.filter;
 
 // Annotations
 
-import org.opengis.annotation.XmlElement;
-
 /**
  * {@linkplain #evaluate Evaluates} to {@code true} if all the combined expressions evaluate to
  * {@code true}. This interface exposes no additional methods beyond those of {@link
@@ -28,5 +26,4 @@ import org.opengis.annotation.XmlElement;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0
  */
-@XmlElement("And")
 public interface And extends BinaryLogicOperator {}

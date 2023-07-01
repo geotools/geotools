@@ -11,8 +11,6 @@ package org.opengis.filter;
 
 // Annotations
 
-import org.opengis.annotation.XmlElement;
-
 /**
  * {@linkplain #evaluate Evaluates} to {@code true} if any of the combined expressions evaluate to
  * {@code true}.
@@ -30,5 +28,4 @@ import org.opengis.annotation.XmlElement;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0
  */
-@XmlElement("Or")
 public interface Or extends BinaryLogicOperator {}

@@ -11,7 +11,6 @@ package org.opengis.filter;
 
 // OpenGIS direct dependencies
 
-import org.opengis.annotation.XmlElement;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -23,20 +22,16 @@ import org.opengis.filter.expression.Expression;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0
  */
-@XmlElement("PropertyIsBetween")
 public interface PropertyIsBetween extends MultiValuedFilter {
     /** Operator name used to check FilterCapabilities */
     public static String NAME = "Between";
 
     /** Returns the expression to be compared by this operator. */
-    @XmlElement("expression")
     Expression getExpression();
 
     /** Returns the lower bounds (inclusive) an an expression. */
-    @XmlElement("LowerBoundary")
     Expression getLowerBoundary();
 
     /** Returns the upper bounds (inclusive) as an expression. */
-    @XmlElement("UpperBoundary")
     Expression getUpperBoundary();
 }

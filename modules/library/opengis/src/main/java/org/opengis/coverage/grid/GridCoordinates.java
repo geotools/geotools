@@ -12,7 +12,6 @@ package org.opengis.coverage.grid;
 import static org.opengis.annotation.Obligation.MANDATORY;
 import static org.opengis.annotation.Specification.ISO_19123;
 
-import org.opengis.annotation.Extension;
 import org.opengis.annotation.UML;
 import org.opengis.util.Cloneable;
 
@@ -34,7 +33,6 @@ public interface GridCoordinates extends Cloneable {
      *
      * @return The number of dimensions.
      */
-    @Extension
     int getDimension();
 
     /**
@@ -58,7 +56,6 @@ public interface GridCoordinates extends Cloneable {
      * @throws IndexOutOfBoundsException If the given index is negative or is equals or greater than
      *     the {@linkplain #getDimension grid dimension}.
      */
-    @Extension
     int getCoordinateValue(int dimension) throws IndexOutOfBoundsException;
 
     /**
@@ -70,7 +67,6 @@ public interface GridCoordinates extends Cloneable {
      *     the {@linkplain #getDimension grid dimension}.
      * @throws UnsupportedOperationException if this grid coordinates is not modifiable.
      */
-    @Extension
     void setCoordinateValue(int dimension, int value)
             throws IndexOutOfBoundsException, UnsupportedOperationException;
 }

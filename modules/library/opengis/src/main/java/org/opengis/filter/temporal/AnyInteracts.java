@@ -17,8 +17,6 @@
  */
 package org.opengis.filter.temporal;
 
-import org.opengis.annotation.XmlElement;
-
 /**
  * Filter operator that determines if two temporal periods interact in any way as defined by the
  * Filter Encoding Specification.
@@ -33,7 +31,6 @@ import org.opengis.annotation.XmlElement;
  * @see http://portal.opengeospatial.org/files/?artifact_id=39968
  * @since 8.0
  */
-@XmlElement("AnyInteracts")
 public interface AnyInteracts extends BinaryTemporalOperator {
     /** Operator name */
     public static final String NAME = "AnyInteracts";

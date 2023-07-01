@@ -11,7 +11,6 @@ package org.opengis.style;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.opengis.annotation.XmlElement;
 import org.opengis.util.CodeList;
 
 /**
@@ -31,7 +30,6 @@ import org.opengis.util.CodeList;
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.2
  */
-@XmlElement("ContrastEnchancement:type")
 public final class ContrastMethod extends CodeList<ContrastMethod> {
     /** Serial number for compatibility with different versions. */
     private static final long serialVersionUID = -7328502367911363577L;
@@ -44,7 +42,6 @@ public final class ContrastMethod extends CodeList<ContrastMethod> {
      * is stretched to black and the brightest color is stretched to white, with all colors in
      * between stretched out linearly.
      */
-    @XmlElement("Normalize")
     public static final ContrastMethod NORMALIZE = new ContrastMethod("NORMALIZE");
 
     /**
@@ -52,13 +49,10 @@ public final class ContrastMethod extends CodeList<ContrastMethod> {
      * many colors are at each brightness level on input, with the goal of producing equal number of
      * pixels in the image at each brightness level on output.
      */
-    @XmlElement("Histogram")
     public static final ContrastMethod HISTOGRAM = new ContrastMethod("HISTOGRAM");
 
-    @XmlElement("Logarithmic")
     public static final ContrastMethod LOGARITHMIC = new ContrastMethod("LOGARITHMIC");
 
-    @XmlElement("Exponential")
     public static final ContrastMethod EXPONENTIAL = new ContrastMethod("EXPONENTIAL");
 
     /** No enchancement. this is the default value. */

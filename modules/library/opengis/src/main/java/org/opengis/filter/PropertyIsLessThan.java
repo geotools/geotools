@@ -11,8 +11,6 @@ package org.opengis.filter;
 
 // Annotations
 
-import org.opengis.annotation.XmlElement;
-
 /**
  * Filter operator that checks that its first sub-expression is less than its second subexpression.
  *
@@ -20,7 +18,6 @@ import org.opengis.annotation.XmlElement;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0
  */
-@XmlElement("PropertyIsLessThan")
 public interface PropertyIsLessThan extends BinaryComparisonOperator {
     /** Operator name used to check FilterCapabilities */
     public static String NAME = "LessThan";

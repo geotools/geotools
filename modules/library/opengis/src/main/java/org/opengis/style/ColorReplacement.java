@@ -10,8 +10,6 @@
 
 package org.opengis.style;
 
-import org.opengis.annotation.Extension;
-import org.opengis.annotation.XmlElement;
 import org.opengis.filter.expression.Function;
 
 /**
@@ -25,7 +23,6 @@ import org.opengis.filter.expression.Function;
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.2
  */
-@XmlElement("ColorReplacement")
 public interface ColorReplacement {
 
     /**
@@ -36,7 +33,6 @@ public interface ColorReplacement {
      * <p>This function recodes values from a property or expression into corresponding values of
      * arbitrary type. The comparisons are performed checking for identical values.
      */
-    @XmlElement("Recode")
     Function getRecoding();
 
     /**
@@ -44,6 +40,5 @@ public interface ColorReplacement {
      *
      * @param visitor the style visitor
      */
-    @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

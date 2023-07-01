@@ -13,7 +13,6 @@ import static org.opengis.annotation.Obligation.MANDATORY;
 import static org.opengis.annotation.Specification.ISO_19103;
 
 import java.util.List;
-import org.opengis.annotation.Extension;
 import org.opengis.annotation.UML;
 
 /**
@@ -210,7 +209,6 @@ public interface GenericName extends Comparable<GenericName> {
      * @return The last element in the list of {@linkplain #getParsedNames parsed names}.
      * @since GeoAPI 2.1
      */
-    @Extension
     LocalName tip();
 
     /**
@@ -225,7 +223,6 @@ public interface GenericName extends Comparable<GenericName> {
      * @return The fully-qualified name (never {@code null}).
      * @since GeoAPI 2.1
      */
-    @Extension
     GenericName toFullyQualifiedName();
 
     /**
@@ -282,7 +279,7 @@ public interface GenericName extends Comparable<GenericName> {
      */
     @Override
     /// @Override
-    @Extension
+
     String toString();
 
     /**
@@ -298,6 +295,5 @@ public interface GenericName extends Comparable<GenericName> {
      *
      * @return A localizable string representation of this name.
      */
-    @Extension
     InternationalString toInternationalString();
 }

@@ -13,7 +13,6 @@ import static org.opengis.annotation.Obligation.MANDATORY;
 import static org.opengis.annotation.Obligation.OPTIONAL;
 import static org.opengis.annotation.Specification.ISO_19107;
 
-import org.opengis.annotation.Association;
 import org.opengis.annotation.UML;
 import org.opengis.geometry.coordinate.GenericCurve;
 import org.opengis.geometry.coordinate.PointArray;
@@ -49,7 +48,6 @@ public interface CurveSegment extends GenericCurve {
      * @see SurfacePatch#getSurface
      * @issue http://jira.codehaus.org/browse/GEO-63
      */
-    @Association("Segmentation")
     @UML(identifier = "curve", obligation = OPTIONAL, specification = ISO_19107)
     Curve getCurve();
 

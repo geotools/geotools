@@ -39,6 +39,5 @@ public enum Obligation {
      * subinterface overrides an association and force it to a {@code null} value. An example is
      * {@link org.opengis.referencing.datum.TemporalDatum#getAnchorPoint}.
      */
-    @Extension
     FORBIDDEN
 }

@@ -11,8 +11,6 @@ package org.opengis.filter;
 
 // Annotations
 
-import org.opengis.annotation.XmlElement;
-
 /**
  * Reverses the logical value of an expression.
  *
@@ -26,7 +24,6 @@ import org.opengis.annotation.XmlElement;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0
  */
-@XmlElement("Not")
 public interface Not extends Filter {
     /** The filter to reverse. */
     Filter getFilter();

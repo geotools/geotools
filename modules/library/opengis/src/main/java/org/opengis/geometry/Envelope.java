@@ -13,7 +13,6 @@ import static org.opengis.annotation.Obligation.MANDATORY;
 import static org.opengis.annotation.Specification.ISO_19107;
 
 import java.awt.geom.Rectangle2D;
-import org.opengis.annotation.Extension;
 import org.opengis.annotation.UML;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -38,7 +37,6 @@ public interface Envelope {
      * @return The envelope CRS, or {@code null} if unknown.
      * @since GeoAPI 2.1
      */
-    @Extension
     CoordinateReferenceSystem getCoordinateReferenceSystem();
 
     /**
@@ -48,7 +46,6 @@ public interface Envelope {
      * @return The dimensionality of this envelope.
      * @since GeoAPI 2.0
      */
-    @Extension
     int getDimension();
 
     /**
@@ -89,7 +86,6 @@ public interface Envelope {
      * @see Rectangle2D#getMinY
      * @since GeoAPI 2.0
      */
-    @Extension
     double getMinimum(int dimension) throws IndexOutOfBoundsException;
 
     /**
@@ -112,7 +108,6 @@ public interface Envelope {
      * @see Rectangle2D#getMaxY
      * @since GeoAPI 2.0
      */
-    @Extension
     double getMaximum(int dimension) throws IndexOutOfBoundsException;
 
     /**
@@ -135,7 +130,6 @@ public interface Envelope {
      * @see Rectangle2D#getCenterY
      * @since GeoAPI 2.2
      */
-    @Extension
     double getMedian(int dimension) throws IndexOutOfBoundsException;
 
     /**
@@ -158,6 +152,5 @@ public interface Envelope {
      * @see Rectangle2D#getHeight
      * @since GeoAPI 2.2
      */
-    @Extension
     double getSpan(int dimension) throws IndexOutOfBoundsException;
 }

@@ -9,8 +9,6 @@
  */
 package org.opengis.filter.identity;
 
-import org.opengis.annotation.XmlElement;
-
 /**
  * Feature identifier.
  *
@@ -21,14 +19,12 @@ import org.opengis.annotation.XmlElement;
  * @author Justin Deoliveira (The Open Planning Project)
  * @since GeoAPI 2.0
  */
-@XmlElement("FeatureId")
 public interface FeatureId extends Identifier {
 
     public static final char VERSION_SEPARATOR = '@';
 
     /** The identifier value, which is a string. */
     @Override
-    @XmlElement("fid")
     String getID();
 
     //
@@ -83,7 +79,6 @@ public interface FeatureId extends Identifier {
      *
      * @return Resource identifier made up of FID (combined with FeatureVersion if available)
      */
-    @XmlElement("rid")
     String getRid();
 
     /**
@@ -92,7 +87,6 @@ public interface FeatureId extends Identifier {
      *
      * @return Previous rid if available; or {@code null}
      */
-    @XmlElement("previousRid")
     String getPreviousRid();
 
     /**

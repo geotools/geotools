@@ -11,7 +11,6 @@ package org.opengis.filter;
 
 // OpenGIS direct dependencies
 
-import org.opengis.annotation.XmlElement;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -28,7 +27,6 @@ import org.opengis.filter.expression.Expression;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0
  */
-@XmlElement("PropertyIsLike")
 public interface PropertyIsLike extends MultiValuedFilter {
     /** Operator name used to check FilterCapabilities */
     public static String NAME = "Like";
@@ -36,13 +34,11 @@ public interface PropertyIsLike extends MultiValuedFilter {
      * Returns the expression whose value will be compared against the wildcard- containing string
      * provided by the getLiteral() method.
      */
-    @XmlElement("PropertyName")
     Expression getExpression();
 
     /**
      * Returns the wildcard-containing string that will be used to check the feature's properties.
      */
-    @XmlElement("Literal")
     String getLiteral();
 
     /**
@@ -51,7 +47,6 @@ public interface PropertyIsLike extends MultiValuedFilter {
      *
      * <p>The default value for this property is the one character string "%".
      */
-    @XmlElement("wildCard")
     String getWildCard();
 
     /**
@@ -60,7 +55,6 @@ public interface PropertyIsLike extends MultiValuedFilter {
      *
      * <p>The default value for this property is the one character string "_".
      */
-    @XmlElement("singleChar")
     String getSingleChar();
 
     /**
@@ -68,7 +62,6 @@ public interface PropertyIsLike extends MultiValuedFilter {
      * the wild card characters to indicate that it should be matched literally in the content of
      * the feature's property. The default value for this property is the single character "'".
      */
-    @XmlElement("escape")
     String getEscape();
 
     /**
@@ -78,6 +71,5 @@ public interface PropertyIsLike extends MultiValuedFilter {
      *
      * @return <code>true</code> if the comparison is case sensetive, otherwise <code>false</code>.
      */
-    @XmlElement("matchCase")
     boolean isMatchingCase();
 }

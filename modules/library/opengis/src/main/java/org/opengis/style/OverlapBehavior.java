@@ -9,8 +9,6 @@
  */
 package org.opengis.style;
 
-import org.opengis.annotation.XmlElement;
-
 /**
  * The OverlapBehavior element tells a system how to behave when multiple raster images in a layer
  * overlap each other, for example with satellite-image scenes. LATEST_ON_TOP and EARLIEST_ON_TOP
@@ -27,7 +25,6 @@ import org.opengis.annotation.XmlElement;
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.2
  */
-@XmlElement("OverlapBehavior")
 public enum OverlapBehavior {
     LATEST_ON_TOP,
     EARLIEST_ON_TOP,

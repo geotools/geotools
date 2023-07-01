@@ -11,7 +11,6 @@ package org.opengis.filter;
 
 // OpenGIS direct dependencies
 
-import org.opengis.annotation.XmlElement;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -22,11 +21,9 @@ import org.opengis.filter.expression.Expression;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0
  */
-@XmlElement("PropertyIsNull")
 public interface PropertyIsNull extends Filter {
     /** Operator name used to check FilterCapabilities */
     public static String NAME = "NullCheck";
     /** Returns the expression whose value will be checked for {@code null}. */
-    @XmlElement("PropertyName")
     Expression getExpression();
 }

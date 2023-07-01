@@ -9,8 +9,6 @@
  */
 package org.opengis.style;
 
-import org.opengis.annotation.Extension;
-import org.opengis.annotation.XmlElement;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -23,7 +21,6 @@ import org.opengis.filter.expression.Expression;
  * @author Ian Turton
  * @since GeoAPI 2.2
  */
-@XmlElement("PointPlacement")
 public interface PointPlacement extends LabelPlacement {
 
     /**
@@ -39,7 +36,6 @@ public interface PointPlacement extends LabelPlacement {
      *
      * @return AnchorPoint : if null use X=0.5 Y=0.5
      */
-    @XmlElement("PointPlacement")
     AnchorPoint getAnchorPoint();
 
     /**
@@ -53,7 +49,6 @@ public interface PointPlacement extends LabelPlacement {
      *
      * @return Displacement
      */
-    @XmlElement("Displacement")
     Displacement getDisplacement();
 
     /**
@@ -65,7 +60,6 @@ public interface PointPlacement extends LabelPlacement {
      *
      * @return Expression
      */
-    @XmlElement("Rotation")
     Expression getRotation();
 
     /**
@@ -74,6 +68,5 @@ public interface PointPlacement extends LabelPlacement {
      * @param visitor the style visitor
      */
     @Override
-    @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

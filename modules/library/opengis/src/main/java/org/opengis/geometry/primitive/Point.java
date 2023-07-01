@@ -13,7 +13,6 @@ import static org.opengis.annotation.Obligation.FORBIDDEN;
 import static org.opengis.annotation.Obligation.MANDATORY;
 import static org.opengis.annotation.Specification.ISO_19107;
 
-import org.opengis.annotation.Association;
 import org.opengis.annotation.UML;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.UnmodifiableGeometryException;
@@ -93,7 +92,6 @@ public interface Point extends Primitive, Position {
      * @issue http://jira.codehaus.org/browse/GEO-63
      */
     @Override
-    @Association("Oriented")
     @UML(identifier = "proxy", obligation = FORBIDDEN, specification = ISO_19107)
     OrientablePrimitive[] getProxy();
 

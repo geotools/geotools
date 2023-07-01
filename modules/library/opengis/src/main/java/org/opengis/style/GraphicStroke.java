@@ -9,8 +9,6 @@
  */
 package org.opengis.style;
 
-import org.opengis.annotation.Extension;
-import org.opengis.annotation.XmlElement;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -22,7 +20,6 @@ import org.opengis.filter.expression.Expression;
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.2
  */
-@XmlElement("GraphicStroke")
 public interface GraphicStroke extends Graphic {
 
     /**
@@ -31,7 +28,6 @@ public interface GraphicStroke extends Graphic {
      *
      * @return Expression
      */
-    @XmlElement("InitialGap")
     Expression getInitialGap();
 
     /**
@@ -39,7 +35,6 @@ public interface GraphicStroke extends Graphic {
      *
      * @return Expression
      */
-    @XmlElement("Gap")
     Expression getGap();
 
     /**
@@ -48,6 +43,5 @@ public interface GraphicStroke extends Graphic {
      * @param visitor the style visitor
      */
     @Override
-    @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

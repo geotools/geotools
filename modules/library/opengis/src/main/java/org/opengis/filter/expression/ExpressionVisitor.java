@@ -11,8 +11,6 @@ package org.opengis.filter.expression;
 
 // Annotation
 
-import org.opengis.annotation.Extension;
-
 /**
  * Visitor with {@code visit} methods to be called by {@link Expression#accept
  * Expression.accept(...)}.
@@ -28,7 +26,6 @@ import org.opengis.annotation.Extension;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0
  */
-@Extension
 public interface ExpressionVisitor {
     /**
      * Used to visit a Expression.NIL, also called for <code>null</code> where an expression is

@@ -16,7 +16,6 @@
  */
 package org.geotools.referencing.operation.matrix;
 
-import org.opengis.annotation.Extension;
 import org.opengis.referencing.operation.Matrix;
 
 /**
@@ -53,7 +52,6 @@ public interface XMatrix extends Matrix {
     public void getColumn(int col, double[] array);
 
     /** Sets the value of the column using an array of values. */
-    @Extension
     public void setColumn(int column, double... values);
 
     /** Sets all the values in this matrix to zero. */

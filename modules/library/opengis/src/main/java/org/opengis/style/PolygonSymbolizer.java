@@ -9,8 +9,6 @@
  */
 package org.opengis.style;
 
-import org.opengis.annotation.Extension;
-import org.opengis.annotation.XmlElement;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -23,7 +21,6 @@ import org.opengis.filter.expression.Expression;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.2
  */
-@XmlElement("PolygonSymbolizer")
 public interface PolygonSymbolizer extends Symbolizer {
 
     /**
@@ -32,7 +29,6 @@ public interface PolygonSymbolizer extends Symbolizer {
      *
      * @return Stroke
      */
-    @XmlElement("Stroke")
     Stroke getStroke();
 
     /**
@@ -41,7 +37,6 @@ public interface PolygonSymbolizer extends Symbolizer {
      *
      * @return Fill
      */
-    @XmlElement("Fill")
     Fill getFill();
 
     /**
@@ -52,7 +47,6 @@ public interface PolygonSymbolizer extends Symbolizer {
      *
      * @return Displacement
      */
-    @XmlElement("Displacement")
     Displacement getDisplacement();
 
     /**
@@ -62,7 +56,6 @@ public interface PolygonSymbolizer extends Symbolizer {
      *
      * @return Expression
      */
-    @XmlElement("PerpendicularOffset")
     Expression getPerpendicularOffset();
 
     /**
@@ -71,6 +64,5 @@ public interface PolygonSymbolizer extends Symbolizer {
      * @param visitor the style visitor
      */
     @Override
-    @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

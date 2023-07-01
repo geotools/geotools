@@ -9,8 +9,6 @@
  */
 package org.opengis.style;
 
-import org.opengis.annotation.Extension;
-import org.opengis.annotation.XmlElement;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -23,7 +21,6 @@ import org.opengis.filter.expression.Expression;
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.2
  */
-@XmlElement("SelectedChannelType")
 public interface SelectedChannelType {
 
     /**
@@ -31,7 +28,6 @@ public interface SelectedChannelType {
      *
      * @return Expression
      */
-    @XmlElement("SourceChannelName")
     public Expression getChannelName();
 
     /**
@@ -39,7 +35,6 @@ public interface SelectedChannelType {
      *
      * @return ContrastEnhancement
      */
-    @XmlElement("SelectedChannelType")
     public ContrastEnhancement getContrastEnhancement();
 
     /**
@@ -47,6 +42,5 @@ public interface SelectedChannelType {
      *
      * @param visitor the style visitor
      */
-    @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

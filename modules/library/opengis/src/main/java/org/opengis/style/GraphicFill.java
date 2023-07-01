@@ -9,9 +9,6 @@
  */
 package org.opengis.style;
 
-import org.opengis.annotation.Extension;
-import org.opengis.annotation.XmlElement;
-
 /**
  * A GraphicFill is a simple interface with only a graphic but additional parameters for the
  * GraphicFill may be provided in the future to provide more control the exact style of filling. We
@@ -23,7 +20,6 @@ import org.opengis.annotation.XmlElement;
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.2
  */
-@XmlElement("GraphicFill")
 public interface GraphicFill extends Graphic {
 
     /**
@@ -32,6 +28,5 @@ public interface GraphicFill extends Graphic {
      * @param visitor the style visitor
      */
     @Override
-    @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

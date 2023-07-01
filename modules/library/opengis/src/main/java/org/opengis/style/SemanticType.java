@@ -11,7 +11,6 @@ package org.opengis.style;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.opengis.annotation.XmlElement;
 import org.opengis.util.CodeList;
 
 /**
@@ -38,7 +37,6 @@ import org.opengis.util.CodeList;
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.2
  */
-@XmlElement("SemanticTypeIdentifier")
 public final class SemanticType extends CodeList<SemanticType> {
     /** Serial number for compatibility with different versions. */
     private static final long serialVersionUID = -7328502367911363577L;
@@ -47,27 +45,21 @@ public final class SemanticType extends CodeList<SemanticType> {
     private static final List<SemanticType> VALUES = new ArrayList<>(6);
 
     /** Semantic identifies a point geometry. */
-    @XmlElement("generic:point")
     public static final SemanticType POINT = new SemanticType("POINT");
 
     /** Semantic identifies a line geometry. */
-    @XmlElement("generic:line")
     public static final SemanticType LINE = new SemanticType("LINE");
 
     /** Semantic identifies a polygon geometry. */
-    @XmlElement("generic:polygon")
     public static final SemanticType POLYGON = new SemanticType("POLYGON");
 
     /** Semantic identifies a text geometry. */
-    @XmlElement("generic:text")
     public static final SemanticType TEXT = new SemanticType("TEXT");
 
     /** Semantic identifies a raster geometry. */
-    @XmlElement("generic:raster")
     public static final SemanticType RASTER = new SemanticType("RASTER");
 
     /** Semantic identifies any geometry. */
-    @XmlElement("generic:any")
     public static final SemanticType ANY = new SemanticType("ANY");
 
     /**

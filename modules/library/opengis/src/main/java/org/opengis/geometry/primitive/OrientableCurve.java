@@ -13,7 +13,6 @@ import static org.opengis.annotation.Obligation.MANDATORY;
 import static org.opengis.annotation.Obligation.OPTIONAL;
 import static org.opengis.annotation.Specification.ISO_19107;
 
-import org.opengis.annotation.Association;
 import org.opengis.annotation.UML;
 import org.opengis.geometry.complex.CompositeCurve;
 
@@ -48,7 +47,6 @@ public interface OrientableCurve extends OrientablePrimitive {
      * @issue http://jira.codehaus.org/browse/GEO-63
      */
     @Override
-    @Association("Oriented")
     @UML(identifier = "primitive", obligation = OPTIONAL, specification = ISO_19107)
     Curve getPrimitive();
 
@@ -63,7 +61,6 @@ public interface OrientableCurve extends OrientablePrimitive {
      * @issue http://jira.codehaus.org/browse/GEO-63
      */
     @Override
-    @Association("Composition")
     @UML(identifier = "composite", obligation = OPTIONAL, specification = ISO_19107)
     CompositeCurve getComposite();
 }

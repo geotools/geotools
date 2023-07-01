@@ -13,7 +13,6 @@ import static org.opengis.annotation.Obligation.MANDATORY;
 import static org.opengis.annotation.Specification.ISO_19103;
 
 import java.util.List;
-import org.opengis.annotation.Extension;
 import org.opengis.annotation.UML;
 
 /**
@@ -130,7 +129,6 @@ public interface ScopedName extends GenericName {
      *     parsed names}.
      * @since GeoAPI 2.1
      */
-    @Extension
     GenericName path();
 
     /**
@@ -144,7 +142,7 @@ public interface ScopedName extends GenericName {
      */
     @Override
     /// @Override
-    @Extension
+
     LocalName tip();
 
     /**

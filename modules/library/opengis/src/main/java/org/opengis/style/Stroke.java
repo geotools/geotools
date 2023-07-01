@@ -9,9 +9,6 @@
  */
 package org.opengis.style;
 
-import org.opengis.annotation.Extension;
-import org.opengis.annotation.XmlElement;
-import org.opengis.annotation.XmlParameter;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -30,7 +27,6 @@ import org.opengis.filter.expression.Expression;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.2
  */
-@XmlElement("Stroke")
 public interface Stroke {
 
     /**
@@ -41,7 +37,6 @@ public interface Stroke {
      *
      * @return Graphic
      */
-    @XmlElement("GraphicFill")
     GraphicFill getGraphicFill();
 
     /**
@@ -53,7 +48,6 @@ public interface Stroke {
      *
      * @return Graphic
      */
-    @XmlElement("GraphicStroke")
     GraphicStroke getGraphicStroke();
 
     // *************************************************************
@@ -69,7 +63,6 @@ public interface Stroke {
      *
      * @return Expression
      */
-    @XmlParameter("stroke")
     Expression getColor();
 
     /**
@@ -79,7 +72,6 @@ public interface Stroke {
      *
      * @return expression
      */
-    @XmlParameter("stroke-opacity")
     Expression getOpacity();
 
     /**
@@ -89,7 +81,6 @@ public interface Stroke {
      *
      * @return expression
      */
-    @XmlParameter("stroke-width")
     Expression getWidth();
 
     /**
@@ -99,7 +90,6 @@ public interface Stroke {
      *
      * @return expression
      */
-    @XmlParameter("stroke-linejoin")
     Expression getLineJoin();
 
     /**
@@ -108,7 +98,6 @@ public interface Stroke {
      *
      * @return expression
      */
-    @XmlParameter("stroke-linecap")
     Expression getLineCap();
 
     /**
@@ -121,7 +110,6 @@ public interface Stroke {
      *
      * @return expression
      */
-    @XmlParameter("stroke-dasharray")
     float[] getDashArray();
 
     /**
@@ -130,7 +118,6 @@ public interface Stroke {
      *
      * @return expression
      */
-    @XmlParameter("stroke-dashoffset")
     Expression getDashOffset();
 
     /**
@@ -138,6 +125,5 @@ public interface Stroke {
      *
      * @param visitor the style visitor
      */
-    @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

@@ -9,8 +9,6 @@
  */
 package org.opengis.style;
 
-import org.opengis.annotation.Extension;
-import org.opengis.annotation.XmlElement;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -34,11 +32,9 @@ import org.opengis.filter.expression.Expression;
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.2
  */
-@XmlElement("ContrastEnhancement")
 public interface ContrastEnhancement {
 
     /** We use a codeList to enable more enchancement type possibilities. */
-    @XmlElement("Normalize,Histogram,Logarithmic,Exponential")
     public ContrastMethod getMethod();
 
     /**
@@ -48,7 +44,6 @@ public interface ContrastEnhancement {
      * @return Expression to control gamma adjustment, null or Expression.NIL handled as the value
      *     1.0
      */
-    @XmlElement("GammaValue")
     Expression getGammaValue();
 
     /**
@@ -56,6 +51,5 @@ public interface ContrastEnhancement {
      *
      * @param visitor the style visitor
      */
-    @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

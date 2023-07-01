@@ -9,8 +9,6 @@
  */
 package org.opengis.filter.temporal;
 
-import org.opengis.annotation.XmlElement;
-
 /**
  * Filter operator that determines if a temporal object is after another temporal object as defined
  * by the Filter Encoding Specification.
@@ -30,7 +28,6 @@ import org.opengis.annotation.XmlElement;
  * @see http://portal.opengeospatial.org/files/?artifact_id=39968
  * @since 8.0
  */
-@XmlElement("After")
 public interface After extends BinaryTemporalOperator {
     /** Operator name */
     public static final String NAME = "After";

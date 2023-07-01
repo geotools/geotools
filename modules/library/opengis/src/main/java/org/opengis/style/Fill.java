@@ -9,9 +9,6 @@
  */
 package org.opengis.style;
 
-import org.opengis.annotation.Extension;
-import org.opengis.annotation.XmlElement;
-import org.opengis.annotation.XmlParameter;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -24,7 +21,6 @@ import org.opengis.filter.expression.Expression;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.2
  */
-@XmlElement("Fill")
 public interface Fill {
 
     /**
@@ -33,7 +29,6 @@ public interface Fill {
      *
      * @return Graphic object or null if no graphic pattern to use.
      */
-    @XmlElement("GraphicFill")
     GraphicFill getGraphicFill();
 
     // *************************************************************
@@ -48,7 +43,6 @@ public interface Fill {
      *
      * @return Expression : if null the color used shall be a 50% gray {@code "#808080"}.
      */
-    @XmlParameter("Fill")
     Expression getColor();
 
     /**
@@ -58,7 +52,6 @@ public interface Fill {
      *
      * @return Expression : if null, value used shall be 1.0
      */
-    @XmlParameter("Opacity")
     Expression getOpacity();
 
     /**
@@ -66,6 +59,5 @@ public interface Fill {
      *
      * @param visitor the style visitor
      */
-    @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

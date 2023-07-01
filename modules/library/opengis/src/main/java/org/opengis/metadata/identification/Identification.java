@@ -9,13 +9,11 @@
  */
 package org.opengis.metadata.identification;
 
-import static org.opengis.annotation.ComplianceLevel.CORE;
 import static org.opengis.annotation.Obligation.MANDATORY;
 import static org.opengis.annotation.Obligation.OPTIONAL;
 import static org.opengis.annotation.Specification.ISO_19115;
 
 import java.util.Collection;
-import org.opengis.annotation.Profile;
 import org.opengis.annotation.UML;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.metadata.citation.ResponsibleParty;
@@ -32,7 +30,6 @@ import org.opengis.util.InternationalString;
  * @author Cory Horner (Refractions Research)
  * @since GeoAPI 2.0
  */
-@Profile(level = CORE)
 @UML(identifier = "MD_Identification", specification = ISO_19115)
 public interface Identification {
     /**
@@ -40,7 +37,6 @@ public interface Identification {
      *
      * @return Citation data for the resource(s).
      */
-    @Profile(level = CORE)
     @UML(identifier = "citation", obligation = MANDATORY, specification = ISO_19115)
     Citation getCitation();
 
@@ -49,7 +45,6 @@ public interface Identification {
      *
      * @return Brief narrative summary of the content.
      */
-    @Profile(level = CORE)
     @UML(identifier = "abstract", obligation = MANDATORY, specification = ISO_19115)
     InternationalString getAbstract();
 
@@ -84,7 +79,6 @@ public interface Identification {
      * @return Means of communication with person(s) and organizations(s) associated with the
      *     resource(s).
      */
-    @Profile(level = CORE)
     @UML(identifier = "pointOfContact", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends ResponsibleParty> getPointOfContacts();
 

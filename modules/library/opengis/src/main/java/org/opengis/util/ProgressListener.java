@@ -9,8 +9,6 @@
  */
 package org.opengis.util;
 
-import org.opengis.annotation.Extension;
-
 /**
  * Monitor the progress of some lengthly operation, and allows cancelation. This interface makes no
  * assumption about the output device. Additionnaly, this interface provides support for non-fatal
@@ -46,7 +44,6 @@ import org.opengis.annotation.Extension;
  * @author Martin Desruisseaux
  * @author Jody Garnet
  */
-@Extension
 public interface ProgressListener {
     /**
      * Returns the description of the current task being performed, or {@code null} if none. It is

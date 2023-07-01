@@ -9,8 +9,6 @@
  */
 package org.opengis.filter;
 
-import org.opengis.annotation.XmlElement;
-
 /**
  * Filter operator that compares that its two sub-expressions are not equal to each other.
  *
@@ -18,7 +16,6 @@ import org.opengis.annotation.XmlElement;
  * @author Justin Deoliveira (The Open Planning Project)
  * @since GeoAPI 2.0
  */
-@XmlElement("PropertyIsNotEqualTo")
 public interface PropertyIsNotEqualTo extends BinaryComparisonOperator {
     /** Operator name used to check FilterCapabilities */
     public static String NAME = "NotEqualTo";

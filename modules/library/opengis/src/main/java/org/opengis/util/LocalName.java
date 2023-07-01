@@ -14,7 +14,6 @@ import static org.opengis.annotation.Specification.ISO_19103;
 
 import java.util.Collections;
 import java.util.List;
-import org.opengis.annotation.Extension;
 import org.opengis.annotation.UML;
 
 /**
@@ -58,7 +57,7 @@ public interface LocalName extends GenericName {
      */
     @Override
     /// @Override
-    @Extension
+
     LocalName tip();
 
     /** Returns a locale-independant string representation of this local name. */

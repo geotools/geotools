@@ -9,7 +9,6 @@
  */
 package org.opengis.geometry;
 
-import org.opengis.annotation.Extension;
 import org.opengis.metadata.extent.GeographicBoundingBox;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -27,7 +26,6 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @author Niels Charlier
  */
-@Extension
 public interface BoundingBox3D extends BoundingBox {
 
     /**

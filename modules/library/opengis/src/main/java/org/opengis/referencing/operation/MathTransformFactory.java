@@ -13,7 +13,6 @@ import static org.opengis.annotation.Obligation.MANDATORY;
 import static org.opengis.annotation.Specification.OGC_01009;
 
 import java.util.Set;
-import org.opengis.annotation.Extension;
 import org.opengis.annotation.UML;
 import org.opengis.parameter.ParameterDescriptorGroup;
 import org.opengis.parameter.ParameterValueGroup;
@@ -74,7 +73,6 @@ public interface MathTransformFactory extends Factory {
      * @see #getDefaultParameters
      * @see #createParameterizedTransform
      */
-    @Extension
     Set<OperationMethod> getAvailableMethods(Class<? extends Operation> type);
 
     /**
@@ -92,7 +90,6 @@ public interface MathTransformFactory extends Factory {
      * @return The last method used, or {@code null} if unknown of unsupported.
      * @since GeoAPI 2.1
      */
-    @Extension
     OperationMethod getLastMethodUsed();
 
     /**
@@ -116,7 +113,6 @@ public interface MathTransformFactory extends Factory {
      * @see #getAvailableMethods
      * @see #createParameterizedTransform
      */
-    @Extension
     ParameterValueGroup getDefaultParameters(String method) throws NoSuchIdentifierException;
 
     /**
@@ -139,7 +135,6 @@ public interface MathTransformFactory extends Factory {
      *     required parameter has not been supplied, or has illegal value.
      * @since GeoAPI 2.1
      */
-    @Extension
     MathTransform createBaseToDerived(
             CoordinateReferenceSystem baseCRS,
             ParameterValueGroup parameters,

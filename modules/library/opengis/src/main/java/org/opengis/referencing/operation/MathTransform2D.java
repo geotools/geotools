@@ -11,7 +11,6 @@ package org.opengis.referencing.operation;
 
 import java.awt.Shape;
 import java.awt.geom.Point2D;
-import org.opengis.annotation.Extension;
 
 /**
  * Transforms two-dimensional coordinate points. {@link CoordinateOperation#getMathTransform} may
@@ -25,7 +24,6 @@ import org.opengis.annotation.Extension;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@Extension
 public interface MathTransform2D extends MathTransform {
     /**
      * Transforms the specified {@code ptSrc} and stores the result in {@code ptDst}. If {@code
@@ -53,7 +51,6 @@ public interface MathTransform2D extends MathTransform {
      *     this transform is identity.
      * @throws TransformException if a transform failed.
      */
-    @Extension
     Shape createTransformedShape(final Shape shape) throws TransformException;
 
     /**

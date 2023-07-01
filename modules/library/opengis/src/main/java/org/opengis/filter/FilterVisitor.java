@@ -9,7 +9,6 @@
  */
 package org.opengis.filter;
 
-import org.opengis.annotation.Extension;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.Beyond;
 import org.opengis.filter.spatial.Contains;
@@ -53,7 +52,6 @@ import org.opengis.filter.temporal.TOverlaps;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0
  */
-@Extension
 public interface FilterVisitor {
     /**
      * Used to account for a <code>null</code> filter value.

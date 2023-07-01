@@ -9,8 +9,6 @@
  */
 package org.opengis.style;
 
-import org.opengis.annotation.Extension;
-import org.opengis.annotation.XmlElement;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -23,7 +21,6 @@ import org.opengis.filter.expression.Expression;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.2
  */
-@XmlElement("Mark")
 public interface Mark extends GraphicalSymbol {
 
     /**
@@ -42,7 +39,6 @@ public interface Mark extends GraphicalSymbol {
      *
      * @return Expression or null
      */
-    @XmlElement("WellKnownName")
     Expression getWellKnownName();
 
     /**
@@ -61,7 +57,6 @@ public interface Mark extends GraphicalSymbol {
      *
      * @return Fill or null
      */
-    @XmlElement("Fill")
     Fill getFill();
 
     /**
@@ -70,7 +65,6 @@ public interface Mark extends GraphicalSymbol {
      *
      * @return stroke or null
      */
-    @XmlElement("Stroke")
     Stroke getStroke();
 
     /**
@@ -78,6 +72,5 @@ public interface Mark extends GraphicalSymbol {
      *
      * @param visitor the style visitor
      */
-    @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

@@ -11,8 +11,6 @@ package org.opengis.filter.spatial;
 
 // Annotations
 
-import org.opengis.annotation.XmlElement;
-
 /**
  * Concrete {@linkplain BinarySpatialOperator binary spatial operator} that evaluates to {@code
  * true} if the two geometric operands intersect. This is the opposite of the {@link Disjoint}
@@ -22,7 +20,6 @@ import org.opengis.annotation.XmlElement;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0
  */
-@XmlElement("Intersects")
 public interface Intersects extends BinarySpatialOperator, BoundedSpatialOperator {
     /** Operator name used to check FilterCapabilities */
     public static String NAME = "Intersects";

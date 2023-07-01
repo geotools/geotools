@@ -9,9 +9,6 @@
  */
 package org.opengis.style;
 
-import org.opengis.annotation.Extension;
-import org.opengis.annotation.XmlElement;
-
 /**
  * Indicates how to draw point geometries on a map.
  *
@@ -22,7 +19,6 @@ import org.opengis.annotation.XmlElement;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.2
  */
-@XmlElement("PointSymbolizer")
 public interface PointSymbolizer extends Symbolizer {
 
     /**
@@ -30,7 +26,6 @@ public interface PointSymbolizer extends Symbolizer {
      *
      * @return Graphic
      */
-    @XmlElement("Graphic")
     Graphic getGraphic();
 
     /**
@@ -39,6 +34,5 @@ public interface PointSymbolizer extends Symbolizer {
      * @param visitor the style visitor
      */
     @Override
-    @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

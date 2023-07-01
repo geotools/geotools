@@ -11,8 +11,6 @@ package org.opengis.filter.spatial;
 
 // Annotations
 
-import org.opengis.annotation.XmlElement;
-
 /**
  * Concrete {@linkplain BinarySpatialOperator binary spatial operator} that evaluates to {@code
  * true} if the geometry of the two operands are equal.
@@ -21,7 +19,6 @@ import org.opengis.annotation.XmlElement;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0
  */
-@XmlElement("Equals")
 public interface Equals extends BinarySpatialOperator, BoundedSpatialOperator {
     /** Operator name used to check FilterCapabilities */
     public static String NAME = "Equals";

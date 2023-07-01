@@ -15,7 +15,6 @@ import static org.opengis.annotation.Specification.ISO_19111;
 
 import java.util.Set;
 import javax.measure.Unit;
-import org.opengis.annotation.Extension;
 import org.opengis.annotation.UML;
 import org.opengis.util.CodeList;
 
@@ -40,7 +39,6 @@ public interface ParameterDescriptor<T> extends GeneralParameterDescriptor {
      * parameter value descriptor} for the created parameter value will be {@code this} object.
      */
     @Override
-    @Extension
     ParameterValue<T> createValue();
 
     /**
@@ -59,7 +57,6 @@ public interface ParameterDescriptor<T> extends GeneralParameterDescriptor {
      * @return A finite set of valid values (usually from a {@linkplain CodeList code list}), or
      *     {@code null} if it doesn't apply.
      */
-    @Extension
     Set<T> getValidValues();
 
     /**
@@ -116,6 +113,5 @@ public interface ParameterDescriptor<T> extends GeneralParameterDescriptor {
      *
      * @return The unit for numeric value, or {@code null} if it doesn't apply to the value type.
      */
-    @Extension
     Unit<?> getUnit();
 }

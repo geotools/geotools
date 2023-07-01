@@ -15,7 +15,6 @@ import static org.opengis.annotation.Obligation.OPTIONAL;
 import static org.opengis.annotation.Specification.ISO_19107;
 
 import java.util.Set;
-import org.opengis.annotation.Association;
 import org.opengis.annotation.UML;
 import org.opengis.geometry.Geometry;
 import org.opengis.geometry.complex.Complex;
@@ -113,7 +112,6 @@ public interface Primitive extends Geometry {
      * @see Composite#getGenerators
      * @issue http://jira.codehaus.org/browse/GEO-63
      */
-    @Association("Composition")
     @UML(identifier = "composite", obligation = OPTIONAL, specification = ISO_19107)
     Composite getComposite();
 
@@ -133,7 +131,6 @@ public interface Primitive extends Geometry {
      * @see OrientablePrimitive#getPrimitive
      * @issue http://jira.codehaus.org/browse/GEO-63
      */
-    @Association("Oriented")
     @UML(identifier = "proxy", obligation = CONDITIONAL, specification = ISO_19107)
     OrientablePrimitive[] getProxy();
 

@@ -22,7 +22,6 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -133,7 +132,6 @@ public class Indexer {
 
     protected Indexer.MultipleBandsDimensions multipleBandsDimensions;
 
-    @XmlElement(required = true)
     protected Indexer.Datastore datastore;
 
     protected Indexer.Collectors collectors;
@@ -358,16 +356,12 @@ public class Indexer {
                 propOrder = {"spi", "type", "value", "mapped"})
         public static class Collector {
 
-            @XmlElement(required = true)
             protected String spi;
 
-            @XmlElement(required = true)
             protected String type;
 
-            @XmlElement(required = true)
             protected String value;
 
-            @XmlElement(required = true)
             protected String mapped;
 
             @XmlAttribute(required = true)
@@ -504,7 +498,6 @@ public class Indexer {
             propOrder = {"coverage"})
     public static class Coverages {
 
-        @XmlElement(required = true)
         protected List<Indexer.Coverages.Coverage> coverage;
 
         /**
@@ -567,13 +560,10 @@ public class Indexer {
                 })
         public static class Coverage {
 
-            @XmlElement(required = true)
             protected SchemaType schema;
 
-            @XmlElement(required = true)
             protected String origName;
 
-            @XmlElement(required = true)
             protected DomainsType domains;
 
             protected String name;
@@ -791,7 +781,6 @@ public class Indexer {
             propOrder = {"multipleBandsDimension"})
     public static class MultipleBandsDimensions {
 
-        @XmlElement(required = true)
         protected List<Indexer.MultipleBandsDimensions.MultipleBandsDimension>
                 multipleBandsDimension;
 
@@ -845,10 +834,8 @@ public class Indexer {
                 propOrder = {"name", "bandsNames"})
         public static class MultipleBandsDimension {
 
-            @XmlElement(required = true)
             protected String name;
 
-            @XmlElement(required = true)
             protected String bandsNames;
 
             /**

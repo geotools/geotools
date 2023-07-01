@@ -9,8 +9,6 @@
  */
 package org.opengis.referencing.operation;
 
-import org.opengis.annotation.Extension;
-
 /**
  * Transforms one-dimensional coordinate points. {@link CoordinateOperation#getMathTransform} may
  * returns instance of this interface when source and destination coordinate systems are both one
@@ -20,7 +18,6 @@ import org.opengis.annotation.Extension;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@Extension
 public interface MathTransform1D extends MathTransform {
     /**
      * Transforms the specified value.

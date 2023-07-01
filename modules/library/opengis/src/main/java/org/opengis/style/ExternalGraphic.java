@@ -11,8 +11,6 @@ package org.opengis.style;
 
 import java.util.Collection;
 import javax.swing.Icon;
-import org.opengis.annotation.Extension;
-import org.opengis.annotation.XmlElement;
 import org.opengis.metadata.citation.OnLineResource;
 
 /**
@@ -25,7 +23,6 @@ import org.opengis.metadata.citation.OnLineResource;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.2
  */
-@XmlElement("ExternalGraphic")
 public interface ExternalGraphic extends GraphicalSymbol {
 
     /**
@@ -35,14 +32,12 @@ public interface ExternalGraphic extends GraphicalSymbol {
      *
      * @return OnlineResource
      */
-    @XmlElement("OnlineResource")
     OnLineResource getOnlineResource();
 
     /**
      * Returns the InlineContent that comprise the image. This overrides the {@link
      * #getOnlineResource OnlineResource} property, if it is set.
      */
-    @XmlElement("InlineContent")
     Icon getInlineContent();
 
     /**
@@ -50,7 +45,6 @@ public interface ExternalGraphic extends GraphicalSymbol {
      *
      * @return mime type
      */
-    @XmlElement("Format")
     String getFormat();
 
     /**
@@ -58,7 +52,6 @@ public interface ExternalGraphic extends GraphicalSymbol {
      * the ExternalGraphic, the color specified in the OriginalColor sub-element, by another color
      * as a result of a recode function as defined in {@link Interpolate} .
      */
-    @XmlElement("ColorReplacement")
     Collection<ColorReplacement> getColorReplacements();
 
     /**
@@ -66,6 +59,5 @@ public interface ExternalGraphic extends GraphicalSymbol {
      *
      * @param visitor the style visitor
      */
-    @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

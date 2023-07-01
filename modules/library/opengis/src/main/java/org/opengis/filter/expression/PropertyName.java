@@ -11,7 +11,6 @@ package org.opengis.filter.expression;
 
 // Annotations
 
-import org.opengis.annotation.XmlElement;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
@@ -27,7 +26,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0
  */
-@XmlElement("PropertyName")
 public interface PropertyName extends Expression {
     /**
      * Returns the name of the property whose value will be returned by the {@link #evaluate

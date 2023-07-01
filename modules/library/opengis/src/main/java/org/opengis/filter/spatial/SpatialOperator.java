@@ -9,7 +9,6 @@
  */
 package org.opengis.filter.spatial;
 
-import org.opengis.annotation.XmlElement;
 import org.opengis.filter.MultiValuedFilter;
 
 /**
@@ -20,5 +19,4 @@ import org.opengis.filter.MultiValuedFilter;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0
  */
-@XmlElement("SpatialOpsType")
 public interface SpatialOperator extends MultiValuedFilter {}

@@ -18,7 +18,6 @@
 package org.geotools.filter.visitor;
 
 import java.util.SortedMap;
-import org.opengis.annotation.XmlElement;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
@@ -35,7 +34,6 @@ import org.opengis.filter.expression.Literal;
  *     Implementation Specification 1.1.0</A>
  * @author Johann Sorel (Geomatys)
  */
-@XmlElement("Categorize")
 public interface Categorize extends Function {
 
     /**
@@ -43,7 +41,6 @@ public interface Categorize extends Function {
      *
      * @return Expression
      */
-    @XmlElement("LookupValue")
     Expression getLookupValue();
 
     /**
@@ -60,6 +57,5 @@ public interface Categorize extends Function {
      *
      * @return SUCCEEDING or PRECEDING
      */
-    @XmlElement("ThreshholdsBelongTo")
     ThreshholdsBelongTo getBelongTo();
 }

@@ -9,8 +9,6 @@
  */
 package org.opengis.style;
 
-import org.opengis.annotation.Extension;
-import org.opengis.annotation.XmlElement;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -24,7 +22,6 @@ import org.opengis.filter.expression.Expression;
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.2
  */
-@XmlElement("RasterSymbolizer")
 public interface RasterSymbolizer extends Symbolizer {
 
     /**
@@ -34,7 +31,6 @@ public interface RasterSymbolizer extends Symbolizer {
      *
      * @return expression
      */
-    @XmlElement("Opacity")
     Expression getOpacity();
 
     /**
@@ -48,7 +44,6 @@ public interface RasterSymbolizer extends Symbolizer {
      *
      * @return the ChannelSelection object set or null if none is available.
      */
-    @XmlElement("ChannelSelection")
     ChannelSelection getChannelSelection();
 
     /**
@@ -62,7 +57,6 @@ public interface RasterSymbolizer extends Symbolizer {
      *
      * @return LATEST_ON_TOP,EARLIEST_ON_TOP, AVERAGE or RANDOM
      */
-    @XmlElement("OverlapBehavior")
     OverlapBehavior getOverlapBehavior();
 
     /**
@@ -78,7 +72,6 @@ public interface RasterSymbolizer extends Symbolizer {
      *
      * @return the ColorMap for the raster
      */
-    @XmlElement("ColorMap")
     ColorMap getColorMap();
 
     /**
@@ -96,7 +89,6 @@ public interface RasterSymbolizer extends Symbolizer {
      *
      * @return the ContrastEnhancement
      */
-    @XmlElement("ContrastEnhancement")
     ContrastEnhancement getContrastEnhancement();
 
     /**
@@ -112,7 +104,6 @@ public interface RasterSymbolizer extends Symbolizer {
      *
      * @return the shadedrelief object
      */
-    @XmlElement("ShadedRelief")
     ShadedRelief getShadedRelief();
 
     /**
@@ -126,7 +117,6 @@ public interface RasterSymbolizer extends Symbolizer {
      *
      * @return The relevent symbolizer
      */
-    @XmlElement("ImageOutline")
     Symbolizer getImageOutline();
 
     /**
@@ -135,6 +125,5 @@ public interface RasterSymbolizer extends Symbolizer {
      * @param visitor the style visitor
      */
     @Override
-    @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

@@ -9,7 +9,6 @@
  */
 package org.opengis.referencing;
 
-import org.opengis.annotation.Extension;
 import org.opengis.metadata.citation.Citation;
 
 /**
@@ -28,7 +27,6 @@ import org.opengis.metadata.citation.Citation;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@Extension
 public interface Factory {
     /**
      * Returns the vendor responsible for creating this factory implementation. Many implementations
@@ -37,6 +35,5 @@ public interface Factory {
      *
      * @return The vendor for this factory implementation.
      */
-    @Extension
     Citation getVendor();
 }

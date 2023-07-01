@@ -17,8 +17,6 @@
  */
 package org.opengis.filter.temporal;
 
-import org.opengis.annotation.XmlElement;
-
 /**
  * Filter operator that determines if two temporal objects are equal as defined by the Filter
  * Encoding Specification.
@@ -38,7 +36,6 @@ import org.opengis.annotation.XmlElement;
  * @see http://portal.opengeospatial.org/files/?artifact_id=39968
  * @since 8.0
  */
-@XmlElement("TEquals")
 public interface TEquals extends BinaryTemporalOperator {
     /** Operator name */
     public static final String NAME = "TEquals";

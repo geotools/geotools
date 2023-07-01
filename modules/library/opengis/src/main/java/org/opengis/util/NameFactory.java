@@ -11,7 +11,6 @@ package org.opengis.util;
 
 import java.util.Locale;
 import java.util.Map;
-import org.opengis.annotation.Extension;
 
 /**
  * Factory for {@linkplain GenericName generic names} and {@linkplain InternationalString
@@ -30,7 +29,6 @@ import org.opengis.annotation.Extension;
  * @author Martin Desruisseaux (Geomatys)
  * @since GeoAPI 2.0
  */
-@Extension
 public interface NameFactory {
     /**
      * Creates an international string from a set of strings in different locales.

@@ -12,7 +12,6 @@ package org.opengis.referencing;
 import static org.opengis.annotation.Specification.OGC_01009;
 
 import java.util.Set;
-import org.opengis.annotation.Extension;
 import org.opengis.annotation.UML;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.util.InternationalString;
@@ -65,7 +64,6 @@ public interface AuthorityFactory extends Factory {
      *     {@linkplain java.util.Collections.emptySet() empty set}.
      * @throws FactoryException if access to the underlying database failed.
      */
-    @Extension
     Set<String> getAuthorityCodes(Class<? extends IdentifiedObject> type) throws FactoryException;
 
     /**
@@ -100,7 +98,6 @@ public interface AuthorityFactory extends Factory {
      * @see org.opengis.referencing.datum.DatumAuthorityFactory#createDatum
      * @see org.opengis.referencing.crs.CRSAuthorityFactory#createCoordinateReferenceSystem
      */
-    @Extension
     IdentifiedObject createObject(String code)
             throws NoSuchAuthorityCodeException, FactoryException;
 }

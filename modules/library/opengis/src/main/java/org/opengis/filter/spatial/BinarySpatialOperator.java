@@ -9,7 +9,6 @@
  */
 package org.opengis.filter.spatial;
 
-import org.opengis.annotation.XmlElement;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -20,14 +19,12 @@ import org.opengis.filter.expression.Expression;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0
  */
-@XmlElement("BinarySpatialOpType")
 public interface BinarySpatialOperator extends SpatialOperator {
     /**
      * Returns an expression that will be evaluated to determine the first operand to the spatial
      * predicate represented by this operator. The result of evaluating this expression must be a
      * geometry object.
      */
-    @XmlElement("expression")
     Expression getExpression1();
 
     /**
@@ -35,6 +32,5 @@ public interface BinarySpatialOperator extends SpatialOperator {
      * predicate represented by this operator. The result of evaluating this expression must be a
      * geometry object.
      */
-    @XmlElement("expression")
     Expression getExpression2();
 }

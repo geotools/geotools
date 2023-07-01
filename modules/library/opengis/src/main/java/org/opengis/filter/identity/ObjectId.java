@@ -9,8 +9,6 @@
  */
 package org.opengis.filter.identity;
 
-import org.opengis.annotation.XmlElement;
-
 /**
  * ObjectId refered to by Filter 1.1 specification (as an example).
  *
@@ -23,12 +21,10 @@ import org.opengis.annotation.XmlElement;
  * @author Jody Garnett, Refractions Research Inc.
  * @since GeoAPI 2.1
  */
-@XmlElement("RecordId")
 public interface ObjectId extends Identifier {
 
     /** The identifier value, which is a Long. */
     @Override
-    @XmlElement("id")
     Long getID();
 
     /**

@@ -9,8 +9,6 @@
  */
 package org.opengis.filter.identity;
 
-import org.opengis.annotation.XmlElement;
-
 /**
  * RecordId refered to by CSW-2 specification.
  *
@@ -22,12 +20,10 @@ import org.opengis.annotation.XmlElement;
  * @author Jody Garnett, Refractions Research Inc.
  * @since GeoAPI 2.1
  */
-@XmlElement("RecordId")
 public interface RecordId extends Identifier {
 
     /** The identifier value, which is a string. */
     @Override
-    @XmlElement("id")
     String getID();
 
     /**

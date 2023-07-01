@@ -11,8 +11,6 @@ package org.opengis.filter.spatial;
 
 // Annotations
 
-import org.opengis.annotation.XmlElement;
-
 /**
  * Concrete {@linkplain DistanceBufferOperator distance buffer operator} that evaluates as {@code
  * true} when all of a feature's geometry lies beyond (i.e. is more distant) than the given distance
@@ -22,7 +20,6 @@ import org.opengis.annotation.XmlElement;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0
  */
-@XmlElement("Beyond")
 public interface Beyond extends DistanceBufferOperator {
     /** Operator name used to check FilterCapabilities */
     public static String NAME = "Beyond";

@@ -10,9 +10,6 @@
 package org.opengis.style;
 
 import java.util.List;
-import org.opengis.annotation.Extension;
-import org.opengis.annotation.XmlElement;
-import org.opengis.annotation.XmlParameter;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -28,7 +25,6 @@ import org.opengis.filter.expression.Expression;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.2
  */
-@XmlElement("Graphic")
 public interface Graphic {
 
     /**
@@ -40,7 +36,6 @@ public interface Graphic {
      * @return List of Marks or ExternalGraphics; if empty it is to be treated a single default
      *     Mark.
      */
-    @XmlElement("ExternalGraphic,Mark")
     List<GraphicalSymbol> graphicalSymbols();
 
     // *************************************************************
@@ -54,7 +49,6 @@ public interface Graphic {
      *
      * @return expression
      */
-    @XmlParameter("stroke-opacity")
     Expression getOpacity();
 
     /**
@@ -70,7 +64,6 @@ public interface Graphic {
      *
      * @return Expression
      */
-    @XmlParameter("Size")
     Expression getSize();
 
     /**
@@ -87,7 +80,6 @@ public interface Graphic {
      *
      * @return Expression
      */
-    @XmlParameter("Rotation")
     Expression getRotation();
 
     /**
@@ -103,7 +95,6 @@ public interface Graphic {
      *
      * @return AnchorPoint , if null should use a default point X=0.5 Y=0.5
      */
-    @XmlParameter("AnchorPoint")
     AnchorPoint getAnchorPoint();
 
     /**
@@ -117,7 +108,6 @@ public interface Graphic {
      *
      * @return Displacement
      */
-    @XmlParameter("Displacement")
     Displacement getDisplacement();
 
     /**
@@ -128,6 +118,5 @@ public interface Graphic {
      *
      * @param visitor the style visitor
      */
-    @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

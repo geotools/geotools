@@ -17,8 +17,6 @@
 
 package org.geotools.filter.visitor;
 
-import org.opengis.annotation.XmlElement;
-
 /**
  * Used by Categorize function.<br>
  * Whether the Threshold values themselves belong to the preceding or the succeeding interval can be
@@ -29,7 +27,6 @@ import org.opengis.annotation.XmlElement;
  *     Implementation Specification 1.1.0</A>
  * @author Johann Sorel (Geomatys)
  */
-@XmlElement("ThreshholdsBelongToType")
 public enum ThreshholdsBelongTo {
     SUCCEEDING,
     PRECEDING

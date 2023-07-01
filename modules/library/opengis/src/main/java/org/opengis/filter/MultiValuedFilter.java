@@ -9,8 +9,6 @@
  */
 package org.opengis.filter;
 
-import org.opengis.annotation.XmlElement;
-
 /**
  * Defines a filter that supports filtering on multi-valued attributes.
  *
@@ -55,6 +53,5 @@ public interface MultiValuedFilter extends Filter {
      *
      * @return MatchAction flag
      */
-    @XmlElement("matchAction")
     MatchAction getMatchAction();
 }

@@ -17,8 +17,6 @@
 
 package org.geotools.filter.visitor;
 
-import org.opengis.annotation.XmlElement;
-
 /**
  * Interpolation method used by the Interpolate function.
  *
@@ -26,7 +24,6 @@ import org.opengis.annotation.XmlElement;
  *     Implementation Specification 1.1.0</A>
  * @author Johann Sorel (Geomatys)
  */
-@XmlElement("Method")
 public enum Method {
     NUMERIC,
     COLOR

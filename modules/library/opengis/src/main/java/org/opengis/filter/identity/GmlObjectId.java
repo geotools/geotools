@@ -9,8 +9,6 @@
  */
 package org.opengis.filter.identity;
 
-import org.opengis.annotation.XmlElement;
-
 /**
  * Feature and Geometry identifier for GML3 specification.
  *
@@ -21,11 +19,9 @@ import org.opengis.annotation.XmlElement;
  * @author Justin Deoliveira (The Open Planning Project)
  * @since GeoAPI 2.0
  */
-@XmlElement("GMLObjectId")
 public interface GmlObjectId extends Identifier {
     /** The identifier value, which is a string. */
     @Override
-    @XmlElement("id")
     String getID();
 
     /**

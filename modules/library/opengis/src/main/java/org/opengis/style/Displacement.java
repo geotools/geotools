@@ -9,8 +9,6 @@
  */
 package org.opengis.style;
 
-import org.opengis.annotation.Extension;
-import org.opengis.annotation.XmlElement;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -26,7 +24,6 @@ import org.opengis.filter.expression.Expression;
  * @author Ian Turton, CCG
  * @since GeoAPI 2.2
  */
-@XmlElement("Displacement")
 public interface Displacement {
 
     /**
@@ -36,7 +33,6 @@ public interface Displacement {
      *
      * @return Expression
      */
-    @XmlElement("DisplacementX")
     Expression getDisplacementX();
 
     /**
@@ -46,7 +42,6 @@ public interface Displacement {
      *
      * @return Expression
      */
-    @XmlElement("DisplacementY")
     Expression getDisplacementY();
 
     /**
@@ -54,6 +49,5 @@ public interface Displacement {
      *
      * @param visitor the style visitor
      */
-    @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

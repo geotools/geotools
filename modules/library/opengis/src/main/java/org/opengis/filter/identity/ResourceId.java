@@ -10,7 +10,6 @@
 package org.opengis.filter.identity;
 
 import java.util.Date;
-import org.opengis.annotation.XmlElement;
 
 /**
  * Resource identifier as per FES 2.0.
@@ -29,7 +28,6 @@ import org.opengis.annotation.XmlElement;
  * #getVersion() version}, {@link #getStartTime() startTime}, and {@link #getEndTime() endTime}
  * shall be ignored and the predicate shall always select the single version that is available.
  */
-@XmlElement("ResourceId")
 public interface ResourceId extends FeatureId {
 
     /**
@@ -40,7 +38,6 @@ public interface ResourceId extends FeatureId {
      * @return Version based resource query; non {@code null} but possibly {@link Version#isEmpty()
      *     empty} if used a date range query or asked for a specific feature id + version id
      */
-    @XmlElement("version")
     Version getVersion();
 
     /**
@@ -50,7 +47,6 @@ public interface ResourceId extends FeatureId {
      *     was provided but the start time is unconstrained TODO: consider using an
      *     org.geotools.util.Range<Date> instead of both start and end time?
      */
-    @XmlElement("startTime")
     Date getStartTime();
 
     /**
@@ -60,6 +56,5 @@ public interface ResourceId extends FeatureId {
      *     was provided but the end time is unconstrained TODO: consider using an
      *     org.geotools.util.Range<Date> instead of both start and end time?
      */
-    @XmlElement("endTime")
     Date getEndTime();
 }

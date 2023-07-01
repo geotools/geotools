@@ -11,7 +11,6 @@ package org.opengis.coverage;
 
 import static org.opengis.annotation.Specification.OGC_01004;
 
-import org.opengis.annotation.Extension;
 import org.opengis.annotation.UML;
 import org.opengis.geometry.DirectPosition;
 
@@ -56,7 +55,6 @@ public class PointOutsideCoverageException extends CannotEvaluateException {
      * @return The position outside the coverage, or {@code null} if unknown.
      * @since GeoAPI 2.2
      */
-    @Extension
     public DirectPosition getOffendingLocation() {
         return offendingLocation;
     }
@@ -68,7 +66,6 @@ public class PointOutsideCoverageException extends CannotEvaluateException {
      * @param location The position outside the coverage, or {@code null} if unknown.
      * @since GeoAPI 2.2
      */
-    @Extension
     public void setOffendingLocation(final DirectPosition location) {
         this.offendingLocation = location;
     }

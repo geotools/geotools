@@ -9,13 +9,11 @@
  */
 package org.opengis.metadata.citation;
 
-import static org.opengis.annotation.ComplianceLevel.CORE;
 import static org.opengis.annotation.Obligation.MANDATORY;
 import static org.opengis.annotation.Obligation.OPTIONAL;
 import static org.opengis.annotation.Specification.ISO_19115;
 
 import java.net.URI;
-import org.opengis.annotation.Profile;
 import org.opengis.annotation.UML;
 import org.opengis.util.InternationalString;
 
@@ -28,7 +26,6 @@ import org.opengis.util.InternationalString;
  * @author Cory Horner (Refractions Research)
  * @since GeoAPI 1.0
  */
-@Profile(level = CORE)
 @UML(identifier = "CI_OnlineResource", specification = ISO_19115)
 public interface OnLineResource {
     /**

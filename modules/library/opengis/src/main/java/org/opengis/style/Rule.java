@@ -14,9 +14,7 @@ import static org.opengis.annotation.Obligation.OPTIONAL;
 import static org.opengis.annotation.Specification.ISO_19117;
 
 import java.util.List;
-import org.opengis.annotation.Extension;
 import org.opengis.annotation.UML;
-import org.opengis.annotation.XmlElement;
 import org.opengis.filter.Filter;
 import org.opengis.metadata.citation.OnLineResource;
 
@@ -33,7 +31,6 @@ import org.opengis.metadata.citation.OnLineResource;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.2
  */
-@XmlElement("Rule")
 @UML(identifier = "PF_PortrayalRule", specification = ISO_19117)
 public interface Rule {
 
@@ -44,7 +41,6 @@ public interface Rule {
      *
      * @return a name for this rule.
      */
-    @XmlElement("Name")
     @UML(identifier = "ruleName", obligation = MANDATORY, specification = ISO_19117)
     String getName();
 
@@ -53,7 +49,6 @@ public interface Rule {
      *
      * @return Description with usual informations used for user interfaces.
      */
-    @XmlElement("Description")
     @UML(identifier = "description", obligation = OPTIONAL, specification = ISO_19117)
     Description getDescription();
 
@@ -64,7 +59,6 @@ public interface Rule {
      * features of a given type are being portrayed. Through its {@code LegendGraphic} property, a
      * {@code Rule} may provide a custom picture to be used in such a legend window.
      */
-    @XmlElement("LegendGraphic")
     GraphicLegend getLegend();
 
     /**
@@ -75,7 +69,6 @@ public interface Rule {
      * @return Filter, use Filter.INCLUDES to indicate everything; or Filter.EXCLUDES for an "else"
      *     rule
      */
-    @XmlElement("Filter")
     @UML(identifier = "queryStatement", obligation = MANDATORY, specification = ISO_19117)
     Filter getFilter();
 
@@ -86,7 +79,6 @@ public interface Rule {
      *
      * @return true if the filter is an else filter
      */
-    @XmlElement("ElseFilter")
     boolean isElseFilter();
 
     /**
@@ -97,7 +89,6 @@ public interface Rule {
      *
      * @return Min scale double value
      */
-    @XmlElement("MinScaleDenominator")
     double getMinScaleDenominator();
 
     /**
@@ -108,7 +99,6 @@ public interface Rule {
      *
      * @return Max scale double value
      */
-    @XmlElement("MaxScaleDenominator")
     double getMaxScaleDenominator();
 
     /**
@@ -123,7 +113,6 @@ public interface Rule {
      *
      * @return the list of Symbolizer
      */
-    @XmlElement("Symbolizer")
     @UML(identifier = "portrayAction", obligation = MANDATORY, specification = ISO_19117)
     List<? extends Symbolizer> symbolizers();
 
@@ -141,6 +130,5 @@ public interface Rule {
      *
      * @param visitor the style visitor
      */
-    @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

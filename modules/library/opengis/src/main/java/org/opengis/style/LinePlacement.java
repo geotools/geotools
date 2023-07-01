@@ -9,8 +9,6 @@
  */
 package org.opengis.style;
 
-import org.opengis.annotation.Extension;
-import org.opengis.annotation.XmlElement;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -23,7 +21,6 @@ import org.opengis.filter.expression.Expression;
  * @author Ian Turton, CCG
  * @since GeoAPI 2.2
  */
-@XmlElement("LinePlacement")
 public interface LinePlacement extends LabelPlacement {
 
     /**
@@ -35,7 +32,6 @@ public interface LinePlacement extends LabelPlacement {
      *
      * @return Expression
      */
-    @XmlElement("PerpendicularOffset")
     Expression getPerpendicularOffset();
 
     /**
@@ -44,7 +40,6 @@ public interface LinePlacement extends LabelPlacement {
      *
      * @return Expression
      */
-    @XmlElement("InitialGap")
     Expression getInitialGap();
 
     /**
@@ -52,7 +47,6 @@ public interface LinePlacement extends LabelPlacement {
      *
      * @return Expression
      */
-    @XmlElement("Gap")
     Expression getGap();
 
     /**
@@ -61,7 +55,6 @@ public interface LinePlacement extends LabelPlacement {
      *
      * @return boolean
      */
-    @XmlElement("IsRepeated")
     boolean isRepeated();
 
     /**
@@ -70,7 +63,6 @@ public interface LinePlacement extends LabelPlacement {
      *
      * @return boolean
      */
-    @XmlElement("IsAligned")
     boolean isAligned();
 
     /**
@@ -80,7 +72,6 @@ public interface LinePlacement extends LabelPlacement {
      *
      * @return boolean
      */
-    @XmlElement("GeneralizeLine")
     boolean isGeneralizeLine();
 
     /**
@@ -89,6 +80,5 @@ public interface LinePlacement extends LabelPlacement {
      * @param visitor the style visitor
      */
     @Override
-    @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

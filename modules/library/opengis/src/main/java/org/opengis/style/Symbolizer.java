@@ -13,9 +13,7 @@ import static org.opengis.annotation.Specification.ISO_19117;
 
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
-import org.opengis.annotation.Extension;
 import org.opengis.annotation.UML;
-import org.opengis.annotation.XmlElement;
 
 /**
  * Abstract superclass of the symbolizers defined by the Symbology Encoding specification.
@@ -62,7 +60,6 @@ public interface Symbolizer {
      *
      * @return can be null. If the unit is null than we shall use a the pixel unit
      */
-    @XmlElement("uom")
     Unit<Length> getUnitOfMeasure();
 
     /**
@@ -77,7 +74,6 @@ public interface Symbolizer {
      *
      * @return Geometry attribute name, or <code>null</code> to indicate default geometry
      */
-    @XmlElement("Geometry")
     String getGeometryPropertyName();
 
     /**
@@ -96,7 +92,6 @@ public interface Symbolizer {
      *
      * @return a name for this style.
      */
-    @XmlElement("Name")
     String getName();
 
     /**
@@ -104,7 +99,6 @@ public interface Symbolizer {
      *
      * @return Description with usual informations used for user interfaces.
      */
-    @XmlElement("Description")
     Description getDescription();
 
     /**
@@ -113,6 +107,5 @@ public interface Symbolizer {
      * @param visitor the style visitor
      * @return value produced
      */
-    @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

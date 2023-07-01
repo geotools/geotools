@@ -10,7 +10,6 @@
 package org.opengis.geometry;
 
 import java.awt.geom.Rectangle2D;
-import org.opengis.annotation.Extension;
 import org.opengis.metadata.extent.GeographicBoundingBox;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -30,7 +29,6 @@ import org.opengis.referencing.operation.TransformException;
  * @author Martin Desruisseaux (Geomatys)
  * @since GeoAPI 2.1
  */
-@Extension
 public interface BoundingBox extends Envelope {
     /**
      * Sets this bounding box to be the same as the specified box.

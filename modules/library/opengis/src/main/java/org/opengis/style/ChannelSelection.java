@@ -9,9 +9,6 @@
  */
 package org.opengis.style;
 
-import org.opengis.annotation.Extension;
-import org.opengis.annotation.XmlElement;
-
 /**
  * The ChannelSelection element specifies the false-color channel selection for a multi-spectral
  * raster source (such as a multi-band satellite-imagery source).
@@ -23,7 +20,6 @@ import org.opengis.annotation.XmlElement;
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.2
  */
-@XmlElement("ChannelSelection")
 public interface ChannelSelection {
 
     /**
@@ -31,7 +27,6 @@ public interface ChannelSelection {
      *
      * @return array of channels in RGB order
      */
-    @XmlElement("RGB Channels")
     SelectedChannelType[] getRGBChannels();
 
     /**
@@ -39,7 +34,6 @@ public interface ChannelSelection {
      *
      * @return the gray channel
      */
-    @XmlElement("GrayChannel")
     SelectedChannelType getGrayChannel();
 
     /**
@@ -47,6 +41,5 @@ public interface ChannelSelection {
      *
      * @param visitor the style visitor
      */
-    @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

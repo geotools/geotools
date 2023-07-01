@@ -13,9 +13,7 @@ import static org.opengis.annotation.Obligation.MANDATORY;
 import static org.opengis.annotation.Specification.ISO_19117;
 
 import java.util.List;
-import org.opengis.annotation.Extension;
 import org.opengis.annotation.UML;
-import org.opengis.annotation.XmlElement;
 
 /**
  * A UserStyle is at the same semantic level as a NamedStyle used in the context of a WMS. In a
@@ -33,7 +31,6 @@ import org.opengis.annotation.XmlElement;
  * @since GeoAPI 2.2
  */
 @UML(identifier = "PF_PortrayalCatalog", specification = ISO_19117)
-@XmlElement("UserStyle")
 public interface Style {
 
     /**
@@ -41,7 +38,6 @@ public interface Style {
      *
      * @return String, identification name of this style
      */
-    @XmlElement("UserStyle")
     String getName();
 
     /**
@@ -49,7 +45,6 @@ public interface Style {
      *
      * @return Description with usual informations used for user interfaces.
      */
-    @XmlElement("Description")
     Description getDescription();
 
     /**
@@ -57,12 +52,10 @@ public interface Style {
      * SLD ‘library mode’ when rendering or for storing inside of a map server. IsDefault uses “1”
      * or “true” for true and “0” or “false” for false. The default value is “0”.
      */
-    @XmlElement("IsDefault")
     boolean isDefault();
 
     /** Returns a collection of feature type style. */
     @UML(identifier = "featurePortrayal", obligation = MANDATORY, specification = ISO_19117)
-    @XmlElement("FeatureTypeStyle")
     List<? extends FeatureTypeStyle> featureTypeStyles();
 
     /**
@@ -79,6 +72,5 @@ public interface Style {
      *
      * @param visitor the style visitor
      */
-    @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

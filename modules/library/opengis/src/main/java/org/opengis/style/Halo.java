@@ -9,8 +9,6 @@
  */
 package org.opengis.style;
 
-import org.opengis.annotation.Extension;
-import org.opengis.annotation.XmlElement;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -24,7 +22,6 @@ import org.opengis.filter.expression.Expression;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.2
  */
-@XmlElement("Halo")
 public interface Halo {
 
     /**
@@ -35,7 +32,6 @@ public interface Halo {
      *
      * @return Fill or null
      */
-    @XmlElement("Fill")
     Fill getFill();
 
     /**
@@ -50,7 +46,6 @@ public interface Halo {
      *
      * @return Expression or null
      */
-    @XmlElement("Radius")
     Expression getRadius();
 
     /**
@@ -58,6 +53,5 @@ public interface Halo {
      *
      * @param visitor the style visitor
      */
-    @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

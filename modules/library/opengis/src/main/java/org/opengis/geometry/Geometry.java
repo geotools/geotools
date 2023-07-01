@@ -13,7 +13,6 @@ import static org.opengis.annotation.Obligation.MANDATORY;
 import static org.opengis.annotation.Specification.ISO_19107;
 
 import java.util.Set;
-import org.opengis.annotation.Extension;
 import org.opengis.annotation.UML;
 import org.opengis.geometry.complex.Complex;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -276,7 +275,6 @@ public interface Geometry extends TransfiniteSet {
      * @throws TransformException if the transformation failed.
      * @return The transformed {@code Geometry}.
      */
-    @Extension
     Geometry transform(CoordinateReferenceSystem newCRS, MathTransform transform)
             throws TransformException;
 
@@ -375,7 +373,6 @@ public interface Geometry extends TransfiniteSet {
      *
      * @return {@code true} if this geometry is mutable.
      */
-    @Extension
     boolean isMutable();
 
     /**
@@ -388,7 +385,6 @@ public interface Geometry extends TransfiniteSet {
      *
      * @return An immutable copy of this geometry.
      */
-    @Extension
     Geometry toImmutable();
 
     /**

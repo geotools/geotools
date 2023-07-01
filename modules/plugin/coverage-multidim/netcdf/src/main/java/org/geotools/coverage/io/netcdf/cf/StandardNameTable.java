@@ -27,9 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -62,20 +60,14 @@ import javax.xml.datatype.XMLGregorianCalendar;
 @XmlRootElement(name = "standard_name_table")
 public class StandardNameTable {
 
-    @XmlElement(name = "version_number", required = true)
     protected String versionNumber;
 
-    @XmlElement(name = "last_modified", required = true)
-    @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar lastModified;
 
-    @XmlElement(required = true)
     protected String institution;
 
-    @XmlElement(required = true)
     protected String contact;
 
-    @XmlElement(required = true)
     protected List<Entry> entry;
 
     protected List<Alias> alias;

@@ -13,7 +13,6 @@ import static org.opengis.annotation.Obligation.MANDATORY;
 import static org.opengis.annotation.Specification.ISO_19111;
 
 import java.util.List;
-import org.opengis.annotation.Extension;
 import org.opengis.annotation.UML;
 import org.opengis.metadata.Identifier;
 
@@ -51,7 +50,6 @@ public interface ParameterDescriptorGroup extends GeneralParameterDescriptor {
      * @return A new parameter instance initialized to the default value.
      */
     @Override
-    @Extension
     ParameterValueGroup createValue();
 
     /**
@@ -71,6 +69,5 @@ public interface ParameterDescriptorGroup extends GeneralParameterDescriptor {
      * @return The parameter for the given identifier code.
      * @throws ParameterNotFoundException if there is no parameter for the given identifier code.
      */
-    @Extension
     GeneralParameterDescriptor descriptor(String name) throws ParameterNotFoundException;
 }

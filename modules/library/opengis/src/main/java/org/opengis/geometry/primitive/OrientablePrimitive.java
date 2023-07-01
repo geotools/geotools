@@ -13,7 +13,6 @@ import static org.opengis.annotation.Obligation.MANDATORY;
 import static org.opengis.annotation.Obligation.OPTIONAL;
 import static org.opengis.annotation.Specification.ISO_19107;
 
-import org.opengis.annotation.Association;
 import org.opengis.annotation.UML;
 
 /**
@@ -76,7 +75,6 @@ public interface OrientablePrimitive extends Primitive {
      * @see Primitive#getProxy
      * @issue http://jira.codehaus.org/browse/GEO-63
      */
-    @Association("Oriented")
     @UML(identifier = "primitive", obligation = OPTIONAL, specification = ISO_19107)
     Primitive getPrimitive();
 }

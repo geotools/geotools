@@ -9,13 +9,11 @@
  */
 package org.opengis.metadata.spatial;
 
-import static org.opengis.annotation.ComplianceLevel.CORE;
 import static org.opengis.annotation.Obligation.CONDITIONAL;
 import static org.opengis.annotation.Specification.ISO_19115;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.opengis.annotation.Profile;
 import org.opengis.annotation.UML;
 import org.opengis.util.CodeList;
 
@@ -26,7 +24,6 @@ import org.opengis.util.CodeList;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@Profile(level = CORE)
 @UML(identifier = "MD_SpatialRepresentationTypeCode", specification = ISO_19115)
 public final class SpatialRepresentationType extends CodeList<SpatialRepresentationType> {
     /** Serial number for compatibility with different versions. */

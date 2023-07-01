@@ -9,7 +9,6 @@
  */ package org.opengis.filter.expression;
 
 import java.util.List;
-import org.opengis.annotation.XmlElement;
 import org.opengis.filter.capability.FunctionName;
 
 /**
@@ -27,7 +26,6 @@ import org.opengis.filter.capability.FunctionName;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0
  */
-@XmlElement("Function")
 public interface Function extends Expression {
     /**
      * Returns the name of the function to be called. For example, this might be "{@code cos}" or
@@ -60,6 +58,5 @@ public interface Function extends Expression {
      * @return Optional literal to use if an implementation for this function is not available.
      * @since GeoAPI 2.2
      */
-    @XmlElement("fallbackValue")
     Literal getFallbackValue();
 }

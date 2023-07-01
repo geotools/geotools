@@ -9,12 +9,10 @@
  */
 package org.opengis.metadata.lineage;
 
-import static org.opengis.annotation.ComplianceLevel.CORE;
 import static org.opengis.annotation.Obligation.CONDITIONAL;
 import static org.opengis.annotation.Specification.ISO_19115;
 
 import java.util.Collection;
-import org.opengis.annotation.Profile;
 import org.opengis.annotation.UML;
 import org.opengis.util.InternationalString;
 
@@ -29,7 +27,6 @@ import org.opengis.util.InternationalString;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@Profile(level = CORE)
 @UML(identifier = "LI_Lineage", specification = ISO_19115)
 public interface Lineage {
     /**
@@ -40,7 +37,6 @@ public interface Lineage {
      *
      * @return Explanation of the data producer's knowledge about the lineage, or {@code null}.
      */
-    @Profile(level = CORE)
     @UML(identifier = "statement", obligation = CONDITIONAL, specification = ISO_19115)
     InternationalString getStatement();
 

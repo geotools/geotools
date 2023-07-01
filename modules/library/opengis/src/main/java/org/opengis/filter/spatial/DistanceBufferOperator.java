@@ -11,8 +11,6 @@ package org.opengis.filter.spatial;
 
 // Annotations
 
-import org.opengis.annotation.XmlElement;
-
 /**
  * Abstract superclass for spatial operators that check that one shape satisfies some relation to a
  * buffer around another shape. This could be used to find, for example, all the geometries that
@@ -24,13 +22,11 @@ import org.opengis.annotation.XmlElement;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0
  */
-@XmlElement("DistanceBufferType")
 public interface DistanceBufferOperator extends BinarySpatialOperator {
     /**
      * Returns the buffer distance around the geometry that will be used when comparing features'
      * geometries.
      */
-    @XmlElement("Distance")
     double getDistance();
 
     /**

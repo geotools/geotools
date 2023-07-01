@@ -13,7 +13,6 @@ import static org.opengis.annotation.Specification.OGC_01009;
 
 import java.util.Map;
 import java.util.Set;
-import org.opengis.annotation.Extension;
 import org.opengis.annotation.UML;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
@@ -87,7 +86,6 @@ public interface CoordinateOperationFactory extends ObjectFactory {
      *     {@code targetCRS}.
      * @throws FactoryException if the operation creation failed for some other reason.
      */
-    @Extension
     CoordinateOperation createOperation(
             CoordinateReferenceSystem sourceCRS,
             CoordinateReferenceSystem targetCRS,
@@ -103,7 +101,6 @@ public interface CoordinateOperationFactory extends ObjectFactory {
      * @return The concatenated operation.
      * @throws FactoryException if the object creation failed.
      */
-    @Extension
     CoordinateOperation createConcatenatedOperation(
             Map<String, ?> properties, CoordinateOperation... operations) throws FactoryException;
 

@@ -9,8 +9,6 @@
  */
 package org.opengis.filter;
 
-import org.opengis.annotation.Extension;
-import org.opengis.annotation.XmlElement;
 import org.opengis.feature.Feature;
 import org.opengis.filter.expression.Function;
 
@@ -39,7 +37,6 @@ import org.opengis.filter.expression.Function;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0
  */
-@XmlElement("Filter")
 public interface Filter {
 
     /**
@@ -75,6 +72,5 @@ public interface Filter {
      *
      * <pre>return visitor.{@linkplain FilterVisitor#visit visit}(this, extraData);</pre>
      */
-    @Extension
     Object accept(FilterVisitor visitor, Object extraData);
 }

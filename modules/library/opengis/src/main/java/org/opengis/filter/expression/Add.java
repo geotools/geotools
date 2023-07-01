@@ -11,8 +11,6 @@ package org.opengis.filter.expression;
 
 // Annotations
 
-import org.opengis.annotation.XmlElement;
-
 /**
  * Encodes the operation of addition.
  *
@@ -24,7 +22,6 @@ import org.opengis.annotation.XmlElement;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0
  */
-@XmlElement("Add")
 public interface Add extends BinaryExpression {
     /** Operator name used to check FilterCapabilities */
     public static String NAME = "Add";

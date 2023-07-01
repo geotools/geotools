@@ -12,7 +12,6 @@ package org.opengis.parameter;
 import static org.opengis.annotation.Obligation.OPTIONAL;
 import static org.opengis.annotation.Specification.ISO_19111;
 
-import org.opengis.annotation.Extension;
 import org.opengis.annotation.UML;
 import org.opengis.referencing.IdentifiedObject;
 
@@ -36,7 +35,6 @@ public interface GeneralParameterDescriptor extends IdentifiedObject {
      *
      * @return A new parameter initialized to its default value.
      */
-    @Extension
     GeneralParameterValue createValue();
 
     /**

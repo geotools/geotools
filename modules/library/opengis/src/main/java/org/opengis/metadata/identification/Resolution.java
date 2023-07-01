@@ -9,11 +9,9 @@
  */
 package org.opengis.metadata.identification;
 
-import static org.opengis.annotation.ComplianceLevel.CORE;
 import static org.opengis.annotation.Obligation.CONDITIONAL;
 import static org.opengis.annotation.Specification.ISO_19115;
 
-import org.opengis.annotation.Profile;
 import org.opengis.annotation.UML;
 
 /**
@@ -24,7 +22,6 @@ import org.opengis.annotation.UML;
  * @author Cory Horner (Refractions Research)
  * @since GeoAPI 2.0
  */
-@Profile(level = CORE)
 @UML(identifier = "MD_Resolution", specification = ISO_19115)
 public interface Resolution {
     /**
@@ -34,7 +31,6 @@ public interface Resolution {
      *
      * @return Level of detail expressed as the scale of a comparable hardcopy, or {@code null}.
      */
-    @Profile(level = CORE)
     @UML(identifier = "equivalentScale", obligation = CONDITIONAL, specification = ISO_19115)
     RepresentativeFraction getEquivalentScale();
 
@@ -46,7 +42,6 @@ public interface Resolution {
      * @todo change return type to ISO 19103 {@code Distance} or to JScience {@code Measure}.
      * @unitof Distance
      */
-    @Profile(level = CORE)
     @UML(identifier = "distance", obligation = CONDITIONAL, specification = ISO_19115)
     Double getDistance();
 }

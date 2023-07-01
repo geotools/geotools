@@ -9,8 +9,6 @@
  */
 package org.opengis.style;
 
-import org.opengis.annotation.Extension;
-import org.opengis.annotation.XmlElement;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -24,7 +22,6 @@ import org.opengis.filter.expression.Expression;
  * @author Ian Turton
  * @since GeoAPI 2.2
  */
-@XmlElement("AnchorPoint")
 public interface AnchorPoint {
 
     /**
@@ -32,7 +29,6 @@ public interface AnchorPoint {
      *
      * @return the expression which represents the X coordinate
      */
-    @XmlElement("AnchorPointX")
     Expression getAnchorPointX();
 
     /**
@@ -40,7 +36,6 @@ public interface AnchorPoint {
      *
      * @return the expression which represents the Y coordinate
      */
-    @XmlElement("AnchorPointY")
     Expression getAnchorPointY();
 
     /**
@@ -48,6 +43,5 @@ public interface AnchorPoint {
      *
      * @param visitor the style visitor
      */
-    @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

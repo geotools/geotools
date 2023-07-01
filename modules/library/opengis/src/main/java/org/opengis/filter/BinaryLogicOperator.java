@@ -12,7 +12,6 @@ package org.opengis.filter;
 // J2SE direct dependencies
 
 import java.util.List;
-import org.opengis.annotation.XmlElement;
 
 /**
  * Abstract super-interface for logical operators that accept two or more other logical values as
@@ -22,7 +21,6 @@ import org.opengis.annotation.XmlElement;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0
  */
-@XmlElement("BinaryLogicOpType")
 public interface BinaryLogicOperator extends Filter {
     /**
      * Returns a list containing all of the child filters of this object.

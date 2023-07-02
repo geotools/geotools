@@ -464,37 +464,12 @@ public class Hints extends RenderingHints {
     public static final Key POSITION_FACTORY = new Key("org.geotools.api.geometry.PositionFactory");
 
     /**
-     * The {@link org.geotools.api.geometry.coordinate.GeometryFactory} instance to use.
-     *
-     * @see #JTS_GEOMETRY_FACTORY
-     * @since 2.5
-     */
-    public static final Key GEOMETRY_FACTORY =
-            new Key("org.geotools.api.geometry.coordinate.GeometryFactory");
-
-    /**
      * The default linearization tolerance for curved geometries
      *
      * @see CurvedGeometryFactory
      * @since 12.0
      */
     public static final Key LINEARIZATION_TOLERANCE = new Key(Double.class);
-
-    /**
-     * The {@link org.geotools.api.geometry.complex.ComplexFactory} instance to use.
-     *
-     * @since 2.5
-     */
-    public static final Key COMPLEX_FACTORY =
-            new Key("org.geotools.api.geometry.complex.ComplexFactory");
-
-    /**
-     * The {@link org.geotools.api.geometry.aggregate.AggregateFactory} instance to use.
-     *
-     * @since 2.5
-     */
-    public static final Key AGGREGATE_FACTORY =
-            new Key("org.geotools.api.geometry.aggregate.AggregateFactory");
 
     /**
      * The {@link org.geotools.api.geometry.primitive.PrimitiveFactory} instance to use.

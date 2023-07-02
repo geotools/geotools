@@ -28,8 +28,9 @@ import org.geotools.api.filter.spatial.Intersects;
 import org.geotools.api.filter.spatial.Overlaps;
 import org.geotools.api.filter.spatial.Touches;
 import org.geotools.api.filter.spatial.Within;
-import org.geotools.api.geometry.Geometry;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
 
 /**
  * @author Jesse
@@ -37,7 +38,7 @@ import org.junit.Test;
  */
 public class CapabilitiesFilterSplitterSpatialTest extends AbstractCapabilitiesFilterSplitterTests {
 
-    private Geometry geom = new MockGeometryImpl();
+    private Geometry geom = new GeometryFactory().createPoint();
 
     @Test
     public void testBBOX() throws Exception {

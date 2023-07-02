@@ -16,8 +16,8 @@ import static org.geotools.api.annotation.Specification.ISO_19115;
 import java.util.Collection;
 import java.util.List;
 import org.geotools.api.annotation.UML;
-import org.geotools.api.geometry.primitive.Point;
 import org.geotools.api.util.InternationalString;
+import org.locationtech.jts.geom.Point;
 
 /**
  * Grid whose cells are regularly spaced in a geographic (i.e., lat / long) or map coordinate system

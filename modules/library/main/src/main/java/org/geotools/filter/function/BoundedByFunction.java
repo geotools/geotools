@@ -20,11 +20,11 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import org.geotools.api.feature.Feature;
 import org.geotools.api.filter.capability.FunctionName;
-import org.geotools.api.geometry.Geometry;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.locationtech.jts.geom.Geometry;
 
 /** A function returning the bounds of a feature (including all geometries) */
 public class BoundedByFunction extends FunctionImpl {

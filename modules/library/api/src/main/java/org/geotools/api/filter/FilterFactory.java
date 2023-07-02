@@ -70,7 +70,7 @@ import org.geotools.api.filter.temporal.TContains;
 import org.geotools.api.filter.temporal.TEquals;
 import org.geotools.api.filter.temporal.TOverlaps;
 import org.geotools.api.geometry.BoundingBox3D;
-import org.geotools.api.geometry.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Interface whose methods allow the caller to create instances of the various {@link Filter} and

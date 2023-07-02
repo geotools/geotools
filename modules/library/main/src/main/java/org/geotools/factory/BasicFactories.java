@@ -18,14 +18,10 @@ package org.geotools.factory;
 
 // J2SE dependencies
 
-import java.util.Map;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.geometry.coordinate.GeometryFactory;
-import org.geotools.api.geometry.primitive.PrimitiveFactory;
 import org.geotools.api.metadata.citation.CitationFactory;
 import org.geotools.api.referencing.crs.CRSAuthorityFactory;
 import org.geotools.api.referencing.crs.CRSFactory;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.cs.CSAuthorityFactory;
 import org.geotools.api.referencing.cs.CSFactory;
 import org.geotools.api.referencing.datum.DatumAuthorityFactory;
@@ -40,6 +36,8 @@ import org.geotools.util.Classes;
 import org.geotools.util.factory.FactoryNotFoundException;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.factory.Hints;
+
+import java.util.Map;
 
 /**
  * Defines a common abstraction for getting the different factories. This default implementation
@@ -220,41 +218,4 @@ public class BasicFactories {
         return ReferencingFactoryFinder.getCoordinateOperationFactory(hints);
     }
 
-    /**
-     * Returns the {@linkplain GeometryFactory geometry factory} equiped to build geometries using
-     * the given {@linkplain CoordinateReferenceSystem coordinate reference system}.
-     *
-     * <p><strong>NOTE:</strong> This method is not yet supported in Geotools. The default
-     * implementation thrown an exception in all case.
-     *
-     * @param crs the {@linkplain CoordinateReferenceSystem coordinate reference system} the
-     *     {@linkplain GeometryFactory geometry factory} should use.
-     * @return the requested {@linkplain GeometryFactory geometry factory} or {@code null} if the
-     *     {@linkplain CoordinateReferenceSystem coordinate reference system} is not supported.
-     * @throws FactoryNotFoundException if no factory was found for the requested type.
-     * @throws FactoryRegistryException if the factory can't be obtained for an other reason.
-     */
-    public GeometryFactory getGeometryFactory(final CoordinateReferenceSystem crs)
-            throws FactoryRegistryException {
-        throw new FactoryNotFoundException(unsupportedFactory(GeometryFactory.class));
-    }
-
-    /**
-     * Returns the {@linkplain PrimitiveFactory primitive factory} equiped to build primitives using
-     * the given {@linkplain CoordinateReferenceSystem coordinate reference system}.
-     *
-     * <p><strong>NOTE:</strong> This method is not yet supported in Geotools. The default
-     * implementation thrown an exception in all case.
-     *
-     * @param crs the {@linkplain CoordinateReferenceSystem coordinate reference system} the
-     *     {@linkplain PrimitiveFactory primitive factory} should use.
-     * @return the requested {@linkplain PrimitiveFactory primitive factory} or {@code null} if the
-     *     {@linkplain CoordinateReferenceSystem coordinate reference system} is not supported.
-     * @throws FactoryNotFoundException if no factory was found for the requested type.
-     * @throws FactoryRegistryException if the factory can't be obtained for an other reason.
-     */
-    public PrimitiveFactory getPrimitiveFactory(final CoordinateReferenceSystem crs)
-            throws FactoryRegistryException {
-        throw new FactoryNotFoundException(unsupportedFactory(PrimitiveFactory.class));
-    }
 }

@@ -16,27 +16,17 @@
  */
 package org.geotools.feature;
 
-import java.util.Collection;
-import org.geotools.api.feature.Association;
-import org.geotools.api.feature.Attribute;
-import org.geotools.api.feature.ComplexAttribute;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.FeatureFactory;
-import org.geotools.api.feature.GeometryAttribute;
-import org.geotools.api.feature.Property;
+import org.geotools.api.feature.*;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.feature.type.AssociationDescriptor;
-import org.geotools.api.feature.type.AttributeDescriptor;
-import org.geotools.api.feature.type.ComplexType;
-import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.feature.type.*;
 import org.geotools.api.filter.FilterFactory2;
-import org.geotools.api.geometry.coordinate.GeometryFactory;
 import org.geotools.api.referencing.crs.CRSFactory;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureImpl;
+
+import java.util.Collection;
 
 /**
  * Factory for creating instances of the Attribute family of classes.
@@ -50,8 +40,6 @@ public abstract class AbstractFeatureFactoryImpl implements FeatureFactory {
 
     /** Factory used to create CRS objects */
     CRSFactory crsFactory;
-    /** Factory used to create geomtries */
-    GeometryFactory geometryFactory;
 
     public FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
@@ -67,14 +55,6 @@ public abstract class AbstractFeatureFactoryImpl implements FeatureFactory {
 
     public void setCRSFactory(CRSFactory crsFactory) {
         this.crsFactory = crsFactory;
-    }
-
-    public GeometryFactory getGeometryFactory() {
-        return geometryFactory;
-    }
-
-    public void setGeometryFactory(GeometryFactory geometryFactory) {
-        this.geometryFactory = geometryFactory;
     }
 
     @Override

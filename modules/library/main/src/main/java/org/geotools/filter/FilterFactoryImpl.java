@@ -102,7 +102,7 @@ import org.geotools.api.filter.temporal.TEquals;
 import org.geotools.api.filter.temporal.TOverlaps;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.geometry.BoundingBox3D;
-import org.geotools.api.geometry.Geometry;
+
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.parameter.Parameter;
 import org.geotools.api.referencing.FactoryException;
@@ -162,6 +162,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.referencing.CRS;
 import org.geotools.util.factory.Factory;
 import org.geotools.util.factory.Hints;
+import org.locationtech.jts.geom.Geometry;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**

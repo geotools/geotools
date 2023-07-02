@@ -172,8 +172,6 @@ public class FunctionToStringTest {
                     parameters.add(null);
                 } else if (type == Geometry.class) {
                     parameters.add(null);
-                } else if (type == org.geotools.api.geometry.Geometry.class) {
-                    parameters.add(null);
                 } else if (type == LineString.class) {
                     parameters.add(null);
                 } else if (type == Classifier.class) {

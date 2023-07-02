@@ -34,7 +34,6 @@ import java.util.logging.Logger;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import org.geotools.api.geometry.Envelope;
-import org.geotools.api.geometry.Geometry;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.metadata.citation.Citation;
 import org.geotools.api.metadata.extent.BoundingPolygon;
@@ -103,6 +102,7 @@ import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Polygon;
 
 /**
  * Simple utility class for making use of the {@linkplain CoordinateReferenceSystem coordinate
@@ -603,21 +603,19 @@ public final class CRS {
                         continue;
                     }
                     if (extent instanceof BoundingPolygon) {
-                        for (final Geometry geometry : ((BoundingPolygon) extent).getPolygons()) {
-                            final Envelope candidate = geometry.getEnvelope();
-                            if (candidate != null) {
-                                final CoordinateReferenceSystem sourceCRS =
-                                        candidate.getCoordinateReferenceSystem();
-                                if (sourceCRS == null || equalsIgnoreMetadata(sourceCRS, crs)) {
+                        for (final Polygon geometry : ((BoundingPolygon) extent).getPolygons()) {
+                            final org.locationtech.jts.geom.Envelope env = geometry.getEnvelopeInternal();
+                            if (env != null) {
                                     if (envelope == null) {
-                                        envelope = candidate;
+                                        envelope = new GeneralEnvelope(new double[] {env.getMinX(), env.getMinY()},
+                                                new double[] {env.getMinY(), env.getMaxY()});
                                     } else {
                                         if (merged == null) {
                                             envelope = merged = new GeneralEnvelope(envelope);
                                         }
                                         merged.add(envelope);
                                     }
-                                }
+
                             }
                         }
                     }

@@ -19,9 +19,10 @@
  */
 package org.geotools.metadata.iso.extent;
 
-import java.util.Collection;
-import org.geotools.api.geometry.Geometry;
 import org.geotools.api.metadata.extent.BoundingPolygon;
+import org.locationtech.jts.geom.Polygon;
+
+import java.util.Collection;
 
 /**
  * Boundary enclosing the dataset, expressed as the closed set of (<var>x</var>,<var>y</var>)
@@ -37,7 +38,7 @@ public class BoundingPolygonImpl extends GeographicExtentImpl implements Boundin
     private static final long serialVersionUID = 8174011874910887918L;
 
     /** The sets of points defining the bounding polygon. */
-    private Collection<Geometry> polygons;
+    private Collection<Polygon> polygons;
 
     /** Constructs an initially empty bounding polygon. */
     public BoundingPolygonImpl() {}
@@ -52,19 +53,19 @@ public class BoundingPolygonImpl extends GeographicExtentImpl implements Boundin
     }
 
     /** Creates a bounding polygon initialized to the specified value. */
-    public BoundingPolygonImpl(final Collection<Geometry> polygons) {
+    public BoundingPolygonImpl(final Collection<Polygon> polygons) {
         setPolygons(polygons);
     }
 
     /** Returns the sets of points defining the bounding polygon. */
     // No class is currently implementing {@linkplain org.geotools.api.geometry.Geometry}.
     @Override
-    public Collection<Geometry> getPolygons() {
-        return polygons = nonNullCollection(polygons, Geometry.class);
+    public Collection<Polygon> getPolygons() {
+        return polygons = nonNullCollection(polygons, Polygon.class);
     }
 
     /** Set the sets of points defining the bounding polygon. */
-    public void setPolygons(final Collection<? extends Geometry> newValues) {
-        polygons = copyCollection(newValues, polygons, Geometry.class);
+    public void setPolygons(final Collection<Polygon> newValues) {
+        polygons = copyCollection(newValues, polygons, Polygon.class);
     }
 }

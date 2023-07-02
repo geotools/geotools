@@ -14,7 +14,7 @@ import static org.geotools.api.annotation.Specification.ISO_19115;
 
 import java.util.Collection;
 import org.geotools.api.annotation.UML;
-import org.geotools.api.geometry.Geometry;
+import org.locationtech.jts.geom.Polygon;
 
 /**
  * Boundary enclosing the dataset, expressed as the closed set of (<var>x</var>,<var>y</var>)
@@ -32,5 +32,5 @@ public interface BoundingPolygon extends GeographicExtent {
      * @return The sets of points defining the bounding polygon.
      */
     @UML(identifier = "polygon", obligation = MANDATORY, specification = ISO_19115)
-    Collection<? extends Geometry> getPolygons();
+    Collection<Polygon> getPolygons();
 }

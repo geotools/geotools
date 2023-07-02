@@ -14,7 +14,6 @@ import static org.geotools.api.annotation.Specification.ISO_19107;
 
 import org.geotools.api.annotation.UML;
 import org.geotools.api.geometry.DirectPosition;
-import org.geotools.api.geometry.primitive.Point;
 
 /**
  * A type consisting of either a {@linkplain DirectPosition direct position} or of a {@linkplain

@@ -19,7 +19,6 @@ package org.geotools.s3;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.AnonymousAWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
@@ -141,11 +140,10 @@ public class S3Connector {
                     AmazonS3ClientBuilder.standard()
                             .withCredentials(
                                     new AWSStaticCredentialsProvider(new AnonymousAWSCredentials()))
+                            .withRegion(region)
                             .build();
-            s3.setRegion(Region.getRegion(region));
         } else {
-            s3 = AmazonS3ClientBuilder.defaultClient();
-            s3.setRegion(Region.getRegion(region));
+            s3 = AmazonS3ClientBuilder.standard().withRegion(region).build();
         }
 
         return s3;

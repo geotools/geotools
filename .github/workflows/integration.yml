@@ -36,7 +36,7 @@ jobs:
       uses: gradle/gradle-build-action@v2
     - name: Build GeoTools (no tests, prepare fresh artifacts)
       run: mvn -B clean install -T2 -Dall --file pom.xml -DskipTests
-    - name: Checkout GeoWebCache, GeoServer and Mapfish print
+    - name: Checkout GeoWebCache, GeoServer and ...
       run: |
         cd ~
         echo "Preparing git ssh checkouts"
@@ -47,9 +47,9 @@ jobs:
         echo "Checking out GeoServer"
         mkdir geoserver
         git clone https://github.com/geoserver/geoserver.git geoserver
-        echo "Checking out MapFish Print v2"
-        mkdir mapfish-print-v2
-        git clone https://github.com/mapfish/mapfish-print-v2.git mapfish-print-v2
+#        echo "Checking out MapFish Print v2"
+#        mkdir mapfish-print-v2
+#        git clone https://github.com/mapfish/mapfish-print-v2.git mapfish-print-v2
     - name: Apply org.opengis removal scripts
       run: |
         cd ~
@@ -60,14 +60,14 @@ jobs:
         cd ~/geoserver/src
         cp ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml .
         ant -noinput -buildfile remove-opengis.xml
-        cd ~/mapfish-print-v2/src
+#        cd ~/mapfish-print-v2/src
         cp ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml .
         ant -noinput -buildfile remove-opengis.xml
-    - name: Build Mapfish-print v2 with tests
-      run: |
-        cd ~/mapfish-print-v2
-        sed -i "s/27.0/30-SNAPSHOT/g" build.gradle
-        ./gradlew build
+#    - name: Build Mapfish-print v2 with tests
+#      run: |
+#        cd ~/mapfish-print-v2
+#        sed -i "s/27.0/30-SNAPSHOT/g" build.gradle
+#        ./gradlew build
     - name: Build GeoWebCache with tests
       run: |
         export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"
@@ -77,6 +77,8 @@ jobs:
         mvn -B -f geowebcache/geowebcache/pom.xml test -fae -nsu -T2 -Dspotless.apply.skip=true
     - name: Build GeoServer with tests
       run: |
+        echo "Building GeoServer without printing (as mapfish-print-v2 not available)"
+        sed -i "s/<module>printing<\/module>/<\!--module>printing<\/module-->/g" src/extension/pom.xml
         export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"
         export MAVEN_OPTS="-Xmx512m $TEST_OPTS"
         cd ~

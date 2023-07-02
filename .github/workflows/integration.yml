@@ -32,9 +32,11 @@ jobs:
     - name: Disable checksum offloading
       # See: https://github.com/actions/virtual-environments/issues/1187#issuecomment-686735760
       run: sudo ethtool -K eth0 tx off rx off
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v2
     - name: Build GeoTools (no tests, prepare fresh artifacts)
       run: mvn -B clean install -T2 -Dall --file pom.xml -DskipTests
-    - name: Checkout GeoWebCache and GeoServer
+    - name: Checkout GeoWebCache, GeoServer and Mapfish print
       run: |
         cd ~
         echo "Preparing git ssh checkouts"
@@ -45,6 +47,9 @@ jobs:
         echo "Checking out GeoServer"
         mkdir geoserver
         git clone https://github.com/geoserver/geoserver.git geoserver
+        echo "Checking out MapFish Print v2"
+        mkdir mapfish-print-v2
+        git clone git@github.com:mapfish/mapfish-print-v2.git mapfish-print-v2
     - name: Apply org.opengis removal scripts
       run: |
         cd ~
@@ -55,6 +60,14 @@ jobs:
         cd ~/geoserver/src
         cp ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml .
         ant -noinput -buildfile remove-opengis.xml
+        cd ~/mapfish-print-v2/src
+        cp ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml .
+        ant -noinput -buildfile remove-opengis.xml
+    - name: Build Mapfish-print v2 with tests
+      run: |
+        cd ~/mapfish-print-v2
+        sed -i "s/27.0/30-SNAPSHOT/g" build.gradle
+        ./gradlew build
     - name: Build GeoWebCache with tests
       run: |
         export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"

@@ -47,7 +47,8 @@ jobs:
         echo "Checking out GeoServer"
         mkdir geoserver
         git clone https://github.com/geoserver/geoserver.git geoserver
-#        echo "Checking out MapFish Print v2"
+
+# echo "Checking out MapFish Print v2"
 #        mkdir mapfish-print-v2
 #        git clone https://github.com/mapfish/mapfish-print-v2.git mapfish-print-v2
     - name: Apply org.opengis removal scripts
@@ -60,9 +61,10 @@ jobs:
         cd ~/geoserver/src
         cp ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml .
         ant -noinput -buildfile remove-opengis.xml
+        
 #        cd ~/mapfish-print-v2/src
-        cp ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml .
-        ant -noinput -buildfile remove-opengis.xml
+#        cp ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml .
+#        ant -noinput -buildfile remove-opengis.xml
 #    - name: Build Mapfish-print v2 with tests
 #      run: |
 #        cd ~/mapfish-print-v2

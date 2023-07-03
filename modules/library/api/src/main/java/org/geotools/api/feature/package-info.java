@@ -8,8 +8,8 @@
  *    All Rights Reserved. http://www.opengis.org/legal/
  */
 /**
- * Representation a {@linkplain org.geotools.api.feature.Feature features} on a map. A {{Feature}} may
- * represent a single item or a {{FeatureCollection}} of many things. Features with common
+ * Representation a {@linkplain org.geotools.api.feature.Feature features} on a map. A {{Feature}}
+ * may represent a single item or a {{FeatureCollection}} of many things. Features with common
  * properties may be categorised into a {{FeatureType}}, forming a dynamic type system similar to
  * those introduced into other aspects of computer science.
  *
@@ -120,9 +120,10 @@
  *
  * <H4>Filter</H4>
  *
- * <P ALIGN="justify">Our {{@linkplain org.geotools.api.filter.Filter filter}} constructs are used to
- * partition values into sets. We have deliberately defined Filter to work on more than just Feature
- * instances, allowing us to use these ideas to capture restrictions on individual attribute values.
+ * <P ALIGN="justify">Our {{@linkplain org.geotools.api.filter.Filter filter}} constructs are used
+ * to partition values into sets. We have deliberately defined Filter to work on more than just
+ * Feature instances, allowing us to use these ideas to capture restrictions on individual attribute
+ * values.
  *
  * <p>Filter should be viewed as our query or constraint system.
  *

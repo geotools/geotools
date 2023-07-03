@@ -80,7 +80,7 @@ jobs:
     - name: Build GeoServer with tests
       run: |
         echo "Building GeoServer without printing (as mapfish-print-v2 not available)"
-        sed -i "s/<module>printing<\/module>/<\!--module>printing<\/module-->/g" src/extension/pom.xml
+        sed -i "s/<module>printing<\/module>/<\!--module>printing<\/module-->/g" geoserver/src/extension/pom.xml
         export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"
         export MAVEN_OPTS="-Xmx512m $TEST_OPTS"
         cd ~

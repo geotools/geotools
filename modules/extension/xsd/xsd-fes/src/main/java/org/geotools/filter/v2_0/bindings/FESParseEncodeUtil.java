@@ -27,6 +27,7 @@ import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.spatial.BinarySpatialOperator;
 import org.geotools.api.filter.spatial.DistanceBufferOperator;
 import org.geotools.api.filter.temporal.BinaryTemporalOperator;
+import org.geotools.filter.v1_0.DistanceUnits;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.xsd.Node;
@@ -78,8 +79,11 @@ public class FESParseEncodeUtil {
         List<Object[]> l = new ArrayList<>();
         l.add(distanceBufferOpProperty(op.getExpression1()));
         l.add(distanceBufferOpProperty(op.getExpression2()));
-
-        l.add(new Object[] {new QName(FES.NAMESPACE, "Distance"), op.getDistance()});
+        l.add(
+                new Object[] {
+                    new QName(FES.NAMESPACE, "Distance"),
+                    DistanceUnits.of(op.getDistance(), op.getDistanceUnits())
+                });
         return l;
     }
 

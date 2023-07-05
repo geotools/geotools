@@ -37,6 +37,8 @@ public class IAUAuthorityFactory extends FactoryUsingWKT {
      */
     public static final String FILENAME = "iau.properties";
 
+    protected static final int PRIORITY = MAXIMUM_PRIORITY - 10;
+
     /** Constructs an authority factory using the default set of factories. */
     public IAUAuthorityFactory() {
         this(null);
@@ -49,7 +51,8 @@ public class IAUAuthorityFactory extends FactoryUsingWKT {
      * {@code FACTORY} hints.
      */
     public IAUAuthorityFactory(final Hints hints) {
-        super(hints, DEFAULT_PRIORITY - 5);
+        super(hints, PRIORITY);
+        this.hints.put(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, false);
     }
 
     /**

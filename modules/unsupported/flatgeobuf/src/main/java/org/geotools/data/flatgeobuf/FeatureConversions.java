@@ -18,6 +18,7 @@ package org.geotools.data.flatgeobuf;
 
 import static java.nio.charset.CodingErrorAction.REPLACE;
 
+import com.google.common.io.LittleEndianDataInputStream;
 import com.google.flatbuffers.FlatBufferBuilder;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -94,9 +95,7 @@ public class FeatureConversions {
         @SuppressWarnings("PMD.CloseResource")
         WritableByteChannel channel = Channels.newChannel(to);
         ByteBuffer dataBuffer = builder.dataBuffer();
-        while (dataBuffer.hasRemaining()) {
-            channel.write(dataBuffer);
-        }
+        while (dataBuffer.hasRemaining()) channel.write(dataBuffer);
     }
 
     protected static int buildGeometry(
@@ -162,9 +161,7 @@ public class FeatureConversions {
             ColumnMeta column = headerMeta.columns.get(i);
             byte type = column.type;
             Object value = feature.getAttribute(column.name);
-            if (value == null) {
-                continue;
-            }
+            if (value == null) continue;
             target.putShort(i);
             if (type == ColumnType.Bool) {
                 target.put((byte) ((boolean) value ? 1 : 0));
@@ -230,13 +227,37 @@ public class FeatureConversions {
     }
 
     public static SimpleFeature deserialize(
+            LittleEndianDataInputStream data,
+            SimpleFeatureBuilder fb,
+            HeaderMeta headerMeta,
+            long fid)
+            throws IOException {
+        int featureSize = data.readInt();
+        SimpleFeature feature = deserialize(data, fb, headerMeta, fid, featureSize);
+        return feature;
+    }
+
+    public static SimpleFeature deserialize(
+            LittleEndianDataInputStream data,
+            SimpleFeatureBuilder fb,
+            HeaderMeta headerMeta,
+            long fid,
+            int featureSize)
+            throws IOException {
+        byte[] bytes = new byte[featureSize];
+        data.readFully(bytes);
+        ByteBuffer bb = ByteBuffer.wrap(bytes);
+        Feature f = Feature.getRootAsFeature(bb);
+        SimpleFeature feature = FeatureConversions.deserialize(f, fb, headerMeta, fid);
+        return feature;
+    }
+
+    public static SimpleFeature deserialize(
             Feature feature, SimpleFeatureBuilder fb, HeaderMeta headerMeta, long fid) {
         Geometry geometry = feature.geometry();
         byte geometryType = headerMeta.geometryType;
         if (geometry != null) {
-            if (geometryType == GeometryType.Unknown) {
-                geometryType = (byte) geometry.type();
-            }
+            if (geometryType == GeometryType.Unknown) geometryType = (byte) geometry.type();
             org.locationtech.jts.geom.Geometry jtsGeometry =
                     GeometryConversions.deserialize(geometry, geometryType);
             fb.add(jtsGeometry);

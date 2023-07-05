@@ -840,4 +840,39 @@ public class GeoTiffWriterTest extends Assert {
         // Check the write
         writeAndRead(coverage, null, -9999d, geotiff, writer);
     }
+
+    @Test
+    public void testIAURoundTrip() throws Exception {
+        File vikingSource = org.geotools.TestData.copy(this, "geotiff/viking.tif");
+        final AbstractGridFormat format = new GeoTiffFormat();
+        GeoTiffReader reader1 = null, reader2 = null;
+        GeoTiffWriter writer = null;
+        try {
+            GeoTiffReader reader = (GeoTiffReader) format.getReader(vikingSource);
+            assertNotNull(reader);
+            GridCoverage2D coverage = reader.read(null);
+            reader.dispose();
+
+            File testFile = new File("./target/viking-write.tiff");
+            writer = new GeoTiffWriter(testFile);
+            writer.write(coverage, null);
+            writer.dispose();
+            coverage.dispose(true);
+
+            // read back
+            reader2 = (GeoTiffReader) format.getReader(testFile);
+
+            // it's 49900
+            CoordinateReferenceSystem crs = reader2.getCoordinateReferenceSystem();
+            CoordinateReferenceSystem expected = CRS.decode("IAU:49900", true);
+            assertTrue(CRS.equalsIgnoreMetadata(expected, crs));
+
+            // and can be looked up as such
+            assertEquals("IAU:49900", CRS.lookupIdentifier(crs, true));
+        } finally {
+            if (reader1 != null) reader1.dispose();
+            if (reader2 != null) reader2.dispose();
+            if (writer != null) writer.dispose();
+        }
+    }
 }

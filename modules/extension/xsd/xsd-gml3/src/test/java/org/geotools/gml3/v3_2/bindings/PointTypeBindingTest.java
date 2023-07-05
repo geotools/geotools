@@ -21,7 +21,10 @@ import static org.junit.Assert.assertEquals;
 import org.geotools.gml3.bindings.GML3MockData;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.gml3.v3_2.GML32TestSupport;
+import org.geotools.referencing.CRS;
 import org.junit.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.w3c.dom.Document;
 
@@ -44,5 +47,16 @@ public class PointTypeBindingTest extends GML32TestSupport {
                 1, dom.getElementsByTagNameNS(GML.NAMESPACE, GML.pos.getLocalPart()).getLength());
         assertEquals(
                 "urn:ogc:def:crs:EPSG::4326", dom.getDocumentElement().getAttribute("srsName"));
+    }
+
+    @Test
+    public void testEncodeIAU() throws Exception {
+        Point p = new GeometryFactory().createPoint(new Coordinate(1, 2));
+        p.setUserData(CRS.decode("urn:x-ogc:def:crs:IAU::1000"));
+
+        Document dom = encode(p, GML.Point);
+        assertEquals(
+                1, dom.getElementsByTagNameNS(GML.NAMESPACE, GML.pos.getLocalPart()).getLength());
+        assertEquals("urn:ogc:def:crs:IAU::1000", dom.getDocumentElement().getAttribute("srsName"));
     }
 }

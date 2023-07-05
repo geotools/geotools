@@ -95,7 +95,7 @@ public class GML3EncodingUtils {
         }
 
         try {
-            String crsCode = GML2EncodingUtils.toURI(crs, srsSyntax);
+            String crsCode = GML2EncodingUtils.toURI(crs, srsSyntax, true);
 
             if (crsCode != null) {
                 return new URI(crsCode);

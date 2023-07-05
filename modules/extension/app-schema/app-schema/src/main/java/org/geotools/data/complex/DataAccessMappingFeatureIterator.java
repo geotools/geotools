@@ -61,6 +61,7 @@ import org.geotools.feature.FeatureImpl;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.FilterAttributeExtractor;
+import org.geotools.gml2.SrsSyntax;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.jdbc.JDBCFeatureSource;
 import org.geotools.jdbc.JDBCFeatureStore;
@@ -1737,11 +1738,12 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             if (wfsVersion.equals("1.0.0")) {
                 return nativeCRS;
             } else {
-                String code = GML2EncodingUtils.epsgCode(nativeCRS);
+                String srsName =
+                        GML2EncodingUtils.toURI(nativeCRS, SrsSyntax.OGC_URN_EXPERIMENTAL, false);
                 // it's possible that we can't do the CRS -> code -> CRS conversion...so we'll just
                 // return what we have
-                if (code == null) return nativeCRS;
-                return CRS.decode("urn:x-ogc:def:crs:EPSG:6.11.2:" + code);
+                if (srsName == null) return nativeCRS;
+                return CRS.decode(srsName);
             }
         } catch (Exception e) {
             throw new UnsupportedOperationException(

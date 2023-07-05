@@ -18,6 +18,7 @@ package org.geotools.gml3;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -33,10 +34,13 @@ import org.geotools.gml2.SrsSyntax;
 import org.geotools.gml3.bindings.GML3MockData;
 import org.geotools.gml3.bindings.TEST;
 import org.geotools.gml3.bindings.TestConfiguration;
+import org.geotools.referencing.CRS;
 import org.geotools.test.xml.XmlTestSupport;
 import org.geotools.xsd.Encoder;
 import org.junit.Assert;
 import org.junit.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.simple.SimpleFeature;
@@ -113,6 +117,27 @@ public class GML3EncodingTest extends XmlTestSupport {
                 dom.getDocumentElement()
                         .getAttribute("srsName")
                         .startsWith("http://www.opengis.net/def/crs/EPSG/0/"));
+    }
+
+    @Test
+    public void testEncodeSrsSyntaxIAU() throws Exception {
+        Point p = new GeometryFactory().createPoint(new Coordinate(1, 2));
+        p.setUserData(CRS.decode("urn:x-ogc:def:crs:IAU::1000"));
+
+        GMLConfiguration gml = new GMLConfiguration();
+        Document dom = new Encoder(gml).encodeAsDOM(p, GML.Point);
+        assertEquals(
+                "urn:x-ogc:def:crs:IAU:1000", dom.getDocumentElement().getAttribute("srsName"));
+
+        gml.setSrsSyntax(SrsSyntax.OGC_URN);
+        dom = new Encoder(gml).encodeAsDOM(p, GML.Point);
+        assertEquals("urn:ogc:def:crs:IAU::1000", dom.getDocumentElement().getAttribute("srsName"));
+
+        gml.setSrsSyntax(SrsSyntax.OGC_HTTP_URI);
+        dom = new Encoder(gml).encodeAsDOM(p, GML.Point);
+        assertEquals(
+                "http://www.opengis.net/def/crs/IAU/0/1000",
+                dom.getDocumentElement().getAttribute("srsName"));
     }
 
     @Test

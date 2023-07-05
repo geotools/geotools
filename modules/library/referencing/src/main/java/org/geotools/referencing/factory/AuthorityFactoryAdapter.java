@@ -316,10 +316,10 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
     /** Returns the {@linkplain #hints hints} extented will all hints specified in dependencies. */
     private Hints hints() {
         final Hints extended = new Hints(hints);
-        addAll(operationFactory, extended);
-        addAll(datumFactory, extended);
-        addAll(csFactory, extended);
-        addAll(crsFactory, extended);
+        if (operationFactory != null) addAll(operationFactory, extended);
+        if (datumFactory != null) addAll(datumFactory, extended);
+        if (csFactory != null) addAll(csFactory, extended);
+        if (crsFactory != null) addAll(crsFactory, extended);
         extended.putAll(hints); // Gives precedence to the hints from this class.
         return extended;
     }

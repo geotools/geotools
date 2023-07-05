@@ -113,6 +113,10 @@ public class GeoJSONDataStore extends ContentDataStore implements FileDataStore 
         return schema;
     }
 
+    protected SimpleFeatureType getCurrentSchema() throws IOException {
+        return schema;
+    }
+
     @Override
     public void updateSchema(SimpleFeatureType featureType) throws IOException {
         schema = featureType;

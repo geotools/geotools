@@ -239,11 +239,9 @@ public class DataStoreTest {
             assertNotNull(featureReader);
 
             assertEquals(
-                    GML2EncodingUtils.epsgCode(otherCrs),
-                    GML2EncodingUtils.epsgCode(
+                    GML2EncodingUtils.toURI(otherCrs),
+                    GML2EncodingUtils.toURI(
                             featureReader.getFeatureType().getCoordinateReferenceSystem()));
-            // GetFeatureRequest request = wfs.getRequest();
-            // assertEquals("urn:ogc:def:crs:EPSG::3857", request.getSrsName());
         }
     }
 

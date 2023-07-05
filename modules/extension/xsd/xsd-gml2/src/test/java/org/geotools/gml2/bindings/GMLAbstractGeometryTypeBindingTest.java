@@ -59,4 +59,15 @@ public class GMLAbstractGeometryTypeBindingTest extends GMLTestSupport {
                 "http://www.opengis.net/gml/srs/epsg.xml#4326",
                 doc.getDocumentElement().getAttribute("srsName"));
     }
+
+    @Test
+    public void testEncodeIAU() throws Exception {
+        Point p = GML2MockData.point();
+        p.setUserData(CRS.decode("IAU:49900", true));
+
+        Document doc = encode(p, GML.Point);
+        assertEquals(
+                "http://www.opengis.net/gml/srs/iau.xml#49900",
+                doc.getDocumentElement().getAttribute("srsName"));
+    }
 }

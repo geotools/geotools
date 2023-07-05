@@ -48,6 +48,7 @@ import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.gml2.SrsSyntax;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
@@ -323,11 +324,17 @@ class WFSFeatureSource extends ContentFeatureSource {
     }
 
     protected String getSupportedSrsName(GetFeatureRequest request, Query query) {
-        String epsgCode = GML2EncodingUtils.epsgCode(query.getCoordinateSystem());
+        String identifier =
+                GML2EncodingUtils.toURI(query.getCoordinateSystem(), SrsSyntax.AUTH_CODE, false);
+        if (identifier == null) return null;
+
+        int idx = identifier.lastIndexOf(':');
+        String authority = identifier.substring(0, idx);
+        String code = identifier.substring(idx + 1);
         Set<String> supported =
                 request.getStrategy().getSupportedCRSIdentifiers(request.getTypeName());
         for (String supportedSrs : supported) {
-            if (supportedSrs.endsWith(":" + epsgCode)) {
+            if (supportedSrs.contains(authority) && supportedSrs.endsWith(":" + code)) {
                 return supportedSrs;
             }
         }

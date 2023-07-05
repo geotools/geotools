@@ -24,13 +24,32 @@ package org.geotools.gml2;
 public enum SrsSyntax {
 
     /**
+     * Deprecated, please use {@link #AUTH_CODE} instead
+     *
+     * <pre>EPSG:1234</pre>
+     *
+     * .
+     */
+    EPSG_CODE("EPSG:") {
+        @Override
+        public String getSRS(String authority, String code) {
+            return authority + ":" + code;
+        }
+    },
+
+    /**
      * Commonly used syntax outside of gml that follows the form:
      *
      * <pre>EPSG:1234</pre>
      *
      * .
      */
-    EPSG_CODE("EPSG:"),
+    AUTH_CODE("EPSG:") {
+        @Override
+        public String getSRS(String authority, String code) {
+            return authority + ":" + code;
+        }
+    },
 
     /**
      * First form of url syntax used by GML 2.1.2 that follows the form:
@@ -39,7 +58,12 @@ public enum SrsSyntax {
      *
      * .
      */
-    OGC_HTTP_URL("http://www.opengis.net/gml/srs/epsg.xml#"),
+    OGC_HTTP_URL("http://www.opengis.net/gml/srs/epsg.xml#") {
+        @Override
+        public String getSRS(String authority, String code) {
+            return "http://www.opengis.net/gml/srs/" + authority.toLowerCase() + ".xml#" + code;
+        }
+    },
 
     /**
      * First form of urn syntax used by GML 3 that follows the form:
@@ -48,7 +72,12 @@ public enum SrsSyntax {
      *
      * .
      */
-    OGC_URN_EXPERIMENTAL("urn:x-ogc:def:crs:EPSG:"),
+    OGC_URN_EXPERIMENTAL("urn:x-ogc:def:crs:EPSG:") {
+        @Override
+        public String getSRS(String authority, String code) {
+            return "urn:x-ogc:def:crs:" + authority + ":" + code;
+        }
+    },
 
     /**
      * Revised form of urn syntax used by GML 3 that follows the form:
@@ -57,7 +86,12 @@ public enum SrsSyntax {
      *
      * .
      */
-    OGC_URN("urn:ogc:def:crs:EPSG::"),
+    OGC_URN("urn:ogc:def:crs:EPSG::") {
+        @Override
+        public String getSRS(String authority, String code) {
+            return "urn:ogc:def:crs:" + authority + "::" + code;
+        }
+    },
 
     /**
      * Newest form from OGC using a url syntax of the form:
@@ -66,7 +100,12 @@ public enum SrsSyntax {
      *
      * .
      */
-    OGC_HTTP_URI("http://www.opengis.net/def/crs/EPSG/0/");
+    OGC_HTTP_URI("http://www.opengis.net/def/crs/EPSG/0/") {
+        @Override
+        public String getSRS(String authority, String code) {
+            return "http://www.opengis.net/def/crs/" + authority + "/0/" + code;
+        }
+    };
 
     private String prefix;
 
@@ -74,7 +113,23 @@ public enum SrsSyntax {
         this.prefix = prefix;
     }
 
+    @Deprecated
     public String getPrefix() {
         return prefix;
+    }
+
+    public abstract String getSRS(String authority, String code);
+
+    /**
+     * Expects either an identifier in the form of "authority:code", or just a code. If just a code
+     * then the "EPSG" authority is assumed.
+     *
+     * @param identifier
+     * @return
+     */
+    public String getSRS(String identifier) {
+        int idx = identifier.indexOf(":");
+        if (idx == -1) return getSRS("EPSG", identifier);
+        return getSRS(identifier.substring(0, idx), identifier.substring(idx + 1));
     }
 }

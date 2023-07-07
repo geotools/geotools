@@ -31,12 +31,17 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.gml2.SrsSyntax;
+import org.geotools.referencing.CRS;
 import org.geotools.wfs.CompositeFeatureCollection;
 import org.geotools.wfs.v2_0.WFS;
 import org.geotools.xsd.EMFUtils;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.TransformException;
 
 public class WFSParsingUtils {
 
@@ -87,11 +92,7 @@ public class WFSParsingUtils {
             if (features.size() == 1) {
                 bounds = first.getBounds();
             } else {
-                // aggregate
-                bounds = new ReferencedEnvelope(first.getBounds());
-                for (int i = 1; i < features.size(); i++) {
-                    bounds.expandToInclude(features.get(i).getBounds());
-                }
+                bounds = aggregateEnvelopes(features, first);
             }
             if (bounds == null || bounds.isNull()) {
                 // wfs 2.0 does not allow for "gml:Null"
@@ -158,6 +159,50 @@ public class WFSParsingUtils {
         }
 
         return null;
+    }
+
+    /**
+     * Aggregates multiple envelopes into one, eventually returning a WGS84 one in case the
+     * coordinate reference systems of the various envelopes differs
+     */
+    private static ReferencedEnvelope aggregateEnvelopes(
+            List<FeatureCollection> features, FeatureCollection first) {
+        ReferencedEnvelope bounds;
+        // aggregate
+        List<ReferencedEnvelope> envelopes = new ArrayList<>(features.size());
+        ReferencedEnvelope firstBounds = first.getBounds();
+        envelopes.add(firstBounds);
+        for (int i = 1; i < features.size(); i++) {
+            envelopes.add(features.get(i).getBounds());
+        }
+        boolean consistent = true;
+        for (ReferencedEnvelope envelope : envelopes) {
+            if (!CRS.equalsIgnoreMetadata(
+                    firstBounds.getCoordinateReferenceSystem(),
+                    envelope.getCoordinateReferenceSystem())) {
+                consistent = false;
+                break;
+            }
+        }
+
+        if (consistent) {
+            bounds = ReferencedEnvelope.create(envelopes.get(0));
+            for (int i = 1; i < envelopes.size(); i++) {
+                bounds.expandToInclude(envelopes.get(i));
+            }
+        } else {
+            try {
+                // get WGS84 in lat/lon order
+                CoordinateReferenceSystem wgs84 = CRS.decode(SrsSyntax.OGC_URN.getSRS("EPSG:4326"));
+                bounds = ReferencedEnvelope.create(envelopes.get(0).transform(wgs84, true));
+                for (int i = 1; i < envelopes.size(); i++) {
+                    bounds.expandToInclude(envelopes.get(i).transform(wgs84, true));
+                }
+            } catch (FactoryException | TransformException e) {
+                throw new RuntimeException("Failed to aggregate envelopes from multiple CRSs", e);
+            }
+        }
+        return bounds;
     }
 
     @SuppressWarnings("unchecked")

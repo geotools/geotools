@@ -19,6 +19,7 @@ package org.geotools.data.crs;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ReprojectingFeatureCollection;
 import org.geotools.feature.FeatureCollection;
@@ -32,6 +33,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
@@ -176,7 +178,14 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
                     newBBox.expandToInclude(internal);
                 }
             }
-            return ReferencedEnvelope.reference(newBBox);
+            Optional<CoordinateReferenceSystem> crs =
+                    Optional.ofNullable(getSchema().getGeometryDescriptor())
+                            .map(GeometryDescriptor::getCoordinateReferenceSystem);
+            if (crs.isPresent()) {
+                return ReferencedEnvelope.create(newBBox, crs.get());
+            } else {
+                return ReferencedEnvelope.reference(newBBox);
+            }
         } catch (Exception e) {
             throw new RuntimeException("Exception occurred while computing reprojected bounds", e);
         }

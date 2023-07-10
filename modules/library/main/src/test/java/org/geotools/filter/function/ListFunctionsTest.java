@@ -19,11 +19,11 @@ package org.geotools.filter.function;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.List;
 import org.geotools.filter.FilterFactoryImpl;
 import org.junit.Test;
 import org.opengis.filter.expression.Function;
-import wiremock.com.google.common.collect.Lists;
 
 /**
  * Unit tests for FilterFunction_lappy FilterFunction_size FilterFunction_literate
@@ -37,7 +37,7 @@ public class ListFunctionsTest {
     @Test
     public void testSize() {
 
-        List<Integer> list = Lists.newArrayList(1, 2, 3, 4);
+        List<Integer> list = Arrays.asList(1, 2, 3, 4);
 
         Function exp = ff.function("size", ff.property("."));
         Object value = exp.evaluate(list);
@@ -48,7 +48,7 @@ public class ListFunctionsTest {
     @Test
     public void testLitem() {
 
-        List<Integer> list = Lists.newArrayList(1, 2, 3, 4);
+        List<Integer> list = Arrays.asList(1, 2, 3, 4);
 
         Function exp = ff.function("litem", ff.property("."), ff.literal(2));
         Object value = exp.evaluate(list);
@@ -59,13 +59,13 @@ public class ListFunctionsTest {
     @Test
     public void testLapply() {
 
-        List<Integer> list = Lists.newArrayList(1, 2, 3, 4);
+        List<Integer> list = Arrays.asList(1, 2, 3, 4);
 
         Function exp =
                 ff.function(
                         "lapply", ff.property("."), ff.multiply(ff.property("."), ff.literal(2)));
         Object value = exp.evaluate(list);
         assertTrue(value instanceof List);
-        assertEquals(Lists.newArrayList(2.0, 4.0, 6.0, 8.0), value);
+        assertEquals(Arrays.asList(2.0, 4.0, 6.0, 8.0), value);
     }
 }

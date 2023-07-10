@@ -18,6 +18,7 @@ package org.geotools.filter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.TimeZone;
 import org.geotools.factory.CommonFactoryFinder;
@@ -35,7 +36,6 @@ import org.opengis.filter.temporal.After;
 import org.opengis.filter.temporal.BegunBy;
 import org.opengis.temporal.Instant;
 import org.opengis.temporal.Period;
-import wiremock.com.google.common.collect.Lists;
 
 /**
  * Unit test for FilterCapabilities.
@@ -103,7 +103,7 @@ public class CapabilitiesTest {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         Filter filter =
                 ff.and(
-                        Lists.newArrayList(
+                        Arrays.asList(
                                 ff.greater(ff.property("a"), ff.literal(2)),
                                 ff.greaterOrEqual(ff.property("a"), ff.literal(2)),
                                 ff.less(ff.property("a"), ff.literal(2)),

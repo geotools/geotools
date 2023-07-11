@@ -62,8 +62,8 @@ public class GML2EncodingUtils {
     static GMLEncodingUtils e = new GMLEncodingUtils(GML.getInstance());
 
     /**
-     * @deprecated Use {@link #toURI(CoordinateReferenceSystem, SrsSyntax, boolean)} instead, or
-     *     {@link SrsSyntax} directly
+     * Use {@link #toURI(CoordinateReferenceSystem, SrsSyntax, boolean)} instead, or {@link
+     * SrsSyntax} directly
      */
     public static String epsgCode(CoordinateReferenceSystem crs) {
         if (crs == null) {

@@ -51,6 +51,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringJoiner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.IIOException;
@@ -562,13 +563,11 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
     private void settingTypeNames(DataStoreConfiguration datastoreConfiguration) {
         Map<String, Serializable> params = datastoreConfiguration.getParams();
         List<Name> coverages = ancillaryFileManager.getCoveragesNames();
-        StringBuilder builder = new StringBuilder();
+        StringJoiner joiner = new StringJoiner(",");
         for (Name coverage : coverages) {
-            builder.append(ancillaryFileManager.getTypeName(coverage.getLocalPart())).append(",");
+            joiner.add(ancillaryFileManager.getTypeName(coverage.getLocalPart()));
         }
-        String typeNames = builder.toString();
-        typeNames = typeNames.substring(0, typeNames.length() - 1);
-        params.put("TypeName", typeNames);
+        params.put("TypeName", joiner.toString());
     }
 
     /** Wraps a generic exception into a {@link IIOException}. */

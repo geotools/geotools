@@ -113,7 +113,10 @@ public enum SrsSyntax {
         this.prefix = prefix;
     }
 
-    @Deprecated
+    /**
+     * Prefix used by this syntax. Please use getSRS instead, in order to build a full URI, the
+     * prefix assumes a fixed EPSG authority.
+     */
     public String getPrefix() {
         return prefix;
     }

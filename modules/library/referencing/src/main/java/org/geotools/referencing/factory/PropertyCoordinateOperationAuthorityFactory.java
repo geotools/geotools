@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.logging.Level;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.DefaultMathTransformFactory;
 import org.geotools.referencing.operation.DefaultOperation;
@@ -228,7 +229,7 @@ public class PropertyCoordinateOperationAuthorityFactory extends DirectAuthority
             mt = factories.getMathTransformFactory().createFromWKT(WKT);
         } catch (FactoryException e) {
             // Probably malformed WKT.
-            LOGGER.warning("Error creating transformation: " + WKT);
+            LOGGER.log(Level.WARNING, "Error creating transformation: " + WKT, e);
             return null;
         }
 

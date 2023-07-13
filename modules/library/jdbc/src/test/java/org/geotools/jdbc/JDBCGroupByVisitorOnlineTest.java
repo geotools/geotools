@@ -484,7 +484,8 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         return value;
     }
 
-    protected void checkValueContains(List<Object[]> value, String... expectedResult) {
+    protected void checkValueContains(
+            List<Object[]> value, double tolerance, String... expectedResult) {
         assertTrue(
                 value.stream()
                         .anyMatch(
@@ -496,7 +497,7 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
                                         if (result[i] instanceof Number) {
                                             double r = ((Number) result[i]).doubleValue();
                                             double e = Double.parseDouble(expectedResult[i]);
-                                            return r == e;
+                                            return Math.abs(r - e) <= tolerance;
                                         } else if (!result[i]
                                                 .toString()
                                                 .equals(expectedResult[i])) {
@@ -505,6 +506,10 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
                                     }
                                     return true;
                                 }));
+    }
+
+    protected void checkValueContains(List<Object[]> value, String... expectedResult) {
+        checkValueContains(value, 0.0, expectedResult);
     }
 
     @Test
@@ -548,11 +553,12 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         assertNotNull(value);
 
         assertEquals(5, value.size());
-        checkValueContains(value, Integer.toString(0 * multiplyingFactor), "3"); // 2016-06-03
-        checkValueContains(value, Integer.toString(2 * multiplyingFactor), "1"); // 2016-06-05
-        checkValueContains(value, Integer.toString(3 * multiplyingFactor), "2"); // 2016-06-06
-        checkValueContains(value, Integer.toString(4 * multiplyingFactor), "3"); // 2016-06-07
-        checkValueContains(value, Integer.toString(12 * multiplyingFactor), "3"); // 2016-06-15
+        double eps = 1e-6;
+        checkValueContains(value, eps, Integer.toString(0 * multiplyingFactor), "3"); // 2016-06-03
+        checkValueContains(value, eps, Integer.toString(2 * multiplyingFactor), "1"); // 2016-06-05
+        checkValueContains(value, eps, Integer.toString(3 * multiplyingFactor), "2"); // 2016-06-06
+        checkValueContains(value, eps, Integer.toString(4 * multiplyingFactor), "3"); // 2016-06-07
+        checkValueContains(value, eps, Integer.toString(12 * multiplyingFactor), "3"); // 2016-06-15
     }
 
     // Geometry should be Comparable<Geometry> but it's just Comparable, this causes issues

@@ -73,7 +73,6 @@ import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.spatial.BBOX;
-import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
@@ -426,14 +425,8 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             if (DefaultEngineeringCRS.GENERIC_2D == crs) {
                 fe.setSrid(GeoPackage.GENERIC_PROJECTED_SRID);
             } else {
-                try {
-                    Integer epsgCode = CRS.lookupEpsgCode(crs, true);
-                    if (epsgCode != null) {
-                        fe.setSrid(epsgCode);
-                    }
-                } catch (FactoryException e) {
-                    LOGGER.log(Level.WARNING, "Error looking up epsg code for " + crs, e);
-                }
+                int srid = getSRIDFromDescriptor(cx, featureType.getGeometryDescriptor());
+                if (srid > 0) fe.setSrid(srid);
             }
         }
 
@@ -508,6 +501,19 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         }
     }
 
+    private static int getSRIDFromDescriptor(Connection cx, GeometryDescriptor gd) {
+        // lookup or reverse engineer the srid
+        CoordinateReferenceSystem crs = gd.getCoordinateReferenceSystem();
+        if (gd.getUserData().get(JDBCDataStore.JDBC_NATIVE_SRID) != null)
+            return (Integer) gd.getUserData().get(JDBCDataStore.JDBC_NATIVE_SRID);
+
+        if (crs != null) {
+            return GeoPackage.findSRID(cx, crs);
+        }
+
+        return -1;
+    }
+
     @Override
     public void postDropTable(String schemaName, SimpleFeatureType featureType, Connection cx)
             throws SQLException {
@@ -560,7 +566,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     @Override
     public CoordinateReferenceSystem createCRS(int srid, Connection cx) throws SQLException {
         try {
-            return GeoPackage.decodeSRID(srid);
+            return GeoPackage.decodeCRS(cx, srid);
         } catch (Exception e) {
             LOGGER.log(Level.FINE, "Unable to create CRS from epsg code " + srid, e);
 

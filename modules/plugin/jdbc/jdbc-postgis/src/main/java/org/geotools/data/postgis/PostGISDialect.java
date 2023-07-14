@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Savepoint;
@@ -1145,24 +1146,7 @@ public class PostGISDialect extends BasicSQLDialect {
                 if (att instanceof GeometryDescriptor) {
                     GeometryDescriptor gd = (GeometryDescriptor) att;
 
-                    // lookup or reverse engineer the srid
-                    int srid = -1;
-                    if (gd.getUserData().get(JDBCDataStore.JDBC_NATIVE_SRID) != null) {
-                        srid = (Integer) gd.getUserData().get(JDBCDataStore.JDBC_NATIVE_SRID);
-                    } else if (gd.getCoordinateReferenceSystem() != null) {
-                        try {
-                            Integer result =
-                                    CRS.lookupEpsgCode(gd.getCoordinateReferenceSystem(), true);
-                            if (result != null) srid = result;
-                        } catch (Exception e) {
-                            LOGGER.log(
-                                    Level.FINE,
-                                    "Error looking up the "
-                                            + "epsg code for metadata "
-                                            + "insertion, assuming -1",
-                                    e);
-                        }
-                    }
+                    int srid = getSRIDFromDescriptor(cx, gd);
 
                     // setup the dimension according to the geometry hints
                     int dimensions = 2;
@@ -1330,6 +1314,59 @@ public class PostGISDialect extends BasicSQLDialect {
         } finally {
             dataStore.closeSafe(st);
         }
+    }
+
+    private static int getSRIDFromDescriptor(Connection cx, GeometryDescriptor gd) {
+        // lookup or reverse engineer the srid
+        CoordinateReferenceSystem crs = gd.getCoordinateReferenceSystem();
+        if (gd.getUserData().get(JDBCDataStore.JDBC_NATIVE_SRID) != null)
+            return (Integer) gd.getUserData().get(JDBCDataStore.JDBC_NATIVE_SRID);
+
+        if (crs != null) {
+            try {
+                Integer result = CRS.lookupEpsgCode(crs, true);
+                if (result != null) return result;
+
+                // if we got here we have a CRS but not an EPSG one, see if it's already there
+                String wkt = crs.toWKT();
+                String sqlWkt = "SELECT srid FROM spatial_ref_sys WHERE srtext = '" + wkt + "'";
+                try (Statement st = cx.createStatement();
+                        ResultSet rs = st.executeQuery(sqlWkt)) {
+                    if (rs.next()) {
+                        return rs.getInt(1);
+                    }
+                }
+
+                // then we should try to create one
+                String sqlMax = "select max(srid) from spatial_ref_sys";
+                String insert =
+                        "INSERT INTO spatial_ref_sys (srid, auth_name, auth_srid, srtext) VALUES (?, ?, ?, ?)";
+                String identifier = CRS.lookupIdentifier(crs, true);
+                int splitIdx = identifier.indexOf(':');
+                try (Statement st = cx.createStatement();
+                        ResultSet rs = st.executeQuery(sqlMax);
+                        PreparedStatement ps = cx.prepareStatement(insert)) {
+                    if (rs.next()) {
+                        int srid = rs.getInt(1) + 1;
+                        ps.setInt(1, srid);
+                        if (splitIdx == -1) {
+                            ps.setString(2, null);
+                            ps.setNull(3, Types.INTEGER);
+                        } else {
+                            ps.setString(2, identifier.substring(0, splitIdx));
+                            ps.setInt(3, Integer.parseInt(identifier.substring(splitIdx + 1)));
+                        }
+                        ps.setString(4, wkt);
+                        ps.execute();
+                        return srid;
+                    }
+                }
+            } catch (Exception e) {
+                LOGGER.log(Level.FINE, "Error looking up the epsg code for metadata insertion", e);
+            }
+        }
+
+        return -1;
     }
 
     @Override

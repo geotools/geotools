@@ -51,6 +51,8 @@ import org.opengis.filter.expression.PropertyName;
 
 public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
 
+    private static final double EPS = 1e-6;
+
     @Test
     public void testSimpleGroupByWithMax() throws Exception {
         List<Object[]> value = genericGroupByTestTest(Aggregate.MAX, "building_type");
@@ -553,12 +555,11 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         assertNotNull(value);
 
         assertEquals(5, value.size());
-        double eps = 1e-6;
-        checkValueContains(value, eps, Integer.toString(0 * multiplyingFactor), "3"); // 2016-06-03
-        checkValueContains(value, eps, Integer.toString(2 * multiplyingFactor), "1"); // 2016-06-05
-        checkValueContains(value, eps, Integer.toString(3 * multiplyingFactor), "2"); // 2016-06-06
-        checkValueContains(value, eps, Integer.toString(4 * multiplyingFactor), "3"); // 2016-06-07
-        checkValueContains(value, eps, Integer.toString(12 * multiplyingFactor), "3"); // 2016-06-15
+        checkValueContains(value, EPS, Integer.toString(0 * multiplyingFactor), "3"); // 2016-06-03
+        checkValueContains(value, EPS, Integer.toString(2 * multiplyingFactor), "1"); // 2016-06-05
+        checkValueContains(value, EPS, Integer.toString(3 * multiplyingFactor), "2"); // 2016-06-06
+        checkValueContains(value, EPS, Integer.toString(4 * multiplyingFactor), "3"); // 2016-06-07
+        checkValueContains(value, EPS, Integer.toString(12 * multiplyingFactor), "3"); // 2016-06-15
     }
 
     // Geometry should be Comparable<Geometry> but it's just Comparable, this causes issues

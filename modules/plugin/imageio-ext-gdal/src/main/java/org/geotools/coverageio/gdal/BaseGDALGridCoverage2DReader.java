@@ -19,7 +19,9 @@ package org.geotools.coverageio.gdal;
 import it.geosolutions.imageio.gdalframework.GDALCommonIIOImageMetadata;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.awt.image.DataBuffer;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageReader;
@@ -92,7 +94,7 @@ public abstract class BaseGDALGridCoverage2DReader extends BaseGridCoverage2DRea
             throw new DataSourceException(
                     "Unexpected error! Metadata should be an instance of the expected class: GDALCommonIIOImageMetadata.");
         }
-        parseCommonMetadata((GDALCommonIIOImageMetadata) metadata);
+        parseCommonMetadata((GDALCommonIIOImageMetadata) metadata, reader);
 
         // //
         //
@@ -119,7 +121,8 @@ public abstract class BaseGDALGridCoverage2DReader extends BaseGridCoverage2DRea
      * @param metadata a {@link GDALCommonIIOImageMetadata} metadata instance from where to search
      *     needed properties.
      */
-    private void parseCommonMetadata(final GDALCommonIIOImageMetadata metadata) {
+    private void parseCommonMetadata(final GDALCommonIIOImageMetadata metadata, ImageReader reader)
+            throws IOException {
 
         // ////////////////////////////////////////////////////////////////////
         //
@@ -187,6 +190,18 @@ public abstract class BaseGDALGridCoverage2DReader extends BaseGridCoverage2DRea
             this.originalGridRange =
                     new GridEnvelope2D(
                             new Rectangle(0, 0, metadata.getWidth(), metadata.getHeight()));
+
+        // NO DATA
+        this.nodata =
+                Optional.ofNullable(metadata.getNoDataValues())
+                        .filter(nd -> nd.length > 0)
+                        .map(nd -> nd[0])
+                        .orElse(null);
+        if (nodata != null) {
+            if (reader.getRawImageType(0).getSampleModel().getDataType() == DataBuffer.TYPE_FLOAT) {
+                this.nodata = Double.valueOf(nodata.floatValue());
+            }
+        }
 
         // //
         //

@@ -177,6 +177,8 @@ class RasterLayerRequest {
     /** The associated ROI provider if any */
     private MultiLevelROI multiLevelRoi;
 
+    private Double noData;
+
     /**
      * Build a new {@code CoverageRequest} given a set of input parameters.
      *
@@ -800,6 +802,7 @@ class RasterLayerRequest {
         this.coverageFullResolution = reader.getHighestRes();
         this.hints = reader.getHints().clone();
         this.multiLevelRoi = reader.getMultiLevelRoi();
+        this.noData = reader.getNodata();
         if (layout != null) {
             this.hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
         }
@@ -881,5 +884,9 @@ class RasterLayerRequest {
 
     public void setReadType(ReadType readType) {
         this.readType = readType;
+    }
+
+    public Double getNoData() {
+        return this.noData;
     }
 }

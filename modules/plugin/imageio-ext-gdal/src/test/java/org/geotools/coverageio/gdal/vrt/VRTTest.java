@@ -17,6 +17,9 @@
  */
 package org.geotools.coverageio.gdal.vrt;
 
+import static org.junit.Assert.assertEquals;
+
+import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.DataBuffer;
@@ -24,6 +27,8 @@ import java.io.File;
 import java.util.Iterator;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
+import org.geotools.coverage.Category;
+import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -34,6 +39,7 @@ import org.geotools.coverageio.gdal.BaseGDALGridCoverage2DReader;
 import org.geotools.coverageio.gdal.GDALTestCase;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.test.TestData;
+import org.geotools.util.NumberRange;
 import org.geotools.util.factory.Hints;
 import org.junit.Assert;
 import org.junit.Test;
@@ -109,6 +115,18 @@ public final class VRTTest extends GDALTestCase {
         GridCoverage2D gc = reader.read(null);
         forceDataLoading(gc);
 
+        // check the nodata has been read
+        Object property = gc.getProperty(NoDataContainer.GC_NODATA);
+        final double NO_DATA_VALUE = -3.27670000000000E+04;
+        assertEquals(NO_DATA_VALUE, (Double) property, 1);
+        GridSampleDimension sd = gc.getSampleDimension(0);
+        assertEquals(1, sd.getCategories().size());
+        Category noDataCategory = sd.getCategories().get(0);
+        assertEquals("NO_DATA", noDataCategory.getName().toString());
+        assertEquals(
+                new NumberRange<>(Double.class, NO_DATA_VALUE, NO_DATA_VALUE),
+                noDataCategory.getRange());
+
         // /////////////////////////////////////////////////////////////////////
         //
         // read again with subsampling and crop
@@ -118,11 +136,10 @@ public final class VRTTest extends GDALTestCase {
         final int oldW = gc.getRenderedImage().getWidth();
         final int oldH = gc.getRenderedImage().getHeight();
 
-        Assert.assertEquals(121, oldW);
-        Assert.assertEquals(121, oldH);
+        assertEquals(121, oldW);
+        assertEquals(121, oldH);
         // check for expected data type
-        Assert.assertEquals(
-                DataBuffer.TYPE_SHORT, gc.getRenderedImage().getSampleModel().getDataType());
+        assertEquals(DataBuffer.TYPE_SHORT, gc.getRenderedImage().getSampleModel().getDataType());
 
         final Rectangle range = ((GridEnvelope2D) reader.getOriginalGridRange());
         final GeneralEnvelope oldEnvelope = reader.getOriginalEnvelope();

@@ -946,7 +946,16 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     }
 
     @Test
-    public void rescaleToBytesNoData() {
+    public void rescaleToBytesNoDataNegative() {
+        rescaleToBytesNoData(-10);
+    }
+
+    @Test
+    public void rescaleToBytesNoDataZero() {
+        rescaleToBytesNoData(0);
+    }
+
+    private static void rescaleToBytesNoData(int minValue) {
         assertTrue("Assertions should be enabled.", ImageWorker.class.desiredAssertionStatus());
 
         // set up synthetic images for testing
@@ -954,7 +963,8 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         ImageWorker worker = new ImageWorker(test3);
         Range noData =
                 RangeFactory.convert(
-                        RangeFactory.create(-10, -10), test3.getSampleModel().getDataType());
+                        RangeFactory.create(minValue, minValue),
+                        test3.getSampleModel().getDataType());
         worker.setNoData(noData);
         worker.rescaleToBytes();
         RenderedImage image = worker.getRenderedImage();

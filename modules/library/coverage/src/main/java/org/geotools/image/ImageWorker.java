@@ -1477,7 +1477,7 @@ public class ImageWorker {
                         : ((nodata != null && !nodata.contains(0)) ? 0d : Double.NaN);
 
         // If setting noData to zero, make sure the rescale doesn't map good values to zero.
-        double offsetAdjustment = Math.abs(destNodata - 0) < 1E-6 ? 1 : 0;
+        double offsetAdjustment = nodata != null || Math.abs(destNodata - 0) < 1E-6 ? 1 : 0;
 
         boolean computeRescale = false;
         for (int i = 0; i < length; i++) {

@@ -78,7 +78,6 @@ if [ "$SKIP_DEPLOY"  != true ]; then
   echo "deploying with $MAVEN_FLAGS"
 
   mvn clean deploy -DskipTests -Dall $MAVEN_FLAGS
-  mvn clean -P deploy.boundless deploy -DskipTests -Dall $MAVEN_FLAGS
 fi
 
 # get <major.minor> for sf release dir
@@ -91,7 +90,7 @@ dir=`echo $tag | sed 's/\([0-9]*\)\([\.\-]\)\([0-9]*\).*/\1/g'`
 pushd $dist > /dev/null
 
 #Assume SSH Key for $SF_USER is added to the SSH Agent
-rsync -ave "ssh " *.zip $SF_USER@$SF_HOST:"/home/pfs/project/g/ge/geotools/GeoTools\\ $dir\\ Releases/$tag/"
+rsync -ave --relative "ssh " *.zip $SF_USER@$SF_HOST:"/home/pfs/project/g/ge/geotools/GeoTools\\ $dir\\ Releases/$tag/"
 
 popd > /dev/null
 

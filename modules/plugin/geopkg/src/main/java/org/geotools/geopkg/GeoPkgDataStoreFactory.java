@@ -77,6 +77,8 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
 
     GeoPkgGeomWriter.Configuration writerConfig;
 
+    private static int sqlLiteConnectTimeout = 60000;
+
     public GeoPkgDataStoreFactory() {
         this.writerConfig = new GeoPkgGeomWriter.Configuration();
     }
@@ -228,6 +230,7 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
             int memoryMB = (Integer) map;
             config.setPragma(SQLiteConfig.Pragma.MMAP_SIZE, String.valueOf(memoryMB * 1024 * 1024));
         }
+        config.setBusyTimeout(sqlLiteConnectTimeout);
         return config;
     }
 
@@ -245,5 +248,14 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
             throws IOException {
         dataStore.setDatabaseSchema(null);
         return dataStore;
+    }
+
+    /**
+     * Sets the timeout for SQLite connections in miliseconds (for testing). Default is 60 seconds.
+     *
+     * @param sqlLiteConnectTimeout timeout in miliseconds
+     */
+    public static void setSqlLiteConnectTimeout(int sqlLiteConnectTimeout) {
+        GeoPkgDataStoreFactory.sqlLiteConnectTimeout = sqlLiteConnectTimeout;
     }
 }

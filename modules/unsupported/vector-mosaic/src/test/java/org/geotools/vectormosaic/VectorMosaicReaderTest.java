@@ -20,8 +20,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.HashSet;
-import java.util.Set;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -60,13 +58,12 @@ public class VectorMosaicReaderTest extends VectorMosaicTest {
     @Test
     public void testFilterThatHitsIndexOnly() throws Exception {
         SimpleFeatureSource featureSource = MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
-        Set<String> tracker = new HashSet<>();
-        ((VectorMosaicFeatureSource) featureSource).granuleTracker = tracker;
+        GranuleTracker tracker = new GranuleTracker();
+        GranuleStoreFinder finder = ((VectorMosaicFeatureSource) featureSource).finder;
+        finder.granuleTracker = tracker;
         Query q = new Query();
-        Filter qequals =
-                FF.equals(
-                        FF.property("queryables"),
-                        FF.literal("time")); // queryables is in the index, not in the granules
+        // queryables is in the index, not in the granules
+        Filter qequals = FF.equals(FF.property("queryables"), FF.literal("time"));
         q.setFilter(qequals);
         SimpleFeatureCollection fc = featureSource.getFeatures(q);
         try (SimpleFeatureIterator iterator = fc.features(); ) {
@@ -84,20 +81,20 @@ public class VectorMosaicReaderTest extends VectorMosaicTest {
         assertNotEquals(
                 Filter.INCLUDE,
                 ((VectorMosaicFeatureSource) featureSource).filterTracker.getDelegateFilter());
-        assertEquals(1, tracker.size()); // only one index hit so only one granule checked
+        // only one index hit so only one granule checked
+        assertEquals(1, tracker.getGranuleNames().size());
     }
 
     @Test
     public void testFilterThatHitsGranulesOnly() throws Exception {
         SimpleFeatureSource featureSource = MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
-        Set<String> tracker = new HashSet<>();
-        ((VectorMosaicFeatureSource) featureSource).granuleTracker = tracker;
+        GranuleTracker tracker = new GranuleTracker();
+        GranuleStoreFinder finder = ((VectorMosaicFeatureSource) featureSource).finder;
+        finder.granuleTracker = tracker;
 
         Query q = new Query();
-        Filter qequals =
-                FF.equals(
-                        FF.property("tractorid"),
-                        FF.literal("deere2")); // tractorid is in the granule, not in the index
+        // tractorid is in the granule, not in the index
+        Filter qequals = FF.equals(FF.property("tractorid"), FF.literal("deere2"));
         q.setFilter(qequals);
         SimpleFeatureCollection fc = featureSource.getFeatures(q);
         try (SimpleFeatureIterator iterator = fc.features(); ) {
@@ -116,25 +113,25 @@ public class VectorMosaicReaderTest extends VectorMosaicTest {
         assertNotEquals(
                 Filter.INCLUDE,
                 ((VectorMosaicFeatureSource) featureSource).filterTracker.getGranuleFilter());
-        assertEquals(3, tracker.size()); // all indexes are hit, so all granules are checked
+        // all indexes are hit, so all granules are checked
+        assertEquals(3, tracker.getGranuleNames().size());
+        // we access the granules more times than we instantiate the datastore, avoiding redundant
+        // store creation
+        assertEquals(4, tracker.getCount());
     }
 
     @Test
     public void testFilterThatHitsGranulesAndIndex() throws Exception {
         SimpleFeatureSource featureSource = MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
-        Set<String> tracker = new HashSet<>();
-        ((VectorMosaicFeatureSource) featureSource).granuleTracker = tracker;
+        GranuleTracker tracker = new GranuleTracker();
+        GranuleStoreFinder finder = ((VectorMosaicFeatureSource) featureSource).finder;
+        finder.granuleTracker = tracker;
 
         Query q = new Query();
-        Filter qequals =
-                FF.equals(
-                        FF.property("tractorid"),
-                        FF.literal("deere2")); // tractorid is in the granule, not in the index
-
-        Filter qequals2 =
-                FF.equals(
-                        FF.property("queryables"),
-                        FF.literal("acreage")); // queryables is in the index, not in the granules
+        // tractorid is in the granule, not in the index
+        Filter qequals = FF.equals(FF.property("tractorid"), FF.literal("deere2"));
+        // queryables is in the index, not in the granules
+        Filter qequals2 = FF.equals(FF.property("queryables"), FF.literal("acreage"));
         Filter and = FF.and(qequals, qequals2);
         q.setFilter(and);
         SimpleFeatureCollection fc = featureSource.getFeatures(q);
@@ -154,25 +151,22 @@ public class VectorMosaicReaderTest extends VectorMosaicTest {
         assertNotEquals(
                 Filter.INCLUDE,
                 ((VectorMosaicFeatureSource) featureSource).filterTracker.getGranuleFilter());
-        assertEquals(1, tracker.size()); // only one index hit and only one granule checked
+        // only one index hit and only one granule checked
+        assertEquals(1, tracker.getGranuleNames().size());
     }
 
     @Test
     public void testFilterThatMatchesNeitherGranulesNorIndex() throws Exception {
         SimpleFeatureSource featureSource = MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
-        Set<String> tracker = new HashSet<>();
-        ((VectorMosaicFeatureSource) featureSource).granuleTracker = tracker;
+        GranuleTracker tracker = new GranuleTracker();
+        GranuleStoreFinder finder = ((VectorMosaicFeatureSource) featureSource).finder;
+        finder.granuleTracker = tracker;
 
         Query q = new Query();
-        Filter qequals =
-                FF.equals(
-                        FF.property("tractorid"),
-                        FF.literal("deere5")); // tractorid is in the granule, not in the index
-
-        Filter qequals2 =
-                FF.equals(
-                        FF.property("queryables"),
-                        FF.literal("province")); // queryables is in the index, not in the granules
+        // tractorid is in the granule, not in the index
+        Filter qequals = FF.equals(FF.property("tractorid"), FF.literal("deere5"));
+        // queryables is in the index, not in the granules
+        Filter qequals2 = FF.equals(FF.property("queryables"), FF.literal("province"));
         Filter and = FF.and(qequals, qequals2);
         q.setFilter(and);
         SimpleFeatureCollection fc = featureSource.getFeatures(q);
@@ -189,25 +183,22 @@ public class VectorMosaicReaderTest extends VectorMosaicTest {
         assertNotEquals(
                 Filter.INCLUDE,
                 ((VectorMosaicFeatureSource) featureSource).filterTracker.getGranuleFilter());
-        assertEquals(
-                0,
-                tracker.size()); // No granules are checked because the index filter doesn't match
+        // No granules are checked because the index filter doesn't match
+        assertEquals(0, tracker.getGranuleNames().size());
     }
 
     @Test
     public void testBBoxFilter() throws Exception {
         SimpleFeatureSource featureSource = MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
-        Set<String> tracker = new HashSet<>();
-        ((VectorMosaicFeatureSource) featureSource).granuleTracker = tracker;
+        GranuleTracker tracker = new GranuleTracker();
+        GranuleStoreFinder finder = ((VectorMosaicFeatureSource) featureSource).finder;
+        finder.granuleTracker = tracker;
 
         Query q = new Query();
         Filter fBbox =
                 FF.bbox("the_geom", -271.40625, -136.40625, 271.40625, 136.40625, "EPSG:4326");
-
-        Filter qequals =
-                FF.equals(
-                        FF.property("tractorid"),
-                        FF.literal("deere2")); // tractorid is in the granule, not in the index
+        // tractorid is in the granule, not in the index
+        Filter qequals = FF.equals(FF.property("tractorid"), FF.literal("deere2"));
 
         Filter and = FF.and(fBbox, qequals);
         q.setFilter(and);
@@ -228,23 +219,22 @@ public class VectorMosaicReaderTest extends VectorMosaicTest {
         assertNotEquals(
                 Filter.INCLUDE,
                 ((VectorMosaicFeatureSource) featureSource).filterTracker.getGranuleFilter());
-        assertEquals(3, tracker.size()); // all indexes are hit, so all granules are checked
+        // all indexes are hit, so all granules are checked
+        assertEquals(3, tracker.getGranuleNames().size());
     }
 
     @Test
     public void testLikeFilter() throws Exception {
         SimpleFeatureSource featureSource = MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
-        Set<String> tracker = new HashSet<>();
-        ((VectorMosaicFeatureSource) featureSource).granuleTracker = tracker;
+        GranuleTracker tracker = new GranuleTracker();
+        GranuleStoreFinder finder = ((VectorMosaicFeatureSource) featureSource).finder;
+        finder.granuleTracker = tracker;
 
         Query q = new Query();
         Filter fBbox =
                 FF.bbox("the_geom", -271.40625, -136.40625, 271.40625, 136.40625, "EPSG:4326");
-
-        Filter qequals =
-                FF.like(
-                        FF.property("tractorid"),
-                        "deere*"); // tractorid is in the granule, not in the index
+        // tractorid is in the granule, not in the index
+        Filter qequals = FF.like(FF.property("tractorid"), "deere*");
 
         Filter and = FF.and(fBbox, qequals);
         q.setFilter(and);
@@ -264,6 +254,7 @@ public class VectorMosaicReaderTest extends VectorMosaicTest {
         assertNotEquals(
                 Filter.INCLUDE,
                 ((VectorMosaicFeatureSource) featureSource).filterTracker.getGranuleFilter());
-        assertEquals(3, tracker.size()); // all indexes are hit, so all granules are checked
+        // all indexes are hit, so all granules are checked
+        assertEquals(3, tracker.getGranuleNames().size());
     }
 }

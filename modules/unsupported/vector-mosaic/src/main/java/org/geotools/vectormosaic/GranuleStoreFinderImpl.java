@@ -18,42 +18,49 @@ package org.geotools.vectormosaic;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.util.logging.Logging;
 
 /** Class used to find the DataStore for a VectorMosaicGranule. */
-public class VectorMosaicGranuleStoreFinderImpl extends VectorMosaicGranuleStoreFinder {
-    static final Logger LOGGER = Logging.getLogger(VectorMosaicGranuleStoreFinderImpl.class);
-    private final String preferredSPI;
+public class GranuleStoreFinderImpl extends GranuleStoreFinder {
+    static final Logger LOGGER = Logging.getLogger(GranuleStoreFinderImpl.class);
+    protected final String preferredSPI;
 
     /**
      * Constructor that accepts a nullable preferred SPI.
      *
      * @param preferredSPI the preferred SPI
      */
-    public VectorMosaicGranuleStoreFinderImpl(String preferredSPI) {
+    public GranuleStoreFinderImpl(String preferredSPI) {
         this.preferredSPI = preferredSPI;
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public void findDataStore(VectorMosaicGranule granule, boolean isSampleForSchema) {
+    public Optional<DataStore> findDataStore(
+            VectorMosaicGranule granule, boolean isSampleForSchema) {
+        DataStore dataStore = null;
         try {
             if (granule.getConnProperties() != null) {
                 Map params = propertiesToMap(granule.getConnProperties());
                 if (preferredSPI != null) {
                     DataStoreFactorySpi dataStoreFactorySpi = getSPI(preferredSPI);
-                    granule.setDataStore(dataStoreFactorySpi.createDataStore(params));
+                    dataStore = dataStoreFactorySpi.createDataStore(params);
                 } else {
-                    granule.setDataStore(DataStoreFinder.getDataStore(params));
+                    dataStore = DataStoreFinder.getDataStore(params);
                 }
                 LOGGER.log(
                         Level.FINE,
                         "Found and set datastore for granule {0} with params {1}",
                         new Object[] {granule.getName(), granule.getConnProperties()});
+                if (!isSampleForSchema && granuleTracker != null) {
+                    granuleTracker.add(granule.getParams());
+                }
             } else {
                 LOGGER.log(
                         Level.WARNING,
@@ -63,5 +70,10 @@ public class VectorMosaicGranuleStoreFinderImpl extends VectorMosaicGranuleStore
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, "Could not find data store", e);
         }
+        return Optional.ofNullable(dataStore);
+    }
+
+    public String getPreferredSPI() {
+        return preferredSPI;
     }
 }

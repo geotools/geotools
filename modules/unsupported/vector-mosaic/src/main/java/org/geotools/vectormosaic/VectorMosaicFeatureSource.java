@@ -43,6 +43,7 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
+import org.geotools.data.store.ContentState;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.visitor.FeatureAttributeVisitor;
 import org.geotools.feature.visitor.MaxVisitor;
@@ -66,6 +67,8 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
     private final String delegateStoreName;
     private final String preferredSPI;
     private final String connectionParameterKey;
+    // included for cache testing purposes
+    protected ContentState state;
     protected FilterTracker filterTracker = new FilterTracker();
     protected GranuleStoreFinder finder;
 
@@ -197,6 +200,15 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
         return getFeatureType(indexFeatureType, granuleFeatureType);
     }
 
+    @Override
+    public ContentState getState() {
+        if (state != null) {
+            return state;
+        } else {
+            return super.getState();
+        }
+    }
+
     /**
      * Get the feature type for the granules.
      *
@@ -204,39 +216,37 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
      * @throws IOException if the feature type can't be found.
      */
     protected SimpleFeatureType getGranuleType() throws IOException {
+        VectorMosaicState state = (VectorMosaicState) getState();
+        // caching should be done at the data store level!
+        if (state.getGranuleFeatureType() != null) return state.getGranuleFeatureType();
+
         Name dsname = buildName(delegateStoreName);
         DataStore delegateDataStore = repository.dataStore(dsname);
         SimpleFeatureSource delegateFeatureSource =
                 delegateDataStore.getFeatureSource(delegateStoreTypeName);
-        SimpleFeatureCollection features = delegateFeatureSource.getFeatures();
-        try (SimpleFeatureIterator fi = features.features(); ) {
-            SimpleFeature firstDelegateFeature = null;
-            if (fi.hasNext()) {
-                firstDelegateFeature = fi.next();
-            }
-            if (firstDelegateFeature == null) {
-                throw new IOException("No index features found in " + delegateStoreName);
-            }
-            VectorMosaicGranule granule =
-                    VectorMosaicGranule.fromDelegateFeature(firstDelegateFeature);
-            DataStore granuleDataStore = initGranule(granule, true);
-            SimpleFeatureType granuleFeatureType = null;
-            try {
-                granuleFeatureType = granuleDataStore.getSchema(granule.getGranuleTypeName());
-            } catch (Exception e) {
-                LOGGER.log(
-                        Level.WARNING,
-                        "Could not get schema for " + granule.getGranuleTypeName(),
-                        e);
-                throw new IOException(
-                        "Could not get schema for " + granule.getGranuleTypeName(), e);
-            } finally {
-                if (granuleDataStore != null) {
-                    granuleDataStore.dispose();
-                }
-            }
-            return granuleFeatureType;
+        Query q = new Query(delegateFeatureSource.getSchema().getTypeName());
+        q.setMaxFeatures(1);
+        SimpleFeatureCollection features = delegateFeatureSource.getFeatures(q);
+        SimpleFeature firstDelegateFeature = DataUtilities.first(features);
+        if (firstDelegateFeature == null) {
+            throw new IOException("No index features found in " + delegateStoreName);
         }
+        VectorMosaicGranule granule = VectorMosaicGranule.fromDelegateFeature(firstDelegateFeature);
+        DataStore granuleDataStore = initGranule(granule, true);
+        SimpleFeatureType granuleFeatureType = null;
+        try {
+            granuleFeatureType = granuleDataStore.getSchema(granule.getGranuleTypeName());
+        } catch (Exception e) {
+            LOGGER.log(
+                    Level.WARNING, "Could not get schema for " + granule.getGranuleTypeName(), e);
+            throw new IOException("Could not get schema for " + granule.getGranuleTypeName(), e);
+        } finally {
+            if (granuleDataStore != null) {
+                granuleDataStore.dispose();
+            }
+        }
+        state.setGranuleFeatureType(granuleFeatureType);
+        return granuleFeatureType;
     }
 
     /**

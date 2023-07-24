@@ -22,11 +22,16 @@ import java.util.Set;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.data.store.ContentDataStore;
+import org.geotools.data.store.ContentEntry;
+import org.geotools.feature.NameImpl;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.PropertyName;
 
@@ -36,6 +41,29 @@ public class VectorMosaicFeatureSourceTest extends VectorMosaicTest {
     public void testGetCount() throws Exception {
         FeatureSource featureSource = MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
         assertEquals(-1, featureSource.getCount(Query.ALL));
+    }
+
+    @Test
+    /** Test that the cached feature type is used when available */
+    public void testCacheFeatureType() throws Exception {
+        VectorMosaicFeatureSource featureSource =
+                (VectorMosaicFeatureSource) MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
+        VectorMosaicState state =
+                new VectorMosaicState(
+                        new ContentEntry(
+                                (ContentDataStore) MOSAIC_STORE, new NameImpl(MOSAIC_TYPE_NAME)));
+        SimpleFeatureType oldType = MOSAIC_STORE.getSchema(MOSAIC_TYPE_NAME);
+        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        tb.setName("cachedType");
+        tb.setNamespaceURI(oldType.getName().getNamespaceURI());
+        tb.setCRS(oldType.getCoordinateReferenceSystem());
+        tb.addAll(oldType.getAttributeDescriptors());
+        tb.setDefaultGeometry(oldType.getGeometryDescriptor().getLocalName());
+        SimpleFeatureType cachedType = tb.buildFeatureType();
+        state.setGranuleFeatureType(cachedType);
+        featureSource.state = state;
+        SimpleFeatureType simpleFeatureType = featureSource.getGranuleType();
+        assertEquals("cachedType", simpleFeatureType.getTypeName());
     }
 
     @Test

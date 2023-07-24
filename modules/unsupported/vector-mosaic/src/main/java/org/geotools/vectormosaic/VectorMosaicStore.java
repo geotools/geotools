@@ -28,6 +28,7 @@ import org.geotools.data.Repository;
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
+import org.geotools.data.store.ContentState;
 import org.geotools.feature.NameImpl;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -224,5 +225,10 @@ public class VectorMosaicStore extends ContentDataStore {
             throw new IOException("No Vector Mosaic configuration found for type " + name);
         }
         return new VectorMosaicFeatureSource(entry, this);
+    }
+
+    @Override
+    protected ContentState createContentState(ContentEntry entry) {
+        return new VectorMosaicState(entry);
     }
 }

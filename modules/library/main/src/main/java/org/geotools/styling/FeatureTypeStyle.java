@@ -137,6 +137,16 @@ public interface FeatureTypeStyle extends org.opengis.style.FeatureTypeStyle {
     public static String SORT_BY_GROUP = "sortByGroup";
 
     /**
+     * Boolean value allowing to control whether rendering transformations should be evaluated when
+     * performing WMS GetFeatureInfo requests. This option applies only to transformations with a
+     * raster source (i.e., raster-to-raster and raster-to-vector). The default value can be
+     * configured by administrators in the global and workspace-specific WMS service settings
+     * (transformations will be evaluated by default) and this SLD vendor option can be used to
+     * override the service setting for a specific FeatureTypeStyle element within the SLD document.
+     */
+    public static String TRANSFORM_FEATURES = "transformFeatures";
+
+    /**
      * String value allowing to control whether an SLD element should be included when applying the
      * style to render maps or a legends. The option can be used also on Rule and all the
      * Symbolizers. Possible values are normal, legendOnly, mapOnly.

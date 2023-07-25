@@ -34,14 +34,12 @@ public abstract class PropertyImpl implements Property {
     protected Object value;
     /** descriptor of the property */
     protected PropertyDescriptor descriptor;
-    /** user data */
-    protected final Map<Object, Object> userData;
+    /** user data, lazily initialized at {@link #getUserData()} / {@link #getUserData(Object)} */
+    private Map<Object, Object> userData;
 
     protected PropertyImpl(Object value, PropertyDescriptor descriptor) {
         this.value = value;
         this.descriptor = descriptor;
-        userData = new HashMap<>();
-
         if (descriptor == null) {
             throw new NullPointerException("descriptor");
         }
@@ -79,7 +77,13 @@ public abstract class PropertyImpl implements Property {
 
     @Override
     public Map<Object, Object> getUserData() {
+        if (userData == null) userData = new HashMap<>();
         return userData;
+    }
+
+    public Object getUserData(Object key) {
+        Map<Object, Object> ud = userData;
+        return ud == null ? null : ud.get(key);
     }
 
     @Override

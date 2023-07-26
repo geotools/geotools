@@ -23,12 +23,17 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.geotools.data.DataStore;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
@@ -39,8 +44,13 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.feature.visitor.FeatureAttributeVisitor;
+import org.geotools.feature.visitor.MaxVisitor;
+import org.geotools.feature.visitor.MinVisitor;
+import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.logging.Logging;
+import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -283,6 +293,51 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
                         () -> new IOException("No data store found for granule"));
         populateGranuleTypeName(granule, dataStore);
         return dataStore;
+    }
+
+    @Override
+    protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
+        // check if visitor is aggregate visitor
+        if (visitor instanceof MaxVisitor
+                || visitor instanceof MinVisitor
+                || visitor instanceof UniqueVisitor) {
+            Name dsname = buildName(delegateStoreName);
+            DataStore delegateDataStore = repository.dataStore(dsname);
+            SimpleFeatureType delegateSchema = delegateDataStore.getSchema(delegateStoreTypeName);
+            Set<String> indexAttributeNames =
+                    delegateSchema.getAttributeDescriptors().stream()
+                            .map(AttributeDescriptor::getLocalName)
+                            .collect(Collectors.toSet());
+            // check if all filter attributes are in index/delegate
+            if (query.getFilter() != null) {
+                String[] filterAttributeNames = DataUtilities.attributeNames(query.getFilter());
+                if (!indexAttributeNames.containsAll(Arrays.asList(filterAttributeNames))) {
+                    return false;
+                }
+            }
+            // check if all visitor expressions are covered by index/delegate
+            List<String> visitorExpressionFields =
+                    ((FeatureAttributeVisitor) visitor)
+                            .getExpressions().stream()
+                                    .map(DataUtilities::attributeNames)
+                                    .flatMap(Arrays::stream)
+                                    .collect(Collectors.toList());
+
+            if (!indexAttributeNames.containsAll(visitorExpressionFields)) {
+                return false;
+            }
+
+            // this avoids query properties being set with granule attributes
+            query.setPropertyNames(visitorExpressionFields);
+            // visitor is aggregate type and all attributes are in index/delegate
+            delegateDataStore
+                    .getFeatureSource(delegateStoreTypeName)
+                    .getFeatures(query)
+                    .accepts(visitor, null);
+            return true;
+        }
+
+        return false;
     }
 
     /**

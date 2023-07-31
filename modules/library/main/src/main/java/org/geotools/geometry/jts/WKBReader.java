@@ -261,6 +261,13 @@ public class WKBReader {
 
     private Point readPoint() throws IOException, ParseException {
         CoordinateSequence pts = readCoordinateSequence(1);
+        boolean empty = true;
+        for (int i = 0; i < pts.getDimension(); i++) {
+            if (!Double.isNaN(pts.getOrdinate(0, i))) {
+                empty = false;
+            }
+        }
+        if (empty) return factory.createPoint();
         return factory.createPoint(pts);
     }
 
@@ -296,6 +303,8 @@ public class WKBReader {
 
     protected Polygon readPolygon() throws IOException, ParseException {
         int numRings = dis.readInt();
+        if (numRings == 0) return factory.createPolygon();
+
         LinearRing[] holes = null;
         if (numRings > 1) holes = new LinearRing[numRings - 1];
 

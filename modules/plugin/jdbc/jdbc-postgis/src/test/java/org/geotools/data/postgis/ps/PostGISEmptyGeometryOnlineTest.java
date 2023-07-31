@@ -16,14 +16,23 @@
  */
 package org.geotools.data.postgis.ps;
 
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.data.postgis.PostGISEmptyGeometryTestSetup;
 import org.geotools.jdbc.JDBCEmptyGeometryOnlineTest;
 import org.geotools.jdbc.JDBCEmptyGeometryTestSetup;
+import org.locationtech.jts.geom.Geometry;
 
 public class PostGISEmptyGeometryOnlineTest extends JDBCEmptyGeometryOnlineTest {
 
     @Override
     protected JDBCEmptyGeometryTestSetup createTestSetup() {
         return new PostGISEmptyGeometryTestSetup(new PostGISPSTestSetup());
+    }
+
+    @Override
+    protected void assertEmptyGeometry(Geometry geometry) {
+        // strict, we insert an empty geometry and want one back, not a null
+        assertTrue(geometry.isEmpty());
     }
 }

@@ -69,12 +69,13 @@ public abstract class JDBCEmptyGeometryOnlineTest extends JDBCTestSupport {
         WKTReader reader = new WKTReader();
         Geometry emptyGeometry = reader.read(type.toUpperCase() + " EMPTY");
 
+        String emptyGeometryName = aname("geom_" + type.toLowerCase());
         try (Transaction tx = new DefaultTransaction();
                 FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
                         dataStore.getFeatureWriterAppend(tname("empty"), tx)) {
             SimpleFeature feature = writer.next();
             feature.setAttribute(aname("id"), Integer.valueOf(100));
-            feature.setAttribute(aname("geom_" + type.toLowerCase()), emptyGeometry);
+            feature.setAttribute(emptyGeometryName, emptyGeometry);
             feature.setAttribute(aname("name"), new String("empty " + type));
             writer.write();
             writer.close();
@@ -85,9 +86,15 @@ public abstract class JDBCEmptyGeometryOnlineTest extends JDBCTestSupport {
         assertEquals(1, fc.size());
         try (SimpleFeatureIterator fi = fc.features()) {
             SimpleFeature nf = fi.next();
-            Geometry geometry = (Geometry) nf.getDefaultGeometry();
-            // either null or empty, we don't really care
-            assertTrue(geometry == null || geometry.isEmpty());
+            Geometry geometry = (Geometry) nf.getAttribute(emptyGeometryName);
+            assertEmptyGeometry(geometry);
         }
+    }
+
+    /**
+     * By default checks the geometry is either null or empty, subclasses can change this behavior
+     */
+    protected void assertEmptyGeometry(Geometry geometry) {
+        assertTrue(geometry == null || geometry.isEmpty());
     }
 }

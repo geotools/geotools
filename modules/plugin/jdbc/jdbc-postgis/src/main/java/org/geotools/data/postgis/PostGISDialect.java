@@ -1396,7 +1396,7 @@ public class PostGISDialect extends BasicSQLDialect {
     @Override
     public void encodeGeometryValue(Geometry value, int dimension, int srid, StringBuffer sql)
             throws IOException {
-        if (value == null || value.isEmpty()) {
+        if (value == null) {
             sql.append("NULL");
         } else {
             if (value instanceof LinearRing && !(value instanceof CurvedRing)) {

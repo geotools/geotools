@@ -1948,7 +1948,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         }
     }
 
-    private Geometry getGeometryAccordingtoBinding(Object value, Class binding) {
+    private Geometry getGeometryAccordingtoBinding(Object value, Class<?> binding) {
         Geometry g = (Geometry) value;
         if (g != null
                 && g instanceof MultiSurface

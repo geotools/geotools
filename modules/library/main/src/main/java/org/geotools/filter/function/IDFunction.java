@@ -22,6 +22,7 @@ import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.capability.FunctionName;
+import org.opengis.filter.expression.VolatileFunction;
 
 /**
  * Allow access to the value of Feature.getID() as an expression
@@ -29,7 +30,7 @@ import org.opengis.filter.capability.FunctionName;
  * @author Jody Garnett
  * @since 2.2, 2.5
  */
-public class IDFunction extends FunctionExpressionImpl {
+public class IDFunction extends FunctionExpressionImpl implements VolatileFunction {
 
     public static FunctionName NAME = new FunctionNameImpl("id", String.class);
 

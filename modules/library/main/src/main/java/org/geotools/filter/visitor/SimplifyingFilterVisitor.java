@@ -44,10 +44,14 @@ import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.PropertyIsNil;
 import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.PropertyIsNull;
+import org.opengis.filter.expression.Add;
+import org.opengis.filter.expression.Divide;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.Multiply;
 import org.opengis.filter.expression.NilExpression;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.expression.Subtract;
 import org.opengis.filter.expression.VolatileFunction;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.identity.GmlObjectId;
@@ -614,6 +618,50 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         } else {
             return clone;
         }
+    }
+
+    @Override
+    public Object visit(Add expression, Object extraData) {
+        Expression expr1 = visit(expression.getExpression1(), extraData);
+        Expression expr2 = visit(expression.getExpression2(), extraData);
+        Add result = getFactory(extraData).add(expr1, expr2);
+        if (expr1 instanceof Literal && expr2 instanceof Literal) {
+            return getFactory(extraData).literal(result.evaluate(null));
+        }
+        return result;
+    }
+
+    @Override
+    public Object visit(Divide expression, Object extraData) {
+        Expression expr1 = visit(expression.getExpression1(), extraData);
+        Expression expr2 = visit(expression.getExpression2(), extraData);
+        Divide result = getFactory(extraData).divide(expr1, expr2);
+        if (expr1 instanceof Literal && expr2 instanceof Literal) {
+            return getFactory(extraData).literal(result.evaluate(null));
+        }
+        return result;
+    }
+
+    @Override
+    public Object visit(Subtract expression, Object extraData) {
+        Expression expr1 = visit(expression.getExpression1(), extraData);
+        Expression expr2 = visit(expression.getExpression2(), extraData);
+        Subtract result = getFactory(extraData).subtract(expr1, expr2);
+        if (expr1 instanceof Literal && expr2 instanceof Literal) {
+            return getFactory(extraData).literal(result.evaluate(null));
+        }
+        return result;
+    }
+
+    @Override
+    public Object visit(Multiply expression, Object extraData) {
+        Expression expr1 = visit(expression.getExpression1(), extraData);
+        Expression expr2 = visit(expression.getExpression2(), extraData);
+        Multiply result = getFactory(extraData).multiply(expr1, expr2);
+        if (expr1 instanceof Literal && expr2 instanceof Literal) {
+            return getFactory(extraData).literal(result.evaluate(null));
+        }
+        return result;
     }
 
     public boolean isRangeSimplicationEnabled() {

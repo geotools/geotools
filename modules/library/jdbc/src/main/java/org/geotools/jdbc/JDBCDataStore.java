@@ -4674,7 +4674,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             Class binding = att.getType().getBinding();
             Object value = values[i];
             if (Geometry.class.isAssignableFrom(binding)) {
-                Geometry g = getGeometryAccordingtoBinding(values, binding);
+                Geometry g = getGeometryAccordingtoBinding(value, binding);
                 dialect.setGeometryValue(
                         g, getDescriptorDimension(att), getDescriptorSRID(att), binding, ps, j + 1);
             } else {

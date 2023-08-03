@@ -1950,7 +1950,8 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
     private Geometry getGeometryAccordingtoBinding(Object value, Class binding) {
         Geometry g = (Geometry) value;
-        if (g.getClass().isAssignableFrom(MultiSurface.class)
+        if (g != null
+                && g.getClass().isAssignableFrom(MultiSurface.class)
                 && binding.isAssignableFrom(MultiPolygon.class)) {
             g = ((MultiSurface) g).linearize();
         }

@@ -1557,6 +1557,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      */
     private boolean fullySupports(Expression expression) {
         if (expression == null) {
+
             throw new IllegalArgumentException("Null expression can not be unpacked");
         }
 
@@ -1950,9 +1951,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
     private Geometry getGeometryAccordingtoBinding(Object value, Class<?> binding) {
         Geometry g = (Geometry) value;
-        if (g != null
-                && g instanceof MultiSurface
-                && binding.isAssignableFrom(MultiPolygon.class)) {
+        if (g != null && g instanceof MultiSurface && binding.equals(MultiPolygon.class)) {
             g = ((MultiSurface) g).linearize();
         }
         return g;

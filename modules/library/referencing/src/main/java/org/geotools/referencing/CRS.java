@@ -183,6 +183,9 @@ public final class CRS {
     private static SoftValueHashMap<String, CoordinateReferenceSystem> xyCache =
             new SoftValueHashMap<>();
 
+    private static SoftValueHashMap<String, CoordinateReferenceSystem> wktCache =
+            new SoftValueHashMap<>();
+
     /** Registers a listener automatically invoked when the system-wide configuration changed. */
     static {
         GeoTools.addChangeListener(
@@ -195,6 +198,7 @@ public final class CRS {
                             strictFactory = null;
                             lenientFactory = null;
                             xyCache.clear();
+                            wktCache.clear();
                             defaultCache.clear();
                         }
                     }
@@ -562,7 +566,12 @@ public final class CRS {
      * </blockquote>
      */
     public static CoordinateReferenceSystem parseWKT(final String wkt) throws FactoryException {
-        return ReferencingFactoryFinder.getCRSFactory(null).createFromWKT(wkt);
+        CoordinateReferenceSystem result = wktCache.get(wkt);
+        if (result == null) {
+            result = ReferencingFactoryFinder.getCRSFactory(null).createFromWKT(wkt);
+            wktCache.put(wkt, result);
+        }
+        return result;
     }
 
     /**

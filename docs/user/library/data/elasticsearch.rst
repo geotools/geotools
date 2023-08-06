@@ -54,6 +54,8 @@ Available data store connection parameters are summarized in the following table
      - Whether to validate the server certificate during the SSL handshake for https connections
    * - default_max_features
      - Default used when maxFeatures is unlimited
+   * - response_buffer_limit
+     - Maximum number of bytes to buffer in memory when reading responses from Elasticsearch
    * - source_filtering_enabled
      - Whether to enable filtering of the _source field
    * - scroll_enabled

@@ -99,7 +99,12 @@ public class RestElasticClientTest {
         SecurityContextHolder.setContext(mockStx);
 
         client = new RestElasticClient(mockRestClient);
-        proxyClient = new RestElasticClient(mockRestClient, mockProxyRestClient, true);
+        proxyClient =
+                new RestElasticClient(
+                        mockRestClient,
+                        mockProxyRestClient,
+                        true,
+                        (Integer) ElasticDataStoreFactory.RESPONSE_BUFFER_LIMIT.sample);
 
         InputStream inputStream = new ByteArrayInputStream("{}".getBytes());
         when(mockEntity.getContent()).thenReturn(inputStream);
@@ -138,7 +143,8 @@ public class RestElasticClientTest {
                         + "{\"properties\": {\"status_s\": {\"type\": \"keyword\"}}}}}";
         InputStream inputStream = new ByteArrayInputStream(content.getBytes());
         when(mockEntity.getContent()).thenReturn(inputStream);
-        when(mockRestClient.performRequest(new Request("GET", "/status_s/_mapping")))
+        when(mockRestClient.performRequest(
+                        (argThat((req) -> "/status_s/_mapping".equals(req.getEndpoint())))))
                 .thenReturn(mockResponse);
 
         List<String> names = client.getTypes("status_s");
@@ -153,7 +159,8 @@ public class RestElasticClientTest {
         InputStream inputStream = new ByteArrayInputStream(content.getBytes());
         when(mockEntity.getContent()).thenReturn(inputStream);
         mockVersion("6.0.0");
-        when(mockRestClient.performRequest(new Request("GET", "/status_s/_mapping")))
+        when(mockRestClient.performRequest(
+                        (argThat((req) -> "/status_s/_mapping".equals(req.getEndpoint())))))
                 .thenReturn(mockResponse);
 
         List<String> names = client.getTypes("status_s");
@@ -168,7 +175,8 @@ public class RestElasticClientTest {
                         + "{\"properties\": {\"status_s\": {\"type\": \"keyword\"}}}}}";
         InputStream inputStream = new ByteArrayInputStream(content.getBytes());
         when(mockEntity.getContent()).thenReturn(inputStream);
-        when(mockRestClient.performRequest(new Request("GET", "/status_s/_mapping")))
+        when(mockRestClient.performRequest(
+                        (argThat((req) -> "/status_s/_mapping".equals(req.getEndpoint())))))
                 .thenReturn(mockResponse);
 
         Map<String, Map<String, String>> expected =
@@ -184,7 +192,8 @@ public class RestElasticClientTest {
         InputStream inputStream = new ByteArrayInputStream(content.getBytes());
         when(mockEntity.getContent()).thenReturn(inputStream);
         mockVersion("6.0.0");
-        when(mockRestClient.performRequest(new Request("GET", "/status_s/_mapping/active")))
+        when(mockRestClient.performRequest(
+                        (argThat((req) -> "/status_s/_mapping/active".equals(req.getEndpoint())))))
                 .thenReturn(mockResponse);
 
         Map<String, Map<String, String>> expected =
@@ -199,7 +208,8 @@ public class RestElasticClientTest {
                         + "{\"properties\": {\"status_s\": {\"type\": \"keyword\"}}}}}}";
         InputStream inputStream = new ByteArrayInputStream(content.getBytes());
         when(mockEntity.getContent()).thenReturn(inputStream);
-        when(mockRestClient.performRequest(new Request("GET", "/status_s/_mapping")))
+        when(mockRestClient.performRequest(
+                        (argThat((req) -> "/status_s/_mapping".equals(req.getEndpoint())))))
                 .thenReturn(mockResponse);
         when(mockRestClient.performRequest(new Request("GET", "/_alias/status_s")))
                 .thenThrow(IOException.class);
@@ -214,7 +224,8 @@ public class RestElasticClientTest {
         String content = "{}";
         InputStream inputStream = new ByteArrayInputStream(content.getBytes());
         when(mockEntity.getContent()).thenReturn(inputStream);
-        when(mockRestClient.performRequest(new Request("GET", "/status_s/_mapping")))
+        when(mockRestClient.performRequest(
+                        (argThat((req) -> "/status_s/_mapping".equals(req.getEndpoint())))))
                 .thenReturn(mockResponse);
         when(mockRestClient.performRequest(new Request("GET", "/_alias/status_s")))
                 .thenThrow(IOException.class);
@@ -229,9 +240,9 @@ public class RestElasticClientTest {
                         + "{\"properties\": {\"status_s\": {\"type\": \"keyword\"}}}}}";
         InputStream inputStream = new ByteArrayInputStream(content.getBytes());
         when(mockEntity.getContent()).thenReturn(inputStream);
-        when(mockRestClient.performRequest(new Request("GET", "/status_s/_mapping")))
+        when(mockRestClient.performRequest(
+                        (argThat((req) -> "/status_s/_mapping".equals(req.getEndpoint())))))
                 .thenReturn(mockResponse);
-
         Map<String, Map<String, String>> expected =
                 ImmutableMap.of("status_s", ImmutableMap.of("type", "keyword"));
         assertEquals(expected, client.getMapping("status_s", "active"));

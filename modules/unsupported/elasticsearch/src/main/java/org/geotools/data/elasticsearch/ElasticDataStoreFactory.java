@@ -193,6 +193,14 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
                     false,
                     0.05);
 
+    public static final Param RESPONSE_BUFFER_LIMIT =
+            new Param(
+                    "response_buffer_limit",
+                    Integer.class,
+                    "Maximum number of bytes to buffer in memory when reading responses from Elasticsearch",
+                    false,
+                    104857600);
+
     public static final Param[] PARAMS = {
         HOSTNAME,
         HOSTPORT,
@@ -210,7 +218,8 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
         DEFAULT_MAX_FEATURES,
         ARRAY_ENCODING,
         GRID_SIZE,
-        GRID_THRESHOLD
+        GRID_THRESHOLD,
+        RESPONSE_BUFFER_LIMIT
     };
 
     @Override
@@ -277,6 +286,7 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
         final String indexName = (String) INDEX_NAME.lookUp(params);
         final String arrayEncoding = getValue(ARRAY_ENCODING, params);
         final boolean runAsGeoServerUser = getValue(RUNAS_GEOSERVER_USER, params);
+        final int responseBufferLimit = getValue(RESPONSE_BUFFER_LIMIT, params);
         if (isForceRunas() && !runAsGeoServerUser) {
             throw new IllegalArgumentException(
                     RUNAS_GEOSERVER_USER.key
@@ -291,7 +301,8 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
         }
 
         final ElasticDataStore dataStore =
-                new ElasticDataStore(client, proxyClient, indexName, runAsGeoServerUser);
+                new ElasticDataStore(
+                        client, proxyClient, indexName, runAsGeoServerUser, responseBufferLimit);
         dataStore.setDefaultMaxFeatures(getValue(DEFAULT_MAX_FEATURES, params));
         dataStore.setSourceFilteringEnabled(getValue(SOURCE_FILTERING_ENABLED, params));
         dataStore.setScrollEnabled(getValue(SCROLL_ENABLED, params));
@@ -395,7 +406,6 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
 
                         httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
                     }
-
                     return httpClientBuilder;
                 });
 

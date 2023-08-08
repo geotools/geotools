@@ -19,7 +19,11 @@ package org.geotools.vectormosaic;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
+import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -27,6 +31,7 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 
@@ -256,5 +261,19 @@ public class VectorMosaicReaderTest extends VectorMosaicTest {
                 ((VectorMosaicFeatureSource) featureSource).filterTracker.getGranuleFilter());
         // all indexes are hit, so all granules are checked
         assertEquals(3, tracker.getGranuleNames().size());
+    }
+
+    @Test
+    public void avoidSchemaRecalculation() throws Exception {
+        VectorMosaicFeatureSource featureSource =
+                (VectorMosaicFeatureSource) MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
+        VectorMosaicFeatureSource spy = spy(featureSource);
+
+        // force it to read some features (count iterates here)
+        assertEquals(4, DataUtilities.count(spy.getFeatures()));
+
+        // the schema was computed once and then no more (when running stand alone, it happens
+        // once, when running along with other tests, schema has been computed already)
+        verify(spy, Mockito.atMost(1)).getFeatureType(any(), any());
     }
 }

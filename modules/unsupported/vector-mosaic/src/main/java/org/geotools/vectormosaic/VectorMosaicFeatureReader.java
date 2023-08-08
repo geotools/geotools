@@ -40,7 +40,7 @@ public class VectorMosaicFeatureReader implements SimpleFeatureReader {
     private final SimpleFeatureCollection delegateCollection;
     private final Query query;
     private final VectorMosaicFeatureSource source;
-    private final SimpleFeatureType granuleFeatureType;
+    private final SimpleFeatureType schema;
     FeatureIterator delegateIterator;
     FeatureIterator granuleIterator;
     DataStore granuleDataStore;
@@ -63,22 +63,13 @@ public class VectorMosaicFeatureReader implements SimpleFeatureReader {
         this.delegateCollection = delegateFeatures;
         this.query = query;
         this.source = vectorMosaicFeatureSource;
-        delegateIterator = delegateCollection.features();
-        try {
-            granuleFeatureType = this.source.getGranuleType();
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Failed to get granule feature type", e);
-        }
+        this.schema = source.getSchema();
+        this.delegateIterator = delegateCollection.features();
     }
 
     @Override
     public SimpleFeatureType getFeatureType() {
-        try {
-            return source.getFeatureType(delegateCollection.getSchema(), granuleFeatureType);
-        } catch (IOException e) {
-            LOGGER.log(Level.WARNING, "Failed to get feature type", e);
-            return null;
-        }
+        return schema;
     }
 
     @Override

@@ -110,7 +110,7 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
 
             if (isDelegate) {
                 String source = indexFeatureType.getGeometryDescriptor().getLocalName();
-                String target = buildFeatureType().getGeometryDescriptor().getLocalName();
+                String target = getSchema().getGeometryDescriptor().getLocalName();
                 AttributeRenameVisitor renameVisitor = new AttributeRenameVisitor(target, source);
                 Filter renamedFilter = (Filter) originalFilter.accept(renameVisitor, null);
                 renamedFilter.accept(splitter, null);

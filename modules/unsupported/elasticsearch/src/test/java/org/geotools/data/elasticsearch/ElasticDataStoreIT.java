@@ -84,7 +84,13 @@ public class ElasticDataStoreIT extends ElasticTestSupport {
         HttpHost httpHost = new HttpHost(host, port, "http");
         try (RestClient client = RestClient.builder(httpHost).build()) {
 
-            DataStore dataStore = new ElasticDataStore(client, client, indexName, false);
+            DataStore dataStore =
+                    new ElasticDataStore(
+                            client,
+                            client,
+                            indexName,
+                            false,
+                            (Integer) ElasticDataStoreFactory.RESPONSE_BUFFER_LIMIT.sample);
             String[] typeNames = dataStore.getTypeNames();
             assertTrue(typeNames.length > 0);
         }
@@ -127,7 +133,12 @@ public class ElasticDataStoreIT extends ElasticTestSupport {
         final AtomicInteger count = new AtomicInteger(0);
         when(mockStatusLine.getStatusCode())
                 .thenAnswer((invocation) -> count.getAndIncrement() == 0 ? 200 : 400);
-        new ElasticDataStore(mockClient, mockClient, indexName, false);
+        new ElasticDataStore(
+                mockClient,
+                mockClient,
+                indexName,
+                false,
+                (Integer) ElasticDataStoreFactory.RESPONSE_BUFFER_LIMIT.sample);
     }
 
     @Test

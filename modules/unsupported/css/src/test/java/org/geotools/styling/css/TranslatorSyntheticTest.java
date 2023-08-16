@@ -54,6 +54,7 @@ import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
+import org.geotools.util.Converters;
 import org.geotools.xml.styling.SLDTransformer;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
@@ -682,6 +683,10 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         RasterSymbolizer rs = assertSingleSymbolizer(rule, RasterSymbolizer.class);
         ColorMap cm = rs.getColorMap();
         assertEquals(3, cm.getColorMapEntries().length);
+        checkBlackWhiteRedColorMap(cm);
+    }
+
+    private void checkBlackWhiteRedColorMap(ColorMap cm) {
         assertLiteral("#000000", cm.getColorMapEntry(0).getColor());
         assertLiteral("1.0", cm.getColorMapEntry(0).getOpacity());
         assertLiteral("100", cm.getColorMapEntry(0).getQuantity());
@@ -718,6 +723,48 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         // GeoServer specific vendor options
         assertEquals("add", rs.getOptions().get("labelInFeatureInfo"));
         assertEquals("name", rs.getOptions().get("labelAttributeName"));
+    }
+
+    @Test
+    public void rasterColorMapExtended() throws Exception {
+        String css =
+                "* { raster-channels: 'auto'; "
+                        + "raster-color-map: color-map-entry(black, 100) "
+                        + "color-map-entry(white, 1000) "
+                        + "color-map-entry(red, 10000, 0);"
+                        + "raster-color-map-extended: true}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        RasterSymbolizer rs = assertSingleSymbolizer(rule, RasterSymbolizer.class);
+        ColorMap cm = rs.getColorMap();
+        assertEquals(3, cm.getColorMapEntries().length);
+        checkBlackWhiteRedColorMap(cm);
+        assertTrue(cm.getExtendedColors());
+    }
+
+    /** Automatically switch to extended colors if there are more than 255 colors */
+    @Test
+    public void rasterColorMapAutoExtend() throws Exception {
+        checkAutoExtend(10, false);
+        checkAutoExtend(255, false);
+        checkAutoExtend(256, true);
+        checkAutoExtend(500, true);
+    }
+
+    private void checkAutoExtend(int colorCount, boolean expectedExtended) {
+        StringBuilder sb = new StringBuilder("* { raster-channels: 'auto'; " + "raster-color-map:");
+        for (int i = 0; i < colorCount; i++) {
+            Color color = new Color((int) (Math.random() * 0x1000000)); // random color
+            String colorSpec = Converters.convert(color, String.class);
+            sb.append("color-map-entry(" + colorSpec + ", ").append(i).append(") ");
+        }
+        sb.append(";}");
+        Style style = translate(sb.toString());
+        Rule rule = assertSingleRule(style);
+        RasterSymbolizer rs = assertSingleSymbolizer(rule, RasterSymbolizer.class);
+        ColorMap cm = rs.getColorMap();
+        assertEquals(colorCount, cm.getColorMapEntries().length);
+        assertEquals(expectedExtended, cm.getExtendedColors());
     }
 
     @Test

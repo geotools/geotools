@@ -1435,6 +1435,13 @@ public class CssTranslator {
                             throw new IllegalArgumentException("Invalid color map type " + type);
                         }
                     }
+
+                    String extended = getLiteral(values, "raster-color-map-extended", i, null);
+                    if (extended != null) {
+                        cmb.extended(Boolean.valueOf(extended));
+                    } else if (cm.values.size() > 255) {
+                        cmb.extended(true);
+                    }
                 }
             }
 

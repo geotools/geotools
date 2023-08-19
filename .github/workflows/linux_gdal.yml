@@ -1,4 +1,4 @@
-name: Linux QA GitHub CI
+name: Linux GDAL GitHub CI
 
 on: [pull_request]
 
@@ -7,7 +7,7 @@ env:
 
 jobs:
   build:
-    runs-on: [ubuntu-20.04]
+    runs-on: [ubuntu-22.04]
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 11
@@ -15,6 +15,16 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: 11
+    - name: Set up GDAL
+      run: |
+        sudo apt update
+        sudo apt install --no-install-recommends -y gdal-bin libgdal-dev
+        # From OSGeo live
+        URL="http://download.osgeo.org/livedvd/data/gdal/gdal-3.4.3+dfsg-java.20220622.tgz"
+        FILE=/tmp/$(basename "$URL")
+        wget --no-verbose -O "$FILE" "$URL" && \
+        sudo tar xvf "$FILE" -C /
+        sudo mv /usr/lib/jni/libgdalalljni.so /usr/lib
     - name: Maven repository caching
       uses: actions/cache@v2
       with:
@@ -27,7 +37,7 @@ jobs:
       run: sudo ethtool -K eth0 tx off rx off
     - name: Build with Maven
       run: |
-        mvn -B -fae clean install -Dall -Dspotless.action=check -Dpom.fmt.action=verify -Dqa=true -DskipTests=true --file pom.xml
+        mvn -B clean install -Dspotless.apply.skip=true -Dall -U --file pom.xml -pl :gt-imageio-ext-gdal,:gt-ogr
     - name: Remove SNAPSHOT jars from repository
       run: |
-        find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {} 
+        find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {}

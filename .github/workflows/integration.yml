@@ -89,6 +89,7 @@ jobs:
         export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"
         export MAVEN_OPTS="-Xmx1024m $TEST_OPTS"
         cd ~
+        sed -i "s/<gt-version>29.2<\/gt-version>/<gt-version>30-SNAPSHOT<\/gt-version>/g" geofence/src/services/pom.xml
         mvn -B -f geofence/src/pom.xml install -nsu -DskipTests -T2
         mvn -B -f geofence/src/pom.xml test -fae -nsu -T2
     - name: Build GeoServer with tests

@@ -16,7 +16,9 @@
  */
 package org.geotools.data.crs;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 
 import org.geotools.api.feature.FeatureVisitor;
 import org.geotools.api.feature.simple.SimpleFeatureType;

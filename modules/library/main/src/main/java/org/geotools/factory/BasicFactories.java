@@ -18,6 +18,7 @@ package org.geotools.factory;
 
 // J2SE dependencies
 
+import java.util.Map;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.metadata.citation.CitationFactory;
 import org.geotools.api.referencing.crs.CRSAuthorityFactory;
@@ -36,8 +37,6 @@ import org.geotools.util.Classes;
 import org.geotools.util.factory.FactoryNotFoundException;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.factory.Hints;
-
-import java.util.Map;
 
 /**
  * Defines a common abstraction for getting the different factories. This default implementation
@@ -217,5 +216,4 @@ public class BasicFactories {
             throws FactoryRegistryException {
         return ReferencingFactoryFinder.getCoordinateOperationFactory(hints);
     }
-
 }

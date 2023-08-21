@@ -21,7 +21,6 @@ package org.geotools.metadata.iso.spatial;
 
 import java.util.Collection;
 import java.util.List;
-
 import org.geotools.api.metadata.spatial.CellGeometry;
 import org.geotools.api.metadata.spatial.Dimension;
 import org.geotools.api.metadata.spatial.Georectified;

@@ -18,7 +18,6 @@ package org.geotools.filter.visitor;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Set;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Id;
@@ -141,5 +140,4 @@ public class AbstractPostPreProcessFilterSplittingVisitorTests {
         PropertyIsEqualTo filter = ff.equals(geomTypeExpr, ff.literal("Polygon"));
         return filter;
     }
-
 }

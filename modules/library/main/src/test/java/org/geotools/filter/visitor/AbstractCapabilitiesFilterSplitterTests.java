@@ -158,6 +158,4 @@ public class AbstractCapabilitiesFilterSplitterTests {
         caps.addType(type);
         return caps;
     }
-
-
 }

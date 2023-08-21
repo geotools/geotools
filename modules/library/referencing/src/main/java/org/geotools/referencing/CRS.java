@@ -604,18 +604,20 @@ public final class CRS {
                     }
                     if (extent instanceof BoundingPolygon) {
                         for (final Polygon geometry : ((BoundingPolygon) extent).getPolygons()) {
-                            final org.locationtech.jts.geom.Envelope env = geometry.getEnvelopeInternal();
+                            final org.locationtech.jts.geom.Envelope env =
+                                    geometry.getEnvelopeInternal();
                             if (env != null) {
-                                    if (envelope == null) {
-                                        envelope = new GeneralEnvelope(new double[] {env.getMinX(), env.getMinY()},
-                                                new double[] {env.getMinY(), env.getMaxY()});
-                                    } else {
-                                        if (merged == null) {
-                                            envelope = merged = new GeneralEnvelope(envelope);
-                                        }
-                                        merged.add(envelope);
+                                if (envelope == null) {
+                                    envelope =
+                                            new GeneralEnvelope(
+                                                    new double[] {env.getMinX(), env.getMinY()},
+                                                    new double[] {env.getMinY(), env.getMaxY()});
+                                } else {
+                                    if (merged == null) {
+                                        envelope = merged = new GeneralEnvelope(envelope);
                                     }
-
+                                    merged.add(envelope);
+                                }
                             }
                         }
                     }

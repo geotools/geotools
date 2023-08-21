@@ -39,7 +39,6 @@ import org.geotools.api.referencing.datum.DatumAuthorityFactory;
 import org.geotools.api.referencing.operation.CoordinateOperation;
 import org.geotools.api.referencing.operation.CoordinateOperationAuthorityFactory;
 import org.geotools.api.util.InternationalString;
-import org.geotools.geometry.GeometryFactoryFinder;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
@@ -124,8 +123,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
      * fallbacks}, to be tried in iteration order only if the first acceptable factory failed to
      * create the requested object.
      *
-     * @param factories A set of user-specified factories to try before to delegate to {@link
-     *     GeometryFactoryFinder}.
+     * @param factories A set of user-specified factories to try
      */
     public ManyAuthoritiesFactory(final Collection<? extends AuthorityFactory> factories) {
         super(NORMAL_PRIORITY);
@@ -430,9 +428,8 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
     }
 
     /**
-     * Searchs for a factory of the given type. This method first search in user-supplied factories.
-     * If no user factory is found, then this method request for a factory using {@link
-     * GeometryFactoryFinder}. The authority name is inferred from the specified code.
+     * Searches for a factory of the given type. This method will search in user-supplied factories.
+     * The authority name is inferred from the specified code.
      *
      * @param type The interface to be implemented.
      * @param code The code of the object to create.

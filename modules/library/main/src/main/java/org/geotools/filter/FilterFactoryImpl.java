@@ -102,7 +102,6 @@ import org.geotools.api.filter.temporal.TEquals;
 import org.geotools.api.filter.temporal.TOverlaps;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.geometry.BoundingBox3D;
-
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.parameter.Parameter;
 import org.geotools.api.referencing.FactoryException;

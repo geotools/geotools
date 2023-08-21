@@ -19,10 +19,9 @@
  */
 package org.geotools.metadata.iso.extent;
 
+import java.util.Collection;
 import org.geotools.api.metadata.extent.BoundingPolygon;
 import org.locationtech.jts.geom.Polygon;
-
-import java.util.Collection;
 
 /**
  * Boundary enclosing the dataset, expressed as the closed set of (<var>x</var>,<var>y</var>)

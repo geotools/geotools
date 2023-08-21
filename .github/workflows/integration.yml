@@ -49,7 +49,9 @@ jobs:
         git clone https://github.com/geoserver/geoserver.git geoserver
         echo "Checking out GeoFence"
         mkdir geofence
-        git clone https://github.com/geoserver/geofence.git geofence
+        # Using the Java 11 build branch, will update when merged
+        git clone https://github.com/aaime/geofence.git geofence
+        git checkout java11
 
 # echo "Checking out MapFish Print v2"
 #        mkdir mapfish-print-v2
@@ -64,7 +66,7 @@ jobs:
         cd ~/geoserver/src
         cp ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml .
         ant -noinput -buildfile remove-opengis.xml
-        cd ~/geofence
+        cd ~/geofence        
         cp ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml .
         ant -noinput -buildfile remove-opengis.xml
         

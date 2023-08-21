@@ -47,6 +47,9 @@ jobs:
         echo "Checking out GeoServer"
         mkdir geoserver
         git clone https://github.com/geoserver/geoserver.git geoserver
+        echo "Checking out GeoFence"
+        mkdir geofence
+        git clone git@github.com:geoserver/geofence.git
 
 # echo "Checking out MapFish Print v2"
 #        mkdir mapfish-print-v2
@@ -59,6 +62,9 @@ jobs:
         cp ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml .
         ant -noinput -buildfile remove-opengis.xml
         cd ~/geoserver/src
+        cp ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml .
+        ant -noinput -buildfile remove-opengis.xml
+        cd ~/geofence
         cp ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml .
         ant -noinput -buildfile remove-opengis.xml
         
@@ -75,8 +81,15 @@ jobs:
         export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"
         export MAVEN_OPTS="-Xmx1024m $TEST_OPTS"
         cd ~
-        mvn -B -f geowebcache/geowebcache/pom.xml install -nsu -Dspotless.apply.skip=true -DskipTests
+        mvn -B -f geowebcache/geowebcache/pom.xml install -nsu -Dspotless.apply.skip=true -DskipTests -T2
         mvn -B -f geowebcache/geowebcache/pom.xml test -fae -nsu -T2 -Dspotless.apply.skip=true
+    - name: Build GeoFence with tests
+      run: |
+        export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"
+        export MAVEN_OPTS="-Xmx1024m $TEST_OPTS"
+        cd ~
+        mvn -B -f geofence/src/pom.xml install -nsu -DskipTests -T2
+        mvn -B -f geofence/src/pom.xml test -fae -nsu -T2
     - name: Build GeoServer with tests
       run: |
         echo "Building GeoServer without printing (as mapfish-print-v2 not available)"
@@ -84,8 +97,9 @@ jobs:
         export MAVEN_OPTS="-Xmx512m $TEST_OPTS"
         cd ~
         sed -i "s/<module>printing<\/module>/<\!--module>printing<\/module-->/g" geoserver/src/extension/pom.xml
-        mvn -B -f geoserver/src/pom.xml install -nsu -Prelease -Dspotless.apply.skip=true -DskipTests
-        mvn -B -f geoserver/src/community/pom.xml install -nsu -DcommunityRelease -Dspotless.apply.skip=true -DskipTests
+        sed -i "s/<gf.version>3.6.0<\/gf.version>/<gf.version>3.6-SNAPSHOT<\/gf.version>/g" geoserver/src/pom.xml
+        mvn -B -f geoserver/src/pom.xml install -nsu -Prelease -Dspotless.apply.skip=true -DskipTests -T2
+        mvn -B -f geoserver/src/community/pom.xml install -nsu -DcommunityRelease -Dspotless.apply.skip=true -DskipTests -T2
         mvn -B -f geoserver/src/pom.xml test -fae -T2 -nsu -Dtest.maxHeapSize=512m -Djvm.opts="$TEST_OPTS" -Prelease -Dspotless.apply.skip=true
     - name: Remove SNAPSHOT jars from repository
       run: |

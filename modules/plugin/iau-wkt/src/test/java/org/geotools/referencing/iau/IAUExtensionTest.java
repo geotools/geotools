@@ -33,10 +33,10 @@ import org.geotools.api.referencing.IdentifiedObject;
 import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.referencing.CRS;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class IAUExtensionTest {
@@ -80,12 +80,12 @@ public class IAUExtensionTest {
 
     /** Checks for CRS instantiations. */
     @Test
-    public void testInstantiation() throws FactoryException {
+    public void testDuplicates() throws FactoryException {
         final StringWriter buffer = new StringWriter();
         final PrintWriter writer = new PrintWriter(buffer);
         final Set duplicated = factory.reportInstantiationFailures(writer);
         // The following number may be adjusted if esri.properties is updated.
-        assertTrue(buffer.toString(), duplicated.size() <= 87);
+        assertTrue(String.valueOf(duplicated), duplicated.isEmpty());
     }
 
     /** Tests an non existing. */
@@ -96,7 +96,6 @@ public class IAUExtensionTest {
 
     /** Tests the code for the Sun. */
     @Test
-    @Ignore // have to figure out why the citation is not the expected one
     public void test1000() throws FactoryException {
         final CoordinateReferenceSystem crs = factory.createCoordinateReferenceSystem("1000");
         assertSame(crs, factory.createCoordinateReferenceSystem("IAU:1000"));
@@ -107,6 +106,7 @@ public class IAUExtensionTest {
         assertNotNull(identifiers);
         assertFalse(identifiers.isEmpty());
 
+        // citation is IAU but not Citations.IAU...
         String asString = identifiers.toString();
         assertTrue(asString, identifiers.contains(new NamedIdentifier(Citations.IAU, "1000")));
 
@@ -117,7 +117,16 @@ public class IAUExtensionTest {
         Identifier identifier = (Identifier) iterator.next();
         assertTrue(identifier instanceof NamedIdentifier);
         assertEquals(Citations.IAU, identifier.getAuthority());
-        assertEquals("IAU", identifier.getCode());
+        assertEquals("1000", identifier.getCode());
         assertEquals("IAU:1000", identifier.toString());
+    }
+
+    @Test
+    public void testAxisOrder() throws FactoryException {
+        CoordinateReferenceSystem latLon = CRS.decode("IAU:1000");
+        assertEquals(CRS.AxisOrder.NORTH_EAST, CRS.getAxisOrder(latLon));
+
+        CoordinateReferenceSystem lonLat = CRS.decode("IAU:1000", true);
+        assertEquals(CRS.AxisOrder.EAST_NORTH, CRS.getAxisOrder(lonLat));
     }
 }

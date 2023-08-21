@@ -158,6 +158,14 @@ public class NameImpl
         if (other == null) {
             return 1; // we are greater than null!
         }
-        return getURI().compareTo(other.getURI());
+        int c = compare(getNamespaceURI(), other.getNamespaceURI());
+        return c != 0 ? c : compare(getLocalPart(), other.getLocalPart());
+    }
+
+    private int compare(String s1, String s2) {
+        if (s1 == null || s2 == null) {
+            return s1 == s2 ? 0 : s1 == null ? 1 : -1;
+        }
+        return s1.compareTo(s2);
     }
 }

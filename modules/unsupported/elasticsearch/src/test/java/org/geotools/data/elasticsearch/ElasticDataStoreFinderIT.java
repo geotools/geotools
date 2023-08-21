@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.Node;
+import org.elasticsearch.client.RestClient;
 import org.geotools.data.DataStore;
 import org.junit.Test;
 
@@ -171,11 +172,15 @@ public class ElasticDataStoreFinderIT extends ElasticTestSupport {
     }
 
     private List<HttpHost> getHosts(String hosts) throws IOException {
+        return getRestClient(hosts).getNodes().stream()
+                .map(Node::getHost)
+                .collect(Collectors.toList());
+    }
+
+    private RestClient getRestClient(String hosts) throws IOException {
         Map<String, Serializable> params = createConnectionParams();
         params.put(ElasticDataStoreFactory.HOSTNAME.key, hosts);
         ElasticDataStoreFactory factory = new ElasticDataStoreFactory();
-        return factory.createRestClient(params).getNodes().stream()
-                .map(Node::getHost)
-                .collect(Collectors.toList());
+        return factory.createRestClient(params);
     }
 }

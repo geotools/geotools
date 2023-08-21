@@ -37,7 +37,7 @@ public class AttributeRoundtripTest {
         SimpleFeatureCollection fc = GeoJSONReader.parseFeatureCollection(geojson);
         FeatureCollectionConversions.serialize(fc, 1, os);
         byte[] bytes = os.toByteArray();
-        fc = FeatureCollectionConversions.deserialize(new ByteArrayInputStream(bytes));
+        fc = FeatureCollectionConversions.deserializeSFC(new ByteArrayInputStream(bytes));
         String result = GeoJSONWriter.toGeoJSON(fc);
         return result;
     }
@@ -107,7 +107,7 @@ public class AttributeRoundtripTest {
         ByteBuffer bb = ByteBuffer.wrap(bytes);
         bb.order(ByteOrder.LITTLE_ENDIAN);
         SimpleFeatureCollection actual =
-                FeatureCollectionConversions.deserialize(new ByteArrayInputStream(bytes));
+                FeatureCollectionConversions.deserializeSFC(new ByteArrayInputStream(bytes));
         SimpleFeature expectedFeature = (SimpleFeature) expected.toArray()[0];
         SimpleFeature actualFeature = (SimpleFeature) actual.toArray()[0];
         // assertEquals(expectedFeature.getAttribute(0).toString(),

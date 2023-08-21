@@ -17,9 +17,11 @@
 package org.geotools.data.geojson.store;
 
 import java.io.IOException;
+import java.util.Collections;
 import org.geotools.api.feature.FeatureVisitor;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.FeatureTypeFactory;
 import org.geotools.api.filter.Filter;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
@@ -27,6 +29,8 @@ import org.geotools.data.geojson.GeoJSONReader;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.FeatureIterator;
+import org.geotools.feature.NameImpl;
+import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.locationtech.jts.geom.Geometry;
 
@@ -119,10 +123,21 @@ public class GeoJSONFeatureSource extends ContentFeatureSource {
                  * been set in the datastore.
                  */
                 if (schema == null) {
-                    schema = getDataStore().getSchema();
+                    schema = getDataStore().getCurrentSchema();
+                    if (schema == null) {
+                        FeatureTypeFactory featureTypeFactory = new FeatureTypeFactoryImpl();
+                        schema =
+                                featureTypeFactory.createSimpleFeatureType(
+                                        new NameImpl(super.entry.getTypeName()),
+                                        Collections.emptyList(),
+                                        null,
+                                        false,
+                                        Collections.emptyList(),
+                                        null,
+                                        null);
+                    }
                 }
             }
-
             return schema;
         }
     }

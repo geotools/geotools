@@ -335,15 +335,17 @@ public class InterpolateFunction implements Function {
         /*
          * TODO: is this the correct way to handle the rasterdata option ?
          */
-        String lookupString = lookup.evaluate(object, String.class);
-        if (lookupString == null) {
-            return null;
-        }
-        if (lookupString.equalsIgnoreCase(RASTER_DATA)) {
+        // This should be safe. Rationale: raster mode assumes the lookup expression evaluates to
+        // Rasterdata, and then the input object is considered to be a number. While the lookup
+        // could dynamically evaluate to "Rasterdata" in a non-raster context (feature input),
+        // the input object would not be a number and the following cast would fail.
+        if (lookup instanceof Literal
+                && RASTER_DATA.equalsIgnoreCase(lookup.evaluate(object, String.class))) {
             lookupValue = ((Number) object).doubleValue();
         } else {
-            lookupValue = Double.valueOf(lookupString);
+            lookupValue = lookup.evaluate(object, Double.class);
         }
+        if (lookupValue == null) return null;
 
         /** Degenerate case: a single interpolation point. Evaluate it directly. */
         if (interpPoints.size() == 1) {

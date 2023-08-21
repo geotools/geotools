@@ -16,6 +16,8 @@
  */
 package org.geotools.data.crs;
 
+import static org.junit.Assert.*;
+
 import org.geotools.api.feature.FeatureVisitor;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
@@ -29,8 +31,8 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.visitor.BoundsVisitor;
 import org.geotools.feature.visitor.CountVisitor;
 import org.geotools.feature.visitor.MaxVisitor;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
@@ -101,7 +103,7 @@ public class ReprojectFeatureResultsTest {
         SimpleFeatureCollection retypedCollection =
                 new ReprojectFeatureResults(visitorCollection, utm32n);
         retypedCollection.accepts(visitor, null);
-        Assert.assertSame(lastVisitor, visitor);
+        assertSame(lastVisitor, visitor);
     }
 
     @Test
@@ -111,6 +113,14 @@ public class ReprojectFeatureResultsTest {
                 new ReprojectFeatureResults(visitorCollection, utm32n);
         retypedCollection.accepts(boundsVisitor, null);
         // not optimized
-        Assert.assertNull(lastVisitor);
+        assertNull(lastVisitor);
+    }
+
+    @Test
+    public void testBoundsCRS() throws Exception {
+        SimpleFeatureCollection retypedCollection =
+                new ReprojectFeatureResults(visitorCollection, utm32n);
+        ReferencedEnvelope bounds = retypedCollection.getBounds();
+        assertEquals(utm32n, bounds.getCoordinateReferenceSystem());
     }
 }

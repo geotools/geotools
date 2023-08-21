@@ -123,6 +123,8 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
 
     private ResourceInfo resourceInfo;
 
+    protected Double nodata;
+
     /**
      * Creates a new instance of a {@link BaseGridCoverage2DReader}. I assume nothing about file
      * extension.
@@ -566,5 +568,9 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
 
     protected MultiLevelROI getMultiLevelRoi() {
         return multiLevelRoi;
+    }
+
+    public Double getNodata() {
+        return nodata;
     }
 }

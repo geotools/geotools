@@ -20,6 +20,7 @@ package org.geotools.filter.function;
 import org.geotools.api.feature.Attribute;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.VolatileFunction;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 
@@ -29,7 +30,7 @@ import org.geotools.filter.capability.FunctionNameImpl;
  * @author Jody Garnett
  * @since 2.2, 2.5
  */
-public class IDFunction extends FunctionExpressionImpl {
+public class IDFunction extends FunctionExpressionImpl implements VolatileFunction {
 
     public static FunctionName NAME = new FunctionNameImpl("id", String.class);
 

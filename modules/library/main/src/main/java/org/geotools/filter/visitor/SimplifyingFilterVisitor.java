@@ -43,11 +43,7 @@ import org.geotools.api.filter.PropertyIsLike;
 import org.geotools.api.filter.PropertyIsNil;
 import org.geotools.api.filter.PropertyIsNotEqualTo;
 import org.geotools.api.filter.PropertyIsNull;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.filter.expression.Literal;
-import org.geotools.api.filter.expression.NilExpression;
-import org.geotools.api.filter.expression.PropertyName;
-import org.geotools.api.filter.expression.VolatileFunction;
+import org.geotools.api.filter.expression.*;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.api.filter.identity.GmlObjectId;
 import org.geotools.api.filter.identity.Identifier;
@@ -614,6 +610,50 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         } else {
             return clone;
         }
+    }
+
+    @Override
+    public Object visit(Add expression, Object extraData) {
+        Expression expr1 = visit(expression.getExpression1(), extraData);
+        Expression expr2 = visit(expression.getExpression2(), extraData);
+        Add result = getFactory(extraData).add(expr1, expr2);
+        if (expr1 instanceof Literal && expr2 instanceof Literal) {
+            return getFactory(extraData).literal(result.evaluate(null));
+        }
+        return result;
+    }
+
+    @Override
+    public Object visit(Divide expression, Object extraData) {
+        Expression expr1 = visit(expression.getExpression1(), extraData);
+        Expression expr2 = visit(expression.getExpression2(), extraData);
+        Divide result = getFactory(extraData).divide(expr1, expr2);
+        if (expr1 instanceof Literal && expr2 instanceof Literal) {
+            return getFactory(extraData).literal(result.evaluate(null));
+        }
+        return result;
+    }
+
+    @Override
+    public Object visit(Subtract expression, Object extraData) {
+        Expression expr1 = visit(expression.getExpression1(), extraData);
+        Expression expr2 = visit(expression.getExpression2(), extraData);
+        Subtract result = getFactory(extraData).subtract(expr1, expr2);
+        if (expr1 instanceof Literal && expr2 instanceof Literal) {
+            return getFactory(extraData).literal(result.evaluate(null));
+        }
+        return result;
+    }
+
+    @Override
+    public Object visit(Multiply expression, Object extraData) {
+        Expression expr1 = visit(expression.getExpression1(), extraData);
+        Expression expr2 = visit(expression.getExpression2(), extraData);
+        Multiply result = getFactory(extraData).multiply(expr1, expr2);
+        if (expr1 instanceof Literal && expr2 instanceof Literal) {
+            return getFactory(extraData).literal(result.evaluate(null));
+        }
+        return result;
     }
 
     public boolean isRangeSimplicationEnabled() {

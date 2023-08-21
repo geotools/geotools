@@ -72,7 +72,7 @@ import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffPCSCodes;
 import org.geotools.measure.Units;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
-import org.geotools.metadata.iso.citation.CitationImpl;
+import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -302,7 +302,7 @@ public final class GeoTiffMetadata2CRSAdapter {
                             pcrs.getConversionFromBase().getParameterValues());
             return new DefaultProjectedCRS(
                     java.util.Collections.singletonMap(
-                            "name", DefaultEllipsoidalCS.getName(pcrs, new CitationImpl("EPSG"))),
+                            "name", DefaultEllipsoidalCS.getName(pcrs, Citations.EPSG)),
                     conversionFromBase,
                     pcrs.getBaseCRS(),
                     pcrs.getConversionFromBase().getMathTransform(),
@@ -405,7 +405,7 @@ public final class GeoTiffMetadata2CRSAdapter {
                     // //
                     gcs =
                             new DefaultGeographicCRS(
-                                    DefaultEllipsoidalCS.getName(gcs, new CitationImpl("EPSG")),
+                                    DefaultEllipsoidalCS.getName(gcs, Citations.EPSG),
                                     gcs.getDatum(),
                                     DefaultEllipsoidalCS.GEODETIC_2D.usingUnit(angularUnit));
                 }

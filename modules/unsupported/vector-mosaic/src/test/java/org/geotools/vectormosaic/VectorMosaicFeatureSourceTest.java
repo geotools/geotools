@@ -18,9 +18,19 @@ package org.geotools.vectormosaic;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Set;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
+import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.data.store.ContentDataStore;
+import org.geotools.data.store.ContentEntry;
+import org.geotools.feature.NameImpl;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.feature.visitor.MaxVisitor;
+import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
@@ -31,6 +41,29 @@ public class VectorMosaicFeatureSourceTest extends VectorMosaicTest {
     public void testGetCount() throws Exception {
         FeatureSource featureSource = MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
         assertEquals(-1, featureSource.getCount(Query.ALL));
+    }
+
+    @Test
+    /** Test that the cached feature type is used when available */
+    public void testCacheFeatureType() throws Exception {
+        VectorMosaicFeatureSource featureSource =
+                (VectorMosaicFeatureSource) MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
+        VectorMosaicState state =
+                new VectorMosaicState(
+                        new ContentEntry(
+                                (ContentDataStore) MOSAIC_STORE, new NameImpl(MOSAIC_TYPE_NAME)));
+        SimpleFeatureType oldType = MOSAIC_STORE.getSchema(MOSAIC_TYPE_NAME);
+        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        tb.setName("cachedType");
+        tb.setNamespaceURI(oldType.getName().getNamespaceURI());
+        tb.setCRS(oldType.getCoordinateReferenceSystem());
+        tb.addAll(oldType.getAttributeDescriptors());
+        tb.setDefaultGeometry(oldType.getGeometryDescriptor().getLocalName());
+        SimpleFeatureType cachedType = tb.buildFeatureType();
+        state.setGranuleFeatureType(cachedType);
+        featureSource.state = state;
+        SimpleFeatureType simpleFeatureType = featureSource.getGranuleType();
+        assertEquals("cachedType", simpleFeatureType.getTypeName());
     }
 
     @Test
@@ -78,5 +111,102 @@ public class VectorMosaicFeatureSourceTest extends VectorMosaicTest {
                         39.65010808794791,
                         DefaultGeographicCRS.WGS84),
                 featureSource.getBounds(query));
+    }
+
+    @Test
+    public void testGetMaxIndexHasExpressionAndFilter() throws Exception {
+        SimpleFeatureSource featureSource = MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
+        GranuleTracker tracker = new GranuleTracker();
+        GranuleStoreFinder finder = ((VectorMosaicFeatureSource) featureSource).finder;
+        finder.granuleTracker = tracker;
+        PropertyName p = FF.property("rank");
+        Query q = new Query();
+        Filter f = FF.lessOrEqual(p, FF.literal(100));
+        q.setFilter(f);
+
+        MaxVisitor v = new MaxVisitor(p);
+        ((VectorMosaicFeatureSource) featureSource).accepts(q, v, null);
+        int max = v.getResult().toInt();
+        assertEquals(4, max);
+        // no granules touched because all expressions match index
+        assertEquals(0, tracker.getGranuleNames().size());
+    }
+
+    @Test
+    public void testGetMaxIndexHasExpressionButFilterNeedsGranules() throws Exception {
+        SimpleFeatureSource featureSource = MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
+        GranuleTracker tracker = new GranuleTracker();
+        GranuleStoreFinder finder = ((VectorMosaicFeatureSource) featureSource).finder;
+        finder.granuleTracker = tracker;
+        PropertyName granuleOnly = FF.property("tractorid");
+        Query q = new Query();
+        Filter f = FF.equals(granuleOnly, FF.literal("deere1"));
+        q.setFilter(f);
+        PropertyName p = FF.property("rank");
+        MaxVisitor v = new MaxVisitor(p);
+        ((VectorMosaicFeatureSource) featureSource).accepts(q, v, null);
+        int max = v.getResult().toInt();
+        assertEquals(1, max);
+        // all granules touched because filter references granule attribute
+        assertEquals(3, tracker.getGranuleNames().size());
+    }
+
+    @Test
+    public void testGetMaxIndexDoesNotMatchExpression() throws Exception {
+        SimpleFeatureSource featureSource = MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
+        GranuleTracker tracker = new GranuleTracker();
+        GranuleStoreFinder finder = ((VectorMosaicFeatureSource) featureSource).finder;
+        finder.granuleTracker = tracker;
+        PropertyName p = FF.property("rank");
+        Query q = new Query();
+        Filter f = FF.lessOrEqual(p, FF.literal(100));
+        q.setFilter(f);
+        PropertyName granuleOnly = FF.property("weight");
+        MaxVisitor v = new MaxVisitor(granuleOnly);
+        ((VectorMosaicFeatureSource) featureSource).accepts(q, v, null);
+        int max = v.getResult().toInt();
+        assertEquals(9, max);
+        // all granules touched because visitor expression references granule attribute
+        assertEquals(3, tracker.getGranuleNames().size());
+    }
+
+    @Test
+    public void testGetUniqueIndexHasExpressionAndFilter() throws Exception {
+        SimpleFeatureSource featureSource = MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
+        GranuleTracker tracker = new GranuleTracker();
+        GranuleStoreFinder finder = ((VectorMosaicFeatureSource) featureSource).finder;
+        finder.granuleTracker = tracker;
+        PropertyName p = FF.property("rank");
+        Query q = new Query();
+        Filter f = FF.lessOrEqual(p, FF.literal(100));
+        q.setFilter(f);
+
+        UniqueVisitor v = new UniqueVisitor(p);
+        ((VectorMosaicFeatureSource) featureSource).accepts(q, v, null);
+        Set uniques = v.getResult().toSet();
+        assertEquals(4, uniques.size());
+        // no granules touched because all expressions match index
+        assertEquals(0, tracker.getGranuleNames().size());
+    }
+
+    @Test
+    public void testGetUniqueIndexDoesNotMatchExpression() throws Exception {
+        SimpleFeatureSource featureSource = MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
+        GranuleTracker tracker = new GranuleTracker();
+        GranuleStoreFinder finder = ((VectorMosaicFeatureSource) featureSource).finder;
+        finder.granuleTracker = tracker;
+        PropertyName p = FF.property("rank");
+        Query q = new Query();
+        Filter f = FF.lessOrEqual(p, FF.literal(100));
+        q.setFilter(f);
+
+        PropertyName granuleOnly = FF.property("weight");
+        UniqueVisitor v = new UniqueVisitor(p, granuleOnly);
+        ((VectorMosaicFeatureSource) featureSource).accepts(q, v, null);
+        Set uniques = v.getResult().toSet();
+        assertEquals(4, uniques.size());
+        // all granules touched because visitor expression references granule-only attribute and
+        // index-only attribute
+        assertEquals(3, tracker.getGranuleNames().size());
     }
 }

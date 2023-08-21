@@ -1588,7 +1588,7 @@ public class GeoTiffReaderTest {
         assertEquals(3396190, gcs.getDatum().getEllipsoid().getSemiMajorAxis(), 0d);
 
         // it's 49900
-        CoordinateReferenceSystem expected = CRS.decode("IAU:49900");
+        CoordinateReferenceSystem expected = CRS.decode("IAU:49900", true);
         assertTrue(CRS.equalsIgnoreMetadata(expected, crs));
 
         // and can be looked up as such

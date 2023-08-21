@@ -33,7 +33,7 @@ import org.geotools.api.referencing.cs.EllipsoidalCS;
 import org.geotools.api.referencing.datum.Ellipsoid;
 import org.geotools.api.referencing.datum.GeodeticDatum;
 import org.geotools.measure.Measure;
-import org.geotools.metadata.iso.citation.CitationImpl;
+import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.metadata.iso.extent.ExtentImpl;
 import org.geotools.referencing.AbstractReferenceSystem; // For javadoc
 import org.geotools.referencing.NamedIdentifier;
@@ -87,12 +87,12 @@ public class DefaultGeographicCRS extends AbstractSingleCRS implements Geographi
         };
         properties.put(ALIAS_KEY, alias);
         properties.put(DOMAIN_OF_VALIDITY_KEY, ExtentImpl.WORLD);
-        properties.put(IDENTIFIERS_KEY, new NamedIdentifier(new CitationImpl("EPSG"), "4326"));
+        properties.put(IDENTIFIERS_KEY, new NamedIdentifier(Citations.EPSG, "4326"));
         WGS84 =
                 new DefaultGeographicCRS(
                         properties, DefaultGeodeticDatum.WGS84, DefaultEllipsoidalCS.GEODETIC_2D);
         alias[1] = "WGS 84 (geographic 3D)"; // Replaces the EPSG name.
-        properties.put(IDENTIFIERS_KEY, new NamedIdentifier(new CitationImpl("EPSG"), "4327"));
+        properties.put(IDENTIFIERS_KEY, new NamedIdentifier(Citations.EPSG, "4327"));
         WGS84_3D =
                 new DefaultGeographicCRS(
                         properties, DefaultGeodeticDatum.WGS84, DefaultEllipsoidalCS.GEODETIC_3D);

@@ -16,15 +16,12 @@
  */
 package org.geotools.vectormosaic;
 
-import java.io.Closeable;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Properties;
 import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.data.DataStore;
 
 /** Configuration for a vector mosaic. */
-public class VectorMosaicGranule implements Serializable, Closeable {
+public class VectorMosaicGranule implements Serializable {
 
     public static final String CONNECTION_PARAMETERS_DELEGATE_FIELD_DEFAULT = "params";
     public static final String GRANULE_TYPE_NAME = "type";
@@ -35,7 +32,6 @@ public class VectorMosaicGranule implements Serializable, Closeable {
 
     String granuleTypeName;
     String params;
-    DataStore dataStore;
     Properties connProperties;
 
     public static VectorMosaicGranule fromDelegateFeature(SimpleFeature delegateFeature) {
@@ -72,26 +68,11 @@ public class VectorMosaicGranule implements Serializable, Closeable {
         this.params = params;
     }
 
-    public DataStore getDataStore() {
-        return dataStore;
-    }
-
-    public void setDataStore(DataStore dataStore) {
-        this.dataStore = dataStore;
-    }
-
     public Properties getConnProperties() {
         return connProperties;
     }
 
     public void setConnProperties(Properties connProperties) {
         this.connProperties = connProperties;
-    }
-
-    @Override
-    public void close() throws IOException {
-        if (dataStore != null) {
-            dataStore.dispose();
-        }
     }
 }

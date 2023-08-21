@@ -997,7 +997,8 @@ public class ProjectionHandler {
             MathTransform mt =
                     CRS.findMathTransform(
                             DefaultGeographicCRS.WGS84,
-                            renderingEnvelope.getCoordinateReferenceSystem());
+                            renderingEnvelope.getCoordinateReferenceSystem(),
+                            true);
             mt.transform(ordinates, 0, ordinates, 0, 2);
             datelineX = ordinates[0];
         } catch (Exception e) {

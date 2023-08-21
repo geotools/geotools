@@ -18,6 +18,7 @@ package org.geotools.filter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.TimeZone;
 import org.geotools.api.filter.And;
@@ -35,7 +36,6 @@ import org.geotools.temporal.object.DefaultPeriod;
 import org.geotools.temporal.object.DefaultPosition;
 import org.junit.Assert;
 import org.junit.Test;
-import wiremock.com.google.common.collect.Lists;
 
 /**
  * Unit test for FilterCapabilities.
@@ -103,7 +103,7 @@ public class CapabilitiesTest {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         Filter filter =
                 ff.and(
-                        Lists.newArrayList(
+                        Arrays.asList(
                                 ff.greater(ff.property("a"), ff.literal(2)),
                                 ff.greaterOrEqual(ff.property("a"), ff.literal(2)),
                                 ff.less(ff.property("a"), ff.literal(2)),

@@ -37,6 +37,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.logging.Level;
@@ -144,6 +145,13 @@ public class GeoPackage implements Closeable {
     static final int GPKG_120_APPID = 0x47504B47;
     /** The application id for GeoPackage 1.0 (GP10) */
     static final int GPKG_100_APPID = 0x47503130;
+
+    /**
+     * Some tools like QGIS find the SRID and blindly assume it's an EPSG code if it's in the
+     * reserved range, without checking the authority or authority code. This is a problem for
+     * custom SRIDs.
+     */
+    private static final int MIN_CUSTOM_SRID = 900000;
 
     public static enum DataType {
         Feature("features"),
@@ -486,7 +494,7 @@ public class GeoPackage implements Closeable {
         try {
             try (PreparedStatement ps =
                             cx.prepareStatement(
-                                    String.format(
+                                    format(
                                             "SELECT srs_id FROM %s WHERE srs_id = ?",
                                             SPATIAL_REF_SYS));
                     ResultSet rs =
@@ -498,7 +506,7 @@ public class GeoPackage implements Closeable {
 
             try (PreparedStatement ps =
                     cx.prepareStatement(
-                            String.format(
+                            format(
                                     "INSERT INTO %s (srs_id, srs_name, organization, organization_coordsys_id, definition, description) "
                                             + "VALUES (?,?,?,?,?,?)",
                                     SPATIAL_REF_SYS))) {
@@ -542,6 +550,21 @@ public class GeoPackage implements Closeable {
         GeoPackage.addCRS(cx, srid, auth + ":" + srid, auth, srid, crs.toWKT(), auth + ":" + srid);
     }
 
+    private boolean hasCRS(Connection cx, int srid) {
+        try (PreparedStatement ps =
+                cx.prepareStatement(
+                        format("SELECT count(*) FROM %s WHERE srs_id = ?", SPATIAL_REF_SYS))) {
+            try (ResultSet rs = prepare(ps).set(srid).log(Level.FINE).statement().executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
+
     private CoordinateReferenceSystem getCRS(int srid) {
         try {
 
@@ -549,7 +572,7 @@ public class GeoPackage implements Closeable {
 
                 try (PreparedStatement ps =
                         cx.prepareStatement(
-                                String.format(
+                                format(
                                         "SELECT definition FROM %s WHERE srs_id = ?",
                                         SPATIAL_REF_SYS))) {
 
@@ -766,8 +789,8 @@ public class GeoPackage implements Closeable {
 
         // check for srid
         if (e.getSrid() == null) {
-            try {
-                e.setSrid(findSRID(schema));
+            try (Connection cx = connPool.getConnection()) {
+                e.setSrid(findSRID(cx, schema));
             } catch (Exception ex) {
                 throw new IllegalArgumentException(ex);
             }
@@ -943,14 +966,14 @@ public class GeoPackage implements Closeable {
         return Features.simple(dataStore().getFeatureReader(q, tx));
     }
 
-    static Integer findSRID(SimpleFeatureType schema) throws Exception {
+    static Integer findSRID(Connection cx, SimpleFeatureType schema) throws Exception {
         CoordinateReferenceSystem crs = schema.getCoordinateReferenceSystem();
         if (crs == null) {
             GeometryDescriptor gd = findGeometryDescriptor(schema);
             crs = gd.getCoordinateReferenceSystem();
         }
 
-        return crs != null ? CRS.lookupEpsgCode(crs, true) : null;
+        return findSRID(cx, crs);
     }
 
     static String findGeometryColumn(SimpleFeatureType schema) {
@@ -1000,8 +1023,22 @@ public class GeoPackage implements Closeable {
                 init(cx);
             }
             Integer srid = e.getSrid();
-            if (srid != null && srid != GENERIC_PROJECTED_SRID && srid != GENERIC_GEOGRAPHIC_SRID) {
-                addCRS(CRS.decode("EPSG:" + srid, true), "epsg", srid, cx);
+            // register the CRS if missing
+            if (srid != null
+                    && srid != GENERIC_GEOGRAPHIC_SRID
+                    && srid != GENERIC_PROJECTED_SRID
+                    && !hasCRS(cx, srid)) {
+                CoordinateReferenceSystem crs = GeoPackage.decodeCRS(cx, srid);
+                String identifier = CRS.lookupIdentifier(crs, false);
+                String name = Optional.ofNullable(identifier).orElse(crs.getName().toString());
+                String auth = "NONE";
+                int code = -1;
+                int idx = identifier.indexOf(":");
+                if (idx > 0) {
+                    auth = identifier.substring(0, idx);
+                    code = Integer.parseInt(identifier.substring(idx + 1));
+                }
+                addCRS(cx, srid, name, auth, code, crs.toWKT(), null);
             }
 
             StringBuilder sb = new StringBuilder();
@@ -1159,8 +1196,61 @@ public class GeoPackage implements Closeable {
         }
     }
 
-    static Integer findSRID(GridCoverage2D raster) throws Exception {
-        return CRS.lookupEpsgCode(raster.getCoordinateReferenceSystem(), true);
+    public static int findSRID(Connection cx, CoordinateReferenceSystem crs) {
+        if (crs == null) return -1;
+
+        try {
+            Integer result = CRS.lookupEpsgCode(crs, true);
+            if (result != null) return result;
+
+            // if we got here we have a CRS but not an EPSG one, see if it's already there
+            String wkt = crs.toWKT();
+            String sqlWkt =
+                    "SELECT srs_id FROM gpkg_spatial_ref_sys WHERE definition = '" + wkt + "'";
+            try (Statement st = cx.createStatement();
+                    ResultSet rs = st.executeQuery(sqlWkt)) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+
+            // then we should try to create one
+            String sqlMax = "select max(srs_id) from gpkg_spatial_ref_sys";
+            int srid = -1;
+            try (Statement st = cx.createStatement();
+                    ResultSet rs = st.executeQuery(sqlMax); ) {
+                if (rs.next()) {
+                    srid = rs.getInt(1) + 1;
+                }
+            }
+            if (srid == -1) return srid;
+            if (srid < MIN_CUSTOM_SRID) srid = MIN_CUSTOM_SRID;
+
+            // insert new entry if none is found
+            String identifier = CRS.lookupIdentifier(crs, true);
+            int splitIdx = identifier.indexOf(':');
+            String organization = "UNKNOWN";
+            int organizationCoordSysId = -1;
+
+            if (splitIdx != -1) {
+                organization = identifier.substring(0, splitIdx);
+                organizationCoordSysId = Integer.parseInt(identifier.substring(splitIdx + 1));
+            }
+            GeoPackage.addCRS(
+                    cx,
+                    srid,
+                    crs.getName().toString(),
+                    organization,
+                    organizationCoordSysId,
+                    wkt,
+                    null);
+            return srid;
+        } catch (Exception e) {
+            LOGGER.log(Level.FINE, "Error looking up the epsg code for metadata insertion", e);
+        }
+
+        // if the above lookups all failed, return -1
+        return -1;
     }
 
     static ReferencedEnvelope findBounds(GridCoverage2D raster) {
@@ -1269,17 +1359,16 @@ public class GeoPackage implements Closeable {
             e.setDescription(e.getIdentifier());
         }
 
-        if (e.getSrid() == null) {
-            try {
-                e.setSrid(findSRID(entry.getBounds()));
-            } catch (Exception ex) {
-                throw new IOException(ex);
-            }
-        }
-
-        e.setLastChange(new Date());
-
         try (Connection cx = connPool.getConnection()) {
+            if (e.getSrid() == null) {
+                try {
+                    e.setSrid(findSRID(cx, entry.getBounds().getCoordinateReferenceSystem()));
+                } catch (Exception ex) {
+                    throw new IOException(ex);
+                }
+            }
+            e.setLastChange(new Date());
+
             // TODO: do all of this in a transaction
             // add entry to tile matrix set table
             Envelope bounds = e.getTileMatrixSetBounds();
@@ -1629,14 +1718,6 @@ public class GeoPackage implements Closeable {
         return e;
     }
 
-    static Integer findSRID(ReferencedEnvelope e) throws Exception {
-        return CRS.lookupEpsgCode(e.getCoordinateReferenceSystem(), true);
-    }
-
-    //
-    // sql utility methods
-    //
-
     static void initEntry(Entry e, ResultSet rs) throws SQLException, IOException {
         e.setIdentifier(rs.getString("identifier"));
         e.setDescription(rs.getString("description"));
@@ -1648,10 +1729,10 @@ public class GeoPackage implements Closeable {
             throw new IOException(ex);
         }
 
-        int srid = rs.getInt("organization_coordsys_id");
+        int srid = rs.getInt("srs_id");
         e.setSrid(srid);
 
-        CoordinateReferenceSystem crs = decodeCRSFromResultset(rs, srid);
+        CoordinateReferenceSystem crs = decodeCRS(rs.getStatement().getConnection(), srid);
 
         e.setBounds(
                 new ReferencedEnvelope(
@@ -1662,24 +1743,33 @@ public class GeoPackage implements Closeable {
                         crs));
     }
 
-    static CoordinateReferenceSystem decodeSRID(int srid) throws FactoryException {
+    static CoordinateReferenceSystem decodeCRS(Connection cx, int srid) throws IOException {
         if (srid == GENERIC_GEOGRAPHIC_SRID || srid == GENERIC_PROJECTED_SRID) {
             return DefaultEngineeringCRS.GENERIC_2D;
         }
-        return CRS.decode("EPSG:" + srid, true);
-    }
+        try (Statement st = cx.createStatement();
+                ResultSet rs =
+                        st.executeQuery(
+                                "select * from " + SPATIAL_REF_SYS + " where srs_id = " + srid)) {
+            if (rs.next()) {
+                String organization = rs.getString("organization");
+                String id = rs.getString("organization_coordsys_id");
+                if (organization != null && id != null) {
+                    try {
+                        return CRS.decode(organization + ":" + id, true);
+                    } catch (FactoryException e) {
+                        // try parsing definition directly
+                        LOGGER.log(Level.FINE, "Failed to decode EPSG code from srid", e);
+                    }
 
-    private static CoordinateReferenceSystem decodeCRSFromResultset(ResultSet rs, int srid)
-            throws IOException {
-        try {
-            return decodeSRID(srid);
-        } catch (Exception ex) {
-            // try parsing definition directly
-            try {
-                return CRS.parseWKT(rs.getString("definition"));
-            } catch (Exception e2) {
-                throw new IOException(ex);
+                    return CRS.parseWKT(rs.getString("definition"));
+                }
             }
+
+            // go silly and try to get from the srid as if it was a EPSG code
+            return CRS.decode("EPSG:" + srid, true);
+        } catch (Exception e) {
+            throw new IOException(e);
         }
     }
 

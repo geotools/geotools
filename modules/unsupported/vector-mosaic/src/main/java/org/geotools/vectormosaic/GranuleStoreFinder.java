@@ -18,19 +18,23 @@ package org.geotools.vectormosaic;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
+import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataStoreFinder;
 
 /** Utility class to find a DataStoreFactorySpi for a given set of connection parameters. */
-public abstract class VectorMosaicGranuleStoreFinder {
+public abstract class GranuleStoreFinder {
+    protected GranuleTracker granuleTracker;
     /**
      * Find the DataStore for the given connection parameters.
      *
      * @param granule the granule
      * @param isSampleForSchema true if the granule is a sample for schema
      */
-    public abstract void findDataStore(VectorMosaicGranule granule, boolean isSampleForSchema);
+    public abstract Optional<DataStore> findDataStore(
+            VectorMosaicGranule granule, boolean isSampleForSchema);
 
     /**
      * Converts properties to a Map of key/value pairs

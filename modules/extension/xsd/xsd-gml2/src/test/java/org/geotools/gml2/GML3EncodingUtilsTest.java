@@ -18,6 +18,7 @@
 package org.geotools.gml2;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.NoSuchAuthorityCodeException;
@@ -26,9 +27,16 @@ import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.referencing.CRS;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
+import org.junit.After;
 import org.junit.Test;
 
 public class GML3EncodingUtilsTest {
+
+    @After
+    public void cleanHints() throws Exception {
+        System.clearProperty(GeoTools.FORCE_SRS_STYLE);
+        Hints.removeSystemDefault(Hints.FORCE_SRS_STYLE);
+    }
 
     @Test
     public void testForceSrs() throws NoSuchAuthorityCodeException, FactoryException {
@@ -39,10 +47,7 @@ public class GML3EncodingUtilsTest {
 
         assertEquals(
                 "http://www.opengis.net/def/crs/EPSG/0/5730",
-                GML2EncodingUtils.toURI(crs, SrsSyntax.OGC_HTTP_URI));
-
-        System.clearProperty(GeoTools.FORCE_SRS_STYLE);
-        Hints.removeSystemDefault(Hints.FORCE_SRS_STYLE);
+                GML2EncodingUtils.toURI(crs, SrsSyntax.OGC_HTTP_URI, true));
     }
 
     @Test
@@ -54,9 +59,25 @@ public class GML3EncodingUtilsTest {
 
         assertEquals(
                 "http://www.opengis.net/gml/srs/epsg.xml#5730",
-                GML2EncodingUtils.toURI(crs, SrsSyntax.OGC_HTTP_URI));
+                GML2EncodingUtils.toURI(crs, SrsSyntax.OGC_HTTP_URI, true));
+    }
 
-        System.clearProperty(GeoTools.FORCE_SRS_STYLE);
-        Hints.removeSystemDefault(Hints.FORCE_SRS_STYLE);
+    @Test
+    public void testIAUStyles() throws NoSuchAuthorityCodeException, FactoryException {
+        CoordinateReferenceSystem crs = CRS.decode("IAU:1000");
+        assertNotNull(crs);
+
+        assertEquals("IAU:1000", GML2EncodingUtils.toURI(crs, SrsSyntax.AUTH_CODE, true));
+        assertEquals(
+                "http://www.opengis.net/gml/srs/iau.xml#1000",
+                GML2EncodingUtils.toURI(crs, SrsSyntax.OGC_HTTP_URL, true));
+        assertEquals(
+                "http://www.opengis.net/def/crs/IAU/0/1000",
+                GML2EncodingUtils.toURI(crs, SrsSyntax.OGC_HTTP_URI, true));
+        assertEquals(
+                "urn:x-ogc:def:crs:IAU:1000",
+                GML2EncodingUtils.toURI(crs, SrsSyntax.OGC_URN_EXPERIMENTAL, true));
+        assertEquals(
+                "urn:ogc:def:crs:IAU::1000", GML2EncodingUtils.toURI(crs, SrsSyntax.OGC_URN, true));
     }
 }

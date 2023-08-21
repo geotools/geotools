@@ -2005,6 +2005,11 @@ public class StreamingRenderer implements GTRenderer {
 
         for (FeatureTypeStyle fts : style.featureTypeStyles()) {
             if (isFeatureTypeStyleActive(layer.getFeatureSource().getSchema(), fts)) {
+
+                SimplifyingStyleVisitor simplifier = new SimplifyingStyleVisitor();
+                fts.accept(simplifier);
+                fts = (FeatureTypeStyle) simplifier.getCopy();
+
                 // DJB: this FTS is compatible with this FT.
 
                 // get applicable rules at the current scale

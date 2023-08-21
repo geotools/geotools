@@ -151,7 +151,7 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
         } else {
             directory = null;
         }
-        hints.put(Hints.CRS_AUTHORITY_EXTRA_DIRECTORY, directory);
+        if (directory != null) hints.put(Hints.CRS_AUTHORITY_EXTRA_DIRECTORY, directory);
         // Disposes the cached property file after at least 15 minutes of inactivity.
         setTimeout(15 * 60 * 1000L);
     }

@@ -88,14 +88,20 @@ public class ElasticDataStore extends ContentDataStore {
     }
 
     public ElasticDataStore(RestClient restClient, String indexName) throws IOException {
-        this(restClient, null, indexName, false);
+        this(
+                restClient,
+                null,
+                indexName,
+                false,
+                (Integer) ElasticDataStoreFactory.RESPONSE_BUFFER_LIMIT.sample);
     }
 
     public ElasticDataStore(
             RestClient restClient,
             RestClient proxyRestClient,
             String indexName,
-            boolean enableRunAs)
+            boolean enableRunAs,
+            int responseBufferLimit)
             throws IOException {
         LOGGER.fine("Initializing data store for " + indexName);
 
@@ -106,7 +112,9 @@ public class ElasticDataStore extends ContentDataStore {
             if (proxyRestClient != null) {
                 checkRestClient(proxyRestClient);
             }
-            client = new RestElasticClient(restClient, proxyRestClient, enableRunAs);
+            client =
+                    new RestElasticClient(
+                            restClient, proxyRestClient, enableRunAs, responseBufferLimit);
         } catch (Exception e) {
             throw new IOException("Unable to create REST client", e);
         }

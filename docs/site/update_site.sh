@@ -1,12 +1,7 @@
 #!/bin/bash
-#
-# Last update 2011-04-10 MB: 
-#   The zip files are now uploaded to ~/stable or ~/latest.
-#   Move xxx.zip to xxx.old.zip after unpacking.
-#
 
-if [ "$1" != "stable" ] && [ "$1" != "latest" ]; then
-  echo "Usage $0 <stable|latest>"
+if [ "$1" != "maintenance" ] && [ "$1" != "stable" ] && [ "$1" != "latest" ]; then
+  echo "Usage $0 <maintenance|stable|latest>"
   exit 1
 fi
 

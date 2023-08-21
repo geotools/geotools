@@ -40,12 +40,14 @@ public class VectorMosaicFeatureReader implements SimpleFeatureReader {
     private final SimpleFeatureCollection delegateCollection;
     private final Query query;
     private final VectorMosaicFeatureSource source;
-    private final SimpleFeatureType granuleFeatureType;
+    private final SimpleFeatureType schema;
     FeatureIterator delegateIterator;
     FeatureIterator granuleIterator;
     DataStore granuleDataStore;
     private Feature nextGranule = null;
     SimpleFeature delegateFeature = null;
+
+    String params;
 
     /**
      * Constructor
@@ -61,22 +63,13 @@ public class VectorMosaicFeatureReader implements SimpleFeatureReader {
         this.delegateCollection = delegateFeatures;
         this.query = query;
         this.source = vectorMosaicFeatureSource;
-        delegateIterator = delegateCollection.features();
-        try {
-            granuleFeatureType = this.source.getGranuleType();
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Failed to get granule feature type", e);
-        }
+        this.schema = source.getSchema();
+        this.delegateIterator = delegateCollection.features();
     }
 
     @Override
     public SimpleFeatureType getFeatureType() {
-        try {
-            return source.getFeatureType(delegateCollection.getSchema(), granuleFeatureType);
-        } catch (IOException e) {
-            LOGGER.log(Level.WARNING, "Failed to get feature type", e);
-            return null;
-        }
+        return schema;
     }
 
     @Override
@@ -118,24 +111,35 @@ public class VectorMosaicFeatureReader implements SimpleFeatureReader {
             if (granuleIterator != null) {
                 granuleIterator.close();
             }
-            if (granuleDataStore != null) {
-                granuleDataStore.dispose();
-            }
 
             delegateFeature = (SimpleFeature) delegateIterator.next();
             VectorMosaicGranule granule = VectorMosaicGranule.fromDelegateFeature(delegateFeature);
-            source.initGranule(granule, false);
+            // if tracking granule statistics, this is how many times granules are accessed
+            if (source.finder.granuleTracker != null) {
+                source.finder.granuleTracker.incrementAccessCount();
+            }
+            if (params != null && params.equals(granule.getParams())) {
+                // same connection, no need to reinitialize
+                source.populateGranuleTypeName(granule, granuleDataStore);
+            } else {
+                // different connection, need to reinitialize
+                if (granuleDataStore != null) {
+                    granuleDataStore.dispose();
+                }
+                granuleDataStore = source.initGranule(granule, false);
+                params = granule.getParams();
+            }
+
             Filter granuleFilter =
                     source.getSplitFilter(
-                            query, granule.getDataStore(), granule.getGranuleTypeName(), false);
-            granuleDataStore = granule.getDataStore();
+                            query, granuleDataStore, granule.getGranuleTypeName(), false);
             granuleIterator =
                     granuleDataStore
                             .getFeatureSource(granule.getGranuleTypeName())
                             .getFeatures(granuleFilter)
                             .features();
 
-            if (granuleIterator.hasNext()) {
+            while (granuleIterator.hasNext()) {
                 peekGranule = (SimpleFeature) granuleIterator.next();
                 Feature peek = mergeGranuleAndDelegate(peekGranule, delegateFeature);
                 if (query.getFilter().evaluate(peek)) {
@@ -146,13 +150,7 @@ public class VectorMosaicFeatureReader implements SimpleFeatureReader {
         }
 
         // no more
-        if (granuleIterator != null) {
-            // close the last iterator
-            granuleIterator.close();
-        }
-        if (granuleDataStore != null) {
-            granuleDataStore.dispose();
-        }
+        close();
         return false;
     }
 
@@ -186,11 +184,19 @@ public class VectorMosaicFeatureReader implements SimpleFeatureReader {
 
     @Override
     public void close() throws IOException {
-        if (delegateIterator != null) {
-            delegateIterator.close();
+        try {
+            if (delegateIterator != null) {
+                delegateIterator.close();
+            }
+        } catch (Exception e) {
+            LOGGER.log(Level.WARNING, "Failed to close delegate iterator", e);
         }
-        if (granuleIterator != null) {
-            granuleIterator.close();
+        try {
+            if (granuleIterator != null) {
+                granuleIterator.close();
+            }
+        } catch (Exception e2) {
+            LOGGER.log(Level.WARNING, "Failed to close granule iterator", e2);
         }
         if (granuleDataStore != null) {
             granuleDataStore.dispose();

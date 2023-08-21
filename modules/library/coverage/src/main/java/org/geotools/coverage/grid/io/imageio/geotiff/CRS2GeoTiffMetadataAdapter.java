@@ -841,7 +841,9 @@ public final class CRS2GeoTiffMetadataAdapter {
 
         // get the name of the gcs which will become a citation for the user
         // define crs
-        metadata.addGeoAscii(GeoTiffGCSCodes.GeogCitationGeoKey, geographicCRS.getName().getCode());
+        metadata.addGeoAscii(
+                GeoTiffGCSCodes.GeogCitationGeoKey,
+                "GCS Name = " + geographicCRS.getName().getCode());
 
         // geodetic datum
         final DefaultGeodeticDatum datum = (DefaultGeodeticDatum) geographicCRS.getDatum();
@@ -887,7 +889,8 @@ public final class CRS2GeoTiffMetadataAdapter {
                 GeoTiffGCSCodes.GeogGeodeticDatumGeoKey, GeoTiffConstants.GTUserDefinedGeoKey);
 
         // set the name
-        metadata.addGeoAscii(GeoTiffGCSCodes.GeogCitationGeoKey, datum.getName().getCode());
+        metadata.addGeoAscii(
+                GeoTiffGCSCodes.GeogCitationGeoKey, "Datum = " + datum.getName().getCode());
 
         parseSpheroid((DefaultEllipsoid) datum.getEllipsoid(), metadata);
     }
@@ -916,7 +919,8 @@ public final class CRS2GeoTiffMetadataAdapter {
         metadata.addGeoShortParam(
                 GeoTiffGCSCodes.GeogEllipsoidGeoKey, GeoTiffConstants.GTUserDefinedGeoKey);
         // setting the name
-        metadata.addGeoAscii(GeoTiffGCSCodes.GeogCitationGeoKey, ellipsoid.getName().getCode());
+        metadata.addGeoAscii(
+                GeoTiffGCSCodes.GeogCitationGeoKey, "Ellipsoid = " + ellipsoid.getName().getCode());
 
         // setting semimajor axis
         metadata.addGeoDoubleParam(
@@ -949,7 +953,8 @@ public final class CRS2GeoTiffMetadataAdapter {
                     GeoTiffGCSCodes.GeogPrimeMeridianGeoKey, GeoTiffConstants.GTUserDefinedGeoKey);
 
             // citation
-            metadata.addGeoAscii(GeoTiffGCSCodes.GeogCitationGeoKey, pm.getName().getCode());
+            metadata.addGeoAscii(
+                    GeoTiffGCSCodes.GeogCitationGeoKey, "Primem = " + pm.getName().getCode());
 
             // longitude
             metadata.addGeoDoubleParam(

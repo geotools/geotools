@@ -251,7 +251,7 @@ public class GeoPackageTest {
             try (PreparedStatement ps = psb.log(Level.FINE).statement()) {
                 try (ResultSet rs = ps.executeQuery()) {
                     assertTrue(rs.next());
-                    assertEquals("epsg:2000", rs.getString(1));
+                    assertEquals("EPSG:2000", rs.getString(1));
                 }
             }
         } catch (Exception e) {

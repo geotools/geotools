@@ -49,5 +49,9 @@ public class NameImplTest {
         assertTrue(scoped2.compareTo(scoped1) < 0);
 
         assertTrue(scoped2.compareTo(scoped1) < 0);
+
+        assertTrue(scoped1.compareTo(new NameImpl(null, scoped1.getLocalPart())) < 0);
+        assertTrue(new NameImpl(null, scoped1.getLocalPart()).compareTo(scoped1) > 0);
+        assertEquals(0, new NameImpl(null, "t").compareTo(new NameImpl(null, "t")));
     }
 }

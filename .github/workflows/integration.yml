@@ -48,8 +48,7 @@ jobs:
         echo "Checking out GeoFence"
         mkdir geofence
         # Using the Java 11 build branch, will update when merged
-        git clone https://github.com/aaime/geofence.git geofence
-        git checkout java11
+        git clone -b java11 https://github.com/aaime/geofence.git geofence
         echo "Checking out mapfish-print-v2"
         mkdir mapfish-print-v2
         git clone https://github.com/mapfish/mapfish-print-v2.git mapfish-print-v2

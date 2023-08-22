@@ -51,9 +51,7 @@ jobs:
         git clone -b java11 https://github.com/aaime/geofence.git geofence
         echo "Checking out mapfish-print-v2"
         mkdir mapfish-print-v2
-        git clone https://github.com/mapfish/mapfish-print-v2.git mapfish-print-v2
-        # Using remove-opengis branch, will update when mered
-        git checkout remove-opengis
+        git clone -b remove-opengis https://github.com/mapfish/mapfish-print-v2.git mapfish-print-v2
     - name: Apply org.opengis removal scripts
       run: |
         cd ~

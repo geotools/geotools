@@ -457,13 +457,6 @@ public class Hints extends RenderingHints {
     public static final Key PRECISION = new Key("org.geotools.api.geometry.Precision");
 
     /**
-     * The {@link org.geotools.api.geometry.PositionFactory} instance to use.
-     *
-     * @since 2.5
-     */
-    public static final Key POSITION_FACTORY = new Key("org.geotools.api.geometry.PositionFactory");
-
-    /**
      * The default linearization tolerance for curved geometries
      *
      * @see CurvedGeometryFactory

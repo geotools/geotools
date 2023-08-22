@@ -27,7 +27,6 @@ import org.geotools.api.coverage.grid.GridEnvelope;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.geometry.Envelope;
-import org.geotools.api.geometry.TransfiniteSet;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.crs.TemporalCRS;
 import org.geotools.api.referencing.crs.VerticalCRS;
@@ -125,7 +124,6 @@ public interface CoverageSource {
          * upper coordinate while lower and upper coordinates may be different to define vertical
          * intervals.
          *
-         * @todo consider {@link TransfiniteSet} as an alternative to {@link SortedSet}
          * @todo allow using an interval as well as a direct position
          * @todo allow transfinite sets!
          */

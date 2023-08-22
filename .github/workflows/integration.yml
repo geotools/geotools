@@ -70,7 +70,7 @@ jobs:
         ant -noinput -buildfile remove-opengis.xml
     - name: Build Mapfish-print v2 with tests
       run: |
-        cd ~/mapfish-print-v2
+        cd ~
         mvn -B -f mapfish-print-v2/pom.xml install -nsu -DskipTests -T2
         mvn -B -f mapfish-print-v2/pom.xml test -fae -nsu -T2 
     - name: Build GeoWebCache with tests

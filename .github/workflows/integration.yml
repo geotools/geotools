@@ -32,8 +32,6 @@ jobs:
     - name: Disable checksum offloading
       # See: https://github.com/actions/virtual-environments/issues/1187#issuecomment-686735760
       run: sudo ethtool -K eth0 tx off rx off
-    - name: Setup Gradle
-      uses: gradle/gradle-build-action@v2
     - name: Build GeoTools (no tests, prepare fresh artifacts)
       run: mvn -B clean install -T2 -Dall --file pom.xml -DskipTests
     - name: Checkout GeoWebCache, GeoServer and ...
@@ -52,10 +50,12 @@ jobs:
         # Using the Java 11 build branch, will update when merged
         git clone https://github.com/aaime/geofence.git geofence
         git checkout java11
-
-# echo "Checking out MapFish Print v2"
-#        mkdir mapfish-print-v2
-#        git clone https://github.com/mapfish/mapfish-print-v2.git mapfish-print-v2
+        echo "Checking out mapfish-print-v2"
+        mkdir mapfish-print-v2
+        git clone https://github.com/mapfish/mapfish-print-v2.git mapfish-print-v2
+        # Using remove-opengis branch, will update when mered
+        git checkout remove-opengis
+        
     - name: Apply org.opengis removal scripts
       run: |
         cd ~
@@ -69,15 +69,14 @@ jobs:
         cd ~/geofence        
         cp ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml .
         ant -noinput -buildfile remove-opengis.xml
-        
-#        cd ~/mapfish-print-v2/src
-#        cp ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml .
-#        ant -noinput -buildfile remove-opengis.xml
-#    - name: Build Mapfish-print v2 with tests
-#      run: |
-#        cd ~/mapfish-print-v2
-#        sed -i "s/27.0/30-SNAPSHOT/g" build.gradle
-#        ./gradlew build
+        cd ~/mapfish-print-v2
+        cp ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml .
+        ant -noinput -buildfile remove-opengis.xml
+   - name: Build Mapfish-print v2 with tests
+     run: |
+       cd ~/mapfish-print-v2
+       mvn -B -f mapfish-print-v2/pom.xml install -nsu -DskipTests -T2
+       mvn -B -f mapfish-print-v2/pom.xml test -fae -nsu -T2 
     - name: Build GeoWebCache with tests
       run: |
         export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"

@@ -23,7 +23,7 @@ import it.geosolutions.jaiext.classifier.LinearColorMap.LinearColorMapType;
 import it.geosolutions.jaiext.classifier.LinearColorMapElement;
 import java.util.HashMap;
 import java.util.Map;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.styling.ColorMapEntry;
@@ -34,7 +34,7 @@ import org.junit.Test;
 public class SLDColorMapBuilderTest {
     private SLDColorMapBuilder builder;
     private ColorMapEntry entry;
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+    FilterFactory ff = CommonFactoryFinder.getFilterFactory();
     Map<String, Object> envValues;
 
     @Before

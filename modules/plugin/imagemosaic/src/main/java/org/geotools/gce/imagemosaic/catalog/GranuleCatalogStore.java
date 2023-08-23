@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.coverage.grid.io.GranuleStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
@@ -41,7 +41,7 @@ public class GranuleCatalogStore extends GranuleCatalogSource implements Granule
 
     static final Logger LOGGER = Logging.getLogger(GranuleCatalogStore.class);
 
-    static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     private Transaction transaction;
 

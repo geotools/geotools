@@ -40,7 +40,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
@@ -119,7 +119,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
     static StyleFactory2 sf = (StyleFactory2) CommonFactoryFinder.getStyleFactory(null);
 
-    static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     static final String NEWLINE = System.getProperty("line.separator");
 
@@ -929,7 +929,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
         TextSymbolizer ts = sb.createTextSymbolizer();
         PropertyName literalPrio =
-                CommonFactoryFinder.getFilterFactory2(null).property("quantVariable");
+                CommonFactoryFinder.getFilterFactory(null).property("quantVariable");
         ts.setPriority(literalPrio);
         Style style = sb.createStyle(ts);
 

@@ -170,7 +170,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @author Ian Turton, CCG
  * @version $Id$
  */
-public class FilterFactoryImpl implements Factory, org.geotools.api.filter.FilterFactory2 {
+public class FilterFactoryImpl implements Factory, org.geotools.api.filter.FilterFactory {
 
     private FunctionFinder functionFinder;
 

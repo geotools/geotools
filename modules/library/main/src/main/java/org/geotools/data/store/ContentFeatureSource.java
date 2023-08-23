@@ -36,7 +36,7 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.identity.FeatureId;
@@ -387,7 +387,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
 
             // don't compute the bounds of the features that are modified or removed in the diff
             Iterator<String> i = diff.getModified().keySet().iterator();
-            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+            FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
             Set<FeatureId> modifiedFids = new HashSet<>();
             while (i.hasNext()) {
@@ -509,7 +509,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
 
                 // consider removed features that satisfy the filter
                 it = diff.getModified().values().iterator();
-                FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+                FilterFactory ff = CommonFactoryFinder.getFilterFactory();
                 Set<FeatureId> modifiedFids = new HashSet<>();
                 int modifiedPostCount = 0;
                 while (it.hasNext()) {

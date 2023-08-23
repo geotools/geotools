@@ -51,7 +51,7 @@ import org.locationtech.jts.geom.PrecisionModel;
 public class FilterAttributeExtractorTest {
     boolean set = false;
     FilterAttributeExtractor fae;
-    org.geotools.api.filter.FilterFactory2 fac;
+    org.geotools.api.filter.FilterFactory fac;
 
     /**
      * Sets up a schema and a test feature.
@@ -68,7 +68,7 @@ public class FilterAttributeExtractorTest {
 
         fae = new FilterAttributeExtractor();
 
-        fac = CommonFactoryFinder.getFilterFactory2(null);
+        fac = CommonFactoryFinder.getFilterFactory(null);
     }
 
     @Test

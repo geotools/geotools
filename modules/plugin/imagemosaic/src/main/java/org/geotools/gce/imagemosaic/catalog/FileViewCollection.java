@@ -27,7 +27,7 @@ import java.util.NoSuchElementException;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.filter.sort.SortOrder;
 import org.geotools.coverage.grid.io.GranuleSource;
@@ -48,7 +48,7 @@ import org.geotools.util.URLs;
 
 class FileViewCollection extends DecoratingSimpleFeatureCollection {
 
-    static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
     public static final String IMAGEINDEX = "imageindex";
 
     private final PathType pathType;

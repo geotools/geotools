@@ -30,7 +30,7 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.sort.SortBy;
 import org.geotools.data.DataAccess;
 import org.geotools.data.FeatureListener;
@@ -64,7 +64,7 @@ public class TransformFeatureSource implements SimpleFeatureSource {
 
     protected static final Logger LOGGER = Logging.getLogger(TransformFeatureSource.class);
 
-    protected static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    protected static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     protected Transformer transformer;
 

@@ -29,7 +29,7 @@ import org.geotools.api.feature.ComplexAttribute;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.Name;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.appschema.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.data.DataAccess;
@@ -64,7 +64,7 @@ public class SweValuesTest {
 
     public static final String SWE_VALUES_MAPPING = "/test-data/sweValuesAsList.xml";
 
-    private static FilterFactory2 ff;
+    private static FilterFactory ff;
 
     private static FeatureSource<FeatureType, Feature> obsSource;
 

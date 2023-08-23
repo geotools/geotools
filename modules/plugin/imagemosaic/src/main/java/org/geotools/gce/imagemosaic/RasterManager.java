@@ -53,7 +53,7 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.sort.SortOrder;
@@ -1016,7 +1016,7 @@ public class RasterManager implements Cloneable {
                             Query query = new Query(typeName);
                             String crsAttribute = getCrsAttribute();
                             query.setPropertyNames(Arrays.asList(crsAttribute));
-                            FilterFactory2 ff = FeatureUtilities.DEFAULT_FILTER_FACTORY;
+                            FilterFactory ff = FeatureUtilities.DEFAULT_FILTER_FACTORY;
                             query.setFilter(
                                     ff.equals(
                                             ff.property(crsAttribute),
@@ -1851,7 +1851,7 @@ public class RasterManager implements Cloneable {
 
         Object granuleCRSCode =
                 Utils.getAttribute(templateDescriptor.getOriginator(), crsAttribute);
-        FilterFactory2 ff = FeatureUtilities.DEFAULT_FILTER_FACTORY;
+        FilterFactory ff = FeatureUtilities.DEFAULT_FILTER_FACTORY;
         PropertyIsEqualTo crsFilter =
                 ff.equal(ff.property(crsAttribute), ff.literal(granuleCRSCode), false);
 

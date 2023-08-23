@@ -40,7 +40,7 @@ class SimplifyingStyleVisitor extends DuplicatingStyleVisitor {
     SimplifyingStyleVisitor() {
         super(
                 CommonFactoryFinder.getStyleFactory(null),
-                CommonFactoryFinder.getFilterFactory2(null),
+                CommonFactoryFinder.getFilterFactory(null),
                 new SimplifyingFilterVisitor());
     }
 

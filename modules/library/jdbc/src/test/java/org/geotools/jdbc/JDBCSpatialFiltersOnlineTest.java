@@ -23,7 +23,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.spatial.BBOX;
@@ -109,7 +108,7 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
 
     @Test
     public void testCrossesFilter() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         // should match only "r2"
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
@@ -121,7 +120,7 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
 
     @Test
     public void testIntersectsFilter() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         // should match only "r1"
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
@@ -133,7 +132,7 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
 
     @Test
     public void testIntersectsRingFilter() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         // should match only "r1"
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
@@ -145,7 +144,7 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
 
     @Test
     public void testTouchesFilter() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         // should match only "r1"
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
@@ -157,7 +156,7 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
 
     @Test
     public void testContainsFilter() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         // should match only "r2"
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
@@ -172,7 +171,7 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
     /** Same as contains, with roles reversed */
     @Test
     public void testWithinFilter() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         // should match only "r2"
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
@@ -186,7 +185,7 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
 
     @Test
     public void testDisjointFilter() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         // should match only "r2"
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
@@ -200,7 +199,7 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
 
     @Test
     public void testEqualsFilter() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         // should match only "r3"
         GeometryFactory gf = new GeometryFactory();
         Geometry g = gf.createGeometry((Geometry) td.roadFeatures[2].getDefaultGeometry());
@@ -234,7 +233,7 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
         GeometryFactory factory = new GeometryFactory();
         GeometryCollection geometry = new GeometryCollection(geometries, factory);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
         PropertyName p = ff.property(aname("geom"));
         Literal collect = ff.literal(geometry);

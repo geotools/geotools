@@ -21,7 +21,6 @@ import java.util.List;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.PropertyIsNull;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.InternalFunction;
@@ -56,7 +55,7 @@ public class DuplicatorFilterVisitorTest {
 
         And oldFilter = fac.and(filters);
         // duplicate it
-        DuplicatingFilterVisitor visitor = new DuplicatingFilterVisitor((FilterFactory2) fac);
+        DuplicatingFilterVisitor visitor = new DuplicatingFilterVisitor((FilterFactory) fac);
         Filter newFilter = (Filter) oldFilter.accept(visitor, null);
 
         // compare it
@@ -82,7 +81,7 @@ public class DuplicatorFilterVisitorTest {
         Expression internalFunction = new TestInternalFunction();
         Filter filter = fac.isNull(internalFunction);
 
-        DuplicatingFilterVisitor visitor = new DuplicatingFilterVisitor((FilterFactory2) fac);
+        DuplicatingFilterVisitor visitor = new DuplicatingFilterVisitor((FilterFactory) fac);
         Filter newFilter = (Filter) filter.accept(visitor, null);
 
         Assert.assertTrue(newFilter instanceof PropertyIsNull);

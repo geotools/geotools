@@ -16,7 +16,7 @@
  */
 package org.geotools.filter.spatial;
 
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -35,7 +35,7 @@ import org.locationtech.jts.geom.Geometry;
 public class DefaultCRSFilterVisitor extends DuplicatingFilterVisitor {
     private CoordinateReferenceSystem defaultCrs;
 
-    public DefaultCRSFilterVisitor(FilterFactory2 factory, CoordinateReferenceSystem defaultCrs) {
+    public DefaultCRSFilterVisitor(FilterFactory factory, CoordinateReferenceSystem defaultCrs) {
         super(factory);
         this.defaultCrs = defaultCrs;
     }

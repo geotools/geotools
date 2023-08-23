@@ -18,7 +18,7 @@ package org.geotools.filter.v1_0;
 
 import javax.xml.namespace.QName;
 import org.geotools.api.filter.And;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Not;
 import org.geotools.api.filter.Or;
 import org.geotools.api.filter.PropertyIsBetween;
@@ -65,7 +65,7 @@ import org.w3c.dom.Node;
  * @author Justin Deoliveira, The Open Planning Project
  */
 public class FilterMockData {
-    static FilterFactory2 f = (FilterFactory2) CommonFactoryFinder.getFilterFactory(null);
+    static FilterFactory f = (FilterFactory) CommonFactoryFinder.getFilterFactory(null);
 
     static Element propertyName(Document document, Node parent) {
         return propertyName("foo", document, parent);

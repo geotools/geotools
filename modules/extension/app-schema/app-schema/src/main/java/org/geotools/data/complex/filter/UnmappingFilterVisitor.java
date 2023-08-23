@@ -35,7 +35,7 @@ import org.geotools.api.filter.BinaryComparisonOperator;
 import org.geotools.api.filter.BinaryLogicOperator;
 import org.geotools.api.filter.ExcludeFilter;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.IncludeFilter;
 import org.geotools.api.filter.MultiValuedFilter.MatchAction;
@@ -130,7 +130,7 @@ public class UnmappingFilterVisitor
 
     protected FeatureTypeMapping mappings;
 
-    private static final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    private static final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     /**
      * visit(*Expression) holds the unmapped expression here. Package visible just for unit tests

@@ -26,7 +26,7 @@ import java.util.Stack;
 import java.util.stream.Collectors;
 import javax.swing.Icon;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.Description;
 import org.geotools.api.style.ExternalMark;
@@ -98,7 +98,7 @@ import org.geotools.styling.UserLayer;
 public class DuplicatingStyleVisitor implements StyleVisitor {
 
     protected final StyleFactory sf;
-    protected final FilterFactory2 ff;
+    protected final FilterFactory ff;
     protected boolean STRICT;
 
     /** We are using aggregation here to contain our DuplicatingFilterVisitor. */
@@ -112,10 +112,10 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     }
 
     public DuplicatingStyleVisitor(StyleFactory styleFactory) {
-        this(styleFactory, CommonFactoryFinder.getFilterFactory2(null));
+        this(styleFactory, CommonFactoryFinder.getFilterFactory(null));
     }
 
-    public DuplicatingStyleVisitor(StyleFactory styleFactory, FilterFactory2 filterFactory) {
+    public DuplicatingStyleVisitor(StyleFactory styleFactory, FilterFactory filterFactory) {
         this(styleFactory, filterFactory, new DuplicatingFilterVisitor(filterFactory));
     }
 
@@ -128,7 +128,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
      */
     public DuplicatingStyleVisitor(
             StyleFactory styleFactory,
-            FilterFactory2 filterFactory,
+            FilterFactory filterFactory,
             DuplicatingFilterVisitor filterCloner) {
         this.copyFilter = filterCloner;
         this.sf = styleFactory;

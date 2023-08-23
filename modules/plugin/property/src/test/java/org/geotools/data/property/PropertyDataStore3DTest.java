@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.util.List;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.data.DataUtilities;
@@ -56,7 +56,7 @@ import org.locationtech.jts.io.WKTReader;
 public class PropertyDataStore3DTest {
     PropertyDataStore store;
 
-    static FilterFactory2 ff = (FilterFactory2) CommonFactoryFinder.getFilterFactory(null);
+    static FilterFactory ff = (FilterFactory) CommonFactoryFinder.getFilterFactory(null);
 
     @Before
     public void setUp() throws Exception {

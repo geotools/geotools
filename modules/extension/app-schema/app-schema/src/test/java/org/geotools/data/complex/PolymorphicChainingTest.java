@@ -30,7 +30,7 @@ import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.appschema.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.data.DataAccess;
@@ -51,7 +51,7 @@ public class PolymorphicChainingTest extends AppSchemaTestSupport {
 
     static final Name ARTIFACT = Types.typeName(EX_NS, "Artifact");
 
-    static FilterFactory2 ff;
+    static FilterFactory ff;
 
     private static final String schemaBase = "/test-data/";
 

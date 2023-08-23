@@ -42,7 +42,7 @@ public abstract class AbstractContrastMethodStrategy implements ContrastMethodSt
     /** ALGORITHM */
     public static final String ALGORITHM = "algorithm";
 
-    protected FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory2();
+    protected FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
 
     protected ContrastMethod method = ContrastMethod.NONE;
 

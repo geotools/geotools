@@ -64,7 +64,7 @@ import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
 import org.jfree.fx.FXGraphics2D;
 import org.geotools.api.feature.type.GeometryDescriptor;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -151,7 +151,7 @@ public class FXMap extends Parent {
     private GeometryDescriptor geomDesc;
     private String geometryAttributeName;
     private String source;
-    private FilterFactory2 ff;
+    private FilterFactory ff;
     private StyleFactory sf;
     private StyleBuilder sb;
 

@@ -62,13 +62,12 @@ public class TeradataViewOnlineTest extends JDBCViewOnlineTest {
 
         // this will use the index but since the index is empty, it will return 0 (despite actually
         // intersecting)
-        BBOX bbox =
-                CommonFactoryFinder.getFilterFactory2(null).bbox("geom", -20, -20, 20, 20, null);
+        BBOX bbox = CommonFactoryFinder.getFilterFactory(null).bbox("geom", -20, -20, 20, 20, null);
         assertEquals(0, query(bbox));
 
         // the filter will not use the index since this is essentially a table scan
         // due to the size of the bbox versus world bounds
-        bbox = CommonFactoryFinder.getFilterFactory2(null).bbox("geom", -179, -89, 179, 89, null);
+        bbox = CommonFactoryFinder.getFilterFactory(null).bbox("geom", -179, -89, 179, 89, null);
         assertEquals(1, query(bbox));
     }
 

@@ -10,7 +10,7 @@ import java.awt.Color;
 import java.util.Arrays;
 import java.util.Map;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
@@ -33,7 +33,7 @@ import org.junit.Test;
 
 public class StyleBuilderTest {
 
-    FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     public void example() {
         StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);

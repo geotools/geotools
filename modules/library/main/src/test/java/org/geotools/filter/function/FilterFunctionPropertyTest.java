@@ -8,7 +8,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.data.DataTestCase;
 import org.geotools.factory.CommonFactoryFinder;
@@ -24,7 +24,7 @@ import org.junit.Test;
 public class FilterFunctionPropertyTest extends DataTestCase {
 
     private static final int LOOPS = 5000;
-    static FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    static FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     @After
     public void teardown() {

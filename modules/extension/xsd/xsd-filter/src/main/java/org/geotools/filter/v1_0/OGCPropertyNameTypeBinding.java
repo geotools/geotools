@@ -17,7 +17,7 @@
 package org.geotools.filter.v1_0;
 
 import javax.xml.namespace.QName;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.filter.Filters;
@@ -49,12 +49,12 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @generated
  */
 public class OGCPropertyNameTypeBinding extends AbstractComplexBinding {
-    protected FilterFactory2 factory;
+    protected FilterFactory factory;
 
     /** parser namespace mappings */
     protected NamespaceSupport namespaceSupport;
 
-    public OGCPropertyNameTypeBinding(FilterFactory2 factory, NamespaceSupport namespaceSupport) {
+    public OGCPropertyNameTypeBinding(FilterFactory factory, NamespaceSupport namespaceSupport) {
         this.factory = factory;
         this.namespaceSupport = namespaceSupport;
     }

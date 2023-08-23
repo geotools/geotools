@@ -27,7 +27,7 @@ import org.geotools.api.filter.And;
 import org.geotools.api.filter.BinaryComparisonOperator;
 import org.geotools.api.filter.BinaryLogicOperator;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.Not;
 import org.geotools.api.filter.Or;
@@ -294,7 +294,7 @@ public class FilterOpsComplexTypes {
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
-            FilterFactory2 factory = FilterSchema.filterFactory(hints);
+            FilterFactory factory = FilterSchema.filterFactory(hints);
 
             try {
                 Expression expr1 = (Expression) value[0].getValue();
@@ -879,7 +879,7 @@ public class FilterOpsComplexTypes {
             if (value.length == 1) return value[0].getValue();
             if (value.length == 0) return Filter.EXCLUDE;
             try {
-                FilterFactory2 fac = CommonFactoryFinder.getFilterFactory2(null);
+                FilterFactory fac = CommonFactoryFinder.getFilterFactory(null);
                 // LogicFilter filter=fac.createLogicFilter(FilterType.LOGIC_OR);
                 List<org.geotools.api.filter.Filter> filters = new ArrayList<>();
                 Set<Identifier> ids = new HashSet<>();
@@ -1067,7 +1067,7 @@ public class FilterOpsComplexTypes {
                                 FeatureIdType.attrs[0].getNamespace().toString(),
                                 FeatureIdType.attrs[0].getName());
             }
-            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+            FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
             Set<FeatureId> fids = new HashSet<>();
             fids.add(ff.featureId(fid));
 
@@ -1194,7 +1194,7 @@ public class FilterOpsComplexTypes {
                 Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException, OperationNotSupportedException {
 
-            FilterFactory2 factory = FilterSchema.filterFactory(hints);
+            FilterFactory factory = FilterSchema.filterFactory(hints);
 
             try {
                 short type = ComparisonOpsType.findFilterType(element.getName());
@@ -1352,7 +1352,7 @@ public class FilterOpsComplexTypes {
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
-            FilterFactory2 factory = FilterSchema.filterFactory(hints);
+            FilterFactory factory = FilterSchema.filterFactory(hints);
             //    			<xsd:extension base="ogc:ComparisonOpsType">
             //    				<xsd:sequence>
             //    					<xsd:element ref="ogc:PropertyName"/>
@@ -1494,7 +1494,7 @@ public class FilterOpsComplexTypes {
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
-            FilterFactory2 factory = FilterSchema.filterFactory(hints);
+            FilterFactory factory = FilterSchema.filterFactory(hints);
             try {
                 Expression expr = (Expression) value[0].getValue();
 
@@ -1610,7 +1610,7 @@ public class FilterOpsComplexTypes {
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
-            FilterFactory2 factory = FilterSchema.filterFactory(hints);
+            FilterFactory factory = FilterSchema.filterFactory(hints);
             try {
                 Expression left = (Expression) value[1].getValue();
                 Expression middle = (Expression) value[0].getValue();
@@ -1915,7 +1915,7 @@ public class FilterOpsComplexTypes {
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
-            FilterFactory2 factory = FilterSchema.filterFactory(hints);
+            FilterFactory factory = FilterSchema.filterFactory(hints);
 
             try {
                 short type = SpatialOpsType.findFilterType(element.getName());
@@ -2125,7 +2125,7 @@ public class FilterOpsComplexTypes {
             if (value == null || value.length != 2) {
                 throw new SAXException("ogc:propertyName or gml:box required for bbox filter");
             }
-            FilterFactory2 factory = FilterSchema.filterFactory(hints);
+            FilterFactory factory = FilterSchema.filterFactory(hints);
             try {
                 Expression geometry1 = (Expression) value[0].getValue();
                 Expression geometry2 = (Expression) value[1].getValue();
@@ -2275,7 +2275,7 @@ public class FilterOpsComplexTypes {
                 Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
 
-            FilterFactory2 factory = FilterSchema.filterFactory(hints);
+            FilterFactory factory = FilterSchema.filterFactory(hints);
             try {
                 Expression geometry1 = (Expression) value[0].getValue();
                 Expression geometry2 = (Expression) value[1].getValue();
@@ -2412,7 +2412,7 @@ public class FilterOpsComplexTypes {
                 Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
 
-            FilterFactory2 factory = FilterSchema.filterFactory(hints);
+            FilterFactory factory = FilterSchema.filterFactory(hints);
             try {
                 Expression geometry1 = (Expression) value[0].getValue();
                 Expression geometry2 = (Expression) value[1].getValue();
@@ -2551,7 +2551,7 @@ public class FilterOpsComplexTypes {
                 Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
 
-            FilterFactory2 factory = FilterSchema.filterFactory(hints);
+            FilterFactory factory = FilterSchema.filterFactory(hints);
             String name = element.getName();
             short type;
             if ("and".equalsIgnoreCase(name)) {
@@ -2700,7 +2700,7 @@ public class FilterOpsComplexTypes {
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
-            FilterFactory2 factory = FilterSchema.filterFactory(hints);
+            FilterFactory factory = FilterSchema.filterFactory(hints);
             String name = element.getName();
             if (!"and".equalsIgnoreCase(name)
                     && !"or".equalsIgnoreCase(name)

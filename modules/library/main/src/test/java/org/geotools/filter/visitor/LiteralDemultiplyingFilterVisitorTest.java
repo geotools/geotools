@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.MultiValuedFilter.MatchAction;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
@@ -38,7 +38,7 @@ import org.junit.Test;
  */
 public class LiteralDemultiplyingFilterVisitorTest {
 
-    static final FilterFactory2 fac = CommonFactoryFinder.getFilterFactory2(null);
+    static final FilterFactory fac = CommonFactoryFinder.getFilterFactory(null);
 
     @Test
     public void testBinaryComparisonFilter() throws IllegalFilterException {

@@ -25,7 +25,7 @@ import javax.swing.JToolBar;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFinder;
@@ -65,7 +65,7 @@ public class SelectionLab {
      * Factories that we will use to create style and filter objects
      */
     private StyleFactory sf = CommonFactoryFinder.getStyleFactory();
-    private FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+    private FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
     /*
      * Convenient constants for the type of feature geometry in the shapefile

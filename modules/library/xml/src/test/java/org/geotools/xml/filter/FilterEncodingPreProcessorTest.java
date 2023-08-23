@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.PropertyIsNull;
 import org.geotools.api.filter.identity.FeatureId;
@@ -36,7 +36,7 @@ public class FilterEncodingPreProcessorTest {
 
     @Test
     public void testNOTFids() throws Exception {
-        FilterFactory2 factory = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         String fid1 = "FID.1";
         // not id filter does not actually have a valid encoding
         Filter filter = factory.not(factory.id(Collections.singleton(factory.featureId(fid1))));
@@ -68,7 +68,7 @@ public class FilterEncodingPreProcessorTest {
 
     @Test
     public void testNOTANDFids() throws Exception {
-        FilterFactory2 factory = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         String fid1 = "FID.1";
 
         Filter fidFilter = factory.not(factory.id(Collections.singleton(factory.featureId(fid1))));
@@ -103,7 +103,7 @@ public class FilterEncodingPreProcessorTest {
     }
 
     Id createFidFilter(String... fid) {
-        FilterFactory2 factory = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         Set<FeatureId> set;
         if (fid == null || fid.length == 0) {
             set = Collections.emptySet();
@@ -118,7 +118,7 @@ public class FilterEncodingPreProcessorTest {
 
     @Test
     public void testStraightANDFids() throws Exception {
-        FilterFactory2 factory = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         String fid1 = "FID.1";
         String fid2 = "FID.2";
         Filter filter = factory.id(Collections.singleton(factory.featureId(fid1)));
@@ -179,7 +179,7 @@ public class FilterEncodingPreProcessorTest {
 
     @Test
     public void testMixedAND() throws Exception {
-        FilterFactory2 factory = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         String fid1 = "FID.1";
         String fid2 = "FID.2";
         Filter filter = factory.or(createFidFilter(fid1), createFidFilter(fid2));
@@ -219,7 +219,7 @@ public class FilterEncodingPreProcessorTest {
 
     @Test
     public void testStraightOrFids() throws Exception {
-        FilterFactory2 factory = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         String fid1 = "FID.1";
         String fid2 = "FID.2";
         Filter filter = factory.or(createFidFilter(fid1), createFidFilter(fid2));
@@ -256,7 +256,7 @@ public class FilterEncodingPreProcessorTest {
 
     @Test
     public void testMixedOr() throws Exception {
-        FilterFactory2 factory = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         String fid1 = "FID.1";
         String fid2 = "FID.2";
         Filter filter = factory.or(createFidFilter(fid1), createFidFilter(fid2));
@@ -309,7 +309,7 @@ public class FilterEncodingPreProcessorTest {
      */
     @Test
     public void testMixedAndOr() throws Exception {
-        FilterFactory2 factory = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         String fid1 = "FID.1";
         Filter nullFilter1 = factory.isNull(factory.property("att"));
 
@@ -352,7 +352,7 @@ public class FilterEncodingPreProcessorTest {
 
     @Test
     public void testStrictlyLegalFilter() throws Exception {
-        FilterFactory2 factory = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         Filter nullFilter1 = factory.isNull(factory.property("att"));
 
         Filter nullFilter2 = factory.isNull(factory.property("name"));

@@ -89,7 +89,7 @@ public class TeradataDialectOnlineTest extends JDBCTestSupport {
         enableLogging(Level.FINE);
         int coords = insertGeom(30000);
         BBOX bbox =
-                CommonFactoryFinder.getFilterFactory2(null)
+                CommonFactoryFinder.getFilterFactory(null)
                         .bbox("geometry", -181.8, -90.868, 181.8, 84.492, null);
         read(coords, cnt - 1, bbox, true);
     }

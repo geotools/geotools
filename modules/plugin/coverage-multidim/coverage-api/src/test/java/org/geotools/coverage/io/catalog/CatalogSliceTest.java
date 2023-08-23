@@ -56,7 +56,7 @@ public class CatalogSliceTest extends Assert {
 
     private H2DataStoreFactory INTERNAL_STORE_SPI = new H2DataStoreFactory();
 
-    private final FilterFactory ff = CommonFactoryFinder.getFilterFactory2();
+    private final FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
     static final PrecisionModel PRECISION_MODEL = new PrecisionModel(PrecisionModel.FLOATING);
 

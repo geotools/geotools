@@ -27,7 +27,7 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
@@ -225,7 +225,7 @@ class WFSFeatureSource extends ContentFeatureSource {
     private void invertAxisInFilter(Query query) {
         Filter filter = query.getFilter();
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         InvertAxisFilterVisitor visitor = new InvertAxisFilterVisitor(ff, new GeometryFactory());
         filter = (Filter) filter.accept(visitor, null);
 

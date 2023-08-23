@@ -31,7 +31,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.style.ContrastMethod;
 import org.geotools.api.style.Displacement;
@@ -404,7 +404,7 @@ public class SEExampleTest extends SETestSupport {
         Fill fill = sym.getFill();
         assertEquals(Color.BLACK, fill.getColor().evaluate(null, Color.class));
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         // System.out.println(sym.getPriority());
         assertEquals(ff.property("people"), sym.getPriority());
 

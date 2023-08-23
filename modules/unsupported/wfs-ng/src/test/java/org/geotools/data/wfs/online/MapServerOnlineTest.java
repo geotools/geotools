@@ -30,7 +30,7 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.DataStore;
 import org.geotools.data.Query;
@@ -161,7 +161,7 @@ public class MapServerOnlineTest {
         } else {
             env = new ReferencedEnvelope(-59, -58, -35, -34, crs);
         }
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
         Filter filter = ff.bbox(ff.property("msGeometry"), env);
         Query query = new Query();
         query.setTypeName(typeName);
@@ -206,7 +206,7 @@ public class MapServerOnlineTest {
                 new ReferencedEnvelope(
                         4773438.659659, 648995.437355, 4773439.659659001, 648996.437355001, crs);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
         Filter filter = ff.bbox(ff.property("Geometry"), env);
         Query query = new Query();
         query.setTypeName(typeName);

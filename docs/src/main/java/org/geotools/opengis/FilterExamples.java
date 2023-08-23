@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.MultiValuedFilter.MatchAction;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.api.filter.identity.Version;
@@ -46,7 +46,7 @@ public class FilterExamples {
 
     public void ffExample() {
         // start ff example
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Filter filter;
 
         // the most common selection criteria is a simple equal test
@@ -79,7 +79,7 @@ public class FilterExamples {
 
     public void nilExample() {
         // start nil example
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Filter filter;
 
         // previous example tested if approved equals "null"
@@ -93,7 +93,7 @@ public class FilterExamples {
 
     public void id() {
         // id start
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         Filter filter =
                 ff.id(
@@ -104,7 +104,7 @@ public class FilterExamples {
 
     public void rid() throws Exception {
         // rid start
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Filter filter;
 
         // grab a specific revision
@@ -158,7 +158,7 @@ public class FilterExamples {
 
     public void idSet() {
         // idSet start
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         Set<FeatureId> selected = new HashSet<>();
         selected.add(ff.featureId("CITY.98734597823459687235"));
@@ -169,7 +169,7 @@ public class FilterExamples {
     }
 
     public void logical() {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Filter filter;
         // logical start
 
@@ -193,7 +193,7 @@ public class FilterExamples {
     }
 
     void temporal() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         // temporal start
 
@@ -217,7 +217,7 @@ public class FilterExamples {
 
     void caseSensitive() throws Exception {
         // caseSensitive start
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         // default is matchCase = true
         Filter filter = ff.equal(ff.property("state"), ff.literal("queensland"));
@@ -231,14 +231,14 @@ public class FilterExamples {
     }
 
     public void matchAction() {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         // matchAction start
         Filter filter = ff.greater(ff.property("child/age"), ff.literal(12), true, MatchAction.ALL);
         // matchAction end
     }
 
     public void matchActionAny() {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         // matchActionAny start
         List<Integer> ages = Arrays.asList(new Integer[] {7, 8, 10, 15});
 
@@ -248,7 +248,7 @@ public class FilterExamples {
     }
 
     public void matchActionAll() {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         // matchActionAll start
         List<Integer> ages = Arrays.asList(new Integer[] {7, 8, 10, 15});
 
@@ -258,7 +258,7 @@ public class FilterExamples {
     }
 
     public void matchActionOne() {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         // matchActionOne start
         List<Integer> ages = Arrays.asList(new Integer[] {7, 8, 10, 15});
 
@@ -274,7 +274,7 @@ public class FilterExamples {
         double y2 = 0;
 
         // bbox start
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         ReferencedEnvelope bbox =
                 new ReferencedEnvelope(x1, x2, y1, y2, DefaultGeographicCRS.WGS84);
         Filter filter = ff.bbox(ff.property("the_geom"), bbox);

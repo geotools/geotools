@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Map;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
@@ -26,7 +26,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 
 public class IntersectionBuilder extends GridFeatureBuilder {
-    final FilterFactory2 ff2 = CommonFactoryFinder.getFilterFactory2();
+    final FilterFactory ff2 = CommonFactoryFinder.getFilterFactory();
     final GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
 
     final SimpleFeatureSource source;

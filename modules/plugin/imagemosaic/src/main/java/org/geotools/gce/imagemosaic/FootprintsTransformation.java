@@ -35,7 +35,7 @@ import org.geotools.api.coverage.grid.GridGeometry;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterDescriptor;
@@ -140,7 +140,7 @@ public class FootprintsTransformation extends FunctionImpl
             StructuredGridCoverage2DReader reader,
             GeneralParameterValue[] readParameters)
             throws IOException {
-        FilterFactory2 ff = FeatureUtilities.DEFAULT_FILTER_FACTORY;
+        FilterFactory ff = FeatureUtilities.DEFAULT_FILTER_FACTORY;
         List<Filter> filters = new ArrayList<>();
 
         Filter filter = getParameter(FILTER, Filter.class, readParameters);

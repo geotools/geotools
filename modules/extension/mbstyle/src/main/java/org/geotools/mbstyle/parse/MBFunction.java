@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Enumeration;
 import java.util.List;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.coverage.processing.operation.Interpolate;
@@ -58,7 +58,7 @@ public class MBFunction {
 
     protected final JSONObject json;
 
-    private final FilterFactory2 ff;
+    private final FilterFactory ff;
 
     final JSONParser parser = new JSONParser();
 

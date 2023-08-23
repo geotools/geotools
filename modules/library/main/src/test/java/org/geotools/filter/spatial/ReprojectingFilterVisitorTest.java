@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
@@ -38,7 +38,7 @@ import org.locationtech.jts.geom.LineString;
 public class ReprojectingFilterVisitorTest {
 
     SimpleFeatureType ft;
-    FilterFactory2 ff;
+    FilterFactory ff;
     ReprojectingFilterVisitor reprojector;
 
     @Before
@@ -51,7 +51,7 @@ public class ReprojectingFilterVisitorTest {
         ft =
                 DataUtilities.createType(
                         "testType", "geom:Point:srid=4326,line:LineString,name:String,id:int");
-        ff = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
+        ff = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
         reprojector = new ReprojectingFilterVisitor(ff, ft);
     }
 

@@ -37,7 +37,7 @@ import org.geotools.TestData;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Id;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
@@ -448,7 +448,7 @@ public class ShapefileTest extends TestCaseSupport {
 
         Query query = new Query(ds.getTypeNames()[0]);
         if (isFilterBeforeScreenMap && filterFid != null) {
-            FilterFactory2 factory = CommonFactoryFinder.getFilterFactory2(null);
+            FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
             Id id =
                     factory.id(
                             Collections.singleton(

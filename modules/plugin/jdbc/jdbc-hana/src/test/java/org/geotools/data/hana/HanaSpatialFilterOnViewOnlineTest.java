@@ -19,7 +19,6 @@ package org.geotools.data.hana;
 import static org.junit.Assert.assertEquals;
 
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.api.filter.spatial.Intersects;
 import org.geotools.data.Query;
@@ -57,7 +56,7 @@ public class HanaSpatialFilterOnViewOnlineTest extends JDBCTestSupport {
         LinearRing shell =
                 gf.createLinearRing(sf.create(new double[] {0, 0, 4, 0, 4, 4, 0, 4, 0, 0}, 2));
         Polygon polygon = gf.createPolygon(shell, null);
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Intersects intersects = ff.intersects(ff.property(aname("geom")), ff.literal(polygon));
         Query q = new Query(aname("geom"), intersects);
         int count = dataStore.getFeatureSource(tname("viewoftab")).getCount(q);

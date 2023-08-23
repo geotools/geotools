@@ -24,7 +24,7 @@ import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.filter.BinaryComparisonOperator;
 import org.geotools.api.filter.BinaryLogicOperator;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsBetween;
 import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.PropertyIsGreaterThan;
@@ -54,7 +54,7 @@ abstract class RangeCombiner {
      */
     static class Or extends RangeCombiner {
 
-        public Or(FilterFactory2 ff, FeatureType featureType, List<Filter> filters) {
+        public Or(FilterFactory ff, FeatureType featureType, List<Filter> filters) {
             super(ff, featureType, filters);
         }
 
@@ -81,7 +81,7 @@ abstract class RangeCombiner {
      */
     static class And extends RangeCombiner {
 
-        public And(FilterFactory2 ff, FeatureType featureType, List<Filter> filters) {
+        public And(FilterFactory ff, FeatureType featureType, List<Filter> filters) {
             super(ff, featureType, filters);
         }
 
@@ -155,12 +155,12 @@ abstract class RangeCombiner {
 
     List<Filter> filters;
 
-    FilterFactory2 ff;
+    FilterFactory ff;
 
     @SuppressWarnings("unchecked")
     // this class combines ranges of comparables, but without really knowing the type of comparable
     // hence it cannot avoid unchecked assignments
-    public RangeCombiner(FilterFactory2 ff, FeatureType featureType, List<Filter> filters) {
+    public RangeCombiner(FilterFactory ff, FeatureType featureType, List<Filter> filters) {
         this.ff = ff;
         this.filters = filters;
         this.featureType = featureType;

@@ -18,7 +18,7 @@ package org.geotools.brewer.styling.filter.expression;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.brewer.styling.builder.Builder;
@@ -58,7 +58,7 @@ public class FunctionBuilder implements Builder<Function> {
         }
     }
 
-    protected FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    protected FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
     LiteralBuilder literal = new LiteralBuilder();
     boolean unset = false;
     private String name = null; // ie unset!

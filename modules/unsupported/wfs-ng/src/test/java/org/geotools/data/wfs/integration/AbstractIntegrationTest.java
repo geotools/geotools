@@ -35,7 +35,7 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Id;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.data.DataSourceException;
@@ -142,7 +142,7 @@ public abstract class AbstractIntegrationTest {
     protected abstract TestDataType createSecondType() throws Exception;
 
     private void completeTestDataType(TestDataType test) throws IOException {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
         SimpleFeatureSource source = data.getFeatureSource(test.typeName);
         test.features = grabArray(source.getFeatures());
@@ -216,7 +216,7 @@ public abstract class AbstractIntegrationTest {
             store1.addFeatureListener(listener1);
             store2.addFeatureListener(listener2);
 
-            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+            FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
             // test that only the listener listening with the current transaction gets the event.
             final SimpleFeature feature = first.features[0];

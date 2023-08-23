@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.naming.OperationNotSupportedException;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.ChannelSelection;
@@ -2540,7 +2540,7 @@ public class sldComplexTypes2 {
                     symbol.setChannelName((String) elementValue.getValue());
 
                 if (elems[CONTRASTENHANCEMENT].getName().equals(e.getName())) {
-                    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+                    FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
                     symbol.setContrastEnhancement(
                             new ContrastEnhancementImpl(
                                     ff, (Expression) elementValue.getValue(), null));

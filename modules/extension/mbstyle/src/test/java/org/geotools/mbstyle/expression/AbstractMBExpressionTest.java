@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Optional;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -60,7 +60,7 @@ public abstract class AbstractMBExpressionTest {
 
     protected Map<String, JSONObject> testLayersById = new HashMap<>();
     protected MBObjectParser parse;
-    protected FilterFactory2 ff;
+    protected FilterFactory ff;
     protected JSONObject mbstyle;
     protected SimpleFeature[] testFeatures;
     protected final GeometryFactory geometryFactory = new GeometryFactory();

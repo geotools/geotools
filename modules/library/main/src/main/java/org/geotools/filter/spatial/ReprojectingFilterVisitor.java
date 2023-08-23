@@ -20,7 +20,7 @@ import java.util.List;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.filter.BinaryComparisonOperator;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.PropertyIsNotEqualTo;
 import org.geotools.api.filter.capability.FunctionName;
@@ -65,12 +65,12 @@ public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
 
     private final CoordinateReferenceSystem targetCrs;
 
-    public ReprojectingFilterVisitor(FilterFactory2 factory, FeatureType featureType) {
+    public ReprojectingFilterVisitor(FilterFactory factory, FeatureType featureType) {
         this(factory, featureType, null);
     }
 
     public ReprojectingFilterVisitor(
-            FilterFactory2 factory, FeatureType featureType, CoordinateReferenceSystem targetCrs) {
+            FilterFactory factory, FeatureType featureType, CoordinateReferenceSystem targetCrs) {
         super(factory);
         this.featureType = featureType;
         this.targetCrs = targetCrs;

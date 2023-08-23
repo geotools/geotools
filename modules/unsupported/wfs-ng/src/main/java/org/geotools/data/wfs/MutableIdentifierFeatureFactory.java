@@ -22,7 +22,7 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.feature.AbstractFeatureFactoryImpl;
 import org.geotools.feature.FeatureImpl;
 import org.geotools.feature.simple.SimpleFeatureImpl;
@@ -34,7 +34,7 @@ import org.geotools.filter.FilterFactoryImpl;
  */
 class MutableIdentifierFeatureFactory extends AbstractFeatureFactoryImpl {
 
-    private static FilterFactory2 MUTABLE_FIDS_FILTER_FACTORY =
+    private static FilterFactory MUTABLE_FIDS_FILTER_FACTORY =
             new FilterFactoryImpl() {
                 @Override
                 public MutableFeatureId featureId(String id) {

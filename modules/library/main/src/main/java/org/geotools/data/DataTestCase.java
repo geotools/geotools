@@ -28,7 +28,7 @@ import java.util.UUID;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Id;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -86,7 +86,7 @@ public abstract class DataTestCase {
     protected SimpleFeatureType buildingType; // building: id, geom, name
     protected SimpleFeature[] buildingFeatures;
     protected ReferencedEnvelope buildingBounds;
-    protected FilterFactory2 ff;
+    protected FilterFactory ff;
 
     public DataTestCase() {}
 
@@ -101,7 +101,7 @@ public abstract class DataTestCase {
     /** Invoked before a test is run. The default implementation invokes {@link #dataSetUp}. */
     @Before
     public void init() throws Exception {
-        ff = CommonFactoryFinder.getFilterFactory2(null);
+        ff = CommonFactoryFinder.getFilterFactory(null);
         dataSetUp();
     }
 

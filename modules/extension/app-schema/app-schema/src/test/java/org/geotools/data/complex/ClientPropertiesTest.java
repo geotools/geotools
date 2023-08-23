@@ -28,7 +28,7 @@ import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.appschema.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.data.DataAccess;
@@ -55,7 +55,7 @@ public class ClientPropertiesTest extends AppSchemaTestSupport {
 
     private FeatureSource<FeatureType, Feature> mfSource;
 
-    private FilterFactory2 ff;
+    private FilterFactory ff;
 
     @Before
     public void setUp() throws Exception {

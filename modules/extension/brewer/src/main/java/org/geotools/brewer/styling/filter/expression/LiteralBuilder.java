@@ -22,7 +22,7 @@ import org.geotools.brewer.styling.builder.Builder;
 import org.geotools.factory.CommonFactoryFinder;
 
 public class LiteralBuilder implements Builder<Literal> {
-    protected FilterFactory ff = CommonFactoryFinder.getFilterFactory2(null);
+    protected FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
     Object literal = null; // will result in Expression.NIL
     boolean unset = false;
 

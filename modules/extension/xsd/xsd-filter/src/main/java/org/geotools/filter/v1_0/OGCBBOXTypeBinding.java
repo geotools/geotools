@@ -17,7 +17,7 @@
 package org.geotools.filter.v1_0;
 
 import javax.xml.namespace.QName;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -54,7 +54,7 @@ import org.locationtech.jts.geom.Envelope;
  * @generated
  */
 public class OGCBBOXTypeBinding extends AbstractComplexBinding {
-    private FilterFactory2 factory;
+    private FilterFactory factory;
     private CoordinateReferenceSystem crs;
 
     public OGCBBOXTypeBinding() {
@@ -63,7 +63,7 @@ public class OGCBBOXTypeBinding extends AbstractComplexBinding {
         // And since we support setter injection of a crs we just fall back on
         // common factory finder... since there is actually only one filter factory
         // impl not a huge deal, but it woul dbe nice to be consistent
-        factory = CommonFactoryFinder.getFilterFactory2(null);
+        factory = CommonFactoryFinder.getFilterFactory(null);
     }
 
     /** @generated */

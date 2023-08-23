@@ -24,7 +24,7 @@ import java.util.List;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.BatchFeatureEvent;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
@@ -95,7 +95,7 @@ public class ContentFeatureSourceEventsTest extends AbstractContentTest {
         store1.addFeatureListener(listener1);
         store2.addFeatureListener(listener2);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         final SimpleFeature feature = FEATURES.get(0);
         Filter fidFilter = ff.id(feature.getIdentifier());
@@ -162,7 +162,7 @@ public class ContentFeatureSourceEventsTest extends AbstractContentTest {
         store1.addFeatureListener(listener1);
         store2.addFeatureListener(listener2);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         final SimpleFeature feature = FEATURES.get(0);
         Filter fidFilter = ff.id(feature.getIdentifier());
@@ -264,7 +264,7 @@ public class ContentFeatureSourceEventsTest extends AbstractContentTest {
         store1.addFeatureListener(listener1);
         store2.addFeatureListener(listener2);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         final SimpleFeature feature0 = FEATURES.get(0);
         final SimpleFeature feature1 = FEATURES.get(1);

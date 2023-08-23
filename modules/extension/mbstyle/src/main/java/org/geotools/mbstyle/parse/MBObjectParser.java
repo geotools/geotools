@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.data.util.ColorConverterFactory;
@@ -74,7 +74,7 @@ public class MBObjectParser {
     /** Wrapper class (used to provide better error messages). */
     final Class<?> context;
 
-    final FilterFactory2 ff;
+    final FilterFactory ff;
     final StyleFactory2 sf;
     private static final Logger LOGGER = Logging.getLogger(MBObjectParser.class);
 
@@ -86,7 +86,7 @@ public class MBObjectParser {
     public MBObjectParser(Class<?> context) {
         this.context = context;
         this.sf = (StyleFactory2) CommonFactoryFinder.getStyleFactory();
-        this.ff = CommonFactoryFinder.getFilterFactory2();
+        this.ff = CommonFactoryFinder.getFilterFactory();
     }
 
     /**
@@ -101,7 +101,7 @@ public class MBObjectParser {
                 parse == null
                         ? (StyleFactory2) CommonFactoryFinder.getStyleFactory()
                         : parse.getStyleFactory();
-        ff = parse == null ? CommonFactoryFinder.getFilterFactory2() : parse.getFilterFactory();
+        ff = parse == null ? CommonFactoryFinder.getFilterFactory() : parse.getFilterFactory();
     }
 
     //
@@ -110,7 +110,7 @@ public class MBObjectParser {
     // These methods throw a validation error if tag is not available
     //
     /** Shared FilterFactory */
-    public FilterFactory2 getFilterFactory() {
+    public FilterFactory getFilterFactory() {
         return this.ff;
     }
 

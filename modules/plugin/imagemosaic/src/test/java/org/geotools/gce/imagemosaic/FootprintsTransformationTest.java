@@ -37,7 +37,7 @@ import org.apache.commons.io.FileUtils;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterDescriptor;
@@ -60,7 +60,7 @@ import org.locationtech.jts.geom.MultiPolygon;
 
 public class FootprintsTransformationTest {
 
-    static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
     static final FootprintsTransformation TX = new FootprintsTransformation();
 
     @Test

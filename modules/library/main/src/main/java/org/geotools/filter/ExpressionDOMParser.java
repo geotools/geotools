@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -56,7 +56,7 @@ public final class ExpressionDOMParser {
             org.geotools.util.logging.Logging.getLogger(ExpressionDOMParser.class);
 
     /** Factory for creating filters. */
-    private FilterFactory2 ff;
+    private FilterFactory ff;
 
     /** Factory for creating geometry objects */
     private static GeometryFactory gfac = new GeometryFactory();
@@ -65,26 +65,26 @@ public final class ExpressionDOMParser {
     private static final int NUM_BOX_COORDS = 5;
 
     /**
-     * @param filterFactory The FilterFactory2 to create literals and expressions with.
+     * @param filterFactory The FilterFactory to create literals and expressions with.
      * @throws NullPointerException in case of filterFactory is null.
      */
-    public ExpressionDOMParser(FilterFactory2 filterFactory) {
+    public ExpressionDOMParser(FilterFactory filterFactory) {
         Objects.requireNonNull(filterFactory);
         this.ff = filterFactory;
     }
 
     /** Constructor injection */
     public ExpressionDOMParser() {
-        this(CommonFactoryFinder.getFilterFactory2(null));
+        this(CommonFactoryFinder.getFilterFactory(null));
     }
 
     /**
      * Setter injection
      *
-     * @param filterFactory The FilterFactory2 to create literals and expressions with.
+     * @param filterFactory The FilterFactory to create literals and expressions with.
      * @throws NullPointerException in case of filterFactory is null.
      */
-    public void setFilterFactory(FilterFactory2 filterFactory) {
+    public void setFilterFactory(FilterFactory filterFactory) {
         Objects.requireNonNull(filterFactory);
         ff = filterFactory;
     }
@@ -482,7 +482,7 @@ public final class ExpressionDOMParser {
 
         if (childName.equalsIgnoreCase("gml:box")) {
             coordList =
-                    new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory2()).coords(child);
+                    new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory()).coords(child);
 
             org.locationtech.jts.geom.Envelope env = new org.locationtech.jts.geom.Envelope();
 
@@ -576,7 +576,7 @@ public final class ExpressionDOMParser {
         if (childName.equalsIgnoreCase("gml:linearRing")) {
             LOGGER.finer("LinearRing");
             coordList =
-                    new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory2()).coords(child);
+                    new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory()).coords(child);
 
             org.locationtech.jts.geom.LinearRing ring = null;
 
@@ -594,7 +594,7 @@ public final class ExpressionDOMParser {
         if (childName.equalsIgnoreCase("gml:linestring")) {
             LOGGER.finer("linestring");
             coordList =
-                    new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory2()).coords(child);
+                    new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory()).coords(child);
 
             LineString line = gfac.createLineString(coordList.toArray(new Coordinate[] {}));
 
@@ -604,7 +604,7 @@ public final class ExpressionDOMParser {
         if (childName.equalsIgnoreCase("gml:point")) {
             LOGGER.finer("point");
             coordList =
-                    new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory2()).coords(child);
+                    new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory()).coords(child);
 
             Point point = gfac.createPoint(coordList.get(0));
 

@@ -16,7 +16,7 @@
  */
 package org.geotools.data.wfs;
 
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.api.geometry.BoundingBox;
@@ -47,7 +47,7 @@ public class InvertAxisFilterVisitor extends DuplicatingFilterVisitor {
 
     private GeometryFactory geometryFactory;
 
-    public InvertAxisFilterVisitor(FilterFactory2 factory, GeometryFactory geometryFactory) {
+    public InvertAxisFilterVisitor(FilterFactory factory, GeometryFactory geometryFactory) {
         super(factory);
         this.geometryFactory = geometryFactory;
     }

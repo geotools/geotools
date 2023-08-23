@@ -29,14 +29,14 @@ public class BandsFunctionTest {
 
     @Test
     public void testRenderedImage() throws Exception {
-        Function bands = CommonFactoryFinder.getFilterFactory2().function("bands");
+        Function bands = CommonFactoryFinder.getFilterFactory().function("bands");
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_4BYTE_ABGR);
         assertEquals(4, (int) bands.evaluate(image, Integer.class));
     }
 
     @Test
     public void testCoverage() throws Exception {
-        Function bands = CommonFactoryFinder.getFilterFactory2().function("bands");
+        Function bands = CommonFactoryFinder.getFilterFactory().function("bands");
         GridCoverage coverage = EasyMock.createNiceMock(GridCoverage.class);
         EasyMock.expect(coverage.getNumSampleDimensions()).andReturn(5);
         EasyMock.replay(coverage);

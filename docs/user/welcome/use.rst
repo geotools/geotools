@@ -145,7 +145,7 @@ In GeoTools we use a ``FactoryFinder`` to look for a factory implementation on t
 
 Here is a quick example showing how to create and use a Filter::
   
-  FilterFactory2 factory = CommonFactoryFinder.getFilterFactory2( null );
+  FilterFactory factory = CommonFactoryFinder.getFilterFactory( null );
   Filter filter = factory.less( factory.property( "size" ), factory.literal( 2 ) );
   
   if( filter.evaulate( feature )){
@@ -154,7 +154,7 @@ Here is a quick example showing how to create and use a Filter::
 
 In this example we:
 
-1. Found an object which implements the GeoAPI ``FilterFactory2`` interface using a ``FactoryFinder``.
+1. Found an object which implements the GeoAPI ``FilterFactory`` interface using a ``FactoryFinder``.
    
    (``CommonFactoryFinder`` gave us ``FilterFactoryImpl`` in this case)
 2. Used the Factory to produce our Instance.

@@ -19,7 +19,7 @@ package org.geotools.styling.visitor;
 import static org.junit.Assert.assertEquals;
 
 import java.awt.Color;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Stroke;
@@ -37,7 +37,7 @@ public class DpiRescaleStyleVisitorTest {
 
     StyleFactory sf;
 
-    FilterFactory2 ff;
+    FilterFactory ff;
 
     DpiRescaleStyleVisitor visitor;
 
@@ -46,7 +46,7 @@ public class DpiRescaleStyleVisitorTest {
     @Before
     public void setUp() throws Exception {
         sf = CommonFactoryFinder.getStyleFactory(null);
-        ff = CommonFactoryFinder.getFilterFactory2(null);
+        ff = CommonFactoryFinder.getFilterFactory(null);
         sb = new StyleBuilder(sf, ff);
         scale = 2.0;
         visitor = new DpiRescaleStyleVisitor(scale);

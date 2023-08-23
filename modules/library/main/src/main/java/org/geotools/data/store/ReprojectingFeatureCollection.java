@@ -25,7 +25,7 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.sort.SortBy;
@@ -60,7 +60,7 @@ import org.locationtech.jts.geom.Geometry;
  * @author Justin
  */
 public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollection {
-    static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2(null);
+    static final FilterFactory FF = CommonFactoryFinder.getFilterFactory(null);
 
     /** The transform to the target coordinate reference system */
     MathTransform transform;

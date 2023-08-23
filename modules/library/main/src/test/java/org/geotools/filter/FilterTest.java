@@ -95,7 +95,7 @@ public class FilterTest {
 
     boolean set = false;
 
-    org.geotools.api.filter.FilterFactory2 fac = CommonFactoryFinder.getFilterFactory2(null);
+    org.geotools.api.filter.FilterFactory fac = CommonFactoryFinder.getFilterFactory(null);
 
     private Calendar calDateTime;
     private Calendar calTime;
@@ -114,7 +114,7 @@ public class FilterTest {
 
         set = true;
 
-        fac = CommonFactoryFinder.getFilterFactory2(null);
+        fac = CommonFactoryFinder.getFilterFactory(null);
 
         SimpleFeatureTypeBuilder ftb = new SimpleFeatureTypeBuilder();
         ftb.setName("testFeatureType");

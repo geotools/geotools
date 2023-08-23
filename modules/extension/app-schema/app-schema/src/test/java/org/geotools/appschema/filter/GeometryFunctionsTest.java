@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
@@ -66,7 +66,7 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
     public static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(GeometryFunctionsTest.class);
 
-    private static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    private static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     private static SimpleFeature feature;
 

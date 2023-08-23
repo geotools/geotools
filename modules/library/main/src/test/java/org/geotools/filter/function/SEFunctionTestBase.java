@@ -19,7 +19,7 @@ package org.geotools.filter.function;
 import java.util.List;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
@@ -36,7 +36,7 @@ import org.locationtech.jts.geom.GeometryFactory;
  */
 public class SEFunctionTestBase {
 
-    protected final FilterFactory2 ff2 = CommonFactoryFinder.getFilterFactory2(null);
+    protected final FilterFactory ff2 = CommonFactoryFinder.getFilterFactory(null);
     protected final FunctionFinder finder = new FunctionFinder(null);
     protected final GeometryFactory gf = JTSFactoryFinder.getGeometryFactory(null);
     protected List<Expression> parameters;

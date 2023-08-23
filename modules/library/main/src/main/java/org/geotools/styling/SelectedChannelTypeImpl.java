@@ -17,7 +17,6 @@
 package org.geotools.styling;
 
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.StyleVisitor;
 import org.geotools.factory.CommonFactoryFinder;
@@ -46,7 +45,7 @@ public class SelectedChannelTypeImpl implements SelectedChannelType {
     }
 
     public SelectedChannelTypeImpl(org.geotools.api.style.SelectedChannelType gray) {
-        filterFactory = CommonFactoryFinder.getFilterFactory2(null);
+        filterFactory = CommonFactoryFinder.getFilterFactory(null);
         name = gray.getChannelName();
         if (gray.getContrastEnhancement() != null) {
             contrastEnhancement = new ContrastEnhancementImpl(gray.getContrastEnhancement());
@@ -70,7 +69,7 @@ public class SelectedChannelTypeImpl implements SelectedChannelType {
 
     @Override
     public void setChannelName(String name) {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         this.name = ff.literal(name);
     }
 

@@ -27,7 +27,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
 import javax.swing.Icon;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
@@ -82,13 +82,13 @@ import org.junit.Test;
 public class DuplicatingStyleVisitorTest {
     StyleBuilder sb;
     StyleFactory sf;
-    FilterFactory2 ff;
+    FilterFactory ff;
     DuplicatingStyleVisitor visitor;
 
     @Before
     public void setUp() throws Exception {
         sf = CommonFactoryFinder.getStyleFactory(null);
-        ff = CommonFactoryFinder.getFilterFactory2(null);
+        ff = CommonFactoryFinder.getFilterFactory(null);
         sb = new StyleBuilder(sf, ff);
         visitor = new DuplicatingStyleVisitor(sf, ff);
     }

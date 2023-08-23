@@ -237,8 +237,7 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
             } else {
                 DuplicatingFilterVisitor visitor = new DuplicatingFilterVisitor();
                 clone.filter =
-                        (Filter)
-                                filter.accept(visitor, CommonFactoryFinder.getFilterFactory2(null));
+                        (Filter) filter.accept(visitor, CommonFactoryFinder.getFilterFactory(null));
             }
             clone.hasElseFilter = hasElseFilter;
             clone.legend = legend;

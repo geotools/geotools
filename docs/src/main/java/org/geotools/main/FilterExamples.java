@@ -28,7 +28,7 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.identity.FeatureId;
@@ -78,7 +78,7 @@ public class FilterExamples {
      */
     // grabSelectedIds start
     SimpleFeatureCollection grabSelectedIds(Set<String> selection) throws IOException {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         Set<FeatureId> fids = new HashSet<>();
         for (String id : selection) {
@@ -108,7 +108,7 @@ public class FilterExamples {
      */
     // grabSelectedNameIgnoreCase start
     SimpleFeatureCollection grabSelectedNameIgnoreCase(String name) throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         Filter filter = ff.equal(ff.property("Name"), ff.literal(name), false);
         return featureSource.getFeatures(filter);
@@ -124,7 +124,7 @@ public class FilterExamples {
      */
     // grabSelectedNames start
     SimpleFeatureCollection grabSelectedNames(Set<String> selectedNames) throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         List<Filter> match = new ArrayList<>();
         for (String name : selectedNames) {
@@ -145,7 +145,7 @@ public class FilterExamples {
     // grabFeaturesInBoundingBox start
     SimpleFeatureCollection grabFeaturesInBoundingBox(double x1, double y1, double x2, double y2)
             throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         FeatureType schema = featureSource.getSchema();
 
         // usually "THE_GEOM" for shapefiles
@@ -164,7 +164,7 @@ public class FilterExamples {
     // grabFeaturesInPolygon start
     SimpleFeatureCollection grabFeaturesInPolygon(double x1, double y1, double x2, double y2)
             throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         FeatureType schema = featureSource.getSchema();
         CoordinateReferenceSystem worldCRS = DefaultGeographicCRS.WGS84;
 
@@ -192,7 +192,7 @@ public class FilterExamples {
 
     // grabFeaturesOnScreen start
     SimpleFeatureCollection grabFeaturesOnScreen(ReferencedEnvelope screen) throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         FeatureType schema = featureSource.getSchema();
 
         // usually "THE_GEOM" for shapefiles
@@ -243,7 +243,7 @@ public class FilterExamples {
 
         ReferencedEnvelope bbox = worldBBox.transform(targetCRS, true, 10);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         // Option 1 BBOX
         Filter filter = ff.bbox(ff.property(geometryAttributeName), bbox);
@@ -276,7 +276,7 @@ public class FilterExamples {
         // threshold distance
         double distance = 10.0d;
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Filter filter =
                 ff.dwithin(ff.property("POLYGON"), ff.literal(point), distance, uom.toString());
 
@@ -292,7 +292,7 @@ public class FilterExamples {
         SimpleFeatureCollection fcResult = null;
         final DefaultFeatureCollection found = new DefaultFeatureCollection();
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         SimpleFeature feature = null;
 
         Filter polyCheck = null;
@@ -334,7 +334,7 @@ public class FilterExamples {
 
     private void expressionExamples() {
         Geometry geometry = null;
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         // expressionExamples start
         Expression propertyAccess = ff.property("THE_GEOM");
         Expression literal = ff.literal(geometry);

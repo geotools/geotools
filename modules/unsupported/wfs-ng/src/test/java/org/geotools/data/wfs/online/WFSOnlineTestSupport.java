@@ -36,7 +36,6 @@ import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.data.DataStore;
@@ -161,7 +160,7 @@ public class WFSOnlineTestSupport {
         }
 
         // test fid filter
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         query.setFilter(ff.id(ff.featureId(fid)));
 
         try (FeatureReader<SimpleFeatureType, SimpleFeature> fr =
@@ -179,7 +178,7 @@ public class WFSOnlineTestSupport {
         SimpleFeatureType featureType = wfs.getSchema(typeName);
 
         // take atleast attributeType 3 to avoid the undeclared one .. inherited optional attrs
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Query query = new Query(typeName);
         query.setCoordinateSystem(bbox.getCoordinateReferenceSystem());
         query.setMaxFeatures(5);

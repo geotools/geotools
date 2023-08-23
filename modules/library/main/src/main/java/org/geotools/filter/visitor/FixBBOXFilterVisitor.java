@@ -16,7 +16,7 @@
  */
 package org.geotools.filter.visitor;
 
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.spatial.BBOX;
@@ -108,7 +108,7 @@ public class FixBBOXFilterVisitor extends DuplicatingFilterVisitor {
         }
         if (clipped) {
             // the bbox was clipped!
-            FilterFactory2 ff = getFactory(extraData);
+            FilterFactory ff = getFactory(extraData);
             return ff.bbox(
                     filter.getExpression1(),
                     ff.literal(new ReferencedEnvelope(minx, maxx, miny, maxy, crs)));

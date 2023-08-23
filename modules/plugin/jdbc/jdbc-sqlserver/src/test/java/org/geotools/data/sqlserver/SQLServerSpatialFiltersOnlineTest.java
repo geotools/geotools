@@ -19,7 +19,7 @@ package org.geotools.data.sqlserver;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.spatial.DWithin;
 import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
@@ -39,7 +39,7 @@ public class SQLServerSpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineT
 
     @Test
     public void testPointDistance() throws IOException, ParseException {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Geometry point = new WKTReader().read("POINT(180000 0)");
         DWithin filter = ff.dwithin(ff.property(aname("geom")), ff.literal(point), 15000, "m");
 

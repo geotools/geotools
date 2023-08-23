@@ -22,7 +22,7 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 
 import java.awt.Color;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +34,7 @@ import org.junit.Test;
  */
 public class SLDTest {
     StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
     StyleBuilder sb = new StyleBuilder(ff);
 
     @Before

@@ -27,7 +27,7 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
@@ -230,7 +230,7 @@ public class FillTest {
 
     @Test
     public void testGEOT3111() throws Exception {
-        FilterFactory2 ff2 = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff2 = CommonFactoryFinder.getFilterFactory(null);
         StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
         Symbolizer sym =
                 sf.createPolygonSymbolizer(

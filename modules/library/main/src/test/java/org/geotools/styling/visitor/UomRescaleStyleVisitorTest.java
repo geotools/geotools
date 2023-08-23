@@ -28,7 +28,7 @@ import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -66,7 +66,7 @@ import systems.uom.common.USCustomary;
 /** @author milton */
 public class UomRescaleStyleVisitorTest {
 
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+    FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
     @Test
     public void testConstructorOK() {
@@ -115,7 +115,7 @@ public class UomRescaleStyleVisitorTest {
                     (PointSymbolizerImpl) styleBuilder.createPointSymbolizer();
             pointSymb.setUnitOfMeasure(uom);
 
-            FilterFactory2 filterFactory = new FilterFactoryImpl();
+            FilterFactory filterFactory = new FilterFactoryImpl();
             pointSymb.getGraphic().setSize(filterFactory.literal(size));
 
             UomRescaleStyleVisitor visitor = new UomRescaleStyleVisitor(scaleMetersToPixel);
@@ -143,7 +143,7 @@ public class UomRescaleStyleVisitorTest {
             LineSymbolizerImpl lineSymb = (LineSymbolizerImpl) styleBuilder.createLineSymbolizer();
             lineSymb.setUnitOfMeasure(uom);
 
-            FilterFactory2 filterFactory = new FilterFactoryImpl();
+            FilterFactory filterFactory = new FilterFactoryImpl();
             lineSymb.getStroke().setWidth(filterFactory.literal(size));
             lineSymb.setPerpendicularOffset(filterFactory.literal(size));
 
@@ -179,7 +179,7 @@ public class UomRescaleStyleVisitorTest {
                     (PolygonSymbolizerImpl) styleBuilder.createPolygonSymbolizer();
             polySymb.setUnitOfMeasure(uom);
 
-            FilterFactory2 filterFactory = new FilterFactoryImpl();
+            FilterFactory filterFactory = new FilterFactoryImpl();
             polySymb.getStroke().setWidth(filterFactory.literal(size));
             polySymb.getOptions().put(PolygonSymbolizer.GRAPHIC_MARGIN_KEY, "15");
 
@@ -298,7 +298,7 @@ public class UomRescaleStyleVisitorTest {
             double expectedRescaledSize =
                     Math.floor(computeExpectedRescaleSize(size, scaleMetersToPixel, uom) * 10000.0)
                             / 10000.0;
-            FilterFactory2 filterFactory = new FilterFactoryImpl();
+            FilterFactory filterFactory = new FilterFactoryImpl();
             Expression func =
                     filterFactory.function(
                             "listMultiply",

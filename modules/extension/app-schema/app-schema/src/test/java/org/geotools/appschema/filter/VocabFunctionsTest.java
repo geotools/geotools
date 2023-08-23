@@ -33,7 +33,6 @@ import org.geotools.api.feature.Property;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
@@ -157,7 +156,7 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
         URL file = getClass().getResource("/test-data/minoc_lithology_mapping.properties");
         assertNotNull(file);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Function function =
                 ff.function(
                         "Vocab", ff.literal("1LIST"), ff.literal(URLs.urlToFile(file).getPath()));
@@ -170,7 +169,7 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
 
     @Test
     public void testNoVocabFunction() {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Function function = ff.function("Vocab", ff.literal("a"), ff.literal("urn:1234"));
 
         try {

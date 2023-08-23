@@ -33,7 +33,7 @@ import java.util.Map;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsGreaterThanOrEqualTo;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
@@ -56,7 +56,7 @@ import org.locationtech.jts.io.WKTReader;
 @RunWith(Enclosed.class)
 public class EqualAreaFunctionTest {
 
-    static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
     public static final Expression PERSONS = FF.property("PERSONS");
 
     static RangedClassifier assertRangedClassifier(Object classifier) {

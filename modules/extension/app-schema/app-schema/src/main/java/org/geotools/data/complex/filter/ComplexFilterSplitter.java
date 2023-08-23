@@ -30,7 +30,7 @@ import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.BinaryComparisonOperator;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.PropertyIsBetween;
 import org.geotools.api.filter.PropertyIsLike;
@@ -293,7 +293,7 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
         // replace the artificial DEFAULT_GEOMETRY property with the actual one
         if (DEFAULT_GEOMETRY_LOCAL_NAME.equals(expression.getPropertyName())) {
             String defGeomPath = mappings.getDefaultGeometryXPath();
-            FilterFactory2 ff = new FilterFactoryImplNamespaceAware(mappings.getNamespaces());
+            FilterFactory ff = new FilterFactoryImplNamespaceAware(mappings.getNamespaces());
             expression = ff.property(defGeomPath);
         }
 

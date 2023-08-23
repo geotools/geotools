@@ -11,7 +11,7 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -144,7 +144,7 @@ public class GeometryTransformationTest {
         PointSymbolizer ps =
                 (PointSymbolizer)
                         style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         ps.setGeometry(ff.function("convert", ff.property("wkt"), ff.literal(Point.class)));
 
         // setup the map

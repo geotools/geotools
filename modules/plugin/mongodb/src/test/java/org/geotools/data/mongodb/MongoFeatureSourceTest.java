@@ -24,7 +24,7 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.BinaryLogicOperator;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.IncludeFilter;
 import org.geotools.api.filter.Or;
 import org.geotools.api.filter.PropertyIsBetween;
@@ -51,7 +51,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
     }
 
     public void testBBOXFilter() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         BBOX f = ff.bbox(ff.property("geometry"), 0.5, 0.5, 1.5, 1.5, "epsg:4326");
 
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
@@ -70,7 +70,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
     }
 
     public void testEqualToFilter() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         PropertyIsEqualTo f =
                 ff.equals(ff.property("properties.stringProperty"), ff.literal("two"));
 
@@ -90,7 +90,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
     }
 
     public void testLikeFilter() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         PropertyIsLike f = ff.like(ff.property("properties.stringProperty"), "on%", "%", "_", "\\");
 
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
@@ -118,7 +118,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
     }
 
     public void testLikePostFilter() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         // wrapping the property name in a function that is not declared as
         // supported in the filter capabilities (i.e. Concatenate) will make the
         // filter a post-filter
@@ -154,7 +154,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
     }
 
     public void testDateGreaterComparison() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         PropertyIsGreaterThan gt =
                 ff.greater(
                         ff.property("properties.dateProperty"),
@@ -202,7 +202,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
     }
 
     public void testDateLessComparison() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         PropertyIsLessThan lt =
                 ff.less(
                         ff.property("properties.dateProperty"),
@@ -234,7 +234,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
     }
 
     public void testDateBetweenComparison() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         PropertyIsBetween lt =
                 ff.between(
                         ff.property("properties.dateProperty"),
@@ -268,7 +268,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
     }
 
     public void testIsNullFilter() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         PropertyIsNull isNull = ff.isNull(ff.literal("properties.nullableAttribute"));
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
         Query q = new Query("ft1", isNull);
@@ -276,7 +276,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
     }
 
     public void testOrPostFilter() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         PropertyIsLike f1 =
                 ff.like(ff.property("properties.stringProperty"), "on%", "%", "_", "\\");
         PropertyIsLike f2 =
@@ -286,7 +286,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
     }
 
     public void testAndPostFilter() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         PropertyIsLike f1 =
                 ff.like(ff.property("properties.stringProperty"), "on%", "%", "_", "\\");
         PropertyIsLike f2 =
@@ -296,7 +296,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
     }
 
     public void testSingleSortBy() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         SortBy[] sorts = {
             ff.sort("properties.doubleProperty", SortOrder.DESCENDING),
         };
@@ -323,7 +323,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
     }
 
     public void testTwoSortBy() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         // sort before desc on string value a,b,b obtaining b,b,a
         // then asc on date 2015-01-01T00:00, 2015-01-01T16:30, 2015-01-01T21:30
         // obtaining second, third, one
@@ -359,7 +359,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
     }
 
     public void testTwoSortByWithNullableAttribute() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         // sort before on nullable so that second sort overcome
         SortBy[] sorts = {
             ff.sort("properties.nullableAttribute", SortOrder.DESCENDING),

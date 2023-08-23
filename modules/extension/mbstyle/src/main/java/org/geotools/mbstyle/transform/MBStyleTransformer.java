@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.filter.text.ecql.ECQL;
@@ -44,7 +44,7 @@ import org.geotools.util.logging.Logging;
  */
 public class MBStyleTransformer {
 
-    private final FilterFactory2 ff;
+    private final FilterFactory ff;
 
     private final StyleFactory sf;
 

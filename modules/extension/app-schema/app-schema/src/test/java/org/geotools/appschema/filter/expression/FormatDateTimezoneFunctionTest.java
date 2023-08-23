@@ -15,7 +15,7 @@ package org.geotools.appschema.filter.expression;
 
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Assert;
 import org.junit.Test;
@@ -45,7 +45,7 @@ public class FormatDateTimezoneFunctionTest {
     /** Expected ISO 8601 formatted day in time zones with negative offset (west of meridian). */
     private static final String PREVIOUS_DAY = "1947-12-31";
 
-    private static final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+    private static final FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
     /**
      * Return {@link #DAY} formatted according to {@link #PATTERN} in a time zone.

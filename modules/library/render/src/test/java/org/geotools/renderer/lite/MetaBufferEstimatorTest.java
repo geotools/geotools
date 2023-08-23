@@ -21,7 +21,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.NilExpression;
 import org.geotools.data.DataTestCase;
 import org.geotools.filter.function.EnvFunction;
@@ -185,7 +185,7 @@ public class MetaBufferEstimatorTest extends DataTestCase {
         Mark mark = sb.createMark("square");
         mark.setStroke(null);
         Graphic graphic = sb.createGraphic(null, mark, null);
-        FilterFactory2 ff = sb.getFilterFactory();
+        FilterFactory ff = sb.getFilterFactory();
         graphic.setSize(ff.function("env", ff.literal("test")));
         PointSymbolizer ps = sb.createPointSymbolizer(graphic);
         Style style = sb.createStyle(ps);

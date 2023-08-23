@@ -21,7 +21,7 @@ import java.util.HashSet;
 import java.util.Set;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.expression.VolatileFunction;
 import org.geotools.factory.CommonFactoryFinder;
@@ -48,7 +48,7 @@ import org.geotools.filter.visitor.DefaultFilterVisitor;
  */
 public class FilterAttributeExtractor extends DefaultFilterVisitor {
 
-    static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     /** Last set visited */
     protected Set<String> attributeNames = new HashSet<>();

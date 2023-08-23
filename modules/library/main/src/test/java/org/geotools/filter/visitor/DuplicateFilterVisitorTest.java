@@ -50,11 +50,11 @@ import org.xml.sax.helpers.NamespaceSupport;
  */
 public class DuplicateFilterVisitorTest {
 
-    private org.geotools.api.filter.FilterFactory2 fac;
+    private org.geotools.api.filter.FilterFactory fac;
 
     @Before
     public void setUp() throws Exception {
-        fac = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
+        fac = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
     }
 
     @Test

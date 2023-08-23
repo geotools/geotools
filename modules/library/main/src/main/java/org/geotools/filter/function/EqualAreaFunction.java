@@ -18,7 +18,7 @@ package org.geotools.filter.function;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
@@ -36,7 +36,7 @@ import org.geotools.filter.capability.FunctionNameImpl;
  */
 public class EqualAreaFunction extends AbstractQuantityClassificationFunction {
 
-    private static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    private static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     public static FunctionName NAME =
             new FunctionNameImpl(

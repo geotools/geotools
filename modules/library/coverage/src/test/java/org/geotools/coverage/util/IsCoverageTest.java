@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageTestBase;
@@ -38,7 +38,7 @@ import org.junit.Test;
 /** @author Davide Savazzi - GeoSolutions */
 public class IsCoverageTest extends GridCoverageTestBase {
 
-    static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     @Test
     public void testEvaluateFeature() throws Exception {

@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.digester.Digester;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.data.DataAccess;
@@ -55,7 +55,7 @@ import org.xml.sax.helpers.NamespaceSupport;
 public final class MongoComplexDataSource implements CustomSourceDataStore {
 
     // filter factory use to create filters
-    private FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2(null);
+    private FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
 
     @Override
     public DataAccess<? extends FeatureType, ? extends Feature> buildDataStore(

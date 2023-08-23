@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.logging.Logger;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.logging.Logging;
 import org.geotools.xml.styling.SLDTransformer;
@@ -13,7 +13,7 @@ public abstract class AbstractStyleTest {
 
     static final Logger LOGGER = Logging.getLogger(AbstractStyleTest.class);
 
-    protected FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    protected FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     protected void print(Object styleObject) {
         try {

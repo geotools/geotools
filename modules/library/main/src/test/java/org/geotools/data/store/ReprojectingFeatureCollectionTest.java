@@ -28,7 +28,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -56,7 +56,7 @@ public class ReprojectingFeatureCollectionTest extends FeatureCollectionWrapperT
 
     GeometryCoordinateSequenceTransformer transformer;
 
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     @Override
     @Before

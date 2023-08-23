@@ -22,7 +22,7 @@ package org.geotools.xml.styling;
  */
 import java.util.Map;
 import javax.naming.OperationNotSupportedException;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.ContrastMethod;
 import org.geotools.factory.CommonFactoryFinder;
@@ -224,7 +224,7 @@ public class sldComplexTypes {
                     symbol.setMethod(ContrastMethod.HISTOGRAM); // (Graphic)value[i].getValue()
 
                 if (elems[GAMMAVALUE].getName().equals(e.getName())) {
-                    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+                    FilterFactory ff = CommonFactoryFinder.getFilterFactory();
                     symbol.setGammaValue(
                             ff.literal(((Double) elementValue.getValue()).doubleValue()));
                 }

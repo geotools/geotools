@@ -19,7 +19,7 @@ package org.geotools.appschema.filter.expression;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.ExpressionVisitor;
@@ -63,7 +63,7 @@ public class ToDirectPositionFunction implements Function {
                     FunctionNameImpl.parameter("return", DirectPosition.class),
                     FunctionNameImpl.parameter("parameter", Object.class, 1, 4));
 
-    private static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    private static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     public static final Expression SRS_NAME = ff.literal("SRS_NAME");
 

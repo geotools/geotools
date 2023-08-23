@@ -23,7 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.identity.FeatureId;
@@ -130,7 +130,7 @@ public class MBFilter {
     /** Parser context. */
     protected final MBObjectParser parse;
 
-    protected final FilterFactory2 ff;
+    protected final FilterFactory ff;
 
     /** Wrapped json */
     protected final JSONArray json;

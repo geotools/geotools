@@ -74,7 +74,7 @@ import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.feature.type.PropertyDescriptor;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.PropertyName;
@@ -231,8 +231,7 @@ public class StreamingRenderer implements GTRenderer {
     int error = 0;
 
     /** Filter factory for creating bounding box filters */
-    protected static final FilterFactory2 filterFactory =
-            CommonFactoryFinder.getFilterFactory2(null);
+    protected static final FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
 
     protected static final StyleFactory STYLE_FACTORY = CommonFactoryFinder.getStyleFactory();
 

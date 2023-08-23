@@ -20,7 +20,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Map;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.spatial.BBOX;
@@ -70,7 +69,7 @@ public class DB2SpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest {
         // For DB2, we must use the following line of code
         MultiLineString ml = gf.createMultiLineString(geometries);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
         PropertyName p = ff.property(aname("geom"));
         Literal collect = ff.literal(ml);

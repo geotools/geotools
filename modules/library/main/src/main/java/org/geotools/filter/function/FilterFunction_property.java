@@ -18,7 +18,7 @@ package org.geotools.filter.function;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.expression.VolatileFunction;
@@ -34,7 +34,7 @@ import org.geotools.util.Converters;
  */
 public class FilterFunction_property extends FunctionExpressionImpl implements VolatileFunction {
 
-    FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     public static FunctionName NAME =
             new FunctionNameImpl(

@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.MultiValuedFilter;
 import org.geotools.api.filter.MultiValuedFilter.MatchAction;
 import org.geotools.api.filter.expression.Expression;
@@ -44,7 +44,7 @@ import org.locationtech.jts.geom.PrecisionModel;
  */
 public class MultiFilterTest {
 
-    private FilterFactory2 fac = CommonFactoryFinder.getFilterFactory2(null);
+    private FilterFactory fac = CommonFactoryFinder.getFilterFactory(null);
 
     @Test
     public void testFactoryAndGetter() {

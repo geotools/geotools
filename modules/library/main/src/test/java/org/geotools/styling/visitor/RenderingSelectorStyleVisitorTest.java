@@ -8,7 +8,7 @@ import static org.junit.Assert.assertNotEquals;
 
 import java.util.Arrays;
 import java.util.List;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Rule;
@@ -23,12 +23,12 @@ public class RenderingSelectorStyleVisitorTest {
 
     StyleBuilder sb;
     StyleFactory sf;
-    FilterFactory2 ff;
+    FilterFactory ff;
 
     @Before
     public void setUp() throws Exception {
         sf = CommonFactoryFinder.getStyleFactory(null);
-        ff = CommonFactoryFinder.getFilterFactory2(null);
+        ff = CommonFactoryFinder.getFilterFactory(null);
         sb = new StyleBuilder(sf, ff);
     }
 

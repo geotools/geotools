@@ -18,7 +18,7 @@ package org.geotools.data.hana;
 
 import static org.junit.Assert.assertEquals;
 
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.spatial.DWithin;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Test;
@@ -31,7 +31,7 @@ public class HanaFilterToSqlTest {
     @Test
     public void testDWithinFilterWithUnitEscaping() throws Exception {
         HanaFilterToSQL encoder = new HanaFilterToSQL(null, true, null);
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         GeometryFactory gf = new GeometryFactory();
 
         Coordinate coordinate = new Coordinate();

@@ -26,7 +26,7 @@ import org.geotools.factory.CommonFactoryFinder;
 /** FilterBuilder acting as a simple wrapper around an Expression. */
 public class FilterBuilder implements Builder<Filter> {
     protected Filter filter; // placeholder just to keep us going right now
-    protected FilterFactory ff = CommonFactoryFinder.getFilterFactory2(null);
+    protected FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
     protected boolean unset = false;
     protected Builder<? extends Filter> delegate = null;
 

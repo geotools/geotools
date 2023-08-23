@@ -18,7 +18,7 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.FeatureTypeFactory;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
@@ -48,7 +48,7 @@ public class WFSEncodingTest extends XmlTestSupport {
     @SuppressWarnings("unchecked")
     public void encodeUpdate() throws IOException, SAXException, TransformerException {
         WfsFactory wfsfac = WfsFactory.eINSTANCE;
-        FilterFactory2 filterfac = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory filterfac = CommonFactoryFinder.getFilterFactory();
         GeometryFactory geomfac = new GeometryFactory(new PrecisionModel(10));
 
         UpdateElementType update = wfsfac.createUpdateElementType();
@@ -140,7 +140,7 @@ public class WFSEncodingTest extends XmlTestSupport {
     @Test
     public void encodeDelete() throws IOException, SAXException, TransformerException {
         WfsFactory wfsfac = WfsFactory.eINSTANCE;
-        FilterFactory2 filterfac = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory filterfac = CommonFactoryFinder.getFilterFactory();
 
         DeleteElementType delete = wfsfac.createDeleteElementType();
         delete.setFilter(filterfac.id(filterfac.featureId("someid")));

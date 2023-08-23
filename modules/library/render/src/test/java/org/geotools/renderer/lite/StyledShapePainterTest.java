@@ -23,7 +23,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.net.URL;
 import javax.imageio.ImageIO;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.data.ows.MockURLChecker;
 import org.geotools.data.ows.URLCheckers;
@@ -160,7 +160,7 @@ public class StyledShapePainterTest {
 
     @Test
     public void testGraphicLegendRotation() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
 
         // Load image directly from file, for comparison with painter output
@@ -233,7 +233,7 @@ public class StyledShapePainterTest {
         StyledShapePainter painter = new StyledShapePainter();
         GraphicImpl legend =
                 new GraphicImpl(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         legend.setRotation(ff.literal(0));
         legend.setOpacity(ff.literal(1));
         URL url = StreamingRenderer.class.getResource("test-data/");

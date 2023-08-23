@@ -28,7 +28,7 @@ import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 import net.opengis.wfs.WfsFactory;
 import org.eclipse.emf.ecore.EObject;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.xsd.Binding;
 import org.geotools.xsd.Configuration;
@@ -43,7 +43,7 @@ import org.xml.sax.InputSource;
 public abstract class WFSTestSupport extends XMLTestSupport {
     protected WfsFactory factory = WfsFactory.eINSTANCE;
 
-    protected FilterFactory2 filterFac;
+    protected FilterFactory filterFac;
 
     private Class bindingTargetClass;
 
@@ -62,7 +62,7 @@ public abstract class WFSTestSupport extends XMLTestSupport {
         this.bindingTargetClass = bindingClass;
         this.executionMode = executionMode;
         binding = binding(qname);
-        filterFac = CommonFactoryFinder.getFilterFactory2(null);
+        filterFac = CommonFactoryFinder.getFilterFactory(null);
     }
 
     @Override

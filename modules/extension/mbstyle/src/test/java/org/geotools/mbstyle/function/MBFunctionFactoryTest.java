@@ -29,7 +29,7 @@ import java.awt.Font;
 import java.util.List;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.data.DataUtilities;
@@ -44,7 +44,7 @@ import org.junit.Test;
 /** Test the {@link ExponentialFunction}, {@link ZoomLevelFunction} and {@link CSSFunction}. */
 public class MBFunctionFactoryTest {
 
-    public static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+    public static FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
     @After
     public void cleanup() {

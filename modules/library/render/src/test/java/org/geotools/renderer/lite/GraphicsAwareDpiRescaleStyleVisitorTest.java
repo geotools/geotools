@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.factory.CommonFactoryFinder;
@@ -24,12 +24,12 @@ import org.junit.Test;
 public class GraphicsAwareDpiRescaleStyleVisitorTest {
 
     private StyleBuilder sb;
-    private FilterFactory2 ff;
+    private FilterFactory ff;
 
     @Before
     public void setup() {
         sb = new StyleBuilder();
-        ff = CommonFactoryFinder.getFilterFactory2(null);
+        ff = CommonFactoryFinder.getFilterFactory(null);
     }
 
     @Test

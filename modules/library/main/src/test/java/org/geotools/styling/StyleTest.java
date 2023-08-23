@@ -7,7 +7,7 @@ import static org.junit.Assert.assertSame;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.AnchorPoint;
 import org.geotools.api.style.Displacement;
@@ -30,7 +30,7 @@ import org.junit.Test;
  * </ul>
  */
 public class StyleTest {
-    static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
     static StyleFactoryImpl2 sf = new StyleFactoryImpl2(ff);
 
     @Test

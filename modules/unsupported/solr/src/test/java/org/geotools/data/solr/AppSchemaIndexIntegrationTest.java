@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.complex.TotalIndexedMappingFeatureIterator;
 import org.geotools.data.complex.feature.type.Types;
 import org.geotools.data.util.FeatureStreams;
@@ -38,7 +38,7 @@ import org.junit.Test;
  */
 public class AppSchemaIndexIntegrationTest extends AppSchemaOnlineTestSupport {
 
-    protected FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+    protected FilterFactory ff = CommonFactoryFinder.getFilterFactory();
     protected final String attId = "st:Station";
     protected final String attName = "st:Station/st:stationName";
     protected final String attComments = "st:Station/st:comments";
@@ -75,7 +75,7 @@ public class AppSchemaIndexIntegrationTest extends AppSchemaOnlineTestSupport {
 
     /** Should returns 1, 2, 10, 12(11 on index) */
     private Filter totalIndexedFilterCase() {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Filter filter = ff.like(ff.property(attObservationDesc), "*sky*");
         return filter;
     }

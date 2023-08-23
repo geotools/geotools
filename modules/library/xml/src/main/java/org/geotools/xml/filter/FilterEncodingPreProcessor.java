@@ -28,7 +28,7 @@ import org.geotools.api.filter.BinaryComparisonOperator;
 import org.geotools.api.filter.BinaryLogicOperator;
 import org.geotools.api.filter.ExcludeFilter;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.FilterVisitor;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.IncludeFilter;
@@ -132,7 +132,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
     private static final int HIGH = 2;
     private int complianceInt;
     private Stack<Data> current = new Stack<>();
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     private boolean requiresPostProcessing = false;
 

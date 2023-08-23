@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.collection.ListFeatureCollection;
@@ -29,7 +29,7 @@ public abstract class AbstractTransformTest {
 
     static CoordinateReferenceSystem WGS84;
 
-    static FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    static FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     @BeforeClass
     public static void setup() throws Exception {

@@ -21,7 +21,7 @@ import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.Query;
 import org.geotools.data.wfs.TestHttpClient;
@@ -63,7 +63,7 @@ public class WFSContentComplexFeatureSourceTest {
 
     private static final String GEOM_FIELD_NAME = "posisjon";
 
-    private static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+    private static FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
     private static final String DEFAULT_SRS = "urn:ogc:def:crs:EPSG::4258";
 
@@ -173,7 +173,7 @@ public class WFSContentComplexFeatureSourceTest {
         ReferencedEnvelope actualReprojected = actual.transform(utm33, true);
         assertEnvelope(actualReprojected, envelopeReprojected);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Query filteredQuery =
                 new Query(STED, ff.bbox("posisjon", 60.0, 20.0, 61.0, 21.0, DEFAULT_SRS));
         ReferencedEnvelope envelopeFilter =

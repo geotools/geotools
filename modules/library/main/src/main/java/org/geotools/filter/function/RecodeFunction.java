@@ -23,7 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.ExpressionVisitor;
@@ -53,7 +53,7 @@ import org.geotools.filter.capability.FunctionNameImpl;
  */
 public class RecodeFunction implements Function {
 
-    private static final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    private static final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     private final List<Expression> parameters;
 

@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.PropertyName;
@@ -42,11 +42,11 @@ import org.locationtech.jts.io.WKTReader;
 final class CQLJsonFilterBuilder {
 
     /** New instance of CQLJsonFilterBuilder */
-    public CQLJsonFilterBuilder(final FilterFactory2 filterFactory) {
+    public CQLJsonFilterBuilder(final FilterFactory filterFactory) {
         this.filterFactory = filterFactory;
     }
 
-    private final FilterFactory2 filterFactory;
+    private final FilterFactory filterFactory;
 
     private static final List<String> ARITHMETIC_OPERATORS;
 

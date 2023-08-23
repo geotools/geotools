@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.mbstyle.MBStyle;
@@ -47,7 +47,7 @@ import org.junit.Test;
 public class MBExpressionParseTest {
     Map<String, JSONObject> testLayersById = new HashMap<>();
     MBObjectParser parse;
-    FilterFactory2 ff;
+    FilterFactory ff;
     JSONObject mbstyle;
 
     @Before

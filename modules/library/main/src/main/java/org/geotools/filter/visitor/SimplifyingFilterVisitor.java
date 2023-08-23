@@ -29,7 +29,7 @@ import org.geotools.api.filter.And;
 import org.geotools.api.filter.BinaryComparisonOperator;
 import org.geotools.api.filter.BinaryLogicOperator;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.Not;
 import org.geotools.api.filter.Or;
@@ -388,7 +388,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
 
     @Override
     public Object visit(Not filter, Object extraData) {
-        FilterFactory2 ff = getFactory(extraData);
+        FilterFactory ff = getFactory(extraData);
         Filter inner = filter.getFilter();
         if (inner instanceof Not) {
             // simplify out double negation

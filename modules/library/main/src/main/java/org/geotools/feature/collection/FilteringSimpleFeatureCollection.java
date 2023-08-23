@@ -24,7 +24,7 @@ import org.geotools.api.feature.FeatureVisitor;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.util.ProgressListener;
 import org.geotools.data.DataUtilities;
@@ -70,7 +70,7 @@ public class FilteringSimpleFeatureCollection extends DecoratingSimpleFeatureCol
 
     @Override
     public SimpleFeatureCollection subCollection(Filter filter) {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Filter subFilter = ff.and(this.filter, filter);
 
         return new FilteringSimpleFeatureCollection(delegate, subFilter);

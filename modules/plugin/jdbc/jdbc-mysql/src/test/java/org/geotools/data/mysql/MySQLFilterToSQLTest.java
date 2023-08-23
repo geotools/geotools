@@ -18,7 +18,7 @@ package org.geotools.data.mysql;
 
 import static org.junit.Assert.assertEquals;
 
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.data.jdbc.SQLFilterTestSupport;
 import org.geotools.factory.CommonFactoryFinder;
@@ -28,7 +28,7 @@ import org.junit.Test;
 
 public class MySQLFilterToSQLTest extends SQLFilterTestSupport {
 
-    private static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+    private static FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
     private MySQLFilterToSQL filterToSql;
 

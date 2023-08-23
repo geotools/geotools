@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsGreaterThanOrEqualTo;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.data.DataTestCase;
@@ -31,7 +31,7 @@ import org.mockito.Mockito;
 
 public class FilterMemoizerTest extends DataTestCase {
 
-    static FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    static FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     @Test
     public void testMemoizeFilter() throws Exception {

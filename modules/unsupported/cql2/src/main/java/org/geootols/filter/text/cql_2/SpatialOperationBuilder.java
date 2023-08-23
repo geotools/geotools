@@ -18,7 +18,6 @@
 package org.geootols.filter.text.cql_2;
 
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.api.filter.spatial.BinarySpatialOperator;
@@ -43,21 +42,21 @@ import org.geotools.filter.text.cql2.CQLException;
 class SpatialOperationBuilder {
 
     private final BuildResultStack resultStack;
-    private final FilterFactory2 filterFactory;
+    private final FilterFactory filterFactory;
 
     public SpatialOperationBuilder(BuildResultStack resultStack, FilterFactory filterFactory) {
         assert resultStack != null;
         assert filterFactory != null;
 
         this.resultStack = resultStack;
-        this.filterFactory = (FilterFactory2) filterFactory;
+        this.filterFactory = (FilterFactory) filterFactory;
     }
 
     protected final BuildResultStack getResultStack() {
         return resultStack;
     }
 
-    protected final FilterFactory2 getFilterFactory() {
+    protected final FilterFactory getFilterFactory() {
         return filterFactory;
     }
 
@@ -182,7 +181,7 @@ class SpatialOperationBuilder {
 
         Expression expr = getResultStack().popExpression();
 
-        FilterFactory2 ff = getFilterFactory();
+        FilterFactory ff = getFilterFactory();
 
         BBOX bbox = ff.bbox(expr, minX, minY, maxX, maxY, crs);
         return bbox;

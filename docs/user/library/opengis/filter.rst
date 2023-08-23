@@ -137,16 +137,16 @@ to strict specification compliance.::
    FilterFactory ff = CommonFactoryFinder.getFilterFactory( GeoTools.getDefaultHints() );
    Filter filter = ff.propertyLessThan( ff.property( "AGE"), ff.literal( 12 ) );
 
-FilterFactory2
+FilterFactory
 ''''''''''''''
 
-In the real world we need to go beyond the specification. ``FilterFactory2`` will let you work with JTS
+In the real world we need to go beyond the specification. ``FilterFactory`` will let you work with JTS
 Geometry instances (the specification is only defined to work with ISO Geometry).::
    
-   FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints() );
+   FilterFactory ff = CommonFactoryFinder.getFilterFactory( GeoTools.getDefaultHints() );
    Filter filter = ff.contains( ff.property( "THE_GEOM"), ff.literal( geometry ) );
 
-``FilterFactory2`` also let's you define your filters in a bit more of a free form manner. In the
+``FilterFactory`` also let's you define your filters in a bit more of a free form manner. In the
 specification all operations must have the ``PropertyName`` expression first.
 
 XML
@@ -464,7 +464,7 @@ by styles to select which data for portrayal and so forth.
   
   The most common use is to access a Feature Property.::
      
-     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints() );
+     FilterFactory ff = CommonFactoryFinder.getFilterFactory( GeoTools.getDefaultHints() );
      
      Expression expr = ff.property("name");
      Object value = expr.evaluate( feature ); // evaluate
@@ -478,7 +478,7 @@ by styles to select which data for portrayal and so forth.
   You can also ask for the value specifically as a String, null will be returned if the value
   cannot be forced into a String::
      
-     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints() );
+     FilterFactory ff = CommonFactoryFinder.getFilterFactory( GeoTools.getDefaultHints() );
      
      Expression expr = ff.property("name");
      String name = expr.evaluate( feature, String ); // evaluate
@@ -492,10 +492,10 @@ by styles to select which data for portrayal and so forth.
   properties against complex features. To evaluate XPath expressions, an
   ``org.xml.sax.helpers.NamespaceSupport`` object is needed to associate prefixes with namespace URI's.
   
-  ``FilterFactory2`` supports the creation of ``PropertyName`` expression with associated namespace context
+  ``FilterFactory`` supports the creation of ``PropertyName`` expression with associated namespace context
   information.::
      
-     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints() );
+     FilterFactory ff = CommonFactoryFinder.getFilterFactory( GeoTools.getDefaultHints() );
      
      NamespaceSupport namespaceSupport = new NamespaceSupport();
      namespaceSupport.declarePrefix("foo", "urn:cgi:xmlns:CGI:GeoSciML:2.0" );
@@ -513,9 +513,9 @@ by styles to select which data for portrayal and so forth.
 
 * Functions
   
-  You can create functions using ``FilterFactory2``::
+  You can create functions using ``FilterFactory``::
      
-     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints() );
+     FilterFactory ff = CommonFactoryFinder.getFilterFactory( GeoTools.getDefaultHints() );
      
      PropertyName a = ff.property("testInteger");
      Literal b = ff.literal( 1004.0 );

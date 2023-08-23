@@ -149,7 +149,7 @@ public class OGCBinarySpatialOpTypeBinding extends AbstractComplexBinding {
         //        //<xsd:element name="Within" substitutionGroup="ogc:spatialOps"
         // type="ogc:BinarySpatialOpType"/>
         //        else if ("Within".equals(name)) {
-        //            //TODO: within method on FilterFactory2 needs to take two expressoins
+        //            //TODO: within method on FilterFactory needs to take two expressoins
         //            return factory.within(e1, e2);
         //        }
         //        //<xsd:element name="Overlaps" substitutionGroup="ogc:spatialOps"

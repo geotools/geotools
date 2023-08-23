@@ -18,7 +18,7 @@ package org.geotools.filter.v1_0;
 
 import java.util.List;
 import javax.xml.namespace.QName;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
@@ -97,7 +97,7 @@ public class OGCUtils {
      * @param node The parse tree.
      * @return A two element array of expressions for a BinarySpatialOp type.
      */
-    static Expression[] spatial(Node node, FilterFactory2 ff, GeometryFactory gf) {
+    static Expression[] spatial(Node node, FilterFactory ff, GeometryFactory gf) {
         List names = node.getChildValues(PropertyName.class);
         if (names.size() == 2) {
             // join

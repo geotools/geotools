@@ -22,7 +22,6 @@ import static org.junit.Assert.assertTrue;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.spatial.Intersects;
 import org.geotools.data.Query;
@@ -58,7 +57,7 @@ public class PostGISFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest 
         ((PostGISDialect) dataStore.getSQLDialect()).setEncodeBBOXFilterAsEnvelope(true);
 
         GeometryFactory gf = dataStore.getGeometryFactory();
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Intersects filter =
                 ff.intersects(
                         ff.property("geometry"),

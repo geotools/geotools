@@ -7,7 +7,7 @@ import java.util.Arrays;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Not;
 import org.geotools.api.filter.Or;
 import org.geotools.api.filter.PropertyIsBetween;
@@ -21,7 +21,7 @@ import org.junit.Test;
 
 public class NullHandlingVisitorTest {
 
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+    FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
     @Test
     public void testBetween() {

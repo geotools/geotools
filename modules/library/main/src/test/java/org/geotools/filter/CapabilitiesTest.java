@@ -23,7 +23,7 @@ import java.util.Date;
 import java.util.TimeZone;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.spatial.Beyond;
 import org.geotools.api.filter.temporal.After;
@@ -56,7 +56,7 @@ public class CapabilitiesTest {
         capabilities.addName("toDegrees", "radians"); // single argument function
         capabilities.addName("length", "expression");
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Filter filter = ff.between(ff.literal(0), ff.property("x"), ff.literal(2));
         Assert.assertFalse("supports", capabilities.supports(filter));
 
@@ -84,7 +84,7 @@ public class CapabilitiesTest {
         Capabilities capabilities = new Capabilities();
         capabilities.addAll(Capabilities.SIMPLE_COMPARISONS);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Filter filter = ff.lessOrEqual(ff.property("x"), ff.literal(2));
         Assert.assertTrue("supports", capabilities.supports(filter));
     }
@@ -100,7 +100,7 @@ public class CapabilitiesTest {
         capabilities.addName("EqualTo");
         capabilities.addName("NotEqualTo");
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Filter filter =
                 ff.and(
                         Arrays.asList(
@@ -125,7 +125,7 @@ public class CapabilitiesTest {
         Date date2 = dateFormat.parse("1970-07-19T07:08:09.101Z");
         Instant temporalInstant2 = new DefaultInstant(new DefaultPosition(date2));
         Period period = new DefaultPeriod(temporalInstant, temporalInstant2);
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         BegunBy filter = ff.begunBy(ff.literal(period), ff.property("dateAttr"));
         Assert.assertTrue("supports", capabilities.supports(filter));
 

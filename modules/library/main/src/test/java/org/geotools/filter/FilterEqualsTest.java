@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.logging.Logger;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Or;
 import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.expression.Expression;
@@ -50,7 +50,7 @@ public class FilterEqualsTest {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(FilterEqualsTest.class);
 
-    private FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    private FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
     private Expression testExp1;
     private Expression testExp2;
     private Expression testExp3;

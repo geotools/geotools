@@ -22,7 +22,7 @@ import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.filter.BinaryLogicOperator;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Or;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.appschema.util.IndexQueryUtils;
@@ -44,7 +44,7 @@ public class IndexQueryManager {
 
     protected final FeatureTypeMapping mapping;
     protected final Query query;
-    protected FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+    protected FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
     public IndexQueryManager(FeatureTypeMapping mapping, Query query) {
         super();

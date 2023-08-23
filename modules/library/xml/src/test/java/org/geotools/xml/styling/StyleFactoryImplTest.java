@@ -24,7 +24,6 @@ import java.util.logging.Logger;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
@@ -342,7 +341,7 @@ public class StyleFactoryImplTest {
     @Test
     public void testBuggyStyleCopy() throws Exception {
         StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Random rand = new Random();
 
         Stroke stroke = sf.createStroke(ff.literal("#8024d0"), ff.literal(rand.nextInt(10) + 1));

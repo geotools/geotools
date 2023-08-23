@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.util.FeatureStreams;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
@@ -85,7 +85,7 @@ public class TotalIndexedMappingFeatureIteratorTest extends IndexesTest {
 
     /** Should returns 1, 2, 10, 12(11 on index) */
     private Filter totalIndexedFilterCase() {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         List<Filter> filters =
                 Arrays.asList(
                         ff.or(

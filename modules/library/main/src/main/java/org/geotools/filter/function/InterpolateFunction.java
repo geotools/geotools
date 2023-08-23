@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.ExpressionVisitor;
@@ -81,7 +81,7 @@ public class InterpolateFunction implements Function {
 
     private static final Logger LOGGER = Logger.getLogger(InterpolateFunction.class.getName());
 
-    private static final FilterFactory2 ff2 = CommonFactoryFinder.getFilterFactory2(null);
+    private static final FilterFactory ff2 = CommonFactoryFinder.getFilterFactory(null);
     private static final double EPS = 1.0e-8;
 
     /** Use as a literal value to indicate interpolation mode */

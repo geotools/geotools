@@ -1,6 +1,6 @@
 package org.geotools.filter.function.string;
 
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Assert;
@@ -8,7 +8,7 @@ import org.junit.Test;
 
 public class StringFunctionsTest {
 
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     @Test
     public void testConcatenate() throws Exception {

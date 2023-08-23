@@ -42,7 +42,7 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.api.filter.sort.SortOrder;
 import org.geotools.api.referencing.FactoryException;
@@ -86,7 +86,7 @@ import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
  */
 public class PropertyDataStoreTest {
     private PropertyDataStore store;
-    static FilterFactory2 ff = (FilterFactory2) CommonFactoryFinder.getFilterFactory(null);
+    static FilterFactory ff = (FilterFactory) CommonFactoryFinder.getFilterFactory(null);
 
     @Before
     public void setUp() throws Exception {
@@ -675,7 +675,7 @@ public class PropertyDataStoreTest {
 
             roadFromClient2.setTransaction(transaction2);
 
-            FilterFactory2 ff = (FilterFactory2) CommonFactoryFinder.getFilterFactory(null);
+            FilterFactory ff = (FilterFactory) CommonFactoryFinder.getFilterFactory(null);
             Filter selectFid1 = ff.id(Collections.singleton(ff.featureId("fid1")));
 
             // Before we edit everything should be the same

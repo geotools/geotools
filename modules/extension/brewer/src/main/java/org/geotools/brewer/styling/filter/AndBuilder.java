@@ -29,7 +29,7 @@ import org.geotools.factory.CommonFactoryFinder;
 
 /** FilterBuilder acting as a simple wrapper around an Expression. */
 public class AndBuilder<P> implements Builder<And> {
-    protected FilterFactory ff = CommonFactoryFinder.getFilterFactory2(null);
+    protected FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
     protected P parent;
     protected List<FilterBuilder> list;
 

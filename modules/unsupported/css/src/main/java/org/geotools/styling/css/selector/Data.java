@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
@@ -30,7 +30,7 @@ import org.geotools.styling.css.util.UnboundSimplifyingFilterVisitor;
 
 public class Data extends Selector {
 
-    public static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    public static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     public static Selector combineAnd(List<Data> selectors, Object ctx) {
         if (selectors.size() == 1) {

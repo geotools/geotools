@@ -23,7 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.Date;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsLike;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.v2_0.FESTestSupport;
@@ -35,7 +35,7 @@ public class FESFilterTest extends FESTestSupport {
     @Test
     public void testEncodePropertyIsLike() throws Exception {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         PropertyIsLike filter = ff.like(ff.property("name"), "%test%");
         org.geotools.filter.v2_0.FESConfiguration configuration =
                 new org.geotools.filter.v2_0.FESConfiguration();
@@ -56,7 +56,7 @@ public class FESFilterTest extends FESTestSupport {
     @Test
     public void testEncodeTemporal() throws Exception {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Filter filter = ff.after(ff.property("date"), ff.literal(new Date()));
         org.geotools.filter.v2_0.FESConfiguration configuration =
                 new org.geotools.filter.v2_0.FESConfiguration();

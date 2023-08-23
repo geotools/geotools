@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.Graphic;
@@ -42,8 +42,8 @@ public class CustomGlyphRenderer implements GlyphRenderer {
 
     /** Creates a new instance of CustomGlyphRenderer */
     public CustomGlyphRenderer() {
-        FilterFactory2 factory =
-                (FilterFactory2) org.geotools.factory.CommonFactoryFinder.getFilterFactory(null);
+        FilterFactory factory =
+                (FilterFactory) org.geotools.factory.CommonFactoryFinder.getFilterFactory(null);
 
         list.addProperty("radius", Expression.class, factory.literal(50));
         list.addProperty("circle color", Expression.class, factory.literal("#000066"));

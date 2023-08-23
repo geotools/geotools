@@ -27,7 +27,7 @@ import javax.measure.quantity.Length;
 import javax.swing.Icon;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
@@ -57,13 +57,13 @@ import org.geotools.util.factory.GeoTools;
  * @version $Id$
  */
 public class StyleFactoryImpl2 implements org.geotools.api.style.StyleFactory {
-    private FilterFactory2 filterFactory;
+    private FilterFactory filterFactory;
 
     public StyleFactoryImpl2() {
-        this(CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints()));
+        this(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
     }
 
-    protected StyleFactoryImpl2(FilterFactory2 factory) {
+    protected StyleFactoryImpl2(FilterFactory factory) {
         filterFactory = factory;
     }
 

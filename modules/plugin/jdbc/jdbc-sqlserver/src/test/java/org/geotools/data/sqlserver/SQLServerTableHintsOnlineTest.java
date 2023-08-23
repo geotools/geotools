@@ -24,7 +24,6 @@ import java.io.IOException;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.api.filter.spatial.Contains;
 import org.geotools.data.Query;
@@ -77,7 +76,7 @@ public class SQLServerTableHintsOnlineTest extends SQLServerSpatialFiltersOnline
                                 + "AND geometry::STGeomFromText('POLYGON ((2 -1, 2 5, 4 5, 4 -1, 2 -1))', 4326).STContains(\"geom\") = 1");
 
         // the filter for the Query
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         LinearRing shell =
@@ -118,7 +117,7 @@ public class SQLServerTableHintsOnlineTest extends SQLServerSpatialFiltersOnline
                                 + "AND geometry::STGeomFromText('POLYGON ((2 -1, 2 5, 4 5, 4 -1, 2 -1))', 4326).STContains(\"geom\") = 1");
 
         // the filter for the Query
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         LinearRing shell =
@@ -142,7 +141,7 @@ public class SQLServerTableHintsOnlineTest extends SQLServerSpatialFiltersOnline
                                 + "WHERE \"name\" = 'XXX')");
 
         // the filter for the Query
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Filter filter = ff.equal(ff.property("name"), ff.literal("XXX"), true);
 
         SimpleFeatureType roadSchema = dataStore.getSchema("road");
@@ -162,7 +161,7 @@ public class SQLServerTableHintsOnlineTest extends SQLServerSpatialFiltersOnline
                                 + "WHERE \"name\" = 'XXX')");
 
         // the filter for the Query
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Filter filter = ff.equal(ff.property("name"), ff.literal("XXX"), true);
 
         SimpleFeatureType roadSchema = dataStore.getSchema("road");
@@ -182,7 +181,7 @@ public class SQLServerTableHintsOnlineTest extends SQLServerSpatialFiltersOnline
                                 + "WHERE \"name\" = 'XXX')");
 
         // the filter for the Query
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Filter filter = ff.equal(ff.property("name"), ff.literal("XXX"), true);
 
         SimpleFeatureType roadSchema = dataStore.getSchema("road");

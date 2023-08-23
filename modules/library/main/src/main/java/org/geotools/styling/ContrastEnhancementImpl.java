@@ -21,7 +21,6 @@ package org.geotools.styling;
 import java.util.HashMap;
 import java.util.Map;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.ContrastMethod;
 import org.geotools.factory.CommonFactoryFinder;
@@ -88,7 +87,7 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
     }
 
     public ContrastEnhancementImpl(org.geotools.api.style.ContrastEnhancement contrastEnhancement) {
-        filterFactory = CommonFactoryFinder.getFilterFactory2(null);
+        filterFactory = CommonFactoryFinder.getFilterFactory(null);
         org.geotools.api.style.ContrastMethod meth = contrastEnhancement.getMethod();
         if (meth != null) {
             this.method = ContrastMethod.valueOf(meth.name());
@@ -103,8 +102,7 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
         }
     }
 
-    public ContrastEnhancementImpl(
-            FilterFactory2 factory, Expression gamma, ContrastMethod method) {
+    public ContrastEnhancementImpl(FilterFactory factory, Expression gamma, ContrastMethod method) {
         this.filterFactory = factory;
         this.gamma = gamma;
         this.method = method;

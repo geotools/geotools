@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsNull;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.factory.CommonFactoryFinder;
@@ -229,7 +229,7 @@ public class XMLEncoderTest {
     // TODO test or ( null, and( fidFilter, null ) ) filter
     @Test
     public void testStrictHintComplexFilter() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
         PropertyIsNull null1 = ff.isNull(ff.property("name"));
         PropertyIsNull null2 = ff.isNull(ff.property("geom"));
@@ -258,7 +258,7 @@ public class XMLEncoderTest {
 
     @Test
     public void testStrictHintOR() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         HashSet<FeatureId> set = new HashSet<>();
         set.add(ff.featureId("FID.1"));
         set.add(ff.featureId("FID.2"));

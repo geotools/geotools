@@ -19,7 +19,7 @@ package org.geotools.mbstyle.function;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.data.Parameter;
@@ -45,7 +45,7 @@ import org.geotools.util.Converters;
  * @author Jody Garnett (Boundless)
  */
 public class ExponentialFunction extends FunctionImpl {
-    private static final FilterFactory2 ff2 = CommonFactoryFinder.getFilterFactory2(null);
+    private static final FilterFactory ff2 = CommonFactoryFinder.getFilterFactory(null);
     public static final FunctionName NAME;
 
     static {

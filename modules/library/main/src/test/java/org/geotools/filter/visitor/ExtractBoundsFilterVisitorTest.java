@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.temporal.Instant;
 import org.geotools.api.temporal.Period;
 import org.geotools.factory.CommonFactoryFinder;
@@ -18,7 +18,7 @@ import org.locationtech.jts.geom.Point;
 
 public class ExtractBoundsFilterVisitorTest extends TemporalFilterTestSupport {
 
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     ExtractBoundsFilterVisitor visitor = new ExtractBoundsFilterVisitor();
 

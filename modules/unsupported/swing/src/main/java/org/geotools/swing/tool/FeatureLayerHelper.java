@@ -23,7 +23,7 @@ import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.feature.type.PropertyDescriptor;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
@@ -59,7 +59,7 @@ public class FeatureLayerHelper extends InfoToolHelper {
 
     private static final GeometryFactory geometryFactory =
             JTSFactoryFinder.getGeometryFactory(null);
-    private static final FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2(null);
+    private static final FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
 
     private String attrName;
     private Geometries geomType;

@@ -161,7 +161,7 @@ Main Application
 Much of this should look familiar to you from the style tutorial. We've added some constants and
 class variables that we'll use when creating styles. 
 
-A subtle difference is that we are now using ``FilterFactory2`` instead of ``FilterFactory``. This class
+A subtle difference is that we are now using ``FilterFactory`` instead of ``FilterFactory``. This class
 adds additional methods, one of which we'll need when selecting features based on a mouse click.
 
 Shapefile viewer with custom map tool
@@ -238,7 +238,7 @@ highlight color, and a second ``Rule`` for unselected features. Both rules are t
       :start-after: // docs start selected style
       :end-before: // docs end selected style
 
-Note that the first Rule includes a ``Filter``, created with the ``FilterFactory2.id`` method. This means the rule will
+Note that the first Rule includes a ``Filter``, created with the ``FilterFactory.id`` method. This means the rule will
 only apply to the selected features.
 
 The second rule is flagged as an *alternative* (applies to all other features) with the ``setElseFilter`` method.

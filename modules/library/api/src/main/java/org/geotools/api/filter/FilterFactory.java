@@ -69,8 +69,12 @@ import org.geotools.api.filter.temporal.OverlappedBy;
 import org.geotools.api.filter.temporal.TContains;
 import org.geotools.api.filter.temporal.TEquals;
 import org.geotools.api.filter.temporal.TOverlaps;
+import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.geometry.BoundingBox3D;
+import org.geotools.api.parameter.Parameter;
+import org.geotools.api.util.InternationalString;
 import org.locationtech.jts.geom.Geometry;
+import org.xml.sax.helpers.NamespaceSupport;
 
 /**
  * Interface whose methods allow the caller to create instances of the various {@link Filter} and
@@ -292,7 +296,7 @@ public interface FilterFactory {
      * Checks if the bounding box of the feature's geometry overlaps the indicated bounds.
      *
      * <p>This method is defined in strict accordance with the Filter 1.0 specification, you may
-     * find the FilterFactory2.bbox(Expression, BoundingBox) to be easier to use.
+     * find the FilterFactory.bbox(Expression, BoundingBox) to be easier to use.
      *
      * @param propertyName Name of geometry property (for a PropertyName to access a Feature's
      *     Geometry)
@@ -316,7 +320,7 @@ public interface FilterFactory {
      * Checks if the bounding box of the feature's geometry overlaps the indicated bounds.
      *
      * <p>This method is defined in strict accordance with the Filter 1.0 specification, you may
-     * find the FilterFactory2.bbox(Expression, BoundingBox) to be easier to use.
+     * find the FilterFactory.bbox(Expression, BoundingBox) to be easier to use.
      *
      * @param propertyName Name of geometry property (for a PropertyName to access a Feature's
      *     Geometry)
@@ -642,4 +646,264 @@ public interface FilterFactory {
             SpatialCapabilities spatial,
             IdCapabilities id,
             TemporalCapabilities temporal);
+
+    ////////////////////////////////////////////////////////////////////////////////
+    //
+    //  CAPABILITIES
+    //
+    ////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Creates a parameter of a function.
+     *
+     * @param name Parameter name
+     * @param type Parameter type/class
+     * @param title Human readable title of the parameter
+     * @param description Extended description of the parameter
+     * @param required Flag indicating if the parameter is required or not
+     * @param minOccurs The minimum number of occurrences of the parameter
+     * @param maxOccurs The maximum number of occurrences of the parameter
+     * @param defaultValue Default value for the parameter
+     */
+    <T> Parameter<T> parameter(
+            String name,
+            Class<T> type,
+            InternationalString title,
+            InternationalString description,
+            boolean required,
+            int minOccurs,
+            int maxOccurs,
+            T defaultValue);
+
+    /**
+     * FunctionName used to describe an available function.
+     *
+     * @param name name of function
+     * @param nargs number of arguments, use a negative number to indicate a minimum if the function
+     *     supports an open ended number of arguments
+     * @param argNames Optional list of argument names
+     */
+    FunctionName functionName(String name, int nargs, List<String> argNames);
+
+    /**
+     * FunctionName used to describe an available function.
+     *
+     * @param name qualified name of function
+     * @param nargs number of arguments, use a negative number to indicate a minimum if the function
+     *     supports an open ended number of arguments
+     * @param argNames Optional list of argument names
+     */
+    FunctionName functionName(Name name, int nargs, List<String> argNames);
+
+    /**
+     * FunctionName used to describe an available function.
+     *
+     * @param name name of function
+     * @param args Parameters describing function arguments.
+     * @param ret Parameter describing function return.
+     */
+    FunctionName functionName(String name, List<Parameter<?>> args, Parameter<?> ret);
+
+    /**
+     * FunctionName used to describe an available function.
+     *
+     * @param name qualified name of function
+     * @param args Parameters describing function arguments.
+     * @param ret Parameter describing function return.
+     */
+    FunctionName functionName(Name name, List<Parameter<?>> args, Parameter<?> ret);
+
+    ////////////////////////////////////////////////////////////////////////////////
+    //
+    //  FILTERS
+    //
+    ////////////////////////////////////////////////////////////////////////////////
+
+    Id id(FeatureId... fids);
+
+    /**
+     * Retrieves the value of a {@linkplain org.geotools.api.feature.Feature feature}'s property.
+     *
+     * @param name Name of attribute referenced
+     * @return PropertyName
+     */
+    PropertyName property(Name name);
+
+    /**
+     * Retrieves the value of a {@linkplain org.geotools.api.feature.Feature feature}'s property.
+     *
+     * @param xpath XPath expression (subject to the restrictions of filter specificaiton)
+     * @param namespaceContext Used to interpret any namespace prefixs in above xpath expression
+     * @return PropertyName
+     */
+    PropertyName property(String xpath, NamespaceSupport namespaceContext);
+
+    ////////////////////////////////////////////////////////////////////////////////
+    //
+    //  SPATIAL FILTERS
+    //
+    ////////////////////////////////////////////////////////////////////////////////
+
+    /** Checks if the geometry expression overlaps the specified bounding box. */
+    BBOX bbox(Expression geometry, double minx, double miny, double maxx, double maxy, String srs);
+
+    /** Checks if the geometry expression overlaps the specified bounding box. */
+    BBOX bbox(
+            Expression geometry,
+            double minx,
+            double miny,
+            double maxx,
+            double maxy,
+            String srs,
+            MatchAction matchAction);
+
+    /** Checks if the geometry expression overlaps the specified bounding box. */
+    BBOX3D bbox(Expression geometry, BoundingBox3D env);
+
+    /** Checks if the geometry expression overlaps the specified bounding box. */
+    BBOX3D bbox(Expression geometry, BoundingBox3D env, MatchAction matchAction);
+
+    /**
+     * Checks if the bounding box of the feature's geometry overlaps the indicated bounds.
+     *
+     * <p>This method does not strictly confirm to the the Filter 1.0 specification, you may use it
+     * to check expressions other than PropertyName.
+     *
+     * @param geometry Expression used to access a Geometry, in order to check for interaction with
+     *     bounds
+     * @param bounds Indicates the bounds to check geometry against
+     */
+    BBOX bbox(Expression geometry, BoundingBox bounds);
+
+    /**
+     * Checks if the bounding box of the feature's geometry overlaps the indicated bounds.
+     *
+     * <p>This method does not strictly confirm to the the Filter 1.0 specification, you may use it
+     * to check expressions other than PropertyName.
+     *
+     * @param geometry Expression used to access a Geometry, in order to check for interaction with
+     *     bounds
+     * @param bounds Indicates the bounds to check geometry against
+     * @param matchAction Match Action
+     */
+    BBOX bbox(Expression geometry, BoundingBox bounds, MatchAction matchAction);
+
+    /**
+     * Check if all of a geometry is more distant than the given distance from this object's
+     * geometry.
+     */
+    Beyond beyond(Expression geometry1, Expression geometry2, double distance, String units);
+
+    /**
+     * Check if all of a geometry is more distant than the given distance from this object's
+     * geometry.
+     */
+    Beyond beyond(
+            Expression geometry1,
+            Expression geometry2,
+            double distance,
+            String units,
+            MatchAction matchAction);
+
+    /** Checks if the the first geometric operand contains the second. */
+    Contains contains(Expression geometry1, Expression geometry2);
+
+    /** Checks if the the first geometric operand contains the second. */
+    Contains contains(Expression geometry1, Expression geometry2, MatchAction matchAction);
+
+    /** Checks if the first geometric operand crosses the second. */
+    Crosses crosses(Expression geometry1, Expression geometry2);
+
+    /** Checks if the first geometric operand crosses the second. */
+    Crosses crosses(Expression geometry1, Expression geometry2, MatchAction matchAction);
+
+    /** Checks if the first operand is disjoint from the second. */
+    Disjoint disjoint(Expression geometry1, Expression geometry2);
+
+    /** Checks if the first operand is disjoint from the second. */
+    Disjoint disjoint(Expression geometry1, Expression geometry2, MatchAction matchAction);
+
+    /**
+     * Checks if any part of the first geometry lies within the given distance of the second
+     * geometry.
+     */
+    DWithin dwithin(Expression geometry1, Expression geometry2, double distance, String units);
+
+    /**
+     * Checks if any part of the first geometry lies within the given distance of the second
+     * geometry.
+     */
+    DWithin dwithin(
+            Expression geometry1,
+            Expression geometry2,
+            double distance,
+            String units,
+            MatchAction matchAction);
+
+    /**
+     * Checks if the geometry of the two operands are equal.
+     *
+     * @todo should be equals, resolve conflict with PropertyIsEqualTo equals( Expression,
+     *     Expression )
+     */
+    Equals equal(Expression geometry1, Expression geometry2);
+
+    /**
+     * Checks if the geometry of the two operands are equal.
+     *
+     * @todo should be equals, resolve conflict with PropertyIsEqualTo equals( Expression,
+     *     Expression )
+     */
+    Equals equal(Expression geometry1, Expression geometry2, MatchAction matchAction);
+
+    /** Checks if the two geometric operands intersect. */
+    Intersects intersects(Expression geometry1, Expression geometry2);
+
+    /** Checks if the two geometric operands intersect. */
+    Intersects intersects(Expression geometry1, Expression geometry2, MatchAction matchAction);
+
+    /**
+     * Checks if the interior of the first geometry somewhere overlaps the interior of the second
+     * geometry.
+     */
+    Overlaps overlaps(Expression geometry1, Expression geometry2);
+
+    /**
+     * Checks if the interior of the first geometry somewhere overlaps the interior of the second
+     * geometry.
+     */
+    Overlaps overlaps(Expression geometry1, Expression geometry2, MatchAction matchAction);
+
+    /**
+     * Checks if the feature's geometry touches, but does not overlap with the geometry held by this
+     * object.
+     */
+    Touches touches(Expression propertyName1, Expression geometry2);
+
+    /**
+     * Checks if the feature's geometry touches, but does not overlap with the geometry held by this
+     * object.
+     */
+    Touches touches(Expression propertyName1, Expression geometry2, MatchAction matchAction);
+
+    /**
+     * Checks if the feature's geometry is completely contained by the specified constant geometry.
+     */
+    Within within(Expression geometry1, Expression geometry2);
+
+    /**
+     * Checks if the feature's geometry is completely contained by the specified constant geometry.
+     */
+    Within within(Expression geometry1, Expression geometry2, MatchAction matchAction);
+
+    /**
+     * Builds a new native filter, which will should be delegated to the data store.
+     *
+     * @param nativeFilter the native filter
+     * @return the build native filter
+     */
+    default NativeFilter nativeFilter(String nativeFilter) {
+        throw new UnsupportedOperationException(
+                "Native filter building is not supported by this filter factory.");
+    }
 }

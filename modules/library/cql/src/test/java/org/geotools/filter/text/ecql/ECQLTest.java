@@ -25,7 +25,6 @@ import org.geotools.api.filter.And;
 import org.geotools.api.filter.ExcludeFilter;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.IncludeFilter;
 import org.geotools.api.filter.Not;
@@ -420,7 +419,7 @@ public final class ECQLTest {
 
     @Test
     public void testDivideEncode() throws Exception {
-        final FilterFactory2 filterFactory2 = CommonFactoryFinder.getFilterFactory2();
+        final FilterFactory filterFactory2 = CommonFactoryFinder.getFilterFactory();
         final Filter javaFilter =
                 filterFactory2.less(
                         filterFactory2.divide(
@@ -433,7 +432,7 @@ public final class ECQLTest {
     @Test
     public void testQuotedComparison() throws Exception {
         Filter filter = ECQL.toFilter("\"a\"=\"b\"");
-        final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        final FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         final Filter expected = ff.equal(ff.property("a"), ff.property("b"), false);
         assertEquals(expected, filter);
     }
@@ -445,7 +444,7 @@ public final class ECQLTest {
         String actual = ECQL.toCQL(expr);
         assertEquals("color literals", expected, actual);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         Function function =
                 ff.function(

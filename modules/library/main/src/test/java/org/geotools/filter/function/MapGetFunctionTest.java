@@ -24,7 +24,7 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.AttributeType;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsGreaterThan;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.factory.CommonFactoryFinder;
@@ -42,7 +42,7 @@ import org.locationtech.jts.geom.LineString;
 
 public class MapGetFunctionTest {
 
-    static FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    static FilterFactory FF = CommonFactoryFinder.getFilterFactory();
     private SimpleFeatureType sampleDataType;
 
     private String namespace = "ns";

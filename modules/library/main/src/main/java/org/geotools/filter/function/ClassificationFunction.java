@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Divide;
 import org.geotools.api.filter.expression.ExpressionVisitor;
@@ -57,8 +57,8 @@ public abstract class ClassificationFunction extends DefaultExpression
     protected static final java.util.logging.Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(ClassificationFunction.class);
 
-    static final FilterFactory2 FF =
-            CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
+    static final FilterFactory FF =
+            CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
 
     FunctionName name;
 

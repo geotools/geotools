@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.style.GraphicalSymbol;
@@ -81,18 +81,18 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
     protected Unit<Length> defaultUnit;
 
     public RescaleStyleVisitor(double scale) {
-        this(CommonFactoryFinder.getFilterFactory2(null), scale);
+        this(CommonFactoryFinder.getFilterFactory(null), scale);
     }
 
     public RescaleStyleVisitor(Expression scale) {
-        this(CommonFactoryFinder.getFilterFactory2(null), scale);
+        this(CommonFactoryFinder.getFilterFactory(null), scale);
     }
 
-    public RescaleStyleVisitor(FilterFactory2 filterFactory, double scale) {
+    public RescaleStyleVisitor(FilterFactory filterFactory, double scale) {
         this(filterFactory, filterFactory.literal(scale));
     }
 
-    public RescaleStyleVisitor(FilterFactory2 filterFactory, Expression scale) {
+    public RescaleStyleVisitor(FilterFactory filterFactory, Expression scale) {
         super(CommonFactoryFinder.getStyleFactory(null), filterFactory);
         this.scale = scale;
     }

@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Map;
 import javax.naming.OperationNotSupportedException;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.BinaryExpression;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
@@ -1369,7 +1369,7 @@ public class FilterComplexTypes {
                 Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
 
-            FilterFactory2 factory = FilterSchema.filterFactory(hints);
+            FilterFactory factory = FilterSchema.filterFactory(hints);
 
             try {
                 String string = (String) value[0].getValue(); // the spec says string!
@@ -1508,7 +1508,7 @@ public class FilterComplexTypes {
                 Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
 
-            FilterFactory2 factory = FilterSchema.filterFactory(hints);
+            FilterFactory factory = FilterSchema.filterFactory(hints);
 
             try {
                 String xpath = (String) value[0].getValue();

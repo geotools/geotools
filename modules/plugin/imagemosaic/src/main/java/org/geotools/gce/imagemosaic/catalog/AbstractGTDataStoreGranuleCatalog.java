@@ -30,7 +30,7 @@ import java.util.logging.Logger;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
@@ -82,8 +82,8 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
     static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(AbstractGTDataStoreGranuleCatalog.class);
 
-    static final FilterFactory2 ff =
-            CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
+    static final FilterFactory ff =
+            CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
     protected final String parentLocation;
 
     private Throwable tracer;

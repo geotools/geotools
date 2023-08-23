@@ -23,7 +23,7 @@ import java.util.Map;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.filter.BinaryComparisonOperator;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
@@ -439,7 +439,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
                     if (result instanceof GeometryCollection) {
                         result = distillSameTypeGeometries((GeometryCollection) result, eval);
                     }
-                    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+                    FilterFactory ff = CommonFactoryFinder.getFilterFactory();
                     e = ff.literal(result);
                 }
             }

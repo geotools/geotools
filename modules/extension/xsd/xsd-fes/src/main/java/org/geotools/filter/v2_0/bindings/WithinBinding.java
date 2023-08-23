@@ -17,7 +17,7 @@
 package org.geotools.filter.v2_0.bindings;
 
 import javax.xml.namespace.QName;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.filter.v1_0.OGCWithinBinding;
 import org.geotools.filter.v2_0.FES;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -38,7 +38,7 @@ import org.locationtech.jts.geom.GeometryFactory;
  */
 public class WithinBinding extends OGCWithinBinding {
 
-    public WithinBinding(FilterFactory2 filterFactory, GeometryFactory geometryFactory) {
+    public WithinBinding(FilterFactory filterFactory, GeometryFactory geometryFactory) {
         super(filterFactory, geometryFactory);
     }
 

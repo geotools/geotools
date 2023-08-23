@@ -21,7 +21,7 @@ import static org.junit.Assert.assertThrows;
 
 import java.net.URL;
 import javax.swing.Icon;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.data.ows.MockURLChecker;
 import org.geotools.data.ows.URLCheckerException;
@@ -61,7 +61,7 @@ public class SpriteGraphicFactoryMockTest {
     private static Literal getAerialWayLocation() {
         String urlStr = pngURL.toExternalForm();
         String spriteBaseUrl = urlStr.substring(0, urlStr.lastIndexOf(".png"));
-        final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+        final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
         Literal spriteExpression = FF.literal(spriteBaseUrl + "#aerialway_11");
         return spriteExpression;
     }

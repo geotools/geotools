@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
@@ -92,7 +92,7 @@ public class OracleNearestNeighborOnlineTest extends JDBCTestSupport {
 
     @Test
     public void testNearestNeighbor() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         ContentFeatureSource source = dataStore.getFeatureSource(tname("NEIGHBORS"));
 
         try (SimpleFeatureIterator features = execSdoNN(source, ff, -10, -10, 1, -1, null)) {
@@ -153,7 +153,7 @@ public class OracleNearestNeighborOnlineTest extends JDBCTestSupport {
 
     private SimpleFeatureIterator execSdoNN(
             ContentFeatureSource source,
-            FilterFactory2 ff,
+            FilterFactory ff,
             double x,
             double y,
             int limit,

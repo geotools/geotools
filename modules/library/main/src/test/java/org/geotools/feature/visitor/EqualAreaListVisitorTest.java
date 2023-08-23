@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsBetween;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.data.DataUtilities;
@@ -49,7 +49,7 @@ import org.junit.runners.Parameterized;
 @RunWith(Enclosed.class)
 public class EqualAreaListVisitorTest {
 
-    static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
     public static final Expression PERSONS = FF.property("PERSONS");
 
     /** Returns a feature collection with a simplified US geometry and PERSONS count */

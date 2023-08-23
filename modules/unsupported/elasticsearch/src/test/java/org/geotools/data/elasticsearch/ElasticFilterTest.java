@@ -42,7 +42,7 @@ import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.ExcludeFilter;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.IncludeFilter;
 import org.geotools.api.filter.Not;
@@ -95,7 +95,7 @@ public class ElasticFilterTest {
 
     private FilterToElastic builder;
 
-    private FilterFactory2 ff;
+    private FilterFactory ff;
 
     private GeometryFactory gf;
 
@@ -109,7 +109,7 @@ public class ElasticFilterTest {
 
     @Before
     public void setUp() {
-        ff = CommonFactoryFinder.getFilterFactory2();
+        ff = CommonFactoryFinder.getFilterFactory();
 
         SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
         typeBuilder.setName("test");

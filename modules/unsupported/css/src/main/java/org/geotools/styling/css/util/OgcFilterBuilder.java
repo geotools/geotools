@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Set;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.api.filter.identity.Identifier;
 import org.geotools.factory.CommonFactoryFinder;
@@ -48,7 +48,7 @@ public class OgcFilterBuilder implements SelectorVisitor {
 
     public static OgcFilterBuilder INSTANCE = new OgcFilterBuilder();
 
-    static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     @Override
     public Object visit(Accept accept) {

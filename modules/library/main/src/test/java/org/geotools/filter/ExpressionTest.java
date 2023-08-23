@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 import org.geotools.api.feature.IllegalAttributeException;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
@@ -62,7 +62,7 @@ public class ExpressionTest {
     /** Schema on which to preform tests */
     private static SimpleFeatureType testSchema = null;
 
-    static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     boolean set = false;
 
@@ -428,7 +428,7 @@ public class ExpressionTest {
 
     @Test
     public void testMathObjectwithLists() throws IllegalFilterException {
-        FilterFactory2 ff = new FilterFactoryImpl();
+        FilterFactory ff = new FilterFactoryImpl();
         // Multiply Test
         // list x 2
         MathExpressionImpl mathExpression =

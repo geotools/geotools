@@ -35,7 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.appschema.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.data.DataAccess;
@@ -91,7 +91,7 @@ public class ClientPropertyIdentifierTest {
 
     @Test
     public void testRetrieveTimeInstantGmlId() throws IOException {
-        FilterFactory2 ff = new FilterFactoryImplNamespaceAware(namespaces);
+        FilterFactory ff = new FilterFactoryImplNamespaceAware(namespaces);
         PropertyName gmlIdProperty = ff.property("om:resultTime/gml:TimeInstant/@gml:id");
         try (FeatureIterator featureIt = obsSource.getFeatures().features()) {
             Feature f = featureIt.next();

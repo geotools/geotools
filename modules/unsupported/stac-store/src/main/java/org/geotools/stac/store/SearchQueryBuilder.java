@@ -30,7 +30,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.filter.sort.SortOrder;
 import org.geotools.api.filter.spatial.BBOX;
@@ -53,7 +53,7 @@ import org.locationtech.jts.geom.Envelope;
 /** Builds a {@link org.geotools.stac.client.SearchQuery} from a GeoTools Query */
 class SearchQueryBuilder {
 
-    static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     /**
      * Used to cut eventual "out of world" coordinates that the remote server could not appreciate

@@ -41,7 +41,7 @@ import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.feature.type.PropertyDescriptor;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
@@ -96,7 +96,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
 
     private Map<Name, FeatureTypeMapping> mappings = new LinkedHashMap<>();
 
-    private FilterFactory2 filterFac = CommonFactoryFinder.getFilterFactory2(null);
+    private FilterFactory filterFac = CommonFactoryFinder.getFilterFactory(null);
 
     /**
      * Flag to mark non-accessible data accesses, which should be automatically disposed of when no

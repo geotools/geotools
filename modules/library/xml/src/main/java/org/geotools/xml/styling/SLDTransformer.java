@@ -34,7 +34,6 @@ import javax.measure.quantity.Length;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
@@ -1280,7 +1279,7 @@ public class SLDTransformer extends TransformerBase {
                 return;
             }
             // create a property name out the name and encode it
-            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+            FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
             Expression expression = ff.property(name);
 
             start("Geometry");

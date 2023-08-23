@@ -5,7 +5,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -43,7 +43,7 @@ public class FilterFunction_minimumDiameterTest {
         SimpleFeatureCollection featureCollection = FunctionTestFixture.polygons();
 
         // Test the Function
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
         Function exp = ff.function("minimumdiameter", ff.property("geom"));
         try (SimpleFeatureIterator iter = featureCollection.features()) {
             while (iter.hasNext()) {

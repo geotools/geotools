@@ -37,7 +37,6 @@ import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.feature.type.GeometryType;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.api.filter.spatial.Intersects;
@@ -259,7 +258,7 @@ class H2GISTest extends H2GISTestSetup {
 
         SimpleFeatureSource fs = (SimpleFeatureSource) ds.getFeatureSource("LANDCOVER");
         SimpleFeatureCollection features = fs.getFeatures(Filter.INCLUDE);
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Function sum = ff.function("Collection_Sum", ff.property("FID"));
         Object value = sum.evaluate(features);
         assertEquals(6L, value);
@@ -279,7 +278,7 @@ class H2GISTest extends H2GISTestSetup {
         SimpleFeatureSource fs = (SimpleFeatureSource) ds.getFeatureSource("LANDCOVER");
         Filter filter = CQL.toFilter("FID >2");
         SimpleFeatureCollection features = fs.getFeatures(filter);
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Function sum = ff.function("Collection_Sum", ff.property("FID"));
         Object value = sum.evaluate(features);
         assertEquals(3L, value);
@@ -330,7 +329,7 @@ class H2GISTest extends H2GISTestSetup {
                         + "INSERT INTO LANDCOVER VALUES(1, 'Green Forest', 'POINT(5 5)');"
                         + "INSERT INTO LANDCOVER VALUES(2, 'Cereal', 'POINT(200 220)');"
                         + "INSERT INTO LANDCOVER VALUES(3, 'Building', 'POINT(90 130)');");
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Intersects is =
                 ff.intersects(ff.property("THE_GEOM"), ff.literal(wKTReader.read("POINT(5 5)")));
         FeatureCollection<?, ?> fc = ds.getFeatureSource("LANDCOVER").getFeatures(is);

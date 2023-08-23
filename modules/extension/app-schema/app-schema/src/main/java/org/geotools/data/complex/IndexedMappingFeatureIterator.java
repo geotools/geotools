@@ -24,7 +24,7 @@ import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.sort.SortBy;
 import org.geotools.appschema.util.IndexQueryUtils;
@@ -51,7 +51,7 @@ public abstract class IndexedMappingFeatureIterator implements IMappingFeatureIt
 
     private static int MAX_FEATURES_ROUND = 100;
 
-    protected FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
+    protected FilterFactory ff = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
 
     protected final AppSchemaDataAccess store;
     protected final FeatureTypeMapping mapping;
@@ -98,7 +98,7 @@ public abstract class IndexedMappingFeatureIterator implements IMappingFeatureIt
     protected SortBy[] unrollSortBy(SortBy[] sortArray) {
         if (sortArray == null) return null;
         ArrayList<SortBy> unrolledSorts = new ArrayList<>();
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
         for (SortBy aSort : sortArray) {
             SortBy newSort =
                     ff.sort(

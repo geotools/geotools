@@ -17,7 +17,7 @@
 package org.geotools.mbstyle.function;
 
 import java.util.List;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.data.Parameter;
@@ -42,7 +42,7 @@ public class StringTransformFunction extends FunctionImpl {
 
     public static final FunctionName NAME;
 
-    private static final FilterFactory2 ff2 = CommonFactoryFinder.getFilterFactory2(null);
+    private static final FilterFactory ff2 = CommonFactoryFinder.getFilterFactory(null);
 
     static {
         Parameter<Object> result = new Parameter<>("result", Object.class, 1, 1);

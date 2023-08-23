@@ -21,7 +21,7 @@ import static org.junit.Assert.assertNotNull;
 
 import java.awt.Color;
 import java.util.Arrays;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.style.SemanticType;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
@@ -54,7 +54,7 @@ import si.uom.SI;
 public class RescaleStyleVisitorTest {
     StyleBuilder sb;
     StyleFactory sf;
-    FilterFactory2 ff;
+    FilterFactory ff;
 
     RescaleStyleVisitor visitor;
     double scale;
@@ -62,7 +62,7 @@ public class RescaleStyleVisitorTest {
     @Before
     public void setUp() throws Exception {
         sf = CommonFactoryFinder.getStyleFactory(null);
-        ff = CommonFactoryFinder.getFilterFactory2(null);
+        ff = CommonFactoryFinder.getFilterFactory(null);
         sb = new StyleBuilder(sf, ff);
         scale = 2.0;
         visitor = new RescaleStyleVisitor(scale);

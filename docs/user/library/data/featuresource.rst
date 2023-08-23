@@ -103,7 +103,7 @@ Ad-hoc summary information is available using aggregate functions for feature co
   
   SimpleFeatureCollection collection = featureSource.getFeatures();
   
-  FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+  FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
   Function sum = ff.function("Collection_Sum", ff.property("population"));
   
   Object value = sum.evaluate( featureCollection );

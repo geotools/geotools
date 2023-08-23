@@ -15,7 +15,7 @@ import java.util.UUID;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureReader;
@@ -103,7 +103,7 @@ public abstract class JDBCUuidOnlineTest extends JDBCTestSupport {
         SimpleFeatureStore featureStore =
                 (SimpleFeatureStore) dataStore.getFeatureSource(tname("guid"));
 
-        final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        final FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         Filter filter = ff.equals(ff.property(aname("uuidProperty")), ff.literal(uuid1));
 

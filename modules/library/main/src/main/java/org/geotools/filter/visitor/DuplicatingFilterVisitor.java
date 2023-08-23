@@ -21,7 +21,7 @@ import java.util.List;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.ExcludeFilter;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.FilterVisitor;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.IncludeFilter;
@@ -80,26 +80,26 @@ import org.geotools.util.factory.GeoTools;
 /**
  * Used to duplication Filters and/or Expressions - returned object is a copy.
  *
- * <p>Extra data can be used to provide a {@link FilterFactory2} but this is NOT required. This
- * class is thread safe.
+ * <p>Extra data can be used to provide a {@link FilterFactory} but this is NOT required. This class
+ * is thread safe.
  * </ul>
  *
  * @author Jesse
  */
 public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisitor {
 
-    protected final FilterFactory2 ff;
+    protected final FilterFactory ff;
 
     public DuplicatingFilterVisitor() {
-        this(CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints()));
+        this(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
     }
 
-    public DuplicatingFilterVisitor(FilterFactory2 factory) {
+    public DuplicatingFilterVisitor(FilterFactory factory) {
         this.ff = factory;
     }
 
-    protected FilterFactory2 getFactory(Object extraData) {
-        if (extraData instanceof FilterFactory2) return (FilterFactory2) extraData;
+    protected FilterFactory getFactory(Object extraData) {
+        if (extraData instanceof FilterFactory) return (FilterFactory) extraData;
         return ff;
     }
 

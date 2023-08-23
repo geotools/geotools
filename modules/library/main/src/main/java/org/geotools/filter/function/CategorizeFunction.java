@@ -23,7 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.ExpressionVisitor;
@@ -240,7 +240,7 @@ public class CategorizeFunction implements Function {
             splits = parameters.subList(2, parameters.size() - 1);
         }
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         for (int i = 0; i < splits.size(); i += 2) {
             Expression threshholdExp = splits.get(i);
             Expression rangedExp = splits.get(i + 1);

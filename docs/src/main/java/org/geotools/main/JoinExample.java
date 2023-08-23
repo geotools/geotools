@@ -17,7 +17,7 @@ import java.util.Map;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.Query;
@@ -82,7 +82,7 @@ public class JoinExample {
         SimpleFeatureType schema2 = shapes2.getSchema();
         String typeName2 = schema2.getTypeName();
         String geomName2 = schema2.getGeometryDescriptor().getLocalName();
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         Query outerGeometry = new Query(typeName, Filter.INCLUDE, new String[] {geomName});
         SimpleFeatureCollection outerFeatures = shapes.getFeatures(outerGeometry);

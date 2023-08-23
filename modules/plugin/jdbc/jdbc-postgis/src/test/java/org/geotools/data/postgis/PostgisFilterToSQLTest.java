@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.StringWriter;
 import org.geotools.api.feature.IllegalAttributeException;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.PropertyIsLike;
 import org.geotools.api.filter.expression.Expression;
@@ -48,7 +48,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 
 public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
 
-    private static FilterFactory2 ff;
+    private static FilterFactory ff;
 
     private static GeometryFactory gf = new GeometryFactory();
 
@@ -61,7 +61,7 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
     @Override
     @Before
     public void setUp() throws IllegalAttributeException, SchemaException {
-        ff = CommonFactoryFinder.getFilterFactory2();
+        ff = CommonFactoryFinder.getFilterFactory();
         dialect = new PostGISDialect(null);
         filterToSql = new PostgisFilterToSQL(dialect);
         filterToSql.setFunctionEncodingEnabled(true);

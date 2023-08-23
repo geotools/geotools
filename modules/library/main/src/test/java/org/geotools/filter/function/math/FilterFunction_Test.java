@@ -47,7 +47,7 @@ public class FilterFunction_Test {
 
     @Before
     public void setUp() throws Exception {
-        ff = CommonFactoryFinder.getFilterFactory2(null);
+        ff = CommonFactoryFinder.getFilterFactory(null);
 
         literal_1 = ff.literal("1");
         literal_m1 = ff.literal("-1");

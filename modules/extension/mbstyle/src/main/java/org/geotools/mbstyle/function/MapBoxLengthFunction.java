@@ -19,7 +19,7 @@ package org.geotools.mbstyle.function;
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import java.util.Collection;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.factory.CommonFactoryFinder;
@@ -28,7 +28,7 @@ import org.geotools.filter.capability.FunctionNameImpl;
 
 /** Returns the size of a list or the length of a string */
 public class MapBoxLengthFunction extends FunctionExpressionImpl {
-    public final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+    public final FilterFactory ff = CommonFactoryFinder.getFilterFactory();
     public static final FunctionName NAME =
             new FunctionNameImpl(
                     "mbLength",

@@ -29,7 +29,7 @@ import org.geotools.api.coverage.grid.GridGeometry;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.Property;
 import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.filter.sort.SortOrder;
@@ -58,7 +58,7 @@ import org.xml.sax.helpers.NamespaceSupport;
                 "Given a collection of features for each group defined only the feature having the MIN or MAX value for the chosen attribute will be included in the final output")
 public class GroupCandidateSelectionProcess implements VectorProcess {
 
-    protected FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
+    protected FilterFactory ff = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
 
     public FeatureCollection execute(
             @DescribeParameter(name = "data", description = "Input feature collection")

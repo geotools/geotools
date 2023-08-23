@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.BinaryExpression;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
@@ -48,7 +48,7 @@ public class ExpressionSAXParser {
 
     /** Factory to construct filters. */
     @SuppressWarnings("PMD.UnusedPrivateField")
-    private FilterFactory2 ff;
+    private FilterFactory ff;
 
     private FunctionFinder functionFinder = new FunctionFinder(null);
 
@@ -81,10 +81,10 @@ public class ExpressionSAXParser {
     private boolean readChars = false;
 
     public ExpressionSAXParser() {
-        this(CommonFactoryFinder.getFilterFactory2());
+        this(CommonFactoryFinder.getFilterFactory());
     }
 
-    public ExpressionSAXParser(FilterFactory2 factory) {
+    public ExpressionSAXParser(FilterFactory factory) {
         this(null, factory);
     }
     /**
@@ -93,15 +93,15 @@ public class ExpressionSAXParser {
      * @param schema The schema for attributes (null is fine, as the code for this is not in place.
      */
     public ExpressionSAXParser(SimpleFeatureType schema) {
-        this(schema, CommonFactoryFinder.getFilterFactory2());
+        this(schema, CommonFactoryFinder.getFilterFactory());
     }
     /** Constructor injection */
-    public ExpressionSAXParser(SimpleFeatureType schema, FilterFactory2 factory) {
+    public ExpressionSAXParser(SimpleFeatureType schema, FilterFactory factory) {
         this.schema = schema;
         ff = factory;
     }
     /** Setter injection */
-    public void setFilterFactory(FilterFactory2 factory) {
+    public void setFilterFactory(FilterFactory factory) {
         ff = factory;
     }
 

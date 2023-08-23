@@ -24,7 +24,7 @@ import java.util.List;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.Name;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.sort.SortOrder;
 import org.geotools.data.DataStore;
 import org.geotools.data.EmptyFeatureReader;
@@ -48,7 +48,7 @@ public class ContentFeatureSourceTest {
     /** Mock feature type. */
     protected static final SimpleFeatureType TYPE = buildType();
 
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+    FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
     /** Build the test type. */
     protected static SimpleFeatureType buildType() {

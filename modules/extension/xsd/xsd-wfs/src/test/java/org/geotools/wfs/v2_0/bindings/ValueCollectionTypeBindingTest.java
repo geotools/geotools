@@ -30,7 +30,7 @@ import javax.xml.namespace.QName;
 import net.opengis.wfs20.ValueCollectionType;
 import net.opengis.wfs20.Wfs20Factory;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -49,7 +49,7 @@ import org.w3c.dom.NodeList;
 public class ValueCollectionTypeBindingTest extends WFSTestSupport {
 
     SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-    private FilterFactory2 filterFac = CommonFactoryFinder.getFilterFactory2();
+    private FilterFactory filterFac = CommonFactoryFinder.getFilterFactory();
 
     @Override
     protected Map<String, String> getNamespaces() {

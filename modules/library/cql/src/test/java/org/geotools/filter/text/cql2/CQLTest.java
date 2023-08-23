@@ -314,6 +314,6 @@ public class CQLTest {
     private Literal getWgs84PointLiteral() throws FactoryException {
         Point p = new GeometryFactory().createPoint(new Coordinate(1, 2));
         p.setUserData(CRS.decode("EPSG:4326", true));
-        return CommonFactoryFinder.getFilterFactory2().literal(p);
+        return CommonFactoryFinder.getFilterFactory().literal(p);
     }
 }

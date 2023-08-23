@@ -31,7 +31,7 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Query;
@@ -95,7 +95,7 @@ public class WFSFeatureStoreTest {
     @Test
     public void testAddFeaturesAutoCommit() throws Exception {
         GeometryFactory geomfac = new GeometryFactory(new PrecisionModel(10));
-        FilterFactory2 filterfac = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory filterfac = CommonFactoryFinder.getFilterFactory();
 
         ContentFeatureSource source =
                 (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
@@ -140,7 +140,7 @@ public class WFSFeatureStoreTest {
     @Test
     public void testRemoveFeaturesAutoCommit() throws Exception {
 
-        FilterFactory2 filterfac = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory filterfac = CommonFactoryFinder.getFilterFactory();
 
         ContentFeatureSource source =
                 (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
@@ -161,7 +161,7 @@ public class WFSFeatureStoreTest {
     @Test
     public void testUpdateFeaturesAutoCommit() throws Exception {
 
-        FilterFactory2 filterfac = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory filterfac = CommonFactoryFinder.getFilterFactory();
 
         ContentFeatureSource source =
                 (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
@@ -183,7 +183,7 @@ public class WFSFeatureStoreTest {
     @Test
     public void testTransaction() throws Exception {
         GeometryFactory geomfac = new GeometryFactory(new PrecisionModel(10));
-        FilterFactory2 filterfac = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory filterfac = CommonFactoryFinder.getFilterFactory();
 
         ContentFeatureSource source =
                 (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);

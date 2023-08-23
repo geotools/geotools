@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.store.FeatureCollectionWrapperTestSupport;
 import org.geotools.factory.CommonFactoryFinder;
@@ -41,7 +41,7 @@ import org.locationtech.jts.io.WKTReader;
 public class SpatialIndexFeatureCollectionTest extends FeatureCollectionWrapperTestSupport {
     private static final Logger LOGGER = Logger.getLogger("SpatialIndexFeatureCollectionTest");
 
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     /**
      * Test method for {@link

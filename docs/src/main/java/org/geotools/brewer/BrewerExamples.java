@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.brewer.color.ColorBrewer;
@@ -36,7 +36,7 @@ public class BrewerExamples {
         SimpleFeatureCollection collection = null;
         SimpleFeature feature = null;
         // classiferExample start
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Function classify = ff.function("Quantile", ff.property("name"), ff.literal(2));
 
         Classifier groups = (Classifier) classify.evaluate(collection);
@@ -59,7 +59,7 @@ public class BrewerExamples {
         SimpleFeatureCollection collection = null;
         SimpleFeature feature = null;
         // classiferQuantile start
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Function classify = ff.function("Quantile", ff.property("zone"), ff.literal(2));
 
         // Zones assigned by a municipal board do not have an intrinsic numerical
@@ -73,7 +73,7 @@ public class BrewerExamples {
         SimpleFeatureCollection collection = null;
         SimpleFeature feature = null;
         // classiferEqualInterval start
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Function classify = ff.function("EqualInterval", ff.property("height"), ff.literal(5));
 
         // this will create a nice smooth series of intervals suitable for presentation
@@ -130,7 +130,7 @@ public class BrewerExamples {
         ColorBrewer brewer = ColorBrewer.instance();
 
         // STEP 1 - call a classifier function to summarise your content
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         PropertyName propteryExpression = ff.property("height");
 
         // classify into five categories

@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.type.Name;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.Parameter;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.DefaultFeatureCollection;
@@ -100,7 +100,7 @@ public class ProcessExample {
     }
 
     public static void example3() {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("featureType");
         tb.add("geometry", Point.class);

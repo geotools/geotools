@@ -224,7 +224,7 @@ public class SLDInlineFeatureParser {
             }
         }
         ExpressionDOMParser parser =
-                new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory2(null));
+                new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory(null));
         return parser.gml(root);
     }
 

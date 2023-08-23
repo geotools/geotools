@@ -27,7 +27,7 @@ import com.mongodb.BasicDBObject;
 import java.math.BigInteger;
 import java.util.Date;
 import org.geotools.api.filter.And;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Not;
 import org.geotools.api.filter.Or;
 import org.geotools.api.filter.PropertyIsBetween;
@@ -57,13 +57,13 @@ public class FilterToMongoTest {
 
     static final String DATE_LITERAL = "2015-07-01T00:00:00.000+01:00";
 
-    FilterFactory2 ff;
+    FilterFactory ff;
     FilterToMongo filterToMongo;
     MongoGeometryBuilder geometryBuilder;
 
     @Before
     public void setUp() throws Exception {
-        ff = CommonFactoryFinder.getFilterFactory2();
+        ff = CommonFactoryFinder.getFilterFactory();
         filterToMongo = new FilterToMongo(new GeoJSONMapper());
 
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();

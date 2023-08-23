@@ -26,7 +26,7 @@ import org.geotools.api.feature.FeatureVisitor;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.filter.sort.SortOrder;
@@ -55,7 +55,7 @@ import org.geotools.util.factory.Hints;
 
 public class STACFeatureSource extends ContentFeatureSource {
 
-    static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
     static final String ASSETS = "assets";
 
     private final STACClient client;

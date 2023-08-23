@@ -111,7 +111,7 @@ public class ForceCoordinateFeatureResultsTest {
     @Test
     public void testMaxVisitorDelegation() throws SchemaException, IOException {
         MaxVisitor visitor =
-                new MaxVisitor(CommonFactoryFinder.getFilterFactory2().property("value"));
+                new MaxVisitor(CommonFactoryFinder.getFilterFactory().property("value"));
         assertOptimalVisit(visitor);
     }
 

@@ -26,7 +26,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.Name;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.ExpressionVisitor;
 import org.geotools.appschema.filter.FilterFactoryImplReportInvalidProperty;
@@ -43,7 +43,7 @@ public final class JdbcMultipleValue extends AttributeExpressionImpl implements 
 
     private static AtomicInteger ID = new AtomicInteger(0);
 
-    private final FilterFactory2 filterFactory = new FilterFactoryImplReportInvalidProperty();
+    private final FilterFactory filterFactory = new FilterFactoryImplReportInvalidProperty();
 
     private String sourceColumn;
     private String targetTable;

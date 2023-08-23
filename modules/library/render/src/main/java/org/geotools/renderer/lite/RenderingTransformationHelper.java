@@ -30,7 +30,7 @@ import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.metadata.extent.GeographicBoundingBox;
 import org.geotools.api.parameter.GeneralParameterValue;
@@ -75,7 +75,7 @@ import org.locationtech.jts.geom.Envelope;
  */
 public abstract class RenderingTransformationHelper {
 
-    private static final FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2(null);
+    private static final FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
 
     private static final CoverageProcessor PROCESSOR = CoverageProcessor.getInstance();
 

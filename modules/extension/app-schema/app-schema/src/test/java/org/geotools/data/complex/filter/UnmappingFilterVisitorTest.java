@@ -43,7 +43,7 @@ import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.BinaryLogicOperator;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.MultiValuedFilter.MatchAction;
 import org.geotools.api.filter.Or;
@@ -102,7 +102,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  */
 public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
 
-    private static FilterFactory2 ff = (FilterFactory2) CommonFactoryFinder.getFilterFactory(null);
+    private static FilterFactory ff = (FilterFactory) CommonFactoryFinder.getFilterFactory(null);
 
     private UnmappingFilterVisitor visitor;
 
@@ -359,7 +359,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
         namespaces.declarePrefix("xmml", XMMLNS);
         namespaces.declarePrefix("xlink", XLINK.NAMESPACE);
 
-        FilterFactory2 ff = new FilterFactoryImplNamespaceAware(namespaces);
+        FilterFactory ff = new FilterFactoryImplNamespaceAware(namespaces);
         String xpathExpression = "sa:shape/geo:LineByVector/geo:origin/@xlink:href";
         PropertyName propNameExpression = ff.property(xpathExpression);
 
@@ -391,7 +391,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
         namespaces.declarePrefix("xlink", XLINK.NAMESPACE);
 
         visitor = new UnmappingFilterVisitor(mapping);
-        FilterFactory2 ff = new FilterFactoryImplNamespaceAware(namespaces);
+        FilterFactory ff = new FilterFactoryImplNamespaceAware(namespaces);
 
         {
             String xpathExpression = "@gml:id";
@@ -503,7 +503,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
         namespaces.declarePrefix("gml", GML.NAMESPACE);
         namespaces.declarePrefix("xmml", XMMLNS);
 
-        FilterFactory2 ff = new FilterFactoryImplNamespaceAware(namespaces);
+        FilterFactory ff = new FilterFactoryImplNamespaceAware(namespaces);
         PropertyIsEqualTo complexFilter =
                 ff.equals(ff.property("gml:name"), ff.literal("SWADLINCOTE"));
 

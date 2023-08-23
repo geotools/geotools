@@ -27,7 +27,6 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.api.filter.spatial.Beyond;
@@ -63,7 +62,7 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
     @Test
     public void testWithinPolygonFilter() throws Exception {
         init();
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         Polygon ls =
@@ -91,7 +90,7 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
     @Test
     public void testCrossesFilter() throws Exception {
         init("not-active", "geo3");
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         LineString ls = gf.createLineString(sf.create(new double[] {0, 0, 2, 2}, 2));
@@ -107,7 +106,7 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
     @Test
     public void testNotCrossesFilter() throws Exception {
         init("not-active", "geo3");
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         LineString ls = gf.createLineString(sf.create(new double[] {0, 0, 1, 1}, 2));
@@ -119,7 +118,7 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
     @Test
     public void testEqualFilter() throws Exception {
         init("not-active", "geo3");
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         Polygon ls = gf.createPolygon(sf.create(new double[] {3, 2, 6, 2, 6, 7, 3, 7, 3, 2}, 2));
@@ -135,7 +134,7 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
     @Test
     public void testDisjointFilter() throws Exception {
         init("not-active", "geo3");
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         Point ls = gf.createPoint(sf.create(new double[] {0, 0}, 2));
@@ -153,7 +152,7 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
     @Test
     public void testTouchesFilter() throws Exception {
         init("not-active", "geo3");
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         Point ls = gf.createPoint(sf.create(new double[] {1, 1}, 2));
@@ -169,7 +168,7 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
     @Test
     public void testWithinFilter() throws Exception {
         init("not-active", "geo3");
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         Polygon ls = gf.createPolygon(sf.create(new double[] {0, 0, 0, 6, 6, 6, 6, 0, 0, 0}, 2));
@@ -185,7 +184,7 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
     @Test
     public void testOverlapsFilter() throws Exception {
         init("not-active", "geo3");
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         Polygon ls =
@@ -202,7 +201,7 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
     @Test
     public void testIntersectsFilter() throws Exception {
         init("not-active", "geo3");
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         Polygon ls = gf.createPolygon(sf.create(new double[] {6, 6, 7, 6, 7, 7, 6, 7, 6, 6}, 2));
@@ -218,7 +217,7 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
     @Test
     public void testContainsFilter() throws Exception {
         init("not-active", "geo3");
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         Polygon ls = gf.createPolygon(sf.create(new double[] {2, 2, 3, 2, 3, 3, 2, 3, 2, 2}, 2));
@@ -234,7 +233,7 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
     @Test
     public void testDWithinFilter() throws Exception {
         init();
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         Point ls = gf.createPoint(sf.create(new double[] {0, 0}, 2));
@@ -252,7 +251,7 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
     @Test
     public void testBeyondFilter() throws Exception {
         init();
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         Point ls = gf.createPoint(sf.create(new double[] {0, 0}, 2));
@@ -269,7 +268,7 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
         assertNotNull(gd);
         assertEquals("geo2", gd.getLocalName());
 
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         BBOX bbox = ff.bbox("geo2", 6.5, 23.5, 7.5, 24.5, "EPSG:4326");
         SimpleFeatureCollection features = featureSource.getFeatures(bbox);
         assertEquals(1, features.size());
@@ -282,7 +281,7 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
     @Test
     public void testOgrStyleGeoPoint() throws Exception {
         init("not-active", "geo4.coordinates");
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         BBOX bbox = ff.bbox("geo4.coordinates", 0, 0, 5, 5, "EPSG:4326");
         assertNotNull(featureSource.getSchema().getDescriptor("geo4.coordinates"));
         assertNull(featureSource.getSchema().getDescriptor("geo4.type"));
@@ -300,7 +299,7 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
     @Test
     public void testGeoPointAsArray() throws Exception {
         init("active", "geo5");
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         Point ls = gf.createPoint(sf.create(new double[] {0, 0}, 2));
@@ -344,7 +343,7 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
             return;
         }
         init("not-active", "geo6");
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         LineString ls = gf.createLineString(sf.create(new double[] {0, 0, 2, 2}, 2));

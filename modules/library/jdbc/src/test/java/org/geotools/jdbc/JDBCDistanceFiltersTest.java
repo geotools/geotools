@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.util.logging.Logger;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.spatial.Beyond;
 import org.geotools.api.filter.spatial.DWithin;
@@ -113,7 +113,7 @@ public abstract class JDBCDistanceFiltersTest extends JDBCTestSupport {
 
     private void assertDWithinFilter(int expectedMatches, double distance, String unit)
             throws IOException {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         final PropertyName geomProperty = ff.property(aname("geometry"));
         final ContentFeatureSource features = dataStore.getFeatureSource(tname("ft1"));
 
@@ -125,7 +125,7 @@ public abstract class JDBCDistanceFiltersTest extends JDBCTestSupport {
 
     private void assertBeyondFilter(int expectedMatches, double distance, String unit)
             throws IOException {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         final PropertyName geomProperty = ff.property(aname("geometry"));
         final ContentFeatureSource features = dataStore.getFeatureSource(tname("ft1"));
 

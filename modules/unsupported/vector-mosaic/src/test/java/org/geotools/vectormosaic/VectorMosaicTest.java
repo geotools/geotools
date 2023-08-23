@@ -21,7 +21,7 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.DataStore;
 import org.geotools.data.DefaultRepository;
 import org.geotools.data.property.PropertyDataStore;
@@ -41,7 +41,7 @@ public class VectorMosaicTest {
     protected static final String MOSAIC_TYPE_NAME = "mosaic_delegate_mosaic";
     protected static final String MOSAIC_PROPERTIES_TYPE_NAME = "mosaic_delegate_mosaic";
 
-    protected static FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    protected static FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     public static void initialize() {
         if (initialized) return;

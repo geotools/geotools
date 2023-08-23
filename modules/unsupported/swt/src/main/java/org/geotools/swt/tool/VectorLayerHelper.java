@@ -33,7 +33,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
 
@@ -52,7 +52,7 @@ public class VectorLayerHelper extends InfoToolHelper<SimpleFeatureCollection> {
 
     private static final GeometryFactory geometryFactory =
             JTSFactoryFinder.getGeometryFactory(null);
-    private static final FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2(null);
+    private static final FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
     private final WeakReference<Layer> layerRef;
     private final String attrName;
     private final boolean isPolygonGeometry;

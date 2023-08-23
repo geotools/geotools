@@ -17,7 +17,7 @@
 package org.geotools.styling.visitor;
 
 import java.util.Map;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 
 /**
@@ -30,7 +30,7 @@ public class DpiRescaleStyleVisitor extends RescaleStyleVisitor {
         super(scale);
     }
 
-    public DpiRescaleStyleVisitor(FilterFactory2 filterFactory, double scale) {
+    public DpiRescaleStyleVisitor(FilterFactory filterFactory, double scale) {
         super(filterFactory, scale);
     }
 

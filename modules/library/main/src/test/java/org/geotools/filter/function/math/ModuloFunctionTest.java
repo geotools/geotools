@@ -32,7 +32,7 @@ public class ModuloFunctionTest {
     @Before
     public void setUp() throws Exception {
 
-        ff = CommonFactoryFinder.getFilterFactory2(null);
+        ff = CommonFactoryFinder.getFilterFactory(null);
         functionName = ModuloFunction.NAME.getName();
     }
 

@@ -53,7 +53,7 @@ import org.locationtech.jts.geom.Point;
  * show the results.
  *
  * <p>Remember when programming that you have other options then the CQL parser, you can directly
- * make a Filter using CommonFactoryFinder.getFilterFactory2().
+ * make a Filter using CommonFactoryFinder.getFilterFactory().
  */
 @SuppressWarnings("serial")
 public class QueryLab extends JFrame {

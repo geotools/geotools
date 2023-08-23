@@ -18,7 +18,7 @@ package org.geotools.filter;
 
 import java.util.logging.Logger;
 import org.geotools.api.filter.And;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Not;
 import org.geotools.api.filter.Or;
 import org.geotools.api.filter.PropertyIsBetween;
@@ -48,7 +48,7 @@ public class FilterCapabilitiesTest {
     private org.geotools.api.filter.Filter compFilter;
     private org.geotools.api.filter.Filter logFilter;
     private FilterCapabilities capabilities;
-    private FilterFactory2 fact = CommonFactoryFinder.getFilterFactory2();
+    private FilterFactory fact = CommonFactoryFinder.getFilterFactory();
 
     boolean setup = false;
 
@@ -101,7 +101,7 @@ public class FilterCapabilitiesTest {
 
     @Test
     public void testFullySupports() {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         try {
             logFilter = ff.and(gFilter, compFilter);
             Assert.assertTrue(capabilities.fullySupports(compFilter));

@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.ExpressionVisitor;
@@ -67,7 +67,7 @@ public class ToPointFunction implements Function {
                     FunctionNameImpl.parameter("return", Point.class),
                     FunctionNameImpl.parameter("parameter", Object.class, 2, 5));
 
-    private static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    private static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     public static final Expression GML_ID = ff.literal("gml:id");
 

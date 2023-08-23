@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.api.filter.spatial.Contains;
@@ -46,14 +46,14 @@ public class OracleFilterToSqlTest {
 
     OracleFilterToSQL encoder;
 
-    FilterFactory2 ff;
+    FilterFactory ff;
 
     GeometryFactory gf;
 
     @Before
     public void setUp() throws Exception {
         encoder = new OracleFilterToSQL(null);
-        ff = CommonFactoryFinder.getFilterFactory2(null);
+        ff = CommonFactoryFinder.getFilterFactory(null);
         gf = new GeometryFactory();
     }
 

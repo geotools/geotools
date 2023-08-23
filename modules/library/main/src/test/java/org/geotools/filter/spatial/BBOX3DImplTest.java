@@ -3,7 +3,7 @@ package org.geotools.filter.spatial;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.geometry.BoundingBox3D;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
@@ -24,7 +24,7 @@ public class BBOX3DImplTest {
 
     @org.junit.Test
     public void testBbox3D() {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         GeometryFactory gf = new GeometryFactory(new PrecisionModel());
 
         SimpleFeatureType type = null;

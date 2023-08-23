@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.util.Range;
 import org.geotools.util.logging.Logging;
@@ -61,7 +61,7 @@ public class DomainFilterBuilder {
         // === create the filter
         // loop values and AND them
         final List<Filter> filters = new ArrayList<>();
-        FilterFactory2 ff = FeatureUtilities.DEFAULT_FILTER_FACTORY;
+        FilterFactory ff = FeatureUtilities.DEFAULT_FILTER_FACTORY;
         for (Object value : values) {
             // checks
             if (value == null) {

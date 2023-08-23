@@ -34,7 +34,6 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.Or;
 import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.PropertyIsLike;
@@ -506,7 +505,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
 
     @Test
     public void testLikeFilter() throws Exception {
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         PropertyIsLike caseSensitiveLike =
                 ff.like(ff.property(aname("stringProperty")), "Z*", "*", "?", "\\", true);
         PropertyIsLike caseInsensitiveLike =

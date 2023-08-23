@@ -27,7 +27,7 @@ import java.util.List;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Not;
 import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.PropertyIsLike;
@@ -220,7 +220,7 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
     }
 
     public void testSortBy() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         SortBy f = ff.sort("properties.dateProperty", SortOrder.ASCENDING);
 
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
@@ -244,7 +244,7 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
     }
 
     public void testIsNullFilter() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         PropertyName pn = ff.property("properties.nullableAttribute");
         PropertyIsNull isNull = ff.isNull(pn);
         Query q = new Query("ft1", isNull);
@@ -260,7 +260,7 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
     }
 
     public void testNotFilter() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         PropertyName pn = ff.property("properties.stringProperty");
         PropertyIsLike like = ff.like(pn, "one");
         Not not = ff.not(like);
@@ -276,7 +276,7 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
     }
 
     public void testNotNullFilter() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         PropertyName pn = ff.property("properties.nullableAttribute");
         PropertyIsNull isNull = ff.isNull(pn);
         Not not = ff.not(isNull);
@@ -289,7 +289,7 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
     }
 
     public void testNotNotEqualFilter() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         PropertyName pnS = ff.property("properties.stringProperty");
         PropertyIsNotEqualTo notEqualTo = ff.notEqual(pnS, ff.literal("one"));
         Not not = ff.not(notEqualTo);
@@ -302,7 +302,7 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
     }
 
     public void testNotEqualBetweenPropertiesFilter() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         PropertyName pnS = ff.property("properties.stringProperty");
         PropertyIsNotEqualTo notEqualTo = ff.notEqual(pnS, ff.literal("one"));
         Not not = ff.not(notEqualTo);
@@ -315,7 +315,7 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
     }
 
     public void testAndNotFilter() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         PropertyName pn = ff.property("properties.stringProperty");
         PropertyIsNull isNull = ff.isNull(ff.property("properties.nullableAttribute"));
         PropertyIsNotEqualTo equalTo = ff.notEqual(pn, ff.literal("zero"));
@@ -330,7 +330,7 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
     }
 
     public void testOrNotFilter() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         PropertyName pn = ff.property("properties.stringProperty");
         PropertyIsNull isNull = ff.isNull(ff.property("properties.nullableAttribute"));
         PropertyIsNotEqualTo equalTo = ff.notEqual(pn, ff.literal("zero"));
@@ -345,7 +345,7 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
     }
 
     public void testEqualFilter() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         PropertyName pn = ff.property("properties.stringProperty");
         PropertyIsEqualTo equalTo = ff.equals(pn, ff.literal("zero"));
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
@@ -357,7 +357,7 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
     }
 
     public void testNotWithEqualFilter() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         PropertyName pn = ff.property("properties.stringProperty");
         PropertyIsEqualTo equalTo = ff.equals(pn, ff.literal("zero"));
         Not not = ff.not(equalTo);
@@ -403,7 +403,7 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
     }
 
     private Intersects getIntersectsFilter(String jsonSelectName) {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Coordinate[] coordinates = {
             new Coordinate(1.0, 1.0),
             new Coordinate(2.0, 1.0),

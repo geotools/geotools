@@ -91,7 +91,7 @@ public class ReprojectFeatureResultsTest {
     @Test
     public void testMaxVisitorDelegation() throws Exception {
         MaxVisitor visitor =
-                new MaxVisitor(CommonFactoryFinder.getFilterFactory2().property("value"));
+                new MaxVisitor(CommonFactoryFinder.getFilterFactory().property("value"));
         assertOptimalVisit(visitor);
     }
 

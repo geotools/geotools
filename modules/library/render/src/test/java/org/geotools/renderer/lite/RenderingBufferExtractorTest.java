@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Color;
 import java.io.File;
 import java.net.URL;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Add;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.factory.CommonFactoryFinder;
@@ -41,7 +41,7 @@ import org.junit.Test;
 
 public class RenderingBufferExtractorTest {
     StyleBuilder sb = new StyleBuilder();
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     @Test
     public void testTextNoStroke() {

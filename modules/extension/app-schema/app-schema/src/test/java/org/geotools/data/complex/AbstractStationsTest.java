@@ -35,7 +35,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.Name;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.appschema.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
@@ -90,7 +90,7 @@ public abstract class AbstractStationsTest {
 
     static final Name MEASUREMENT_MANY_TO_ONE_MAPPING = Types.typeName("measurementsManyToOne");
 
-    static FilterFactory2 ff;
+    static FilterFactory ff;
 
     WKTWriter writer = new WKTWriter();
 

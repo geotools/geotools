@@ -7,7 +7,7 @@ import javax.xml.namespace.NamespaceContext;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.xsd.Configuration;
@@ -22,7 +22,7 @@ public class PropertyIsNullTypeBindingTest {
     /** Test checking correct encoding for isNull filter and its property name. */
     @Test
     public void testPropertyIsNullEncoding() throws Exception {
-        FilterFactory2 ff = new FilterFactoryImpl();
+        FilterFactory ff = new FilterFactoryImpl();
         Filter filter = ff.isNull(ff.property(PROP));
         Configuration configuration = new org.geotools.filter.v2_0.FESConfiguration();
         Encoder encoder = new Encoder(configuration);

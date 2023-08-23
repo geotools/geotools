@@ -35,7 +35,7 @@ import java.util.Map;
 import javax.xml.transform.TransformerException;
 import org.geotools.TestData;
 import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.GraphicalSymbol;
 import org.geotools.data.property.PropertyDataStore;
@@ -89,7 +89,7 @@ import org.junit.Test;
 /** Test parsing and transforming a Mapbox fill layer from json. */
 public class StyleTransformTest {
 
-    static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+    static FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
     Map<String, JSONObject> testLayersById = new HashMap<>();
 

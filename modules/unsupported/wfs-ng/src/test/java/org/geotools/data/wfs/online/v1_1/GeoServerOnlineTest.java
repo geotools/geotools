@@ -29,7 +29,7 @@ import java.util.logging.Level;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.PropertyIsNull;
 import org.geotools.api.filter.expression.PropertyName;
@@ -85,7 +85,7 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
         };
         LinearRing shell = gf.createLinearRing(coordinates);
         Polygon polygon = gf.createPolygon(shell, null);
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         return ff.intersects(ff.property("the_geom"), ff.literal(polygon));
     }
 
@@ -147,8 +147,7 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
         SimpleFeatureSource fs = wfs.getFeatureSource(testType.FEATURETYPENAME);
 
         Id startingFeatures = createFidFilter(fs);
-        FilterFactory2 filterFac =
-                CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
+        FilterFactory filterFac = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
         try {
             GeometryFactory gf = new GeometryFactory();
             MultiPolygon mp =
@@ -217,7 +216,7 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
 
     private Id createFidFilter(SimpleFeatureSource fs) throws IOException {
         try (SimpleFeatureIterator iter = fs.getFeatures().features()) {
-            FilterFactory2 ffac = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
+            FilterFactory ffac = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
             Set<FeatureId> fids = new HashSet<>();
             while (iter.hasNext()) {
                 String id = iter.next().getID();

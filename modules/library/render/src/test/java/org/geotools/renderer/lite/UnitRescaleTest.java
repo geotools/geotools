@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.LineSymbolizer;
@@ -35,12 +35,12 @@ import org.junit.Test;
 public class UnitRescaleTest {
 
     private StyleFactory2 sf;
-    private FilterFactory2 ff;
+    private FilterFactory ff;
 
     @Before
     public void setUp() throws Exception {
         sf = (StyleFactory2) CommonFactoryFinder.getStyleFactory(null);
-        ff = CommonFactoryFinder.getFilterFactory2(null);
+        ff = CommonFactoryFinder.getFilterFactory(null);
     }
 
     @Test

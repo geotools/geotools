@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Comparator;
 import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.filter.sort.SortOrder;
 import org.geotools.data.DataUtilities;
@@ -32,7 +32,7 @@ import org.junit.Test;
 
 public class SortedFeatureCollectionTest extends FeatureCollectionWrapperTestSupport {
 
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     @Test
     public void testNaturalSort() throws Exception {

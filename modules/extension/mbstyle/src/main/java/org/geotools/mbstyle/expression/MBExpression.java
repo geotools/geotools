@@ -20,7 +20,7 @@ package org.geotools.mbstyle.expression;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FunctionImpl;
@@ -47,7 +47,7 @@ public abstract class MBExpression extends FunctionImpl {
 
     protected final JSONArray json;
     protected final String name;
-    protected final FilterFactory2 ff;
+    protected final FilterFactory ff;
     protected final MBObjectParser parse;
     protected final MBStyleTransformer transformer;
 
@@ -59,7 +59,7 @@ public abstract class MBExpression extends FunctionImpl {
     protected MBExpression(JSONArray json) {
         this.json = json;
         this.name = (String) json.get(0);
-        this.ff = CommonFactoryFinder.getFilterFactory2();
+        this.ff = CommonFactoryFinder.getFilterFactory();
         parse = new MBObjectParser(MBExpression.class);
         transformer = new MBStyleTransformer(parse);
     }

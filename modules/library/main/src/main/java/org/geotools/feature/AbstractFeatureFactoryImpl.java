@@ -31,7 +31,7 @@ import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.ComplexType;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.GeometryDescriptor;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.referencing.crs.CRSFactory;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.factory.CommonFactoryFinder;
@@ -50,7 +50,7 @@ public abstract class AbstractFeatureFactoryImpl implements FeatureFactory {
     /** Factory used to create CRS objects */
     CRSFactory crsFactory;
 
-    public FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    public FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     /**
      * Whether the features to be built should be self validating on construction and value setting,

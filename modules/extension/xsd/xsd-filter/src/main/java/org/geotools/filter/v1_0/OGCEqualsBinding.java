@@ -17,7 +17,7 @@
 package org.geotools.filter.v1_0;
 
 import javax.xml.namespace.QName;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.spatial.Equals;
 import org.geotools.xsd.AbstractComplexBinding;
@@ -40,10 +40,10 @@ import org.locationtech.jts.geom.GeometryFactory;
  * @generated
  */
 public class OGCEqualsBinding extends AbstractComplexBinding {
-    FilterFactory2 filterFactory;
+    FilterFactory filterFactory;
     GeometryFactory geometryFactory;
 
-    public OGCEqualsBinding(FilterFactory2 filterFactory, GeometryFactory geometryFactory) {
+    public OGCEqualsBinding(FilterFactory filterFactory, GeometryFactory geometryFactory) {
         this.filterFactory = filterFactory;
         this.geometryFactory = geometryFactory;
     }

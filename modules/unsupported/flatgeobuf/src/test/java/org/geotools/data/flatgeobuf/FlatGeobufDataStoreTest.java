@@ -29,7 +29,7 @@ import java.util.Map;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
@@ -844,7 +844,7 @@ public class FlatGeobufDataStoreTest {
     public void readCountriesBbox() throws IOException {
         SimpleFeatureSource featureSource = getFeatureSource("countries");
         SimpleFeatureType schema = featureSource.getSchema();
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         String geometryPropertyName = schema.getGeometryDescriptor().getLocalName();
         CoordinateReferenceSystem targetCRS =
                 schema.getGeometryDescriptor().getCoordinateReferenceSystem();
@@ -867,7 +867,7 @@ public class FlatGeobufDataStoreTest {
     public void readCountriesFids() throws IOException {
         SimpleFeatureSource featureSource = getFeatureSource("countries");
         SimpleFeatureType schema = featureSource.getSchema();
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Filter filter = ff.id(ff.featureId("countries.3"), ff.featureId("countries.45"));
         Query query = new Query(schema.getTypeName(), filter);
         SimpleFeatureCollection featureCollection = featureSource.getFeatures(query);
@@ -885,7 +885,7 @@ public class FlatGeobufDataStoreTest {
     public void readCountriesFidsInvalid() throws IOException {
         SimpleFeatureSource featureSource = getFeatureSource("countries");
         SimpleFeatureType schema = featureSource.getSchema();
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Filter filter = ff.id(ff.featureId("countries.noreallong"));
         Query query = new Query(schema.getTypeName(), filter);
         SimpleFeatureCollection featureCollection = featureSource.getFeatures(query);
@@ -898,7 +898,7 @@ public class FlatGeobufDataStoreTest {
     public void readCountriesFidsOutOfBounds() throws IOException {
         SimpleFeatureSource featureSource = getFeatureSource("countries");
         SimpleFeatureType schema = featureSource.getSchema();
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Filter filter = ff.id(ff.featureId("countries.2349873589"));
         Query query = new Query(schema.getTypeName(), filter);
         SimpleFeatureCollection featureCollection = featureSource.getFeatures(query);
@@ -913,7 +913,7 @@ public class FlatGeobufDataStoreTest {
     public void readCountriesWithNullIntersection() throws IOException {
         SimpleFeatureSource featureSource = getFeatureSource("countries");
         SimpleFeatureType schema = featureSource.getSchema();
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         String geometryPropertyName = schema.getGeometryDescriptor().getLocalName();
         Filter filter = ff.intersects(ff.property(geometryPropertyName), ff.literal(null));
         Query query = new Query(schema.getTypeName(), filter);

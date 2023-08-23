@@ -70,7 +70,7 @@ import org.geotools.api.coverage.grid.GridEnvelope;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.filter.sort.SortOrder;
 import org.geotools.api.filter.spatial.BBOX;
@@ -1099,7 +1099,7 @@ public class HeterogenousCRSTest {
         assertThat(dryRunQuery.getFilter(), Matchers.instanceOf(BBOX.class));
         // data access query, also attribute filtering and sorting present
         Query dataQuery = queries.get(size - 2);
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         assertArrayEquals(
                 new SortBy[] {ff.sort("crs", SortOrder.ASCENDING)}, dataQuery.getSortBy());
         assertThat(dataQuery.getFilter(), Matchers.instanceOf(And.class));

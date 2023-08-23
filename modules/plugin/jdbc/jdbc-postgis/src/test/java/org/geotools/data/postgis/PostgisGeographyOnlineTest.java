@@ -25,7 +25,7 @@ import java.awt.RenderingHints;
 import java.sql.Connection;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.spatial.DWithin;
@@ -101,7 +101,7 @@ public class PostgisGeographyOnlineTest extends JDBCGeographyOnlineTest {
         Geometry[] geometries = {point};
         GeometryCollection geometry = new GeometryCollection(geometries, factory);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
         PropertyName geomName = ff.property(aname("geo"));
         Literal lit = ff.literal(geometry);

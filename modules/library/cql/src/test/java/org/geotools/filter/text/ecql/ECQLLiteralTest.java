@@ -23,7 +23,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.spatial.Beyond;
@@ -59,7 +59,7 @@ import org.locationtech.jts.geom.Polygon;
 public class ECQLLiteralTest extends CQLLiteralTest {
 
     public static final int WGS84 = 4326;
-    private FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+    private FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
     public ECQLLiteralTest() {
         super(Language.ECQL);

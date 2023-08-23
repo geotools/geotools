@@ -25,7 +25,6 @@ import org.geootols.filter.text.cql_2.CQL2;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.Not;
 import org.geotools.api.filter.Or;
 import org.geotools.api.filter.PropertyIsBetween;
@@ -317,7 +316,7 @@ public class CQL2Test {
 
     @Test
     public void testDivideEncode() throws Exception {
-        final FilterFactory2 filterFactory2 = CommonFactoryFinder.getFilterFactory2();
+        final FilterFactory filterFactory2 = CommonFactoryFinder.getFilterFactory();
         final Filter javaFilter =
                 filterFactory2.less(
                         filterFactory2.divide(
@@ -330,7 +329,7 @@ public class CQL2Test {
     @Test
     public void testQuotedComparison() throws Exception {
         Filter filter = CQL2.toFilter("\"a\"=\"b\"");
-        final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        final FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         final Filter expected = ff.equal(ff.property("a"), ff.property("b"), false);
         assertEquals(expected, filter);
     }
@@ -342,7 +341,7 @@ public class CQL2Test {
         String actual = CQL2.toCQL2(expr);
         assertEquals("color literals", expected, actual);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         Function function =
                 ff.function(

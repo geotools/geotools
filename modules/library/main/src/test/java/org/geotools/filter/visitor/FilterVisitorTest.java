@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.FilterVisitor;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.expression.PropertyName;
@@ -44,7 +44,7 @@ import org.junit.Test;
  */
 public class FilterVisitorTest {
 
-    private static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    private static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     /** Example located on the wiki */
     @Test

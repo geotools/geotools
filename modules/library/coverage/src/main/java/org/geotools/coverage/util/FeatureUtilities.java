@@ -27,7 +27,7 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.FeatureTypeFactory;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.parameter.GeneralParameterValue;
@@ -71,8 +71,8 @@ public final class FeatureUtilities {
 
     static FeatureTypeFactory typeFactory;
     static FeatureFactory featureFactory;
-    public static final FilterFactory2 DEFAULT_FILTER_FACTORY =
-            CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
+    public static final FilterFactory DEFAULT_FILTER_FACTORY =
+            CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
     public static final PropertyName GRID_PROPERTY_NAME = DEFAULT_FILTER_FACTORY.property("grid");
     public static final PropertyName PARAMS_PROPERTY_NAME =
             DEFAULT_FILTER_FACTORY.property("params");

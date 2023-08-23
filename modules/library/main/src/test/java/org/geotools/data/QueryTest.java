@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.sort.SortBy;
 import org.geotools.factory.CommonFactoryFinder;
@@ -75,7 +75,7 @@ public class QueryTest {
     /** Test of set/getProperties method, of class org.geotools.data.Query. */
     @Test
     public void testProperties() {
-        final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
         // System.out.println("testProperties");
         Query query = new Query();

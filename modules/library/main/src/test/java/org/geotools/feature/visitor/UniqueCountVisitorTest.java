@@ -21,7 +21,7 @@ public class UniqueCountVisitorTest {
 
     private static SimpleFeatureType uniqueValuesCountTestType;
     private static FeatureCollection featureCollection;
-    static FilterFactory ff = CommonFactoryFinder.getFilterFactory2();
+    static FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
     @BeforeClass
     public static void setup() throws Exception {

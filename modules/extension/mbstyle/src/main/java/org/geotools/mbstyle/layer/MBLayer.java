@@ -20,7 +20,7 @@ package org.geotools.mbstyle.layer;
 import java.util.Collections;
 import java.util.List;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.style.SemanticType;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.parse.MBFilter;
@@ -53,7 +53,7 @@ public abstract class MBLayer {
     protected final MBObjectParser parse;
 
     /** Shared filter factory */
-    protected final FilterFactory2 ff;
+    protected final FilterFactory ff;
 
     /** Shared style factory */
     protected final StyleFactory2 sf;

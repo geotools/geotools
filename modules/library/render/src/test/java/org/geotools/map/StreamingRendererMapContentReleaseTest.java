@@ -14,7 +14,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -46,7 +46,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 public class StreamingRendererMapContentReleaseTest extends LoggerTest {
 
     private static final StyleFactory sf = CommonFactoryFinder.getStyleFactory();
-    private static final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+    private static final FilterFactory ff = CommonFactoryFinder.getFilterFactory();
     private static final GeometryFactory geom = JTSFactoryFinder.getGeometryFactory();
 
     @BeforeClass

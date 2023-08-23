@@ -27,7 +27,7 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -693,7 +693,7 @@ public class IntersectionFeatureCollection implements VectorProcess {
 
         private SimpleFeatureCollection filteredCollection(
                 Geometry currentGeom, SimpleFeatureCollection subFeatureCollection) {
-            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+            FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
             Filter intersectFilter =
                     ff.intersects(ff.property(dataGeomName), ff.literal(currentGeom));
             SimpleFeatureCollection subFeatureCollectionIntersection =

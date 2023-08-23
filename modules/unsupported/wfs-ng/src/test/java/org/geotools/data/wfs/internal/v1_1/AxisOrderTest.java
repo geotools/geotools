@@ -28,7 +28,7 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.data.Query;
@@ -63,7 +63,7 @@ public class AxisOrderTest {
 
     private QName qTypeName = new QName("http://www.tinyows.org/", "comuni11", "comuni");
 
-    private FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+    private FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
     @Test
     public void testGetFeatureWithNorthEastAxisOrderOutputEPSG4326() throws Exception {

@@ -32,7 +32,7 @@ import org.geotools.factory.CommonFactoryFinder;
 
 /** ExpressionBuilder acting as a simple wrapper around an Expression. */
 public class ExpressionBuilder implements Builder<Expression> {
-    protected FilterFactory ff = CommonFactoryFinder.getFilterFactory2(null);
+    protected FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
     protected boolean unset = false;
     protected Builder<? extends Expression> delegate = new NilBuilder();
 

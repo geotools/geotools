@@ -19,7 +19,7 @@ package org.geotools.mbtiles;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.List;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.factory.CommonFactoryFinder;
@@ -29,7 +29,7 @@ import org.locationtech.jts.geom.Envelope;
 
 public class ExtractMultiBoundsFilterVisitorTest {
     private static final String CRS = "EPSG:404000";
-    FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     @Test
     public void testBoundsSimple() throws FactoryException {

@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.Arrays;
 import java.util.List;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.complex.TestFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.test.AppSchemaTestSupport;
@@ -70,7 +70,7 @@ public class IndexedFilterDetectorVisitorTest extends AppSchemaTestSupport {
     }
 
     private Filter partialIndexedFilter() {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Filter filter =
                 ff.and(
                         totallyIndexedFilter(),
@@ -79,7 +79,7 @@ public class IndexedFilterDetectorVisitorTest extends AppSchemaTestSupport {
     }
 
     private Filter totallyIndexedFilter() {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Filter filter =
                 ff.or(
                         ff.equals(ff.property("st:Station"), ff.literal("st.1")),
@@ -88,7 +88,7 @@ public class IndexedFilterDetectorVisitorTest extends AppSchemaTestSupport {
     }
 
     private Filter totallyIndexedFilter2() {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Filter filter =
                 ff.or(
                         ff.equals(ff.property("st:Station/st:name"), ff.literal("fer")),
@@ -97,7 +97,7 @@ public class IndexedFilterDetectorVisitorTest extends AppSchemaTestSupport {
     }
 
     private Filter partialIndexedFilter_2idxfilterResults() {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         List<Filter> filters =
                 Arrays.asList(
                         totallyIndexedFilter(),

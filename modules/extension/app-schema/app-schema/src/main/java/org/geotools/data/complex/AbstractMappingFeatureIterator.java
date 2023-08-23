@@ -39,7 +39,6 @@ import org.geotools.api.feature.type.FeatureTypeFactory;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.feature.type.PropertyDescriptor;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -78,7 +77,7 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
     public static final GeometryFactory GEOMETRY_FACTORY =
             new GeometryFactory(new PrecisionModel(PrecisionModel.FLOATING));
 
-    protected FilterFactory2 filterFac = CommonFactoryFinder.getFilterFactory2(null);
+    protected FilterFactory filterFac = CommonFactoryFinder.getFilterFactory(null);
 
     protected FeatureTypeFactory ftf = new ComplexFeatureTypeFactoryImpl();
 

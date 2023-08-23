@@ -31,7 +31,7 @@ import org.geotools.factory.CommonFactoryFinder;
 /** FilterBuilder acting as a simple wrapper around an Expression. */
 public class IdBuilder<P> implements Builder<Id> {
     protected Filter filter; // placeholder just to keep us going right now
-    protected FilterFactory ff = CommonFactoryFinder.getFilterFactory2(null);
+    protected FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
     protected P parent;
 
     protected boolean unset = false;

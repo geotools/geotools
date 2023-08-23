@@ -37,7 +37,7 @@ import java.util.Enumeration;
 import java.util.List;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
@@ -59,7 +59,7 @@ import org.junit.Test;
  */
 public class MBFunctionTest {
 
-    public static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+    public static FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
     @Test
     public void colorIdentityTest() throws Exception {

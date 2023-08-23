@@ -33,7 +33,7 @@ import org.apache.commons.io.IOUtils;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.data.Query;
@@ -192,7 +192,7 @@ public class TinyOwsTest extends XmlTestSupport {
 
         SimpleFeatureSource source = wfs.getFeatureSource(typeName);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Filter and =
                 ff.and(
                         Arrays.asList(
@@ -209,7 +209,7 @@ public class TinyOwsTest extends XmlTestSupport {
 
         SimpleFeatureSource source = wfs.getFeatureSource(typeName);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Set<FeatureId> fids = new HashSet<>();
         fids.add(new FeatureIdImpl("comuni11.2671"));
         Query query = new Query(typeName.getLocalPart(), ff.id(fids));
@@ -255,7 +255,7 @@ public class TinyOwsTest extends XmlTestSupport {
         SimpleFeatureSource source = wfs.getFeatureSource(typeName);
         SimpleFeature sf = getSampleSimpleFeature(source);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         PropertyName bboxProperty = ff.property(sf.getDefaultGeometryProperty().getName());
         Query query = new Query(typeName.getLocalPart(), ff.bbox(bboxProperty, sf.getBounds()));
         iterate(source.getFeatures(query), 6, true);
@@ -298,7 +298,7 @@ public class TinyOwsTest extends XmlTestSupport {
         Set<FeatureId> fids = new HashSet<>();
         fids.add(new FeatureIdImpl("comuni11.2671"));
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         PropertyName bboxProperty = ff.property(sf.getDefaultGeometryProperty().getName());
         Query query =
                 new Query(
@@ -344,7 +344,7 @@ public class TinyOwsTest extends XmlTestSupport {
         Set<FeatureId> fids = new HashSet<>();
         fids.add(new FeatureIdImpl("comuni11.2671"));
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         PropertyName bboxProperty = ff.property(sf.getDefaultGeometryProperty().getName());
         Query query =
                 new Query(
@@ -396,7 +396,7 @@ public class TinyOwsTest extends XmlTestSupport {
         Set<FeatureId> fids = new HashSet<>();
         fids.add(new FeatureIdImpl("comuni11.2671"));
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         PropertyName bboxProperty = ff.property(sf.getDefaultGeometryProperty().getName());
         Query query =
                 new Query(
@@ -416,7 +416,7 @@ public class TinyOwsTest extends XmlTestSupport {
     }
 
     private SimpleFeature getSampleSimpleFeature(SimpleFeatureSource source) throws IOException {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Set<FeatureId> fids = new HashSet<>();
         fids.add(new FeatureIdImpl("comuni11.2671"));
         Query query = new Query(typeName.getLocalPart(), ff.id(fids));

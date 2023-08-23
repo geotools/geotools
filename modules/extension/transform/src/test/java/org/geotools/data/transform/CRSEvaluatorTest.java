@@ -6,7 +6,7 @@ import static org.junit.Assert.assertSame;
 
 import java.io.File;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
@@ -24,7 +24,7 @@ public class CRSEvaluatorTest {
     static SimpleFeatureType STATES_SCHEMA;
     private static CoordinateReferenceSystem WGS84;
     WKTReader wkt = new WKTReader();
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+    FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
     @BeforeClass
     public static void beforeClass() throws Exception {

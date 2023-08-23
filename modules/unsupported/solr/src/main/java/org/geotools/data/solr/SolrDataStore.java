@@ -243,7 +243,7 @@ public class SolrDataStore extends ContentDataStore {
 
     @Override
     public FilterFactory getFilterFactory() {
-        return CommonFactoryFinder.getFilterFactory2();
+        return CommonFactoryFinder.getFilterFactory();
     }
 
     /**

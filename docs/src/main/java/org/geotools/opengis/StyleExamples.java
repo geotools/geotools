@@ -15,7 +15,7 @@ import java.awt.Color;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.AnchorPoint;
 import org.geotools.api.style.Displacement;
@@ -37,7 +37,7 @@ public class StyleExamples {
         // styleFactoryExample start
         //
         org.geotools.api.style.StyleFactory sf = CommonFactoryFinder.getStyleFactory();
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         //
         // create the graphical mark used to represent a city

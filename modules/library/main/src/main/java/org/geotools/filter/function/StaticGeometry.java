@@ -20,7 +20,7 @@ package org.geotools.filter.function;
 import com.google.re2j.Pattern;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.locationtech.jts.algorithm.MinimumBoundingCircle;
 import org.locationtech.jts.algorithm.MinimumDiameter;
@@ -36,11 +36,11 @@ import org.locationtech.jts.io.WKTReader;
 public class StaticGeometry {
 
     // Lazily created filter factory for updated numerical operations
-    private static FilterFactory2 ff;
+    private static FilterFactory ff;
 
-    private static FilterFactory2 getFilterFactory2() {
+    private static FilterFactory getFilterFactory() {
         if (ff == null) {
-            ff = CommonFactoryFinder.getFilterFactory2();
+            ff = CommonFactoryFinder.getFilterFactory();
         }
         return ff;
     }
@@ -598,24 +598,24 @@ public class StaticGeometry {
         return !(equalTo(o1, o2));
     }
 
-    /** Delegates to FilterFactory2 */
+    /** Delegates to FilterFactory */
     public static boolean lessThan(Object o1, Object o2) {
-        return getFilterFactory2().less(ff.literal(o1), ff.literal(o2)).evaluate(null);
+        return getFilterFactory().less(ff.literal(o1), ff.literal(o2)).evaluate(null);
     }
 
-    /** Delegates to FilterFactory2 */
+    /** Delegates to FilterFactory */
     public static boolean greaterThan(Object o1, Object o2) {
-        return getFilterFactory2().greater(ff.literal(o1), ff.literal(o2)).evaluate(null);
+        return getFilterFactory().greater(ff.literal(o1), ff.literal(o2)).evaluate(null);
     }
 
-    /** Delegates to FilterFactory2 */
+    /** Delegates to FilterFactory */
     public static boolean greaterEqualThan(Object o1, Object o2) {
-        return getFilterFactory2().greaterOrEqual(ff.literal(o1), ff.literal(o2)).evaluate(null);
+        return getFilterFactory().greaterOrEqual(ff.literal(o1), ff.literal(o2)).evaluate(null);
     }
 
-    /** Delegates to FilterFactory2 */
+    /** Delegates to FilterFactory */
     public static boolean lessEqualThan(Object o1, Object o2) {
-        return getFilterFactory2().lessOrEqual(ff.literal(o1), ff.literal(o2)).evaluate(null);
+        return getFilterFactory().lessOrEqual(ff.literal(o1), ff.literal(o2)).evaluate(null);
     }
 
     public static boolean isLike(String s1, String s2) {

@@ -111,7 +111,7 @@ import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.geometry.Envelope;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
 import org.geotools.api.parameter.GeneralParameterValue;
@@ -206,7 +206,7 @@ import org.locationtech.jts.geom.LinearRing;
  */
 public class ImageMosaicReaderTest {
 
-    private static final FilterFactory2 FF = FeatureUtilities.DEFAULT_FILTER_FACTORY;
+    private static final FilterFactory FF = FeatureUtilities.DEFAULT_FILTER_FACTORY;
 
     private static final double DELTA = 1E-4;
 

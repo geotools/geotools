@@ -31,7 +31,7 @@ import java.util.Map.Entry;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.data.DataUtilities;
@@ -54,7 +54,7 @@ public class FidQueryTest extends FIDTestCase {
 
     private ShapefileDataStore ds;
 
-    private static final FilterFactory2 fac = CommonFactoryFinder.getFilterFactory2(null);
+    private static final FilterFactory fac = CommonFactoryFinder.getFilterFactory(null);
 
     Map<String, SimpleFeature> fids = new HashMap<>();
 
@@ -130,7 +130,7 @@ public class FidQueryTest extends FIDTestCase {
         SimpleFeature feature = this.fids.values().iterator().next();
         int newId = 237594123;
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
         Id createFidFilter = ff.id(Collections.singleton(ff.featureId(feature.getID())));
 
@@ -147,7 +147,7 @@ public class FidQueryTest extends FIDTestCase {
     @Test
     public void testDeleteFeature() throws Exception {
         SimpleFeature feature = DataUtilities.first(featureStore.getFeatures());
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Id fidFilter = ff.id(Collections.singleton(ff.featureId(feature.getID())));
 
         featureStore.removeFeatures(fidFilter);
@@ -174,7 +174,7 @@ public class FidQueryTest extends FIDTestCase {
         try (SimpleFeatureIterator features = allfeatures.features()) {
             feature = features.next();
         }
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Id fidFilter = ff.id(Collections.singleton(ff.featureId(feature.getID())));
 
         featureStore.removeFeatures(fidFilter);

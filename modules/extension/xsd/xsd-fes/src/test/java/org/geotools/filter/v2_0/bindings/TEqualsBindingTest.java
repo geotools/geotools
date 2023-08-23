@@ -9,7 +9,7 @@ import javax.xml.namespace.NamespaceContext;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.MultiValuedFilter.MatchAction;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
@@ -70,7 +70,7 @@ public class TEqualsBindingTest extends FESTestSupport {
      */
     @Test
     public void testPropertyEqualsMatchEncoding() throws Exception {
-        FilterFactory2 ff = new FilterFactoryImpl();
+        FilterFactory ff = new FilterFactoryImpl();
         Filter filter = ff.equal(ff.property("prop"), ff.literal("abc"), true, MatchAction.ANY);
         Configuration configuration = new org.geotools.filter.v2_0.FESConfiguration();
         Encoder encoder = new Encoder(configuration);

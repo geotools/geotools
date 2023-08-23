@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 
 /**
@@ -96,7 +96,7 @@ public class LogicSAXParser {
             org.geotools.util.logging.Logging.getLogger(LogicSAXParser.class);
 
     /** factory for creating filters. */
-    private FilterFactory2 ff;
+    private FilterFactory ff;
 
     /** AbstractFilter filte type. */
     private short logicType = -1;
@@ -112,15 +112,15 @@ public class LogicSAXParser {
 
     /** Constructor which flags the operator as between. */
     public LogicSAXParser() {
-        this(CommonFactoryFinder.getFilterFactory2());
+        this(CommonFactoryFinder.getFilterFactory());
     }
     /** Constructor injection */
-    public LogicSAXParser(FilterFactory2 factory) {
+    public LogicSAXParser(FilterFactory factory) {
         ff = factory;
         LOGGER.finer("made new logic factory");
     }
     /** Setter injection */
-    public void setFilterFactory(FilterFactory2 factory) {
+    public void setFilterFactory(FilterFactory factory) {
         ff = factory;
     }
 

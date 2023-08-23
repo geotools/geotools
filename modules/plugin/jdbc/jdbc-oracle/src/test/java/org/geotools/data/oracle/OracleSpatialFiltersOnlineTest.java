@@ -19,7 +19,6 @@ package org.geotools.data.oracle;
 import static org.junit.Assert.assertEquals;
 
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.spatial.BBOX;
@@ -84,7 +83,7 @@ public class OracleSpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest
         Geometry[] geometries = {point};
         GeometryCollection geometry = new GeometryCollection(geometries, factory);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
         PropertyName geomName = ff.property(aname("geom"));
         Literal lit = ff.literal(geometry);

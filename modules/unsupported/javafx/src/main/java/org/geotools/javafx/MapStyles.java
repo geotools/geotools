@@ -28,7 +28,7 @@ import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.Symbolizer;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.identity.FeatureId;
 
 /** Created by Jochen Saalfeld <jochen.saalfeld@intevation.de> on 2/16/17. */
@@ -41,7 +41,7 @@ public class MapStyles {
     private float fillTransparacy;
     private StyleBuilder sb;
     private StyleFactory sf;
-    private FilterFactory2 ff;
+    private FilterFactory ff;
     private String geometryAttributeName;
     private float strokeTransparacy;
     private static final Color OUTLINE_COLOR = Color.BLACK;
@@ -61,7 +61,7 @@ public class MapStyles {
             String geometryAttributeName) {
         this.sb = new StyleBuilder();
         this.sf = CommonFactoryFinder.getStyleFactory(null);
-        this.ff = CommonFactoryFinder.getFilterFactory2(null);
+        this.ff = CommonFactoryFinder.getFilterFactory(null);
         this.selectedColor = selectedColor;
         this.outlineColor = outlineColor;
         this.fillColor = fillColor;

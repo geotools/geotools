@@ -27,7 +27,7 @@ import java.awt.Color;
 import java.util.Arrays;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Or;
 import org.geotools.api.filter.PropertyIsLike;
 import org.geotools.factory.CommonFactoryFinder;
@@ -41,7 +41,7 @@ public class FiltersTest {
 
     private static Filters filters;
 
-    private static FilterFactory2 ff;
+    private static FilterFactory ff;
 
     private static Filter a;
 
@@ -53,7 +53,7 @@ public class FiltersTest {
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        ff = CommonFactoryFinder.getFilterFactory2(null);
+        ff = CommonFactoryFinder.getFilterFactory(null);
         filters = new Filters(ff);
         a = ff.greater(ff.property("zone"), ff.literal(7));
         b = ff.like(ff.property("suburb"), "N%");

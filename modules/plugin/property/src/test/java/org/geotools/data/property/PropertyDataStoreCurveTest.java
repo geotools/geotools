@@ -22,7 +22,7 @@ import java.io.FileWriter;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -52,7 +52,7 @@ import org.locationtech.jts.io.WKTReader;
 public class PropertyDataStoreCurveTest {
     PropertyDataStore store;
 
-    static FilterFactory2 ff = (FilterFactory2) CommonFactoryFinder.getFilterFactory(null);
+    static FilterFactory ff = (FilterFactory) CommonFactoryFinder.getFilterFactory(null);
 
     @Before
     public void setUp() throws Exception {

@@ -43,7 +43,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.geotools.api.coverage.grid.GridEnvelope;
 import org.geotools.api.coverage.processing.Operation;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.Envelope;
 import org.geotools.api.metadata.extent.Extent;
@@ -462,7 +462,7 @@ public class NetCDFReaderTest extends Assert {
                 gg.setValue(new GridGeometry2D(range, reducedEnvelope));
 
                 final ParameterValue<Filter> filterParam = NetCDFFormat.FILTER.createValue();
-                FilterFactory2 FF = FeatureUtilities.DEFAULT_FILTER_FACTORY;
+                FilterFactory FF = FeatureUtilities.DEFAULT_FILTER_FACTORY;
                 Filter filter = FF.equals(FF.property("z"), FF.literal(450.0));
                 filterParam.setValue(filter);
 

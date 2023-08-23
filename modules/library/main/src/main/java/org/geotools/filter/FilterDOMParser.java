@@ -26,7 +26,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 import org.geotools.api.filter.BinaryComparisonOperator;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.PropertyIsBetween;
 import org.geotools.api.filter.PropertyIsLike;
@@ -62,7 +62,7 @@ public final class FilterDOMParser {
             org.geotools.util.logging.Logging.getLogger(FilterDOMParser.class);
 
     /** Factory to create filters. */
-    private static final FilterFactory2 FILTER_FACT = CommonFactoryFinder.getFilterFactory2(null);
+    private static final FilterFactory FILTER_FACT = CommonFactoryFinder.getFilterFactory(null);
 
     /** Number of children in a between filter. */
     private static final int NUM_BETWEEN_CHILDREN = 3;

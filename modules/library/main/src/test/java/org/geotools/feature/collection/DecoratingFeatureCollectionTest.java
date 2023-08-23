@@ -21,7 +21,7 @@ import org.easymock.EasyMock;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.FeatureVisitor;
 import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -32,7 +32,7 @@ public class DecoratingFeatureCollectionTest {
 
     @Test
     public void testDelegateVisitor() throws IOException {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         UniqueVisitor visitor = new UniqueVisitor(ff.property("test"));
 
         FeatureCollection<FeatureType, Feature> mock = EasyMock.createMock(FeatureCollection.class);
@@ -53,7 +53,7 @@ public class DecoratingFeatureCollectionTest {
 
     @Test
     public void testDontDelegateVisitor() throws IOException {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         UniqueVisitor visitor = new UniqueVisitor(ff.property("test"));
 
         FeatureCollection<FeatureType, Feature> mock = EasyMock.createMock(FeatureCollection.class);

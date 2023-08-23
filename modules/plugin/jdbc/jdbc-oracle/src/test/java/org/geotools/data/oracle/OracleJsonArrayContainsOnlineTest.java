@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureSource;
@@ -34,7 +34,7 @@ import org.junit.Test;
 public class OracleJsonArrayContainsOnlineTest extends JDBCTestSupport {
 
     private OracleJsonArrayContainsTestSetup testSetup;
-    private FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    private FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     @Override
     protected OracleJsonArrayContainsTestSetup createTestSetup() {

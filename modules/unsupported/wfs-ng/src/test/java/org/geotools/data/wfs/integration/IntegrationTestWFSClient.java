@@ -39,7 +39,7 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Diff;
@@ -411,7 +411,7 @@ public class IntegrationTestWFSClient extends WFSClient {
             tr.setUpdateResults(factory.createActionResultsType());
 
             if (!added.isEmpty()) {
-                FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+                FilterFactory ff = CommonFactoryFinder.getFilterFactory();
                 CreatedOrModifiedFeatureType inserted =
                         factory.createCreatedOrModifiedFeatureType();
                 for (String addedId : added) {
@@ -445,7 +445,7 @@ public class IntegrationTestWFSClient extends WFSClient {
             tr.setInsertResults(factory.createInsertResultsType());
 
             if (!added.isEmpty()) {
-                FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+                FilterFactory ff = CommonFactoryFinder.getFilterFactory();
                 InsertedFeatureType inserted = factory.createInsertedFeatureType();
                 tr.getInsertResults().getFeature().add(inserted);
                 for (String addedId : added) {

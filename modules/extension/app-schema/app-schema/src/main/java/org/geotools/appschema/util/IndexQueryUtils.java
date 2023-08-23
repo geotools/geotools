@@ -26,7 +26,6 @@ import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
@@ -138,7 +137,7 @@ public final class IndexQueryUtils {
      * @return Filter IN function
      */
     public static Filter buildIdInExpressionFunction(List<String> ids, FeatureTypeMapping mapping) {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         List<Expression> idExpressions = new ArrayList<>();
         String rootXpath =
                 XPath.rootElementSteps(mapping.getTargetFeature(), mapping.getNamespaces())

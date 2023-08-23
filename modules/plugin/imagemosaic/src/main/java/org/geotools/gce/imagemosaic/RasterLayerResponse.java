@@ -63,7 +63,7 @@ import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.geometry.MismatchedDimensionException;
@@ -1454,7 +1454,7 @@ public class RasterLayerResponse {
                                             Utils.getAttribute(
                                                     templateDescriptor.getOriginator(),
                                                     crsAttribute);
-                            FilterFactory2 ff = FeatureUtilities.DEFAULT_FILTER_FACTORY;
+                            FilterFactory ff = FeatureUtilities.DEFAULT_FILTER_FACTORY;
                             PropertyIsEqualTo crsFilter =
                                     ff.equal(
                                             ff.property(crsAttribute),

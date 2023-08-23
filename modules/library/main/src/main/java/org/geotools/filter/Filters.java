@@ -110,18 +110,18 @@ public class Filters {
      */
     private static Filters STATIC = new Filters();
 
-    org.geotools.api.filter.FilterFactory2 ff;
+    org.geotools.api.filter.FilterFactory ff;
 
     /** Create Filters helper object using global FilterFactory provided by CommonFactoryFinder */
     public Filters() {
-        this(CommonFactoryFinder.getFilterFactory2(null));
+        this(CommonFactoryFinder.getFilterFactory(null));
     }
     /** Create a Filters helper using the provided FilterFactory */
-    public Filters(org.geotools.api.filter.FilterFactory2 factory) {
+    public Filters(org.geotools.api.filter.FilterFactory factory) {
         ff = factory;
     }
 
-    public void setFilterFactory(org.geotools.api.filter.FilterFactory2 factory) {
+    public void setFilterFactory(org.geotools.api.filter.FilterFactory factory) {
         ff = factory;
     }
 

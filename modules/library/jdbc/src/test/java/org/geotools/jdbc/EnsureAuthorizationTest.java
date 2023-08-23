@@ -123,7 +123,7 @@ public class EnsureAuthorizationTest {
         configureMetadata();
 
         dataStore = new JDBCDataStore();
-        dataStore.setFilterFactory(CommonFactoryFinder.getFilterFactory2());
+        dataStore.setFilterFactory(CommonFactoryFinder.getFilterFactory());
         dataStore.setSQLDialect(createBasicSQLDialect());
 
         MockDataSource dataSource = new MockDataSource();

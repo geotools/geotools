@@ -138,7 +138,7 @@ public class PostGISHStoreOnlineTest extends JDBCTestSupport {
         // Simply test that the MapGet Filter Function will also work against returned
         // HSTORE objects which, at the end, are basically maps.
         ContentFeatureSource fs = dataStore.getFeatureSource(tname("hstoretest"));
-        FilterFactory ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         Function f = ff.function("mapGet", ff.property("mapping"), ff.literal("key2"));
         PropertyIsEqualTo filter = ff.equals(f, ff.literal("value2"));

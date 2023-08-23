@@ -38,7 +38,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.lang3.StringUtils;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
@@ -124,7 +123,7 @@ import org.xml.sax.SAXException;
  */
 public class SLDParser {
 
-    private static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    private static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     /** HISTOGRAM */
     private static final String HISTOGRAM = "histogram";
@@ -873,7 +872,7 @@ public class SLDParser {
                 rules.add(parseRule(child));
             } else if (childName.equalsIgnoreCase("Transformation")) {
                 ExpressionDOMParser parser =
-                        new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory2(null));
+                        new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory(null));
                 Expression tx = parser.expression(getFirstNonTextChild(child));
                 ft.setTransformation(tx);
             } else if (childName.equalsIgnoreCase(VendorOptionString)) {
@@ -1340,7 +1339,7 @@ public class SLDParser {
      * values.
      */
     Expression parseParameterValueExpression(Node root, boolean mixedText) {
-        ExpressionDOMParser parser = new ExpressionDOMParser((FilterFactory2) ff);
+        ExpressionDOMParser parser = new ExpressionDOMParser((FilterFactory) ff);
         Expression expr = parser.expression(root); // try the provided node first
         if (expr != null) return expr;
         NodeList children = root.getChildNodes();

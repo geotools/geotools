@@ -41,7 +41,7 @@ import org.geotools.api.feature.type.ComplexType;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
@@ -331,7 +331,7 @@ public class BoreholeTest extends AppSchemaTestSupport {
         namespaces.declarePrefix("geo", GEONS);
         namespaces.declarePrefix("xlink", XLINK.NAMESPACE);
 
-        final FilterFactory2 ff = new FilterFactoryImplNamespaceAware(namespaces);
+        final FilterFactory ff = new FilterFactoryImplNamespaceAware(namespaces);
         final PropertyName propertyName = ff.property(queryProperty);
         final Literal literal = ff.literal(queryLiteral);
 

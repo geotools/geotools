@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.DataUtilities;
@@ -448,7 +448,7 @@ public class MBStyle {
 
         if (background != null) {
             // attach to the first layer if possible
-            FilterFactory2 ff = parse.getFilterFactory();
+            FilterFactory ff = parse.getFilterFactory();
             if (sld.getStyledLayers().length > 0) {
                 NamedLayer layer = (NamedLayer) sld.getStyledLayers()[0];
                 Style firstStyle = layer.getStyles()[0];
@@ -469,7 +469,7 @@ public class MBStyle {
             StyleFactory sf,
             StyledLayerDescriptor sld,
             BackgroundMBLayer background,
-            FilterFactory2 ff) {
+            FilterFactory ff) {
         // Background does not use a source; construct a user later with a world extent
         // inline feature so that we still have a valid SLD.
         UserLayer userLayer = sf.createUserLayer();

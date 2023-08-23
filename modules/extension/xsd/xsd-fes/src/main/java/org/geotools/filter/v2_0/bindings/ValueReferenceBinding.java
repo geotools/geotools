@@ -18,7 +18,6 @@ package org.geotools.filter.v2_0.bindings;
 
 import javax.xml.namespace.QName;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.gml3.bindings.GML3EncodingUtils;
@@ -78,7 +77,7 @@ public class ValueReferenceBinding extends AbstractSimpleBinding {
      */
     @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
-        return ((FilterFactory2) filterFactory)
+        return ((FilterFactory) filterFactory)
                 .property(
                         (String) value, GML3EncodingUtils.copyNamespaceSupport((namespaceSupport)));
     }

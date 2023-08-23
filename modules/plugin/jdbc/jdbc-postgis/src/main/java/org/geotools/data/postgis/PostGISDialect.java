@@ -41,7 +41,7 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
@@ -1668,7 +1668,7 @@ public class PostGISDialect extends BasicSQLDialect {
             Function duplicated = (Function) expression.accept(duplicating, null);
             // if constant can encode
             Object result = param.evaluate(null);
-            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+            FilterFactory ff = CommonFactoryFinder.getFilterFactory();
             // setting constant expression evaluated to literal
             duplicated.getParameters().set(paramIdx, ff.literal(result));
             return duplicated;

@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.Map;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -39,7 +39,7 @@ public class GeoPkgDialectTest {
         File lakes0 = new File("./src/test/resources/org/geotools/geopkg/lakes_srs_0.gpkg");
         Map<String, File> params = Collections.singletonMap("database", lakes0);
         JDBCDataStore store = new GeoPkgDataStoreFactory().createDataStore(params);
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         BBOX bboxDefault = ff.bbox("", 0, 0, 10, 10, null);
         BBOX bboxExplicit = ff.bbox("geom", 5, 5, 15, 15, null);
         And and = ff.and(bboxDefault, bboxExplicit);

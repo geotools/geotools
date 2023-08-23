@@ -31,7 +31,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.And;
-import org.geotools.api.filter.FilterFactory2;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.data.DataUtilities;
@@ -60,7 +60,7 @@ public class STACFeatureSourceTest extends AbstractSTACStoreTest {
     private static final String MAJA_100_POST = "{\"collections\":[\"S2_L2A_MAJA\"],\"limit\":100}";
     private static final String APPLICATION_JSON = "application/json";
 
-    private static FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    private static FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     private static String MAJA_SPACE_TIME =
             BASE_URL

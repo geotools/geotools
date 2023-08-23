@@ -20,7 +20,6 @@ import java.util.Collections;
 import java.util.List;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.GraphicalSymbol;
 import org.geotools.factory.CommonFactoryFinder;
@@ -56,7 +55,7 @@ public class StyleExamples {
         //
         // We are using the GeoTools styleFactory that allows access to get/set methods
         org.geotools.styling.StyleFactory sf = CommonFactoryFinder.getStyleFactory();
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
         sld.setName("sld");
@@ -161,7 +160,7 @@ public class StyleExamples {
         //
         // We are using the GeoTools StyleBuilder that is helpful for quickly making things
         StyleBuilder builder = new StyleBuilder();
-        FilterFactory2 ff = builder.getFilterFactory();
+        FilterFactory ff = builder.getFilterFactory();
 
         // RULE 1
         // first rule to draw cities
@@ -209,7 +208,7 @@ public class StyleExamples {
     private void splatExample() {
         // splatExample start
         StyleBuilder builder = new StyleBuilder();
-        FilterFactory2 ff = builder.getFilterFactory();
+        FilterFactory ff = builder.getFilterFactory();
 
         Graphic splat = builder.createGraphic(null, builder.createMark("splat"), null);
         PointSymbolizer symbolizer = builder.createPointSymbolizer(splat);
@@ -274,7 +273,7 @@ public class StyleExamples {
     private void twoFeatureTypeStyles() {
         // twoFeatureTypeStyles start
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
-        FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
 
         Style style = styleFactory.getDefaultStyle();
 
@@ -308,7 +307,7 @@ public class StyleExamples {
         // quickPointSymbolizer start
         // "testPoint" feature type style
         StyleBuilder sb = new StyleBuilder();
-        FilterFactory2 ff = sb.getFilterFactory();
+        FilterFactory ff = sb.getFilterFactory();
 
         Mark testMark =
                 sb.createMark(sb.attributeExpression("name"), sb.createFill(Color.RED, 0.5), null);
@@ -331,7 +330,7 @@ public class StyleExamples {
         // quickTextSymbolizer start
         // "labelPoint" feature type style
         StyleBuilder sb = new StyleBuilder();
-        FilterFactory2 ff = sb.getFilterFactory();
+        FilterFactory ff = sb.getFilterFactory();
 
         // creation of the TextSymbolizer
         AnchorPoint anchorPoint =
@@ -365,7 +364,7 @@ public class StyleExamples {
     private void quickPolygonSymbolizer() {
         // quickPolygonSymbolizer start
         StyleBuilder styleBuilder = new StyleBuilder();
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         PolygonSymbolizer polygonSymbolizer = styleBuilder.createPolygonSymbolizer(Color.BLUE);
         polygonSymbolizer.getFill().setOpacity(ff.literal(0.5)); // 50% blue

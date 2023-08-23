@@ -442,8 +442,8 @@ public class PostPreProcessFilterSplittingVisitorTest
         caps.addAll(FilterCapabilities.SIMPLE_COMPARISONS_OPENGIS);
         caps.addType(JsonPointerFunction.class);
         caps.addType(And.class);
-        Filter memoryOne = ff.crosses(null, null);
-        Filter memoryTwo = ff.crosses(null, null);
+        Filter memoryOne = ff.crosses((String) null, null);
+        Filter memoryTwo = ff.crosses((String) null, null);
         Filter otherFilter =
                 ff.equal(
                         ff.function("jsonPointer", ff.literal("/pointer"), ff.property("property")),

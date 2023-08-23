@@ -31,7 +31,6 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.api.filter.sort.SortOrder;
 import org.geotools.data.DataUtilities;
@@ -512,7 +511,7 @@ public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
 
     void doTestSpatialJoin(boolean exposePrimaryKeys) throws Exception {
         dataStore.setExposePrimaryKeyColumns(exposePrimaryKeys);
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         Query q = new Query(tname("ft1"));
         q.setPropertyNames(Arrays.asList(aname("geometry"), aname("intProperty")));
         q.setSortBy(ff.sort(aname("intProperty"), SortOrder.ASCENDING));

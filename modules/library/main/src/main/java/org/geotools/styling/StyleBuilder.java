@@ -21,7 +21,6 @@ import java.util.Arrays;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.FilterFactory2;
 import org.geotools.api.filter.PropertyIsBetween;
 import org.geotools.api.filter.PropertyIsGreaterThan;
 import org.geotools.api.filter.PropertyIsLessThan;
@@ -62,7 +61,7 @@ public class StyleBuilder {
     public static final String FONT_WEIGHT_BOLD = "bold";
 
     private StyleFactory sf;
-    private FilterFactory2 ff;
+    private FilterFactory ff;
 
     /** use the default StyleFactory and FilterFactory */
     public StyleBuilder() {
@@ -95,7 +94,7 @@ public class StyleBuilder {
      */
     public StyleBuilder(StyleFactory styleFactory, FilterFactory filterFactory) {
         this.sf = styleFactory;
-        this.ff = (FilterFactory2) filterFactory;
+        this.ff = (FilterFactory) filterFactory;
     }
 
     /** Documented setter injection, StyleBuilder uses a StyleFactory for creation. */
@@ -113,7 +112,7 @@ public class StyleBuilder {
 
     /** Documented setter injection, StyleBuilder uses a StyleFactory for creation. */
     public void setFilterFactory(FilterFactory factory) {
-        ff = (FilterFactory2) factory;
+        ff = (FilterFactory) factory;
     }
 
     /**
@@ -121,7 +120,7 @@ public class StyleBuilder {
      *
      * @return the FilterFactory being used
      */
-    public FilterFactory2 getFilterFactory() {
+    public FilterFactory getFilterFactory() {
         return ff;
     }
 

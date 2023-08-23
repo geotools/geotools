@@ -52,6 +52,9 @@ jobs:
         echo "Checking out mapfish-print-v2"
         mkdir mapfish-print-v2
         git clone -b remove-opengis https://github.com/mapfish/mapfish-print-v2.git mapfish-print-v2
+        echo "Checking out mapfish-print-v3"
+        mkdir mapfish-print-v3
+        git clone https://github.com/mapfish/mapfish-print.git mapfish-print-v3
     - name: Apply org.opengis removal scripts
       run: |
         cd ~
@@ -68,6 +71,19 @@ jobs:
         cd ~/mapfish-print-v2
         cp ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml .
         ant -noinput -buildfile remove-opengis.xml
+        cd ~/mapfish-print-v3/core/src
+        cp ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml .
+        ant -noinput -buildfile remove-opengis.xml
+        cd ~/mapfish-print-v3/docs/src
+        cp ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml .
+        ant -noinput -buildfile remove-opengis.xml
+        cd ~/mapfish-print-v3/example/src
+        cp ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml .
+        ant -noinput -buildfile remove-opengis.xml
+    - name: Build Mapfish-print v3 with tests
+      run: |
+        cd ~/mapfish-print-v3/
+        make build
     - name: Build Mapfish-print v2 with tests
       run: |
         cd ~

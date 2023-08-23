@@ -83,6 +83,7 @@ jobs:
     - name: Build Mapfish-print v3 with tests
       run: |
         cd ~/mapfish-print-v3/
+        touch CI.asc
         make build
     - name: Build Mapfish-print v2 with tests
       run: |

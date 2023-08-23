@@ -145,12 +145,12 @@ public class InPlaceCoordinateSequenceTransformer implements CoordinateSequenceT
             throw new UnsupportedOperationException();
         }
 
-        /** @see org.geotools.api.geometry.coordinate.Position#getPosition() */
+        /** @see DirectPosition */
         public DirectPosition getPosition() {
             return this;
         }
 
-        /** @see org.geotools.api.geometry.coordinate.Position#getDirectPosition() */
+        /** @see DirectPosition */
         @Override
         public DirectPosition getDirectPosition() {
             return this;

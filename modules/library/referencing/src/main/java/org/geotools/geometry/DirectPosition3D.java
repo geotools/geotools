@@ -92,8 +92,8 @@ public class DirectPosition3D implements DirectPosition, Serializable, Cloneable
     }
 
     /**
-     * Returns always {@code this}, the direct position for this {@linkplain
-     * org.geotools.api.geometry.coordinate.Position position}.
+     * Returns always {@code this}, the direct position for this {@linkplain DirectPosition
+     * position}.
      */
     @Override
     public DirectPosition getDirectPosition() {

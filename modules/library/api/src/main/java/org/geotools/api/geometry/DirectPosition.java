@@ -9,11 +9,11 @@
  */
 package org.geotools.api.geometry;
 
+import static org.geotools.api.annotation.Obligation.CONDITIONAL;
 import static org.geotools.api.annotation.Obligation.MANDATORY;
 import static org.geotools.api.annotation.Specification.ISO_19107;
 
 import org.geotools.api.annotation.UML;
-import org.geotools.api.geometry.coordinate.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
@@ -36,7 +36,7 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
  * @since GeoAPI 1.0
  */
 @UML(identifier = "DirectPosition", specification = ISO_19107)
-public interface DirectPosition extends Position {
+public interface DirectPosition {
     /**
      * The coordinate reference system in which the coordinate is given. May be {@code null} if this
      * particular {@code DirectPosition} is included in a larger object with such a reference to a
@@ -113,6 +113,17 @@ public interface DirectPosition extends Position {
     double[] getCoordinate();
 
     /**
+     * Returns the direct position. This method shall never returns {@code null}, but may returns
+     * {@code this} if invoked on an object which is already a {@code DirectPosition} instance.
+     *
+     * @return The direct position (may be {@code this}).
+     * @since GeoAPI 2.2
+     */
+    @UML(identifier = "direct", obligation = CONDITIONAL, specification = ISO_19107)
+    @Deprecated
+    DirectPosition getDirectPosition();
+
+    /**
      * Returns the ordinate at the specified dimension.
      *
      * @param dimension The dimension in the range 0 to {@linkplain #getDimension dimension}-1.
@@ -157,7 +168,6 @@ public interface DirectPosition extends Position {
      * @since GeoAPI 2.1
      */
     @Override
-    /// @Override
     boolean equals(Object object);
 
     /**
@@ -170,6 +180,5 @@ public interface DirectPosition extends Position {
      * @since GeoAPI 2.1
      */
     @Override
-    /// @Override
     int hashCode();
 }

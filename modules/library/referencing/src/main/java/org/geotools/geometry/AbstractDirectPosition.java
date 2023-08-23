@@ -41,8 +41,8 @@ public abstract class AbstractDirectPosition implements DirectPosition {
     protected AbstractDirectPosition() {}
 
     /**
-     * Returns always {@code this}, the direct position for this {@linkplain
-     * org.geotools.api.geometry.coordinate.Position position}.
+     * Returns always {@code this}, the direct position for this {@linkplain DirectPosition
+     * position}.
      *
      * @since 2.5
      */

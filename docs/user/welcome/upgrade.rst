@@ -32,6 +32,9 @@ The first step to upgrade: change the ``geotools.version`` of your dependencies 
 GeoTools 30.x
 -------------
 
+Remove OpenGIS and Cleanup GeoTools API
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 The ``gt-opengis`` module has been renamed, change your dependency to:
 
 .. code-block:: xml
@@ -44,26 +47,61 @@ The ``gt-opengis`` module has been renamed, change your dependency to:
 
 The package ``org.opengis`` has changed ``org.geotools.api``.
 
-
 To aid in this transition an `Apache Ant <https://ant.apache.org>`__ script is provided:
 
 1. Download Ant script :download:`remove-opengis.xml <files/remove-opengis.xml>` included with this documentation.
 
 2. The default ``update`` target will update your Java code and ``META-INF/services``:
-   
-   Copy this file into  your project directory and run:
-   
-   .. code-block:: bash
-      
-      ant -f remove-opengis.xml
 
-   Or use the absolute path for project.dir:
+   Use the absolute path for project.dir:
 
    .. code-block:: bash
     
       ant -f remove-opengis.xml -Dproject.dir=(absolute path to your project directory)
-   
-3. At this end of this process you may need to re-run code formatters, or clean up unused imports.
+
+   Or copy :file:`remove-opengis.xml` file into  your project directory and run:
+
+   .. code-block:: bash
+
+      ant -f remove-opengis.xml
+
+3. We have done our best to with this update script but it is not perfect - known issues:
+
+   * Double check use of coordinate Position and temporal Position which have the same classname in different packages
+   * Clean up unused or duplicate imports
+   * You may need to re-run code formatters
+
+ISO Geometry
+^^^^^^^^^^^^
+
+The **org.opengis.geometry** interfaces (for ``Point``, ``Curve`` and ``Surface`` and supporting classes) were no longer in use.
+
+The direct use of **JTS Topology Suite** ``Geometry`` is now used throughout the library. Previously Object was used
+requiring a cast to Geometry.
+
+.. code-block:: java
+
+   // cast to Geometry no longer needed
+   Geometry geometry = feature.getDefaultGeometry();
+
+
+DirectPosition and GeneralEnvelope cleanup
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The **org.opengis.geometry** and **org.opengis.geometry.coordinates** interfaces for positions, envelopes and bounding
+boxes have been revised as part of their refactor to **org.geotools.api**.
+
+===============================================  ===============================================================
+OpenGIS                                          GeoTools API
+===============================================  ===============================================================
+org.opengis.geometry.coordinates.Position        org.geotools.api.geometry.Position
+org.opengis.geometry.DirectPosition              org.geotools.api.geometry.Position
+org.opengis.geometry.Envelope                    org.geotools.api.geometry.Bounds
+org.opengis.geometry.GeneralEnvelope             org.geotools.api.geometry.Bounds
+org.opengis.geometry.AbstractEnvelope            org.geotools.api.geometry.Bounds
+org.opengis.geometry.BoundingBox                 org.geotools.geometry.jts.ReferencedEnvelope
+org.opengis.geometry.BoundingBox3D               org.geotools.geometry.jts.ReferencedEnvelope3D
+===============================================  ===============================================================
 
 GeoTools 29.x
 -------------

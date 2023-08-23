@@ -20,29 +20,25 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
  * A sequence of points.
  *
  * <p>The {@code PointArray} interface outlines a means of efficiently storing large numbers of
- * usually homogeneous {@linkplain Position positions}; i.e. all having the same {@linkplain
- * CoordinateReferenceSystem coordinate reference system}. While a point array conceptually contains
- * {@linkplain Position positions}, it provides convenience methods for fetching directly the
- * {@linkplain DirectPosition direct positions} instead.
+ * usually homogeneous {@linkplain DirectPosition positions}; i.e. all having the same {@linkplain
+ * CoordinateReferenceSystem coordinate reference system}.
  *
  * <p>A simple implementation of {@code PointArray} will generally be no more efficient than a
- * simple array of {@link Position}s. More efficient implementations may store coordinates in a more
- * compact form (e.g. in a single {@code float[]} array) and creates {@link Position} objects on the
- * fly when needed.
+ * simple array of {@link PositionArchive}s. More efficient implementations may store coordinates in
+ * a more compact form (e.g. in a single {@code float[]} array) and create {@link PositionArchive}
+ * objects on the fly as needed.
  *
- * <p>If a particular {@code PointArray} implementation supports efficiently random access through
- * any {@code get} or {@code set} method, it shall announce this capability by implementing the
- * {@link java.util.RandomAccess} interface. Otherwise, users should read the positions through the
- * {@link #iterator() iterator()} instead.
+ * <p>If a particular {@code PointArray} implementation supports efficient random access through any
+ * {@code get} or {@code set} method, it shall announce this capability by implementing the {@link
+ * java.util.RandomAccess} interface. Otherwise, users should read the positions through the {@link
+ * #iterator() iterator()} instead.
  *
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
- * @since GeoAPI 1.0
- * @see Position
- * @see PointGrid
+ * @see PositionArchive
  */
 @UML(identifier = "GM_PointArray", specification = ISO_19107)
-public interface PointArray extends List<Position> {
+public interface PointArrayArchive extends List<PositionArchive> {
     /**
      * Returns the dimensionality of the coordinates in this array. It should be equals to the
      * dimensionality of the {@linkplain #getCoordinateReferenceSystem() coordinate reference

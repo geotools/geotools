@@ -149,8 +149,8 @@ public class DirectPosition2D extends Point2D.Double
     }
 
     /**
-     * Returns always {@code this}, the direct position for this {@linkplain
-     * org.geotools.api.geometry.coordinate.Position position}.
+     * Returns always {@code this}, the direct position for this {@linkplain DirectPosition
+     * position}.
      *
      * @since 2.5
      */

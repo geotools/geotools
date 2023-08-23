@@ -32,7 +32,7 @@ import org.geotools.api.geometry.DirectPosition;
  * @issue http://jira.codehaus.org/browse/GEO-87
  */
 @UML(identifier = "GM_Position", specification = ISO_19107)
-public interface Position {
+public interface PositionArchive {
 
     /**
      * Returns the direct position. This method shall never returns {@code null}, but may returns

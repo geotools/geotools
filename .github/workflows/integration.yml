@@ -77,7 +77,7 @@ jobs:
         cd ~/mapfish-print-v3/docs/src
         cp ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml .
         ant -noinput -buildfile remove-opengis.xml
-        cd ~/mapfish-print-v3/example/src
+        cd ~/mapfish-print-v3/examples/src
         cp ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml .
         ant -noinput -buildfile remove-opengis.xml
     - name: Build Mapfish-print v3 with tests

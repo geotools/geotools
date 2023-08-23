@@ -3,7 +3,7 @@
 
     <property name="project.dir" location="."/>
     
-    <target name="update" depends="code,services"
+    <target name="update" depends="_opengis,_bounds"
         description="Update project in current directory to remove org.opengis package use">
         
         <echo/>
@@ -11,45 +11,54 @@
         <echo>You may have unsued imports to clean up, but we believe your project will compile!</echo>
     </target>
     
-    <target name="bounds"
-        description="Bounds and Position API cleanup">
-       <fileset id="bounds.files" dir="${project.dir}" includes="**/*.java">
-            <contains text="import org.geotools.api.geometry.Envelope;" casesensitive="yes"/>
-        </fileset>
-        <echo message="Files containing org.geotools.api.geometry.Envelope: ${toString:bounds.files}" />
-
-        <replaceregexp byline="true">
-          <fileset refid="bounds.files"/>
-          <regexp pattern="(\s)Envelope"/>
-          <substitution expression="\1Bounds"/>
-        </replaceregexp>
-        
-        <replacefilter>
-          <fileset refid="bounds.files"/>
-          <replacetoken>import org.geotools.api.geometry.Envelope;</replacetoken>
-          <replacevalue>import org.geotools.api.geometry.Bounds;</replacevalue>
-        </replacefilter>
-    </target>
-    
-    <target name="code"
-        description="Update Java files, replacing imports and refernces to org.opengis classes">
+    <target name="_opengis"
+        description="Package change from org.opengis classes to org.geotools.api">
         
         <echo>Updating ${project.dir} java files ...</echo>
         <echo/>
-        <!-- bulk repalce * imports, may require more than one * import -->
+        <!-- bulk replace * imports, may require more than one * import -->
         <replace dir="${project.dir}" summary="yes">
           <include name="**/*.java"/>
-          <replacefilter>
+          <!--replacefilter>
             <replacetoken>import org.opengis.annotation.*;</replacetoken>
             <replacevalue>// documentation annotations no-longer available</replacevalue>
-          </replacefilter>
+          </replacefilter-->
           <replacefilter>
             <replacetoken>org.opengis.</replacetoken>
             <replacevalue>org.geotools.api.</replacevalue>
           </replacefilter>
         </replace>
-        
-        
+        <!-- Service INF -->
+        <move todir="." verbose="true">
+            <fileset dir=".">
+                <include name="**/META-INF/services/org.opengis.*"/>
+                <exclude name="**/target/*"/>
+            </fileset>
+            <regexpmapper from="(.*)/org.opengis.(.*)" to="\1/org.geotools.api.\2"/>
+        </move>
+    </target>
+
+    <!-- the following tasks run after _opengis above to reflect api refactoring -->
+    <target name="_bounds"
+            description="Bounds and Position API cleanup">
+
+        <fileset id="position.files" dir="${project.dir}" includes="**/*.java">
+            <contains text="import org.geotools.api.geometry.coordinate.Position;" casesensitive="yes"/>
+        </fileset>
+        <echo message="Files containing Position: ${toString:position.files}" />
+        <replaceregexp byline="true">
+            <fileset refid="position.files"/>
+            <regexp pattern="(\s)Position"/>
+            <substitution expression="\1Bounds"/>
+        </replaceregexp>
+        <replace>
+            <fileset refid="position.files"/>
+            <replacefilter>
+                <replacetoken>import org.geotools.api.geometry.coordinate.Position;</replacetoken>
+                <replacevalue>import org.geotools.api.geometry.DirectPosition</replacevalue>
+            </replacefilter>
+        </replace>
+    </target>
         <!--                                                       -->
         <!-- COVERAGE                                              -->
         <!--                                                       -->
@@ -144,19 +153,4 @@
           <replacevalue>import org.geotools.styling.*;</replacevalue>
         </replacefilter>
         -->
-     </target>
-     
-     <target name="services" description="Update META-INF/services to migrate org.opengis services">
-        <echo>Updating ${project.dir} META-INF/services ...</echo>
-        <echo/>
-        <!-- Service INF -->
-        <move todir="." verbose="true">
-          <fileset dir=".">
-             <include name="**/META-INF/services/org.opengis.*"/>
-             <exclude name="**/target/*"/>
-          </fileset>
-          <regexpmapper from="(.*)/org.opengis.(.*)" to="\1/org.geotools.api.\2"/>
-        </move>
-     </target>
-    
 </project>

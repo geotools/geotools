@@ -32,7 +32,6 @@ import net.sf.geographiclib.GeodesicData;
 import net.sf.geographiclib.GeodesicLine;
 import net.sf.geographiclib.GeodesicMask;
 import org.geotools.api.geometry.DirectPosition;
-import org.geotools.api.geometry.coordinate.Position;
 import org.geotools.api.referencing.crs.CompoundCRS;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.crs.GeographicCRS;
@@ -424,13 +423,12 @@ public class GeodeticCalculator {
      * @throws TransformException if the position can't be transformed.
      * @since 2.3
      */
-    public void setStartingPosition(final Position position) throws TransformException {
-        DirectPosition p = position.getDirectPosition();
+    public void setStartingPosition(DirectPosition position) throws TransformException {
         if (userToGeodetic != null) {
-            userToGeodetic.transform(p);
-            p = userToGeodetic;
+            userToGeodetic.transform(position);
+            position = userToGeodetic;
         }
-        setStartingGeographicPoint(p.getOrdinate(0), p.getOrdinate(1));
+        setStartingGeographicPoint(position.getOrdinate(0), position.getOrdinate(1));
     }
 
     /**
@@ -515,13 +513,12 @@ public class GeodeticCalculator {
      * @throws TransformException if the position can't be transformed.
      * @since 2.2
      */
-    public void setDestinationPosition(final Position position) throws TransformException {
-        DirectPosition p = position.getDirectPosition();
+    public void setDestinationPosition(DirectPosition position) throws TransformException {
         if (userToGeodetic != null) {
-            userToGeodetic.transform(p);
-            p = userToGeodetic;
+            userToGeodetic.transform(position);
+            position = userToGeodetic;
         }
-        setDestinationGeographicPoint(p.getOrdinate(0), p.getOrdinate(1));
+        setDestinationGeographicPoint(position.getOrdinate(0), position.getOrdinate(1));
     }
 
     /**

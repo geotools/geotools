@@ -23,7 +23,6 @@ import org.geotools.api.metadata.citation.OnLineResource;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "MD_MetadataExtensionInformation", specification = ISO_19115)
 public interface MetadataExtensionInformation {
     /**
      * Information about on-line sources containing the community profile name and the extended
@@ -31,7 +30,6 @@ public interface MetadataExtensionInformation {
      *
      * @return On-line sources to community profile name and extended metadata elements.
      */
-    @UML(identifier = "extensionOnLineResource", obligation = OPTIONAL, specification = ISO_19115)
     OnLineResource getExtensionOnLineResource();
 
     /**

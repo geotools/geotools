@@ -9,11 +9,7 @@
  */
 package org.geotools.api.referencing.operation;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
 import java.util.List;
-import org.geotools.api.annotation.UML;
 
 /**
  * An ordered sequence of two or more single coordinate operations. The sequence of operations is
@@ -30,13 +26,11 @@ import org.geotools.api.annotation.UML;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "CC_ConcatenatedOperation", specification = ISO_19111)
 public interface ConcatenatedOperation extends CoordinateOperation {
     /**
      * Returns the sequence of operations.
      *
      * @return The sequence of operations.
      */
-    @UML(identifier = "usesOperation", obligation = MANDATORY, specification = ISO_19111)
     List<SingleOperation> getOperations();
 }

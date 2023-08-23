@@ -9,10 +9,6 @@
  */
 package org.geotools.api.referencing.cs;
 
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * A two- or three-dimensional coordinate system that consists of any combination of coordinate axes
  * not covered by any other Coordinate System type. An example is a multilinear coordinate system
@@ -26,5 +22,4 @@ import org.geotools.api.annotation.UML;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "CS_UserDefinedCS", specification = ISO_19111)
 public interface UserDefinedCS extends CoordinateSystem {}

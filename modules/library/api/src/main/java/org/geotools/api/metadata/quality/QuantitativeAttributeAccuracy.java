@@ -9,10 +9,6 @@
  */
 package org.geotools.api.metadata.quality;
 
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * Accuracy of quantitative attributes.
  *
@@ -20,5 +16,4 @@ import org.geotools.api.annotation.UML;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "DQ_QuantitativeAttributeAccuracy", specification = ISO_19115)
 public interface QuantitativeAttributeAccuracy extends ThematicAccuracy {}

@@ -9,11 +9,7 @@
  */
 package org.geotools.api.parameter;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
 import java.util.List;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.metadata.Identifier;
 
 /**
@@ -27,7 +23,6 @@ import org.geotools.api.metadata.Identifier;
  * @see ParameterValueGroup
  * @see ParameterDescriptor
  */
-@UML(identifier = "CC_OperationParameterGroup", specification = ISO_19111)
 public interface ParameterDescriptorGroup extends GeneralParameterDescriptor {
     /**
      * Creates a new instance of {@linkplain ParameterValueGroup parameter value group} initialized
@@ -57,7 +52,6 @@ public interface ParameterDescriptorGroup extends GeneralParameterDescriptor {
      *
      * @return The descriptor of this group.
      */
-    @UML(identifier = "includesParameter", obligation = MANDATORY, specification = ISO_19111)
     List<GeneralParameterDescriptor> descriptors();
 
     /**

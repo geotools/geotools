@@ -9,11 +9,7 @@
  */
 package org.geotools.api.metadata.maintenance;
 
-import static org.geotools.api.annotation.Obligation.CONDITIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
 import java.util.Set;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.feature.type.AttributeType;
 import org.geotools.api.feature.type.FeatureType;
 
@@ -25,14 +21,12 @@ import org.geotools.api.feature.type.FeatureType;
  * @author Cory Horner (Refractions Research)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "MD_ScopeDescription", specification = ISO_19115)
 public interface ScopeDescription {
     /**
      * Attributes to which the information applies.
      *
      * @return Attributes to which the information applies.
      */
-    @UML(identifier = "attributes", obligation = CONDITIONAL, specification = ISO_19115)
     Set<? extends AttributeType> getAttributes();
 
     /**
@@ -40,7 +34,6 @@ public interface ScopeDescription {
      *
      * @return Features to which the information applies.
      */
-    @UML(identifier = "features", obligation = CONDITIONAL, specification = ISO_19115)
     Set<? extends FeatureType> getFeatures();
 
     /**
@@ -48,7 +41,6 @@ public interface ScopeDescription {
      *
      * @return Feature instances to which the information applies.
      */
-    @UML(identifier = "featureInstances", obligation = CONDITIONAL, specification = ISO_19115)
     Set<? extends FeatureType> getFeatureInstances();
 
     /**
@@ -57,7 +49,6 @@ public interface ScopeDescription {
      * @return Attribute instances to which the information applies.
      * @since GeoAPI 2.1
      */
-    @UML(identifier = "attributeInstances", obligation = CONDITIONAL, specification = ISO_19115)
     Set<? extends AttributeType> getAttributeInstances();
 
     /**
@@ -66,7 +57,6 @@ public interface ScopeDescription {
      * @return Dataset to which the information applies.
      * @since GeoAPI 2.1
      */
-    @UML(identifier = "dataset", obligation = CONDITIONAL, specification = ISO_19115)
     String getDataset();
 
     /**
@@ -76,6 +66,5 @@ public interface ScopeDescription {
      * @return Class of information that does not fall into the other categories.
      * @since GeoAPI 2.1
      */
-    @UML(identifier = "other", obligation = CONDITIONAL, specification = ISO_19115)
     String getOther();
 }

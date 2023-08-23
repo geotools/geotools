@@ -9,10 +9,6 @@
  */
 package org.geotools.api.metadata.identification;
 
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * Identification of capabilities which a service provider makes available to a service user through
  * a set of interfaces that define a behaviour - See ISO 19119 for further information.
@@ -21,5 +17,4 @@ import org.geotools.api.annotation.UML;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "SV_ServiceIdentification", specification = ISO_19115)
 public interface ServiceIdentification extends Identification {}

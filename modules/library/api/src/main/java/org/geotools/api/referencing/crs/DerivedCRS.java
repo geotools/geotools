@@ -9,10 +9,6 @@
  */
 package org.geotools.api.referencing.crs;
 
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * A coordinate reference system that is defined by its coordinate conversion from another
  * coordinate reference system but is not a projected coordinate reference system. This category
@@ -27,5 +23,4 @@ import org.geotools.api.annotation.UML;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "SC_DerivedCRS", specification = ISO_19111)
 public interface DerivedCRS extends GeneralDerivedCRS {}

@@ -9,11 +9,8 @@
  */
 package org.geotools.api.referencing.operation;
 
-import static org.geotools.api.annotation.Specification.OGC_01009;
-
 import java.util.Map;
 import java.util.Set;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.ObjectFactory;
@@ -28,7 +25,6 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "CT_CoordinateTransformationFactory", specification = OGC_01009)
 public interface CoordinateOperationFactory extends ObjectFactory {
     /**
      * Returns an operation for conversion or transformation between two coordinate reference
@@ -52,7 +48,6 @@ public interface CoordinateOperationFactory extends ObjectFactory {
      *     {@code targetCRS}.
      * @throws FactoryException if the operation creation failed for some other reason.
      */
-    @UML(identifier = "createFromCoordinateSystems", specification = OGC_01009)
     CoordinateOperation createOperation(
             CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS)
             throws OperationNotFoundException, FactoryException;
@@ -167,7 +162,6 @@ public interface CoordinateOperationFactory extends ObjectFactory {
      * @return A set of coordinate operations from {@code sourceCRS} to {@code targetCRS}.
      * @throws FactoryException if there was a failure retrieving or creating the operations.
      */
-    @UML(identifier = "createFromCoordinateSystems", specification = OGC_01009)
     Set<CoordinateOperation> findOperations(
             CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS)
             throws FactoryException;

@@ -9,12 +9,8 @@
  */
 package org.geotools.api.parameter;
 
-import static org.geotools.api.annotation.Obligation.CONDITIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
 import java.net.URI;
 import javax.measure.Unit;
-import org.geotools.api.annotation.UML;
 
 /**
  * A parameter value used by an operation method. Most parameter values are numeric, but other types
@@ -32,7 +28,6 @@ import org.geotools.api.annotation.UML;
  * @see ParameterDescriptor
  * @see ParameterValueGroup
  */
-@UML(identifier = "CC_ParameterValue", specification = ISO_19111)
 public interface ParameterValue<T> extends GeneralParameterValue {
     /**
      * Returns the abstract definition of this parameter value.
@@ -85,7 +80,6 @@ public interface ParameterValue<T> extends GeneralParameterValue {
      * @see #setValue(double)
      * @see #doubleValueList
      */
-    @UML(identifier = "value", obligation = CONDITIONAL, specification = ISO_19111)
     double doubleValue() throws InvalidParameterTypeException;
 
     /**
@@ -99,7 +93,6 @@ public interface ParameterValue<T> extends GeneralParameterValue {
      * @see #setValue(int)
      * @see #intValueList
      */
-    @UML(identifier = "integerValue", obligation = CONDITIONAL, specification = ISO_19111)
     int intValue() throws InvalidParameterTypeException;
 
     /**
@@ -110,7 +103,6 @@ public interface ParameterValue<T> extends GeneralParameterValue {
      * @throws InvalidParameterTypeException if the value is not a boolean type.
      * @see #setValue(boolean)
      */
-    @UML(identifier = "booleanValue", obligation = CONDITIONAL, specification = ISO_19111)
     boolean booleanValue() throws InvalidParameterTypeException;
 
     /**
@@ -122,7 +114,6 @@ public interface ParameterValue<T> extends GeneralParameterValue {
      * @see #getValue
      * @see #setValue(Object)
      */
-    @UML(identifier = "stringValue", obligation = CONDITIONAL, specification = ISO_19111)
     String stringValue() throws InvalidParameterTypeException;
 
     /**
@@ -154,7 +145,6 @@ public interface ParameterValue<T> extends GeneralParameterValue {
      *     #doubleValue()}. Also because, like {@code doubleValue()}, this method returns a {@code
      *     double} value rather than a {@code Measure} object.
      */
-    @UML(identifier = "valueList", obligation = CONDITIONAL, specification = ISO_19111)
     double[] doubleValueList() throws InvalidParameterTypeException;
 
     /**
@@ -169,7 +159,6 @@ public interface ParameterValue<T> extends GeneralParameterValue {
      *     #doubleValue()}. Also because, like {@code doubleValue()}, this method returns a {@code
      *     double} value rather than a {@code Measure} object.
      */
-    @UML(identifier = "integerValueList", obligation = CONDITIONAL, specification = ISO_19111)
     int[] intValueList() throws InvalidParameterTypeException;
 
     /**
@@ -183,7 +172,6 @@ public interface ParameterValue<T> extends GeneralParameterValue {
      * @see #getValue
      * @see #setValue(Object)
      */
-    @UML(identifier = "valueFile", obligation = CONDITIONAL, specification = ISO_19111)
     URI valueFile() throws InvalidParameterTypeException;
 
     /**
@@ -194,7 +182,6 @@ public interface ParameterValue<T> extends GeneralParameterValue {
      * @return The parameter value as an object.
      * @see #setValue(Object)
      */
-    @UML(identifier = "value", obligation = CONDITIONAL, specification = ISO_19111)
     T getValue();
 
     /**

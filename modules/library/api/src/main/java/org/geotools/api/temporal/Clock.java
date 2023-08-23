@@ -9,10 +9,6 @@
  */
 package org.geotools.api.temporal;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19108;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.util.InternationalString;
 
 /**
@@ -21,25 +17,19 @@ import org.geotools.api.util.InternationalString;
  * @author Alexander Petkov
  * @todo Retrofit in the referencing framework.
  */
-@UML(identifier = "TM_Clock", specification = ISO_19108)
 public interface Clock extends TemporalReferenceSystem {
     /** Event used as the datum for this clock. */
-    @UML(identifier = "referenceEvent", obligation = MANDATORY, specification = ISO_19108)
     InternationalString getReferenceEvent();
 
     /** Time of the reference Event for this clock, usually the origin of the clock scale. */
-    @UML(identifier = "ReferenceTime", obligation = MANDATORY, specification = ISO_19108)
     ClockTime getReferenceTime();
 
     /** Provides the 24-hour local or UTC time that corresponds to the reference time. */
-    @UML(identifier = "utcReference", obligation = MANDATORY, specification = ISO_19108)
     ClockTime getUTCReference();
 
     /** Converts UTC time to a time on this clock. */
-    @UML(identifier = "clkTrans", obligation = MANDATORY, specification = ISO_19108)
     ClockTime clkTrans(ClockTime clkTime);
 
     /** Converts UTC time to a time on this clock. */
-    @UML(identifier = "utcTrans", obligation = MANDATORY, specification = ISO_19108)
     ClockTime utcTrans(ClockTime uTime);
 }

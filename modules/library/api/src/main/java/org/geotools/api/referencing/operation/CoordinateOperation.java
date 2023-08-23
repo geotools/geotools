@@ -9,10 +9,8 @@
  */
 package org.geotools.api.referencing.operation;
 
-import static org.geotools.api.annotation.Obligation.CONDITIONAL;
 import static org.geotools.api.annotation.Obligation.OPTIONAL;
 import static org.geotools.api.annotation.Specification.ISO_19111;
-import static org.geotools.api.annotation.Specification.OGC_01009;
 
 import java.util.Collection;
 import org.geotools.api.annotation.UML;
@@ -40,7 +38,6 @@ import org.geotools.api.util.InternationalString;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "CC_CoordinateOperation", specification = ISO_19111)
 public interface CoordinateOperation extends IdentifiedObject {
     /**
      * Key for the <code>{@value}</code> property. This is used for setting the value to be returned
@@ -86,7 +83,6 @@ public interface CoordinateOperation extends IdentifiedObject {
      * @see Conversion#getSourceCRS
      * @see Transformation#getSourceCRS
      */
-    @UML(identifier = "sourceCRS", obligation = CONDITIONAL, specification = ISO_19111)
     CoordinateReferenceSystem getSourceCRS();
 
     /**
@@ -99,7 +95,6 @@ public interface CoordinateOperation extends IdentifiedObject {
      * @see Conversion#getTargetCRS
      * @see Transformation#getTargetCRS
      */
-    @UML(identifier = "targetCRS", obligation = CONDITIONAL, specification = ISO_19111)
     CoordinateReferenceSystem getTargetCRS();
 
     /**
@@ -109,7 +104,6 @@ public interface CoordinateOperation extends IdentifiedObject {
      *
      * @return The coordinate operation version, or {@code null} in none.
      */
-    @UML(identifier = "operationVersion", obligation = CONDITIONAL, specification = ISO_19111)
     String getOperationVersion();
 
     /**
@@ -132,7 +126,6 @@ public interface CoordinateOperation extends IdentifiedObject {
      * @return The coordinate operation valid domain, or {@code null} if not available.
      * @since GeoAPI 2.1
      */
-    @UML(identifier = "domainOfValidity", obligation = OPTIONAL, specification = ISO_19111)
     Extent getDomainOfValidity();
 
     /**
@@ -140,7 +133,6 @@ public interface CoordinateOperation extends IdentifiedObject {
      *
      * @return A description of domain of usage, or {@code null} if none.
      */
-    @UML(identifier = "scope", obligation = OPTIONAL, specification = ISO_19111)
     InternationalString getScope();
 
     /**
@@ -151,6 +143,5 @@ public interface CoordinateOperation extends IdentifiedObject {
      *
      * @return The transform from source to target CRS, or {@code null} if not applicable.
      */
-    @UML(identifier = "CT_CoordinateTransformation.getMathTransform", specification = OGC_01009)
     MathTransform getMathTransform();
 }

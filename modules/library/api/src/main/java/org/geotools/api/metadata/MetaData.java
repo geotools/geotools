@@ -9,15 +9,9 @@
  */
 package org.geotools.api.metadata;
 
-import static org.geotools.api.annotation.Obligation.CONDITIONAL;
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
 import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.metadata.citation.ResponsibleParty;
 import org.geotools.api.metadata.constraint.Constraints;
 import org.geotools.api.metadata.content.ContentInformation;
@@ -38,14 +32,12 @@ import org.geotools.api.referencing.ReferenceSystem;
  * @author Cory Horner (Refractions Research)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "MD_MetaData", specification = ISO_19115)
 public interface MetaData {
     /**
      * Unique identifier for this metadata file, or {@code null} if none.
      *
      * @return Unique identifier for this metadata file, or {@code null}.
      */
-    @UML(identifier = "fileIdentifier", obligation = OPTIONAL, specification = ISO_19115)
     String getFileIdentifier();
 
     /**
@@ -53,7 +45,6 @@ public interface MetaData {
      *
      * @return Language used for documenting metadata, or {@code null}.
      */
-    @UML(identifier = "language", obligation = CONDITIONAL, specification = ISO_19115)
     Locale getLanguage();
 
     /**
@@ -61,7 +52,6 @@ public interface MetaData {
      *
      * @return character coding standard used for the metadata, or {@code null}.
      */
-    @UML(identifier = "characterSet", obligation = CONDITIONAL, specification = ISO_19115)
     CharacterSet getCharacterSet();
 
     /**
@@ -69,7 +59,6 @@ public interface MetaData {
      *
      * @return Identifier of the metadata to which this metadata is a subset, or {@code null}.
      */
-    @UML(identifier = "parentIdentifier", obligation = CONDITIONAL, specification = ISO_19115)
     String getParentIdentifier();
 
     /**
@@ -77,7 +66,6 @@ public interface MetaData {
      *
      * @return Scope to which the metadata applies.
      */
-    @UML(identifier = "hierarchyLevel", obligation = CONDITIONAL, specification = ISO_19115)
     Collection<ScopeCode> getHierarchyLevels();
 
     /**
@@ -85,7 +73,6 @@ public interface MetaData {
      *
      * @return Hierarchy levels for which the metadata is provided.
      */
-    @UML(identifier = "hierarchyLevelName", obligation = CONDITIONAL, specification = ISO_19115)
     Collection<String> getHierarchyLevelNames();
 
     /**
@@ -94,7 +81,6 @@ public interface MetaData {
      * @return Parties responsible for the metadata information.
      * @since GeoAPI 2.1
      */
-    @UML(identifier = "contact", obligation = MANDATORY, specification = ISO_19115)
     Collection<? extends ResponsibleParty> getContacts();
 
     /**
@@ -102,7 +88,6 @@ public interface MetaData {
      *
      * @return Date that the metadata was created.
      */
-    @UML(identifier = "dateStamp", obligation = MANDATORY, specification = ISO_19115)
     Date getDateStamp();
 
     /**
@@ -110,7 +95,6 @@ public interface MetaData {
      *
      * @return Name of the metadata standard used, or {@code null}.
      */
-    @UML(identifier = "metadataStandardName", obligation = OPTIONAL, specification = ISO_19115)
     String getMetadataStandardName();
 
     /**
@@ -118,7 +102,6 @@ public interface MetaData {
      *
      * @return Version of the metadata standard used, or {@code null}.
      */
-    @UML(identifier = "metadataStandardVersion", obligation = OPTIONAL, specification = ISO_19115)
     String getMetadataStandardVersion();
 
     /**
@@ -127,7 +110,6 @@ public interface MetaData {
      * @return Uniformed Resource Identifier of the dataset, or {@code null}.
      * @since GeoAPI 2.1
      */
-    @UML(identifier = "dataSetURI", obligation = OPTIONAL, specification = ISO_19115)
     String getDataSetUri();
 
     /**
@@ -137,7 +119,6 @@ public interface MetaData {
      * @return Alternatively used localized character string for a linguistic extension.
      * @since GeoAPI 2.1
      */
-    @UML(identifier = "locale", obligation = OPTIONAL, specification = ISO_19115)
     Collection<Locale> getLocales();
 
     /**
@@ -145,7 +126,6 @@ public interface MetaData {
      *
      * @return Digital representation of spatial information in the dataset.
      */
-    @UML(identifier = "spatialRepresentationInfo", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends SpatialRepresentation> getSpatialRepresentationInfo();
 
     /**
@@ -153,7 +133,6 @@ public interface MetaData {
      *
      * @return Spatial and temporal reference systems used in the dataset.
      */
-    @UML(identifier = "referenceSystemInfo", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends ReferenceSystem> getReferenceSystemInfo();
 
     /**
@@ -161,7 +140,6 @@ public interface MetaData {
      *
      * @return Metadata extensions.
      */
-    @UML(identifier = "metadataExtensionInfo", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends MetadataExtensionInformation> getMetadataExtensionInfo();
 
     /**
@@ -169,7 +147,6 @@ public interface MetaData {
      *
      * @return The resource(s) to which the metadata applies.
      */
-    @UML(identifier = "identificationInfo", obligation = MANDATORY, specification = ISO_19115)
     Collection<? extends Identification> getIdentificationInfo();
 
     /**
@@ -178,7 +155,6 @@ public interface MetaData {
      *
      * @return The feature catalogue, coverage descriptions and image data characteristics.
      */
-    @UML(identifier = "contentInfo", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends ContentInformation> getContentInfo();
 
     /**
@@ -186,7 +162,6 @@ public interface MetaData {
      *
      * @return The distributor of and options for obtaining the resource(s).
      */
-    @UML(identifier = "distributionInfo", obligation = OPTIONAL, specification = ISO_19115)
     Distribution getDistributionInfo();
 
     /**
@@ -194,7 +169,6 @@ public interface MetaData {
      *
      * @return Overall assessment of quality of a resource(s).
      */
-    @UML(identifier = "dataQualityInfo", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends DataQuality> getDataQualityInfo();
 
     /**
@@ -202,7 +176,6 @@ public interface MetaData {
      *
      * @return The catalogue of rules defined for the portrayal of a resource(s).
      */
-    @UML(identifier = "portrayalCatalogueInfo", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends PortrayalCatalogueReference> getPortrayalCatalogueInfo();
 
     /**
@@ -210,7 +183,6 @@ public interface MetaData {
      *
      * @return Restrictions on the access and use of data.
      */
-    @UML(identifier = "metadataConstraints", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends Constraints> getMetadataConstraints();
 
     /**
@@ -218,7 +190,6 @@ public interface MetaData {
      *
      * @return The conceptual schema of a dataset.
      */
-    @UML(identifier = "applicationSchemaInfo", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends ApplicationSchemaInformation> getApplicationSchemaInfo();
 
     /**
@@ -226,6 +197,5 @@ public interface MetaData {
      *
      * @return The frequency of metadata updates and their scope.
      */
-    @UML(identifier = "metadataMaintenance", obligation = OPTIONAL, specification = ISO_19115)
     MaintenanceInformation getMetadataMaintenance();
 }

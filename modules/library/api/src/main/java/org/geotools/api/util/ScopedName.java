@@ -9,11 +9,7 @@
  */
 package org.geotools.api.util;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19103;
-
 import java.util.List;
-import org.geotools.api.annotation.UML;
 
 /**
  * A composite of a {@linkplain LocalName local name} (as {@linkplain #head head}) for locating
@@ -60,7 +56,6 @@ import org.geotools.api.annotation.UML;
  * @since GeoAPI 2.0
  * @see NameFactory#createScopedName
  */
-@UML(identifier = "ScopedName", specification = ISO_19103)
 public interface ScopedName extends GenericName {
     /**
      * Returns the first element in the sequence of {@linkplain #getParsedNames parsed names}. The
@@ -85,7 +80,7 @@ public interface ScopedName extends GenericName {
      */
     @Override
     /// @Override
-    @UML(identifier = "head", obligation = MANDATORY, specification = ISO_19103)
+
     LocalName head();
 
     /**
@@ -107,7 +102,6 @@ public interface ScopedName extends GenericName {
      *     parsed names}.
      * @since GeoAPI 2.1
      */
-    @UML(identifier = "tail", obligation = MANDATORY, specification = ISO_19103)
     GenericName tail();
 
     /**
@@ -156,6 +150,6 @@ public interface ScopedName extends GenericName {
      */
     @Override
     /// @Override
-    @UML(identifier = "scopedName", obligation = MANDATORY, specification = ISO_19103)
+
     String toString();
 }

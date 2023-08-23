@@ -9,11 +9,7 @@
  */
 package org.geotools.api.metadata.distribution;
 
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
 import java.util.Collection;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.metadata.citation.OnLineResource;
 import org.geotools.api.util.InternationalString;
 
@@ -25,7 +21,6 @@ import org.geotools.api.util.InternationalString;
  * @author Cory Horner (Refractions Research)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "MD_DigitalTransferOptions", specification = ISO_19115)
 public interface DigitalTransferOptions {
     /**
      * Tiles, layers, geographic areas, <cite>etc.</cite>, in which data is available.
@@ -33,7 +28,6 @@ public interface DigitalTransferOptions {
      * @return Tiles, layers, geographic areas, <cite>etc.</cite> in which data is available, or
      *     {@code null}.
      */
-    @UML(identifier = "unitsOfDistribution", obligation = OPTIONAL, specification = ISO_19115)
     InternationalString getUnitsOfDistribution();
 
     /**
@@ -43,7 +37,6 @@ public interface DigitalTransferOptions {
      * @return Estimated size of a unit in the specified transfer format in megabytes, or {@code
      *     null}.
      */
-    @UML(identifier = "transferSize", obligation = OPTIONAL, specification = ISO_19115)
     Double getTransferSize();
 
     /**
@@ -51,7 +44,6 @@ public interface DigitalTransferOptions {
      *
      * @return Online sources from which the resource can be obtained.
      */
-    @UML(identifier = "onLine", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends OnLineResource> getOnLines();
 
     /**
@@ -59,6 +51,5 @@ public interface DigitalTransferOptions {
      *
      * @return offline media on which the resource can be obtained, or {@code null}.
      */
-    @UML(identifier = "offLine", obligation = OPTIONAL, specification = ISO_19115)
     Medium getOffLine();
 }

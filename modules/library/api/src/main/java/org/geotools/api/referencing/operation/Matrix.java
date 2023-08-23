@@ -9,9 +9,6 @@
  */
 package org.geotools.api.referencing.operation;
 
-import static org.geotools.api.annotation.Specification.OGC_01009;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.util.Cloneable;
 
 /**
@@ -23,7 +20,6 @@ import org.geotools.api.util.Cloneable;
  * @see java.awt.geom.AffineTransform
  * @see <A HREF="http://ejml.org/"EJML</A>
  */
-@UML(identifier = "PT_Matrix", specification = OGC_01009)
 public interface Matrix extends Cloneable {
     /**
      * Returns the number of rows in this matrix.

@@ -9,11 +9,7 @@
  */
 package org.geotools.api.referencing.datum;
 
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
 import java.util.Date;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.metadata.extent.Extent;
 import org.geotools.api.referencing.IdentifiedObject;
 import org.geotools.api.util.InternationalString;
@@ -32,7 +28,6 @@ import org.geotools.api.util.InternationalString;
  * @see org.geotools.api.referencing.cs.CoordinateSystem
  * @see org.geotools.api.referencing.crs.CoordinateReferenceSystem
  */
-@UML(identifier = "CD_Datum", specification = ISO_19111)
 public interface Datum extends IdentifiedObject {
     /**
      * Key for the <code>{@value}</code> property to be given to the {@linkplain DatumFactory datum
@@ -93,7 +88,6 @@ public interface Datum extends IdentifiedObject {
      *
      * @return A description of the anchor point, or {@code null} if none.
      */
-    @UML(identifier = "anchorPoint", obligation = OPTIONAL, specification = ISO_19111)
     InternationalString getAnchorPoint();
 
     /**
@@ -106,7 +100,6 @@ public interface Datum extends IdentifiedObject {
      *
      * @return The datum realization epoch, or {@code null} if not available.
      */
-    @UML(identifier = "realizationEpoch", obligation = OPTIONAL, specification = ISO_19111)
     Date getRealizationEpoch();
 
     /**
@@ -115,7 +108,6 @@ public interface Datum extends IdentifiedObject {
      * @return The datum valid domain, or {@code null} if not available.
      * @since GeoAPI 2.1
      */
-    @UML(identifier = "domainOfValidity", obligation = OPTIONAL, specification = ISO_19111)
     Extent getDomainOfValidity();
 
     /**
@@ -124,6 +116,5 @@ public interface Datum extends IdentifiedObject {
      *
      * @return A description of domain of usage, or {@code null} if none.
      */
-    @UML(identifier = "scope", obligation = OPTIONAL, specification = ISO_19111)
     InternationalString getScope();
 }

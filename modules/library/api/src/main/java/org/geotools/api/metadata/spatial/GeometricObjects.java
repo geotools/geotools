@@ -9,12 +9,6 @@
  */
 package org.geotools.api.metadata.spatial;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * Number of objects, listed by geometric object type, used in the dataset.
  *
@@ -22,7 +16,6 @@ import org.geotools.api.annotation.UML;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "MD_GeometricObjects", specification = ISO_19115)
 public interface GeometricObjects {
     /**
      * Name of point and vector spatial objects used to locate zero-, one-, and twodimensional
@@ -30,7 +23,6 @@ public interface GeometricObjects {
      *
      * @return Name of spatial objects used to locate spatial locations in the dataset.
      */
-    @UML(identifier = "geometricObjectType", obligation = MANDATORY, specification = ISO_19115)
     GeometricObjectType getGeometricObjectType();
 
     /**
@@ -38,6 +30,5 @@ public interface GeometricObjects {
      *
      * @return Total number of the point or vector object type, or {@code null}.
      */
-    @UML(identifier = "geometricObjectCount", obligation = OPTIONAL, specification = ISO_19115)
     Integer getGeometricObjectCount();
 }

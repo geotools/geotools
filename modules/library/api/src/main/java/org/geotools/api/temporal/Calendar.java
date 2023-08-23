@@ -9,11 +9,7 @@
  */
 package org.geotools.api.temporal;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19108;
-
 import java.util.Collection;
-import org.geotools.api.annotation.UML;
 
 /**
  * A discrete temporal reference system that provides a basis for defining temporal position to a
@@ -21,20 +17,17 @@ import org.geotools.api.annotation.UML;
  *
  * @author Alexander Petkov
  */
-@UML(identifier = "TM_Calendar", specification = ISO_19108)
 public interface Calendar extends TemporalReferenceSystem {
     /**
      * Converts a {@linkplain CalendarDate date} in this calendar to a {@linkplain JulianDate julian
      * date}.
      */
-    @UML(identifier = "dateTrans", obligation = MANDATORY, specification = ISO_19108)
     JulianDate dateTrans(CalendarDate date, ClockTime time);
 
     /**
      * Converts a {@linkplain JulianDate julian date} to a {@linkplain CalendarDate date} in this
      * calendar.
      */
-    @UML(identifier = "julTrans", obligation = MANDATORY, specification = ISO_19108)
     CalendarDate julTrans(JulianDate julian);
 
     /**
@@ -45,7 +38,6 @@ public interface Calendar extends TemporalReferenceSystem {
      *     exists in the provided sources. I assumed that it was a typo and that the actual class
      *     was {@link CalendarEra}.
      */
-    @UML(identifier = "Basis", specification = ISO_19108)
     Collection<CalendarEra> getBasis();
 
     /**
@@ -54,6 +46,5 @@ public interface Calendar extends TemporalReferenceSystem {
      *
      * @todo Method name doesn't match the UML identifier.
      */
-    @UML(identifier = "Resolution", specification = ISO_19108)
     Clock getClock();
 }

@@ -9,12 +9,10 @@
  */
 package org.geotools.api.metadata.citation;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
 import java.util.Collection;
 import java.util.Date;
+import org.geotools.api.annotation.Obligation;
+import org.geotools.api.annotation.Specification;
 import org.geotools.api.annotation.UML;
 import org.geotools.api.metadata.Identifier;
 import org.geotools.api.util.InternationalString;
@@ -27,14 +25,12 @@ import org.geotools.api.util.InternationalString;
  * @author Cory Horner (Refractions Research)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "CI_Citation", specification = ISO_19115)
 public interface Citation {
     /**
      * Name by which the cited resource is known.
      *
      * @return The cited resource name.
      */
-    @UML(identifier = "title", obligation = MANDATORY, specification = ISO_19115)
     InternationalString getTitle();
 
     /**
@@ -43,7 +39,10 @@ public interface Citation {
      *
      * @return Other names for the resource, or an empty collection if none.
      */
-    @UML(identifier = "alternateTitle", obligation = OPTIONAL, specification = ISO_19115)
+    @UML(
+            identifier = "alternateTitle",
+            obligation = Obligation.OPTIONAL,
+            specification = Specification.ISO_19115)
     Collection<? extends InternationalString> getAlternateTitles();
 
     /**
@@ -51,7 +50,6 @@ public interface Citation {
      *
      * @return The reference date.
      */
-    @UML(identifier = "date", obligation = MANDATORY, specification = ISO_19115)
     Collection<? extends CitationDate> getDates();
 
     /**
@@ -59,7 +57,6 @@ public interface Citation {
      *
      * @return The version, or {@code null} if none.
      */
-    @UML(identifier = "edition", obligation = OPTIONAL, specification = ISO_19115)
     InternationalString getEdition();
 
     /**
@@ -67,7 +64,6 @@ public interface Citation {
      *
      * @return The edition date, or {@code null} if none.
      */
-    @UML(identifier = "editionDate", obligation = OPTIONAL, specification = ISO_19115)
     Date getEditionDate();
 
     /**
@@ -76,7 +72,6 @@ public interface Citation {
      *
      * @return The identifiers, or an empty collection if none.
      */
-    @UML(identifier = "identifier", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends Identifier> getIdentifiers();
 
     /**
@@ -85,7 +80,6 @@ public interface Citation {
      *
      * @return The individual or organization that is responsible, or an empty collection if none.
      */
-    @UML(identifier = "citedResponsibleParty", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends ResponsibleParty> getCitedResponsibleParties();
 
     /**
@@ -93,7 +87,6 @@ public interface Citation {
      *
      * @return The presentation mode, or an empty collection if none.
      */
-    @UML(identifier = "presentationForm", obligation = OPTIONAL, specification = ISO_19115)
     Collection<PresentationForm> getPresentationForm();
 
     /**
@@ -102,7 +95,6 @@ public interface Citation {
      *
      * @return The series of which the dataset is a part, or {@code null} if none.
      */
-    @UML(identifier = "series", obligation = OPTIONAL, specification = ISO_19115)
     Series getSeries();
 
     /**
@@ -111,7 +103,6 @@ public interface Citation {
      *
      * @return Other details, or {@code null} if none.
      */
-    @UML(identifier = "otherCitationDetails", obligation = OPTIONAL, specification = ISO_19115)
     InternationalString getOtherCitationDetails();
 
     /**
@@ -121,7 +112,6 @@ public interface Citation {
      *
      * @return The common title, or {@code null} if none.
      */
-    @UML(identifier = "collectiveTitle", obligation = OPTIONAL, specification = ISO_19115)
     InternationalString getCollectiveTitle();
 
     /**
@@ -129,7 +119,6 @@ public interface Citation {
      *
      * @return The ISBN, or {@code null} if none.
      */
-    @UML(identifier = "ISBN", obligation = OPTIONAL, specification = ISO_19115)
     String getISBN();
 
     /**
@@ -137,6 +126,5 @@ public interface Citation {
      *
      * @return The ISSN, or {@code null} if none.
      */
-    @UML(identifier = "ISSN", obligation = OPTIONAL, specification = ISO_19115)
     String getISSN();
 }

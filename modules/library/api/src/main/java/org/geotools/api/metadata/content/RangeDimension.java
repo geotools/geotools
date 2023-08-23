@@ -9,10 +9,6 @@
  */
 package org.geotools.api.metadata.content;
 
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.util.InternationalString;
 import org.geotools.api.util.MemberName;
 
@@ -24,14 +20,12 @@ import org.geotools.api.util.MemberName;
  * @author Cory Horner (Refractions Research)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "MD_RangeDimension", specification = ISO_19115)
 public interface RangeDimension {
     /**
      * Number that uniquely identifies instances of bands of wavelengths on which a sensor operates.
      *
      * @return Identifier of bands on which a sensor operates, or {@code null}.
      */
-    @UML(identifier = "sequenceIdentifier", obligation = OPTIONAL, specification = ISO_19115)
     MemberName getSequenceIdentifier();
 
     /**
@@ -39,6 +33,5 @@ public interface RangeDimension {
      *
      * @return Description of the range of a cell measurement value, or {@code null}.
      */
-    @UML(identifier = "descriptor", obligation = OPTIONAL, specification = ISO_19115)
     InternationalString getDescriptor();
 }

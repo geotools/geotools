@@ -9,11 +9,7 @@
  */
 package org.geotools.api.metadata.citation;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
 import java.util.Date;
-import org.geotools.api.annotation.UML;
 
 /**
  * Reference date and event used to describe it.
@@ -22,14 +18,12 @@ import org.geotools.api.annotation.UML;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "CI_Date", specification = ISO_19115)
 public interface CitationDate {
     /**
      * Reference date for the cited resource.
      *
      * @return Reference date for the cited resource.
      */
-    @UML(identifier = "date", obligation = MANDATORY, specification = ISO_19115)
     Date getDate();
 
     /**
@@ -37,6 +31,5 @@ public interface CitationDate {
      *
      * @return Event used for reference date.
      */
-    @UML(identifier = "dateType", obligation = MANDATORY, specification = ISO_19115)
     DateType getDateType();
 }

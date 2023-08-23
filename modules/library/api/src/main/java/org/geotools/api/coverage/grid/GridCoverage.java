@@ -9,13 +9,8 @@
  */
 package org.geotools.api.coverage.grid;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.OGC_01004;
-
 import java.awt.image.RenderedImage;
 import java.util.List;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.coverage.Coverage;
 
 /**
@@ -28,14 +23,12 @@ import org.geotools.api.coverage.Coverage;
  * @see RenderedImage
  * @see javax.media.jai.PixelAccessor
  */
-@UML(identifier = "CV_GridCoverage", specification = OGC_01004)
 public interface GridCoverage extends Coverage {
     /**
      * Returns {@code true} if grid data can be edited.
      *
      * @return {@code true} if grid data can be edited.
      */
-    @UML(identifier = "dataEditable", obligation = MANDATORY, specification = OGC_01004)
     boolean isDataEditable();
 
     /**
@@ -44,7 +37,6 @@ public interface GridCoverage extends Coverage {
      *
      * @return The information for the grid coverage geometry.
      */
-    @UML(identifier = "gridGeometry", obligation = MANDATORY, specification = OGC_01004)
     GridGeometry getGridGeometry();
 
     /**
@@ -57,7 +49,6 @@ public interface GridCoverage extends Coverage {
      * @return The optimal size to use for each dimension when accessing grid values, or {@code
      *     null} if none.
      */
-    @UML(identifier = "optimalDataBlockSizes", obligation = OPTIONAL, specification = OGC_01004)
     int[] getOptimalDataBlockSizes();
 
     /**
@@ -65,7 +56,6 @@ public interface GridCoverage extends Coverage {
      *
      * @return The number of predetermined overviews for the grid.
      */
-    @UML(identifier = "numOverviews", obligation = MANDATORY, specification = OGC_01004)
     int getNumOverviews();
 
     /**
@@ -75,7 +65,6 @@ public interface GridCoverage extends Coverage {
      * @return The grid geometry for an overview.
      * @throws IndexOutOfBoundsException if {@code overviewIndex} is out of bounds.
      */
-    @UML(identifier = "getOverviewGridGeometry", obligation = MANDATORY, specification = OGC_01004)
     GridGeometry getOverviewGridGeometry(int index) throws IndexOutOfBoundsException;
 
     /**
@@ -115,7 +104,6 @@ public interface GridCoverage extends Coverage {
      * @return A pre-calculated overview for a grid coverage.
      * @throws IndexOutOfBoundsException if {@code overviewIndex} is out of bounds.
      */
-    @UML(identifier = "getOverview", obligation = MANDATORY, specification = OGC_01004)
     GridCoverage getOverview(int index) throws IndexOutOfBoundsException;
 
     /**

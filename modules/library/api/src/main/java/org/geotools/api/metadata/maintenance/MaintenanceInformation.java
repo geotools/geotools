@@ -28,7 +28,6 @@ import org.geotools.api.util.InternationalString;
  * @author Cory Horner (Refractions Research)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "MD_MaintenanceInformation", specification = ISO_19115)
 public interface MaintenanceInformation {
     /**
      * Frequency with which changes and additions are made to the resource after the initial
@@ -47,7 +46,6 @@ public interface MaintenanceInformation {
      *
      * @return Scheduled revision date, or {@code null}.
      */
-    @UML(identifier = "dateOfNextUpdate", obligation = OPTIONAL, specification = ISO_19115)
     Date getDateOfNextUpdate();
 
     /**
@@ -66,7 +64,6 @@ public interface MaintenanceInformation {
      *
      * @return Scope of data to which maintenance is applied.
      */
-    @UML(identifier = "updateScope", obligation = OPTIONAL, specification = ISO_19115)
     Collection<ScopeCode> getUpdateScopes();
 
     /**
@@ -74,7 +71,6 @@ public interface MaintenanceInformation {
      *
      * @return Additional information about the range or extent of the resource.
      */
-    @UML(identifier = "updateScopeDescription", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends ScopeDescription> getUpdateScopeDescriptions();
 
     /**
@@ -83,7 +79,6 @@ public interface MaintenanceInformation {
      * @return Information regarding specific requirements for maintaining the resource.
      * @since GeoAPI 2.1
      */
-    @UML(identifier = "maintenanceNote", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends InternationalString> getMaintenanceNotes();
 
     /**
@@ -94,6 +89,5 @@ public interface MaintenanceInformation {
      *     maintaining the metadata.
      * @since GeoAPI 2.1
      */
-    @UML(identifier = "contact", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends ResponsibleParty> getContacts();
 }

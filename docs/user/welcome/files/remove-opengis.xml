@@ -2,9 +2,9 @@
 <project name="remove-opengis" default="update">
 
     <property name="project.dir" location="."/>
-    
+
     <target name="starting-up"
-        description="Update project in current directory to remove org.opengis package use">
+            description="Update project in current directory to remove org.opengis package use">
         <echo>Update to GeoTools 30.x series</echo>
         <echo/>
         <echo>UPDATE STARTING: ${project.dir}</echo>
@@ -15,14 +15,14 @@
         <echo/>
         <echo message="Refactor FilterFactory2 --> FilerFactory" />
         <replace dir="${project.dir}" includes="**/*.java" summary="yes">
-          <!-- This adds more method overloads in FilterFactory, so code that compiled
-               before with "null" as  argument might need an explicit cast now -->
-          <replacefilter>
-            <replacetoken>FilterFactory2</replacetoken>
-            <replacevalue>FilterFactory</replacevalue>
-          </replacefilter>
+            <!-- This adds more method overloads in FilterFactory, so code that compiled
+                 before with "null" as  argument might need an explicit cast now -->
+            <replacefilter>
+                <replacetoken>FilterFactory2</replacetoken>
+                <replacevalue>FilterFactory</replacevalue>
+            </replacefilter>
         </replace>
-        
+
         <fileset id="filterFactory.files" dir="${project.dir}" includes="**/*.java">
             <contains text="import org.opengis.filter.FilterFactory;" casesensitive="yes"/>
         </fileset>
@@ -116,7 +116,7 @@
         <echo/>
         <echo message="Refactor Position to DirectPosition" />
         <echo message="  and removing org.opengis.geometry.coordinates.Position)" />
-        
+
         <fileset id="position.files" dir="${project.dir}" includes="**/*.java">
             <contains text="import org.opengis.geometry.coordinate.Position;" casesensitive="yes"/>
         </fileset>
@@ -133,18 +133,18 @@
             </replacefilter>
         </replace>
     </target>
-    
+
     <target name="_opengis"
-        description="Package change from org.opengis classes to org.geotools.api">
+            description="Package change from org.opengis classes to org.geotools.api">
 
         <echo/>
         <echo message="Refactor org.opengis to org.geotools.api" />
         <!-- bulk replace * imports, may require more than one * import -->
         <replace dir="${project.dir}" includes="**/*.java" summary="yes">
-          <replacefilter>
-            <replacetoken>org.opengis.</replacetoken>
-            <replacevalue>org.geotools.api.</replacevalue>
-          </replacefilter>
+            <replacefilter>
+                <replacetoken>org.opengis.</replacetoken>
+                <replacevalue>org.geotools.api.</replacevalue>
+            </replacefilter>
         </replace>
         <!-- Service INF -->
         <move todir="." verbose="true">
@@ -157,8 +157,8 @@
     </target>
 
     <target name="update" depends="starting-up,_filterFactory,_bounds,_opengis"
-        description="Update project in current directory to remove org.opengis package use">
-        
+            description="Update project in current directory to remove org.opengis package use">
+
         <echo>UPDATE COMPLETED: ${project.dir}</echo>
         <echo/>
         <echo>At the request of OGC https://www.ogc.org/standard/geoapi/ standard</echo>
@@ -166,5 +166,5 @@
         <echo/>
         <echo>You may have unsued imports to clean up, but we believe your project will compile!</echo>
     </target>
-    
+
 </project>

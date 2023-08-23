@@ -9,11 +9,7 @@
  */
 package org.geotools.api.coverage;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.OGC_01004;
-
 import javax.measure.Unit;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.util.InternationalString;
 
 /**
@@ -26,7 +22,6 @@ import org.geotools.api.util.InternationalString;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "CV_SampleDimension", specification = OGC_01004)
 public interface SampleDimension {
     /**
      * Sample dimension title or description. This string may be null or empty if no description is
@@ -34,7 +29,6 @@ public interface SampleDimension {
      *
      * @return A description for this sample dimension.
      */
-    @UML(identifier = "description", obligation = MANDATORY, specification = OGC_01004)
     InternationalString getDescription();
 
     /**
@@ -43,7 +37,6 @@ public interface SampleDimension {
      *
      * @return A code value indicating grid value data type.
      */
-    @UML(identifier = "sampleDimensionType", obligation = MANDATORY, specification = OGC_01004)
     SampleDimensionType getSampleDimensionType();
 
     /**
@@ -64,7 +57,6 @@ public interface SampleDimension {
      *
      * @return The category names.
      */
-    @UML(identifier = "categoryNames", obligation = MANDATORY, specification = OGC_01004)
     InternationalString[] getCategoryNames();
 
     /**
@@ -75,7 +67,6 @@ public interface SampleDimension {
      * @see #getMinimumValue
      * @see #getMaximumValue
      */
-    @UML(identifier = "noDataValue", obligation = MANDATORY, specification = OGC_01004)
     double[] getNoDataValues();
 
     /**
@@ -88,7 +79,6 @@ public interface SampleDimension {
      * @see #getMaximumValue
      * @see #getNoDataValues
      */
-    @UML(identifier = "minimumValue", obligation = MANDATORY, specification = OGC_01004)
     double getMinimumValue();
 
     /**
@@ -101,7 +91,6 @@ public interface SampleDimension {
      * @see #getMinimumValue
      * @see #getNoDataValues
      */
-    @UML(identifier = "maximumValue", obligation = MANDATORY, specification = OGC_01004)
     double getMaximumValue();
 
     /**
@@ -111,7 +100,6 @@ public interface SampleDimension {
      *
      * @return The unit information for this sample dimension.
      */
-    @UML(identifier = "units", obligation = MANDATORY, specification = OGC_01004)
     Unit<?> getUnits();
 
     /**
@@ -122,7 +110,6 @@ public interface SampleDimension {
      * @return The offset.
      * @see #getScale
      */
-    @UML(identifier = "offset", obligation = MANDATORY, specification = OGC_01004)
     double getOffset();
 
     /**
@@ -133,6 +120,5 @@ public interface SampleDimension {
      * @return The scale factor.
      * @see #getOffset
      */
-    @UML(identifier = "scale", obligation = MANDATORY, specification = OGC_01004)
     double getScale();
 }

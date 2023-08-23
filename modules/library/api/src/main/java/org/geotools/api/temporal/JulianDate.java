@@ -9,10 +9,6 @@
  */
 package org.geotools.api.temporal;
 
-import static org.geotools.api.annotation.Specification.ISO_19108;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * The Julian day numbering system is a temporal coordinate system that has its origin at noon on 1
  * January 4713 BC in the Julian proleptic calendar. The Julian day number is an integer value; the
@@ -20,5 +16,4 @@ import org.geotools.api.annotation.UML;
  *
  * @author Stephane Fellah (Image Matters)
  */
-@UML(identifier = "JulianDate", specification = ISO_19108)
 public interface JulianDate extends TemporalCoordinate {}

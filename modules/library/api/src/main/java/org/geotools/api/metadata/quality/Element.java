@@ -9,7 +9,6 @@
  */
 package org.geotools.api.metadata.quality;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
 import static org.geotools.api.annotation.Obligation.OPTIONAL;
 import static org.geotools.api.annotation.Specification.ISO_19115;
 
@@ -28,14 +27,12 @@ import org.geotools.api.util.InternationalString;
  * @author Cory Horner (Refractions Research)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "DQ_Element", specification = ISO_19115)
 public interface Element {
     /**
      * Name of the test applied to the data.
      *
      * @return Name of the test applied to the data.
      */
-    @UML(identifier = "nameOfMeasure", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends InternationalString> getNamesOfMeasure();
 
     /**
@@ -43,7 +40,6 @@ public interface Element {
      *
      * @return Code identifying a registered standard procedure, or {@code null}.
      */
-    @UML(identifier = "measureIdentification", obligation = OPTIONAL, specification = ISO_19115)
     Identifier getMeasureIdentification();
 
     /**
@@ -51,7 +47,6 @@ public interface Element {
      *
      * @return Description of the measure being determined, or {@code null}.
      */
-    @UML(identifier = "measureDescription", obligation = OPTIONAL, specification = ISO_19115)
     InternationalString getMeasureDescription();
 
     /**
@@ -59,7 +54,6 @@ public interface Element {
      *
      * @return Type of method used to evaluate quality, or {@code null}.
      */
-    @UML(identifier = "evaluationMethodType", obligation = OPTIONAL, specification = ISO_19115)
     EvaluationMethodType getEvaluationMethodType();
 
     /**
@@ -78,7 +72,6 @@ public interface Element {
      *
      * @return Reference to the procedure information, or {@code null}.
      */
-    @UML(identifier = "evaluationProcedure", obligation = OPTIONAL, specification = ISO_19115)
     Citation getEvaluationProcedure();
 
     /**
@@ -89,7 +82,6 @@ public interface Element {
      * @return Date or range of dates on which a data quality measure was applied.
      * @since GeoAPI 2.1
      */
-    @UML(identifier = "dateTime", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends Date> getDates();
 
     /**
@@ -100,6 +92,5 @@ public interface Element {
      * @return Set of values obtained from applying a data quality measure.
      * @since GeoAPI 2.1
      */
-    @UML(identifier = "result", obligation = MANDATORY, specification = ISO_19115)
     Collection<? extends Result> getResults();
 }

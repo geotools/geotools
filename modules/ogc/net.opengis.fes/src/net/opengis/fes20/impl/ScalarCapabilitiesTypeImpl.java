@@ -257,7 +257,7 @@ public class ScalarCapabilitiesTypeImpl extends EObjectImpl implements ScalarCap
     }
 
     @Override
-    @UML(identifier = "arithmeticOperators", specification = Specification.UNSPECIFIED)
+    
     public ArithmeticOperators getArithmeticOperators() {
         return null;
     }

@@ -9,10 +9,7 @@
  */
 package org.geotools.api.temporal;
 
-import static org.geotools.api.annotation.Specification.ISO_19108;
-
 import java.util.Collection;
-import org.geotools.api.annotation.UML;
 
 /**
  * An aggregation of connected {@linkplain TemporalTopologicalPrimitive temporal topological
@@ -20,7 +17,6 @@ import org.geotools.api.annotation.UML;
  *
  * @author Alexander Petkov
  */
-@UML(identifier = "TM_TopologicalComplex", specification = ISO_19108)
 public interface TemporalTopologicalComplex extends TemporalComplex {
     /**
      * The aggregation of connected {@linkplain TemporalTopologicalPrimitive temporal topological

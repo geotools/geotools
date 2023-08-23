@@ -9,13 +9,7 @@
  */
 package org.geotools.api.metadata;
 
-import static org.geotools.api.annotation.Obligation.CONDITIONAL;
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
 import java.util.Collection;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.metadata.citation.ResponsibleParty;
 import org.geotools.api.util.InternationalString;
 
@@ -26,14 +20,12 @@ import org.geotools.api.util.InternationalString;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "MD_ExtendedElementInformation", specification = ISO_19115)
 public interface ExtendedElementInformation {
     /**
      * Name of the extended metadata element.
      *
      * @return Name of the extended metadata element.
      */
-    @UML(identifier = "name", obligation = MANDATORY, specification = ISO_19115)
     String getName();
 
     /**
@@ -44,7 +36,6 @@ public interface ExtendedElementInformation {
      * @return Short form suitable for use in an implementation method such as XML or SGML, or
      *     {@code null}.
      */
-    @UML(identifier = "shortName", obligation = CONDITIONAL, specification = ISO_19115)
     String getShortName();
 
     /**
@@ -54,7 +45,6 @@ public interface ExtendedElementInformation {
      *
      * @return Three digit code assigned to the extended element, or {@code null}.
      */
-    @UML(identifier = "domainCode", obligation = CONDITIONAL, specification = ISO_19115)
     Integer getDomainCode();
 
     /**
@@ -62,7 +52,6 @@ public interface ExtendedElementInformation {
      *
      * @return Definition of the extended element.
      */
-    @UML(identifier = "definition", obligation = MANDATORY, specification = ISO_19115)
     InternationalString getDefinition();
 
     /**
@@ -70,7 +59,6 @@ public interface ExtendedElementInformation {
      *
      * @return Obligation of the extended element, or {@code null}.
      */
-    @UML(identifier = "obligation", obligation = CONDITIONAL, specification = ISO_19115)
     Obligation getObligation();
 
     /**
@@ -79,7 +67,6 @@ public interface ExtendedElementInformation {
      *
      * @return The condition under which the extended element is mandatory, or {@code null}.
      */
-    @UML(identifier = "condition", obligation = CONDITIONAL, specification = ISO_19115)
     InternationalString getCondition();
 
     /**
@@ -87,7 +74,6 @@ public interface ExtendedElementInformation {
      *
      * @return The kind of value provided in the extended element.
      */
-    @UML(identifier = "dataType", obligation = MANDATORY, specification = ISO_19115)
     Datatype getDataType();
 
     /**
@@ -98,7 +84,6 @@ public interface ExtendedElementInformation {
      *
      * @return Maximum occurrence of the extended element, or {@code null}.
      */
-    @UML(identifier = "maximumOccurrence", obligation = CONDITIONAL, specification = ISO_19115)
     Integer getMaximumOccurrence();
 
     /**
@@ -109,7 +94,6 @@ public interface ExtendedElementInformation {
      *
      * @return Valid values that can be assigned to the extended element, or {@code null}.
      */
-    @UML(identifier = "domainValue", obligation = CONDITIONAL, specification = ISO_19115)
     InternationalString getDomainValue();
 
     /**
@@ -118,7 +102,6 @@ public interface ExtendedElementInformation {
      *
      * @return Name of the metadata entity(s) under which this extended metadata element may appear.
      */
-    @UML(identifier = "parentEntity", obligation = MANDATORY, specification = ISO_19115)
     Collection<String> getParentEntity();
 
     /**
@@ -126,7 +109,6 @@ public interface ExtendedElementInformation {
      *
      * @return How the extended element relates to other existing elements and entities.
      */
-    @UML(identifier = "rule", obligation = MANDATORY, specification = ISO_19115)
     InternationalString getRule();
 
     /**
@@ -134,7 +116,6 @@ public interface ExtendedElementInformation {
      *
      * @return Reason for creating the extended element.
      */
-    @UML(identifier = "rationale", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends InternationalString> getRationales();
 
     /**
@@ -142,6 +123,5 @@ public interface ExtendedElementInformation {
      *
      * @return Name of the person or organization creating the extended element.
      */
-    @UML(identifier = "source", obligation = MANDATORY, specification = ISO_19115)
     Collection<? extends ResponsibleParty> getSources();
 }

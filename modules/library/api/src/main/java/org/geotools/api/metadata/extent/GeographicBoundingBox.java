@@ -9,11 +9,6 @@
  */
 package org.geotools.api.metadata.extent;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * Geographic position of the dataset. This is only an approximate so specifying the co-ordinate
  * reference system is unnecessary.
@@ -22,7 +17,6 @@ import org.geotools.api.annotation.UML;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "EX_GeographicBoundingBox", specification = ISO_19115)
 public interface GeographicBoundingBox extends GeographicExtent {
     /**
      * Returns the western-most coordinate of the limit of the dataset extent. The value is
@@ -31,7 +25,6 @@ public interface GeographicBoundingBox extends GeographicExtent {
      * @return The western-most longitude between -180 and +180&deg;.
      * @unitof Angle
      */
-    @UML(identifier = "westBoundLongitude", obligation = MANDATORY, specification = ISO_19115)
     double getWestBoundLongitude();
 
     /**
@@ -41,7 +34,6 @@ public interface GeographicBoundingBox extends GeographicExtent {
      * @return The eastern-most longitude between -180 and +180&deg;.
      * @unitof Angle
      */
-    @UML(identifier = "eastBoundLongitude", obligation = MANDATORY, specification = ISO_19115)
     double getEastBoundLongitude();
 
     /**
@@ -51,7 +43,6 @@ public interface GeographicBoundingBox extends GeographicExtent {
      * @return The southern-most latitude between -90 and +90&deg;.
      * @unitof Angle
      */
-    @UML(identifier = "southBoundLatitude", obligation = MANDATORY, specification = ISO_19115)
     double getSouthBoundLatitude();
 
     /**
@@ -61,6 +52,5 @@ public interface GeographicBoundingBox extends GeographicExtent {
      * @return The northern-most latitude between -90 and +90&deg;.
      * @unitof Angle
      */
-    @UML(identifier = "northBoundLatitude", obligation = MANDATORY, specification = ISO_19115)
     double getNorthBoundLatitude();
 }

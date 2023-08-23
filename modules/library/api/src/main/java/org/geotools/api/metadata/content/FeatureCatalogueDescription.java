@@ -9,13 +9,8 @@
  */
 package org.geotools.api.metadata.content;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
 import java.util.Collection;
 import java.util.Locale;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.metadata.citation.Citation;
 import org.geotools.api.util.GenericName;
 
@@ -26,7 +21,6 @@ import org.geotools.api.util.GenericName;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "MD_FeatureCatalogueDescription", specification = ISO_19115)
 public interface FeatureCatalogueDescription extends ContentInformation {
     /**
      * Indication of whether or not the cited feature catalogue complies with ISO 19110. This value
@@ -34,7 +28,6 @@ public interface FeatureCatalogueDescription extends ContentInformation {
      *
      * @return Whether or not the cited feature catalogue complies with ISO 19110, or {@code null}.
      */
-    @UML(identifier = "complianceCode", obligation = OPTIONAL, specification = ISO_19115)
     Boolean isCompliant();
 
     /**
@@ -42,7 +35,6 @@ public interface FeatureCatalogueDescription extends ContentInformation {
      *
      * @return Language(s) used within the catalogue.
      */
-    @UML(identifier = "language", obligation = OPTIONAL, specification = ISO_19115)
     Collection<Locale> getLanguages();
 
     /**
@@ -50,7 +42,6 @@ public interface FeatureCatalogueDescription extends ContentInformation {
      *
      * @return whether or not the feature catalogue is included with the dataset.
      */
-    @UML(identifier = "includedWithDataset", obligation = MANDATORY, specification = ISO_19115)
     boolean isIncludedWithDataset();
 
     /**
@@ -58,7 +49,6 @@ public interface FeatureCatalogueDescription extends ContentInformation {
      *
      * @return Subset of feature types occurring in dataset.
      */
-    @UML(identifier = "featureTypes", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends GenericName> getFeatureTypes();
 
     /**
@@ -66,6 +56,5 @@ public interface FeatureCatalogueDescription extends ContentInformation {
      *
      * @return Bibliographic reference to one or more external feature catalogues.
      */
-    @UML(identifier = "featureCatalogueCitation", obligation = MANDATORY, specification = ISO_19115)
     Collection<? extends Citation> getFeatureCatalogueCitations();
 }

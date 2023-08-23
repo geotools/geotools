@@ -9,11 +9,7 @@
  */
 package org.geotools.api.metadata;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
 import java.util.Collection;
-import org.geotools.api.annotation.UML;
 
 /**
  * Spatial attributes in the application schema for the feature types.
@@ -22,13 +18,11 @@ import org.geotools.api.annotation.UML;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "MD_SpatialAttributeSupplement", specification = ISO_19115)
 public interface SpatialAttributeSupplement {
     /**
      * Provides information about the list of feature types with the same spatial representation.
      *
      * @return The list of feature types with the same spatial representation.
      */
-    @UML(identifier = "theFeatureTypeList", obligation = MANDATORY, specification = ISO_19115)
     Collection<FeatureTypeList> getFeatureTypeList();
 }

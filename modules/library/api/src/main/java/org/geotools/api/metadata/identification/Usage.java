@@ -9,13 +9,8 @@
  */
 package org.geotools.api.metadata.identification;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
 import java.util.Collection;
 import java.util.Date;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.metadata.citation.ResponsibleParty;
 import org.geotools.api.util.InternationalString;
 
@@ -26,14 +21,12 @@ import org.geotools.api.util.InternationalString;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "MD_Usage", specification = ISO_19115)
 public interface Usage {
     /**
      * Brief description of the resource and/or resource series usage.
      *
      * @return Description of the resource usage.
      */
-    @UML(identifier = "specificUsage", obligation = MANDATORY, specification = ISO_19115)
     InternationalString getSpecificUsage();
 
     /**
@@ -41,7 +34,6 @@ public interface Usage {
      *
      * @return Date of the first use of the resource, or {@code null}.
      */
-    @UML(identifier = "usageDateTime", obligation = OPTIONAL, specification = ISO_19115)
     Date getUsageDate();
 
     /**
@@ -51,7 +43,6 @@ public interface Usage {
      * @return Applications for which the resource and/or resource series is not suitable, or {@code
      *     null}.
      */
-    @UML(identifier = "userDeterminedLimitations", obligation = OPTIONAL, specification = ISO_19115)
     InternationalString getUserDeterminedLimitations();
 
     /**
@@ -60,6 +51,5 @@ public interface Usage {
      *
      * @return Means of communicating with person(s) and organization(s) using the resource(s).
      */
-    @UML(identifier = "userContactInfo", obligation = MANDATORY, specification = ISO_19115)
     Collection<? extends ResponsibleParty> getUserContactInfo();
 }

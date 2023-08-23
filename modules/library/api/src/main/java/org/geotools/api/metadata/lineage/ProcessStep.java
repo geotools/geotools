@@ -9,13 +9,8 @@
  */
 package org.geotools.api.metadata.lineage;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
 import java.util.Collection;
 import java.util.Date;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.metadata.citation.ResponsibleParty;
 import org.geotools.api.util.InternationalString;
 
@@ -26,14 +21,12 @@ import org.geotools.api.util.InternationalString;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "LI_ProcessStep", specification = ISO_19115)
 public interface ProcessStep {
     /**
      * Description of the event, including related parameters or tolerances.
      *
      * @return Description of the event.
      */
-    @UML(identifier = "description", obligation = MANDATORY, specification = ISO_19115)
     InternationalString getDescription();
 
     /**
@@ -41,7 +34,6 @@ public interface ProcessStep {
      *
      * @return Requirement or purpose for the process step, or {@code null}.
      */
-    @UML(identifier = "rationale", obligation = OPTIONAL, specification = ISO_19115)
     InternationalString getRationale();
 
     /**
@@ -49,7 +41,6 @@ public interface ProcessStep {
      *
      * @return Date on or over which the process step occurred, or {@code null}.
      */
-    @UML(identifier = "dateTime", obligation = OPTIONAL, specification = ISO_19115)
     Date getDate();
 
     /**
@@ -59,7 +50,6 @@ public interface ProcessStep {
      * @return Means of communication with person(s) and organization(s) associated with the process
      *     step.
      */
-    @UML(identifier = "processor", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends ResponsibleParty> getProcessors();
 
     /**
@@ -67,6 +57,5 @@ public interface ProcessStep {
      *
      * @return Information about the source data used in creating the data.
      */
-    @UML(identifier = "source", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends Source> getSources();
 }

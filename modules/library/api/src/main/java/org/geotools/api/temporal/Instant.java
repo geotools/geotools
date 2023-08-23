@@ -9,12 +9,7 @@
  */
 package org.geotools.api.temporal;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19108;
-
 import java.util.Collection;
-import org.geotools.api.annotation.UML;
 
 /**
  * A zero-dimensional geometric primitive that represents position in time, equivalent to a point in
@@ -25,10 +20,8 @@ import org.geotools.api.annotation.UML;
  *     be returned for "position." The diagram shows that Position should be returned, while the
  *     text in the document demands that TemporalPosition should represent position in time.
  */
-@UML(identifier = "TM_Instant", specification = ISO_19108)
 public interface Instant extends TemporalGeometricPrimitive {
     /** Get the position of this instant. */
-    @UML(identifier = "position", obligation = MANDATORY, specification = ISO_19108)
     Position getPosition();
 
     /**
@@ -37,7 +30,6 @@ public interface Instant extends TemporalGeometricPrimitive {
      *
      * @see Period#begin
      */
-    @UML(identifier = "begunBy", obligation = OPTIONAL, specification = ISO_19108)
     Collection<Period> getBegunBy();
 
     /**
@@ -46,6 +38,5 @@ public interface Instant extends TemporalGeometricPrimitive {
      *
      * @see Period#end
      */
-    @UML(identifier = "endedBy", obligation = OPTIONAL, specification = ISO_19108)
     Collection<Period> getEndedBy();
 }

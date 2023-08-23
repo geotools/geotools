@@ -9,10 +9,6 @@
  */
 package org.geotools.api.metadata.extent;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.metadata.Identifier;
 
 /**
@@ -22,13 +18,11 @@ import org.geotools.api.metadata.Identifier;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "EX_GeographicDescription", specification = ISO_19115)
 public interface GeographicDescription extends GeographicExtent {
     /**
      * Returns the identifier used to represent a geographic area.
      *
      * @return The identifier used to represent a geographic area.
      */
-    @UML(identifier = "geographicIdentifier", obligation = MANDATORY, specification = ISO_19115)
     Identifier getGeographicIdentifier();
 }

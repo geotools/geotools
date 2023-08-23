@@ -9,12 +9,6 @@
  */
 package org.geotools.api.metadata.citation;
 
-import static org.geotools.api.annotation.Obligation.CONDITIONAL;
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.util.InternationalString;
 
 /**
@@ -25,7 +19,6 @@ import org.geotools.api.util.InternationalString;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "CI_ResponsibleParty", specification = ISO_19115)
 public interface ResponsibleParty {
     /**
      * Name of the responsible person- surname, given name, title separated by a delimiter. Only one
@@ -34,7 +27,6 @@ public interface ResponsibleParty {
      *
      * @return Name, surname, given name and title of the responsible person, or {@code null}.
      */
-    @UML(identifier = "individualName", obligation = CONDITIONAL, specification = ISO_19115)
     String getIndividualName();
 
     /**
@@ -43,7 +35,6 @@ public interface ResponsibleParty {
      *
      * @return Name of the responsible organization, or {@code null}.
      */
-    @UML(identifier = "organisationName", obligation = CONDITIONAL, specification = ISO_19115)
     InternationalString getOrganisationName();
 
     /**
@@ -53,7 +44,6 @@ public interface ResponsibleParty {
      *
      * @return Role or position of the responsible person, or {@code null}
      */
-    @UML(identifier = "positionName", obligation = CONDITIONAL, specification = ISO_19115)
     InternationalString getPositionName();
 
     /**
@@ -61,7 +51,6 @@ public interface ResponsibleParty {
      *
      * @return Address of the responsible party., or {@code null}.
      */
-    @UML(identifier = "contactInfo", obligation = OPTIONAL, specification = ISO_19115)
     Contact getContactInfo();
 
     /**
@@ -69,6 +58,5 @@ public interface ResponsibleParty {
      *
      * @return Function performed by the responsible party.
      */
-    @UML(identifier = "role", obligation = MANDATORY, specification = ISO_19115)
     Role getRole();
 }

@@ -9,10 +9,6 @@
  */
 package org.geotools.api.coverage.grid;
 
-import static org.geotools.api.annotation.Specification.OGC_01004;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * Thrown when an attempt is made to write in a non-editable grid.
  *
@@ -21,7 +17,6 @@ import org.geotools.api.annotation.UML;
  * @since GeoAPI 1.0
  * @see GridCoverage#isDataEditable
  */
-@UML(identifier = "GC_GridNotEditable", specification = OGC_01004)
 public class GridNotEditableException extends IllegalStateException {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 612186655921122650L;

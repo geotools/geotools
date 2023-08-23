@@ -9,10 +9,6 @@
  */
 package org.geotools.api.referencing.operation;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.referencing.IdentifiedObject;
 import org.geotools.api.util.InternationalString;
@@ -28,7 +24,6 @@ import org.geotools.api.util.InternationalString;
  * @since GeoAPI 1.0
  * @see Operation
  */
-@UML(identifier = "CC_OperationMethod", specification = ISO_19111)
 public interface OperationMethod extends IdentifiedObject {
     /**
      * Key for the <code>{@value}</code> property. This is used for setting the value to be returned
@@ -45,7 +40,6 @@ public interface OperationMethod extends IdentifiedObject {
      *
      * @return The formula used by this method.
      */
-    @UML(identifier = "formula", obligation = MANDATORY, specification = ISO_19111)
     InternationalString getFormula();
 
     /**
@@ -53,7 +47,6 @@ public interface OperationMethod extends IdentifiedObject {
      *
      * @return The dimension of source CRS.
      */
-    @UML(identifier = "sourceDimensions", obligation = MANDATORY, specification = ISO_19111)
     int getSourceDimensions();
 
     /**
@@ -61,7 +54,6 @@ public interface OperationMethod extends IdentifiedObject {
      *
      * @return The dimension of target CRS.
      */
-    @UML(identifier = "targetDimensions", obligation = MANDATORY, specification = ISO_19111)
     int getTargetDimensions();
 
     /**
@@ -69,6 +61,5 @@ public interface OperationMethod extends IdentifiedObject {
      *
      * @return The parameters, or an empty group if none.
      */
-    @UML(identifier = "usesParameter", obligation = MANDATORY, specification = ISO_19111)
     ParameterDescriptorGroup getParameters();
 }

@@ -10,8 +10,6 @@
 package org.geotools.api.metadata.identification;
 
 import static org.geotools.api.annotation.Obligation.CONDITIONAL;
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
 import static org.geotools.api.annotation.Specification.ISO_19115;
 
 import org.geotools.api.annotation.UML;
@@ -25,14 +23,12 @@ import org.geotools.api.metadata.citation.Citation;
  * @author Ely Conn (Leica Geosystems Geospatial Imaging, LLC)
  * @since GeoAPI 2.1
  */
-@UML(identifier = "MD_AggregateInformation", specification = ISO_19115)
 public interface AggregateInformation {
     /**
      * Citation information about the aggregate dataset.
      *
      * @return Citation information about the aggregate dataset, or {@code null}.
      */
-    @UML(identifier = "aggregateDataSetName", obligation = CONDITIONAL, specification = ISO_19115)
     Citation getAggregateDataSetName();
 
     /**
@@ -51,7 +47,6 @@ public interface AggregateInformation {
      *
      * @return Association type of the aggregate dataset.
      */
-    @UML(identifier = "associationType", obligation = MANDATORY, specification = ISO_19115)
     AssociationType getAssociationType();
 
     /**
@@ -59,6 +54,5 @@ public interface AggregateInformation {
      *
      * @return Type of initiative under which the aggregate dataset was produced, or {@code null}.
      */
-    @UML(identifier = "initiativeType", obligation = OPTIONAL, specification = ISO_19115)
     InitiativeType getInitiativeType();
 }

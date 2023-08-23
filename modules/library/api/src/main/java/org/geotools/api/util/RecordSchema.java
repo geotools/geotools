@@ -9,13 +9,8 @@
  */
 package org.geotools.api.util;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19103;
-
 import java.util.Collection;
 import java.util.Map;
-import org.geotools.api.annotation.UML;
 
 /**
  * A collection of {@linkplain RecordType record types}. All schemas possess an associated
@@ -34,27 +29,23 @@ import org.geotools.api.annotation.UML;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.1
  */
-@UML(identifier = "RecordSchema", specification = ISO_19103)
 public interface RecordSchema {
     /**
      * Returns the schema name. The {@linkplain LocalName#scope scope} of the schema name is
      * associated with a {@linkplain NameSpace name space} which fixes this schema to a specific
      * location in the type hierarchy.
      */
-    @UML(identifier = "schemaName", obligation = MANDATORY, specification = ISO_19103)
     LocalName getSchemaName();
 
     /**
      * Returns the dictionary of all (<var>name</var>, <var>record type</var>) pairs in this schema.
      */
-    @UML(identifier = "description", obligation = MANDATORY, specification = ISO_19103)
     Map<TypeName, RecordType> getDescription();
 
     /**
      * Returns all record types declared in this schema. This is functionnaly equivalent to <code>
      * {@linkplain #getDescription()}.{@linkplain Map#values values()}</code>.
      */
-    @UML(identifier = "element", obligation = OPTIONAL, specification = ISO_19103)
     Collection<RecordType> getElements();
 
     /**
@@ -62,6 +53,5 @@ public interface RecordSchema {
      * not defined within this schema, then this method returns {@code null}. This is functionnaly
      * equivalent to <code>{@linkplain #getDescription()}.{@linkplain Map#get get}(name)</code>.
      */
-    @UML(identifier = "locate", obligation = MANDATORY, specification = ISO_19103)
     RecordType locate(TypeName name);
 }

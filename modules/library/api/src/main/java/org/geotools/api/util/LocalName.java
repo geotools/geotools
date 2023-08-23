@@ -9,12 +9,8 @@
  */
 package org.geotools.api.util;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19103;
-
 import java.util.Collections;
 import java.util.List;
-import org.geotools.api.annotation.UML;
 
 /**
  * Identifier within a {@linkplain NameSpace name space} for a local object. Local names are names
@@ -27,7 +23,6 @@ import org.geotools.api.annotation.UML;
  * @since GeoAPI 2.0
  * @see NameFactory#createLocalName
  */
-@UML(identifier = "LocalName", specification = ISO_19103)
 public interface LocalName extends GenericName {
     /** Returns the depth, which is always 1 for a local name. */
     @Override
@@ -38,7 +33,6 @@ public interface LocalName extends GenericName {
      * always returns a {@linkplain Collections#singleton singleton} containing only {@code this}.
      */
     @Override
-    @UML(identifier = "parsedName", obligation = MANDATORY, specification = ISO_19103)
     List<? extends LocalName> getParsedNames();
 
     /**
@@ -63,6 +57,6 @@ public interface LocalName extends GenericName {
     /** Returns a locale-independant string representation of this local name. */
     @Override
     /// @Override
-    @UML(identifier = "aName", obligation = MANDATORY, specification = ISO_19103)
+
     String toString();
 }

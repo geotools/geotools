@@ -34,7 +34,6 @@ import org.geotools.api.referencing.cs.SphericalCS;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "SC_GeocentricCRS", specification = ISO_19111)
 public interface GeocentricCRS extends GeodeticCRS {
     /**
      * Returns the coordinate system, which must be {@linkplain CartesianCS cartesian} or

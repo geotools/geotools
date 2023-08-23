@@ -9,11 +9,7 @@
  */
 package org.geotools.api.coverage.processing;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.OGC_01004;
-
 import java.util.Collection;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.coverage.SampleDimensionType;
 import org.geotools.api.coverage.grid.GridCoverage;
 
@@ -68,7 +64,6 @@ import org.geotools.api.coverage.grid.GridCoverage;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "GP_GridCoverageProcessor", specification = OGC_01004)
 public interface GridCoverageProcessor {
     /**
      * Retrieves grid processing operations information. Each operation information will contain the
@@ -76,6 +71,5 @@ public interface GridCoverageProcessor {
      *
      * @return The available operations.
      */
-    @UML(identifier = "getOperation", obligation = MANDATORY, specification = OGC_01004)
     Collection<Operation> getOperations();
 }

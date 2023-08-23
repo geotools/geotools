@@ -29,14 +29,12 @@ import org.geotools.api.util.Record;
  * @author Cory Horner (Refractions Research)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "MD_Georeferenceable", specification = ISO_19115)
 public interface Georeferenceable extends GridSpatialRepresentation {
     /**
      * Indication of whether or not control point(s) exists.
      *
      * @return Whether or not control point(s) exists.
      */
-    @UML(identifier = "controlPointAvailability", obligation = MANDATORY, specification = ISO_19115)
     boolean isControlPointAvailable();
 
     /**
@@ -67,7 +65,6 @@ public interface Georeferenceable extends GridSpatialRepresentation {
      * @return Terms which support grid data georeferencing.
      * @since GeoAPI 2.1
      */
-    @UML(identifier = "georeferencedParameters", obligation = MANDATORY, specification = ISO_19115)
     Record getGeoreferencedParameters();
 
     /**
@@ -75,6 +72,5 @@ public interface Georeferenceable extends GridSpatialRepresentation {
      *
      * @return Reference providing description of the parameters.
      */
-    @UML(identifier = "parameterCitation", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends Citation> getParameterCitation();
 }

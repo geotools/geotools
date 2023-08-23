@@ -23,7 +23,6 @@ import org.geotools.api.metadata.Identifier;
  * @author Cory Horner (Refractions Research)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "MD_ImageDescription", specification = ISO_19115)
 public interface ImageDescription extends CoverageDescription {
     /**
      * Illumination elevation measured in degrees clockwise from the target plane at intersection of
@@ -44,7 +43,6 @@ public interface ImageDescription extends CoverageDescription {
      *
      * @return A value between 0&deg; and 360&deg;, or {@code null} if unspecified.
      */
-    @UML(identifier = "illuminationAzimuthAngle", obligation = OPTIONAL, specification = ISO_19115)
     Double getIlluminationAzimuthAngle();
 
     /**
@@ -52,7 +50,6 @@ public interface ImageDescription extends CoverageDescription {
      *
      * @return Conditions affected the image, or {@code null} if unknown.
      */
-    @UML(identifier = "imagingCondition", obligation = OPTIONAL, specification = ISO_19115)
     ImagingCondition getImagingCondition();
 
     /**
@@ -60,7 +57,6 @@ public interface ImageDescription extends CoverageDescription {
      *
      * @return The image quality, or {@code null} if unknown.
      */
-    @UML(identifier = "imageQualityCode", obligation = OPTIONAL, specification = ISO_19115)
     Identifier getImageQualityCode();
 
     /**
@@ -68,7 +64,6 @@ public interface ImageDescription extends CoverageDescription {
      *
      * @return A value between 0 and 100, or {@code null} if unknown.
      */
-    @UML(identifier = "cloudCoverPercentage", obligation = OPTIONAL, specification = ISO_19115)
     Double getCloudCoverPercentage();
 
     /**
@@ -78,7 +73,6 @@ public interface ImageDescription extends CoverageDescription {
      * @return The level of radiometric and geometric processing that has been applied, or {@code
      *     null} if unknown.
      */
-    @UML(identifier = "processingLevelCode", obligation = OPTIONAL, specification = ISO_19115)
     Identifier getProcessingLevelCode();
 
     /**
@@ -101,7 +95,6 @@ public interface ImageDescription extends CoverageDescription {
      * @return Whether or not triangulation has been performed upon the image, or {@code null} if
      *     unknown.
      */
-    @UML(identifier = "triangulationIndicator", obligation = OPTIONAL, specification = ISO_19115)
     Boolean getTriangulationIndicator();
 
     /**

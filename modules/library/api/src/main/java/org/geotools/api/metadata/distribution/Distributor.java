@@ -9,8 +9,6 @@
  */
 package org.geotools.api.metadata.distribution;
 
-import static org.geotools.api.annotation.Obligation.CONDITIONAL;
-import static org.geotools.api.annotation.Obligation.MANDATORY;
 import static org.geotools.api.annotation.Obligation.OPTIONAL;
 import static org.geotools.api.annotation.Specification.ISO_19115;
 
@@ -25,14 +23,12 @@ import org.geotools.api.metadata.citation.ResponsibleParty;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "MD_Distributor", specification = ISO_19115)
 public interface Distributor {
     /**
      * Party from whom the resource may be obtained. This list need not be exhaustive.
      *
      * @return Party from whom the resource may be obtained.
      */
-    @UML(identifier = "distributorContact", obligation = MANDATORY, specification = ISO_19115)
     ResponsibleParty getDistributorContact();
 
     /**
@@ -41,7 +37,6 @@ public interface Distributor {
      *
      * @return Information about how the resource may be obtained.
      */
-    @UML(identifier = "distributionOrderProcess", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends StandardOrderProcess> getDistributionOrderProcesses();
 
     /**
@@ -49,7 +44,6 @@ public interface Distributor {
      *
      * @return Information about the format used by the distributor.
      */
-    @UML(identifier = "distributorFormat", obligation = CONDITIONAL, specification = ISO_19115)
     Collection<? extends Format> getDistributorFormats();
 
     /**

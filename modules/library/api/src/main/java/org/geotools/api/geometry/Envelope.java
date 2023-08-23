@@ -9,11 +9,7 @@
  */
 package org.geotools.api.geometry;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19107;
-
 import java.awt.geom.Rectangle2D;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
@@ -27,7 +23,6 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
  * @since GeoAPI 1.0
  * @see org.geotools.api.coverage.grid.GridEnvelope
  */
-@UML(identifier = "GM_Envelope", specification = ISO_19107)
 public interface Envelope {
     /**
      * Returns the envelope coordinate reference system, or {@code null} if unknown. If non-null, it
@@ -54,7 +49,6 @@ public interface Envelope {
      *
      * @return The lower corner.
      */
-    @UML(identifier = "lowerCorner", obligation = MANDATORY, specification = ISO_19107)
     DirectPosition getLowerCorner();
 
     /**
@@ -63,7 +57,6 @@ public interface Envelope {
      *
      * @return The upper corner.
      */
-    @UML(identifier = "upperCorner", obligation = MANDATORY, specification = ISO_19107)
     DirectPosition getUpperCorner();
 
     /**

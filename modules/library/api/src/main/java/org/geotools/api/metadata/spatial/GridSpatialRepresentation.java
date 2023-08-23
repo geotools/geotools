@@ -23,14 +23,12 @@ import org.geotools.api.annotation.UML;
  * @author Cory Horner (Refractions Research)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "MD_GridSpatialRepresentation", specification = ISO_19115)
 public interface GridSpatialRepresentation extends SpatialRepresentation {
     /**
      * Number of independent spatial-temporal axes.
      *
      * @return Number of independent spatial-temporal axes.
      */
-    @UML(identifier = "numberOfDimensions", obligation = MANDATORY, specification = ISO_19115)
     Integer getNumberOfDimensions();
 
     /**
@@ -38,7 +36,6 @@ public interface GridSpatialRepresentation extends SpatialRepresentation {
      *
      * @return Information about spatial-temporal axis properties.
      */
-    @UML(identifier = "axisDimensionsProperties", obligation = MANDATORY, specification = ISO_19115)
     List<? extends Dimension> getAxisDimensionsProperties();
 
     /**
@@ -46,7 +43,6 @@ public interface GridSpatialRepresentation extends SpatialRepresentation {
      *
      * @return Identification of grid data as point or cell.
      */
-    @UML(identifier = "cellGeometry", obligation = MANDATORY, specification = ISO_19115)
     CellGeometry getCellGeometry();
 
     /**

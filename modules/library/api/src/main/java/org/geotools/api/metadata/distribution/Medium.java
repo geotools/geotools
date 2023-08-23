@@ -9,13 +9,8 @@
  */
 package org.geotools.api.metadata.distribution;
 
-import static org.geotools.api.annotation.Obligation.CONDITIONAL;
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
 import java.util.Collection;
 import javax.measure.Unit;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.util.InternationalString;
 
 /**
@@ -25,14 +20,12 @@ import org.geotools.api.util.InternationalString;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "MD_Medium", specification = ISO_19115)
 public interface Medium {
     /**
      * Name of the medium on which the resource can be received.
      *
      * @return Name of the medium, or {@code null}.
      */
-    @UML(identifier = "name", obligation = OPTIONAL, specification = ISO_19115)
     MediumName getName();
 
     /**
@@ -40,7 +33,6 @@ public interface Medium {
      *
      * @return Density at which the data is recorded, or {@code null}.
      */
-    @UML(identifier = "density", obligation = OPTIONAL, specification = ISO_19115)
     Collection<Double> getDensities();
 
     /**
@@ -48,7 +40,6 @@ public interface Medium {
      *
      * @return Units of measure for the recording density, or {@code null}.
      */
-    @UML(identifier = "densityUnits", obligation = CONDITIONAL, specification = ISO_19115)
     Unit<?> getDensityUnits();
 
     /**
@@ -56,7 +47,6 @@ public interface Medium {
      *
      * @return Number of items in the media identified, or {@code null}.
      */
-    @UML(identifier = "volumes", obligation = OPTIONAL, specification = ISO_19115)
     Integer getVolumes();
 
     /**
@@ -64,7 +54,6 @@ public interface Medium {
      *
      * @return Method used to write to the medium, or {@code null}.
      */
-    @UML(identifier = "mediumFormat", obligation = OPTIONAL, specification = ISO_19115)
     Collection<MediumFormat> getMediumFormats();
 
     /**
@@ -72,6 +61,5 @@ public interface Medium {
      *
      * @return Description of other limitations for using the medium, or {@code null}.
      */
-    @UML(identifier = "mediumNote", obligation = OPTIONAL, specification = ISO_19115)
     InternationalString getMediumNote();
 }

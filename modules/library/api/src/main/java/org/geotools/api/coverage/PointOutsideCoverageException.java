@@ -9,9 +9,6 @@
  */
 package org.geotools.api.coverage;
 
-import static org.geotools.api.annotation.Specification.OGC_01004;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.geometry.DirectPosition;
 
 /**
@@ -25,7 +22,6 @@ import org.geotools.api.geometry.DirectPosition;
  * @see Coverage#evaluate(DirectPosition, byte[])
  * @see Coverage#evaluate(DirectPosition, double[])
  */
-@UML(identifier = "CV_PointOutsideCoverage", specification = OGC_01004)
 public class PointOutsideCoverageException extends CannotEvaluateException {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -8718412090539227101L;

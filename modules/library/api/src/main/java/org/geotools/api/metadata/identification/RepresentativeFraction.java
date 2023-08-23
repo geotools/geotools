@@ -9,11 +9,6 @@
  */
 package org.geotools.api.metadata.identification;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * A scale defined as the inverse of a denominator. This is derived from ISO 19103 {@code Scale}
  * where {@linkplain #getDenominator denominator} = 1 / <var>scale</var>.
@@ -44,7 +39,6 @@ import org.geotools.api.annotation.UML;
  * @author Ely Conn (Leica Geosystems Geospatial Imaging, LLC)
  * @since GeoAPI 2.1
  */
-@UML(identifier = "MD_RepresentativeFraction", specification = ISO_19115)
 public interface RepresentativeFraction {
 
     /**
@@ -61,7 +55,6 @@ public interface RepresentativeFraction {
      *
      * @return The denominator.
      */
-    @UML(identifier = "denominator", obligation = MANDATORY, specification = ISO_19115)
     long getDenominator();
 
     /**

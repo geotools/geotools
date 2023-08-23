@@ -9,13 +9,7 @@
  */
 package org.geotools.api.metadata.quality;
 
-import static org.geotools.api.annotation.Obligation.CONDITIONAL;
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
 import java.util.Collection;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.metadata.extent.Extent;
 import org.geotools.api.metadata.maintenance.ScopeCode;
 import org.geotools.api.metadata.maintenance.ScopeDescription;
@@ -27,14 +21,12 @@ import org.geotools.api.metadata.maintenance.ScopeDescription;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "DQ_Scope", specification = ISO_19115)
 public interface Scope {
     /**
      * Hierarchical level of the data specified by the scope.
      *
      * @return Hierarchical level of the data.
      */
-    @UML(identifier = "level", obligation = MANDATORY, specification = ISO_19115)
     ScopeCode getLevel();
 
     /**
@@ -45,7 +37,6 @@ public interface Scope {
      * @return Detailed description about the level of the data.
      * @since GeoAPI 2.1
      */
-    @UML(identifier = "levelDescription", obligation = CONDITIONAL, specification = ISO_19115)
     Collection<? extends ScopeDescription> getLevelDescription();
 
     /**
@@ -54,6 +45,5 @@ public interface Scope {
      *
      * @return Information about the extent of the data, or {@code null}.
      */
-    @UML(identifier = "extent", obligation = OPTIONAL, specification = ISO_19115)
     Extent getExtent();
 }

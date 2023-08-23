@@ -9,10 +9,6 @@
  */
 package org.geotools.api.metadata.quality;
 
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * Closeness of gridded data position values to values accepted as or being true.
  *
@@ -20,5 +16,4 @@ import org.geotools.api.annotation.UML;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "DQ_GriddedDataPositionalAccuracy", specification = ISO_19115)
 public interface GriddedDataPositionalAccuracy extends PositionalAccuracy {}

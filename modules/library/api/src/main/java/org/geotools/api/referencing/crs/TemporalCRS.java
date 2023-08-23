@@ -9,10 +9,6 @@
  */
 package org.geotools.api.referencing.crs;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.referencing.cs.TimeCS;
 import org.geotools.api.referencing.datum.TemporalDatum;
 
@@ -30,15 +26,12 @@ import org.geotools.api.referencing.datum.TemporalDatum;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "SC_TemporalCRS", specification = ISO_19111)
 public interface TemporalCRS extends SingleCRS {
     /** Returns the coordinate system, which must be temporal. */
     @Override
-    @UML(identifier = "usesCS", obligation = MANDATORY, specification = ISO_19111)
     TimeCS getCoordinateSystem();
 
     /** Returns the datum, which must be temporal. */
     @Override
-    @UML(identifier = "usesDatum", obligation = MANDATORY, specification = ISO_19111)
     TemporalDatum getDatum();
 }

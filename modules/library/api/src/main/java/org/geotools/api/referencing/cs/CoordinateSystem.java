@@ -9,10 +9,6 @@
  */
 package org.geotools.api.referencing.cs;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.referencing.IdentifiedObject;
 
 /**
@@ -31,7 +27,6 @@ import org.geotools.api.referencing.IdentifiedObject;
  * @see org.geotools.api.referencing.datum.Datum
  * @see org.geotools.api.referencing.crs.CoordinateReferenceSystem
  */
-@UML(identifier = "CS_CoordinateSystem", specification = ISO_19111)
 public interface CoordinateSystem extends IdentifiedObject {
     /**
      * Returns the dimension of the coordinate system.
@@ -48,6 +43,5 @@ public interface CoordinateSystem extends IdentifiedObject {
      * @return The axis at the specified dimension.
      * @throws IndexOutOfBoundsException if {@code dimension} is out of bounds.
      */
-    @UML(identifier = "usesAxis", obligation = MANDATORY, specification = ISO_19111)
     CoordinateSystemAxis getAxis(int dimension) throws IndexOutOfBoundsException;
 }

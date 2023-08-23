@@ -3,44 +3,38 @@
 
     <property name="project.dir" location="."/>
     
-    <target name="update" depends="filterFactory,code,services"
+    <target name="starting-up"
         description="Update project in current directory to remove org.opengis package use">
-        
+        <echo>Update to GeoTools 30.x series</echo>
         <echo/>
-        <echo>Your project ${project.dir} has been updated to remove references to org.opengis</echo>
-        <echo>You may have unsued imports to clean up, but we believe your project will compile!</echo>
+        <echo>UPDATE STARTING: ${project.dir}</echo>
     </target>
-    
-    <target name="bounds"
-        description="Bounds and Position API cleanup">
-       <fileset id="bounds.files" dir="${project.dir}" includes="**/*.java">
-            <contains text="import org.geotools.api.geometry.Envelope;" casesensitive="yes"/>
-        </fileset>
-        <echo message="Files containing org.geotools.api.geometry.Envelope: ${toString:bounds.files}" />
 
-        <replaceregexp byline="true">
-          <fileset refid="bounds.files"/>
-          <regexp pattern="(\s)Envelope"/>
-          <substitution expression="\1Bounds"/>
-        </replaceregexp>
+    <target name="_filterFactory"
+            description="FilterFactory2 and FilterFactory merge">
+        <echo/>
+        <echo message="Refactor FilterFactory2 --> FilerFactory" />
+        <replace dir="${project.dir}" includes="**/*.java" summary="yes">
+          <!-- This adds more method overloads in FilterFactory, so code that compiled
+               before with "null" as  argument might need an explicit cast now -->
+          <replacefilter>
+            <replacetoken>FilterFactory2</replacetoken>
+            <replacevalue>FilterFactory</replacevalue>
+          </replacefilter>
+        </replace>
         
-        <replacefilter>
-          <fileset refid="bounds.files"/>
-          <replacetoken>import org.geotools.api.geometry.Envelope;</replacetoken>
-          <replacevalue>import org.geotools.api.geometry.Bounds;</replacevalue>
-        </replacefilter>
-    </target>
-
-    <target name="filterFactory"
-            description="FilterFactory ambiguous usages">
         <fileset id="filterFactory.files" dir="${project.dir}" includes="**/*.java">
             <contains text="import org.opengis.filter.FilterFactory;" casesensitive="yes"/>
         </fileset>
         <echo message="Files containing org.opengis.filter.FilterFactory: ${toString:filterFactory.files}" />
+        <echo level="warning">  check: FilterFactory and Collecions use of contains((String) null)</echo>
+        <echo level="warning">  check: FilterFactory and Collecion use of equals((String) null)</echo>
+
 
         <replace dir="${project.dir}" summary="yes">
 
         <fileset refid="filterFactory.files"/>
+        
         <replacefilter>
             <replacetoken>.property(null)</replacetoken>
             <replacevalue>.property((String) null)</replacevalue>
@@ -107,138 +101,62 @@
         </replacefilter>
         </replace>
     </target>
-    
-    <target name="code"
-        description="Update Java files, replacing imports and references to org.opengis classes">
-        
-        <echo>Updating ${project.dir} java files ...</echo>
+
+    <!-- the following tasks run after _opengis above to reflect api refactoring -->
+    <target name="_bounds"
+            description="Bounds and Position API cleanup">
         <echo/>
+        <echo message="Refactor Position to DirectPosition" />
+        <echo message="  and removing org.opengis.geometry.coordinates.Position)" />
+        
+        <fileset id="position.files" dir="${project.dir}" includes="**/*.java">
+            <contains text="import org.opengis.geometry.coordinate.Position;" casesensitive="yes"/>
+        </fileset>
+        <echo message="Files containing Position: ${toString:position.files}" />
+        <replaceregexp byline="true">
+            <fileset refid="position.files"/>
+            <regexp pattern="(\s)Position"/>
+            <substitution expression="\1DirectPosition"/>
+        </replaceregexp>
+        <replace dir="${project.dir}" includes="**/*.java" summary="yes">
+            <replacefilter>
+                <replacetoken>org.opengis.geometry.coordinate.Position</replacetoken>
+                <replacevalue>org.opengis.geometry.DirectPosition</replacevalue>
+            </replacefilter>
+        </replace>
+    </target>
+    
+    <target name="_opengis"
+        description="Package change from org.opengis classes to org.geotools.api">
+
+        <echo/>
+        <echo message="Refactor org.opengis to org.geotools.api" />
         <!-- bulk replace * imports, may require more than one * import -->
-        <replace dir="${project.dir}" summary="yes">
-          <include name="**/*.java"/>
-          <replacefilter>
-            <replacetoken>import org.opengis.annotation.*;</replacetoken>
-            <replacevalue>// documentation annotations no-longer available</replacevalue>
-          </replacefilter>
+        <replace dir="${project.dir}" includes="**/*.java" summary="yes">
           <replacefilter>
             <replacetoken>org.opengis.</replacetoken>
             <replacevalue>org.geotools.api.</replacevalue>
           </replacefilter>
-          <!-- This adds more method overloads in FilterFactory, so code that compiled
-               before with "null" as  argument might need an explicit cast now -->
-          <replacefilter>
-            <replacetoken>FilterFactory2</replacetoken>
-            <replacevalue>FilterFactory</replacevalue>
-          </replacefilter>
         </replace>
-
-        <!--                                                       -->
-        <!-- COVERAGE                                              -->
-        <!--                                                       -->
-        <!--
-        <replacefilter>
-          <replacetoken>import org.opengis.coverage.*;</replacetoken>
-          <replacevalue>import org.geotools.coverage.*;</replacevalue>
-        </replacefilter>
-        <replacefilter>
-          <replacetoken>import org.opengis.coverage.grid.*;</replacetoken>
-          <replacevalue>import org.geotools.coverage.grid.*;</replacevalue>
-        </replacefilter>
-        <replacefilter>
-          <replacetoken>import org.opengis.coverage.processing.*;</replacetoken>
-          <replacevalue>import org.geotools.coverage.processing.*;</replacevalue>
-        </replacefilter>
-        <replacefilter>
-          <replacetoken>import org.opengis.coverage.processing.GridCoverageProcessor;</replacetoken>
-          <replacevalue>// GridCoverageProcessor removed used CoverageProcessor</replacevalue>
-        </replacefilter>
-        <replacefilter>
-          <replacetoken>org.opengis.coverage.processing.Operation</replacetoken>
-          <replacevalue>org.geotools.coverage.processing.Operation</replacevalue>
-        </replacefilter>
-        -->
-
-        <!--                                                       -->
-        <!-- FEATURE                                               -->
-        <!--                                                       -->
-        <!--
-        <replacefilter>
-          <replacetoken>import org.opengis.feature.*;</replacetoken>
-          <replacevalue>import org.geotools.feature.*;</replacevalue>
-        </replacefilter>
-        
-        
-        <replacefilter>
-          <replacetoken>import org.opengis.feature.simple.*;</replacetoken>
-          <replacevalue>import org.geotools.feature.simple.*;</replacevalue>
-        </replacefilter>
-        <replacefilter>
-          <replacetoken>org.opengis.feature.simple.SimpleFeature</replacetoken>
-          <replacevalue>org.geotools.feature.simple.SimpleFeature</replacevalue>
-        </replacefilter>
-        <replacefilter>
-          <replacetoken>org.opengis.feature.simple.SimpleFeatureType</replacetoken>
-          <replacevalue>org.geotools.feature.simple.SimpleFeatureType</replacevalue>
-        </replacefilter>
-        
-        <replacefilter>
-          <replacetoken>import org.opengis.feature.type.*;</replacetoken>
-          <replacevalue>import org.geotools.feature.type.*;</replacevalue>
-        </replacefilter>
-        <replacefilter>
-          <replacetoken>org.opengis.feature.type.AssociationDescriptor</replacetoken>
-          <replacevalue>org.geotools.feature.type.AssociationDescriptor</replacevalue>
-        </replacefilter>
-        <replacefilter>
-          <replacetoken>org.opengis.feature.type.AssociationType</replacetoken>
-          <replacevalue>org.geotools.feature.type.AssociationType</replacevalue>
-        </replacefilter>
-        <replacefilter>
-          <replacetoken>org.opengis.feature.type.AttributeDescriptor</replacetoken>
-          <replacevalue>org.geotools.feature.type.AttributeDescriptor</replacevalue>
-        </replacefilter>
-        <replacefilter>
-          <replacetoken>org.opengis.feature.type.AttributeType</replacetoken>
-          <replacevalue>org.geotools.feature.type.AttributeType</replacevalue>
-        </replacefilter>
-        <replacefilter>
-          <replacetoken>org.opengis.feature.type.ComplexType</replacetoken>
-          <replacevalue>org.geotools.feature.type.ComplexType</replacevalue>
-        </replacefilter>
-        -->
-
-        <!--                                                       -->
-        <!-- FILTER                                                -->
-        <!--                                                       -->
-        <!--
-        <replacefilter>
-          <replacetoken>import org.opengis.filter.*;</replacetoken>
-          <replacevalue>import org.geotools.filter.*;</replacevalue>
-        </replacefilter>
-        
-        <replacefilter>
-          <replacetoken>import org.opengis.filter.*;</replacetoken>
-          <replacevalue>import org.geotools.filter.*;</replacevalue>
-        </replacefilter>
-        
-        <replacefilter>
-          <replacetoken>import org.opengis.style.*;</replacetoken>
-          <replacevalue>import org.geotools.styling.*;</replacevalue>
-        </replacefilter>
-        -->
-     </target>
-     
-     <target name="services" description="Update META-INF/services to migrate org.opengis services">
-        <echo>Updating ${project.dir} META-INF/services ...</echo>
-        <echo/>
         <!-- Service INF -->
         <move todir="." verbose="true">
-          <fileset dir=".">
-             <include name="**/META-INF/services/org.opengis.*"/>
-             <exclude name="**/target/*"/>
-          </fileset>
-          <regexpmapper from="(.*)/org.opengis.(.*)" to="\1/org.geotools.api.\2"/>
+            <fileset dir=".">
+                <include name="**/META-INF/services/org.opengis.*"/>
+                <exclude name="**/target/*"/>
+            </fileset>
+            <regexpmapper from="(.*)/org.opengis.(.*)" to="\1/org.geotools.api.\2"/>
         </move>
-     </target>
+    </target>
+
+    <target name="update" depends="starting-up,_filterFactory,_bounds,_opengis"
+        description="Update project in current directory to remove org.opengis package use">
+        
+        <echo>UPDATE COMPLETED: ${project.dir}</echo>
+        <echo/>
+        <echo>At the request of OGC https://www.ogc.org/standard/geoapi/ standard</echo>
+        <echo>Your project has been refactored to change org.opengis to org.geotools.api</echo>
+        <echo/>
+        <echo>You may have unsued imports to clean up, but we believe your project will compile!</echo>
+    </target>
     
 </project>

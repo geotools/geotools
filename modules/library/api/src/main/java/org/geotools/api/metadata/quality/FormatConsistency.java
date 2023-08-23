@@ -9,10 +9,6 @@
  */
 package org.geotools.api.metadata.quality;
 
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * Degree to which data is stored in accordance with the physical structure of the dataset, as
  * described by the scope.
@@ -22,5 +18,4 @@ import org.geotools.api.annotation.UML;
  * @author Cory Horner (Refractions Research)
  * @since GeoAPI 2.1
  */
-@UML(identifier = "DQ_FormatConsistency", specification = ISO_19115)
 public interface FormatConsistency extends LogicalConsistency {}

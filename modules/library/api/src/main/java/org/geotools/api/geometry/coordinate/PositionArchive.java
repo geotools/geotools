@@ -9,10 +9,6 @@
  */
 package org.geotools.api.geometry.coordinate;
 
-import static org.geotools.api.annotation.Obligation.CONDITIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19107;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.geometry.DirectPosition;
 
 /**
@@ -31,7 +27,6 @@ import org.geotools.api.geometry.DirectPosition;
  * @since GeoAPI 1.0
  * @issue http://jira.codehaus.org/browse/GEO-87
  */
-@UML(identifier = "GM_Position", specification = ISO_19107)
 public interface PositionArchive {
 
     /**
@@ -41,6 +36,5 @@ public interface PositionArchive {
      * @return The direct position (may be {@code this}).
      * @since GeoAPI 2.2
      */
-    @UML(identifier = "direct", obligation = CONDITIONAL, specification = ISO_19107)
     DirectPosition getDirectPosition();
 }

@@ -9,10 +9,6 @@
  */
 package org.geotools.api.referencing.crs;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.referencing.datum.GeodeticDatum;
 
 /**
@@ -31,10 +27,8 @@ import org.geotools.api.referencing.datum.GeodeticDatum;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.1
  */
-@UML(identifier = "SC_GeodeticCRS", specification = ISO_19111)
 public interface GeodeticCRS extends SingleCRS {
     /** Returns the datum, which must be geodetic. */
     @Override
-    @UML(identifier = "usesDatum", obligation = MANDATORY, specification = ISO_19111)
     GeodeticDatum getDatum();
 }

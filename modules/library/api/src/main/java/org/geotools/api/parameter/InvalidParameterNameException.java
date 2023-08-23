@@ -9,10 +9,6 @@
  */
 package org.geotools.api.parameter;
 
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * Thrown when an unexpected parameter was found in a {@linkplain ParameterDescriptorGroup parameter
  * group}.
@@ -21,7 +17,6 @@ import org.geotools.api.annotation.UML;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "GC_InvalidParameterName", specification = ISO_19111)
 public class InvalidParameterNameException extends IllegalArgumentException {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -8473266898408204803L;

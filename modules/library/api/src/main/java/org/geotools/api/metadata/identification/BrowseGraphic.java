@@ -9,12 +9,7 @@
  */
 package org.geotools.api.metadata.identification;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
 import java.net.URI;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.util.InternationalString;
 
 /**
@@ -24,14 +19,12 @@ import org.geotools.api.util.InternationalString;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "MD_BrowseGraphic", specification = ISO_19115)
 public interface BrowseGraphic {
     /**
      * Name of the file that contains a graphic that provides an illustration of the dataset.
      *
      * @return File that contains a graphic that provides an illustration of the dataset.
      */
-    @UML(identifier = "fileName", obligation = MANDATORY, specification = ISO_19115)
     URI getFileName();
 
     /**
@@ -39,7 +32,6 @@ public interface BrowseGraphic {
      *
      * @return Text description of the illustration, or {@code null}.
      */
-    @UML(identifier = "fileDescription", obligation = OPTIONAL, specification = ISO_19115)
     InternationalString getFileDescription();
 
     /**
@@ -50,6 +42,5 @@ public interface BrowseGraphic {
      * @return Format in which the illustration is encoded, or {@code null}.
      * @see javax.imageio.ImageIO#getReaderFormatNames()
      */
-    @UML(identifier = "fileType", obligation = OPTIONAL, specification = ISO_19115)
     String getFileType();
 }

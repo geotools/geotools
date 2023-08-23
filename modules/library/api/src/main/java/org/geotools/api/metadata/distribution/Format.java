@@ -9,7 +9,6 @@
  */
 package org.geotools.api.metadata.distribution;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
 import static org.geotools.api.annotation.Obligation.OPTIONAL;
 import static org.geotools.api.annotation.Specification.ISO_19115;
 
@@ -25,14 +24,12 @@ import org.geotools.api.util.InternationalString;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "MD_Format", specification = ISO_19115)
 public interface Format {
     /**
      * Name of the data transfer format(s).
      *
      * @return Name of the data transfer format(s).
      */
-    @UML(identifier = "name", obligation = MANDATORY, specification = ISO_19115)
     InternationalString getName();
 
     /**
@@ -40,7 +37,6 @@ public interface Format {
      *
      * @return Version of the format.
      */
-    @UML(identifier = "version", obligation = MANDATORY, specification = ISO_19115)
     InternationalString getVersion();
 
     /**
@@ -48,7 +44,6 @@ public interface Format {
      *
      * @return Amendment number of the format version, or {@code null}.
      */
-    @UML(identifier = "amendmentNumber", obligation = OPTIONAL, specification = ISO_19115)
     InternationalString getAmendmentNumber();
 
     /**
@@ -56,7 +51,6 @@ public interface Format {
      *
      * @return Name of a subset, profile, or product specification of the format, or {@code null}.
      */
-    @UML(identifier = "specification", obligation = OPTIONAL, specification = ISO_19115)
     InternationalString getSpecification();
 
     /**
@@ -77,6 +71,5 @@ public interface Format {
      *
      * @return Information about the distributor's format.
      */
-    @UML(identifier = "formatDistributor", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends Distributor> getFormatDistributors();
 }

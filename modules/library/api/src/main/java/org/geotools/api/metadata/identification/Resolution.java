@@ -9,11 +9,6 @@
  */
 package org.geotools.api.metadata.identification;
 
-import static org.geotools.api.annotation.Obligation.CONDITIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * Level of detail expressed as a scale factor or a ground distance.
  *
@@ -22,7 +17,6 @@ import org.geotools.api.annotation.UML;
  * @author Cory Horner (Refractions Research)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "MD_Resolution", specification = ISO_19115)
 public interface Resolution {
     /**
      * Level of detail expressed as the scale of a comparable hardcopy map or chart. Only one of
@@ -31,7 +25,6 @@ public interface Resolution {
      *
      * @return Level of detail expressed as the scale of a comparable hardcopy, or {@code null}.
      */
-    @UML(identifier = "equivalentScale", obligation = CONDITIONAL, specification = ISO_19115)
     RepresentativeFraction getEquivalentScale();
 
     /**
@@ -42,6 +35,5 @@ public interface Resolution {
      * @todo change return type to ISO 19103 {@code Distance} or to JScience {@code Measure}.
      * @unitof Distance
      */
-    @UML(identifier = "distance", obligation = CONDITIONAL, specification = ISO_19115)
     Double getDistance();
 }

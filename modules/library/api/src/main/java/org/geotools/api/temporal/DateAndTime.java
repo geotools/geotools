@@ -9,10 +9,6 @@
  */
 package org.geotools.api.temporal;
 
-import static org.geotools.api.annotation.Specification.ISO_19108;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * Provides a single data type for identifying a temporal position with a resolution of less than a
  * day.
@@ -20,5 +16,4 @@ import org.geotools.api.annotation.UML;
  * @author Stephane Fellah (Image Matters)
  * @author Alexander Petkov
  */
-@UML(identifier = "TM_DateAndTime", specification = ISO_19108)
 public interface DateAndTime extends ClockTime, CalendarDate {}

@@ -9,11 +9,6 @@
  */
 package org.geotools.api.temporal;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19108;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * Provides an operation for determining the position of this {@linkplain TemporalPrimitive temporal
  * primitive} relative to another {@linkplain TemporalPrimitive temporal primitive}.
@@ -23,9 +18,7 @@ import org.geotools.api.annotation.UML;
  * @todo The javadoc suggests that this interface should extends some kind of {@link
  *     TemporalPrimitive}.
  */
-@UML(identifier = "TM_Order", specification = ISO_19108)
 public interface TemporalOrder {
     /** Determines the position of this primitive relative to another primitive. */
-    @UML(identifier = "relativePosition", obligation = MANDATORY, specification = ISO_19108)
     RelativePosition relativePosition(TemporalPrimitive other);
 }

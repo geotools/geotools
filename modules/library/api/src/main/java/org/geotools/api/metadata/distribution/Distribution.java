@@ -9,12 +9,7 @@
  */
 package org.geotools.api.metadata.distribution;
 
-import static org.geotools.api.annotation.Obligation.CONDITIONAL;
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
 import java.util.Collection;
-import org.geotools.api.annotation.UML;
 
 /**
  * Information about the distributor of and options for obtaining the resource.
@@ -23,14 +18,12 @@ import org.geotools.api.annotation.UML;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "MD_Distribution", specification = ISO_19115)
 public interface Distribution {
     /**
      * Provides a description of the format of the data to be distributed.
      *
      * @return Description of the format of the data to be distributed.
      */
-    @UML(identifier = "distributionFormat", obligation = CONDITIONAL, specification = ISO_19115)
     Collection<? extends Format> getDistributionFormats();
 
     /**
@@ -38,7 +31,6 @@ public interface Distribution {
      *
      * @return Information about the distributor.
      */
-    @UML(identifier = "distributor", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends Distributor> getDistributors();
 
     /**
@@ -47,6 +39,5 @@ public interface Distribution {
      *
      * @return Technical means and media by which a resource is obtained from the distributor.
      */
-    @UML(identifier = "transferOptions", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends DigitalTransferOptions> getTransferOptions();
 }

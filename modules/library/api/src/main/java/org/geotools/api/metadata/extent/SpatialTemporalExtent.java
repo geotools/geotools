@@ -9,11 +9,7 @@
  */
 package org.geotools.api.metadata.extent;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
 import java.util.Collection;
-import org.geotools.api.annotation.UML;
 
 /**
  * Extent with respect to date/time and spatial boundaries.
@@ -22,13 +18,11 @@ import org.geotools.api.annotation.UML;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "EX_SpatialTemporalExtent", specification = ISO_19115)
 public interface SpatialTemporalExtent extends TemporalExtent {
     /**
      * Returns the spatial extent component of composite spatial and temporal extent.
      *
      * @return The list of geographic extents (never {@code null}).
      */
-    @UML(identifier = "spatialExtent", obligation = MANDATORY, specification = ISO_19115)
     Collection<? extends GeographicExtent> getSpatialExtent();
 }

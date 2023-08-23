@@ -9,11 +9,6 @@
  */
 package org.geotools.api.feature.type;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19103;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * A qualified Name (with respect to a namespace rather than just a simple prefix).
  *
@@ -66,7 +61,6 @@ public interface Name {
      *
      * @since GeoAPI 2.1
      */
-    @UML(identifier = "scope", obligation = MANDATORY, specification = ISO_19103)
     String getNamespaceURI();
 
     /**
@@ -123,7 +117,6 @@ public interface Name {
      *
      * @return a complete URI constructed of namespace URI and the local part.
      */
-    @UML(identifier = "parsedName", obligation = MANDATORY, specification = ISO_19103)
     String getURI();
 
     /**

@@ -9,13 +9,8 @@
  */
 package org.geotools.api.util;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19103;
-
 import java.util.Map;
 import java.util.Set;
-import org.geotools.api.annotation.UML;
 
 /**
  * A list of logically related elements as (<var>name</var>, <var>value</var>) pairs in a
@@ -28,7 +23,6 @@ import org.geotools.api.annotation.UML;
  * @since GeoAPI 2.1
  * @see RecordType
  */
-@UML(identifier = "Record", specification = ISO_19103)
 public interface Record {
     /**
      * Returns the type definition of record. All attributes named in this record must be defined in
@@ -45,7 +39,6 @@ public interface Record {
      *
      * <p>This method can be think as the equivalent of the Java {@link Object#getClass()} method.
      */
-    @UML(identifier = "recordType", obligation = OPTIONAL, specification = ISO_19103)
     RecordType getRecordType();
 
     /**
@@ -55,7 +48,6 @@ public interface Record {
      *
      * @see RecordType#getAttributeTypes
      */
-    @UML(identifier = "attributes", obligation = MANDATORY, specification = ISO_19103)
     Map<MemberName, Object> getAttributes();
 
     /**
@@ -66,7 +58,6 @@ public interface Record {
      *
      * @see RecordType#locate
      */
-    @UML(identifier = "locate", obligation = MANDATORY, specification = ISO_19103)
     Object locate(MemberName name);
 
     /**

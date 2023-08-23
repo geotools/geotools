@@ -9,11 +9,7 @@
  */
 package org.geotools.api.metadata.extent;
 
-import static org.geotools.api.annotation.Obligation.CONDITIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
 import java.util.Collection;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.util.InternationalString;
 
 /**
@@ -27,14 +23,12 @@ import org.geotools.api.util.InternationalString;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "EX_Extent", specification = ISO_19115)
 public interface Extent {
     /**
      * Returns the spatial and temporal extent for the referring object.
      *
      * @return The spatial and temporal extent, or {@code null} in none.
      */
-    @UML(identifier = "description", obligation = CONDITIONAL, specification = ISO_19115)
     InternationalString getDescription();
 
     /**
@@ -42,7 +36,6 @@ public interface Extent {
      *
      * @return The geographic extent, or an empty set if none.
      */
-    @UML(identifier = "geographicElement", obligation = CONDITIONAL, specification = ISO_19115)
     Collection<? extends GeographicExtent> getGeographicElements();
 
     /**
@@ -50,7 +43,6 @@ public interface Extent {
      *
      * @return The temporal extent, or an empty set if none.
      */
-    @UML(identifier = "temporalElement", obligation = CONDITIONAL, specification = ISO_19115)
     Collection<? extends TemporalExtent> getTemporalElements();
 
     /**
@@ -58,6 +50,5 @@ public interface Extent {
      *
      * @return The vertical extent, or an empty set if none.
      */
-    @UML(identifier = "verticalElement", obligation = CONDITIONAL, specification = ISO_19115)
     Collection<? extends VerticalExtent> getVerticalElements();
 }

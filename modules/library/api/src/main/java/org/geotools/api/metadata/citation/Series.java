@@ -9,10 +9,6 @@
  */
 package org.geotools.api.metadata.citation;
 
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.util.InternationalString;
 
 /**
@@ -22,7 +18,6 @@ import org.geotools.api.util.InternationalString;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "CI_Series", specification = ISO_19115)
 public interface Series {
     /**
      * Name of the series, or aggregate dataset, of which the dataset is a part. Returns {@code
@@ -30,7 +25,6 @@ public interface Series {
      *
      * @return The name of the series or aggregate dataset.
      */
-    @UML(identifier = "name", obligation = OPTIONAL, specification = ISO_19115)
     InternationalString getName();
 
     /**
@@ -38,7 +32,6 @@ public interface Series {
      *
      * @return Information identifying the issue of the series.
      */
-    @UML(identifier = "issueIdentification", obligation = OPTIONAL, specification = ISO_19115)
     String getIssueIdentification();
 
     /**
@@ -46,6 +39,5 @@ public interface Series {
      *
      * @return Details on which pages of the publication the article was published.
      */
-    @UML(identifier = "page", obligation = OPTIONAL, specification = ISO_19115)
     String getPage();
 }

@@ -9,11 +9,7 @@
  */
 package org.geotools.api.metadata.lineage;
 
-import static org.geotools.api.annotation.Obligation.CONDITIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
 import java.util.Collection;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.util.InternationalString;
 
 /**
@@ -27,7 +23,6 @@ import org.geotools.api.util.InternationalString;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "LI_Lineage", specification = ISO_19115)
 public interface Lineage {
     /**
      * General explanation of the data producer's knowledge about the lineage of a dataset. Should
@@ -37,7 +32,6 @@ public interface Lineage {
      *
      * @return Explanation of the data producer's knowledge about the lineage, or {@code null}.
      */
-    @UML(identifier = "statement", obligation = CONDITIONAL, specification = ISO_19115)
     InternationalString getStatement();
 
     /**
@@ -45,7 +39,6 @@ public interface Lineage {
      *
      * @return Information about an event in the creation process.
      */
-    @UML(identifier = "processStep", obligation = CONDITIONAL, specification = ISO_19115)
     Collection<? extends ProcessStep> getProcessSteps();
 
     /**
@@ -53,6 +46,5 @@ public interface Lineage {
      *
      * @return Information about the source data.
      */
-    @UML(identifier = "source", obligation = CONDITIONAL, specification = ISO_19115)
     Collection<? extends Source> getSources();
 }

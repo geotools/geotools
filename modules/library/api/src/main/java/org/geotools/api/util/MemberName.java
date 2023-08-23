@@ -9,11 +9,6 @@
  */
 package org.geotools.api.util;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19103;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * The name to identify a member of a {@linkplain Record record}. This name bears an association
  * with a {@linkplain TypeName type name}. There may be alternate implementations of this: for
@@ -24,7 +19,6 @@ import org.geotools.api.annotation.UML;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.1
  */
-@UML(identifier = "MemberName", specification = ISO_19103)
 public interface MemberName extends LocalName {
     /**
      * Returns the type of the data associated with the record member.
@@ -32,6 +26,5 @@ public interface MemberName extends LocalName {
      * @todo Check in the specification if this association is really navigable that way. This
      *     association seems redundant with {@link RecordType#locate}.
      */
-    @UML(identifier = "attributeType", obligation = MANDATORY, specification = ISO_19103)
     TypeName getAttributeType();
 }

@@ -9,12 +9,7 @@
  */
 package org.geotools.api.metadata.identification;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
 import java.util.Collection;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.metadata.citation.Citation;
 import org.geotools.api.metadata.citation.ResponsibleParty;
 import org.geotools.api.metadata.constraint.Constraints;
@@ -30,14 +25,12 @@ import org.geotools.api.util.InternationalString;
  * @author Cory Horner (Refractions Research)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "MD_Identification", specification = ISO_19115)
 public interface Identification {
     /**
      * Citation data for the resource(s).
      *
      * @return Citation data for the resource(s).
      */
-    @UML(identifier = "citation", obligation = MANDATORY, specification = ISO_19115)
     Citation getCitation();
 
     /**
@@ -45,7 +38,6 @@ public interface Identification {
      *
      * @return Brief narrative summary of the content.
      */
-    @UML(identifier = "abstract", obligation = MANDATORY, specification = ISO_19115)
     InternationalString getAbstract();
 
     /**
@@ -53,7 +45,6 @@ public interface Identification {
      *
      * @return The intentions with which the resource(s) was developed, or {@code null}.
      */
-    @UML(identifier = "purpose", obligation = OPTIONAL, specification = ISO_19115)
     InternationalString getPurpose();
 
     /**
@@ -61,7 +52,6 @@ public interface Identification {
      *
      * @return Recognition of those who contributed to the resource(s).
      */
-    @UML(identifier = "credit", obligation = OPTIONAL, specification = ISO_19115)
     Collection<String> getCredits();
 
     /**
@@ -69,7 +59,6 @@ public interface Identification {
      *
      * @return Status of the resource(s), or {@code null}.
      */
-    @UML(identifier = "status", obligation = OPTIONAL, specification = ISO_19115)
     Collection<Progress> getStatus();
 
     /**
@@ -79,7 +68,6 @@ public interface Identification {
      * @return Means of communication with person(s) and organizations(s) associated with the
      *     resource(s).
      */
-    @UML(identifier = "pointOfContact", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends ResponsibleParty> getPointOfContacts();
 
     /**
@@ -87,7 +75,6 @@ public interface Identification {
      *
      * @return Frequency and scope of resource updates.
      */
-    @UML(identifier = "resourceMaintenance", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends MaintenanceInformation> getResourceMaintenance();
 
     /**
@@ -96,7 +83,6 @@ public interface Identification {
      *
      * @return A graphic that illustrates the resource(s).
      */
-    @UML(identifier = "graphicOverview", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends BrowseGraphic> getGraphicOverviews();
 
     /**
@@ -104,7 +90,6 @@ public interface Identification {
      *
      * @return Description of the format.
      */
-    @UML(identifier = "resourceFormat", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends Format> getResourceFormat();
 
     /**
@@ -112,7 +97,6 @@ public interface Identification {
      *
      * @return Category keywords, their type, and reference source.
      */
-    @UML(identifier = "descriptiveKeywords", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends Keywords> getDescriptiveKeywords();
 
     /**
@@ -122,7 +106,6 @@ public interface Identification {
      * @return Information about specific application(s) for which the resource(s) has/have been or
      *     is being used.
      */
-    @UML(identifier = "resourceSpecificUsage", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends Usage> getResourceSpecificUsages();
 
     /**
@@ -130,7 +113,6 @@ public interface Identification {
      *
      * @return Constraints which apply to the resource(s).
      */
-    @UML(identifier = "resourceConstraints", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends Constraints> getResourceConstraints();
 
     /**
@@ -139,6 +121,5 @@ public interface Identification {
      * @return Aggregate dataset information.
      * @since GeoAPI 2.1
      */
-    @UML(identifier = "aggregationInfo", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends AggregateInformation> getAggregationInfo();
 }

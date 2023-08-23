@@ -9,7 +9,6 @@
  */
 package org.geotools.api.metadata;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
 import static org.geotools.api.annotation.Obligation.OPTIONAL;
 import static org.geotools.api.annotation.Specification.ISO_19115;
 
@@ -24,14 +23,12 @@ import org.geotools.api.metadata.citation.Citation;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "MD_ApplicationSchemaInformation", specification = ISO_19115)
 public interface ApplicationSchemaInformation {
     /**
      * Name of the application schema used.
      *
      * @return Name of the application schema.
      */
-    @UML(identifier = "name", obligation = MANDATORY, specification = ISO_19115)
     Citation getName();
 
     /**
@@ -39,7 +36,6 @@ public interface ApplicationSchemaInformation {
      *
      * @return The schema language used.
      */
-    @UML(identifier = "schemaLanguage", obligation = MANDATORY, specification = ISO_19115)
     String getSchemaLanguage();
 
     /**
@@ -47,7 +43,6 @@ public interface ApplicationSchemaInformation {
      *
      * @return Formal language used in Application Schema.
      */
-    @UML(identifier = "constraintLanguage", obligation = MANDATORY, specification = ISO_19115)
     String getConstraintLanguage();
 
     /**
@@ -57,7 +52,6 @@ public interface ApplicationSchemaInformation {
      * @todo In UML, the type was {@code CharacterString}. It is not clear if it should be the file
      *     name or the file content.
      */
-    @UML(identifier = "schemaAscii", obligation = OPTIONAL, specification = ISO_19115)
     URI getSchemaAscii();
 
     /**
@@ -65,7 +59,6 @@ public interface ApplicationSchemaInformation {
      *
      * @return Application schema as a graphics file.
      */
-    @UML(identifier = "graphicsFile", obligation = OPTIONAL, specification = ISO_19115)
     URI getGraphicsFile();
 
     /**
@@ -75,7 +68,6 @@ public interface ApplicationSchemaInformation {
      * @todo In UML, the type was {@code binary}. It is not clear if it was intented to be the file
      *     content.
      */
-    @UML(identifier = "softwareDevelopmentFile", obligation = OPTIONAL, specification = ISO_19115)
     URI getSoftwareDevelopmentFile();
 
     /**

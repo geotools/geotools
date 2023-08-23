@@ -9,11 +9,6 @@
  */
 package org.geotools.api.temporal;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19108;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.util.InternationalString;
 
 /**
@@ -22,25 +17,20 @@ import org.geotools.api.util.InternationalString;
  * @author Stephane Fellah (Image Matters)
  * @author Alexander Petkov
  */
-@UML(identifier = "TM_CalendarEra", specification = ISO_19108)
 public interface CalendarEra {
     /** Uniquely identifies the calendar era within this calendar. */
-    @UML(identifier = "name", obligation = MANDATORY, specification = ISO_19108)
     InternationalString getName();
 
     /**
      * Provides the name or description of a mythical or historic event which fixes the position of
      * the base scale of the calendar era.
      */
-    @UML(identifier = "referenceEvent", obligation = OPTIONAL, specification = ISO_19108)
     InternationalString getReferenceEvent();
 
     /** Provides the date of the reference event expressed as a date in the given calendar. */
-    @UML(identifier = "referenceDate", obligation = OPTIONAL, specification = ISO_19108)
     CalendarDate getReferenceDate();
 
     /** Provides the {@linkplain JulianDate julian date} that corresponds to the reference date. */
-    @UML(identifier = "julianReference", specification = ISO_19108)
     JulianDate getJulianReference();
 
     /**
@@ -50,6 +40,5 @@ public interface CalendarEra {
      * @return The period, where the data type for {@linkplain Period#getBegin begin} and {@link
      *     Period#getEnd end} is {@link JulianDate}.
      */
-    @UML(identifier = "epochOfUse", specification = ISO_19108)
     Period getEpochOfUse();
 }

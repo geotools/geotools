@@ -9,9 +9,6 @@
  */
 package org.geotools.api.referencing.crs;
 
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.referencing.ReferenceSystem;
 import org.geotools.api.referencing.cs.CoordinateSystem;
 
@@ -41,7 +38,6 @@ import org.geotools.api.referencing.cs.CoordinateSystem;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "SC_CRS", specification = ISO_19111)
 public interface CoordinateReferenceSystem extends ReferenceSystem {
     /**
      * Returns a relevant coordinate system instance. Special cases:

@@ -9,10 +9,7 @@
  */
 package org.geotools.api.feature.type;
 
-import static org.geotools.api.annotation.Specification.ISO_19103;
-
 import java.util.Set;
-import org.geotools.api.annotation.UML;
 
 /**
  * A set of 0 or more names, with no duplicates.
@@ -59,7 +56,6 @@ import org.geotools.api.annotation.UML;
  * @author Justin Deoliveira, The Open Planning Project
  * @since GeoAPI 2.1
  */
-@UML(identifier = "NameSpace", specification = ISO_19103)
 public interface Namespace extends Set<Name> {
 
     /**

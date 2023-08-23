@@ -9,11 +9,7 @@
  */
 package org.geotools.api.temporal;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19108;
-
 import java.util.Collection;
-import org.geotools.api.annotation.UML;
 
 /**
  * Provides only the attributes inherited from temporal reference system.
@@ -29,6 +25,5 @@ public interface OrdinalReferenceSystem extends TemporalReferenceSystem {
      * @return A hierarchically-structured collection of ordinal eras.
      * @todo What the structure is exactly?
      */
-    @UML(identifier = "structure", obligation = MANDATORY, specification = ISO_19108)
     Collection<OrdinalEra> getOrdinalEraSequence();
 }

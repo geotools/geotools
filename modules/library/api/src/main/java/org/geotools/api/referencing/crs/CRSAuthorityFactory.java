@@ -9,9 +9,6 @@
  */
 package org.geotools.api.referencing.crs;
 
-import static org.geotools.api.annotation.Specification.OGC_01009;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.referencing.AuthorityFactory;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.NoSuchAuthorityCodeException; // For javadoc
@@ -29,7 +26,6 @@ import org.geotools.api.referencing.NoSuchAuthorityCodeException; // For javadoc
  * @see org.geotools.api.referencing.cs.CSAuthorityFactory
  * @see org.geotools.api.referencing.datum.DatumAuthorityFactory
  */
-@UML(identifier = "CS_CoordinateSystemAuthorityFactory", specification = OGC_01009)
 public interface CRSAuthorityFactory extends AuthorityFactory {
     /**
      * Returns an arbitrary {@linkplain CoordinateReferenceSystem coordinate reference system} from
@@ -49,7 +45,6 @@ public interface CRSAuthorityFactory extends AuthorityFactory {
      * @see #createTemporalCRS
      * @see #createCompoundCRS
      */
-    @UML(identifier = "createHorizontalCoordinateSystem", specification = OGC_01009)
     CoordinateReferenceSystem createCoordinateReferenceSystem(String code)
             throws NoSuchAuthorityCodeException, FactoryException;
 
@@ -61,7 +56,6 @@ public interface CRSAuthorityFactory extends AuthorityFactory {
      * @throws NoSuchAuthorityCodeException if the specified {@code code} was not found.
      * @throws FactoryException if the object creation failed for some other reason.
      */
-    @UML(identifier = "createCompoundCoordinateSystem", specification = OGC_01009)
     CompoundCRS createCompoundCRS(String code)
             throws NoSuchAuthorityCodeException, FactoryException;
 
@@ -95,7 +89,6 @@ public interface CRSAuthorityFactory extends AuthorityFactory {
      * @throws FactoryException if the object creation failed for some other reason.
      * @see org.geotools.api.referencing.datum.DatumAuthorityFactory#createGeodeticDatum
      */
-    @UML(identifier = "createGeographicCoordinateSystem", specification = OGC_01009)
     GeographicCRS createGeographicCRS(String code)
             throws NoSuchAuthorityCodeException, FactoryException;
 
@@ -130,7 +123,6 @@ public interface CRSAuthorityFactory extends AuthorityFactory {
      * @throws FactoryException if the object creation failed for some other reason.
      * @see org.geotools.api.referencing.datum.DatumAuthorityFactory#createGeodeticDatum
      */
-    @UML(identifier = "createProjectedCoordinateSystem", specification = OGC_01009)
     ProjectedCRS createProjectedCRS(String code)
             throws NoSuchAuthorityCodeException, FactoryException;
 
@@ -155,7 +147,6 @@ public interface CRSAuthorityFactory extends AuthorityFactory {
      * @throws FactoryException if the object creation failed for some other reason.
      * @see org.geotools.api.referencing.datum.DatumAuthorityFactory#createVerticalDatum
      */
-    @UML(identifier = "createVerticalCoordinateSystem", specification = OGC_01009)
     VerticalCRS createVerticalCRS(String code)
             throws NoSuchAuthorityCodeException, FactoryException;
 }

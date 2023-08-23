@@ -9,17 +9,12 @@
  */
 package org.geotools.api.coverage;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19123;
-import static org.geotools.api.annotation.Specification.OGC_01004;
-
 import java.awt.image.Raster;
 import java.awt.image.renderable.RenderableImage;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import org.geotools.api.annotation.Specification;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.Envelope;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -67,7 +62,6 @@ import org.geotools.api.util.RecordType;
  * @author Alexander Petkov
  * @since GeoAPI 2.1
  */
-@UML(identifier = "CV_Coverage", specification = ISO_19123)
 public interface Coverage {
     /**
      * Returns the coordinate reference system to which the objects in its domain are referenced.
@@ -83,7 +77,6 @@ public interface Coverage {
      * @return The coordinate reference system used when accessing a coverage or grid coverage with
      *     the {@code evaluate(...)} methods.
      */
-    @UML(identifier = "CRS", obligation = MANDATORY, specification = ISO_19123)
     CoordinateReferenceSystem getCoordinateReferenceSystem();
 
     /**
@@ -107,7 +100,6 @@ public interface Coverage {
      * @return The bounding box for the coverage domain in coordinate system coordinates.
      * @todo We need to explain the relationship with {@link #getDomainExtents}, if any.
      */
-    @UML(identifier = "envelope", obligation = MANDATORY, specification = OGC_01004)
     Envelope getEnvelope();
 
     /**
@@ -118,7 +110,6 @@ public interface Coverage {
      *
      * @return The coverage range.
      */
-    @UML(identifier = "rangeType", obligation = MANDATORY, specification = ISO_19123)
     RecordType getRangeType();
 
     /**
@@ -140,7 +131,6 @@ public interface Coverage {
      * @throws PointOutsideCoverageException if the point is outside the coverage domain.
      * @throws CannotEvaluateException If the point can't be evaluated for some other reason.
      */
-    @UML(identifier = "evaluate", obligation = MANDATORY, specification = ISO_19123)
     Set<Record> evaluate(DirectPosition p, Collection<String> list)
             throws PointOutsideCoverageException, CannotEvaluateException;
 
@@ -163,7 +153,6 @@ public interface Coverage {
      * @throws CannotEvaluateException If the point can't be evaluated for some other reason.
      * @see Raster#getDataElements(int, int, Object)
      */
-    @UML(identifier = "evaluate", obligation = MANDATORY, specification = OGC_01004)
     Object evaluate(DirectPosition point)
             throws PointOutsideCoverageException, CannotEvaluateException;
 
@@ -187,7 +176,6 @@ public interface Coverage {
      * @throws ArrayIndexOutOfBoundsException if the {@code destination} array is not null and too
      *     small to hold the output.
      */
-    @UML(identifier = "evaluateAsBoolean", obligation = MANDATORY, specification = OGC_01004)
     boolean[] evaluate(DirectPosition point, boolean[] destination)
             throws PointOutsideCoverageException, CannotEvaluateException,
                     ArrayIndexOutOfBoundsException;
@@ -212,7 +200,6 @@ public interface Coverage {
      * @throws ArrayIndexOutOfBoundsException if the {@code destination} array is not null and too
      *     small to hold the output.
      */
-    @UML(identifier = "evaluateAsByte", obligation = MANDATORY, specification = OGC_01004)
     byte[] evaluate(DirectPosition point, byte[] destination)
             throws PointOutsideCoverageException, CannotEvaluateException,
                     ArrayIndexOutOfBoundsException;
@@ -238,7 +225,6 @@ public interface Coverage {
      *     small to hold the output.
      * @see Raster#getPixel(int, int, int[])
      */
-    @UML(identifier = "evaluateAsInteger", obligation = MANDATORY, specification = OGC_01004)
     int[] evaluate(DirectPosition point, int[] destination)
             throws PointOutsideCoverageException, CannotEvaluateException,
                     ArrayIndexOutOfBoundsException;
@@ -287,7 +273,6 @@ public interface Coverage {
      *     small to hold the output.
      * @see Raster#getPixel(int, int, double[])
      */
-    @UML(identifier = "evaluateAsDouble", obligation = MANDATORY, specification = OGC_01004)
     double[] evaluate(DirectPosition point, double[] destination)
             throws PointOutsideCoverageException, CannotEvaluateException,
                     ArrayIndexOutOfBoundsException;
@@ -302,7 +287,6 @@ public interface Coverage {
      *
      * @return The number of sample dimensions in the coverage.
      */
-    @UML(identifier = "numSampleDimensions", obligation = MANDATORY, specification = OGC_01004)
     int getNumSampleDimensions();
 
     /**
@@ -321,7 +305,6 @@ public interface Coverage {
      * @return Sample dimension information for the coverage.
      * @throws IndexOutOfBoundsException if {@code index} is out of bounds.
      */
-    @UML(identifier = "getSampleDimension", obligation = MANDATORY, specification = OGC_01004)
     SampleDimension getSampleDimension(int index) throws IndexOutOfBoundsException;
 
     /**
@@ -339,7 +322,6 @@ public interface Coverage {
      *
      * @return The list of sources data for a coverage.
      */
-    @UML(identifier = "getSource, numSource", obligation = MANDATORY, specification = OGC_01004)
     List<? extends Coverage> getSources();
 
     /**

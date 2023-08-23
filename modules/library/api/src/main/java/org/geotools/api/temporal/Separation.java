@@ -9,11 +9,6 @@
  */
 package org.geotools.api.temporal;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19108;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * Provides operations for calculating temporal length and distance.
  *
@@ -22,20 +17,17 @@ import org.geotools.api.annotation.UML;
  * @todo The Javadoc suggest that this interface should extends some kind of {@linkplain
  *     TemporalGeometricPrimitive temporal geometric primitive}.
  */
-@UML(identifier = "TM_Separation", specification = ISO_19108)
 public interface Separation {
     /**
      * Returns the distance from this {@linkplain TemporalGeometricPrimitive temporal geometric
      * primitive} to another {@linkplain TemporalGeometricPrimitive temporal geometric primitive}.
      * This is the absolute value of the difference b/n their temporal positions.
      */
-    @UML(identifier = "distance", obligation = MANDATORY, specification = ISO_19108)
     Duration distance(TemporalGeometricPrimitive other);
 
     /**
      * Return the duration of this {@linkplain TemporalGeometricPrimitive temporal geometric
      * primitive}.
      */
-    @UML(identifier = "length", obligation = MANDATORY, specification = ISO_19108)
     Duration length();
 }

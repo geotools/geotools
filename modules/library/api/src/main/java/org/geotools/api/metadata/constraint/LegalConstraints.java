@@ -9,12 +9,7 @@
  */
 package org.geotools.api.metadata.constraint;
 
-import static org.geotools.api.annotation.Obligation.CONDITIONAL;
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
 import java.util.Collection;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.util.InternationalString;
 
 /**
@@ -25,7 +20,6 @@ import org.geotools.api.util.InternationalString;
  * @author Cory Horner (Refractions Research)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "MD_LegalConstraints", specification = ISO_19115)
 public interface LegalConstraints extends Constraints {
     /**
      * Access constraints applied to assure the protection of privacy or intellectual property, and
@@ -34,7 +28,6 @@ public interface LegalConstraints extends Constraints {
      * @return Access constraints applied to assure the protection of privacy or intellectual
      *     property.
      */
-    @UML(identifier = "accessConstraints", obligation = OPTIONAL, specification = ISO_19115)
     Collection<Restriction> getAccessConstraints();
 
     /**
@@ -43,7 +36,6 @@ public interface LegalConstraints extends Constraints {
      *
      * @return Constraints applied to assure the protection of privacy or intellectual property.
      */
-    @UML(identifier = "useConstraints", obligation = OPTIONAL, specification = ISO_19115)
     Collection<Restriction> getUseConstraints();
 
     /**
@@ -54,6 +46,5 @@ public interface LegalConstraints extends Constraints {
      *
      * @return Other restrictions and legal prerequisites for accessing and using the resource.
      */
-    @UML(identifier = "otherConstraints", obligation = CONDITIONAL, specification = ISO_19115)
     Collection<? extends InternationalString> getOtherConstraints();
 }

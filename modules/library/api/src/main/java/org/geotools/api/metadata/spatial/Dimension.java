@@ -9,12 +9,6 @@
  */
 package org.geotools.api.metadata.spatial;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * Axis properties.
  *
@@ -23,14 +17,12 @@ import org.geotools.api.annotation.UML;
  * @author Cory Horner (Refractions Research)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "MD_Dimension", specification = ISO_19115)
 public interface Dimension {
     /**
      * Name of the axis.
      *
      * @return Name of the axis.
      */
-    @UML(identifier = "dimensionName", obligation = MANDATORY, specification = ISO_19115)
     DimensionNameType getDimensionName();
 
     /**
@@ -38,7 +30,6 @@ public interface Dimension {
      *
      * @return Number of elements along the axis.
      */
-    @UML(identifier = "dimensionSize", obligation = MANDATORY, specification = ISO_19115)
     Integer getDimensionSize();
 
     /**
@@ -47,6 +38,5 @@ public interface Dimension {
      * @return Degree of detail in the grid dataset, or {@code null}.
      * @unitof Measure
      */
-    @UML(identifier = "resolution", obligation = OPTIONAL, specification = ISO_19115)
     Double getResolution();
 }

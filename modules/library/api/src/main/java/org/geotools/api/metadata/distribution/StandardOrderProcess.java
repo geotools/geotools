@@ -9,11 +9,7 @@
  */
 package org.geotools.api.metadata.distribution;
 
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
 import java.util.Date;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.util.InternationalString;
 
 /**
@@ -24,7 +20,6 @@ import org.geotools.api.util.InternationalString;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "MD_StandardOrderProcess", specification = ISO_19115)
 public interface StandardOrderProcess {
     /**
      * Fees and terms for retrieving the resource. Include monetary units (as specified in ISO
@@ -32,7 +27,6 @@ public interface StandardOrderProcess {
      *
      * @return Fees and terms for retrieving the resource, or {@code null}.
      */
-    @UML(identifier = "fees", obligation = OPTIONAL, specification = ISO_19115)
     InternationalString getFees();
 
     /**
@@ -40,7 +34,6 @@ public interface StandardOrderProcess {
      *
      * @return Date and time when the dataset will be available, or {@code null}.
      */
-    @UML(identifier = "plannedAvailableDateTime", obligation = OPTIONAL, specification = ISO_19115)
     Date getPlannedAvailableDateTime();
 
     /**
@@ -49,7 +42,6 @@ public interface StandardOrderProcess {
      * @return General instructions, terms and services provided by the distributor, or {@code
      *     null}.
      */
-    @UML(identifier = "orderingInstructions", obligation = OPTIONAL, specification = ISO_19115)
     InternationalString getOrderingInstructions();
 
     /**
@@ -57,6 +49,5 @@ public interface StandardOrderProcess {
      *
      * @return Typical turnaround time for the filling of an order, or {@code null}.
      */
-    @UML(identifier = "turnaround", obligation = OPTIONAL, specification = ISO_19115)
     InternationalString getTurnaround();
 }

@@ -9,11 +9,6 @@
  */
 package org.geotools.api.temporal;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19108;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * A data type that shall be used to identify a temporal position within a day. Because {@linkplain
  * TemporalPosition temporal position} cannot by itself completely identify a single temporal
@@ -23,7 +18,6 @@ import org.geotools.api.annotation.UML;
  * @author Stephane Fellah (Image Matters)
  * @author Alexander Petkov
  */
-@UML(identifier = "TM_ClockTime", specification = ISO_19108)
 public interface ClockTime extends TemporalPosition {
     /**
      * A sequence of numbers with a structure similar to that of {@link CalendarDate#getCalendarDate
@@ -35,6 +29,5 @@ public interface ClockTime extends TemporalPosition {
      * @todo Should we returns an array of some primitive type instead?
      * @todo Method name doesn't match the UML attribute name.
      */
-    @UML(identifier = "clkTime", obligation = MANDATORY, specification = ISO_19108)
     Number[] getClockTime();
 }

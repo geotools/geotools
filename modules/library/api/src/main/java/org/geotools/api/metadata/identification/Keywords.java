@@ -9,12 +9,7 @@
  */
 package org.geotools.api.metadata.identification;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
 import java.util.Collection;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.metadata.citation.Citation;
 import org.geotools.api.util.InternationalString;
 
@@ -25,14 +20,12 @@ import org.geotools.api.util.InternationalString;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "MD_Keywords", specification = ISO_19115)
 public interface Keywords {
     /**
      * Commonly used word(s) or formalised word(s) or phrase(s) used to describe the subject.
      *
      * @return Word(s) or phrase(s) used to describe the subject.
      */
-    @UML(identifier = "keyword", obligation = MANDATORY, specification = ISO_19115)
     Collection<? extends InternationalString> getKeywords();
 
     /**
@@ -40,7 +33,6 @@ public interface Keywords {
      *
      * @return Subject matter used to group similar keywords, or {@code null}.
      */
-    @UML(identifier = "type", obligation = OPTIONAL, specification = ISO_19115)
     KeywordType getType();
 
     /**
@@ -49,6 +41,5 @@ public interface Keywords {
      * @return Name of registered thesaurus or similar authoritative source of keywords, or {@code
      *     null}.
      */
-    @UML(identifier = "thesaurusName", obligation = OPTIONAL, specification = ISO_19115)
     Citation getThesaurusName();
 }

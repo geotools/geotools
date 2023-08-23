@@ -23,7 +23,6 @@ import org.geotools.api.metadata.citation.Citation;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "MD_PortrayalCatalogueReference", specification = ISO_19115)
 public interface PortrayalCatalogueReference {
     /**
      * Bibliographic reference to the portrayal catalogue cited.

@@ -9,10 +9,6 @@
  */
 package org.geotools.api.metadata.quality;
 
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * Degree of adherence to logical rules of data structure, attribution and relationships (data
  * structure can be conceptual, logical or physical).
@@ -21,5 +17,4 @@ import org.geotools.api.annotation.UML;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "DQ_LogicalConsistency", specification = ISO_19115)
 public interface LogicalConsistency extends Element {}

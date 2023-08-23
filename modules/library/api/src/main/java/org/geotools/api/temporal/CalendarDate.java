@@ -9,10 +9,6 @@
  */
 package org.geotools.api.temporal;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19108;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.util.InternationalString;
 
 /**
@@ -21,13 +17,11 @@ import org.geotools.api.util.InternationalString;
  * @author Stephane Fellah (Image Matters)
  * @author Alexander Petkov
  */
-@UML(identifier = "TM_CalDate", specification = ISO_19108)
 public interface CalendarDate extends TemporalPosition {
     /**
      * Provides the name of the {@linkplain CalendarEra calendar era} to which the date is
      * referenced.
      */
-    @UML(identifier = "calendarEraName", obligation = MANDATORY, specification = ISO_19108)
     InternationalString getCalendarEraName();
 
     /**
@@ -39,6 +33,5 @@ public interface CalendarDate extends TemporalPosition {
      *
      * @todo Should we returns an array of some primitive type instead?
      */
-    @UML(identifier = "calDate", obligation = MANDATORY, specification = ISO_19108)
     int[] getCalendarDate();
 }

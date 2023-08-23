@@ -9,11 +9,7 @@
  */
 package org.geotools.api.util;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19103;
-
 import java.util.List;
-import org.geotools.api.annotation.UML;
 
 /**
  * A sequence of identifiers rooted within the context of a {@linkplain NameSpace namespace}. This
@@ -124,7 +120,6 @@ import org.geotools.api.annotation.UML;
  * @since GeoAPI 1.0
  * @see javax.naming.Name
  */
-@UML(identifier = "GenericName", specification = ISO_19103)
 public interface GenericName extends Comparable<GenericName> {
     /**
      * Returns the scope (name space) in which this name is local. The scope is set on creation and
@@ -138,7 +133,6 @@ public interface GenericName extends Comparable<GenericName> {
      * @return The scope of this name.
      * @since GeoAPI 2.1
      */
-    @UML(identifier = "scope", obligation = MANDATORY, specification = ISO_19103)
     NameSpace scope();
 
     /**
@@ -157,7 +151,6 @@ public interface GenericName extends Comparable<GenericName> {
      * @return The depth of this name.
      * @since GeoAPI 2.1
      */
-    @UML(identifier = "depth", obligation = MANDATORY, specification = ISO_19103)
     int depth();
 
     /**
@@ -177,7 +170,6 @@ public interface GenericName extends Comparable<GenericName> {
      * @return The local names making this generic name, without the {@linkplain #scope scope}.
      *     Shall never be {@code null} neither {@linkplain List#isEmpty empty}.
      */
-    @UML(identifier = "parsedName", obligation = MANDATORY, specification = ISO_19103)
     List<? extends LocalName> getParsedNames();
 
     /**
@@ -193,7 +185,6 @@ public interface GenericName extends Comparable<GenericName> {
      * @return The first element in the list of {@linkplain #getParsedNames parsed names}.
      * @since GeoAPI 2.2
      */
-    @UML(identifier = "ScopedName.head", obligation = MANDATORY, specification = ISO_19103)
     LocalName head();
 
     /**
@@ -258,7 +249,6 @@ public interface GenericName extends Comparable<GenericName> {
      * @return A concatenation of the given name with this name.
      * @since GeoAPI 2.1
      */
-    @UML(identifier = "push", obligation = MANDATORY, specification = ISO_19103)
     ScopedName push(GenericName scope);
 
     /**

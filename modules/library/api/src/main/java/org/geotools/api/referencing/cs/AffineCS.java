@@ -9,10 +9,6 @@
  */
 package org.geotools.api.referencing.cs;
 
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * A two- or three-dimensional coordinate system with straight axes that are not necessarily
  * orthogonal. An {@code AffineCS} shall have two or three {@linkplain #getAxis axis associations}.
@@ -30,5 +26,4 @@ import org.geotools.api.annotation.UML;
  * @since GeoAPI 2.0
  * @see CartesianCS
  */
-@UML(identifier = "CS_AffineCS", specification = ISO_19111)
 public interface AffineCS extends CoordinateSystem {}

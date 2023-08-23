@@ -9,10 +9,6 @@
  */
 package org.geotools.api.metadata.spatial;
 
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * Digital mechanism used to represent spatial information.
  *
@@ -20,5 +16,4 @@ import org.geotools.api.annotation.UML;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "MD_SpatialRepresentation", specification = ISO_19115)
 public interface SpatialRepresentation {}

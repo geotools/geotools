@@ -9,10 +9,6 @@
  */
 package org.geotools.api.temporal;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19108;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.metadata.extent.Extent;
 import org.geotools.api.referencing.ReferenceIdentifier;
 import org.geotools.api.referencing.ReferenceSystem;
@@ -27,7 +23,6 @@ import org.geotools.api.referencing.ReferenceSystem;
  * @author Stephane Fellah (Image Matters)
  * @author Alexander Petkov
  */
-@UML(identifier = "TM_ReferenceSystem", specification = ISO_19108)
 public interface TemporalReferenceSystem extends ReferenceSystem {
     /**
      * Provides a name that uniquely identifies the temporal referece system.
@@ -40,7 +35,6 @@ public interface TemporalReferenceSystem extends ReferenceSystem {
      * @return {@link ReferenceIdentifier} for the temporal reference system
      */
     @Override
-    @UML(identifier = "name", obligation = MANDATORY, specification = ISO_19108)
     ReferenceIdentifier getName();
 
     /**
@@ -53,6 +47,5 @@ public interface TemporalReferenceSystem extends ReferenceSystem {
      * <p>Please note this is very similar to ReferenceSystem.getValidArea() from ISO 19115.
      */
     @Override
-    @UML(identifier = "DomainOfValidity", obligation = MANDATORY, specification = ISO_19108)
     Extent getDomainOfValidity();
 }

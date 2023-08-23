@@ -9,10 +9,7 @@
  */
 package org.geotools.api.referencing.operation;
 
-import static org.geotools.api.annotation.Specification.OGC_01009;
-
 import java.util.Set;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.metadata.Identifier;
 import org.geotools.api.referencing.AuthorityFactory;
 import org.geotools.api.referencing.FactoryException;
@@ -28,7 +25,6 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "CT_CoordinateTransformationAuthorityFactory", specification = OGC_01009)
 public interface CoordinateOperationAuthorityFactory extends AuthorityFactory {
     /**
      * Creates an operation from a single operation code. The "{@linkplain Identifier#getAuthority
@@ -41,7 +37,6 @@ public interface CoordinateOperationAuthorityFactory extends AuthorityFactory {
      * @throws NoSuchAuthorityCodeException if the specified {@code code} was not found.
      * @throws FactoryException if the object creation failed for some other reason.
      */
-    @UML(identifier = "createFromTransformationCode", specification = OGC_01009)
     CoordinateOperation createCoordinateOperation(String code)
             throws NoSuchAuthorityCodeException, FactoryException;
 
@@ -61,7 +56,6 @@ public interface CoordinateOperationAuthorityFactory extends AuthorityFactory {
      * @throws NoSuchAuthorityCodeException if a specified code was not found.
      * @throws FactoryException if the object creation failed for some other reason.
      */
-    @UML(identifier = "createFromCoordinateSystemCodes", specification = OGC_01009)
     Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(
             String sourceCRS, String targetCRS)
             throws NoSuchAuthorityCodeException, FactoryException;

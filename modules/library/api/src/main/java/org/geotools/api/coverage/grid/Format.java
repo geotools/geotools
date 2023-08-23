@@ -10,7 +10,6 @@
 package org.geotools.api.coverage.grid;
 
 import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
 import static org.geotools.api.annotation.Specification.OGC_01004;
 
 import org.geotools.api.annotation.UML;
@@ -25,26 +24,20 @@ import org.geotools.api.parameter.ParameterValueGroup;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "CV_Format", specification = OGC_01004)
 public interface Format {
     /** Name of the file format. */
-    @UML(identifier = "name", obligation = MANDATORY, specification = OGC_01004)
     String getName();
 
     /** Description of the file format. If no description, the value will be {@code null}. */
-    @UML(identifier = "description", obligation = OPTIONAL, specification = OGC_01004)
     String getDescription();
 
     /** Vendor or agency for the format. */
-    @UML(identifier = "vendor", obligation = OPTIONAL, specification = OGC_01004)
     String getVendor();
 
     /** Documentation URL for the format. */
-    @UML(identifier = "docURL", obligation = OPTIONAL, specification = OGC_01004)
     String getDocURL();
 
     /** Version number of the format. */
-    @UML(identifier = "version", obligation = OPTIONAL, specification = OGC_01004)
     String getVersion();
 
     /** Retrieve the parameter information for a {@link GridCoverageReader#read read} operation. */

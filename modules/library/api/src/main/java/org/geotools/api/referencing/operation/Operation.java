@@ -9,10 +9,6 @@
  */
 package org.geotools.api.referencing.operation;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.parameter.ParameterValueGroup;
 
 /**
@@ -26,14 +22,12 @@ import org.geotools.api.parameter.ParameterValueGroup;
  * @since GeoAPI 1.0
  * @see OperationMethod
  */
-@UML(identifier = "CC_Operation", specification = ISO_19111)
 public interface Operation extends SingleOperation {
     /**
      * Returns the operation method.
      *
      * @return The operation method.
      */
-    @UML(identifier = "usesMethod", obligation = MANDATORY, specification = ISO_19111)
     OperationMethod getMethod();
 
     /**
@@ -42,6 +36,5 @@ public interface Operation extends SingleOperation {
      * @return The parameter values.
      * @rename Added "{@code Parameter}" prefix for more consistency with the return type.
      */
-    @UML(identifier = "usesValue", obligation = MANDATORY, specification = ISO_19111)
     ParameterValueGroup getParameterValues();
 }

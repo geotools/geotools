@@ -9,10 +9,6 @@
  */
 package org.geotools.api.metadata.quality;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.metadata.citation.Citation;
 import org.geotools.api.util.InternationalString;
 
@@ -25,14 +21,12 @@ import org.geotools.api.util.InternationalString;
  * @author Cory Horner (Refractions Research)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "DQ_ConformanceResult", specification = ISO_19115)
 public interface ConformanceResult extends Result {
     /**
      * Citation of product specification or user requirement against which data is being evaluated.
      *
      * @return Citation of product specification or user requirement.
      */
-    @UML(identifier = "specification", obligation = MANDATORY, specification = ISO_19115)
     Citation getSpecification();
 
     /**
@@ -40,7 +34,6 @@ public interface ConformanceResult extends Result {
      *
      * @return Explanation of the meaning of conformance.
      */
-    @UML(identifier = "explanation", obligation = MANDATORY, specification = ISO_19115)
     InternationalString getExplanation();
 
     /**
@@ -48,6 +41,5 @@ public interface ConformanceResult extends Result {
      *
      * @return Indication of the conformance result.
      */
-    @UML(identifier = "pass", obligation = MANDATORY, specification = ISO_19115)
     boolean pass();
 }

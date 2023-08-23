@@ -9,10 +9,6 @@
  */
 package org.geotools.api.metadata.citation;
 
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.util.InternationalString;
 
 /**
@@ -22,7 +18,6 @@ import org.geotools.api.util.InternationalString;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "CI_Contact", specification = ISO_19115)
 public interface Contact {
     /**
      * Telephone numbers at which the organization or individual may be contacted. Returns {@code
@@ -31,7 +26,6 @@ public interface Contact {
      * @return Telephone numbers at which the organization or individual may be contacted, or {@code
      *     null}.
      */
-    @UML(identifier = "phone", obligation = OPTIONAL, specification = ISO_19115)
     Telephone getPhone();
 
     /**
@@ -41,7 +35,6 @@ public interface Contact {
      * @return Physical and email address at which the organization or individual may be contacted,
      *     or {@code null}.
      */
-    @UML(identifier = "address", obligation = OPTIONAL, specification = ISO_19115)
     Address getAddress();
 
     /**
@@ -51,7 +44,6 @@ public interface Contact {
      * @return On-line information that can be used to contact the individual or organization, or
      *     {@code null}.
      */
-    @UML(identifier = "onLineResource", obligation = OPTIONAL, specification = ISO_19115)
     OnLineResource getOnLineResource();
 
     /**
@@ -61,7 +53,6 @@ public interface Contact {
      * @return Time period when individuals can contact the organization or individual, or {@code
      *     null}.
      */
-    @UML(identifier = "hoursOfService", obligation = OPTIONAL, specification = ISO_19115)
     InternationalString getHoursOfService();
 
     /**
@@ -71,6 +62,5 @@ public interface Contact {
      * @return Supplemental instructions on how or when to contact the individual or organization,
      *     or {@code null}.
      */
-    @UML(identifier = "contactInstructions", obligation = OPTIONAL, specification = ISO_19115)
     InternationalString getContactInstructions();
 }

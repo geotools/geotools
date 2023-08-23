@@ -9,10 +9,6 @@
  */
 package org.geotools.api.referencing.crs;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.referencing.datum.EngineeringDatum;
 
 /**
@@ -62,10 +58,8 @@ import org.geotools.api.referencing.datum.EngineeringDatum;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "SC_EngineeringCRS", specification = ISO_19111)
 public interface EngineeringCRS extends SingleCRS {
     /** Returns the datum, which must be an engineering one. */
     @Override
-    @UML(identifier = "usesDatum", obligation = MANDATORY, specification = ISO_19111)
     EngineeringDatum getDatum();
 }

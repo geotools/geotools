@@ -9,7 +9,6 @@
  */
 package org.geotools.api.metadata.spatial;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
 import static org.geotools.api.annotation.Obligation.OPTIONAL;
 import static org.geotools.api.annotation.Specification.ISO_19115;
 
@@ -29,7 +28,6 @@ import org.locationtech.jts.geom.Point;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "MD_Georectified", specification = ISO_19115)
 public interface Georectified extends GridSpatialRepresentation {
     /**
      * Indication of whether or not geographic position points are available to test the accuracy of
@@ -37,7 +35,6 @@ public interface Georectified extends GridSpatialRepresentation {
      *
      * @return Whether or not geographic position points are available to test accuracy.
      */
-    @UML(identifier = "checkPointAvailability", obligation = MANDATORY, specification = ISO_19115)
     boolean isCheckPointAvailable();
 
     /**
@@ -46,7 +43,6 @@ public interface Georectified extends GridSpatialRepresentation {
      *
      * @return Description of geographic position points used to test accuracy, or {@code null}.
      */
-    @UML(identifier = "checkPointDescription", obligation = OPTIONAL, specification = ISO_19115)
     InternationalString getCheckPointDescription();
 
     /**
@@ -57,7 +53,6 @@ public interface Georectified extends GridSpatialRepresentation {
      *
      * @return The corner points.
      */
-    @UML(identifier = "cornerPoints", obligation = MANDATORY, specification = ISO_19115)
     List<? extends Point> getCornerPoints();
 
     /**
@@ -66,7 +61,6 @@ public interface Georectified extends GridSpatialRepresentation {
      *
      * @return The center point, or {@code null}.
      */
-    @UML(identifier = "centerPoint", obligation = OPTIONAL, specification = ISO_19115)
     Point getCenterPoint();
 
     /**
@@ -74,7 +68,6 @@ public interface Georectified extends GridSpatialRepresentation {
      *
      * @return Earth location of the pixel.
      */
-    @UML(identifier = "pointInPixel", obligation = MANDATORY, specification = ISO_19115)
     PixelOrientation getPointInPixel();
 
     /**

@@ -9,11 +9,7 @@
  */
 package org.geotools.api.metadata.extent;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
 import java.util.Collection;
-import org.geotools.api.annotation.UML;
 import org.locationtech.jts.geom.Polygon;
 
 /**
@@ -24,13 +20,11 @@ import org.locationtech.jts.geom.Polygon;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "EX_BoundingPolygon", specification = ISO_19115)
 public interface BoundingPolygon extends GeographicExtent {
     /**
      * Returns the sets of points defining the bounding polygon.
      *
      * @return The sets of points defining the bounding polygon.
      */
-    @UML(identifier = "polygon", obligation = MANDATORY, specification = ISO_19115)
     Collection<Polygon> getPolygons();
 }

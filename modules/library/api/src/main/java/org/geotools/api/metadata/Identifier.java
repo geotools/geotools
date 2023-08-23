@@ -9,11 +9,6 @@
  */
 package org.geotools.api.metadata;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.metadata.citation.Citation;
 
 /**
@@ -23,7 +18,6 @@ import org.geotools.api.metadata.citation.Citation;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "MD_Identifier", specification = ISO_19115)
 public interface Identifier {
     /**
      * Key for the <code>{@value}</code> property to be given to the {@linkplain
@@ -48,7 +42,6 @@ public interface Identifier {
      *
      * @return Value identifying an instance in the namespace.
      */
-    @UML(identifier = "code", obligation = MANDATORY, specification = ISO_19115)
     String getCode();
 
     /**
@@ -57,6 +50,5 @@ public interface Identifier {
      *
      * @return Party responsible for definition and maintenance of the code.
      */
-    @UML(identifier = "authority", obligation = OPTIONAL, specification = ISO_19115)
     Citation getAuthority();
 }

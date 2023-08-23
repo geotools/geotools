@@ -59,7 +59,6 @@ import org.geotools.api.referencing.datum.Ellipsoid;
  * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/">Projection transform list on
  *     RemoteSensing.org</A>
  */
-@UML(identifier = "CT_MathTransformFactory", specification = OGC_01009)
 public interface MathTransformFactory extends Factory {
     /**
      * Returns a set of available methods for {@linkplain MathTransform math transforms}. For each
@@ -207,7 +206,6 @@ public interface MathTransformFactory extends Factory {
      * @return The affine transform.
      * @throws FactoryException if the object creation failed.
      */
-    @UML(identifier = "createAffineTransform", obligation = MANDATORY, specification = OGC_01009)
     MathTransform createAffineTransform(Matrix matrix) throws FactoryException;
 
     /**
@@ -264,7 +262,6 @@ public interface MathTransformFactory extends Factory {
      * @return The math transform (never {@code null}).
      * @throws FactoryException if the object creation failed.
      */
-    @UML(identifier = "createFromXML", obligation = MANDATORY, specification = OGC_01009)
     MathTransform createFromXML(String xml) throws FactoryException;
 
     /**
@@ -276,6 +273,5 @@ public interface MathTransformFactory extends Factory {
      * @throws FactoryException if the Well-Known Text can't be parsed, or if the math transform
      *     creation failed from some other reason.
      */
-    @UML(identifier = "createFromWKT", obligation = MANDATORY, specification = OGC_01009)
     MathTransform createFromWKT(String wkt) throws FactoryException;
 }

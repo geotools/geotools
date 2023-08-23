@@ -9,11 +9,6 @@
  */
 package org.geotools.api.referencing.operation;
 
-import static org.geotools.api.annotation.Obligation.CONDITIONAL;
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
@@ -29,7 +24,6 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
  * @since GeoAPI 1.0
  * @see Transformation
  */
-@UML(identifier = "CC_Conversion", specification = ISO_19111)
 public interface Conversion extends Operation {
     /**
      * Returns the source CRS. Conversions may have a source CRS that is not specified here, but
@@ -38,7 +32,6 @@ public interface Conversion extends Operation {
      * @return The source CRS, or {@code null} if not available.
      */
     @Override
-    @UML(identifier = "sourceCRS", obligation = OPTIONAL, specification = ISO_19111)
     CoordinateReferenceSystem getSourceCRS();
 
     /**
@@ -49,7 +42,6 @@ public interface Conversion extends Operation {
      * @return The target CRS, or {@code null} if not available.
      */
     @Override
-    @UML(identifier = "targetCRS", obligation = OPTIONAL, specification = ISO_19111)
     CoordinateReferenceSystem getTargetCRS();
 
     /**
@@ -58,6 +50,5 @@ public interface Conversion extends Operation {
      * @return Always {@code null}.
      */
     @Override
-    @UML(identifier = "operationVersion", obligation = CONDITIONAL, specification = ISO_19111)
     String getOperationVersion();
 }

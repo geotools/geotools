@@ -9,9 +9,6 @@
  */
 package org.geotools.api.referencing.operation;
 
-import static org.geotools.api.annotation.Specification.OGC_01009;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
 
@@ -40,14 +37,12 @@ import org.geotools.api.geometry.MismatchedDimensionException;
  * @see MathTransformFactory
  * @see CoordinateOperation#getMathTransform
  */
-@UML(identifier = "CT_MathTransform", specification = OGC_01009)
 public interface MathTransform {
     /**
      * Gets the dimension of input points.
      *
      * @return The dimension of input points.
      */
-    @UML(identifier = "getDimSource", specification = OGC_01009)
     int getSourceDimensions();
 
     /**
@@ -55,7 +50,6 @@ public interface MathTransform {
      *
      * @return The dimension of output points.
      */
-    @UML(identifier = "getDimTarget", specification = OGC_01009)
     int getTargetDimensions();
 
     /**
@@ -74,7 +68,6 @@ public interface MathTransform {
      *     expected dimension.
      * @throws TransformException if the point can't be transformed.
      */
-    @UML(identifier = "transform", specification = OGC_01009)
     DirectPosition transform(DirectPosition ptSrc, DirectPosition ptDst)
             throws MismatchedDimensionException, TransformException;
 
@@ -100,7 +93,6 @@ public interface MathTransform {
      *     Implementations that fall in the later case should set the {@linkplain
      *     TransformException#getLastCompletedTransform last completed transform} to {@code this}.
      */
-    @UML(identifier = "transformList", specification = OGC_01009)
     void transform(double[] srcPts, int srcOff, double[] dstPts, int dstOff, int numPts)
             throws TransformException;
 
@@ -213,7 +205,6 @@ public interface MathTransform {
      * @throws MismatchedDimensionException if {@code point} doesn't have the expected dimension.
      * @throws TransformException if the derivative can't be evaluated at the specified point.
      */
-    @UML(identifier = "derivative", specification = OGC_01009)
     Matrix derivative(final DirectPosition point)
             throws MismatchedDimensionException, TransformException;
 
@@ -227,7 +218,6 @@ public interface MathTransform {
      * @return The inverse transform.
      * @throws NoninvertibleTransformException if the transform can't be inversed.
      */
-    @UML(identifier = "inverse", specification = OGC_01009)
     MathTransform inverse() throws NoninvertibleTransformException;
 
     /**
@@ -236,7 +226,6 @@ public interface MathTransform {
      * @return {@code true} if this {@code MathTransform} is an identity transform; {@code false}
      *     otherwise.
      */
-    @UML(identifier = "isIdentity", specification = OGC_01009)
     boolean isIdentity();
 
     /**
@@ -248,6 +237,5 @@ public interface MathTransform {
      *     object.
      * @throws UnsupportedOperationException If this object can't be formatted as WKT.
      */
-    @UML(identifier = "getWKT", specification = OGC_01009)
     String toWKT() throws UnsupportedOperationException;
 }

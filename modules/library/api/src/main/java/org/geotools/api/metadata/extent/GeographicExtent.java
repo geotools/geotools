@@ -9,11 +9,6 @@
  */
 package org.geotools.api.metadata.extent;
 
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * Base interface for geographic area of the dataset.
  *
@@ -22,7 +17,6 @@ import org.geotools.api.annotation.UML;
  * @author Cory Horner (Refractions Research)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "EX_GeographicExtent", specification = ISO_19115)
 public interface GeographicExtent {
     /**
      * Indication of whether the bounding polygon encompasses an area covered by the data
@@ -31,6 +25,5 @@ public interface GeographicExtent {
      * @return {@code true} for inclusion, {@code false} for exclusion, or {@code null} if
      *     unspecified.
      */
-    @UML(identifier = "extentTypeCode", obligation = OPTIONAL, specification = ISO_19115)
     Boolean getInclusion();
 }

@@ -9,11 +9,7 @@
  */
 package org.geotools.api.style;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19117;
-
 import java.util.List;
-import org.geotools.api.annotation.UML;
 
 /**
  * A UserStyle is at the same semantic level as a NamedStyle used in the context of a WMS. In a
@@ -30,7 +26,6 @@ import org.geotools.api.annotation.UML;
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.2
  */
-@UML(identifier = "PF_PortrayalCatalog", specification = ISO_19117)
 public interface Style {
 
     /**
@@ -55,7 +50,6 @@ public interface Style {
     boolean isDefault();
 
     /** Returns a collection of feature type style. */
-    @UML(identifier = "featurePortrayal", obligation = MANDATORY, specification = ISO_19117)
     List<? extends FeatureTypeStyle> featureTypeStyles();
 
     /**
@@ -64,7 +58,6 @@ public interface Style {
      *
      * @return PortrayalSpecification
      */
-    @UML(identifier = "defaultPortrayalSpec", obligation = MANDATORY, specification = ISO_19117)
     Symbolizer getDefaultSpecification();
 
     /**

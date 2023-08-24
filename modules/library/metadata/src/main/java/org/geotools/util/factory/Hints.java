@@ -449,14 +449,6 @@ public class Hints extends RenderingHints {
             new Key("org.geotools.api.referencing.crs.CoordinateReferenceSystem");
 
     /**
-     * The {@link org.geotools.api.geometry.Precision} to use in ISO geometry factories.
-     *
-     * @see #JTS_PRECISION_MODEL
-     * @since 2.5
-     */
-    public static final Key PRECISION = new Key("org.geotools.api.geometry.Precision");
-
-    /**
      * The default linearization tolerance for curved geometries
      *
      * @see CurvedGeometryFactory

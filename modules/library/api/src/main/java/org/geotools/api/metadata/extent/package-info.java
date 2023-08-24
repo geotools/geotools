@@ -21,9 +21,8 @@
  * org.geotools.api.metadata.extent.VerticalExtent vertical} extent of the referring entity.
  *
  * <p>The {@linkplain org.geotools.api.metadata.extent.GeographicExtent geographic extent} can be
- * subclassed as {@linkplain org.geotools.api.metadata.extent.BoundingPolygon bounding polygon},
- * {@linkplain org.geotools.api.metadata.extent.GeographicBoundingBox geographic bounding box} and
- * {@linkplain org.geotools.api.metadata.extent.GeographicDescription geographic description}.
+ * subclassed as {@linkplain org.geotools.api.metadata.extent.GeographicBoundingBox geographic
+ * bounding box}.
  *
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @since GeoAPI 1.0

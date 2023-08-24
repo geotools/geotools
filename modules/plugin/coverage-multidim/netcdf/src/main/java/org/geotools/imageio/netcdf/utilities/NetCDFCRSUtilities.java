@@ -43,7 +43,6 @@ import org.geotools.api.temporal.Position;
 import org.geotools.imageio.Identification;
 import org.geotools.measure.UnitFormat;
 import org.geotools.measure.UnitFormatter;
-import org.geotools.metadata.sql.MetadataException;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
@@ -490,8 +489,6 @@ public class NetCDFCRSUtilities {
      *
      * @param unitName The name of the unit. Should not be {@code null}.
      * @return The unit matching with the specified name.
-     * @throws MetadataException if the unit name does not match with the {@linkplain
-     *     #UNIT_FORMATTER unit format}.
      */
     static Unit<?> getUnit(final String unitName) throws FactoryException {
         if (contains(unitName, METERS)) {

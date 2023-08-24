@@ -13,7 +13,6 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -25,7 +24,6 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Logger;
-import org.geotools.api.metadata.identification.CharacterSet;
 import org.junit.Test;
 
 /**
@@ -36,26 +34,6 @@ import org.junit.Test;
 public final class CodeListTest {
     /** The logger to use. */
     private static final Logger LOGGER = Logger.getLogger("org.geotools.api");
-
-    /**
-     * Tests the {@link CharacterSet} code list. At the difference of other code lists, its {@link
-     * CodeList#matches} method is overriden.
-     */
-    @Test
-    public void testCharacterSet() {
-        final CodeList code = CharacterSet.UTF_8;
-        assertEquals("UTF_8", code.name());
-        assertEquals("utf8", code.identifier());
-        assertTrue(code.matches("UTF8"));
-        assertTrue(code.matches("UTF_8"));
-        assertTrue(code.matches("UTF-8"));
-        assertFalse(code.matches("UTF 8"));
-        assertSame(code, CharacterSet.valueOf("UTF_8"));
-        assertSame(code, CharacterSet.valueOf("UTF-8"));
-        assertSame(code, CharacterSet.valueOf("UTF8"));
-        assertSame(code, CharacterSet.valueOf("utf8"));
-        assertNotSame(code, CharacterSet.valueOf("UTF_7"));
-    }
 
     /** Tests the instantiation of every code lists. */
     @Test

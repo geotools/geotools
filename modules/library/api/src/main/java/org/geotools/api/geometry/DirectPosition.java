@@ -120,7 +120,6 @@ public interface DirectPosition {
      * @since GeoAPI 2.2
      */
     @UML(identifier = "direct", obligation = CONDITIONAL, specification = ISO_19107)
-    @Deprecated
     DirectPosition getDirectPosition();
 
     /**

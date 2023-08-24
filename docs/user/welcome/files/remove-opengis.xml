@@ -28,78 +28,86 @@
         </fileset>
         <echo message="Files containing org.opengis.filter.FilterFactory: ${toString:filterFactory.files}" />
         <echo level="warning">  check: FilterFactory and Collecions use of contains((String) null)</echo>
-        <echo level="warning">  check: FilterFactory and Collecion use of equals((String) null)</echo>
+        <echo level="warning">  check: FilterFactory and Collection use of equals((String) null)</echo>
 
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\.property\(null\)"/>
+            <substitution expression=".property((String) null)"/>
+            <fileset refid="filterFactory.files"/>
+        </replaceregexp>
 
-        <replace dir="${project.dir}" summary="yes">
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\.beyond\(null\)"/>
+            <substitution expression=".beyond((String) null)"/>
+            <fileset refid="filterFactory.files"/>
+        </replaceregexp>
 
-        <fileset refid="filterFactory.files"/>
-        
-        <replacefilter>
-            <replacetoken>.property(null)</replacetoken>
-            <replacevalue>.property((String) null)</replacevalue>
-        </replacefilter>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\.contains\(null\)"/>
+            <substitution expression=".contains((String) null)"/>
+            <fileset refid="filterFactory.files"/>
+        </replaceregexp>
 
-        <replacefilter>
-            <replacetoken>.beyond(null)</replacetoken>
-            <replacevalue>.beyond((String) null)</replacevalue>
-        </replacefilter>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\.crosses\(null\)"/>
+            <substitution expression=".crosses((String) null)"/>
+            <fileset refid="filterFactory.files"/>
+        </replaceregexp>
 
-        <replacefilter>
-            <replacetoken>.contains(null)</replacetoken>
-            <replacevalue>.contains((String) null)</replacevalue>
-        </replacefilter>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\.disjoint\(null\)"/>
+            <substitution expression=".disjoint((String) null)"/>
+            <fileset refid="filterFactory.files"/>
+        </replaceregexp>
 
-        <replacefilter>
-            <replacetoken>.crosses(null)</replacetoken>
-            <replacevalue>.crosses((String) null)</replacevalue>
-        </replacefilter>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\.intersects\(null\)"/>
+            <substitution expression=".intersects((String) null)"/>
+            <fileset refid="filterFactory.files"/>
+        </replaceregexp>
 
-        <replacefilter>
-            <replacetoken>.disjoint(null)</replacetoken>
-            <replacevalue>.disjoint((String) null)</replacevalue>
-        </replacefilter>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\.overlaps\(null\)"/>
+            <substitution expression=".overlaps((String) null)"/>
+            <fileset refid="filterFactory.files"/>
+        </replaceregexp>
 
-        <replacefilter>
-            <replacetoken>.dwithin(null)</replacetoken>
-            <replacevalue>.dwithin((String) null)</replacevalue>
-        </replacefilter>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\.equals\(null\)"/>
+            <substitution expression=".equals((String) null)"/>
+            <fileset refid="filterFactory.files"/>
+        </replaceregexp>
 
-        <replacefilter>
-            <replacetoken>.equals(null)</replacetoken>
-            <replacevalue>.equals((String) null)</replacevalue>
-        </replacefilter>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\.dwithin\(null\)"/>
+            <substitution expression=".dwithin((String) null)"/>
+            <fileset refid="filterFactory.files"/>
+        </replaceregexp>
 
-        <replacefilter>
-            <replacetoken>.intersects(null)</replacetoken>
-            <replacevalue>.intersects((String) null)</replacevalue>
-        </replacefilter>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\.touches\(null\)"/>
+            <substitution expression=".touches((String) null)"/>
+            <fileset refid="filterFactory.files"/>
+        </replaceregexp>
 
-        <replacefilter>
-            <replacetoken>.overlaps(null)</replacetoken>
-            <replacevalue>.overlaps((String) null)</replacevalue>
-        </replacefilter>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\.overlaps\(null\)"/>
+            <substitution expression=".overlaps((String) null)"/>
+            <fileset refid="filterFactory.files"/>
+        </replaceregexp>
 
-        <replacefilter>
-            <replacetoken>.touches(null)</replacetoken>
-            <replacevalue>.touches((String) null)</replacevalue>
-        </replacefilter>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\.touches\(null\)"/>
+            <substitution expression=".touches((String) null)"/>
+            <fileset refid="filterFactory.files"/>
+        </replaceregexp>
 
-        <replacefilter>
-            <replacetoken>.overlaps(null)</replacetoken>
-            <replacevalue>.overlaps((String) null)</replacevalue>
-        </replacefilter>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\.within\(null\)"/>
+            <substitution expression=".within((String) null)"/>
+            <fileset refid="filterFactory.files"/>
+        </replaceregexp>
 
-        <replacefilter>
-            <replacetoken>.touches(null)</replacetoken>
-            <replacevalue>.touches((String) null)</replacevalue>
-        </replacefilter>
-
-        <replacefilter>
-            <replacetoken>.within(null)</replacetoken>
-            <replacevalue>.within((String) null)</replacevalue>
-        </replacefilter>
-        </replace>
     </target>
 
     <!-- the following tasks run after _opengis above to reflect api refactoring -->

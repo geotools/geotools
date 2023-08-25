@@ -18,7 +18,7 @@ package org.geotools.sld.v1_1.bindings;
 
 import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.sld.bindings.SLDStyledLayerDescriptorBinding;
-import org.geotools.styling.Description;
+import org.geotools.styling.DescriptionImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
@@ -74,7 +74,7 @@ public class StyledLayerDescriptorBinding extends SLDStyledLayerDescriptorBindin
 
         StyledLayerDescriptor sld = (StyledLayerDescriptor) super.parse(instance, node, value);
         if (node.hasChild("Description")) {
-            Description desc = (Description) node.getChildValue("Description");
+            DescriptionImpl desc = (DescriptionImpl) node.getChildValue("Description");
             if (desc.getAbstract() != null) {
                 sld.setAbstract(desc.getAbstract().toString());
             }

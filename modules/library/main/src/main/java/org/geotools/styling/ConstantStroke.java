@@ -72,7 +72,7 @@ import org.geotools.api.filter.expression.Expression;
  * @version $Id$
  * @author James Macgill
  */
-public abstract class ConstantStroke extends Stroke {
+public abstract class ConstantStroke extends StrokeImpl {
     /**
      * Default Stroke capturing the defaults indicated by the standard.
      *

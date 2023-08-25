@@ -96,23 +96,23 @@ public class TextSymbolTest {
         // org.geotools.map.Map map = new DefaultMap();
         // The following is complex, and should be built from
         // an SLD document and not by hand
-        Mark textMark = new Mark("square");
+        MarkImpl textMark = new MarkImpl("square");
 
-        Graphic graphic = new Graphic();
+        GraphicImpl graphic = new GraphicImpl();
         graphic.graphicalSymbols().add(textMark);
 
-        PointSymbolizer pointsym = new PointSymbolizer();
+        PointSymbolizerImpl pointsym = new PointSymbolizerImpl();
         pointsym.setGeometryPropertyName("centre");
         pointsym.setGraphic(graphic);
 
-        Rule rule = new Rule();
+        RuleImpl rule = new RuleImpl();
         rule.symbolizers().add(pointsym);
 
-        FeatureTypeStyle fts = new FeatureTypeStyle();
+        FeatureTypeStyleImpl fts = new FeatureTypeStyleImpl();
         fts.rules().add(rule);
         fts.featureTypeNames().add(new NameImpl("testPoint"));
 
-        Style style = new Style();
+        StyleImpl style = new StyleImpl();
         style.featureTypeStyles().add(fts);
 
         // map.addFeatureTable(ft,style);

@@ -18,23 +18,15 @@
 package org.geotools.ysld.parse;
 
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Halo;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.*;
+import org.geotools.styling.FillImpl;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
 /** Handles parsing a Ysld "text" symbolizer property into a {@link Symbolizer} object. */
-public class TextParser extends SymbolizerParser<TextSymbolizer> {
+public class TextParser extends SymbolizerParser<TextSymbolizerImpl> {
 
-    public TextParser(Rule rule, Factory factory) {
+    public TextParser(RuleImpl rule, Factory factory) {
         super(rule, factory.style.createTextSymbolizer(), factory);
     }
 
@@ -56,7 +48,7 @@ public class TextParser extends SymbolizerParser<TextSymbolizer> {
         context.push(
                 new FillParser(factory) {
                     @Override
-                    protected void fill(Fill fill) {
+                    protected void fill(FillImpl fill) {
                         sym.setFill(fill);
                     }
                 });
@@ -64,16 +56,16 @@ public class TextParser extends SymbolizerParser<TextSymbolizer> {
                 "graphic",
                 new GraphicParser(factory) {
                     @Override
-                    protected void graphic(Graphic g) {
+                    protected void graphic(GraphicImpl g) {
 
-                        ((TextSymbolizer) sym).setGraphic(g);
+                        ((TextSymbolizerImpl) sym).setGraphic(g);
                     }
                 });
     }
 
     class FontHandler extends YsldParseHandler {
 
-        Font font;
+        FontImpl font;
 
         protected FontHandler() {
             super(TextParser.this.factory);
@@ -111,7 +103,7 @@ public class TextParser extends SymbolizerParser<TextSymbolizer> {
 
     class HaloParser extends YsldParseHandler {
 
-        Halo halo;
+        HaloImpl halo;
 
         HaloParser() {
             super(TextParser.this.factory);
@@ -127,7 +119,7 @@ public class TextParser extends SymbolizerParser<TextSymbolizer> {
             context.push(
                     new FillParser(factory) {
                         @Override
-                        protected void fill(Fill fill) {
+                        protected void fill(FillImpl fill) {
                             halo.setFill(fill);
                         }
                     });
@@ -142,9 +134,9 @@ public class TextParser extends SymbolizerParser<TextSymbolizer> {
 
         String type;
 
-        PointPlacement point;
+        PointPlacementImpl point;
 
-        LinePlacement line;
+        LinePlacementImpl line;
 
         protected PlacementParser() {
             super(TextParser.this.factory);
@@ -175,7 +167,7 @@ public class TextParser extends SymbolizerParser<TextSymbolizer> {
             }
             // anchor point is manditory for SLD encoding
             if (point.getAnchorPoint() == null) {
-                AnchorPoint defaultAnchor =
+                AnchorPointImpl defaultAnchor =
                         factory.style.getDefaultPointPlacement().getAnchorPoint();
                 point.setAnchorPoint(defaultAnchor);
             }

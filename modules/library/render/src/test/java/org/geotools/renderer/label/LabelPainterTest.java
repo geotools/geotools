@@ -39,7 +39,7 @@ import org.geotools.renderer.style.MarkStyle2D;
 import org.geotools.renderer.style.Style2D;
 import org.geotools.renderer.style.TextStyle2D;
 import org.geotools.styling.StyleFactory;
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.TextSymbolizerImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
@@ -52,7 +52,7 @@ public class LabelPainterTest {
     private static StyleFactory styleFactory = new StyleFactory();
     private Graphics2D graphics;
     private TextStyle2D style;
-    private TextSymbolizer symbolizer;
+    private TextSymbolizerImpl symbolizer;
     LiteShape2 shape;
 
     @Before

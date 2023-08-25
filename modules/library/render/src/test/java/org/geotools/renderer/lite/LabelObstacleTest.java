@@ -43,7 +43,7 @@ import org.geotools.image.test.ImageAssert;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.xml.styling.SLDParser;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -122,7 +122,7 @@ public class LabelObstacleTest {
         }
     }
 
-    Style style(String name) throws Exception {
+    StyleImpl style(String name) throws Exception {
         // return RendererBaseTest.loadStyle(this, "test-data/obstacles/" + name + ".sld");
         SLDParser p =
                 new SLDParser(
@@ -131,12 +131,12 @@ public class LabelObstacleTest {
         return p.readXML()[0];
     }
 
-    Style[] styles(String... names) throws Exception {
-        List<Style> styles = new ArrayList<>();
+    StyleImpl[] styles(String... names) throws Exception {
+        List<StyleImpl> styles = new ArrayList<>();
         for (String name : names) {
             styles.add(name != null ? style(name) : null);
         }
-        return styles.toArray(new Style[styles.size()]);
+        return styles.toArray(new StyleImpl[styles.size()]);
     }
 
     FeatureSource[] sources(String... names) throws Exception {
@@ -147,7 +147,7 @@ public class LabelObstacleTest {
         return sources.toArray(new FeatureSource[sources.size()]);
     }
 
-    BufferedImage render(FeatureSource[] sources, Style[] styles) throws Exception {
+    BufferedImage render(FeatureSource[] sources, StyleImpl[] styles) throws Exception {
         MapContent map = new MapContent();
 
         ReferencedEnvelope env = sources[0].getBounds();

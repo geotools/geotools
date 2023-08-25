@@ -61,12 +61,12 @@ public class YsldParseCookbookTest {
         //     </Rule>
         //   </FeatureTypeStyle>
         // </UserStyle>
-        Style style = parse("point", "simple.sld");
+        StyleImpl style = parse("point", "simple.sld");
         assertEquals(
                 "SLD Cook Book: Simple Point With Stroke",
                 style.getDescription().getTitle().toString());
 
-        PointSymbolizer point = SLD.pointSymbolizer(style);
+        PointSymbolizerImpl point = SLD.pointSymbolizer(style);
         assertEquals("circle", SLD.wellKnownName(SLD.mark(point)));
         assertEquals(1, point.getGraphic().graphicalSymbols().size());
         assertEquals(Color.red, SLD.color(SLD.fill(point)));
@@ -97,12 +97,12 @@ public class YsldParseCookbookTest {
         //        </Rule>
         //      </FeatureTypeStyle>
         //    </UserStyle>
-        Style style = parse("point", "stroke.sld");
+        StyleImpl style = parse("point", "stroke.sld");
 
-        PointSymbolizer point = SLD.pointSymbolizer(style);
+        PointSymbolizerImpl point = SLD.pointSymbolizer(style);
         assertEquals(6, SLD.pointSize(point));
 
-        Mark mark = SLD.pointMark(style);
+        MarkImpl mark = SLD.pointMark(style);
         assertEquals("circle", SLD.wellKnownName(mark));
         assertEquals(Color.red, SLD.color(mark.getFill()));
         assertEquals(Color.black, SLD.color(mark.getStroke()));
@@ -129,12 +129,12 @@ public class YsldParseCookbookTest {
         //        </Rule>
         //      </FeatureTypeStyle>
         //    </UserStyle>
-        Style style = parse("point", "graphic.sld");
+        StyleImpl style = parse("point", "graphic.sld");
 
-        Graphic graphic = SLD.graphic(SLD.pointSymbolizer(style));
+        GraphicImpl graphic = SLD.graphic(SLD.pointSymbolizer(style));
         assertEquals(32, Filters.asInt(graphic.getSize()));
 
-        ExternalGraphic external = (ExternalGraphic) graphic.graphicalSymbols().get(0);
+        ExternalGraphicImpl external = (ExternalGraphicImpl) graphic.graphicalSymbols().get(0);
         assertEquals("smileyface.png", external.getLocation().getPath());
         assertEquals("image/png", external.getFormat());
     }
@@ -168,16 +168,16 @@ public class YsldParseCookbookTest {
         //     </Rule>
         //   </FeatureTypeStyle>
         // </UserStyle>
-        Style style = parse("point", "legend.sld");
+        StyleImpl style = parse("point", "legend.sld");
 
         GraphicLegend legend = (GraphicLegend) SLD.rules(style)[0].getLegend();
         assertEquals(32, Filters.asInt(legend.getSize()));
 
-        ExternalGraphic external = (ExternalGraphic) legend.graphicalSymbols().get(0);
+        ExternalGraphicImpl external = (ExternalGraphicImpl) legend.graphicalSymbols().get(0);
         assertEquals("smileyface.png", external.getLocation().getPath());
         assertEquals("image/png", external.getFormat());
 
-        PointSymbolizer point = SLD.pointSymbolizer(style);
+        PointSymbolizerImpl point = SLD.pointSymbolizer(style);
         assertEquals("circle", SLD.wellKnownName(SLD.mark(point)));
         assertEquals(1, point.getGraphic().graphicalSymbols().size());
         assertEquals(Color.red, SLD.color(SLD.fill(point)));
@@ -237,12 +237,12 @@ public class YsldParseCookbookTest {
         //        </Rule>
         //      </FeatureTypeStyle>
         //    </UserStyle>
-        Style style = parse("point", "zoom.sld");
-        Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        StyleImpl style = parse("point", "zoom.sld");
+        RuleImpl rule = style.featureTypeStyles().get(0).rules().get(0);
         assertEquals("Large", rule.getName());
         assertEquals(160000000.0, rule.getMaxScaleDenominator(), 0.1);
 
-        PointSymbolizer point = (PointSymbolizer) rule.symbolizers().get(0);
+        PointSymbolizerImpl point = (PointSymbolizerImpl) rule.symbolizers().get(0);
         assertEquals("circle", SLD.wellKnownName(SLD.mark(point)));
         assertEquals(color("CC3300"), SLD.color(SLD.fill(point)));
         assertEquals(12, SLD.pointSize(point));
@@ -252,7 +252,7 @@ public class YsldParseCookbookTest {
         assertEquals(160000000.0, rule.getMinScaleDenominator(), 0.1);
         assertEquals(320000000.0, rule.getMaxScaleDenominator(), 0.1);
 
-        point = (PointSymbolizer) rule.symbolizers().get(0);
+        point = (PointSymbolizerImpl) rule.symbolizers().get(0);
         assertEquals("circle", SLD.wellKnownName(SLD.mark(point)));
         assertEquals(color("CC3300"), SLD.color(SLD.fill(point)));
         assertEquals(8, SLD.pointSize(point));
@@ -261,7 +261,7 @@ public class YsldParseCookbookTest {
         assertEquals("Small", rule.getName());
         assertEquals(320000000.0, rule.getMinScaleDenominator(), 0.1);
 
-        point = (PointSymbolizer) rule.symbolizers().get(0);
+        point = (PointSymbolizerImpl) rule.symbolizers().get(0);
         assertEquals("circle", SLD.wellKnownName(SLD.mark(point)));
         assertEquals(color("CC3300"), SLD.color(SLD.fill(point)));
         assertEquals(4, SLD.pointSize(point));
@@ -343,9 +343,9 @@ public class YsldParseCookbookTest {
         //        </Rule>
         //      </FeatureTypeStyle>
         //    </UserStyle>
-        Style style = parse("point", "attribute.sld");
+        StyleImpl style = parse("point", "attribute.sld");
 
-        Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        RuleImpl rule = style.featureTypeStyles().get(0).rules().get(0);
         assertEquals("SmallPop", rule.getName());
         assertEquals("pop < '50000'", ECQL.toCQL(rule.getFilter()));
 
@@ -379,9 +379,9 @@ public class YsldParseCookbookTest {
         //     </Rule>
         //   </FeatureTypeStyle>
         // </UserStyle>
-        Style style = parse("point", "rotated-square.sld");
+        StyleImpl style = parse("point", "rotated-square.sld");
 
-        PointSymbolizer point = SLD.pointSymbolizer(style);
+        PointSymbolizerImpl point = SLD.pointSymbolizer(style);
         assertEquals("square", SLD.wellKnownName(SLD.mark(point)));
         assertEquals(color("009900"), SLD.color(SLD.fill(point)));
         assertEquals(12, SLD.pointSize(point));
@@ -413,9 +413,9 @@ public class YsldParseCookbookTest {
         //        </Rule>
         //      </FeatureTypeStyle>
         //    </UserStyle>
-        Style style = parse("point", "transparent-triangle.sld");
+        StyleImpl style = parse("point", "transparent-triangle.sld");
 
-        PointSymbolizer point = SLD.pointSymbolizer(style);
+        PointSymbolizerImpl point = SLD.pointSymbolizer(style);
         assertEquals("triangle", SLD.wellKnownName(SLD.mark(point)));
         assertEquals(color("009900"), SLD.color(SLD.fill(point)));
         assertEquals(0.2, SLD.opacity(SLD.fill(point)), 0.1);
@@ -453,9 +453,9 @@ public class YsldParseCookbookTest {
         //        </Rule>
         //      </FeatureTypeStyle>
         //    </UserStyle>
-        Style style = parse("point", "default-label.sld");
+        StyleImpl style = parse("point", "default-label.sld");
 
-        TextSymbolizer text = SLD.textSymbolizer(style);
+        TextSymbolizerImpl text = SLD.textSymbolizer(style);
         assertEquals("name", SLD.textLabelString(text));
         assertEquals(Color.black, SLD.textFontFill(text));
     }
@@ -506,19 +506,19 @@ public class YsldParseCookbookTest {
         //        </Rule>
         //      </FeatureTypeStyle>
         //    </UserStyle>
-        Style style = parse("point", "styled-label.sld");
+        StyleImpl style = parse("point", "styled-label.sld");
 
-        TextSymbolizer text = SLD.textSymbolizer(style);
+        TextSymbolizerImpl text = SLD.textSymbolizer(style);
         assertEquals("name", SLD.textLabelString(text));
         assertEquals(Color.black, SLD.textFontFill(text));
 
-        Font font = SLD.font(text);
+        FontImpl font = SLD.font(text);
         assertEquals("Arial", Filters.asString(font.getFamily().get(0)));
         assertEquals(12, Filters.asInt(font.getSize()));
         assertEquals("bold", Filters.asString(font.getWeight()));
         assertEquals("normal", Filters.asString(font.getStyle()));
 
-        PointPlacement placement = (PointPlacement) text.getLabelPlacement();
+        PointPlacementImpl placement = (PointPlacementImpl) text.getLabelPlacement();
         assertEquals(0.5, Filters.asDouble(placement.getAnchorPoint().getAnchorPointX()), 0.1);
         assertEquals(0.0, Filters.asDouble(placement.getAnchorPoint().getAnchorPointY()), 0.1);
         assertEquals(0, Filters.asInt(placement.getDisplacement().getDisplacementX()));
@@ -572,19 +572,19 @@ public class YsldParseCookbookTest {
         //     </Rule>
         //   </FeatureTypeStyle>
         // </UserStyle>
-        Style style = parse("point", "rotated-label.sld");
+        StyleImpl style = parse("point", "rotated-label.sld");
 
-        TextSymbolizer text = SLD.textSymbolizer(style);
+        TextSymbolizerImpl text = SLD.textSymbolizer(style);
         assertEquals("name", SLD.textLabelString(text));
         assertEquals(color("990099"), SLD.textFontFill(text));
 
-        Font font = SLD.font(text);
+        FontImpl font = SLD.font(text);
         assertEquals("Arial", Filters.asString(font.getFamily().get(0)));
         assertEquals(12, Filters.asInt(font.getSize()));
         assertEquals("bold", Filters.asString(font.getWeight()));
         assertEquals("normal", Filters.asString(font.getStyle()));
 
-        PointPlacement placement = (PointPlacement) text.getLabelPlacement();
+        PointPlacementImpl placement = (PointPlacementImpl) text.getLabelPlacement();
         assertEquals(0.5, Filters.asDouble(placement.getAnchorPoint().getAnchorPointX()), 0.1);
         assertEquals(0.0, Filters.asDouble(placement.getAnchorPoint().getAnchorPointY()), 0.1);
         assertEquals(0, Filters.asInt(placement.getDisplacement().getDisplacementX()));
@@ -625,8 +625,8 @@ public class YsldParseCookbookTest {
         //     </Rule>
         //   </FeatureTypeStyle>
         // </UserStyle>
-        Style style = parse("point", "rule-option.sld");
-        List<Rule> rules = style.featureTypeStyles().get(0).rules();
+        StyleImpl style = parse("point", "rule-option.sld");
+        List<RuleImpl> rules = style.featureTypeStyles().get(0).rules();
         assertThat(rules.get(0).getOptions(), hasEntry("inclusion", "mapOnly"));
         assertThat(rules.get(1).getOptions(), hasEntry("inclusion", "legendOnly"));
     }
@@ -646,9 +646,9 @@ public class YsldParseCookbookTest {
         //        </Rule>
         //      </FeatureTypeStyle>
         //    </UserStyle>
-        Style style = parse("line", "simple.sld");
+        StyleImpl style = parse("line", "simple.sld");
 
-        LineSymbolizer line = SLD.lineSymbolizer(style);
+        LineSymbolizerImpl line = SLD.lineSymbolizer(style);
         assertEquals(Color.black, SLD.lineColor(line));
         assertEquals(3, SLD.lineWidth(line));
     }
@@ -710,14 +710,14 @@ public class YsldParseCookbookTest {
         //      </FeatureTypeStyle>
         //    </UserStyle>
 
-        Style style = parse("line", "attribute.sld");
+        StyleImpl style = parse("line", "attribute.sld");
 
-        FeatureTypeStyle featureStyle = style.featureTypeStyles().get(0);
-        Rule rule = featureStyle.rules().get(0);
+        FeatureTypeStyleImpl featureStyle = style.featureTypeStyles().get(0);
+        RuleImpl rule = featureStyle.rules().get(0);
         assertEquals("local-road", rule.getName());
         assertEquals("type = 'local-road'", ECQL.toCQL(rule.getFilter()));
 
-        LineSymbolizer line = (LineSymbolizer) rule.symbolizers().get(0);
+        LineSymbolizerImpl line = (LineSymbolizerImpl) rule.symbolizers().get(0);
         assertEquals(color("009933"), SLD.color(line));
         assertEquals(2, SLD.width(line));
 
@@ -726,7 +726,7 @@ public class YsldParseCookbookTest {
         assertEquals("secondary", rule.getName());
         assertEquals("type = 'secondary'", ECQL.toCQL(rule.getFilter()));
 
-        line = (LineSymbolizer) rule.symbolizers().get(0);
+        line = (LineSymbolizerImpl) rule.symbolizers().get(0);
         assertEquals(color("0055CC"), SLD.color(line));
         assertEquals(3, SLD.width(line));
 
@@ -735,7 +735,7 @@ public class YsldParseCookbookTest {
         assertEquals("highway", rule.getName());
         assertEquals("type = 'highway'", ECQL.toCQL(rule.getFilter()));
 
-        line = (LineSymbolizer) rule.symbolizers().get(0);
+        line = (LineSymbolizerImpl) rule.symbolizers().get(0);
         assertEquals(color("FF0000"), SLD.color(line));
         assertEquals(6, SLD.width(line));
     }
@@ -768,10 +768,10 @@ public class YsldParseCookbookTest {
         //      </FeatureTypeStyle>
         //    </UserStyle>
 
-        Style style = parse("line", "border.sld");
+        StyleImpl style = parse("line", "border.sld");
 
-        FeatureTypeStyle featureStyle = style.featureTypeStyles().get(0);
-        LineSymbolizer line = SLD.lineSymbolizer(featureStyle);
+        FeatureTypeStyleImpl featureStyle = style.featureTypeStyles().get(0);
+        LineSymbolizerImpl line = SLD.lineSymbolizer(featureStyle);
 
         assertEquals(color("333333"), SLD.color(line));
         assertEquals(5, SLD.width(line));
@@ -813,8 +813,8 @@ public class YsldParseCookbookTest {
         //      </FeatureTypeStyle>
         //    </UserStyle>
 
-        Style style = parse("line", "curved-label.sld");
-        TextSymbolizer text = SLD.textSymbolizer(style);
+        StyleImpl style = parse("line", "curved-label.sld");
+        TextSymbolizerImpl text = SLD.textSymbolizer(style);
         assertEquals("name", SLD.textLabelString(text));
         Map<String, String> options = text.getOptions();
         assertEquals("true", options.get("followLine"));
@@ -854,25 +854,25 @@ public class YsldParseCookbookTest {
         //        </Rule>
         //      </FeatureTypeStyle>
         //    </UserStyle>
-        Style style = parse("line", "dash-dot.sld");
+        StyleImpl style = parse("line", "dash-dot.sld");
 
-        LineSymbolizer line = (LineSymbolizer) SLD.rules(style)[0].symbolizers().get(0);
+        LineSymbolizerImpl line = (LineSymbolizerImpl) SLD.rules(style)[0].symbolizers().get(0);
         assertEquals(Color.blue, SLD.color(line));
         assertEquals(1, SLD.width(line));
         assertEquals(10f, SLD.lineDash(line)[0], 0.1);
         assertEquals(10f, SLD.lineDash(line)[0], 0.1);
 
-        line = (LineSymbolizer) SLD.rules(style)[0].symbolizers().get(1);
-        Stroke stroke = line.getStroke();
+        line = (LineSymbolizerImpl) SLD.rules(style)[0].symbolizers().get(1);
+        StrokeImpl stroke = line.getStroke();
 
         assertEquals(5f, SLD.lineDash(line)[0], 0.1);
         assertEquals(15f, SLD.lineDash(line)[1], 0.1);
         assertEquals(7.5, Filters.asDouble(stroke.getDashOffset()), 0.1);
 
-        Graphic g = stroke.getGraphicStroke();
+        GraphicImpl g = stroke.getGraphicStroke();
         assertEquals(5, Filters.asInt(g.getSize()));
 
-        Mark mark = SLD.mark(g);
+        MarkImpl mark = SLD.mark(g);
         assertEquals("circle", SLD.wellKnownName(mark));
         assertEquals(color("000033"), SLD.color(mark.getStroke()));
         assertEquals(1, SLD.width(mark.getStroke()));
@@ -895,8 +895,8 @@ public class YsldParseCookbookTest {
         //      </FeatureTypeStyle>
         //    </UserStyle>
 
-        Style style = parse("line", "dashed-line.sld");
-        LineSymbolizer line = SLD.lineSymbolizer(style);
+        StyleImpl style = parse("line", "dashed-line.sld");
+        LineSymbolizerImpl line = SLD.lineSymbolizer(style);
         assertEquals(Color.blue, SLD.color(line));
         assertEquals(3, SLD.width(line));
         assertEquals(5f, SLD.lineDash(line)[0], 0.1);
@@ -933,13 +933,13 @@ public class YsldParseCookbookTest {
         //     </FeatureTypeStyle>
         //   </UserStyle>
 
-        Style style = parse("line", "dash-space.sld");
+        StyleImpl style = parse("line", "dash-space.sld");
 
-        LineSymbolizer line = SLD.lineSymbolizer(style);
+        LineSymbolizerImpl line = SLD.lineSymbolizer(style);
         assertEquals(4f, SLD.lineDash(line)[0], 0.1);
         assertEquals(6f, SLD.lineDash(line)[1], 0.1);
 
-        Mark mark = SLD.mark(line.getStroke().getGraphicStroke());
+        MarkImpl mark = SLD.mark(line.getStroke().getGraphicStroke());
         assertEquals("circle", SLD.wellKnownName(mark));
         assertEquals(color("666666"), SLD.color(mark.getFill()));
         assertEquals(color("333333"), SLD.color(mark.getStroke()));
@@ -970,11 +970,11 @@ public class YsldParseCookbookTest {
         //      </FeatureTypeStyle>
         //    </UserStyle>
 
-        Style style = parse("line", "default-label.sld");
-        LineSymbolizer line = SLD.lineSymbolizer(style);
+        StyleImpl style = parse("line", "default-label.sld");
+        LineSymbolizerImpl line = SLD.lineSymbolizer(style);
         assertEquals(Color.red, SLD.color(line));
 
-        TextSymbolizer text = SLD.textSymbolizer(style);
+        TextSymbolizerImpl text = SLD.textSymbolizer(style);
         assertEquals("name", SLD.textLabelString(text));
         assertEquals(Color.black, SLD.color(text.getFill()));
     }
@@ -1011,17 +1011,17 @@ public class YsldParseCookbookTest {
         //      </FeatureTypeStyle>
         //    </UserStyle>
 
-        Style style = parse("line", "railroad.sld");
+        StyleImpl style = parse("line", "railroad.sld");
 
-        LineSymbolizer line = (LineSymbolizer) SLD.rules(style)[0].symbolizers().get(0);
+        LineSymbolizerImpl line = (LineSymbolizerImpl) SLD.rules(style)[0].symbolizers().get(0);
         assertEquals(color("333333"), SLD.color(line));
         assertEquals(3, SLD.width(line));
 
-        line = (LineSymbolizer) SLD.rules(style)[0].symbolizers().get(1);
+        line = (LineSymbolizerImpl) SLD.rules(style)[0].symbolizers().get(1);
 
-        Graphic g = line.getStroke().getGraphicStroke();
+        GraphicImpl g = line.getStroke().getGraphicStroke();
 
-        Mark mark = SLD.mark(g);
+        MarkImpl mark = SLD.mark(g);
         assertEquals("shape://vertline", SLD.wellKnownName(mark));
         assertEquals(color("333333"), SLD.color(mark.getStroke()));
         assertEquals(1, SLD.width(mark.getStroke()));
@@ -1068,13 +1068,13 @@ public class YsldParseCookbookTest {
         //      </FeatureTypeStyle>
         //    </UserStyle>
 
-        Style style = parse("line", "zoom.sld");
+        StyleImpl style = parse("line", "zoom.sld");
 
-        Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        RuleImpl rule = style.featureTypeStyles().get(0).rules().get(0);
         assertEquals("Large", rule.getName());
         assertEquals(180000000d, rule.getMaxScaleDenominator(), 0.1);
 
-        LineSymbolizer line = (LineSymbolizer) rule.symbolizers().get(0);
+        LineSymbolizerImpl line = (LineSymbolizerImpl) rule.symbolizers().get(0);
         assertEquals(color("009933"), SLD.color(line));
         assertEquals(6, SLD.width(line));
 
@@ -1083,7 +1083,7 @@ public class YsldParseCookbookTest {
         assertEquals(360000000d, rule.getMaxScaleDenominator(), 0.1);
         assertEquals(180000000d, rule.getMinScaleDenominator(), 0.1);
 
-        line = (LineSymbolizer) rule.symbolizers().get(0);
+        line = (LineSymbolizerImpl) rule.symbolizers().get(0);
         assertEquals(color("009933"), SLD.color(line));
         assertEquals(4, SLD.width(line));
 
@@ -1091,7 +1091,7 @@ public class YsldParseCookbookTest {
         assertEquals("Small", rule.getName());
         assertEquals(360000000d, rule.getMinScaleDenominator(), 0.1);
 
-        line = (LineSymbolizer) rule.symbolizers().get(0);
+        line = (LineSymbolizerImpl) rule.symbolizers().get(0);
         assertEquals(color("009933"), SLD.color(line));
         assertEquals(2, SLD.width(line));
     }
@@ -1126,12 +1126,12 @@ public class YsldParseCookbookTest {
         //      </FeatureTypeStyle>
         //    </UserStyle>
 
-        Style style = parse("line", "optimized-label.sld");
+        StyleImpl style = parse("line", "optimized-label.sld");
 
-        LineSymbolizer line = SLD.lineSymbolizer(style);
+        LineSymbolizerImpl line = SLD.lineSymbolizer(style);
         assertEquals(Color.red, SLD.color(line));
 
-        TextSymbolizer text = SLD.textSymbolizer(style);
+        TextSymbolizerImpl text = SLD.textSymbolizer(style);
         assertEquals("name", SLD.textLabelString(text));
         assertEquals(Color.black, SLD.color(text.getFill()));
 
@@ -1178,16 +1178,16 @@ public class YsldParseCookbookTest {
         //      </FeatureTypeStyle>
         //    </UserStyle>
 
-        Style style = parse("line", "optimized-styled-label.sld");
+        StyleImpl style = parse("line", "optimized-styled-label.sld");
 
-        LineSymbolizer line = SLD.lineSymbolizer(style);
+        LineSymbolizerImpl line = SLD.lineSymbolizer(style);
         assertEquals(Color.red, SLD.color(line));
 
-        TextSymbolizer text = SLD.textSymbolizer(style);
+        TextSymbolizerImpl text = SLD.textSymbolizer(style);
         assertEquals("name", SLD.textLabelString(text));
         assertEquals(Color.black, SLD.color(text.getFill()));
 
-        Font font = SLD.font(text);
+        FontImpl font = SLD.font(text);
         assertEquals("Arial", Filters.asString(font.getFamily().get(0)));
         assertEquals(10, Filters.asInt(font.getSize()));
         assertEquals("normal", Filters.asString(font.getStyle()));
@@ -1215,9 +1215,9 @@ public class YsldParseCookbookTest {
         //      </FeatureTypeStyle>
         //    </UserStyle>
 
-        Style style = parse("poly", "simple.sld");
+        StyleImpl style = parse("poly", "simple.sld");
 
-        PolygonSymbolizer poly = SLD.polySymbolizer(style);
+        PolygonSymbolizerImpl poly = SLD.polySymbolizer(style);
         assertEquals(color("000080"), SLD.color(poly.getFill()));
     }
 
@@ -1280,27 +1280,27 @@ public class YsldParseCookbookTest {
         //      </FeatureTypeStyle>
         //    </UserStyle>
 
-        Style style = parse("poly", "attribute.sld");
+        StyleImpl style = parse("poly", "attribute.sld");
 
-        Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        RuleImpl rule = style.featureTypeStyles().get(0).rules().get(0);
         assertEquals("SmallPop", rule.getName());
         assertEquals("pop < '200000'", ECQL.toCQL(rule.getFilter()));
 
-        PolygonSymbolizer poly = (PolygonSymbolizer) rule.symbolizers().get(0);
+        PolygonSymbolizerImpl poly = (PolygonSymbolizerImpl) rule.symbolizers().get(0);
         assertEquals(color("66FF66"), SLD.color(poly.getFill()));
 
         rule = style.featureTypeStyles().get(0).rules().get(1);
         assertEquals("MediumPop", rule.getName());
         assertEquals("pop >= '200000' AND pop < '500000'", ECQL.toCQL(rule.getFilter()));
 
-        poly = (PolygonSymbolizer) rule.symbolizers().get(0);
+        poly = (PolygonSymbolizerImpl) rule.symbolizers().get(0);
         assertEquals(color("33CC33"), SLD.color(poly.getFill()));
 
         rule = style.featureTypeStyles().get(0).rules().get(2);
         assertEquals("LargePop", rule.getName());
         assertEquals("pop > '500000'", ECQL.toCQL(rule.getFilter()));
 
-        poly = (PolygonSymbolizer) rule.symbolizers().get(0);
+        poly = (PolygonSymbolizerImpl) rule.symbolizers().get(0);
         assertEquals(color("009900"), SLD.color(poly.getFill()));
     }
 
@@ -1328,14 +1328,14 @@ public class YsldParseCookbookTest {
         //      </FeatureTypeStyle>
         //    </UserStyle>
 
-        Style style = parse("poly", "default-label.sld");
+        StyleImpl style = parse("poly", "default-label.sld");
 
-        PolygonSymbolizer poly = SLD.polySymbolizer(style);
+        PolygonSymbolizerImpl poly = SLD.polySymbolizer(style);
         assertEquals(color("40FF40"), SLD.color(poly.getFill()));
         assertEquals(color("FFFFFF"), SLD.color(poly.getStroke()));
         assertEquals(2, SLD.width(poly.getStroke()));
 
-        TextSymbolizer text = SLD.textSymbolizer(style);
+        TextSymbolizerImpl text = SLD.textSymbolizer(style);
         assertEquals("name", SLD.textLabelString(text));
     }
 
@@ -1364,12 +1364,12 @@ public class YsldParseCookbookTest {
         //      </FeatureTypeStyle>
         //    </UserStyle>
 
-        Style style = parse("poly", "graphic-fill.sld");
+        StyleImpl style = parse("poly", "graphic-fill.sld");
 
-        PolygonSymbolizer poly = SLD.polySymbolizer(style);
-        Graphic g = poly.getFill().getGraphicFill();
+        PolygonSymbolizerImpl poly = SLD.polySymbolizer(style);
+        GraphicImpl g = poly.getFill().getGraphicFill();
 
-        ExternalGraphic external = (ExternalGraphic) g.graphicalSymbols().get(0);
+        ExternalGraphicImpl external = (ExternalGraphicImpl) g.graphicalSymbols().get(0);
         assertEquals("file:colorblocks.png", external.getLocation().toString());
         assertEquals("image/png", external.getFormat());
         assertEquals(93, Filters.asInt(g.getSize()));
@@ -1405,14 +1405,14 @@ public class YsldParseCookbookTest {
         //      </FeatureTypeStyle>
         //    </UserStyle>
 
-        Style style = parse("poly", "halo-label.sld");
+        StyleImpl style = parse("poly", "halo-label.sld");
 
-        PolygonSymbolizer poly = SLD.polySymbolizer(style);
+        PolygonSymbolizerImpl poly = SLD.polySymbolizer(style);
         assertEquals(color("40FF40"), SLD.color(poly.getFill()));
         assertEquals(color("FFFFFF"), SLD.color(poly.getStroke()));
         assertEquals(2, SLD.width(poly.getStroke()));
 
-        TextSymbolizer text = SLD.textSymbolizer(style);
+        TextSymbolizerImpl text = SLD.textSymbolizer(style);
         assertEquals("name", SLD.textLabelString(text));
 
         assertEquals(color("FFFFFF"), SLD.textHaloFill(text));
@@ -1445,11 +1445,11 @@ public class YsldParseCookbookTest {
         //      </FeatureTypeStyle>
         //    </UserStyle>
 
-        Style style = parse("poly", "hatch-fill.sld");
+        StyleImpl style = parse("poly", "hatch-fill.sld");
 
-        PolygonSymbolizer poly = SLD.polySymbolizer(style);
+        PolygonSymbolizerImpl poly = SLD.polySymbolizer(style);
 
-        Mark mark = SLD.mark(poly.getFill().getGraphicFill());
+        MarkImpl mark = SLD.mark(poly.getFill().getGraphicFill());
         assertEquals("shape://times", Filters.asString(mark.getWellKnownName()));
 
         assertEquals(color("990099"), SLD.color(mark.getStroke()));
@@ -1477,9 +1477,9 @@ public class YsldParseCookbookTest {
         //      </FeatureTypeStyle>
         //    </UserStyle>
 
-        Style style = parse("poly", "stroke.sld");
+        StyleImpl style = parse("poly", "stroke.sld");
 
-        PolygonSymbolizer poly = SLD.polySymbolizer(style);
+        PolygonSymbolizerImpl poly = SLD.polySymbolizer(style);
         assertEquals(color("000080"), SLD.color(poly.getFill()));
         assertEquals(color("FFFFFF"), SLD.color(poly.getStroke()));
         assertEquals(2, SLD.width(poly.getStroke()));
@@ -1528,22 +1528,22 @@ public class YsldParseCookbookTest {
         //      </FeatureTypeStyle>
         //    </UserStyle>
 
-        Style style = parse("poly", "styled-label.sld");
+        StyleImpl style = parse("poly", "styled-label.sld");
 
-        PolygonSymbolizer poly = SLD.polySymbolizer(style);
+        PolygonSymbolizerImpl poly = SLD.polySymbolizer(style);
         assertEquals(color("40FF40"), SLD.color(poly.getFill()));
         assertEquals(color("FFFFFF"), SLD.color(poly.getStroke()));
         assertEquals(2, SLD.width(poly.getStroke()));
 
-        TextSymbolizer text = SLD.textSymbolizer(style);
+        TextSymbolizerImpl text = SLD.textSymbolizer(style);
         assertThat(SLD.textLabel(text), TestUtils.attribute("name"));
         assertEquals(Color.black, SLD.color(text.getFill()));
 
-        PointPlacement place = (PointPlacement) text.getLabelPlacement();
+        PointPlacementImpl place = (PointPlacementImpl) text.getLabelPlacement();
         assertEquals(0.5, Filters.asDouble(place.getAnchorPoint().getAnchorPointX()), 0.1);
         assertEquals(0.5, Filters.asDouble(place.getAnchorPoint().getAnchorPointY()), 0.1);
 
-        Font font = SLD.font(text);
+        FontImpl font = SLD.font(text);
         assertEquals("Arial", Filters.asString(font.getFamily().get(0)));
         assertEquals(11, Filters.asInt(font.getSize()));
         assertEquals("normal", Filters.asString(font.getStyle()));
@@ -1574,9 +1574,9 @@ public class YsldParseCookbookTest {
         //      </FeatureTypeStyle>
         //    </UserStyle>
 
-        Style style = parse("poly", "transparent.sld");
+        StyleImpl style = parse("poly", "transparent.sld");
 
-        PolygonSymbolizer poly = SLD.polySymbolizer(style);
+        PolygonSymbolizerImpl poly = SLD.polySymbolizer(style);
         assertEquals(color("000080"), SLD.color(poly.getFill()));
         assertEquals(0.5, SLD.opacity(poly.getFill()), 0.1);
 
@@ -1654,13 +1654,13 @@ public class YsldParseCookbookTest {
         //      </FeatureTypeStyle>
         //    </UserStyle>
 
-        Style style = parse("poly", "zoom.sld");
+        StyleImpl style = parse("poly", "zoom.sld");
 
-        Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        RuleImpl rule = style.featureTypeStyles().get(0).rules().get(0);
         assertEquals("Large", rule.getName());
         assertEquals(100000000d, rule.getMaxScaleDenominator(), 0.1);
 
-        PolygonSymbolizer poly = (PolygonSymbolizer) rule.symbolizers().get(0);
+        PolygonSymbolizerImpl poly = (PolygonSymbolizerImpl) rule.symbolizers().get(0);
         assertEquals(color("0000CC"), SLD.color(poly.getFill()));
         assertEquals(color("000000"), SLD.color(poly.getStroke()));
         assertEquals(7, SLD.width(poly.getStroke()));
@@ -1670,7 +1670,7 @@ public class YsldParseCookbookTest {
         assertEquals(200000000d, rule.getMaxScaleDenominator(), 0.1);
         assertEquals(100000000d, rule.getMinScaleDenominator(), 0.1);
 
-        poly = (PolygonSymbolizer) rule.symbolizers().get(0);
+        poly = (PolygonSymbolizerImpl) rule.symbolizers().get(0);
         assertEquals(color("0000CC"), SLD.color(poly.getFill()));
         assertEquals(color("000000"), SLD.color(poly.getStroke()));
         assertEquals(4, SLD.width(poly.getStroke()));
@@ -1679,7 +1679,7 @@ public class YsldParseCookbookTest {
         assertEquals("Small", rule.getName());
         assertEquals(200000000d, rule.getMinScaleDenominator(), 0.1);
 
-        poly = (PolygonSymbolizer) rule.symbolizers().get(0);
+        poly = (PolygonSymbolizerImpl) rule.symbolizers().get(0);
         assertEquals(color("0000CC"), SLD.color(poly.getFill()));
         assertEquals(color("000000"), SLD.color(poly.getStroke()));
         assertEquals(1, SLD.width(poly.getStroke()));
@@ -1701,8 +1701,8 @@ public class YsldParseCookbookTest {
         //      </FeatureTypeStyle>
         //    </UserStyle>
 
-        Style style = parse("raster", "alpha-channel.sld");
-        RasterSymbolizer raster = SLD.rasterSymbolizer(style);
+        StyleImpl style = parse("raster", "alpha-channel.sld");
+        RasterSymbolizerImpl raster = SLD.rasterSymbolizer(style);
 
         ColorMapEntry e = raster.getColorMap().getColorMapEntry(0);
         assertEquals("#008000", Filters.asString(e.getColor()));
@@ -1734,11 +1734,11 @@ public class YsldParseCookbookTest {
         //      </FeatureTypeStyle>
         //    </UserStyle>
 
-        Style style = parse("raster", "brightness-and-contrast.sld");
+        StyleImpl style = parse("raster", "brightness-and-contrast.sld");
 
-        RasterSymbolizer raster = SLD.rasterSymbolizer(style);
+        RasterSymbolizerImpl raster = SLD.rasterSymbolizer(style);
 
-        ContrastEnhancement contrast = raster.getContrastEnhancement();
+        ContrastEnhancementImpl contrast = raster.getContrastEnhancement();
         assertEquals(0.5, Filters.asDouble(contrast.getGammaValue()), 0.1);
         assertEquals(ContrastMethod.NORMALIZE, contrast.getMethod());
 
@@ -1767,9 +1767,9 @@ public class YsldParseCookbookTest {
         //      </FeatureTypeStyle>
         //    </UserStyle>
 
-        Style style = parse("raster", "discrete-colors.sld");
+        StyleImpl style = parse("raster", "discrete-colors.sld");
 
-        RasterSymbolizer raster = SLD.rasterSymbolizer(style);
+        RasterSymbolizerImpl raster = SLD.rasterSymbolizer(style);
 
         ColorMapEntry e = raster.getColorMap().getColorMapEntry(0);
         assertEquals("#008000", Filters.asString(e.getColor()));
@@ -1802,9 +1802,9 @@ public class YsldParseCookbookTest {
         //      </FeatureTypeStyle>
         //    </UserStyle>
 
-        Style style = parse("raster", "many-color-gradient.sld");
+        StyleImpl style = parse("raster", "many-color-gradient.sld");
 
-        RasterSymbolizer raster = SLD.rasterSymbolizer(style);
+        RasterSymbolizerImpl raster = SLD.rasterSymbolizer(style);
 
         ColorMapEntry e = raster.getColorMap().getColorMapEntry(0);
         assertEquals("#000000", Filters.asString(e.getColor()));
@@ -1856,9 +1856,9 @@ public class YsldParseCookbookTest {
         //      </FeatureTypeStyle>
         //    </UserStyle>
 
-        Style style = parse("raster", "three-color-gradient.sld");
+        StyleImpl style = parse("raster", "three-color-gradient.sld");
 
-        RasterSymbolizer raster = SLD.rasterSymbolizer(style);
+        RasterSymbolizerImpl raster = SLD.rasterSymbolizer(style);
 
         ColorMapEntry e = raster.getColorMap().getColorMapEntry(0);
         assertEquals("#0000FF", Filters.asString(e.getColor()));
@@ -1890,9 +1890,9 @@ public class YsldParseCookbookTest {
         //      </FeatureTypeStyle>
         //    </UserStyle>
 
-        Style style = parse("raster", "transparent-gradient.sld");
+        StyleImpl style = parse("raster", "transparent-gradient.sld");
 
-        RasterSymbolizer raster = SLD.rasterSymbolizer(style);
+        RasterSymbolizerImpl raster = SLD.rasterSymbolizer(style);
 
         assertEquals(0.3, Filters.asDouble(raster.getOpacity()), 0.1);
 
@@ -1921,9 +1921,9 @@ public class YsldParseCookbookTest {
         //      </FeatureTypeStyle>
         //    </UserStyle>
 
-        Style style = parse("raster", "two-color-gradient.sld");
+        StyleImpl style = parse("raster", "two-color-gradient.sld");
 
-        RasterSymbolizer raster = SLD.rasterSymbolizer(style);
+        RasterSymbolizerImpl raster = SLD.rasterSymbolizer(style);
 
         ColorMapEntry e = raster.getColorMap().getColorMapEntry(0);
         assertEquals("#008000", Filters.asString(e.getColor()));
@@ -1936,8 +1936,8 @@ public class YsldParseCookbookTest {
 
     @Test
     public void testRasterWithBandSelectionExpression() throws Exception {
-        Style style = parse("raster", "band-selection-expression.sld");
-        RasterSymbolizer raster = SLD.rasterSymbolizer(style);
+        StyleImpl style = parse("raster", "band-selection-expression.sld");
+        RasterSymbolizerImpl raster = SLD.rasterSymbolizer(style);
         Expression name = raster.getChannelSelection().getGrayChannel().getChannelName();
         assertEquals("1", name.evaluate(null, String.class).trim());
         try {
@@ -1948,7 +1948,7 @@ public class YsldParseCookbookTest {
         }
     }
 
-    Style parse(String dir, String file) throws IOException {
+    StyleImpl parse(String dir, String file) throws IOException {
         StringWriter writer = new StringWriter();
         transform(YsldTests.sld(dir, file), writer);
 

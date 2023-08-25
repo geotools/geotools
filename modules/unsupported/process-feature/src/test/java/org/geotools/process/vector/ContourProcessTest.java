@@ -37,7 +37,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.styling.Font;
+import org.geotools.styling.FontImpl;
 import org.geotools.styling.SLD;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.swing.JMapFrame;
@@ -160,7 +160,7 @@ public class ContourProcessTest {
                 new FeatureLayer(
                         points, SLD.createPointStyle("circle", Color.red, Color.red, 1, 5)));
         StyleBuilder sb = new StyleBuilder();
-        Font font = sb.createFont("Arial", 10);
+        FontImpl font = sb.createFont("Arial", 10);
         map.addLayer(
                 new FeatureLayer(results, SLD.createLineStyle(Color.black, 1, "elevation", font)));
 

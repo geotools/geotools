@@ -19,7 +19,7 @@ package org.geotools.kml.bindings;
 import java.awt.Color;
 import javax.xml.namespace.QName;
 import org.geotools.kml.KML;
-import org.geotools.styling.PolygonSymbolizer;
+import org.geotools.styling.PolygonSymbolizerImpl;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.Binding;
@@ -71,7 +71,7 @@ public class PolyStyleTypeBinding extends AbstractComplexBinding {
      */
     @Override
     public Class getType() {
-        return PolygonSymbolizer.class;
+        return PolygonSymbolizerImpl.class;
     }
 
     @Override
@@ -89,7 +89,7 @@ public class PolyStyleTypeBinding extends AbstractComplexBinding {
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Color color = (Color) value;
-        PolygonSymbolizer poly = sb.createPolygonSymbolizer();
+        PolygonSymbolizerImpl poly = sb.createPolygonSymbolizer();
 
         Boolean fill = (Boolean) node.getChildValue("fill", Boolean.TRUE);
         Boolean outline = (Boolean) node.getChildValue("outline", Boolean.TRUE);

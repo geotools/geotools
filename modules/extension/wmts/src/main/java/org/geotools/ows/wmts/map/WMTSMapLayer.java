@@ -26,11 +26,7 @@ import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wmts.WebMapTileServer;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.Parameter;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
+import org.geotools.styling.*;
 
 /**
  * Wraps a WMTS layer into a {@link Layer} for interactive rendering usage.
@@ -51,17 +47,17 @@ public class WMTSMapLayer extends GridReaderLayer {
             new DefaultParameterDescriptor<>(
                     "SourceCRS", CoordinateReferenceSystem.class, null, null);
 
-    private static Style createStyle() {
+    private static StyleImpl createStyle() {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
-        RasterSymbolizer symbolizer = factory.createRasterSymbolizer();
+        RasterSymbolizerImpl symbolizer = factory.createRasterSymbolizer();
 
-        Rule rule = factory.createRule();
+        RuleImpl rule = factory.createRule();
         rule.symbolizers().add(symbolizer);
 
-        final FeatureTypeStyle type = factory.createFeatureTypeStyle();
+        final FeatureTypeStyleImpl type = factory.createFeatureTypeStyle();
         type.rules().add(rule);
 
-        Style style = factory.createStyle();
+        StyleImpl style = factory.createStyle();
         style.featureTypeStyles().add(type);
 
         return style;

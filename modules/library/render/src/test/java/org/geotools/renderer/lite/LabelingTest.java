@@ -39,7 +39,7 @@ import org.geotools.image.test.ImageAssert;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.test.TestData;
 import org.geotools.xml.styling.SLDParser;
@@ -83,7 +83,7 @@ public class LabelingTest {
     @Test
     public void testPointLabeling() throws Exception {
         FeatureCollection collection = createPointFeatureCollection();
-        Style style = loadStyle("PointStyle.sld");
+        StyleImpl style = loadStyle("PointStyle.sld");
         Assert.assertNotNull(style);
         MapContent map = new MapContent();
         map.addLayer(new FeatureLayer(collection, style));
@@ -102,13 +102,13 @@ public class LabelingTest {
         RendererBaseTest.showRender("testPointLabeling", renderer, timout, env);
     }
 
-    private Style loadStyle(String sldFilename) throws IOException {
+    private StyleImpl loadStyle(String sldFilename) throws IOException {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory();
 
         java.net.URL surl = TestData.getResource(this, sldFilename);
         SLDParser stylereader = new SLDParser(factory, surl);
 
-        Style style = stylereader.readXML()[0];
+        StyleImpl style = stylereader.readXML()[0];
         return style;
     }
 
@@ -150,7 +150,7 @@ public class LabelingTest {
     @Test
     public void testLineLabeling() throws Exception {
         FeatureCollection collection = createLineFeatureCollection();
-        Style style = loadStyle("LineStyle.sld");
+        StyleImpl style = loadStyle("LineStyle.sld");
         Assert.assertNotNull(style);
         MapContent map = new MapContent();
         map.addLayer(new FeatureLayer(collection, style));
@@ -178,7 +178,7 @@ public class LabelingTest {
     @Test
     public void testLineLabelingUom() throws Exception {
         FeatureCollection collection = createLineFeatureCollection();
-        Style style = loadStyle("LineStyleUom.sld");
+        StyleImpl style = loadStyle("LineStyleUom.sld");
         Assert.assertNotNull(style);
         MapContent map = new MapContent();
         map.addLayer(new FeatureLayer(collection, style));
@@ -202,7 +202,7 @@ public class LabelingTest {
     @Test
     public void testLineLabelingSharpTurn() throws Exception {
         FeatureCollection collection = createTightUTurnLineCollection();
-        Style style = loadStyle("LineStyleLarge.sld");
+        StyleImpl style = loadStyle("LineStyleLarge.sld");
         Assert.assertNotNull(style);
         MapContent map = new MapContent();
         map.addLayer(new FeatureLayer(collection, style));
@@ -231,7 +231,7 @@ public class LabelingTest {
     @Test
     public void testLineLabelingSharpTurn2() throws Exception {
         FeatureCollection collection = createTightUTurnLineCollection2();
-        Style style = loadStyle("LineStyleLarge2.sld");
+        StyleImpl style = loadStyle("LineStyleLarge2.sld");
         Assert.assertNotNull(style);
         MapContent map = new MapContent();
         map.addLayer(new FeatureLayer(collection, style));
@@ -260,7 +260,7 @@ public class LabelingTest {
     @Test
     public void testSharpChangeLastSegment() throws Exception {
         FeatureCollection collection = createSharpTurnLineCollection();
-        Style style = loadStyle("LineStyleLarge.sld");
+        StyleImpl style = loadStyle("LineStyleLarge.sld");
         Assert.assertNotNull(style);
         MapContent map = new MapContent();
         map.addLayer(new FeatureLayer(collection, style));
@@ -353,7 +353,7 @@ public class LabelingTest {
     @Test
     public void testPolyLabeling() throws Exception {
         FeatureCollection collection = createPolyFeatureCollection();
-        Style style = loadStyle("PolyStyle.sld");
+        StyleImpl style = loadStyle("PolyStyle.sld");
         Assert.assertNotNull(style);
         MapContent map = new MapContent();
         map.addLayer(new FeatureLayer(collection, style));

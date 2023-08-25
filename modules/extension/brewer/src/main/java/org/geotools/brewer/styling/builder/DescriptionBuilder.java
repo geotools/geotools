@@ -17,10 +17,10 @@
 package org.geotools.brewer.styling.builder;
 
 import org.geotools.api.util.InternationalString;
-import org.geotools.styling.Description;
+import org.geotools.styling.DescriptionImpl;
 import org.geotools.util.SimpleInternationalString;
 
-public class DescriptionBuilder extends AbstractStyleBuilder<Description> {
+public class DescriptionBuilder extends AbstractStyleBuilder<DescriptionImpl> {
 
     private InternationalString title;
 
@@ -36,11 +36,11 @@ public class DescriptionBuilder extends AbstractStyleBuilder<Description> {
     }
 
     @Override
-    public Description build() {
+    public DescriptionImpl build() {
         if (unset) {
             return null;
         }
-        Description descript = sf.description(title, description);
+        DescriptionImpl descript = sf.description(title, description);
         if (parent == null) {
             reset();
         }
@@ -76,7 +76,7 @@ public class DescriptionBuilder extends AbstractStyleBuilder<Description> {
     }
 
     @Override
-    public DescriptionBuilder reset(Description original) {
+    public DescriptionBuilder reset(DescriptionImpl original) {
         unset = false;
         title = original.getTitle();
         description = original.getAbstract();

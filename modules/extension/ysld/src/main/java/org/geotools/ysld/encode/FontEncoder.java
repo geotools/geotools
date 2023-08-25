@@ -17,16 +17,16 @@
  */
 package org.geotools.ysld.encode;
 
-import org.geotools.styling.Font;
+import org.geotools.styling.FontImpl;
 
-/** Encodes an {@link Font} as YSLD. */
-public class FontEncoder extends YsldEncodeHandler<Font> {
-    FontEncoder(Font font) {
+/** Encodes an {@link FontImpl} as YSLD. */
+public class FontEncoder extends YsldEncodeHandler<FontImpl> {
+    FontEncoder(FontImpl font) {
         super(font);
     }
 
     @Override
-    protected void encode(Font font) {
+    protected void encode(FontImpl font) {
         putName("font-family", font.getFamily().get(0));
         put("font-size", font.getSize());
         putName("font-style", font.getStyle());

@@ -17,18 +17,18 @@
  */
 package org.geotools.ysld.parse;
 
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Style;
+import org.geotools.styling.FeatureTypeStyleImpl;
+import org.geotools.styling.StyleImpl;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 import org.geotools.ysld.YamlSeq;
 
-/** Handles parsing a Ysld "feature-styles" property into a {@link FeatureTypeStyle} object. */
+/** Handles parsing a Ysld "feature-styles" property into a {@link FeatureTypeStyleImpl} object. */
 public class FeatureStyleParser extends YsldParseHandler {
 
-    Style style;
+    StyleImpl style;
 
-    FeatureStyleParser(Style style, Factory factory) {
+    FeatureStyleParser(StyleImpl style, Factory factory) {
         super(factory);
         this.style = style;
     }
@@ -39,7 +39,7 @@ public class FeatureStyleParser extends YsldParseHandler {
         for (YamlObject<?> o : seq) {
             YamlMap fs = o.map();
 
-            FeatureTypeStyle featureStyle = factory.style.createFeatureTypeStyle();
+            FeatureTypeStyleImpl featureStyle = factory.style.createFeatureTypeStyle();
             style.featureTypeStyles().add(featureStyle);
 
             featureStyle.setName(fs.str("name"));

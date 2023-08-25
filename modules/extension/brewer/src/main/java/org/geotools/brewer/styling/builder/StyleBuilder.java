@@ -19,11 +19,12 @@ package org.geotools.brewer.styling.builder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Style;
+
+import org.geotools.styling.FeatureTypeStyleImpl;
+import org.geotools.styling.StyleImpl;
 import org.geotools.util.SimpleInternationalString;
 
-public class StyleBuilder extends AbstractStyleBuilder<Style> {
+public class StyleBuilder extends AbstractStyleBuilder<StyleImpl> {
     List<FeatureTypeStyleBuilder> fts = new ArrayList<>();
 
     String name;
@@ -77,12 +78,12 @@ public class StyleBuilder extends AbstractStyleBuilder<Style> {
     }
 
     @Override
-    public Style build() {
+    public StyleImpl build() {
         if (unset) {
             return null;
         }
 
-        Style s;
+        StyleImpl s;
         if (fts.isEmpty()) {
             s = sf.createNamedStyle();
             s.setName(name);
@@ -123,12 +124,12 @@ public class StyleBuilder extends AbstractStyleBuilder<Style> {
     }
 
     @Override
-    public StyleBuilder reset(Style style) {
+    public StyleBuilder reset(StyleImpl style) {
         if (style == null) {
             return unset();
         }
         fts.clear();
-        for (FeatureTypeStyle ft : style.featureTypeStyles()) {
+        for (FeatureTypeStyleImpl ft : style.featureTypeStyles()) {
             fts.add(new FeatureTypeStyleBuilder(this).reset(ft));
         }
         name = style.getName();
@@ -147,7 +148,7 @@ public class StyleBuilder extends AbstractStyleBuilder<Style> {
     }
 
     @Override
-    public Style buildStyle() {
+    public StyleImpl buildStyle() {
         return build();
     }
 

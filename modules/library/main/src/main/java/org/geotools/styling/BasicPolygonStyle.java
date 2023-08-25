@@ -24,7 +24,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
+import org.geotools.api.style.FeatureTypeStyle;
 import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.Symbolizer;
 import org.geotools.api.util.Cloneable;
 import org.geotools.util.Utilities;
 
@@ -34,32 +36,33 @@ import org.geotools.util.Utilities;
  * @author James Macgill, CCG
  * @version $Id$
  */
-public abstract class BasicPolygonStyle extends Style
+public abstract class BasicPolygonStyle extends StyleImpl
         implements Cloneable, org.geotools.api.style.Style {
     /** The logger for the default core module. */
-    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(Style.class);
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(StyleImpl.class);
 
     private List<FeatureTypeStyle> featureTypeStyles = new ArrayList<>();
-    private Description description = new Description();
+    private DescriptionImpl description = new DescriptionImpl();
     private String name = "Default Styler";
     private boolean defaultB = false;
-    private Fill background;
+    private FillImpl background;
     private Symbolizer defaultSymbolizer;
 
     /** Creates a new instance of BasicPolygonStyle */
     public BasicPolygonStyle() {
-        this(new Fill(), new Stroke());
+        this(new FillImpl(), new StrokeImpl());
     }
 
-    public BasicPolygonStyle(Fill fill, Stroke stroke) {
-        PolygonSymbolizer polysym = new PolygonSymbolizer();
+    public BasicPolygonStyle(FillImpl fill, StrokeImpl stroke) {
+        PolygonSymbolizerImpl polysym = new PolygonSymbolizerImpl();
         polysym.setFill(fill);
         polysym.setStroke(stroke);
 
-        Rule rule = new Rule();
+        RuleImpl rule = new RuleImpl();
         rule.symbolizers().add(polysym);
 
-        FeatureTypeStyle fts = new FeatureTypeStyle();
+        FeatureTypeStyleImpl fts = new FeatureTypeStyleImpl();
         fts.rules().add(rule);
         this.featureTypeStyles().add(fts);
     }
@@ -90,8 +93,8 @@ public abstract class BasicPolygonStyle extends Style
         this.defaultSymbolizer = defaultSymbolizer;
     }
 
-    public void setFeatureTypeStyles(FeatureTypeStyle... styles) {
-        List<FeatureTypeStyle> newStyles = Arrays.asList(styles);
+    public void setFeatureTypeStyles(FeatureTypeStyleImpl... styles) {
+        List<FeatureTypeStyleImpl> newStyles = Arrays.asList(styles);
 
         this.featureTypeStyles.clear();
         this.featureTypeStyles.addAll(newStyles);
@@ -116,18 +119,18 @@ public abstract class BasicPolygonStyle extends Style
      * Clones the Style. Creates deep copy clone of the style.
      *
      * @return the Clone of the style.
-     * @see Style#clone()
+     * @see StyleImpl#clone()
      */
     @Override
     public Object clone() {
-        Style clone;
+        StyleImpl clone;
 
-        clone = (Style) super.clone();
+        clone = (StyleImpl) super.clone();
 
-        List<FeatureTypeStyle> ftsCopies = new ArrayList<>();
+        List<FeatureTypeStyleImpl> ftsCopies = new ArrayList<>();
 
         for (FeatureTypeStyle featureTypeStyle : featureTypeStyles) {
-            ftsCopies.add((FeatureTypeStyle) ((Cloneable) featureTypeStyle).clone());
+            ftsCopies.add((FeatureTypeStyleImpl) ((Cloneable) featureTypeStyle).clone());
         }
 
         clone.featureTypeStyles().clear();
@@ -157,8 +160,8 @@ public abstract class BasicPolygonStyle extends Style
             return true;
         }
 
-        if (oth instanceof Style) {
-            Style other = (Style) oth;
+        if (oth instanceof StyleImpl) {
+            StyleImpl other = (StyleImpl) oth;
 
             return Utilities.equals(name, other.getName())
                     && Utilities.equals(description, other.getDescription())
@@ -171,13 +174,13 @@ public abstract class BasicPolygonStyle extends Style
 
     public void setDescription(org.geotools.api.style.Description description) {
         if (description == super.getBackground()) {
-            this.description = new Description();
+            this.description = new DescriptionImpl();
         } else {
-            this.description = Description.cast(description);
+            this.description = DescriptionImpl.cast(description);
         }
     }
 
-    public void setBackground(Fill background) {
+    public void setBackground(FillImpl background) {
         this.background = background;
     }
 }

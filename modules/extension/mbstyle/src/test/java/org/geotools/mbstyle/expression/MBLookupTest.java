@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.layer.SymbolMBLayer;
-import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.FeatureTypeStyleImpl;
 import org.geotools.xml.styling.SLDTransformer;
 import org.json.simple.JSONObject;
 import org.junit.Test;
@@ -53,7 +53,7 @@ public class MBLookupTest extends AbstractMBExpressionTest {
         // Transform to confirm it uses PropertyName function in SLD
         MBStyle getTest = MBStyle.create(mbstyle);
         SymbolMBLayer testLayer = (SymbolMBLayer) getTest.layer("getExpression");
-        List<FeatureTypeStyle> getFeatures = testLayer.transformInternal(getTest);
+        List<FeatureTypeStyleImpl> getFeatures = testLayer.transformInternal(getTest);
         try {
             String xml = new SLDTransformer().transform(getFeatures.get(0));
             assertTrue(xml.contains("<ogc:PropertyName>Name</ogc:PropertyName>"));
@@ -114,7 +114,7 @@ public class MBLookupTest extends AbstractMBExpressionTest {
         // Verify that a "has" lookup expression transforms correctly to SLD.
         MBStyle getTest = MBStyle.create(mbstyle);
         SymbolMBLayer rgbLayer = (SymbolMBLayer) getTest.layer("hasExpression");
-        List<FeatureTypeStyle> getFeatures = rgbLayer.transformInternal(getTest);
+        List<FeatureTypeStyleImpl> getFeatures = rgbLayer.transformInternal(getTest);
         String xml = new SLDTransformer().transform(getFeatures.get(0));
         assertTrue(
                 xml.contains(

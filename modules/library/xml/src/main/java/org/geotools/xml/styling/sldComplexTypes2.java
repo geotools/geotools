@@ -28,6 +28,7 @@ import org.geotools.api.style.FeatureTypeConstraint;
 import org.geotools.api.style.LabelPlacement;
 import org.geotools.api.style.RemoteOWS;
 import org.geotools.api.style.StyledLayerDescriptor;
+import org.geotools.api.style.Symbolizer;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.*;
 import org.geotools.xml.PrintHandler;
@@ -286,7 +287,7 @@ public class sldComplexTypes2 {
          */
         @Override
         public Class getInstanceType() {
-            return LinePlacement.class;
+            return LinePlacementImpl.class;
         }
 
         /**
@@ -336,7 +337,8 @@ public class sldComplexTypes2 {
                     offset = (Expression) elementValue.getValue();
             }
 
-            LinePlacement dlp = CommonFactoryFinder.getStyleFactory().createLinePlacement(offset);
+            LinePlacementImpl dlp =
+                    CommonFactoryFinder.getStyleFactory().createLinePlacement(offset);
             return dlp;
         }
     }
@@ -371,7 +373,7 @@ public class sldComplexTypes2 {
          */
         @Override
         public Class getInstanceType() {
-            return LineSymbolizer.class;
+            return LineSymbolizerImpl.class;
         }
 
         /**
@@ -410,8 +412,9 @@ public class sldComplexTypes2 {
                 ElementValue[] value,
                 Attributes attrs1,
                 Map<String, Object> hints) {
-            LineSymbolizer symbol =
-                    CommonFactoryFinder.getStyleFactory().getDefaultLineSymbolizer();
+            LineSymbolizerImpl symbol =
+                    (LineSymbolizerImpl)
+                            CommonFactoryFinder.getStyleFactory().getDefaultLineSymbolizer();
             // symbol.setGraphic(null);
 
             for (ElementValue elementValue : value) {
@@ -424,7 +427,7 @@ public class sldComplexTypes2 {
                     symbol.setGeometryPropertyName((String) elementValue.getValue());
 
                 if (elems[STROKE].getName().equals(e.getName()))
-                    symbol.setStroke((Stroke) elementValue.getValue());
+                    symbol.setStroke((StrokeImpl) elementValue.getValue());
             }
 
             return symbol;
@@ -484,7 +487,7 @@ public class sldComplexTypes2 {
          */
         @Override
         public Class getInstanceType() {
-            return Mark.class;
+            return MarkImpl.class;
         }
 
         /**
@@ -523,7 +526,7 @@ public class sldComplexTypes2 {
                 ElementValue[] value,
                 Attributes attrs1,
                 Map<String, Object> hints) {
-            Mark symbol = CommonFactoryFinder.getStyleFactory().getDefaultMark();
+            MarkImpl symbol = CommonFactoryFinder.getStyleFactory().getDefaultMark();
 
             for (ElementValue elementValue : value) {
                 if ((elementValue == null) || elementValue.getElement() == null) {
@@ -535,10 +538,10 @@ public class sldComplexTypes2 {
                     symbol.setWellKnownName((Expression) elementValue.getValue());
 
                 if (elems[FILL].getName().equals(e.getName()))
-                    symbol.setFill((Fill) elementValue.getValue());
+                    symbol.setFill((FillImpl) elementValue.getValue());
 
                 if (elems[STROKE].getName().equals(e.getName()))
-                    symbol.setStroke((Stroke) elementValue.getValue());
+                    symbol.setStroke((StrokeImpl) elementValue.getValue());
             }
 
             return symbol;
@@ -632,7 +635,7 @@ public class sldComplexTypes2 {
                 ElementValue[] value,
                 Attributes attrs1,
                 Map<String, Object> hints) {
-            NamedLayer sld = new NamedLayer();
+            NamedLayerImpl sld = new NamedLayerImpl();
 
             for (ElementValue elementValue : value) {
                 if ((elementValue == null) || elementValue.getElement() == null) {
@@ -649,10 +652,10 @@ public class sldComplexTypes2 {
                 }
 
                 if (elems[NAMEDSTYLE].getName().equals(e.getName()))
-                    sld.addStyle((NamedStyle) elementValue.getValue());
+                    sld.addStyle((NamedStyleImpl) elementValue.getValue());
 
                 if (elems[USERSTYLE].getName().equals(e.getName()))
-                    sld.addStyle((Style) elementValue.getValue());
+                    sld.addStyle((StyleImpl) elementValue.getValue());
             }
 
             return sld;
@@ -744,7 +747,7 @@ public class sldComplexTypes2 {
                 ElementValue[] value,
                 Attributes attrs1,
                 Map<String, Object> hints) {
-            NamedStyle sld = new NamedStyle();
+            NamedStyleImpl sld = new NamedStyleImpl();
 
             for (ElementValue elementValue : value) {
                 if ((elementValue == null) || elementValue.getElement() == null) {
@@ -1156,7 +1159,7 @@ public class sldComplexTypes2 {
          */
         @Override
         public Class getInstanceType() {
-            return PointSymbolizer.class;
+            return PointSymbolizerImpl.class;
         }
 
         /**
@@ -1193,8 +1196,9 @@ public class sldComplexTypes2 {
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException {
-            PointSymbolizer symbol =
-                    CommonFactoryFinder.getStyleFactory().getDefaultPointSymbolizer();
+            PointSymbolizerImpl symbol =
+                    (PointSymbolizerImpl)
+                            CommonFactoryFinder.getStyleFactory().getDefaultPointSymbolizer();
             // symbol.setGraphic(null);
 
             for (ElementValue elementValue : value) {
@@ -1207,7 +1211,7 @@ public class sldComplexTypes2 {
                     symbol.setGeometryPropertyName((String) elementValue.getValue());
 
                 if (elems[GRAPHIC].getName().equals(e.getName()))
-                    symbol.setGraphic((Graphic) elementValue.getValue());
+                    symbol.setGraphic((GraphicImpl) elementValue.getValue());
             }
 
             return symbol;
@@ -1246,7 +1250,7 @@ public class sldComplexTypes2 {
          */
         @Override
         public Class getInstanceType() {
-            return PolygonSymbolizer.class;
+            return PolygonSymbolizerImpl.class;
         }
 
         /**
@@ -1283,8 +1287,9 @@ public class sldComplexTypes2 {
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException {
-            PolygonSymbolizer symbol =
-                    CommonFactoryFinder.getStyleFactory().getDefaultPolygonSymbolizer();
+            PolygonSymbolizerImpl symbol =
+                    (PolygonSymbolizerImpl)
+                            CommonFactoryFinder.getStyleFactory().getDefaultPolygonSymbolizer();
             // symbol.setGraphic(null);
 
             for (ElementValue elementValue : value) {
@@ -1297,10 +1302,10 @@ public class sldComplexTypes2 {
                     symbol.setGeometryPropertyName((String) elementValue.getValue());
 
                 if (elems[FILL].getName().equals(e.getName()))
-                    symbol.setFill((Fill) elementValue.getValue());
+                    symbol.setFill((FillImpl) elementValue.getValue());
 
                 if (elems[STROKE].getName().equals(e.getName()))
-                    symbol.setStroke((Stroke) elementValue.getValue());
+                    symbol.setStroke((StrokeImpl) elementValue.getValue());
             }
 
             return symbol;
@@ -1386,7 +1391,7 @@ public class sldComplexTypes2 {
          */
         @Override
         public Class getInstanceType() {
-            return RasterSymbolizer.class;
+            return RasterSymbolizerImpl.class;
         }
 
         private static Attribute[] attrs = null;
@@ -1451,8 +1456,9 @@ public class sldComplexTypes2 {
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException {
-            RasterSymbolizer symbol =
-                    CommonFactoryFinder.getStyleFactory().getDefaultRasterSymbolizer();
+            RasterSymbolizerImpl symbol =
+                    (RasterSymbolizerImpl)
+                            CommonFactoryFinder.getStyleFactory().getDefaultRasterSymbolizer();
             // symbol.setGraphic(null);
 
             for (ElementValue elementValue : value) {
@@ -1468,19 +1474,20 @@ public class sldComplexTypes2 {
                     symbol.setOpacity((Expression) elementValue.getValue());
 
                 if (elems[CHANNELSELECTION].getName().equals(e.getName()))
-                    symbol.setChannelSelection((ChannelSelection) elementValue.getValue());
+                    symbol.setChannelSelection((ChannelSelectionImpl) elementValue.getValue());
 
                 if (elems[OVERLAPBEHAVIOR].getName().equals(e.getName()))
                     symbol.setOverlap((Expression) elementValue.getValue());
 
                 if (elems[COLORMAP].getName().equals(e.getName()))
-                    symbol.setColorMap((ColorMap) elementValue.getValue());
+                    symbol.setColorMap((ColorMapImpl) elementValue.getValue());
 
                 if (elems[CONTRASTENHANCEMENT].getName().equals(e.getName()))
-                    symbol.setContrastEnhancement((ContrastEnhancement) elementValue.getValue());
+                    symbol.setContrastEnhancement(
+                            (ContrastEnhancementImpl) elementValue.getValue());
 
                 if (elems[SHADEDRELIEF].getName().equals(e.getName()))
-                    symbol.setShadedRelief((ShadedRelief) elementValue.getValue());
+                    symbol.setShadedRelief((ShadedReliefImpl) elementValue.getValue());
 
                 if (elems[IMAGEOUTLINE].getName().equals(e.getName()))
                     symbol.setImageOutline((Symbolizer) elementValue.getValue());
@@ -1803,7 +1810,7 @@ public class sldComplexTypes2 {
          */
         @Override
         public Class getInstanceType() {
-            return Stroke.class;
+            return StrokeImpl.class;
         }
 
         private static int GRAPHICFILL = 0;
@@ -1860,7 +1867,7 @@ public class sldComplexTypes2 {
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException {
-            Stroke symbol = CommonFactoryFinder.getStyleFactory().getDefaultStroke();
+            StrokeImpl symbol = CommonFactoryFinder.getStyleFactory().getDefaultStroke();
 
             for (ElementValue elementValue : value) {
                 if ((elementValue == null) || elementValue.getElement() == null) {
@@ -1869,10 +1876,10 @@ public class sldComplexTypes2 {
 
                 Element e = elementValue.getElement();
                 if (elems[GRAPHICFILL].getName().equals(e.getName()))
-                    symbol.setGraphicFill((Graphic) elementValue.getValue());
+                    symbol.setGraphicFill((GraphicImpl) elementValue.getValue());
 
                 if (elems[GRAPHICSTROKE].getName().equals(e.getName()))
-                    symbol.setGraphicStroke((Graphic) elementValue.getValue());
+                    symbol.setGraphicStroke((GraphicImpl) elementValue.getValue());
 
                 //                if (elems[CSSPARAMETER].getName().equals(e.getName())) {
                 //                    // TODO apply the css
@@ -2003,10 +2010,10 @@ public class sldComplexTypes2 {
                     sld.setAbstract((String) elementValue.getValue());
 
                 if (elems[NAMEDLAYER].getName().equals(e.getName()))
-                    sld.addStyledLayer((StyledLayer) elementValue.getValue());
+                    sld.addStyledLayer((StyledLayerImpl) elementValue.getValue());
 
                 if (elems[USERLAYER].getName().equals(e.getName()))
-                    sld.addStyledLayer((StyledLayer) elementValue.getValue());
+                    sld.addStyledLayer((StyledLayerImpl) elementValue.getValue());
             }
 
             return sld;
@@ -2051,7 +2058,7 @@ public class sldComplexTypes2 {
          */
         @Override
         public Class getInstanceType() {
-            return TextSymbolizer.class;
+            return TextSymbolizerImpl.class;
         }
 
         /**
@@ -2088,10 +2095,12 @@ public class sldComplexTypes2 {
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException {
-            TextSymbolizer symbol = CommonFactoryFinder.getStyleFactory().createTextSymbolizer();
+            TextSymbolizerImpl symbol =
+                    (TextSymbolizerImpl)
+                            CommonFactoryFinder.getStyleFactory().createTextSymbolizer();
             symbol.setFill(null);
 
-            List<Font> fonts = new ArrayList<>();
+            List<FontImpl> fonts = new ArrayList<>();
 
             for (ElementValue elementValue : value) {
                 if ((elementValue == null) || elementValue.getElement() == null) {
@@ -2102,22 +2111,22 @@ public class sldComplexTypes2 {
                     symbol.setGeometryPropertyName((String) elementValue.getValue());
 
                 if (elems[FILL].getName().equals(e.getName()))
-                    symbol.setFill((Fill) elementValue.getValue());
+                    symbol.setFill((FillImpl) elementValue.getValue());
 
                 if (elems[LABEL].getName().equals(e.getName()))
                     symbol.setLabel((Expression) elementValue.getValue());
 
                 if (elems[FONT].getName().equals(e.getName()))
-                    fonts.add((Font) elementValue.getValue());
+                    fonts.add((FontImpl) elementValue.getValue());
 
                 if (elems[LABELPLACEMENT].getName().equals(e.getName()))
-                    symbol.setFill((Fill) elementValue.getValue());
+                    symbol.setFill((FillImpl) elementValue.getValue());
 
                 if (elems[LABELPLACEMENT].getName().equals(e.getName()))
                     symbol.setLabelPlacement((LabelPlacement) elementValue.getValue());
 
                 if (elems[HALO].getName().equals(e.getName()))
-                    symbol.setHalo((Halo) elementValue.getValue());
+                    symbol.setHalo((HaloImpl) elementValue.getValue());
             }
             symbol.fonts().addAll(fonts);
 
@@ -2197,7 +2206,7 @@ public class sldComplexTypes2 {
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
-            UserLayer sld = new UserLayer();
+            UserLayerImpl sld = new UserLayerImpl();
 
             for (ElementValue elementValue : value) {
                 if ((elementValue == null) || elementValue.getElement() == null) {
@@ -2216,7 +2225,7 @@ public class sldComplexTypes2 {
                             (FeatureTypeConstraint[]) elementValue.getValue());
 
                 if (elems[USERSTYLE].getName().equals(e.getName()))
-                    sld.addUserStyle((Style) elementValue.getValue());
+                    sld.addUserStyle((StyleImpl) elementValue.getValue());
             }
 
             return sld;
@@ -2463,7 +2472,7 @@ public class sldComplexTypes2 {
          */
         @Override
         public Class getInstanceType() {
-            return org.geotools.styling.SelectedChannelType.class;
+            return SelectedChannelTypeImpl.class;
         }
 
         /**
@@ -2502,8 +2511,7 @@ public class sldComplexTypes2 {
                 ElementValue[] value,
                 Attributes attrs1,
                 Map<String, Object> hints) {
-            org.geotools.styling.SelectedChannelType symbol =
-                    new org.geotools.styling.SelectedChannelType();
+            SelectedChannelTypeImpl symbol = new SelectedChannelTypeImpl();
 
             for (ElementValue elementValue : value) {
                 if ((elementValue == null) || elementValue.getElement() == null) {
@@ -2517,7 +2525,7 @@ public class sldComplexTypes2 {
                 if (elems[CONTRASTENHANCEMENT].getName().equals(e.getName())) {
                     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
                     symbol.setContrastEnhancement(
-                            new ContrastEnhancement(
+                            new ContrastEnhancementImpl(
                                     ff, (Expression) elementValue.getValue(), null));
                 }
             }

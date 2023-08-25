@@ -23,8 +23,9 @@ import java.awt.Composite;
 import java.awt.Paint;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Stroke;
+import org.geotools.styling.GraphicImpl;
+import org.geotools.styling.LineSymbolizerImpl;
+import org.geotools.styling.StrokeImpl;
 
 /**
  * A dynamic line style, that will compute its parameters each time they are requested instead of
@@ -37,10 +38,10 @@ public class DynamicLineStyle2D extends org.geotools.renderer.style.LineStyle2D 
     protected SimpleFeature feature;
 
     /** The line symbolizer used to get stroke/composite/... */
-    protected LineSymbolizer ls;
+    protected LineSymbolizerImpl ls;
 
     /** Creates a new instance of DynamicLineStyle2D */
-    public DynamicLineStyle2D(SimpleFeature feature, LineSymbolizer sym) {
+    public DynamicLineStyle2D(SimpleFeature feature, LineSymbolizerImpl sym) {
         this.feature = feature;
         ls = sym;
     }
@@ -48,7 +49,7 @@ public class DynamicLineStyle2D extends org.geotools.renderer.style.LineStyle2D 
     /** Computes and returns the stroke */
     @Override
     public java.awt.Stroke getStroke() {
-        Stroke stroke = ls.getStroke();
+        StrokeImpl stroke = ls.getStroke();
 
         if (stroke == null) {
             return null;
@@ -104,7 +105,7 @@ public class DynamicLineStyle2D extends org.geotools.renderer.style.LineStyle2D 
     /** Computes and returns the contour style */
     @Override
     public java.awt.Composite getContourComposite() {
-        Stroke stroke = ls.getStroke();
+        StrokeImpl stroke = ls.getStroke();
 
         if (stroke == null) {
             return null;
@@ -123,7 +124,7 @@ public class DynamicLineStyle2D extends org.geotools.renderer.style.LineStyle2D 
      */
     @Override
     public java.awt.Paint getContour() {
-        Stroke stroke = ls.getStroke();
+        StrokeImpl stroke = ls.getStroke();
 
         if (stroke == null) {
             return null;
@@ -139,7 +140,7 @@ public class DynamicLineStyle2D extends org.geotools.renderer.style.LineStyle2D 
         }
 
         // if a graphic fill is to be used, prepare the paint accordingly....
-        org.geotools.styling.Graphic gr = stroke.getGraphicFill();
+        GraphicImpl gr = stroke.getGraphicFill();
         SLDStyleFactory fac = new SLDStyleFactory();
 
         if (gr != null) {

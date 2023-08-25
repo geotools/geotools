@@ -18,7 +18,7 @@ package org.geotools.sld.bindings;
 
 import javax.xml.namespace.QName;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.styling.AnchorPoint;
+import org.geotools.styling.AnchorPointImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
@@ -86,7 +86,7 @@ public class SLDAnchorPointBinding extends AbstractComplexBinding {
      */
     @Override
     public Class getType() {
-        return AnchorPoint.class;
+        return AnchorPointImpl.class;
     }
 
     /**

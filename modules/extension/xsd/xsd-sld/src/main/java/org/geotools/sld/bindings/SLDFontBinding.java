@@ -20,7 +20,7 @@ import javax.xml.namespace.QName;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.sld.CssParameter;
-import org.geotools.styling.Font;
+import org.geotools.styling.FontImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
@@ -89,7 +89,7 @@ public class SLDFontBinding extends AbstractComplexBinding {
      */
     @Override
     public Class getType() {
-        return Font.class;
+        return FontImpl.class;
     }
 
     /**
@@ -111,7 +111,7 @@ public class SLDFontBinding extends AbstractComplexBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        Font font = styleFactory.getDefaultFont();
+        FontImpl font = styleFactory.getDefaultFont();
 
         boolean familyFound = false;
         for (CssParameter css : node.getChildValues(CssParameter.class)) {

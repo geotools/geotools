@@ -19,9 +19,11 @@ package org.geotools.renderer;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.regex.Pattern;
+
+import org.geotools.api.style.Symbolizer;
 import org.geotools.api.style.TextSymbolizer;
 import org.geotools.api.style.TextSymbolizer.DisplacementMode;
-import org.geotools.styling.Symbolizer;
+
 
 /**
  * Helper class that provides utility methods to extract and parse elements from the vendor options

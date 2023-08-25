@@ -32,7 +32,7 @@ import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.styling.SLD;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.swing.testutils.WaitingMapPaneListener;
 import org.locationtech.jts.geom.Polygon;
 
@@ -93,7 +93,7 @@ public abstract class JMapPaneTestBase {
      */
     protected Layer createLayer(ReferencedEnvelope env) {
         SimpleFeatureCollection fc = singlePolygonFeatureCollection(env);
-        Style style = SLD.createSimpleStyle(fc.getSchema());
+        StyleImpl style = SLD.createSimpleStyle(fc.getSchema());
         return new FeatureLayer(fc, style);
     }
 

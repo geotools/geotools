@@ -20,7 +20,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import org.geotools.api.style.TextSymbolizer;
 import org.geotools.image.test.ImageAssert;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.junit.Test;
 
 /** Tests labels underling. */
@@ -29,7 +29,7 @@ public class LabelStrikethoughtTest extends AbstractLabelLineTest {
     @Test
     public void testLabelsStrikethrough() throws Exception {
         // load the style that will strikethrough the labels
-        Style style =
+        StyleImpl style =
                 loadParametricStyle(
                         this,
                         "lineStyleTemplate.sld",
@@ -49,7 +49,7 @@ public class LabelStrikethoughtTest extends AbstractLabelLineTest {
     @Test
     public void testLabelsNotStrikethrough() throws Exception {
         // load the style that will strikethrough the labels
-        Style style =
+        StyleImpl style =
                 loadParametricStyle(
                         this,
                         "lineStyleTemplate.sld",

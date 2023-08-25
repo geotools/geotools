@@ -19,8 +19,8 @@ package org.geotools.xml.styling;
 import static org.junit.Assert.fail;
 
 import java.io.StringReader;
-import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
+import org.geotools.styling.StyleImpl;
 import org.geotools.test.TestData;
 import org.junit.Test;
 
@@ -38,7 +38,7 @@ public class XmlnsNamespaceTest {
 
         java.net.URL sldUrl = TestData.getResource(this, "xmlnsNamespaces.sld");
         SLDParser parser = new SLDParser(new StyleFactory(), sldUrl);
-        Style style = parser.readXML()[0];
+        StyleImpl style = parser.readXML()[0];
 
         SLDTransformer transformer = new SLDTransformer();
         transformer.setNamespaceDeclarationEnabled(true);

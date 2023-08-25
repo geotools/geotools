@@ -38,13 +38,8 @@ import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.lite.RendererBaseTest;
 import org.geotools.renderer.lite.StreamingRenderer;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.SLD;
-import org.geotools.styling.SelectedChannelType;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
+import org.geotools.styling.*;
+import org.geotools.styling.StyleImpl;
 import org.junit.Test;
 
 /**
@@ -76,14 +71,14 @@ public class DisplayCoverageTest {
      */
     @Test
     public void renderCoverage() throws IOException {
-        Style style = createCoverageStyle("1");
+        StyleImpl style = createCoverageStyle("1");
         String styleName = "contrastStretchSimple";
         testCoverageStyle(style, styleName);
     }
 
     @Test
     public void renderCoverageWithEnvContrastLow() throws IOException {
-        Style style = createEnvCoverageStyle("1");
+        StyleImpl style = createEnvCoverageStyle("1");
         EnvFunction.setLocalValue("gamma", "0.5");
         try {
             String styleName = "contrastStretchEnvLow";
@@ -95,7 +90,7 @@ public class DisplayCoverageTest {
 
     @Test
     public void renderCoverageWithEnvContrastHigh() throws IOException {
-        Style style = createEnvCoverageStyle("1");
+        StyleImpl style = createEnvCoverageStyle("1");
         EnvFunction.setLocalValue("gamma", "2");
         try {
             String styleName = "contrastStretchEnvHigh";
@@ -107,7 +102,7 @@ public class DisplayCoverageTest {
 
     @Test
     public void renderCoverageWithEnvMinMax() throws IOException {
-        Style style = createEnvMinMaxCoverageStyle("1");
+        StyleImpl style = createEnvMinMaxCoverageStyle("1");
         EnvFunction.setLocalValue("range_min", "4");
         EnvFunction.setLocalValue("range_max", "16");
         try {
@@ -118,7 +113,7 @@ public class DisplayCoverageTest {
         }
     }
 
-    private void testCoverageStyle(Style style, String styleName) throws IOException {
+    private void testCoverageStyle(StyleImpl style, String styleName) throws IOException {
         GridCoverage2D coverage = createCoverage();
         StreamingRenderer renderer = new StreamingRenderer();
 
@@ -161,49 +156,49 @@ public class DisplayCoverageTest {
         return gcf.create("coverage", matrix, env);
     }
 
-    private Style createCoverageStyle(String bandName) {
+    private StyleImpl createCoverageStyle(String bandName) {
         StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
-        ContrastEnhancement ce = sf.contrastEnhancement(ff.literal(1.0), ContrastMethod.NORMALIZE);
-        SelectedChannelType sct = sf.createSelectedChannelType(bandName, ce);
+        ContrastEnhancementImpl ce = sf.contrastEnhancement(ff.literal(1.0), ContrastMethod.NORMALIZE);
+        SelectedChannelTypeImpl sct = sf.createSelectedChannelType(bandName, ce);
 
-        RasterSymbolizer sym = sf.getDefaultRasterSymbolizer();
-        ChannelSelection sel = sf.channelSelection(sct);
+        RasterSymbolizerImpl sym = sf.getDefaultRasterSymbolizer();
+        ChannelSelectionImpl sel = sf.channelSelection(sct);
         sym.setChannelSelection(sel);
 
         return SLD.wrapSymbolizers(sym);
     }
 
-    private Style createEnvCoverageStyle(String bandName) {
+    private StyleImpl createEnvCoverageStyle(String bandName) {
         StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
-        ContrastEnhancement ce =
+        ContrastEnhancementImpl ce =
                 sf.contrastEnhancement(
                         ff.function("env", ff.literal("gamma"), ff.literal(1)),
                         ContrastMethod.NORMALIZE);
-        SelectedChannelType sct = sf.createSelectedChannelType(bandName, ce);
+        SelectedChannelTypeImpl sct = sf.createSelectedChannelType(bandName, ce);
 
-        RasterSymbolizer sym = sf.getDefaultRasterSymbolizer();
-        ChannelSelection sel = sf.channelSelection(sct);
+        RasterSymbolizerImpl sym = sf.getDefaultRasterSymbolizer();
+        ChannelSelectionImpl sel = sf.channelSelection(sct);
         sym.setChannelSelection(sel);
 
         return SLD.wrapSymbolizers(sym);
     }
 
-    private Style createEnvMinMaxCoverageStyle(String bandName) {
+    private StyleImpl createEnvMinMaxCoverageStyle(String bandName) {
         StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
-        ContrastEnhancement ce = sf.contrastEnhancement(ff.literal(1.0), ContrastMethod.NORMALIZE);
+        ContrastEnhancementImpl ce = sf.contrastEnhancement(ff.literal(1.0), ContrastMethod.NORMALIZE);
         ce.addOption("algorithm", ff.literal("StretchToMinimumMaximum"));
         ce.addOption("minValue", ff.function("env", ff.literal("range_min"), ff.literal(0)));
         ce.addOption("maxValue", ff.function("env", ff.literal("range_max"), ff.literal(220)));
-        SelectedChannelType sct = sf.createSelectedChannelType(bandName, ce);
+        SelectedChannelTypeImpl sct = sf.createSelectedChannelType(bandName, ce);
 
-        RasterSymbolizer sym = sf.getDefaultRasterSymbolizer();
-        ChannelSelection sel = sf.channelSelection(sct);
+        RasterSymbolizerImpl sym = sf.getDefaultRasterSymbolizer();
+        ChannelSelectionImpl sel = sf.channelSelection(sct);
         sym.setChannelSelection(sel);
 
         return SLD.wrapSymbolizers(sym);

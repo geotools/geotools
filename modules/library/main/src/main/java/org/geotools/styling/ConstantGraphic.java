@@ -76,14 +76,14 @@ import org.geotools.filter.ConstantExpression;
  *
  * @task REVISIT: There are no setter methods in this interface, is this a problem?
  */
-class ConstantGraphic extends Graphic {
+class ConstantGraphic extends GraphicImpl {
     /**
      * A default Graphic instance.
      *
      * <p>For some attributes the standard does not define a default, so a reasonable value is
      * supplied.
      */
-    public static final Graphic DEFAULT =
+    public static final GraphicImpl DEFAULT =
             new ConstantGraphic() {
 
                 @Override
@@ -98,8 +98,8 @@ class ConstantGraphic extends Graphic {
                 }
 
                 @Override
-                public Displacement getDisplacement() {
-                    return Displacement.DEFAULT;
+                public DisplacementImpl getDisplacement() {
+                    return DisplacementImpl.DEFAULT;
                 }
 
                 @Override
@@ -113,7 +113,7 @@ class ConstantGraphic extends Graphic {
      * <p>This value is used to indicate that the Graphics based operation should be skipped. Aka
      * this is used by Stroke.Stroke as placeholders for GRAPHIC_FILL and GRAPHIC_STROKE.
      */
-    public static final Graphic NULL =
+    public static final GraphicImpl NULL =
             new ConstantGraphic() {
 
                 @Override
@@ -132,8 +132,8 @@ class ConstantGraphic extends Graphic {
                 }
 
                 @Override
-                public Displacement getDisplacement() {
-                    return Displacement.NULL;
+                public DisplacementImpl getDisplacement() {
+                    return DisplacementImpl.NULL;
                 }
 
                 @Override
@@ -142,8 +142,8 @@ class ConstantGraphic extends Graphic {
                 }
 
                 @Override
-                public AnchorPoint getAnchorPoint() {
-                    return AnchorPoint.NULL;
+                public AnchorPointImpl getAnchorPoint() {
+                    return AnchorPointImpl.NULL;
                 }
             };
 
@@ -156,19 +156,19 @@ class ConstantGraphic extends Graphic {
         cannotModifyConstant();
     }
 
-    public void setExternalGraphics(ExternalGraphic... externalGraphics) {
+    public void setExternalGraphics(ExternalGraphicImpl... externalGraphics) {
         cannotModifyConstant();
     }
 
-    public void addExternalGraphic(ExternalGraphic externalGraphic) {
+    public void addExternalGraphic(ExternalGraphicImpl externalGraphic) {
         cannotModifyConstant();
     }
 
-    public void setMarks(Mark... marks) {
+    public void setMarks(MarkImpl... marks) {
         cannotModifyConstant();
     }
 
-    public void addMark(Mark mark) {
+    public void addMark(MarkImpl mark) {
         cannotModifyConstant();
     }
 
@@ -203,7 +203,7 @@ class ConstantGraphic extends Graphic {
         cannotModifyConstant();
     }
 
-    public void setAnchorPoint(AnchorPoint anchor) {
+    public void setAnchorPoint(AnchorPointImpl anchor) {
         cannotModifyConstant();
     }
 
@@ -213,8 +213,8 @@ class ConstantGraphic extends Graphic {
     }
 
     @Override
-    public AnchorPoint getAnchorPoint() {
-        return org.geotools.styling.AnchorPoint.DEFAULT;
+    public AnchorPointImpl getAnchorPoint() {
+        return AnchorPointImpl.DEFAULT;
     }
 
     @Override

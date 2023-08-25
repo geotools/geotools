@@ -27,25 +27,25 @@ import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.NilExpression;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.style.*;
+import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.NamedLayer;
+import org.geotools.api.style.PointPlacement;
+import org.geotools.api.style.PointSymbolizer;
+import org.geotools.api.style.PolygonSymbolizer;
+import org.geotools.api.style.RasterSymbolizer;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyledLayer;
+import org.geotools.api.style.TextSymbolizer;
+import org.geotools.api.style.UserLayer;
 import org.geotools.filter.ConstantExpression;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.renderer.style.DynamicSymbolFactoryFinder;
 import org.geotools.renderer.style.ExpressionExtractor;
 import org.geotools.renderer.style.ExternalGraphicFactory;
 import org.geotools.renderer.style.SLDStyleFactory;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Style;
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.*;
+import org.geotools.styling.GraphicImpl;
 
 /**
  * Parses a style or part of it and returns the size of the largest stroke and the biggest point
@@ -104,7 +104,7 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
 
     @Override
     public void visit(org.geotools.api.style.Style style) {
-        ((org.geotools.styling.Style) style).featureTypeStyles().forEach(ft -> ft.accept(this));
+        ((StyleImpl) style).featureTypeStyles().forEach(ft -> ft.accept(this));
     }
 
     @Override
@@ -130,7 +130,7 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
         // nothing to do here
     }
 
-    /** @see StyleVisitor#visit(org.geotools.styling.Stroke) */
+    /** @see StyleVisitor#visit(StrokeImpl) */
     @Override
     public void visit(org.geotools.api.style.Stroke stroke) {
         try {
@@ -199,7 +199,7 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
         }
     }
 
-    /** @see StyleVisitor#visit(org.geotools.styling.PointSymbolizer) */
+    /** @see StyleVisitor#visit(PointSymbolizerImpl) */
     @Override
     public void visit(org.geotools.api.style.PointSymbolizer ps) {
         if (ps.getGraphic() != null) {
@@ -207,7 +207,7 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
         }
     }
 
-    /** @see StyleVisitor#visit(org.geotools.styling.LineSymbolizer) */
+    /** @see StyleVisitor#visit(LineSymbolizerImpl) */
     @Override
     public void visit(org.geotools.api.style.LineSymbolizer line) {
         if (line.getStroke() != null) {
@@ -215,7 +215,7 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
         }
     }
 
-    /** @see StyleVisitor#visit(org.geotools.styling.PolygonSymbolizer) */
+    /** @see StyleVisitor#visit(PolygonSymbolizerImpl) */
     @Override
     public void visit(org.geotools.api.style.PolygonSymbolizer poly) {
         if (poly.getStroke() != null) {
@@ -223,25 +223,25 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
         }
     }
 
-    /** @see StyleVisitor#visit(org.geotools.styling.TextSymbolizer) */
+    /** @see StyleVisitor#visit(TextSymbolizerImpl) */
     @Override
     public void visit(org.geotools.api.style.TextSymbolizer text) {
         TextSymbolizer input = (TextSymbolizer) text;
         // while we cannot account for the label size, we should at least
         // account for its height, anchor point, and eventual offsets
         if (input.fonts() != null && !input.fonts().isEmpty()) {
-            for (Font font : input.fonts()) {
+            for (FontImpl font : input.fonts()) {
                 int textSize = getPositiveValue(font.getSize());
                 int delta = -1;
                 if (input.getLabelPlacement() instanceof PointPlacement) {
                     PointPlacement pp = (PointPlacement) input.getLabelPlacement();
-                    Displacement pd = pp.getDisplacement();
+                    DisplacementImpl pd = pp.getDisplacement();
                     if (pd != null) {
                         int dx = getPositiveValue(pd.getDisplacementX());
                         int dy = getPositiveValue(pd.getDisplacementY());
                         delta = Math.max(dx, dy);
                     }
-                    AnchorPoint ap = pp.getAnchorPoint();
+                    AnchorPointImpl ap = pp.getAnchorPoint();
                     if (ap != null) {
                         double ax = Math.abs(getDouble(ap.getAnchorPointX()) - 0.5);
                         double ay = Math.abs(getDouble(ap.getAnchorPointY()) - 0.5);
@@ -270,14 +270,14 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
 
         // take into account label shields if any
         if (text instanceof TextSymbolizer) {
-            Graphic graphic = ((TextSymbolizer) text).getGraphic();
+            GraphicImpl graphic = ((TextSymbolizer) text).getGraphic();
             if (graphic != null) {
                 graphic.accept(this);
             }
         }
     }
 
-    /** @see StyleVisitor#visit(org.geotools.styling.Graphic) */
+    /** @see StyleVisitor#visit(GraphicImpl) */
     @Override
     public void visit(org.geotools.api.style.Graphic gr) {
         try {
@@ -297,8 +297,8 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
             }
 
             for (GraphicalSymbol gs : gr.graphicalSymbols()) {
-                if (gs instanceof ExternalGraphic) {
-                    ExternalGraphic eg = (ExternalGraphic) gs;
+                if (gs instanceof ExternalGraphicImpl) {
+                    ExternalGraphicImpl eg = (ExternalGraphicImpl) gs;
                     Icon icon = null;
                     if (eg.getInlineContent() != null) {
                         icon = eg.getInlineContent();
@@ -418,43 +418,43 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
         return attributeExtractor.isConstantExpression();
     }
 
-    /** @see StyleVisitor#visit(org.geotools.styling.Mark) */
+    /** @see StyleVisitor#visit(MarkImpl) */
     @Override
     public void visit(org.geotools.api.style.Mark mark) {
         // nothing to do here
     }
 
-    /** @see StyleVisitor#visit(org.geotools.styling.ExternalGraphic) */
+    /** @see StyleVisitor#visit(ExternalGraphicImpl) */
     @Override
     public void visit(org.geotools.api.style.ExternalGraphic exgr) {
         // nothing to do
     }
 
-    /** @see StyleVisitor#visit(org.geotools.styling.PointPlacement) */
+    /** @see StyleVisitor#visit(PointPlacementImpl) */
     @Override
     public void visit(org.geotools.api.style.PointPlacement pp) {
         // nothing to do here
     }
 
-    /** @see StyleVisitor#visit(org.geotools.styling.AnchorPoint) */
+    /** @see StyleVisitor#visit(AnchorPointImpl) */
     @Override
     public void visit(org.geotools.api.style.AnchorPoint ap) {
         // nothing to do here
     }
 
-    /** @see StyleVisitor#visit(org.geotools.styling.Displacement) */
+    /** @see StyleVisitor#visit(DisplacementImpl) */
     @Override
     public void visit(org.geotools.api.style.Displacement dis) {
         // nothing to do here
     }
 
-    /** @see StyleVisitor#visit(org.geotools.styling.LinePlacement) */
+    /** @see StyleVisitor#visit(LinePlacementImpl) */
     @Override
     public void visit(org.geotools.api.style.LinePlacement lp) {
         // nothing to do here
     }
 
-    /** @see StyleVisitor#visit(org.geotools.styling.Halo) */
+    /** @see StyleVisitor#visit(HaloImpl) */
     @Override
     public void visit(org.geotools.api.style.Halo halo) {
         // nothing to do here

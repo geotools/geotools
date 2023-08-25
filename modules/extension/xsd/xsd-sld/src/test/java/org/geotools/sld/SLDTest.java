@@ -28,16 +28,8 @@ import org.geotools.api.style.GraphicalSymbol;
 import org.geotools.api.style.NamedLayer;
 import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.api.style.UserLayer;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.SLD;
-import org.geotools.styling.Style;
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.*;
+import org.geotools.styling.FillImpl;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Parser;
 import org.junit.Ignore;
@@ -60,19 +52,19 @@ public class SLDTest {
         assertEquals("OCEANSEA_1M:Foundation", layer.getName());
         assertEquals(1, layer.getStyles().length);
 
-        Style style = (Style) layer.getStyles()[0];
+        StyleImpl style = (StyleImpl) layer.getStyles()[0];
         assertEquals("GEOSYM", style.getName());
         assertTrue(style.isDefault());
         assertEquals(1, style.featureTypeStyles().size());
 
-        FeatureTypeStyle ftStyle = style.featureTypeStyles().get(0);
+        FeatureTypeStyleImpl ftStyle = (FeatureTypeStyleImpl) style.featureTypeStyles().get(0);
         assertEquals(1, ftStyle.rules().size());
 
-        Rule rule = ftStyle.rules().get(0);
+        RuleImpl rule = (RuleImpl) ftStyle.rules().get(0);
         assertEquals("main", rule.getName());
         assertEquals(1, rule.symbolizers().size());
 
-        PolygonSymbolizer ps = (PolygonSymbolizer) rule.symbolizers().get(0);
+        PolygonSymbolizerImpl ps = (PolygonSymbolizerImpl) rule.symbolizers().get(0);
         assertEquals("GEOMETRY", ps.getGeometryPropertyName());
 
         Color color = SLD.color(ps.getFill().getColor());
@@ -143,10 +135,10 @@ public class SLDTest {
         StyledLayerDescriptor sld =
                 (StyledLayerDescriptor) parser.parse(IOUtils.toInputStream(sldText, "UTF-8"));
 
-        Style s = (Style) ((UserLayer) (sld.layers().get(0))).getUserStyles()[0];
-        TextSymbolizer symbolizer =
-                (TextSymbolizer) (s.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0));
-        Font font = symbolizer.fonts().get(0);
+        StyleImpl s = (StyleImpl) ((UserLayer) (sld.layers().get(0))).getUserStyles()[0];
+        TextSymbolizerImpl symbolizer =
+                (TextSymbolizerImpl) (s.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0));
+        FontImpl font = symbolizer.fonts().get(0);
         assertTrue(font.getFamily().size() > 0);
 
         assertEquals("", font.getFamily().get(0).toString());
@@ -163,8 +155,8 @@ public class SLDTest {
         StyledLayerDescriptor sld =
                 (StyledLayerDescriptor)
                         parser.parse(getClass().getResourceAsStream("backgroundSolid.sld"));
-        Style style = (Style) ((NamedLayer) sld.getStyledLayers()[0]).getStyles()[0];
-        Fill fill = style.getBackground();
+        StyleImpl style = (StyleImpl) ((NamedLayer) sld.getStyledLayers()[0]).getStyles()[0];
+        FillImpl fill = style.getBackground();
         assertNotNull(fill);
         assertEquals(Color.RED, fill.getColor().evaluate(null, Color.class));
         assertEquals(1, fill.getOpacity().evaluate(null, Double.class), 1);
@@ -181,14 +173,14 @@ public class SLDTest {
         StyledLayerDescriptor sld =
                 (StyledLayerDescriptor)
                         parser.parse(getClass().getResourceAsStream("backgroundGraphicFill.sld"));
-        Style style = (Style) ((NamedLayer) sld.getStyledLayers()[0]).getStyles()[0];
-        Fill fill = style.getBackground();
+        StyleImpl style = (StyleImpl) ((NamedLayer) sld.getStyledLayers()[0]).getStyles()[0];
+        FillImpl fill = style.getBackground();
         assertNotNull(fill);
-        Graphic graphic = fill.getGraphicFill();
+        GraphicImpl graphic = fill.getGraphicFill();
         assertNotNull(graphic);
         GraphicalSymbol firstSymbol = graphic.graphicalSymbols().get(0);
-        assertTrue(firstSymbol instanceof Mark);
+        assertTrue(firstSymbol instanceof MarkImpl);
         assertEquals(
-                "square", ((Mark) firstSymbol).getWellKnownName().evaluate(null, String.class));
+                "square", ((MarkImpl) firstSymbol).getWellKnownName().evaluate(null, String.class));
     }
 }

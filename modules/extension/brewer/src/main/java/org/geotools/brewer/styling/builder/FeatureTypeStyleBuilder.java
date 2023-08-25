@@ -28,11 +28,11 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.SemanticType;
 import org.geotools.brewer.styling.filter.IdBuilder;
 import org.geotools.feature.NameImpl;
-import org.geotools.styling.Description;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Rule;
+import org.geotools.styling.DescriptionImpl;
+import org.geotools.styling.FeatureTypeStyleImpl;
+import org.geotools.styling.RuleImpl;
 
-public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeStyle> {
+public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeStyleImpl> {
     String name;
 
     List<RuleBuilder> rules = new ArrayList<>();
@@ -82,7 +82,7 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
 
     /**
      * Accumulates another feature type name in the list of the feature type names for this {@link
-     * FeatureTypeStyle}
+     * FeatureTypeStyleImpl}
      */
     public FeatureTypeStyleBuilder featureTypeName(String featureTypeName) {
         this.featureTypeNames.add(new NameImpl(featureTypeName));
@@ -98,15 +98,15 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
         return rules;
     }
 
-    public FeatureTypeStyleBuilder rules(List<Rule> rules) {
+    public FeatureTypeStyleBuilder rules(List<RuleImpl> rules) {
         unset = false;
-        for (Rule rule : rules) {
+        for (RuleImpl rule : rules) {
             this.rules.add(new RuleBuilder(this).reset(rule));
         }
         return this;
     }
 
-    public FeatureTypeStyleBuilder description(Description description) {
+    public FeatureTypeStyleBuilder description(DescriptionImpl description) {
         this.description.reset(description);
         this.unset = false;
         return this;
@@ -145,7 +145,7 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
 
     /**
      * Accumulates another feature type name in the list of the feature type names for this {@link
-     * FeatureTypeStyle}
+     * FeatureTypeStyleImpl}
      */
     public FeatureTypeStyleBuilder featureTypeName(Name featureTypeName) {
         this.featureTypeNames.add(featureTypeName);
@@ -154,7 +154,7 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
     }
 
     @Override
-    public FeatureTypeStyle build() {
+    public FeatureTypeStyleImpl build() {
         if (unset) {
             return null;
         }
@@ -162,7 +162,7 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
         for (RuleBuilder ruleBuilder : rules) {
             list.add(ruleBuilder.build());
         }
-        FeatureTypeStyle fts =
+        FeatureTypeStyleImpl fts =
                 sf.featureTypeStyle(
                         name,
                         description.build(),
@@ -196,7 +196,7 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
     }
 
     @Override
-    public FeatureTypeStyleBuilder reset(FeatureTypeStyle fts) {
+    public FeatureTypeStyleBuilder reset(FeatureTypeStyleImpl fts) {
         if (fts == null) {
             return unset();
         }
@@ -209,7 +209,7 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
         }
         this.rules.clear();
         if (fts.rules() != null) {
-            for (Rule rule : fts.rules()) {
+            for (RuleImpl rule : fts.rules()) {
                 this.rules.add(new RuleBuilder(this).reset(rule));
             }
         }

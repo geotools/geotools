@@ -17,22 +17,22 @@
  */
 package org.geotools.ysld.parse;
 
-import org.geotools.styling.ExternalGraphic;
+import org.geotools.styling.ExternalGraphicImpl;
 import org.geotools.styling.ResourceLocator;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
-/** Handles parsing a Ysld "external" property into a {@link ExternalGraphic} object. */
+/** Handles parsing a Ysld "external" property into a {@link ExternalGraphicImpl} object. */
 public abstract class ExternalGraphicParser extends YsldParseHandler {
 
-    ExternalGraphic external;
+    ExternalGraphicImpl external;
 
     public ExternalGraphicParser(Factory factory) {
         super(factory);
         external = factory.style.createExternalGraphic((String) null, null);
     }
 
-    protected abstract void externalGraphic(ExternalGraphic externalGraphic);
+    protected abstract void externalGraphic(ExternalGraphicImpl externalGraphic);
 
     @Override
     public void handle(YamlObject<?> obj, YamlParseContext context) {

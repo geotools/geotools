@@ -49,16 +49,7 @@ import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.StyleFactory;
+import org.geotools.styling.*;
 import org.geotools.test.TestData;
 import org.geotools.xml.styling.SLDParser;
 import org.junit.Assert;
@@ -106,65 +97,65 @@ public class Rendering2DTest {
         rendererHints.put("optimizedDataLoadingEnabled", Boolean.TRUE);
     }
 
-    Style loadTestStyle() throws IOException {
+    StyleImpl loadTestStyle() throws IOException {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
 
         URL surl = TestData.getResource(this, "test-sld.xml");
         SLDParser stylereader = new SLDParser(factory, surl);
         StyledLayerDescriptor sld = stylereader.parseSLD();
         UserLayer layer = (UserLayer) sld.getStyledLayers()[0];
-        return (Style) layer.getUserStyles()[0];
+        return (StyleImpl) layer.getUserStyles()[0];
     }
 
-    Style createTestStyle() throws IllegalFilterException {
+    StyleImpl createTestStyle() throws IllegalFilterException {
         StyleFactory sFac = CommonFactoryFinder.getStyleFactory(null);
         // The following is complex, and should be built from
         // an SLD document and not by hand
-        PointSymbolizer pointsym = sFac.createPointSymbolizer();
+        PointSymbolizerImpl pointsym = sFac.createPointSymbolizer();
         pointsym.setGraphic(sFac.getDefaultGraphic());
 
-        Rule rule = sFac.createRule();
+        RuleImpl rule = sFac.createRule();
         rule.symbolizers().add(polysym(sFac));
-        FeatureTypeStyle fts = (FeatureTypeStyle) sFac.createFeatureTypeStyle(rule);
+        FeatureTypeStyleImpl fts = (FeatureTypeStyleImpl) sFac.createFeatureTypeStyle(rule);
         fts.featureTypeNames().add(new NameImpl("polygonfeature"));
 
-        Rule rule1 = sFac.createRule();
+        RuleImpl rule1 = sFac.createRule();
         rule.symbolizers().add(polysym(sFac));
-        FeatureTypeStyle fts1 = (FeatureTypeStyle) sFac.createFeatureTypeStyle(rule1);
+        FeatureTypeStyleImpl fts1 = (FeatureTypeStyleImpl) sFac.createFeatureTypeStyle(rule1);
         fts1.featureTypeNames().add(new NameImpl("polygonfeature"));
 
-        Rule rule2 = sFac.createRule();
+        RuleImpl rule2 = sFac.createRule();
         rule2.symbolizers().add(linesym(sFac));
-        FeatureTypeStyle fts2 = sFac.createFeatureTypeStyle();
+        FeatureTypeStyleImpl fts2 = sFac.createFeatureTypeStyle();
         fts2.rules().add(rule2);
         fts2.featureTypeNames().add(new NameImpl("linefeature"));
 
-        Rule rule3 = sFac.createRule();
+        RuleImpl rule3 = sFac.createRule();
         rule3.symbolizers().add(pointsym);
-        FeatureTypeStyle fts3 = sFac.createFeatureTypeStyle();
+        FeatureTypeStyleImpl fts3 = sFac.createFeatureTypeStyle();
         fts3.rules().add(rule3);
         fts3.featureTypeNames().add(new NameImpl("pointfeature"));
 
-        Rule rule4 = sFac.createRule();
+        RuleImpl rule4 = sFac.createRule();
         rule4.symbolizers().addAll(Arrays.asList(polysym(sFac), linesym(sFac)));
-        FeatureTypeStyle fts4 = sFac.createFeatureTypeStyle();
+        FeatureTypeStyleImpl fts4 = sFac.createFeatureTypeStyle();
         fts4.rules().add(rule4);
         fts4.featureTypeNames().add(new NameImpl("collFeature"));
 
-        Rule rule5 = sFac.createRule();
+        RuleImpl rule5 = sFac.createRule();
         rule5.symbolizers().add(linesym(sFac));
-        FeatureTypeStyle fts5 = sFac.createFeatureTypeStyle();
+        FeatureTypeStyleImpl fts5 = sFac.createFeatureTypeStyle();
         fts5.rules().add(rule5);
         fts5.featureTypeNames().add(new NameImpl("ringFeature"));
 
-        Style style = sFac.createStyle();
+        StyleImpl style = sFac.createStyle();
         style.featureTypeStyles().addAll(Arrays.asList(fts1, fts, fts2, fts3, fts4, fts5));
         return style;
     }
 
-    private LineSymbolizer linesym(StyleFactory sFac) throws IllegalFilterException {
-        LineSymbolizer linesym = sFac.createLineSymbolizer();
-        Stroke myStroke = sFac.getDefaultStroke();
+    private LineSymbolizerImpl linesym(StyleFactory sFac) throws IllegalFilterException {
+        LineSymbolizerImpl linesym = sFac.createLineSymbolizer();
+        StrokeImpl myStroke = sFac.getDefaultStroke();
         myStroke.setColor(filterFactory.literal("#0000ff"));
         myStroke.setWidth(filterFactory.literal(Integer.valueOf(5)));
         LOGGER.fine("got new Stroke " + myStroke);
@@ -172,12 +163,12 @@ public class Rendering2DTest {
         return linesym;
     }
 
-    private PolygonSymbolizer polysym(StyleFactory sFac) throws IllegalFilterException {
-        PolygonSymbolizer polysym = sFac.createPolygonSymbolizer();
-        Fill myFill = sFac.getDefaultFill();
+    private PolygonSymbolizerImpl polysym(StyleFactory sFac) throws IllegalFilterException {
+        PolygonSymbolizerImpl polysym = sFac.createPolygonSymbolizer();
+        FillImpl myFill = sFac.getDefaultFill();
         myFill.setColor(filterFactory.literal("#ff0000"));
         polysym.setFill(myFill);
-        Stroke myStroke = sFac.getDefaultStroke();
+        StrokeImpl myStroke = sFac.getDefaultStroke();
         myStroke.setColor(filterFactory.literal("#0000ff"));
         myStroke.setWidth(filterFactory.literal(Integer.valueOf(2)));
         polysym.setStroke(myStroke);
@@ -268,7 +259,7 @@ public class Rendering2DTest {
         // CREATING STYLE
         //
         // ////////////////////////////////////////////////////////////////////
-        final Style style = createTestStyle();
+        final StyleImpl style = createTestStyle();
 
         // ////////////////////////////////////////////////////////////////////
         //
@@ -330,7 +321,7 @@ public class Rendering2DTest {
         // CREATING STYLE
         //
         // ////////////////////////////////////////////////////////////////////
-        final Style style = createTestStyle();
+        final StyleImpl style = createTestStyle();
 
         // ////////////////////////////////////////////////////////////////////
         //
@@ -381,7 +372,7 @@ public class Rendering2DTest {
         // CREATING STYLE
         //
         // ////////////////////////////////////////////////////////////////////
-        final Style style = createTestStyle();
+        final StyleImpl style = createTestStyle();
 
         // ////////////////////////////////////////////////////////////////////
         //
@@ -432,7 +423,7 @@ public class Rendering2DTest {
                 new GeometryFactory(PackedCoordinateSequenceFactory.DOUBLE_FACTORY);
         SimpleFeatureCollection ft =
                 createTestFeatureCollection(DefaultGeographicCRS.WGS84, geomFac, POLYGON);
-        Style style = createTestStyle();
+        StyleImpl style = createTestStyle();
 
         // //
         //
@@ -503,7 +494,7 @@ public class Rendering2DTest {
                 new GeometryFactory(PackedCoordinateSequenceFactory.DOUBLE_FACTORY);
         final SimpleFeatureCollection ft =
                 createTestFeatureCollection(DefaultGeographicCRS.WGS84, geomFac, LINE);
-        final Style style = createTestStyle();
+        final StyleImpl style = createTestStyle();
 
         //
         // ///////////////////////////////////////////////////////////////////
@@ -576,7 +567,7 @@ public class Rendering2DTest {
                 new GeometryFactory(PackedCoordinateSequenceFactory.DOUBLE_FACTORY);
         final SimpleFeatureCollection ft =
                 createTestFeatureCollection(DefaultGeographicCRS.WGS84, geomFac, POINT);
-        final Style style = createTestStyle();
+        final StyleImpl style = createTestStyle();
 
         //
         // ///////////////////////////////////////////////////////////////////
@@ -971,7 +962,7 @@ public class Rendering2DTest {
                         pointType,
                         new Object[] {gf.createLineString((Coordinate[]) null), "name"},
                         null);
-        Style style = sb.createStyle(sb.createLineSymbolizer());
+        StyleImpl style = sb.createStyle(sb.createLineSymbolizer());
 
         renderEmptyGeometry(f, style);
     }
@@ -985,7 +976,7 @@ public class Rendering2DTest {
         SimpleFeature f =
                 SimpleFeatureBuilder.build(
                         pointType, new Object[] {gf.createMultiPolygon(null), "name"}, null);
-        Style style = sb.createStyle(sb.createPolygonSymbolizer());
+        StyleImpl style = sb.createStyle(sb.createPolygonSymbolizer());
 
         renderEmptyGeometry(f, style);
     }
@@ -1010,7 +1001,7 @@ public class Rendering2DTest {
                         null);
         MultiPolygon mp = gf.createMultiPolygon(new Polygon[] {p1, p2});
         SimpleFeature f = SimpleFeatureBuilder.build(pointType, new Object[] {mp, "name"}, null);
-        Style style = sb.createStyle(sb.createPolygonSymbolizer());
+        StyleImpl style = sb.createStyle(sb.createPolygonSymbolizer());
 
         renderEmptyGeometry(f, style);
     }
@@ -1034,7 +1025,7 @@ public class Rendering2DTest {
         Polygon p2 = gf.createPolygon(emptyRing, new LinearRing[] {emptyRing});
         MultiPolygon mp = gf.createMultiPolygon(new Polygon[] {p1, p2});
         SimpleFeature f = SimpleFeatureBuilder.build(pointType, new Object[] {mp, "name"}, null);
-        Style style = sb.createStyle(sb.createPolygonSymbolizer());
+        StyleImpl style = sb.createStyle(sb.createPolygonSymbolizer());
 
         renderEmptyGeometry(f, style);
     }
@@ -1050,12 +1041,12 @@ public class Rendering2DTest {
                 gf.createLineString(new Coordinate[] {new Coordinate(0, 0), new Coordinate(1, 1)});
         MultiLineString mls = gf.createMultiLineString(new LineString[] {emptyLine, realLine});
         SimpleFeature f = SimpleFeatureBuilder.build(pointType, new Object[] {mls, "name"}, null);
-        Style style = sb.createStyle(sb.createPolygonSymbolizer());
+        StyleImpl style = sb.createStyle(sb.createPolygonSymbolizer());
 
         renderEmptyGeometry(f, style);
     }
 
-    private void renderEmptyGeometry(SimpleFeature f, Style style) {
+    private void renderEmptyGeometry(SimpleFeature f, StyleImpl style) {
         SimpleFeatureCollection fc = DataUtilities.collection(f);
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(fc, style));

@@ -31,7 +31,7 @@ import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.util.logging.Logging;
 
@@ -382,9 +382,9 @@ public abstract class Layer {
      *
      * @return The style (SLD).
      */
-    public synchronized Style getStyle() {
+    public synchronized StyleImpl getStyle() {
         // using user data to cache this placeholder so we don't have to create it each time
-        Style style = (Style) getUserData().get("style");
+        StyleImpl style = (StyleImpl) getUserData().get("style");
         if (style == null) {
             StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
 

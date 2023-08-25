@@ -21,12 +21,8 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.style.LabelPlacement;
 import org.geotools.sld.CssParameter;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Halo;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.*;
+import org.geotools.styling.FillImpl;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
@@ -103,7 +99,7 @@ public class SLDTextSymbolizerBinding extends AbstractComplexBinding {
      */
     @Override
     public Class getType() {
-        return TextSymbolizer.class;
+        return TextSymbolizerImpl.class;
     }
 
     /**
@@ -125,7 +121,7 @@ public class SLDTextSymbolizerBinding extends AbstractComplexBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        TextSymbolizer ts = styleFactory.createTextSymbolizer();
+        TextSymbolizerImpl ts = (TextSymbolizerImpl) styleFactory.createTextSymbolizer();
 
         // &lt;xsd:element ref="sld:Geometry" minOccurs="0"/&gt;
         if (node.hasChild("Geometry")) {
@@ -145,7 +141,7 @@ public class SLDTextSymbolizerBinding extends AbstractComplexBinding {
 
         // &lt;xsd:element ref="sld:Font" minOccurs="0"/&gt;
         if (node.hasChild("Font")) {
-            ts.fonts().add((Font) node.getChildValue("Font"));
+            ts.fonts().add((FontImpl) node.getChildValue("Font"));
         }
 
         // &lt;xsd:element ref="sld:LabelPlacement" minOccurs="0"/&gt;
@@ -155,16 +151,16 @@ public class SLDTextSymbolizerBinding extends AbstractComplexBinding {
 
         // &lt;xsd:element ref="sld:Halo" minOccurs="0"/&gt;
         if (node.hasChild("Halo")) {
-            ts.setHalo((Halo) node.getChildValue("Halo"));
+            ts.setHalo((HaloImpl) node.getChildValue("Halo"));
         }
 
         // &lt;xsd:element ref="sld:Fill" minOccurs="0"/&gt;
         if (node.hasChild("Fill")) {
-            ts.setFill((Fill) node.getChildValue("Fill"));
+            ts.setFill((FillImpl) node.getChildValue("Fill"));
         }
 
         if (node.hasChild("Graphic")) {
-            ts.setGraphic((Graphic) node.getChildValue("Graphic"));
+            ts.setGraphic((GraphicImpl) node.getChildValue("Graphic"));
         }
 
         if (node.hasChild("Priority")) {

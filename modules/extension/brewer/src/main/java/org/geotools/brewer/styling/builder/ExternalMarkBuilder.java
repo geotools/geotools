@@ -18,9 +18,9 @@ package org.geotools.brewer.styling.builder;
 
 import javax.swing.Icon;
 import org.geotools.api.metadata.citation.OnLineResource;
-import org.geotools.styling.ExternalMark;
+import org.geotools.styling.ExternalMarkImpl;
 
-public class ExternalMarkBuilder extends AbstractStyleBuilder<ExternalMark> {
+public class ExternalMarkBuilder extends AbstractStyleBuilder<ExternalMarkImpl> {
     private Icon inline;
 
     private String format;
@@ -63,7 +63,7 @@ public class ExternalMarkBuilder extends AbstractStyleBuilder<ExternalMark> {
     }
 
     @Override
-    public ExternalMark build() {
+    public ExternalMarkImpl build() {
         if (unset) {
             return null;
         }
@@ -98,7 +98,7 @@ public class ExternalMarkBuilder extends AbstractStyleBuilder<ExternalMark> {
     }
 
     @Override
-    public ExternalMarkBuilder reset(ExternalMark mark) {
+    public ExternalMarkBuilder reset(ExternalMarkImpl mark) {
         if (mark == null) {
             return reset();
         }

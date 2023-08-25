@@ -19,24 +19,25 @@ package org.geotools.ysld.encode;
 
 import java.util.Optional;
 import java.util.logging.Logger;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Style;
+
+import org.geotools.styling.FeatureTypeStyleImpl;
+import org.geotools.styling.StyleImpl;
 import org.geotools.util.logging.Logging;
 
 /**
- * Encodes a {@link FeatureTypeStyle} as YSLD. Delegates to {@link TransformEncoder} and {@link
+ * Encodes a {@link FeatureTypeStyleImpl} as YSLD. Delegates to {@link TransformEncoder} and {@link
  * RuleEncoder}.
  */
-public class FeatureStyleEncoder extends YsldEncodeHandler<FeatureTypeStyle> {
+public class FeatureStyleEncoder extends YsldEncodeHandler<FeatureTypeStyleImpl> {
 
     static Logger LOG = Logging.getLogger(FeatureStyleEncoder.class);
 
-    public FeatureStyleEncoder(Style style) {
+    public FeatureStyleEncoder(StyleImpl style) {
         super(style.featureTypeStyles().iterator());
     }
 
     @Override
-    protected void encode(FeatureTypeStyle featureStyle) {
+    protected void encode(FeatureTypeStyleImpl featureStyle) {
         put("name", featureStyle.getName());
         put(
                 "title",

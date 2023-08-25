@@ -16,7 +16,7 @@ public class CookbookRasterTest extends AbstractStyleTest {
 
     @Test
     public void testSimple() {
-        Style style = new RasterSymbolizerBuilder().buildStyle();
+        StyleImpl style = new RasterSymbolizerBuilder().buildStyle();
         // print(style);
 
         // round up the basic elements and check its simple
@@ -25,7 +25,7 @@ public class CookbookRasterTest extends AbstractStyleTest {
         assertSimpleStyle(collector);
 
         // check the symbolizer
-        RasterSymbolizer rs = (RasterSymbolizer) collector.symbolizers.get(0);
+        RasterSymbolizerImpl rs = (RasterSymbolizerImpl) collector.symbolizers.get(0);
         assertNull(rs.getChannelSelection());
         assertEquals(0, rs.getColorMap().getColorMapEntries().length);
     }
@@ -35,7 +35,7 @@ public class CookbookRasterTest extends AbstractStyleTest {
         ColorMapBuilder cm = new ColorMapBuilder();
         cm.entry().quantity(70).colorHex("#008000");
         cm.entry().quantity(256).colorHex("#663333");
-        Style style = cm.buildStyle();
+        StyleImpl style = cm.buildStyle();
         // print(style);
 
         // round up the basic elements and check its simple
@@ -44,10 +44,10 @@ public class CookbookRasterTest extends AbstractStyleTest {
         assertSimpleStyle(collector);
 
         // check the symbolizer
-        RasterSymbolizer rs = (RasterSymbolizer) collector.symbolizers.get(0);
+        RasterSymbolizerImpl rs = (RasterSymbolizerImpl) collector.symbolizers.get(0);
         assertNull(rs.getChannelSelection());
-        ColorMap cmap = rs.getColorMap();
-        assertEquals(ColorMap.TYPE_RAMP, cmap.getType());
+        ColorMapImpl cmap = rs.getColorMap();
+        assertEquals(ColorMapImpl.TYPE_RAMP, cmap.getType());
         assertFalse(cmap.getExtendedColors());
         assertEntry("#008000", 70.0, 1.0, null, cmap.getColorMapEntry(0));
         assertEntry("#663333", 256.0, 1.0, null, cmap.getColorMapEntry(1));
@@ -58,7 +58,7 @@ public class CookbookRasterTest extends AbstractStyleTest {
         ColorMapBuilder cm = new RasterSymbolizerBuilder().opacity(0.3).colorMap();
         cm.entry().quantity(70).colorHex("#008000");
         cm.entry().quantity(256).colorHex("#663333");
-        Style style = cm.buildStyle();
+        StyleImpl style = cm.buildStyle();
         // print(style);
 
         // round up the basic elements and check its simple
@@ -67,11 +67,11 @@ public class CookbookRasterTest extends AbstractStyleTest {
         assertSimpleStyle(collector);
 
         // check the symbolizer
-        RasterSymbolizer rs = (RasterSymbolizer) collector.symbolizers.get(0);
+        RasterSymbolizerImpl rs = (RasterSymbolizerImpl) collector.symbolizers.get(0);
         assertEquals(0.3, rs.getOpacity().evaluate(null, Double.class), 0.0);
         assertNull(rs.getChannelSelection());
-        ColorMap cmap = rs.getColorMap();
-        assertEquals(ColorMap.TYPE_RAMP, cmap.getType());
+        ColorMapImpl cmap = rs.getColorMap();
+        assertEquals(ColorMapImpl.TYPE_RAMP, cmap.getType());
         assertFalse(cmap.getExtendedColors());
         assertEntry("#008000", 70.0, 1.0, null, cmap.getColorMapEntry(0));
         assertEntry("#663333", 256.0, 1.0, null, cmap.getColorMapEntry(1));
@@ -84,7 +84,7 @@ public class CookbookRasterTest extends AbstractStyleTest {
         ColorMapBuilder cm = rsb.colorMap();
         cm.entry().quantity(70).colorHex("#008000");
         cm.entry().quantity(256).colorHex("#663333");
-        Style style = cm.buildStyle();
+        StyleImpl style = cm.buildStyle();
         // print(style);
 
         // round up the basic elements and check its simple
@@ -93,15 +93,15 @@ public class CookbookRasterTest extends AbstractStyleTest {
         assertSimpleStyle(collector);
 
         // check the symbolizer
-        RasterSymbolizer rs = (RasterSymbolizer) collector.symbolizers.get(0);
+        RasterSymbolizerImpl rs = (RasterSymbolizerImpl) collector.symbolizers.get(0);
         assertEquals(1.0, rs.getOpacity().evaluate(null, Double.class), 0.0);
         assertNotNull(rs.getContrastEnhancement());
         assertEquals(ContrastMethod.NORMALIZE, rs.getContrastEnhancement().getMethod());
         assertEquals(
                 0.5, rs.getContrastEnhancement().getGammaValue().evaluate(null, Double.class), 0.0);
         assertNull(rs.getChannelSelection());
-        ColorMap cmap = rs.getColorMap();
-        assertEquals(ColorMap.TYPE_RAMP, cmap.getType());
+        ColorMapImpl cmap = rs.getColorMap();
+        assertEquals(ColorMapImpl.TYPE_RAMP, cmap.getType());
         assertFalse(cmap.getExtendedColors());
         assertEntry("#008000", 70.0, 1.0, null, cmap.getColorMapEntry(0));
         assertEntry("#663333", 256.0, 1.0, null, cmap.getColorMapEntry(1));
@@ -113,7 +113,7 @@ public class CookbookRasterTest extends AbstractStyleTest {
         cm.entry().quantity(150).colorHex("#0000FF");
         cm.entry().quantity(200).colorHex("#FFFF00");
         cm.entry().quantity(250).colorHex("#FF0000");
-        Style style = cm.buildStyle();
+        StyleImpl style = cm.buildStyle();
         // print(style);
 
         // round up the basic elements and check its simple
@@ -122,10 +122,10 @@ public class CookbookRasterTest extends AbstractStyleTest {
         assertSimpleStyle(collector);
 
         // check the symbolizer
-        RasterSymbolizer rs = (RasterSymbolizer) collector.symbolizers.get(0);
+        RasterSymbolizerImpl rs = (RasterSymbolizerImpl) collector.symbolizers.get(0);
         assertNull(rs.getChannelSelection());
-        ColorMap cmap = rs.getColorMap();
-        assertEquals(ColorMap.TYPE_RAMP, cmap.getType());
+        ColorMapImpl cmap = rs.getColorMap();
+        assertEquals(ColorMapImpl.TYPE_RAMP, cmap.getType());
         assertFalse(cmap.getExtendedColors());
         assertEquals(3, cmap.getColorMapEntries().length);
         assertEntry("#0000FF", 150.0, 1.0, null, cmap.getColorMapEntry(0));
@@ -138,7 +138,7 @@ public class CookbookRasterTest extends AbstractStyleTest {
         ColorMapBuilder cm = new ColorMapBuilder();
         cm.entry().quantity(70).colorHex("#008000");
         cm.entry().quantity(256).colorHex("#008000").opacity(0);
-        Style style = cm.buildStyle();
+        StyleImpl style = cm.buildStyle();
         // print(style);
 
         // round up the basic elements and check its simple
@@ -147,10 +147,10 @@ public class CookbookRasterTest extends AbstractStyleTest {
         assertSimpleStyle(collector);
 
         // check the symbolizer
-        RasterSymbolizer rs = (RasterSymbolizer) collector.symbolizers.get(0);
+        RasterSymbolizerImpl rs = (RasterSymbolizerImpl) collector.symbolizers.get(0);
         assertNull(rs.getChannelSelection());
-        ColorMap cmap = rs.getColorMap();
-        assertEquals(ColorMap.TYPE_RAMP, cmap.getType());
+        ColorMapImpl cmap = rs.getColorMap();
+        assertEquals(ColorMapImpl.TYPE_RAMP, cmap.getType());
         assertFalse(cmap.getExtendedColors());
         assertEquals(2, cmap.getColorMapEntries().length);
         assertEntry("#008000", 70.0, 1.0, null, cmap.getColorMapEntry(0));
@@ -159,10 +159,10 @@ public class CookbookRasterTest extends AbstractStyleTest {
 
     @Test
     public void testDiscreteColors() {
-        ColorMapBuilder cm = new ColorMapBuilder().type(ColorMap.TYPE_INTERVALS);
+        ColorMapBuilder cm = new ColorMapBuilder().type(ColorMapImpl.TYPE_INTERVALS);
         cm.entry().quantity(150).colorHex("#008000");
         cm.entry().quantity(256).colorHex("#663333");
-        Style style = cm.buildStyle();
+        StyleImpl style = cm.buildStyle();
         // print(style);
 
         // round up the basic elements and check its simple
@@ -171,10 +171,10 @@ public class CookbookRasterTest extends AbstractStyleTest {
         assertSimpleStyle(collector);
 
         // check the symbolizer
-        RasterSymbolizer rs = (RasterSymbolizer) collector.symbolizers.get(0);
+        RasterSymbolizerImpl rs = (RasterSymbolizerImpl) collector.symbolizers.get(0);
         assertNull(rs.getChannelSelection());
-        ColorMap cmap = rs.getColorMap();
-        assertEquals(ColorMap.TYPE_INTERVALS, cmap.getType());
+        ColorMapImpl cmap = rs.getColorMap();
+        assertEquals(ColorMapImpl.TYPE_INTERVALS, cmap.getType());
         assertFalse(cmap.getExtendedColors());
         assertEquals(2, cmap.getColorMapEntries().length);
         assertEntry("#008000", 150.0, 1.0, null, cmap.getColorMapEntry(0));
@@ -195,7 +195,7 @@ public class CookbookRasterTest extends AbstractStyleTest {
 
     @Test
     public void testShadedRelief() {
-        Style style = new ShadedReliefBuilder().factor(10).brightnessOnly(true).buildStyle();
+        StyleImpl style = new ShadedReliefBuilder().factor(10).brightnessOnly(true).buildStyle();
         // print(style);
 
         // round up the basic elements and check its simple
@@ -204,10 +204,10 @@ public class CookbookRasterTest extends AbstractStyleTest {
         assertSimpleStyle(collector);
 
         // check the symbolizer
-        RasterSymbolizer rs = (RasterSymbolizer) collector.symbolizers.get(0);
+        RasterSymbolizerImpl rs = (RasterSymbolizerImpl) collector.symbolizers.get(0);
         assertNull(rs.getChannelSelection());
         assertNull(rs.getColorMap());
-        ShadedRelief sr = rs.getShadedRelief();
+        ShadedReliefImpl sr = rs.getShadedRelief();
         assertEquals(10.0, sr.getReliefFactor().evaluate(null, Double.class), 0.0);
         assertTrue(sr.isBrightnessOnly());
     }
@@ -216,14 +216,14 @@ public class CookbookRasterTest extends AbstractStyleTest {
     public void testGrayChannelSelection() {
         final RasterSymbolizerBuilder rsb = new RasterSymbolizerBuilder();
         rsb.channelSelection().gray().channelName("BAND1");
-        Style style = rsb.buildStyle();
+        StyleImpl style = rsb.buildStyle();
         StyleCollector collector = new StyleCollector();
         style.accept(collector);
         assertSimpleStyle(collector);
 
         // check the symbolizer
-        RasterSymbolizer rs = (RasterSymbolizer) collector.symbolizers.get(0);
-        final SelectedChannelType[] rgbChannels = rs.getChannelSelection().getRGBChannels();
+        RasterSymbolizerImpl rs = (RasterSymbolizerImpl) collector.symbolizers.get(0);
+        final SelectedChannelTypeImpl[] rgbChannels = rs.getChannelSelection().getRGBChannels();
         assertNull(rgbChannels);
         assertEquals(
                 "BAND1",
@@ -240,15 +240,15 @@ public class CookbookRasterTest extends AbstractStyleTest {
         cs.red().channelName("BAND1");
         cs.green().channelName("BAND3");
         cs.blue().channelName("BAND5");
-        Style style = rsb.buildStyle();
+        StyleImpl style = rsb.buildStyle();
 
         StyleCollector collector = new StyleCollector();
         style.accept(collector);
         assertSimpleStyle(collector);
 
         // check the symbolizer
-        RasterSymbolizer rs = (RasterSymbolizer) collector.symbolizers.get(0);
-        final SelectedChannelType[] rgbChannels = rs.getChannelSelection().getRGBChannels();
+        RasterSymbolizerImpl rs = (RasterSymbolizerImpl) collector.symbolizers.get(0);
+        final SelectedChannelTypeImpl[] rgbChannels = rs.getChannelSelection().getRGBChannels();
         assertEquals("BAND1", rgbChannels[0].getChannelName().evaluate(null, String.class));
         assertEquals("BAND3", rgbChannels[1].getChannelName().evaluate(null, String.class));
         assertEquals("BAND5", rgbChannels[2].getChannelName().evaluate(null, String.class));
@@ -263,15 +263,15 @@ public class CookbookRasterTest extends AbstractStyleTest {
         cs.red().channelName(ff.function("env", ff.literal("B1"), ff.literal("BAND1")));
         cs.green().channelName("BAND3");
         cs.blue().channelName("BAND5");
-        Style style = rsb.buildStyle();
+        StyleImpl style = rsb.buildStyle();
 
         StyleCollector collector = new StyleCollector();
         style.accept(collector);
         assertSimpleStyle(collector);
 
         // check the symbolizer
-        RasterSymbolizer rs = (RasterSymbolizer) collector.symbolizers.get(0);
-        final SelectedChannelType[] rgbChannels = rs.getChannelSelection().getRGBChannels();
+        RasterSymbolizerImpl rs = (RasterSymbolizerImpl) collector.symbolizers.get(0);
+        final SelectedChannelTypeImpl[] rgbChannels = rs.getChannelSelection().getRGBChannels();
 
         // check default value: BAND1
         EnvFunction.removeLocalValue("B1");
@@ -291,7 +291,7 @@ public class CookbookRasterTest extends AbstractStyleTest {
         ColorMapBuilder cm = new RasterSymbolizerBuilder().opacity(0.3).colorMap();
         cm.entry().quantity(70).colorHex("#008000").label("Label1");
         cm.entry().quantity(256).colorHex("#663333").label("Label2");
-        Style style = cm.buildStyle();
+        StyleImpl style = cm.buildStyle();
         // print(style);
 
         // round up the basic elements and check its simple
@@ -300,11 +300,11 @@ public class CookbookRasterTest extends AbstractStyleTest {
         assertSimpleStyle(collector);
 
         // check the symbolizer
-        RasterSymbolizer rs = (RasterSymbolizer) collector.symbolizers.get(0);
+        RasterSymbolizerImpl rs = (RasterSymbolizerImpl) collector.symbolizers.get(0);
         assertEquals(0.3, rs.getOpacity().evaluate(null, Double.class), 0.0);
         assertNull(rs.getChannelSelection());
-        ColorMap cmap = rs.getColorMap();
-        assertEquals(ColorMap.TYPE_RAMP, cmap.getType());
+        ColorMapImpl cmap = rs.getColorMap();
+        assertEquals(ColorMapImpl.TYPE_RAMP, cmap.getType());
         assertFalse(cmap.getExtendedColors());
         assertEntry("#008000", 70.0, 1.0, "Label1", cmap.getColorMapEntry(0));
         assertEntry("#663333", 256.0, 1.0, "Label2", cmap.getColorMapEntry(1));

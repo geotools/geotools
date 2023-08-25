@@ -18,7 +18,7 @@ import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.label.LabelCacheImpl;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.GeoTools;
 import org.junit.Before;
@@ -63,7 +63,7 @@ public class LabelShieldTest {
 
     @Test
     public void testLabelShield() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "textLabelShield.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "textLabelShield.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(fs, style));
@@ -74,7 +74,7 @@ public class LabelShieldTest {
 
     @Test
     public void testPointShieldUnderTheLine() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "textLabelShieldStretch2.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "textLabelShieldStretch2.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(pointShield, style));
@@ -92,7 +92,7 @@ public class LabelShieldTest {
 
     @Test
     public void testPointIndependentGraphic() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "textLabelIndependentGraphic.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "textLabelIndependentGraphic.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(pointShield, style));
@@ -110,7 +110,7 @@ public class LabelShieldTest {
 
     @Test
     public void testLabelShieldMultiline() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "textLabelShield.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "textLabelShield.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(fs_multiline, style));
@@ -126,7 +126,7 @@ public class LabelShieldTest {
 
     @Test
     public void testLabelShieldMultilineStretch() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "textLabelShieldStretch.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "textLabelShieldStretch.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(fs_multiline, style));
@@ -142,7 +142,7 @@ public class LabelShieldTest {
 
     @Test
     public void testOnlyShield() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "textOnlyShield.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "textOnlyShield.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(fs, style));

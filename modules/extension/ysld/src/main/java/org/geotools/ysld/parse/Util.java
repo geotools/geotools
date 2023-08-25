@@ -31,8 +31,8 @@ import org.geotools.api.filter.expression.Literal;
 import org.geotools.filter.function.FilterFunction_strConcat;
 import org.geotools.filter.function.string.ConcatenateFunction;
 import org.geotools.renderer.style.ExpressionExtractor;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.Displacement;
+import org.geotools.styling.AnchorPointImpl;
+import org.geotools.styling.DisplacementImpl;
 import org.geotools.ysld.Colors;
 import org.geotools.ysld.Tuple;
 import org.geotools.ysld.YamlMap;
@@ -133,7 +133,7 @@ public class Util {
     }
 
     /** Parses an anchor tuple. */
-    public static AnchorPoint anchor(Object value, Factory factory) {
+    public static AnchorPointImpl anchor(Object value, Factory factory) {
         Tuple t = null;
         try {
             t = Tuple.of(2).parse(value);
@@ -150,7 +150,7 @@ public class Util {
     }
 
     /** Parses an displacement tuple. */
-    public static Displacement displacement(Object value, Factory factory) {
+    public static DisplacementImpl displacement(Object value, Factory factory) {
         Tuple t = null;
         try {
             t = Tuple.of(2).parse(value);

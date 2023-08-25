@@ -21,11 +21,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Mark;
-import org.geotools.styling.ResourceLocator;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.StyleFactory;
+import org.geotools.styling.*;
+import org.geotools.styling.FillImpl;
 import org.geotools.util.logging.Logging;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
@@ -101,7 +98,7 @@ public class SLDMarkBinding extends AbstractComplexBinding {
      */
     @Override
     public Class getType() {
-        return Mark.class;
+        return MarkImpl.class;
     }
 
     /**
@@ -124,10 +121,10 @@ public class SLDMarkBinding extends AbstractComplexBinding {
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         String wkName = (String) node.getChildValue("WellKnownName");
-        Stroke stroke = (Stroke) node.getChildValue("Stroke");
-        Fill fill = (Fill) node.getChildValue("Fill");
+        StrokeImpl stroke = (StrokeImpl) node.getChildValue("Stroke");
+        FillImpl fill = (FillImpl) node.getChildValue("Fill");
 
-        Mark mark = styleFactory.createMark();
+        MarkImpl mark = styleFactory.createMark();
 
         if (wkName != null) {
             // allow references to files containing mark definitions

@@ -23,7 +23,7 @@ import java.util.List;
 import org.geotools.api.feature.Feature;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.renderer.label.LabelCacheImpl;
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.TextSymbolizerImpl;
 import org.geotools.util.NumberRange;
 
 /**
@@ -76,7 +76,7 @@ public class SynchronizedLabelCache implements LabelCache {
     @Override
     public synchronized void put(
             String layerId,
-            TextSymbolizer symbolizer,
+            TextSymbolizerImpl symbolizer,
             Feature feature,
             LiteShape2 shape,
             NumberRange<Double> scaleRange) {

@@ -34,11 +34,7 @@ import org.geotools.mbstyle.function.MapBoxFontWeightFunction;
 import org.geotools.mbstyle.layer.MBLayer;
 import org.geotools.mbstyle.layer.SymbolMBLayer;
 import org.geotools.mbstyle.layer.SymbolMBLayer.TextAnchor;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Font;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.Rule;
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -54,13 +50,13 @@ public class SymbolMBLayerTest {
     MBStyle lineStyle;
     MBStyle pointStyle;
     MBStyle fontStyle;
-    List<FeatureTypeStyle> featureTypeLine;
-    List<FeatureTypeStyle> featureTypePoint;
+    List<FeatureTypeStyleImpl> featureTypeLine;
+    List<FeatureTypeStyleImpl> featureTypePoint;
     MBStyle angleStyle;
     MBStyle style;
-    List<FeatureTypeStyle> featureTypeWithAngle;
-    List<FeatureTypeStyle> featureTypeDefaults;
-    List<FeatureTypeStyle> featureTypeTestValues;
+    List<FeatureTypeStyleImpl> featureTypeWithAngle;
+    List<FeatureTypeStyleImpl> featureTypeDefaults;
+    List<FeatureTypeStyleImpl> featureTypeTestValues;
 
     @Before
     public void setUp() throws IOException, ParseException {
@@ -130,9 +126,9 @@ public class SymbolMBLayerTest {
         // Default MBStyle value
         assertEquals(0, testLayerDefault.getTextRotate().intValue());
         // Default values from FeatureTypeStyle transform
-        Rule r = featureTypeDefaults.get(0).rules().get(0);
-        TextSymbolizer symbolizer = (TextSymbolizer) r.symbolizers().get(0);
-        PointPlacement pp = (PointPlacement) symbolizer.getLabelPlacement();
+        RuleImpl r = featureTypeDefaults.get(0).rules().get(0);
+        TextSymbolizerImpl symbolizer = (TextSymbolizerImpl) r.symbolizers().get(0);
+        PointPlacementImpl pp = (PointPlacementImpl) symbolizer.getLabelPlacement();
         assertEquals("0.0", pp.getRotation().toString());
     }
 
@@ -141,9 +137,9 @@ public class SymbolMBLayerTest {
         // Test generated MBStyle value
         assertEquals(10, testLayer.getTextRotate().intValue());
         // Test values from FeatureTypeStyle transform
-        Rule r = featureTypeTestValues.get(0).rules().get(0);
-        TextSymbolizer symbolizer = (TextSymbolizer) r.symbolizers().get(0);
-        PointPlacement pp = (PointPlacement) symbolizer.getLabelPlacement();
+        RuleImpl r = featureTypeTestValues.get(0).rules().get(0);
+        TextSymbolizerImpl symbolizer = (TextSymbolizerImpl) r.symbolizers().get(0);
+        PointPlacementImpl pp = (PointPlacementImpl) symbolizer.getLabelPlacement();
         assertEquals("10", pp.getRotation().toString());
     }
 
@@ -240,10 +236,10 @@ public class SymbolMBLayerTest {
         assertEquals("Apple-Chancery", ((JSONArray) ((JSONArray) stops.get(0)).get(1)).get(0));
 
         // check the SLD
-        List<FeatureTypeStyle> featureTypeFont = fontLayer.transformInternal(fontStyle);
-        TextSymbolizer text =
-                (TextSymbolizer) featureTypeFont.get(0).rules().get(0).symbolizers().get(0);
-        Font font = text.fonts().get(0);
+        List<FeatureTypeStyleImpl> featureTypeFont = fontLayer.transformInternal(fontStyle);
+        TextSymbolizerImpl text =
+                (TextSymbolizerImpl) featureTypeFont.get(0).rules().get(0).symbolizers().get(0);
+        FontImpl font = text.fonts().get(0);
         Expression family = font.getFamily().get(0);
         assertThat(family, instanceOf(FontAlternativesFunction.class));
         FontAlternativesFunction fontAlternatives = (FontAlternativesFunction) family;
@@ -282,9 +278,9 @@ public class SymbolMBLayerTest {
 
     @Test
     public void testTextFeatureTypeDefaults() {
-        Rule rule = featureTypeDefaults.get(0).rules().get(0);
-        TextSymbolizer textSymbolizer = (TextSymbolizer) rule.symbolizers().get(0);
-        Font font = textSymbolizer.fonts().get(0);
+        RuleImpl rule = featureTypeDefaults.get(0).rules().get(0);
+        TextSymbolizerImpl textSymbolizer = (TextSymbolizerImpl) rule.symbolizers().get(0);
+        FontImpl font = textSymbolizer.fonts().get(0);
 
         Expression family = font.getFamily().get(0);
         assertThat(family, instanceOf(FontAlternativesFunction.class));

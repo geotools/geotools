@@ -17,9 +17,9 @@
 package org.geotools.brewer.styling.builder;
 
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.styling.LinePlacement;
+import org.geotools.styling.LinePlacementImpl;
 
-public class LinePlacementBuilder extends AbstractStyleBuilder<LinePlacement> {
+public class LinePlacementBuilder extends AbstractStyleBuilder<LinePlacementImpl> {
     private Expression offset;
 
     private Expression initialGap;
@@ -77,11 +77,11 @@ public class LinePlacementBuilder extends AbstractStyleBuilder<LinePlacement> {
     }
 
     @Override
-    public LinePlacement build() {
+    public LinePlacementImpl build() {
         if (unset) {
             return null;
         }
-        LinePlacement linePlacement =
+        LinePlacementImpl linePlacement =
                 sf.linePlacement(offset, initialGap, gap, repeated, aligned, generalizedLine);
         if (parent == null) {
             reset();
@@ -103,7 +103,7 @@ public class LinePlacementBuilder extends AbstractStyleBuilder<LinePlacement> {
     }
 
     @Override
-    public LinePlacementBuilder reset(LinePlacement placement) {
+    public LinePlacementBuilder reset(LinePlacementImpl placement) {
         if (placement == null) {
             return reset();
         }

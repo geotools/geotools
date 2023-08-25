@@ -24,9 +24,9 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.GraphicalSymbol;
 import org.geotools.api.style.Symbol;
 import org.geotools.metadata.iso.citation.OnLineResourceImpl;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Mark;
+import org.geotools.styling.ExternalGraphicImpl;
+import org.geotools.styling.GraphicImpl;
+import org.geotools.styling.MarkImpl;
 
 public class GraphicBuilder extends AbstractStyleBuilder<org.geotools.api.style.Graphic> {
     List<Builder<? extends Symbol>> symbols = new ArrayList<>();
@@ -135,7 +135,7 @@ public class GraphicBuilder extends AbstractStyleBuilder<org.geotools.api.style.
     }
 
     @Override
-    public Graphic build() {
+    public GraphicImpl build() {
         if (unset) {
             return null;
         }
@@ -147,7 +147,7 @@ public class GraphicBuilder extends AbstractStyleBuilder<org.geotools.api.style.
         for (Builder<? extends Symbol> symbol : symbols) {
             list.add(symbol.build());
         }
-        Graphic g = sf.graphic(list, opacity, size, rotation, anchor.build(), displacement.build());
+        GraphicImpl g = sf.graphic(list, opacity, size, rotation, anchor.build(), displacement.build());
 
         if (parent == null) {
             reset();
@@ -190,10 +190,10 @@ public class GraphicBuilder extends AbstractStyleBuilder<org.geotools.api.style.
             if (graphicalSymbol instanceof Symbol) {
                 Symbol symbol = (Symbol) graphicalSymbol;
                 Builder<? extends Symbol> builder;
-                if (symbol instanceof Mark) {
-                    builder = new MarkBuilder(this).reset((Mark) symbol);
-                } else if (symbol instanceof ExternalGraphic) {
-                    builder = new ExternalGraphicBuilder(this).reset((ExternalGraphic) symbol);
+                if (symbol instanceof MarkImpl) {
+                    builder = new MarkBuilder(this).reset((MarkImpl) symbol);
+                } else if (symbol instanceof ExternalGraphicImpl) {
+                    builder = new ExternalGraphicBuilder(this).reset((ExternalGraphicImpl) symbol);
                 } else {
                     throw new IllegalArgumentException(
                             "Unrecognized symbol type: " + symbol.getClass());

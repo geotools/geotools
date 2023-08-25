@@ -20,10 +20,10 @@ import java.awt.Color;
 import java.util.List;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.styling.ConstantStroke;
-import org.geotools.styling.Stroke;
+import org.geotools.styling.StrokeImpl;
 import org.geotools.util.Converters;
 
-public class StrokeBuilder extends AbstractStyleBuilder<Stroke> {
+public class StrokeBuilder extends AbstractStyleBuilder<StrokeImpl> {
     Expression color;
 
     Expression width;
@@ -76,7 +76,7 @@ public class StrokeBuilder extends AbstractStyleBuilder<Stroke> {
     }
 
     @Override
-    public StrokeBuilder reset(Stroke original) {
+    public StrokeBuilder reset(StrokeImpl original) {
         return reset((org.geotools.api.style.Stroke) original);
     }
 
@@ -91,7 +91,7 @@ public class StrokeBuilder extends AbstractStyleBuilder<Stroke> {
         lineCap = stroke.getLineCap();
         lineJoin = stroke.getLineJoin();
         dashArray = stroke.getDashArray();
-        dashArrayExpressions = (stroke instanceof Stroke) ? ((Stroke) stroke).dashArray() : null;
+        dashArrayExpressions = (stroke instanceof StrokeImpl) ? ((StrokeImpl) stroke).dashArray() : null;
         dashOffset = stroke.getDashOffset();
         graphicFill.reset(stroke.getGraphicFill());
         graphicStroke.reset(stroke.getGraphicStroke());
@@ -213,11 +213,11 @@ public class StrokeBuilder extends AbstractStyleBuilder<Stroke> {
     }
 
     @Override
-    public Stroke build() {
+    public StrokeImpl build() {
         if (unset) {
             return null;
         }
-        Stroke stroke =
+        StrokeImpl stroke =
                 sf.createStroke(
                         color,
                         width,

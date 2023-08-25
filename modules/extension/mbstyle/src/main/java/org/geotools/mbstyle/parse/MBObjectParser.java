@@ -30,7 +30,7 @@ import org.geotools.data.util.ColorConverterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.expression.MBExpression;
 import org.geotools.mbstyle.layer.LineMBLayer.LineJoin;
-import org.geotools.styling.Displacement;
+import org.geotools.styling.DisplacementImpl;
 import org.geotools.util.Converters;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
@@ -1387,20 +1387,20 @@ public class MBObjectParser {
     }
 
     /**
-     * Maps a json value at 'tag' in the provided JSONObject to a {@link Displacement}.
+     * Maps a json value at 'tag' in the provided JSONObject to a {@link DisplacementImpl}.
      *
      * @param json The JSONObject in which to look up a displacement value
      * @param name The tag in the JSONObject
      * @param fallback The fallback displacement, if no value is found at that tag.
      * @return A displacement from the json
      */
-    public Displacement displacement(JSONObject json, String name, Displacement fallback) {
+    public DisplacementImpl displacement(JSONObject json, String name, DisplacementImpl fallback) {
         Object defn = json.get(name);
         if (defn == null) {
             return fallback;
         } else if (defn instanceof JSONArray) {
             JSONArray array = (JSONArray) defn;
-            return (Displacement) sf.displacement(number(array, 0, 0), number(array, 1, 0));
+            return (DisplacementImpl) sf.displacement(number(array, 0, 0), number(array, 1, 0));
         } else if (defn instanceof JSONObject) {
             // Function case
             MBFunction function = new MBFunction(this, (JSONObject) defn);
@@ -1432,7 +1432,7 @@ public class MBObjectParser {
 
             Expression xFn = functionForEachDimension.get(0).numeric();
             Expression yFn = functionForEachDimension.get(1).numeric();
-            return (Displacement) sf.displacement(xFn, yFn);
+            return (DisplacementImpl) sf.displacement(xFn, yFn);
         } else {
             throw new MBFormatException(
                     "\""

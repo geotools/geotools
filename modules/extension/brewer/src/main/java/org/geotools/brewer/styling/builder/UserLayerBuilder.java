@@ -23,6 +23,8 @@ import org.geotools.api.style.FeatureTypeConstraint;
 import org.geotools.api.style.Style;
 import org.geotools.api.style.UserLayer;
 import org.geotools.data.DataStore;
+import org.geotools.styling.StyleImpl;
+import org.geotools.styling.UserLayerImpl;
 
 public class UserLayerBuilder extends AbstractSLDBuilder<UserLayer> {
 
@@ -92,7 +94,7 @@ public class UserLayerBuilder extends AbstractSLDBuilder<UserLayer> {
         }
 
         inlineFeatureDataStore =
-                ((org.geotools.styling.UserLayer) other).getInlineFeatureDatastore();
+                ((UserLayerImpl) other).getInlineFeatureDatastore();
         inlineFeatureType = other.getInlineFeatureType();
         remoteOWS.reset(other.getRemoteOWS());
         featureTypeConstraint.clear();
@@ -101,7 +103,7 @@ public class UserLayerBuilder extends AbstractSLDBuilder<UserLayer> {
         }
         userStyles.clear();
         for (Style style : other.getUserStyles()) {
-            userStyles.add(new StyleBuilder(this).reset((org.geotools.styling.Style) style));
+            userStyles.add(new StyleBuilder(this).reset((StyleImpl) style));
         }
 
         unset = false;
@@ -118,7 +120,7 @@ public class UserLayerBuilder extends AbstractSLDBuilder<UserLayer> {
         if (unset) {
             return null;
         }
-        org.geotools.styling.UserLayer layer = sf.createUserLayer();
+        UserLayerImpl layer = sf.createUserLayer();
         layer.setRemoteOWS(remoteOWS.build());
         layer.setInlineFeatureDatastore(inlineFeatureDataStore);
         layer.setInlineFeatureType(inlineFeatureType);

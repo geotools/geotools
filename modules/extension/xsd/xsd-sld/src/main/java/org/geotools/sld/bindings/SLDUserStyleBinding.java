@@ -19,9 +19,9 @@ package org.geotools.sld.bindings;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.api.util.InternationalString;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Style;
+import org.geotools.styling.FeatureTypeStyleImpl;
+import org.geotools.styling.FillImpl;
+import org.geotools.styling.StyleImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
@@ -91,7 +91,7 @@ public class SLDUserStyleBinding extends AbstractComplexBinding {
      */
     @Override
     public Class getType() {
-        return Style.class;
+        return StyleImpl.class;
     }
 
     /**
@@ -113,7 +113,7 @@ public class SLDUserStyleBinding extends AbstractComplexBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        Style style = styleFactory.createStyle();
+        StyleImpl style = styleFactory.createStyle();
 
         // &lt;xsd:element ref="sld:Name" minOccurs="0"/&gt;
         if (node.hasChild("Name")) {
@@ -137,11 +137,11 @@ public class SLDUserStyleBinding extends AbstractComplexBinding {
         }
 
         if (node.hasChild("Background")) {
-            style.setBackground((Fill) node.getChildValue("Background", null));
+            style.setBackground((FillImpl) node.getChildValue("Background", null));
         }
 
         // &lt;xsd:element ref="sld:FeatureTypeStyle" maxOccurs="unbounded"/&gt;
-        List<FeatureTypeStyle> fts = node.getChildValues(FeatureTypeStyle.class);
+        List<FeatureTypeStyleImpl> fts = node.getChildValues(FeatureTypeStyleImpl.class);
         style.featureTypeStyles().addAll(fts);
 
         return style;

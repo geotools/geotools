@@ -31,7 +31,7 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.data.Parameter;
 import org.geotools.filter.FunctionFactory;
-import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.FeatureTypeStyleImpl;
 import org.geotools.ysld.ProcessUtil;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
@@ -39,13 +39,13 @@ import org.geotools.ysld.YamlObject;
 /** Handles parsing a Ysld "transform" property into a transformation {@link Function} object. */
 public class TransformHandler extends YsldParseHandler {
 
-    FeatureTypeStyle featureStyle;
+    FeatureTypeStyleImpl featureStyle;
 
     int processes = 0;
 
     FunctionFactory functionFactory = loadProcessFunctionFactory();
 
-    protected TransformHandler(FeatureTypeStyle featureStyle, Factory factory) {
+    protected TransformHandler(FeatureTypeStyleImpl featureStyle, Factory factory) {
         super(factory);
         this.featureStyle = featureStyle;
     }

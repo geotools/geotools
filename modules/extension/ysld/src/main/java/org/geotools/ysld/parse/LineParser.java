@@ -17,17 +17,17 @@
  */
 package org.geotools.ysld.parse;
 
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Stroke;
+import org.geotools.styling.LineSymbolizerImpl;
+import org.geotools.styling.RuleImpl;
+import org.geotools.styling.StrokeImpl;
 import org.geotools.styling.Symbolizer;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
 /** Handles parsing a Ysld "line" symbolizer property into a {@link Symbolizer} object. */
-public class LineParser extends SymbolizerParser<LineSymbolizer> {
+public class LineParser extends SymbolizerParser<LineSymbolizerImpl> {
 
-    protected LineParser(Rule rule, Factory factory) {
+    protected LineParser(RuleImpl rule, Factory factory) {
         super(rule, factory.style.createLineSymbolizer(), factory);
     }
 
@@ -39,7 +39,7 @@ public class LineParser extends SymbolizerParser<LineSymbolizer> {
         context.push(
                 new StrokeParser(factory) {
                     @Override
-                    protected void stroke(Stroke stroke) {
+                    protected void stroke(StrokeImpl stroke) {
                         sym.setStroke(stroke);
                     }
                 });

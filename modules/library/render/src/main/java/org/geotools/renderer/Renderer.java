@@ -20,7 +20,7 @@ import java.awt.Graphics;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 
@@ -45,7 +45,7 @@ public interface Renderer {
     void render(
             FeatureCollection<? extends FeatureType, ? extends Feature> fc,
             Envelope viewport,
-            Style style);
+            StyleImpl style);
 
     /**
      * Getter for property interactive.

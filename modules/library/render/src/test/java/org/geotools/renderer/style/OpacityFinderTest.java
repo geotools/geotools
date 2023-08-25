@@ -3,8 +3,8 @@ package org.geotools.renderer.style;
 import java.net.URL;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.renderer.lite.OpacityFinder;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Style;
+import org.geotools.styling.RasterSymbolizerImpl;
+import org.geotools.styling.StyleImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.test.TestData;
 import org.geotools.xml.styling.SLDParser;
@@ -19,9 +19,9 @@ public class OpacityFinderTest {
 
         SLDParser stylereader = new SLDParser(factory, styleURL);
 
-        Style style = stylereader.readXML()[0];
+        StyleImpl style = stylereader.readXML()[0];
 
-        OpacityFinder opacityFinder = new OpacityFinder(new Class[] {RasterSymbolizer.class});
+        OpacityFinder opacityFinder = new OpacityFinder(new Class[] {RasterSymbolizerImpl.class});
 
         style.accept(opacityFinder);
 
@@ -35,9 +35,9 @@ public class OpacityFinderTest {
 
         SLDParser stylereader = new SLDParser(factory, styleURL);
 
-        Style style = stylereader.readXML()[0];
+        StyleImpl style = stylereader.readXML()[0];
 
-        OpacityFinder opacityFinder = new OpacityFinder(new Class[] {RasterSymbolizer.class});
+        OpacityFinder opacityFinder = new OpacityFinder(new Class[] {RasterSymbolizerImpl.class});
 
         style.accept(opacityFinder);
 

@@ -36,7 +36,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.lite.RendererBaseTest;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.util.logging.Logging;
 import org.geotools.xml.styling.SLDTransformer;
 import org.json.simple.JSONObject;
@@ -123,12 +123,12 @@ public class MapboxTestUtils {
      * @param layerIndex The layer to be considered for style extraction
      * @return The first associated style
      */
-    public static Style getStyle(StyledLayerDescriptor sld, int layerIndex) {
+    public static StyleImpl getStyle(StyledLayerDescriptor sld, int layerIndex) {
         StyledLayer styledLayer = sld.layers().get(layerIndex);
         if (styledLayer instanceof UserLayer) {
-            return (Style) ((UserLayer) styledLayer).getUserStyles()[0];
+            return (StyleImpl) ((UserLayer) styledLayer).getUserStyles()[0];
         } else if (styledLayer instanceof NamedLayer) {
-            return (Style) ((NamedLayer) styledLayer).getStyles()[0];
+            return (StyleImpl) ((NamedLayer) styledLayer).getStyles()[0];
         } else {
             throw new RuntimeException("Layer is neither a user layer nor a named layer");
         }

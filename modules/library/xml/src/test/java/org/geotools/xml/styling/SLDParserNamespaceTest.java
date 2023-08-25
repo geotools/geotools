@@ -23,12 +23,11 @@ import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.Symbolizer;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.Symbolizer;
+import org.geotools.styling.*;
 import org.junit.Assert;
 import org.junit.Test;
 import org.xml.sax.helpers.NamespaceSupport;
@@ -73,15 +72,15 @@ public class SLDParserNamespaceTest {
     @Test
     public void testNamespace() throws Exception {
         SLDParser parser = new SLDParser(styleFactory, input());
-        Style[] styles = parser.readXML();
+        StyleImpl[] styles = parser.readXML();
         Assert.assertEquals(styles.length, 1);
-        Style style = styles[0];
+        StyleImpl style = styles[0];
         List<FeatureTypeStyle> ftstyles = style.featureTypeStyles();
         Assert.assertEquals(ftstyles.size(), 1);
-        FeatureTypeStyle ftstyle = ftstyles.get(0);
+        FeatureTypeStyleImpl ftstyle = (FeatureTypeStyleImpl) ftstyles.get(0);
         List<Rule> rules = ftstyle.rules();
         Assert.assertEquals(rules.size(), 1);
-        Rule rule = rules.get(0);
+        RuleImpl rule = (RuleImpl) rules.get(0);
         Filter filter = rule.getFilter();
         assert (filter instanceof PropertyIsEqualTo);
         Expression expr = ((PropertyIsEqualTo) filter).getExpression1();

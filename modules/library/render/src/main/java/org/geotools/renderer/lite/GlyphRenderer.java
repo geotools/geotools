@@ -18,8 +18,8 @@ package org.geotools.renderer.lite;
 
 import java.awt.image.BufferedImage;
 import java.util.List;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.Graphic;
+import org.geotools.styling.ExternalGraphicImpl;
+import org.geotools.styling.GraphicImpl;
 
 /** @author jamesm */
 public interface GlyphRenderer {
@@ -31,5 +31,5 @@ public interface GlyphRenderer {
      * @param height use <=0 if you dont want any scaling done. THIS MIGHT BE IGNORED by the
      *     renderer!
      */
-    public BufferedImage render(Graphic graphic, ExternalGraphic eg, Object feature, int height);
+    public BufferedImage render(GraphicImpl graphic, ExternalGraphicImpl eg, Object feature, int height);
 }

@@ -21,6 +21,7 @@ import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.style.AbstractStyleVisitor;
 import org.geotools.api.style.ColorMapEntry;
 import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.Symbolizer;
 import org.geotools.styling.*;
 
 /**
@@ -151,23 +152,23 @@ public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor 
      */
     @Override
     public void visit(org.geotools.api.style.Symbolizer sym) {
-        if (sym instanceof PointSymbolizer) {
-            PointSymbolizer ps = (PointSymbolizer) sym;
+        if (sym instanceof PointSymbolizerImpl) {
+            PointSymbolizerImpl ps = (PointSymbolizerImpl) sym;
             ps.accept(this);
         }
 
-        if (sym instanceof LineSymbolizer) {
-            LineSymbolizer ps = (LineSymbolizer) sym;
+        if (sym instanceof LineSymbolizerImpl) {
+            LineSymbolizerImpl ps = (LineSymbolizerImpl) sym;
             ps.accept(this);
         }
 
-        if (sym instanceof PolygonSymbolizer) {
-            PolygonSymbolizer ps = (PolygonSymbolizer) sym;
+        if (sym instanceof PolygonSymbolizerImpl) {
+            PolygonSymbolizerImpl ps = (PolygonSymbolizerImpl) sym;
             ps.accept(this);
         }
 
-        if (sym instanceof RasterSymbolizer) {
-            RasterSymbolizer rs = (RasterSymbolizer) sym;
+        if (sym instanceof RasterSymbolizerImpl) {
+            RasterSymbolizerImpl rs = (RasterSymbolizerImpl) sym;
             rs.accept(this);
         }
     }

@@ -49,9 +49,9 @@ import org.geotools.util.factory.GeoTools;
  */
 public class StyleFactory extends AbstractStyleFactory
         implements org.geotools.api.style.StyleFactory {
-    static final Fill DEFAULT_FILL = (Fill) ConstantFill.DEFAULT;
-    static final Stroke DEFAULT_STROKE = (Stroke) ConstantStroke.DEFAULT;
-    private FilterFactory filterFactory;
+    static final FillImpl DEFAULT_FILL = (FillImpl) ConstantFill.DEFAULT;
+    static final StrokeImpl DEFAULT_STROKE = ConstantStroke.DEFAULT;
+    private final FilterFactory filterFactory;
 
     public StyleFactory() {
         this(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
@@ -63,7 +63,7 @@ public class StyleFactory extends AbstractStyleFactory
 
     @Override
     public TextSymbolizer createTextSymbolizer() {
-        return new TextSymbolizer(filterFactory);
+        return new TextSymbolizerImpl(filterFactory);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class StyleFactory extends AbstractStyleFactory
             org.geotools.api.style.AnchorPoint anchorPoint,
             org.geotools.api.style.Displacement displacement,
             Expression rotation) {
-        PointPlacement pointPlacement = new PointPlacement(filterFactory);
+        PointPlacementImpl pointPlacement = new PointPlacementImpl(filterFactory);
         pointPlacement.setAnchorPoint(anchorPoint);
         pointPlacement.setDisplacement(displacement);
         pointPlacement.setRotation(rotation);
@@ -79,20 +79,20 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public TextSymbolizer createTextSymbolizer(
+    public TextSymbolizerImpl createTextSymbolizer(
             org.geotools.api.style.Fill fill,
             org.geotools.api.style.Font[] fonts,
             org.geotools.api.style.Halo halo,
             Expression label,
             org.geotools.api.style.LabelPlacement labelPlacement,
             String geometryPropertyName) {
-        TextSymbolizer tSymb = new TextSymbolizer(filterFactory);
+        TextSymbolizerImpl tSymb = new TextSymbolizerImpl(filterFactory);
         tSymb.setFill(fill);
-        Collection<Font> nFonts = new ArrayList<>();
+        Collection<FontImpl> nFonts = new ArrayList<>();
 
         if (fonts != null) {
             for (org.geotools.api.style.Font font : fonts) {
-                nFonts.add((org.geotools.styling.Font) font);
+                nFonts.add((FontImpl) font);
             }
             tSymb.fonts().addAll(nFonts);
         }
@@ -106,7 +106,7 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public TextSymbolizer createTextSymbolizer(
+    public TextSymbolizerImpl createTextSymbolizer(
             org.geotools.api.style.Fill fill,
             org.geotools.api.style.Font[] fonts,
             org.geotools.api.style.Halo halo,
@@ -114,13 +114,13 @@ public class StyleFactory extends AbstractStyleFactory
             org.geotools.api.style.LabelPlacement labelPlacement,
             String geometryPropertyName,
             org.geotools.api.style.Graphic graphic) {
-        TextSymbolizer tSymb = new TextSymbolizer(filterFactory);
+        TextSymbolizerImpl tSymb = new TextSymbolizerImpl(filterFactory);
         tSymb.setFill(fill);
-        Collection<Font> nFonts = new ArrayList<>();
+        Collection<FontImpl> nFonts = new ArrayList<>();
 
         if (fonts != null) {
             for (org.geotools.api.style.Font font : fonts) {
-                nFonts.add((org.geotools.styling.Font) font);
+                nFonts.add((FontImpl) font);
             }
             tSymb.fonts().addAll(nFonts);
         }
@@ -129,14 +129,14 @@ public class StyleFactory extends AbstractStyleFactory
         tSymb.setHalo(halo);
         tSymb.setLabel(label);
         tSymb.setLabelPlacement(labelPlacement);
-        tSymb.setGraphic((Graphic) graphic);
+        tSymb.setGraphic((GraphicImpl) graphic);
 
         return tSymb;
     }
 
     @Override
-    public Extent createExtent(String name, String value) {
-        Extent extent = new Extent();
+    public ExtentImpl createExtent(String name, String value) {
+        ExtentImpl extent = new ExtentImpl();
         extent.setName(name);
         extent.setValue(value);
 
@@ -152,9 +152,9 @@ public class StyleFactory extends AbstractStyleFactory
      * @return The new feature type constaint.
      */
     @Override
-    public FeatureTypeConstraint createFeatureTypeConstraint(
+    public FeatureTypeConstraintImpl createFeatureTypeConstraint(
             String featureTypeName, Filter filter, org.geotools.api.style.Extent... extents) {
-        FeatureTypeConstraint constraint = new FeatureTypeConstraint();
+        FeatureTypeConstraintImpl constraint = new FeatureTypeConstraintImpl();
         constraint.setFeatureTypeName(featureTypeName);
         constraint.setFilter(filter);
         constraint.setExtents(extents);
@@ -163,89 +163,69 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public org.geotools.api.style.FeatureTypeStyle createFeatureTypeStyle(
-            org.geotools.api.style.Rule... rules) {
-        return null;
-    }
-
-    /**
-     * Creates a new ImageOutline.
-     *
-     * @param symbolizer A line or polygon symbolizer.
-     * @return The new image outline.
-     */
-    @Override
-    public org.geotools.api.style.ImageOutline createImageOutline(
-            org.geotools.api.style.Symbolizer symbolizer) {
-        return null;
-    }
-
-    @Override
-    public LayerFeatureConstraints createLayerFeatureConstraints(
+    public LayerFeatureConstraintsImpl createLayerFeatureConstraints(
             org.geotools.api.style.FeatureTypeConstraint[] featureTypeConstraints) {
-        org.geotools.styling.LayerFeatureConstraints constraints =
-                new org.geotools.styling.LayerFeatureConstraints();
+        LayerFeatureConstraintsImpl constraints = new LayerFeatureConstraintsImpl();
         constraints.setFeatureTypeConstraints(featureTypeConstraints);
 
         return constraints;
     }
 
     @Override
-    public FeatureTypeStyle createFeatureTypeStyle() {
-        return new FeatureTypeStyle();
+    public FeatureTypeStyleImpl createFeatureTypeStyle() {
+        return new FeatureTypeStyleImpl();
     }
 
     @Override
-    public org.geotools.api.style.Graphic createGraphic(
-            org.geotools.api.style.ExternalGraphic[] externalGraphics,
-            org.geotools.api.style.Mark[] marks,
-            Symbol[] symbols,
-            Expression opacity,
-            Expression size,
-            Expression rotation) {
-        return null;
+    public Graphic createGraphic(ExternalGraphic[] externalGraphics, Mark[] marks, Symbol[] symbols, Expression opacity, Expression size, Expression rotation) {
+        GraphicImpl g = new GraphicImpl();
+        g.graphicalSymbols().addAll(List.of(externalGraphics));
+        g.graphicalSymbols().addAll(List.of(marks));
+        g.graphicalSymbols().addAll(List.of(symbols));
+        g.setOpacity(opacity);
+        g.setRotation(rotation);
+        g.setSize(size);
+        return g;
     }
 
     @Override
     public FeatureTypeStyle createFeatureTypeStyle(Rule[] rules) {
-        return new FeatureTypeStyle(rules);
+        return new FeatureTypeStyleImpl((RuleImpl[]) rules);
     }
 
     @Override
     public Rule createRule() {
-        return new Rule();
-    }
-
-    @Override
-    public org.geotools.api.style.LineSymbolizer createLineSymbolizer(
-            org.geotools.api.style.Stroke stroke, String geometryPropertyName) {
-        return null;
+        return new RuleImpl();
     }
 
     @Override
     public LineSymbolizer createLineSymbolizer(Stroke stroke, String geometryPropertyName) {
-        return new LineSymbolizer();
+        LineSymbolizerImpl ls = new LineSymbolizerImpl();
+        ls.setStroke(stroke);
+        ls.setGeometryPropertyName(geometryPropertyName);
+        return ls;
     }
 
-    public Rule createRule(
-            org.geotools.styling.Symbolizer[] symbolizers,
+    public RuleImpl createRule(
+            Symbolizer[] symbolizers,
             Description desc,
-            org.geotools.api.style.GraphicLegend legend,
+            GraphicLegend legend,
             String name,
             Filter filter,
             boolean isElseFilter,
             double maxScale,
             double minScale) {
 
-        Rule r =
-                new Rule(symbolizers, desc, legend, name, filter, isElseFilter, maxScale, minScale);
+        RuleImpl r =
+                new RuleImpl(
+                        symbolizers, desc, legend, name, filter, isElseFilter, maxScale, minScale);
 
         return r;
     }
 
     @Override
-    public org.geotools.styling.ImageOutline createImageOutline(Symbolizer symbolizer) {
-        org.geotools.styling.ImageOutline outline = new org.geotools.styling.ImageOutline();
+    public ImageOutlineImpl createImageOutline(Symbolizer symbolizer) {
+        ImageOutlineImpl outline = new ImageOutlineImpl();
         outline.setSymbolizer(symbolizer);
 
         return outline;
@@ -260,7 +240,7 @@ public class StyleFactory extends AbstractStyleFactory
      * @see org.geotools.api.style.Stroke
      */
     @Override
-    public Stroke createStroke(Expression color, Expression width) {
+    public StrokeImpl createStroke(Expression color, Expression width) {
         return createStroke(color, width, filterFactory.literal(1.0));
     }
 
@@ -274,46 +254,18 @@ public class StyleFactory extends AbstractStyleFactory
      * @see org.geotools.api.style.Stroke
      */
     @Override
-    public Stroke createStroke(Expression color, Expression width, Expression opacity) {
-        return createStroke(
-                color,
-                width,
-                opacity,
-                filterFactory.literal("miter"),
-                filterFactory.literal("butt"),
-                null,
-                filterFactory.literal(0.0),
-                null,
-                null);
-    }
-
-    /**
-     * creates a stroke
-     *
-     * @param color The color of the line
-     * @param width The width of the line
-     * @param opacity The opacity of the line
-     * @param lineJoin - the type of Line joint
-     * @param lineCap - the type of line cap
-     * @param dashArray - an array of floats describing the dashes in the line
-     * @param dashOffset - where in the dash array to start drawing from
-     * @param graphicFill - a graphic object to fill the line with
-     * @param graphicStroke - a graphic object to draw the line with
-     * @return The completed stroke.
-     * @see org.geotools.api.style.Stroke
-     */
-    @Override
-    public org.geotools.api.style.Stroke createStroke(
-            Expression color,
-            Expression width,
-            Expression opacity,
-            Expression lineJoin,
-            Expression lineCap,
-            float[] dashArray,
-            Expression dashOffset,
-            org.geotools.api.style.Graphic graphicFill,
-            org.geotools.api.style.Graphic graphicStroke) {
-        return null;
+    public StrokeImpl createStroke(Expression color, Expression width, Expression opacity) {
+        return (StrokeImpl)
+                createStroke(
+                        color,
+                        width,
+                        opacity,
+                        filterFactory.literal("miter"),
+                        filterFactory.literal("butt"),
+                        null,
+                        filterFactory.literal(0.0),
+                        null,
+                        null);
     }
 
     /**
@@ -342,32 +294,32 @@ public class StyleFactory extends AbstractStyleFactory
             Expression dashOffset,
             Graphic graphicFill,
             Graphic graphicStroke) {
-        Stroke stroke = new Stroke(filterFactory);
+        StrokeImpl stroke = new StrokeImpl(filterFactory);
 
         if (color == null) {
             // use default
-            color = Stroke.DEFAULT.getColor();
+            color = StrokeImpl.DEFAULT.getColor();
         }
         stroke.setColor(color);
 
         if (width == null) {
             // use default
-            width = Stroke.DEFAULT.getWidth();
+            width = StrokeImpl.DEFAULT.getWidth();
         }
         stroke.setWidth(width);
 
         if (opacity == null) {
-            opacity = Stroke.DEFAULT.getOpacity();
+            opacity = StrokeImpl.DEFAULT.getOpacity();
         }
         stroke.setOpacity(opacity);
 
         if (lineJoin == null) {
-            lineJoin = Stroke.DEFAULT.getLineJoin();
+            lineJoin = StrokeImpl.DEFAULT.getLineJoin();
         }
         stroke.setLineJoin(lineJoin);
 
         if (lineCap == null) {
-            lineCap = Stroke.DEFAULT.getLineCap();
+            lineCap = StrokeImpl.DEFAULT.getLineCap();
         }
 
         stroke.setLineCap(lineCap);
@@ -382,7 +334,7 @@ public class StyleFactory extends AbstractStyleFactory
     @Override
     public Fill createFill(
             Expression color, Expression backgroundColor, Expression opacity, Graphic graphicFill) {
-        Fill fill = new Fill(filterFactory);
+        FillImpl fill = new FillImpl(filterFactory);
 
         if (color == null) {
             color = ConstantFill.DEFAULT.getColor();
@@ -403,18 +355,12 @@ public class StyleFactory extends AbstractStyleFactory
 
     @Override
     public LineSymbolizer createLineSymbolizer() {
-        return new LineSymbolizer();
-    }
-
-    @Override
-    public org.geotools.api.style.PointSymbolizer createPointSymbolizer(
-            org.geotools.api.style.Graphic graphic, String geometryPropertyName) {
-        return null;
+        return new LineSymbolizerImpl();
     }
 
     @Override
     public PointSymbolizer createPointSymbolizer(Graphic graphic, String geometryPropertyName) {
-        PointSymbolizer pSymb = new PointSymbolizer();
+        PointSymbolizerImpl pSymb = new PointSymbolizerImpl();
         pSymb.setGeometryPropertyName(geometryPropertyName);
         pSymb.setGraphic(graphic);
 
@@ -422,13 +368,13 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public Style createStyle() {
-        return new Style();
+    public StyleImpl createStyle() {
+        return new StyleImpl();
     }
 
     @Override
-    public NamedStyle createNamedStyle() {
-        return new NamedStyle();
+    public NamedStyleImpl createNamedStyle() {
+        return new NamedStyleImpl();
     }
 
     @Override
@@ -442,13 +388,13 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public Mark createMark(
+    public MarkImpl createMark(
             Expression wellKnownName,
             org.geotools.api.style.Stroke stroke,
             org.geotools.api.style.Fill fill,
             Expression size,
             Expression rotation) {
-        Mark mark = new Mark(filterFactory, null);
+        MarkImpl mark = new MarkImpl(filterFactory, null);
 
         if (wellKnownName == null) {
             throw new IllegalArgumentException("WellKnownName can not be null in mark");
@@ -462,9 +408,9 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public Mark getSquareMark() {
-        Fill fill = getDefaultFill();
-        Mark mark =
+    public MarkImpl getSquareMark() {
+        FillImpl fill = (FillImpl) getDefaultFill();
+        MarkImpl mark =
                 createMark(
                         filterFactory.literal("Square"),
                         getDefaultStroke(),
@@ -476,77 +422,69 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public Mark getCircleMark() {
-        Mark mark = getDefaultMark();
+    public MarkImpl getCircleMark() {
+        MarkImpl mark = getDefaultMark();
         mark.setWellKnownName(filterFactory.literal("Circle"));
 
         return mark;
     }
 
     @Override
-    public Mark getCrossMark() {
-        Mark mark = getDefaultMark();
+    public MarkImpl getCrossMark() {
+        MarkImpl mark = getDefaultMark();
         mark.setWellKnownName(filterFactory.literal("Cross"));
 
         return mark;
     }
 
     @Override
-    public Mark getXMark() {
-        Mark mark = getDefaultMark();
+    public MarkImpl getXMark() {
+        MarkImpl mark = getDefaultMark();
         mark.setWellKnownName(filterFactory.literal("X"));
 
         return mark;
     }
 
     @Override
-    public Mark getTriangleMark() {
-        Mark mark = getDefaultMark();
+    public MarkImpl getTriangleMark() {
+        MarkImpl mark = getDefaultMark();
         mark.setWellKnownName(filterFactory.literal("Triangle"));
 
         return mark;
     }
 
     @Override
-    public Mark getStarMark() {
-        Mark mark = getDefaultMark();
+    public MarkImpl getStarMark() {
+        MarkImpl mark = getDefaultMark();
         mark.setWellKnownName(filterFactory.literal("Star"));
 
         return mark;
     }
 
     @Override
-    public Mark createMark() {
-        Mark mark = new Mark(filterFactory, null);
+    public MarkImpl createMark() {
+        MarkImpl mark = new MarkImpl(filterFactory, null);
 
         return mark;
     }
 
     @Override
-    public org.geotools.api.style.PolygonSymbolizer createPolygonSymbolizer(
-            org.geotools.api.style.Stroke stroke,
-            org.geotools.api.style.Fill fill,
-            String geometryPropertyName) {
+    public PolygonSymbolizer createPolygonSymbolizer(
+            Stroke stroke, Fill fill, String geometryPropertyName) {
         return null;
     }
 
     @Override
-    public PolygonSymbolizer createPolygonSymbolizer(
-            Stroke stroke, Fill fill, String geometryPropertyName) {
-        return new PolygonSymbolizer();
-    }
-
-    @Override
-    public Graphic createGraphic(
-            ExternalGraphic[] externalGraphics,
-            Mark[] marks,
+    public GraphicImpl createGraphic(
+            ExternalGraphicImpl[] externalGraphics,
+            MarkImpl[] marks,
             Symbol[] symbols,
             Expression opacity,
             Expression size,
             Expression rotation) {
-        Graphic graphic = new Graphic(filterFactory);
+        GraphicImpl graphic = new GraphicImpl(filterFactory);
 
-        symbols = symbols != null ? symbols : new Symbol[0];
+        symbols = symbols != null ? symbols : Symbol.SYMBOLS_EMPTY;
         graphic.graphicalSymbols().addAll(Arrays.asList(symbols));
 
         // externalGraphics = externalGraphics != null ? externalGraphics : new ExternalGraphic[0];
@@ -579,8 +517,8 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public ExternalGraphic createExternalGraphic(String uri, String format) {
-        ExternalGraphic extg = new ExternalGraphic();
+    public ExternalGraphicImpl createExternalGraphic(String uri, String format) {
+        ExternalGraphicImpl extg = new ExternalGraphicImpl();
         extg.setURI(uri);
         extg.setFormat(format);
 
@@ -588,16 +526,16 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public ExternalGraphic createExternalGraphic(Icon inlineContent, String format) {
-        ExternalGraphic extg = new ExternalGraphic();
+    public ExternalGraphicImpl createExternalGraphic(Icon inlineContent, String format) {
+        ExternalGraphicImpl extg = new ExternalGraphicImpl();
         extg.setInlineContent(inlineContent);
         extg.setFormat(format);
         return extg;
     }
 
     @Override
-    public ExternalGraphic createExternalGraphic(java.net.URL url, String format) {
-        ExternalGraphic extg = new ExternalGraphic();
+    public ExternalGraphicImpl createExternalGraphic(java.net.URL url, String format) {
+        ExternalGraphicImpl extg = new ExternalGraphicImpl();
         extg.setLocation(url);
         extg.setFormat(format);
 
@@ -605,12 +543,12 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public Font createFont(
+    public FontImpl createFont(
             Expression fontFamily,
             Expression fontStyle,
             Expression fontWeight,
             Expression fontSize) {
-        Font font = new Font();
+        FontImpl font = new FontImpl();
 
         if (fontFamily == null) {
             throw new IllegalArgumentException("Null font family specified");
@@ -642,50 +580,21 @@ public class StyleFactory extends AbstractStyleFactory
     //        return new LinePlacementImpl();
     //    }
     @Override
-    public LinePlacement createLinePlacement(Expression offset) {
-        LinePlacement linep = new LinePlacement(filterFactory);
+    public LinePlacementImpl createLinePlacement(Expression offset) {
+        LinePlacementImpl linep = new LinePlacementImpl(filterFactory);
         linep.setPerpendicularOffset(offset);
 
         return linep;
     }
 
     @Override
-    public PolygonSymbolizer createPolygonSymbolizer() {
-        return new PolygonSymbolizer();
+    public PolygonSymbolizerImpl createPolygonSymbolizer() {
+        return new PolygonSymbolizerImpl();
     }
 
     @Override
-    public org.geotools.api.style.Halo createHalo(
-            org.geotools.api.style.Fill fill, Expression radius) {
-        return null;
-    }
-
-    @Override
-    public org.geotools.api.style.Fill createFill(
-            Expression color,
-            Expression backgroundColor,
-            Expression opacity,
-            org.geotools.api.style.Graphic graphicFill) {
-        return null;
-    }
-
-    //    public PointPlacement createPointPlacement(){
-    //        return new PointPlacementImpl();
-    //    }
-    @Override
-    public PointPlacement createPointPlacement(
-            AnchorPoint anchorPoint, Displacement displacement, Expression rotation) {
-        PointPlacement pointp = new PointPlacement(filterFactory);
-        pointp.setAnchorPoint(anchorPoint);
-        pointp.setDisplacement(displacement);
-        pointp.setRotation(rotation);
-
-        return pointp;
-    }
-
-    @Override
-    public AnchorPoint createAnchorPoint(Expression x, Expression y) {
-        AnchorPoint anchorPoint = new AnchorPoint(filterFactory);
+    public AnchorPointImpl createAnchorPoint(Expression x, Expression y) {
+        AnchorPointImpl anchorPoint = new AnchorPointImpl(filterFactory);
         anchorPoint.setAnchorPointX(x);
         anchorPoint.setAnchorPointY(y);
 
@@ -693,8 +602,8 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public Displacement createDisplacement(Expression x, Expression y) {
-        Displacement displacement = new Displacement(filterFactory);
+    public DisplacementImpl createDisplacement(Expression x, Expression y) {
+        DisplacementImpl displacement = new DisplacementImpl(filterFactory);
         displacement.setDisplacementX(x);
         displacement.setDisplacementY(y);
 
@@ -702,15 +611,15 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public PointSymbolizer createPointSymbolizer() {
-        PointSymbolizer copy = new PointSymbolizer();
+    public PointSymbolizerImpl createPointSymbolizer() {
+        PointSymbolizerImpl copy = new PointSymbolizerImpl();
 
         return copy;
     }
 
     @Override
     public Halo createHalo(Fill fill, Expression radius) {
-        Halo halo = new Halo(filterFactory);
+        HaloImpl halo = new HaloImpl(filterFactory);
         halo.setFill(fill);
         halo.setRadius(radius);
 
@@ -719,7 +628,7 @@ public class StyleFactory extends AbstractStyleFactory
 
     @Override
     public Fill getDefaultFill() {
-        Fill fill = new Fill(filterFactory);
+        FillImpl fill = new FillImpl(filterFactory);
 
         try {
             fill.setColor(filterFactory.literal("#808080"));
@@ -738,7 +647,7 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public Mark getDefaultMark() {
+    public MarkImpl getDefaultMark() {
         return getSquareMark();
     }
 
@@ -753,15 +662,15 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public Stroke getDefaultStroke() {
+    public StrokeImpl getDefaultStroke() {
         try {
-            Stroke stroke =
+            StrokeImpl stroke =
                     createStroke(
                             filterFactory.literal("#000000"),
                             filterFactory.literal(Integer.valueOf(1)));
 
             stroke.setDashOffset(filterFactory.literal(Integer.valueOf(0)));
-            stroke.setDashArray(Stroke.DEFAULT.getDashArray());
+            stroke.setDashArray(StrokeImpl.DEFAULT.getDashArray());
             stroke.setLineCap(filterFactory.literal("butt"));
             stroke.setLineJoin(filterFactory.literal("miter"));
             stroke.setOpacity(filterFactory.literal(Integer.valueOf(1)));
@@ -774,8 +683,8 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public Style getDefaultStyle() {
-        Style style = createStyle();
+    public StyleImpl getDefaultStyle() {
+        StyleImpl style = createStyle();
 
         return style;
     }
@@ -788,10 +697,10 @@ public class StyleFactory extends AbstractStyleFactory
      * @return A default TextSymbolizer
      */
     @Override
-    public TextSymbolizer getDefaultTextSymbolizer() {
+    public TextSymbolizerImpl getDefaultTextSymbolizer() {
         return createTextSymbolizer(
                 getDefaultFill(),
-                new Font[] {getDefaultFont()},
+                new FontImpl[] {getDefaultFont()},
                 null,
                 null,
                 getDefaultPointPlacement(),
@@ -805,13 +714,13 @@ public class StyleFactory extends AbstractStyleFactory
      * @return the default Font
      */
     @Override
-    public Font getDefaultFont() {
-        return Font.createDefault(filterFactory);
+    public FontImpl getDefaultFont() {
+        return FontImpl.createDefault(filterFactory);
     }
 
     @Override
-    public Graphic createDefaultGraphic() {
-        Graphic graphic = new Graphic(filterFactory);
+    public GraphicImpl createDefaultGraphic() {
+        GraphicImpl graphic = new GraphicImpl(filterFactory);
         graphic.graphicalSymbols()
                 .add(createMark()); // a default graphic is assumed to have a single Mark
         graphic.setSize(Expression.NIL);
@@ -822,7 +731,7 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public Graphic getDefaultGraphic() {
+    public GraphicImpl getDefaultGraphic() {
         return createDefaultGraphic();
     }
 
@@ -835,27 +744,14 @@ public class StyleFactory extends AbstractStyleFactory
     @Override
     public PointPlacement getDefaultPointPlacement() {
         return this.createPointPlacement(
-                PointPlacement.DEFAULT_ANCHOR_POINT,
+                PointPlacementImpl.DEFAULT_ANCHOR_POINT,
                 this.createDisplacement(filterFactory.literal(0), filterFactory.literal(0)),
                 filterFactory.literal(0));
     }
 
     @Override
-    public RasterSymbolizer createRasterSymbolizer() {
-        return new RasterSymbolizer(filterFactory);
-    }
-
-    @Override
-    public org.geotools.api.style.RasterSymbolizer createRasterSymbolizer(
-            String geometryPropertyName,
-            Expression opacity,
-            org.geotools.api.style.ChannelSelection channel,
-            Expression overlap,
-            org.geotools.api.style.ColorMap colorMap,
-            org.geotools.api.style.ContrastEnhancement ce,
-            org.geotools.api.style.ShadedRelief relief,
-            org.geotools.api.style.Symbolizer outline) {
-        return null;
+    public RasterSymbolizerImpl createRasterSymbolizer() {
+        return new RasterSymbolizerImpl(filterFactory);
     }
 
     @Override
@@ -868,7 +764,7 @@ public class StyleFactory extends AbstractStyleFactory
             ContrastEnhancement cenhancement,
             ShadedRelief relief,
             Symbolizer outline) {
-        RasterSymbolizer rastersym = new RasterSymbolizer(filterFactory);
+        RasterSymbolizerImpl rastersym = new RasterSymbolizerImpl(filterFactory);
 
         if (geometryPropertyName != null) {
             rastersym.setGeometryPropertyName(geometryPropertyName);
@@ -912,14 +808,13 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public org.geotools.api.style.ChannelSelection createChannelSelection(
-            org.geotools.api.style.SelectedChannelType... channels) {
+    public ChannelSelection createChannelSelection(SelectedChannelType... channels) {
         return null;
     }
 
     @Override
-    public ChannelSelection createChannelSelection(SelectedChannelType[] channels) {
-        ChannelSelection channelSel = new ChannelSelection();
+    public ChannelSelectionImpl createChannelSelection(SelectedChannelTypeImpl[] channels) {
+        ChannelSelectionImpl channelSel = new ChannelSelectionImpl();
 
         if ((channels != null) && (channels.length > 0)) {
             if (channels.length == 1) {
@@ -933,44 +828,32 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public ColorMap createColorMap() {
-        return new ColorMap();
+    public ColorMapImpl createColorMap() {
+        return new ColorMapImpl();
     }
 
     @Override
-    public ColorMapEntry createColorMapEntry() {
-        return new ColorMapEntry();
+    public ColorMapEntryImpl createColorMapEntry() {
+        return new ColorMapEntryImpl();
     }
 
     @Override
-    public ContrastEnhancement createContrastEnhancement() {
-        return new ContrastEnhancement(filterFactory);
+    public ContrastEnhancementImpl createContrastEnhancement() {
+        return new ContrastEnhancementImpl(filterFactory);
     }
 
     @Override
-    public ContrastEnhancement createContrastEnhancement(Expression gammaValue) {
-        ContrastEnhancement ce = new ContrastEnhancement();
+    public ContrastEnhancementImpl createContrastEnhancement(Expression gammaValue) {
+        ContrastEnhancementImpl ce = new ContrastEnhancementImpl();
         ce.setGammaValue(gammaValue);
 
         return ce;
     }
 
     @Override
-    public org.geotools.api.style.SelectedChannelType createSelectedChannelType(
-            Expression name, org.geotools.api.style.ContrastEnhancement enhancement) {
-        return null;
-    }
-
-    @Override
-    public org.geotools.api.style.SelectedChannelType createSelectedChannelType(
-            String name, org.geotools.api.style.ContrastEnhancement enhancement) {
-        return null;
-    }
-
-    @Override
     public SelectedChannelType createSelectedChannelType(
             Expression name, ContrastEnhancement enhancement) {
-        SelectedChannelType sct = new SelectedChannelType(filterFactory);
+        SelectedChannelTypeImpl sct = new SelectedChannelTypeImpl(filterFactory);
         sct.setChannelName(name);
         sct.setContrastEnhancement(enhancement);
 
@@ -985,8 +868,9 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public SelectedChannelType createSelectedChannelType(Expression name, Expression gammaValue) {
-        SelectedChannelType sct = new SelectedChannelType(filterFactory);
+    public SelectedChannelTypeImpl createSelectedChannelType(
+            Expression name, Expression gammaValue) {
+        SelectedChannelTypeImpl sct = new SelectedChannelTypeImpl(filterFactory);
         sct.setChannelName(name);
         sct.setContrastEnhancement(createContrastEnhancement(gammaValue));
 
@@ -999,18 +883,18 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public UserLayer createUserLayer() {
-        return new UserLayer();
+    public UserLayerImpl createUserLayer() {
+        return new UserLayerImpl();
     }
 
     @Override
-    public NamedLayer createNamedLayer() {
-        return new NamedLayer();
+    public NamedLayerImpl createNamedLayer() {
+        return new NamedLayerImpl();
     }
 
     @Override
-    public RemoteOWS createRemoteOWS(String service, String onlineResource) {
-        RemoteOWS remoteOWS = new RemoteOWS();
+    public RemoteOWSImpl createRemoteOWS(String service, String onlineResource) {
+        RemoteOWSImpl remoteOWS = new RemoteOWSImpl();
         remoteOWS.setService(service);
         remoteOWS.setOnlineResource(onlineResource);
 
@@ -1018,8 +902,8 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public ShadedRelief createShadedRelief(Expression reliefFactor) {
-        ShadedRelief relief = new ShadedRelief(filterFactory);
+    public ShadedReliefImpl createShadedRelief(Expression reliefFactor) {
+        ShadedReliefImpl relief = new ShadedReliefImpl(filterFactory);
         relief.setReliefFactor(reliefFactor);
 
         return relief;
@@ -1029,51 +913,46 @@ public class StyleFactory extends AbstractStyleFactory
     //
 
     @Override
-    public AnchorPoint anchorPoint(Expression x, Expression y) {
+    public AnchorPointImpl anchorPoint(Expression x, Expression y) {
         return createAnchorPoint(x, y);
     }
 
     @Override
-    public ChannelSelection channelSelection(org.geotools.api.style.SelectedChannelType gray) {
-        return (ChannelSelection) createChannelSelection(gray);
+    public ChannelSelectionImpl channelSelection(org.geotools.api.style.SelectedChannelType gray) {
+        return (ChannelSelectionImpl) createChannelSelection(gray);
     }
 
     @Override
-    public ChannelSelection channelSelection(
+    public ChannelSelectionImpl channelSelection(
             org.geotools.api.style.SelectedChannelType red,
             org.geotools.api.style.SelectedChannelType green,
             org.geotools.api.style.SelectedChannelType blue) {
-        return (ChannelSelection) createChannelSelection(red, green, blue);
+        return (ChannelSelectionImpl) createChannelSelection(red, green, blue);
     }
 
     @Override
-    public ColorMap colorMap(Expression propertyName, Expression... mapping) {
+    public ColorMapImpl colorMap(Expression propertyName, Expression... mapping) {
         Expression[] arguments = new Expression[mapping.length + 2];
         arguments[0] = propertyName;
-        for (int i = 0; i < mapping.length; i++) {
-            arguments[i + 1] = mapping[i];
-        }
+        System.arraycopy(mapping, 0, arguments, 1, mapping.length);
         Function function = filterFactory.function("Categorize", arguments);
-        ColorMap colorMap = new ColorMap(function);
+        ColorMapImpl colorMap = new ColorMapImpl(function);
         return colorMap;
     }
 
     @Override
-    public org.geotools.styling.ColorReplacement colorReplacement(
-            Expression propertyName, Expression... mapping) {
+    public ColorReplacementImpl colorReplacement(Expression propertyName, Expression... mapping) {
         Expression[] arguments = new Expression[mapping.length + 2];
         arguments[0] = propertyName;
-        for (int i = 0; i < mapping.length; i++) {
-            arguments[i + 1] = mapping[i];
-        }
+        System.arraycopy(mapping, 0, arguments, 1, mapping.length);
         Function function = filterFactory.function("Recode", arguments);
-        ColorReplacement colorRep = new org.geotools.styling.ColorReplacement(function);
+        ColorReplacement colorRep = new ColorReplacementImpl(function);
 
-        return (org.geotools.styling.ColorReplacement) colorRep;
+        return (ColorReplacementImpl) colorRep;
     }
 
     @Override
-    public ContrastEnhancement contrastEnhancement(
+    public ContrastEnhancementImpl contrastEnhancement(
             Expression gamma, ContrastMethod contrastMethod) {
         ContrastMethod meth = ContrastMethod.NONE;
         if (ContrastMethod.NORMALIZE.equals(contrastMethod)) {
@@ -1085,53 +964,52 @@ public class StyleFactory extends AbstractStyleFactory
         } else if (ContrastMethod.EXPONENTIAL.equals(contrastMethod)) {
             meth = ContrastMethod.EXPONENTIAL;
         }
-        return new ContrastEnhancement(filterFactory, gamma, meth);
+        return new ContrastEnhancementImpl(filterFactory, gamma, meth);
     }
 
     @Override
-    public org.geotools.styling.Description description(
-            InternationalString title, InternationalString description) {
-        return new org.geotools.styling.Description(title, description);
+    public DescriptionImpl description(InternationalString title, InternationalString description) {
+        return new DescriptionImpl(title, description);
     }
 
     @Override
-    public Displacement displacement(Expression dx, Expression dy) {
-        return new Displacement(dx, dy);
+    public DisplacementImpl displacement(Expression dx, Expression dy) {
+        return new DisplacementImpl(dx, dy);
     }
 
     @Override
-    public ExternalGraphic externalGraphic(Icon inline, Collection<ColorReplacement> replacements) {
-        return new ExternalGraphic(inline, replacements, null);
+    public ExternalGraphicImpl externalGraphic(
+            Icon inline, Collection<ColorReplacement> replacements) {
+        return new ExternalGraphicImpl(inline, replacements, null);
     }
 
     @Override
-    public ExternalGraphic externalGraphic(
+    public ExternalGraphicImpl externalGraphic(
             OnLineResource resource, String format, Collection<ColorReplacement> replacements) {
-        ExternalGraphic externalGraphic = new ExternalGraphic(null, replacements, resource);
+        ExternalGraphicImpl externalGraphic = new ExternalGraphicImpl(null, replacements, resource);
         externalGraphic.setFormat(format);
         return externalGraphic;
     }
 
     @Override
-    public org.geotools.styling.ExternalMark externalMark(Icon inline) {
-        return new org.geotools.styling.ExternalMark(inline);
+    public ExternalMarkImpl externalMark(Icon inline) {
+        return new ExternalMarkImpl(inline);
     }
 
     @Override
-    public org.geotools.styling.ExternalMark externalMark(
-            OnLineResource resource, String format, int markIndex) {
-        return new org.geotools.styling.ExternalMark(resource, format, markIndex);
+    public ExternalMarkImpl externalMark(OnLineResource resource, String format, int markIndex) {
+        return new ExternalMarkImpl(resource, format, markIndex);
     }
 
     @Override
-    public FeatureTypeStyle featureTypeStyle(
+    public FeatureTypeStyleImpl featureTypeStyle(
             String name,
             Description description,
             Id definedFor,
             Set<Name> featureTypeNames,
             Set<SemanticType> types,
             List<org.geotools.api.style.Rule> rules) {
-        FeatureTypeStyle featureTypeStyle = new FeatureTypeStyle();
+        FeatureTypeStyleImpl featureTypeStyle = new FeatureTypeStyleImpl();
         featureTypeStyle.setName(name);
 
         if (description != null && description.getTitle() != null) {
@@ -1145,18 +1023,18 @@ public class StyleFactory extends AbstractStyleFactory
         featureTypeStyle.semanticTypeIdentifiers().addAll(types);
 
         for (org.geotools.api.style.Rule rule : rules) {
-            if (rule instanceof Rule) {
-                featureTypeStyle.rules().add((Rule) rule);
+            if (rule instanceof RuleImpl) {
+                featureTypeStyle.rules().add(rule);
             } else {
-                featureTypeStyle.rules().add(new Rule(rule));
+                featureTypeStyle.rules().add(new RuleImpl(rule));
             }
         }
         return featureTypeStyle;
     }
 
     @Override
-    public Fill fill(GraphicFill graphicFill, Expression color, Expression opacity) {
-        Fill fill = new Fill(filterFactory);
+    public FillImpl fill(GraphicFill graphicFill, Expression color, Expression opacity) {
+        FillImpl fill = new FillImpl(filterFactory);
         fill.setGraphicFill(graphicFill);
         fill.setColor(color);
         fill.setOpacity(opacity);
@@ -1164,9 +1042,9 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public Font font(
+    public FontImpl font(
             List<Expression> family, Expression style, Expression weight, Expression size) {
-        Font font = new Font();
+        FontImpl font = new FontImpl();
         font.getFamily().addAll(family);
         font.setStyle(style);
         font.setWeight(weight);
@@ -1176,20 +1054,20 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public Graphic graphic(
+    public GraphicImpl graphic(
             List<GraphicalSymbol> symbols,
             Expression opacity,
             Expression size,
             Expression rotation,
             org.geotools.api.style.AnchorPoint anchor,
             org.geotools.api.style.Displacement disp) {
-        Graphic graphic = new Graphic(filterFactory);
+        GraphicImpl graphic = new GraphicImpl(filterFactory);
         if (symbols != null) {
             for (GraphicalSymbol graphicalSymbol : symbols) {
-                if (graphicalSymbol instanceof ExternalGraphic) {
-                    graphic.graphicalSymbols().add(ExternalGraphic.cast(graphicalSymbol));
-                } else if (graphicalSymbol instanceof Mark) {
-                    graphic.graphicalSymbols().add(Mark.cast(graphicalSymbol));
+                if (graphicalSymbol instanceof ExternalGraphicImpl) {
+                    graphic.graphicalSymbols().add(ExternalGraphicImpl.cast(graphicalSymbol));
+                } else if (graphicalSymbol instanceof MarkImpl) {
+                    graphic.graphicalSymbols().add(MarkImpl.cast(graphicalSymbol));
                 }
             }
         }
@@ -1209,13 +1087,13 @@ public class StyleFactory extends AbstractStyleFactory
             Expression rotation,
             org.geotools.api.style.AnchorPoint anchorPoint,
             org.geotools.api.style.Displacement displacement) {
-        Graphic graphicFill = new Graphic(filterFactory);
+        GraphicImpl graphicFill = new GraphicImpl(filterFactory);
         if (symbols != null) {
             for (GraphicalSymbol graphicalSymbol : symbols) {
-                if (graphicalSymbol instanceof ExternalGraphic) {
-                    graphicFill.graphicalSymbols().add(ExternalGraphic.cast(graphicalSymbol));
-                } else if (graphicalSymbol instanceof Mark) {
-                    graphicFill.graphicalSymbols().add(Mark.cast(graphicalSymbol));
+                if (graphicalSymbol instanceof ExternalGraphicImpl) {
+                    graphicFill.graphicalSymbols().add(ExternalGraphicImpl.cast(graphicalSymbol));
+                } else if (graphicalSymbol instanceof MarkImpl) {
+                    graphicFill.graphicalSymbols().add(MarkImpl.cast(graphicalSymbol));
                 }
             }
         }
@@ -1236,13 +1114,13 @@ public class StyleFactory extends AbstractStyleFactory
             Expression rotation,
             org.geotools.api.style.AnchorPoint anchorPoint,
             org.geotools.api.style.Displacement displacement) {
-        GraphicLegend graphicLegend = (GraphicLegend) new Graphic(filterFactory);
+        GraphicLegend graphicLegend = (GraphicLegend) new GraphicImpl(filterFactory);
         if (symbols != null) {
             for (GraphicalSymbol graphicalSymbol : symbols) {
-                if (graphicalSymbol instanceof ExternalGraphic) {
-                    graphicLegend.graphicalSymbols().add(ExternalGraphic.cast(graphicalSymbol));
-                } else if (graphicalSymbol instanceof Mark) {
-                    graphicLegend.graphicalSymbols().add(Mark.cast(graphicalSymbol));
+                if (graphicalSymbol instanceof ExternalGraphicImpl) {
+                    graphicLegend.graphicalSymbols().add(ExternalGraphicImpl.cast(graphicalSymbol));
+                } else if (graphicalSymbol instanceof MarkImpl) {
+                    graphicLegend.graphicalSymbols().add(MarkImpl.cast(graphicalSymbol));
                 }
             }
         }
@@ -1265,13 +1143,13 @@ public class StyleFactory extends AbstractStyleFactory
             org.geotools.api.style.Displacement displacement,
             Expression initialGap,
             Expression gap) {
-        Graphic graphicStroke = new Graphic(filterFactory);
+        GraphicImpl graphicStroke = new GraphicImpl(filterFactory);
         if (symbols != null) {
             for (GraphicalSymbol graphicalSymbol : symbols) {
-                if (graphicalSymbol instanceof ExternalGraphic) {
-                    graphicStroke.graphicalSymbols().add(ExternalGraphic.cast(graphicalSymbol));
-                } else if (graphicalSymbol instanceof Mark) {
-                    graphicStroke.graphicalSymbols().add(Mark.cast(graphicalSymbol));
+                if (graphicalSymbol instanceof ExternalGraphicImpl) {
+                    graphicStroke.graphicalSymbols().add(ExternalGraphicImpl.cast(graphicalSymbol));
+                } else if (graphicalSymbol instanceof MarkImpl) {
+                    graphicStroke.graphicalSymbols().add(MarkImpl.cast(graphicalSymbol));
                 }
             }
         }
@@ -1287,22 +1165,22 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public Halo halo(org.geotools.api.style.Fill fill, Expression radius) {
-        Halo halo = new Halo();
+    public HaloImpl halo(org.geotools.api.style.Fill fill, Expression radius) {
+        HaloImpl halo = new HaloImpl();
         halo.setFill(fill);
         halo.setRadius(radius);
         return halo;
     }
 
     @Override
-    public LinePlacement linePlacement(
+    public LinePlacementImpl linePlacement(
             Expression offset,
             Expression initialGap,
             Expression gap,
             boolean repeated,
             boolean aligned,
             boolean generalizedLine) {
-        LinePlacement placement = new LinePlacement(filterFactory);
+        LinePlacementImpl placement = new LinePlacementImpl(filterFactory);
         placement.setPerpendicularOffset(offset);
         placement.setInitialGap(initialGap);
         placement.setGap(gap);
@@ -1314,14 +1192,14 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public LineSymbolizer lineSymbolizer(
+    public LineSymbolizerImpl lineSymbolizer(
             String name,
             Expression geometry,
             Description description,
             Unit<?> unit,
             org.geotools.api.style.Stroke stroke,
             Expression offset) {
-        LineSymbolizer copy = new LineSymbolizer();
+        LineSymbolizerImpl copy = new LineSymbolizerImpl();
         copy.setDescription(description);
         copy.setGeometry(geometry);
         copy.setName(name);
@@ -1332,11 +1210,11 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public Mark mark(
+    public MarkImpl mark(
             Expression wellKnownName,
             org.geotools.api.style.Fill fill,
             org.geotools.api.style.Stroke stroke) {
-        Mark mark = new Mark(filterFactory, null);
+        MarkImpl mark = new MarkImpl(filterFactory, null);
         mark.setWellKnownName(wellKnownName);
         mark.setFill(fill);
         mark.setStroke(stroke);
@@ -1345,11 +1223,11 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public Mark mark(
+    public MarkImpl mark(
             org.geotools.api.style.ExternalMark externalMark,
             org.geotools.api.style.Fill fill,
             org.geotools.api.style.Stroke stroke) {
-        Mark mark = new Mark();
+        MarkImpl mark = new MarkImpl();
         mark.setExternalMark(externalMark);
         mark.setFill(fill);
         mark.setStroke(stroke);
@@ -1358,11 +1236,11 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public PointPlacement pointPlacement(
+    public PointPlacementImpl pointPlacement(
             org.geotools.api.style.AnchorPoint anchor,
             org.geotools.api.style.Displacement displacement,
             Expression rotation) {
-        PointPlacement pointPlacement = new PointPlacement(filterFactory);
+        PointPlacementImpl pointPlacement = new PointPlacementImpl(filterFactory);
         pointPlacement.setAnchorPoint(anchor);
         pointPlacement.setDisplacement(displacement);
         pointPlacement.setRotation(rotation);
@@ -1370,13 +1248,13 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public PointSymbolizer pointSymbolizer(
+    public PointSymbolizerImpl pointSymbolizer(
             String name,
             Expression geometry,
             Description description,
             Unit<?> unit,
             org.geotools.api.style.Graphic graphic) {
-        PointSymbolizer copy = new PointSymbolizer();
+        PointSymbolizerImpl copy = new PointSymbolizerImpl();
         copy.setDescription(description);
         copy.setGeometryPropertyName(((PropertyName) geometry).getPropertyName());
         copy.setGraphic(graphic);
@@ -1386,7 +1264,7 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public PolygonSymbolizer polygonSymbolizer(
+    public PolygonSymbolizerImpl polygonSymbolizer(
             String name,
             Expression geometry,
             Description description,
@@ -1395,7 +1273,7 @@ public class StyleFactory extends AbstractStyleFactory
             org.geotools.api.style.Fill fill,
             org.geotools.api.style.Displacement displacement,
             Expression offset) {
-        PolygonSymbolizer polygonSymbolizer = new PolygonSymbolizer();
+        PolygonSymbolizerImpl polygonSymbolizer = new PolygonSymbolizerImpl();
         polygonSymbolizer.setStroke(stroke);
         polygonSymbolizer.setDescription(description);
         polygonSymbolizer.setDisplacement(displacement);
@@ -1408,7 +1286,7 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public RasterSymbolizer rasterSymbolizer(
+    public RasterSymbolizerImpl rasterSymbolizer(
             String name,
             Expression geometry,
             Description description,
@@ -1420,7 +1298,7 @@ public class StyleFactory extends AbstractStyleFactory
             org.geotools.api.style.ContrastEnhancement contrast,
             org.geotools.api.style.ShadedRelief shaded,
             org.geotools.api.style.Symbolizer outline) {
-        RasterSymbolizer rasterSymbolizer = new RasterSymbolizer(filterFactory);
+        RasterSymbolizerImpl rasterSymbolizer = new RasterSymbolizerImpl(filterFactory);
         rasterSymbolizer.setChannelSelection(channelSelection);
         rasterSymbolizer.setColorMap(colorMap);
         rasterSymbolizer.setContrastEnhancement(contrast);
@@ -1458,7 +1336,7 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public Rule rule(
+    public RuleImpl rule(
             String name,
             Description description,
             org.geotools.api.style.GraphicLegend legend,
@@ -1466,7 +1344,7 @@ public class StyleFactory extends AbstractStyleFactory
             double max,
             List<org.geotools.api.style.Symbolizer> symbolizers,
             Filter filter) {
-        Rule rule = new Rule();
+        RuleImpl rule = new RuleImpl();
         rule.setName(name);
         rule.setDescription(description);
         rule.setLegend(legend);
@@ -1474,7 +1352,7 @@ public class StyleFactory extends AbstractStyleFactory
         rule.setMaxScaleDenominator(max);
         if (symbolizers != null) {
             for (org.geotools.api.style.Symbolizer symbolizer : symbolizers) {
-                rule.symbolizers().add((Symbolizer) symbolizer);
+                rule.symbolizers().add(symbolizer);
             }
         }
         if (filter != null) {
@@ -1487,34 +1365,34 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public SelectedChannelType selectedChannelType(
+    public SelectedChannelTypeImpl selectedChannelType(
             Expression channelName,
             org.geotools.api.style.ContrastEnhancement contrastEnhancement) {
-        SelectedChannelType selectedChannelType = new SelectedChannelType(filterFactory);
+        SelectedChannelTypeImpl selectedChannelType = new SelectedChannelTypeImpl(filterFactory);
         selectedChannelType.setChannelName(channelName);
         selectedChannelType.setContrastEnhancement(contrastEnhancement);
         return selectedChannelType;
     }
 
     @Override
-    public SelectedChannelType selectedChannelType(
+    public SelectedChannelTypeImpl selectedChannelType(
             String channelName, org.geotools.api.style.ContrastEnhancement contrastEnhancement) {
-        SelectedChannelType selectedChannelType = new SelectedChannelType(filterFactory);
+        SelectedChannelTypeImpl selectedChannelType = new SelectedChannelTypeImpl(filterFactory);
         selectedChannelType.setChannelName(channelName);
         selectedChannelType.setContrastEnhancement(contrastEnhancement);
         return selectedChannelType;
     }
 
     @Override
-    public ShadedRelief shadedRelief(Expression reliefFactor, boolean brightnessOnly) {
-        ShadedRelief shadedRelief = new ShadedRelief(filterFactory);
+    public ShadedReliefImpl shadedRelief(Expression reliefFactor, boolean brightnessOnly) {
+        ShadedReliefImpl shadedRelief = new ShadedReliefImpl(filterFactory);
         shadedRelief.setReliefFactor(reliefFactor);
         shadedRelief.setBrightnessOnly(brightnessOnly);
         return shadedRelief;
     }
 
     @Override
-    public Stroke stroke(
+    public StrokeImpl stroke(
             Expression color,
             Expression opacity,
             Expression width,
@@ -1522,7 +1400,7 @@ public class StyleFactory extends AbstractStyleFactory
             Expression cap,
             float[] dashes,
             Expression offset) {
-        Stroke stroke = new Stroke(filterFactory);
+        StrokeImpl stroke = new StrokeImpl(filterFactory);
         stroke.setColor(color);
         stroke.setOpacity(opacity);
         stroke.setWidth(width);
@@ -1534,7 +1412,7 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public Stroke stroke(
+    public StrokeImpl stroke(
             GraphicFill fill,
             Expression color,
             Expression opacity,
@@ -1543,7 +1421,7 @@ public class StyleFactory extends AbstractStyleFactory
             Expression cap,
             float[] dashes,
             Expression offset) {
-        Stroke stroke = new Stroke(filterFactory);
+        StrokeImpl stroke = new StrokeImpl(filterFactory);
         stroke.setGraphicFill(fill);
         stroke.setColor(color);
         stroke.setOpacity(opacity);
@@ -1556,7 +1434,7 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public Stroke stroke(
+    public StrokeImpl stroke(
             GraphicStroke stroke,
             Expression color,
             Expression opacity,
@@ -1565,7 +1443,7 @@ public class StyleFactory extends AbstractStyleFactory
             Expression cap,
             float[] dashes,
             Expression offset) {
-        Stroke s = new Stroke(filterFactory);
+        StrokeImpl s = new StrokeImpl(filterFactory);
         s.setColor(color);
         s.setWidth(width);
         s.setOpacity(opacity);
@@ -1579,27 +1457,28 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public Style style(
+    public StyleImpl style(
             String name,
             Description description,
             boolean isDefault,
             List<org.geotools.api.style.FeatureTypeStyle> featureTypeStyles,
             org.geotools.api.style.Symbolizer defaultSymbolizer) {
-        Style style = new Style();
+        StyleImpl style = new StyleImpl();
         style.setName(name);
-        style.setDescription((org.geotools.styling.Description) description);
+        style.setDescription((DescriptionImpl) description);
         style.setDefault(isDefault);
         if (featureTypeStyles != null) {
             for (org.geotools.api.style.FeatureTypeStyle featureTypeStyle : featureTypeStyles) {
-                style.featureTypeStyles().add(FeatureTypeStyle.cast(featureTypeStyle));
+                style.featureTypeStyles()
+                        .add(org.geotools.styling.FeatureTypeStyleImpl.cast(featureTypeStyle));
             }
         }
-        style.setDefaultSpecification((Symbolizer) defaultSymbolizer);
+        style.setDefaultSpecification(defaultSymbolizer);
         return style;
     }
 
     @Override
-    public TextSymbolizer textSymbolizer(
+    public TextSymbolizerImpl textSymbolizer(
             String name,
             Expression geometry,
             Description description,
@@ -1609,7 +1488,7 @@ public class StyleFactory extends AbstractStyleFactory
             org.geotools.api.style.LabelPlacement placement,
             org.geotools.api.style.Halo halo,
             org.geotools.api.style.Fill fill) {
-        TextSymbolizer tSymb = new TextSymbolizer(filterFactory);
+        TextSymbolizerImpl tSymb = new TextSymbolizerImpl(filterFactory);
         tSymb.setName(name);
         tSymb.setFill(fill);
         tSymb.setUnitOfMeasure((Unit<Length>) unit);
@@ -1637,7 +1516,7 @@ public class StyleFactory extends AbstractStyleFactory
         } else if (ContrastMethod.EXPONENTIAL.matches(method)) {
             meth = ContrastMethod.EXPONENTIAL;
         }
-        return new ContrastEnhancement(filterFactory, gamma, meth);
+        return new ContrastEnhancementImpl(filterFactory, gamma, meth);
     }
 
     @Override

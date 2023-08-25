@@ -20,20 +20,20 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.geotools.api.filter.expression.Function;
-import org.geotools.styling.PolygonSymbolizer;
+import org.geotools.styling.PolygonSymbolizerImpl;
 import org.junit.Test;
 
 public class SLDPolygonSymbolizerBindingTest extends SLDTestSupport {
     @Test
     public void testType() throws Exception {
-        assertEquals(PolygonSymbolizer.class, new SLDPolygonSymbolizerBinding(null).getType());
+        assertEquals(PolygonSymbolizerImpl.class, new SLDPolygonSymbolizerBinding(null).getType());
     }
 
     @Test
     public void test() throws Exception {
         SLDMockData.polygonSymbolizer(document, document);
 
-        PolygonSymbolizer ps = (PolygonSymbolizer) parse();
+        PolygonSymbolizerImpl ps = (PolygonSymbolizerImpl) parse();
         assertNotNull(ps);
         assertNotNull(ps.getFill());
         assertNotNull(ps.getStroke());
@@ -43,7 +43,7 @@ public class SLDPolygonSymbolizerBindingTest extends SLDTestSupport {
     public void testTransform() throws Exception {
         SLDMockData.transformedPolygonSymbolizer(document, document);
 
-        PolygonSymbolizer ps = (PolygonSymbolizer) parse();
+        PolygonSymbolizerImpl ps = (PolygonSymbolizerImpl) parse();
         assertNotNull(ps);
         assertNotNull(ps.getFill());
         assertNotNull(ps.getStroke());

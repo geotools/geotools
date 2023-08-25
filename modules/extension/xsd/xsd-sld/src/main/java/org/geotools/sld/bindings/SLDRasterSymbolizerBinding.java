@@ -23,11 +23,8 @@ import org.geotools.api.style.ColorMap;
 import org.geotools.api.style.ImageOutline;
 import org.geotools.api.style.OverlapBehavior;
 import org.geotools.sld.CssParameter;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.ShadedRelief;
-import org.geotools.styling.StyleFactory;
+import org.geotools.styling.*;
+import org.geotools.styling.ContrastEnhancementImpl;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
@@ -103,7 +100,7 @@ public class SLDRasterSymbolizerBinding extends AbstractComplexBinding {
      */
     @Override
     public Class getType() {
-        return RasterSymbolizer.class;
+        return RasterSymbolizerImpl.class;
     }
 
     /**
@@ -125,7 +122,7 @@ public class SLDRasterSymbolizerBinding extends AbstractComplexBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        RasterSymbolizer rs = styleFactory.createRasterSymbolizer();
+        RasterSymbolizerImpl rs = styleFactory.createRasterSymbolizer();
 
         // &lt;xsd:element ref="sld:Geometry" minOccurs="0"/&gt;
         if (node.hasChild("Geometry")) {
@@ -145,7 +142,7 @@ public class SLDRasterSymbolizerBinding extends AbstractComplexBinding {
 
         // &lt;xsd:element ref="sld:ChannelSelection" minOccurs="0"/&gt;
         if (node.hasChild("ChannelSelection")) {
-            rs.setChannelSelection((ChannelSelection) node.getChildValue("ChannelSelection"));
+            rs.setChannelSelection((ChannelSelectionImpl) node.getChildValue("ChannelSelection"));
         }
 
         // &lt;xsd:element ref="sld:OverlapBehavior" minOccurs="0"/&gt;
@@ -161,12 +158,12 @@ public class SLDRasterSymbolizerBinding extends AbstractComplexBinding {
         // &lt;xsd:element ref="sld:ContrastEnhancement" minOccurs="0"/&gt;
         if (node.hasChild("ContrastEnhancement")) {
             rs.setContrastEnhancement(
-                    (ContrastEnhancement) node.getChildValue("ContrastEnhancement"));
+                    (ContrastEnhancementImpl) node.getChildValue("ContrastEnhancement"));
         }
 
         // &lt;xsd:element ref="sld:ShadedRelief" minOccurs="0"/&gt;
         if (node.hasChild("ShadedRelief")) {
-            rs.setShadedRelief((ShadedRelief) node.getChildValue("ShadedRelief"));
+            rs.setShadedRelief((ShadedReliefImpl) node.getChildValue("ShadedRelief"));
         }
 
         // &lt;xsd:element ref="sld:ImageOutline" minOccurs="0"/&gt;

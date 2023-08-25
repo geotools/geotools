@@ -17,7 +17,7 @@
 package org.geotools.sld.bindings;
 
 import javax.xml.namespace.QName;
-import org.geotools.styling.Graphic;
+import org.geotools.styling.GraphicImpl;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
@@ -76,7 +76,7 @@ public class SLDGraphicStrokeBinding extends AbstractComplexBinding {
      */
     @Override
     public Class getType() {
-        return Graphic.class;
+        return GraphicImpl.class;
     }
 
     /**

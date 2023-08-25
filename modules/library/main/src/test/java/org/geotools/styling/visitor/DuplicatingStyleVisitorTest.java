@@ -32,38 +32,36 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.style.*;
+import org.geotools.api.style.OverlapBehavior;
+import org.geotools.api.style.Symbolizer;
 import org.geotools.api.util.Cloneable;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.metadata.iso.citation.OnLineResourceImpl;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.ExternalMark;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Halo;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.OtherText;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.SelectedChannelType;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleBuilder;
+import org.geotools.styling.*;
+import org.geotools.styling.ContrastEnhancementImpl;
+import org.geotools.styling.DisplacementImpl;
+import org.geotools.styling.ExternalGraphicImpl;
+import org.geotools.styling.ExternalMarkImpl;
+import org.geotools.styling.FillImpl;
+import org.geotools.styling.FontImpl;
+import org.geotools.styling.GraphicImpl;
+import org.geotools.styling.HaloImpl;
+import org.geotools.styling.LinePlacementImpl;
+import org.geotools.styling.LineSymbolizerImpl;
+import org.geotools.styling.MarkImpl;
+import org.geotools.styling.OtherTextImpl;
+import org.geotools.styling.PointPlacementImpl;
+import org.geotools.styling.PointSymbolizerImpl;
+import org.geotools.styling.PolygonSymbolizerImpl;
+import org.geotools.styling.RasterSymbolizerImpl;
+import org.geotools.styling.RuleImpl;
+import org.geotools.styling.SelectedChannelTypeImpl;
+import org.geotools.styling.StrokeImpl;
 import org.geotools.styling.StyleFactory;
-import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.UomOgcMapping;
+import org.geotools.styling.StyleImpl;
+import org.geotools.styling.TextSymbolizerImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -90,11 +88,11 @@ public class DuplicatingStyleVisitorTest {
     @Test
     public void testRasterSymbolizerDuplication() {
         // create a default RasterSymbolizer
-        RasterSymbolizer original = sb.createRasterSymbolizer();
+        RasterSymbolizerImpl original = sb.createRasterSymbolizer();
 
         // duplicate it
         original.accept(visitor);
-        RasterSymbolizer copy = (RasterSymbolizer) visitor.getCopy();
+        RasterSymbolizerImpl copy = (RasterSymbolizerImpl) visitor.getCopy();
 
         // compare it
         Assert.assertNotNull(copy);
@@ -104,7 +102,7 @@ public class DuplicatingStyleVisitorTest {
     @Test
     public void testStyleDuplication() throws IllegalFilterException {
         // create a style
-        Style oldStyle = sb.createStyle("FTSName", sf.createPolygonSymbolizer());
+        StyleImpl oldStyle = sb.createStyle("FTSName", sf.createPolygonSymbolizer());
         oldStyle.featureTypeStyles()
                 .get(0)
                 .semanticTypeIdentifiers()
@@ -114,7 +112,7 @@ public class DuplicatingStyleVisitorTest {
                                 SemanticType.valueOf("generic:geometry")));
         // duplicate it
         oldStyle.accept(visitor);
-        Style newStyle = (Style) visitor.getCopy();
+        StyleImpl newStyle = (StyleImpl) visitor.getCopy();
 
         // compare it
         Assert.assertNotNull(newStyle);
@@ -123,22 +121,22 @@ public class DuplicatingStyleVisitorTest {
 
     @Test
     public void testStyle() throws Exception {
-        FeatureTypeStyle fts = sf.createFeatureTypeStyle();
+        FeatureTypeStyleImpl fts = sf.createFeatureTypeStyle();
         fts.featureTypeNames().add(new NameImpl("feature-type-1"));
 
-        FeatureTypeStyle fts2 = fts2();
+        FeatureTypeStyleImpl fts2 = fts2();
 
-        Style style = sf.getDefaultStyle();
+        StyleImpl style = sf.getDefaultStyle();
         style.featureTypeStyles().add(fts);
         style.featureTypeStyles().add(fts2);
 
         style.accept(visitor);
-        Style copy = (Style) visitor.getCopy();
+        StyleImpl copy = (StyleImpl) visitor.getCopy();
 
         // assertClone(style, clone);
         assertEqualsContract(style, copy);
 
-        Style notEq = sf.getDefaultStyle();
+        StyleImpl notEq = sf.getDefaultStyle();
 
         fts2 = fts2();
         notEq.featureTypeStyles().add(fts2);
@@ -146,9 +144,9 @@ public class DuplicatingStyleVisitorTest {
         assertEqualsContract(copy, notEq, style);
     }
 
-    private FeatureTypeStyle fts2() {
-        FeatureTypeStyle fts2 = sf.createFeatureTypeStyle();
-        Rule rule = sf.createRule();
+    private FeatureTypeStyleImpl fts2() {
+        FeatureTypeStyleImpl fts2 = sf.createFeatureTypeStyle();
+        RuleImpl rule = (RuleImpl) sf.createRule();
         fts2.rules().add(rule);
         fts2.featureTypeNames().add(new NameImpl("feature-type-2"));
 
@@ -157,30 +155,30 @@ public class DuplicatingStyleVisitorTest {
 
     @Test
     public void testFeatureTypeStyle() throws Exception {
-        FeatureTypeStyle fts = sf.createFeatureTypeStyle();
+        FeatureTypeStyleImpl fts = sf.createFeatureTypeStyle();
         fts.featureTypeNames().add(new NameImpl("feature-type"));
         fts.getOptions().put("key", "value");
 
-        Rule rule1 = sf.createRule();
+        RuleImpl rule1 = (RuleImpl) sf.createRule();
         rule1.setName("rule1");
         rule1.setFilter(ff.id(Collections.singleton(ff.featureId("FID"))));
 
-        Rule rule2 = sf.createRule();
+        RuleImpl rule2 = (RuleImpl) sf.createRule();
         rule2.setElseFilter(true);
         rule2.setName("rule2");
         fts.rules().add(rule1);
         fts.rules().add(rule2);
 
         fts.accept(visitor);
-        FeatureTypeStyle clone = (FeatureTypeStyle) visitor.getCopy();
+        FeatureTypeStyleImpl clone = (FeatureTypeStyleImpl) visitor.getCopy();
         // assertClone(fts, clone);
         assertEqualsContract(fts, clone);
 
-        rule1 = sf.createRule();
+        rule1 = (RuleImpl) sf.createRule();
         rule1.setName("rule1");
         rule1.setFilter(ff.id(Collections.singleton(ff.featureId("FID"))));
 
-        FeatureTypeStyle notEq = sf.createFeatureTypeStyle();
+        FeatureTypeStyleImpl notEq = sf.createFeatureTypeStyle();
         notEq.setName("fts-not-equal");
         notEq.rules().add(rule1);
         assertEqualsContract(clone, notEq, fts);
@@ -189,7 +187,7 @@ public class DuplicatingStyleVisitorTest {
         fts.setOnlineResource(new OnLineResourceImpl());
 
         fts.accept(visitor);
-        clone = (FeatureTypeStyle) visitor.getCopy();
+        clone = (FeatureTypeStyleImpl) visitor.getCopy();
         assertEqualsContract(fts, clone);
     }
 
@@ -200,17 +198,17 @@ public class DuplicatingStyleVisitorTest {
         Symbolizer symb2 =
                 sf.createPolygonSymbolizer(sf.getDefaultStroke(), sf.getDefaultFill(), "shape");
 
-        Rule rule = sf.createRule();
+        RuleImpl rule = (RuleImpl) sf.createRule();
         rule.symbolizers().addAll(Arrays.asList(symb1, symb2));
 
         rule.accept(visitor);
-        Rule clone = (Rule) visitor.getCopy();
+        RuleImpl clone = (RuleImpl) visitor.getCopy();
         assertCopy(rule, clone);
         assertEqualsContract(rule, clone);
 
         symb2 = sf.createPolygonSymbolizer(sf.getDefaultStroke(), sf.getDefaultFill(), "shape");
 
-        Rule notEq = sf.createRule();
+        RuleImpl notEq = (RuleImpl) sf.createRule();
         notEq.symbolizers().add(symb2);
         assertEqualsContract(clone, notEq, rule);
 
@@ -222,54 +220,54 @@ public class DuplicatingStyleVisitorTest {
     @Test
     public void testPointSymbolizer() throws Exception {
         URL urlExternal = getClass().getResource("/data/sld/blob.gif");
-        ExternalGraphic extg = sb.createExternalGraphic(urlExternal, "image/svg+xml");
-        Graphic graphic = sb.createGraphic(extg, null, null);
-        PointSymbolizer pointSymb = sb.createPointSymbolizer(graphic);
+        ExternalGraphicImpl extg = sb.createExternalGraphic(urlExternal, "image/svg+xml");
+        GraphicImpl graphic = sb.createGraphic(extg, null, null);
+        PointSymbolizerImpl pointSymb = sb.createPointSymbolizer(graphic);
 
         pointSymb.accept(visitor);
-        PointSymbolizer clone = (PointSymbolizer) visitor.getCopy();
+        PointSymbolizerImpl clone = (PointSymbolizerImpl) visitor.getCopy();
 
         assertCopy(pointSymb, clone);
         assertEqualsContract(pointSymb, clone);
 
-        PointSymbolizer notEq = sf.getDefaultPointSymbolizer();
+        PointSymbolizerImpl notEq = (PointSymbolizerImpl) sf.getDefaultPointSymbolizer();
         notEq.setGeometryPropertyName("something_else");
         assertEqualsContract(clone, notEq, pointSymb);
     }
 
     @Test
     public void testRasterSymbolizerWithUOM() throws Exception {
-        RasterSymbolizer rasterSymb = sf.createRasterSymbolizer();
+        RasterSymbolizerImpl rasterSymb = sf.createRasterSymbolizer();
         rasterSymb.setUnitOfMeasure(UomOgcMapping.FOOT.getUnit());
         rasterSymb.accept(visitor);
-        RasterSymbolizer clone = (RasterSymbolizer) visitor.getCopy();
+        RasterSymbolizerImpl clone = (RasterSymbolizerImpl) visitor.getCopy();
 
         assertEquals(clone.getUnitOfMeasure(), rasterSymb.getUnitOfMeasure());
 
-        RasterSymbolizer notEq = sf.createRasterSymbolizer();
+        RasterSymbolizerImpl notEq = sf.createRasterSymbolizer();
 
         Assert.assertNotEquals(notEq.getUnitOfMeasure(), rasterSymb.getUnitOfMeasure());
     }
 
     @Test
     public void testRasterSymbolizerWithOverlapBehavior() throws Exception {
-        RasterSymbolizer rasterSymb1 = sf.createRasterSymbolizer();
+        RasterSymbolizerImpl rasterSymb1 = sf.createRasterSymbolizer();
         rasterSymb1.setOverlapBehavior(OverlapBehavior.AVERAGE);
         rasterSymb1.accept(visitor);
-        RasterSymbolizer clone1 = (RasterSymbolizer) visitor.getCopy();
+        RasterSymbolizerImpl clone1 = (RasterSymbolizerImpl) visitor.getCopy();
         assertEquals(clone1.getOverlapBehavior(), rasterSymb1.getOverlapBehavior());
 
         // Try literal expression
-        RasterSymbolizer rasterSymbLiteral = sf.createRasterSymbolizer();
+        RasterSymbolizerImpl rasterSymbLiteral = sf.createRasterSymbolizer();
         rasterSymbLiteral.setOverlap(ff.literal(OverlapBehavior.EARLIEST_ON_TOP.toString()));
         rasterSymbLiteral.accept(visitor);
-        RasterSymbolizer cloneLiteral = (RasterSymbolizer) visitor.getCopy();
+        RasterSymbolizerImpl cloneLiteral = (RasterSymbolizerImpl) visitor.getCopy();
 
         assertEquals(cloneLiteral.getOverlapBehavior(), rasterSymbLiteral.getOverlapBehavior());
         assertEquals(cloneLiteral.getOverlap(), rasterSymbLiteral.getOverlap());
 
         // Try with invalid expression string
-        RasterSymbolizer rasterSymb3 = sf.createRasterSymbolizer();
+        RasterSymbolizerImpl rasterSymb3 = sf.createRasterSymbolizer();
         try {
             rasterSymb3.setOverlap(ff.literal("invalid string"));
         } catch (IllegalArgumentException e) {
@@ -279,39 +277,39 @@ public class DuplicatingStyleVisitorTest {
         }
 
         // Compare rastersymbolizer overlap behaviour
-        RasterSymbolizer notEq = sf.createRasterSymbolizer();
+        RasterSymbolizerImpl notEq = sf.createRasterSymbolizer();
         Assert.assertNotEquals(notEq.getOverlapBehavior(), rasterSymb1.getOverlapBehavior());
     }
 
     @Test
     public void testPointSymbolizerWithUOM() throws Exception {
-        PointSymbolizer pointSymb = sf.createPointSymbolizer();
+        PointSymbolizerImpl pointSymb = sf.createPointSymbolizer();
         pointSymb.setUnitOfMeasure(UomOgcMapping.FOOT.getUnit());
         pointSymb.accept(visitor);
-        PointSymbolizer clone = (PointSymbolizer) visitor.getCopy();
+        PointSymbolizerImpl clone = (PointSymbolizerImpl) visitor.getCopy();
 
         assertCopy(pointSymb, clone);
         assertEqualsContract(pointSymb, clone);
 
-        PointSymbolizer notEq = sf.getDefaultPointSymbolizer();
+        PointSymbolizerImpl notEq = (PointSymbolizerImpl) sf.getDefaultPointSymbolizer();
         assertEqualsContract(clone, notEq, pointSymb);
     }
 
     @Test
     public void testTextSymbolizer2() {
-        TextSymbolizer textSymb = sf.createTextSymbolizer();
+        TextSymbolizerImpl textSymb = (TextSymbolizerImpl) sf.createTextSymbolizer();
         Expression offset = ff.literal(10);
         textSymb.setLabelPlacement(sf.createLinePlacement(offset));
 
         textSymb.accept(visitor);
-        TextSymbolizer clone = (TextSymbolizer) visitor.getCopy();
+        TextSymbolizerImpl clone = (TextSymbolizerImpl) visitor.getCopy();
         assertCopy(textSymb, clone);
         assertEqualsContract(textSymb, clone);
 
-        TextSymbolizer notEq = sf.getDefaultTextSymbolizer();
+        TextSymbolizerImpl notEq = sf.getDefaultTextSymbolizer();
         Expression ancX = ff.literal(10);
         Expression ancY = ff.literal(10);
-        AnchorPoint ancPoint = sf.createAnchorPoint(ancX, ancY);
+        AnchorPointImpl ancPoint = sf.createAnchorPoint(ancX, ancY);
         LabelPlacement placement = sf.createPointPlacement(ancPoint, null, null);
         notEq.setLabelPlacement(placement);
         assertEqualsContract(clone, notEq, textSymb);
@@ -319,11 +317,11 @@ public class DuplicatingStyleVisitorTest {
 
     @Test
     public void testTextSymbolizerVendorParams() {
-        TextSymbolizer textSymb = sf.createTextSymbolizer();
+        TextSymbolizerImpl textSymb = (TextSymbolizerImpl) sf.createTextSymbolizer();
         textSymb.getOptions().put("autoWrap", "100");
 
         textSymb.accept(visitor);
-        TextSymbolizer clone = (TextSymbolizer) visitor.getCopy();
+        TextSymbolizerImpl clone = (TextSymbolizerImpl) visitor.getCopy();
         assertCopy(textSymb, clone);
         assertEqualsContract(textSymb, clone);
 
@@ -333,31 +331,31 @@ public class DuplicatingStyleVisitorTest {
 
     @Test
     public void testTextSymbolizerVendorOptions() {
-        TextSymbolizer textSymb = sf.createTextSymbolizer();
+        TextSymbolizerImpl textSymb = (TextSymbolizerImpl) sf.createTextSymbolizer();
         textSymb.getOptions().put("autoWrap", "100");
 
         textSymb.accept(visitor);
-        TextSymbolizer clone = (TextSymbolizer) visitor.getCopy();
+        TextSymbolizerImpl clone = (TextSymbolizerImpl) visitor.getCopy();
         assertCopy(textSymb, clone);
         assertEqualsContract(textSymb, clone);
     }
 
     @Test
     public void testTextSymbolizerWithUOM() {
-        TextSymbolizer textSymb = sf.createTextSymbolizer();
+        TextSymbolizerImpl textSymb = (TextSymbolizerImpl) sf.createTextSymbolizer();
         textSymb.setUnitOfMeasure(UomOgcMapping.METRE.getUnit());
         Expression offset = ff.literal(10);
         textSymb.setLabelPlacement(sf.createLinePlacement(offset));
 
         textSymb.accept(visitor);
-        TextSymbolizer clone = (TextSymbolizer) visitor.getCopy();
+        TextSymbolizerImpl clone = (TextSymbolizerImpl) visitor.getCopy();
         assertCopy(textSymb, clone);
         assertEqualsContract(textSymb, clone);
 
-        TextSymbolizer notEq = sf.getDefaultTextSymbolizer();
+        TextSymbolizerImpl notEq = sf.getDefaultTextSymbolizer();
         Expression ancX = ff.literal(10);
         Expression ancY = ff.literal(10);
-        AnchorPoint ancPoint = sf.createAnchorPoint(ancX, ancY);
+        AnchorPointImpl ancPoint = sf.createAnchorPoint(ancX, ancY);
         LabelPlacement placement = sf.createPointPlacement(ancPoint, null, null);
         notEq.setLabelPlacement(placement);
         assertEqualsContract(clone, notEq, textSymb);
@@ -365,12 +363,12 @@ public class DuplicatingStyleVisitorTest {
 
     @Test
     public void testFont() {
-        Font font = sf.getDefaultFont();
-        Font clone = visitor.copy(font);
+        FontImpl font = sf.getDefaultFont();
+        FontImpl clone = visitor.copy(font);
         assertCopy(font, clone);
         assertEqualsContract(font, clone);
 
-        Font other =
+        FontImpl other =
                 sf.createFont(
                         ff.literal("other"),
                         ff.literal("normal"),
@@ -382,62 +380,62 @@ public class DuplicatingStyleVisitorTest {
 
     @Test
     public void testHalo() {
-        Halo halo = sf.createHalo(sf.getDefaultFill(), ff.literal(10));
+        HaloImpl halo = (HaloImpl) sf.createHalo(sf.getDefaultFill(), ff.literal(10));
 
         halo.accept(visitor);
-        Halo clone = (Halo) visitor.getCopy();
+        HaloImpl clone = (HaloImpl) visitor.getCopy();
 
         assertCopy(halo, clone);
 
-        Halo other = sf.createHalo(sf.getDefaultFill(), ff.literal(12));
+        HaloImpl other = (HaloImpl) sf.createHalo(sf.getDefaultFill(), ff.literal(12));
         assertEqualsContract(clone, other, halo);
     }
 
     @Test
     public void testLinePlacement() throws Exception {
-        LinePlacement linePlacement = sf.createLinePlacement(ff.literal(12));
+        LinePlacementImpl linePlacement = sf.createLinePlacement(ff.literal(12));
 
         linePlacement.accept(visitor);
-        LinePlacement clone = (LinePlacement) visitor.getCopy();
+        LinePlacementImpl clone = (LinePlacementImpl) visitor.getCopy();
 
         assertCopy(linePlacement, clone);
 
-        LinePlacement other = sf.createLinePlacement(ff.property("NAME"));
+        LinePlacementImpl other = sf.createLinePlacement(ff.property("NAME"));
         assertEqualsContract(clone, other, linePlacement);
     }
 
     @Test
     public void testAnchorPoint() {
-        AnchorPoint anchorPoint = sf.createAnchorPoint(ff.literal(1), ff.literal(2));
+        AnchorPointImpl anchorPoint = sf.createAnchorPoint(ff.literal(1), ff.literal(2));
         anchorPoint.accept(visitor);
 
-        AnchorPoint clone = (AnchorPoint) visitor.getCopy();
+        AnchorPointImpl clone = (AnchorPointImpl) visitor.getCopy();
         assertCopy(anchorPoint, clone);
 
-        AnchorPoint other = sf.createAnchorPoint(ff.literal(3), ff.literal(4));
+        AnchorPointImpl other = sf.createAnchorPoint(ff.literal(3), ff.literal(4));
         assertEqualsContract(clone, other, anchorPoint);
     }
 
     @Test
     public void testDisplacement() {
-        Displacement displacement = sf.createDisplacement(ff.literal(1), ff.literal(2));
+        DisplacementImpl displacement = sf.createDisplacement(ff.literal(1), ff.literal(2));
 
         displacement.accept(visitor);
-        Displacement clone = (Displacement) visitor.getCopy();
+        DisplacementImpl clone = (DisplacementImpl) visitor.getCopy();
         assertCopy(displacement, clone);
 
-        Displacement other = sf.createDisplacement(ff.literal(3), ff.literal(4));
+        DisplacementImpl other = sf.createDisplacement(ff.literal(3), ff.literal(4));
         assertEqualsContract(clone, other, displacement);
     }
 
     @Test
     public void testPointPlacement() {
-        PointPlacement pointPl = sf.getDefaultPointPlacement();
+        PointPlacementImpl pointPl = (PointPlacementImpl) sf.getDefaultPointPlacement();
 
-        PointPlacement clone = (PointPlacement) visitor.copy(pointPl);
+        PointPlacementImpl clone = (PointPlacementImpl) visitor.copy(pointPl);
         assertCopy(pointPl, clone);
 
-        PointPlacement other = (PointPlacement) ((Cloneable) pointPl).clone();
+        PointPlacementImpl other = (PointPlacementImpl) ((Cloneable) pointPl).clone();
         other.setRotation(ff.literal(274.0));
         assertEqualsContract(clone, other, pointPl);
     }
@@ -446,11 +444,11 @@ public class DuplicatingStyleVisitorTest {
     public void testPolygonSymbolizer() {
         try {
             // visitor.setStrict(true);
-            PolygonSymbolizer polygonSymb = sf.createPolygonSymbolizer();
-            PolygonSymbolizer clone = (PolygonSymbolizer) visitor.copy(polygonSymb);
+            PolygonSymbolizerImpl polygonSymb = sf.createPolygonSymbolizer();
+            PolygonSymbolizerImpl clone = (PolygonSymbolizerImpl) visitor.copy(polygonSymb);
             assertCopy(polygonSymb, clone);
 
-            PolygonSymbolizer notEq = sf.getDefaultPolygonSymbolizer();
+            PolygonSymbolizerImpl notEq = (PolygonSymbolizerImpl) sf.getDefaultPolygonSymbolizer();
             notEq.setGeometryPropertyName("something_else");
 
             assertEqualsContract(clone, notEq, polygonSymb);
@@ -463,12 +461,12 @@ public class DuplicatingStyleVisitorTest {
     public void testPolygonSymbolizerWithUOM() {
         try {
             // visitor.setStrict(true);
-            PolygonSymbolizer polygonSymb = sf.createPolygonSymbolizer();
+            PolygonSymbolizerImpl polygonSymb = sf.createPolygonSymbolizer();
             polygonSymb.setUnitOfMeasure(UomOgcMapping.FOOT.getUnit());
-            PolygonSymbolizer clone = (PolygonSymbolizer) visitor.copy(polygonSymb);
+            PolygonSymbolizerImpl clone = (PolygonSymbolizerImpl) visitor.copy(polygonSymb);
             assertCopy(polygonSymb, clone);
 
-            PolygonSymbolizer notEq = sf.getDefaultPolygonSymbolizer();
+            PolygonSymbolizerImpl notEq = (PolygonSymbolizerImpl) sf.getDefaultPolygonSymbolizer();
             notEq.setUnitOfMeasure(UomOgcMapping.PIXEL.getUnit());
 
             assertEqualsContract(clone, notEq, polygonSymb);
@@ -479,50 +477,50 @@ public class DuplicatingStyleVisitorTest {
 
     @Test
     public void testLineSymbolizer() {
-        LineSymbolizer lineSymb = sf.createLineSymbolizer();
-        LineSymbolizer clone = (LineSymbolizer) visitor.copy(lineSymb);
+        LineSymbolizerImpl lineSymb = (LineSymbolizerImpl) sf.createLineSymbolizer();
+        LineSymbolizerImpl clone = (LineSymbolizerImpl) visitor.copy(lineSymb);
         assertCopy(lineSymb, clone);
 
-        LineSymbolizer notEq = sf.getDefaultLineSymbolizer();
+        LineSymbolizerImpl notEq = (LineSymbolizerImpl) sf.getDefaultLineSymbolizer();
         notEq.setGeometryPropertyName("something_else");
         assertEqualsContract(clone, notEq, lineSymb);
     }
 
     @Test
     public void testLineSymbolizerWithUOM() {
-        LineSymbolizer lineSymb = sf.createLineSymbolizer();
-        LineSymbolizer clone = (LineSymbolizer) visitor.copy(lineSymb);
+        LineSymbolizerImpl lineSymb = (LineSymbolizerImpl) sf.createLineSymbolizer();
+        LineSymbolizerImpl clone = (LineSymbolizerImpl) visitor.copy(lineSymb);
         assertCopy(lineSymb, clone);
 
-        LineSymbolizer notEq = sf.getDefaultLineSymbolizer();
+        LineSymbolizerImpl notEq = (LineSymbolizerImpl) sf.getDefaultLineSymbolizer();
         notEq.setUnitOfMeasure(UomOgcMapping.METRE.getUnit());
         assertEqualsContract(clone, notEq, lineSymb);
     }
 
     @Test
     public void testGraphic() {
-        Graphic graphic = sf.getDefaultGraphic();
+        GraphicImpl graphic = sf.getDefaultGraphic();
         graphic.graphicalSymbols().add(sf.getDefaultMark());
         assertEquals(2, graphic.graphicalSymbols().size());
-        Graphic clone = visitor.copy(graphic);
+        GraphicImpl clone = visitor.copy(graphic);
         assertCopy(graphic, clone);
         assertEqualsContract(graphic, clone);
 
-        Graphic notEq = sf.getDefaultGraphic();
+        GraphicImpl notEq = sf.getDefaultGraphic();
         assertEqualsContract(clone, notEq, graphic);
     }
 
     @Test
     public void testExternalGraphic() {
-        ExternalGraphic exGraphic = sf.createExternalGraphic("http://somewhere", "image/png");
-        ExternalGraphic clone = visitor.copy(exGraphic);
+        ExternalGraphicImpl exGraphic = sf.createExternalGraphic("http://somewhere", "image/png");
+        ExternalGraphicImpl clone = (ExternalGraphicImpl) visitor.copy((ExternalGraphic) exGraphic);
         assertCopy(exGraphic, clone);
 
-        ExternalGraphic notEq = sf.createExternalGraphic("http://somewhereelse", "image/jpeg");
+        ExternalGraphicImpl notEq = sf.createExternalGraphic("http://somewhereelse", "image/jpeg");
         assertEqualsContract(clone, notEq, exGraphic);
 
         // make sure it works for different format, same url
-        ExternalGraphic notEq2 = visitor.copy(clone);
+        ExternalGraphicImpl notEq2 = (ExternalGraphicImpl) visitor.copy((ExternalGraphic) clone);
         notEq2.setFormat("image/jpeg");
         assertEqualsContract(clone, notEq2, exGraphic);
     }
@@ -545,38 +543,38 @@ public class DuplicatingStyleVisitorTest {
                     }
                 };
 
-        ExternalGraphic exGraphic = sf.createExternalGraphic(icon, "image/png");
-        ExternalGraphic clone = visitor.copy(exGraphic);
+        ExternalGraphicImpl exGraphic = sf.createExternalGraphic(icon, "image/png");
+        ExternalGraphicImpl clone = (ExternalGraphicImpl) visitor.copy((ExternalGraphic) exGraphic);
         assertCopy(exGraphic, clone);
         Assert.assertSame(exGraphic.getInlineContent(), clone.getInlineContent());
 
-        ExternalGraphic notEq = sf.createExternalGraphic(icon, "image/jpeg");
+        ExternalGraphicImpl notEq = sf.createExternalGraphic(icon, "image/jpeg");
         assertEqualsContract(clone, notEq, exGraphic);
 
         // make sure it works for different format, same content
-        ExternalGraphic notEq2 = visitor.copy(clone);
+        ExternalGraphicImpl notEq2 = (ExternalGraphicImpl) visitor.copy((ExternalGraphic) clone);
         notEq2.setFormat("image/jpeg");
         assertEqualsContract(clone, notEq2, exGraphic);
     }
 
     @Test
     public void testCircleMark() {
-        Mark mark = sf.getCircleMark();
-        Mark clone = visitor.copy(mark);
+        MarkImpl mark = sf.getCircleMark();
+        MarkImpl clone = (MarkImpl) visitor.copy((Mark) mark);
         assertCopy(mark, clone);
         assertEqualsContract(mark, clone);
-        Mark notEq = sf.getStarMark();
+        MarkImpl notEq = sf.getStarMark();
         assertEqualsContract(clone, notEq, mark);
     }
 
     @Test
     public void testSquareMark() {
-        Mark mark = sf.getSquareMark();
-        Mark clone = visitor.copy(mark);
+        MarkImpl mark = sf.getSquareMark();
+        MarkImpl clone = (MarkImpl) visitor.copy((Mark) mark);
         assertCopy(mark, clone);
         assertEqualsContract(mark, clone);
 
-        Mark notEq = sf.getStarMark();
+        MarkImpl notEq = sf.getStarMark();
         assertEqualsContract(clone, notEq, mark);
     }
 
@@ -584,13 +582,13 @@ public class DuplicatingStyleVisitorTest {
     public void testExternalMark() throws URISyntaxException {
         OnLineResourceImpl or = new OnLineResourceImpl();
         or.setLinkage(new URI("ttf://wingdings"));
-        ExternalMark externalMark = sf.externalMark(or, "ttf", 15);
-        Mark mark = sf.createMark();
+        ExternalMarkImpl externalMark = sf.externalMark(or, "ttf", 15);
+        MarkImpl mark = sf.createMark();
         mark.setExternalMark(externalMark);
-        Mark clone = visitor.copy(mark);
+        MarkImpl clone = (MarkImpl) visitor.copy((Mark) mark);
         assertCopy(mark, clone);
         assertCopy(mark.getExternalMark(), clone.getExternalMark());
-        ExternalMark emCopy = clone.getExternalMark();
+        ExternalMarkImpl emCopy = clone.getExternalMark();
         assertEquals("ttf", emCopy.getFormat());
         assertEquals("ttf://wingdings", emCopy.getOnlineResource().getLinkage().toASCIIString());
         assertEquals(15, emCopy.getMarkIndex());
@@ -598,29 +596,29 @@ public class DuplicatingStyleVisitorTest {
 
     @Test
     public void testFill() {
-        Fill fill = sf.getDefaultFill();
-        Fill clone = visitor.copy(fill);
+        FillImpl fill = (FillImpl) sf.getDefaultFill();
+        FillImpl clone = (FillImpl) visitor.copy(fill);
         assertCopy(fill, clone);
         assertEqualsContract(fill, clone);
-        Fill notEq = sf.createFill(ff.literal("#FF0000"));
+        FillImpl notEq = (FillImpl) sf.createFill(ff.literal("#FF0000"));
         assertEqualsContract(clone, notEq, fill);
     }
 
     @Test
     public void testStroke() {
-        Stroke stroke = sf.getDefaultStroke();
-        Stroke clone = (Stroke) visitor.copy(stroke);
+        StrokeImpl stroke = sf.getDefaultStroke();
+        StrokeImpl clone = (StrokeImpl) visitor.copy(stroke);
         assertCopy(stroke, clone);
         assertEqualsContract(stroke, clone);
-        Stroke notEq = sf.createStroke(ff.literal("#FF0000"), ff.literal(10));
+        StrokeImpl notEq = sf.createStroke(ff.literal("#FF0000"), ff.literal(10));
         assertEqualsContract(clone, notEq, stroke);
 
         // a stroke is a complex object with lots of properties,
         // need more extensive tests here.
-        Stroke dashArray = sf.getDefaultStroke();
+        StrokeImpl dashArray = sf.getDefaultStroke();
         dashArray.setDashArray(new float[] {1.0f, 2.0f, 3.0f});
 
-        Stroke dashArray2 = (Stroke) ((Cloneable) dashArray).clone();
+        StrokeImpl dashArray2 = (StrokeImpl) ((Cloneable) dashArray).clone();
         assertEqualsContract(dashArray, dashArray2);
     }
 
@@ -677,12 +675,12 @@ public class DuplicatingStyleVisitorTest {
     @Test
     public void testContrastEnhancementDuplication() throws Exception {
 
-        ContrastEnhancement ce = sf.createContrastEnhancement();
+        ContrastEnhancementImpl ce = sf.createContrastEnhancement();
         ce.setGammaValue(sb.literalExpression(0.5));
         ce.setMethod(ContrastMethod.HISTOGRAM);
 
         ce.accept(visitor);
-        ContrastEnhancement ce2 = (ContrastEnhancement) visitor.getCopy();
+        ContrastEnhancementImpl ce2 = (ContrastEnhancementImpl) visitor.getCopy();
 
         assertEquals(
                 "Gamma value incorrest after duplication",
@@ -726,16 +724,16 @@ public class DuplicatingStyleVisitorTest {
     @Test
     public void testPointSymbolizerWithGeomFunction() throws Exception {
         URL urlExternal = getClass().getResource("/data/sld/blob.gif");
-        ExternalGraphic extg = sb.createExternalGraphic(urlExternal, "image/svg+xml");
-        Graphic graphic = sb.createGraphic(extg, null, null);
-        PointSymbolizer pointSymb = sb.createPointSymbolizer(graphic);
+        ExternalGraphicImpl extg = sb.createExternalGraphic(urlExternal, "image/svg+xml");
+        GraphicImpl graphic = sb.createGraphic(extg, null, null);
+        PointSymbolizerImpl pointSymb = sb.createPointSymbolizer(graphic);
 
         // Set a function as geometry
         Function geomFunc = ff.function("centroid", ff.property("thr_geom"));
         pointSymb.setGeometry(geomFunc);
 
         pointSymb.accept(visitor);
-        PointSymbolizer copy = (PointSymbolizer) visitor.getCopy();
+        PointSymbolizerImpl copy = (PointSymbolizerImpl) visitor.getCopy();
 
         assertEquals(
                 "Any Expression set as Geometry must be correctly replicated",
@@ -746,7 +744,7 @@ public class DuplicatingStyleVisitorTest {
     @Test
     public void testRasterSymbolizerDuplicationWithGeometryFunction() {
         // create a default RasterSymbolizer
-        RasterSymbolizer original = sb.createRasterSymbolizer();
+        RasterSymbolizerImpl original = sb.createRasterSymbolizer();
 
         // Set a function as geometry
         Function geomFunc = ff.function("centroid", ff.property("thr_geom"));
@@ -754,7 +752,7 @@ public class DuplicatingStyleVisitorTest {
 
         // duplicate it
         original.accept(visitor);
-        RasterSymbolizer copy = (RasterSymbolizer) visitor.getCopy();
+        RasterSymbolizerImpl copy = (RasterSymbolizerImpl) visitor.getCopy();
 
         // compare it
         assertEquals(
@@ -765,13 +763,13 @@ public class DuplicatingStyleVisitorTest {
 
     @Test
     public void testLineSymbolizerWithGeometryFunction() {
-        LineSymbolizer lineSymb = sf.createLineSymbolizer();
+        LineSymbolizerImpl lineSymb = (LineSymbolizerImpl) sf.createLineSymbolizer();
 
         // Set a function as geometry
         Function geomFunc = ff.function("centroid", ff.property("thr_geom"));
         lineSymb.setGeometry(geomFunc);
 
-        LineSymbolizer copy = (LineSymbolizer) visitor.copy(lineSymb);
+        LineSymbolizerImpl copy = (LineSymbolizerImpl) visitor.copy(lineSymb);
 
         // compare it
         assertEquals(
@@ -782,13 +780,13 @@ public class DuplicatingStyleVisitorTest {
 
     @Test
     public void testPolygonSymbolizerWithGeometryFunction() {
-        PolygonSymbolizer symb = sf.createPolygonSymbolizer();
+        PolygonSymbolizerImpl symb = sf.createPolygonSymbolizer();
 
         // Set a function as geometry
         Function geomFunc = ff.function("centroid", ff.property("thr_geom"));
         symb.setGeometry(geomFunc);
 
-        PolygonSymbolizer copy = (PolygonSymbolizer) visitor.copy(symb);
+        PolygonSymbolizerImpl copy = (PolygonSymbolizerImpl) visitor.copy(symb);
 
         // compare it
         assertEquals(
@@ -799,13 +797,13 @@ public class DuplicatingStyleVisitorTest {
 
     @Test
     public void testTextSymbolizerWithGeometryFunction() {
-        TextSymbolizer symb = sf.createTextSymbolizer();
+        TextSymbolizerImpl symb = (TextSymbolizerImpl) sf.createTextSymbolizer();
 
         // Set a function as geometry
         Function geomFunc = ff.function("centroid", ff.property("the_geom"));
         symb.setGeometry(geomFunc);
 
-        TextSymbolizer copy = (TextSymbolizer) visitor.copy(symb);
+        TextSymbolizerImpl copy = (TextSymbolizerImpl) visitor.copy(symb);
 
         // compare it
         assertEquals(
@@ -815,16 +813,16 @@ public class DuplicatingStyleVisitorTest {
     }
 
     /**
-     * Test that {@link TextSymbolizer} is correctly duplicated.
+     * Test that {@link TextSymbolizerImpl} is correctly duplicated.
      *
      * @author Stefan Tzeggai, June 29th 2010
      */
     @Test
     public void testTextSymbolizer() {
-        TextSymbolizer symb = (TextSymbolizer) sf.createTextSymbolizer();
+        TextSymbolizerImpl symb = (TextSymbolizerImpl) sf.createTextSymbolizer();
 
         // Create a Graphic with two recognizable values
-        Graphic gr = new Graphic(ff);
+        GraphicImpl gr = new GraphicImpl(ff);
         gr.setOpacity(ff.literal(0.77));
         gr.setSize(ff.literal(77));
         symb.setGraphic(gr);
@@ -832,13 +830,13 @@ public class DuplicatingStyleVisitorTest {
         symb.setSnippet(snippet);
         Literal fD = ff.literal("some description");
         symb.setFeatureDescription(fD);
-        OtherText otherText = new OtherText();
+        OtherTextImpl otherText = new OtherTextImpl();
         otherText.setTarget("otherTextTarget");
         otherText.setText(ff.literal("otherTextText"));
         symb.setOtherText(otherText);
 
         // copy it
-        TextSymbolizer copy = (TextSymbolizer) visitor.copy(symb);
+        TextSymbolizerImpl copy = (TextSymbolizerImpl) visitor.copy(symb);
 
         // compare it
         assertEquals(
@@ -876,11 +874,11 @@ public class DuplicatingStyleVisitorTest {
      */
     @Test
     public void testLineSymbolizerWithPerpendicularOffset() {
-        LineSymbolizer ls = sf.createLineSymbolizer();
+        LineSymbolizerImpl ls = (LineSymbolizerImpl) sf.createLineSymbolizer();
         ls.setPerpendicularOffset(ff.literal(0.88));
 
         // copy
-        LineSymbolizer copy = (LineSymbolizer) visitor.copy(ls);
+        LineSymbolizerImpl copy = (LineSymbolizerImpl) visitor.copy(ls);
 
         // compare
         assertEquals(
@@ -894,12 +892,13 @@ public class DuplicatingStyleVisitorTest {
     public void testSelectedChannelTypeDuplication() throws Exception {
         final String b1 = "b1";
 
-        SelectedChannelType sct =
-                sf.createSelectedChannelType(
-                        ff.function("env", ff.literal(b1), ff.literal("1")),
-                        sf.createContrastEnhancement());
+        SelectedChannelTypeImpl sct =
+                (SelectedChannelTypeImpl)
+                        sf.createSelectedChannelType(
+                                ff.function("env", ff.literal(b1), ff.literal("1")),
+                                sf.createContrastEnhancement());
         sct.accept(visitor);
-        SelectedChannelType clone = (SelectedChannelType) visitor.getCopy();
+        SelectedChannelTypeImpl clone = (SelectedChannelTypeImpl) visitor.getCopy();
 
         assertEquals(sct, clone);
     }

@@ -45,7 +45,7 @@ import org.geotools.image.ImageWorker;
 import org.geotools.renderer.i18n.ErrorKeys;
 import org.geotools.renderer.i18n.Errors;
 import org.geotools.styling.AbstractContrastMethodStrategy;
-import org.geotools.styling.ContrastEnhancement;
+import org.geotools.styling.ContrastEnhancementImpl;
 import org.geotools.styling.ExponentialContrastMethodStrategy;
 import org.geotools.styling.LogarithmicContrastMethodStrategy;
 import org.geotools.styling.NormalizeContrastMethodStrategy;
@@ -53,7 +53,7 @@ import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
 
 /**
- * Starting with version 14.x, {@link ContrastEnhancement} can be customized to support different
+ * Starting with version 14.x, {@link ContrastEnhancementImpl} can be customized to support different
  * {@link ContrastMethod}s algorithm and parameters.
  *
  * <p>This class contains implementations from previously defined algorithm, as well as new ones.

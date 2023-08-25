@@ -23,7 +23,7 @@ import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.image.BufferedImage;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.styling.Rule;
+import org.geotools.styling.RuleImpl;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.MultiLineString;
@@ -64,7 +64,7 @@ public class Glyph {
      *
      * @return Icon representing style applyed to an image
      */
-    public static BufferedImage point(final Rule rule) {
+    public static BufferedImage point(final RuleImpl rule) {
         BufferedImage bi = new BufferedImage(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_DEPTH);
         drawer.drawDirect(bi, drawer.feature(drawer.point(7, 7)), rule);
         return bi;
@@ -126,7 +126,7 @@ public class Glyph {
      * </p>
      * @return Icon representing geometry style
      */
-    public static BufferedImage line(final Rule rule) {
+    public static BufferedImage line(final RuleImpl rule) {
         BufferedImage bi = new BufferedImage(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_DEPTH);
         drawer.drawDirect(
                 bi, drawer.feature(drawer.line(new int[] {1, 14, 6, 0, 11, 14, 15, 1})), rule);
@@ -191,7 +191,7 @@ public class Glyph {
      * </p>
      * @return Icon representing geometry style
      */
-    public static BufferedImage geometry(final Rule rule) {
+    public static BufferedImage geometry(final RuleImpl rule) {
         BufferedImage bi = new BufferedImage(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_DEPTH);
         drawer.drawDirect(
                 bi,
@@ -259,7 +259,7 @@ public class Glyph {
      * </p>
      * @return Icon representing geometry style
      */
-    public static BufferedImage Polygon(final Rule rule) {
+    public static BufferedImage Polygon(final RuleImpl rule) {
         BufferedImage bi = new BufferedImage(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_DEPTH);
         drawer.drawDirect(
                 bi,

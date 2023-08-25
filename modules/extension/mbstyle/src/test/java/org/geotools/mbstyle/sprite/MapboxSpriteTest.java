@@ -46,14 +46,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.renderer.style.DynamicSymbolFactoryFinder;
 import org.geotools.renderer.style.ExternalGraphicFactory;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.SLD;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
+import org.geotools.styling.*;
 import org.json.simple.parser.JSONParser;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -142,7 +135,7 @@ public class MapboxSpriteTest {
         // Use the feature's "icon" property.
         String iconUrl = constructSpriteUrl(spriteBaseUrl, "${icon}");
         MapContent mc = new MapContent();
-        ExternalGraphic eg = styleFactory.createExternalGraphic(iconUrl, "mbsprite");
+        ExternalGraphicImpl eg = styleFactory.createExternalGraphic(iconUrl, "mbsprite");
 
         // Also add a simple background layer.
         mc.addLayer(
@@ -252,15 +245,15 @@ public class MapboxSpriteTest {
     }
 
     /**
-     * Create a simple style with a {@link PointSymbolizer} using the provided graphic and size.
+     * Create a simple style with a {@link PointSymbolizerImpl} using the provided graphic and size.
      *
      * @param eg The external graphic to use
      * @param size The size in pixels for the point symbolizer's graphic. If null, defaults to the
      *     external graphic's default size.
      */
-    public Style pointStyleWithExternalGraphic(ExternalGraphic eg, String size) {
+    public StyleImpl pointStyleWithExternalGraphic(ExternalGraphicImpl eg, String size) {
         size = size == null ? "-1" : size;
-        Graphic gr =
+        GraphicImpl gr =
                 styleFactory.graphic(
                         Arrays.asList(eg),
                         filterFactory.literal(1),
@@ -268,11 +261,11 @@ public class MapboxSpriteTest {
                         null,
                         null,
                         null);
-        Rule rule = styleFactory.createRule();
-        PointSymbolizer p = styleFactory.createPointSymbolizer(gr, null);
+        RuleImpl rule = styleFactory.createRule();
+        PointSymbolizerImpl p = styleFactory.createPointSymbolizer(gr, null);
         rule.symbolizers().add(p);
-        FeatureTypeStyle fts = (FeatureTypeStyle) styleFactory.createFeatureTypeStyle(rule);
-        Style pointStyle = styleFactory.createStyle();
+        FeatureTypeStyleImpl fts = (FeatureTypeStyleImpl) styleFactory.createFeatureTypeStyle(rule);
+        StyleImpl pointStyle = styleFactory.createStyle();
         pointStyle.featureTypeStyles().addAll(Arrays.asList(fts));
         return pointStyle;
     }

@@ -102,7 +102,7 @@ public interface FeatureTypeStyle {
      * @return the list of rules. can not be null but can be empty.
      */
     @UML(identifier = "portrayalRule", obligation = MANDATORY, specification = ISO_19117)
-    List<? extends Rule> rules();
+    List<Rule> rules();
 
     /**
      * It is common to have a style coming from a external xml file, this method provide a way to

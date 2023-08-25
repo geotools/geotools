@@ -18,8 +18,8 @@ package org.geotools.sld.bindings;
 
 import javax.xml.namespace.QName;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.SelectedChannelType;
+import org.geotools.styling.ContrastEnhancementImpl;
+import org.geotools.styling.SelectedChannelTypeImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
@@ -79,7 +79,7 @@ public class SLDSelectedChannelTypeBinding extends AbstractComplexBinding {
      */
     @Override
     public Class getType() {
-        return SelectedChannelType.class;
+        return SelectedChannelTypeImpl.class;
     }
 
     /**
@@ -103,6 +103,6 @@ public class SLDSelectedChannelTypeBinding extends AbstractComplexBinding {
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return styleFactory.createSelectedChannelType(
                 (Expression) node.getChildValue("SourceChannelName"),
-                (ContrastEnhancement) node.getChildValue("ContrastEnhancement"));
+                (ContrastEnhancementImpl) node.getChildValue("ContrastEnhancement"));
     }
 }

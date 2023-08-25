@@ -47,7 +47,7 @@ public class BaseCoverageProcessingNodeTest {
                                 .create(
                                         "name",
                                         PlanarImage.wrapRenderedImage(
-                                                RasterSymbolizerTest.getSynthetic(Double.NaN)),
+                                                RasterSymbolizerImplTest.getSynthetic(Double.NaN)),
                                         new GeneralEnvelope(
                                                 new double[] {-90, -180}, new double[] {90, 180}),
                                         new GridSampleDimension[] {
@@ -74,7 +74,7 @@ public class BaseCoverageProcessingNodeTest {
                                 .create(
                                         "name",
                                         PlanarImage.wrapRenderedImage(
-                                                RasterSymbolizerTest.getSynthetic(Double.NaN)),
+                                                RasterSymbolizerImplTest.getSynthetic(Double.NaN)),
                                         new GeneralEnvelope(
                                                 new double[] {-90, -180}, new double[] {90, 180}),
                                         new GridSampleDimension[] {

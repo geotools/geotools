@@ -24,8 +24,8 @@ import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.map.MapViewport;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.styling.Style;
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.StyleImpl;
+import org.geotools.styling.TextSymbolizerImpl;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 import org.junit.Before;
 import org.junit.Test;
@@ -85,7 +85,7 @@ public class LabelWrapTest {
 
     @Test
     public void testNoAutoWrap() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "textWrapDisabled.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "textWrapDisabled.sld");
         BufferedImage image = renderLabels(fs, style, "Label wrap disabled");
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapDisabled.png";
@@ -94,7 +94,7 @@ public class LabelWrapTest {
 
     @Test
     public void testAutoWrap() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "textWrapEnabled.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "textWrapEnabled.sld");
         BufferedImage image = renderLabels(fs, style, "Label wrap enabled");
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapEnabled.png";
@@ -103,7 +103,7 @@ public class LabelWrapTest {
 
     @Test
     public void testAutoWrapWithIncreasedSpacing() throws Exception {
-        Style spacedStyle =
+        StyleImpl spacedStyle =
                 getCharSpacedStyle(
                         "textWrapEnabled.sld",
                         org.geotools.api.style.TextSymbolizer.CHAR_SPACING_KEY,
@@ -117,7 +117,7 @@ public class LabelWrapTest {
 
     @Test
     public void testAutoWrapWithDecreasedSpacing() throws Exception {
-        Style spacedStyle =
+        StyleImpl spacedStyle =
                 getCharSpacedStyle(
                         "textWrapEnabled.sld",
                         org.geotools.api.style.TextSymbolizer.CHAR_SPACING_KEY,
@@ -131,7 +131,7 @@ public class LabelWrapTest {
 
     @Test
     public void testAutoWrapWithIncreasedWordSpacing() throws Exception {
-        Style spacedStyle =
+        StyleImpl spacedStyle =
                 getCharSpacedStyle(
                         "textWrapEnabled.sld",
                         org.geotools.api.style.TextSymbolizer.WORD_SPACING_KEY,
@@ -143,26 +143,26 @@ public class LabelWrapTest {
         ImageAssert.assertEquals(new File(refPath), image, 3000);
     }
 
-    private Style getCharSpacedStyle(String styleFile, String key, float spacing)
+    private StyleImpl getCharSpacedStyle(String styleFile, String key, float spacing)
             throws IOException {
-        Style style = RendererBaseTest.loadStyle(this, styleFile);
+        StyleImpl style = RendererBaseTest.loadStyle(this, styleFile);
         DuplicatingStyleVisitor visitor =
                 new DuplicatingStyleVisitor() {
                     @Override
                     public void visit(org.geotools.api.style.TextSymbolizer text) {
                         super.visit(text);
-                        TextSymbolizer ts = (TextSymbolizer) getCopy();
+                        TextSymbolizerImpl ts = (TextSymbolizerImpl) getCopy();
                         ts.getOptions().put(key, String.valueOf(spacing));
                     }
                 };
         style.accept(visitor);
-        Style spacedStyle = (Style) visitor.getCopy();
+        StyleImpl spacedStyle = (StyleImpl) visitor.getCopy();
         return spacedStyle;
     }
 
     @Test
     public void testAutoWrapLocalTransform() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "textWrapEnabled.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "textWrapEnabled.sld");
 
         MapContent mc = new MapContent();
         mc.getViewport().setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
@@ -196,7 +196,7 @@ public class LabelWrapTest {
 
     @Test
     public void testDirectLayerLabelInteraction() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "textWrapEnabled.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "textWrapEnabled.sld");
         MapContent mc = new MapContent();
         mc.getViewport().setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
         mc.addLayer(new FeatureLayer(fs, style));
@@ -226,7 +226,7 @@ public class LabelWrapTest {
         ImageAssert.assertEquals(new File(refPath), image, 3000);
     }
 
-    private BufferedImage renderLabels(SimpleFeatureSource fs, Style style, String title)
+    private BufferedImage renderLabels(SimpleFeatureSource fs, StyleImpl style, String title)
             throws Exception {
         MapContent mc = new MapContent();
         mc.getViewport().setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);

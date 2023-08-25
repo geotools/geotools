@@ -44,20 +44,24 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.style.*;
+import org.geotools.api.style.ColorMapEntry;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.GraphicLegend;
+import org.geotools.api.style.RemoteOWS;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
+import org.geotools.styling.*;
+import org.geotools.styling.ExternalGraphicImpl;
+import org.geotools.styling.LineSymbolizerImpl;
+import org.geotools.styling.MarkImpl;
+import org.geotools.styling.PointSymbolizerImpl;
+import org.geotools.styling.RasterSymbolizerImpl;
+import org.geotools.styling.RuleImpl;
+import org.geotools.styling.StrokeImpl;
+import org.geotools.styling.StyleImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.UomOgcMapping;
+import org.geotools.styling.TextSymbolizerImpl;
 import org.geotools.util.logging.Logging;
 import org.geotools.ysld.Tuple;
 import org.geotools.ysld.YamlMap;
@@ -84,7 +88,7 @@ public class YsldEncodeTest {
         sld.setTitle("My SLD");
         sld.setAbstract("Remote WMS user layer style definition");
 
-        org.geotools.styling.UserLayer layer = styleFactory.createUserLayer();
+        UserLayerImpl layer = styleFactory.createUserLayer();
         RemoteOWS remote =
                 styleFactory.createRemoteOWS("WMS", "http://localhost:8080/geoserver/wms");
         layer.setName("MyLayer");
@@ -92,11 +96,11 @@ public class YsldEncodeTest {
 
         sld.layers().add(layer);
 
-        Style style = styleFactory.createStyle();
+        StyleImpl style = styleFactory.createStyle();
         style.setName("Ignored");
         layer.userStyles().add(style);
 
-        Style defaultStyle = styleFactory.createStyle();
+        StyleImpl defaultStyle = styleFactory.createStyle();
         defaultStyle.setDefault(true);
         defaultStyle.setName("MyStyle");
         layer.userStyles().add(defaultStyle);
@@ -128,13 +132,13 @@ public class YsldEncodeTest {
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
 
-        org.geotools.styling.UserLayer layer = styleFactory.createUserLayer();
+        UserLayerImpl layer = styleFactory.createUserLayer();
         sld.layers().add(layer);
 
-        Style style = styleFactory.createStyle();
+        StyleImpl style = styleFactory.createStyle();
         layer.userStyles().add(style);
 
-        Rule rule = styleFactory.createRule();
+        RuleImpl rule = styleFactory.createRule();
 
         style.featureTypeStyles().add(styleFactory.createFeatureTypeStyle());
         style.featureTypeStyles().get(0).rules().add(rule);
@@ -160,13 +164,13 @@ public class YsldEncodeTest {
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
 
-        org.geotools.styling.UserLayer layer = styleFactory.createUserLayer();
+        UserLayerImpl layer = styleFactory.createUserLayer();
         sld.layers().add(layer);
 
-        Style style = styleFactory.createStyle();
+        StyleImpl style = styleFactory.createStyle();
         layer.userStyles().add(style);
 
-        FeatureTypeStyle featureStyle = styleFactory.createFeatureTypeStyle();
+        FeatureTypeStyleImpl featureStyle = styleFactory.createFeatureTypeStyle();
         style.featureTypeStyles().add(featureStyle);
 
         Function p1 = filterFactory.function("parameter", filterFactory.literal("data"));
@@ -210,13 +214,13 @@ public class YsldEncodeTest {
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
 
-        org.geotools.styling.UserLayer layer = styleFactory.createUserLayer();
+        UserLayerImpl layer = styleFactory.createUserLayer();
         sld.layers().add(layer);
 
-        Style style = styleFactory.createStyle();
+        StyleImpl style = styleFactory.createStyle();
         layer.userStyles().add(style);
 
-        FeatureTypeStyle featureStyle = styleFactory.createFeatureTypeStyle();
+        FeatureTypeStyleImpl featureStyle = styleFactory.createFeatureTypeStyle();
         style.featureTypeStyles().add(featureStyle);
 
         Function p1 = filterFactory.function("parameter", filterFactory.literal("alternateInput"));
@@ -260,13 +264,13 @@ public class YsldEncodeTest {
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
 
-        org.geotools.styling.UserLayer layer = styleFactory.createUserLayer();
+        UserLayerImpl layer = styleFactory.createUserLayer();
         sld.layers().add(layer);
 
-        Style style = styleFactory.createStyle();
+        StyleImpl style = styleFactory.createStyle();
         layer.userStyles().add(style);
 
-        FeatureTypeStyle featureStyle = styleFactory.createFeatureTypeStyle();
+        FeatureTypeStyleImpl featureStyle = styleFactory.createFeatureTypeStyle();
         style.featureTypeStyles().add(featureStyle);
 
         Function p1 = filterFactory.function("parameter", filterFactory.literal("data"));
@@ -302,7 +306,7 @@ public class YsldEncodeTest {
         Function rt = filterFactory.function("vec:Heatmap", p1, p2, p3, p4, p5, p6, p7);
         featureStyle.setTransformation(rt);
 
-        Rule rule = styleFactory.createRule();
+        RuleImpl rule = styleFactory.createRule();
         rule.setName("Za'Ha'Dum");
         featureStyle.rules().add(rule);
 
@@ -333,13 +337,13 @@ public class YsldEncodeTest {
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
 
-        org.geotools.styling.UserLayer layer = styleFactory.createUserLayer();
+        UserLayerImpl layer = styleFactory.createUserLayer();
         sld.layers().add(layer);
 
-        Style style = styleFactory.createStyle();
+        StyleImpl style = styleFactory.createStyle();
         layer.userStyles().add(style);
 
-        FeatureTypeStyle featureStyle = styleFactory.createFeatureTypeStyle();
+        FeatureTypeStyleImpl featureStyle = styleFactory.createFeatureTypeStyle();
         style.featureTypeStyles().add(featureStyle);
 
         Function p1 = filterFactory.function("parameter", filterFactory.literal("data"));
@@ -375,7 +379,7 @@ public class YsldEncodeTest {
         Function rt = filterFactory.function("vec:Heatmap", p1, p2, p3, p4, p5, p6, p7);
         featureStyle.setTransformation(rt);
 
-        Rule rule = styleFactory.createRule();
+        RuleImpl rule = styleFactory.createRule();
         rule.setName("Za'Ha'Dum");
         featureStyle.rules().add(rule);
 
@@ -406,13 +410,13 @@ public class YsldEncodeTest {
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
 
-        org.geotools.styling.UserLayer layer = styleFactory.createUserLayer();
+        UserLayerImpl layer = styleFactory.createUserLayer();
         sld.layers().add(layer);
 
-        Style style = styleFactory.createStyle();
+        StyleImpl style = styleFactory.createStyle();
         layer.userStyles().add(style);
 
-        FeatureTypeStyle featureStyle = styleFactory.createFeatureTypeStyle();
+        FeatureTypeStyleImpl featureStyle = styleFactory.createFeatureTypeStyle();
         style.featureTypeStyles().add(featureStyle);
 
         Function p1 = filterFactory.function("parameter", filterFactory.literal("features"));
@@ -446,7 +450,7 @@ public class YsldEncodeTest {
         Function rt = filterFactory.function("vec:Simplify", p1, p2, p3, p5, p6, p7);
         featureStyle.setTransformation(rt);
 
-        Rule rule = styleFactory.createRule();
+        RuleImpl rule = styleFactory.createRule();
         rule.setName("Za'Ha'Dum");
         featureStyle.rules().add(rule);
 
@@ -478,13 +482,13 @@ public class YsldEncodeTest {
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
 
-        org.geotools.styling.UserLayer layer = styleFactory.createUserLayer();
+        UserLayerImpl layer = styleFactory.createUserLayer();
         sld.layers().add(layer);
 
-        Style style = styleFactory.createStyle();
+        StyleImpl style = styleFactory.createStyle();
         layer.userStyles().add(style);
 
-        FeatureTypeStyle featureStyle = styleFactory.createFeatureTypeStyle();
+        FeatureTypeStyleImpl featureStyle = styleFactory.createFeatureTypeStyle();
         style.featureTypeStyles().add(featureStyle);
 
         Function p1_1 = filterFactory.function("parameter", filterFactory.literal("data"));
@@ -553,20 +557,20 @@ public class YsldEncodeTest {
 
         StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
 
-        org.geotools.styling.UserLayer layer = sf.createUserLayer();
+        UserLayerImpl layer = sf.createUserLayer();
         sld.layers().add(layer);
-        Style style = sf.createStyle();
+        StyleImpl style = sf.createStyle();
         layer.userStyles().add(style);
-        FeatureTypeStyle featureStyle = sf.createFeatureTypeStyle();
+        FeatureTypeStyleImpl featureStyle = sf.createFeatureTypeStyle();
         style.featureTypeStyles().add(featureStyle);
-        Rule rule = sf.createRule();
+        RuleImpl rule = sf.createRule();
         featureStyle.rules().add(rule);
-        Stroke stroke = sf.stroke(ff.literal("#555555"), null, null, null, null, null, null);
+        StrokeImpl stroke = sf.stroke(ff.literal("#555555"), null, null, null, null, null, null);
         rule.symbolizers().add(sf.lineSymbolizer("line", null, null, null, stroke, null));
-        Mark mark = sf.mark(ff.literal("circle"), sf.fill(null, ff.literal("#995555"), null), null);
+        MarkImpl mark = sf.mark(ff.literal("circle"), sf.fill(null, ff.literal("#995555"), null), null);
         List<GraphicalSymbol> symbols = new ArrayList<>();
         symbols.add(mark);
-        TextSymbolizer text =
+        TextSymbolizerImpl text =
                 sf.textSymbolizer(
                         null,
                         ff.property("geom"),
@@ -602,13 +606,13 @@ public class YsldEncodeTest {
 
         StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
 
-        org.geotools.styling.UserLayer layer = sf.createUserLayer();
+        UserLayerImpl layer = sf.createUserLayer();
         sld.layers().add(layer);
-        Style style = sf.createStyle();
+        StyleImpl style = sf.createStyle();
         layer.userStyles().add(style);
-        FeatureTypeStyle featureStyle = sf.createFeatureTypeStyle();
+        FeatureTypeStyleImpl featureStyle = sf.createFeatureTypeStyle();
         style.featureTypeStyles().add(featureStyle);
-        Rule rule = sf.createRule();
+        RuleImpl rule = sf.createRule();
         featureStyle.rules().add(rule);
 
         LabelPlacement place =
@@ -616,7 +620,7 @@ public class YsldEncodeTest {
                         sf.createAnchorPoint(ff.literal(0.75), ff.literal(0.25)),
                         sf.createDisplacement(ff.literal(10), ff.literal(15)),
                         ff.literal(90));
-        TextSymbolizer text =
+        TextSymbolizerImpl text =
                 sf.textSymbolizer(
                         null,
                         ff.property("geom"),
@@ -657,18 +661,18 @@ public class YsldEncodeTest {
 
         StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
 
-        org.geotools.styling.UserLayer layer = sf.createUserLayer();
+        UserLayerImpl layer = sf.createUserLayer();
         sld.layers().add(layer);
-        Style style = sf.createStyle();
+        StyleImpl style = sf.createStyle();
         layer.userStyles().add(style);
-        FeatureTypeStyle featureStyle = sf.createFeatureTypeStyle();
+        FeatureTypeStyleImpl featureStyle = sf.createFeatureTypeStyle();
         style.featureTypeStyles().add(featureStyle);
-        Rule rule = sf.createRule();
+        RuleImpl rule = sf.createRule();
         featureStyle.rules().add(rule);
 
         LabelPlacement place = sf.createLinePlacement(ff.literal(10));
 
-        TextSymbolizer text =
+        TextSymbolizerImpl text =
                 sf.textSymbolizer(
                         null,
                         ff.property("geom"),
@@ -743,7 +747,7 @@ public class YsldEncodeTest {
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
         FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
 
-        RasterSymbolizer symb = styleFactory.createRasterSymbolizer();
+        RasterSymbolizerImpl symb = styleFactory.createRasterSymbolizer();
         ColorMapEntry e1 = styleFactory.createColorMapEntry();
         e1.setColor(filterFactory.literal("#000011"));
         e1.setQuantity(filterFactory.literal(0.0d));
@@ -795,7 +799,7 @@ public class YsldEncodeTest {
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
         FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
 
-        RasterSymbolizer symb = styleFactory.createRasterSymbolizer();
+        RasterSymbolizerImpl symb = styleFactory.createRasterSymbolizer();
         ColorMapEntry e1 = styleFactory.createColorMapEntry();
         e1.setColor(filterFactory.literal("#000011"));
         e1.setQuantity(filterFactory.literal(0.0d));
@@ -846,7 +850,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testExpressionNil() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        PointSymbolizerImpl p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
         p.getGraphic().setSize(Expression.NIL);
 
         StringWriter out = new StringWriter();
@@ -857,9 +861,9 @@ public class YsldEncodeTest {
 
     @Test
     public void testNameExpressionLiteral() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        PointSymbolizerImpl p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
         Expression nameExpression = CommonFactoryFinder.getFilterFactory().literal("test");
-        Mark mark = CommonFactoryFinder.getStyleFactory().createMark();
+        MarkImpl mark = CommonFactoryFinder.getStyleFactory().createMark();
         mark.setWellKnownName(nameExpression);
         p.getGraphic().graphicalSymbols().add(mark);
 
@@ -885,9 +889,9 @@ public class YsldEncodeTest {
 
     @Test
     public void testNameExpressionAttribute() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        PointSymbolizerImpl p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
         Expression nameExpression = CommonFactoryFinder.getFilterFactory().property("test");
-        Mark mark = CommonFactoryFinder.getStyleFactory().createMark();
+        MarkImpl mark = CommonFactoryFinder.getStyleFactory().createMark();
         mark.setWellKnownName(nameExpression);
         p.getGraphic().graphicalSymbols().add(mark);
 
@@ -913,7 +917,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testNonNameExpressionLiteral() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        PointSymbolizerImpl p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
         Expression expression = CommonFactoryFinder.getFilterFactory().literal("test");
         p.setGeometry(expression);
 
@@ -936,7 +940,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testNonNameExpressionAttribute() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        PointSymbolizerImpl p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
         Expression expression = CommonFactoryFinder.getFilterFactory().property("test");
         p.setGeometry(expression);
 
@@ -959,7 +963,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testEmbededExpression() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        PointSymbolizerImpl p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
         Expression expression =
                 CommonFactoryFinder.getFilterFactory()
                         .function(
@@ -988,7 +992,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testEmbededExpressionEscapeLiteral() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        PointSymbolizerImpl p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
         Expression expression = CommonFactoryFinder.getFilterFactory().literal("$}\\");
         p.setGeometry(expression);
 
@@ -1011,7 +1015,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testEmbededExpressionEscapeExpression() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        PointSymbolizerImpl p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
         Expression expression =
                 CommonFactoryFinder.getFilterFactory()
                         .function(
@@ -1044,20 +1048,20 @@ public class YsldEncodeTest {
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
 
-        org.geotools.styling.UserLayer layer = styleFactory.createUserLayer();
+        UserLayerImpl layer = styleFactory.createUserLayer();
         sld.layers().add(layer);
 
-        Style style = styleFactory.createStyle();
+        StyleImpl style = styleFactory.createStyle();
         layer.userStyles().add(style);
 
-        Rule rule = styleFactory.createRule();
+        RuleImpl rule = styleFactory.createRule();
 
         rule.setFilter(filterFactory.less(filterFactory.property("foo"), filterFactory.literal(2)));
 
         style.featureTypeStyles().add(styleFactory.createFeatureTypeStyle());
         style.featureTypeStyles().get(0).rules().add(rule);
 
-        PointSymbolizer p = styleFactory.createPointSymbolizer();
+        PointSymbolizerImpl p = styleFactory.createPointSymbolizer();
         rule.symbolizers().add(p);
 
         StringWriter out = new StringWriter();
@@ -1076,13 +1080,13 @@ public class YsldEncodeTest {
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
 
-        org.geotools.styling.UserLayer layer = styleFactory.createUserLayer();
+        UserLayerImpl layer = styleFactory.createUserLayer();
         sld.layers().add(layer);
 
-        Style style = styleFactory.createStyle();
+        StyleImpl style = styleFactory.createStyle();
         layer.userStyles().add(style);
 
-        Rule rule = styleFactory.createRule();
+        RuleImpl rule = styleFactory.createRule();
 
         rule.setFilter(
                 filterFactory.less(filterFactory.property("foo"), filterFactory.literal("}$")));
@@ -1090,7 +1094,7 @@ public class YsldEncodeTest {
         style.featureTypeStyles().add(styleFactory.createFeatureTypeStyle());
         style.featureTypeStyles().get(0).rules().add(rule);
 
-        PointSymbolizer p = styleFactory.createPointSymbolizer();
+        PointSymbolizerImpl p = styleFactory.createPointSymbolizer();
         rule.symbolizers().add(p);
 
         StringWriter out = new StringWriter();
@@ -1108,15 +1112,15 @@ public class YsldEncodeTest {
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
 
-        org.geotools.styling.UserLayer layer = styleFactory.createUserLayer();
+        UserLayerImpl layer = styleFactory.createUserLayer();
         sld.layers().add(layer);
 
-        Style style = styleFactory.createStyle();
+        StyleImpl style = styleFactory.createStyle();
         layer.userStyles().add(style);
 
         style.featureTypeStyles().add(styleFactory.createFeatureTypeStyle());
 
-        Rule rule = styleFactory.createRule();
+        RuleImpl rule = styleFactory.createRule();
 
         rule.setMinScaleDenominator(5_000_000);
         rule.setMaxScaleDenominator(10_000_000);
@@ -1158,15 +1162,15 @@ public class YsldEncodeTest {
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
 
-        org.geotools.styling.UserLayer layer = styleFactory.createUserLayer();
+        UserLayerImpl layer = styleFactory.createUserLayer();
         sld.layers().add(layer);
 
-        Style style = styleFactory.createStyle();
+        StyleImpl style = styleFactory.createStyle();
         layer.userStyles().add(style);
 
         style.featureTypeStyles().add(styleFactory.createFeatureTypeStyle());
 
-        Rule rule = styleFactory.createRule();
+        RuleImpl rule = styleFactory.createRule();
 
         rule.setMinScaleDenominator(5_000_000);
 
@@ -1197,7 +1201,7 @@ public class YsldEncodeTest {
     @Test
     public void testGrayBandSelection() throws Exception {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory();
-        RasterSymbolizer r = factory.createRasterSymbolizer();
+        RasterSymbolizerImpl r = factory.createRasterSymbolizer();
         ChannelSelection sel =
                 factory.channelSelection(
                         factory.createSelectedChannelType(
@@ -1230,7 +1234,7 @@ public class YsldEncodeTest {
     @Test
     public void testRGBBandSelection() throws Exception {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory();
-        RasterSymbolizer r = factory.createRasterSymbolizer();
+        RasterSymbolizerImpl r = factory.createRasterSymbolizer();
         ChannelSelection sel =
                 factory.channelSelection(
                         factory.createSelectedChannelType(
@@ -1284,10 +1288,10 @@ public class YsldEncodeTest {
     public void testStrokeGraphic() throws Exception {
         StyleFactory sf = CommonFactoryFinder.getStyleFactory();
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
-        LineSymbolizer l = sf.createLineSymbolizer();
-        Mark mark = sf.mark(ff.literal("circle"), sf.fill(null, ff.literal("#995555"), null), null);
-        Graphic g = sf.createGraphic(null, new Mark[] {mark}, null, null, null, null);
-        Stroke s = sf.createStroke(null, null);
+        LineSymbolizerImpl l = sf.createLineSymbolizer();
+        MarkImpl mark = sf.mark(ff.literal("circle"), sf.fill(null, ff.literal("#995555"), null), null);
+        Graphic g = sf.createGraphic(null, new MarkImpl[] {mark}, null, null, null, null);
+        StrokeImpl s = sf.createStroke(null, null);
         s.setGraphicStroke(g);
         l.setStroke(s);
 
@@ -1325,10 +1329,10 @@ public class YsldEncodeTest {
     public void testStrokeGraphicFill() throws Exception {
         StyleFactory sf = CommonFactoryFinder.getStyleFactory();
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
-        LineSymbolizer l = sf.createLineSymbolizer();
-        Mark mark = sf.mark(ff.literal("circle"), sf.fill(null, ff.literal("#995555"), null), null);
-        Graphic g = sf.createGraphic(null, new Mark[] {mark}, null, null, null, null);
-        Stroke s = sf.createStroke(null, ff.literal(10));
+        LineSymbolizerImpl l = sf.createLineSymbolizer();
+        MarkImpl mark = sf.mark(ff.literal("circle"), sf.fill(null, ff.literal("#995555"), null), null);
+        Graphic g = sf.createGraphic(null, new MarkImpl[] {mark}, null, null, null, null);
+        StrokeImpl s = sf.createStroke(null, ff.literal(10));
         s.setGraphicFill(g);
         l.setStroke(s);
 
@@ -1366,7 +1370,7 @@ public class YsldEncodeTest {
     public void testGrayBandSelectionWithContrast() throws Exception {
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
         FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
-        RasterSymbolizer r = styleFactory.createRasterSymbolizer();
+        RasterSymbolizerImpl r = styleFactory.createRasterSymbolizer();
         ChannelSelection sel =
                 styleFactory.channelSelection(
                         styleFactory.createSelectedChannelType(
@@ -1404,7 +1408,7 @@ public class YsldEncodeTest {
     public void testRGBBandSelectionWithContrast() throws Exception {
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
         FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
-        RasterSymbolizer r = styleFactory.createRasterSymbolizer();
+        RasterSymbolizerImpl r = styleFactory.createRasterSymbolizer();
         ChannelSelection sel =
                 styleFactory.channelSelection(
                         styleFactory.createSelectedChannelType(
@@ -1414,7 +1418,7 @@ public class YsldEncodeTest {
                                 styleFactory.createContrastEnhancement(filterFactory.literal(1.2))),
                         styleFactory.createSelectedChannelType(
                                 "baz", styleFactory.createContrastEnhancement()));
-        ((org.geotools.styling.ContrastEnhancement)
+        ((ContrastEnhancementImpl)
                         sel.getRGBChannels()[2].getContrastEnhancement())
                 .setMethod(ContrastMethod.HISTOGRAM);
         r.setChannelSelection(sel);
@@ -1457,7 +1461,7 @@ public class YsldEncodeTest {
         Expression nameExpression =
                 filterFactory.function(
                         "env", filterFactory.literal("B1"), filterFactory.literal("1"));
-        RasterSymbolizer r = styleFactory.createRasterSymbolizer();
+        RasterSymbolizerImpl r = styleFactory.createRasterSymbolizer();
         ChannelSelection sel =
                 styleFactory.channelSelection(
                         styleFactory.createSelectedChannelType(nameExpression, (Expression) null));
@@ -1484,27 +1488,27 @@ public class YsldEncodeTest {
         return sld(fts(sym));
     }
 
-    private FeatureTypeStyle fts(Symbolizer sym) {
+    private FeatureTypeStyleImpl fts(Symbolizer sym) {
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
 
-        Rule rule = styleFactory.createRule();
+        RuleImpl rule = styleFactory.createRule();
 
-        FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle();
+        FeatureTypeStyleImpl fts = styleFactory.createFeatureTypeStyle();
         fts.rules().add(rule);
 
         rule.symbolizers().add(sym);
         return fts;
     }
 
-    private StyledLayerDescriptor sld(FeatureTypeStyle fts) {
+    private StyledLayerDescriptor sld(FeatureTypeStyleImpl fts) {
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
 
-        org.geotools.styling.UserLayer layer = styleFactory.createUserLayer();
+        UserLayerImpl layer = styleFactory.createUserLayer();
         sld.layers().add(layer);
 
-        Style style = styleFactory.createStyle();
+        StyleImpl style = styleFactory.createStyle();
         layer.userStyles().add(style);
         style.featureTypeStyles().add(fts);
         return sld;
@@ -1515,7 +1519,7 @@ public class YsldEncodeTest {
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
         FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
 
-        TextSymbolizer symb = styleFactory.createTextSymbolizer();
+        TextSymbolizerImpl symb = styleFactory.createTextSymbolizer();
         symb.setPriority(filterFactory.property("foo"));
 
         StringWriter out = new StringWriter();
@@ -1546,9 +1550,9 @@ public class YsldEncodeTest {
 
     @Test
     public void testColourNoQuotes() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        PointSymbolizerImpl p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
 
-        Mark m1 = CommonFactoryFinder.getStyleFactory().getCircleMark();
+        MarkImpl m1 = CommonFactoryFinder.getStyleFactory().getCircleMark();
         m1.setFill(
                 CommonFactoryFinder.getStyleFactory()
                         .createFill(CommonFactoryFinder.getFilterFactory().literal("#112233")));
@@ -1585,9 +1589,9 @@ public class YsldEncodeTest {
 
     @Test
     public void testScientificNotationCase() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        PointSymbolizerImpl p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
 
-        Mark m1 = CommonFactoryFinder.getStyleFactory().getCircleMark();
+        MarkImpl m1 = CommonFactoryFinder.getStyleFactory().getCircleMark();
         m1.setFill(
                 CommonFactoryFinder.getStyleFactory()
                         .createFill(
@@ -1618,9 +1622,9 @@ public class YsldEncodeTest {
 
     @Test
     public void testColourCase() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        PointSymbolizerImpl p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
 
-        Mark m1 = CommonFactoryFinder.getStyleFactory().getCircleMark();
+        MarkImpl m1 = CommonFactoryFinder.getStyleFactory().getCircleMark();
         m1.setFill(
                 CommonFactoryFinder.getStyleFactory()
                         .createFill(
@@ -1650,9 +1654,9 @@ public class YsldEncodeTest {
 
     @Test
     public void testColourLiteral() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        PointSymbolizerImpl p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
 
-        Mark m1 = CommonFactoryFinder.getStyleFactory().getCircleMark();
+        MarkImpl m1 = CommonFactoryFinder.getStyleFactory().getCircleMark();
         m1.setFill(
                 CommonFactoryFinder.getStyleFactory()
                         .createFill(
@@ -1682,8 +1686,8 @@ public class YsldEncodeTest {
 
     @Test
     public void testFTSVendorOption() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
-        FeatureTypeStyle fts = fts(p);
+        PointSymbolizerImpl p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        FeatureTypeStyleImpl fts = fts(p);
         fts.getOptions().put("foo", "bar");
 
         StringWriter out = new StringWriter();
@@ -1699,8 +1703,8 @@ public class YsldEncodeTest {
 
     @Test
     public void testSymbolizerVendorOption() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
-        FeatureTypeStyle fts = fts(p);
+        PointSymbolizerImpl p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        FeatureTypeStyleImpl fts = fts(p);
         p.getOptions().put("foo", "bar");
 
         StringWriter out = new StringWriter();
@@ -1723,8 +1727,8 @@ public class YsldEncodeTest {
 
     @Test
     public void testSymbolizerUoMMetre() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
-        FeatureTypeStyle fts = fts(p);
+        PointSymbolizerImpl p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        FeatureTypeStyleImpl fts = fts(p);
         p.setUnitOfMeasure(UomOgcMapping.METRE.getUnit());
 
         StringWriter out = new StringWriter();
@@ -1747,8 +1751,8 @@ public class YsldEncodeTest {
 
     @Test
     public void testSymbolizerUoMFoot() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
-        FeatureTypeStyle fts = fts(p);
+        PointSymbolizerImpl p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        FeatureTypeStyleImpl fts = fts(p);
         p.setUnitOfMeasure(UomOgcMapping.FOOT.getUnit());
 
         StringWriter out = new StringWriter();
@@ -1771,8 +1775,8 @@ public class YsldEncodeTest {
 
     @Test
     public void testSymbolizerUoMPixel() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
-        FeatureTypeStyle fts = fts(p);
+        PointSymbolizerImpl p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        FeatureTypeStyleImpl fts = fts(p);
         p.setUnitOfMeasure(UomOgcMapping.PIXEL.getUnit());
 
         StringWriter out = new StringWriter();
@@ -1795,8 +1799,8 @@ public class YsldEncodeTest {
 
     @Test
     public void testSymbolizerUoMOther() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
-        FeatureTypeStyle fts = fts(p);
+        PointSymbolizerImpl p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        FeatureTypeStyleImpl fts = fts(p);
         p.setUnitOfMeasure(USCustomary.LIGHT_YEAR);
 
         StringWriter out = new StringWriter();
@@ -1808,18 +1812,18 @@ public class YsldEncodeTest {
     public void testLegend() throws Exception {
         StyleFactory sf = CommonFactoryFinder.getStyleFactory();
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
-        PointSymbolizer p = sf.createPointSymbolizer();
-        Mark mark = sf.mark(ff.literal("circle"), sf.fill(null, ff.literal("#FF0000"), null), null);
-        p.setGraphic(sf.createGraphic(null, new Mark[] {mark}, null, null, null, null));
-        Rule rule = sf.createRule();
+        PointSymbolizerImpl p = sf.createPointSymbolizer();
+        MarkImpl mark = sf.mark(ff.literal("circle"), sf.fill(null, ff.literal("#FF0000"), null), null);
+        p.setGraphic(sf.createGraphic(null, new MarkImpl[] {mark}, null, null, null, null));
+        RuleImpl rule = sf.createRule();
         rule.symbolizers().add(p);
-        ExternalGraphic eg = sf.createExternalGraphic("smileyface.png", "image/png");
+        ExternalGraphicImpl eg = sf.createExternalGraphic("smileyface.png", "image/png");
         rule.setLegend(
                 (GraphicLegend)
-                        sf.createGraphic(new ExternalGraphic[] {eg}, null, null, null, null, null));
+                        sf.createGraphic(new ExternalGraphicImpl[] {eg}, null, null, null, null, null));
 
         StringWriter out = new StringWriter();
-        Ysld.encode(sld((FeatureTypeStyle) sf.createFeatureTypeStyle(rule)), out);
+        Ysld.encode(sld((FeatureTypeStyleImpl) sf.createFeatureTypeStyle(rule)), out);
         // System.out.append(out.toString());
 
         YamlMap obj = new YamlMap(YamlUtil.getSafeYaml().load(out.toString()));
@@ -1857,9 +1861,9 @@ public class YsldEncodeTest {
                                                 .getBytes()))
                         .parse();
 
-        RasterSymbolizer symbolizer =
-                (RasterSymbolizer)
-                        ((org.geotools.styling.NamedLayer) style.getStyledLayers()[0])
+        RasterSymbolizerImpl symbolizer =
+                (RasterSymbolizerImpl)
+                        ((NamedLayerImpl) style.getStyledLayers()[0])
                                 .styles()
                                 .get(0)
                                 .featureTypeStyles()
@@ -1872,15 +1876,15 @@ public class YsldEncodeTest {
         ColorMap colorMap = symbolizer.getColorMap();
         RasterSymbolizerEncoder.ColorMapEntryIterator iterator =
                 new RasterSymbolizerEncoder(symbolizer)
-                .new ColorMapEntryIterator((org.geotools.styling.ColorMap) colorMap);
+                .new ColorMapEntryIterator((ColorMapImpl) colorMap);
         Tuple map = iterator.next();
         assertEquals("('#E20374',1.0,1,Lorem Ipsum (magenta = covered))", map.toString());
     }
 
     @Test
     public void testRuleVendorOption() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
-        FeatureTypeStyle fts = fts(p);
+        PointSymbolizerImpl p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        FeatureTypeStyleImpl fts = fts(p);
         fts.rules().get(0).getOptions().put("foo", "bar");
 
         StringWriter out = new StringWriter();

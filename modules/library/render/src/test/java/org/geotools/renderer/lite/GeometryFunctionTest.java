@@ -29,7 +29,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
@@ -64,7 +64,7 @@ public class GeometryFunctionTest {
     }
 
     private void runSingleLayerTest(String styleName, int threshold) throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, styleName);
+        StyleImpl style = RendererBaseTest.loadStyle(this, styleName);
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(fs, style));

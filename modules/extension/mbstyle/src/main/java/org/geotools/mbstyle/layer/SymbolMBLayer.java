@@ -249,7 +249,7 @@ public class SymbolMBLayer extends MBLayer {
 
     /**
      * When any of these strings is provided as the sprite source in an MB style, the style's
-     * 'icon-image' will actually be interpreted as the well-known name of a GeoTools {@link Mark}
+     * 'icon-image' will actually be interpreted as the well-known name of a GeoTools {@link MarkImpl}
      * rather than an actual sprite sheet location.
      */
     protected static final Set<String> MARK_SHEET_ALIASES =
@@ -690,7 +690,7 @@ public class SymbolMBLayer extends MBLayer {
     }
 
     /**
-     * Maps {@link #getIconOffset()} to a {@link Displacement}
+     * Maps {@link #getIconOffset()} to a {@link DisplacementImpl}
      *
      * <p>(Optional) Defaults to 0,0. Requires icon-image. Offset distance of icon from its anchor.
      * Positive values indicate right and down, while negative values indicate left and up. When
@@ -698,11 +698,11 @@ public class SymbolMBLayer extends MBLayer {
      *
      * @return Icon offset
      */
-    public Displacement iconOffsetDisplacement() {
+    public DisplacementImpl iconOffsetDisplacement() {
         return parse.displacement(
                 layout,
                 "icon-offset",
-                (Displacement) sf.displacement(ff.literal(0), ff.literal(0)));
+                (DisplacementImpl) sf.displacement(ff.literal(0), ff.literal(0)));
     }
 
     /**
@@ -1020,30 +1020,30 @@ public class SymbolMBLayer extends MBLayer {
     }
 
     /**
-     * Layout "text-anchor" provided as {@link AnchorPoint}.
+     * Layout "text-anchor" provided as {@link AnchorPointImpl}.
      *
      * @return AnchorPoint defined by "text-anchor".
      */
-    public AnchorPoint anchorPoint() {
+    public AnchorPointImpl anchorPoint() {
         return anchorPointByProperty("text-anchor");
     }
 
-    public AnchorPoint iconAnchorPoint() {
+    public AnchorPointImpl iconAnchorPoint() {
         return anchorPointByProperty("icon-anchor");
     }
 
-    public AnchorPoint anchorPointByProperty(String propertyName) {
+    public AnchorPointImpl anchorPointByProperty(String propertyName) {
         Expression expression = parse.string(layout, propertyName, TextAnchor.CENTER.name());
         if (expression == null) {
             return null;
         }
         if (expression instanceof Literal) {
             TextAnchor anchor = TextAnchor.parse(expression.evaluate(null, String.class));
-            return (AnchorPoint)
+            return (AnchorPointImpl)
                     sf.anchorPoint(ff.literal(anchor.getX()), ff.literal(anchor.getY()));
         }
         // it's a generic expression, need to map it to values
-        return (AnchorPoint)
+        return (AnchorPointImpl)
                 sf.anchorPoint(
                         ff.function("mbAnchor", expression, ff.literal("x")),
                         ff.function("mbAnchor", expression, ff.literal("y")));
@@ -1226,15 +1226,15 @@ public class SymbolMBLayer extends MBLayer {
     }
 
     /**
-     * Maps {@link #getTextOffset()} to a {@link Displacement}.
+     * Maps {@link #getTextOffset()} to a {@link DisplacementImpl}.
      *
      * @return (Optional) Units in ems. Defaults to 0,0. Requires text-field.
      */
-    public Displacement textOffsetDisplacement() {
+    public DisplacementImpl textOffsetDisplacement() {
         return parse.displacement(
                 layout,
                 "text-offset",
-                (Displacement) sf.displacement(ff.literal(0), ff.literal(0)));
+                (DisplacementImpl) sf.displacement(ff.literal(0), ff.literal(0)));
     }
 
     private boolean hasTextOffset() {
@@ -1454,7 +1454,7 @@ public class SymbolMBLayer extends MBLayer {
     }
 
     /**
-     * Maps {@link #getIconTranslate()} to a {@link Displacement}
+     * Maps {@link #getIconTranslate()} to a {@link DisplacementImpl}
      *
      * <p>(Optional) Units in pixels. Defaults to 0,0. Requires icon-image. Distance that the icon's
      * anchor is moved from its original placement. Positive values indicate right and down, while
@@ -1462,11 +1462,11 @@ public class SymbolMBLayer extends MBLayer {
      *
      * @return Icon translate displacement
      */
-    public Displacement iconTranslateDisplacement() {
+    public DisplacementImpl iconTranslateDisplacement() {
         return parse.displacement(
                 paint,
                 "icon-translate",
-                (Displacement) sf.displacement(ff.literal(0), ff.literal(0)));
+                (DisplacementImpl) sf.displacement(ff.literal(0), ff.literal(0)));
     }
 
     /**
@@ -1649,7 +1649,7 @@ public class SymbolMBLayer extends MBLayer {
     }
 
     /**
-     * Maps {@link #getTextTranslate()} to a {@link Displacement}.
+     * Maps {@link #getTextTranslate()} to a {@link DisplacementImpl}.
      *
      * <p>Distance that the text's anchor is moved from its original placement. Positive values
      * indicate right and down, while negative values indicate left and up. (Optional) Units in
@@ -1657,11 +1657,11 @@ public class SymbolMBLayer extends MBLayer {
      *
      * @return Displacement defined by text-translate
      */
-    public Displacement textTranslateDisplacement() {
+    public DisplacementImpl textTranslateDisplacement() {
         return parse.displacement(
                 paint,
                 "text-translate",
-                (Displacement) sf.displacement(ff.literal(0), ff.literal(0)));
+                (DisplacementImpl) sf.displacement(ff.literal(0), ff.literal(0)));
     }
 
     /**
@@ -1707,7 +1707,7 @@ public class SymbolMBLayer extends MBLayer {
      * @return FeatureTypeStyle
      */
     @Override
-    public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
+    public List<FeatureTypeStyleImpl> transformInternal(MBStyle styleContext) {
         MBStyleTransformer transformer = new MBStyleTransformer(parse);
         StyleBuilder sb = new StyleBuilder();
         List<Symbolizer> symbolizers = new ArrayList<>();
@@ -1722,21 +1722,21 @@ public class SymbolMBLayer extends MBLayer {
         Expression fontSize = textSize();
         if ("point".equalsIgnoreCase(symbolPlacementVal.trim())) {
             // Point Placement (default)
-            PointPlacement pointP = sb.createPointPlacement();
+            PointPlacementImpl pointP = sb.createPointPlacement();
             // Set anchor point (translated by text-translate)
             // GeoTools AnchorPoint doesn't seem to have an effect on PointPlacement
             pointP.setAnchorPoint(anchorPoint());
 
             // MapBox text-translate: +y means down, expressed in px
-            Displacement displacement = null;
+            DisplacementImpl displacement = null;
             if (hasTextTranslate()) {
-                Displacement textTranslate = textTranslateDisplacement();
+                DisplacementImpl textTranslate = textTranslateDisplacement();
                 textTranslate.setDisplacementY(
                         ff.multiply(ff.literal(-1), textTranslate.getDisplacementY()));
                 displacement = textTranslate;
             }
             // MapBox test-offset: +y mean down and expressed in ems
-            Displacement textOffset;
+            DisplacementImpl textOffset;
             if (hasTextOffset()) {
                 textOffset = textOffsetDisplacement();
                 textOffset.setDisplacementX(ff.multiply(fontSize, textOffset.getDisplacementX()));
@@ -1759,7 +1759,7 @@ public class SymbolMBLayer extends MBLayer {
             labelPlacement = pointP;
         } else {
             // Line Placement
-            LinePlacement lineP = sb.createLinePlacement(null);
+            LinePlacementImpl lineP = sb.createLinePlacement(null);
             lineP.setRepeated(true);
 
             // pixels (geotools) vs ems (mapbox) for text-offset
@@ -1775,20 +1775,20 @@ public class SymbolMBLayer extends MBLayer {
         // the default value of the halo color is rgba(0,0,0,0) that is, no halo drawn,
         // regardless of the value of other halo parameters
         Expression haloColor = textHaloColor();
-        Halo halo = null;
+        HaloImpl halo = null;
         if (!(haloColor instanceof Literal)
                 || (haloColor.evaluate(null, Color.class).getAlpha() > 0)) {
-            halo = (Halo) sf.halo(sf.fill(null, haloColor, null), textHaloWidth());
+            halo = (HaloImpl) sf.halo(sf.fill(null, haloColor, null), textHaloWidth());
         }
-        Fill fill = (Fill) sf.fill(null, textColor(), textOpacity());
+        FillImpl fill = (FillImpl) sf.fill(null, textColor(), textOpacity());
 
         // leverage GeoTools ability to have several distinct fonts, inherited from SLD 1.0
-        List<Font> fonts = new ArrayList<>();
+        List<FontImpl> fonts = new ArrayList<>();
         List<String> staticFonts = getTextFont();
         if (staticFonts != null) {
             for (String textFont : staticFonts) {
                 FontAttributesExtractor fae = new FontAttributesExtractor(textFont);
-                Font font =
+                FontImpl font =
                         sb.createFont(
                                 ff.function(
                                         FontAlternativesFunction.NAME.getName(),
@@ -1800,7 +1800,7 @@ public class SymbolMBLayer extends MBLayer {
             }
         } else if (textFont() != null) {
             Expression dynamicFont = textFont();
-            Font font =
+            FontImpl font =
                     sb.createFont(
                             ff.function(
                                     FontAlternativesFunction.NAME.getName(),
@@ -1828,8 +1828,8 @@ public class SymbolMBLayer extends MBLayer {
             textExpression = ff.function("StringTransform", textExpression, textTransform());
         }
 
-        TextSymbolizer symbolizer =
-                (TextSymbolizer)
+        TextSymbolizerImpl symbolizer =
+                (TextSymbolizerImpl)
                         sf.textSymbolizer(
                                 getId(),
                                 ff.property((String) null),
@@ -1854,7 +1854,7 @@ public class SymbolMBLayer extends MBLayer {
 
         // text max angle - only for line placement
         // throw MBFormatException if point placement
-        if (labelPlacement instanceof LinePlacement) {
+        if (labelPlacement instanceof LinePlacementImpl) {
             // followLine will be true if line placement, it is an implied default of MBstyles.
             symbolizer
                     .getOptions()
@@ -1983,7 +1983,7 @@ public class SymbolMBLayer extends MBLayer {
             }
             // If we have an icon with a Point placement force graphic placement independ
             // of the label final position (each one gets its own anchor and displacement)
-            Graphic graphic = getGraphic(transformer, styleContext);
+            GraphicImpl graphic = getGraphic(transformer, styleContext);
             if ("point".equalsIgnoreCase(symbolPlacementVal.trim())) {
                 symbolizer
                         .getOptions()
@@ -1992,7 +1992,7 @@ public class SymbolMBLayer extends MBLayer {
                                 INDEPENDENT.name());
             }
             // the mapbox-gl library does not paint the graphic if the icon cannot be found
-            symbolizer.getOptions().put(PointSymbolizer.FALLBACK_ON_DEFAULT_MARK, "false");
+            symbolizer.getOptions().put(PointSymbolizerImpl.FALLBACK_ON_DEFAULT_MARK, "false");
             symbolizer.setGraphic(graphic);
         }
 
@@ -2007,8 +2007,8 @@ public class SymbolMBLayer extends MBLayer {
 
         // List of opengis rules here (needed for constructor)
         List<org.geotools.api.style.Rule> rules = new ArrayList<>();
-        Rule rule =
-                (Rule)
+        RuleImpl rule =
+                (RuleImpl)
                         sf.rule(
                                 getId(),
                                 null,
@@ -2021,7 +2021,7 @@ public class SymbolMBLayer extends MBLayer {
         rules.add(rule);
 
         return Collections.singletonList(
-                (FeatureTypeStyle)
+                (FeatureTypeStyleImpl)
                         sf.featureTypeStyle(
                                 getId(),
                                 sf.description(
@@ -2036,14 +2036,14 @@ public class SymbolMBLayer extends MBLayer {
     }
 
     /**
-     * Get a graphic for this style's 'icon-image'. It will usually be an {@link ExternalGraphic} to
+     * Get a graphic for this style's 'icon-image'. It will usually be an {@link ExternalGraphicImpl} to
      * be handled by the {@link SpriteGraphicFactory}, but this method also supports GeoTools {@link
-     * Mark}s as a special case.
+     * MarkImpl}s as a special case.
      *
      * @param styleContext The containing style (used to get the sprite source)
      * @return A graphic based on this style's 'icon-image' property.
      */
-    private Graphic getGraphic(MBStyleTransformer transformer, MBStyle styleContext) {
+    private GraphicImpl getGraphic(MBStyleTransformer transformer, MBStyle styleContext) {
         // If the iconImage is a literal string (not a function), then
         // we need to support Mapbox token replacement.
         // Note: the URL is expected to be a CQL STRING ...
@@ -2066,14 +2066,14 @@ public class SymbolMBLayer extends MBLayer {
                         : styleContext.getSprite().trim().toLowerCase();
         Expression iconSize = iconSize();
         if (MARK_SHEET_ALIASES.contains(spriteSheetLocation)) {
-            Fill f = (Fill) sf.fill(null, iconColor(), null);
-            Stroke s = (Stroke) sf.stroke(iconColor(), null, null, null, null, null, null);
+            FillImpl f = (FillImpl) sf.fill(null, iconColor(), null);
+            StrokeImpl s = (StrokeImpl) sf.stroke(iconColor(), null, null, null, null, null, null);
             gs = sf.mark(iconExpression, f, s);
         } else {
             gs = transformer.createExternalGraphicForSprite(iconExpression, iconSize, styleContext);
         }
 
-        if (gs instanceof Mark) {
+        if (gs instanceof MarkImpl) {
             // The graphicSize is specified in pixels, so only set it on the Graphic if the
             // GraphicalSymbol is a mark.
             // If it is an ExternalGraphic from a sprite sheet, the absolute size of the icon is
@@ -2081,8 +2081,8 @@ public class SymbolMBLayer extends MBLayer {
             graphicSize = ff.multiply(ff.literal(MARK_ICON_DEFAULT_SIZE), iconSize);
         }
 
-        Graphic g =
-                (Graphic)
+        GraphicImpl g =
+                (GraphicImpl)
                         sf.graphic(
                                 Arrays.asList(gs),
                                 iconOpacity(),
@@ -2094,7 +2094,7 @@ public class SymbolMBLayer extends MBLayer {
         // Offset distance of icon from its anchor. Positive values indicate right and down, while
         // negative values indicate left and up. Each component is multiplied by the value of
         // icon-size to obtain the final offset in pixels
-        Displacement d = iconOffsetDisplacement();
+        DisplacementImpl d = iconOffsetDisplacement();
         d.setDisplacementY(
                 ff.multiply(iconSize, ff.multiply(ff.literal(-1), d.getDisplacementY())));
         d.setDisplacementX(ff.multiply(iconSize, d.getDisplacementX()));

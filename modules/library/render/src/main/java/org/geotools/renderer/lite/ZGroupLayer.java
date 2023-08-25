@@ -388,11 +388,11 @@ class ZGroupLayer extends Layer {
     }
 
     public void addLayer(FeatureLayer layer) {
-        List<FeatureTypeStyle> featureTypeStyles = layer.getStyle().featureTypeStyles();
+        List<FeatureTypeStyleImpl> featureTypeStyles = layer.getStyle().featureTypeStyles();
         boolean cleanupStyle = false;
-        for (FeatureTypeStyle fts : featureTypeStyles) {
+        for (FeatureTypeStyleImpl fts : featureTypeStyles) {
             Map<String, String> options = fts.getOptions();
-            String compositingBaseDefinition = options.get(FeatureTypeStyle.COMPOSITE_BASE);
+            String compositingBaseDefinition = options.get(org.geotools.styling.FeatureTypeStyleImpl.COMPOSITE_BASE);
             if ("true".equalsIgnoreCase(compositingBaseDefinition)) {
                 this.compositingBase = true;
             }
@@ -411,13 +411,13 @@ class ZGroupLayer extends Layer {
                         @Override
                         public void visit(org.geotools.api.style.FeatureTypeStyle fts) {
                             super.visit(fts);
-                            FeatureTypeStyle copy = (FeatureTypeStyle) pages.peek();
-                            copy.getOptions().remove(FeatureTypeStyle.COMPOSITE);
-                            copy.getOptions().remove(FeatureTypeStyle.COMPOSITE_BASE);
+                            FeatureTypeStyleImpl copy = (FeatureTypeStyleImpl) pages.peek();
+                            copy.getOptions().remove(org.geotools.styling.FeatureTypeStyleImpl.COMPOSITE);
+                            copy.getOptions().remove(org.geotools.styling.FeatureTypeStyleImpl.COMPOSITE_BASE);
                         }
                     };
             layer.getStyle().accept(cleaner);
-            Style cleaned = (Style) cleaner.getCopy();
+            StyleImpl cleaned = (StyleImpl) cleaner.getCopy();
             layer.setStyle(cleaned);
         }
 
@@ -425,9 +425,9 @@ class ZGroupLayer extends Layer {
     }
 
     @Override
-    public synchronized Style getStyle() {
+    public synchronized StyleImpl getStyle() {
         // using user data to cache this placeholder so we don't have to create it each time
-        Style style = (Style) getUserData().get("style");
+        StyleImpl style = (StyleImpl) getUserData().get("style");
         if (style == null) {
             StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
 
@@ -441,7 +441,7 @@ class ZGroupLayer extends Layer {
         return style;
     }
 
-    private Fill getBackgroundFromLayers() {
+    private FillImpl getBackgroundFromLayers() {
         // pick the first non null background specification
         return layers.stream()
                 .flatMap(

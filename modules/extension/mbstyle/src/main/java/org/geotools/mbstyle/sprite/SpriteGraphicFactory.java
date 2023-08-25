@@ -45,7 +45,7 @@ import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.renderer.style.ExternalGraphicFactory;
 import org.geotools.renderer.style.GraphicCache;
-import org.geotools.styling.ExternalGraphic;
+import org.geotools.styling.ExternalGraphicImpl;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.logging.Logging;
 import org.json.simple.JSONObject;
@@ -57,7 +57,7 @@ import org.json.simple.parser.ParseException;
  * sprite sheet resource and an icon name, and retrieves the icon from the sprite sheet.
  *
  * <p>Note that this factory expects the {@link MBStyleTransformer} to produce {@link
- * ExternalGraphic} instances with slightly modified URLs using one of the following forms: <code>
+ * ExternalGraphicImpl} instances with slightly modified URLs using one of the following forms: <code>
  * {baseUrl}#{iconName}</code> <code>{baseUrl}#icon={iconName}&amp;size={sizeMultiplier}</code>
  *
  * <p>Only the baseUrl is used to retrieve the sprite sheet (at {baseUrl}.png) and sprite index (at
@@ -86,7 +86,7 @@ import org.json.simple.parser.ParseException;
 public class SpriteGraphicFactory implements ExternalGraphicFactory, GraphicCache {
 
     /**
-     * {@link ExternalGraphic} instances with this format will be handled by the {@link
+     * {@link ExternalGraphicImpl} instances with this format will be handled by the {@link
      * SpriteGraphicFactory}.
      */
     public static final String FORMAT = "mbsprite";

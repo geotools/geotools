@@ -11,7 +11,7 @@ import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.test.TestData;
 import org.junit.Assert;
 import org.junit.Before;
@@ -52,7 +52,7 @@ public class QueryOptimizeTest {
 
     @Test
     public void testLessFilters() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "fillSolidTwoRules.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "fillSolidTwoRules.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(squareFS, style));

@@ -17,31 +17,31 @@
  */
 package org.geotools.ysld.parse;
 
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Mark;
+import org.geotools.styling.ExternalGraphicImpl;
+import org.geotools.styling.GraphicImpl;
+import org.geotools.styling.MarkImpl;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 import org.geotools.ysld.YamlSeq;
 
 /**
  * Handles parsing Ysld "graphic" properties (e.g., "graphic", "stroke-graphic", "fill-graphic")
- * into a {@link Graphic} object.
+ * into a {@link GraphicImpl} object.
  */
 public class GraphicParser extends YsldParseHandler {
 
-    Graphic g;
+    GraphicImpl g;
 
     GraphicParser(Factory factory) {
         this(factory, factory.styleBuilder.createGraphic(null, null, null));
     }
 
-    GraphicParser(Factory factory, Graphic g) {
+    GraphicParser(Factory factory, GraphicImpl g) {
         super(factory);
         this.g = g;
     }
 
-    protected void graphic(Graphic g) {}
+    protected void graphic(GraphicImpl g) {}
 
     @Override
     public void handle(YamlObject<?> obj, YamlParseContext context) {
@@ -95,7 +95,7 @@ public class GraphicParser extends YsldParseHandler {
                         "mark",
                         new MarkParser(factory) {
                             @Override
-                            protected void mark(Mark mark) {
+                            protected void mark(MarkImpl mark) {
                                 g.graphicalSymbols().add(mark);
                             }
                         });
@@ -104,7 +104,7 @@ public class GraphicParser extends YsldParseHandler {
                         "external",
                         new ExternalGraphicParser(factory) {
                             @Override
-                            protected void externalGraphic(ExternalGraphic externalGraphic) {
+                            protected void externalGraphic(ExternalGraphicImpl externalGraphic) {
                                 g.graphicalSymbols().add(externalGraphic);
                             }
                         });

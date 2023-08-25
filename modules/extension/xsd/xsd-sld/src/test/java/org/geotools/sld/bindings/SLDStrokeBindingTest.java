@@ -21,20 +21,20 @@ import static org.junit.Assert.assertNotNull;
 
 import org.geotools.filter.Filters;
 import org.geotools.styling.SLD;
-import org.geotools.styling.Stroke;
+import org.geotools.styling.StrokeImpl;
 import org.junit.Test;
 
 public class SLDStrokeBindingTest extends SLDTestSupport {
     @Test
     public void testType() throws Exception {
-        assertEquals(Stroke.class, new SLDStrokeBinding(null, null).getType());
+        assertEquals(StrokeImpl.class, new SLDStrokeBinding(null, null).getType());
     }
 
     @Test
     public void test() throws Exception {
         SLDMockData.stroke(document, document);
 
-        Stroke stroke = (Stroke) parse();
+        StrokeImpl stroke = (StrokeImpl) parse();
         assertNotNull(stroke);
 
         assertEquals(Integer.parseInt("12", 16), SLD.color(stroke.getColor()).getRed());

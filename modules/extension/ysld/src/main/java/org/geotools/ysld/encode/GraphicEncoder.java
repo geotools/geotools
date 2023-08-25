@@ -17,28 +17,28 @@
  */
 package org.geotools.ysld.encode;
 
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.Graphic;
+import org.geotools.styling.AnchorPointImpl;
+import org.geotools.styling.GraphicImpl;
 
-/** Encodes a {@link Graphic} as YSLD. */
-public class GraphicEncoder extends YsldEncodeHandler<Graphic> {
+/** Encodes a {@link GraphicImpl} as YSLD. */
+public class GraphicEncoder extends YsldEncodeHandler<GraphicImpl> {
 
     final boolean flatten;
 
-    GraphicEncoder(Graphic g) {
+    GraphicEncoder(GraphicImpl g) {
         this(g, true);
     }
 
-    GraphicEncoder(Graphic g, Boolean flatten) {
+    GraphicEncoder(GraphicImpl g, Boolean flatten) {
         super(g);
         this.flatten = flatten;
     }
 
     @Override
-    protected void encode(Graphic g) {
+    protected void encode(GraphicImpl g) {
         if (!flatten) push("graphic");
 
-        inline(new AnchorPointEncoder((AnchorPoint) g.getAnchorPoint()));
+        inline(new AnchorPointEncoder((AnchorPointImpl) g.getAnchorPoint()));
         inline(new DisplacementEncoder(g.getDisplacement()));
         put("gap", nullIf(g.getGap(), 0d), nullIf(g.getInitialGap(), 0d));
         put("opacity", nullIf(g.getOpacity(), 1));

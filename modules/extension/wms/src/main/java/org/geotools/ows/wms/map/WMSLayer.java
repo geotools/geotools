@@ -35,11 +35,7 @@ import org.geotools.ows.wms.WebMapServer;
 import org.geotools.ows.wms.request.GetMapRequest;
 import org.geotools.referencing.CRS;
 import org.geotools.renderer.lite.RendererUtilities;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
+import org.geotools.styling.*;
 
 /**
  * Wraps a WMS layer into a {@link Layer} for interactive rendering usage TODO: expose a
@@ -51,16 +47,16 @@ import org.geotools.styling.StyleFactory;
 public class WMSLayer extends GridReaderLayer {
 
     /** The default raster style */
-    static Style STYLE;
+    static StyleImpl STYLE;
 
     static {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
-        RasterSymbolizer symbolizer = factory.createRasterSymbolizer();
+        RasterSymbolizerImpl symbolizer = factory.createRasterSymbolizer();
 
-        Rule rule = factory.createRule();
+        RuleImpl rule = factory.createRule();
         rule.symbolizers().add(symbolizer);
 
-        FeatureTypeStyle type = factory.createFeatureTypeStyle();
+        FeatureTypeStyleImpl type = factory.createFeatureTypeStyle();
         type.rules().add(rule);
 
         STYLE = factory.createStyle();

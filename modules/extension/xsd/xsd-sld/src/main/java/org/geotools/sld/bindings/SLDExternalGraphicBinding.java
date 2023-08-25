@@ -19,7 +19,7 @@ package org.geotools.sld.bindings;
 import java.net.URI;
 import java.net.URL;
 import javax.xml.namespace.QName;
-import org.geotools.styling.ExternalGraphic;
+import org.geotools.styling.ExternalGraphicImpl;
 import org.geotools.styling.ResourceLocator;
 import org.geotools.styling.StyleFactory;
 import org.geotools.util.Converters;
@@ -91,7 +91,7 @@ public class SLDExternalGraphicBinding extends AbstractComplexBinding {
      */
     @Override
     public Class getType() {
-        return ExternalGraphic.class;
+        return ExternalGraphicImpl.class;
     }
 
     /**

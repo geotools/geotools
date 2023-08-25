@@ -17,17 +17,17 @@
  */
 package org.geotools.ysld.parse;
 
-import org.geotools.styling.Fill;
-import org.geotools.styling.Graphic;
+import org.geotools.styling.FillImpl;
+import org.geotools.styling.GraphicImpl;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
 /**
  * Handles parsing Ysld "fill-*" properties ("fill-color", "fill-opacity", "fill-graphic") into a
- * {@link Fill} object.
+ * {@link FillImpl} object.
  */
 public abstract class FillParser extends YsldParseHandler {
-    Fill fill;
+    FillImpl fill;
 
     protected FillParser(Factory factory) {
         super(factory);
@@ -46,18 +46,18 @@ public abstract class FillParser extends YsldParseHandler {
                 "fill-graphic",
                 new GraphicParser(factory) {
                     @Override
-                    protected void graphic(Graphic g) {
+                    protected void graphic(GraphicImpl g) {
                         fill().setGraphicFill(g);
                     }
                 });
     }
 
-    Fill fill() {
+    FillImpl fill() {
         if (fill == null) {
             fill(fill = factory.style.createFill(null));
         }
         return fill;
     }
 
-    protected abstract void fill(Fill fill);
+    protected abstract void fill(FillImpl fill);
 }

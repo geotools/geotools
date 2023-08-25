@@ -23,8 +23,8 @@ import org.geotools.renderer.style.IconStyle2D;
 import org.geotools.renderer.style.MarkStyle2D;
 import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.renderer.style.Style2D;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.PointSymbolizer;
+import org.geotools.styling.GraphicImpl;
+import org.geotools.styling.PointSymbolizerImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.visitor.DpiRescaleStyleVisitor;
 import org.geotools.util.Range;
@@ -51,10 +51,10 @@ public class GraphicsAwareDpiRescaleStyleVisitor extends DpiRescaleStyleVisitor 
     }
 
     @Override
-    protected Expression rescaleGraphicSize(Graphic gr) {
+    protected Expression rescaleGraphicSize(GraphicImpl gr) {
         Expression size = gr.getSize();
         if (size == null || size == Expression.NIL) {
-            PointSymbolizer symbolizer = sf.createPointSymbolizer(gr, null);
+            PointSymbolizerImpl symbolizer = sf.createPointSymbolizer(gr, null);
             Style2D style = ssf.createStyle(null, symbolizer, INFINITE_RANGE);
             if (style instanceof IconStyle2D) {
                 IconStyle2D is = (IconStyle2D) style;

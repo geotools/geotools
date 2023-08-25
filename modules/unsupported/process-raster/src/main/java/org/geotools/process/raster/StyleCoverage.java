@@ -24,8 +24,8 @@ import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.renderer.lite.gridcoverage2d.RasterSymbolizerHelper;
 import org.geotools.renderer.lite.gridcoverage2d.SubchainStyleVisitorCoverageProcessingAdapter;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Style;
+import org.geotools.styling.RasterSymbolizerImpl;
+import org.geotools.styling.StyleImpl;
 
 /**
  * Applies a raster symbolizer to the coverage
@@ -46,11 +46,11 @@ public class StyleCoverage implements RasterProcess {
                             name = "style",
                             description =
                                     "Styled Layer Descriptor (SLD) style containing a raster symbolizer")
-                    Style style)
+            StyleImpl style)
             throws IOException {
         // TODO: perform a lookup in the entire style?
-        final RasterSymbolizer symbolizer =
-                (RasterSymbolizer)
+        final RasterSymbolizerImpl symbolizer =
+                (RasterSymbolizerImpl)
                         style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
 
         SubchainStyleVisitorCoverageProcessingAdapter rsh =

@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.geotools.filter.function.EnvFunction;
-import org.geotools.styling.ChannelSelection;
+import org.geotools.styling.ChannelSelectionImpl;
 import org.junit.Test;
 
 public class SLDChannelSectionBindingTest extends SLDTestSupport {
@@ -28,14 +28,14 @@ public class SLDChannelSectionBindingTest extends SLDTestSupport {
     @Test
     public void testType() throws Exception {
         assertEquals(
-                ChannelSelection.class, new SLDChannelSelectionBinding(styleFactory).getType());
+                ChannelSelectionImpl.class, new SLDChannelSelectionBinding(styleFactory).getType());
     }
 
     @Test
     public void testRGB() throws Exception {
         SLDMockData.channelSelectionRGB(document, document);
 
-        ChannelSelection cs = (ChannelSelection) parse();
+        ChannelSelectionImpl cs = (ChannelSelectionImpl) parse();
         assertNotNull(cs);
 
         assertEquals(cs.getRGBChannels()[0].getChannelName().evaluate(null, String.class), "Red");
@@ -48,7 +48,7 @@ public class SLDChannelSectionBindingTest extends SLDTestSupport {
     public void testRGBExpression() throws Exception {
         SLDMockData.channelSelectionExpression(document, document);
 
-        ChannelSelection cs = (ChannelSelection) parse();
+        ChannelSelectionImpl cs = (ChannelSelectionImpl) parse();
         assertNotNull(cs);
 
         // test default value: 1
@@ -75,7 +75,7 @@ public class SLDChannelSectionBindingTest extends SLDTestSupport {
     public void testGray() throws Exception {
         SLDMockData.channelSelectionGray(document, document);
 
-        ChannelSelection cs = (ChannelSelection) parse();
+        ChannelSelectionImpl cs = (ChannelSelectionImpl) parse();
         assertNotNull(cs);
 
         assertEquals(cs.getGrayChannel().getChannelName().evaluate(null, String.class), "Gray");

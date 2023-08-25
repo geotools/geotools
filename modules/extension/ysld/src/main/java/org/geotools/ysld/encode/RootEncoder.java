@@ -26,8 +26,10 @@ import org.geotools.api.style.RemoteOWS;
 import org.geotools.api.style.StyledLayer;
 import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.api.style.UserLayer;
+import org.geotools.styling.NamedLayerImpl;
 import org.geotools.styling.SLD;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
+import org.geotools.styling.UserLayerImpl;
 
 /**
  * Encodes a {@link StyledLayerDescriptor} as YSLD. Handles top-level elements such a name and
@@ -58,7 +60,7 @@ public class RootEncoder extends YsldEncodeHandler<StyledLayerDescriptor> {
         put("sld-title", sld.getTitle());
         put("sld-abstract", sld.getAbstract());
 
-        Style style = SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld);
+        StyleImpl style = SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld);
 
         StyledLayer layer = findParentLayer(sld, style);
         encode(layer);
@@ -96,7 +98,7 @@ public class RootEncoder extends YsldEncodeHandler<StyledLayerDescriptor> {
      * @param style
      * @return layer containing the provided style, or {@code null} if not found
      */
-    private StyledLayer findParentLayer(StyledLayerDescriptor sld, Style style) {
+    private StyledLayer findParentLayer(StyledLayerDescriptor sld, StyleImpl style) {
         if (style == null) return null;
 
         return sld.layers().stream()
@@ -104,14 +106,14 @@ public class RootEncoder extends YsldEncodeHandler<StyledLayerDescriptor> {
                         new Predicate<StyledLayer>() {
                             @Override
                             public boolean test(StyledLayer styledLayer) {
-                                List<Style> styles;
+                                List<StyleImpl> styles;
                                 if (styledLayer instanceof NamedLayer)
                                     styles =
-                                            ((org.geotools.styling.NamedLayer) styledLayer)
+                                            ((NamedLayerImpl) styledLayer)
                                                     .styles();
                                 else if (styledLayer instanceof UserLayer) {
                                     styles =
-                                            ((org.geotools.styling.UserLayer) styledLayer)
+                                            ((UserLayerImpl) styledLayer)
                                                     .userStyles();
                                 } else {
                                     styles = Collections.emptyList();
@@ -131,7 +133,7 @@ public class RootEncoder extends YsldEncodeHandler<StyledLayerDescriptor> {
         }
     }
 
-    protected void encode(Style style) {
+    protected void encode(StyleImpl style) {
         put("name", style.getName());
         put(
                 "title",

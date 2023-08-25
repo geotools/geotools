@@ -19,9 +19,9 @@ package org.geotools.brewer.styling.builder;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.styling.Font;
+import org.geotools.styling.FontImpl;
 
-public class FontBuilder extends AbstractStyleBuilder<Font> {
+public class FontBuilder extends AbstractStyleBuilder<FontImpl> {
     boolean familiesSet = false;
 
     private List<Expression> families = new ArrayList<>();
@@ -42,14 +42,14 @@ public class FontBuilder extends AbstractStyleBuilder<Font> {
     }
 
     @Override
-    public Font build() {
+    public FontImpl build() {
         if (unset) {
             return null;
         }
         if (families.isEmpty()) {
             families.add(FF.literal("Serif"));
         }
-        Font font = sf.font(families, style, weight, size);
+        FontImpl font = sf.font(families, style, weight, size);
         if (parent == null) {
             reset();
         }
@@ -110,7 +110,7 @@ public class FontBuilder extends AbstractStyleBuilder<Font> {
 
     @Override
     public FontBuilder reset() {
-        Font df = sf.getDefaultFont();
+        FontImpl df = sf.getDefaultFont();
         this.families = new ArrayList<>();
         this.size = df.getSize();
         this.style = df.getStyle();
@@ -119,7 +119,7 @@ public class FontBuilder extends AbstractStyleBuilder<Font> {
     }
 
     @Override
-    public FontBuilder reset(Font font) {
+    public FontBuilder reset(FontImpl font) {
         if (font == null) {
             return reset();
         }

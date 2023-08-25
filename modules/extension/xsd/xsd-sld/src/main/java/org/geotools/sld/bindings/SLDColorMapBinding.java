@@ -20,6 +20,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.api.style.ColorMap;
 import org.geotools.api.style.ColorMapEntry;
+import org.geotools.styling.ColorMapImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
@@ -111,7 +112,7 @@ public class SLDColorMapBinding extends AbstractComplexBinding {
         List entries = node.getChildValues("ColorMapEntry");
 
         for (Object entry : entries) {
-            ((org.geotools.styling.ColorMap) colorMap).addColorMapEntry((ColorMapEntry) entry);
+            ((ColorMapImpl) colorMap).addColorMapEntry((ColorMapEntry) entry);
         }
 
         return colorMap;

@@ -19,8 +19,8 @@ package org.geotools.se.v1_1.bindings;
 import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDFeatureTypeStyleBinding;
-import org.geotools.styling.Description;
-import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.DescriptionImpl;
+import org.geotools.styling.FeatureTypeStyleImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
@@ -87,10 +87,10 @@ public class FeatureTypeStyleBinding extends SLDFeatureTypeStyleBinding {
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
-        FeatureTypeStyle fts = (FeatureTypeStyle) super.parse(instance, node, value);
+        FeatureTypeStyleImpl fts = (FeatureTypeStyleImpl) super.parse(instance, node, value);
 
         if (node.hasChild("Description")) {
-            Description d = (Description) node.getChildValue("Description");
+            DescriptionImpl d = (DescriptionImpl) node.getChildValue("Description");
             fts.getDescription().setTitle(d.getTitle());
             fts.getDescription().setAbstract(d.getAbstract());
         }

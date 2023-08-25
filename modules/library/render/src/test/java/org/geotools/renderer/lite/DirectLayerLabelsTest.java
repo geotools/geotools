@@ -35,7 +35,7 @@ import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.map.MapViewport;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.test.TestData;
 import org.geotools.xml.styling.SLDParser;
@@ -59,7 +59,7 @@ public class DirectLayerLabelsTest {
     @Test
     public void testPointLabeling() throws Exception {
         FeatureCollection collection = createPointFeatureCollection();
-        Style style = loadStyle("PointStyle.sld");
+        StyleImpl style = loadStyle("PointStyle.sld");
         Assert.assertNotNull(style);
         MapContent map = new MapContent();
         map.addLayer(new FeatureLayer(collection, style));
@@ -94,13 +94,13 @@ public class DirectLayerLabelsTest {
         map.dispose();
     }
 
-    private Style loadStyle(String sldFilename) throws IOException {
+    private StyleImpl loadStyle(String sldFilename) throws IOException {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory();
 
         java.net.URL surl = TestData.getResource(this, sldFilename);
         SLDParser stylereader = new SLDParser(factory, surl);
 
-        Style style = stylereader.readXML()[0];
+        StyleImpl style = stylereader.readXML()[0];
         return style;
     }
 

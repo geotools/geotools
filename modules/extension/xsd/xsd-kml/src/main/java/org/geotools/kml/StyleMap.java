@@ -16,11 +16,12 @@
  */
 package org.geotools.kml;
 
+import org.geotools.styling.FeatureTypeStyleImpl;
+
 import java.net.URI;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import org.geotools.styling.FeatureTypeStyle;
 
 /**
  * Simple container for holding styles by uri.
@@ -31,13 +32,13 @@ import org.geotools.styling.FeatureTypeStyle;
  * @author Justin Deoliveira, The Open Planning Project
  */
 public class StyleMap {
-    protected Map<URI, FeatureTypeStyle> map = Collections.synchronizedMap(new HashMap<>());
+    protected Map<URI, FeatureTypeStyleImpl> map = Collections.synchronizedMap(new HashMap<>());
 
-    public void put(URI uri, FeatureTypeStyle style) {
+    public void put(URI uri, FeatureTypeStyleImpl style) {
         map.put(uri, style);
     }
 
-    public FeatureTypeStyle get(URI uri) {
+    public FeatureTypeStyleImpl get(URI uri) {
         return map.get(uri);
     }
 }

@@ -37,7 +37,7 @@ import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.NilExpression;
 import org.geotools.api.filter.expression.PropertyName;
-import org.geotools.styling.Rule;
+import org.geotools.styling.RuleImpl;
 import org.geotools.ysld.parse.ScaleRange;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
@@ -52,7 +52,7 @@ public enum TestUtils {
      *
      * @param scale denominator of the scale
      */
-    public static Matcher<Rule> appliesToScale(double scale) {
+    public static Matcher<RuleImpl> appliesToScale(double scale) {
         return describedAs(
                 "rule applies to scale denom %0",
                 allOf(

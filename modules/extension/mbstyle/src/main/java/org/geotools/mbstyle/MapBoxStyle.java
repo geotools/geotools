@@ -29,7 +29,8 @@ import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.mbstyle.layer.MBLayer;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBStyleParser;
-import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.FeatureTypeStyleImpl;
+import org.geotools.styling.NamedLayerImpl;
 import org.json.simple.parser.ParseException;
 
 /**
@@ -105,7 +106,7 @@ public class MapBoxStyle {
                 continue;
             }
             try {
-                List<FeatureTypeStyle> featureTypeStyle = layer.transform(style);
+                List<FeatureTypeStyleImpl> featureTypeStyle = layer.transform(style);
                 if (featureTypeStyle != null) {
                     hasVisibleLayer = true;
                 }
@@ -148,15 +149,15 @@ public class MapBoxStyle {
     }
 
     private static void validateLayer(List<Exception> problems, NamedLayer layer) {
-        org.geotools.styling.NamedLayer named = (org.geotools.styling.NamedLayer) layer;
+        NamedLayerImpl named = (NamedLayerImpl) layer;
         if (named.styles().isEmpty()) {
             problems.add(
                     new MBFormatException(
                             "Generated named layer for " + named.getName() + " is empty."));
         } else {
             for (Style layerStyle : named.styles()) {
-                if (layerStyle instanceof FeatureTypeStyle) {
-                    FeatureTypeStyle fts = (FeatureTypeStyle) layerStyle;
+                if (layerStyle instanceof FeatureTypeStyleImpl) {
+                    FeatureTypeStyleImpl fts = (FeatureTypeStyleImpl) layerStyle;
                     if (fts.rules().isEmpty()) {
                         problems.add(
                                 new MBFormatException(

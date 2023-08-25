@@ -22,9 +22,9 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
-import org.geotools.styling.PointSymbolizer;
+import org.geotools.styling.PointSymbolizerImpl;
 import org.geotools.styling.SLD;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
@@ -58,7 +58,7 @@ public class GeometryTransformationTest {
 
     @Test
     public void testBufferLine() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "lineBuffer.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "lineBuffer.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(fs, style));
@@ -71,7 +71,7 @@ public class GeometryTransformationTest {
 
     @Test
     public void testBufferPoly() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "polyBuffer.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "polyBuffer.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(bfs, style));
@@ -84,7 +84,7 @@ public class GeometryTransformationTest {
 
     @Test
     public void testVertices() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "lineVertices.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "lineVertices.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(fs, style));
@@ -97,7 +97,7 @@ public class GeometryTransformationTest {
 
     @Test
     public void testStartEnd() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "lineStartEnd.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "lineStartEnd.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(fs, style));
@@ -110,7 +110,7 @@ public class GeometryTransformationTest {
 
     @Test
     public void testIsometric() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "isometric.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "isometric.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(bfs, style));
@@ -140,9 +140,9 @@ public class GeometryTransformationTest {
         }
 
         // setup a point layer with the right geometry trnasformation
-        Style style = SLD.createPointStyle("circle", Color.BLUE, Color.BLUE, 1f, 10f);
-        PointSymbolizer ps =
-                (PointSymbolizer)
+        StyleImpl style = SLD.createPointStyle("circle", Color.BLUE, Color.BLUE, 1f, 10f);
+        PointSymbolizerImpl ps =
+                (PointSymbolizerImpl)
                         style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         ps.setGeometry(ff.function("convert", ff.property("wkt"), ff.literal(Point.class)));

@@ -12,7 +12,7 @@ public class CookbookPolygonTest extends AbstractStyleTest {
 
     @Test
     public void testSimple() {
-        Style style = new FillBuilder().color(Color.BLUE).buildStyle();
+        StyleImpl style = new FillBuilder().color(Color.BLUE).buildStyle();
         // print(style);
 
         // round up the basic elements and check its simple
@@ -21,7 +21,7 @@ public class CookbookPolygonTest extends AbstractStyleTest {
         assertSimpleStyle(collector);
 
         // check the symbolizer
-        PolygonSymbolizer ps = (PolygonSymbolizer) collector.symbolizers.get(0);
+        PolygonSymbolizerImpl ps = (PolygonSymbolizerImpl) collector.symbolizers.get(0);
         assertEquals(Color.BLUE, ps.getFill().getColor().evaluate(null, Color.class));
         assertNull(ps.getStroke());
     }
@@ -30,7 +30,7 @@ public class CookbookPolygonTest extends AbstractStyleTest {
     public void testSimpleWithStroke() {
         PolygonSymbolizerBuilder psb = new PolygonSymbolizerBuilder();
         psb.fill().color(Color.BLUE);
-        Style style = psb.stroke().color(Color.WHITE).width(2).buildStyle();
+        StyleImpl style = psb.stroke().color(Color.WHITE).width(2).buildStyle();
         // print(style);
 
         // round up the basic elements and check its simple
@@ -39,7 +39,7 @@ public class CookbookPolygonTest extends AbstractStyleTest {
         assertSimpleStyle(collector);
 
         // check the symbolizer
-        PolygonSymbolizer ps = (PolygonSymbolizer) collector.symbolizers.get(0);
+        PolygonSymbolizerImpl ps = (PolygonSymbolizerImpl) collector.symbolizers.get(0);
         assertEquals(Color.BLUE, ps.getFill().getColor().evaluate(null, Color.class));
         assertEquals(Color.WHITE, ps.getStroke().getColor().evaluate(null, Color.class));
         assertEquals(2, (int) ps.getStroke().getWidth().evaluate(null, Integer.class));
@@ -50,7 +50,7 @@ public class CookbookPolygonTest extends AbstractStyleTest {
         PolygonSymbolizerBuilder psb = new PolygonSymbolizerBuilder();
         psb.fill().color(Color.BLUE).opacity(0.5);
         psb.stroke().color(Color.WHITE).width(2);
-        Style style = psb.buildStyle();
+        StyleImpl style = psb.buildStyle();
         // print(style);
 
         // round up the basic elements and check its simple
@@ -59,7 +59,7 @@ public class CookbookPolygonTest extends AbstractStyleTest {
         assertSimpleStyle(collector);
 
         // check the symbolizer
-        PolygonSymbolizer ps = (PolygonSymbolizer) collector.symbolizers.get(0);
+        PolygonSymbolizerImpl ps = (PolygonSymbolizerImpl) collector.symbolizers.get(0);
         assertEquals(Color.BLUE, ps.getFill().getColor().evaluate(null, Color.class));
         assertEquals(0.5, ps.getFill().getOpacity().evaluate(null, Double.class), 0.0);
         assertEquals(Color.WHITE, ps.getStroke().getColor().evaluate(null, Color.class));
@@ -68,7 +68,7 @@ public class CookbookPolygonTest extends AbstractStyleTest {
 
     @Test
     public void testGraphicFill() {
-        Style style =
+        StyleImpl style =
                 new FillBuilder()
                         .graphicFill()
                         .size(93)
@@ -82,17 +82,17 @@ public class CookbookPolygonTest extends AbstractStyleTest {
         assertSimpleStyle(collector);
 
         // check the symbolizer
-        PolygonSymbolizer ps = (PolygonSymbolizer) collector.symbolizers.get(0);
+        PolygonSymbolizerImpl ps = (PolygonSymbolizerImpl) collector.symbolizers.get(0);
         assertNull(ps.getStroke());
-        ExternalGraphic eg =
-                (ExternalGraphic) ps.getFill().getGraphicFill().graphicalSymbols().get(0);
+        ExternalGraphicImpl eg =
+                (ExternalGraphicImpl) ps.getFill().getGraphicFill().graphicalSymbols().get(0);
         assertEquals("colorblocks.png", eg.getOnlineResource().getLinkage().toString());
         assertEquals("image/png", eg.getFormat());
     }
 
     @Test
     public void testHatch() {
-        Style style =
+        StyleImpl style =
                 new FillBuilder()
                         .graphicFill()
                         .size(93)
@@ -110,9 +110,9 @@ public class CookbookPolygonTest extends AbstractStyleTest {
         assertSimpleStyle(collector);
 
         // check the symbolizer
-        PolygonSymbolizer ps = (PolygonSymbolizer) collector.symbolizers.get(0);
+        PolygonSymbolizerImpl ps = (PolygonSymbolizerImpl) collector.symbolizers.get(0);
         assertNull(ps.getStroke());
-        Mark mark = (Mark) ps.getFill().getGraphicFill().graphicalSymbols().get(0);
+        MarkImpl mark = (MarkImpl) ps.getFill().getGraphicFill().graphicalSymbols().get(0);
         assertEquals("shape://times", mark.getWellKnownName().evaluate(null, String.class));
         assertEquals("#990099", mark.getStroke().getColor().evaluate(null, String.class));
         assertNull(mark.getFill());
@@ -131,24 +131,24 @@ public class CookbookPolygonTest extends AbstractStyleTest {
         tb.fill().color(Color.BLACK);
         tb.halo().radius(3).fill().color(Color.WHITE);
         tb.option("autoWrap", 60).option("maxDisplacement", 150);
-        Style style = rb.buildStyle();
+        StyleImpl style = rb.buildStyle();
         // print(style);
 
         // round up the basic elements and check its simple
         StyleCollector collector = new StyleCollector();
         style.accept(collector);
 
-        PolygonSymbolizer ps = (PolygonSymbolizer) collector.symbolizers.get(0);
+        PolygonSymbolizerImpl ps = (PolygonSymbolizerImpl) collector.symbolizers.get(0);
         assertEquals("#40FF40", ps.getFill().getColor().evaluate(null, String.class));
         assertEquals(Color.WHITE, ps.getStroke().getColor().evaluate(null, Color.class));
         assertEquals(2, (int) ps.getStroke().getWidth().evaluate(null, Integer.class));
 
-        TextSymbolizer ts = (TextSymbolizer) collector.symbolizers.get(1);
+        TextSymbolizerImpl ts = (TextSymbolizerImpl) collector.symbolizers.get(1);
         assertEquals(ff.property("name"), ts.getLabel());
         assertEquals(Color.BLACK, ts.getFill().getColor().evaluate(null, Color.class));
 
         // font
-        Font font = ts.getFont();
+        FontImpl font = ts.getFont();
         assertEquals("Arial", font.getFamily().get(0).evaluate(null, String.class));
         assertEquals(11, (int) font.getSize().evaluate(null, Integer.class));
         assertEquals(
@@ -159,7 +159,7 @@ public class CookbookPolygonTest extends AbstractStyleTest {
                 font.getWeight().evaluate(null, String.class));
 
         // placement
-        PointPlacement pp = (PointPlacement) ts.getLabelPlacement();
+        PointPlacementImpl pp = (PointPlacementImpl) ts.getLabelPlacement();
         assertEquals(0.5, pp.getAnchorPoint().getAnchorPointX().evaluate(null, Double.class), 0);
         assertEquals(0.5, pp.getAnchorPoint().getAnchorPointY().evaluate(null, Double.class), 0);
 
@@ -197,7 +197,7 @@ public class CookbookPolygonTest extends AbstractStyleTest {
                 .polygon()
                 .fill()
                 .colorHex("#009900");
-        Style style = fts.buildStyle();
+        StyleImpl style = fts.buildStyle();
         // print(style);
 
         // round up the elements and check the basics
@@ -219,11 +219,11 @@ public class CookbookPolygonTest extends AbstractStyleTest {
                 collector.rules.get(2).getFilter());
 
         // check symbolizers
-        PolygonSymbolizer ps = (PolygonSymbolizer) collector.symbolizers.get(0);
+        PolygonSymbolizerImpl ps = (PolygonSymbolizerImpl) collector.symbolizers.get(0);
         assertEquals("#66FF66", ps.getFill().getColor().evaluate(null, String.class));
-        ps = (PolygonSymbolizer) collector.symbolizers.get(1);
+        ps = (PolygonSymbolizerImpl) collector.symbolizers.get(1);
         assertEquals("#33CC33", ps.getFill().getColor().evaluate(null, String.class));
-        ps = (PolygonSymbolizer) collector.symbolizers.get(2);
+        ps = (PolygonSymbolizerImpl) collector.symbolizers.get(2);
         assertEquals("#009900", ps.getFill().getColor().evaluate(null, String.class));
     }
 
@@ -248,7 +248,7 @@ public class CookbookPolygonTest extends AbstractStyleTest {
         pb.stroke().color(Color.BLACK).width(1);
         pb.fill().colorHex("#0000CC");
 
-        Style style = fts.buildStyle();
+        StyleImpl style = fts.buildStyle();
         // print(style);
 
         StyleCollector collector = new StyleCollector();
@@ -272,7 +272,7 @@ public class CookbookPolygonTest extends AbstractStyleTest {
         tb.newFont().familyName("Arial").size(14).styleName("normal").weightName("bold");
         tb.pointPlacement().anchor().x(0.5).y(0.5);
         tb.fill().color(Color.WHITE);
-        Style style = fts.buildStyle();
+        StyleImpl style = fts.buildStyle();
         // print(style);
 
         StyleCollector collector = new StyleCollector();

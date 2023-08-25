@@ -17,16 +17,16 @@
  */
 package org.geotools.ysld.encode;
 
-import org.geotools.styling.LineSymbolizer;
+import org.geotools.styling.LineSymbolizerImpl;
 
-/** Encodes a {@link LineSymbolizer} as YSLD. */
-public class LineSymbolizerEncoder extends SymbolizerEncoder<LineSymbolizer> {
-    public LineSymbolizerEncoder(LineSymbolizer sym) {
+/** Encodes a {@link LineSymbolizerImpl} as YSLD. */
+public class LineSymbolizerEncoder extends SymbolizerEncoder<LineSymbolizerImpl> {
+    public LineSymbolizerEncoder(LineSymbolizerImpl sym) {
         super(sym);
     }
 
     @Override
-    protected void encode(LineSymbolizer sym) {
+    protected void encode(LineSymbolizerImpl sym) {
         inline(new StrokeEncoder(sym.getStroke()));
         put("offset", sym.getPerpendicularOffset());
         super.encode(sym);

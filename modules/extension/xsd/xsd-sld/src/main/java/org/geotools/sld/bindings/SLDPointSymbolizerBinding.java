@@ -20,8 +20,8 @@ import javax.xml.namespace.QName;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.sld.CssParameter;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.PointSymbolizer;
+import org.geotools.styling.GraphicImpl;
+import org.geotools.styling.PointSymbolizerImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
@@ -92,7 +92,7 @@ public class SLDPointSymbolizerBinding extends AbstractComplexBinding {
      */
     @Override
     public Class getType() {
-        return PointSymbolizer.class;
+        return PointSymbolizerImpl.class;
     }
 
     /**
@@ -114,7 +114,7 @@ public class SLDPointSymbolizerBinding extends AbstractComplexBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        PointSymbolizer ps = styleFactory.createPointSymbolizer();
+        PointSymbolizerImpl ps = styleFactory.createPointSymbolizer();
 
         // &lt;xsd:element ref="sld:Geometry" minOccurs="0"/&gt;
         if (node.hasChild("Geometry")) {
@@ -129,7 +129,7 @@ public class SLDPointSymbolizerBinding extends AbstractComplexBinding {
 
         // &lt;xsd:element ref="sld:Graphic" minOccurs="0"/&gt;
         if (node.hasChild("Graphic")) {
-            ps.setGraphic((Graphic) node.getChildValue("Graphic"));
+            ps.setGraphic((GraphicImpl) node.getChildValue("Graphic"));
         }
 
         // &lt;xsd:element ref="sld:VendorOption" minOccurs="0" maxOccurs="unbounded"/&gt;

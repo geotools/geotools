@@ -19,7 +19,8 @@ package org.geotools.se.v1_1.bindings;
 import javax.xml.namespace.QName;
 import org.geotools.api.style.Description;
 import org.geotools.se.v1_1.SE;
-import org.geotools.styling.Symbolizer;
+import org.geotools.api.style.Symbolizer;
+import org.geotools.styling.AbstractSymbolizer;
 import org.geotools.styling.UomOgcMapping;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
@@ -84,7 +85,7 @@ public class SymbolizerTypeBinding extends AbstractComplexBinding {
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
-        Symbolizer sym = (Symbolizer) value;
+        AbstractSymbolizer sym = (AbstractSymbolizer) value;
         //      &lt;xsd:sequence&gt;
         //          &lt;xsd:element minOccurs="0" ref="se:Name"/&gt;
         //          &lt;xsd:element minOccurs="0" ref="se:Description"/&gt;

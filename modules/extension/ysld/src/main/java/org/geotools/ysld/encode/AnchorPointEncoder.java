@@ -17,17 +17,17 @@
  */
 package org.geotools.ysld.encode;
 
-import org.geotools.styling.AnchorPoint;
+import org.geotools.styling.AnchorPointImpl;
 
-/** Encodes an {@link AnchorPoint} as YSLD. */
-public class AnchorPointEncoder extends YsldEncodeHandler<AnchorPoint> {
+/** Encodes an {@link AnchorPointImpl} as YSLD. */
+public class AnchorPointEncoder extends YsldEncodeHandler<AnchorPointImpl> {
 
-    AnchorPointEncoder(AnchorPoint anchor) {
+    AnchorPointEncoder(AnchorPointImpl anchor) {
         super(anchor);
     }
 
     @Override
-    protected void encode(AnchorPoint anchor) {
+    protected void encode(AnchorPointImpl anchor) {
         if (nullIf(anchor.getAnchorPointX(), 0) == null
                 && nullIf(anchor.getAnchorPointY(), 0.5) == null) {
             return;

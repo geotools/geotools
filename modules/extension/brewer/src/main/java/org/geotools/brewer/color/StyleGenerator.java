@@ -45,15 +45,8 @@ import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.function.Classifier;
 import org.geotools.filter.function.ExplicitClassifier;
 import org.geotools.filter.function.RangedClassifier;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Mark;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.Symbolizer;
+import org.geotools.styling.*;
+import org.geotools.styling.FillImpl;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
@@ -110,7 +103,7 @@ public class StyleGenerator {
      *
      * @param typeId semantic type identifier, which will be prefixed with "colorbrewer:"
      */
-    public static FeatureTypeStyle createFeatureTypeStyle(
+    public static FeatureTypeStyleImpl createFeatureTypeStyle(
             Classifier classifier,
             Expression expression,
             Color[] colors,
@@ -118,15 +111,15 @@ public class StyleGenerator {
             GeometryDescriptor geometryAttrType,
             int elseMode,
             double opacity,
-            Stroke defaultStroke)
+            StrokeImpl defaultStroke)
             throws IllegalFilterException {
         // init nulls
         if (defaultStroke == null) {
-            defaultStroke = (Stroke) sb.createStroke();
+            defaultStroke = (StrokeImpl) sb.createStroke();
         }
 
         // answer goes here
-        FeatureTypeStyle fts = sf.createFeatureTypeStyle();
+        FeatureTypeStyleImpl fts = sf.createFeatureTypeStyle();
 
         // update the number of classes
 
@@ -143,7 +136,7 @@ public class StyleGenerator {
                 localMin = ranged.getMin(i);
                 localMax = ranged.getMax(i);
 
-                Rule rule =
+                RuleImpl rule =
                         createRuleRanged(
                                 ranged,
                                 expression,
@@ -163,7 +156,7 @@ public class StyleGenerator {
             // for each class
             for (int i = 0; i < explicit.getSize(); i++) {
                 Set value = explicit.getValues(i);
-                Rule rule =
+                RuleImpl rule =
                         createRuleExplicit(
                                 explicit,
                                 expression,
@@ -188,7 +181,7 @@ public class StyleGenerator {
                             getElseColor(elseMode, colors),
                             opacity,
                             defaultStroke);
-            Rule elseRule = sb.createRule(symb);
+            RuleImpl elseRule = sb.createRule(symb);
             elseRule.setElseFilter(true);
             elseRule.getDescription().setTitle("Else");
             elseRule.setName("else");
@@ -212,7 +205,7 @@ public class StyleGenerator {
             GeometryDescriptor geometryAttrType,
             Color color,
             double opacity,
-            Stroke defaultStroke) {
+            StrokeImpl defaultStroke) {
         Symbolizer symb;
 
         if (defaultStroke == null) {
@@ -221,15 +214,15 @@ public class StyleGenerator {
 
         if ((geometryAttrType.getType().getBinding() == MultiPolygon.class)
                 || (geometryAttrType.getType().getBinding() == Polygon.class)) {
-            Fill fill = sb.createFill(color, opacity);
+            FillImpl fill = sb.createFill(color, opacity);
             symb = sb.createPolygonSymbolizer(defaultStroke, fill);
         } else if (geometryAttrType.getType().getBinding() == LineString.class) {
             symb = sb.createLineSymbolizer(color);
         } else if ((geometryAttrType.getType().getBinding() == MultiPoint.class)
                 || (geometryAttrType.getType().getBinding() == Point.class)) {
-            Fill fill = sb.createFill(color, opacity);
-            Mark square = sb.createMark(StyleBuilder.MARK_SQUARE, fill, defaultStroke);
-            Graphic graphic = sb.createGraphic(null, square, null); // , 1, 4, 0);
+            FillImpl fill = sb.createFill(color, opacity);
+            MarkImpl square = sb.createMark(StyleBuilder.MARK_SQUARE, fill, defaultStroke);
+            GraphicImpl graphic = sb.createGraphic(null, square, null); // , 1, 4, 0);
             symb = sb.createPointSymbolizer(graphic);
 
             // TODO: handle Text and Raster
@@ -265,7 +258,7 @@ public class StyleGenerator {
         }
     }
 
-    private static Rule createRuleRanged(
+    private static RuleImpl createRuleRanged(
             RangedClassifier classifier,
             Expression expression,
             Object localMin,
@@ -275,7 +268,7 @@ public class StyleGenerator {
             int elseMode,
             Color[] colors,
             double opacity,
-            Stroke defaultStroke)
+            StrokeImpl defaultStroke)
             throws IllegalFilterException {
         // 1.0 --> 1
         // (this makes our styleExpressions more readable. Note that the
@@ -325,7 +318,7 @@ public class StyleGenerator {
                         geometryAttrType, getColor(elseMode, colors, i), opacity, defaultStroke);
 
         // create a rule
-        Rule rule = sb.createRule(symb);
+        RuleImpl rule = sb.createRule(symb);
         rule.setFilter(filter);
         rule.getDescription().setTitle(title);
         rule.setName(getRuleName(i + 1));
@@ -333,7 +326,7 @@ public class StyleGenerator {
         return rule;
     }
 
-    private static Rule createRuleExplicit(
+    private static RuleImpl createRuleExplicit(
             ExplicitClassifier explicit,
             Expression expression,
             Set value,
@@ -342,7 +335,7 @@ public class StyleGenerator {
             int elseMode,
             Color[] colors,
             double opacity,
-            Stroke defaultStroke) {
+            StrokeImpl defaultStroke) {
         // create a sub filter for each unique value, and merge them
         // into the logic filter
         Object[] items = value.toArray();
@@ -379,7 +372,7 @@ public class StyleGenerator {
                         geometryAttrType, getColor(elseMode, colors, i), opacity, defaultStroke);
 
         // create the rule
-        Rule rule = sb.createRule(symb);
+        RuleImpl rule = sb.createRule(symb);
 
         if (filters.size() == 1) {
             rule.setFilter(filters.get(0));
@@ -393,9 +386,9 @@ public class StyleGenerator {
         return rule;
     }
     /** Used to update an existing style based on the provided input. */
-    public static void modifyFTS(FeatureTypeStyle fts, int ruleIndex, String styleExpression)
+    public static void modifyFTS(FeatureTypeStyleImpl fts, int ruleIndex, String styleExpression)
             throws IllegalFilterException {
-        Rule thisRule = fts.rules().get(ruleIndex);
+        RuleImpl thisRule = fts.rules().get(ruleIndex);
         Filter filter = thisRule.getFilter();
 
         if (filter instanceof And) { // ranged expression

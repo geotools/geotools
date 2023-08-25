@@ -19,29 +19,29 @@ package org.geotools.ysld.encode;
 
 import org.geotools.api.metadata.citation.OnLineResource;
 import org.geotools.api.style.GraphicalSymbol;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Mark;
+import org.geotools.styling.ExternalGraphicImpl;
+import org.geotools.styling.GraphicImpl;
+import org.geotools.styling.MarkImpl;
 
 /** Encodes a {@link GraphicalSymbol} as YSLD. */
 public class SymbolsEncoder extends YsldEncodeHandler<GraphicalSymbol> {
 
-    public SymbolsEncoder(Graphic g) {
+    public SymbolsEncoder(GraphicImpl g) {
         super(g.graphicalSymbols().iterator());
     }
 
     @Override
     protected void encode(GraphicalSymbol symbol) {
-        if (symbol instanceof Mark) {
+        if (symbol instanceof MarkImpl) {
             push("mark");
-            encode((Mark) symbol);
-        } else if (symbol instanceof ExternalGraphic) {
+            encode((MarkImpl) symbol);
+        } else if (symbol instanceof ExternalGraphicImpl) {
             push("external");
-            encode((ExternalGraphic) symbol);
+            encode((ExternalGraphicImpl) symbol);
         }
     }
 
-    SymbolsEncoder encode(Mark mark) {
+    SymbolsEncoder encode(MarkImpl mark) {
         putName("shape", mark.getWellKnownName());
         inline(new StrokeEncoder(mark.getStroke()));
         inline(new FillEncoder(mark.getFill()));
@@ -52,7 +52,7 @@ public class SymbolsEncoder extends YsldEncodeHandler<GraphicalSymbol> {
         return this;
     }
 
-    SymbolsEncoder encode(ExternalGraphic eg) {
+    SymbolsEncoder encode(ExternalGraphicImpl eg) {
         OnLineResource r = eg.getOnlineResource();
         if (r != null) {
             put("url", r.getLinkage().toString());

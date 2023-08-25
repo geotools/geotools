@@ -19,7 +19,8 @@ package org.geotools.sld.bindings;
 import javax.xml.namespace.QName;
 import org.geotools.api.style.LayerFeatureConstraints;
 import org.geotools.api.style.NamedLayer;
-import org.geotools.styling.Style;
+import org.geotools.styling.NamedLayerImpl;
+import org.geotools.styling.StyleImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
@@ -111,7 +112,7 @@ public class SLDNamedLayerBinding extends AbstractComplexBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        org.geotools.styling.NamedLayer namedLayer = styleFactory.createNamedLayer();
+        NamedLayerImpl namedLayer = styleFactory.createNamedLayer();
 
         // &lt;xsd:element ref="sld:Name"/&gt;
         namedLayer.setName((String) node.getChildValue("Name"));
@@ -127,7 +128,7 @@ public class SLDNamedLayerBinding extends AbstractComplexBinding {
         //  &lt;xsd:element ref="sld:NamedStyle"/&gt;
         //  &lt;xsd:element ref="sld:UserStyle"/&gt;
         // &lt;/xsd:choice&gt;
-        for (Style style : node.getChildValues(Style.class)) {
+        for (StyleImpl style : node.getChildValues(StyleImpl.class)) {
             namedLayer.addStyle(style);
         }
 

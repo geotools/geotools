@@ -23,7 +23,7 @@ import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 
 /**
  * Layer used to draw a raster {@link GridCoverage}.
@@ -45,12 +45,12 @@ public class GridCoverageLayer extends RasterLayer {
      *
      * @param coverage The new layer that has been added.
      */
-    public GridCoverageLayer(GridCoverage2D coverage, Style style) {
+    public GridCoverageLayer(GridCoverage2D coverage, StyleImpl style) {
         super(style);
         this.coverage = coverage;
     }
     /** Create layer to draw the provided grid coverage. */
-    public GridCoverageLayer(GridCoverage2D coverage, Style style, String title) {
+    public GridCoverageLayer(GridCoverage2D coverage, StyleImpl style, String title) {
         super(style, title);
         this.coverage = coverage;
     }

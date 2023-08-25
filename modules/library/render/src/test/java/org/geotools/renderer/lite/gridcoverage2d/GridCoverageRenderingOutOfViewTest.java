@@ -41,7 +41,7 @@ import org.geotools.map.MapContent;
 import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.lite.GridCoverageRendererTest;
 import org.geotools.renderer.lite.StreamingRenderer;
-import org.geotools.styling.RasterSymbolizer;
+import org.geotools.styling.RasterSymbolizerImpl;
 import org.geotools.styling.StyleBuilder;
 import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
@@ -113,7 +113,7 @@ public class GridCoverageRenderingOutOfViewTest {
                         8.899888225675163E9);
         GridCoverageRenderer renderer = new GridCoverageRenderer(crs, mapExtent, screenSize, w2s);
 
-        RasterSymbolizer rasterSymbolizer = new RasterSymbolizer();
+        RasterSymbolizerImpl rasterSymbolizer = new RasterSymbolizerImpl();
 
         RenderedImage rendered =
                 renderer.renderImage(
@@ -134,7 +134,7 @@ public class GridCoverageRenderingOutOfViewTest {
             throws IOException, URISyntaxException {
 
         StyleBuilder sb = new StyleBuilder();
-        RasterSymbolizer rs = sb.createRasterSymbolizer();
+        RasterSymbolizerImpl rs = sb.createRasterSymbolizer();
         return new GridCoverageLayer(gc, sb.createStyle(rs), "");
     }
 

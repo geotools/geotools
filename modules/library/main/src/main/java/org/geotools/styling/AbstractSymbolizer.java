@@ -23,12 +23,13 @@ import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.style.Symbolizer;
 import org.geotools.factory.CommonFactoryFinder;
 
 public abstract class AbstractSymbolizer implements Symbolizer {
     protected String name;
 
-    protected Description description;
+    protected DescriptionImpl description;
 
     protected Expression geometry;
 
@@ -39,7 +40,10 @@ public abstract class AbstractSymbolizer implements Symbolizer {
     protected AbstractSymbolizer() {}
 
     public AbstractSymbolizer(
-            String name, Description description, Expression geometry, Unit<Length> unitOfMeasure) {
+            String name,
+            DescriptionImpl description,
+            Expression geometry,
+            Unit<Length> unitOfMeasure) {
         this.name = name;
         this.description = description;
         this.geometry = geometry;
@@ -48,7 +52,7 @@ public abstract class AbstractSymbolizer implements Symbolizer {
 
     public AbstractSymbolizer(
             String name,
-            Description description,
+            DescriptionImpl description,
             String geometryPropertyName,
             Unit<Length> unitOfMeasure) {
         this.name = name;
@@ -58,13 +62,12 @@ public abstract class AbstractSymbolizer implements Symbolizer {
     }
 
     @Override
-    public Description getDescription() {
+    public DescriptionImpl getDescription() {
         return description;
     }
 
-    @Override
     public void setDescription(org.geotools.api.style.Description description) {
-        this.description = Description.cast(description);
+        this.description = DescriptionImpl.cast(description);
     }
 
     @Override
@@ -72,17 +75,14 @@ public abstract class AbstractSymbolizer implements Symbolizer {
         return name;
     }
 
-    @Override
     public void setName(String name) {
         this.name = name;
     }
 
-    @Override
     public void setUnitOfMeasure(Unit<Length> uom) {
         this.unitOfMeasure = uom;
     }
 
-    @Override
     public Unit<Length> getUnitOfMeasure() {
         return unitOfMeasure;
     }
@@ -92,7 +92,6 @@ public abstract class AbstractSymbolizer implements Symbolizer {
         return geometry;
     }
 
-    @Override
     public void setGeometry(Expression geometry) {
         this.geometry = geometry;
     }
@@ -106,7 +105,6 @@ public abstract class AbstractSymbolizer implements Symbolizer {
         return null;
     }
 
-    @Override
     public void setGeometryPropertyName(String geometryPropertyName) {
         if (geometryPropertyName == null) {
             geometry = null;
@@ -121,7 +119,6 @@ public abstract class AbstractSymbolizer implements Symbolizer {
         return options != null && options.containsKey(key);
     }
 
-    @Override
     public Map<String, String> getOptions() {
         if (options == null) {
             options = new LinkedHashMap<>();

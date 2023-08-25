@@ -1,0 +1,54 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
+package org.geotools.sld.bindings;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.awt.Color;
+import org.geotools.filter.Filters;
+import org.geotools.styling.GraphicImpl;
+import org.geotools.styling.MarkImpl;
+import org.junit.Test;
+
+public class SLDGraphicBindingTestImpl extends SLDTestSupport {
+    @Test
+    public void testType() throws Exception {
+        assertEquals(GraphicImpl.class, new SLDGraphicBinding(null).getType());
+    }
+
+    @Test
+    public void test() throws Exception {
+        SLDMockData.graphic(document, document);
+
+        GraphicImpl graphic = (GraphicImpl) parse();
+        assertNotNull(graphic);
+
+        assertEquals(graphic.graphicalSymbols().size(), 1);
+
+        MarkImpl mark = (MarkImpl) graphic.graphicalSymbols().get(0);
+
+        Color c = org.geotools.styling.SLD.color(mark.getFill().getColor());
+        assertEquals(Integer.parseInt("12", 16), c.getRed());
+        assertEquals(Integer.parseInt("34", 16), c.getGreen());
+        assertEquals(Integer.parseInt("56", 16), c.getBlue());
+
+        assertEquals(1, Filters.asInt(graphic.getSize()));
+        assertEquals(1, Filters.asInt(graphic.getOpacity()));
+        assertEquals(90, Filters.asInt(graphic.getRotation()));
+    }
+}

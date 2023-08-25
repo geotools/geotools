@@ -25,27 +25,27 @@ import org.geotools.styling.*;
 import org.geotools.ysld.Band;
 import org.geotools.ysld.Tuple;
 
-/** Encodes a {@link RasterSymbolizer} as YSLD. */
-public class RasterSymbolizerEncoder extends SymbolizerEncoder<RasterSymbolizer> {
-    public RasterSymbolizerEncoder(RasterSymbolizer sym) {
+/** Encodes a {@link RasterSymbolizerImpl} as YSLD. */
+public class RasterSymbolizerEncoder extends SymbolizerEncoder<RasterSymbolizerImpl> {
+    public RasterSymbolizerEncoder(RasterSymbolizerImpl sym) {
         super(sym);
     }
 
-    private boolean emptyColourMap(ColorMap map) {
+    private boolean emptyColourMap(ColorMapImpl map) {
         if (map == null) return true;
         ColorMapEntry[] entries = map.getColorMapEntries();
         if (entries == null) return true;
         return map.getColorMapEntries().length == 0;
     }
 
-    private boolean emptyContrastEnhancement(ContrastEnhancement ch) {
+    private boolean emptyContrastEnhancement(ContrastEnhancementImpl ch) {
         if (ch == null) return true;
         if (ch.getMethod() != null && ch.getMethod() != ContrastMethod.NONE) return false;
         if (ch.getGammaValue() != null) return false;
         return true;
     }
 
-    private boolean emptyChannelSelection(ChannelSelection ch) {
+    private boolean emptyChannelSelection(ChannelSelectionImpl ch) {
         if (ch == null) return true;
         for (Band b : Band.values()) {
             if (b.getFrom(ch) != null) return false;
@@ -54,7 +54,7 @@ public class RasterSymbolizerEncoder extends SymbolizerEncoder<RasterSymbolizer>
     }
 
     @Override
-    protected void encode(RasterSymbolizer sym) {
+    protected void encode(RasterSymbolizerImpl sym) {
         put("opacity", sym.getOpacity());
         if (!emptyColourMap(sym.getColorMap())) {
             inline(new ColorMapEncoder(sym.getColorMap()));
@@ -70,23 +70,23 @@ public class RasterSymbolizerEncoder extends SymbolizerEncoder<RasterSymbolizer>
         super.encode(sym);
     }
 
-    class ColorMapEncoder extends YsldEncodeHandler<ColorMap> {
+    class ColorMapEncoder extends YsldEncodeHandler<ColorMapImpl> {
 
-        ColorMapEncoder(ColorMap colorMap) {
+        ColorMapEncoder(ColorMapImpl colorMap) {
             super(colorMap);
         }
 
         @Override
-        protected void encode(ColorMap colorMap) {
+        protected void encode(ColorMapImpl colorMap) {
             push("color-map");
             switch (colorMap.getType()) {
-                case ColorMap.TYPE_INTERVALS:
+                case ColorMapImpl.TYPE_INTERVALS:
                     put("type", "intervals");
                     break;
-                case ColorMap.TYPE_RAMP:
+                case ColorMapImpl.TYPE_RAMP:
                     put("type", "ramp");
                     break;
-                case ColorMap.TYPE_VALUES:
+                case ColorMapImpl.TYPE_VALUES:
                     put("type", "values");
                     break;
             }
@@ -99,7 +99,7 @@ public class RasterSymbolizerEncoder extends SymbolizerEncoder<RasterSymbolizer>
 
         Iterator<ColorMapEntry> entries;
 
-        public ColorMapEntryIterator(ColorMap colorMap) {
+        public ColorMapEntryIterator(ColorMapImpl colorMap) {
             entries = Arrays.asList(colorMap.getColorMapEntries()).iterator();
         }
 
@@ -125,13 +125,13 @@ public class RasterSymbolizerEncoder extends SymbolizerEncoder<RasterSymbolizer>
         }
     }
 
-    class ContrastEnhancementEncoder extends YsldEncodeHandler<ContrastEnhancement> {
-        public ContrastEnhancementEncoder(ContrastEnhancement contrast) {
+    class ContrastEnhancementEncoder extends YsldEncodeHandler<ContrastEnhancementImpl> {
+        public ContrastEnhancementEncoder(ContrastEnhancementImpl contrast) {
             super(contrast);
         }
 
         @Override
-        protected void encode(ContrastEnhancement contrast) {
+        protected void encode(ContrastEnhancementImpl contrast) {
             push("contrast-enhancement");
             if (contrast.getMethod() != null) {
                 put("mode", contrast.getMethod().name().toLowerCase());
@@ -140,17 +140,17 @@ public class RasterSymbolizerEncoder extends SymbolizerEncoder<RasterSymbolizer>
         }
     }
 
-    class ChannelSelectionEncoder extends YsldEncodeHandler<ChannelSelection> {
+    class ChannelSelectionEncoder extends YsldEncodeHandler<ChannelSelectionImpl> {
 
-        public ChannelSelectionEncoder(ChannelSelection obj) {
+        public ChannelSelectionEncoder(ChannelSelectionImpl obj) {
             super(obj);
         }
 
         @Override
-        protected void encode(ChannelSelection next) {
+        protected void encode(ChannelSelectionImpl next) {
             push("channels");
             for (Band band : Band.values()) {
-                SelectedChannelType channel = (SelectedChannelType) band.getFrom(next);
+                SelectedChannelTypeImpl channel = (SelectedChannelTypeImpl) band.getFrom(next);
                 if (channel != null) {
                     inline(new SelectedChannelTypeEncoder(band, channel));
                 }
@@ -158,17 +158,17 @@ public class RasterSymbolizerEncoder extends SymbolizerEncoder<RasterSymbolizer>
         }
     }
 
-    class SelectedChannelTypeEncoder extends YsldEncodeHandler<SelectedChannelType> {
+    class SelectedChannelTypeEncoder extends YsldEncodeHandler<SelectedChannelTypeImpl> {
 
         private Band band;
 
-        public SelectedChannelTypeEncoder(Band band, SelectedChannelType it) {
+        public SelectedChannelTypeEncoder(Band band, SelectedChannelTypeImpl it) {
             super(it);
             this.band = band;
         }
 
         @Override
-        protected void encode(SelectedChannelType channel) {
+        protected void encode(SelectedChannelTypeImpl channel) {
             push(band.key);
             put("name", channel.getChannelName());
             if (!emptyContrastEnhancement(channel.getContrastEnhancement())) {

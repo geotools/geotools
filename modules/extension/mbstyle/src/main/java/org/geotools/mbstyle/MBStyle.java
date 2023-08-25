@@ -41,11 +41,7 @@ import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.parse.MBObjectStops;
 import org.geotools.mbstyle.source.MBSource;
 import org.geotools.referencing.CRS;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.StyleFactory;
+import org.geotools.styling.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -366,11 +362,11 @@ public class MBStyle {
         }
 
         // TODO: Just track last NamedLayer
-        org.geotools.styling.NamedLayer currentNamedLayer = null;
+        NamedLayerImpl currentNamedLayer = null;
         String currentName = null;
         BackgroundMBLayer background = null;
         for (MBLayer layer : layers) {
-            List<FeatureTypeStyle> featureTypeStyles = new ArrayList<>();
+            List<FeatureTypeStyleImpl> featureTypeStyles = new ArrayList<>();
             MBObjectStops mbObjectStops = new MBObjectStops(layer);
 
             int layerMaxZoom = layer.getMaxZoom();
@@ -434,7 +430,7 @@ public class MBStyle {
                         // TODO: When NamedLayer supports description, use layer.getId() for
                         // description
 
-                        Style style = sf.createStyle();
+                        StyleImpl style = sf.createStyle();
                         currentNamedLayer.styles().add(style);
 
                         sld.layers().add(currentNamedLayer);
@@ -450,7 +446,7 @@ public class MBStyle {
             FilterFactory ff = parse.getFilterFactory();
             if (sld.getStyledLayers().length > 0) {
                 NamedLayer layer = (NamedLayer) sld.getStyledLayers()[0];
-                Style firstStyle = (Style) layer.getStyles()[0];
+                StyleImpl firstStyle = (StyleImpl) layer.getStyles()[0];
                 firstStyle.setBackground(background.getFill(this));
             } else {
                 // odd situation, the only spec is a background layer? build a fake SLD layer then
@@ -471,8 +467,8 @@ public class MBStyle {
             FilterFactory ff) {
         // Background does not use a source; construct a user later with a world extent
         // inline feature so that we still have a valid SLD.
-        org.geotools.styling.UserLayer userLayer = sf.createUserLayer();
-        Style style = sf.createStyle();
+        UserLayerImpl userLayer = sf.createUserLayer();
+        StyleImpl style = sf.createStyle();
 
         final SimpleFeatureTypeBuilder ftb = new SimpleFeatureTypeBuilder();
         final PrecisionModel pm = new PrecisionModel(PrecisionModel.FLOATING);
@@ -503,9 +499,9 @@ public class MBStyle {
 
             // fake style and filter, won't ever be ued
             StyleBuilder sb = new StyleBuilder();
-            Rule rule = sb.createRule(sb.createPolygonSymbolizer());
+            RuleImpl rule = sb.createRule(sb.createPolygonSymbolizer());
             rule.setFilter(ff.equal(ff.literal(0), ff.literal(1)));
-            FeatureTypeStyle featureTypeStyle = sb.createFeatureTypeStyle("background", rule);
+            FeatureTypeStyleImpl featureTypeStyle = sb.createFeatureTypeStyle("background", rule);
             style.featureTypeStyles().add(featureTypeStyle);
             // the actual background color
             style.setBackground(background.getFill(this));

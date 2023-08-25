@@ -46,13 +46,13 @@ import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.image.ImageWorker;
 import org.geotools.renderer.i18n.ErrorKeys;
 import org.geotools.renderer.i18n.Errors;
-import org.geotools.styling.ShadedRelief;
+import org.geotools.styling.ShadedReliefImpl;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
 import si.uom.SI;
 
 /**
- * This implementations of {@link CoverageProcessingNode} takes care of the {@link ShadedRelief}
+ * This implementations of {@link CoverageProcessingNode} takes care of the {@link ShadedReliefImpl}
  * element of the SLD 1.0 spec.
  *
  * @author Daniele Romagnoli, GeoSolutions SAS

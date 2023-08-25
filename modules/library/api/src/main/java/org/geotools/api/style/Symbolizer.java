@@ -14,6 +14,7 @@ import static org.geotools.api.annotation.Specification.ISO_19117;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.api.annotation.UML;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * Abstract superclass of the symbolizers defined by the Symbology Encoding specification.
@@ -21,9 +22,8 @@ import org.geotools.api.annotation.UML;
  * <p>Please note you are not free to create your own subtype o Symbolizer - we are limited to
  * LineSymbolizer, PointSymbolizer, PolygonSymbolizer, RasterSymbolizer and TextSymbolizer.
  *
- * <p><b>using a static geometry<b/> you can use static geometry if needed, see {@link
- * #getGeometryAttribute} <b>Particular cases if the geometry is not the defined type of the
- * symbolizer</b>
+ * <p><b>using a static geometry<b/> you can use static geometry if needed, see <b>Particular cases
+ * if the geometry is not the defined type of the symbolizer</b>
  *
  * <p>Geometry types other than inherently linear types can also be used. If a point geometry is
  * used, it should be interpreted as a line of "epsilon" (arbitrarily small) length with a
@@ -61,6 +61,8 @@ public interface Symbolizer {
      * @return can be null. If the unit is null than we shall use a the pixel unit
      */
     Unit<Length> getUnitOfMeasure();
+
+    Expression getGeometry();
 
     /**
      * Returns the name of the geometry feature attribute to use for drawing. May return null (or
@@ -108,4 +110,8 @@ public interface Symbolizer {
      * @return value produced
      */
     void accept(StyleVisitor visitor);
+
+    boolean hasOption(String key);
+
+    java.util.Map<String, String> getOptions();
 }

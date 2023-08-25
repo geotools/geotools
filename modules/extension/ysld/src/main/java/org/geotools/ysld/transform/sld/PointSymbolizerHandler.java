@@ -17,11 +17,13 @@
  */
 package org.geotools.ysld.transform.sld;
 
+import org.geotools.styling.PointSymbolizerImpl;
+
 import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-/** Handles xml parse events for {@link org.geotools.styling.PointSymbolizer} elements. */
+/** Handles xml parse events for {@link PointSymbolizerImpl} elements. */
 public class PointSymbolizerHandler extends SymbolizerHandler {
     @Override
     public void element(XMLStreamReader xml, SldTransformContext context)

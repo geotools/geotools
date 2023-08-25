@@ -23,8 +23,8 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.metadata.iso.citation.OnLineResourceImpl;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDMarkBinding;
-import org.geotools.styling.ExternalMark;
-import org.geotools.styling.Mark;
+import org.geotools.styling.ExternalMarkImpl;
+import org.geotools.styling.MarkImpl;
 import org.geotools.styling.ResourceLocator;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.ElementInstance;
@@ -97,7 +97,7 @@ public class MarkBinding extends SLDMarkBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        Mark mark = (Mark) super.parse(instance, node, value);
+        MarkImpl mark = (MarkImpl) super.parse(instance, node, value);
 
         if (node.getChildValue("WellKnownName") == null) {
             String format = (String) node.getChildValue("Format");
@@ -107,7 +107,7 @@ public class MarkBinding extends SLDMarkBinding {
                 markIndex = ((Number) node.getChildValue("MarkIndex")).intValue();
             }
 
-            ExternalMark emark = null;
+            ExternalMarkImpl emark = null;
 
             if (node.hasChild("OnlineResource")) {
                 emark =

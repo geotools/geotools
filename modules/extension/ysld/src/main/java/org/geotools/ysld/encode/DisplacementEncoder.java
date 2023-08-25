@@ -17,17 +17,17 @@
  */
 package org.geotools.ysld.encode;
 
-import org.geotools.styling.Displacement;
+import org.geotools.styling.DisplacementImpl;
 
-/** Encodes a {@link Displacement} as YSLD. */
-public class DisplacementEncoder extends YsldEncodeHandler<Displacement> {
+/** Encodes a {@link DisplacementImpl} as YSLD. */
+public class DisplacementEncoder extends YsldEncodeHandler<DisplacementImpl> {
 
-    DisplacementEncoder(Displacement displace) {
+    DisplacementEncoder(DisplacementImpl displace) {
         super(displace);
     }
 
     @Override
-    protected void encode(Displacement displace) {
+    protected void encode(DisplacementImpl displace) {
         if (nullIf(displace.getDisplacementX(), 0) == null
                 && nullIf(displace.getDisplacementY(), 0) == null) {
             return;

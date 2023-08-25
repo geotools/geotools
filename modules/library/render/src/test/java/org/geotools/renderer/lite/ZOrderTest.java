@@ -37,8 +37,8 @@ import org.geotools.image.test.ImageAssert;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.renderer.RenderListener;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Style;
+import org.geotools.styling.FeatureTypeStyleImpl;
+import org.geotools.styling.StyleImpl;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.Hints;
 import org.junit.After;
@@ -139,7 +139,7 @@ public class ZOrderTest {
 
     private void runZSquaresTest(String styleName, String sortBy, String referenceImageName)
             throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, styleName);
+        StyleImpl style = RendererBaseTest.loadStyle(this, styleName);
         forceSortBy(style, sortBy);
 
         MapContent mc = new MapContent();
@@ -151,7 +151,7 @@ public class ZOrderTest {
     private void runRoadsTest(
             String styleName, String sortBy, String sortByGroup, String referenceImageName)
             throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, styleName);
+        StyleImpl style = RendererBaseTest.loadStyle(this, styleName);
         forceSortBy(style, sortBy);
         forceSortByGroup(style, sortByGroup);
 
@@ -163,11 +163,11 @@ public class ZOrderTest {
 
     private void runRoadsBuildingTest(String sortBy, String sortByGroup, String referenceImageName)
             throws Exception {
-        Style roadsStyle = RendererBaseTest.loadStyle(this, "zorder/zroads.sld");
+        StyleImpl roadsStyle = RendererBaseTest.loadStyle(this, "zorder/zroads.sld");
         forceSortBy(roadsStyle, sortBy);
         forceSortByGroup(roadsStyle, sortByGroup);
 
-        Style buildingsStyle = RendererBaseTest.loadStyle(this, "zorder/zbuildings.sld");
+        StyleImpl buildingsStyle = RendererBaseTest.loadStyle(this, "zorder/zbuildings.sld");
         forceSortBy(buildingsStyle, sortBy);
         forceSortByGroup(buildingsStyle, sortByGroup);
 
@@ -208,18 +208,18 @@ public class ZOrderTest {
         mc.dispose();
     }
 
-    private void forceSortBy(Style style, String sortBy) {
+    private void forceSortBy(StyleImpl style, String sortBy) {
         if (sortBy != null) {
-            for (FeatureTypeStyle fts : style.featureTypeStyles()) {
-                fts.getOptions().put(FeatureTypeStyle.SORT_BY, sortBy);
+            for (FeatureTypeStyleImpl fts : style.featureTypeStyles()) {
+                fts.getOptions().put(org.geotools.styling.FeatureTypeStyleImpl.SORT_BY, sortBy);
             }
         }
     }
 
-    private void forceSortByGroup(Style style, String sortByGroup) {
+    private void forceSortByGroup(StyleImpl style, String sortByGroup) {
         if (sortByGroup != null) {
-            for (FeatureTypeStyle fts : style.featureTypeStyles()) {
-                fts.getOptions().put(FeatureTypeStyle.SORT_BY_GROUP, sortByGroup);
+            for (FeatureTypeStyleImpl fts : style.featureTypeStyles()) {
+                fts.getOptions().put(FeatureTypeStyleImpl.SORT_BY_GROUP, sortByGroup);
             }
         }
     }
@@ -377,7 +377,7 @@ public class ZOrderTest {
     private void runZRoadsFailureTest(
             String styleName, String sortBy, String sortByGroup, RenderListener listener)
             throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, styleName);
+        StyleImpl style = RendererBaseTest.loadStyle(this, styleName);
         forceSortBy(style, sortBy);
         forceSortByGroup(style, sortByGroup);
 
@@ -403,11 +403,11 @@ public class ZOrderTest {
             String sortByGroup,
             RenderListener listener)
             throws Exception {
-        Style roadsStyle = RendererBaseTest.loadStyle(this, "zorder/zroads.sld");
+        StyleImpl roadsStyle = RendererBaseTest.loadStyle(this, "zorder/zroads.sld");
         forceSortBy(roadsStyle, sortByRoads);
         forceSortByGroup(roadsStyle, sortByGroup);
 
-        Style buildingsStyle = RendererBaseTest.loadStyle(this, "zorder/zbuildings.sld");
+        StyleImpl buildingsStyle = RendererBaseTest.loadStyle(this, "zorder/zbuildings.sld");
         forceSortBy(buildingsStyle, sortByBuildings);
         forceSortByGroup(buildingsStyle, sortByGroup);
 
@@ -420,14 +420,14 @@ public class ZOrderTest {
 
     @Test
     public void testZOrderComposite() throws Exception {
-        Style roadsStyle = RendererBaseTest.loadStyle(this, "zorder/zroads.sld");
+        StyleImpl roadsStyle = RendererBaseTest.loadStyle(this, "zorder/zroads.sld");
         forceSortBy(roadsStyle, "z");
         forceSortByGroup(roadsStyle, "theGroup");
-        FeatureTypeStyle fts = roadsStyle.featureTypeStyles().get(0);
-        fts.getOptions().put(FeatureTypeStyle.COMPOSITE_BASE, "true");
-        fts.getOptions().put(FeatureTypeStyle.COMPOSITE, "destination-in");
+        FeatureTypeStyleImpl fts = roadsStyle.featureTypeStyles().get(0);
+        fts.getOptions().put(org.geotools.styling.FeatureTypeStyleImpl.COMPOSITE_BASE, "true");
+        fts.getOptions().put(org.geotools.styling.FeatureTypeStyleImpl.COMPOSITE, "destination-in");
 
-        Style buildingsStyle = RendererBaseTest.loadStyle(this, "zorder/zbuildings.sld");
+        StyleImpl buildingsStyle = RendererBaseTest.loadStyle(this, "zorder/zbuildings.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(zbuildings, buildingsStyle));

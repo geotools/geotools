@@ -45,14 +45,14 @@ public class SLDTest {
      */
     @Test
     public void testDefaults() {
-        Stroke stroke = sf.getDefaultStroke();
+        StrokeImpl stroke = sf.getDefaultStroke();
         assertEquals("default stroke width is one", 1, SLD.width(stroke));
         assertEquals("default stroke color is black", Color.BLACK, SLD.color(stroke));
     }
     /** See http://jira.codehaus.org/browse/UDIG-1374 */
     @Test
     public void testStroke() {
-        Stroke stroke = sf.createStroke(ff.literal("#FF0000"), ff.literal("3"));
+        StrokeImpl stroke = sf.createStroke(ff.literal("#FF0000"), ff.literal("3"));
         assertEquals("width", 3, SLD.width(stroke));
         assertEquals("color", Color.RED, SLD.color(stroke));
 
@@ -66,8 +66,8 @@ public class SLDTest {
      */
     @Test
     public void testSetRasterOpacity() {
-        RasterSymbolizer rs = sb.createRasterSymbolizer();
-        Style s = sb.createStyle(rs);
+        RasterSymbolizerImpl rs = sb.createRasterSymbolizer();
+        StyleImpl s = sb.createStyle(rs);
 
         assertEquals(1.0, SLD.opacity(SLD.rasterSymbolizer(s)), 0d);
 
@@ -82,22 +82,27 @@ public class SLDTest {
      */
     @Test
     public void testSetRasterRGBChannels() {
-        RasterSymbolizer rs = sb.createRasterSymbolizer();
-        Style s = sb.createStyle(rs);
+        RasterSymbolizerImpl rs = sb.createRasterSymbolizer();
+        StyleImpl s = sb.createStyle(rs);
 
-        SelectedChannelType red =
-                sf.createSelectedChannelType("red", sf.createContrastEnhancement(ff.literal(0.2)));
-        SelectedChannelType green =
-                sf.createSelectedChannelType(
-                        "green", sf.createContrastEnhancement(ff.literal(0.4)));
-        SelectedChannelType blue =
-                sf.createSelectedChannelType("blue", sf.createContrastEnhancement(ff.literal(0.7)));
+        SelectedChannelTypeImpl red =
+                (SelectedChannelTypeImpl)
+                        sf.createSelectedChannelType(
+                                "red", sf.createContrastEnhancement(ff.literal(0.2)));
+        SelectedChannelTypeImpl green =
+                (SelectedChannelTypeImpl)
+                        sf.createSelectedChannelType(
+                                "green", sf.createContrastEnhancement(ff.literal(0.4)));
+        SelectedChannelTypeImpl blue =
+                (SelectedChannelTypeImpl)
+                        sf.createSelectedChannelType(
+                                "blue", sf.createContrastEnhancement(ff.literal(0.7)));
 
-        SLD.setChannelSelection(s, new SelectedChannelType[] {red, green, blue}, null);
+        SLD.setChannelSelection(s, new SelectedChannelTypeImpl[] {red, green, blue}, null);
 
         assertNull(SLD.rasterSymbolizer(s).getChannelSelection().getGrayChannel());
         assertNotNull(SLD.rasterSymbolizer(s).getChannelSelection().getRGBChannels());
-        SelectedChannelType[] selectedChannels =
+        SelectedChannelTypeImpl[] selectedChannels =
                 SLD.rasterSymbolizer(s).getChannelSelection().getRGBChannels();
 
         assertEquals("red", selectedChannels[0].getChannelName().evaluate(null, String.class));

@@ -42,11 +42,8 @@ import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.style.FontCache;
 import org.geotools.sld.v1_1.SLDConfiguration;
-import org.geotools.styling.DefaultResourceLocator;
-import org.geotools.styling.NamedStyle;
-import org.geotools.styling.ResourceLocator;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
+import org.geotools.styling.*;
+import org.geotools.styling.StyleImpl;
 import org.geotools.test.TestData;
 import org.geotools.xml.styling.SLDParser;
 import org.geotools.xsd.Parser;
@@ -240,18 +237,18 @@ public abstract class RendererBaseTest {
     }
 
     /** Load a style from the test-data directory associated with the object. */
-    public static Style loadStyle(Object loader, String sldFilename) throws IOException {
+    public static StyleImpl loadStyle(Object loader, String sldFilename) throws IOException {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
 
         java.net.URL surl = TestData.getResource(loader, sldFilename);
         SLDParser stylereader = new SLDParser(factory, surl);
 
-        Style style = stylereader.readXML()[0];
+        StyleImpl style = stylereader.readXML()[0];
         return style;
     }
 
     /** Load a Symbology Encoding style from the test-data directory associated with the object. */
-    protected static Style loadSEStyle(Object loader, String sldFilename) throws IOException {
+    protected static StyleImpl loadSEStyle(Object loader, String sldFilename) throws IOException {
         try {
             final java.net.URL surl = TestData.getResource(loader, sldFilename);
             SLDConfiguration configuration =
@@ -269,19 +266,19 @@ public abstract class RendererBaseTest {
             StyledLayerDescriptor sld = (StyledLayerDescriptor) parser.parse(surl.openStream());
 
             for (int i = 0; i < sld.getStyledLayers().length; i++) {
-                Style[] styles = null;
+                StyleImpl[] styles = null;
 
                 if (sld.getStyledLayers()[i] instanceof NamedLayer) {
                     NamedLayer layer = (NamedLayer) sld.getStyledLayers()[i];
-                    styles = (Style[]) layer.getStyles();
+                    styles = (StyleImpl[]) layer.getStyles();
                 } else if (sld.getStyledLayers()[i] instanceof UserLayer) {
                     UserLayer layer = (UserLayer) sld.getStyledLayers()[i];
-                    styles = (Style[]) layer.getUserStyles();
+                    styles = (StyleImpl[]) layer.getUserStyles();
                 }
 
                 if (styles != null) {
-                    for (Style s : styles) {
-                        if (!(s instanceof NamedStyle)) {
+                    for (StyleImpl s : styles) {
+                        if (!(s instanceof NamedStyleImpl)) {
                             return s;
                         }
                     }

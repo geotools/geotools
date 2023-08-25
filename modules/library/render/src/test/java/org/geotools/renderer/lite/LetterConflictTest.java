@@ -42,7 +42,7 @@ import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.label.LabelCacheImpl;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.test.TestData;
 import org.geotools.util.logging.Logging;
 import org.junit.Assert;
@@ -115,7 +115,7 @@ public class LetterConflictTest {
     public void testLetterConflictEnabled() throws Exception {
 
         LabelCacheImpl.DISABLE_LETTER_LEVEL_CONFLICT = true;
-        Style style = RendererBaseTest.loadStyle(this, "letterConflict20.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "letterConflict20.sld");
 
         MapContent mc = new MapContent();
         mc.getViewport().setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
@@ -148,7 +148,7 @@ public class LetterConflictTest {
     public void testLetterConflictEnabled2Lines() throws Exception {
 
         LabelCacheImpl.DISABLE_LETTER_LEVEL_CONFLICT = true;
-        Style style = RendererBaseTest.loadStyle(this, "letterConflict20.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "letterConflict20.sld");
         MapContent mc = new MapContent();
         mc.getViewport().setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
         mc.addLayer(new FeatureLayer(fs_line2, style));
@@ -180,7 +180,7 @@ public class LetterConflictTest {
     public void testLetterConflictEnabledCurvedLine() throws Exception {
 
         LabelCacheImpl.DISABLE_LETTER_LEVEL_CONFLICT = true;
-        Style style = RendererBaseTest.loadStyle(this, "letterConflict20.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "letterConflict20.sld");
         MapContent mc = new MapContent();
         mc.getViewport().setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
         mc.addLayer(new FeatureLayer(fs_line3, style));
@@ -213,7 +213,7 @@ public class LetterConflictTest {
     public void testLetterConflictEnabledPerf() throws Exception {
         synchronized (LabelCacheImpl.class) {
             LabelCacheImpl.DISABLE_LETTER_LEVEL_CONFLICT = true;
-            Style style = RendererBaseTest.loadStyle(this, "letterConflict6.sld");
+            StyleImpl style = RendererBaseTest.loadStyle(this, "letterConflict6.sld");
             MapContent mc = new MapContent();
             mc.getViewport().setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
             mc.addLayer(new FeatureLayer(fs_line4, style));

@@ -20,8 +20,8 @@ import javax.xml.namespace.QName;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.sld.CssParameter;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Stroke;
+import org.geotools.styling.LineSymbolizerImpl;
+import org.geotools.styling.StrokeImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
@@ -91,7 +91,7 @@ public class SLDLineSymbolizerBinding extends AbstractComplexBinding {
      */
     @Override
     public Class getType() {
-        return LineSymbolizer.class;
+        return LineSymbolizerImpl.class;
     }
 
     /**
@@ -113,7 +113,7 @@ public class SLDLineSymbolizerBinding extends AbstractComplexBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        LineSymbolizer ls = styleFactory.createLineSymbolizer();
+        LineSymbolizerImpl ls = (LineSymbolizerImpl) styleFactory.createLineSymbolizer();
 
         // &lt;xsd:element ref="sld:Geometry" minOccurs="0"/&gt;
         if (node.hasChild("Geometry")) {
@@ -127,8 +127,8 @@ public class SLDLineSymbolizerBinding extends AbstractComplexBinding {
         }
 
         // &lt;xsd:element ref="sld:Stroke" minOccurs="0"/&gt;
-        if (node.hasChild(Stroke.class)) {
-            ls.setStroke(node.getChildValue(Stroke.class));
+        if (node.hasChild(StrokeImpl.class)) {
+            ls.setStroke(node.getChildValue(StrokeImpl.class));
         }
 
         // &lt;xsd:element ref="sld:VendorOption" minOccurs="0" maxOccurs="unbounded"/&gt;

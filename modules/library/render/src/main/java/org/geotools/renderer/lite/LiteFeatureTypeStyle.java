@@ -24,7 +24,7 @@ import org.geotools.api.filter.sort.SortBy;
 import org.geotools.data.util.ScreenMap;
 import org.geotools.map.Layer;
 import org.geotools.renderer.crs.ProjectionHandler;
-import org.geotools.styling.Rule;
+import org.geotools.styling.RuleImpl;
 
 /**
  * This is a simple class that contains the information needed to render a layer.
@@ -53,9 +53,9 @@ final class LiteFeatureTypeStyle {
 
     public Layer layer;
 
-    public Rule[] ruleList;
+    public RuleImpl[] ruleList;
 
-    public Rule[] elseRules;
+    public RuleImpl[] elseRules;
 
     public Graphics2D graphics;
 
@@ -93,13 +93,13 @@ final class LiteFeatureTypeStyle {
     public LiteFeatureTypeStyle(
             Layer layer,
             Graphics2D graphics,
-            List<Rule> ruleList,
-            List<Rule> elseRuleList,
+            List<RuleImpl> ruleList,
+            List<RuleImpl> elseRuleList,
             Expression transformation) {
         this.layer = layer;
         this.graphics = graphics;
-        this.ruleList = ruleList.toArray(new Rule[ruleList.size()]);
-        this.elseRules = elseRuleList.toArray(new Rule[elseRuleList.size()]);
+        this.ruleList = ruleList.toArray(new RuleImpl[ruleList.size()]);
+        this.elseRules = elseRuleList.toArray(new RuleImpl[elseRuleList.size()]);
         this.transformation = transformation;
     }
 }

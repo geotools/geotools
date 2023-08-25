@@ -21,7 +21,7 @@ import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.GeoTools;
 import org.junit.Before;
@@ -98,7 +98,7 @@ public class GeographicTransformPointTest {
 
     @Test
     public void testGDA94Points() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "markCircle.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "markCircle.sld");
 
         BufferedImage reference = toImage(point_test_2d, style);
         BufferedImage actual = null;
@@ -113,7 +113,7 @@ public class GeographicTransformPointTest {
         ImageAssert.assertEquals(reference, actual, 10);
     }
 
-    private BufferedImage toImage(SimpleFeatureSource featuerSource, Style style) throws Exception {
+    private BufferedImage toImage(SimpleFeatureSource featuerSource, StyleImpl style) throws Exception {
         String typeName = featuerSource.getSchema().getTypeName();
 
         MapContent content = new MapContent();

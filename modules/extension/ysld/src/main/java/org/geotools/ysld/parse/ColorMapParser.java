@@ -18,16 +18,16 @@
 package org.geotools.ysld.parse;
 
 import org.geotools.api.style.ColorMapEntry;
-import org.geotools.styling.ColorMap;
+import org.geotools.styling.ColorMapImpl;
 import org.geotools.ysld.Tuple;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 import org.geotools.ysld.YamlSeq;
 
-/** Handles the parsing of a Ysld "color-map" property to a {@link ColorMap} object. */
+/** Handles the parsing of a Ysld "color-map" property to a {@link ColorMapImpl} object. */
 public abstract class ColorMapParser extends YsldParseHandler {
 
-    ColorMap colorMap;
+    ColorMapImpl colorMap;
 
     public ColorMapParser(Factory factory) {
         super(factory);
@@ -42,11 +42,11 @@ public abstract class ColorMapParser extends YsldParseHandler {
         if (map.has("type")) {
             String value = map.str("type");
             if ("ramp".equals(value)) {
-                colorMap.setType(ColorMap.TYPE_RAMP);
+                colorMap.setType(ColorMapImpl.TYPE_RAMP);
             } else if ("intervals".equals(value)) {
-                colorMap.setType(ColorMap.TYPE_INTERVALS);
+                colorMap.setType(ColorMapImpl.TYPE_INTERVALS);
             } else if ("values".equals(value)) {
-                colorMap.setType(ColorMap.TYPE_VALUES);
+                colorMap.setType(ColorMapImpl.TYPE_VALUES);
             } else {
                 LOG.warning("Unknown color map type: " + value);
             }
@@ -54,7 +54,7 @@ public abstract class ColorMapParser extends YsldParseHandler {
         context.push("entries", new EntriesParser());
     }
 
-    protected abstract void colorMap(ColorMap colorMap);
+    protected abstract void colorMap(ColorMapImpl colorMap);
 
     class EntriesParser extends YsldParseHandler {
 

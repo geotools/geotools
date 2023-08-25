@@ -20,7 +20,7 @@ import javax.xml.namespace.QName;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDLineSymbolizerBinding;
-import org.geotools.styling.LineSymbolizer;
+import org.geotools.styling.LineSymbolizerImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
@@ -71,7 +71,7 @@ public class LineSymbolizerBinding extends SLDLineSymbolizerBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        LineSymbolizer sym = (LineSymbolizer) super.parse(instance, node, value);
+        LineSymbolizerImpl sym = (LineSymbolizerImpl) super.parse(instance, node, value);
 
         // &lt;xsd:element minOccurs="0" ref="se:PerpendicularOffset"/&gt;
         if (node.hasChild("PerpendicularOffset")) {

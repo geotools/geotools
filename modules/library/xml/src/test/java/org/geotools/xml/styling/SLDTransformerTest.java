@@ -45,13 +45,11 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
-import org.geotools.api.style.ContrastMethod;
-import org.geotools.api.style.GraphicalSymbol;
-import org.geotools.api.style.NamedLayer;
+import org.geotools.api.style.*;
 import org.geotools.api.style.StyledLayerDescriptor;
-import org.geotools.api.style.Symbolizer;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.*;
+import org.geotools.styling.StyleFactory;
 import org.geotools.test.xml.XmlTestSupport;
 import org.geotools.util.GrowableInternationalString;
 import org.geotools.util.factory.GeoTools;
@@ -102,11 +100,11 @@ public class SLDTransformerTest extends XmlTestSupport {
      */
     @Test
     public void testEncodingRasterSymbolizer() throws Exception {
-        RasterSymbolizer defaultRasterSymbolizer = sf.createRasterSymbolizer();
+        RasterSymbolizerImpl defaultRasterSymbolizer = sf.createRasterSymbolizer();
         String xmlFragment = transformer.transform(defaultRasterSymbolizer);
         assertNotNull(xmlFragment);
 
-        RasterSymbolizer opacityRasterSymbolizer = sf.createRasterSymbolizer();
+        RasterSymbolizerImpl opacityRasterSymbolizer = sf.createRasterSymbolizer();
         opacityRasterSymbolizer.setOpacity(ff.literal(1.0));
 
         xmlFragment = transformer.transform(opacityRasterSymbolizer);
@@ -126,7 +124,7 @@ public class SLDTransformerTest extends XmlTestSupport {
     public void testEncodingStyle() throws TransformerException {
 
         // simple default raster symbolizer
-        RasterSymbolizer defaultRasterSymbolizer = sf.createRasterSymbolizer();
+        RasterSymbolizerImpl defaultRasterSymbolizer = sf.createRasterSymbolizer();
         String xmlFragment = transformer.transform(defaultRasterSymbolizer);
         assertNotNull(xmlFragment);
 
@@ -134,44 +132,44 @@ public class SLDTransformerTest extends XmlTestSupport {
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(GeoTools.getDefaultHints());
         StyleBuilder styleBuilder = new StyleBuilder(styleFactory);
 
-        RasterSymbolizer rasterSymbolizer = styleFactory.createRasterSymbolizer();
+        RasterSymbolizerImpl rasterSymbolizer = styleFactory.createRasterSymbolizer();
 
         // set opacity
         rasterSymbolizer.setOpacity(
                 CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()).literal(0.25));
 
         // set channel selection
-        ChannelSelection csi = new ChannelSelection();
+        ChannelSelectionImpl csi = new ChannelSelectionImpl();
         // red
-        SelectedChannelType redChannel = new SelectedChannelType();
+        SelectedChannelTypeImpl redChannel = new SelectedChannelTypeImpl();
         redChannel.setChannelName("1");
-        ContrastEnhancement rcei = new ContrastEnhancement();
+        ContrastEnhancementImpl rcei = new ContrastEnhancementImpl();
         rcei.setMethod(ContrastMethod.HISTOGRAM);
         redChannel.setContrastEnhancement(rcei);
 
         // green
-        SelectedChannelType greenChannel = new SelectedChannelType();
+        SelectedChannelTypeImpl greenChannel = new SelectedChannelTypeImpl();
         greenChannel.setChannelName("4");
-        ContrastEnhancement gcei = new ContrastEnhancement();
+        ContrastEnhancementImpl gcei = new ContrastEnhancementImpl();
         gcei.setGammaValue(ff.literal(2.5));
         greenChannel.setContrastEnhancement(gcei);
 
         // blue
-        SelectedChannelType blueChannel = new SelectedChannelType();
+        SelectedChannelTypeImpl blueChannel = new SelectedChannelTypeImpl();
         blueChannel.setChannelName("2");
-        ContrastEnhancement bcei = new ContrastEnhancement();
+        ContrastEnhancementImpl bcei = new ContrastEnhancementImpl();
         bcei.setMethod(ContrastMethod.NORMALIZE);
         blueChannel.setContrastEnhancement(bcei);
 
         csi.setRGBChannels(redChannel, greenChannel, blueChannel);
         rasterSymbolizer.setChannelSelection(csi);
 
-        Style style = styleBuilder.createStyle(rasterSymbolizer);
+        StyleImpl style = styleBuilder.createStyle(rasterSymbolizer);
         style.setName("simpleStyle");
         // style.setAbstract("Hello World");
 
-        NamedLayer layer = styleFactory.createNamedLayer();
-        ((org.geotools.styling.NamedLayer) layer).addStyle(style);
+        NamedLayerImpl layer = styleFactory.createNamedLayer();
+        layer.addStyle(style);
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
         sld.addStyledLayer(layer);
@@ -182,8 +180,8 @@ public class SLDTransformerTest extends XmlTestSupport {
         assertNotNull(xmlFragment);
         SLDParser parser = new SLDParser(sf);
         parser.setInput(new StringReader(xmlFragment));
-        Style[] stuff = parser.readXML();
-        Style out = stuff[0];
+        StyleImpl[] stuff = parser.readXML();
+        StyleImpl out = stuff[0];
         assertNotNull(out);
         Assert.assertEquals(0.25, SLD.rasterOpacity(out), 0d);
     }
@@ -199,15 +197,15 @@ public class SLDTransformerTest extends XmlTestSupport {
         StringReader reader = new StringReader(xml);
         SLDParser sldParser = new SLDParser(sf, reader);
 
-        Style[] parsed = sldParser.readXML();
+        StyleImpl[] parsed = sldParser.readXML();
         assertNotNull("parsed xml", parsed);
         assertTrue("parsed xml into style", parsed.length > 0);
 
-        Style style = parsed[0];
+        StyleImpl style = parsed[0];
         assertNotNull(style);
         org.geotools.api.style.Rule rule = style.featureTypeStyles().get(0).rules().get(0);
-        LineSymbolizer lineSymbolize = (LineSymbolizer) rule.symbolizers().get(0);
-        Stroke stroke = lineSymbolize.getStroke();
+        LineSymbolizerImpl lineSymbolize = (LineSymbolizerImpl) rule.symbolizers().get(0);
+        StrokeImpl stroke = lineSymbolize.getStroke();
 
         Expression color = stroke.getColor();
         Color value = color.evaluate(null, Color.class);
@@ -267,15 +265,15 @@ public class SLDTransformerTest extends XmlTestSupport {
         StringReader reader = new StringReader(xml);
         SLDParser sldParser = new SLDParser(sf, reader);
 
-        Style[] parsed = sldParser.readXML();
+        StyleImpl[] parsed = sldParser.readXML();
         assertNotNull("parsed xml", parsed);
         assertTrue("parsed xml into style", parsed.length > 0);
 
-        Style style = parsed[0];
+        StyleImpl style = parsed[0];
         assertNotNull(style);
         org.geotools.api.style.Rule rule = style.featureTypeStyles().get(0).rules().get(0);
-        LineSymbolizer lineSymbolize = (LineSymbolizer) rule.symbolizers().get(0);
-        Stroke stroke = lineSymbolize.getStroke();
+        LineSymbolizerImpl lineSymbolize = (LineSymbolizerImpl) rule.symbolizers().get(0);
+        StrokeImpl stroke = lineSymbolize.getStroke();
 
         Expression color = stroke.getColor();
         Color value = color.evaluate(null, Color.class);
@@ -323,14 +321,14 @@ public class SLDTransformerTest extends XmlTestSupport {
         StringReader reader = new StringReader(xml);
         SLDParser sldParser = new SLDParser(sf, reader);
 
-        Style[] parsed = sldParser.readXML();
+        StyleImpl[] parsed = sldParser.readXML();
         assertNotNull("parsed xml", parsed);
         assertTrue("parsed xml into style", parsed.length > 0);
 
-        Style style = parsed[0];
+        StyleImpl style = parsed[0];
         assertNotNull(style);
         org.geotools.api.style.Rule rule = style.featureTypeStyles().get(0).rules().get(0);
-        TextSymbolizer textSymbolize = (TextSymbolizer) rule.symbolizers().get(0);
+        TextSymbolizerImpl textSymbolize = (TextSymbolizerImpl) rule.symbolizers().get(0);
         org.geotools.api.style.LabelPlacement labelPlacement = textSymbolize.getLabelPlacement();
 
         assertNotNull(labelPlacement);
@@ -380,15 +378,15 @@ public class SLDTransformerTest extends XmlTestSupport {
         StringReader reader = new StringReader(xml);
         SLDParser sldParser = new SLDParser(sf, reader);
 
-        Style[] parsed = sldParser.readXML();
+        StyleImpl[] parsed = sldParser.readXML();
         assertNotNull("parsed xml", parsed);
         assertTrue("parsed xml into style", parsed.length > 0);
 
-        Style style = parsed[0];
+        StyleImpl style = parsed[0];
         assertNotNull(style);
         org.geotools.api.style.Rule rule = style.featureTypeStyles().get(0).rules().get(0);
-        TextSymbolizer textSymbolize = (TextSymbolizer) rule.symbolizers().get(0);
-        PointPlacement pointPlacement = (PointPlacement) textSymbolize.getLabelPlacement();
+        TextSymbolizerImpl textSymbolize = (TextSymbolizerImpl) rule.symbolizers().get(0);
+        PointPlacementImpl pointPlacement = (PointPlacementImpl) textSymbolize.getLabelPlacement();
 
         assertNotNull(pointPlacement);
         assertNotNull(pointPlacement.getRotation());
@@ -484,20 +482,20 @@ public class SLDTransformerTest extends XmlTestSupport {
         StringReader reader = new StringReader(xml);
         SLDParser sldParser = new SLDParser(sf, reader);
 
-        Style[] parsed = sldParser.readXML();
+        StyleImpl[] parsed = sldParser.readXML();
         assertNotNull("parsed xml", parsed);
         assertTrue("parsed xml into style", parsed.length > 0);
 
-        Style style = parsed[0];
+        StyleImpl style = parsed[0];
         assertNotNull(style);
         org.geotools.api.style.Rule rule = style.featureTypeStyles().get(0).rules().get(0);
         List<? extends Symbolizer> symbolizers = rule.symbolizers();
         assertEquals(1, symbolizers.size());
-        PointSymbolizer symbolize = (PointSymbolizer) symbolizers.get(0);
-        Graphic graphic = symbolize.getGraphic();
+        PointSymbolizerImpl symbolize = (PointSymbolizerImpl) symbolizers.get(0);
+        GraphicImpl graphic = symbolize.getGraphic();
         List<GraphicalSymbol> symbols = graphic.graphicalSymbols();
         assertEquals(1, symbols.size());
-        Mark mark = (Mark) symbols.get(0);
+        MarkImpl mark = (MarkImpl) symbols.get(0);
         Expression color = mark.getFill().getColor();
         Color value = color.evaluate(null, Color.class);
         assertNotNull("color", value);
@@ -519,15 +517,15 @@ public class SLDTransformerTest extends XmlTestSupport {
             StringReader reader = new StringReader(xml);
             SLDParser sldParser = new SLDParser(sf, reader);
 
-            Style[] parsed = sldParser.readXML();
+            StyleImpl[] parsed = sldParser.readXML();
             assertNotNull("parsed xml", parsed);
             assertTrue("parsed xml into style", parsed.length > 0);
 
-            Style style = parsed[0];
+            StyleImpl style = parsed[0];
             assertNotNull(style);
             org.geotools.api.style.Rule rule = style.featureTypeStyles().get(0).rules().get(0);
-            LineSymbolizer lineSymbolize = (LineSymbolizer) rule.symbolizers().get(0);
-            Stroke stroke = lineSymbolize.getStroke();
+            LineSymbolizerImpl lineSymbolize = (LineSymbolizerImpl) rule.symbolizers().get(0);
+            StrokeImpl stroke = lineSymbolize.getStroke();
 
             Expression color = stroke.getColor();
             Color value = color.evaluate(null, Color.class);
@@ -544,7 +542,7 @@ public class SLDTransformerTest extends XmlTestSupport {
     public void testUOMEncodingPointSymbolizer() throws TransformerException {
 
         // simple default line symbolizer
-        PointSymbolizer pointSymbolizer = sf.createPointSymbolizer();
+        PointSymbolizerImpl pointSymbolizer = sf.createPointSymbolizer();
         pointSymbolizer.setUnitOfMeasure(UomOgcMapping.FOOT.getUnit());
         String xmlFragment = transformer.transform(pointSymbolizer);
         assertNotNull(xmlFragment);
@@ -557,7 +555,7 @@ public class SLDTransformerTest extends XmlTestSupport {
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document dom = db.parse(new InputSource(new StringReader(xmlFragment)));
 
-            PointSymbolizer pointSymbolizer2 = parser.parsePointSymbolizer(dom.getFirstChild());
+            PointSymbolizerImpl pointSymbolizer2 = parser.parsePointSymbolizer(dom.getFirstChild());
 
             assertEquals(pointSymbolizer.getUnitOfMeasure(), pointSymbolizer2.getUnitOfMeasure());
         } catch (Exception e) {
@@ -570,7 +568,7 @@ public class SLDTransformerTest extends XmlTestSupport {
             throws TransformerException, ParserConfigurationException, IOException, SAXException {
 
         // simple default line symbolizer
-        PolygonSymbolizer polygonSymbolizer = sf.createPolygonSymbolizer();
+        PolygonSymbolizerImpl polygonSymbolizer = sf.createPolygonSymbolizer();
         polygonSymbolizer.setUnitOfMeasure(UomOgcMapping.METRE.getUnit());
         String xmlFragment = transformer.transform(polygonSymbolizer);
         assertNotNull(xmlFragment);
@@ -582,7 +580,8 @@ public class SLDTransformerTest extends XmlTestSupport {
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document dom = db.parse(new InputSource(new StringReader(xmlFragment)));
 
-        PolygonSymbolizer polygonSymbolizer2 = parser.parsePolygonSymbolizer(dom.getFirstChild());
+        PolygonSymbolizerImpl polygonSymbolizer2 =
+                parser.parsePolygonSymbolizer(dom.getFirstChild());
 
         assertEquals(polygonSymbolizer.getUnitOfMeasure(), polygonSymbolizer2.getUnitOfMeasure());
     }
@@ -592,7 +591,7 @@ public class SLDTransformerTest extends XmlTestSupport {
             throws TransformerException, ParserConfigurationException, IOException, SAXException {
 
         // simple default line symbolizer
-        RasterSymbolizer rasterSymbolizer = sf.createRasterSymbolizer();
+        RasterSymbolizerImpl rasterSymbolizer = sf.createRasterSymbolizer();
         rasterSymbolizer.setUnitOfMeasure(UomOgcMapping.PIXEL.getUnit());
         String xmlFragment = transformer.transform(rasterSymbolizer);
         assertNotNull(xmlFragment);
@@ -604,7 +603,7 @@ public class SLDTransformerTest extends XmlTestSupport {
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document dom = db.parse(new InputSource(new StringReader(xmlFragment)));
 
-        RasterSymbolizer rasterSymbolizer2 = parser.parseRasterSymbolizer(dom.getFirstChild());
+        RasterSymbolizerImpl rasterSymbolizer2 = parser.parseRasterSymbolizer(dom.getFirstChild());
 
         assertEquals(rasterSymbolizer.getUnitOfMeasure(), rasterSymbolizer2.getUnitOfMeasure());
     }
@@ -613,7 +612,7 @@ public class SLDTransformerTest extends XmlTestSupport {
     public void testChannelExpressionEncodingRasterSymbolizer() throws TransformerException {
         final String b1 = "B1";
         Function envFunction = ff.function("env", ff.literal(b1), ff.literal("1"));
-        RasterSymbolizer rasterSymbolizer = sf.createRasterSymbolizer();
+        RasterSymbolizerImpl rasterSymbolizer = sf.createRasterSymbolizer();
         rasterSymbolizer.setChannelSelection(
                 sf.createChannelSelection(
                         sf.createSelectedChannelType(envFunction, sf.createContrastEnhancement())));
@@ -647,7 +646,7 @@ public class SLDTransformerTest extends XmlTestSupport {
             throws TransformerException, ParserConfigurationException, IOException, SAXException {
 
         // simple default line symbolizer
-        LineSymbolizer lineSymbolizer = sf.createLineSymbolizer();
+        LineSymbolizerImpl lineSymbolizer = (LineSymbolizerImpl) sf.createLineSymbolizer();
         lineSymbolizer.setUnitOfMeasure(UomOgcMapping.METRE.getUnit());
         String xmlFragment = transformer.transform(lineSymbolizer);
         assertNotNull(xmlFragment);
@@ -659,7 +658,7 @@ public class SLDTransformerTest extends XmlTestSupport {
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document dom = db.parse(new InputSource(new StringReader(xmlFragment)));
 
-        LineSymbolizer lineSymbolizer2 = parser.parseLineSymbolizer(dom.getFirstChild());
+        LineSymbolizerImpl lineSymbolizer2 = parser.parseLineSymbolizer(dom.getFirstChild());
 
         assertEquals(lineSymbolizer.getUnitOfMeasure(), lineSymbolizer2.getUnitOfMeasure());
     }
@@ -669,7 +668,7 @@ public class SLDTransformerTest extends XmlTestSupport {
             throws TransformerException, ParserConfigurationException, IOException, SAXException {
 
         // simple default text symbolizer
-        TextSymbolizer textSymbolizer = sf.createTextSymbolizer();
+        TextSymbolizerImpl textSymbolizer = (TextSymbolizerImpl) sf.createTextSymbolizer();
         textSymbolizer.setUnitOfMeasure(UomOgcMapping.FOOT.getUnit());
         String xmlFragment = transformer.transform(textSymbolizer);
 
@@ -686,7 +685,7 @@ public class SLDTransformerTest extends XmlTestSupport {
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document dom = db.parse(new InputSource(new StringReader(xmlFragment)));
 
-        TextSymbolizer textSymbolizer2 = parser.parseTextSymbolizer(dom.getFirstChild());
+        TextSymbolizerImpl textSymbolizer2 = parser.parseTextSymbolizer(dom.getFirstChild());
 
         assertEquals(textSymbolizer.getUnitOfMeasure(), textSymbolizer2.getUnitOfMeasure());
     }
@@ -695,7 +694,7 @@ public class SLDTransformerTest extends XmlTestSupport {
     public void testNullUOMEncodingPointSymbolizer() throws TransformerException {
 
         // simple default line symbolizer
-        PointSymbolizer pointSymbolizer = sf.createPointSymbolizer();
+        PointSymbolizerImpl pointSymbolizer = sf.createPointSymbolizer();
         String xmlFragment = transformer.transform(pointSymbolizer);
         assertNotNull(xmlFragment);
 
@@ -707,7 +706,7 @@ public class SLDTransformerTest extends XmlTestSupport {
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document dom = db.parse(new InputSource(new StringReader(xmlFragment)));
 
-            PointSymbolizer pointSymbolizer2 = parser.parsePointSymbolizer(dom.getFirstChild());
+            PointSymbolizerImpl pointSymbolizer2 = parser.parsePointSymbolizer(dom.getFirstChild());
 
             assertNull(pointSymbolizer2.getUnitOfMeasure());
         } catch (Exception e) {
@@ -720,7 +719,7 @@ public class SLDTransformerTest extends XmlTestSupport {
             throws TransformerException, ParserConfigurationException, IOException, SAXException {
 
         // simple default line symbolizer
-        PolygonSymbolizer polygonSymbolizer = sf.createPolygonSymbolizer();
+        PolygonSymbolizerImpl polygonSymbolizer = sf.createPolygonSymbolizer();
         String xmlFragment = transformer.transform(polygonSymbolizer);
         assertNotNull(xmlFragment);
 
@@ -731,7 +730,8 @@ public class SLDTransformerTest extends XmlTestSupport {
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document dom = db.parse(new InputSource(new StringReader(xmlFragment)));
 
-        PolygonSymbolizer polygonSymbolizer2 = parser.parsePolygonSymbolizer(dom.getFirstChild());
+        PolygonSymbolizerImpl polygonSymbolizer2 =
+                parser.parsePolygonSymbolizer(dom.getFirstChild());
 
         assertNull(polygonSymbolizer2.getUnitOfMeasure());
     }
@@ -741,7 +741,7 @@ public class SLDTransformerTest extends XmlTestSupport {
             throws TransformerException, ParserConfigurationException, IOException, SAXException {
 
         // simple default line symbolizer
-        RasterSymbolizer rasterSymbolizer = sf.createRasterSymbolizer();
+        RasterSymbolizerImpl rasterSymbolizer = sf.createRasterSymbolizer();
         String xmlFragment = transformer.transform(rasterSymbolizer);
         assertNotNull(xmlFragment);
 
@@ -752,7 +752,7 @@ public class SLDTransformerTest extends XmlTestSupport {
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document dom = db.parse(new InputSource(new StringReader(xmlFragment)));
 
-        RasterSymbolizer rasterSymbolizer2 = parser.parseRasterSymbolizer(dom.getFirstChild());
+        RasterSymbolizerImpl rasterSymbolizer2 = parser.parseRasterSymbolizer(dom.getFirstChild());
 
         assertNull(rasterSymbolizer2.getUnitOfMeasure());
     }
@@ -762,7 +762,7 @@ public class SLDTransformerTest extends XmlTestSupport {
             throws TransformerException, ParserConfigurationException, IOException, SAXException {
 
         // simple default line symbolizer
-        LineSymbolizer lineSymbolizer = sf.createLineSymbolizer();
+        LineSymbolizerImpl lineSymbolizer = (LineSymbolizerImpl) sf.createLineSymbolizer();
         String xmlFragment = transformer.transform(lineSymbolizer);
         assertNotNull(xmlFragment);
 
@@ -773,7 +773,7 @@ public class SLDTransformerTest extends XmlTestSupport {
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document dom = db.parse(new InputSource(new StringReader(xmlFragment)));
 
-        LineSymbolizer lineSymbolizer2 = parser.parseLineSymbolizer(dom.getFirstChild());
+        LineSymbolizerImpl lineSymbolizer2 = parser.parseLineSymbolizer(dom.getFirstChild());
 
         assertNull(lineSymbolizer2.getUnitOfMeasure());
     }
@@ -783,7 +783,7 @@ public class SLDTransformerTest extends XmlTestSupport {
             throws TransformerException, ParserConfigurationException, IOException, SAXException {
 
         // simple default text symbolizer
-        TextSymbolizer textSymbolizer = sf.createTextSymbolizer();
+        TextSymbolizerImpl textSymbolizer = (TextSymbolizerImpl) sf.createTextSymbolizer();
         String xmlFragment = transformer.transform(textSymbolizer);
         assertNotNull(xmlFragment);
 
@@ -794,7 +794,7 @@ public class SLDTransformerTest extends XmlTestSupport {
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document dom = db.parse(new InputSource(new StringReader(xmlFragment)));
 
-        TextSymbolizer textSymbolizer2 = parser.parseTextSymbolizer(dom.getFirstChild());
+        TextSymbolizerImpl textSymbolizer2 = parser.parseTextSymbolizer(dom.getFirstChild());
 
         assertNull(textSymbolizer2.getUnitOfMeasure());
     }
@@ -804,8 +804,8 @@ public class SLDTransformerTest extends XmlTestSupport {
     public void testDisplacement() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
 
-        Graphic graphic = sb.createGraphic();
-        Displacement disp = sb.createDisplacement(10.1, -5.5);
+        GraphicImpl graphic = sb.createGraphic();
+        DisplacementImpl disp = sb.createDisplacement(10.1, -5.5);
         graphic.setDisplacement(disp);
 
         SLDTransformer st = new SLDTransformer();
@@ -820,13 +820,13 @@ public class SLDTransformerTest extends XmlTestSupport {
     public void testTextSymbolizerTransformOutAndInAndOutAgain() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
 
-        Style style = sb.createStyle(sb.createTextSymbolizer());
+        StyleImpl style = sb.createStyle(sb.createTextSymbolizer());
 
         SLDTransformer st = new SLDTransformer();
         String firstExport = st.transform(style);
         SLDParser sldp = new SLDParser(CommonFactoryFinder.getStyleFactory(null));
         sldp.setInput(new StringReader(firstExport));
-        Style[] firstImport = sldp.readXML();
+        StyleImpl[] firstImport = sldp.readXML();
 
         assertNotNull(firstImport[0]);
 
@@ -841,11 +841,11 @@ public class SLDTransformerTest extends XmlTestSupport {
         // Construct a style with an empty "" font
         StyleBuilder sb = new StyleBuilder();
 
-        Font font =
+        FontImpl font =
                 sb.createFont(
                         ff.literal(""), ff.literal("normal"), ff.literal("normal"), ff.literal(12));
-        TextSymbolizer ts = sb.createStaticTextSymbolizer(Color.BLACK, font, "label");
-        Style style = sb.createStyle(ts);
+        TextSymbolizerImpl ts = sb.createStaticTextSymbolizer(Color.BLACK, font, "label");
+        StyleImpl style = sb.createStyle(ts);
 
         assertEquals("", getFontFamily(style));
 
@@ -854,7 +854,7 @@ public class SLDTransformerTest extends XmlTestSupport {
         String firstExport = st.transform(style);
         SLDParser sldp = new SLDParser(CommonFactoryFinder.getStyleFactory(null));
         sldp.setInput(new StringReader(firstExport));
-        Style[] firstImport = sldp.readXML();
+        StyleImpl[] firstImport = sldp.readXML();
 
         assertNotNull(firstImport[0]);
 
@@ -864,19 +864,19 @@ public class SLDTransformerTest extends XmlTestSupport {
         // Encode the style, and parse it again
         String secondExport = st.transform(firstImport);
         sldp.setInput(new StringReader(secondExport));
-        Style[] secondImport = sldp.readXML();
+        StyleImpl[] secondImport = sldp.readXML();
 
         // previously got "Serif" here
         assertEquals("", getFontFamily(secondImport[0]));
     }
 
-    private String getFontFamily(Style s) {
+    private String getFontFamily(StyleImpl s) {
 
-        List<org.geotools.styling.Symbolizer> symbolizers =
-                s.featureTypeStyles().get(0).rules().get(0).symbolizers();
-        for (org.geotools.styling.Symbolizer symbolizer : symbolizers) {
-            if (symbolizer instanceof TextSymbolizer) {
-                Font font = ((TextSymbolizer) symbolizer).fonts().get(0);
+        List<Symbolizer> symbolizers =
+                (List<Symbolizer>) s.featureTypeStyles().get(0).rules().get(0).symbolizers();
+        for (Symbolizer symbolizer : symbolizers) {
+            if (symbolizer instanceof TextSymbolizerImpl) {
+                FontImpl font = ((TextSymbolizerImpl) symbolizer).fonts().get(0);
                 assertTrue(font.getFamily().size() > 0);
                 return font.getFamily().get(0) == null ? null : font.getFamily().get(0).toString();
             }
@@ -892,24 +892,24 @@ public class SLDTransformerTest extends XmlTestSupport {
     public void testPriorityTransformOutAndIn() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
 
-        TextSymbolizer ts = sb.createTextSymbolizer();
+        TextSymbolizerImpl ts = sb.createTextSymbolizer();
         PropertyName literalPrio =
                 CommonFactoryFinder.getFilterFactory(null).property("quantVariable");
         ts.setPriority(literalPrio);
-        Style style = sb.createStyle(ts);
+        StyleImpl style = sb.createStyle(ts);
 
         SLDTransformer st = new SLDTransformer();
         String firstExport = st.transform(style);
         SLDParser sldp = new SLDParser(CommonFactoryFinder.getStyleFactory(null));
         sldp.setInput(new StringReader(firstExport));
-        Style[] firstImport = sldp.readXML();
+        StyleImpl[] firstImport = sldp.readXML();
 
         assertNotNull(firstImport[0]);
 
         {
-            Style reimportedStyle = firstImport[0];
-            TextSymbolizer reimportedTs =
-                    (TextSymbolizer)
+            StyleImpl reimportedStyle = firstImport[0];
+            TextSymbolizerImpl reimportedTs =
+                    (TextSymbolizerImpl)
                             reimportedStyle
                                     .featureTypeStyles()
                                     .get(0)
@@ -927,11 +927,11 @@ public class SLDTransformerTest extends XmlTestSupport {
             String secondExport = st.transform(firstImport);
             SLDParser sldp2 = new SLDParser(CommonFactoryFinder.getStyleFactory(null));
             sldp2.setInput(new StringReader(secondExport));
-            Style[] readXML = sldp2.readXML();
+            StyleImpl[] readXML = sldp2.readXML();
 
-            Style reimportedStyle = readXML[0];
-            TextSymbolizer reimportedTs =
-                    (TextSymbolizer)
+            StyleImpl reimportedStyle = readXML[0];
+            TextSymbolizerImpl reimportedTs =
+                    (TextSymbolizerImpl)
                             reimportedStyle
                                     .featureTypeStyles()
                                     .get(0)
@@ -948,22 +948,22 @@ public class SLDTransformerTest extends XmlTestSupport {
     @Test
     public void testColorMap() throws TransformerException {
         SLDTransformer st = new SLDTransformer();
-        ColorMap cm = sf.createColorMap();
+        ColorMapImpl cm = sf.createColorMap();
 
         // Test type = values
-        cm.setType(ColorMap.TYPE_VALUES);
+        cm.setType(ColorMapImpl.TYPE_VALUES);
         assertTrue(
                 "parsed xml must contain attribbute type with correct value",
                 st.transform(cm).contains("type=\"values\""));
 
         // Test type = intervals
-        cm.setType(ColorMap.TYPE_INTERVALS);
+        cm.setType(ColorMapImpl.TYPE_INTERVALS);
         assertTrue(
                 "parsed xml must contain attribbute type with correct value",
                 st.transform(cm).contains("type=\"intervals\""));
 
         // Test type = ramp
-        cm.setType(ColorMap.TYPE_RAMP);
+        cm.setType(ColorMapImpl.TYPE_RAMP);
         assertEquals(
                 "parsed xml must contain attribbute type with correct value",
                 -1,
@@ -973,24 +973,24 @@ public class SLDTransformerTest extends XmlTestSupport {
     @Test
     public void testColorMapExtended() throws TransformerException {
         SLDTransformer st = new SLDTransformer();
-        ColorMap cm = sf.createColorMap();
+        ColorMapImpl cm = sf.createColorMap();
 
         // Test type = values, extended = true
-        cm.setType(ColorMap.TYPE_VALUES);
+        cm.setType(ColorMapImpl.TYPE_VALUES);
         cm.setExtendedColors(true);
         assertTrue(
                 "parsed xml must contain attribbute type with correct value",
                 st.transform(cm).contains("extended=\"true\""));
 
         // Test type = intervals, extended = true
-        cm.setType(ColorMap.TYPE_INTERVALS);
+        cm.setType(ColorMapImpl.TYPE_INTERVALS);
         cm.setExtendedColors(true);
         assertTrue(
                 "parsed xml must contain attribbute type with correct value",
                 st.transform(cm).contains("extended=\"true\""));
 
         // Test type = ramp, extended = true
-        cm.setType(ColorMap.TYPE_RAMP);
+        cm.setType(ColorMapImpl.TYPE_RAMP);
         cm.setExtendedColors(true);
         assertTrue(
                 "parsed xml must contain attribbute type with correct value",
@@ -1005,7 +1005,7 @@ public class SLDTransformerTest extends XmlTestSupport {
     public void testMinimumLineSymbolizer() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
 
-        LineSymbolizer ls = sb.createLineSymbolizer();
+        LineSymbolizerImpl ls = sb.createLineSymbolizer();
         String xml = transformer.transform(ls);
 
         // check LineSymbolizer has the stroke element inside, but stroke does not have children
@@ -1036,7 +1036,7 @@ public class SLDTransformerTest extends XmlTestSupport {
     @Test
     public void testMinimumPolygonSymbolizer() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
-        PolygonSymbolizer ps = sb.createPolygonSymbolizer();
+        PolygonSymbolizerImpl ps = sb.createPolygonSymbolizer();
         String xml = transformer.transform(ps);
 
         // check PolygonSymbolizer has a fill and a stroke, both empty
@@ -1061,7 +1061,7 @@ public class SLDTransformerTest extends XmlTestSupport {
     @Test
     public void testMinimumPointSymbolizer() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
-        PointSymbolizer ps = sb.createPointSymbolizer();
+        PointSymbolizerImpl ps = sb.createPointSymbolizer();
         String xml = transformer.transform(ps);
 
         // check PolygonSymbolizer has a fill and a stroke, both empty
@@ -1094,7 +1094,7 @@ public class SLDTransformerTest extends XmlTestSupport {
     @Test
     public void testMinimumRasterSymbolizer() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
-        RasterSymbolizer rs = sb.getStyleFactory().createRasterSymbolizer();
+        RasterSymbolizerImpl rs = sb.getStyleFactory().createRasterSymbolizer();
         String xml = transformer.transform(rs);
 
         // check RasterSymbolizer just has the default geometry value
@@ -1107,7 +1107,7 @@ public class SLDTransformerTest extends XmlTestSupport {
     @Test
     public void testMinimumStyle() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
-        Style s = sb.createStyle(sb.createPointSymbolizer());
+        StyleImpl s = sb.createStyle(sb.createPointSymbolizer());
         String xml = transformer.transform(s);
 
         // check RasterSymbolizer just has the default geometry value
@@ -1130,11 +1130,11 @@ public class SLDTransformerTest extends XmlTestSupport {
     @Test
     public void testDefaultStyle() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
-        Style s = sb.createStyle(sb.createPointSymbolizer());
+        StyleImpl s = sb.createStyle(sb.createPointSymbolizer());
         s.setDefault(true);
         StyleFactory sf = sb.getStyleFactory();
         StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
-        org.geotools.styling.NamedLayer layer = sf.createNamedLayer();
+        NamedLayerImpl layer = sf.createNamedLayer();
         layer.setName("layerName");
         layer.addStyle(s);
         sld.addStyledLayer(layer);
@@ -1150,7 +1150,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
     @Test
     public void testLocalizedTitle() throws TransformerException {
-        Rule rule = (Rule) CommonFactoryFinder.getStyleFactory().createRule();
+        RuleImpl rule = (RuleImpl) CommonFactoryFinder.getStyleFactory().createRule();
         GrowableInternationalString intString =
                 new GrowableInternationalString("title") {
 
@@ -1187,7 +1187,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
     @Test
     public void testLocalizedAbstract() throws TransformerException {
-        Rule rule = (Rule) CommonFactoryFinder.getStyleFactory().createRule();
+        RuleImpl rule = (RuleImpl) CommonFactoryFinder.getStyleFactory().createRule();
         GrowableInternationalString intString =
                 new GrowableInternationalString("title") {
 
@@ -1224,9 +1224,9 @@ public class SLDTransformerTest extends XmlTestSupport {
     @Test
     public void testEncodeFunction() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
-        PointSymbolizer ps = sb.createPointSymbolizer();
+        PointSymbolizerImpl ps = sb.createPointSymbolizer();
         ps.getGraphic().setSize(sb.getFilterFactory().function("random"));
-        Style s = sb.createStyle(ps);
+        StyleImpl s = sb.createStyle(ps);
         s.setDefault(true);
 
         String xml = transformer.transform(s);
@@ -1243,9 +1243,9 @@ public class SLDTransformerTest extends XmlTestSupport {
     public void textTextSymbolizer2_InAndOut() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
 
-        TextSymbolizer ts2 = sf.createTextSymbolizer();
+        TextSymbolizerImpl ts2 = (TextSymbolizerImpl) sf.createTextSymbolizer();
         // Create a Graphic with two recognizable values
-        Graphic gr = new Graphic(ff);
+        GraphicImpl gr = new GraphicImpl(ff);
         gr.setOpacity(ff.literal(0.77));
         gr.setSize(ff.literal(77));
         ts2.setGraphic(gr);
@@ -1253,7 +1253,7 @@ public class SLDTransformerTest extends XmlTestSupport {
         ts2.setSnippet(snippet);
         Literal fD = ff.literal("some description");
         ts2.setFeatureDescription(fD);
-        OtherText otherText = new OtherText();
+        OtherTextImpl otherText = new OtherTextImpl();
         otherText.setTarget("otherTextTarget");
         otherText.setText(ff.literal("otherTextText"));
         ts2.setOtherText(otherText);
@@ -1272,9 +1272,9 @@ public class SLDTransformerTest extends XmlTestSupport {
 
         SLDParser sldParser = new SLDParser(sf);
         sldParser.setInput(new StringReader(xml));
-        Style importedStyle = sldParser.readXML()[0];
-        TextSymbolizer copy =
-                (TextSymbolizer)
+        StyleImpl importedStyle = sldParser.readXML()[0];
+        TextSymbolizerImpl copy =
+                (TextSymbolizerImpl)
                         importedStyle
                                 .featureTypeStyles()
                                 .get(0)
@@ -1314,7 +1314,7 @@ public class SLDTransformerTest extends XmlTestSupport {
     @Test
     public void testLineSymbolizerWithPerpendicularOffset() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
-        LineSymbolizer ls = sb.createLineSymbolizer();
+        LineSymbolizerImpl ls = sb.createLineSymbolizer();
         ls.setPerpendicularOffset(ff.literal(0.77));
 
         // check XML
@@ -1328,9 +1328,9 @@ public class SLDTransformerTest extends XmlTestSupport {
 
         SLDParser sldParser = new SLDParser(sf);
         sldParser.setInput(new StringReader(xml));
-        Style importedStyle = sldParser.readXML()[0];
-        LineSymbolizer copy =
-                (LineSymbolizer)
+        StyleImpl importedStyle = sldParser.readXML()[0];
+        LineSymbolizerImpl copy =
+                (LineSymbolizerImpl)
                         importedStyle
                                 .featureTypeStyles()
                                 .get(0)
@@ -1390,7 +1390,7 @@ public class SLDTransformerTest extends XmlTestSupport {
         StringReader reader = new StringReader(xml);
         SLDParser sldParser = new SLDParser(sf, reader);
 
-        Style[] styles = sldParser.readXML();
+        StyleImpl[] styles = sldParser.readXML();
         assertNotNull("parsed xml", styles);
         assertTrue("parsed xml into style", styles.length > 0);
 
@@ -1412,10 +1412,10 @@ public class SLDTransformerTest extends XmlTestSupport {
         StyleBuilder sb = new StyleBuilder();
         String chartURI =
                 "http://chart?cht=p&chd=t:${100 * MALE / PERSONS},${100 * FEMALE / PERSONS}&chf=bg,s,FFFFFF00";
-        ExternalGraphic eg = sb.createExternalGraphic(chartURI, "image/png");
-        PointSymbolizer ps = sb.createPointSymbolizer(sb.createGraphic(eg, null, null));
+        ExternalGraphicImpl eg = sb.createExternalGraphic(chartURI, "image/png");
+        PointSymbolizerImpl ps = sb.createPointSymbolizer(sb.createGraphic(eg, null, null));
 
-        Style s = sb.createStyle(ps);
+        StyleImpl s = sb.createStyle(ps);
         s.setDefault(true);
 
         String xml = transformer.transform(s);
@@ -1428,9 +1428,9 @@ public class SLDTransformerTest extends XmlTestSupport {
 
         SLDParser parser = new SLDParser(sf);
         parser.setInput(new StringReader(xml));
-        Style importedStyle = parser.readXML()[0];
-        PointSymbolizer psCopy =
-                (PointSymbolizer)
+        StyleImpl importedStyle = parser.readXML()[0];
+        PointSymbolizerImpl psCopy =
+                (PointSymbolizerImpl)
                         importedStyle
                                 .featureTypeStyles()
                                 .get(0)
@@ -1438,14 +1438,15 @@ public class SLDTransformerTest extends XmlTestSupport {
                                 .get(0)
                                 .symbolizers()
                                 .get(0);
-        ExternalGraphic egCopy = (ExternalGraphic) psCopy.getGraphic().graphicalSymbols().get(0);
+        ExternalGraphicImpl egCopy =
+                (ExternalGraphicImpl) psCopy.getGraphic().graphicalSymbols().get(0);
         assertEquals(chartURI, egCopy.getLocation().toExternalForm());
     }
 
     @Test
     public void testLocalUomPoint() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
-        PointSymbolizer ps = sb.createPointSymbolizer();
+        PointSymbolizerImpl ps = sb.createPointSymbolizer();
         ps.getGraphic().setSize(ff.literal("1m"));
         StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ps);
 
@@ -1457,7 +1458,7 @@ public class SLDTransformerTest extends XmlTestSupport {
     @Test
     public void testLocalUomLine() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
-        LineSymbolizer ls = sb.createLineSymbolizer();
+        LineSymbolizerImpl ls = sb.createLineSymbolizer();
         ls.getStroke().setWidth(ff.literal("1m"));
         StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ls);
 
@@ -1473,7 +1474,7 @@ public class SLDTransformerTest extends XmlTestSupport {
     @Test
     public void testLocalUomText() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
-        TextSymbolizer ts = sb.createTextSymbolizer();
+        TextSymbolizerImpl ts = sb.createTextSymbolizer();
         ts.getFont().setSize(ff.literal("1m"));
         StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
 
@@ -1489,7 +1490,7 @@ public class SLDTransformerTest extends XmlTestSupport {
     @Test
     public void testLabelMixedContent() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
-        TextSymbolizer ts = sb.createTextSymbolizer();
+        TextSymbolizerImpl ts = sb.createTextSymbolizer();
         ts.setLabel(ff.function("strConcat", ff.literal("abc"), ff.property("myProperty")));
         StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
 
@@ -1503,7 +1504,7 @@ public class SLDTransformerTest extends XmlTestSupport {
     @Test
     public void testLabelCDataStart() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
-        TextSymbolizer ts = sb.createTextSymbolizer();
+        TextSymbolizerImpl ts = sb.createTextSymbolizer();
         ts.setLabel(ff.function("strConcat", ff.literal(" abc"), ff.property("myProperty")));
         StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
 
@@ -1520,7 +1521,7 @@ public class SLDTransformerTest extends XmlTestSupport {
     @Test
     public void testLabelCDataEnd() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
-        TextSymbolizer ts = sb.createTextSymbolizer();
+        TextSymbolizerImpl ts = sb.createTextSymbolizer();
         ts.setLabel(ff.function("strConcat", ff.literal("abc "), ff.property("myProperty")));
         StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
 
@@ -1537,7 +1538,7 @@ public class SLDTransformerTest extends XmlTestSupport {
     @Test
     public void testLabelCDataMid() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
-        TextSymbolizer ts = sb.createTextSymbolizer();
+        TextSymbolizerImpl ts = sb.createTextSymbolizer();
         ts.setLabel(ff.function("strConcat", ff.literal("a  bc"), ff.property("myProperty")));
         StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
 
@@ -1554,7 +1555,7 @@ public class SLDTransformerTest extends XmlTestSupport {
     @Test
     public void testLabelCDataNewline() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
-        TextSymbolizer ts = sb.createTextSymbolizer();
+        TextSymbolizerImpl ts = sb.createTextSymbolizer();
         ts.setLabel(ff.function("strConcat", ff.literal("a \n bc"), ff.property("myProperty")));
         StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
 
@@ -1571,7 +1572,7 @@ public class SLDTransformerTest extends XmlTestSupport {
     @Test
     public void testLabelNested() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
-        TextSymbolizer ts = sb.createTextSymbolizer();
+        TextSymbolizerImpl ts = sb.createTextSymbolizer();
         ts.setLabel(
                 ff.function(
                         "strConcat",
@@ -1626,7 +1627,7 @@ public class SLDTransformerTest extends XmlTestSupport {
                         + "	</sld:NamedLayer>"
                         + "</sld:StyledLayerDescriptor>";
 
-        Style originalStyle = validateWellKnownNameWithExpressionStyle(originalStyleXml);
+        StyleImpl originalStyle = validateWellKnownNameWithExpressionStyle(originalStyleXml);
 
         SLDTransformer styleTransform = new SLDTransformer();
         styleTransform.setIndentation(2);
@@ -1677,7 +1678,7 @@ public class SLDTransformerTest extends XmlTestSupport {
         styleTransform.transform(parseStyles(originalStyleXml), writerWriter);
         String transformedStyleXml = writerWriter.toString();
 
-        Style style = parseStyles(transformedStyleXml)[0];
+        StyleImpl style = parseStyles(transformedStyleXml)[0];
 
         assertNotNull("style is null", style);
         assertNotNull("feature type styles are null", style.featureTypeStyles());
@@ -1698,10 +1699,10 @@ public class SLDTransformerTest extends XmlTestSupport {
         assertNotNull("symbolizers are null", symbolizers);
         assertEquals("more or less that one symbolizer is available", 1, symbolizers.size());
 
-        LineSymbolizer lineSymbolizer = (LineSymbolizer) symbolizers.get(0);
+        LineSymbolizerImpl lineSymbolizer = (LineSymbolizerImpl) symbolizers.get(0);
         assertNotNull("line symbolizer is null", lineSymbolizer);
 
-        Stroke stroke = lineSymbolizer.getStroke();
+        StrokeImpl stroke = lineSymbolizer.getStroke();
         assertNotNull("stroke is null", stroke);
         assertNotNull("stroke dasharray is null", stroke.dashArray());
 
@@ -1757,7 +1758,7 @@ public class SLDTransformerTest extends XmlTestSupport {
                         "<sld:CssParameter name=\"stroke-dasharray\">10.0 5.0 20.0 15.0</sld:CssParameter>"));
     }
 
-    private Style[] parseStyles(String styleXml) {
+    private StyleImpl[] parseStyles(String styleXml) {
         StringReader stringReader = new StringReader(styleXml);
         SLDParser sldParser = new SLDParser(sf, stringReader);
         return sldParser.readXML();
@@ -1767,9 +1768,9 @@ public class SLDTransformerTest extends XmlTestSupport {
     public void testAnchorPointInGraphic() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
 
-        Graphic graphic = sb.createGraphic();
-        Displacement disp = sb.createDisplacement(10, 10);
-        AnchorPoint ap = sb.createAnchorPoint(1, 0.3);
+        GraphicImpl graphic = sb.createGraphic();
+        DisplacementImpl disp = sb.createDisplacement(10, 10);
+        AnchorPointImpl ap = sb.createAnchorPoint(1, 0.3);
         graphic.setDisplacement(disp);
         graphic.setAnchorPoint(ap);
 
@@ -1787,7 +1788,7 @@ public class SLDTransformerTest extends XmlTestSupport {
     @Test
     public void testFeatureTypeStyleOptions() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
-        Style style = sb.createStyle(sb.createPolygonSymbolizer());
+        StyleImpl style = sb.createStyle(sb.createPolygonSymbolizer());
         FeatureTypeStyle fts = style.featureTypeStyles().get(0);
         fts.getOptions().put("key", "value");
 
@@ -1800,14 +1801,14 @@ public class SLDTransformerTest extends XmlTestSupport {
                 hasXPath("//sld:FeatureTypeStyle/sld:VendorOption[@name='key']", equalTo("value")));
     }
 
-    private Style validateWellKnownNameWithExpressionStyle(String xmlStyle) {
+    private StyleImpl validateWellKnownNameWithExpressionStyle(String xmlStyle) {
 
         StringReader stringReader = new StringReader(xmlStyle);
         SLDParser sldParser = new SLDParser(sf, stringReader);
-        Style[] parsedStyles = sldParser.readXML();
+        StyleImpl[] parsedStyles = sldParser.readXML();
         assertNotNull("parsing xml style returns null", parsedStyles);
         assertEquals("more or less that one style is available", 1, parsedStyles.length);
-        Style style = parsedStyles[0];
+        StyleImpl style = parsedStyles[0];
 
         assertNotNull("style is null", style);
         assertNotNull("feature type styles are null", style.featureTypeStyles());
@@ -1826,10 +1827,10 @@ public class SLDTransformerTest extends XmlTestSupport {
         List<? extends Symbolizer> symbolizers = rule.symbolizers();
         assertNotNull("symbolizers are null", symbolizers);
         assertEquals("more or less that one symbolizer is available", 1, symbolizers.size());
-        PointSymbolizer pointSymbolizer = (PointSymbolizer) symbolizers.get(0);
+        PointSymbolizerImpl pointSymbolizer = (PointSymbolizerImpl) symbolizers.get(0);
         assertNotNull("point symbolizer is null", pointSymbolizer);
 
-        Graphic graphic = pointSymbolizer.getGraphic();
+        GraphicImpl graphic = pointSymbolizer.getGraphic();
         assertNotNull("graphic is null", graphic);
         assertNotNull("graphic symbols are null", graphic.graphicalSymbols());
         assertEquals(
@@ -1837,7 +1838,7 @@ public class SLDTransformerTest extends XmlTestSupport {
                 1,
                 graphic.graphicalSymbols().size());
 
-        Mark mark = (Mark) graphic.graphicalSymbols().get(0);
+        MarkImpl mark = (MarkImpl) graphic.graphicalSymbols().get(0);
         assertNotNull("mark is null", mark);
         assertNotNull("mark wellKnownName is null", mark.getWellKnownName());
         assertTrue("wellKnownName is not a function", mark.getWellKnownName() instanceof Function);
@@ -1871,7 +1872,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
     @Test
     public void testContrastEnhancement() throws TransformerException {
-        ContrastEnhancement ce = new ContrastEnhancement();
+        ContrastEnhancementImpl ce = new ContrastEnhancementImpl();
         NormalizeContrastMethodStrategy normal = new NormalizeContrastMethodStrategy();
         normal.setAlgorithm(ff.literal("ClipToMinimumMaximum"));
         normal.addParameter("p1", ff.literal(false));
@@ -1925,7 +1926,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
     @Test
     public void testGammaValueExpressionContrastEnhancement() throws TransformerException {
-        ContrastEnhancement ce = new ContrastEnhancement();
+        ContrastEnhancementImpl ce = new ContrastEnhancementImpl();
         ce.setGammaValue(ff.add(ff.literal(1.0), ff.literal(0.5)));
         SLDTransformer st = new SLDTransformer();
         String xml = st.transform(ce);
@@ -1950,9 +1951,10 @@ public class SLDTransformerTest extends XmlTestSupport {
     @Test
     public void testMultipleFontsUniform() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
-        Font f1 = sb.createFont("Arial", 10);
-        Font f2 = sb.createFont("Comic Sans MS", 10);
-        TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, new Font[] {f1, f2}, "label");
+        FontImpl f1 = sb.createFont("Arial", 10);
+        FontImpl f2 = sb.createFont("Comic Sans MS", 10);
+        TextSymbolizerImpl ts =
+                sb.createTextSymbolizer(Color.BLACK, new FontImpl[] {f1, f2}, "label");
 
         SLDTransformer st = new SLDTransformer();
         String xml = st.transform(ts);
@@ -1983,9 +1985,10 @@ public class SLDTransformerTest extends XmlTestSupport {
     @Test
     public void testMultipleFontsNotUniform() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
-        Font f1 = sb.createFont("Arial", 10);
-        Font f2 = sb.createFont("Comic Sans MS", 12);
-        TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, new Font[] {f1, f2}, "label");
+        FontImpl f1 = sb.createFont("Arial", 10);
+        FontImpl f2 = sb.createFont("Comic Sans MS", 12);
+        TextSymbolizerImpl ts =
+                sb.createTextSymbolizer(Color.BLACK, new FontImpl[] {f1, f2}, "label");
 
         SLDTransformer st = new SLDTransformer();
         String xml = st.transform(ts);
@@ -2022,7 +2025,7 @@ public class SLDTransformerTest extends XmlTestSupport {
     @Test
     public void testLineOffsetExpression() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
-        LineSymbolizer ls = sb.createLineSymbolizer(Color.RED);
+        LineSymbolizerImpl ls = sb.createLineSymbolizer(Color.RED);
         ls.setPerpendicularOffset(ff.multiply(ff.property("a"), ff.literal(2)));
 
         SLDTransformer st = new SLDTransformer();
@@ -2045,7 +2048,7 @@ public class SLDTransformerTest extends XmlTestSupport {
     @Test
     public void testDefaults() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
-        LineSymbolizer ls = sb.createLineSymbolizer(Color.BLACK);
+        LineSymbolizerImpl ls = sb.createLineSymbolizer(Color.BLACK);
 
         SLDTransformer st = new SLDTransformer();
         st.setExportDefaultValues(true);
@@ -2070,7 +2073,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
         st.setExportDefaultValues(true);
 
-        PolygonSymbolizer ps = sb.createPolygonSymbolizer(Color.GRAY, Color.black, 1.0);
+        PolygonSymbolizerImpl ps = sb.createPolygonSymbolizer(Color.GRAY, Color.black, 1.0);
 
         xml = st.transform(ps);
 
@@ -2104,7 +2107,7 @@ public class SLDTransformerTest extends XmlTestSupport {
                         equalTo("0")));
 
         st.setExportDefaultValues(true);
-        PointSymbolizer pos =
+        PointSymbolizerImpl pos =
                 sb.createPointSymbolizer(sb.createGraphic(null, sb.createMark("square"), null));
 
         xml = st.transform(pos);
@@ -2202,15 +2205,15 @@ public class SLDTransformerTest extends XmlTestSupport {
         StringReader reader = new StringReader(xml);
         SLDParser sldParser = new SLDParser(sf, reader);
 
-        Style[] styles = sldParser.readXML();
+        StyleImpl[] styles = sldParser.readXML();
 
-        Style style = styles[0];
+        StyleImpl style = styles[0];
 
         org.geotools.api.style.Rule rule = style.featureTypeStyles().get(0).rules().get(0);
 
         List<? extends Symbolizer> symbolizers = rule.symbolizers();
 
-        LineSymbolizer lineSymbolizer = (LineSymbolizer) symbolizers.get(0);
+        LineSymbolizerImpl lineSymbolizer = (LineSymbolizerImpl) symbolizers.get(0);
         assertNotNull(lineSymbolizer);
 
         SLDTransformer st = new SLDTransformer();
@@ -2235,14 +2238,13 @@ public class SLDTransformerTest extends XmlTestSupport {
                         notNullValue(String.class)));
     }
 
-    private StyledLayerDescriptor buildSLDAroundSymbolizer(
-            org.geotools.styling.Symbolizer symbolizer) {
+    private StyledLayerDescriptor buildSLDAroundSymbolizer(Symbolizer symbolizer) {
         StyleBuilder sb = new StyleBuilder();
-        Style s = sb.createStyle(symbolizer);
+        StyleImpl s = sb.createStyle(symbolizer);
         s.setDefault(true);
         StyleFactory sf = sb.getStyleFactory();
         StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
-        org.geotools.styling.NamedLayer layer = sf.createNamedLayer();
+        NamedLayerImpl layer = sf.createNamedLayer();
         layer.setName("layerName");
         layer.addStyle(s);
         sld.addStyledLayer(layer);
@@ -2252,7 +2254,7 @@ public class SLDTransformerTest extends XmlTestSupport {
     @Test
     public void testEncodeBackgroundSolid() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
-        Style style = sb.createStyle(sb.createLineSymbolizer());
+        StyleImpl style = sb.createStyle(sb.createLineSymbolizer());
         style.setBackground(sb.createFill(Color.RED));
 
         SLDTransformer st = new SLDTransformer();
@@ -2275,8 +2277,8 @@ public class SLDTransformerTest extends XmlTestSupport {
     @Test
     public void testEncodeBackgroundGraphicFill() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
-        Style style = sb.createStyle(sb.createLineSymbolizer());
-        Fill fill = sb.createFill();
+        StyleImpl style = sb.createStyle(sb.createLineSymbolizer());
+        FillImpl fill = sb.createFill();
         fill.setColor((String) null);
         fill.setOpacity((String) null);
         fill.setGraphicFill(sb.createGraphic(null, sb.createMark("square"), null));
@@ -2340,13 +2342,13 @@ public class SLDTransformerTest extends XmlTestSupport {
         StringReader reader = new StringReader(xml);
         SLDParser sldParser = new SLDParser(sf, reader);
 
-        Style[] parsed = sldParser.readXML();
+        StyleImpl[] parsed = sldParser.readXML();
         assertNotNull("parsed xml", parsed);
         assertTrue("parsed xml into style", parsed.length > 0);
 
-        Style style = parsed[0];
+        StyleImpl style = parsed[0];
         assertNotNull(style);
-        org.geotools.styling.Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        Rule rule = style.featureTypeStyles().get(0).rules().get(0);
         assertNotNull(rule);
         assertEquals("firstValue", rule.getOptions().get("firstOption"));
         assertEquals("secondValue", rule.getOptions().get("secondOption"));
@@ -2354,7 +2356,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
     @Test
     public void testRasterVendorOption() throws TransformerException {
-        RasterSymbolizer rs = sf.createRasterSymbolizer();
+        RasterSymbolizerImpl rs = sf.createRasterSymbolizer();
         rs.getOptions().put("test", "value");
 
         SLDTransformer st = new SLDTransformer();

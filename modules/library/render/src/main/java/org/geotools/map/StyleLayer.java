@@ -16,7 +16,7 @@
  */
 package org.geotools.map;
 
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 
 /**
  * Layer responsible for rendering under control of a user supplied Style object.
@@ -36,18 +36,18 @@ import org.geotools.styling.Style;
  */
 public abstract class StyleLayer extends Layer {
     /** Style used for rendering */
-    protected Style style;
+    protected StyleImpl style;
 
     /**
      * Creates a new instance of StyleLayer
      *
      * @param style the style used to control drawing of this layer
      */
-    public StyleLayer(Style style) {
+    public StyleLayer(StyleImpl style) {
         this.style = style;
     }
 
-    public StyleLayer(Style style, String title) {
+    public StyleLayer(StyleImpl style, String title) {
         this.style = style;
         setTitle(title);
     }
@@ -69,7 +69,7 @@ public abstract class StyleLayer extends Layer {
      * @return The style (SLD).
      */
     @Override
-    public Style getStyle() {
+    public StyleImpl getStyle() {
         return style;
     }
 
@@ -78,7 +78,7 @@ public abstract class StyleLayer extends Layer {
      *
      * @param style The new style
      */
-    public void setStyle(Style style) {
+    public void setStyle(StyleImpl style) {
         if (style == null) {
             throw new NullPointerException("Style is required");
         }

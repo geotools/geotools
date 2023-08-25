@@ -20,10 +20,10 @@ import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.styling.ConstantStroke;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Stroke;
+import org.geotools.styling.LineSymbolizerImpl;
+import org.geotools.styling.StrokeImpl;
 
-public class LineSymbolizerBuilder extends SymbolizerBuilder<LineSymbolizer> {
+public class LineSymbolizerBuilder extends SymbolizerBuilder<LineSymbolizerImpl> {
     StrokeBuilder strokeBuilder = new StrokeBuilder(this);
 
     Expression geometry = null;
@@ -62,15 +62,15 @@ public class LineSymbolizerBuilder extends SymbolizerBuilder<LineSymbolizer> {
     }
 
     @Override
-    public LineSymbolizer build() {
+    public LineSymbolizerImpl build() {
         if (unset) {
             return null; // builder was constructed but never used
         }
-        Stroke stroke = strokeBuilder.build();
+        StrokeImpl stroke = strokeBuilder.build();
         if (stroke == null) {
             stroke = ConstantStroke.DEFAULT;
         }
-        LineSymbolizer ls = sf.createLineSymbolizer(stroke, null);
+        LineSymbolizerImpl ls = sf.createLineSymbolizer(stroke, null);
         if (geometry != null) {
             ls.setGeometry(geometry);
         }
@@ -98,7 +98,7 @@ public class LineSymbolizerBuilder extends SymbolizerBuilder<LineSymbolizer> {
     }
 
     @Override
-    public LineSymbolizerBuilder reset(LineSymbolizer original) {
+    public LineSymbolizerBuilder reset(LineSymbolizerImpl original) {
         if (original == null) {
             return unset();
         }
@@ -110,8 +110,8 @@ public class LineSymbolizerBuilder extends SymbolizerBuilder<LineSymbolizer> {
     }
 
     public LineSymbolizerBuilder reset(org.geotools.api.style.LineSymbolizer original) {
-        if (original instanceof LineSymbolizer) {
-            return reset((LineSymbolizer) original);
+        if (original instanceof LineSymbolizerImpl) {
+            return reset((LineSymbolizerImpl) original);
         }
         if (original == null) {
             return unset();

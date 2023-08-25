@@ -21,7 +21,7 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.Displacement;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDPolygonSymbolizerBinding;
-import org.geotools.styling.PolygonSymbolizer;
+import org.geotools.styling.PolygonSymbolizerImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
@@ -73,7 +73,7 @@ public class PolygonSymbolizerBinding extends SLDPolygonSymbolizerBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        PolygonSymbolizer sym = (PolygonSymbolizer) super.parse(instance, node, value);
+        PolygonSymbolizerImpl sym = (PolygonSymbolizerImpl) super.parse(instance, node, value);
 
         // &lt;xsd:element minOccurs="0" ref="se:Displacement"/&gt;
         if (node.hasChild("Displacement")) {

@@ -17,7 +17,7 @@
 package org.geotools.brewer.styling.builder;
 
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.styling.AnchorPoint;
+import org.geotools.styling.AnchorPointImpl;
 
 /**
  * AnchorPoint allows you specify which part of a graphic indicates the location.
@@ -36,7 +36,7 @@ import org.geotools.styling.AnchorPoint;
  *
  *
  */
-public class AnchorPointBuilder extends AbstractStyleBuilder<AnchorPoint> {
+public class AnchorPointBuilder extends AbstractStyleBuilder<AnchorPointImpl> {
     double defaultX;
 
     double defaultY;
@@ -57,11 +57,11 @@ public class AnchorPointBuilder extends AbstractStyleBuilder<AnchorPoint> {
     }
 
     @Override
-    public AnchorPoint build() {
+    public AnchorPointImpl build() {
         if (unset) {
             return null;
         }
-        AnchorPoint anchorPoint = sf.anchorPoint(x, y);
+        AnchorPointImpl anchorPoint = sf.anchorPoint(x, y);
         if (parent == null) {
             reset();
         }
@@ -105,7 +105,7 @@ public class AnchorPointBuilder extends AbstractStyleBuilder<AnchorPoint> {
     }
 
     @Override
-    public AnchorPointBuilder reset(AnchorPoint anchorPoint) {
+    public AnchorPointBuilder reset(AnchorPointImpl anchorPoint) {
         if (anchorPoint == null) {
             return reset();
         }

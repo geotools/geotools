@@ -24,7 +24,7 @@ import java.util.Set;
 import org.geotools.api.style.TextSymbolizer.PolygonAlignOptions;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.renderer.style.TextStyle2D;
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.TextSymbolizerImpl;
 import org.locationtech.jts.geom.Geometry;
 
 /**
@@ -94,7 +94,7 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
 
     double wordSpacing;
 
-    TextSymbolizer symbolizer;
+    TextSymbolizerImpl symbolizer;
 
     int fontShrinkSizeMin;
 
@@ -104,7 +104,7 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
 
     boolean partialsEnabled = false;
 
-    TextSymbolizer.GraphicPlacement graphicPlacement;
+    TextSymbolizerImpl.GraphicPlacement graphicPlacement;
 
     /**
      * A value between 0 and 1 representing the portion of the label that overlaps with the geometry
@@ -146,7 +146,7 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
             TextStyle2D textStyle,
             LiteShape2 shape,
             String label,
-            TextSymbolizer symbolizer) {
+            TextSymbolizerImpl symbolizer) {
         this.textStyle = textStyle;
         this.geoms.add(shape.getGeometry());
         this.label = label;
@@ -410,13 +410,13 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
         this.fontShrinkSizeMin = fontShrinkSize;
     }
 
-    public TextSymbolizer.GraphicPlacement getGraphicPlacement() {
+    public TextSymbolizerImpl.GraphicPlacement getGraphicPlacement() {
         return graphicPlacement == null
                 ? org.geotools.api.style.TextSymbolizer.GraphicPlacement.LABEL
                 : graphicPlacement;
     }
 
-    public void setGraphicPlacement(TextSymbolizer.GraphicPlacement graphicPlacement) {
+    public void setGraphicPlacement(TextSymbolizerImpl.GraphicPlacement graphicPlacement) {
         this.graphicPlacement = graphicPlacement;
     }
 

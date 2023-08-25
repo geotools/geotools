@@ -34,29 +34,24 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.style.*;
+import org.geotools.api.style.OverlapBehavior;
+import org.geotools.api.style.Rule;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.function.EnvFunction;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.DefaultResourceLocator;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.ExternalMark;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.ResourceLocator;
-import org.geotools.styling.SLD;
-import org.geotools.styling.SelectedChannelType;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.UomOgcMapping;
+import org.geotools.styling.*;
+import org.geotools.styling.FillImpl;
+import org.geotools.styling.FontImpl;
+import org.geotools.styling.GraphicImpl;
+import org.geotools.styling.LineSymbolizerImpl;
+import org.geotools.styling.MarkImpl;
+import org.geotools.styling.PointSymbolizerImpl;
+import org.geotools.styling.PolygonSymbolizerImpl;
+import org.geotools.styling.RasterSymbolizerImpl;
+import org.geotools.styling.SelectedChannelTypeImpl;
+import org.geotools.styling.StrokeImpl;
+import org.geotools.styling.TextSymbolizerImpl;
 import org.geotools.xsd.Parser;
 import org.junit.Before;
 import org.junit.Test;
@@ -99,17 +94,17 @@ public class SEExampleTest extends SETestSupport {
          </Graphic>
         </PointSymbolizer>*/
 
-        PointSymbolizer sym = (PointSymbolizer) parse("example-pointsymbolizer1.xml");
+        PointSymbolizerImpl sym = (PointSymbolizerImpl) parse("example-pointsymbolizer1.xml");
         assertEquals("Example Pointsymbolizer", sym.getDescription().getTitle().toString());
         assertEquals(
                 "This is just a simple example of a point symbolizer.",
                 sym.getDescription().getAbstract().toString());
 
-        Graphic g = sym.getGraphic();
+        GraphicImpl g = sym.getGraphic();
         assertEquals(8.0, g.getSize().evaluate(null, Double.class), 0d);
         assertEquals(1, g.graphicalSymbols().size());
 
-        Mark m = (Mark) g.graphicalSymbols().get(0);
+        MarkImpl m = (MarkImpl) g.graphicalSymbols().get(0);
         assertEquals("star", m.getWellKnownName().evaluate(null, String.class));
         Color c = m.getFill().getColor().evaluate(null, Color.class);
         assertEquals(255, c.getRed());
@@ -138,22 +133,22 @@ public class SEExampleTest extends SETestSupport {
             </Graphic>
         </PointSymbolizer>*/
 
-        PointSymbolizer sym = (PointSymbolizer) parse("example-pointsymbolizer2.xml");
+        PointSymbolizerImpl sym = (PointSymbolizerImpl) parse("example-pointsymbolizer2.xml");
         assertEquals("MyPointSymbolizer", sym.getName());
         assertEquals("Example Pointsymbolizer", sym.getDescription().getTitle().toString());
         assertEquals(
                 "This is just a simple example of a point symbolizer.",
                 sym.getDescription().getAbstract().toString());
 
-        Graphic g = sym.getGraphic();
+        GraphicImpl g = sym.getGraphic();
         assertEquals(15.0, g.getSize().evaluate(null, Double.class), 0d);
         assertEquals(2, g.graphicalSymbols().size());
 
-        ExternalGraphic eg = (ExternalGraphic) g.graphicalSymbols().get(0);
+        ExternalGraphicImpl eg = (ExternalGraphicImpl) g.graphicalSymbols().get(0);
         assertEquals("http://www.vendor.com/geosym/2267.svg", eg.getLocation().toString());
         assertEquals("image/svg+xml", eg.getFormat());
 
-        eg = (ExternalGraphic) g.graphicalSymbols().get(1);
+        eg = (ExternalGraphicImpl) g.graphicalSymbols().get(1);
         assertEquals("http://www.vendor.com/geosym/2267.png", eg.getLocation().toString());
         assertEquals("image/png", eg.getFormat());
     }
@@ -176,18 +171,18 @@ public class SEExampleTest extends SETestSupport {
         </PointSymbolizer>*/
         BufferedImage referenceImage = getReferenceImage("inlineContent-image.png");
 
-        PointSymbolizer sym = (PointSymbolizer) parse("example-pointsymbolizer3.xml");
+        PointSymbolizerImpl sym = (PointSymbolizerImpl) parse("example-pointsymbolizer3.xml");
         assertEquals("MyPointSymbolizer", sym.getName());
         assertEquals("Example Pointsymbolizer", sym.getDescription().getTitle().toString());
         assertEquals(
                 "This is just a simple example of a point symbolizer.",
                 sym.getDescription().getAbstract().toString());
 
-        Graphic g = sym.getGraphic();
+        GraphicImpl g = sym.getGraphic();
         assertEquals(15.0, g.getSize().evaluate(null, Double.class), 0d);
         assertEquals(1, g.graphicalSymbols().size());
 
-        ExternalGraphic eg = (ExternalGraphic) g.graphicalSymbols().get(0);
+        ExternalGraphicImpl eg = (ExternalGraphicImpl) g.graphicalSymbols().get(0);
         assertNull(eg.getLocation());
         assertEquals("image/png", eg.getFormat());
         assertImagesEqual(referenceImage, eg.getInlineContent());
@@ -212,19 +207,19 @@ public class SEExampleTest extends SETestSupport {
         </PointSymbolizer>*/
         BufferedImage referenceImage = getReferenceImage("inlineContent-image.png");
 
-        PointSymbolizer sym = (PointSymbolizer) parse("example-pointsymbolizer4.xml");
+        PointSymbolizerImpl sym = (PointSymbolizerImpl) parse("example-pointsymbolizer4.xml");
         assertEquals("MyPointSymbolizer", sym.getName());
         assertEquals("Example Pointsymbolizer", sym.getDescription().getTitle().toString());
         assertEquals(
                 "This is just a simple example of a point symbolizer.",
                 sym.getDescription().getAbstract().toString());
 
-        Graphic g = sym.getGraphic();
+        GraphicImpl g = sym.getGraphic();
         assertEquals(15.0, g.getSize().evaluate(null, Double.class), 0d);
         assertEquals(1, g.graphicalSymbols().size());
 
-        Mark mark = (Mark) g.graphicalSymbols().get(0);
-        ExternalMark em = mark.getExternalMark();
+        MarkImpl mark = (MarkImpl) g.graphicalSymbols().get(0);
+        ExternalMarkImpl em = mark.getExternalMark();
         assertNotNull(em);
         assertEquals("image/png", em.getFormat());
         assertImagesEqual(referenceImage, em.getInlineContent());
@@ -267,8 +262,8 @@ public class SEExampleTest extends SETestSupport {
                     }
                 };
         Parser p = new Parser(se);
-        PointSymbolizer sym =
-                (PointSymbolizer)
+        PointSymbolizerImpl sym =
+                (PointSymbolizerImpl)
                         p.parse(getClass().getResourceAsStream("example-pointsymbolizer6.xml"));
         assertEquals("MyPointSymbolizer", sym.getName());
         assertEquals("Example Pointsymbolizer", sym.getDescription().getTitle().toString());
@@ -276,23 +271,23 @@ public class SEExampleTest extends SETestSupport {
                 "This is just a simple example of a point symbolizer.",
                 sym.getDescription().getAbstract().toString());
 
-        Graphic g = sym.getGraphic();
+        GraphicImpl g = sym.getGraphic();
         assertEquals(15.0, g.getSize().evaluate(null, Double.class), 0d);
         assertEquals(1, g.graphicalSymbols().size());
 
-        ExternalGraphic eg = (ExternalGraphic) g.graphicalSymbols().get(0);
+        ExternalGraphicImpl eg = (ExternalGraphicImpl) g.graphicalSymbols().get(0);
         assertEquals("http://my.test.host/inlineContent-image.png", eg.getURI().toString());
         assertEquals("image/png", eg.getFormat());
     }
 
     @Test
     public void testParsePointSymbolizerAnchorDisplacement() throws Exception {
-        PointSymbolizer sym = (PointSymbolizer) parse("example-pointsymbolizer5.xml");
+        PointSymbolizerImpl sym = (PointSymbolizerImpl) parse("example-pointsymbolizer5.xml");
 
-        Graphic g = sym.getGraphic();
+        GraphicImpl g = sym.getGraphic();
         assertEquals(15.0, g.getSize().evaluate(null, Double.class), 0d);
         assertEquals(1, g.graphicalSymbols().size());
-        AnchorPoint ap = (AnchorPoint) g.getAnchorPoint();
+        AnchorPointImpl ap = (AnchorPointImpl) g.getAnchorPoint();
         assertNotNull(ap);
         assertEquals(0, ap.getAnchorPointX().evaluate(null, Double.class), 0d);
         assertEquals(1, ap.getAnchorPointY().evaluate(null, Double.class), 0d);
@@ -304,13 +299,13 @@ public class SEExampleTest extends SETestSupport {
 
     @Test
     public void testParsePointSymbolizerMarkIndex() throws Exception {
-        PointSymbolizer sym = (PointSymbolizer) parse("example-pointsymbolizer-markindex.xml");
+        PointSymbolizerImpl sym = (PointSymbolizerImpl) parse("example-pointsymbolizer-markindex.xml");
 
-        Graphic g = sym.getGraphic();
+        GraphicImpl g = sym.getGraphic();
         assertEquals(1, g.graphicalSymbols().size());
-        Mark mark = (Mark) g.graphicalSymbols().get(0);
+        MarkImpl mark = (MarkImpl) g.graphicalSymbols().get(0);
         assertNotNull(mark.getExternalMark());
-        ExternalMark em = mark.getExternalMark();
+        ExternalMarkImpl em = mark.getExternalMark();
         assertEquals("ttf://Webdings", em.getOnlineResource().getLinkage().toString());
         assertEquals(64, em.getMarkIndex());
         assertEquals("ttf", em.getFormat());
@@ -329,14 +324,14 @@ public class SEExampleTest extends SETestSupport {
                 <SvgParameter name="stroke-width">2</SvgParameter>
             </Stroke>
         </LineSymbolizer>*/
-        LineSymbolizer sym = (LineSymbolizer) parse("example-linesymbolizer.xml");
+        LineSymbolizerImpl sym = (LineSymbolizerImpl) parse("example-linesymbolizer.xml");
         assertEquals("MyLineSymbolizer", sym.getName());
         assertEquals("Example Symbol", sym.getDescription().getTitle().toString());
         assertEquals(
                 "This is just a simple example of a line symbolizer.",
                 sym.getDescription().getAbstract().toString());
 
-        Stroke s = sym.getStroke();
+        StrokeImpl s = sym.getStroke();
         assertEquals(255, s.getColor().evaluate(null, Color.class).getBlue());
         assertEquals(Integer.valueOf(2), s.getWidth().evaluate(null, Integer.class));
     }
@@ -356,14 +351,14 @@ public class SEExampleTest extends SETestSupport {
                 <SvgParameter name="stroke">#0000aa</SvgParameter>
             </Stroke>
         </PolygonSymbolizer>*/
-        PolygonSymbolizer sym = (PolygonSymbolizer) parse("example-polygonsymbolizer.xml");
+        PolygonSymbolizerImpl sym = (PolygonSymbolizerImpl) parse("example-polygonsymbolizer.xml");
         assertEquals("MyPolygonSymbolizer", sym.getName());
         assertEquals("Example PolygonSymbolizer", sym.getDescription().getTitle().toString());
         assertEquals(
                 "This is just a simple example of a polygon symbolizer.",
                 sym.getDescription().getAbstract().toString());
 
-        Fill f = sym.getFill();
+        FillImpl f = sym.getFill();
         Color c = f.getColor().evaluate(null, Color.class);
         assertEquals(170, c.getRed());
         assertEquals(170, c.getGreen());
@@ -375,7 +370,7 @@ public class SEExampleTest extends SETestSupport {
 
     @Test
     public void testParseTextSymbolizer() throws Exception {
-        TextSymbolizer sym = (TextSymbolizer) parse("example-textsymbolizer.xml");
+        TextSymbolizerImpl sym = (TextSymbolizerImpl) parse("example-textsymbolizer.xml");
         assertEquals("MyTextSymbolizer", sym.getName());
         assertEquals("Example TextSymbolizer", sym.getDescription().getTitle().toString());
         assertEquals(
@@ -388,14 +383,14 @@ public class SEExampleTest extends SETestSupport {
         assertEquals("foobar (10)", l.evaluate(f1));
         // assertEquals("hospitalName", l);
 
-        Font f = sym.getFont();
+        FontImpl f = sym.getFont();
         assertEquals(2, f.getFamily().size());
         assertEquals("Arial", f.getFamily().get(0).evaluate(null, String.class));
         assertEquals("Sans-Serif", f.getFamily().get(1).evaluate(null, String.class));
         assertEquals("italic", f.getStyle().evaluate(null, String.class));
         assertEquals("10", f.getSize().evaluate(null, String.class));
 
-        Fill fill = sym.getFill();
+        FillImpl fill = sym.getFill();
         assertEquals(Color.BLACK, fill.getColor().evaluate(null, Color.class));
 
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
@@ -458,7 +453,7 @@ public class SEExampleTest extends SETestSupport {
                 </ColorMap>
                 <ShadedRelief/>
         </RasterSymbolizer>*/
-        RasterSymbolizer sym = (RasterSymbolizer) parse("example-rastersymbolizer1.xml");
+        RasterSymbolizerImpl sym = (RasterSymbolizerImpl) parse("example-rastersymbolizer1.xml");
         assertEquals(1.0, sym.getOpacity().evaluate(null, Double.class), 0d);
         assertEquals(OverlapBehavior.AVERAGE, sym.getOverlapBehavior());
 
@@ -528,11 +523,11 @@ public class SEExampleTest extends SETestSupport {
                 </ContrastEnhancement>
         </RasterSymbolizer>*/
 
-        RasterSymbolizer sym = (RasterSymbolizer) parse("example-rastersymbolizer2.xml");
+        RasterSymbolizerImpl sym = (RasterSymbolizerImpl) parse("example-rastersymbolizer2.xml");
         assertEquals(1.0, sym.getOpacity().evaluate(null, Double.class), 0d);
         assertEquals(OverlapBehavior.LATEST_ON_TOP, sym.getOverlapBehavior());
 
-        SelectedChannelType[] ch = sym.getChannelSelection().getRGBChannels();
+        SelectedChannelTypeImpl[] ch = sym.getChannelSelection().getRGBChannels();
         assertEquals("1", ch[0].getChannelName().evaluate(null, String.class));
         assertEquals(ContrastMethod.HISTOGRAM, ch[0].getContrastEnhancement().getMethod());
         assertEquals("2", ch[1].getChannelName().evaluate(null, String.class));
@@ -560,11 +555,11 @@ public class SEExampleTest extends SETestSupport {
     /** Test the Expression parser for SelectChannel */
     @Test
     public void testParseRasterChannelExpression() throws Exception {
-        RasterSymbolizer sym = (RasterSymbolizer) parse("example-raster-channel-expression.xml");
+        RasterSymbolizerImpl sym = (RasterSymbolizerImpl) parse("example-raster-channel-expression.xml");
         assertEquals(1.0, sym.getOpacity().evaluate(null, Double.class), 0d);
         assertEquals(OverlapBehavior.LATEST_ON_TOP, sym.getOverlapBehavior());
 
-        SelectedChannelType[] ch = sym.getChannelSelection().getRGBChannels();
+        SelectedChannelTypeImpl[] ch = sym.getChannelSelection().getRGBChannels();
 
         // assert default value : 1
         EnvFunction.removeLocalValue("B1");
@@ -612,7 +607,7 @@ public class SEExampleTest extends SETestSupport {
                 </Rule>
         </FeatureTypeStyle>*/
 
-        FeatureTypeStyle fts = (FeatureTypeStyle) parse("example-featurestyle.xml");
+        FeatureTypeStyleImpl fts = (FeatureTypeStyleImpl) parse("example-featurestyle.xml");
         assertEquals(
                 "oceansea:Foundation", fts.featureTypeNames().iterator().next().getLocalPart());
         assertEquals(1, fts.rules().size());
@@ -622,14 +617,14 @@ public class SEExampleTest extends SETestSupport {
 
         assertEquals(1, rule.symbolizers().size());
 
-        PolygonSymbolizer sym = (PolygonSymbolizer) rule.symbolizers().get(0);
+        PolygonSymbolizerImpl sym = (PolygonSymbolizerImpl) rule.symbolizers().get(0);
         assertEquals(UomOgcMapping.PIXEL.getUnit(), sym.getUnitOfMeasure());
         assertEquals(SLD.toColor("#96C3F5"), sym.getFill().getColor().evaluate(null, Color.class));
     }
 
     @Test
     public void testParseFeatureStyleVendor() throws Exception {
-        FeatureTypeStyle fts = (FeatureTypeStyle) parse("example-featurestyle-vendor.xml");
+        FeatureTypeStyleImpl fts = (FeatureTypeStyleImpl) parse("example-featurestyle-vendor.xml");
         assertEquals(
                 "oceansea:Foundation", fts.featureTypeNames().iterator().next().getLocalPart());
         assertEquals(1, fts.rules().size());
@@ -661,7 +656,7 @@ public class SEExampleTest extends SETestSupport {
         </CoverageStyle>
         */
 
-        FeatureTypeStyle cs = (FeatureTypeStyle) parse("example-coveragestyle.xml");
+        FeatureTypeStyleImpl cs = (FeatureTypeStyleImpl) parse("example-coveragestyle.xml");
         assertEquals(1, cs.rules().size());
         Rule rule = cs.rules().get(0);
 
@@ -669,7 +664,7 @@ public class SEExampleTest extends SETestSupport {
         assertEquals("Gray channel mapping", rule.getDescription().getTitle().toString());
         assertEquals(1, rule.symbolizers().size());
 
-        RasterSymbolizer sym = (RasterSymbolizer) rule.symbolizers().get(0);
+        RasterSymbolizerImpl sym = (RasterSymbolizerImpl) rule.symbolizers().get(0);
         assertEquals(
                 "Band.band1",
                 sym.getChannelSelection()
@@ -680,7 +675,7 @@ public class SEExampleTest extends SETestSupport {
 
     @Test
     public void testParseValidatePointSymbolizerGeomTransform() throws Exception {
-        PointSymbolizer ps = (PointSymbolizer) parse("example-pointsymbolizer-geotrans.xml");
+        PointSymbolizerImpl ps = (PointSymbolizerImpl) parse("example-pointsymbolizer-geotrans.xml");
         assertTrue(ps.getGeometry() instanceof Function);
 
         List errors = validate("example-pointsymbolizer-geotrans.xml");
@@ -689,31 +684,31 @@ public class SEExampleTest extends SETestSupport {
 
     @Test
     public void testParseGraphicWithFallbacks() throws Exception {
-        Graphic graphic = (Graphic) parse("example-graphic-fallback.xml");
+        GraphicImpl graphic = (GraphicImpl) parse("example-graphic-fallback.xml");
         final List<GraphicalSymbol> symbols = graphic.graphicalSymbols();
         // check all the symbols are there (used to kick out external graphics when mark were
         // present)
         assertEquals(3, symbols.size());
         // check the order has been preserved
-        ExternalGraphic eg1 = (ExternalGraphic) symbols.get(0);
+        ExternalGraphicImpl eg1 = (ExternalGraphicImpl) symbols.get(0);
         assertThat(eg1.getURI(), containsString("transport/amenity=parking.svg?fill=%2300eb00"));
-        ExternalGraphic eg2 = (ExternalGraphic) symbols.get(1);
+        ExternalGraphicImpl eg2 = (ExternalGraphicImpl) symbols.get(1);
         assertThat(eg2.getURI(), containsString("transport/amenity=parking.svg"));
         assertThat(
                 eg2.getURI(),
                 not((containsString("transport/amenity=parking.svg?fill=%2300eb00"))));
-        Mark mark = (Mark) symbols.get(2);
+        MarkImpl mark = (MarkImpl) symbols.get(2);
         assertEquals("square", mark.getWellKnownName().evaluate(null, String.class));
     }
 
     @Test
     public void testParseTextSymbolizerWithGraphic() throws Exception {
-        TextSymbolizer sym = (TextSymbolizer) parse("example-textsymbolizer-graphic.xml");
-        Graphic graphic = sym.getGraphic();
+        TextSymbolizerImpl sym = (TextSymbolizerImpl) parse("example-textsymbolizer-graphic.xml");
+        GraphicImpl graphic = sym.getGraphic();
         assertNotNull(graphic);
         assertNotNull(graphic.graphicalSymbols());
         assertEquals(1, graphic.graphicalSymbols().size());
-        Mark mark = (Mark) graphic.graphicalSymbols().get(0);
+        MarkImpl mark = (MarkImpl) graphic.graphicalSymbols().get(0);
         assertEquals("square", mark.getWellKnownName().evaluate(null, String.class));
         assertEquals(Integer.valueOf(7), graphic.getSize().evaluate(null, Integer.class));
     }

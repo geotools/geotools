@@ -17,9 +17,9 @@
 package org.geotools.brewer.styling.builder;
 
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.styling.Mark;
+import org.geotools.styling.MarkImpl;
 
-public class MarkBuilder extends AbstractStyleBuilder<Mark> {
+public class MarkBuilder extends AbstractStyleBuilder<MarkImpl> {
     StrokeBuilder strokeBuilder = new StrokeBuilder(this).unset();
 
     FillBuilder fill = new FillBuilder(this).unset();
@@ -73,12 +73,12 @@ public class MarkBuilder extends AbstractStyleBuilder<Mark> {
     }
 
     @Override
-    public Mark build() {
+    public MarkImpl build() {
         if (unset) {
             return null;
         }
 
-        Mark mark = null;
+        MarkImpl mark = null;
         if (!externalMark.isUnset()) {
             mark = sf.mark(externalMark.build(), fill.build(), strokeBuilder.build());
         }
@@ -92,7 +92,7 @@ public class MarkBuilder extends AbstractStyleBuilder<Mark> {
     }
 
     @Override
-    public MarkBuilder reset(Mark mark) {
+    public MarkBuilder reset(MarkImpl mark) {
         return reset((org.geotools.api.style.Mark) mark);
     }
 

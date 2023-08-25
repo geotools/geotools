@@ -25,9 +25,9 @@ import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
 /** Handles the parsing of a Ysld "raster" symbolizer property into a {@link Symbolizer} object. */
-public class RasterParser extends SymbolizerParser<RasterSymbolizer> {
+public class RasterParser extends SymbolizerParser<RasterSymbolizerImpl> {
 
-    public RasterParser(Rule rule, Factory factory) {
+    public RasterParser(RuleImpl rule, Factory factory) {
         super(rule, factory.style.createRasterSymbolizer(), factory);
     }
 
@@ -45,7 +45,7 @@ public class RasterParser extends SymbolizerParser<RasterSymbolizer> {
                 "color-map",
                 new ColorMapParser(factory) {
                     @Override
-                    protected void colorMap(ColorMap colorMap) {
+                    protected void colorMap(ColorMapImpl colorMap) {
                         sym.setColorMap(colorMap);
                     }
                 });
@@ -55,7 +55,7 @@ public class RasterParser extends SymbolizerParser<RasterSymbolizer> {
 
     class ContrastEnhancementHandler extends YsldParseHandler {
 
-        ContrastEnhancement contrast;
+        ContrastEnhancementImpl contrast;
 
         protected ContrastEnhancementHandler() {
             super(RasterParser.this.factory);
@@ -87,14 +87,14 @@ public class RasterParser extends SymbolizerParser<RasterSymbolizer> {
 
     class ChannelsHandler extends YsldParseHandler {
 
-        ChannelSelection selection;
+        ChannelSelectionImpl selection;
 
         protected ChannelsHandler() {
             super(RasterParser.this.factory);
             this.selection = sym.getChannelSelection();
         }
 
-        void parse(Band band, SelectedChannelType sel, YamlMap map, YamlParseContext context) {
+        void parse(Band band, SelectedChannelTypeImpl sel, YamlMap map, YamlParseContext context) {
             if (map.get(band.key) instanceof Map) {
                 context.push(band.key, new SelectedChannelHandler(sel));
             } else {
@@ -109,15 +109,15 @@ public class RasterParser extends SymbolizerParser<RasterSymbolizer> {
             if (map.has(Band.GRAY.key)) {
                 if (map.has(Band.RED.key) || map.has(Band.GREEN.key) || map.has(Band.BLUE.key))
                     throw new IllegalArgumentException("grey and RGB can not be combined");
-                SelectedChannelType gray = factory.style.selectedChannelType((String) null, null);
+                SelectedChannelTypeImpl gray = factory.style.selectedChannelType((String) null, null);
                 selection.setGrayChannel(gray);
                 parse(Band.GRAY, gray, map, context);
             } else {
                 if (!(map.has(Band.RED.key) && map.has(Band.GREEN.key) && map.has(Band.BLUE.key)))
                     throw new IllegalArgumentException("all of red green and blue must be preset");
-                SelectedChannelType red = factory.style.selectedChannelType((String) null, null);
-                SelectedChannelType green = factory.style.selectedChannelType((String) null, null);
-                SelectedChannelType blue = factory.style.selectedChannelType((String) null, null);
+                SelectedChannelTypeImpl red = factory.style.selectedChannelType((String) null, null);
+                SelectedChannelTypeImpl green = factory.style.selectedChannelType((String) null, null);
+                SelectedChannelTypeImpl blue = factory.style.selectedChannelType((String) null, null);
                 selection.setRGBChannels(red, green, blue);
                 parse(Band.RED, red, map, context);
                 parse(Band.GREEN, green, map, context);
@@ -127,9 +127,9 @@ public class RasterParser extends SymbolizerParser<RasterSymbolizer> {
     }
 
     class SelectedChannelHandler extends YsldParseHandler {
-        SelectedChannelType sel;
+        SelectedChannelTypeImpl sel;
 
-        public SelectedChannelHandler(SelectedChannelType sel) {
+        public SelectedChannelHandler(SelectedChannelTypeImpl sel) {
             super(RasterParser.this.factory);
             this.sel = sel;
         }

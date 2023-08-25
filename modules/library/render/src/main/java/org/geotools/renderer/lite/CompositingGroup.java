@@ -33,8 +33,8 @@ import org.geotools.map.MapContent;
 import org.geotools.map.MapLayerListener;
 import org.geotools.map.MapViewport;
 import org.geotools.renderer.style.SLDStyleFactory;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Style;
+import org.geotools.styling.FeatureTypeStyleImpl;
+import org.geotools.styling.StyleImpl;
 import org.geotools.styling.StyleFactory;
 
 /**
@@ -51,7 +51,7 @@ class CompositingGroup {
         List<CompositingGroup> result = new ArrayList<>();
         List<Layer> layers = new ArrayList<>();
         for (Layer layer : mc.layers()) {
-            Style style = layer.getStyle();
+            StyleImpl style = layer.getStyle();
             if (layer instanceof DirectLayer) {
                 layers.add(new WrappingDirectLayer((DirectLayer) layer));
             } else if (layer instanceof ZGroupLayer) {
@@ -61,9 +61,9 @@ class CompositingGroup {
                 }
                 layers.add(layer);
             } else {
-                List<Style> styles = splitOnCompositingBase(style);
-                for (Style s : styles) {
-                    FeatureTypeStyle firstFts = s.featureTypeStyles().get(0);
+                List<StyleImpl> styles = splitOnCompositingBase(style);
+                for (StyleImpl s : styles) {
+                    FeatureTypeStyleImpl firstFts = s.featureTypeStyles().get(0);
                     if (isCompositingBase(firstFts) && !layers.isEmpty()) {
                         addToCompositingMapContents(graphics, screenSize, result, layers);
                     }
@@ -125,12 +125,12 @@ class CompositingGroup {
         if (layer instanceof ZGroupLayer) {
             return ((ZGroupLayer) layer).getComposite();
         }
-        Style styles = layer.getStyle();
-        List<FeatureTypeStyle> featureTypeStyles = styles.featureTypeStyles();
+        StyleImpl styles = layer.getStyle();
+        List<FeatureTypeStyleImpl> featureTypeStyles = styles.featureTypeStyles();
         if (featureTypeStyles.isEmpty()) {
             return null;
         } else {
-            FeatureTypeStyle firstFts = featureTypeStyles.get(0);
+            FeatureTypeStyleImpl firstFts = featureTypeStyles.get(0);
             Composite composite = SLDStyleFactory.getComposite(firstFts.getOptions());
             return composite;
         }
@@ -140,7 +140,7 @@ class CompositingGroup {
     private static boolean hasAlphaCompositing(List<Layer> layers) {
         AlphaCompositeVisitor visitor = new AlphaCompositeVisitor();
         for (Layer layer : layers) {
-            Style style = layer.getStyle();
+            StyleImpl style = layer.getStyle();
             style.accept(visitor);
             if (visitor.alphaComposite) {
                 return true;
@@ -150,10 +150,10 @@ class CompositingGroup {
         return false;
     }
 
-    private static List<Style> splitOnCompositingBase(Style style) {
-        List<Style> styles = new ArrayList<>();
-        List<FeatureTypeStyle> featureTypeStyles = new ArrayList<>();
-        for (FeatureTypeStyle fts : style.featureTypeStyles()) {
+    private static List<StyleImpl> splitOnCompositingBase(StyleImpl style) {
+        List<StyleImpl> styles = new ArrayList<>();
+        List<FeatureTypeStyleImpl> featureTypeStyles = new ArrayList<>();
+        for (FeatureTypeStyleImpl fts : style.featureTypeStyles()) {
             if (isCompositingBase(fts)) {
                 addToStyles(styles, featureTypeStyles);
             }
@@ -167,17 +167,17 @@ class CompositingGroup {
         return styles;
     }
 
-    private static void addToStyles(List<Style> styles, List<FeatureTypeStyle> featureTypeStyles) {
+    private static void addToStyles(List<StyleImpl> styles, List<FeatureTypeStyleImpl> featureTypeStyles) {
         if (!featureTypeStyles.isEmpty()) {
-            Style s = STYLE_FACTORY.createStyle();
+            StyleImpl s = STYLE_FACTORY.createStyle();
             s.featureTypeStyles().addAll(featureTypeStyles);
             styles.add(s);
             featureTypeStyles.clear();
         }
     }
 
-    static boolean isCompositingBase(FeatureTypeStyle fts) {
-        return "true".equalsIgnoreCase(fts.getOptions().get(FeatureTypeStyle.COMPOSITE_BASE));
+    static boolean isCompositingBase(FeatureTypeStyleImpl fts) {
+        return "true".equalsIgnoreCase(fts.getOptions().get(org.geotools.styling.FeatureTypeStyleImpl.COMPOSITE_BASE));
     }
 
     Graphics2D graphics;
@@ -290,7 +290,7 @@ class CompositingGroup {
         }
 
         @Override
-        public Style getStyle() {
+        public StyleImpl getStyle() {
             return delegate.getStyle();
         }
 

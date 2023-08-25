@@ -21,24 +21,20 @@ import java.util.Optional;
 import org.geotools.api.filter.Filter;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.text.ecql.ECQL;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.StyleFactory;
+import org.geotools.styling.*;
 import org.geotools.ysld.Tuple;
 
-/** Encodes a {@link Rule} as YSLD. Delegates to {@link SymbolizersEncoder}. */
-public class RuleEncoder extends YsldEncodeHandler<Rule> {
+/** Encodes a {@link RuleImpl} as YSLD. Delegates to {@link SymbolizersEncoder}. */
+public class RuleEncoder extends YsldEncodeHandler<RuleImpl> {
 
     private static StyleFactory sf = CommonFactoryFinder.getStyleFactory();
 
-    public RuleEncoder(FeatureTypeStyle featureStyle) {
+    public RuleEncoder(FeatureTypeStyleImpl featureStyle) {
         super(featureStyle.rules().iterator());
     }
 
     @Override
-    protected void encode(Rule rule) {
+    protected void encode(RuleImpl rule) {
         put("name", rule.getName());
         put(
                 "title",
@@ -53,12 +49,12 @@ public class RuleEncoder extends YsldEncodeHandler<Rule> {
                         .map(t -> t.toString())
                         .orElse(null));
         if (rule.getLegend() != null) {
-            Graphic graphic = null;
-            if (rule.getLegend() instanceof Graphic) {
-                graphic = (Graphic) rule.getLegend();
+            GraphicImpl graphic = null;
+            if (rule.getLegend() instanceof GraphicImpl) {
+                graphic = (GraphicImpl) rule.getLegend();
             } else {
                 // convert org.geotools.api.style.GraphicLegend to org.geotools.styling.Graphic
-                PointSymbolizer point = sf.createPointSymbolizer();
+                PointSymbolizerImpl point = sf.createPointSymbolizer();
                 point.setGraphic(rule.getLegend());
                 graphic = point.getGraphic();
             }

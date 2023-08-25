@@ -16,9 +16,9 @@
  */
 package org.geotools.brewer.styling.builder;
 
-import org.geotools.styling.ChannelSelection;
+import org.geotools.styling.ChannelSelectionImpl;
 
-public class ChannelSelectionBuilder extends AbstractStyleBuilder<ChannelSelection> {
+public class ChannelSelectionBuilder extends AbstractStyleBuilder<ChannelSelectionImpl> {
 
     SelectedChannelTypeBuilder gray = new SelectedChannelTypeBuilder().unset();
 
@@ -58,11 +58,11 @@ public class ChannelSelectionBuilder extends AbstractStyleBuilder<ChannelSelecti
     }
 
     @Override
-    public ChannelSelection build() {
+    public ChannelSelectionImpl build() {
         if (unset) {
             return null;
         }
-        ChannelSelection result;
+        ChannelSelectionImpl result;
         if (gray.isUnset()) {
             result = sf.channelSelection(red.build(), green.build(), blue.build());
         } else {
@@ -85,7 +85,7 @@ public class ChannelSelectionBuilder extends AbstractStyleBuilder<ChannelSelecti
     }
 
     @Override
-    public ChannelSelectionBuilder reset(ChannelSelection original) {
+    public ChannelSelectionBuilder reset(ChannelSelectionImpl original) {
         if (original == null) {
             return unset();
         }

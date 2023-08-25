@@ -24,11 +24,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.lite.StreamingRenderer;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
+import org.geotools.styling.*;
 import org.hamcrest.CoreMatchers;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -132,25 +128,25 @@ public class StreamingRendererMapContentReleaseTest extends LoggerTest {
         renderer.paint((Graphics2D) img.getGraphics(), area, bounds);
     }
 
-    private static Style createDefaultStyle() {
+    private static StyleImpl createDefaultStyle() {
 
         Color foreground = Color.darkGray;
         int thick = 3;
 
         // create stroke
-        org.geotools.styling.Stroke stroke =
+        StrokeImpl stroke =
                 sf.stroke(ff.literal(foreground), null, ff.literal(thick), null, null, null, null);
 
         // create line symbolizer
-        LineSymbolizer lineSym = sf.createLineSymbolizer(stroke, null);
+        LineSymbolizerImpl lineSym = sf.createLineSymbolizer(stroke, null);
 
         // create rule
-        Rule r = sf.createRule();
+        RuleImpl r = sf.createRule();
         r.symbolizers().add(lineSym);
 
         // add it to style
-        Style style = sf.createStyle();
-        FeatureTypeStyle fts = sf.createFeatureTypeStyle();
+        StyleImpl style = sf.createStyle();
+        FeatureTypeStyleImpl fts = sf.createFeatureTypeStyle();
         fts.rules().add(r);
         style.featureTypeStyles().add(fts);
 

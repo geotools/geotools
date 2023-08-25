@@ -70,7 +70,7 @@ import java.util.zip.ZipFile;
  * </ul>
  *
  * <p>By convention you should try and locate {@code test-data} near the JUnit test cases that uses
- * it. If you need an access to shared test data, import the {@link org.geotools.TestData} class
+ * it. If you need access to shared test data, import the {@link org.geotools.TestData} class
  * from the {@code sample-module} instead of this one.
  *
  * @since 2.4

@@ -17,11 +17,13 @@
  */
 package org.geotools.ysld.transform.sld;
 
+import org.geotools.styling.PolygonSymbolizerImpl;
+
 import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-/** Handles xml parse events for {@link org.geotools.styling.PolygonSymbolizer} elements. */
+/** Handles xml parse events for {@link PolygonSymbolizerImpl} elements. */
 public class PolygonSymbolizerHandler extends SymbolizerHandler {
 
     @Override

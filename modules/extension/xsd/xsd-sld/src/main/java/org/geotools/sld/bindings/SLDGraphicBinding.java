@@ -22,7 +22,7 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.AnchorPoint;
 import org.geotools.api.style.Displacement;
 import org.geotools.api.style.Symbol;
-import org.geotools.styling.Graphic;
+import org.geotools.styling.GraphicImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
@@ -96,7 +96,7 @@ public class SLDGraphicBinding extends AbstractComplexBinding {
      */
     @Override
     public Class getType() {
-        return Graphic.class;
+        return GraphicImpl.class;
     }
 
     /**
@@ -125,7 +125,7 @@ public class SLDGraphicBinding extends AbstractComplexBinding {
         Expression size = (Expression) node.getChildValue("Size");
         Expression rotation = (Expression) node.getChildValue("Rotation");
 
-        Graphic graphic =
+        GraphicImpl graphic =
                 styleFactory.createGraphic(
                         null,
                         null,

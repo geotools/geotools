@@ -20,7 +20,7 @@ import javax.xml.namespace.QName;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.ContrastMethodStrategy;
-import org.geotools.styling.ContrastEnhancement;
+import org.geotools.styling.ContrastEnhancementImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
@@ -94,7 +94,7 @@ public class SLDContrastEnhancementBinding extends AbstractComplexBinding {
      */
     @Override
     public Class getType() {
-        return ContrastEnhancement.class;
+        return ContrastEnhancementImpl.class;
     }
 
     /**
@@ -116,7 +116,7 @@ public class SLDContrastEnhancementBinding extends AbstractComplexBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        ContrastEnhancement ce = styleFactory.createContrastEnhancement();
+        ContrastEnhancementImpl ce = styleFactory.createContrastEnhancement();
 
         if (node.getChild("GammaValue") != null) {
             Expression gamma = (Expression) node.getChildValue("GammaValue");

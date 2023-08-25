@@ -20,7 +20,7 @@ import javax.xml.namespace.QName;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDLinePlacementBinding;
-import org.geotools.styling.LinePlacement;
+import org.geotools.styling.LinePlacementImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
@@ -69,7 +69,7 @@ public class LinePlacementBinding extends SLDLinePlacementBinding {
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         // &lt;xsd:element minOccurs="0" ref="se:PerpendicularOffset"/&gt;
-        LinePlacement lp = (LinePlacement) super.parse(instance, node, value);
+        LinePlacementImpl lp = (LinePlacementImpl) super.parse(instance, node, value);
 
         // &lt;xsd:element minOccurs="0" ref="se:IsRepeated"/&gt;
         if (node.hasChild("IsRepeated")) {

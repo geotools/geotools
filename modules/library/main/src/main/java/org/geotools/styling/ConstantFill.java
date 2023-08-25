@@ -63,8 +63,7 @@ import org.geotools.filter.ConstantExpression;
  * @author James Macgill, CCG
  * @version $Id$
  */
-public abstract class ConstantFill extends org.geotools.styling.Fill
-        implements org.geotools.api.style.Fill {
+public abstract class ConstantFill extends FillImpl implements org.geotools.api.style.Fill {
     public static final Fill DEFAULT =
             new ConstantFill() {
                 private void cannotModifyConstant() {
@@ -86,7 +85,7 @@ public abstract class ConstantFill extends org.geotools.styling.Fill
                 }
 
                 @Override
-                public Graphic getGraphicFill() {
+                public GraphicImpl getGraphicFill() {
                     return ConstantGraphic.NULL;
                 }
             };
@@ -108,7 +107,7 @@ public abstract class ConstantFill extends org.geotools.styling.Fill
                 }
 
                 @Override
-                public Graphic getGraphicFill() {
+                public GraphicImpl getGraphicFill() {
                     return ConstantGraphic.NULL;
                 }
             };

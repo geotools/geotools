@@ -20,9 +20,9 @@ import java.util.HashMap;
 import java.util.Map;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.ContrastMethod;
-import org.geotools.styling.ContrastEnhancement;
+import org.geotools.styling.ContrastEnhancementImpl;
 
-public class ContrastEnhancementBuilder extends AbstractStyleBuilder<ContrastEnhancement> {
+public class ContrastEnhancementBuilder extends AbstractStyleBuilder<ContrastEnhancementImpl> {
     private Expression gamma = null;
 
     private ContrastMethod method;
@@ -90,11 +90,11 @@ public class ContrastEnhancementBuilder extends AbstractStyleBuilder<ContrastEnh
     }
 
     @Override
-    public ContrastEnhancement build() {
+    public ContrastEnhancementImpl build() {
         if (unset) {
             return null;
         }
-        ContrastEnhancement contrastEnhancement = sf.contrastEnhancement(gamma, method);
+        ContrastEnhancementImpl contrastEnhancement = sf.contrastEnhancement(gamma, method);
         contrastEnhancement.setOptions(options);
 
         return contrastEnhancement;
@@ -109,7 +109,7 @@ public class ContrastEnhancementBuilder extends AbstractStyleBuilder<ContrastEnh
     }
 
     @Override
-    public ContrastEnhancementBuilder reset(ContrastEnhancement contrastEnhancement) {
+    public ContrastEnhancementBuilder reset(ContrastEnhancementImpl contrastEnhancement) {
         if (contrastEnhancement == null) {
             return reset();
         }

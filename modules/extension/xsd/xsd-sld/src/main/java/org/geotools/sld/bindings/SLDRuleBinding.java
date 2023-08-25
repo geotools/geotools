@@ -20,11 +20,12 @@ import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.style.GraphicLegend;
+import org.geotools.api.style.Symbolizer;
 import org.geotools.api.util.InternationalString;
 import org.geotools.sld.CssParameter;
-import org.geotools.styling.Rule;
+import org.geotools.styling.RuleImpl;
 import org.geotools.styling.StyleFactory;
-import org.geotools.styling.Symbolizer;
+
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
@@ -99,7 +100,7 @@ public class SLDRuleBinding extends AbstractComplexBinding {
      */
     @Override
     public Class getType() {
-        return Rule.class;
+        return RuleImpl.class;
     }
 
     /**
@@ -121,7 +122,7 @@ public class SLDRuleBinding extends AbstractComplexBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        Rule rule = styleFactory.createRule();
+        RuleImpl rule = (RuleImpl) styleFactory.createRule();
 
         // &lt;xsd:element ref="sld:Name" minOccurs="0"/&gt;
         if (node.hasChild("Name")) {

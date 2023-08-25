@@ -17,5 +17,7 @@
  */
 package org.geotools.ysld.transform.sld;
 
-/** Handles xml parse events for the {@link org.geotools.styling.Displacement} element. */
+import org.geotools.styling.DisplacementImpl;
+
+/** Handles xml parse events for the {@link DisplacementImpl} element. */
 public class DisplacementHandler extends XYHandler {}

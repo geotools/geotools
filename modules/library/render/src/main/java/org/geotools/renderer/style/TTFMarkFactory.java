@@ -35,7 +35,7 @@ import javax.swing.WindowConstants;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.renderer.util.ExplicitBoundsShape;
-import org.geotools.styling.ExternalMark;
+import org.geotools.styling.ExternalMarkImpl;
 
 /**
  * This factory accepts mark paths in the <code>ttf://fontName#code</code> format, where fontName is
@@ -128,7 +128,7 @@ public class TTFMarkFactory implements MarkFactory {
     }
 
     /** Returns a shape from an external mark definition */
-    public Shape getShape(ExternalMark mark) {
+    public Shape getShape(ExternalMarkImpl mark) {
         if (!"ttf".equals(mark.getFormat())) {
             return null;
         }

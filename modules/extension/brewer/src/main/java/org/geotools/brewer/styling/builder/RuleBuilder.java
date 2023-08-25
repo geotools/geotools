@@ -23,10 +23,10 @@ import java.util.Map;
 import java.util.Optional;
 import org.geotools.api.filter.Filter;
 import org.geotools.styling.GraphicLegend;
-import org.geotools.styling.Rule;
+import org.geotools.styling.RuleImpl;
 import org.geotools.styling.Symbolizer;
 
-public class RuleBuilder extends AbstractStyleBuilder<Rule> {
+public class RuleBuilder extends AbstractStyleBuilder<RuleImpl> {
     List<Symbolizer> symbolizers = new ArrayList<>();
 
     Builder<? extends Symbolizer> symbolizerBuilder;
@@ -163,7 +163,7 @@ public class RuleBuilder extends AbstractStyleBuilder<Rule> {
     }
 
     @Override
-    public Rule build() {
+    public RuleImpl build() {
         if (unset) {
             return null;
         }
@@ -174,7 +174,7 @@ public class RuleBuilder extends AbstractStyleBuilder<Rule> {
             symbolizers.add(symbolizerBuilder.build());
         }
 
-        Rule rule = sf.createRule();
+        RuleImpl rule = sf.createRule();
         rule.setName(name);
         // TODO: rule's description cannot be set
         rule.getDescription().setTitle(title);
@@ -217,7 +217,7 @@ public class RuleBuilder extends AbstractStyleBuilder<Rule> {
     }
 
     @Override
-    public RuleBuilder reset(Rule rule) {
+    public RuleBuilder reset(RuleImpl rule) {
         if (rule == null) {
             return unset();
         }

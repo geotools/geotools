@@ -46,16 +46,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.renderer.lite.LabelShieldTest;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.renderer.style.FontCache;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
+import org.geotools.styling.*;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.junit.Before;
@@ -144,7 +135,7 @@ public class VisualTransformerTest {
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
         StyledLayerDescriptor sld = mbStyle.transform();
-        Style style = MapboxTestUtils.getStyle(sld, 0);
+        StyleImpl style = MapboxTestUtils.getStyle(sld, 0);
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(pointFS, style));
@@ -177,7 +168,7 @@ public class VisualTransformerTest {
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
         StyledLayerDescriptor sld = mbStyle.transform();
-        Style style = MapboxTestUtils.getStyle(sld, 0);
+        StyleImpl style = MapboxTestUtils.getStyle(sld, 0);
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(polygonsBigFS, style));
@@ -208,7 +199,7 @@ public class VisualTransformerTest {
         MBStyle mbStyle = new MBStyle(jsonObject);
         StyledLayerDescriptor sld = mbStyle.transform();
         NamedLayer l = (NamedLayer) sld.layers().get(0);
-        Style style = (Style) l.getStyles()[0];
+        StyleImpl style = (StyleImpl) l.getStyles()[0];
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(polygonFS, style));
@@ -237,7 +228,7 @@ public class VisualTransformerTest {
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
         StyledLayerDescriptor sld = mbStyle.transform();
-        Style style = MapboxTestUtils.getStyle(sld, 0);
+        StyleImpl style = MapboxTestUtils.getStyle(sld, 0);
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(polygonFS, style));
@@ -270,7 +261,7 @@ public class VisualTransformerTest {
         MBStyle mbStyle = new MBStyle(jsonObject);
         StyledLayerDescriptor sld = mbStyle.transform();
         NamedLayer l = (NamedLayer) sld.layers().get(0);
-        Style style = (Style) l.getStyles()[0];
+        StyleImpl style = (StyleImpl) l.getStyles()[0];
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(polygonsBigFS, style));
@@ -302,7 +293,7 @@ public class VisualTransformerTest {
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
         StyledLayerDescriptor sld = mbStyle.transform();
-        Style style = MapboxTestUtils.getStyle(sld, 0);
+        StyleImpl style = MapboxTestUtils.getStyle(sld, 0);
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(polygonsBigFS, style));
@@ -334,7 +325,7 @@ public class VisualTransformerTest {
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
         StyledLayerDescriptor sld = mbStyle.transform();
-        Style style = MapboxTestUtils.getStyle(sld, 0);
+        StyleImpl style = MapboxTestUtils.getStyle(sld, 0);
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(polygonsBigFS, style));
@@ -363,7 +354,7 @@ public class VisualTransformerTest {
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
         StyledLayerDescriptor sld = mbStyle.transform();
-        Style style = MapboxTestUtils.getStyle(sld, 0);
+        StyleImpl style = MapboxTestUtils.getStyle(sld, 0);
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(pointFS, style));
@@ -395,7 +386,7 @@ public class VisualTransformerTest {
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
         StyledLayerDescriptor sld = mbStyle.transform();
-        Style style = MapboxTestUtils.getStyle(sld, 0);
+        StyleImpl style = MapboxTestUtils.getStyle(sld, 0);
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(pointFS, style));
@@ -546,7 +537,7 @@ public class VisualTransformerTest {
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
         StyledLayerDescriptor sld = mbStyle.transform();
-        Style style = MapboxTestUtils.getStyle(sld, 0);
+        StyleImpl style = MapboxTestUtils.getStyle(sld, 0);
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(pointsWithMarksFS, style));
@@ -578,7 +569,7 @@ public class VisualTransformerTest {
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
         StyledLayerDescriptor sld = mbStyle.transform();
-        Style style = MapboxTestUtils.getStyle(sld, 0);
+        StyleImpl style = MapboxTestUtils.getStyle(sld, 0);
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(pointsWithMarksFS, style));
@@ -616,7 +607,7 @@ public class VisualTransformerTest {
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
         StyledLayerDescriptor sld = mbStyle.transform();
-        Style style = MapboxTestUtils.getStyle(sld, 0);
+        StyleImpl style = MapboxTestUtils.getStyle(sld, 0);
 
         MapContent mc = new MapContent();
 
@@ -646,7 +637,7 @@ public class VisualTransformerTest {
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
         StyledLayerDescriptor sld = mbStyle.transform();
-        Style style = MapboxTestUtils.getStyle(sld, 0);
+        StyleImpl style = MapboxTestUtils.getStyle(sld, 0);
 
         MapContent mc = new MapContent();
 
@@ -764,7 +755,7 @@ public class VisualTransformerTest {
         }
         for (StyledLayer l : sld.layers()) {
             NamedLayer nl = (NamedLayer) l;
-            mc.addLayer(new FeatureLayer((FeatureSource) pointFS, (Style) nl.getStyles()[0]));
+            mc.addLayer(new FeatureLayer((FeatureSource) pointFS, (StyleImpl) nl.getStyles()[0]));
         }
 
         StreamingRenderer renderer = new StreamingRenderer();
@@ -794,7 +785,7 @@ public class VisualTransformerTest {
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonStyle);
         StyledLayerDescriptor sld = mbStyle.transform();
-        Style style = MapboxTestUtils.getStyle(sld, 0);
+        StyleImpl style = MapboxTestUtils.getStyle(sld, 0);
 
         MapContent mc = new MapContent();
 
@@ -817,22 +808,22 @@ public class VisualTransformerTest {
         mc.dispose();
     }
 
-    public Style defaultLineStyle() {
-        Rule rule = styleFactory.createRule();
-        Stroke stroke =
+    public StyleImpl defaultLineStyle() {
+        RuleImpl rule = styleFactory.createRule();
+        StrokeImpl stroke =
                 styleFactory.createStroke(
                         filterFactory.literal(Color.BLACK), filterFactory.literal(1));
         rule.symbolizers().add(styleFactory.createLineSymbolizer(stroke, null));
-        FeatureTypeStyle fts = (FeatureTypeStyle) styleFactory.createFeatureTypeStyle(rule);
-        Style lineStyle = styleFactory.createStyle();
+        FeatureTypeStyleImpl fts = (FeatureTypeStyleImpl) styleFactory.createFeatureTypeStyle(rule);
+        StyleImpl lineStyle = styleFactory.createStyle();
         lineStyle.featureTypeStyles().addAll(Arrays.asList(fts));
         return lineStyle;
     }
 
-    public Style defaultPointStyle() {
+    public StyleImpl defaultPointStyle() {
 
-        Graphic gr = styleFactory.createDefaultGraphic();
-        Mark mark = styleFactory.getCircleMark();
+        GraphicImpl gr = styleFactory.createDefaultGraphic();
+        MarkImpl mark = styleFactory.getCircleMark();
         mark.setStroke(
                 styleFactory.createStroke(
                         filterFactory.literal(Color.BLACK), filterFactory.literal(1)));
@@ -842,39 +833,39 @@ public class VisualTransformerTest {
         gr.graphicalSymbols().add(mark);
         gr.setSize(filterFactory.literal(1));
 
-        Rule rule = styleFactory.createRule();
-        PointSymbolizer p = styleFactory.createPointSymbolizer(gr, null);
+        RuleImpl rule = styleFactory.createRule();
+        PointSymbolizerImpl p = styleFactory.createPointSymbolizer(gr, null);
 
         rule.symbolizers().add(p);
-        FeatureTypeStyle fts = (FeatureTypeStyle) styleFactory.createFeatureTypeStyle(rule);
-        Style pointStyle = styleFactory.createStyle();
+        FeatureTypeStyleImpl fts = (FeatureTypeStyleImpl) styleFactory.createFeatureTypeStyle(rule);
+        StyleImpl pointStyle = styleFactory.createStyle();
         pointStyle.featureTypeStyles().addAll(Arrays.asList(fts));
         return pointStyle;
     }
 
-    public Style defaultPolyStyle() {
+    public StyleImpl defaultPolyStyle() {
 
         // create a partially opaque outline stroke
-        Stroke stroke =
+        StrokeImpl stroke =
                 styleFactory.createStroke(
                         filterFactory.literal(Color.BLACK),
                         filterFactory.literal(1),
                         filterFactory.literal(1));
 
         // create a partial opaque fill
-        Fill fill =
+        FillImpl fill =
                 styleFactory.createFill(
                         filterFactory.literal(Color.BLACK), filterFactory.literal(1));
 
         /*
          * Setting the geometryPropertyName arg to null signals that we want to draw the default geometry of features
          */
-        PolygonSymbolizer sym = styleFactory.createPolygonSymbolizer(stroke, fill, null);
+        PolygonSymbolizerImpl sym = styleFactory.createPolygonSymbolizer(stroke, fill, null);
 
-        Rule rule = styleFactory.createRule();
+        RuleImpl rule = styleFactory.createRule();
         rule.symbolizers().add(sym);
-        FeatureTypeStyle fts = (FeatureTypeStyle) styleFactory.createFeatureTypeStyle(rule);
-        Style style = styleFactory.createStyle();
+        FeatureTypeStyleImpl fts = (FeatureTypeStyleImpl) styleFactory.createFeatureTypeStyle(rule);
+        StyleImpl style = styleFactory.createStyle();
         style.featureTypeStyles().add(fts);
 
         return style;

@@ -21,6 +21,8 @@ import java.util.List;
 import org.geotools.api.style.FeatureTypeConstraint;
 import org.geotools.api.style.NamedLayer;
 import org.geotools.api.style.Style;
+import org.geotools.styling.NamedLayerImpl;
+import org.geotools.styling.StyleImpl;
 
 public class NamedLayerBuilder extends AbstractSLDBuilder<NamedLayer> {
 
@@ -57,8 +59,8 @@ public class NamedLayerBuilder extends AbstractSLDBuilder<NamedLayer> {
         if (unset) {
             return null;
         }
-        org.geotools.styling.NamedLayer layer =
-                (org.geotools.styling.NamedLayer) sf.createNamedLayer();
+        NamedLayerImpl layer =
+                (NamedLayerImpl) sf.createNamedLayer();
         layer.setName(name);
         List<FeatureTypeConstraint> list = new ArrayList<>();
         for (FeatureTypeConstraintBuilder constraint : featureTypeConstraint) {
@@ -99,7 +101,7 @@ public class NamedLayerBuilder extends AbstractSLDBuilder<NamedLayer> {
         }
         styles.clear();
         for (Style style : layer.getStyles()) {
-            styles.add(new StyleBuilder().reset((org.geotools.styling.Style) style));
+            styles.add(new StyleBuilder().reset((StyleImpl) style));
         }
         unset = false;
         return this;

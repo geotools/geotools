@@ -17,5 +17,7 @@
  */
 package org.geotools.ysld.transform.sld;
 
-/** Handles xml parse events for the {@link org.geotools.styling.AnchorPoint} element. */
+import org.geotools.styling.AnchorPointImpl;
+
+/** Handles xml parse events for the {@link AnchorPointImpl} element. */
 public class AnchorHandler extends XYHandler {}

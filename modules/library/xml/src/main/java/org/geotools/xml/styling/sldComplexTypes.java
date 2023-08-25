@@ -26,11 +26,8 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.ContrastMethod;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Mark;
-import org.geotools.styling.Stroke;
+import org.geotools.styling.*;
+import org.geotools.styling.GraphicImpl;
 import org.geotools.xml.PrintHandler;
 import org.geotools.xml.schema.Attribute;
 import org.geotools.xml.schema.ComplexType;
@@ -171,7 +168,7 @@ public class sldComplexTypes {
          */
         @Override
         public Class getInstanceType() {
-            return ContrastEnhancement.class;
+            return ContrastEnhancementImpl.class;
         }
 
         /**
@@ -208,7 +205,7 @@ public class sldComplexTypes {
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
-            ContrastEnhancement symbol = new ContrastEnhancement();
+            ContrastEnhancementImpl symbol = new ContrastEnhancementImpl();
 
             for (ElementValue elementValue : value) {
                 if ((elementValue == null) || elementValue.getElement() == null) {
@@ -683,7 +680,7 @@ public class sldComplexTypes {
          */
         @Override
         public Class getInstanceType() {
-            return Graphic.class;
+            return GraphicImpl.class;
         }
 
         private static final ElementGrouping child =
@@ -769,7 +766,7 @@ public class sldComplexTypes {
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException {
-            Graphic symbol = CommonFactoryFinder.getStyleFactory().getDefaultGraphic();
+            GraphicImpl symbol = CommonFactoryFinder.getStyleFactory().getDefaultGraphic();
 
             for (ElementValue elementValue : value) {
                 if ((elementValue == null) || elementValue.getElement() == null) {
@@ -778,10 +775,10 @@ public class sldComplexTypes {
 
                 Element e = elementValue.getElement();
                 if (elems[EXTERNALGRAPHIC].getName().equals(e.getName()))
-                    symbol.graphicalSymbols().add((ExternalGraphic) elementValue.getValue());
+                    symbol.graphicalSymbols().add((ExternalGraphicImpl) elementValue.getValue());
 
                 if (elems[MARK].getName().equals(e.getName()))
-                    symbol.graphicalSymbols().add((Mark) elementValue.getValue());
+                    symbol.graphicalSymbols().add((MarkImpl) elementValue.getValue());
 
                 if (elems[OPACITY].getName().equals(e.getName()))
                     symbol.setOpacity((Expression) elementValue.getValue());
@@ -917,7 +914,7 @@ public class sldComplexTypes {
          */
         @Override
         public Class getInstanceType() {
-            return Stroke.class;
+            return StrokeImpl.class;
         }
 
         /**
@@ -954,7 +951,7 @@ public class sldComplexTypes {
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException {
-            Stroke symbol = CommonFactoryFinder.getStyleFactory().getDefaultStroke();
+            StrokeImpl symbol = CommonFactoryFinder.getStyleFactory().getDefaultStroke();
 
             for (ElementValue elementValue : value) {
                 if ((elementValue == null) || elementValue.getElement() == null) {
@@ -963,7 +960,7 @@ public class sldComplexTypes {
 
                 Element e = elementValue.getElement();
                 if (elems[GRAPHICFILL].getName().equals(e.getName()))
-                    symbol.setGraphicFill((Graphic) elementValue.getValue());
+                    symbol.setGraphicFill((GraphicImpl) elementValue.getValue());
 
                 //                if (elems[CSSPARAMETER].getName().equals(e.getName())) {
                 //                    // TODO apply the css

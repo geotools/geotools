@@ -17,17 +17,17 @@
  */
 package org.geotools.ysld.parse;
 
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Stroke;
+import org.geotools.styling.GraphicImpl;
+import org.geotools.styling.StrokeImpl;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
 /**
  * Handles parsing Ysld "stroke-*" (e.g., "stroke-color", "stroke-width", ... ) properties into a
- * {@link Stroke} object.
+ * {@link StrokeImpl} object.
  */
 public abstract class StrokeParser extends YsldParseHandler {
-    Stroke stroke;
+    StrokeImpl stroke;
 
     protected StrokeParser(Factory factory) {
         super(factory);
@@ -63,7 +63,7 @@ public abstract class StrokeParser extends YsldParseHandler {
                 "stroke-graphic-fill",
                 new GraphicParser(factory) {
                     @Override
-                    protected void graphic(Graphic g) {
+                    protected void graphic(GraphicImpl g) {
                         stroke().setGraphicFill(g);
                     }
                 });
@@ -71,13 +71,13 @@ public abstract class StrokeParser extends YsldParseHandler {
                 "stroke-graphic",
                 new GraphicParser(factory) {
                     @Override
-                    protected void graphic(Graphic g) {
+                    protected void graphic(GraphicImpl g) {
                         stroke().setGraphicStroke(g);
                     }
                 });
     }
 
-    Stroke stroke() {
+    StrokeImpl stroke() {
         if (stroke == null) {
             stroke = factory.style.createStroke(null, null);
             stroke(stroke);
@@ -85,5 +85,5 @@ public abstract class StrokeParser extends YsldParseHandler {
         return stroke;
     }
 
-    protected abstract void stroke(Stroke stroke);
+    protected abstract void stroke(StrokeImpl stroke);
 }

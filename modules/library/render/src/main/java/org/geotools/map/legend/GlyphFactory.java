@@ -20,7 +20,7 @@ import java.awt.Color;
 import javax.swing.Icon;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.map.Layer;
-import org.geotools.styling.Rule;
+import org.geotools.styling.RuleImpl;
 
 /**
  * Used to draw the little pictures that appear in a Legend.
@@ -56,7 +56,7 @@ public interface GlyphFactory {
      * @param rule Rule used to render a Point
      * @return Icon representing a Point
      */
-    Icon point(Rule rule);
+    Icon point(RuleImpl rule);
 
     /**
      * Produces a simple Icon representing a line.
@@ -82,15 +82,15 @@ public interface GlyphFactory {
      * @param rule Rule used to render a Point
      * @return Icon representing a Point
      */
-    Icon line(Rule rule);
+    Icon line(RuleImpl rule);
 
     Icon geometry(Color color, Color fill);
 
-    Icon geometry(Rule rule);
+    Icon geometry(RuleImpl rule);
 
     Icon polygon(Color color, Color fill, int width);
 
-    Icon polygon(Rule rule);
+    Icon polygon(RuleImpl rule);
 
     Icon grid(Color color1, Color color2, Color color3, Color color4);
 

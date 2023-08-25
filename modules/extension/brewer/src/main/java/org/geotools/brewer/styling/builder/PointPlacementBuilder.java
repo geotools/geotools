@@ -17,9 +17,9 @@
 package org.geotools.brewer.styling.builder;
 
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.styling.PointPlacement;
+import org.geotools.styling.PointPlacementImpl;
 
-public class PointPlacementBuilder extends AbstractStyleBuilder<PointPlacement> {
+public class PointPlacementBuilder extends AbstractStyleBuilder<PointPlacementImpl> {
     private Expression rotation;
 
     private AnchorPointBuilder anchor = new AnchorPointBuilder(this, 0, 0).unset();
@@ -36,11 +36,11 @@ public class PointPlacementBuilder extends AbstractStyleBuilder<PointPlacement> 
     }
 
     @Override
-    public PointPlacement build() {
+    public PointPlacementImpl build() {
         if (unset) {
             return null;
         }
-        PointPlacement placement =
+        PointPlacementImpl placement =
                 sf.pointPlacement(anchor.build(), displacement.build(), rotation);
         if (parent == null) {
             reset();
@@ -81,7 +81,7 @@ public class PointPlacementBuilder extends AbstractStyleBuilder<PointPlacement> 
     }
 
     @Override
-    public PointPlacementBuilder reset(PointPlacement placement) {
+    public PointPlacementBuilder reset(PointPlacementImpl placement) {
         if (placement == null) {
             return unset();
         }

@@ -28,7 +28,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.map.GridReaderLayer;
 import org.geotools.map.MapContent;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.test.TestData;
 import org.junit.Test;
 
@@ -44,7 +44,7 @@ public class FootprintsRenderingTest {
         TestData.unzip(zip, new File("./target"));
 
         ImageMosaicReader reader = new ImageMosaicReader(new File("./target/rgb"));
-        Style style = RendererBaseTest.loadStyle(this, "footprintstx.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "footprintstx.sld");
         GridReaderLayer layer = new GridReaderLayer(reader, style);
 
         MapContent mc = new MapContent();

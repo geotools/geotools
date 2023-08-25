@@ -29,7 +29,7 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 
 /**
  * Layer responsible for rendering vector information provided by a FeatureSource.
@@ -66,26 +66,26 @@ public class FeatureLayer extends StyleLayer {
      * @param style the style used to represent this layer
      */
     @SuppressWarnings("unchecked")
-    public FeatureLayer(FeatureSource featureSource, Style style) {
+    public FeatureLayer(FeatureSource featureSource, StyleImpl style) {
         super(style);
         this.featureSource = featureSource;
     }
 
     @SuppressWarnings("unchecked")
-    public FeatureLayer(FeatureSource featureSource, Style style, String title) {
+    public FeatureLayer(FeatureSource featureSource, StyleImpl style, String title) {
         super(style, title);
         this.featureSource = featureSource;
     }
 
     @SuppressWarnings("unchecked")
-    public FeatureLayer(FeatureCollection collection, Style style) {
+    public FeatureLayer(FeatureCollection collection, StyleImpl style) {
         super(style);
         this.featureSource = DataUtilities.source(collection);
         this.style = style;
     }
 
     @SuppressWarnings("unchecked")
-    public FeatureLayer(FeatureCollection collection, Style style, String title) {
+    public FeatureLayer(FeatureCollection collection, StyleImpl style, String title) {
         super(style, title);
         this.featureSource = DataUtilities.source(collection);
     }

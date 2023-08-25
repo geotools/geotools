@@ -25,8 +25,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.util.ColorConverterFactory;
 import org.geotools.filter.FilterFactoryImpl;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.ColorMapEntry;
+import org.geotools.styling.ColorMapImpl;
+import org.geotools.styling.ColorMapEntryImpl;
 import org.geotools.util.Converter;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.Utilities;
@@ -98,10 +98,10 @@ public class GradientColorMapGenerator {
     }
 
     /**
-     * Generate a {@link ColorMap} object, by updating the ColorMapEntries quantities on top of the
+     * Generate a {@link ColorMapImpl} object, by updating the ColorMapEntries quantities on top of the
      * min and max values reported here.
      */
-    public ColorMap generateColorMap(double min, double max) {
+    public ColorMapImpl generateColorMap(double min, double max) {
         final int numEntries = entries.length;
         final double range = max - min;
         boolean intervals = false;
@@ -114,7 +114,7 @@ public class GradientColorMapGenerator {
                 intervals = false;
             }
         }
-        ColorMap colorMap = new ColorMap();
+        ColorMapImpl colorMap = new ColorMapImpl();
 
         // Adding transparent color entry before the min
         final double offset = 0 /* intervals ? 0 : 1E-2 */;
@@ -124,12 +124,12 @@ public class GradientColorMapGenerator {
         colorMap.addColorMapEntry(startEntry);
 
         if (intervals) {
-            colorMap.setType(ColorMap.TYPE_INTERVALS);
+            colorMap.setType(ColorMapImpl.TYPE_INTERVALS);
             for (int i = 1; i < numEntries - 1; i += 2) {
                 colorMap.addColorMapEntry(entries[i].getColorMapEntry(min, range));
             }
         } else {
-            colorMap.setType(ColorMap.TYPE_RAMP);
+            colorMap.setType(ColorMapImpl.TYPE_RAMP);
             for (int i = 0; i < numEntries - 1; i++) {
                 colorMap.addColorMapEntry(entries[i].getColorMapEntry(min, range));
             }
@@ -183,7 +183,7 @@ public class GradientColorMapGenerator {
         }
 
         private org.geotools.api.style.ColorMapEntry getColorMapEntry(double min, double range) {
-            org.geotools.api.style.ColorMapEntry entry = new ColorMapEntry();
+            org.geotools.api.style.ColorMapEntry entry = new ColorMapEntryImpl();
             entry.setOpacity(filterFactory.literal(opacity));
             entry.setColor(filterFactory.literal(toHexColor(color)));
             entry.setQuantity(

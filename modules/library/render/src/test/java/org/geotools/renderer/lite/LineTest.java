@@ -37,7 +37,7 @@ import org.geotools.map.MapViewport;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.test.TestData;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -123,12 +123,12 @@ public class LineTest {
 
     private StreamingRenderer setupMap(SimpleFeatureSource fs, String styleFile)
             throws IOException {
-        Style style = RendererBaseTest.loadStyle(this, styleFile);
+        StyleImpl style = RendererBaseTest.loadStyle(this, styleFile);
 
         return setupMap(fs, style);
     }
 
-    private StreamingRenderer setupMap(SimpleFeatureSource fs, Style style) {
+    private StreamingRenderer setupMap(SimpleFeatureSource fs, StyleImpl style) {
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(fs, style));
 

@@ -29,7 +29,7 @@ import org.geotools.image.test.ImageAssert;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 import org.geotools.test.TestData;
 import org.junit.Before;
@@ -73,7 +73,7 @@ public class RepeatedLabelTest {
     }
 
     private void checkRepeatedLabels(String styleName) throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, styleName + ".sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, styleName + ".sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(fs_line, style));
@@ -144,10 +144,10 @@ public class RepeatedLabelTest {
             DuplicatingStyleVisitor styleVisitor,
             int tolerance)
             throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, styleName + ".sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, styleName + ".sld");
         if (styleVisitor != null) {
             style.accept(styleVisitor);
-            style = (Style) styleVisitor.getCopy();
+            style = (StyleImpl) styleVisitor.getCopy();
         }
 
         MapContent mc = new MapContent();

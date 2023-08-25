@@ -304,7 +304,7 @@ public class GridCoverageRendererTest {
         //
         // /////////////////////////////////////////////////////////////////
         final MapContent map = new MapContent();
-        final Style style = getStyle();
+        final StyleImpl style = getStyle();
         map.addLayer(new GridCoverageLayer(gc, style));
 
         // /////////////////////////////////////////////////////////////////
@@ -328,7 +328,7 @@ public class GridCoverageRendererTest {
         final MapContent map = new MapContent();
 
         // final Style style = new StyleBuilder().createStyle((Symbolizer) null);
-        final Style style = RendererBaseTest.loadStyle(this, "empty.sld");
+        final StyleImpl style = RendererBaseTest.loadStyle(this, "empty.sld");
         map.addLayer(new GridCoverageLayer(gc, style));
 
         final StreamingRenderer renderer = new StreamingRenderer();
@@ -364,7 +364,7 @@ public class GridCoverageRendererTest {
         //
         // /////////////////////////////////////////////////////////////////
         final MapContent map = new MapContent();
-        final Style style = getStyle();
+        final StyleImpl style = getStyle();
         map.addLayer(new GridCoverageLayer(coverage, style));
 
         // transform to a new crs
@@ -395,7 +395,7 @@ public class GridCoverageRendererTest {
     public void testRenderingBuffer() throws Exception {
         // prepare the layer
         MapContent content = new MapContent();
-        final Style style = getStyle();
+        final StyleImpl style = getStyle();
         content.addLayer(new GridReaderLayer(worldReader, style));
 
         final StreamingRenderer renderer = new StreamingRenderer();
@@ -426,7 +426,7 @@ public class GridCoverageRendererTest {
         GridCoverageRenderer renderer =
                 new GridCoverageRenderer(googleMercator, mapExtent, screenSize, w2s);
 
-        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+        RasterSymbolizerImpl rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
         GridCoverage2D coverage = worldReader.read(null);
         RenderedImage image =
                 renderer.renderImage(
@@ -453,8 +453,8 @@ public class GridCoverageRendererTest {
                                 -89.999828389438,
                                 270.00021311603,
                                 DefaultGeographicCRS.WGS84));
-        RasterSymbolizer rs = buildRainColorMap();
-        final Style style = new StyleBuilder().createStyle(rs);
+        RasterSymbolizerImpl rs = buildRainColorMap();
+        final StyleImpl style = new StyleBuilder().createStyle(rs);
         content.addLayer(new GridReaderLayer(rainReader, style));
 
         final StreamingRenderer renderer = new StreamingRenderer();
@@ -476,10 +476,10 @@ public class GridCoverageRendererTest {
                 1000);
     }
 
-    private static Style getStyle() {
+    private static StyleImpl getStyle() {
         StyleBuilder sb = new StyleBuilder();
-        Style rasterstyle = sb.createStyle();
-        RasterSymbolizer raster = sb.createRasterSymbolizer();
+        StyleImpl rasterstyle = sb.createStyle();
+        RasterSymbolizerImpl raster = sb.createRasterSymbolizer();
         rasterstyle.featureTypeStyles().add(sb.createFeatureTypeStyle(raster));
         rasterstyle.featureTypeStyles().get(0).setName("GridCoverage");
         return rasterstyle;
@@ -555,7 +555,7 @@ public class GridCoverageRendererTest {
         GridCoverageRenderer renderer =
                 new GridCoverageRenderer(googleMercator, mapExtent, screenSize, w2s);
 
-        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+        RasterSymbolizerImpl rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
         GridCoverage2D coverage = worldReader.read(null);
         RenderedImage image =
                 renderer.renderImage(
@@ -598,7 +598,7 @@ public class GridCoverageRendererTest {
         GridCoverageRenderer renderer =
                 new GridCoverageRenderer(googleMercator, mapExtent, screenSize, w2s);
 
-        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+        RasterSymbolizerImpl rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
         RenderedImage image =
                 renderer.renderImage(
                         worldReader,
@@ -634,7 +634,7 @@ public class GridCoverageRendererTest {
         GridCoverageRenderer renderer =
                 new GridCoverageRenderer(googleMercator, mapExtent, screenSize, w2s);
 
-        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+        RasterSymbolizerImpl rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
         RenderedImage image =
                 renderer.renderImage(
                         worldReader,
@@ -664,7 +664,7 @@ public class GridCoverageRendererTest {
         GridCoverageRenderer renderer =
                 new GridCoverageRenderer(googleMercator, mapExtent, screenSize, w2s);
 
-        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+        RasterSymbolizerImpl rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
         RenderedImage image =
                 renderer.renderImage(
                         worldReader,
@@ -690,7 +690,7 @@ public class GridCoverageRendererTest {
         GridCoverageRenderer renderer =
                 new GridCoverageRenderer(DefaultGeographicCRS.WGS84, mapExtent, screenSize, w2s);
 
-        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+        RasterSymbolizerImpl rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
 
         RenderedImage image =
                 renderer.renderImage(
@@ -719,7 +719,7 @@ public class GridCoverageRendererTest {
                 new GridCoverageRenderer(DefaultGeographicCRS.WGS84, mapExtent, screenSize, w2s);
         // Setting No projectionHandler
         renderer.setAdvancedProjectionHandlingEnabled(false);
-        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+        RasterSymbolizerImpl rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
 
         RenderedImage image =
                 renderer.renderImage(
@@ -751,7 +751,7 @@ public class GridCoverageRendererTest {
         GridCoverageRenderer renderer =
                 new GridCoverageRenderer(DefaultGeographicCRS.WGS84, mapExtent, screenSize, w2s);
 
-        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+        RasterSymbolizerImpl rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
 
         RenderedImage image =
                 renderer.renderImage(
@@ -780,7 +780,7 @@ public class GridCoverageRendererTest {
         GridCoverageRenderer renderer =
                 new GridCoverageRenderer(DefaultGeographicCRS.WGS84, mapExtent, screenSize, w2s);
 
-        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+        RasterSymbolizerImpl rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
 
         RenderedImage image =
                 renderer.renderImage(
@@ -811,7 +811,7 @@ public class GridCoverageRendererTest {
                 new GridCoverageRenderer(
                         mapExtent.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
 
-        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+        RasterSymbolizerImpl rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
 
         RenderedImage image =
                 renderer.renderImage(
@@ -849,7 +849,7 @@ public class GridCoverageRendererTest {
                 new GridCoverageRenderer(
                         mapExtent.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
 
-        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+        RasterSymbolizerImpl rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
 
         RenderedImage image =
                 renderer.renderImage(
@@ -881,7 +881,7 @@ public class GridCoverageRendererTest {
                 new GridCoverageRenderer(
                         mapExtent.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
 
-        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+        RasterSymbolizerImpl rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
 
         RenderedImage image =
                 renderer.renderImage(
@@ -910,7 +910,7 @@ public class GridCoverageRendererTest {
         AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
         GridCoverageRenderer renderer =
                 new GridCoverageRenderer(googleMercator, mapExtent, screenSize, w2s);
-        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+        RasterSymbolizerImpl rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
         RenderedImage image =
                 renderer.renderImage(
                         worldPaletteReader,
@@ -937,7 +937,7 @@ public class GridCoverageRendererTest {
                 new GridCoverageRenderer(
                         mapExtent.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
 
-        RasterSymbolizer rasterSymbolizer = buildRainColorMap();
+        RasterSymbolizerImpl rasterSymbolizer = buildRainColorMap();
 
         RenderedImage image =
                 renderer.renderImage(
@@ -955,15 +955,15 @@ public class GridCoverageRendererTest {
         ImageAssert.assertEquals(reference, image, 0);
     }
 
-    private RasterSymbolizer buildRainColorMap() {
+    private RasterSymbolizerImpl buildRainColorMap() {
         StyleBuilder sb = new StyleBuilder();
-        ColorMap colorMap =
+        ColorMapImpl colorMap =
                 sb.createColorMap(
                         new String[] {"1", "2", "3", "4"},
                         new double[] {0, 100, 2000, 5000},
                         new Color[] {Color.RED, Color.WHITE, Color.GREEN, Color.BLUE},
-                        ColorMap.TYPE_RAMP);
-        RasterSymbolizer rasterSymbolizer = sb.createRasterSymbolizer(colorMap, 1d);
+                        ColorMapImpl.TYPE_RAMP);
+        RasterSymbolizerImpl rasterSymbolizer = sb.createRasterSymbolizer(colorMap, 1d);
         return rasterSymbolizer;
     }
 
@@ -980,7 +980,7 @@ public class GridCoverageRendererTest {
                 new GridCoverageRenderer(
                         mapExtent.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
 
-        RasterSymbolizer rasterSymbolizer = buildRainColorMap();
+        RasterSymbolizerImpl rasterSymbolizer = buildRainColorMap();
 
         RenderedImage image =
                 renderer.renderImage(
@@ -1012,7 +1012,7 @@ public class GridCoverageRendererTest {
                 new GridCoverageRenderer(
                         mapExtent.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
 
-        RasterSymbolizer rasterSymbolizer = buildRainColorMap();
+        RasterSymbolizerImpl rasterSymbolizer = buildRainColorMap();
 
         RenderedImage image =
                 renderer.renderImage(
@@ -1049,7 +1049,7 @@ public class GridCoverageRendererTest {
                 new GridCoverageRenderer(
                         mapExtent.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
         // Apply the symbolizer
-        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+        RasterSymbolizerImpl rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
         // Render the image
         RenderedImage image =
                 renderer.renderImage(
@@ -1088,7 +1088,7 @@ public class GridCoverageRendererTest {
                 new GridCoverageRenderer(
                         mapExtent.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
         // Apply the symbolizer
-        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+        RasterSymbolizerImpl rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
 
         // Get the reader
         File coverageFile = TestData.copy(this, "geotiff/worldPalette.tiff");
@@ -1133,7 +1133,7 @@ public class GridCoverageRendererTest {
                 new GridCoverageRenderer(
                         mapExtent.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
         // Apply the symbolizer
-        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+        RasterSymbolizerImpl rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
 
         // Get the reader
         // Render the image
@@ -1162,9 +1162,9 @@ public class GridCoverageRendererTest {
         GridCoverage2DReader reader = new GeoTiffReader(coverageFile);
 
         // Apply the symbolizer
-        Style style = RendererBaseTest.loadStyle(this, "float64.sld");
-        RasterSymbolizer rasterSymbolizer =
-                (RasterSymbolizer)
+        StyleImpl style = RendererBaseTest.loadStyle(this, "float64.sld");
+        RasterSymbolizerImpl rasterSymbolizer =
+                (RasterSymbolizerImpl)
                         style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
 
         // Render, used to return a white image
@@ -1202,7 +1202,7 @@ public class GridCoverageRendererTest {
         GridCoverage2DReader reader = new GeoTiffReader(coverageFile);
 
         // Apply the symbolizer
-        Style style = RendererBaseTest.loadStyle(this, "float64.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "float64.sld");
 
         final MapContent mc = new MapContent();
         mc.addLayer(new GridReaderLayer(reader, style));
@@ -1230,7 +1230,7 @@ public class GridCoverageRendererTest {
                 new GridCoverageRenderer(
                         mapExtent.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
 
-        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+        RasterSymbolizerImpl rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
 
         RenderedImage image =
                 renderer.renderImage(
@@ -1260,7 +1260,7 @@ public class GridCoverageRendererTest {
         GridCoverageRenderer renderer =
                 new GridCoverageRenderer(
                         mapExtent.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
-        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+        RasterSymbolizerImpl rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
         RenderedImage image =
                 renderer.renderImage(
                         sampleGribReader,
@@ -1288,7 +1288,7 @@ public class GridCoverageRendererTest {
         GridCoverageRenderer renderer =
                 new GridCoverageRenderer(
                         mapExtent.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
-        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+        RasterSymbolizerImpl rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
         RenderedImage image =
                 renderer.renderImage(
                         sampleGribReader,
@@ -1416,7 +1416,7 @@ public class GridCoverageRendererTest {
         GridCoverage2DReader reader = new GeoTiffReader(coverageFile);
 
         String b1 = "B1";
-        RasterSymbolizer rasterSymb = buildEnvChannelSelectingSymbolizer(b1, 3);
+        RasterSymbolizerImpl rasterSymb = buildEnvChannelSelectingSymbolizer(b1, 3);
 
         // check default env value: 3
         // Render the image selecting blue as default ENV value
@@ -1466,7 +1466,7 @@ public class GridCoverageRendererTest {
         // keeping a reference to the raster symbolizer so we can check we has not altered
         // during the band setup the raster symbolizer channel selection needs to be rearranged
         // but the original raster symbolizer should not be altered
-        RasterSymbolizer rasterSymbolizer = buildChannelSelectingSymbolizer(3);
+        RasterSymbolizerImpl rasterSymbolizer = buildChannelSelectingSymbolizer(3);
         RenderedImage image =
                 renderer.renderImage(
                         reader,
@@ -1479,7 +1479,7 @@ public class GridCoverageRendererTest {
         assertEquals(1, image.getSampleModel().getNumBands());
         assertEquals(255, new ImageWorker(image).getMinimums()[0], 0d);
         // test that raster symbolizer was not altered
-        RasterSymbolizer expectedRasterSymbolizer = buildChannelSelectingSymbolizer(3);
+        RasterSymbolizerImpl expectedRasterSymbolizer = buildChannelSelectingSymbolizer(3);
         // during the copy method contrast enhancement NULL options are converted to an empty
         // HashMap
         expectedRasterSymbolizer.getContrastEnhancement().setOptions(Collections.emptyMap());
@@ -1494,23 +1494,23 @@ public class GridCoverageRendererTest {
         applyAndAssertContrastEnhancement(reader);
     }
 
-    private RasterSymbolizer createClippingChannelSelectionSymbolizer(int min, int max) {
+    private RasterSymbolizerImpl createClippingChannelSelectionSymbolizer(int min, int max) {
         StyleBuilder sldBuilder = new StyleBuilder();
 
-        RasterSymbolizer symbolizer = sldBuilder.createRasterSymbolizer();
-        final ChannelSelection chSel = new ChannelSelection();
-        final SelectedChannelType chTypeRed = new SelectedChannelType();
-        final SelectedChannelType chTypeBlue = new SelectedChannelType();
-        final SelectedChannelType chTypeGreen = new SelectedChannelType();
+        RasterSymbolizerImpl symbolizer = sldBuilder.createRasterSymbolizer();
+        final ChannelSelectionImpl chSel = new ChannelSelectionImpl();
+        final SelectedChannelTypeImpl chTypeRed = new SelectedChannelTypeImpl();
+        final SelectedChannelTypeImpl chTypeBlue = new SelectedChannelTypeImpl();
+        final SelectedChannelTypeImpl chTypeGreen = new SelectedChannelTypeImpl();
 
-        SelectedChannelType[] channels = {chTypeRed, chTypeGreen, chTypeBlue};
+        SelectedChannelTypeImpl[] channels = {chTypeRed, chTypeGreen, chTypeBlue};
 
         // Assign a different contrast method for each channel
         // by offsetting min and max of 20 on each channel
         // and assigning channels number with increments of 2
 
         for (int i = 0; i < 3; i++) {
-            final ContrastEnhancement cntEnh = new ContrastEnhancement();
+            final ContrastEnhancementImpl cntEnh = new ContrastEnhancementImpl();
             final ContrastMethodStrategy method = new NormalizeContrastMethodStrategy();
             method.addOption(
                     "algorithm",
@@ -1583,7 +1583,7 @@ public class GridCoverageRendererTest {
 
         int min = 10;
         int max = 100;
-        RasterSymbolizer symbolizer = createClippingChannelSelectionSymbolizer(min, max);
+        RasterSymbolizerImpl symbolizer = createClippingChannelSelectionSymbolizer(min, max);
 
         RenderedImage image =
                 renderer.renderImage(
@@ -1619,11 +1619,11 @@ public class GridCoverageRendererTest {
 
         StyleBuilder sldBuilder = new StyleBuilder();
 
-        RasterSymbolizer symbolizer = sldBuilder.createRasterSymbolizer();
-        final ChannelSelection chSel = new ChannelSelection();
-        final SelectedChannelType chTypeRed = new SelectedChannelType();
-        final SelectedChannelType chTypeBlue = new SelectedChannelType();
-        final SelectedChannelType chTypeGreen = new SelectedChannelType();
+        RasterSymbolizerImpl symbolizer = sldBuilder.createRasterSymbolizer();
+        final ChannelSelectionImpl chSel = new ChannelSelectionImpl();
+        final SelectedChannelTypeImpl chTypeRed = new SelectedChannelTypeImpl();
+        final SelectedChannelTypeImpl chTypeBlue = new SelectedChannelTypeImpl();
+        final SelectedChannelTypeImpl chTypeGreen = new SelectedChannelTypeImpl();
 
         chTypeRed.setChannelName("5");
         chTypeGreen.setChannelName("3");
@@ -1663,7 +1663,7 @@ public class GridCoverageRendererTest {
         assertTrue(coverageFile.exists());
         GridCoverage2DReader reader = new GeoTiffReader(coverageFile);
 
-        RasterSymbolizer rasterSymbolizer = buildChannelSelectingSymbolizer(1);
+        RasterSymbolizerImpl rasterSymbolizer = buildChannelSelectingSymbolizer(1);
         BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
         GridCoverageRenderer renderer =
                 new GridCoverageRenderer(
@@ -1703,7 +1703,7 @@ public class GridCoverageRendererTest {
         // keeping a reference to the raster symbolizer so we can check we has not altered
         // during the band setup the raster symbolizer channel selection needs to be rearranged
         // but the original raster symbolizer should not be altered
-        RasterSymbolizer rasterSymbolizer = buildChannelSelectingSymbolizer(3);
+        RasterSymbolizerImpl rasterSymbolizer = buildChannelSelectingSymbolizer(3);
         BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) bi.getGraphics();
         // .. the reader here checks the band selection params were passed down
@@ -1777,7 +1777,7 @@ public class GridCoverageRendererTest {
                 new GridCoverageRenderer(
                         DefaultGeographicCRS.WGS84, reOutside, new Rectangle(0, 0, 100, 100), null);
 
-        RasterSymbolizer symbolizer = new StyleBuilder().createRasterSymbolizer();
+        RasterSymbolizerImpl symbolizer = new StyleBuilder().createRasterSymbolizer();
         Interpolation interpolation = Interpolation.getInstance(Interpolation.INTERP_NEAREST);
         RenderedImage image =
                 renderer.renderImage(cropped, symbolizer, interpolation, null, 256, 256);
@@ -1801,7 +1801,7 @@ public class GridCoverageRendererTest {
                 new GridCoverageRenderer(
                         DefaultGeographicCRS.WGS84, envelope, new Rectangle(0, 0, 450, 450), null);
 
-        RasterSymbolizer symbolizer = new StyleBuilder().createRasterSymbolizer();
+        RasterSymbolizerImpl symbolizer = new StyleBuilder().createRasterSymbolizer();
         Interpolation interpolation = Interpolation.getInstance(Interpolation.INTERP_NEAREST);
         RenderedImage image =
                 renderer.renderImage(
@@ -1827,8 +1827,8 @@ public class GridCoverageRendererTest {
         content.getViewport()
                 .setBounds(
                         new ReferencedEnvelope(0, -0.0020, 0.0040, 0, DefaultGeographicCRS.WGS84));
-        RasterSymbolizer rs = buildRainColorMap();
-        final Style style = new StyleBuilder().createStyle(rs);
+        RasterSymbolizerImpl rs = buildRainColorMap();
+        final StyleImpl style = new StyleBuilder().createStyle(rs);
         content.addLayer(new GridReaderLayer(rainReader, style));
 
         final StreamingRenderer renderer = new StreamingRenderer();
@@ -1896,7 +1896,7 @@ public class GridCoverageRendererTest {
                             rasterArea,
                             affineTransform);
             StyleBuilder sb = new StyleBuilder();
-            RasterSymbolizer symbolizer = sb.createRasterSymbolizer();
+            RasterSymbolizerImpl symbolizer = sb.createRasterSymbolizer();
             RenderedImage image =
                     renderer.renderImage(
                             reader2,
@@ -1937,9 +1937,9 @@ public class GridCoverageRendererTest {
         assertEquals((pixel >> 24), 0x00);
     }
 
-    private RasterSymbolizer buildChannelSelectingSymbolizer(int band) {
+    private RasterSymbolizerImpl buildChannelSelectingSymbolizer(int band) {
         StyleBuilder sb = new StyleBuilder();
-        RasterSymbolizer symbolizer = sb.createRasterSymbolizer();
+        RasterSymbolizerImpl symbolizer = sb.createRasterSymbolizer();
         StyleFactory sf = sb.getStyleFactory();
         symbolizer.setChannelSelection(
                 sf.createChannelSelection(
@@ -1948,16 +1948,16 @@ public class GridCoverageRendererTest {
     }
 
     /** Build a Symbolizer with ENV function ChannelName */
-    private RasterSymbolizer buildEnvChannelSelectingSymbolizer(String envVar, int band) {
+    private RasterSymbolizerImpl buildEnvChannelSelectingSymbolizer(String envVar, int band) {
         StyleBuilder sb = new StyleBuilder();
-        RasterSymbolizer symbolizer = sb.createRasterSymbolizer();
+        RasterSymbolizerImpl symbolizer = sb.createRasterSymbolizer();
         StyleFactory sf = sb.getStyleFactory();
         final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         symbolizer.setChannelSelection(
                 sf.createChannelSelection(
                         sf.createSelectedChannelType(
                                 ff.function("env", ff.literal(envVar), ff.literal(band)),
-                                (ContrastEnhancement) null)));
+                                (ContrastEnhancementImpl) null)));
         return symbolizer;
     }
 
@@ -2169,7 +2169,7 @@ public class GridCoverageRendererTest {
     public void testPaintOutsideValidArea() throws Exception {
 
         StyleBuilder sb = new StyleBuilder();
-        Style style = sb.createStyle(sb.createRasterSymbolizer());
+        StyleImpl style = sb.createStyle(sb.createRasterSymbolizer());
         final MapContent content = new MapContent();
         content.addLayer(new GridReaderLayer(worldReader, style));
 
@@ -2265,9 +2265,9 @@ public class GridCoverageRendererTest {
                 new GridCoverageRenderer(
                         coverage.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
 
-        Style style = RendererBaseTest.loadStyle(this, "landWaterRaster.sld");
-        RasterSymbolizer rasterSymbolizer =
-                (RasterSymbolizer)
+        StyleImpl style = RendererBaseTest.loadStyle(this, "landWaterRaster.sld");
+        RasterSymbolizerImpl rasterSymbolizer =
+                (RasterSymbolizerImpl)
                         style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
         RenderedImage rendered =
                 renderer.renderImage(
@@ -2319,9 +2319,9 @@ public class GridCoverageRendererTest {
                 new GridCoverageRenderer(
                         coverage.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
 
-        Style style = RendererBaseTest.loadStyle(this, "sld1.sld");
-        RasterSymbolizer rasterSymbolizer =
-                (RasterSymbolizer)
+        StyleImpl style = RendererBaseTest.loadStyle(this, "sld1.sld");
+        RasterSymbolizerImpl rasterSymbolizer =
+                (RasterSymbolizerImpl)
                         style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
         image =
                 renderer.renderImage(
@@ -2370,9 +2370,9 @@ public class GridCoverageRendererTest {
                 new GridCoverageRenderer(
                         coverage.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
 
-        Style style = RendererBaseTest.loadStyle(this, "n_bands.sld");
-        RasterSymbolizer rasterSymbolizer =
-                (RasterSymbolizer)
+        StyleImpl style = RendererBaseTest.loadStyle(this, "n_bands.sld");
+        RasterSymbolizerImpl rasterSymbolizer =
+                (RasterSymbolizerImpl)
                         style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
         image =
                 renderer.renderImage(
@@ -2416,9 +2416,9 @@ public class GridCoverageRendererTest {
                 new GridCoverageRenderer(
                         coverage.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
 
-        Style style = RendererBaseTest.loadStyle(this, "nodatazero.sld");
-        RasterSymbolizer rasterSymbolizer =
-                (RasterSymbolizer)
+        StyleImpl style = RendererBaseTest.loadStyle(this, "nodatazero.sld");
+        RasterSymbolizerImpl rasterSymbolizer =
+                (RasterSymbolizerImpl)
                         style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
         image =
                 renderer.renderImage(
@@ -2497,7 +2497,7 @@ public class GridCoverageRendererTest {
                 new GridCoverageRenderer(
                         mapExtent.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
 
-        RasterSymbolizer rasterSymbolizer = buildRadardStyle();
+        RasterSymbolizerImpl rasterSymbolizer = buildRadardStyle();
 
         RenderedImage image =
                 renderer.renderImage(
@@ -2516,15 +2516,15 @@ public class GridCoverageRendererTest {
         ImageAssert.assertEquals(reference, image, 20);
     }
 
-    private RasterSymbolizer buildRadardStyle() {
+    private RasterSymbolizerImpl buildRadardStyle() {
         StyleBuilder sb = new StyleBuilder();
-        ColorMap cm =
+        ColorMapImpl cm =
                 sb.createColorMap(
                         new String[] {"a", "b"},
                         new double[] {-20, 50},
                         new Color[] {Color.RED, Color.GREEN},
-                        ColorMap.TYPE_RAMP);
-        RasterSymbolizer rasterSymbolizer = sb.createRasterSymbolizer(cm, 1d);
+                        ColorMapImpl.TYPE_RAMP);
+        RasterSymbolizerImpl rasterSymbolizer = sb.createRasterSymbolizer(cm, 1d);
         return rasterSymbolizer;
     }
 }

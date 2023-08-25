@@ -22,9 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import org.geotools.api.style.RemoteOWS;
 import org.geotools.api.style.StyledLayerDescriptor;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Style;
+import org.geotools.styling.*;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
@@ -37,7 +35,7 @@ public class RootParser extends YsldParseHandler {
 
     StyledLayerDescriptor sld;
 
-    Style style;
+    StyleImpl style;
 
     public RootParser() {
         this(Collections.emptyList());
@@ -74,7 +72,7 @@ public class RootParser extends YsldParseHandler {
 
         if (root.has("user-name") || root.has("user-remote") || root.has("user-service")) {
             // user prefix for user layer properties
-            org.geotools.styling.UserLayer layer = factory.style.createUserLayer();
+            UserLayerImpl layer = factory.style.createUserLayer();
             sld.layers().add(layer);
             layer.userStyles().add(style);
 
@@ -89,7 +87,7 @@ public class RootParser extends YsldParseHandler {
             }
         } else {
             // assume named layer
-            org.geotools.styling.NamedLayer layer = factory.style.createNamedLayer();
+            NamedLayerImpl layer = factory.style.createNamedLayer();
             sld.layers().add(layer);
             layer.styles().add(style);
 
@@ -158,14 +156,14 @@ public class RootParser extends YsldParseHandler {
         return result;
     }
 
-    public FeatureTypeStyle newFeatureTypeStyle() {
-        FeatureTypeStyle fts = factory.style.createFeatureTypeStyle();
+    public FeatureTypeStyleImpl newFeatureTypeStyle() {
+        FeatureTypeStyleImpl fts = factory.style.createFeatureTypeStyle();
         style.featureTypeStyles().add(fts);
         return fts;
     }
 
-    public Rule newRule() {
-        Rule rule = factory.style.createRule();
+    public RuleImpl newRule() {
+        RuleImpl rule = factory.style.createRule();
         newFeatureTypeStyle().rules().add(rule);
         return rule;
     }

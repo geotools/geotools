@@ -30,7 +30,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,7 +51,7 @@ public class CurveTest {
         ReferencedEnvelope bounds = fs.getBounds();
         bounds.expandBy(1, 1);
 
-        Style style = RendererBaseTest.loadStyle(this, "fillSolid.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "fillSolid.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(fs, style));
@@ -78,7 +78,7 @@ public class CurveTest {
         ReferencedEnvelope bounds = fs.getBounds();
         bounds.expandBy(1, 1);
 
-        Style style = RendererBaseTest.loadStyle(this, "lineGray.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "lineGray.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(fs, style));

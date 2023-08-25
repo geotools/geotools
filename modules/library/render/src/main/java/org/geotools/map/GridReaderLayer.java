@@ -24,7 +24,7 @@ import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 
 /**
  * Layer used to draw a raster {@link GridCoverage2DReader}.
@@ -49,7 +49,7 @@ public class GridReaderLayer extends RasterLayer {
      *
      * @param reader a reader with the new layer that will be added
      */
-    public GridReaderLayer(GridCoverage2DReader reader, Style style) {
+    public GridReaderLayer(GridCoverage2DReader reader, StyleImpl style) {
         this(reader, style, null, null);
     }
 
@@ -58,7 +58,7 @@ public class GridReaderLayer extends RasterLayer {
      *
      * @param reader a reader with the new layer that will be added.
      */
-    public GridReaderLayer(GridCoverage2DReader reader, Style style, String title) {
+    public GridReaderLayer(GridCoverage2DReader reader, StyleImpl style, String title) {
         this(reader, style, title, null);
     }
 
@@ -68,7 +68,7 @@ public class GridReaderLayer extends RasterLayer {
      * @param reader a reader with the new layer that will be added.
      */
     public GridReaderLayer(
-            GridCoverage2DReader reader, Style style, GeneralParameterValue[] params) {
+            GridCoverage2DReader reader, StyleImpl style, GeneralParameterValue[] params) {
         this(reader, style, null, params);
     }
 
@@ -81,7 +81,7 @@ public class GridReaderLayer extends RasterLayer {
      */
     public GridReaderLayer(
             GridCoverage2DReader reader,
-            Style style,
+            StyleImpl style,
             String title,
             GeneralParameterValue[] params) {
         super(style, title);

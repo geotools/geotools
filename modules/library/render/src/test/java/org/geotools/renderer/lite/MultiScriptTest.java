@@ -41,7 +41,7 @@ import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.style.FontCache;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
@@ -204,7 +204,7 @@ public class MultiScriptTest {
 
     @Test
     public void testMultiScriptPoint() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "multiscript/textMultiScript.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "multiscript/textMultiScript.sld");
         BufferedImage image = renderLabels(points, style, "Multi script");
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/multiscript/textMultiScript.png";
@@ -213,7 +213,7 @@ public class MultiScriptTest {
 
     @Test
     public void testMultiScriptPointWrap() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "multiscript/textMultiScriptWrap.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "multiscript/textMultiScriptWrap.sld");
         BufferedImage image = renderLabels(points, style, "Multi script wrap");
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/multiscript/textMultiScriptWrap.png";
@@ -222,14 +222,14 @@ public class MultiScriptTest {
 
     @Test
     public void testMultiScriptLine() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "multiscript/textMultiScriptLine.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "multiscript/textMultiScriptLine.sld");
         BufferedImage image = renderLabels(lines, style, "Multi script lines");
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/multiscript/textMultiScriptLine.png";
         ImageAssert.assertEquals(new File(refPath), image, TOLERANCE);
     }
 
-    private BufferedImage renderLabels(SimpleFeatureSource fs, Style style, String title)
+    private BufferedImage renderLabels(SimpleFeatureSource fs, StyleImpl style, String title)
             throws Exception {
         MapContent mc = new MapContent();
         mc.getViewport().setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
@@ -244,7 +244,7 @@ public class MultiScriptTest {
 
     @Test
     public void testFollowLineWithLocalTransform() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "multiscript/textMultiScriptLine.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "multiscript/textMultiScriptLine.sld");
         MapContent mc = new MapContent();
         mc.getViewport().setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
         mc.addLayer(new FeatureLayer(lines, style));

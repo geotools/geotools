@@ -23,9 +23,10 @@ import java.util.Set;
 import javax.swing.Icon;
 import org.geotools.api.metadata.citation.OnLineResource;
 import org.geotools.api.style.ColorReplacement;
-import org.geotools.styling.ExternalGraphic;
+import org.geotools.styling.ColorReplacementImpl;
+import org.geotools.styling.ExternalGraphicImpl;
 
-public class ExternalGraphicBuilder extends AbstractStyleBuilder<ExternalGraphic> {
+public class ExternalGraphicBuilder extends AbstractStyleBuilder<ExternalGraphicImpl> {
     private Icon inline;
 
     private String format;
@@ -84,11 +85,11 @@ public class ExternalGraphicBuilder extends AbstractStyleBuilder<ExternalGraphic
     }
 
     @Override
-    public ExternalGraphic build() {
+    public ExternalGraphicImpl build() {
         if (unset) {
             return null;
         }
-        ExternalGraphic externalGraphic;
+        ExternalGraphicImpl externalGraphic;
         Collection<ColorReplacement> set = new HashSet<>();
         for (ColorReplacementBuilder replacement : replacements) {
             set.add(replacement.build());
@@ -117,7 +118,7 @@ public class ExternalGraphicBuilder extends AbstractStyleBuilder<ExternalGraphic
     }
 
     @Override
-    public ExternalGraphicBuilder reset(ExternalGraphic original) {
+    public ExternalGraphicBuilder reset(ExternalGraphicImpl original) {
         this.unset = false;
         this.format = original.getFormat();
         this.inline = original.getInlineContent();
@@ -132,7 +133,7 @@ public class ExternalGraphicBuilder extends AbstractStyleBuilder<ExternalGraphic
             for (ColorReplacement cr : original.getColorReplacements()) {
                 replacements.add(
                         new ColorReplacementBuilder()
-                                .reset((org.geotools.styling.ColorReplacement) cr));
+                                .reset((ColorReplacementImpl) cr));
             }
         }
         return this;

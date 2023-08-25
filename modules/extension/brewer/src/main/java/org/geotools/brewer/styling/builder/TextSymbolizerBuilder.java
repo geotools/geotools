@@ -22,12 +22,12 @@ import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.LabelPlacement;
-import org.geotools.styling.Font;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.FontImpl;
+import org.geotools.styling.LinePlacementImpl;
+import org.geotools.styling.PointPlacementImpl;
+import org.geotools.styling.TextSymbolizerImpl;
 
-public class TextSymbolizerBuilder extends SymbolizerBuilder<TextSymbolizer> {
+public class TextSymbolizerBuilder extends SymbolizerBuilder<TextSymbolizerImpl> {
     FillBuilder fill = new FillBuilder(this).unset();
 
     List<FontBuilder> fonts = new ArrayList<>();
@@ -111,18 +111,18 @@ public class TextSymbolizerBuilder extends SymbolizerBuilder<TextSymbolizer> {
     }
 
     @Override
-    public TextSymbolizer build() {
+    public TextSymbolizerImpl build() {
         if (unset) {
             return null;
         }
-        Font[] array = null;
+        FontImpl[] array = null;
         if (!fonts.isEmpty()) {
-            array = new Font[fonts.size()];
+            array = new FontImpl[fonts.size()];
             for (int i = 0; i < array.length; i++) {
                 array[i] = fonts.get(i).build();
             }
         }
-        TextSymbolizer ts =
+        TextSymbolizerImpl ts =
                 sf.createTextSymbolizer(
                         fill.build(), array, halo.build(), label, placement.build(), null);
         ts.setGeometry(geometry);
@@ -131,8 +131,8 @@ public class TextSymbolizerBuilder extends SymbolizerBuilder<TextSymbolizer> {
         }
         ts.getOptions().putAll(options);
         ts.setPriority(priority);
-        if (ts instanceof TextSymbolizer) {
-            TextSymbolizer ts2 = (TextSymbolizer) ts;
+        if (ts instanceof TextSymbolizerImpl) {
+            TextSymbolizerImpl ts2 = (TextSymbolizerImpl) ts;
             if (!shield.isUnset()) {
                 ts2.setGraphic(shield.build());
             }
@@ -162,19 +162,19 @@ public class TextSymbolizerBuilder extends SymbolizerBuilder<TextSymbolizer> {
     }
 
     @Override
-    public TextSymbolizerBuilder reset(TextSymbolizer symbolizer) {
+    public TextSymbolizerBuilder reset(TextSymbolizerImpl symbolizer) {
         fill.reset(symbolizer.getFill());
         halo.reset(symbolizer.getHalo());
         label = symbolizer.getLabel();
         geometry = null;
         LabelPlacement otherPlacement = symbolizer.getLabelPlacement();
-        if (symbolizer.getLabelPlacement() instanceof PointPlacement) {
+        if (symbolizer.getLabelPlacement() instanceof PointPlacementImpl) {
             PointPlacementBuilder builder = new PointPlacementBuilder(this);
-            builder.reset((PointPlacement) otherPlacement);
+            builder.reset((PointPlacementImpl) otherPlacement);
             placement = builder;
         } else if (symbolizer.getLabelPlacement() instanceof LabelPlacement) {
             LinePlacementBuilder builder = new LinePlacementBuilder(this);
-            builder.reset((LinePlacement) otherPlacement);
+            builder.reset((LinePlacementImpl) otherPlacement);
             placement = builder;
         } else {
             throw new IllegalArgumentException("Unrecognized label placement: " + otherPlacement);

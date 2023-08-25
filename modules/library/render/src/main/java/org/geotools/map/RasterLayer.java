@@ -20,7 +20,7 @@ import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 
 /**
  * Layer responsible for raster content.
@@ -37,11 +37,11 @@ public abstract class RasterLayer extends StyleLayer {
      */
     protected SimpleFeatureSource source;
 
-    public RasterLayer(Style style) {
+    public RasterLayer(StyleImpl style) {
         super(style);
     }
 
-    public RasterLayer(Style style, String title) {
+    public RasterLayer(StyleImpl style, String title) {
         super(style, title);
     }
 

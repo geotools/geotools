@@ -28,7 +28,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.renderer.style.FontCache;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
@@ -77,7 +77,7 @@ public class TileTest {
 
     @Test
     public void testFillAlignment() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "fillCross.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "fillCross.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(polyfs, style));
@@ -92,7 +92,7 @@ public class TileTest {
 
     @Test
     public void testStrokeAlignment() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "dotsStars.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "dotsStars.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(linefs, style));

@@ -21,8 +21,8 @@ import javax.xml.namespace.QName;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.sld.CssParameter;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Graphic;
+import org.geotools.styling.FillImpl;
+import org.geotools.styling.GraphicImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
@@ -92,7 +92,7 @@ public class SLDFillBinding extends AbstractComplexBinding {
      */
     @Override
     public Class getType() {
-        return Fill.class;
+        return FillImpl.class;
     }
 
     /**
@@ -117,7 +117,7 @@ public class SLDFillBinding extends AbstractComplexBinding {
         Expression color = null;
         Expression opacity = null;
 
-        Graphic graphicFill = (Graphic) node.getChildValue("GraphicFill");
+        GraphicImpl graphicFill = (GraphicImpl) node.getChildValue("GraphicFill");
 
         // &quot;fill&quot; (color)
         // &quot;fill-opacity&quot;
@@ -135,7 +135,7 @@ public class SLDFillBinding extends AbstractComplexBinding {
             }
         }
 
-        Fill fill = styleFactory.createFill(color);
+        FillImpl fill = (FillImpl) styleFactory.createFill(color);
 
         if (opacity != null) {
             fill.setOpacity(opacity);

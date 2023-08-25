@@ -7,7 +7,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.renderer.lite.StreamingRenderer;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +35,7 @@ public class ChartRenderingTest {
 
     @Test
     public void testPieCharts() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "pieCharts.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "pieCharts.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(fs, style));

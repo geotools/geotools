@@ -24,9 +24,9 @@ import java.util.Map;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.style.StyleFactory;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Rule;
+import org.geotools.styling.FeatureTypeStyleImpl;
+import org.geotools.styling.LineSymbolizerImpl;
+import org.geotools.styling.RuleImpl;
 import org.geotools.styling.UomOgcMapping;
 import org.junit.Assert;
 import org.junit.Before;
@@ -45,17 +45,17 @@ public class UnitRescaleTest {
 
     @Test
     public void testUOMEncodingLineSymbolizer() throws Exception {
-        LineSymbolizer lineSymbolizer = (LineSymbolizer) sf.createLineSymbolizer();
+        LineSymbolizerImpl lineSymbolizer = (LineSymbolizerImpl) sf.createLineSymbolizer();
         lineSymbolizer.setUnitOfMeasure(UomOgcMapping.METRE.getUnit());
         lineSymbolizer.setStroke(sf.createStroke(ff.literal("#0000FF"), ff.literal("3")));
 
-        Rule rule = (Rule) sf.createRule();
+        RuleImpl rule = (RuleImpl) sf.createRule();
         rule.symbolizers().add(lineSymbolizer);
 
-        Rule[] rules = {rule};
-        FeatureTypeStyle featureTypeStyle = (FeatureTypeStyle) sf.createFeatureTypeStyle(rules);
+        RuleImpl[] rules = {rule};
+        FeatureTypeStyleImpl featureTypeStyle = (FeatureTypeStyleImpl) sf.createFeatureTypeStyle(rules);
 
-        List<FeatureTypeStyle> featureTypeStyles = new ArrayList<>();
+        List<FeatureTypeStyleImpl> featureTypeStyles = new ArrayList<>();
         featureTypeStyles.add(featureTypeStyle);
 
         double dpi90 = 25.4 / 0.28;
@@ -72,11 +72,11 @@ public class UnitRescaleTest {
     }
 
     private double getStrokeWidth(
-            List<FeatureTypeStyle> featureTypeStyles, Rule[] rules, double dpi) {
+            List<FeatureTypeStyleImpl> featureTypeStyles, RuleImpl[] rules, double dpi) {
         ArrayList<LiteFeatureTypeStyle> lfts = new ArrayList<>();
-        for (FeatureTypeStyle fts : featureTypeStyles) {
-            List<Rule> ruleList = new ArrayList<>(Arrays.asList(rules));
-            List<Rule> elseRuleList = new ArrayList<>();
+        for (FeatureTypeStyleImpl fts : featureTypeStyles) {
+            List<RuleImpl> ruleList = new ArrayList<>(Arrays.asList(rules));
+            List<RuleImpl> elseRuleList = new ArrayList<>();
             LiteFeatureTypeStyle s =
                     new LiteFeatureTypeStyle(
                             null, null, ruleList, elseRuleList, fts.getTransformation());
@@ -92,8 +92,8 @@ public class UnitRescaleTest {
         renderer.applyUnitRescale(lfts);
 
         for (LiteFeatureTypeStyle s : lfts) {
-            Rule r = s.ruleList[0];
-            LineSymbolizer rescaledLineSymbolizer = (LineSymbolizer) r.symbolizers().get(0);
+            RuleImpl r = s.ruleList[0];
+            LineSymbolizerImpl rescaledLineSymbolizer = (LineSymbolizerImpl) r.symbolizers().get(0);
             return rescaledLineSymbolizer.getStroke().getWidth().evaluate(null, Double.class);
         }
 

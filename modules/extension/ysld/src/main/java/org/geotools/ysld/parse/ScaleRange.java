@@ -17,11 +17,11 @@
  */
 package org.geotools.ysld.parse;
 
-import org.geotools.styling.Rule;
+import org.geotools.styling.RuleImpl;
 
 /**
  * Represents and provides utility methods for a scale range (e.g., "scale: [min, max]") that can be
- * applied to a given {@link Rule}.
+ * applied to a given {@link RuleImpl}.
  */
 public class ScaleRange {
     final double minDenom;
@@ -44,7 +44,7 @@ public class ScaleRange {
         this.maxDenom = maxDenom;
     }
 
-    public void applyTo(Rule r) {
+    public void applyTo(RuleImpl r) {
         r.setMaxScaleDenominator(maxDenom);
         r.setMinScaleDenominator(minDenom);
     }

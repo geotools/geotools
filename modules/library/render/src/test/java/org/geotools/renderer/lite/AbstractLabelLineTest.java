@@ -36,7 +36,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.test.TestData;
 import org.geotools.xml.styling.SLDParser;
@@ -61,7 +61,7 @@ public abstract class AbstractLabelLineTest {
         bounds.expandBy(1, 1);
     }
 
-    protected Style loadParametricStyle(Object loader, String sldFilename, String... parameters)
+    protected StyleImpl loadParametricStyle(Object loader, String sldFilename, String... parameters)
             throws IOException {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
 
@@ -75,13 +75,13 @@ public abstract class AbstractLabelLineTest {
 
         SLDParser stylereader = new SLDParser(factory, new StringReader(styleTemplate));
 
-        Style style = stylereader.readXML()[0];
+        StyleImpl style = stylereader.readXML()[0];
         return style;
     }
 
     protected BufferedImage renderNonStraightLines(
             SimpleFeatureSource featureSource,
-            Style style,
+            StyleImpl style,
             int width,
             int height,
             ReferencedEnvelope bounds) {

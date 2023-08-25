@@ -26,7 +26,7 @@ import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.mbstyle.layer.MBLayer;
-import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.FeatureTypeStyleImpl;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -213,10 +213,10 @@ public class MBStopsTest {
         JSONObject jsonObject = MapboxTestUtils.parseTestStyle("functionParseTest.json");
         MBStyle mbStyle = new MBStyle(jsonObject);
         StyledLayerDescriptor transformed = mbStyle.transform();
-        List<FeatureTypeStyle> fts = MapboxTestUtils.getStyle(transformed, 0).featureTypeStyles();
+        List<FeatureTypeStyleImpl> fts = MapboxTestUtils.getStyle(transformed, 0).featureTypeStyles();
 
         int i = 0;
-        for (FeatureTypeStyle layer : fts) {
+        for (FeatureTypeStyleImpl layer : fts) {
             // layer named function4 has the property zoom functions and there should be 2 feature
             // type styles for this layer.
             if (layer.getName().equalsIgnoreCase("function4")) {
@@ -246,10 +246,10 @@ public class MBStopsTest {
         JSONObject jsonObject = MapboxTestUtils.parseTestStyle("functionParseFloatStopsTest.json");
         MBStyle mbStyle = new MBStyle(jsonObject);
         StyledLayerDescriptor transformed = mbStyle.transform();
-        List<FeatureTypeStyle> fts = MapboxTestUtils.getStyle(transformed, 0).featureTypeStyles();
+        List<FeatureTypeStyleImpl> fts = MapboxTestUtils.getStyle(transformed, 0).featureTypeStyles();
 
         int i = 0;
-        for (FeatureTypeStyle layer : fts) {
+        for (FeatureTypeStyleImpl layer : fts) {
             // layer named function4 has the property zoom functions and there should be 2 feature
             // type styles for this layer.
             if (layer.getName().equalsIgnoreCase("function4")) {

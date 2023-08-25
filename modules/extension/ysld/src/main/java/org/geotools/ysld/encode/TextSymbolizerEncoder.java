@@ -18,20 +18,20 @@
 package org.geotools.ysld.encode;
 
 import org.geotools.api.style.LabelPlacement;
-import org.geotools.styling.Halo;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.HaloImpl;
+import org.geotools.styling.LinePlacementImpl;
+import org.geotools.styling.PointPlacementImpl;
+import org.geotools.styling.TextSymbolizerImpl;
 
-/** Encodes a {@link TextSymbolizer} as YSLD. */
-public class TextSymbolizerEncoder extends SymbolizerEncoder<TextSymbolizer> {
+/** Encodes a {@link TextSymbolizerImpl} as YSLD. */
+public class TextSymbolizerEncoder extends SymbolizerEncoder<TextSymbolizerImpl> {
 
-    TextSymbolizerEncoder(TextSymbolizer text) {
+    TextSymbolizerEncoder(TextSymbolizerImpl text) {
         super(text);
     }
 
     @Override
-    protected void encode(TextSymbolizer text) {
+    protected void encode(TextSymbolizerImpl text) {
         put("label", text.getLabel());
         put("priority", text.getPriority());
         inline(new FillEncoder(text.getFill()));
@@ -39,7 +39,7 @@ public class TextSymbolizerEncoder extends SymbolizerEncoder<TextSymbolizer> {
         inline(new FontEncoder(text.getFont()));
         inline(new PlacementEncoder(text.getLabelPlacement()));
 
-        inline(new GraphicEncoder(((TextSymbolizer) text).getGraphic(), false));
+        inline(new GraphicEncoder(((TextSymbolizerImpl) text).getGraphic(), false));
 
         super.encode(text);
     }
@@ -52,11 +52,11 @@ public class TextSymbolizerEncoder extends SymbolizerEncoder<TextSymbolizer> {
         @Override
         protected void encode(LabelPlacement placement) {
             // push("placement");
-            if (placement instanceof LinePlacement) {
+            if (placement instanceof LinePlacementImpl) {
                 put("placement", "line");
-                put("offset", ((LinePlacement) placement).getPerpendicularOffset());
-            } else if (placement instanceof PointPlacement) {
-                PointPlacement pp = (PointPlacement) placement;
+                put("offset", ((LinePlacementImpl) placement).getPerpendicularOffset());
+            } else if (placement instanceof PointPlacementImpl) {
+                PointPlacementImpl pp = (PointPlacementImpl) placement;
                 put("placement", "point");
 
                 inline(new AnchorPointEncoder(pp.getAnchorPoint()));
@@ -66,13 +66,13 @@ public class TextSymbolizerEncoder extends SymbolizerEncoder<TextSymbolizer> {
         }
     }
 
-    static class HaloEncoder extends YsldEncodeHandler<Halo> {
-        public HaloEncoder(Halo halo) {
+    static class HaloEncoder extends YsldEncodeHandler<HaloImpl> {
+        public HaloEncoder(HaloImpl halo) {
             super(halo);
         }
 
         @Override
-        protected void encode(Halo h) {
+        protected void encode(HaloImpl h) {
             push("halo");
             inline(new FillEncoder(h.getFill()));
             put("radius", h.getRadius());

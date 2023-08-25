@@ -52,7 +52,7 @@ import org.geotools.map.GridReaderLayer;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
 import org.geotools.renderer.lite.StreamingRenderer;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.test.TestData;
 import org.geotools.xml.styling.SLDParser;
@@ -270,7 +270,7 @@ public class ContourProcessTest {
     private void assertWhiteSamples(String styleName) throws Exception {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
         URL url = TestData.getResource(this, styleName);
-        Style style = new SLDParser(factory, url).readXML()[0];
+        StyleImpl style = new SLDParser(factory, url).readXML()[0];
 
         // load the sample coverage with a Mercator projection
         GeoTiffReader reader = new GeoTiffReader(TestData.file(this, "mer.tiff"));

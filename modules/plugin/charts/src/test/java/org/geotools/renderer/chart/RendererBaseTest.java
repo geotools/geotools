@@ -32,7 +32,7 @@ import java.io.IOException;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.renderer.GTRenderer;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.test.TestData;
 import org.geotools.xml.styling.SLDParser;
@@ -123,13 +123,13 @@ public abstract class RendererBaseTest {
         }
     }
 
-    static Style loadStyle(Object loader, String sldFilename) throws IOException {
+    static StyleImpl loadStyle(Object loader, String sldFilename) throws IOException {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
 
         java.net.URL surl = TestData.getResource(loader, sldFilename);
         SLDParser stylereader = new SLDParser(factory, surl);
 
-        Style style = stylereader.readXML()[0];
+        StyleImpl style = stylereader.readXML()[0];
         return style;
     }
 }

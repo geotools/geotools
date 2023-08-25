@@ -21,16 +21,16 @@ import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.style.StyleVisitor;
 import org.geotools.api.util.InternationalString;
 import org.geotools.coverage.grid.GridCoverageFactory;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Style;
+import org.geotools.styling.RasterSymbolizerImpl;
+import org.geotools.styling.StyleImpl;
 import org.geotools.util.factory.Hints;
 
 /**
  * This class implements an adapter to allow a {@link CoverageProcessingNode} to feed itself by
- * visiting an SLD {@link Style} .
+ * visiting an SLD {@link StyleImpl} .
  *
  * <p>This class can be used to tie together {@link CoverageProcessingNode} s built from a chains as
- * specified by the {@link RasterSymbolizer} SLd element.
+ * specified by the {@link RasterSymbolizerImpl} SLd element.
  *
  * @author Simone Giannecchini, GeoSolutions
  */

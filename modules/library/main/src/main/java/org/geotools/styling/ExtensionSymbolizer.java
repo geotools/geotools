@@ -18,6 +18,7 @@ package org.geotools.styling;
 
 import java.util.Map;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.Symbolizer;
 
 /**
  * Custom symbolizer support.

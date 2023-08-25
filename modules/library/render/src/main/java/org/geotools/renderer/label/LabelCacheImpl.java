@@ -54,7 +54,7 @@ import org.geotools.renderer.lite.LabelCache;
 import org.geotools.renderer.lite.RendererUtilities;
 import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.renderer.style.TextStyle2D;
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.TextSymbolizerImpl;
 import org.geotools.util.NumberRange;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Coordinate;
@@ -81,14 +81,14 @@ import org.locationtech.jts.operation.linemerge.LineMerger;
  * configuration and the TextSymbolizer options.
  *
  * <p>The basic functionality of the label cache consist in finding the best label position for each
- * Feature according to the {@link TextSymbolizer} specifications, and drawing it, provided it does
+ * Feature according to the {@link TextSymbolizerImpl} specifications, and drawing it, provided it does
  * not overlap with other labels.
  *
  * <p>This basic behaviour can be customised in a number of ways.
  *
  * <h2>Priority</h2>
  *
- * <p>{@link TextSymbolizer#getPriority()} OGC Expression controls a label priority.
+ * <p>{@link TextSymbolizerImpl#getPriority()} OGC Expression controls a label priority.
  *
  * <p>A label with high priority will be drawn before others, increasing its likeliness to appear on
  * the screen
@@ -273,7 +273,7 @@ public class LabelCacheImpl implements LabelCache {
      * number, convert to string and try to parse the number; return the number 4. otherwise, return
      * DEFAULT_PRIORITY
      */
-    public double getPriority(TextSymbolizer symbolizer, Feature feature) {
+    public double getPriority(TextSymbolizerImpl symbolizer, Feature feature) {
         if (symbolizer.getPriority() == null) return DEFAULT_PRIORITY;
 
         // evaluate
@@ -286,13 +286,13 @@ public class LabelCacheImpl implements LabelCache {
     }
 
     /**
-     * @see org.geotools.renderer.lite.LabelCache#put(String,TextSymbolizer,Feature,
+     * @see org.geotools.renderer.lite.LabelCache#put(String, TextSymbolizerImpl,Feature,
      *     LiteShape2,NumberRange)
      */
     @Override
     public void put(
             String layerId,
-            TextSymbolizer symbolizer,
+            TextSymbolizerImpl symbolizer,
             Feature feature,
             LiteShape2 shape,
             NumberRange scaleRange) {
@@ -349,7 +349,7 @@ public class LabelCacheImpl implements LabelCache {
 
     private LabelCacheItem buildLabelCacheItem(
             String layerId,
-            TextSymbolizer symbolizer,
+            TextSymbolizerImpl symbolizer,
             Feature feature,
             LiteShape2 shape,
             NumberRange scaleRange,

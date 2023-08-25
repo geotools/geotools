@@ -43,16 +43,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.Geometries;
 import org.geotools.map.RasterLayer;
 import org.geotools.map.StyleLayer;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Font;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.SLD;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.Symbolizer;
+import org.geotools.styling.*;
 import org.locationtech.jts.geom.Geometry;
 
 /**
@@ -122,7 +113,7 @@ public class JSimpleStyleDialog extends JDialog {
     private String pointSymbolName;
     private boolean labelFeatures;
     private String labelField;
-    private Font labelFont;
+    private FontImpl labelFont;
 
     private JColorIcon lineColorIcon;
     private JLabel lineColorLabel;
@@ -156,7 +147,7 @@ public class JSimpleStyleDialog extends JDialog {
      * @param layer the map layer
      * @return a new Style instance or null if the user cancels the dialog
      */
-    public static Style showDialog(Component parent, StyleLayer layer) {
+    public static StyleImpl showDialog(Component parent, StyleLayer layer) {
         /*
          * Grid coverages and readers are not supported yet...
          */
@@ -182,7 +173,7 @@ public class JSimpleStyleDialog extends JDialog {
      * @param dataStore data store with the features to be rendered
      * @return a new Style instance or null if the user cancels the dialog
      */
-    public static Style showDialog(Component parent, DataStore dataStore) {
+    public static StyleImpl showDialog(Component parent, DataStore dataStore) {
         return showDialog(parent, dataStore, null);
     }
 
@@ -195,7 +186,7 @@ public class JSimpleStyleDialog extends JDialog {
      * @param initialStyle an optional Style object to initialize the dialog (may be {@code null})
      * @return a new Style instance or null if the user cancels the dialog
      */
-    public static Style showDialog(Component parent, DataStore dataStore, Style initialStyle) {
+    public static StyleImpl showDialog(Component parent, DataStore dataStore, StyleImpl initialStyle) {
         SimpleFeatureType type = null;
         try {
             String typeName = dataStore.getTypeNames()[0];
@@ -216,7 +207,7 @@ public class JSimpleStyleDialog extends JDialog {
      * @param featureType the feature type that the Style will be used to display
      * @return a new Style instance or null if the user cancels the dialog
      */
-    public static Style showDialog(Component parent, SimpleFeatureType featureType) {
+    public static StyleImpl showDialog(Component parent, SimpleFeatureType featureType) {
         return showDialog(parent, featureType, null);
     }
 
@@ -229,10 +220,10 @@ public class JSimpleStyleDialog extends JDialog {
      * @param initialStyle an optional Style object to initialize the dialog (may be {@code null})
      * @return a new Style instance or null if the user cancels the dialog
      */
-    public static Style showDialog(
-            Component parent, SimpleFeatureType featureType, Style initialStyle) {
+    public static StyleImpl showDialog(
+            Component parent, SimpleFeatureType featureType, StyleImpl initialStyle) {
 
-        Style style = null;
+        StyleImpl style = null;
         JSimpleStyleDialog dialog = null;
         if (parent != null) {
             if (parent instanceof Frame) {
@@ -299,7 +290,7 @@ public class JSimpleStyleDialog extends JDialog {
      * @param initialStyle an optional Style object to initialize the dialog (may be {@code null})
      * @throws IllegalStateException if the data store cannot be accessed
      */
-    public JSimpleStyleDialog(Frame owner, SimpleFeatureType schema, Style initialStyle) {
+    public JSimpleStyleDialog(Frame owner, SimpleFeatureType schema, StyleImpl initialStyle) {
         super(owner, "Simple style maker", true);
         setResizable(false);
         this.schema = schema;
@@ -314,7 +305,7 @@ public class JSimpleStyleDialog extends JDialog {
      * @param initialStyle an optional Style object to initialize the dialog (may be {@code null})
      * @throws IllegalStateException if the data store cannot be accessed
      */
-    public JSimpleStyleDialog(Dialog owner, SimpleFeatureType schema, Style initialStyle) {
+    public JSimpleStyleDialog(Dialog owner, SimpleFeatureType schema, StyleImpl initialStyle) {
         super(owner, "Simple style maker", true);
         setResizable(false);
         this.schema = schema;
@@ -326,7 +317,7 @@ public class JSimpleStyleDialog extends JDialog {
      *
      * @param initialStyle an optional Style object to initialize the dialog (may be {@code null})
      */
-    private void init(Style initialStyle) {
+    private void init(StyleImpl initialStyle) {
 
         lineColor = DEFAULT_LINE_COLOR;
         fillColor = DEFAULT_FILL_COLOR;
@@ -443,7 +434,7 @@ public class JSimpleStyleDialog extends JDialog {
      *
      * @return a GeoTools Font object
      */
-    public Font getLabelFont() {
+    public FontImpl getLabelFont() {
         return labelFont;
     }
 
@@ -672,9 +663,9 @@ public class JSimpleStyleDialog extends JDialog {
      *
      * @param style style to display
      */
-    private void setStyle(Style style) {
-        FeatureTypeStyle featureTypeStyle = null;
-        Rule rule = null;
+    private void setStyle(StyleImpl style) {
+        FeatureTypeStyleImpl featureTypeStyle = null;
+        RuleImpl rule = null;
         Symbolizer symbolizer = null;
 
         if (style != null) {
@@ -710,11 +701,11 @@ public class JSimpleStyleDialog extends JDialog {
                 for (int ifts = 0;
                         featureTypeStyle == null && ifts < style.featureTypeStyles().size();
                         ifts++) {
-                    FeatureTypeStyle fts = style.featureTypeStyles().get(ifts);
+                    FeatureTypeStyleImpl fts = style.featureTypeStyles().get(ifts);
                     for (int irule = 0;
                             featureTypeStyle == null && irule < fts.rules().size();
                             irule++) {
-                        Rule r = fts.rules().get(irule);
+                        RuleImpl r = fts.rules().get(irule);
                         for (Symbolizer sym : r.symbolizers()) {
                             if (isValidSymbolizer(sym, geomType)) {
                                 featureTypeStyle = fts;
@@ -740,11 +731,11 @@ public class JSimpleStyleDialog extends JDialog {
      * @param rule a {@code Rule}
      * @param sym a {@code Symbolizer}
      */
-    private void initControls(FeatureTypeStyle fts, Rule rule, Symbolizer sym) {
+    private void initControls(FeatureTypeStyleImpl fts, RuleImpl rule, Symbolizer sym) {
         switch (geomType) {
             case POLYGON:
             case MULTIPOLYGON:
-                PolygonSymbolizer polySym = (PolygonSymbolizer) sym;
+                PolygonSymbolizerImpl polySym = (PolygonSymbolizerImpl) sym;
                 setLineColorItems(SLD.color(polySym.getStroke()));
                 setFillColorItems(SLD.color(polySym.getFill()));
                 setFillOpacityItems(SLD.opacity(polySym.getFill()));
@@ -752,13 +743,13 @@ public class JSimpleStyleDialog extends JDialog {
 
             case LINESTRING:
             case MULTILINESTRING:
-                LineSymbolizer lineSym = (LineSymbolizer) sym;
+                LineSymbolizerImpl lineSym = (LineSymbolizerImpl) sym;
                 setLineColorItems(SLD.color(lineSym));
                 break;
 
             case POINT:
             case MULTIPOINT:
-                PointSymbolizer pointSym = (PointSymbolizer) sym;
+                PointSymbolizerImpl pointSym = (PointSymbolizerImpl) sym;
                 setLineColorItems(SLD.pointColor(pointSym));
                 setFillColorItems(SLD.pointFill(pointSym));
                 setFillOpacityItems(SLD.pointOpacity(pointSym));
@@ -769,11 +760,11 @@ public class JSimpleStyleDialog extends JDialog {
 
     private boolean isValidSymbolizer(Symbolizer sym, Geometries type) {
         if (sym != null) {
-            if (sym instanceof PolygonSymbolizer) {
+            if (sym instanceof PolygonSymbolizerImpl) {
                 return type == Geometries.POLYGON || type == Geometries.MULTIPOLYGON;
-            } else if (sym instanceof LineSymbolizer) {
+            } else if (sym instanceof LineSymbolizerImpl) {
                 return type == Geometries.LINESTRING || type == Geometries.MULTILINESTRING;
-            } else if (sym instanceof PointSymbolizer) {
+            } else if (sym instanceof PointSymbolizerImpl) {
                 return type == Geometries.POINT || type == Geometries.MULTIPOINT;
             }
         }
@@ -880,7 +871,7 @@ public class JSimpleStyleDialog extends JDialog {
     }
 
     private void chooseLabelFont() {
-        Font font = JFontChooser.showDialog(this, "Choose label font", labelFont);
+        FontImpl font = JFontChooser.showDialog(this, "Choose label font", labelFont);
         if (font != null) {
             labelFont = font;
         }

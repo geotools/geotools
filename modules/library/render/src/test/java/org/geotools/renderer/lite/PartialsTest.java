@@ -39,7 +39,7 @@ import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.label.LabelCacheImpl;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
@@ -98,7 +98,7 @@ public class PartialsTest {
     public void testPartialPointLabelNo() throws Exception {
         // System.setProperty("java.awt.headless", "false");
         Thread.sleep(1000);
-        Style style = RendererBaseTest.loadStyle(this, "partialPointLabelNo.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "partialPointLabelNo.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(fs_point, style));
@@ -117,7 +117,7 @@ public class PartialsTest {
     public void testPointLabelFalse() throws Exception {
         // System.setProperty("java.awt.headless", "false");
         Thread.sleep(1000);
-        Style style = RendererBaseTest.loadStyle(this, "partialPointLabelFalse.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "partialPointLabelFalse.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(fs_point, style));
@@ -136,7 +136,7 @@ public class PartialsTest {
     public void testPartialPointLabelTrue() throws Exception {
         // System.setProperty("java.awt.headless", "false");
         Thread.sleep(1000);
-        Style style = RendererBaseTest.loadStyle(this, "partialPointLabelTrue.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "partialPointLabelTrue.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(fs_point, style));
@@ -156,7 +156,7 @@ public class PartialsTest {
     public void testPartialLineLabelNo() throws Exception {
         // System.setProperty("java.awt.headless", "false");
         Thread.sleep(1000);
-        Style style = RendererBaseTest.loadStyle(this, "partialLineLabelNo.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "partialLineLabelNo.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(fs_line, style));
@@ -176,7 +176,7 @@ public class PartialsTest {
     public void testPartialLineLabelFalse() throws Exception {
         // System.setProperty("java.awt.headless", "false");
         Thread.sleep(1000);
-        Style style = RendererBaseTest.loadStyle(this, "partialLineLabelFalse.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "partialLineLabelFalse.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(fs_line, style));
@@ -196,7 +196,7 @@ public class PartialsTest {
     public void testPartialLineLabelTrue() throws Exception {
         // System.setProperty("java.awt.headless", "false");
         Thread.sleep(1000);
-        Style style = RendererBaseTest.loadStyle(this, "partialLineLabelTrue.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "partialLineLabelTrue.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(fs_line, style));
@@ -212,7 +212,7 @@ public class PartialsTest {
     public void testPartialAreaLabelNo() throws Exception {
         // System.setProperty("java.awt.headless", "false");
         Thread.sleep(1000);
-        Style style = RendererBaseTest.loadStyle(this, "partialAreaLabelNo.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "partialAreaLabelNo.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(fs_area, style));
@@ -232,7 +232,7 @@ public class PartialsTest {
     public void testPartialAreaLabelFalse() throws Exception {
         // System.setProperty("java.awt.headless", "false");
         Thread.sleep(1000);
-        Style style = RendererBaseTest.loadStyle(this, "partialAreaLabelFalse.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "partialAreaLabelFalse.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(fs_area, style));
@@ -252,7 +252,7 @@ public class PartialsTest {
     public void testPartialAreaLabelTrue() throws Exception {
         // System.setProperty("java.awt.headless", "false");
         Thread.sleep(1000);
-        Style style = RendererBaseTest.loadStyle(this, "partialAreaLabelTrue.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "partialAreaLabelTrue.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(fs_area, style));

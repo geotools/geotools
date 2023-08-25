@@ -51,11 +51,7 @@ import org.geotools.gce.imagemosaic.ImageMosaicFormatFactory;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.referencing.CRS;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
+import org.geotools.styling.*;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.xml.styling.SLDParser;
@@ -306,12 +302,12 @@ public class TransparencyStyledTest {
         return mosaicDirectory;
     }
 
-    private static RasterSymbolizer extractRasterSymbolizer(StyledLayerDescriptor sld) {
+    private static RasterSymbolizerImpl extractRasterSymbolizer(StyledLayerDescriptor sld) {
         final UserLayer nl = (UserLayer) sld.getStyledLayers()[0];
-        final Style style = (Style) nl.getUserStyles()[0];
-        final FeatureTypeStyle fts = style.featureTypeStyles().get(0);
-        final Rule rule = fts.rules().get(0);
-        final RasterSymbolizer rs_1 = (RasterSymbolizer) rule.symbolizers().get(0);
+        final StyleImpl style = (StyleImpl) nl.getUserStyles()[0];
+        final FeatureTypeStyleImpl fts = style.featureTypeStyles().get(0);
+        final RuleImpl rule = fts.rules().get(0);
+        final RasterSymbolizerImpl rs_1 = (RasterSymbolizerImpl) rule.symbolizers().get(0);
         return rs_1;
     }
 
@@ -323,7 +319,7 @@ public class TransparencyStyledTest {
         RasterSymbolizerHelper visitor = new RasterSymbolizerHelper(gc, null);
 
         // build the RasterSymbolizer
-        final RasterSymbolizer rs = extractRasterSymbolizer(sld);
+        final RasterSymbolizerImpl rs = extractRasterSymbolizer(sld);
 
         // visit the RasterSymbolizer
         visitor.visit(rs);

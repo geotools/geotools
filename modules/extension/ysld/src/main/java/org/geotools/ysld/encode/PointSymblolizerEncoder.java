@@ -17,16 +17,16 @@
  */
 package org.geotools.ysld.encode;
 
-import org.geotools.styling.PointSymbolizer;
+import org.geotools.styling.PointSymbolizerImpl;
 
-/** Encodes a {@link PointSymbolizer} as YSLD. */
-public class PointSymblolizerEncoder extends SymbolizerEncoder<PointSymbolizer> {
-    PointSymblolizerEncoder(PointSymbolizer sym) {
+/** Encodes a {@link PointSymbolizerImpl} as YSLD. */
+public class PointSymblolizerEncoder extends SymbolizerEncoder<PointSymbolizerImpl> {
+    PointSymblolizerEncoder(PointSymbolizerImpl sym) {
         super(sym);
     }
 
     @Override
-    protected void encode(PointSymbolizer sym) {
+    protected void encode(PointSymbolizerImpl sym) {
         inline(new GraphicEncoder((sym.getGraphic())));
         super.encode(sym);
     }

@@ -17,7 +17,7 @@
  */
 package org.geotools.ysld.parse;
 
-import org.geotools.styling.Rule;
+import org.geotools.styling.RuleImpl;
 import org.geotools.styling.Symbolizer;
 import org.geotools.ysld.UomMapper;
 import org.geotools.ysld.YamlMap;
@@ -33,7 +33,7 @@ public class SymbolizerParser<T extends Symbolizer> extends YsldParseHandler {
 
     protected T sym;
 
-    protected SymbolizerParser(Rule rule, T sym, Factory factory) {
+    protected SymbolizerParser(RuleImpl rule, T sym, Factory factory) {
         super(factory);
         rule.symbolizers().add(this.sym = sym);
     }

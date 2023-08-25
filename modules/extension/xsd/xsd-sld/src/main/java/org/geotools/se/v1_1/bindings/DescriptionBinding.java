@@ -19,7 +19,7 @@ package org.geotools.se.v1_1.bindings;
 import javax.xml.namespace.QName;
 import org.geotools.api.util.InternationalString;
 import org.geotools.se.v1_1.SE;
-import org.geotools.styling.Description;
+import org.geotools.styling.DescriptionImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.xsd.AbstractComplexBinding;
@@ -70,7 +70,7 @@ public class DescriptionBinding extends AbstractComplexBinding {
      */
     @Override
     public Class getType() {
-        return Description.class;
+        return DescriptionImpl.class;
     }
 
     /**

@@ -40,7 +40,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.lite.RendererBaseTest;
 import org.geotools.renderer.lite.StreamingRenderer;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.util.factory.Hints;
 import org.junit.Before;
@@ -52,7 +52,7 @@ public class GeneralizationDistanceTest {
 
     private static final double EPS = 1e-3;
     private SimpleFeatureCollection collection;
-    private Style style;
+    private StyleImpl style;
     private Double lastDistance;
     private GeneralizingCollectionFeatureSource source;
     private CoordinateReferenceSystem webMercator;

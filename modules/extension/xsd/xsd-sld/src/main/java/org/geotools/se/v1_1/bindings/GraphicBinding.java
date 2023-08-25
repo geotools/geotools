@@ -19,9 +19,9 @@ package org.geotools.se.v1_1.bindings;
 import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDGraphicBinding;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.Graphic;
+import org.geotools.styling.AnchorPointImpl;
+import org.geotools.styling.DisplacementImpl;
+import org.geotools.styling.GraphicImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
@@ -61,12 +61,12 @@ public class GraphicBinding extends SLDGraphicBinding {
 
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        Graphic g = (Graphic) super.parse(instance, node, value);
-        if (node.hasChild(AnchorPoint.class)) {
-            g.setAnchorPoint(node.getChildValue(AnchorPoint.class));
+        GraphicImpl g = (GraphicImpl) super.parse(instance, node, value);
+        if (node.hasChild(AnchorPointImpl.class)) {
+            g.setAnchorPoint(node.getChildValue(AnchorPointImpl.class));
         }
-        if (node.hasChild(Displacement.class)) {
-            g.setDisplacement(node.getChildValue(Displacement.class));
+        if (node.hasChild(DisplacementImpl.class)) {
+            g.setDisplacement(node.getChildValue(DisplacementImpl.class));
         }
         return g;
     }

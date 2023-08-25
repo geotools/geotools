@@ -21,7 +21,7 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 
 abstract class AbstractStyleBuilder<T> extends AbstractSLDBuilder<T> {
 
@@ -71,7 +71,7 @@ abstract class AbstractStyleBuilder<T> extends AbstractSLDBuilder<T> {
         throw new UnsupportedOperationException("Implementation missing");
     }
 
-    public Style buildStyle() {
+    public StyleImpl buildStyle() {
         if (parent != null && parent instanceof AbstractStyleBuilder) {
             return ((AbstractStyleBuilder) parent).buildStyle();
         } else {

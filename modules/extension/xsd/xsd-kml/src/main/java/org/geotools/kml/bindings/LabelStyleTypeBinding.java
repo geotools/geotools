@@ -20,7 +20,7 @@ import java.awt.Color;
 import javax.xml.namespace.QName;
 import org.geotools.kml.KML;
 import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.TextSymbolizerImpl;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.Binding;
 import org.geotools.xsd.ElementInstance;
@@ -70,7 +70,7 @@ public class LabelStyleTypeBinding extends AbstractComplexBinding {
      */
     @Override
     public Class getType() {
-        return TextSymbolizer.class;
+        return TextSymbolizerImpl.class;
     }
 
     @Override
@@ -89,7 +89,7 @@ public class LabelStyleTypeBinding extends AbstractComplexBinding {
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Color color = (Color) value;
 
-        TextSymbolizer textSymbolizer = sb.createTextSymbolizer();
+        TextSymbolizerImpl textSymbolizer = sb.createTextSymbolizer();
         textSymbolizer.setFill(sb.createFill(color));
 
         return textSymbolizer;

@@ -28,7 +28,7 @@ import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.kml.bindings.DocumentTypeBinding;
-import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.FeatureTypeStyleImpl;
 import org.geotools.xsd.Encoder;
 import org.geotools.xsd.Parser;
 import org.geotools.xsd.StreamingParser;
@@ -66,7 +66,7 @@ public class KMLParsingTest {
         SimpleFeature f = null;
 
         while ((f = (SimpleFeature) parser.parse()) != null) {
-            FeatureTypeStyle style = (FeatureTypeStyle) f.getAttribute("Style");
+            FeatureTypeStyleImpl style = (FeatureTypeStyleImpl) f.getAttribute("Style");
             Assert.assertNotNull(style);
 
             Assert.assertEquals(3, style.rules().get(0).symbolizers().size());

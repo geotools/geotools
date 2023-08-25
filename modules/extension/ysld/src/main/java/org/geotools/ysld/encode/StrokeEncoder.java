@@ -17,17 +17,17 @@
  */
 package org.geotools.ysld.encode;
 
-import org.geotools.styling.Stroke;
+import org.geotools.styling.StrokeImpl;
 
-/** Encodes a {@link Stroke} as YSLD. */
-public class StrokeEncoder extends YsldEncodeHandler<Stroke> {
+/** Encodes a {@link StrokeImpl} as YSLD. */
+public class StrokeEncoder extends YsldEncodeHandler<StrokeImpl> {
 
-    StrokeEncoder(Stroke stroke) {
+    StrokeEncoder(StrokeImpl stroke) {
         super(stroke);
     }
 
     @Override
-    protected void encode(Stroke stroke) {
+    protected void encode(StrokeImpl stroke) {
         putColor("stroke-color", stroke.getColor());
         put("stroke-width", stroke.getWidth());
         put("stroke-opacity", nullIf(stroke.getOpacity(), 1d));

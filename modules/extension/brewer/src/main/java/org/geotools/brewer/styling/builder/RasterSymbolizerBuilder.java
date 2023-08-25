@@ -22,10 +22,10 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.OverlapBehavior;
 import org.geotools.api.style.PolygonSymbolizer;
 import org.geotools.api.style.Symbolizer;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
+import org.geotools.styling.LineSymbolizerImpl;
+import org.geotools.styling.RasterSymbolizerImpl;
 
-public class RasterSymbolizerBuilder extends SymbolizerBuilder<RasterSymbolizer> {
+public class RasterSymbolizerBuilder extends SymbolizerBuilder<RasterSymbolizerImpl> {
     private String name;
 
     private Expression geometry;
@@ -125,11 +125,11 @@ public class RasterSymbolizerBuilder extends SymbolizerBuilder<RasterSymbolizer>
     }
 
     @Override
-    public RasterSymbolizer build() {
+    public RasterSymbolizerImpl build() {
         if (unset) {
             return null;
         }
-        RasterSymbolizer symbolizer =
+        RasterSymbolizerImpl symbolizer =
                 sf.rasterSymbolizer(
                         name,
                         geometry,
@@ -157,7 +157,7 @@ public class RasterSymbolizerBuilder extends SymbolizerBuilder<RasterSymbolizer>
     }
 
     @Override
-    public RasterSymbolizerBuilder reset(RasterSymbolizer symbolizer) {
+    public RasterSymbolizerBuilder reset(RasterSymbolizerImpl symbolizer) {
         if (symbolizer == null) {
             return reset();
         }
@@ -165,10 +165,10 @@ public class RasterSymbolizerBuilder extends SymbolizerBuilder<RasterSymbolizer>
         channelSelection.reset(symbolizer.getChannelSelection());
         colorMap.reset(symbolizer.getColorMap());
         contrast.reset(symbolizer.getContrastEnhancement());
-        if (symbolizer.getImageOutline() instanceof LineSymbolizer) {
+        if (symbolizer.getImageOutline() instanceof LineSymbolizerImpl) {
             this.outline =
                     new LineSymbolizerBuilder()
-                            .reset((LineSymbolizer) symbolizer.getImageOutline());
+                            .reset((LineSymbolizerImpl) symbolizer.getImageOutline());
         } else if (symbolizer.getImageOutline() instanceof PolygonSymbolizer) {
             this.outline =
                     new PolygonSymbolizerBuilder()

@@ -28,7 +28,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.renderer.style.SLDStyleFactory;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -38,7 +38,7 @@ public class LabelUnderlineTest extends AbstractLabelLineTest {
     @Test
     public void testLabelsUnderline() throws Exception {
         // load the style that will underline the labels
-        Style style =
+        StyleImpl style =
                 loadParametricStyle(
                         this,
                         "lineStyleTemplate.sld",
@@ -59,7 +59,7 @@ public class LabelUnderlineTest extends AbstractLabelLineTest {
     public void testLabelsUnderline_legacyAnchorPoint() throws Exception {
         System.setProperty(SLDStyleFactory.USE_LEGACY_ANCHOR_POINT_KEY, "true");
         // load the style that will underline the labels
-        Style style =
+        StyleImpl style =
                 loadParametricStyle(
                         this,
                         "lineStyleTemplate.sld",
@@ -83,7 +83,7 @@ public class LabelUnderlineTest extends AbstractLabelLineTest {
                 DataUtilities.createView(
                         this.featureSource,
                         new Query(null, ff.id(Collections.singleton(ff.featureId("Line.4")))));
-        Style style = RendererBaseTest.loadStyle(this, "labelStyle.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "labelStyle.sld");
         ReferencedEnvelope bounds = featureSource.getBounds();
         bounds.expandBy(-1, -1);
         BufferedImage image = renderNonStraightLines(view, style, 768, 754, bounds);
@@ -99,7 +99,7 @@ public class LabelUnderlineTest extends AbstractLabelLineTest {
     // it's impossible to debug... removing the test
     public void testLabelsUnderlineWithOffset() throws Exception {
         // load the style that will underline the labels
-        Style style =
+        StyleImpl style =
                 loadParametricStyle(
                         this,
                         "lineStyleTemplate.sld",
@@ -107,7 +107,7 @@ public class LabelUnderlineTest extends AbstractLabelLineTest {
                         TextSymbolizer.UNDERLINE_TEXT_KEY,
                         "VENDOR_VALUE",
                         "true");
-        Style offsetStyle = PerpendicularOffsetVisitor.apply(style, 15);
+        StyleImpl offsetStyle = PerpendicularOffsetVisitor.apply(style, 15);
         // set the map content
         BufferedImage image =
                 renderNonStraightLines(featureSource, offsetStyle, 1000, 1000, bounds);
@@ -123,7 +123,7 @@ public class LabelUnderlineTest extends AbstractLabelLineTest {
     // it's impossible to debug... removing the test
     public void testLabelsUnderlineWithNegativeOffset() throws Exception {
         // load the style that will underline the labels
-        Style style =
+        StyleImpl style =
                 loadParametricStyle(
                         this,
                         "lineStyleTemplate.sld",
@@ -131,7 +131,7 @@ public class LabelUnderlineTest extends AbstractLabelLineTest {
                         TextSymbolizer.UNDERLINE_TEXT_KEY,
                         "VENDOR_VALUE",
                         "true");
-        Style offsetStyle = PerpendicularOffsetVisitor.apply(style, -15);
+        StyleImpl offsetStyle = PerpendicularOffsetVisitor.apply(style, -15);
         // set the map content
         BufferedImage image =
                 renderNonStraightLines(featureSource, offsetStyle, 1000, 1000, bounds);

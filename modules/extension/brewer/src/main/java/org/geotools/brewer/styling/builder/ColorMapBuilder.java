@@ -20,11 +20,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.geotools.api.style.ColorMapEntry;
-import org.geotools.styling.ColorMap;
+import org.geotools.styling.ColorMapImpl;
 
-public class ColorMapBuilder extends AbstractStyleBuilder<ColorMap> {
+public class ColorMapBuilder extends AbstractStyleBuilder<ColorMapImpl> {
 
-    int type = ColorMap.TYPE_RAMP;
+    int type = ColorMapImpl.TYPE_RAMP;
 
     boolean extended = false;
 
@@ -63,14 +63,14 @@ public class ColorMapBuilder extends AbstractStyleBuilder<ColorMap> {
     }
 
     @Override
-    public ColorMap build() {
+    public ColorMapImpl build() {
         // force the dump of the last entry builder
         entry();
 
         if (unset) {
             return null;
         }
-        ColorMap colorMap = sf.createColorMap();
+        ColorMapImpl colorMap = sf.createColorMap();
         colorMap.setType(type);
         colorMap.setExtendedColors(extended);
         for (ColorMapEntry entry : entries) {
@@ -84,7 +84,7 @@ public class ColorMapBuilder extends AbstractStyleBuilder<ColorMap> {
 
     @Override
     public ColorMapBuilder reset() {
-        type = ColorMap.TYPE_RAMP;
+        type = ColorMapImpl.TYPE_RAMP;
         extended = false;
         entries = new ArrayList<>();
         unset = false;
@@ -92,7 +92,7 @@ public class ColorMapBuilder extends AbstractStyleBuilder<ColorMap> {
     }
 
     @Override
-    public ColorMapBuilder reset(ColorMap original) {
+    public ColorMapBuilder reset(ColorMapImpl original) {
         if (original == null) {
             return reset();
         }

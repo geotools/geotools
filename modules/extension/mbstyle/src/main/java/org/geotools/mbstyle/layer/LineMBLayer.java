@@ -35,12 +35,7 @@ import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.measure.Units;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Stroke;
+import org.geotools.styling.*;
 import org.geotools.text.Text;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -111,12 +106,12 @@ public class LineMBLayer extends MBLayer {
     }
 
     /**
-     * Maps {@link #getLineCap()} to {@link Stroke#getLineCap()} values of "butt", "round", and
+     * Maps {@link #getLineCap()} to {@link StrokeImpl#getLineCap()} values of "butt", "round", and
      * "square" Literals. Defaults to butt.
      *
      * <p>Since piecewise constant functions is supported a {@link RecodeFunction} may be generated.
      *
-     * @return Expression for {@link Stroke#getLineCap()} use.
+     * @return Expression for {@link StrokeImpl#getLineCap()} use.
      */
     public Expression lineCap() {
         return parse.enumToExpression(layout, "line-cap", LineCap.class, LineCap.BUTT);
@@ -151,12 +146,12 @@ public class LineMBLayer extends MBLayer {
     }
 
     /**
-     * Maps {@link #getLineJoin()} to {@link Stroke#getLineJoin()} values of "mitre", "round", and
+     * Maps {@link #getLineJoin()} to {@link StrokeImpl#getLineJoin()} values of "mitre", "round", and
      * "bevel" Literals. Defaults to "mitre".
      *
      * <p>Since piecewise constant functions is supported a {@link RecodeFunction} may be generated.
      *
-     * @return Expression for {@link Stroke#getLineJoin()} use.
+     * @return Expression for {@link StrokeImpl#getLineJoin()} use.
      */
     public Expression lineJoin() {
         return parse.enumToExpression(layout, "line-join", LineJoin.class, LineJoin.MITER);
@@ -276,7 +271,7 @@ public class LineMBLayer extends MBLayer {
     }
 
     /**
-     * Maps {@link #getLineTranslate()} to a {@link Displacement}.
+     * Maps {@link #getLineTranslate()} to a {@link DisplacementImpl}.
      *
      * <p>(Optional) The geometry's offset. Values are [x, y] where negatives indicate left and up,
      * respectively.
@@ -285,11 +280,11 @@ public class LineMBLayer extends MBLayer {
      *
      * @return The geometry's offset, as a Displacement.
      */
-    public Displacement lineTranslateDisplacement() {
+    public DisplacementImpl lineTranslateDisplacement() {
         return parse.displacement(
                 paint,
                 "line-translate",
-                (Displacement) sf.displacement(ff.literal(0), ff.literal(0)));
+                (DisplacementImpl) sf.displacement(ff.literal(0), ff.literal(0)));
     }
 
     /**
@@ -536,11 +531,11 @@ public class LineMBLayer extends MBLayer {
      * @return FeatureTypeStyle
      */
     @Override
-    public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
+    public List<FeatureTypeStyleImpl> transformInternal(MBStyle styleContext) {
         MBStyleTransformer transformer = new MBStyleTransformer(parse);
         List<Symbolizer> symbolizers = new ArrayList<>();
-        org.geotools.styling.Stroke stroke =
-                (Stroke)
+        StrokeImpl stroke =
+                (StrokeImpl)
                         sf.stroke(
                                 lineColor(),
                                 lineOpacity(),
@@ -551,8 +546,8 @@ public class LineMBLayer extends MBLayer {
                                 null); // last "offset" is really "dash offset"
 
         stroke.setDashArray(scaleByWidth(lineDasharray(), lineWidth()));
-        LineSymbolizer ls =
-                (LineSymbolizer)
+        LineSymbolizerImpl ls =
+                (LineSymbolizerImpl)
                         sf.lineSymbolizer(
                                 getId(),
                                 null,
@@ -562,7 +557,7 @@ public class LineMBLayer extends MBLayer {
                                 lineOffset());
 
         if (hasLinePattern()) {
-            ExternalGraphic eg =
+            ExternalGraphicImpl eg =
                     transformer.createExternalGraphicForSprite(linePattern(), styleContext);
             GraphicFill fill =
                     sf.graphicFill(Arrays.asList(eg), lineOpacity(), null, null, null, null);
@@ -580,7 +575,7 @@ public class LineMBLayer extends MBLayer {
                             ff.divide(ff.add(lineGapWidth(), lineWidth()), ff.literal(2)));
 
             ls =
-                    (LineSymbolizer)
+                    (LineSymbolizerImpl)
                             sf.lineSymbolizer(
                                     getId(),
                                     null,
@@ -588,8 +583,8 @@ public class LineMBLayer extends MBLayer {
                                     Units.PIXEL,
                                     stroke,
                                     topOffset);
-            LineSymbolizer bottomLine =
-                    (LineSymbolizer)
+            LineSymbolizerImpl bottomLine =
+                    (LineSymbolizerImpl)
                             sf.lineSymbolizer(
                                     getId(),
                                     null,
@@ -604,8 +599,8 @@ public class LineMBLayer extends MBLayer {
         MBFilter filter = getFilter();
         List<org.geotools.api.style.Rule> rules = new ArrayList<>();
 
-        Rule rule =
-                (Rule)
+        RuleImpl rule =
+                (RuleImpl)
                         sf.rule(
                                 getId(),
                                 null,
@@ -617,7 +612,7 @@ public class LineMBLayer extends MBLayer {
         rules.add(rule);
 
         return Collections.singletonList(
-                (FeatureTypeStyle)
+                (FeatureTypeStyleImpl)
                         sf.featureTypeStyle(
                                 getId(),
                                 sf.description(

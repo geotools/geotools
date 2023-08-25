@@ -28,8 +28,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.Graphic;
+import org.geotools.styling.ExternalGraphicImpl;
+import org.geotools.styling.GraphicImpl;
 import org.geotools.util.logging.Logging;
 
 /** @author jfc173 */
@@ -86,7 +86,7 @@ public class CustomGlyphRenderer implements GlyphRenderer {
 
     /** djb -- addd "height" which is ignored as per API change */
     @Override
-    public BufferedImage render(Graphic graphic, ExternalGraphic eg, Object feature, int height) {
+    public BufferedImage render(GraphicImpl graphic, ExternalGraphicImpl eg, Object feature, int height) {
         Map props = eg.getCustomProperties();
         Set propNames = props.keySet();
         Iterator it = propNames.iterator();

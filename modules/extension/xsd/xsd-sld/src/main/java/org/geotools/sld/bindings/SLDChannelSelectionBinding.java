@@ -17,8 +17,8 @@
 package org.geotools.sld.bindings;
 
 import javax.xml.namespace.QName;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.SelectedChannelType;
+import org.geotools.styling.ChannelSelectionImpl;
+import org.geotools.styling.SelectedChannelTypeImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
@@ -90,7 +90,7 @@ public class SLDChannelSelectionBinding extends AbstractComplexBinding {
      */
     @Override
     public Class getType() {
-        return ChannelSelection.class;
+        return ChannelSelectionImpl.class;
     }
 
     /**
@@ -113,15 +113,15 @@ public class SLDChannelSelectionBinding extends AbstractComplexBinding {
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
-        ChannelSelection cs = styleFactory.createChannelSelection(null);
+        ChannelSelectionImpl cs = styleFactory.createChannelSelection(null);
 
         if (node.hasChild("GrayChannel")) {
-            cs.setGrayChannel((SelectedChannelType) node.getChildValue("GrayChannel"));
+            cs.setGrayChannel((SelectedChannelTypeImpl) node.getChildValue("GrayChannel"));
         } else {
-            SelectedChannelType[] rgb = {
-                (SelectedChannelType) node.getChildValue("RedChannel"),
-                (SelectedChannelType) node.getChildValue("GreenChannel"),
-                (SelectedChannelType) node.getChildValue("BlueChannel")
+            SelectedChannelTypeImpl[] rgb = {
+                (SelectedChannelTypeImpl) node.getChildValue("RedChannel"),
+                (SelectedChannelTypeImpl) node.getChildValue("GreenChannel"),
+                (SelectedChannelTypeImpl) node.getChildValue("BlueChannel")
             };
             cs.setRGBChannels(rgb);
         }

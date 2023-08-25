@@ -26,9 +26,9 @@ import org.geotools.api.style.SemanticType;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
+import org.geotools.styling.ExternalGraphicImpl;
+import org.geotools.styling.FeatureTypeStyleImpl;
+import org.geotools.styling.FillImpl;
 import org.json.simple.JSONObject;
 
 /**
@@ -137,25 +137,25 @@ public class BackgroundMBLayer extends MBLayer {
      * @return FeatureTypeStyle
      */
     @Override
-    public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
+    public List<FeatureTypeStyleImpl> transformInternal(MBStyle styleContext) {
         throw new UnsupportedOperationException(
                 "This layer is not meant to be transformed, but converted in a Style background fill");
     }
 
-    public Fill getFill(MBStyle styleContext) {
+    public FillImpl getFill(MBStyle styleContext) {
         return getFill(
                 styleContext, new MBStyleTransformer(new MBObjectParser(BackgroundMBLayer.class)));
     }
 
-    private Fill getFill(MBStyle styleContext, MBStyleTransformer transformer) {
+    private FillImpl getFill(MBStyle styleContext, MBStyleTransformer transformer) {
         if (hasBackgroundPattern()) {
-            ExternalGraphic eg =
+            ExternalGraphicImpl eg =
                     transformer.createExternalGraphicForSprite(backgroundPattern(), styleContext);
             GraphicFill gf =
                     sf.graphicFill(Arrays.asList(eg), backgroundOpacity(), null, null, null, null);
-            return (Fill) sf.fill(gf, backgroundColor(), backgroundOpacity());
+            return (FillImpl) sf.fill(gf, backgroundColor(), backgroundOpacity());
         } else {
-            return (Fill) sf.fill(null, backgroundColor(), backgroundOpacity());
+            return (FillImpl) sf.fill(null, backgroundColor(), backgroundOpacity());
         }
     }
 

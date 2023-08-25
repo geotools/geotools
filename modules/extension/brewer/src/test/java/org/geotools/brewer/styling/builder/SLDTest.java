@@ -8,8 +8,8 @@ import org.geotools.api.style.FeatureTypeConstraint;
 import org.geotools.api.style.NamedLayer;
 import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.api.style.UserLayer;
-import org.geotools.styling.NamedStyle;
-import org.geotools.styling.PointSymbolizer;
+import org.geotools.styling.NamedStyleImpl;
+import org.geotools.styling.PointSymbolizerImpl;
 import org.junit.Test;
 
 public class SLDTest extends AbstractStyleTest {
@@ -32,7 +32,7 @@ public class SLDTest extends AbstractStyleTest {
 
         NamedLayer layer = (NamedLayer) collector.layers.get(0);
         assertEquals("states", layer.getName());
-        assertTrue(collector.symbolizers.get(0) instanceof PointSymbolizer);
+        assertTrue(collector.symbolizers.get(0) instanceof PointSymbolizerImpl);
     }
 
     @Test
@@ -51,7 +51,7 @@ public class SLDTest extends AbstractStyleTest {
 
         NamedLayer layer = (NamedLayer) collector.layers.get(0);
         assertEquals("states", layer.getName());
-        NamedStyle ns = (NamedStyle) layer.getStyles()[0];
+        NamedStyleImpl ns = (NamedStyleImpl) layer.getStyles()[0];
         assertEquals("population", ns.getName());
     }
 

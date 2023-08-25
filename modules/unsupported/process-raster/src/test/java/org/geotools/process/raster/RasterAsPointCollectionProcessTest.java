@@ -68,7 +68,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.lite.RendererUtilities;
 import org.geotools.renderer.lite.StreamingRenderer;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.xml.styling.SLDParser;
@@ -85,7 +85,7 @@ public class RasterAsPointCollectionProcessTest {
         GeneralParameterValue[] params;
 
         public GridCoverageReaderLayer(
-                GridCoverage2DReader reader, Style style, GeneralParameterValue[] params) {
+                GridCoverage2DReader reader, StyleImpl style, GeneralParameterValue[] params) {
             super(style);
             this.params = params;
             this.reader = reader;
@@ -468,7 +468,7 @@ public class RasterAsPointCollectionProcessTest {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
         java.net.URL surl = TestData.getResource(this, "arrows.sld");
         SLDParser stylereader = new SLDParser(factory, surl);
-        Style style = stylereader.readXML()[0];
+        StyleImpl style = stylereader.readXML()[0];
 
         GeoTiffReader reader = new GeoTiffReader(TestData.file(this, "current.tif"));
 

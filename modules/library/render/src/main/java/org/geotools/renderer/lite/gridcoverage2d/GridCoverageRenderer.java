@@ -78,9 +78,9 @@ import org.geotools.renderer.composite.BlendComposite.BlendingMode;
 import org.geotools.renderer.crs.ProjectionHandler;
 import org.geotools.renderer.crs.ProjectionHandlerFinder;
 import org.geotools.renderer.crs.WrappingProjectionHandler;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.SelectedChannelType;
+import org.geotools.styling.ChannelSelectionImpl;
+import org.geotools.styling.RasterSymbolizerImpl;
+import org.geotools.styling.SelectedChannelTypeImpl;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.factory.Hints.Key;
 import org.locationtech.jts.geom.Envelope;
@@ -350,7 +350,7 @@ public final class GridCoverageRenderer {
      */
     public RenderedImage renderImage(
             final GridCoverage2D gridCoverage,
-            final RasterSymbolizer symbolizer,
+            final RasterSymbolizerImpl symbolizer,
             final double[] bkgValues)
             throws Exception {
 
@@ -363,7 +363,7 @@ public final class GridCoverageRenderer {
 
     private GridCoverage2D renderCoverage(
             final GridCoverage2D gridCoverage,
-            final RasterSymbolizer symbolizer,
+            final RasterSymbolizerImpl symbolizer,
             final double[] bkgValues)
             throws FactoryException {
         // Initial checks
@@ -439,7 +439,7 @@ public final class GridCoverageRenderer {
 
     private GridCoverage2D symbolize(
             final GridCoverage2D coverage,
-            final RasterSymbolizer symbolizer,
+            final RasterSymbolizerImpl symbolizer,
             final double[] bkgValues,
             final Hints hints)
             throws FactoryException {
@@ -527,7 +527,7 @@ public final class GridCoverageRenderer {
 
     /** */
     private GridCoverage2D affine(
-            GridCoverage2D input, double[] bkgValues, RasterSymbolizer symbolizer, Hints hints) {
+            GridCoverage2D input, double[] bkgValues, RasterSymbolizerImpl symbolizer, Hints hints) {
         // NOTICE that at this stage the image we get should be 8 bits, either RGB, RGBA, Gray,
         // GrayA either multiband or indexed. It could also be 16 bits indexed!!!!
 
@@ -563,7 +563,7 @@ public final class GridCoverageRenderer {
      */
     public RenderedImage renderImage(
             final GridCoverage2D gridCoverage,
-            final RasterSymbolizer symbolizer,
+            final RasterSymbolizerImpl symbolizer,
             final Interpolation interpolation,
             final Color background,
             final int tileSizeX,
@@ -578,7 +578,7 @@ public final class GridCoverageRenderer {
 
     private GridCoverage2D renderCoverage(
             final GridCoverage2D gridCoverage,
-            final RasterSymbolizer symbolizer,
+            final RasterSymbolizerImpl symbolizer,
             final Interpolation interpolation,
             final Color background,
             final int tileSizeX,
@@ -653,7 +653,7 @@ public final class GridCoverageRenderer {
     public RenderedImage renderImage(
             final GridCoverage2DReader reader,
             GeneralParameterValue[] readParams,
-            final RasterSymbolizer symbolizer,
+            final RasterSymbolizerImpl symbolizer,
             final Interpolation interpolation,
             final Color background,
             final int tileSizeX,
@@ -670,7 +670,7 @@ public final class GridCoverageRenderer {
     private RenderedImage renderImage(
             final GridCoverage2DReader reader,
             GeneralParameterValue[] readParams,
-            final RasterSymbolizer symbolizer,
+            final RasterSymbolizerImpl symbolizer,
             final Interpolation interpolation,
             final Color background)
             throws FactoryException, IOException, TransformException {
@@ -681,7 +681,7 @@ public final class GridCoverageRenderer {
         // Check if reader supports band selection, and rearrange raster channels order in
         // symbolizer. Reader should have taken care o proper channel order, based on initial
         // symbolizer channel definition
-        RasterSymbolizer finalSymbolizer = symbolizer;
+        RasterSymbolizerImpl finalSymbolizer = symbolizer;
         if (symbolizer != null && isBandsSelectionApplicable(reader, symbolizer)) {
             readParams = applyBandsSelectionParameter(reader, readParams, symbolizer);
             finalSymbolizer = setupSymbolizerForBandsSelection(symbolizer);
@@ -897,7 +897,7 @@ public final class GridCoverageRenderer {
     public void paint(
             final Graphics2D graphics,
             final GridCoverage2D gridCoverage,
-            final RasterSymbolizer symbolizer)
+            final RasterSymbolizerImpl symbolizer)
             throws Exception {
         paint(graphics, gridCoverage, symbolizer, null);
     }
@@ -914,7 +914,7 @@ public final class GridCoverageRenderer {
     public void paint(
             final Graphics2D graphics,
             final GridCoverage2D gridCoverage,
-            final RasterSymbolizer symbolizer,
+            final RasterSymbolizerImpl symbolizer,
             final double[] bkgValues)
             throws Exception {
 
@@ -953,7 +953,7 @@ public final class GridCoverageRenderer {
             final Graphics2D graphics,
             final GridCoverage2DReader gridCoverageReader,
             GeneralParameterValue[] readParams,
-            final RasterSymbolizer symbolizer,
+            final RasterSymbolizerImpl symbolizer,
             Interpolation interpolation,
             final Color background)
             throws Exception {
@@ -994,7 +994,7 @@ public final class GridCoverageRenderer {
     private void paintImage(
             final Graphics2D graphics,
             RenderedImage inputImage,
-            final RasterSymbolizer symbolizer) {
+            final RasterSymbolizerImpl symbolizer) {
         final RenderingHints oldHints = graphics.getRenderingHints();
         graphics.setRenderingHints(this.hints);
 
@@ -1127,7 +1127,7 @@ public final class GridCoverageRenderer {
     private GeneralParameterValue[] applyBandsSelectionParameter(
             GridCoverageReader reader,
             GeneralParameterValue[] readParams,
-            RasterSymbolizer symbolizer) {
+            RasterSymbolizerImpl symbolizer) {
         int[] bandIndices =
                 ChannelSelectionUpdateStyleVisitor.getBandIndicesFromSelectionChannels(symbolizer);
         Parameter<int[]> bandIndicesParam =
@@ -1145,18 +1145,18 @@ public final class GridCoverageRenderer {
      * Takes into account that the band selection has been delegated down to the reader by producing
      * a new channel selection
      */
-    public static RasterSymbolizer setupSymbolizerForBandsSelection(RasterSymbolizer symbolizer) {
-        ChannelSelection selection = symbolizer.getChannelSelection();
-        SelectedChannelType[] originalChannels = selection.getRGBChannels();
+    public static RasterSymbolizerImpl setupSymbolizerForBandsSelection(RasterSymbolizerImpl symbolizer) {
+        ChannelSelectionImpl selection = symbolizer.getChannelSelection();
+        SelectedChannelTypeImpl[] originalChannels = selection.getRGBChannels();
         if (originalChannels == null && selection.getGrayChannel() != null) {
-            originalChannels = new SelectedChannelType[] {selection.getGrayChannel()};
+            originalChannels = new SelectedChannelTypeImpl[] {selection.getGrayChannel()};
         }
         if (originalChannels != null) {
             int i = 0;
-            SelectedChannelType[] channels = new SelectedChannelType[originalChannels.length];
-            for (SelectedChannelType originalChannel : originalChannels) {
+            SelectedChannelTypeImpl[] channels = new SelectedChannelTypeImpl[originalChannels.length];
+            for (SelectedChannelTypeImpl originalChannel : originalChannels) {
                 // Remember, channel indices start from 1
-                SelectedChannelType channel = new SelectedChannelType();
+                SelectedChannelTypeImpl channel = new SelectedChannelTypeImpl();
                 channel.setChannelName(Integer.toString(i + 1));
                 channel.setContrastEnhancement(originalChannel.getContrastEnhancement());
                 channels[i] = channel;
@@ -1165,14 +1165,14 @@ public final class GridCoverageRenderer {
             ChannelSelectionUpdateStyleVisitor channelsUpdateVisitor =
                     new ChannelSelectionUpdateStyleVisitor(channels);
             symbolizer.accept(channelsUpdateVisitor);
-            return (RasterSymbolizer) channelsUpdateVisitor.getCopy();
+            return (RasterSymbolizerImpl) channelsUpdateVisitor.getCopy();
         }
         return symbolizer;
     }
 
     /** Checks if band selection is present, and can be delegated down to the reader */
     public static boolean isBandsSelectionApplicable(
-            GridCoverageReader reader, RasterSymbolizer symbolizer) {
+            GridCoverageReader reader, RasterSymbolizerImpl symbolizer) {
         int[] bandIndices =
                 ChannelSelectionUpdateStyleVisitor.getBandIndicesFromSelectionChannels(symbolizer);
         return reader.getFormat() != null

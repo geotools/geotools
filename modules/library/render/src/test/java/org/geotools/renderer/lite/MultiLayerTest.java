@@ -15,7 +15,7 @@ import org.geotools.map.FeatureLayer;
 import org.geotools.map.GridCoverageLayer;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.test.TestData;
 import org.junit.Test;
@@ -32,7 +32,7 @@ public class MultiLayerTest {
                 new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
 
         StyleBuilder sb = new StyleBuilder();
-        Style pst =
+        StyleImpl pst =
                 sb.createStyle(sb.createPolygonSymbolizer(null, sb.createFill(Color.GRAY, 0.5)));
 
         // a raster layer
@@ -43,7 +43,7 @@ public class MultiLayerTest {
         g.dispose();
         GridCoverage2D coverage = new GridCoverageFactory().create("test_red", bi, bounds);
 
-        Style rst = sb.createStyle(sb.createRasterSymbolizer());
+        StyleImpl rst = sb.createStyle(sb.createRasterSymbolizer());
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(fs, pst));

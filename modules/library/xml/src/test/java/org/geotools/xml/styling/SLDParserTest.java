@@ -36,21 +36,12 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.style.ContrastMethod;
-import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.*;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.ResourceLocator;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
+import org.geotools.styling.*;
+import org.geotools.styling.ContrastEnhancementImpl;
+import org.geotools.styling.RuleImpl;
 import org.geotools.styling.StyleFactory;
-import org.geotools.styling.Symbolizer;
 import org.junit.Test;
 import org.xml.sax.InputSource;
 
@@ -435,14 +426,14 @@ public class SLDParserTest {
     @Test
     public void testBasic() throws Exception {
         SLDParser parser = new SLDParser(styleFactory, input(SLD));
-        Style[] styles = parser.readXML();
+        StyleImpl[] styles = parser.readXML();
         assertStyles(styles);
     }
 
     @Test
     public void testLocalizedRuleTitle() throws Exception {
         SLDParser parser = new SLDParser(styleFactory, input(LocalizedSLD));
-        Style[] styles = parser.readXML();
+        StyleImpl[] styles = parser.readXML();
         assertEquals(
                 "sldtitle",
                 styles[0]
@@ -579,7 +570,7 @@ public class SLDParserTest {
     @Test
     public void testEmptyTitle() throws Exception {
         SLDParser parser = new SLDParser(styleFactory, input(EmptyTitleSLD));
-        Style[] styles = parser.readXML();
+        StyleImpl[] styles = parser.readXML();
         assertEquals(
                 "",
                 styles[0]
@@ -595,7 +586,7 @@ public class SLDParserTest {
     @Test
     public void testEmptyAbstract() throws Exception {
         SLDParser parser = new SLDParser(styleFactory, input(EmptyAbstractSLD));
-        Style[] styles = parser.readXML();
+        StyleImpl[] styles = parser.readXML();
         assertEquals(
                 "",
                 styles[0]
@@ -611,7 +602,7 @@ public class SLDParserTest {
     @Test
     public void testMultipleParse() throws Exception {
         SLDParser parser = new SLDParser(styleFactory, input(SLD));
-        Style[] styles = parser.readXML();
+        StyleImpl[] styles = parser.readXML();
         assertStyles(styles);
 
         styles = parser.readDOM();
@@ -628,20 +619,20 @@ public class SLDParserTest {
     public void testDefaultPoint() throws Exception {
         // fixes for GEOS-3111 broke default point symbsolizer handling
         SLDParser parser = new SLDParser(styleFactory, input(SLD_DEFAULT_POINT));
-        Style[] styles = parser.readXML();
+        StyleImpl[] styles = parser.readXML();
 
         assertEquals(1, styles.length);
         List<FeatureTypeStyle> fts = styles[0].featureTypeStyles();
         assertEquals(1, fts.size());
         List<Rule> rules = fts.get(0).rules();
         assertEquals(1, rules.size());
-        List<Symbolizer> symbolizers = rules.get(0).symbolizers();
+        List<Symbolizer> symbolizers = ((RuleImpl) rules.get(0)).symbolizers();
         assertEquals(1, symbolizers.size());
-        PointSymbolizer ps = (PointSymbolizer) symbolizers.get(0);
+        PointSymbolizerImpl ps = (PointSymbolizerImpl) symbolizers.get(0);
         // here we would have had two instead of one
         List<GraphicalSymbol> graphicalSymbols = ps.getGraphic().graphicalSymbols();
         assertEquals(1, graphicalSymbols.size());
-        Mark mark = (Mark) graphicalSymbols.get(0);
+        MarkImpl mark = (MarkImpl) graphicalSymbols.get(0);
         assertEquals(mark, CommonFactoryFinder.getStyleFactory(null).createMark());
     }
 
@@ -660,20 +651,20 @@ public class SLDParserTest {
                         return null;
                     }
                 });
-        Style[] styles = parser.readXML();
+        StyleImpl[] styles = parser.readXML();
 
         assertEquals(1, styles.length);
         List<FeatureTypeStyle> fts = styles[0].featureTypeStyles();
         assertEquals(1, fts.size());
         List<Rule> rules = fts.get(0).rules();
         assertEquals(1, rules.size());
-        List<Symbolizer> symbolizers = rules.get(0).symbolizers();
+        List<Symbolizer> symbolizers = ((RuleImpl) rules.get(0)).symbolizers();
         assertEquals(1, symbolizers.size());
-        PointSymbolizer ps = (PointSymbolizer) symbolizers.get(0);
+        PointSymbolizerImpl ps = (PointSymbolizerImpl) symbolizers.get(0);
         // here we would have had two instead of one
         List<GraphicalSymbol> graphicalSymbols = ps.getGraphic().graphicalSymbols();
         assertEquals(1, graphicalSymbols.size());
-        Mark mark = (Mark) graphicalSymbols.get(0);
+        MarkImpl mark = (MarkImpl) graphicalSymbols.get(0);
         assertEquals("file://test/foo.svg", mark.getWellKnownName().evaluate(null, String.class));
     }
 
@@ -690,19 +681,19 @@ public class SLDParserTest {
                         return getClass().getResource(uri);
                     }
                 });
-        Style[] styles = parser.readXML();
+        StyleImpl[] styles = parser.readXML();
         assertEquals(1, styles.length);
         List<FeatureTypeStyle> fts = styles[0].featureTypeStyles();
         assertEquals(1, fts.size());
         List<Rule> rules = fts.get(0).rules();
         assertEquals(1, rules.size());
-        List<Symbolizer> symbolizers = rules.get(0).symbolizers();
+        List<Symbolizer> symbolizers = ((RuleImpl) rules.get(0)).symbolizers();
         assertEquals(1, symbolizers.size());
-        PointSymbolizer ps = (PointSymbolizer) symbolizers.get(0);
+        PointSymbolizerImpl ps = (PointSymbolizerImpl) symbolizers.get(0);
         // here we would have had two instead of one
         List<GraphicalSymbol> graphicalSymbols = ps.getGraphic().graphicalSymbols();
         assertEquals(1, graphicalSymbols.size());
-        ExternalGraphic graphic = (ExternalGraphic) graphicalSymbols.get(0);
+        ExternalGraphicImpl graphic = (ExternalGraphicImpl) graphicalSymbols.get(0);
         assertEquals(getClass().getResource("test-data/blob.gif"), graphic.getLocation());
     }
 
@@ -757,7 +748,7 @@ public class SLDParserTest {
                         new ByteArrayInputStream(
                                 formattedCssStrokeParameter.getBytes(StandardCharsets.UTF_8)));
         SLDParser parser = new SLDParser(styleFactory);
-        Stroke stroke = parser.parseStroke(node.getDocumentElement());
+        StrokeImpl stroke = parser.parseStroke(node.getDocumentElement());
         // <strConcat([#], [env([stroke_color], [" + color + "])])>";
         assertEquals("#" + color, stroke.getColor().evaluate(Color.decode("#" + color)));
     }
@@ -770,7 +761,7 @@ public class SLDParserTest {
                 builder.parse(new ByteArrayInputStream(contrastEnhance.getBytes()));
         // First check the happy path for normalize
         SLDParser parser = new SLDParser(styleFactory);
-        ContrastEnhancement ce = parser.parseContrastEnhancement(node.getDocumentElement());
+        ContrastEnhancementImpl ce = parser.parseContrastEnhancement(node.getDocumentElement());
         ContrastMethod method = ce.getMethod();
         assertNotNull(ce);
         assertEquals("Wrong method type", "normalize", method.name().toLowerCase());
@@ -833,12 +824,12 @@ public class SLDParserTest {
         final String OK_KEY = "OkVendor";
 
         SLDParser parser = new SLDParser(styleFactory, input(SLD_NULL_VENDOR_OPTION));
-        Style[] styles = parser.readXML();
+        StyleImpl[] styles = parser.readXML();
         List<FeatureTypeStyle> fts = styles[0].featureTypeStyles();
         List<Rule> rules = fts.get(0).rules();
-        List<Symbolizer> symbolizers = rules.get(0).symbolizers();
+        List<Symbolizer> symbolizers = ((RuleImpl) rules.get(0)).symbolizers();
 
-        PointSymbolizer ps = (PointSymbolizer) symbolizers.get(0);
+        PointSymbolizerImpl ps = (PointSymbolizerImpl) symbolizers.get(0);
 
         assertEquals(1, ps.getOptions().size());
         assertTrue(ps.getOptions().containsKey(OK_KEY));
@@ -850,12 +841,12 @@ public class SLDParserTest {
         // are correctly parsed
         SLDParser parser =
                 new SLDParser(styleFactory, input(SLD_RASTER_SYMBOLIZER_WITH_VENDOR_OPTIONS));
-        Style[] styles = parser.readXML();
+        StyleImpl[] styles = parser.readXML();
         List<FeatureTypeStyle> fts = styles[0].featureTypeStyles();
         List<Rule> rules = fts.get(0).rules();
-        List<Symbolizer> symbolizers = rules.get(0).symbolizers();
+        List<Symbolizer> symbolizers = ((RuleImpl) rules.get(0)).symbolizers();
 
-        RasterSymbolizer ps = (RasterSymbolizer) symbolizers.get(0);
+        RasterSymbolizerImpl ps = (RasterSymbolizerImpl) symbolizers.get(0);
 
         assertEquals(2, ps.getOptions().size());
         assertTrue(ps.getOptions().containsKey("FirstVendorOption"));
@@ -869,7 +860,7 @@ public class SLDParserTest {
         // tests that VendorOptions placed under a RasterSymbolizer
         // are correctly parsed
         SLDParser parser = new SLDParser(styleFactory, input(SLD_RULE_WITH_VENDOR_OPTIONS));
-        Style[] styles = parser.readXML();
+        StyleImpl[] styles = parser.readXML();
         List<FeatureTypeStyle> fts = styles[0].featureTypeStyles();
         Rule rule = fts.get(0).rules().get(0);
 
@@ -880,7 +871,7 @@ public class SLDParserTest {
         assertEquals("SECOND_VENDOR_OPTION", rule.getOptions().get("SecondVendorOption"));
     }
 
-    void assertStyles(Style[] styles) {
+    void assertStyles(StyleImpl[] styles) {
         assertEquals(1, styles.length);
         assertEquals("style", styles[0].getName());
     }

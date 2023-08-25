@@ -20,8 +20,9 @@ import javax.xml.namespace.QName;
 import org.geotools.api.style.LayerFeatureConstraints;
 import org.geotools.api.style.RemoteOWS;
 import org.geotools.api.style.UserLayer;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.styling.StyleFactory;
+import org.geotools.styling.UserLayerImpl;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
@@ -110,7 +111,7 @@ public class SLDUserLayerBinding extends AbstractComplexBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        org.geotools.styling.UserLayer userLayer = styleFactory.createUserLayer();
+        UserLayerImpl userLayer = styleFactory.createUserLayer();
 
         // &lt;xsd:element ref="sld:Name" minOccurs="0"/&gt;
         if (node.hasChild("Name")) {
@@ -131,7 +132,7 @@ public class SLDUserLayerBinding extends AbstractComplexBinding {
 
         // &lt;xsd:element ref="sld:UserStyle" maxOccurs="unbounded"/&gt;
         for (Object o : node.getChildValues("UserStyle")) {
-            userLayer.addUserStyle((Style) o);
+            userLayer.addUserStyle((StyleImpl) o);
         }
 
         return userLayer;

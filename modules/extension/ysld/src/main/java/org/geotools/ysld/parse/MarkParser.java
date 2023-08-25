@@ -17,16 +17,16 @@
  */
 package org.geotools.ysld.parse;
 
-import org.geotools.styling.Fill;
-import org.geotools.styling.Mark;
-import org.geotools.styling.Stroke;
+import org.geotools.styling.FillImpl;
+import org.geotools.styling.MarkImpl;
+import org.geotools.styling.StrokeImpl;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
-/** Handles parsing a Ysld "mark" property into a {@link Mark} object. */
+/** Handles parsing a Ysld "mark" property into a {@link MarkImpl} object. */
 public abstract class MarkParser extends YsldParseHandler {
 
-    Mark mark;
+    MarkImpl mark;
 
     protected MarkParser(Factory factory) {
         super(factory);
@@ -48,18 +48,18 @@ public abstract class MarkParser extends YsldParseHandler {
         context.push(
                 new StrokeParser(factory) {
                     @Override
-                    protected void stroke(Stroke stroke) {
+                    protected void stroke(StrokeImpl stroke) {
                         mark.setStroke(stroke);
                     }
                 });
         context.push(
                 new FillParser(factory) {
                     @Override
-                    protected void fill(Fill fill) {
+                    protected void fill(FillImpl fill) {
                         mark.setFill(fill);
                     }
                 });
     }
 
-    protected abstract void mark(Mark mark);
+    protected abstract void mark(MarkImpl mark);
 }

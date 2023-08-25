@@ -17,17 +17,17 @@
  */
 package org.geotools.ysld.encode;
 
-import org.geotools.styling.Fill;
+import org.geotools.styling.FillImpl;
 
-/** Encodes a {@link Fill} as YSLD. */
-public class FillEncoder extends YsldEncodeHandler<Fill> {
+/** Encodes a {@link FillImpl} as YSLD. */
+public class FillEncoder extends YsldEncodeHandler<FillImpl> {
 
-    public FillEncoder(Fill fill) {
+    public FillEncoder(FillImpl fill) {
         super(fill);
     }
 
     @Override
-    protected void encode(Fill fill) {
+    protected void encode(FillImpl fill) {
         putColor("fill-color", fill.getColor());
         put("fill-opacity", nullIf(fill.getOpacity(), 1d));
         if (fill.getGraphicFill() != null) {

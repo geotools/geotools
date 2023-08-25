@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Optional;
 import org.geotools.api.style.ChannelSelection;
 import org.geotools.api.style.SelectedChannelType;
+import org.geotools.styling.ChannelSelectionImpl;
+import org.geotools.styling.SelectedChannelTypeImpl;
 
 /** Enumeration for valid raster band values. */
 public enum Band {
@@ -36,8 +38,8 @@ public enum Band {
 
         @Override
         public void setTo(
-                org.geotools.styling.ChannelSelection sel,
-                org.geotools.styling.SelectedChannelType chan) {
+                ChannelSelectionImpl sel,
+                SelectedChannelTypeImpl chan) {
             sel.setGrayChannel(chan);
         }
     },
@@ -49,9 +51,9 @@ public enum Band {
 
         @Override
         public void setTo(
-                org.geotools.styling.ChannelSelection sel,
-                org.geotools.styling.SelectedChannelType chan) {
-            org.geotools.styling.SelectedChannelType[] channels = sel.getRGBChannels();
+                ChannelSelectionImpl sel,
+                SelectedChannelTypeImpl chan) {
+            SelectedChannelTypeImpl[] channels = sel.getRGBChannels();
             channels[0] = chan;
             sel.setRGBChannels(channels);
         }
@@ -64,9 +66,9 @@ public enum Band {
 
         @Override
         public void setTo(
-                org.geotools.styling.ChannelSelection sel,
-                org.geotools.styling.SelectedChannelType chan) {
-            org.geotools.styling.SelectedChannelType[] channels = sel.getRGBChannels();
+                ChannelSelectionImpl sel,
+                SelectedChannelTypeImpl chan) {
+            SelectedChannelTypeImpl[] channels = sel.getRGBChannels();
             channels[1] = chan;
             sel.setRGBChannels(channels);
         }
@@ -79,9 +81,9 @@ public enum Band {
 
         @Override
         public void setTo(
-                org.geotools.styling.ChannelSelection sel,
-                org.geotools.styling.SelectedChannelType chan) {
-            org.geotools.styling.SelectedChannelType[] channels = sel.getRGBChannels();
+                ChannelSelectionImpl sel,
+                SelectedChannelTypeImpl chan) {
+            SelectedChannelTypeImpl[] channels = sel.getRGBChannels();
             channels[2] = chan;
             sel.setRGBChannels(channels);
         }
@@ -97,8 +99,8 @@ public enum Band {
 
     /** Set the {@link SelectedChannelType} in sel that is represented by this band to chan. */
     public abstract void setTo(
-            org.geotools.styling.ChannelSelection sel,
-            org.geotools.styling.SelectedChannelType chan);
+            ChannelSelectionImpl sel,
+            SelectedChannelTypeImpl chan);
 
     public final String key;
 

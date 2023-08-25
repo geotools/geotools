@@ -17,15 +17,15 @@
  */
 package org.geotools.ysld.parse;
 
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.Rule;
+import org.geotools.styling.PointSymbolizerImpl;
+import org.geotools.styling.RuleImpl;
 import org.geotools.styling.Symbolizer;
 import org.geotools.ysld.YamlObject;
 
 /** Handles parsing a Ysld "point" symbolizer property into a {@link Symbolizer} object. */
-public class PointParser extends SymbolizerParser<PointSymbolizer> {
+public class PointParser extends SymbolizerParser<PointSymbolizerImpl> {
 
-    public PointParser(Rule rule, Factory factory) {
+    public PointParser(RuleImpl rule, Factory factory) {
         super(rule, factory.style.createPointSymbolizer(), factory);
     }
 

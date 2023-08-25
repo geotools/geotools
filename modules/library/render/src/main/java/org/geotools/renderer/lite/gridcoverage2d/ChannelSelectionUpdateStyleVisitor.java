@@ -18,9 +18,9 @@
 package org.geotools.renderer.lite.gridcoverage2d;
 
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.SelectedChannelType;
+import org.geotools.styling.ChannelSelectionImpl;
+import org.geotools.styling.RasterSymbolizerImpl;
+import org.geotools.styling.SelectedChannelTypeImpl;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 
 /**
@@ -36,17 +36,17 @@ import org.geotools.styling.visitor.DuplicatingStyleVisitor;
  */
 public class ChannelSelectionUpdateStyleVisitor extends DuplicatingStyleVisitor {
 
-    private SelectedChannelType[] channels;
+    private SelectedChannelTypeImpl[] channels;
 
-    public ChannelSelectionUpdateStyleVisitor(SelectedChannelType[] channels) {
+    public ChannelSelectionUpdateStyleVisitor(SelectedChannelTypeImpl[] channels) {
         super();
         this.channels = channels;
     }
 
     @Override
-    protected ChannelSelection copy(ChannelSelection channelSelection) {
+    protected ChannelSelectionImpl copy(ChannelSelectionImpl channelSelection) {
         if (channels.length != 3) {
-            return (ChannelSelection) sf.createChannelSelection(channels[0]);
+            return (ChannelSelectionImpl) sf.createChannelSelection(channels[0]);
         } else {
             return sf.createChannelSelection(channels);
         }
@@ -59,11 +59,11 @@ public class ChannelSelectionUpdateStyleVisitor extends DuplicatingStyleVisitor 
      * @param symbolizer The input symbolizer
      * @return the band indices array (null if no channel selection was present in symbolizer)
      */
-    public static int[] getBandIndicesFromSelectionChannels(RasterSymbolizer symbolizer) {
+    public static int[] getBandIndicesFromSelectionChannels(RasterSymbolizerImpl symbolizer) {
         int[] bandIndices = null;
-        ChannelSelection channelSelection = symbolizer.getChannelSelection();
+        ChannelSelectionImpl channelSelection = symbolizer.getChannelSelection();
         if (channelSelection != null) {
-            SelectedChannelType[] channels = channelSelection.getRGBChannels();
+            SelectedChannelTypeImpl[] channels = channelSelection.getRGBChannels();
             if (channels != null && channels.length > 0 && channels[0] != null) {
                 bandIndices = new int[channels.length];
                 for (int i = 0; i < channels.length; i++) {
@@ -72,7 +72,7 @@ public class ChannelSelectionUpdateStyleVisitor extends DuplicatingStyleVisitor 
                     bandIndices[i] = channels[i].getChannelName().evaluate(null, Integer.class) - 1;
                 }
             }
-            SelectedChannelType grayChannel = channelSelection.getGrayChannel();
+            SelectedChannelTypeImpl grayChannel = channelSelection.getGrayChannel();
             if (grayChannel != null) {
                 bandIndices = new int[1];
                 bandIndices[0] = grayChannel.getChannelName().evaluate(null, Integer.class) - 1;

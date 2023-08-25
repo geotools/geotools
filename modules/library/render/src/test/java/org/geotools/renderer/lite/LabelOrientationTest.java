@@ -14,7 +14,7 @@ import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.label.LabelCacheImpl;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,7 +48,7 @@ public class LabelOrientationTest {
 
     @Test
     public void testLabelNatural() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "textNaturalOrientation.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "textNaturalOrientation.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(fs, style));
@@ -60,7 +60,7 @@ public class LabelOrientationTest {
 
     @Test
     public void testLabelLineOrientation() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "textLineOrientation.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "textLineOrientation.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(fs, style));

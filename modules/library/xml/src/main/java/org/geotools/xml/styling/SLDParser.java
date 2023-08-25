@@ -52,37 +52,35 @@ import org.geotools.filter.ExpressionDOMParser;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.styling.*;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeConstraint;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Halo;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.NamedLayer;
-import org.geotools.styling.OtherText;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.RemoteOWS;
-import org.geotools.styling.Rule;
-import org.geotools.styling.SelectedChannelType;
-import org.geotools.styling.ShadedRelief;
-import org.geotools.styling.Style;
+import org.geotools.styling.AnchorPointImpl;
+import org.geotools.styling.ChannelSelectionImpl;
+import org.geotools.styling.ColorMapImpl;
+import org.geotools.styling.ContrastEnhancementImpl;
+import org.geotools.styling.DisplacementImpl;
+import org.geotools.styling.ExternalGraphicImpl;
+import org.geotools.styling.FeatureTypeConstraintImpl;
+import org.geotools.styling.FillImpl;
+import org.geotools.styling.FontImpl;
+import org.geotools.styling.GraphicImpl;
+import org.geotools.styling.HaloImpl;
+import org.geotools.styling.LinePlacementImpl;
+import org.geotools.styling.LineSymbolizerImpl;
+import org.geotools.styling.MarkImpl;
+import org.geotools.styling.NamedLayerImpl;
+import org.geotools.styling.OtherTextImpl;
+import org.geotools.styling.PointPlacementImpl;
+import org.geotools.styling.PointSymbolizerImpl;
+import org.geotools.styling.PolygonSymbolizerImpl;
+import org.geotools.styling.RasterSymbolizerImpl;
+import org.geotools.styling.RemoteOWSImpl;
+import org.geotools.styling.RuleImpl;
+import org.geotools.styling.SelectedChannelTypeImpl;
+import org.geotools.styling.ShadedReliefImpl;
 import org.geotools.styling.StyleFactory;
+import org.geotools.styling.StyleImpl;
 import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.UserLayer;
+import org.geotools.styling.TextSymbolizerImpl;
+import org.geotools.styling.UserLayerImpl;
 import org.geotools.util.Base64;
 import org.geotools.util.GrowableInternationalString;
 import org.geotools.util.SimpleInternationalString;
@@ -360,7 +358,7 @@ public class SLDParser {
      * @return Style[] the styles constructed.
      * @throws RuntimeException if a parsing error occurs
      */
-    public Style[] readXML() {
+    public StyleImpl[] readXML() {
         try {
             dom = newDocumentBuilder(true).parse(source);
         } catch (ParserConfigurationException | IOException | SAXException pce) {
@@ -392,7 +390,7 @@ public class SLDParser {
     }
 
     /** Read styles from the dom that was previously parsed. */
-    public Style[] readDOM() {
+    public StyleImpl[] readDOM() {
         if (dom == null) {
             throw new NullPointerException("dom is null");
         }
@@ -405,16 +403,16 @@ public class SLDParser {
      * @param document a dom containing the SLD
      * @return Style[] the styles constructed.
      */
-    public Style[] readDOM(org.w3c.dom.Document document) {
+    public StyleImpl[] readDOM(org.w3c.dom.Document document) {
         this.dom = document;
 
         // for our next trick do something with the dom.
         NodeList nodes = findElements(document, "UserStyle");
 
-        if (nodes == null) return new Style[0];
+        if (nodes == null) return new StyleImpl[0];
 
         final int length = nodes.getLength();
-        Style[] styles = new Style[length];
+        StyleImpl[] styles = new StyleImpl[length];
 
         for (int i = 0; i < length; i++) {
             styles[i] = parseStyle(nodes.item(i));
@@ -511,7 +509,7 @@ public class SLDParser {
     }
 
     private org.geotools.api.style.StyledLayer parseUserLayer(Node root) {
-        org.geotools.api.style.UserLayer layer = new UserLayer();
+        org.geotools.api.style.UserLayer layer = new UserLayerImpl();
         // LineSymbolizer symbol = factory.createLineSymbolizer();
 
         NodeList children = root.getChildNodes();
@@ -529,17 +527,18 @@ public class SLDParser {
             if (childName.equalsIgnoreCase("InlineFeature")) {
                 parseInlineFeature(child, layer);
             } else if (childName.equalsIgnoreCase("UserStyle")) {
-                Style user = parseStyle(child);
-                ((org.geotools.styling.UserLayer) layer).addUserStyle(user);
+                StyleImpl user = parseStyle(child);
+                ((UserLayerImpl) layer).addUserStyle(user);
             } else if (childName.equalsIgnoreCase("Name")) {
                 String layerName = getFirstChildValue(child);
-                ((UserLayer) layer).setName(layerName);
+                ((UserLayerImpl) layer).setName(layerName);
                 if (LOGGER.isLoggable(Level.INFO)) LOGGER.info("layer name: " + layer.getName());
             } else if (childName.equalsIgnoreCase("RemoteOWS")) {
                 org.geotools.api.style.RemoteOWS remoteOws = parseRemoteOWS(child);
-                ((UserLayer) layer).setRemoteOWS(remoteOws);
+                ((UserLayerImpl) layer).setRemoteOWS(remoteOws);
             } else if (childName.equalsIgnoreCase("LayerFeatureConstraints")) {
-                ((UserLayer) layer).setLayerFeatureConstraints(parseLayerFeatureConstraints(child));
+                ((UserLayerImpl) layer)
+                        .setLayerFeatureConstraints(parseLayerFeatureConstraints(child));
             }
         }
 
@@ -569,7 +568,7 @@ public class SLDParser {
     }
 
     protected org.geotools.api.style.FeatureTypeConstraint parseFeatureTypeConstraint(Node root) {
-        org.geotools.api.style.FeatureTypeConstraint ftc = new FeatureTypeConstraint();
+        org.geotools.api.style.FeatureTypeConstraint ftc = new FeatureTypeConstraintImpl();
 
         NodeList children = root.getChildNodes();
         final int length = children.getLength();
@@ -585,7 +584,7 @@ public class SLDParser {
                 ftc.setFilter(parseFilter(child));
             }
         }
-        ftc.setExtents(new org.geotools.styling.Extent[0]);
+        ftc.setExtents(new ExtentImpl[0]);
         if (ftc.getFeatureTypeName() == null) return null;
         else return ftc;
     }
@@ -600,7 +599,7 @@ public class SLDParser {
     }
 
     protected org.geotools.api.style.RemoteOWS parseRemoteOWS(Node root) {
-        RemoteOWS ows = new RemoteOWS();
+        RemoteOWSImpl ows = new RemoteOWSImpl();
 
         NodeList children = root.getChildNodes();
         final int length = children.getLength();
@@ -623,7 +622,7 @@ public class SLDParser {
     /** */
     private void parseInlineFeature(Node root, org.geotools.api.style.UserLayer layer) {
         try {
-            UserLayer uLayer = (UserLayer) layer;
+            UserLayerImpl uLayer = (UserLayerImpl) layer;
             SLDInlineFeatureParser inparser = new SLDInlineFeatureParser(root);
             uLayer.setInlineFeatureDatastore(inparser.dataStore);
             uLayer.setInlineFeatureType(inparser.featureType);
@@ -658,7 +657,7 @@ public class SLDParser {
      * </pre>
      */
     private org.geotools.api.style.NamedLayer parseNamedLayer(Node root) {
-        NamedLayer layer = new NamedLayer();
+        NamedLayerImpl layer = new NamedLayerImpl();
 
         NodeList children = root.getChildNodes();
         final int length = children.getLength();
@@ -675,10 +674,10 @@ public class SLDParser {
             if (childName.equalsIgnoreCase("Name")) {
                 layer.setName(getFirstChildValue(child));
             } else if (childName.equalsIgnoreCase("NamedStyle")) {
-                NamedStyle style = parseNamedStyle(child);
+                NamedStyleImpl style = parseNamedStyle(child);
                 layer.addStyle(style);
             } else if (childName.equalsIgnoreCase("UserStyle")) {
-                Style user = parseStyle(child);
+                StyleImpl user = parseStyle(child);
                 layer.addStyle(user);
             } else if (childName.equalsIgnoreCase("LayerFeatureConstraints")) {
                 layer.setLayerFeatureConstraints(parseLayerFeatureConstraints(child));
@@ -708,7 +707,7 @@ public class SLDParser {
      * &lt;/code&gt;
      * </pre>
      */
-    public NamedStyle parseNamedStyle(Node n) {
+    public NamedStyleImpl parseNamedStyle(Node n) {
         if (dom == null) {
             try {
                 dom = newDocumentBuilder(false).newDocument();
@@ -717,7 +716,7 @@ public class SLDParser {
             }
         }
 
-        NamedStyle style = factory.createNamedStyle();
+        NamedStyleImpl style = factory.createNamedStyle();
 
         NodeList children = n.getChildNodes();
         final int length = children.getLength();
@@ -754,7 +753,7 @@ public class SLDParser {
      * @return the Style constructed.
      * @throws RuntimeException if an error occurs setting up the parser
      */
-    public Style parseStyle(Node n) {
+    public StyleImpl parseStyle(Node n) {
         if (dom == null) {
             try {
                 dom = newDocumentBuilder(false).newDocument();
@@ -763,7 +762,7 @@ public class SLDParser {
             }
         }
 
-        Style style = factory.createStyle();
+        StyleImpl style = factory.createStyle();
 
         NodeList children = n.getChildNodes();
         final int length = children.getLength();
@@ -813,13 +812,13 @@ public class SLDParser {
     }
 
     /** Internal parse method - made protected for unit testing */
-    protected FeatureTypeStyle parseFeatureTypeStyle(Node style) {
+    protected FeatureTypeStyleImpl parseFeatureTypeStyle(Node style) {
         if (LOGGER.isLoggable(Level.FINEST)) {
             LOGGER.finest("Parsing featuretype style " + style.getLocalName());
         }
 
-        FeatureTypeStyle ft = factory.createFeatureTypeStyle();
-        ArrayList<Rule> rules = new ArrayList<>();
+        FeatureTypeStyleImpl ft = factory.createFeatureTypeStyle();
+        ArrayList<RuleImpl> rules = new ArrayList<>();
         ArrayList<String> sti = new ArrayList<>();
         NodeList children = style.getChildNodes();
         final int length = children.getLength();
@@ -890,12 +889,12 @@ public class SLDParser {
     }
 
     /** Internal parse method - made protected for unit testing */
-    protected Rule parseRule(Node ruleNode) {
+    protected RuleImpl parseRule(Node ruleNode) {
         if (LOGGER.isLoggable(Level.FINEST)) {
             LOGGER.finest("Parsing rule " + ruleNode.getLocalName());
         }
 
-        Rule rule = factory.createRule();
+        RuleImpl rule = (RuleImpl) factory.createRule();
         List<Symbolizer> symbolizers = new ArrayList<>();
         NodeList children = ruleNode.getChildNodes();
         final int length = children.getLength();
@@ -939,7 +938,7 @@ public class SLDParser {
                 NodeList g = findElements(((Element) child), graphicSt);
                 final int l = g.getLength();
                 for (int k = 0; k < l; k++) {
-                    Graphic graphic = parseGraphic(g.item(k));
+                    GraphicImpl graphic = parseGraphic(g.item(k));
                     if (graphic != null) {
                         rule.setLegend((GraphicLegend) graphic);
                         break;
@@ -1048,8 +1047,8 @@ public class SLDParser {
      * @param root a w2c Dom Node
      * @return the linesymbolizer
      */
-    protected LineSymbolizer parseLineSymbolizer(Node root) {
-        LineSymbolizer symbol = factory.createLineSymbolizer();
+    protected LineSymbolizerImpl parseLineSymbolizer(Node root) {
+        LineSymbolizerImpl symbol = (LineSymbolizerImpl) factory.createLineSymbolizer();
 
         NamedNodeMap namedNodeMap = root.getAttributes();
         Node uomNode = namedNodeMap.getNamedItem(uomString);
@@ -1091,8 +1090,8 @@ public class SLDParser {
      * @param root w3c dom node
      * @return the polygon symbolizer
      */
-    protected PolygonSymbolizer parsePolygonSymbolizer(Node root) {
-        PolygonSymbolizer symbol = factory.createPolygonSymbolizer();
+    protected PolygonSymbolizerImpl parsePolygonSymbolizer(Node root) {
+        PolygonSymbolizerImpl symbol = factory.createPolygonSymbolizer();
         symbol.setFill(null);
         symbol.setStroke(null);
 
@@ -1135,8 +1134,8 @@ public class SLDParser {
      * @param root w3c dom node
      * @return the TextSymbolizer
      */
-    protected TextSymbolizer parseTextSymbolizer(Node root) {
-        TextSymbolizer symbol = factory.createTextSymbolizer();
+    protected TextSymbolizerImpl parseTextSymbolizer(Node root) {
+        TextSymbolizerImpl symbol = (TextSymbolizerImpl) factory.createTextSymbolizer();
         symbol.setFill(null);
 
         NamedNodeMap namedNodeMap = root.getAttributes();
@@ -1146,7 +1145,7 @@ public class SLDParser {
             symbol.setUnitOfMeasure(uomMapping.getUnit());
         }
 
-        List<org.geotools.styling.Font> fonts = new ArrayList<>();
+        List<FontImpl> fonts = new ArrayList<>();
         NodeList children = root.getChildNodes();
         final int length = children.getLength();
         for (int i = 0; i < length; i++) {
@@ -1216,7 +1215,7 @@ public class SLDParser {
 
     protected org.geotools.api.style.OtherText parseOtherText(Node root) {
         // TODO: add methods to the factory to create OtherText instances
-        OtherText ot = new OtherText();
+        OtherTextImpl ot = new OtherTextImpl();
         final Node targetAttribute = root.getAttributes().getNamedItem("target");
         if (targetAttribute == null)
             throw new IllegalArgumentException(
@@ -1244,8 +1243,9 @@ public class SLDParser {
      * @param root w3c dom node
      * @return the TextSymbolizer
      */
-    protected RasterSymbolizer parseRasterSymbolizer(Node root) {
-        final RasterSymbolizer symbol = factory.getDefaultRasterSymbolizer();
+    protected RasterSymbolizerImpl parseRasterSymbolizer(Node root) {
+        final RasterSymbolizerImpl symbol =
+                (RasterSymbolizerImpl) factory.getDefaultRasterSymbolizer();
 
         NamedNodeMap namedNodeMap = root.getAttributes();
         Node uomNode = namedNodeMap.getNamedItem(uomString);
@@ -1382,8 +1382,8 @@ public class SLDParser {
     }
 
     /** Internal parse method - made protected for unit testing */
-    protected ColorMap parseColorMap(Node root) {
-        ColorMap symbol = factory.createColorMap();
+    protected ColorMapImpl parseColorMap(Node root) {
+        ColorMapImpl symbol = factory.createColorMap();
 
         if (root.hasAttributes()) {
             // parsing type attribute
@@ -1393,11 +1393,11 @@ public class SLDParser {
                 final String type = typeAtt.getNodeValue();
 
                 if ("ramp".equalsIgnoreCase(type)) {
-                    symbol.setType(ColorMap.TYPE_RAMP);
+                    symbol.setType(ColorMapImpl.TYPE_RAMP);
                 } else if ("intervals".equalsIgnoreCase(type)) {
-                    symbol.setType(ColorMap.TYPE_INTERVALS);
+                    symbol.setType(ColorMapImpl.TYPE_INTERVALS);
                 } else if ("values".equalsIgnoreCase(type)) {
-                    symbol.setType(ColorMap.TYPE_VALUES);
+                    symbol.setType(ColorMapImpl.TYPE_VALUES);
                 } else if (LOGGER.isLoggable(Level.FINE))
                     LOGGER.fine(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "ColorMapType", type));
             }
@@ -1439,7 +1439,7 @@ public class SLDParser {
 
     /** Internal parse method - made protected for unit testing */
     protected org.geotools.api.style.SelectedChannelType parseSelectedChannel(Node root) {
-        org.geotools.api.style.SelectedChannelType symbol = new SelectedChannelType();
+        org.geotools.api.style.SelectedChannelType symbol = new SelectedChannelTypeImpl();
 
         NodeList children = root.getChildNodes();
         final int length = children.getLength();
@@ -1455,11 +1455,11 @@ public class SLDParser {
                 childName = child.getNodeName();
             } else if (childName.equalsIgnoreCase("SourceChannelName")) {
                 if (child.getFirstChild() != null) {
-                    ((SelectedChannelType) symbol)
+                    ((SelectedChannelTypeImpl) symbol)
                             .setChannelName(parseParameterValueExpression(child, true));
                 }
             } else if (childName.equalsIgnoreCase("ContrastEnhancement")) {
-                ((SelectedChannelType) symbol)
+                ((SelectedChannelTypeImpl) symbol)
                         .setContrastEnhancement(parseContrastEnhancement(child));
 
                 /*
@@ -1474,7 +1474,7 @@ public class SLDParser {
     }
 
     /** Internal parse method - made protected for unit testing */
-    protected ChannelSelection parseChannelSelection(Node root) {
+    protected ChannelSelectionImpl parseChannelSelection(Node root) {
         NodeList children = root.getChildNodes();
         boolean isGray = isGray(children);
         List<org.geotools.api.style.SelectedChannelType> channels = new ArrayList<>();
@@ -1502,9 +1502,9 @@ public class SLDParser {
             }
         }
 
-        ChannelSelection dap =
+        ChannelSelectionImpl dap =
                 factory.createChannelSelection(
-                        channels.toArray(new SelectedChannelType[channels.size()]));
+                        channels.toArray(new SelectedChannelTypeImpl[channels.size()]));
 
         return dap;
     }
@@ -1533,8 +1533,8 @@ public class SLDParser {
     }
 
     /** Internal parse method - made protected for unit testing */
-    protected ContrastEnhancement parseContrastEnhancement(Node root) {
-        ContrastEnhancement symbol = new ContrastEnhancement();
+    protected ContrastEnhancementImpl parseContrastEnhancement(Node root) {
+        ContrastEnhancementImpl symbol = new ContrastEnhancementImpl();
 
         NodeList children = root.getChildNodes();
         final int length = children.getLength();
@@ -1615,7 +1615,7 @@ public class SLDParser {
 
     /** Internal parse method - made protected for unit testing */
     protected org.geotools.api.style.ShadedRelief parseShadedRelief(Node root) {
-        org.geotools.api.style.ShadedRelief symbol = new ShadedRelief();
+        org.geotools.api.style.ShadedRelief symbol = new ShadedReliefImpl();
 
         NodeList children = root.getChildNodes();
         final int length = children.getLength();
@@ -1630,13 +1630,13 @@ public class SLDParser {
                 childName = child.getNodeName();
             }
             if ("BrightnessOnly".equalsIgnoreCase(childName)) {
-                ((ShadedRelief) symbol)
+                ((ShadedReliefImpl) symbol)
                         .setBrightnessOnly(Boolean.parseBoolean(getFirstChildValue(child)));
             } else if ("ReliefFactor".equalsIgnoreCase(childName)) {
                 try {
                     final String reliefString = getFirstChildValue(child);
                     Expression relief = ff.literal(Double.parseDouble(reliefString));
-                    ((ShadedRelief) symbol).setReliefFactor(relief);
+                    ((ShadedReliefImpl) symbol).setReliefFactor(relief);
                 } catch (Exception e) {
                     if (LOGGER.isLoggable(Level.WARNING))
                         LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
@@ -1653,8 +1653,8 @@ public class SLDParser {
      * @param root a w3c dom node
      * @return the pointsymbolizer
      */
-    protected PointSymbolizer parsePointSymbolizer(Node root) {
-        PointSymbolizer symbol = factory.getDefaultPointSymbolizer();
+    protected PointSymbolizerImpl parsePointSymbolizer(Node root) {
+        PointSymbolizerImpl symbol = (PointSymbolizerImpl) factory.getDefaultPointSymbolizer();
         // symbol.setGraphic(null);
 
         NamedNodeMap namedNodeMap = root.getAttributes();
@@ -1690,12 +1690,12 @@ public class SLDParser {
     }
 
     /** Internal parse method - made protected for unit testing */
-    protected Graphic parseGraphic(Node root) {
+    protected GraphicImpl parseGraphic(Node root) {
         if (LOGGER.isLoggable(Level.FINEST)) {
             LOGGER.finest("processing graphic " + root);
         }
 
-        Graphic graphic = factory.getDefaultGraphic();
+        GraphicImpl graphic = factory.getDefaultGraphic();
 
         NodeList children = root.getChildNodes();
         final int length = children.getLength();
@@ -1759,12 +1759,12 @@ public class SLDParser {
     }
 
     /** Internal parse method - made protected for unit testing */
-    protected Mark parseMark(Node root) {
+    protected MarkImpl parseMark(Node root) {
         if (LOGGER.isLoggable(Level.FINEST)) {
             LOGGER.finest("parsing mark");
         }
 
-        Mark mark = factory.createMark();
+        MarkImpl mark = factory.createMark();
         mark.setFill(null);
         mark.setStroke(null);
 
@@ -1810,7 +1810,7 @@ public class SLDParser {
     }
 
     /** Internal parse method - made protected for unit testing */
-    protected ExternalGraphic parseExternalGraphic(Node root) {
+    protected ExternalGraphicImpl parseExternalGraphic(Node root) {
         if (LOGGER.isLoggable(Level.FINEST)) {
             LOGGER.finest("processing external graphic ");
         }
@@ -1870,7 +1870,7 @@ public class SLDParser {
             }
         }
 
-        ExternalGraphic extgraph;
+        ExternalGraphicImpl extgraph;
         if (content != null) {
             Icon icon = null;
             if (content.length() > 0) {
@@ -1931,8 +1931,8 @@ public class SLDParser {
     }
 
     /** Internal parse method - made protected for unit testing */
-    protected org.geotools.styling.Stroke parseStroke(Node root) {
-        org.geotools.styling.Stroke stroke = factory.getDefaultStroke();
+    protected StrokeImpl parseStroke(Node root) {
+        StrokeImpl stroke = factory.getDefaultStroke();
         NodeList list = findElements(((Element) root), "GraphicFill");
         int length = list.getLength();
         if (length > 0) {
@@ -1952,7 +1952,7 @@ public class SLDParser {
                     childName = child.getNodeName();
                 }
                 if (childName.equalsIgnoreCase(graphicSt)) {
-                    Graphic g = parseGraphic(child);
+                    GraphicImpl g = parseGraphic(child);
                     if (LOGGER.isLoggable(Level.FINEST))
                         LOGGER.finest("setting stroke graphicfill with " + g);
                     stroke.setGraphicFill(g);
@@ -1979,7 +1979,7 @@ public class SLDParser {
                     childName = child.getNodeName();
                 }
                 if (childName.equalsIgnoreCase(graphicSt)) {
-                    Graphic g = parseGraphic(child);
+                    GraphicImpl g = parseGraphic(child);
                     if (LOGGER.isLoggable(Level.FINEST))
                         LOGGER.finest("setting stroke graphicStroke with " + g);
                     stroke.setGraphicStroke(g);
@@ -2098,12 +2098,12 @@ public class SLDParser {
     }
 
     /** Internal parse method - made protected for unit testing */
-    protected Fill parseFill(Node root) {
+    protected FillImpl parseFill(Node root) {
         if (LOGGER.isLoggable(Level.FINEST)) {
             LOGGER.finest("parsing fill ");
         }
 
-        Fill fill = factory.getDefaultFill();
+        FillImpl fill = (FillImpl) factory.getDefaultFill();
         NodeList list = findElements(((Element) root), "GraphicFill");
         int length = list.getLength();
         if (length > 0) {
@@ -2123,7 +2123,7 @@ public class SLDParser {
                     childName = child.getNodeName();
                 }
                 if (childName.equalsIgnoreCase(graphicSt)) {
-                    Graphic g = parseGraphic(child);
+                    GraphicImpl g = parseGraphic(child);
                     if (LOGGER.isLoggable(Level.FINEST))
                         LOGGER.finest("setting fill graphic with " + g);
                     fill.setGraphicFill(g);
@@ -2352,12 +2352,12 @@ public class SLDParser {
     }
 
     /** Internal method to parse a Font Node; protected to allow for unit testing */
-    protected org.geotools.styling.Font parseFont(Node root) {
+    protected FontImpl parseFont(Node root) {
         if (LOGGER.isLoggable(Level.FINEST)) {
             LOGGER.finest("parsing font");
         }
 
-        Font font = factory.getDefaultFont();
+        FontImpl font = factory.getDefaultFont();
         boolean firstFontFamily = true;
         NodeList list = findElements(((Element) root), "CssParameter");
         int length = list.getLength();
@@ -2425,14 +2425,14 @@ public class SLDParser {
     }
 
     /** Internal parse method - made protected for unit testing */
-    protected PointPlacement parsePointPlacement(Node root) {
+    protected PointPlacementImpl parsePointPlacement(Node root) {
         if (LOGGER.isLoggable(Level.FINEST)) {
             LOGGER.finest("parsing pointPlacement");
         }
 
         Expression rotation = ff.literal(0.0);
-        AnchorPoint ap = null;
-        Displacement dp = null;
+        AnchorPointImpl ap = null;
+        DisplacementImpl dp = null;
 
         NodeList children = root.getChildNodes();
         final int length = children.getLength();
@@ -2460,13 +2460,14 @@ public class SLDParser {
             LOGGER.fine("setting displacement " + dp);
         }
 
-        PointPlacement dpp = factory.createPointPlacement(ap, dp, rotation);
+        PointPlacementImpl dpp =
+                (PointPlacementImpl) factory.createPointPlacement(ap, dp, rotation);
 
         return dpp;
     }
 
     /** Internal parse method - made protected for unit testing */
-    protected LinePlacement parseLinePlacement(Node root) {
+    protected LinePlacementImpl parseLinePlacement(Node root) {
         if (LOGGER.isLoggable(Level.FINEST)) {
             LOGGER.finest("parsing linePlacement");
         }
@@ -2489,13 +2490,13 @@ public class SLDParser {
             }
         }
 
-        LinePlacement dlp = factory.createLinePlacement(offset);
+        LinePlacementImpl dlp = factory.createLinePlacement(offset);
 
         return dlp;
     }
 
     /** Internal method to parse an AnchorPoint node; protected visibility for testing. */
-    protected AnchorPoint parseAnchorPoint(Node root) {
+    protected AnchorPointImpl parseAnchorPoint(Node root) {
         if (LOGGER.isLoggable(Level.FINEST)) {
             LOGGER.finest("parsing anchorPoint");
         }
@@ -2522,13 +2523,13 @@ public class SLDParser {
             }
         }
 
-        AnchorPoint dap = factory.createAnchorPoint(x, y);
+        AnchorPointImpl dap = factory.createAnchorPoint(x, y);
 
         return dap;
     }
 
     /** Internal parse method - made protected for unit testing */
-    protected Displacement parseDisplacement(Node root) {
+    protected DisplacementImpl parseDisplacement(Node root) {
         if (LOGGER.isLoggable(Level.FINEST)) {
             LOGGER.finest("parsing displacment");
         }
@@ -2556,17 +2557,20 @@ public class SLDParser {
             }
         }
 
-        Displacement dd = factory.createDisplacement(x, y);
+        DisplacementImpl dd = factory.createDisplacement(x, y);
 
         return dd;
     }
 
     /** Internal parse method - made protected for unit testing */
-    protected Halo parseHalo(Node root) {
+    protected HaloImpl parseHalo(Node root) {
         if (LOGGER.isLoggable(Level.FINEST)) {
             LOGGER.finest("parsing halo");
         }
-        Halo halo = factory.createHalo(factory.createFill(ff.literal("#FFFFFF")), ff.literal(1.0));
+        HaloImpl halo =
+                (HaloImpl)
+                        factory.createHalo(
+                                factory.createFill(ff.literal("#FFFFFF")), ff.literal(1.0));
 
         NodeList children = root.getChildNodes();
         final int length = children.getLength();

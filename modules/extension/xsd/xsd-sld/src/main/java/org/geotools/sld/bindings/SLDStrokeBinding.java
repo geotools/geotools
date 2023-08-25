@@ -21,8 +21,8 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.filter.Filters;
 import org.geotools.sld.CssParameter;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Stroke;
+import org.geotools.styling.GraphicImpl;
+import org.geotools.styling.StrokeImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
@@ -99,7 +99,7 @@ public class SLDStrokeBinding extends AbstractComplexBinding {
      */
     @Override
     public Class getType() {
-        return Stroke.class;
+        return StrokeImpl.class;
     }
 
     /**
@@ -202,8 +202,8 @@ public class SLDStrokeBinding extends AbstractComplexBinding {
         //   &lt;xsd:element ref="sld:GraphicFill"/&gt;
         //   &lt;xsd:element ref="sld:GraphicStroke"/&gt;
         // &lt;/xsd:choice&gt;
-        Graphic graphicFill = (Graphic) node.getChildValue("GraphicFill");
-        Graphic graphicStroke = (Graphic) node.getChildValue("GraphicStroke");
+        GraphicImpl graphicFill = (GraphicImpl) node.getChildValue("GraphicFill");
+        GraphicImpl graphicStroke = (GraphicImpl) node.getChildValue("GraphicStroke");
 
         return styleFactory.createStroke(
                 color,

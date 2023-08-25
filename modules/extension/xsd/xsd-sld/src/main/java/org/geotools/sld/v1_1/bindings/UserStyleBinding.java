@@ -17,8 +17,8 @@
 package org.geotools.sld.v1_1.bindings;
 
 import org.geotools.sld.bindings.SLDUserStyleBinding;
-import org.geotools.styling.Description;
-import org.geotools.styling.Style;
+import org.geotools.styling.DescriptionImpl;
+import org.geotools.styling.StyleImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
@@ -72,10 +72,10 @@ public class UserStyleBinding extends SLDUserStyleBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        Style style = (Style) super.parse(instance, node, value);
+        StyleImpl style = (StyleImpl) super.parse(instance, node, value);
 
         if (node.hasChild("Description")) {
-            Description desc = (Description) node.getChildValue("Description");
+            DescriptionImpl desc = (DescriptionImpl) node.getChildValue("Description");
             style.getDescription().setAbstract(desc.getAbstract());
             style.getDescription().setTitle(desc.getTitle());
         }

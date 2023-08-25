@@ -26,9 +26,9 @@ import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.lite.RendererBaseTest;
-import org.geotools.styling.Font;
+import org.geotools.styling.FontImpl;
 import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.TextSymbolizerImpl;
 import org.geotools.test.TestGraphics;
 import org.geotools.util.NumberRange;
 import org.junit.Before;
@@ -81,7 +81,7 @@ public class LabelCacheImplTest {
 
     @Test
     public void testSimpleGrouping() throws Exception {
-        TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, (Font) null, "name");
+        TextSymbolizerImpl ts = sb.createTextSymbolizer(Color.BLACK, (FontImpl) null, "name");
         ts.getOptions().put(org.geotools.api.style.TextSymbolizer.GROUP_KEY, "true");
         SimpleFeature f1 = createFeature("label1", L1);
         SimpleFeature f2 = createFeature("label1", L2);
@@ -108,9 +108,9 @@ public class LabelCacheImplTest {
 
     @Test
     public void testGroupDifferentSymbolizers() throws Exception {
-        TextSymbolizer ts1 = sb.createTextSymbolizer(Color.BLACK, (Font) null, "name");
+        TextSymbolizerImpl ts1 = sb.createTextSymbolizer(Color.BLACK, (FontImpl) null, "name");
         ts1.getOptions().put(org.geotools.api.style.TextSymbolizer.GROUP_KEY, "true");
-        TextSymbolizer ts2 = sb.createTextSymbolizer(Color.YELLOW, (Font) null, "name");
+        TextSymbolizerImpl ts2 = sb.createTextSymbolizer(Color.YELLOW, (FontImpl) null, "name");
         ts2.getOptions().put(org.geotools.api.style.TextSymbolizer.GROUP_KEY, "true");
 
         SimpleFeature f1 = createFeature("label1", L1);
@@ -135,8 +135,8 @@ public class LabelCacheImplTest {
 
     @Test
     public void testMinNonGrouped() throws Exception {
-        TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, (Font) null, "name");
-        TextSymbolizer tsGroup = sb.createTextSymbolizer(Color.YELLOW, (Font) null, "name");
+        TextSymbolizerImpl ts = sb.createTextSymbolizer(Color.BLACK, (FontImpl) null, "name");
+        TextSymbolizerImpl tsGroup = sb.createTextSymbolizer(Color.YELLOW, (FontImpl) null, "name");
         tsGroup.getOptions().put(org.geotools.api.style.TextSymbolizer.GROUP_KEY, "true");
 
         SimpleFeature f1 = createFeature("label1", L1);
@@ -196,7 +196,7 @@ public class LabelCacheImplTest {
                                 labelItem);
                     }
                 };
-        TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, (Font) null, "name");
+        TextSymbolizerImpl ts = sb.createTextSymbolizer(Color.BLACK, (FontImpl) null, "name");
         SimpleFeature f1 = createFeature("label1", L1);
         myCache.enableLayer(LAYER_ID);
         myCache.put(
@@ -213,7 +213,7 @@ public class LabelCacheImplTest {
 
     @Test
     public void testRendererListener() throws Exception {
-        TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, (Font) null, "name");
+        TextSymbolizerImpl ts = sb.createTextSymbolizer(Color.BLACK, (FontImpl) null, "name");
 
         AtomicReference<Exception> exception = new AtomicReference<>(null);
         RenderListener listener =
@@ -252,7 +252,7 @@ public class LabelCacheImplTest {
         Graphics2D graphics = Mockito.mock(Graphics2D.class);
 
         cache.setConstructPainter((x, y) -> painter);
-        TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, (Font) null, "name");
+        TextSymbolizerImpl ts = sb.createTextSymbolizer(Color.BLACK, (FontImpl) null, "name");
         SimpleFeature f1 = createFeature("label1", L1);
         cache.put(
                 LAYER_ID,
@@ -270,8 +270,8 @@ public class LabelCacheImplTest {
 
     @Test
     public void testDecimateSmallRing() throws Exception {
-        Font font = sb.createFont("Bitstream Vera Sans", 12);
-        TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, font, "name");
+        FontImpl font = sb.createFont("Bitstream Vera Sans", 12);
+        TextSymbolizerImpl ts = sb.createTextSymbolizer(Color.BLACK, font, "name");
         ts.getOptions().put(org.geotools.api.style.TextSymbolizer.FOLLOW_LINE_KEY, "true");
 
         AtomicReference<Exception> exception = new AtomicReference<>(null);
@@ -308,8 +308,8 @@ public class LabelCacheImplTest {
     @Test
     public void testFollowLineAutoWrap() throws Exception {
         // these two right now are not compatible
-        Font font = sb.createFont("Bitstream Vera Sans", 12);
-        TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, font, "name");
+        FontImpl font = sb.createFont("Bitstream Vera Sans", 12);
+        TextSymbolizerImpl ts = sb.createTextSymbolizer(Color.BLACK, font, "name");
         ts.getOptions().put(org.geotools.api.style.TextSymbolizer.AUTO_WRAP_KEY, "10");
         ts.getOptions().put(org.geotools.api.style.TextSymbolizer.FOLLOW_LINE_KEY, "true");
 

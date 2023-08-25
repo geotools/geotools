@@ -32,14 +32,15 @@ import java.util.Random;
 import javax.swing.Icon;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.api.style.Symbolizer;
 import org.geotools.geometry.jts.GeometryBuilder;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.LiteShape;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.renderer.VendorOptionParser;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Mark;
-import org.geotools.styling.Symbolizer;
+import org.geotools.styling.GraphicImpl;
+import org.geotools.styling.MarkImpl;
+
 import org.locationtech.jts.algorithm.MinimumDiameter;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.index.quadtree.Quadtree;
@@ -89,9 +90,9 @@ class RandomFillBuilder {
     /** Builds a image with a random distribution of the graphic/mark */
     BufferedImage buildRandomTilableImage(
             Symbolizer symbolizer,
-            Graphic gr,
+            GraphicImpl gr,
             Icon icon,
-            Mark mark,
+            MarkImpl mark,
             Shape shape,
             double markSize,
             Object feature) {
@@ -268,7 +269,7 @@ class RandomFillBuilder {
     }
 
     private Geometry getGeometryBounds(
-            Icon icon, Mark mark, Shape shape, double markSize, Object feature) {
+            Icon icon, MarkImpl mark, Shape shape, double markSize, Object feature) {
         Geometry bounds;
         if (icon != null) {
             bounds = new GeometryBuilder().box(0, 0, icon.getIconWidth(), icon.getIconHeight());

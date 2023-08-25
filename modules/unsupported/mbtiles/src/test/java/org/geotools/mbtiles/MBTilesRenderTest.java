@@ -45,7 +45,7 @@ import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.renderer.lite.StreamingRenderer;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.util.URLs;
 import org.geotools.xml.styling.SLDParser;
@@ -74,7 +74,7 @@ public class MBTilesRenderTest {
         URL styleResource = MBTilesRenderTest.class.getResource("generic.sld");
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
         StyledLayerDescriptor sld = new SLDParser(styleFactory, styleResource).parseSLD();
-        Style style = (Style) ((NamedLayer) sld.getStyledLayers()[0]).getStyles()[0];
+        StyleImpl style = (StyleImpl) ((NamedLayer) sld.getStyledLayers()[0]).getStyles()[0];
 
         MapContent mc = new MapContent();
         File file = URLs.urlToFile(getClass().getResource("madagascar.mbtiles"));
@@ -110,7 +110,7 @@ public class MBTilesRenderTest {
         URL styleResource = MBTilesRenderTest.class.getResource("generic.sld");
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
         StyledLayerDescriptor sld = new SLDParser(styleFactory, styleResource).parseSLD();
-        Style style = (Style) ((NamedLayer) sld.getStyledLayers()[0]).getStyles()[0];
+        StyleImpl style = (StyleImpl) ((NamedLayer) sld.getStyledLayers()[0]).getStyles()[0];
 
         MapContent mc = new MapContent();
         File file = URLs.urlToFile(getClass().getResource("madagascar.mbtiles"));
@@ -148,7 +148,7 @@ public class MBTilesRenderTest {
     public void testTransformWithGeneralizationHint() throws Exception {
         // tests if geometry generalization happens when a rendering
         // transformation is issued
-        Style style = getStyle("transformation_water.sld");
+        StyleImpl style = getStyle("transformation_water.sld");
         File file = URLs.urlToFile(getClass().getResource("madagascar.mbtiles"));
         MBTilesDataStore store = new MBTilesDataStore(new MBTilesFile(file));
 
@@ -186,12 +186,12 @@ public class MBTilesRenderTest {
         // rendering transformation is issued
 
         // Issues AttributeRename transformation
-        Style styleTransformation = getStyle("transformation_many_points.sld");
+        StyleImpl styleTransformation = getStyle("transformation_many_points.sld");
 
         // Style equal to the former Fbut without AttributeRename
         // so that the two images will differ just for the presence of not removed
         // buffer pixel at tiles' borders
-        Style styleNoTransformation = getStyle("many_points.sld");
+        StyleImpl styleNoTransformation = getStyle("many_points.sld");
 
         File file = URLs.urlToFile(getClass().getResource("manypoints_test.mbtiles"));
         MBTilesDataStore store = new MBTilesDataStore(new MBTilesFile(file));
@@ -225,15 +225,15 @@ public class MBTilesRenderTest {
         }
     }
 
-    private Style getStyle(String fileName) throws IOException {
+    private StyleImpl getStyle(String fileName) throws IOException {
         URL styleResource = MBTilesRenderTest.class.getResource(fileName);
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
         StyledLayerDescriptor sld = new SLDParser(styleFactory, styleResource).parseSLD();
-        return (Style) ((NamedLayer) sld.getStyledLayers()[0]).getStyles()[0];
+        return (StyleImpl) ((NamedLayer) sld.getStyledLayers()[0]).getStyles()[0];
     }
 
     private BufferedImage getImage(
-            int w, int h, ReferencedEnvelope bbox, FeatureSource fs, Style style) {
+            int w, int h, ReferencedEnvelope bbox, FeatureSource fs, StyleImpl style) {
         FeatureLayer layer = new FeatureLayer(fs, style);
 
         MapContent mc = new MapContent();

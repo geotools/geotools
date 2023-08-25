@@ -33,7 +33,7 @@ import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.styling.StyleBuilder;
 import org.junit.Assert;
 import org.junit.Before;
@@ -81,7 +81,7 @@ public class ReprojectionTest {
                 pointFeautureType, new Object[] {gf.createLineString(coords)}, null);
     }
 
-    private Style createLineStyle() {
+    private StyleImpl createLineStyle() {
         StyleBuilder sb = new StyleBuilder();
         return sb.createStyle(sb.createLineSymbolizer());
     }

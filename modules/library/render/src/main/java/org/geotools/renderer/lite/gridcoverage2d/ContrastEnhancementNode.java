@@ -53,7 +53,7 @@ import org.geotools.renderer.i18n.Errors;
 import org.geotools.renderer.i18n.Vocabulary;
 import org.geotools.renderer.i18n.VocabularyKeys;
 import org.geotools.styling.AbstractContrastMethodStrategy;
-import org.geotools.styling.ContrastEnhancement;
+import org.geotools.styling.ContrastEnhancementImpl;
 import org.geotools.styling.ExponentialContrastMethodStrategy;
 import org.geotools.styling.HistogramContrastMethodStrategy;
 import org.geotools.styling.LogarithmicContrastMethodStrategy;
@@ -63,7 +63,7 @@ import org.geotools.util.factory.Hints;
 
 /**
  * This implementations of {@link CoverageProcessingNode} takes care of the {@link
- * ContrastEnhancement} element of the SLD 1.0 spec.
+ * ContrastEnhancementImpl} element of the SLD 1.0 spec.
  *
  * @author Simone Giannecchini, GeoSolutions
  * @authod Daniele Romagnoli, GeoSolutions

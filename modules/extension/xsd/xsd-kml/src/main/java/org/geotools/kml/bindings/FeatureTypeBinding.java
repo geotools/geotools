@@ -34,7 +34,7 @@ import org.geotools.kml.FolderStack;
 import org.geotools.kml.KML;
 import org.geotools.kml.StyleMap;
 import org.geotools.kml.v22.SchemaRegistry;
-import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.FeatureTypeStyleImpl;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
@@ -108,7 +108,7 @@ public class FeatureTypeBinding extends AbstractComplexBinding {
         // &lt;element minOccurs="0" ref="kml:TimePrimitive"/&gt;
         // tb.add("TimePrimitive", ...);
         // &lt;element minOccurs="0" ref="kml:styleUrl"/&gt;
-        tb.add("Style", FeatureTypeStyle.class);
+        tb.add("Style", FeatureTypeStyleImpl.class);
         // &lt;element maxOccurs="unbounded" minOccurs="0" ref="kml:StyleSelector"/&gt;
 
         // &lt;element minOccurs="0" ref="kml:Region"/&gt;

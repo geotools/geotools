@@ -19,7 +19,7 @@ package org.geotools.brewer.styling.builder;
 import java.awt.Color;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.styling.ConstantFill;
-import org.geotools.styling.Fill;
+import org.geotools.styling.FillImpl;
 import org.geotools.util.Converters;
 
 public class FillBuilder extends AbstractStyleBuilder<org.geotools.api.style.Fill> {
@@ -87,11 +87,11 @@ public class FillBuilder extends AbstractStyleBuilder<org.geotools.api.style.Fil
      * @return Created Fill as defined
      */
     @Override
-    public Fill build() {
+    public FillImpl build() {
         if (unset) {
             return null;
         }
-        Fill fill = sf.createFill(color, null, opacity, graphic.build());
+        FillImpl fill = sf.createFill(color, null, opacity, graphic.build());
 
         if (parent == null) {
             reset();

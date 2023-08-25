@@ -186,7 +186,7 @@ public class CircleMBLayer extends MBLayer {
         return parse.displacement(
                 paint,
                 "circle-translate",
-                (org.geotools.styling.Displacement) sf.displacement(ff.literal(0), ff.literal(0)));
+                (DisplacementImpl) sf.displacement(ff.literal(0), ff.literal(0)));
     }
 
     /**
@@ -323,11 +323,11 @@ public class CircleMBLayer extends MBLayer {
      * @return FeatureTypeStyle
      */
     @Override
-    public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
+    public List<FeatureTypeStyleImpl> transformInternal(MBStyle styleContext) {
         // default linecap because StrokeImpl.getOpacity has a bug. If lineCap == null, it returns a
         // default opacity.
-        Stroke s =
-                (Stroke)
+        StrokeImpl s =
+                (StrokeImpl)
                         sf.stroke(
                                 circleStrokeColor(),
                                 circleStrokeOpacity(),
@@ -336,11 +336,11 @@ public class CircleMBLayer extends MBLayer {
                                 ConstantStroke.DEFAULT.getLineCap(),
                                 null,
                                 null);
-        Fill f = (Fill) sf.fill(null, circleColor(), circleOpacity());
-        Mark m = (Mark) sf.mark(ff.literal("circle"), f, s);
+        FillImpl f = (FillImpl) sf.fill(null, circleColor(), circleOpacity());
+        MarkImpl m = (MarkImpl) sf.mark(ff.literal("circle"), f, s);
 
-        Graphic gr =
-                (Graphic)
+        GraphicImpl gr =
+                (GraphicImpl)
                         sf.graphic(
                                 Arrays.asList(m),
                                 null,
@@ -351,8 +351,8 @@ public class CircleMBLayer extends MBLayer {
         gr.graphicalSymbols().clear();
         gr.graphicalSymbols().add(m);
 
-        PointSymbolizer ps =
-                (PointSymbolizer)
+        PointSymbolizerImpl ps =
+                (PointSymbolizerImpl)
                         sf.pointSymbolizer(
                                 getId(),
                                 ff.property((String) null),
@@ -365,8 +365,8 @@ public class CircleMBLayer extends MBLayer {
         MBFilter filter = getFilter();
 
         List<org.geotools.api.style.Rule> rules = new ArrayList<>();
-        Rule rule =
-                (Rule)
+        RuleImpl rule =
+                (RuleImpl)
                         sf.rule(
                                 getId(),
                                 null,
@@ -379,7 +379,7 @@ public class CircleMBLayer extends MBLayer {
         rules.add(rule);
 
         return Collections.singletonList(
-                (FeatureTypeStyle)
+                (FeatureTypeStyleImpl)
                         sf.featureTypeStyle(
                                 getId(),
                                 sf.description(

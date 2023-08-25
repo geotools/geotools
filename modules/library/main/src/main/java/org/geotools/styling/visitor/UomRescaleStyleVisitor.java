@@ -121,7 +121,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
      * @param stroke the unscaled stroke, which will be modified in-place.
      * @param uom the unit of measure that will be used to scale.
      */
-    protected void rescaleStroke(Stroke stroke, Unit<Length> uom) {
+    protected void rescaleStroke(StrokeImpl stroke, Unit<Length> uom) {
         if (stroke != null) {
             stroke.setWidth(rescale(stroke.getWidth(), uom));
             stroke.setDashArray(rescaleDashArray(stroke.dashArray(), uom));
@@ -134,20 +134,20 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
     @Override
     public void visit(org.geotools.api.style.PointSymbolizer ps) {
         super.visit(ps);
-        PointSymbolizer copy = (PointSymbolizer) pages.peek();
+        PointSymbolizerImpl copy = (PointSymbolizerImpl) pages.peek();
 
         Unit<Length> uom = copy.getUnitOfMeasure();
-        Graphic copyGraphic = copy.getGraphic();
+        GraphicImpl copyGraphic = copy.getGraphic();
         rescale(copyGraphic, uom);
         copy.setUnitOfMeasure(Units.PIXEL);
     }
 
-    private void rescale(Graphic graphic, Unit<Length> unit) {
+    private void rescale(GraphicImpl graphic, Unit<Length> unit) {
         if (graphic != null) {
             graphic.setSize(rescale(graphic.getSize(), unit));
             graphic.setGap(rescale(graphic.getGap(), unit));
 
-            Displacement disp = graphic.getDisplacement();
+            DisplacementImpl disp = graphic.getDisplacement();
             if (disp != null) {
                 disp.setDisplacementX(rescale(disp.getDisplacementX(), unit));
                 disp.setDisplacementY(rescale(disp.getDisplacementY(), unit));
@@ -156,8 +156,8 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
 
             if (graphic.graphicalSymbols() != null) {
                 for (GraphicalSymbol gs : graphic.graphicalSymbols()) {
-                    if (gs instanceof Mark) {
-                        Mark mark = (Mark) gs;
+                    if (gs instanceof MarkImpl) {
+                        MarkImpl mark = (MarkImpl) gs;
                         rescaleStroke(mark.getStroke(), unit);
                         rescaleFill(mark.getFill(), unit);
                     }
@@ -169,9 +169,9 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
     @Override
     public void visit(org.geotools.api.style.LineSymbolizer line) {
         super.visit(line);
-        LineSymbolizer copy = (LineSymbolizer) pages.peek();
+        LineSymbolizerImpl copy = (LineSymbolizerImpl) pages.peek();
         Unit<Length> uom = copy.getUnitOfMeasure();
-        Stroke copyStroke = copy.getStroke();
+        StrokeImpl copyStroke = copy.getStroke();
         rescaleStroke(copyStroke, uom);
         copy.setPerpendicularOffset(rescale(copy.getPerpendicularOffset(), uom));
         copy.setUnitOfMeasure(Units.PIXEL);
@@ -180,16 +180,16 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
     @Override
     public void visit(org.geotools.api.style.PolygonSymbolizer poly) {
         super.visit(poly);
-        PolygonSymbolizer copy = (PolygonSymbolizer) pages.peek();
+        PolygonSymbolizerImpl copy = (PolygonSymbolizerImpl) pages.peek();
 
         Unit<Length> uom = copy.getUnitOfMeasure();
         rescaleStroke(copy.getStroke(), uom);
         rescaleFill(copy.getFill(), uom);
-        scaleIntArrayOption(copy.getOptions(), PolygonSymbolizer.GRAPHIC_MARGIN_KEY, uom);
+        scaleIntArrayOption(copy.getOptions(), PolygonSymbolizerImpl.GRAPHIC_MARGIN_KEY, uom);
         copy.setUnitOfMeasure(Units.PIXEL);
     }
 
-    private void rescaleFill(Fill copyFill, Unit<Length> unit) {
+    private void rescaleFill(FillImpl copyFill, Unit<Length> unit) {
         // rescale the graphic fill, if any
         if (copyFill != null) {
             rescale(copyFill.getGraphicFill(), unit);
@@ -199,28 +199,28 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
     @Override
     public void visit(org.geotools.api.style.TextSymbolizer text) {
         super.visit(text);
-        TextSymbolizer copy = (TextSymbolizer) pages.peek();
+        TextSymbolizerImpl copy = (TextSymbolizerImpl) pages.peek();
 
         Unit<Length> uom = copy.getUnitOfMeasure();
         // rescales fonts
-        for (Font font : copy.fonts()) {
+        for (FontImpl font : copy.fonts()) {
             font.setSize(rescale(font.getSize(), uom));
         }
 
         // rescales label placement
         LabelPlacement placement = copy.getLabelPlacement();
-        if (placement instanceof PointPlacement) {
+        if (placement instanceof PointPlacementImpl) {
             // rescales point label placement
-            PointPlacement pointPlacement = (PointPlacement) placement;
-            Displacement disp = pointPlacement.getDisplacement();
+            PointPlacementImpl pointPlacement = (PointPlacementImpl) placement;
+            DisplacementImpl disp = pointPlacement.getDisplacement();
             if (disp != null) {
                 disp.setDisplacementX(rescale(disp.getDisplacementX(), uom));
                 disp.setDisplacementY(rescale(disp.getDisplacementY(), uom));
                 pointPlacement.setDisplacement(disp);
             }
-        } else if (placement instanceof LinePlacement) {
+        } else if (placement instanceof LinePlacementImpl) {
             // rescales line label placement
-            LinePlacement linePlacement = (LinePlacement) placement;
+            LinePlacementImpl linePlacement = (LinePlacementImpl) placement;
             linePlacement.setGap(rescale(linePlacement.getGap(), uom));
             linePlacement.setInitialGap(rescale(linePlacement.getInitialGap(), uom));
             linePlacement.setPerpendicularOffset(
@@ -233,8 +233,8 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
             copy.getHalo().setRadius(rescale(copy.getHalo().getRadius(), uom));
         }
 
-        if (copy instanceof TextSymbolizer) {
-            TextSymbolizer copy2 = (TextSymbolizer) copy;
+        if (copy instanceof TextSymbolizerImpl) {
+            TextSymbolizerImpl copy2 = (TextSymbolizerImpl) copy;
 
             rescale(copy2.getGraphic(), uom);
         }

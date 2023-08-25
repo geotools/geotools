@@ -57,7 +57,7 @@ import org.geotools.map.GridReaderLayer;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
 import org.geotools.renderer.RenderListener;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
@@ -83,7 +83,7 @@ public class RenderingTransformationTest {
 
     @Test
     public void testTransformReprojectedGridReader() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "coverageCenter.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "coverageCenter.sld");
 
         GeoTiffReader reader = new GeoTiffReader(TestData.copy(this, "geotiff/world.tiff"));
 
@@ -111,7 +111,7 @@ public class RenderingTransformationTest {
 
     @Test
     public void testTransformBBOXIsCorrect() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "noop_colormap.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "noop_colormap.sld");
         GeoTiffReader reader = new GeoTiffReader(TestData.file(this, "watertemp.tiff"));
         MapContent mc = new MapContent();
         mc.addLayer(new GridReaderLayer(reader, style));
@@ -141,7 +141,7 @@ public class RenderingTransformationTest {
 
     @Test
     public void testRasterToVectorTransformAcrossDateline() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "coverageCenter.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "coverageCenter.sld");
 
         GeoTiffReader reader = new GeoTiffReader(TestData.copy(this, "geotiff/world.tiff"));
 
@@ -176,7 +176,7 @@ public class RenderingTransformationTest {
 
     @Test
     public void testRasterToTransformVectorPastDateline() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "coverageCenter.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "coverageCenter.sld");
 
         GeoTiffReader reader = new GeoTiffReader(TestData.copy(this, "geotiff/world.tiff"));
 
@@ -208,7 +208,7 @@ public class RenderingTransformationTest {
 
     @Test
     public void testTransformReprojectedGridCoverage() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "coverageCenter.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "coverageCenter.sld");
 
         GeoTiffReader reader = new GeoTiffReader(TestData.copy(this, "geotiff/world.tiff"));
 
@@ -236,7 +236,7 @@ public class RenderingTransformationTest {
 
     @Test
     public void testTransformNullCoverage() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "coverageCenter.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "coverageCenter.sld");
 
         GridCoverage2DReader reader =
                 new AbstractGridCoverage2DReader() {
@@ -288,7 +288,7 @@ public class RenderingTransformationTest {
             throws IOException, URISyntaxException, CQLException, NoSuchAuthorityCodeException,
                     FactoryException, Exception {
         // grab the style
-        Style style =
+        StyleImpl style =
                 RendererBaseTest.loadStyle(
                         this, invert ? "attributeRename.sld" : "attributeRenameNoInvert.sld");
         // grab the data
@@ -330,7 +330,7 @@ public class RenderingTransformationTest {
     @Test
     public void testTransformReproject() throws Exception {
         // grab the style
-        Style style = RendererBaseTest.loadStyle(this, "reproject-rt.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "reproject-rt.sld");
         // grab the data
         File property = new File(TestData.getResource(this, "point.properties").toURI());
         PropertyDataStore ds = new PropertyDataStore(property.getParentFile());
@@ -396,7 +396,7 @@ public class RenderingTransformationTest {
         File rainFile = URLs.urlToFile(rainURL);
         ArcGridReader rainReader = new ArcGridReader(rainFile);
 
-        Style style = RendererBaseTest.loadStyle(this, "rainrt.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "rainrt.sld");
         MapContent mc = new MapContent();
         mc.addLayer(new GridReaderLayer(rainReader, style));
         StreamingRenderer renderer = new StreamingRenderer();

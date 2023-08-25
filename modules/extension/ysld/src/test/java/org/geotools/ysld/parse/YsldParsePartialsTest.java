@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.geotools.api.style.StyledLayerDescriptor;
-import org.geotools.styling.PointSymbolizer;
+import org.geotools.styling.PointSymbolizerImpl;
 import org.geotools.styling.SLD;
 import org.geotools.ysld.Ysld;
 import org.junit.Test;
@@ -62,7 +62,7 @@ public class YsldParsePartialsTest {
 
     void assertSLD(StyledLayerDescriptor sld) {
         assertNotNull(sld);
-        PointSymbolizer point =
+        PointSymbolizerImpl point =
                 SLD.pointSymbolizer(
                         SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
         assertNotNull(point);

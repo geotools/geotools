@@ -19,9 +19,9 @@ package org.geotools.brewer.styling.builder;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.styling.PolygonSymbolizer;
+import org.geotools.styling.PolygonSymbolizerImpl;
 
-public class PolygonSymbolizerBuilder extends SymbolizerBuilder<PolygonSymbolizer> {
+public class PolygonSymbolizerBuilder extends SymbolizerBuilder<PolygonSymbolizerImpl> {
     StrokeBuilder stroke = new StrokeBuilder(this).unset();
 
     FillBuilder fill = new FillBuilder(this).unset();
@@ -67,11 +67,11 @@ public class PolygonSymbolizerBuilder extends SymbolizerBuilder<PolygonSymbolize
     }
 
     @Override
-    public PolygonSymbolizer build() {
+    public PolygonSymbolizerImpl build() {
         if (unset) {
             return null;
         }
-        PolygonSymbolizer ps = sf.createPolygonSymbolizer(stroke.build(), fill.build(), null);
+        PolygonSymbolizerImpl ps = sf.createPolygonSymbolizer(stroke.build(), fill.build(), null);
         if (geometry != null) {
             ps.setGeometry(geometry);
         }
@@ -98,8 +98,8 @@ public class PolygonSymbolizerBuilder extends SymbolizerBuilder<PolygonSymbolize
         if (symbolizer == null) {
             return unset();
         }
-        if (symbolizer instanceof PolygonSymbolizer) {
-            return reset((PolygonSymbolizer) symbolizer);
+        if (symbolizer instanceof PolygonSymbolizerImpl) {
+            return reset((PolygonSymbolizerImpl) symbolizer);
         }
         stroke.reset(symbolizer.getStroke());
         fill.reset(symbolizer.getFill());
@@ -111,7 +111,7 @@ public class PolygonSymbolizerBuilder extends SymbolizerBuilder<PolygonSymbolize
     }
 
     @Override
-    public PolygonSymbolizerBuilder reset(PolygonSymbolizer symbolizer) {
+    public PolygonSymbolizerBuilder reset(PolygonSymbolizerImpl symbolizer) {
         if (symbolizer == null) {
             return unset();
         }

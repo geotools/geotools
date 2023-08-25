@@ -32,11 +32,7 @@ import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.measure.Units;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.Rule;
+import org.geotools.styling.*;
 import org.geotools.text.Text;
 import org.json.simple.JSONObject;
 
@@ -239,12 +235,12 @@ public class FillExtrusionMBLayer extends MBLayer {
      *     like resolving sprite and glyph names to full urls.
      */
     @Override
-    public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
-        List<FeatureTypeStyle> fillExtrusion = new ArrayList<>();
+    public List<FeatureTypeStyleImpl> transformInternal(MBStyle styleContext) {
+        List<FeatureTypeStyleImpl> fillExtrusion = new ArrayList<>();
         MBStyleTransformer transformer = new MBStyleTransformer(parse);
 
         // from fill pattern or fill color
-        Fill fill;
+        FillImpl fill;
 
         //        DisplacementImpl displacement = new DisplacementImpl();
         //
@@ -253,21 +249,21 @@ public class FillExtrusionMBLayer extends MBLayer {
 
         if (getFillExtrusionPattern() != null) {
             // Fill graphic (with external graphics)
-            ExternalGraphic eg =
+            ExternalGraphicImpl eg =
                     transformer.createExternalGraphicForSprite(
                             getFillExtrusionPattern(), styleContext);
             GraphicFill gf =
                     sf.graphicFill(
                             Arrays.asList(eg), fillExtrusionOpacity(), null, null, null, null);
-            fill = (Fill) sf.fill(gf, null, null);
+            fill = (FillImpl) sf.fill(gf, null, null);
         } else {
-            fill = (Fill) sf.fill(null, fillExtrusionColor(), fillExtrusionOpacity());
+            fill = (FillImpl) sf.fill(null, fillExtrusionColor(), fillExtrusionOpacity());
         }
 
         // Create 3 symbolizers one each for shadow, sides, and roof.
-        PolygonSymbolizer shadowSymbolizer = (PolygonSymbolizer) sf.createPolygonSymbolizer();
-        PolygonSymbolizer sidesSymbolizer = (PolygonSymbolizer) sf.createPolygonSymbolizer();
-        PolygonSymbolizer roofSymbolizer = (PolygonSymbolizer) sf.createPolygonSymbolizer();
+        PolygonSymbolizerImpl shadowSymbolizer = (PolygonSymbolizerImpl) sf.createPolygonSymbolizer();
+        PolygonSymbolizerImpl sidesSymbolizer = (PolygonSymbolizerImpl) sf.createPolygonSymbolizer();
+        PolygonSymbolizerImpl roofSymbolizer = (PolygonSymbolizerImpl) sf.createPolygonSymbolizer();
 
         shadowSymbolizer.setName("shadow");
         shadowSymbolizer.setGeometry(
@@ -343,8 +339,8 @@ public class FillExtrusionMBLayer extends MBLayer {
         MBFilter filter = getFilter();
 
         // Each symbolizer needs a rule.
-        Rule shadowRule =
-                (Rule)
+        RuleImpl shadowRule =
+                (RuleImpl)
                         sf.rule(
                                 getId(),
                                 null,
@@ -354,8 +350,8 @@ public class FillExtrusionMBLayer extends MBLayer {
                                 Arrays.asList(shadowSymbolizer),
                                 filter.filter());
 
-        Rule sidesRule =
-                (Rule)
+        RuleImpl sidesRule =
+                (RuleImpl)
                         sf.rule(
                                 getId(),
                                 null,
@@ -365,8 +361,8 @@ public class FillExtrusionMBLayer extends MBLayer {
                                 Arrays.asList(sidesSymbolizer),
                                 filter.filter());
 
-        Rule roofRule =
-                (Rule)
+        RuleImpl roofRule =
+                (RuleImpl)
                         sf.rule(
                                 getId(),
                                 null,
@@ -377,8 +373,8 @@ public class FillExtrusionMBLayer extends MBLayer {
                                 filter.filter());
 
         // Finally we create the FeatureTypeStyles for the extrusion.
-        FeatureTypeStyle shadow =
-                (FeatureTypeStyle)
+        FeatureTypeStyleImpl shadow =
+                (FeatureTypeStyleImpl)
                         sf.featureTypeStyle(
                                 getId(),
                                 sf.description(
@@ -389,8 +385,8 @@ public class FillExtrusionMBLayer extends MBLayer {
                                 filter.semanticTypeIdentifiers(),
                                 Arrays.asList(shadowRule));
 
-        FeatureTypeStyle sides =
-                (FeatureTypeStyle)
+        FeatureTypeStyleImpl sides =
+                (FeatureTypeStyleImpl)
                         sf.featureTypeStyle(
                                 getId(),
                                 sf.description(
@@ -401,8 +397,8 @@ public class FillExtrusionMBLayer extends MBLayer {
                                 filter.semanticTypeIdentifiers(),
                                 Arrays.asList(sidesRule));
 
-        FeatureTypeStyle roof =
-                (FeatureTypeStyle)
+        FeatureTypeStyleImpl roof =
+                (FeatureTypeStyleImpl)
                         sf.featureTypeStyle(
                                 getId(),
                                 sf.description(

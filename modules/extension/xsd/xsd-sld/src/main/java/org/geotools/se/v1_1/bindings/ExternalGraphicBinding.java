@@ -20,7 +20,7 @@ import javax.swing.Icon;
 import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDExternalGraphicBinding;
-import org.geotools.styling.ExternalGraphic;
+import org.geotools.styling.ExternalGraphicImpl;
 import org.geotools.styling.ResourceLocator;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.ElementInstance;
@@ -85,13 +85,13 @@ public class ExternalGraphicBinding extends SLDExternalGraphicBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        ExternalGraphic g;
+        ExternalGraphicImpl g;
         if (node.hasChild("InlineContent")) {
             String format = (String) node.getChildValue("Format");
             Icon icon = (Icon) node.getChildValue("InlineContent");
             g = styleFactory.createExternalGraphic(icon, format);
         } else {
-            g = (ExternalGraphic) super.parse(instance, node, value);
+            g = (ExternalGraphicImpl) super.parse(instance, node, value);
         }
 
         return g;

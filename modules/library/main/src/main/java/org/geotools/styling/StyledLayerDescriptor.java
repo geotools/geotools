@@ -70,16 +70,16 @@ public class StyledLayerDescriptor implements org.geotools.api.style.StyledLayer
      *
      * @return first Style (in SLD-->UserLayers-->UserStyles) that claims to be the default
      */
-    public Style getDefaultStyle() {
+    public StyleImpl getDefaultStyle() {
         // descend into the layers
         for (org.geotools.api.style.StyledLayer layer : layers) {
             if (layer instanceof UserLayer) {
                 UserLayer userLayer = (UserLayer) layer;
 
                 // descend into the styles
-                Style[] styles = (Style[]) userLayer.getUserStyles();
+                StyleImpl[] styles = (StyleImpl[]) userLayer.getUserStyles();
 
-                for (Style style : styles) {
+                for (StyleImpl style : styles) {
                     // return the first style that claims to be the default
                     if (style.isDefault()) {
                         return style;
@@ -93,7 +93,7 @@ public class StyledLayerDescriptor implements org.geotools.api.style.StyledLayer
 
     @Override
     public org.geotools.api.style.StyledLayer[] getStyledLayers() {
-        return layers.toArray(new StyledLayer[layers.size()]);
+        return layers.toArray(new StyledLayerImpl[layers.size()]);
     }
 
     @Override

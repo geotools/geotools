@@ -20,9 +20,9 @@ import javax.xml.namespace.QName;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.sld.CssParameter;
-import org.geotools.styling.Fill;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.Stroke;
+import org.geotools.styling.FillImpl;
+import org.geotools.styling.PolygonSymbolizerImpl;
+import org.geotools.styling.StrokeImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
@@ -94,7 +94,7 @@ public class SLDPolygonSymbolizerBinding extends AbstractComplexBinding {
      */
     @Override
     public Class getType() {
-        return PolygonSymbolizer.class;
+        return PolygonSymbolizerImpl.class;
     }
 
     /**
@@ -116,7 +116,7 @@ public class SLDPolygonSymbolizerBinding extends AbstractComplexBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        PolygonSymbolizer ps = styleFactory.createPolygonSymbolizer();
+        PolygonSymbolizerImpl ps = styleFactory.createPolygonSymbolizer();
 
         // &lt;xsd:element ref="sld:Geometry" minOccurs="0"/&gt;
         if (node.hasChild("Geometry")) {
@@ -130,13 +130,13 @@ public class SLDPolygonSymbolizerBinding extends AbstractComplexBinding {
         }
 
         // &lt;xsd:element ref="sld:Fill" minOccurs="0"/&gt;
-        if (node.hasChild(Fill.class)) {
-            ps.setFill(node.getChildValue(Fill.class));
+        if (node.hasChild(FillImpl.class)) {
+            ps.setFill(node.getChildValue(FillImpl.class));
         }
 
         // &lt;xsd:element ref="sld:Stroke" minOccurs="0"/&gt;
-        if (node.hasChild(Stroke.class)) {
-            ps.setStroke(node.getChildValue(Stroke.class));
+        if (node.hasChild(StrokeImpl.class)) {
+            ps.setStroke(node.getChildValue(StrokeImpl.class));
         }
 
         // &lt;xsd:element ref="sld:VendorOption" minOccurs="0" maxOccurs="unbounded"/&gt;

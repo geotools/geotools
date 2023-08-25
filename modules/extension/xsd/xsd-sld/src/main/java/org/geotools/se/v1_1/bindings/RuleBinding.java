@@ -20,7 +20,7 @@ import javax.xml.namespace.QName;
 import org.geotools.api.style.Description;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDRuleBinding;
-import org.geotools.styling.Rule;
+import org.geotools.styling.RuleImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
@@ -67,7 +67,7 @@ public class RuleBinding extends SLDRuleBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        Rule rule = (Rule) super.parse(instance, node, value);
+        RuleImpl rule = (RuleImpl) super.parse(instance, node, value);
 
         // &lt;xsd:element minOccurs="0" ref="se:Description"/&gt;
         if (node.hasChild("Description")) {

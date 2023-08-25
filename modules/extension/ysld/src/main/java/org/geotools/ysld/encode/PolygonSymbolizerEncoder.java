@@ -17,16 +17,16 @@
  */
 package org.geotools.ysld.encode;
 
-import org.geotools.styling.PolygonSymbolizer;
+import org.geotools.styling.PolygonSymbolizerImpl;
 
-/** Encodes a {@link PolygonSymbolizer} as YSLD. */
-public class PolygonSymbolizerEncoder extends SymbolizerEncoder<PolygonSymbolizer> {
-    public PolygonSymbolizerEncoder(PolygonSymbolizer sym) {
+/** Encodes a {@link PolygonSymbolizerImpl} as YSLD. */
+public class PolygonSymbolizerEncoder extends SymbolizerEncoder<PolygonSymbolizerImpl> {
+    public PolygonSymbolizerEncoder(PolygonSymbolizerImpl sym) {
         super(sym);
     }
 
     @Override
-    protected void encode(PolygonSymbolizer sym) {
+    protected void encode(PolygonSymbolizerImpl sym) {
         inline(new StrokeEncoder(sym.getStroke()));
         inline(new FillEncoder(sym.getFill()));
         put("offset", sym.getPerpendicularOffset());

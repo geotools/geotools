@@ -12,7 +12,7 @@ import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,7 +42,7 @@ public class FeatureListenerTest {
     }
 
     protected void testFeatureCount(String sldFilename, int expectedCount) throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, sldFilename);
+        StyleImpl style = RendererBaseTest.loadStyle(this, sldFilename);
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(squareFS, style));

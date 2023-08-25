@@ -22,7 +22,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.List;
 import org.geotools.api.feature.Feature;
 import org.geotools.geometry.jts.LiteShape2;
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.TextSymbolizerImpl;
 import org.geotools.util.NumberRange;
 
 /**
@@ -57,7 +57,7 @@ public interface LabelCache {
      */
     void put(
             String layerId,
-            TextSymbolizer symbolizer,
+            TextSymbolizerImpl symbolizer,
             Feature feature,
             LiteShape2 shape,
             NumberRange<Double> scaleRange);

@@ -138,12 +138,12 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
      */
     @Override
     public void visit(org.geotools.api.style.Stroke stroke) {
-        Stroke copy = sf.getDefaultStroke();
+        StrokeImpl copy = sf.getDefaultStroke();
         copy.setColor(copy(stroke.getColor()));
-        copy.setDashArray(rescaleDashArray(((Stroke) stroke).dashArray()));
+        copy.setDashArray(rescaleDashArray(((StrokeImpl) stroke).dashArray()));
         copy.setDashOffset(rescale(stroke.getDashOffset()));
-        copy.setGraphicFill(copy(((Stroke) stroke).getGraphicFill()));
-        copy.setGraphicStroke(copy(((Stroke) stroke).getGraphicStroke()));
+        copy.setGraphicFill(copy(((StrokeImpl) stroke).getGraphicFill()));
+        copy.setGraphicStroke(copy(((StrokeImpl) stroke).getGraphicStroke()));
         copy.setLineCap(copy(stroke.getLineCap()));
         copy.setLineJoin(copy(stroke.getLineJoin()));
         copy.setOpacity(copy(stroke.getOpacity()));
@@ -155,17 +155,17 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
     @Override
     public void visit(org.geotools.api.style.Graphic gr) {
 
-        Displacement displacementCopy = null;
+        DisplacementImpl displacementCopy = null;
 
         if (gr.getDisplacement() != null) {
             gr.getDisplacement().accept(this);
-            displacementCopy = (Displacement) pages.pop();
+            displacementCopy = (DisplacementImpl) pages.pop();
         }
 
-        AnchorPoint anchorCopy = null;
+        AnchorPointImpl anchorCopy = null;
         if (gr.getAnchorPoint() != null) {
             gr.getAnchorPoint().accept(this);
-            anchorCopy = (AnchorPoint) pages.pop();
+            anchorCopy = (AnchorPointImpl) pages.pop();
         }
 
         List<GraphicalSymbol> symbols = gr.graphicalSymbols();
@@ -181,9 +181,9 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
 
         Expression opacityCopy = copy(gr.getOpacity());
         Expression rotationCopy = copy(gr.getRotation());
-        Expression sizeCopy = rescaleGraphicSize((Graphic) gr);
+        Expression sizeCopy = rescaleGraphicSize((GraphicImpl) gr);
 
-        Graphic copy = sf.createDefaultGraphic();
+        GraphicImpl copy = sf.createDefaultGraphic();
         copy.setDisplacement(displacementCopy);
         copy.setAnchorPoint(anchorCopy);
         copy.graphicalSymbols().clear();
@@ -195,7 +195,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
         pages.push(copy);
     }
 
-    protected Expression rescaleGraphicSize(Graphic gr) {
+    protected Expression rescaleGraphicSize(GraphicImpl gr) {
         return rescale(gr.getSize());
     }
 
@@ -204,10 +204,10 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
         this.defaultUnit = text.getUnitOfMeasure();
         try {
             super.visit(text);
-            TextSymbolizer copy = (TextSymbolizer) pages.peek();
+            TextSymbolizerImpl copy = (TextSymbolizerImpl) pages.peek();
 
             // rescales fonts
-            for (Font font : copy.fonts()) {
+            for (FontImpl font : copy.fonts()) {
                 if (font != null) {
                     font.setSize(rescale(font.getSize()));
                 }
@@ -215,18 +215,18 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
 
             // rescales label placement
             LabelPlacement placement = copy.getLabelPlacement();
-            if (placement instanceof PointPlacement) {
+            if (placement instanceof PointPlacementImpl) {
                 // rescales point label placement
-                PointPlacement pointPlacement = (PointPlacement) placement;
-                Displacement disp = pointPlacement.getDisplacement();
+                PointPlacementImpl pointPlacement = (PointPlacementImpl) placement;
+                DisplacementImpl disp = pointPlacement.getDisplacement();
                 if (disp != null) {
                     disp.setDisplacementX(rescale(disp.getDisplacementX()));
                     disp.setDisplacementY(rescale(disp.getDisplacementY()));
                     pointPlacement.setDisplacement(disp);
                 }
-            } else if (placement instanceof LinePlacement) {
+            } else if (placement instanceof LinePlacementImpl) {
                 // rescales line label placement
-                LinePlacement linePlacement = (LinePlacement) placement;
+                LinePlacementImpl linePlacement = (LinePlacementImpl) placement;
                 linePlacement.setGap(rescale(linePlacement.getGap()));
                 linePlacement.setInitialGap(rescale(linePlacement.getInitialGap()));
                 linePlacement.setPerpendicularOffset(
@@ -293,7 +293,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
         this.defaultUnit = sym.getUnitOfMeasure();
         try {
             super.visit(sym);
-            LineSymbolizer copy = (LineSymbolizer) pages.peek();
+            LineSymbolizerImpl copy = (LineSymbolizerImpl) pages.peek();
             copy.setPerpendicularOffset(rescale(copy.getPerpendicularOffset()));
         } finally {
             this.defaultUnit = null;
@@ -306,8 +306,8 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
         try {
             super.visit(sym);
 
-            PolygonSymbolizer copy = (PolygonSymbolizer) pages.peek();
-            rescaleArrayOption(copy.getOptions(), PolygonSymbolizer.GRAPHIC_MARGIN_KEY, 0);
+            PolygonSymbolizerImpl copy = (PolygonSymbolizerImpl) pages.peek();
+            rescaleArrayOption(copy.getOptions(), PolygonSymbolizerImpl.GRAPHIC_MARGIN_KEY, 0);
         } finally {
             this.defaultUnit = null;
         }

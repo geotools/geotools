@@ -210,7 +210,7 @@ public class FillMBLayer extends MBLayer {
         return parse.displacement(
                 paint,
                 "fill-translate",
-                (org.geotools.styling.Displacement) sf.displacement(ff.literal(0), ff.literal(0)));
+                (DisplacementImpl) sf.displacement(ff.literal(0), ff.literal(0)));
     }
 
     /**
@@ -263,11 +263,11 @@ public class FillMBLayer extends MBLayer {
      * @return FeatureTypeStyle
      */
     @Override
-    public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
+    public List<FeatureTypeStyleImpl> transformInternal(MBStyle styleContext) {
         MBStyleTransformer transformer = new MBStyleTransformer(parse);
         // use factory to avoid defaults values
-        org.geotools.styling.Stroke stroke =
-                (Stroke)
+        StrokeImpl stroke =
+                (StrokeImpl)
                         sf.stroke(
                                 fillOutlineColor(),
                                 fillOpacity(),
@@ -278,7 +278,7 @@ public class FillMBLayer extends MBLayer {
                                 null);
 
         // from fill pattern or fill color
-        Fill fill;
+        FillImpl fill;
         if (hasFillPattern()) {
 
             // If the fill-pattern is a literal string (not a function), then
@@ -293,7 +293,7 @@ public class FillMBLayer extends MBLayer {
                 }
             }
 
-            ExternalGraphic eg =
+            ExternalGraphicImpl eg =
                     transformer.createExternalGraphicForSprite(fillPatternExpr, styleContext);
             GraphicFill gf =
                     sf.graphicFill(
@@ -304,13 +304,13 @@ public class FillMBLayer extends MBLayer {
                             null,
                             fillTranslateDisplacement());
             stroke.setOpacity(ff.literal(0));
-            fill = (Fill) sf.fill(gf, null, null);
+            fill = (FillImpl) sf.fill(gf, null, null);
         } else {
-            fill = (Fill) sf.fill(null, fillColor(), fillOpacity());
+            fill = (FillImpl) sf.fill(null, fillColor(), fillOpacity());
         }
 
-        PolygonSymbolizer symbolizer =
-                (PolygonSymbolizer)
+        PolygonSymbolizerImpl symbolizer =
+                (PolygonSymbolizerImpl)
                         sf.polygonSymbolizer(
                                 getId(),
                                 ff.property((String) null),
@@ -323,8 +323,8 @@ public class FillMBLayer extends MBLayer {
 
         MBFilter filter = getFilter();
 
-        Rule rule =
-                (Rule)
+        RuleImpl rule =
+                (RuleImpl)
                         sf.rule(
                                 getId(),
                                 null,
@@ -335,7 +335,7 @@ public class FillMBLayer extends MBLayer {
                                 filter.filter());
 
         return Collections.singletonList(
-                (FeatureTypeStyle)
+                (FeatureTypeStyleImpl)
                         sf.featureTypeStyle(
                                 getId(),
                                 sf.description(

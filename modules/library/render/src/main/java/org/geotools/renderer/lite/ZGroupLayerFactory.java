@@ -29,13 +29,13 @@ import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
 import org.geotools.renderer.style.SLDStyleFactory;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Style;
+import org.geotools.styling.FeatureTypeStyleImpl;
+import org.geotools.styling.StyleImpl;
 import org.geotools.styling.StyleFactory;
 
 /**
  * Builds {@link ZGroupLayer} instances from a MapContent using {@link
- * FeatureTypeStyle#SORT_BY_GROUP} options
+ * FeatureTypeStyleImpl#SORT_BY_GROUP} options
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -44,8 +44,8 @@ class ZGroupLayerFactory {
     private static StyleFactory STYLE_FACTORY = CommonFactoryFinder.getStyleFactory();
 
     /**
-     * Filters a MapContent and returns a new one where adjacent {@link FeatureTypeStyle} using the
-     * same {@link FeatureTypeStyle#SORT_BY_GROUP} key are turned into {@link ZGroupLayer}
+     * Filters a MapContent and returns a new one where adjacent {@link FeatureTypeStyleImpl} using the
+     * same {@link FeatureTypeStyleImpl#SORT_BY_GROUP} key are turned into {@link ZGroupLayer}
      */
     public static MapContent filter(MapContent mapContent) {
         // Quick check, do we have any z-group to care for? For the common
@@ -108,9 +108,9 @@ class ZGroupLayerFactory {
             splitLayers.add(previousGroup);
         }
         String currentGroupId = previousGroup != null ? previousGroup.getGroupId() : null;
-        List<FeatureTypeStyle> featureTypeStyles = new ArrayList<>();
-        for (FeatureTypeStyle fts : layer.getStyle().featureTypeStyles()) {
-            String groupName = fts.getOptions().get(FeatureTypeStyle.SORT_BY_GROUP);
+        List<FeatureTypeStyleImpl> featureTypeStyles = new ArrayList<>();
+        for (FeatureTypeStyleImpl fts : layer.getStyle().featureTypeStyles()) {
+            String groupName = fts.getOptions().get(org.geotools.styling.FeatureTypeStyleImpl.SORT_BY_GROUP);
             if (!(groupName == currentGroupId
                             || (groupName != null && groupName.equals(currentGroupId)))
                     && !featureTypeStyles.isEmpty()) {
@@ -134,8 +134,8 @@ class ZGroupLayerFactory {
             ZGroupLayer previousGroup,
             List<Layer> splitLayers,
             String groupId,
-            List<FeatureTypeStyle> featureTypeStyles) {
-        Style style = STYLE_FACTORY.createStyle();
+            List<FeatureTypeStyleImpl> featureTypeStyles) {
+        StyleImpl style = STYLE_FACTORY.createStyle();
         style.featureTypeStyles().addAll(featureTypeStyles);
         featureTypeStyles.clear();
         FeatureLayer singleGroupLayer = buildNewFeatureLayer(layer, style);
@@ -149,7 +149,7 @@ class ZGroupLayerFactory {
         }
     }
 
-    private static FeatureLayer buildNewFeatureLayer(Layer layer, Style style) {
+    private static FeatureLayer buildNewFeatureLayer(Layer layer, StyleImpl style) {
         FeatureLayer singleGroupLayer = new FeatureLayer(layer.getFeatureSource(), style);
         SortBy[] sortBy = SLDStyleFactory.getSortBy(style.featureTypeStyles().get(0).getOptions());
         Query nativeQuery = layer.getQuery();
@@ -201,23 +201,23 @@ class ZGroupLayerFactory {
     private static boolean hasZGroup(Layer layer, boolean checkValid) {
         boolean hasGroup = false;
         if (layer.getStyle() != null) {
-            for (FeatureTypeStyle fts : layer.getStyle().featureTypeStyles()) {
+            for (FeatureTypeStyleImpl fts : layer.getStyle().featureTypeStyles()) {
                 Map<String, String> options = fts.getOptions();
-                String groupName = options.get(FeatureTypeStyle.SORT_BY_GROUP);
+                String groupName = options.get(org.geotools.styling.FeatureTypeStyleImpl.SORT_BY_GROUP);
                 if (groupName != null && !groupName.trim().isEmpty()) {
                     hasGroup = true;
                     if (checkValid) {
                         if (fts.getTransformation() != null) {
                             throw new IllegalArgumentException(
                                     "Invalid "
-                                            + FeatureTypeStyle.SORT_BY_GROUP
+                                            + org.geotools.styling.FeatureTypeStyleImpl.SORT_BY_GROUP
                                             + " usage in layer "
                                             + layer.getTitle()
                                             + ": cannot be mixed with rendering transformations");
-                        } else if (options.get(FeatureTypeStyle.SORT_BY) == null) {
+                        } else if (options.get(FeatureTypeStyleImpl.SORT_BY) == null) {
                             throw new IllegalArgumentException(
                                     "Invalid "
-                                            + FeatureTypeStyle.SORT_BY_GROUP
+                                            + org.geotools.styling.FeatureTypeStyleImpl.SORT_BY_GROUP
                                             + " usage in layer "
                                             + layer.getTitle()
                                             + ": the corresponding sortBy vendor option is missing");
@@ -229,7 +229,7 @@ class ZGroupLayerFactory {
         if (hasGroup && !(layer instanceof FeatureLayer)) {
             throw new IllegalArgumentException(
                     "Invalid "
-                            + FeatureTypeStyle.SORT_BY_GROUP
+                            + org.geotools.styling.FeatureTypeStyleImpl.SORT_BY_GROUP
                             + " usage in layer "
                             + layer.getTitle()
                             + ": can only be applied to vector layers");

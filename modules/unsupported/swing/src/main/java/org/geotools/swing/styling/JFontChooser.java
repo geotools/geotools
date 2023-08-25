@@ -31,7 +31,7 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.Font;
+import org.geotools.styling.FontImpl;
 import org.geotools.styling.StyleFactory;
 
 /**
@@ -78,7 +78,7 @@ public class JFontChooser extends JDialog {
     private int styleIndex;
     private int sizeIndex;
 
-    private Font selectedFont = null;
+    private FontImpl selectedFont = null;
     private boolean completed = false;
 
     /**
@@ -91,9 +91,9 @@ public class JFontChooser extends JDialog {
      *     GeoTools font
      * @return a new Font object or {@code null} if the user cancelled the dialog
      */
-    public static Font showDialog(Component owner, String title, Font labelFont) {
+    public static FontImpl showDialog(Component owner, String title, FontImpl labelFont) {
         JFontChooser chooser = null;
-        Font font = null;
+        FontImpl font = null;
 
         if (owner == null) {
             chooser = new JFontChooser((JFrame) null, title, labelFont);
@@ -127,7 +127,7 @@ public class JFontChooser extends JDialog {
      * @param initialFont the initial font for the chooser to display, or {@code null} for the
      *     GeoTools default font
      */
-    public JFontChooser(JFrame owner, String title, Font initialFont) {
+    public JFontChooser(JFrame owner, String title, FontImpl initialFont) {
         super(owner, title, true);
         setResizable(false);
         selectedFont = (initialFont == null ? sf.getDefaultFont() : initialFont);
@@ -144,7 +144,7 @@ public class JFontChooser extends JDialog {
      * @param initialFont the initial font for the chooser to display, or {@code null} for the
      *     GeoTools default font
      */
-    public JFontChooser(JDialog owner, String title, Font initialFont) {
+    public JFontChooser(JDialog owner, String title, FontImpl initialFont) {
         super(owner, title, true);
         setResizable(false);
         selectedFont = (initialFont == null ? sf.getDefaultFont() : initialFont);
@@ -167,7 +167,7 @@ public class JFontChooser extends JDialog {
      *
      * @return the selected font or {@code null} if the dialog was cancelled
      */
-    public Font getSelectedFont() {
+    public FontImpl getSelectedFont() {
         return selectedFont;
     }
 

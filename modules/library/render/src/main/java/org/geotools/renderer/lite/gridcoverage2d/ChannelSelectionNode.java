@@ -29,17 +29,17 @@ import org.geotools.renderer.i18n.ErrorKeys;
 import org.geotools.renderer.i18n.Errors;
 import org.geotools.renderer.i18n.Vocabulary;
 import org.geotools.renderer.i18n.VocabularyKeys;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.SelectedChannelType;
+import org.geotools.styling.ChannelSelectionImpl;
+import org.geotools.styling.SelectedChannelTypeImpl;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
 
 /**
- * {@link CoverageProcessingNode} that actually implement a {@link ChannelSelection} operation as
+ * {@link CoverageProcessingNode} that actually implement a {@link ChannelSelectionImpl} operation as
  * stated in SLD 1.0 spec from OGC.
  *
  * <p>This node internally creates a small chain that does all that�'s needed to satisfy a {@link
- * ChannelSelection} element.
+ * ChannelSelectionImpl} element.
  *
  * @author Simone Giannecchini, GeoSolutions
  */
@@ -126,8 +126,8 @@ class ChannelSelectionNode extends SubchainStyleVisitorCoverageProcessingAdapter
         setSink(subChainSink);
 
         if (cs != null) {
-            final SelectedChannelType[] rgb = (SelectedChannelType[]) cs.getRGBChannels();
-            final SelectedChannelType gray = (SelectedChannelType) cs.getGrayChannel();
+            final SelectedChannelTypeImpl[] rgb = (SelectedChannelTypeImpl[]) cs.getRGBChannels();
+            final SelectedChannelTypeImpl gray = (SelectedChannelTypeImpl) cs.getGrayChannel();
             // both of them are set?
             if ((rgb != null && rgb[0] != null && rgb[1] != null && rgb[2] != null)
                     && (gray != null))
@@ -135,7 +135,7 @@ class ChannelSelectionNode extends SubchainStyleVisitorCoverageProcessingAdapter
                         Errors.format(
                                 ErrorKeys.ILLEGAL_ARGUMENT_$1,
                                 "Both gray and rgb channel selection are valid!"));
-            final SelectedChannelType[] sc = gray == null ? rgb : new SelectedChannelType[] {gray};
+            final SelectedChannelTypeImpl[] sc = gray == null ? rgb : new SelectedChannelTypeImpl[] {gray};
 
             // If we do not really select any bands from the original coverage, we try to entirely
             // skip this operation
@@ -149,7 +149,7 @@ class ChannelSelectionNode extends SubchainStyleVisitorCoverageProcessingAdapter
                 for (int i = 0; i < sc.length; i++) {
 
                     // get the channel element
-                    final SelectedChannelType channel = sc[i];
+                    final SelectedChannelTypeImpl channel = sc[i];
                     if (LOGGER.isLoggable(Level.FINE))
                         LOGGER.fine(
                                 "Channel "

@@ -29,9 +29,10 @@ import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.measure.Units;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.RasterSymbolizer;
+import org.geotools.styling.ContrastEnhancementImpl;
+import org.geotools.styling.FeatureTypeStyleImpl;
+import org.geotools.styling.RasterSymbolizerImpl;
+import org.geotools.styling.RuleImpl;
 import org.geotools.text.Text;
 import org.json.simple.JSONObject;
 
@@ -224,14 +225,14 @@ public class RasterMBLayer extends MBLayer {
      * @return FeatureTypeStyle
      */
     @Override
-    public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
-        ContrastEnhancement ce =
-                (ContrastEnhancement) sf.contrastEnhancement(ff.literal(1.0), ContrastMethod.NONE);
+    public List<FeatureTypeStyleImpl> transformInternal(MBStyle styleContext) {
+        ContrastEnhancementImpl ce =
+                (ContrastEnhancementImpl) sf.contrastEnhancement(ff.literal(1.0), ContrastMethod.NONE);
 
         // Use of builder is easier for code examples; but fills in SLD defaults
         // Currently only applies the opacity.
-        RasterSymbolizer symbolizer =
-                (RasterSymbolizer)
+        RasterSymbolizerImpl symbolizer =
+                (RasterSymbolizerImpl)
                         sf.rasterSymbolizer(
                                 getId(),
                                 null,
@@ -247,8 +248,8 @@ public class RasterMBLayer extends MBLayer {
 
         List<Rule> rules = new ArrayList<>();
         MBFilter filter = getFilter();
-        org.geotools.styling.Rule rule =
-                (org.geotools.styling.Rule)
+        RuleImpl rule =
+                (RuleImpl)
                         sf.rule(
                                 getId(),
                                 null,
@@ -260,7 +261,7 @@ public class RasterMBLayer extends MBLayer {
         rules.add(rule);
 
         return Collections.singletonList(
-                (FeatureTypeStyle)
+                (FeatureTypeStyleImpl)
                         sf.featureTypeStyle(
                                 getId(),
                                 sf.description(

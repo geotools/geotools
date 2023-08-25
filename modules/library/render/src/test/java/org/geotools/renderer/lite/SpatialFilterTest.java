@@ -24,11 +24,8 @@ import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.Symbolizer;
+import org.geotools.styling.*;
+import org.geotools.styling.StyleImpl;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.Hints;
 import org.junit.AfterClass;
@@ -120,9 +117,9 @@ public class SpatialFilterTest {
     public void testSpatialNoReprojection() throws Exception {
         // a spatial filter in the same SRS as the geometry
         StyleBuilder sb = new StyleBuilder();
-        PolygonSymbolizer ps = sb.createPolygonSymbolizer();
-        Style style = sb.createStyle(ps);
-        Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        PolygonSymbolizerImpl ps = sb.createPolygonSymbolizer();
+        StyleImpl style = sb.createStyle(ps);
+        RuleImpl rule = style.featureTypeStyles().get(0).rules().get(0);
         rule.setFilter(ff.bbox("geom", 1, 1, 4, 4, "EPSG:4326"));
 
         content.addLayer(new FeatureLayer(squareFS, style));
@@ -135,9 +132,9 @@ public class SpatialFilterTest {
     public void testSpatialDefaulter() throws Exception {
         // a spatial filter in the same SRS as the geometry
         StyleBuilder sb = new StyleBuilder();
-        PolygonSymbolizer ps = sb.createPolygonSymbolizer();
-        Style style = sb.createStyle(ps);
-        Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        PolygonSymbolizerImpl ps = sb.createPolygonSymbolizer();
+        StyleImpl style = sb.createStyle(ps);
+        RuleImpl rule = style.featureTypeStyles().get(0).rules().get(0);
         rule.setFilter(ff.bbox("geom", 1, 1, 4, 4, null));
 
         content.addLayer(new FeatureLayer(squareFS, style));
@@ -152,8 +149,8 @@ public class SpatialFilterTest {
         // interpretation, if we assume lat/lon we should pick point.4
         StyleBuilder sb = new StyleBuilder();
         Symbolizer ps = sb.createPointSymbolizer();
-        Style style = sb.createStyle(ps);
-        Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        StyleImpl style = sb.createStyle(ps);
+        RuleImpl rule = style.featureTypeStyles().get(0).rules().get(0);
         rule.setFilter(ff.bbox("geom", 5, 1, 7, 3, null));
 
         // force EPSG axis order interpretation
@@ -177,8 +174,8 @@ public class SpatialFilterTest {
 
         StyleBuilder sb = new StyleBuilder();
         Symbolizer ps = sb.createPointSymbolizer();
-        Style style = sb.createStyle(ps);
-        Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        StyleImpl style = sb.createStyle(ps);
+        RuleImpl rule = style.featureTypeStyles().get(0).rules().get(0);
         rule.setFilter(
                 ff.bbox(
                         "geom",
@@ -209,8 +206,8 @@ public class SpatialFilterTest {
 
         StyleBuilder sb = new StyleBuilder();
         Symbolizer ps = sb.createPointSymbolizer();
-        Style style = sb.createStyle(ps);
-        Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        StyleImpl style = sb.createStyle(ps);
+        RuleImpl rule = style.featureTypeStyles().get(0).rules().get(0);
         Polygon polygon = JTS.toGeometry(envUTM31N);
         polygon.setUserData(utm31n);
         rule.setFilter(ff.intersects(ff.property("geom"), ff.literal(polygon)));
@@ -225,7 +222,7 @@ public class SpatialFilterTest {
     @Test
     public void testReprojectedPolygonFromSLD() throws Exception {
         // same as above, but with the style in SLD form
-        Style style = RendererBaseTest.loadStyle(this, "spatialFilter.sld");
+        StyleImpl style = RendererBaseTest.loadStyle(this, "spatialFilter.sld");
 
         content.addLayer(new FeatureLayer(pointFS, style));
 
@@ -245,7 +242,7 @@ public class SpatialFilterTest {
         // build the style
         StyleBuilder sb = new StyleBuilder();
         Symbolizer ps = sb.createPointSymbolizer();
-        Style style = sb.createStyle(ps);
+        StyleImpl style = sb.createStyle(ps);
 
         // build a filter for the layer own definition query
         FeatureLayer layer = new FeatureLayer(pointFS, style);

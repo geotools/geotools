@@ -21,8 +21,9 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Paint;
 import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.styling.Fill;
-import org.geotools.styling.PolygonSymbolizer;
+import org.geotools.styling.FillImpl;
+import org.geotools.styling.GraphicImpl;
+import org.geotools.styling.PolygonSymbolizerImpl;
 
 /**
  * A dynamic polygon style, that will compute its parameters each time they are requested instead of
@@ -32,10 +33,10 @@ import org.geotools.styling.PolygonSymbolizer;
  */
 public class DynamicPolygonStyle2D extends org.geotools.renderer.style.PolygonStyle2D {
     SimpleFeature feature;
-    PolygonSymbolizer ps;
+    PolygonSymbolizerImpl ps;
 
     /** Creates a new instance of DynamicPolygonStyle2D */
-    public DynamicPolygonStyle2D(SimpleFeature f, PolygonSymbolizer sym) {
+    public DynamicPolygonStyle2D(SimpleFeature f, PolygonSymbolizerImpl sym) {
         feature = f;
         ps = sym;
     }
@@ -43,7 +44,7 @@ public class DynamicPolygonStyle2D extends org.geotools.renderer.style.PolygonSt
     /** Computes and returns the fill based on the feature and the symbolizer */
     @Override
     public java.awt.Paint getFill() {
-        Fill fill = ps.getFill();
+        FillImpl fill = ps.getFill();
 
         if (fill == null) {
             return null;
@@ -52,7 +53,7 @@ public class DynamicPolygonStyle2D extends org.geotools.renderer.style.PolygonSt
         Paint fillPaint = fill.getColor().evaluate(feature, Color.class);
 
         // if a graphic fill is to be used, prepare the paint accordingly....
-        org.geotools.styling.Graphic gr = fill.getGraphicFill();
+        GraphicImpl gr = fill.getGraphicFill();
 
         if (gr != null) {
             SLDStyleFactory fac = new SLDStyleFactory();
@@ -65,7 +66,7 @@ public class DynamicPolygonStyle2D extends org.geotools.renderer.style.PolygonSt
     /** Computes and returns the fill composite based on the feature and the symbolizer */
     @Override
     public Composite getFillComposite() {
-        Fill fill = ps.getFill();
+        FillImpl fill = ps.getFill();
 
         if (fill == null) {
             return null;

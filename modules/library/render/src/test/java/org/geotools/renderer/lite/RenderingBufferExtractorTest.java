@@ -38,7 +38,7 @@ public class RenderingBufferExtractorTest {
 
     @Test
     public void testTextNoStroke() {
-        Style style = sb.createStyle(sb.createTextSymbolizer());
+        StyleImpl style = sb.createStyle(sb.createTextSymbolizer());
         MetaBufferEstimator rbe = new MetaBufferEstimator();
         assertEquals(0, rbe.getBuffer());
         assertTrue(rbe.isEstimateAccurate());
@@ -49,11 +49,11 @@ public class RenderingBufferExtractorTest {
 
     @Test
     public void testTextDisplaced() {
-        TextSymbolizer ts = sb.createTextSymbolizer();
+        TextSymbolizerImpl ts = sb.createTextSymbolizer();
         ts.setFont(sb.createFont("Arial", 20));
-        PointPlacement pp = sb.createPointPlacement(1, 1, 10, 10, 0);
+        PointPlacementImpl pp = sb.createPointPlacement(1, 1, 10, 10, 0);
         ts.setLabelPlacement(pp);
-        Style style = sb.createStyle(ts);
+        StyleImpl style = sb.createStyle(ts);
         MetaBufferEstimator rbe = new MetaBufferEstimator();
         rbe.visit(style);
         // 20 (font) + 20 * 0.5 (anchor) + 10 (offset)
@@ -63,7 +63,7 @@ public class RenderingBufferExtractorTest {
 
     @Test
     public void testSimpleStroke() {
-        Style style = sb.createStyle(sb.createLineSymbolizer((Stroke) sb.createStroke(10.0)));
+        StyleImpl style = sb.createStyle(sb.createLineSymbolizer((StrokeImpl) sb.createStroke(10.0)));
         MetaBufferEstimator rbe = new MetaBufferEstimator();
         rbe.visit(style);
         assertEquals(10, rbe.getBuffer());
@@ -72,11 +72,11 @@ public class RenderingBufferExtractorTest {
 
     @Test
     public void testSimpleGraphic() {
-        PointSymbolizer ps =
+        PointSymbolizerImpl ps =
                 sb.createPointSymbolizer(
                         sb.createGraphic(null, sb.createMark(sb.MARK_CIRCLE), null));
         ps.getGraphic().setSize(sb.literalExpression(15));
-        Style style = sb.createStyle(ps);
+        StyleImpl style = sb.createStyle(ps);
 
         MetaBufferEstimator rbe = new MetaBufferEstimator();
         rbe.visit(style);
@@ -87,12 +87,12 @@ public class RenderingBufferExtractorTest {
     @Test
     public void testReachableExternalGraphic() {
         URL resource = TestData.getResource(this, "draw.png");
-        PointSymbolizer ps =
+        PointSymbolizerImpl ps =
                 sb.createPointSymbolizer(
                         sb.createGraphic(
                                 null, null, sb.createExternalGraphic(resource, "image/png")));
         ps.getGraphic().setSize(sb.literalExpression(null));
-        Style style = sb.createStyle(ps);
+        StyleImpl style = sb.createStyle(ps);
 
         MetaBufferEstimator rbe = new MetaBufferEstimator();
         rbe.visit(style);
@@ -104,12 +104,12 @@ public class RenderingBufferExtractorTest {
     public void testUnreachableExternalGraphic() throws Exception {
         File file = new File(TestData.getResource(this, "draw.png").toURI());
         URL resource = new File(file.getParent(), "draw-not-there.png").toURI().toURL();
-        PointSymbolizer ps =
+        PointSymbolizerImpl ps =
                 sb.createPointSymbolizer(
                         sb.createGraphic(
                                 null, null, sb.createExternalGraphic(resource, "image/png")));
         ps.getGraphic().setSize(sb.literalExpression(null));
-        Style style = sb.createStyle(ps);
+        StyleImpl style = sb.createStyle(ps);
 
         MetaBufferEstimator rbe = new MetaBufferEstimator();
         rbe.visit(style);
@@ -119,7 +119,7 @@ public class RenderingBufferExtractorTest {
 
     @Test
     public void testNonIntegerStroke() {
-        Style style = sb.createStyle(sb.createLineSymbolizer((Stroke) sb.createStroke(10.8)));
+        StyleImpl style = sb.createStyle(sb.createLineSymbolizer((StrokeImpl) sb.createStroke(10.8)));
         MetaBufferEstimator rbe = new MetaBufferEstimator();
         rbe.visit(style);
         assertEquals(11, rbe.getBuffer());
@@ -128,9 +128,9 @@ public class RenderingBufferExtractorTest {
 
     @Test
     public void testMultiSymbolizers() {
-        Symbolizer ls = sb.createLineSymbolizer((Stroke) sb.createStroke(10.8));
-        Symbolizer ps = sb.createPolygonSymbolizer((Stroke) sb.createStroke(12), sb.createFill());
-        Rule r = sb.createRule(ls, ps);
+        Symbolizer ls = sb.createLineSymbolizer((StrokeImpl) sb.createStroke(10.8));
+        Symbolizer ps = sb.createPolygonSymbolizer((StrokeImpl) sb.createStroke(12), sb.createFill());
+        RuleImpl r = sb.createRule(ls, ps);
         MetaBufferEstimator rbe = new MetaBufferEstimator();
         rbe.visit(r);
         assertEquals(12, rbe.getBuffer());
@@ -143,8 +143,8 @@ public class RenderingBufferExtractorTest {
                 sb.createLineSymbolizer(
                         sb.createStroke(
                                 sb.colorExpression(Color.BLACK), sb.attributeExpression("gimbo")));
-        Symbolizer ps = sb.createPolygonSymbolizer((Stroke) sb.createStroke(12), sb.createFill());
-        Rule r = sb.createRule(ls, ps);
+        Symbolizer ps = sb.createPolygonSymbolizer((StrokeImpl) sb.createStroke(12), sb.createFill());
+        RuleImpl r = sb.createRule(ls, ps);
         MetaBufferEstimator rbe = new MetaBufferEstimator();
         rbe.visit(r);
         assertEquals(12, rbe.getBuffer());
@@ -158,7 +158,7 @@ public class RenderingBufferExtractorTest {
                         sb.createStroke(
                                 sb.colorExpression(Color.BLACK),
                                 ff.function("env", ff.literal("thickness"), ff.literal(10))));
-        Rule r = sb.createRule(ls);
+        RuleImpl r = sb.createRule(ls);
         MetaBufferEstimator rbe = new MetaBufferEstimator();
 
         // no env variable, fall back on the default value
@@ -182,7 +182,7 @@ public class RenderingBufferExtractorTest {
         Function cos = ff.function("cos", ff.literal(Math.toRadians(Math.PI)));
         Symbolizer ls =
                 sb.createLineSymbolizer(sb.createStroke(sb.colorExpression(Color.BLACK), cos));
-        Rule r = sb.createRule(ls);
+        RuleImpl r = sb.createRule(ls);
         MetaBufferEstimator rbe = new MetaBufferEstimator();
 
         // cos(pi) == 1
@@ -196,7 +196,7 @@ public class RenderingBufferExtractorTest {
         Add add = ff.add(ff.literal("5"), ff.literal("-2"));
         Symbolizer ls =
                 sb.createLineSymbolizer(sb.createStroke(sb.colorExpression(Color.BLACK), add));
-        Rule r = sb.createRule(ls);
+        RuleImpl r = sb.createRule(ls);
         MetaBufferEstimator rbe = new MetaBufferEstimator();
 
         // 5-2 = 3
@@ -207,7 +207,7 @@ public class RenderingBufferExtractorTest {
 
     @Test
     public void testLiteralParseStroke() {
-        Style style =
+        StyleImpl style =
                 sb.createStyle(
                         sb.createLineSymbolizer(
                                 sb.createStroke(
@@ -221,7 +221,7 @@ public class RenderingBufferExtractorTest {
 
     @Test
     public void testNpePreventionStroke() {
-        Style style =
+        StyleImpl style =
                 sb.createStyle(
                         sb.createLineSymbolizer(
                                 sb.createStroke(
@@ -235,7 +235,7 @@ public class RenderingBufferExtractorTest {
 
     @Test
     public void testLiteralParseGraphics() {
-        Graphic g = sb.createGraphic();
+        GraphicImpl g = sb.createGraphic();
         g.setSize(sb.literalExpression("10.0"));
         MetaBufferEstimator rbe = new MetaBufferEstimator();
         rbe.visit(g);

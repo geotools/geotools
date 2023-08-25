@@ -35,7 +35,7 @@ import org.geotools.process.Process;
 import org.geotools.process.Processors;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.renderer.lite.StreamingRenderer;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.test.TestData;
 import org.geotools.xml.styling.SLDParser;
@@ -170,7 +170,7 @@ public class JiffleProcessTest {
 
         java.net.URL styleURL = TestData.getResource(this, "ndvi.sld");
         SLDParser stylereader = new SLDParser(factory, styleURL);
-        Style style = stylereader.readXML()[0];
+        StyleImpl style = stylereader.readXML()[0];
 
         MapContent mc = new MapContent();
         mc.addLayer(new GridReaderLayer(reader, style));
@@ -208,7 +208,7 @@ public class JiffleProcessTest {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
         URL styleURL = TestData.getResource(this, "ndvi.sld");
         SLDParser stylereader = new SLDParser(factory, styleURL);
-        Style style = stylereader.readXML()[0];
+        StyleImpl style = stylereader.readXML()[0];
         RenderingTransformation tx =
                 (RenderingTransformation) style.featureTypeStyles().get(0).getTransformation();
 
@@ -247,7 +247,7 @@ public class JiffleProcessTest {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
         URL styleURL = TestData.getResource(this, "ndvi.sld");
         SLDParser stylereader = new SLDParser(factory, styleURL);
-        Style style = stylereader.readXML()[0];
+        StyleImpl style = stylereader.readXML()[0];
         RenderingTransformation tx =
                 (RenderingTransformation) style.featureTypeStyles().get(0).getTransformation();
 

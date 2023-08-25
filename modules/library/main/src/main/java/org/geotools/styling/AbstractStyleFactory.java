@@ -121,7 +121,7 @@ public abstract class AbstractStyleFactory implements org.geotools.api.style.Sty
 
     public abstract Style createStyle();
 
-    public abstract NamedStyle createNamedStyle();
+    public abstract NamedStyleImpl createNamedStyle();
 
     public abstract Fill createFill(Expression color, Expression opacity);
 
@@ -186,8 +186,8 @@ public abstract class AbstractStyleFactory implements org.geotools.api.style.Sty
     public abstract FeatureTypeStyle createFeatureTypeStyle();
 
     public abstract Graphic createGraphic(
-            ExternalGraphic[] externalGraphics,
-            Mark[] marks,
+            ExternalGraphicImpl[] externalGraphics,
+            MarkImpl[] marks,
             Symbol[] symbols,
             Expression opacity,
             Expression size,
@@ -305,7 +305,7 @@ public abstract class AbstractStyleFactory implements org.geotools.api.style.Sty
 
     public abstract RasterSymbolizer createRasterSymbolizer();
 
-    public abstract ChannelSelection createChannelSelection(SelectedChannelType... channels);
+    public abstract ChannelSelection createChannelSelection(SelectedChannelTypeImpl... channels);
 
     public abstract ContrastEnhancement createContrastEnhancement();
 

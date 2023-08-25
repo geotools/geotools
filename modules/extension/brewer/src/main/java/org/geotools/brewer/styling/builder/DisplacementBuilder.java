@@ -17,9 +17,9 @@
 package org.geotools.brewer.styling.builder;
 
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.styling.Displacement;
+import org.geotools.styling.DisplacementImpl;
 
-public class DisplacementBuilder extends AbstractStyleBuilder<Displacement> {
+public class DisplacementBuilder extends AbstractStyleBuilder<DisplacementImpl> {
     private Expression x = null;
 
     private Expression y = null;
@@ -34,11 +34,11 @@ public class DisplacementBuilder extends AbstractStyleBuilder<Displacement> {
     }
 
     @Override
-    public Displacement build() {
+    public DisplacementImpl build() {
         if (unset) {
             return null;
         }
-        Displacement displacement = sf.displacement(x, y);
+        DisplacementImpl displacement = sf.displacement(x, y);
         return displacement;
     }
 
@@ -79,7 +79,7 @@ public class DisplacementBuilder extends AbstractStyleBuilder<Displacement> {
     }
 
     @Override
-    public DisplacementBuilder reset(Displacement displacement) {
+    public DisplacementBuilder reset(DisplacementImpl displacement) {
         if (displacement == null) {
             return reset();
         }

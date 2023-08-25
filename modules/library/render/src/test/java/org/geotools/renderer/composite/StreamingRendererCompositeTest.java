@@ -160,7 +160,7 @@ public class StreamingRendererCompositeTest {
 
     @Test
     public void testCompositeExternalGraphicPoint1() throws Exception {
-        Style style = applyCompositeOnFirstSymbolizer("pointBlend.sld");
+        StyleImpl style = applyCompositeOnFirstSymbolizer("pointBlend.sld");
         BufferedImage blended = composePoint(BKG, style);
 
         // compare with expected image
@@ -180,7 +180,7 @@ public class StreamingRendererCompositeTest {
 
     @Test
     public void testCompositeExternalGraphicPoint2() throws Exception {
-        Style style = applyCompositeOnFirstSymbolizer("pointBlend2.sld");
+        StyleImpl style = applyCompositeOnFirstSymbolizer("pointBlend2.sld");
         BufferedImage blended = composePoint(BKG2, style);
 
         // compare with expected image
@@ -200,7 +200,7 @@ public class StreamingRendererCompositeTest {
 
     @Test
     public void testCompositeRedMark() throws Exception {
-        Style style = applyCompositeOnFirstSymbolizer("redMarkBlend.sld");
+        StyleImpl style = applyCompositeOnFirstSymbolizer("redMarkBlend.sld");
         BufferedImage blended = composePoint(BKG2, style);
 
         // compare with expected image
@@ -220,7 +220,7 @@ public class StreamingRendererCompositeTest {
 
     @Test
     public void testCompositeRedStrokeLine() throws Exception {
-        Style style = applyCompositeOnFirstSymbolizer("redLineBlend.sld");
+        StyleImpl style = applyCompositeOnFirstSymbolizer("redLineBlend.sld");
         BufferedImage blended = composeLine(BKG2, style);
 
         // compare with expected image
@@ -240,7 +240,7 @@ public class StreamingRendererCompositeTest {
 
     @Test
     public void testCompositeRedGraphicStrokeLine() throws Exception {
-        Style style = applyCompositeOnFirstSymbolizer("redLineGraphicStrokeBlend.sld");
+        StyleImpl style = applyCompositeOnFirstSymbolizer("redLineGraphicStrokeBlend.sld");
         BufferedImage blended = composeLine(BKG2, style);
 
         // compare with expected image
@@ -260,7 +260,7 @@ public class StreamingRendererCompositeTest {
 
     @Test
     public void testCompositeExternalGraphicLine1() throws Exception {
-        Style style = applyCompositeOnFirstSymbolizer("lineBlend.sld");
+        StyleImpl style = applyCompositeOnFirstSymbolizer("lineBlend.sld");
         BufferedImage blended = composeLine(BKG, style);
 
         // compare with expected image
@@ -280,7 +280,7 @@ public class StreamingRendererCompositeTest {
 
     @Test
     public void testCompositeExternalGraphicLine2() throws Exception {
-        Style style = applyCompositeOnFirstSymbolizer("lineBlend2.sld");
+        StyleImpl style = applyCompositeOnFirstSymbolizer("lineBlend2.sld");
         BufferedImage blended = composeLine(BKG2, style);
 
         // compare with expected image
@@ -300,7 +300,7 @@ public class StreamingRendererCompositeTest {
 
     @Test
     public void testCompositeRedFill() throws Exception {
-        Style style = applyCompositeOnFirstSymbolizer("redFillBlend.sld");
+        StyleImpl style = applyCompositeOnFirstSymbolizer("redFillBlend.sld");
         BufferedImage blended = composePolygon(BKG2, style);
 
         // compare with expected image
@@ -320,7 +320,7 @@ public class StreamingRendererCompositeTest {
 
     @Test
     public void testCompositeGraphicFill() throws Exception {
-        Style style = applyCompositeOnFirstSymbolizer("fillBlend.sld");
+        StyleImpl style = applyCompositeOnFirstSymbolizer("fillBlend.sld");
         BufferedImage blended = composePolygon(BKG, style);
 
         // compare with expected image
@@ -340,7 +340,7 @@ public class StreamingRendererCompositeTest {
 
     @Test
     public void testCompositeGraphicFill2() throws Exception {
-        Style style = applyCompositeOnFirstSymbolizer("fillBlend2.sld");
+        StyleImpl style = applyCompositeOnFirstSymbolizer("fillBlend2.sld");
         BufferedImage blended = composePolygon(BKG2, style);
 
         // compare with expected image
@@ -362,11 +362,11 @@ public class StreamingRendererCompositeTest {
         // build the map content
         MapContent mc = new MapContent();
         StyleBuilder sb = new StyleBuilder();
-        Style baseStyle = sb.createStyle(sb.createRasterSymbolizer());
+        StyleImpl baseStyle = sb.createStyle(sb.createRasterSymbolizer());
         mc.addLayer(new GridCoverageLayer(first, baseStyle));
-        FeatureTypeStyle compositeFts = sb.createFeatureTypeStyle(sb.createRasterSymbolizer());
-        compositeFts.getOptions().put(FeatureTypeStyle.COMPOSITE, composite);
-        Style compositeStyle = sb.createStyle();
+        FeatureTypeStyleImpl compositeFts = sb.createFeatureTypeStyle(sb.createRasterSymbolizer());
+        compositeFts.getOptions().put(org.geotools.styling.FeatureTypeStyleImpl.COMPOSITE, composite);
+        StyleImpl compositeStyle = sb.createStyle();
         compositeStyle.featureTypeStyles().add(compositeFts);
         mc.addLayer(new GridCoverageLayer(second, compositeStyle));
 
@@ -389,13 +389,13 @@ public class StreamingRendererCompositeTest {
         return blended;
     }
 
-    private BufferedImage composePoint(GridCoverage2D first, Style pointStyle)
+    private BufferedImage composePoint(GridCoverage2D first, StyleImpl pointStyle)
             throws SchemaException, IOException {
         // build the map content
         MapContent mc = new MapContent();
         StyleBuilder sb = new StyleBuilder();
         // first layer is the usual coverage
-        Style baseStyle = sb.createStyle(sb.createRasterSymbolizer());
+        StyleImpl baseStyle = sb.createStyle(sb.createRasterSymbolizer());
         mc.addLayer(new GridCoverageLayer(first, baseStyle));
 
         // second layer is a point in the middle of the map
@@ -432,13 +432,13 @@ public class StreamingRendererCompositeTest {
         return blended;
     }
 
-    private BufferedImage composeLine(GridCoverage2D first, Style lineStyle)
+    private BufferedImage composeLine(GridCoverage2D first, StyleImpl lineStyle)
             throws SchemaException, IOException {
         // build the map content
         MapContent mc = new MapContent();
         StyleBuilder sb = new StyleBuilder();
         // first layer is the usual coverage
-        Style baseStyle = sb.createStyle(sb.createRasterSymbolizer());
+        StyleImpl baseStyle = sb.createStyle(sb.createRasterSymbolizer());
         mc.addLayer(new GridCoverageLayer(first, baseStyle));
 
         // second layer is a line in the middle of the map
@@ -478,13 +478,13 @@ public class StreamingRendererCompositeTest {
         return blended;
     }
 
-    private BufferedImage composePolygon(GridCoverage2D first, Style polygonStyle)
+    private BufferedImage composePolygon(GridCoverage2D first, StyleImpl polygonStyle)
             throws SchemaException, IOException {
         // build the map content
         MapContent mc = new MapContent();
         StyleBuilder sb = new StyleBuilder();
         // first layer is the usual coverage
-        Style baseStyle = sb.createStyle(sb.createRasterSymbolizer());
+        StyleImpl baseStyle = sb.createStyle(sb.createRasterSymbolizer());
         mc.addLayer(new GridCoverageLayer(first, baseStyle));
 
         // second layer is a polygon covering the whole map
@@ -522,11 +522,11 @@ public class StreamingRendererCompositeTest {
         return blended;
     }
 
-    private Style applyCompositeOnFirstSymbolizer(String styleName) throws IOException {
-        Style style = RendererBaseTest.loadStyle(StreamingRendererCompositeTest.class, styleName);
+    private StyleImpl applyCompositeOnFirstSymbolizer(String styleName) throws IOException {
+        StyleImpl style = RendererBaseTest.loadStyle(StreamingRendererCompositeTest.class, styleName);
         Symbolizer symbolizer =
                 style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
-        symbolizer.getOptions().put(FeatureTypeStyle.COMPOSITE, composite);
+        symbolizer.getOptions().put(org.geotools.styling.FeatureTypeStyleImpl.COMPOSITE, composite);
         return style;
     }
 }

@@ -20,8 +20,8 @@ import java.util.List;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.VolatileFunction;
 import org.geotools.api.style.StyleVisitor;
-import org.geotools.styling.Font;
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.FontImpl;
+import org.geotools.styling.TextSymbolizerImpl;
 
 /**
  * A simple visitor whose purpose is to extract the set of attributes used by a Style, that is,
@@ -69,9 +69,9 @@ public class StyleAttributeExtractorTruncated extends StyleAttributeExtractor
     @Override
     public void visit(org.geotools.api.style.TextSymbolizer text) {
 
-        if (text instanceof TextSymbolizer) {
-            if (((TextSymbolizer) text).getGraphic() != null)
-                ((TextSymbolizer) text).getGraphic().accept(this);
+        if (text instanceof TextSymbolizerImpl) {
+            if (((TextSymbolizerImpl) text).getGraphic() != null)
+                ((TextSymbolizerImpl) text).getGraphic().accept(this);
         }
 
         if (text.getFill() != null) {
@@ -82,9 +82,9 @@ public class StyleAttributeExtractorTruncated extends StyleAttributeExtractor
             text.getHalo().accept(this);
         }
 
-        if (((TextSymbolizer) text).fonts() != null) {
-            List<Font> fonts = ((TextSymbolizer) text).fonts();
-            for (Font font : fonts) {
+        if (((TextSymbolizerImpl) text).fonts() != null) {
+            List<FontImpl> fonts = ((TextSymbolizerImpl) text).fonts();
+            for (FontImpl font : fonts) {
                 if (font.getFamily() != null) {
                     for (Expression family : font.getFamily()) {
                         family.accept(this, null);

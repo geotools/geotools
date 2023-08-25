@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Rule;
+import org.geotools.styling.FeatureTypeStyleImpl;
+import org.geotools.styling.RuleImpl;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 
 /**
@@ -46,15 +46,15 @@ class SimplifyingStyleVisitor extends DuplicatingStyleVisitor {
     @Override
     public void visit(org.geotools.api.style.FeatureTypeStyle fts) {
 
-        FeatureTypeStyle copy = new FeatureTypeStyle(fts);
+        FeatureTypeStyleImpl copy = new FeatureTypeStyleImpl(fts);
 
-        List<Rule> rulesCopy =
+        List<RuleImpl> rulesCopy =
                 fts.rules().stream()
                         .filter(r -> r != null)
                         .map(
                                 r -> {
                                     r.accept(this);
-                                    return !pages.isEmpty() ? (Rule) pages.pop() : null;
+                                    return !pages.isEmpty() ? (RuleImpl) pages.pop() : null;
                                 })
                         .filter(r -> r != null)
                         .collect(Collectors.toList());

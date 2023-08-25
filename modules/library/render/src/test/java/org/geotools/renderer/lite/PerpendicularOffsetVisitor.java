@@ -16,9 +16,9 @@
  */
 package org.geotools.renderer.lite;
 
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.Style;
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.LinePlacementImpl;
+import org.geotools.styling.StyleImpl;
+import org.geotools.styling.TextSymbolizerImpl;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 
 /**
@@ -29,10 +29,10 @@ import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 class PerpendicularOffsetVisitor extends DuplicatingStyleVisitor {
     double distance;
 
-    public static Style apply(Style style, double distance) {
+    public static StyleImpl apply(StyleImpl style, double distance) {
         PerpendicularOffsetVisitor visitor = new PerpendicularOffsetVisitor(distance);
         style.accept(visitor);
-        return (Style) visitor.getCopy();
+        return (StyleImpl) visitor.getCopy();
     }
 
     public PerpendicularOffsetVisitor(double distance) {
@@ -42,19 +42,19 @@ class PerpendicularOffsetVisitor extends DuplicatingStyleVisitor {
     @Override
     public void visit(org.geotools.api.style.LinePlacement lp) {
         super.visit(lp);
-        LinePlacement copy = (LinePlacement) pages.peek();
+        LinePlacementImpl copy = (LinePlacementImpl) pages.peek();
         copy.setPerpendicularOffset(ff.literal(distance));
     }
 
     @Override
     public void visit(org.geotools.api.style.TextSymbolizer text) {
         super.visit(text);
-        TextSymbolizer ts = (TextSymbolizer) pages.peek();
+        TextSymbolizerImpl ts = (TextSymbolizerImpl) pages.peek();
 
         // do we have follow line without line placement?
         if (ts.getLabelPlacement() == null
                 && "true".equalsIgnoreCase(ts.getOptions().get("followLine"))) {
-            ts.setLabelPlacement(new LinePlacement());
+            ts.setLabelPlacement(new LinePlacementImpl());
         }
     }
 }

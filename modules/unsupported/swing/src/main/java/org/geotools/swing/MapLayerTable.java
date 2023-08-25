@@ -38,7 +38,7 @@ import org.geotools.map.MapContent;
 import org.geotools.map.MapLayerListEvent;
 import org.geotools.map.MapLayerListListener;
 import org.geotools.map.StyleLayer;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.swing.control.DnDList;
 import org.geotools.swing.control.DnDListModel;
 import org.geotools.swing.event.MapPaneAdapter;
@@ -340,7 +340,7 @@ public class MapLayerTable extends JPanel {
     private void doSetStyle(Layer layer) {
         if (layer instanceof StyleLayer) {
             StyleLayer styleLayer = (StyleLayer) layer;
-            Style style = JSimpleStyleDialog.showDialog(this, styleLayer);
+            StyleImpl style = JSimpleStyleDialog.showDialog(this, styleLayer);
             if (style != null) {
                 styleLayer.setStyle(style);
             }

@@ -22,8 +22,8 @@ import org.geotools.api.style.SemanticType;
 import org.geotools.api.util.InternationalString;
 import org.geotools.feature.NameImpl;
 import org.geotools.sld.CssParameter;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Rule;
+import org.geotools.styling.FeatureTypeStyleImpl;
+import org.geotools.styling.RuleImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
@@ -95,7 +95,7 @@ public class SLDFeatureTypeStyleBinding extends AbstractComplexBinding {
      */
     @Override
     public Class getType() {
-        return FeatureTypeStyle.class;
+        return FeatureTypeStyleImpl.class;
     }
 
     /**
@@ -117,7 +117,7 @@ public class SLDFeatureTypeStyleBinding extends AbstractComplexBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        FeatureTypeStyle featureTypeStyle = styleFactory.createFeatureTypeStyle();
+        FeatureTypeStyleImpl featureTypeStyle = styleFactory.createFeatureTypeStyle();
 
         // &lt;xsd:element ref="sld:Name" minOccurs="0"/&gt;
         if (node.hasChild("Name")) {
@@ -166,7 +166,7 @@ public class SLDFeatureTypeStyleBinding extends AbstractComplexBinding {
         // &lt;xsd:element ref="sld:Rule" maxOccurs="unbounded"/&gt;
         if (node.hasChild("Rule")) {
             @SuppressWarnings("unchecked")
-            List<Rule> rules = node.getChildValues("Rule");
+            List<RuleImpl> rules = node.getChildValues("Rule");
             featureTypeStyle.rules().clear();
             featureTypeStyle.rules().addAll(rules);
         }

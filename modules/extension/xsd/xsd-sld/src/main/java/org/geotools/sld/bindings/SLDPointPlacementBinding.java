@@ -18,9 +18,9 @@ package org.geotools.sld.bindings;
 
 import javax.xml.namespace.QName;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.PointPlacement;
+import org.geotools.styling.AnchorPointImpl;
+import org.geotools.styling.DisplacementImpl;
+import org.geotools.styling.PointPlacementImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
@@ -88,7 +88,7 @@ public class SLDPointPlacementBinding extends AbstractComplexBinding {
      */
     @Override
     public Class getType() {
-        return PointPlacement.class;
+        return PointPlacementImpl.class;
     }
 
     /**
@@ -111,10 +111,10 @@ public class SLDPointPlacementBinding extends AbstractComplexBinding {
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // &lt;xsd:element ref="sld:AnchorPoint" minOccurs="0"/&gt;
-        AnchorPoint anchorPoint = (AnchorPoint) node.getChildValue("AnchorPoint");
+        AnchorPointImpl anchorPoint = (AnchorPointImpl) node.getChildValue("AnchorPoint");
 
         // &lt;xsd:element ref="sld:Displacement" minOccurs="0"/&gt;
-        Displacement displacement = (Displacement) node.getChildValue("Displacement");
+        DisplacementImpl displacement = (DisplacementImpl) node.getChildValue("Displacement");
 
         // &lt;xsd:element ref="sld:Rotation" minOccurs="0"/&gt;
         Expression rotation = (Expression) node.getChildValue("Rotation");

@@ -31,16 +31,7 @@ import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.map.MapViewport;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -113,7 +104,7 @@ public class ScreenMapShapefileTest {
     }
 
     private static void checkTiles(SimpleFeatureSource featureSource) {
-        Style style = createPointStyle();
+        StyleImpl style = createPointStyle();
         BufferedImage untiled =
                 renderImage(
                         featureSource,
@@ -161,7 +152,7 @@ public class ScreenMapShapefileTest {
             int width,
             int height,
             Rectangle2D mapArea,
-            Style style,
+            StyleImpl style,
             Map<Object, Object> renderingHints) {
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = (Graphics2D) image.getGraphics();
@@ -181,21 +172,21 @@ public class ScreenMapShapefileTest {
         return image;
     }
 
-    private static Style createPointStyle() {
+    private static StyleImpl createPointStyle() {
         StyleFactory sf = CommonFactoryFinder.getStyleFactory();
         URL iconUrl = ScreenMapShapefileTest.class.getResource("icon.png");
-        ExternalGraphic icon = sf.createExternalGraphic(iconUrl, "image/png");
-        Graphic graphic =
-                sf.createGraphic(new ExternalGraphic[] {icon}, null, null, null, null, null);
-        PointSymbolizer symbolizer = sf.createPointSymbolizer(graphic, "the_geom");
+        ExternalGraphicImpl icon = sf.createExternalGraphic(iconUrl, "image/png");
+        GraphicImpl graphic =
+                sf.createGraphic(new ExternalGraphicImpl[] {icon}, null, null, null, null, null);
+        PointSymbolizerImpl symbolizer = sf.createPointSymbolizer(graphic, "the_geom");
 
-        Rule rule = sf.createRule();
+        RuleImpl rule = sf.createRule();
         rule.symbolizers().add(symbolizer);
 
-        FeatureTypeStyle fts = sf.createFeatureTypeStyle();
+        FeatureTypeStyleImpl fts = sf.createFeatureTypeStyle();
         fts.rules().add(rule);
 
-        Style style = sf.createStyle();
+        StyleImpl style = sf.createStyle();
         style.featureTypeStyles().add(fts);
         return style;
     }
@@ -203,7 +194,7 @@ public class ScreenMapShapefileTest {
     @Test
     public void testOffsetLabel() throws IOException {
         SimpleFeatureSource fs = shapeFileDataStore.getFeatureSource(featureType.getTypeName());
-        Style style = createLabelOffsetStyle();
+        StyleImpl style = createLabelOffsetStyle();
         Map<Object, Object> renderingHints = new HashMap<>();
         BufferedImage image =
                 renderImage(
@@ -216,10 +207,10 @@ public class ScreenMapShapefileTest {
         assertTrue(countNonBlankPixels(image) > 0);
     }
 
-    private static Style createLabelOffsetStyle() {
+    private static StyleImpl createLabelOffsetStyle() {
         StyleBuilder sb = new StyleBuilder();
-        PointPlacement pp = sb.createPointPlacement(0.5, 0.5, 50, 0, 0);
-        TextSymbolizer ts = sb.createTextSymbolizer();
+        PointPlacementImpl pp = sb.createPointPlacement(0.5, 0.5, 50, 0, 0);
+        TextSymbolizerImpl ts = sb.createTextSymbolizer();
         ts.setFont(sb.createFont("Bitstream Vera Sans", 20));
         ts.setLabel(sb.getFilterFactory().literal("name"));
         ts.setLabelPlacement(pp);

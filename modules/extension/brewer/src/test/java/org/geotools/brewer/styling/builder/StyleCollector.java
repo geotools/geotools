@@ -3,20 +3,20 @@ package org.geotools.brewer.styling.builder;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.style.*;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Style;
+import org.geotools.styling.FeatureTypeStyleImpl;
+import org.geotools.styling.RuleImpl;
+import org.geotools.styling.StyleImpl;
 import org.geotools.styling.Symbolizer;
 
 public class StyleCollector extends AbstractStyleVisitor implements StyleVisitor {
 
-    List<FeatureTypeStyle> featureTypeStyles = new ArrayList<>();
+    List<FeatureTypeStyleImpl> featureTypeStyles = new ArrayList<>();
 
-    List<Rule> rules = new ArrayList<>();
+    List<RuleImpl> rules = new ArrayList<>();
 
     List<Symbolizer> symbolizers = new ArrayList<>();
 
-    List<Style> styles = new ArrayList<>();
+    List<StyleImpl> styles = new ArrayList<>();
 
     List<StyledLayer> layers = new ArrayList<>();
 
@@ -41,9 +41,9 @@ public class StyleCollector extends AbstractStyleVisitor implements StyleVisitor
 
     @Override
     public void visit(org.geotools.api.style.Style style) {
-        styles.add((Style) style);
+        styles.add((StyleImpl) style);
         for (org.geotools.api.style.FeatureTypeStyle fts : style.featureTypeStyles()) {
-            featureTypeStyles.add((FeatureTypeStyle) fts);
+            featureTypeStyles.add((FeatureTypeStyleImpl) fts);
             fts.accept(this);
         }
     }
@@ -58,7 +58,7 @@ public class StyleCollector extends AbstractStyleVisitor implements StyleVisitor
     @Override
     public void visit(org.geotools.api.style.FeatureTypeStyle fts) {
         for (org.geotools.api.style.Rule rule : fts.rules()) {
-            rules.add((Rule) rule);
+            rules.add((RuleImpl) rule);
             rule.accept(this);
         }
     }

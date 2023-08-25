@@ -32,6 +32,9 @@ import org.geotools.api.feature.IllegalAttributeException;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.Symbolizer;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
@@ -42,18 +45,7 @@ import org.geotools.renderer.style.GraphicStyle2D;
 import org.geotools.renderer.style.MarkStyle2D;
 import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.renderer.style.Style2D;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.SLD;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.*;
 import org.geotools.util.NumberRange;
 import org.geotools.util.factory.GeoTools;
 import org.locationtech.jts.geom.Coordinate;
@@ -101,12 +93,12 @@ public class Drawer {
      * @param feature Feature to be rendered
      * @param style Style to render feature with
      */
-    public void drawDirect(BufferedImage bi, SimpleFeature feature, Style style) {
+    public void drawDirect(BufferedImage bi, SimpleFeature feature, StyleImpl style) {
 
         drawFeature(bi, feature, style, new AffineTransform());
     }
 
-    public void drawDirect(BufferedImage bi, SimpleFeature feature, Rule rule) {
+    public void drawDirect(BufferedImage bi, SimpleFeature feature, RuleImpl rule) {
 
         AffineTransform worldToScreenTransform = new AffineTransform();
 
@@ -133,7 +125,7 @@ public class Drawer {
             BufferedImage bi,
             SimpleFeature feature,
             AffineTransform worldToScreenTransform,
-            Style style) {
+            StyleImpl style) {
         if (feature == null) return;
         drawFeature(bi, feature, worldToScreenTransform, false, getSymbolizers(style), null);
     }
@@ -141,14 +133,14 @@ public class Drawer {
     public void drawFeature(
             BufferedImage bi,
             SimpleFeature feature,
-            Style style,
+            StyleImpl style,
             AffineTransform worldToScreenTransform) {
         if (feature == null) return;
 
         drawFeature(bi, feature, worldToScreenTransform, false, getSymbolizers(style), null);
     }
 
-    Symbolizer[] getSymbolizers(Style style) {
+    Symbolizer[] getSymbolizers(StyleImpl style) {
         List<Symbolizer> symbs = new ArrayList<>();
         for (FeatureTypeStyle fstyle : style.featureTypeStyles()) {
             for (Rule rule : fstyle.rules()) {
@@ -158,7 +150,7 @@ public class Drawer {
         return symbs.toArray(new Symbolizer[symbs.size()]);
     }
 
-    Symbolizer[] getSymbolizers(Rule rule) {
+    Symbolizer[] getSymbolizers(RuleImpl rule) {
         List<Symbolizer> symbs = new ArrayList<>();
         symbs.addAll(rule.symbolizers());
         return symbs.toArray(new Symbolizer[symbs.size()]);
@@ -180,7 +172,7 @@ public class Drawer {
         if (LineString.class.isAssignableFrom(type) || MultiLineString.class.isAssignableFrom(type))
             syms[0] = builder.createLineSymbolizer(baseColor, 2);
         if (Point.class.isAssignableFrom(type) || MultiPoint.class.isAssignableFrom(type)) {
-            PointSymbolizer point = builder.createPointSymbolizer(builder.createGraphic());
+            PointSymbolizerImpl point = builder.createPointSymbolizer(builder.createGraphic());
             // set graphic size to 10 by default
             point.getGraphic()
                     .setSize(
@@ -188,14 +180,14 @@ public class Drawer {
                                     .literal(10));
 
             // danger assumes a Mark!
-            Mark mark = (Mark) point.getGraphic().graphicalSymbols().get(0);
+            MarkImpl mark = (MarkImpl) point.getGraphic().graphicalSymbols().get(0);
             mark.setFill(builder.createFill(baseColor));
             syms[0] = point;
         }
         if (Polygon.class.isAssignableFrom(type) || MultiPolygon.class.isAssignableFrom(type)) {
             syms[0] =
                     builder.createPolygonSymbolizer(
-                            (org.geotools.styling.Stroke) builder.createStroke(baseColor, 2),
+                            (StrokeImpl) builder.createStroke(baseColor, 2),
                             builder.createFill(baseColor, useTransparency ? .6 : 1.0));
         }
         return syms;
@@ -227,7 +219,7 @@ public class Drawer {
 
         Graphics graphics = bi.getGraphics();
 
-        if (!(symbolizer instanceof RasterSymbolizer)) {
+        if (!(symbolizer instanceof RasterSymbolizerImpl)) {
             Geometry g = findGeometry(feature, symbolizer);
             if (g == null) return;
             if (mathTransform != null) {
@@ -271,8 +263,8 @@ public class Drawer {
         Graphics graphics = bi.getGraphics();
         Graphics2D g = (Graphics2D) graphics;
 
-        if (symb instanceof PolygonSymbolizer) {
-            PolygonSymbolizer polySymb = (PolygonSymbolizer) symb;
+        if (symb instanceof PolygonSymbolizerImpl) {
+            PolygonSymbolizerImpl polySymb = (PolygonSymbolizerImpl) symb;
             Color stroke = SLD.polyColor(polySymb);
             double opacity = SLD.polyFillOpacity(polySymb);
             Color fill = SLD.polyFill(polySymb);
@@ -300,8 +292,8 @@ public class Drawer {
                 g.draw(shape);
             }
         }
-        if (symb instanceof LineSymbolizer) {
-            LineSymbolizer lineSymbolizer = (LineSymbolizer) symb;
+        if (symb instanceof LineSymbolizerImpl) {
+            LineSymbolizerImpl lineSymbolizer = (LineSymbolizerImpl) symb;
             Color c = SLD.color(lineSymbolizer);
             int w = SLD.width(lineSymbolizer);
             if (c != null && w > 0) {
@@ -313,8 +305,8 @@ public class Drawer {
                 g.draw(shape);
             }
         }
-        if (symb instanceof PointSymbolizer) {
-            PointSymbolizer pointSymbolizer = (PointSymbolizer) symb;
+        if (symb instanceof PointSymbolizerImpl) {
+            PointSymbolizerImpl pointSymbolizer = (PointSymbolizerImpl) symb;
 
             Color c = SLD.pointColor(pointSymbolizer);
             Color fill = SLD.pointFill(pointSymbolizer);
@@ -328,7 +320,7 @@ public class Drawer {
             Style2D tmp =
                     styleFactory.createStyle(
                             feature,
-                            pointSymbolizer,
+                            symb,
                             NumberRange.create(Double.MIN_VALUE, Double.MAX_VALUE));
 
             if (tmp instanceof MarkStyle2D) {
@@ -397,7 +389,7 @@ public class Drawer {
         // location to place the
         // point in order to avoid recomputing that location at each rendering
         // step
-        if ((s instanceof PointSymbolizer || s instanceof TextSymbolizer)
+        if ((s instanceof PointSymbolizerImpl || s instanceof TextSymbolizerImpl)
                 && !(geom instanceof Point)) {
             if (geom instanceof LineString && !(geom instanceof LinearRing)) {
                 // use the mid point to represent the point/text symbolizer
@@ -419,13 +411,13 @@ public class Drawer {
         String geomName = null;
         // TODO: fix the styles, the getGeometryPropertyName should probably be
         // moved into an interface...
-        if (s instanceof PolygonSymbolizer) {
+        if (s instanceof PolygonSymbolizerImpl) {
             geomName = s.getGeometryPropertyName();
-        } else if (s instanceof PointSymbolizer) {
+        } else if (s instanceof PointSymbolizerImpl) {
             geomName = s.getGeometryPropertyName();
-        } else if (s instanceof LineSymbolizer) {
+        } else if (s instanceof LineSymbolizerImpl) {
             geomName = s.getGeometryPropertyName();
-        } else if (s instanceof TextSymbolizer) {
+        } else if (s instanceof TextSymbolizerImpl) {
             geomName = s.getGeometryPropertyName();
         }
         return geomName;

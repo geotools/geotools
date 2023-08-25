@@ -17,18 +17,15 @@
  */
 package org.geotools.ysld.parse;
 
-import org.geotools.styling.Fill;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Symbolizer;
+import org.geotools.styling.*;
+import org.geotools.styling.StrokeImpl;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
 /** Handles parsing a Ysld "polygon" symbolizer property into a {@link Symbolizer} object. */
-public class PolygonParser extends SymbolizerParser<PolygonSymbolizer> {
+public class PolygonParser extends SymbolizerParser<PolygonSymbolizerImpl> {
 
-    public PolygonParser(Rule rule, Factory factory) {
+    public PolygonParser(RuleImpl rule, Factory factory) {
         super(rule, factory.style.createPolygonSymbolizer(), factory);
     }
 
@@ -40,14 +37,14 @@ public class PolygonParser extends SymbolizerParser<PolygonSymbolizer> {
         context.push(
                 new StrokeParser(factory) {
                     @Override
-                    protected void stroke(Stroke stroke) {
+                    protected void stroke(StrokeImpl stroke) {
                         sym.setStroke(stroke);
                     }
                 });
         context.push(
                 new FillParser(factory) {
                     @Override
-                    protected void fill(Fill fill) {
+                    protected void fill(FillImpl fill) {
                         sym.setFill(fill);
                     }
                 });

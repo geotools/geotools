@@ -17,9 +17,9 @@
 package org.geotools.brewer.styling.builder;
 
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.styling.SelectedChannelType;
+import org.geotools.styling.SelectedChannelTypeImpl;
 
-public class SelectedChannelTypeBuilder extends AbstractStyleBuilder<SelectedChannelType> {
+public class SelectedChannelTypeBuilder extends AbstractStyleBuilder<SelectedChannelTypeImpl> {
 
     private Expression channelName;
 
@@ -53,11 +53,11 @@ public class SelectedChannelTypeBuilder extends AbstractStyleBuilder<SelectedCha
     }
 
     @Override
-    public SelectedChannelType build() {
+    public SelectedChannelTypeImpl build() {
         if (unset) {
             return null;
         }
-        SelectedChannelType selectedChannelType =
+        SelectedChannelTypeImpl selectedChannelType =
                 sf.selectedChannelType(channelName, contrastEnhancement.build());
         return selectedChannelType;
     }
@@ -71,7 +71,7 @@ public class SelectedChannelTypeBuilder extends AbstractStyleBuilder<SelectedCha
     }
 
     @Override
-    public SelectedChannelTypeBuilder reset(SelectedChannelType selectedChannelType) {
+    public SelectedChannelTypeBuilder reset(SelectedChannelTypeImpl selectedChannelType) {
         if (selectedChannelType == null) {
             return reset();
         }

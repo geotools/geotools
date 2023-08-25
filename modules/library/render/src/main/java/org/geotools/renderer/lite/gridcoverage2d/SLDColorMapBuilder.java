@@ -34,13 +34,13 @@ import org.geotools.api.style.ColorMapEntry;
 import org.geotools.renderer.i18n.ErrorKeys;
 import org.geotools.renderer.i18n.Errors;
 import org.geotools.renderer.style.ExpressionExtractor;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.RasterSymbolizer;
+import org.geotools.styling.ColorMapImpl;
+import org.geotools.styling.RasterSymbolizerImpl;
 import org.geotools.util.SuppressFBWarnings;
 
 /**
  * Builder facility for creating a {@link LinearColorMap} using elements from {@link
- * RasterSymbolizer} {@link ColorMapTransform} element.
+ * RasterSymbolizerImpl} {@link ColorMapTransform} element.
  *
  * <p>This class is not intended to be thread safe.
  *
@@ -270,7 +270,7 @@ public class SLDColorMapBuilder {
             ////
 
             switch (linearColorMapType) {
-                case ColorMap.TYPE_RAMP:
+                case ColorMapImpl.TYPE_RAMP:
                     colormapElements.add(
                             LinearColorMapElement.create(
                                     label,
@@ -278,10 +278,10 @@ public class SLDColorMapBuilder {
                                     RangeFactory.create(Double.NEGATIVE_INFINITY, false, q, false),
                                     0));
                     break;
-                case ColorMap.TYPE_VALUES:
+                case ColorMapImpl.TYPE_VALUES:
                     colormapElements.add(LinearColorMapElement.create(label, newColorValue, q, 0));
                     break;
-                case ColorMap.TYPE_INTERVALS:
+                case ColorMapImpl.TYPE_INTERVALS:
                     colormapElements.add(
                             LinearColorMapElement.create(
                                     label,
@@ -324,7 +324,7 @@ public class SLDColorMapBuilder {
                 Range valueRange = RangeFactory.create(previousMax, true, q, false);
 
                 switch (linearColorMapType) {
-                    case ColorMap.TYPE_RAMP:
+                    case ColorMapImpl.TYPE_RAMP:
                         Color[] colors = {lastColorValue, newColorValue};
                         int previousMaximum = previous.getOutputRange().getMax().intValue();
                         // the piecewise machinery will complain if we have different colors
@@ -344,12 +344,12 @@ public class SLDColorMapBuilder {
                                 LinearColorMapElement.create(
                                         label, colors, valueRange, sampleRange));
                         break;
-                    case ColorMap.TYPE_VALUES:
+                    case ColorMapImpl.TYPE_VALUES:
                         colormapElements.add(
                                 LinearColorMapElement.create(
                                         label, newColorValue, q, newColorMapElementIndex));
                         break;
-                    case ColorMap.TYPE_INTERVALS:
+                    case ColorMapImpl.TYPE_INTERVALS:
                         colormapElements.add(
                                 LinearColorMapElement.create(
                                         label, newColorValue, valueRange, newColorMapElementIndex));
@@ -377,7 +377,7 @@ public class SLDColorMapBuilder {
         // ColorMapTransform type VALUES
         //
         // //
-        if (numberColorMapEntries == 1 && linearColorMapType != ColorMap.TYPE_VALUES)
+        if (numberColorMapEntries == 1 && linearColorMapType != ColorMapImpl.TYPE_VALUES)
             throw new IllegalArgumentException(
                     Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "colormap entries", "1"));
 
@@ -387,7 +387,7 @@ public class SLDColorMapBuilder {
         //
         // /////////////////////////////////////////////////////////////////////
         numberOfColorMapElements = numberColorMapEntries;
-        if (linearColorMapType == ColorMap.TYPE_RAMP) {
+        if (linearColorMapType == ColorMapImpl.TYPE_RAMP) {
 
             // //
             //
@@ -640,7 +640,7 @@ public class SLDColorMapBuilder {
         //
         // /////////////////////////////////////////////////////////////////////
         LinearColorMapElement last = this.colormapElements.get(this.colormapElements.size() - 1);
-        if (linearColorMapType == ColorMap.TYPE_RAMP) {
+        if (linearColorMapType == ColorMapImpl.TYPE_RAMP) {
 
             // //
             //

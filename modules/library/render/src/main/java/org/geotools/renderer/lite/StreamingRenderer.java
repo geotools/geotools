@@ -881,7 +881,7 @@ public class StreamingRenderer implements GTRenderer {
                     }
 
                     // handle the background color specification, if any
-                    Style style = layer.getStyle();
+                    StyleImpl style = layer.getStyle();
                     if (style != null && style.getBackground() != null) {
                         fillBackground(graphics, paintArea, style);
                     }
@@ -987,7 +987,7 @@ public class StreamingRenderer implements GTRenderer {
         }
     }
 
-    protected void fillBackground(Graphics2D graphics, Rectangle paintArea, Style style) {
+    protected void fillBackground(Graphics2D graphics, Rectangle paintArea, StyleImpl style) {
         // get the paint, could be a repeated image too (TexturePaint)
         Paint background = styleFactory.getPaint(style.getBackground(), null, null);
         graphics.setPaint(background);
@@ -1485,10 +1485,10 @@ public class StreamingRenderer implements GTRenderer {
         ReferencedEnvelope result = new ReferencedEnvelope(envelope);
         if (styles != null) {
             for (LiteFeatureTypeStyle lts : styles) {
-                List<Rule> rules = new ArrayList<>();
+                List<RuleImpl> rules = new ArrayList<>();
                 rules.addAll(Arrays.asList(lts.ruleList));
                 rules.addAll(Arrays.asList(lts.elseRules));
-                for (Rule r : rules) {
+                for (RuleImpl r : rules) {
                     for (Symbolizer s : r.symbolizers()) {
                         if (s.getGeometry() != null) {
                             ReferencedEnvelope re =
@@ -1646,7 +1646,7 @@ public class StreamingRenderer implements GTRenderer {
                 if (style.elseRules.length > 0) // uh-oh has elseRule
                 return;
                 // look at each rule in the featuretypestyle
-                for (Rule r : style.ruleList) {
+                for (RuleImpl r : style.ruleList) {
                     if (r.getFilter() == null) return; // uh-oh has no filter (want all rows)
                     filtersToDS.add(r.getFilter());
                 }
@@ -1778,12 +1778,12 @@ public class StreamingRenderer implements GTRenderer {
         final MetaBufferEstimator rbe = new MetaBufferEstimator();
 
         for (LiteFeatureTypeStyle lfts : styles) {
-            Rule[] rules = lfts.elseRules;
-            for (Rule value : rules) {
+            RuleImpl[] rules = lfts.elseRules;
+            for (RuleImpl value : rules) {
                 rbe.visit(value);
             }
             rules = lfts.ruleList;
-            for (Rule rule : rules) {
+            for (RuleImpl rule : rules) {
                 rbe.visit(rule);
             }
         }
@@ -1813,10 +1813,10 @@ public class StreamingRenderer implements GTRenderer {
         final StyleAttributeExtractor sae = new StyleAttributeExtractor();
 
         for (LiteFeatureTypeStyle lfts : styles) {
-            for (Rule rule : lfts.elseRules) {
+            for (RuleImpl rule : lfts.elseRules) {
                 sae.visit(rule);
             }
-            for (Rule rule : lfts.ruleList) {
+            for (RuleImpl rule : lfts.ruleList) {
                 sae.visit(rule);
             }
         }
@@ -1964,7 +1964,7 @@ public class StreamingRenderer implements GTRenderer {
      * @param r The rule
      * @return true if the scale is compatible with the rule settings
      */
-    private boolean isWithInScale(Rule r) {
+    private boolean isWithInScale(RuleImpl r) {
         return ((r.getMinScaleDenominator() - TOLERANCE) <= scaleDenominator)
                 && ((r.getMaxScaleDenominator() + TOLERANCE) > scaleDenominator);
     }
@@ -1992,21 +1992,21 @@ public class StreamingRenderer implements GTRenderer {
         // to the data
         RenderingSelectorStyleVisitor selectorStyleVisitor = new MapRenderingSelectorStyleVisitor();
         layer.getStyle().accept(selectorStyleVisitor);
-        Style style = (Style) selectorStyleVisitor.getCopy();
+        StyleImpl style = (StyleImpl) selectorStyleVisitor.getCopy();
 
-        for (FeatureTypeStyle fts : style.featureTypeStyles()) {
+        for (FeatureTypeStyleImpl fts : style.featureTypeStyles()) {
             if (isFeatureTypeStyleActive(layer.getFeatureSource().getSchema(), fts)) {
 
                 SimplifyingStyleVisitor simplifier = new SimplifyingStyleVisitor();
                 fts.accept(simplifier);
-                fts = (FeatureTypeStyle) simplifier.getCopy();
+                fts = (FeatureTypeStyleImpl) simplifier.getCopy();
 
                 // DJB: this FTS is compatible with this FT.
 
                 // get applicable rules at the current scale
-                List<List<Rule>> splittedRules = splitRules(fts);
-                List<Rule> ruleList = splittedRules.get(0);
-                List<Rule> elseRuleList = splittedRules.get(1);
+                List<List<RuleImpl>> splittedRules = splitRules(fts);
+                List<RuleImpl> ruleList = splittedRules.get(0);
+                List<RuleImpl> elseRuleList = splittedRules.get(1);
 
                 // if none, skip it
                 if ((ruleList.isEmpty()) && (elseRuleList.isEmpty())) continue;
@@ -2034,8 +2034,8 @@ public class StreamingRenderer implements GTRenderer {
                                     fts.getTransformation());
                 }
                 lfts.composite = composite;
-                if (FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST.equals(
-                        fts.getOptions().get(FeatureTypeStyle.KEY_EVALUATION_MODE))) {
+                if (org.geotools.styling.FeatureTypeStyleImpl.VALUE_EVALUATION_MODE_FIRST.equals(
+                        fts.getOptions().get(org.geotools.styling.FeatureTypeStyleImpl.KEY_EVALUATION_MODE))) {
                     lfts.matchFirst = true;
                 }
 
@@ -2080,19 +2080,19 @@ public class StreamingRenderer implements GTRenderer {
         OpacityFinder finder =
                 new OpacityFinder(
                         new Class[] {
-                            PointSymbolizer.class, LineSymbolizer.class, PolygonSymbolizer.class
+                            PointSymbolizerImpl.class, LineSymbolizer.class, PolygonSymbolizer.class
                         });
-        for (Rule r : lfts.ruleList) {
+        for (RuleImpl r : lfts.ruleList) {
             r.accept(finder);
         }
-        for (Rule r : lfts.elseRules) {
+        for (RuleImpl r : lfts.elseRules) {
             r.accept(finder);
         }
 
         return !finder.hasOpacity;
     }
 
-    private boolean isFeatureTypeStyleActive(FeatureType ftype, FeatureTypeStyle fts) {
+    private boolean isFeatureTypeStyleActive(FeatureType ftype, FeatureTypeStyleImpl fts) {
         // TODO: find a complex feature equivalent for this check
         return fts.featureTypeNames().isEmpty()
                 || ((ftype.getName().getLocalPart() != null)
@@ -2101,11 +2101,11 @@ public class StreamingRenderer implements GTRenderer {
                                         .anyMatch(tn -> FeatureTypes.matches(ftype, tn))));
     }
 
-    private List<List<Rule>> splitRules(FeatureTypeStyle fts) {
-        List<Rule> ruleList = new ArrayList<>();
-        List<Rule> elseRuleList = new ArrayList<>();
+    private List<List<RuleImpl>> splitRules(FeatureTypeStyleImpl fts) {
+        List<RuleImpl> ruleList = new ArrayList<>();
+        List<RuleImpl> elseRuleList = new ArrayList<>();
 
-        for (Rule r : fts.rules())
+        for (RuleImpl r : fts.rules())
             if (isWithInScale(r)) {
                 if (r.isElseFilter()) {
                     elseRuleList.add(r);
@@ -2125,7 +2125,7 @@ public class StreamingRenderer implements GTRenderer {
                                     }
                                 };
                         r.accept(cloner);
-                        Rule copy = (Rule) cloner.getCopy();
+                        RuleImpl copy = (RuleImpl) cloner.getCopy();
                         if (!Filter.EXCLUDE.equals(copy.getFilter())) {
                             ruleList.add(copy);
                         }
@@ -2187,12 +2187,12 @@ public class StreamingRenderer implements GTRenderer {
             // count how many lite feature type styles are active
             int currCount = 0;
             FeatureType ftype = layer.getFeatureSource().getSchema();
-            for (FeatureTypeStyle fts : styleLayer.getStyle().featureTypeStyles()) {
+            for (FeatureTypeStyleImpl fts : styleLayer.getStyle().featureTypeStyles()) {
                 if (isFeatureTypeStyleActive(ftype, fts)) {
                     // get applicable rules at the current scale
-                    List<List<Rule>> splittedRules = splitRules(fts);
-                    List<Rule> ruleList = splittedRules.get(0);
-                    List<Rule> elseRuleList = splittedRules.get(1);
+                    List<List<RuleImpl>> splittedRules = splitRules(fts);
+                    List<RuleImpl> ruleList = splittedRules.get(0);
+                    List<RuleImpl> elseRuleList = splittedRules.get(1);
 
                     // if none, skip this fts
                     if ((ruleList.isEmpty()) && (elseRuleList.isEmpty())) continue;
@@ -2265,12 +2265,12 @@ public class StreamingRenderer implements GTRenderer {
                         new MemoryFilterOptimizer(features.getSchema(), repeatedObjects);
                 for (LiteFeatureTypeStyle fts : uniformLfts) {
                     for (int i = 0; i < fts.ruleList.length; i++) {
-                        Rule rule = fts.ruleList[i];
+                        RuleImpl rule = fts.ruleList[i];
                         DuplicatingStyleVisitor optimizingStyleVisitor =
                                 new DuplicatingStyleVisitor(
                                         STYLE_FACTORY, filterFactory, filterOptimizer);
                         rule.accept(optimizingStyleVisitor);
-                        fts.ruleList[i] = (Rule) optimizingStyleVisitor.getCopy();
+                        fts.ruleList[i] = (RuleImpl) optimizingStyleVisitor.getCopy();
                     }
                 }
             }
@@ -2569,8 +2569,8 @@ public class StreamingRenderer implements GTRenderer {
      * Reprojects spatial filters so that they match the feature source native CRS, and assuming all
      * literal geometries are specified in the specified declaredCRS
      */
-    private Rule reprojectSpatialFilters(
-            Rule rule, CoordinateReferenceSystem declaredCRS, FeatureType schema) {
+    private RuleImpl reprojectSpatialFilters(
+            RuleImpl rule, CoordinateReferenceSystem declaredCRS, FeatureType schema) {
         // NPE avoidance
         Filter filter = rule.getFilter();
         if (filter == null) {
@@ -2585,7 +2585,7 @@ public class StreamingRenderer implements GTRenderer {
 
         // clone the rule (the style can be reused over and over, we cannot alter it) and set the
         // new filter
-        Rule rr = new Rule(rule);
+        RuleImpl rr = new RuleImpl(rule);
         rr.setFilter(reprojected);
         return rr;
     }
@@ -2622,12 +2622,12 @@ public class StreamingRenderer implements GTRenderer {
     void rescaleFeatureTypeStyle(LiteFeatureTypeStyle fts, DuplicatingStyleVisitor visitor) {
         for (int i = 0; i < fts.ruleList.length; i++) {
             visitor.visit(fts.ruleList[i]);
-            fts.ruleList[i] = (Rule) visitor.getCopy();
+            fts.ruleList[i] = (RuleImpl) visitor.getCopy();
         }
         if (fts.elseRules != null) {
             for (int i = 0; i < fts.elseRules.length; i++) {
                 visitor.visit(fts.elseRules[i]);
-                fts.elseRules[i] = (Rule) visitor.getCopy();
+                fts.elseRules[i] = (RuleImpl) visitor.getCopy();
             }
         }
     }
@@ -2804,7 +2804,7 @@ public class StreamingRenderer implements GTRenderer {
         Set<String> plainGeometries = new java.util.HashSet<>();
         Set<String> txGeometries = new java.util.HashSet<>();
         for (LiteFeatureTypeStyle lft : lfts) {
-            for (Rule r : lft.ruleList) {
+            for (RuleImpl r : lft.ruleList) {
                 for (Symbolizer s : r.symbolizers()) {
                     if (s.getGeometry() == null) {
                         String attribute =
@@ -2835,7 +2835,7 @@ public class StreamingRenderer implements GTRenderer {
         StyleAttributeExtractor extractorOther = new StyleAttributeExtractor();
         extractorOther.setSymbolizerGeometriesVisitEnabled(false);
         for (LiteFeatureTypeStyle lft : lfts) {
-            for (Rule r : lft.ruleList) {
+            for (RuleImpl r : lft.ruleList) {
                 if (r.getFilter() != null) {
                     r.getFilter().accept(extractorOther, null);
                 }
@@ -2871,14 +2871,14 @@ public class StreamingRenderer implements GTRenderer {
 
             // can the rules
             boolean doElse = true;
-            Rule[] elseRuleList = fts.elseRules;
-            Rule[] ruleList = fts.ruleList;
-            Rule r;
+            RuleImpl[] elseRuleList = fts.elseRules;
+            RuleImpl[] ruleList = fts.ruleList;
+            RuleImpl r;
             Filter filter;
             Graphics2D graphics = fts.graphics;
             // applicable rules
             int paintCommands = 0;
-            for (Rule value : ruleList) {
+            for (RuleImpl value : ruleList) {
                 r = value;
                 filter = r.getFilter();
 
@@ -2894,7 +2894,7 @@ public class StreamingRenderer implements GTRenderer {
             }
 
             if (doElse) {
-                for (Rule rule : elseRuleList) {
+                for (RuleImpl rule : elseRuleList) {
                     r = rule;
 
                     paintCommands += processSymbolizers(graphics, rf, r.symbolizers());
@@ -2936,7 +2936,7 @@ public class StreamingRenderer implements GTRenderer {
             // RASTER
             //
             // /////////////////////////////////////////////////////////////////
-            if (symbolizer instanceof RasterSymbolizer) {
+            if (symbolizer instanceof RasterSymbolizerImpl) {
                 // grab the grid coverage
                 GridCoverage2D coverage = null;
                 boolean disposeCoverage = false;
@@ -2956,7 +2956,7 @@ public class StreamingRenderer implements GTRenderer {
                                             graphics,
                                             coverage,
                                             disposeCoverage,
-                                            (RasterSymbolizer) symbolizer,
+                                            (RasterSymbolizerImpl) symbolizer,
                                             destinationCrs,
                                             worldToScreenTransform));
                             paintCommands++;
@@ -2971,7 +2971,7 @@ public class StreamingRenderer implements GTRenderer {
                                         graphics,
                                         reader,
                                         params,
-                                        (RasterSymbolizer) symbolizer,
+                                        (RasterSymbolizerImpl) symbolizer,
                                         destinationCrs,
                                         worldToScreenTransform,
                                         getRenderingInterpolation(drawMe.layer)));
@@ -2992,10 +2992,10 @@ public class StreamingRenderer implements GTRenderer {
                     continue;
                 }
 
-                if (symbolizer instanceof TextSymbolizer && drawMe.feature instanceof Feature) {
+                if (symbolizer instanceof TextSymbolizerImpl && drawMe.feature instanceof Feature) {
                     labelCache.put(
                             drawMe.layerId,
-                            (TextSymbolizer) symbolizer,
+                            (TextSymbolizerImpl) symbolizer,
                             drawMe.feature,
                             shape,
                             null);
@@ -3448,7 +3448,7 @@ public class StreamingRenderer implements GTRenderer {
                 // really needs to play against the original coordinates, plus, once we start
                 // drawing a geometry we want to apply all symbolizers on it)
                 if (screenMap != null //
-                        && !(symbolizer instanceof PointSymbolizer) //
+                        && !(symbolizer instanceof PointSymbolizerImpl) //
                         && !(g instanceof Point)
                         && getGeometryIndex(g) == -1) {
                     Envelope env = g.getEnvelopeInternal();
@@ -3496,7 +3496,7 @@ public class StreamingRenderer implements GTRenderer {
 
                 // some shapes may be too close to projection boundaries to
                 // get transformed, try to be lenient
-                if (symbolizer instanceof PointSymbolizer) {
+                if (symbolizer instanceof PointSymbolizerImpl) {
                     // if the coordinate transformation will occurr in place on the coordinate
                     // sequence
                     if (!clone
@@ -3830,7 +3830,7 @@ public class StreamingRenderer implements GTRenderer {
         private Graphics2D graphics;
         private boolean disposeCoverage;
         private GridCoverage2D coverage;
-        private RasterSymbolizer symbolizer;
+        private RasterSymbolizerImpl symbolizer;
         private CoordinateReferenceSystem destinationCRS;
         private AffineTransform worldToScreen;
 
@@ -3838,7 +3838,7 @@ public class StreamingRenderer implements GTRenderer {
                 Graphics2D graphics,
                 GridCoverage2D coverage,
                 boolean disposeCoverage,
-                RasterSymbolizer symbolizer,
+                RasterSymbolizerImpl symbolizer,
                 CoordinateReferenceSystem destinationCRS,
                 AffineTransform worldToScreen) {
             this.graphics = graphics;
@@ -3911,7 +3911,7 @@ public class StreamingRenderer implements GTRenderer {
 
         private GridCoverage2DReader reader;
 
-        private RasterSymbolizer symbolizer;
+        private RasterSymbolizerImpl symbolizer;
 
         private CoordinateReferenceSystem destinationCRS;
 
@@ -3925,7 +3925,7 @@ public class StreamingRenderer implements GTRenderer {
                 Graphics2D graphics,
                 GridCoverage2DReader reader,
                 GeneralParameterValue[] readParams,
-                RasterSymbolizer symbolizer,
+                RasterSymbolizerImpl symbolizer,
                 CoordinateReferenceSystem destinationCRS,
                 AffineTransform worldToScreen,
                 Interpolation interpolation) {

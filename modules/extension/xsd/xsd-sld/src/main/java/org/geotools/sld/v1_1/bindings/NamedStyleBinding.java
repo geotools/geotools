@@ -17,8 +17,8 @@
 package org.geotools.sld.v1_1.bindings;
 
 import org.geotools.sld.bindings.SLDNamedStyleBinding;
-import org.geotools.styling.Description;
-import org.geotools.styling.NamedStyle;
+import org.geotools.styling.DescriptionImpl;
+import org.geotools.styling.NamedStyleImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
@@ -64,10 +64,10 @@ public class NamedStyleBinding extends SLDNamedStyleBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        NamedStyle style = (NamedStyle) super.parse(instance, node, value);
+        NamedStyleImpl style = (NamedStyleImpl) super.parse(instance, node, value);
 
         if (node.hasChild("Description")) {
-            Description desc = (Description) node.getChildValue("Description");
+            DescriptionImpl desc = (DescriptionImpl) node.getChildValue("Description");
             style.getDescription().setAbstract(desc.getAbstract());
             style.getDescription().setTitle(desc.getTitle());
         }

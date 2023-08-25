@@ -42,7 +42,7 @@ import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
 import org.geotools.renderer.RenderListener;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.test.TestData;
 import org.geotools.util.logging.Logging;
 import org.junit.Before;
@@ -137,8 +137,8 @@ public class DrawSVGTest {
 
     private void setupPointRenderer(String pointStyle)
             throws IOException, ParserConfigurationException {
-        Style pStyle = RendererBaseTest.loadStyle(this, pointStyle);
-        Style lStyle = RendererBaseTest.loadStyle(this, "lineGray.sld");
+        StyleImpl pStyle = RendererBaseTest.loadStyle(this, pointStyle);
+        StyleImpl lStyle = RendererBaseTest.loadStyle(this, "lineGray.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(lineFS, lStyle));
@@ -181,7 +181,7 @@ public class DrawSVGTest {
 
     private void setupSinglePointRenderer(String pointStyle)
             throws IOException, ParserConfigurationException {
-        Style pStyle = RendererBaseTest.loadStyle(this, pointStyle);
+        StyleImpl pStyle = RendererBaseTest.loadStyle(this, pointStyle);
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(singlePointFS, pStyle));
@@ -226,8 +226,8 @@ public class DrawSVGTest {
 
     private void setupLineRenderer(String lineStyle)
             throws IOException, ParserConfigurationException {
-        Style lStyle = RendererBaseTest.loadStyle(this, lineStyle);
-        Style baseStyle = RendererBaseTest.loadStyle(this, "lineGray.sld");
+        StyleImpl lStyle = RendererBaseTest.loadStyle(this, lineStyle);
+        StyleImpl baseStyle = RendererBaseTest.loadStyle(this, "lineGray.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(lineFS, baseStyle));

@@ -21,7 +21,7 @@ import javax.swing.Icon;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.map.Layer;
-import org.geotools.styling.Rule;
+import org.geotools.styling.RuleImpl;
 import org.geotools.styling.SLD;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
@@ -50,7 +50,7 @@ public class DefaultGlyphFactory implements GlyphFactory {
         if ("GridCoverage".equals(schema.getName().getLocalPart())) {
             return grid(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW);
         }
-        Rule rule = SLD.rules(layer.getStyle())[0];
+        RuleImpl rule = SLD.rules(layer.getStyle())[0];
 
         Class<?> binding = schema.getBinding();
         if (isPolygon(binding)) {
@@ -77,7 +77,7 @@ public class DefaultGlyphFactory implements GlyphFactory {
     }
 
     @Override
-    public Icon polygon(Rule rule) {
+    public Icon polygon(RuleImpl rule) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -89,7 +89,7 @@ public class DefaultGlyphFactory implements GlyphFactory {
     }
 
     @Override
-    public Icon geometry(Rule rule) {
+    public Icon geometry(RuleImpl rule) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -113,7 +113,7 @@ public class DefaultGlyphFactory implements GlyphFactory {
     }
 
     @Override
-    public Icon line(Rule rule) {
+    public Icon line(RuleImpl rule) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -131,7 +131,7 @@ public class DefaultGlyphFactory implements GlyphFactory {
     }
 
     @Override
-    public Icon point(Rule rule) {
+    public Icon point(RuleImpl rule) {
         // TODO Auto-generated method stub
         return null;
     }

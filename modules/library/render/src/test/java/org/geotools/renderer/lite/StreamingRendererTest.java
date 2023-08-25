@@ -169,17 +169,17 @@ public class StreamingRendererTest {
                 testPointFeatureType, new Object[] {gf.createPoint(coord)}, null);
     }
 
-    private Style createLineStyle() {
+    private StyleImpl createLineStyle() {
         StyleBuilder sb = new StyleBuilder();
         return sb.createStyle(sb.createLineSymbolizer());
     }
 
-    private Style createRasterStyle() {
+    private StyleImpl createRasterStyle() {
         StyleBuilder sb = new StyleBuilder();
         return sb.createStyle(sb.createRasterSymbolizer());
     }
 
-    private Style createPointStyle() {
+    private StyleImpl createPointStyle() {
         StyleBuilder sb = new StyleBuilder();
         return sb.createStyle(sb.createPointSymbolizer());
     }
@@ -486,8 +486,8 @@ public class StreamingRendererTest {
         // thread is dead
         SimpleFeatureCollection lines = createLineCollection();
 
-        Style rasterStyle = createRasterStyle();
-        Style lineStyle = createLineStyle();
+        StyleImpl rasterStyle = createRasterStyle();
+        StyleImpl lineStyle = createLineStyle();
 
         MapContent mapContent = new MapContent();
         mapContent.addLayer(new GridCoverageLayer(oomCoverage, rasterStyle));
@@ -577,8 +577,8 @@ public class StreamingRendererTest {
                 };
 
         StyleBuilder sb = new StyleBuilder();
-        Style style20 = sb.createStyle(sb.createLineSymbolizer(20));
-        Style style10 = sb.createStyle(sb.createLineSymbolizer(10));
+        StyleImpl style20 = sb.createStyle(sb.createLineSymbolizer(20));
+        StyleImpl style10 = sb.createStyle(sb.createLineSymbolizer(10));
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(testSource, style20));
@@ -684,7 +684,7 @@ public class StreamingRendererTest {
                     }
                 };
 
-        Style style = createPointStyle();
+        StyleImpl style = createPointStyle();
         MapContent mc = new MapContent();
         FeatureLayer layer = new FeatureLayer(testSource, style);
         mc.addLayer(layer);
@@ -697,9 +697,9 @@ public class StreamingRendererTest {
         // simulate geofence adding a bbox
         BBOX bbox = StreamingRenderer.filterFactory.bbox("", 30, 60, 30, 60, "EPSG:4326");
         StyleFactory sf = new StyleFactory();
-        Rule bboxRule =
+        RuleImpl bboxRule =
                 sf.createRule(
-                        new Symbolizer[0], new Description(), null, "bbox", bbox, false, 1e12, 0);
+                        new Symbolizer[0], new DescriptionImpl(), null, "bbox", bbox, false, 1e12, 0);
         style.featureTypeStyles().get(0).rules().add(bboxRule);
 
         BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
@@ -748,7 +748,7 @@ public class StreamingRendererTest {
          * Set up the rendering of previous empty geometry
          */
         StyleBuilder sb = new StyleBuilder();
-        Style style = sb.createStyle(sb.createPolygonSymbolizer());
+        StyleImpl style = sb.createStyle(sb.createPolygonSymbolizer());
         Layer layer = new FeatureLayer(dataStore.getFeatureSource("empty-geom-rendering"), style);
         mc.addLayer(layer);
         StreamingRenderer sr = new StreamingRenderer();
@@ -788,7 +788,7 @@ public class StreamingRendererTest {
         // preparing the layer to be rendered, the provided style as a filter that will use
         // the default geometry attribute "", this will allow us to test that using geometry
         // default attribute "" is correctly handled
-        Style style = (Style) RendererBaseTest.loadStyle(this, "genericLines.sld");
+        StyleImpl style = (StyleImpl) RendererBaseTest.loadStyle(this, "genericLines.sld");
         File vectorDataFile =
                 new File(TestData.getResource(this, "genericLines.properties").toURI());
         PropertyDataStore dataStore = new PropertyDataStore(vectorDataFile.getParentFile());
@@ -908,7 +908,7 @@ public class StreamingRendererTest {
 
         // create the map content
         SimpleFeatureCollection lines = createLineCollection();
-        Style lineStyle = createLineStyle();
+        StyleImpl lineStyle = createLineStyle();
         MapContent mapContent = new MapContent();
         mapContent.addLayer(new FeatureLayer(lines, lineStyle));
 

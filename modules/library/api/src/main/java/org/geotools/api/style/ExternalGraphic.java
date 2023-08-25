@@ -79,4 +79,6 @@ public interface ExternalGraphic extends GraphicalSymbol {
      * @return properties
      */
     Map<String, Object> getCustomProperties();
+
+    void accept(StyleVisitor visitor);
 }

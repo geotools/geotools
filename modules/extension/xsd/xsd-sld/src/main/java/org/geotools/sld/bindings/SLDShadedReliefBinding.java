@@ -19,7 +19,7 @@ package org.geotools.sld.bindings;
 import javax.xml.namespace.QName;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.styling.ShadedRelief;
+import org.geotools.styling.ShadedReliefImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
@@ -90,7 +90,7 @@ public class SLDShadedReliefBinding extends AbstractComplexBinding {
      */
     @Override
     public Class getType() {
-        return ShadedRelief.class;
+        return ShadedReliefImpl.class;
     }
 
     /**
@@ -119,7 +119,7 @@ public class SLDShadedReliefBinding extends AbstractComplexBinding {
             reliefFactor = filterFactory.literal(d.doubleValue());
         }
 
-        ShadedRelief shadedRelief = styleFactory.createShadedRelief(reliefFactor);
+        ShadedReliefImpl shadedRelief = styleFactory.createShadedRelief(reliefFactor);
 
         if (node.hasChild("BrightnessOnly")) {
             Boolean b = (Boolean) node.getChildValue("BrightnessOnly");

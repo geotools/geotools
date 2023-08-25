@@ -17,7 +17,7 @@
  */
 package org.geotools.ysld.parse;
 
-import org.geotools.styling.Rule;
+import org.geotools.styling.RuleImpl;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 import org.geotools.ysld.YamlSeq;
@@ -28,9 +28,9 @@ import org.geotools.ysld.YamlSeq;
  */
 public class SymbolizersParser extends YsldParseHandler {
 
-    Rule rule;
+    RuleImpl rule;
 
-    public SymbolizersParser(Rule rule, Factory factory) {
+    public SymbolizersParser(RuleImpl rule, Factory factory) {
         super(factory);
         this.rule = rule;
     }

@@ -15,7 +15,7 @@ import org.geotools.ows.wmts.map.WMTSMapLayer;
 import org.geotools.ows.wmts.model.WMTSLayer;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.SLD;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.swing.JMapFrame;
 
 /**
@@ -56,7 +56,7 @@ public class Quickstart {
         File file = new File("/data/natural_earth/110m_physical/110m_coastline.shp");
         FileDataStore store = FileDataStoreFinder.getDataStore(file);
         SimpleFeatureSource featureSource = store.getFeatureSource();
-        Style style = SLD.createSimpleStyle(featureSource.getSchema());
+        StyleImpl style = SLD.createSimpleStyle(featureSource.getSchema());
         Layer layer = new FeatureLayer(featureSource, style);
         map.addLayer(layer);
         JMapFrame frame = new JMapFrame();

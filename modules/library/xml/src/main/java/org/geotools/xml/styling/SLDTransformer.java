@@ -53,22 +53,22 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.gml.producer.FeatureTransformer;
 import org.geotools.referencing.CRS;
 import org.geotools.styling.*;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.NamedLayer;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.SelectedChannelType;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.UserLayer;
+import org.geotools.styling.ChannelSelectionImpl;
+import org.geotools.styling.ColorMapImpl;
+import org.geotools.styling.ContrastEnhancementImpl;
+import org.geotools.styling.FillImpl;
+import org.geotools.styling.FontImpl;
+import org.geotools.styling.GraphicImpl;
+import org.geotools.styling.LineSymbolizerImpl;
+import org.geotools.styling.NamedLayerImpl;
+import org.geotools.styling.PointSymbolizerImpl;
+import org.geotools.styling.PolygonSymbolizerImpl;
+import org.geotools.styling.RasterSymbolizerImpl;
+import org.geotools.styling.SelectedChannelTypeImpl;
+import org.geotools.styling.StrokeImpl;
+import org.geotools.styling.StyleImpl;
+import org.geotools.styling.TextSymbolizerImpl;
+import org.geotools.styling.UserLayerImpl;
 import org.geotools.util.GrowableInternationalString;
 import org.geotools.xml.filter.FilterTransformer;
 import org.geotools.xml.transform.TransformerBase;
@@ -92,7 +92,7 @@ public class SLDTransformer extends TransformerBase {
 
     static final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
-    static final Font DEFAULT_FONT = CommonFactoryFinder.getStyleFactory().getDefaultFont();
+    static final FontImpl DEFAULT_FONT = CommonFactoryFinder.getStyleFactory().getDefaultFont();
 
     /**
      * Additional namespace mappings to emit in the start element of the generated. Each entry has a
@@ -203,7 +203,7 @@ public class SLDTransformer extends TransformerBase {
         FilterTransformer.FilterTranslator filterTranslator;
 
         private boolean exportDefaultValues = false;
-        private Style[] styles;
+        private StyleImpl[] styles;
 
         /** Translates into the default of prefix "sld" for "http://www.opengis.net/sld". */
         public SLDTranslator(ContentHandler handler) {
@@ -396,7 +396,7 @@ public class SLDTransformer extends TransformerBase {
             encodeCssParam("stroke-width", stroke.getWidth(), 1.0);
             encodeCssParam("stroke-dashoffset", stroke.getDashOffset(), 0.0);
 
-            encodeStrokeDasharray(((Stroke) stroke).dashArray());
+            encodeStrokeDasharray(((StrokeImpl) stroke).dashArray());
 
             end("Stroke");
         }
@@ -461,7 +461,7 @@ public class SLDTransformer extends TransformerBase {
 
             start("TextSymbolizer", atts);
 
-            encodeGeometryExpression(((TextSymbolizer) text).getGeometry());
+            encodeGeometryExpression(((TextSymbolizerImpl) text).getGeometry());
 
             if (text.getLabel() != null) {
                 start("Label");
@@ -469,16 +469,16 @@ public class SLDTransformer extends TransformerBase {
                 end("Label");
             }
 
-            if ((((TextSymbolizer) text).fonts() != null)
-                    && (!((TextSymbolizer) text).fonts().isEmpty())) {
-                List<Font> fonts = ((TextSymbolizer) text).fonts();
+            if ((((TextSymbolizerImpl) text).fonts() != null)
+                    && (!((TextSymbolizerImpl) text).fonts().isEmpty())) {
+                List<FontImpl> fonts = ((TextSymbolizerImpl) text).fonts();
                 if (areFontsUniform(fonts)) {
                     // go for standard encoding, SLD 1.0 does not allow more than one
                     // Font item in a TextSymbolizer
                     start("Font");
 
-                    Font initialFont = fonts.get(0);
-                    for (Font font : fonts) {
+                    FontImpl initialFont = fonts.get(0);
+                    for (FontImpl font : fonts) {
                         encodeCssParam("font-family", font.getFamily().get(0));
                     }
                     encodeCssParam("font-size", initialFont.getSize());
@@ -488,7 +488,7 @@ public class SLDTransformer extends TransformerBase {
                 } else {
                     // use a GT specific encoding with multiple fonts, matching our
                     // internal data model (which we can also parse)
-                    for (Font font : fonts) {
+                    for (FontImpl font : fonts) {
                         start("Font");
                         encodeCssParam("font-family", font.getFamily().get(0));
                         encodeCssParam("font-size", font.getSize());
@@ -526,8 +526,8 @@ public class SLDTransformer extends TransformerBase {
                 element("Priority", text.getPriority());
             }
 
-            if (((TextSymbolizer) text).getOptions() != null) {
-                encodeVendorOptions(((TextSymbolizer) text).getOptions());
+            if (((TextSymbolizerImpl) text).getOptions() != null) {
+                encodeVendorOptions(((TextSymbolizerImpl) text).getOptions());
             }
 
             end("TextSymbolizer");
@@ -537,17 +537,17 @@ public class SLDTransformer extends TransformerBase {
          * Returns true if the list of fonts has the same settings for everything besides the font
          * family, and can thus be represented as a single Font element
          */
-        private boolean areFontsUniform(List<Font> fonts) {
+        private boolean areFontsUniform(List<FontImpl> fonts) {
             if (fonts.size() == 1) {
                 return true;
             }
 
-            Font reference = fonts.get(0);
+            FontImpl reference = fonts.get(0);
             Expression referenceSize = reference.getSize();
             Expression referenceStyle = reference.getStyle();
             Expression referenceWeight = reference.getWeight();
             for (int i = 1; i < fonts.size(); i++) {
-                Font f = fonts.get(i);
+                FontImpl f = fonts.get(i);
                 Expression size = f.getSize();
                 if (!expressionEquals(referenceSize, size, DEFAULT_FONT.getSize())) {
                     return false;
@@ -590,15 +590,15 @@ public class SLDTransformer extends TransformerBase {
 
             start("RasterSymbolizer", atts);
 
-            encodeGeometryExpression(((RasterSymbolizer) raster).getGeometry());
+            encodeGeometryExpression(((RasterSymbolizerImpl) raster).getGeometry());
 
             element("Opacity", raster.getOpacity(), 1.0);
 
             if (raster.getChannelSelection() != null) {
-                final ChannelSelection cs = (ChannelSelection) raster.getChannelSelection();
+                final ChannelSelectionImpl cs = (ChannelSelectionImpl) raster.getChannelSelection();
                 if (cs.getGrayChannel() != null) {
                     start("ChannelSelection");
-                    SelectedChannelType gray = cs.getGrayChannel();
+                    SelectedChannelTypeImpl gray = cs.getGrayChannel();
 
                     start("GrayChannel");
                     gray.accept(this);
@@ -611,7 +611,7 @@ public class SLDTransformer extends TransformerBase {
                         && cs.getRGBChannels()[1] != null
                         && cs.getRGBChannels()[2] != null) {
                     start("ChannelSelection");
-                    SelectedChannelType[] rgb = cs.getRGBChannels();
+                    SelectedChannelTypeImpl[] rgb = cs.getRGBChannels();
 
                     start("RedChannel");
                     rgb[0].accept(this);
@@ -646,7 +646,7 @@ public class SLDTransformer extends TransformerBase {
                 }
             }
 
-            ColorMap colorMap = (ColorMap) raster.getColorMap();
+            ColorMapImpl colorMap = (ColorMapImpl) raster.getColorMap();
             if (colorMap != null
                     && colorMap.getColorMapEntries() != null
                     && colorMap.getColorMapEntries().length > 0) {
@@ -667,7 +667,7 @@ public class SLDTransformer extends TransformerBase {
                 end("ImageOutline");
             }
 
-            encodeVendorOptions(((RasterSymbolizer) raster).getOptions());
+            encodeVendorOptions(((RasterSymbolizerImpl) raster).getOptions());
 
             end("RasterSymbolizer");
         }
@@ -678,8 +678,8 @@ public class SLDTransformer extends TransformerBase {
             // string-values: "ramp", "intervals" or "values".
             AttributesImpl atts = new AttributesImpl();
             String typeString;
-            if (colorMap.getType() == ColorMap.TYPE_INTERVALS) typeString = "intervals";
-            else if (colorMap.getType() == ColorMap.TYPE_VALUES) typeString = "values";
+            if (colorMap.getType() == ColorMapImpl.TYPE_INTERVALS) typeString = "intervals";
+            else if (colorMap.getType() == ColorMapImpl.TYPE_VALUES) typeString = "values";
             else typeString = "ramp"; // Also the default in the parser
             if (!"ramp".equals(typeString)) {
                 atts.addAttribute("", "type", "type", "", typeString);
@@ -743,7 +743,7 @@ public class SLDTransformer extends TransformerBase {
                 atts.addAttribute("", "uom", "uom", "", UomOgcMapping.get(uom).getSEString());
 
             start("PolygonSymbolizer", atts);
-            encodeGeometryExpression(((PolygonSymbolizer) poly).getGeometry());
+            encodeGeometryExpression(((PolygonSymbolizerImpl) poly).getGeometry());
 
             if (poly.getFill() != null) {
                 poly.getFill().accept(this);
@@ -753,8 +753,8 @@ public class SLDTransformer extends TransformerBase {
                 poly.getStroke().accept(this);
             }
 
-            if (((PolygonSymbolizer) poly).getOptions() != null) {
-                encodeVendorOptions(((PolygonSymbolizer) poly).getOptions());
+            if (((PolygonSymbolizerImpl) poly).getOptions() != null) {
+                encodeVendorOptions(((PolygonSymbolizerImpl) poly).getOptions());
             }
             end("PolygonSymbolizer");
         }
@@ -785,7 +785,7 @@ public class SLDTransformer extends TransformerBase {
             Unit<Length> uom = line.getUnitOfMeasure();
             if (uom != null)
                 atts.addAttribute("", "uom", "uom", "", UomOgcMapping.get(uom).getSEString());
-            LineSymbolizer input = (LineSymbolizer) line;
+            LineSymbolizerImpl input = (LineSymbolizerImpl) line;
             start("LineSymbolizer", atts);
             encodeGeometryExpression(input.getGeometry());
 
@@ -825,7 +825,7 @@ public class SLDTransformer extends TransformerBase {
             if (rule.getDescription() != null && rule.getDescription().getAbstract() != null)
                 element("Abstract", rule.getDescription().getAbstract());
 
-            Graphic legend = (Graphic) rule.getLegend();
+            GraphicImpl legend = (GraphicImpl) rule.getLegend();
             if (legend != null) {
                 start("LegendGraphic");
                 legend.accept(this);
@@ -883,7 +883,7 @@ public class SLDTransformer extends TransformerBase {
 
         @Override
         public void visit(org.geotools.api.style.PointSymbolizer ps) {
-            PointSymbolizer input = (PointSymbolizer) ps;
+            PointSymbolizerImpl input = (PointSymbolizerImpl) ps;
             // adds the uom attribute according to the OGC SE specification
             AttributesImpl atts = new AttributesImpl();
             Unit<Length> uom = ps.getUnitOfMeasure();
@@ -958,10 +958,10 @@ public class SLDTransformer extends TransformerBase {
             org.geotools.api.style.StyledLayer[] layers = sld.getStyledLayers();
 
             for (StyledLayer layer : layers) {
-                if (layer instanceof NamedLayer) {
-                    visit((NamedLayer) layer);
-                } else if (layer instanceof UserLayer) {
-                    visit((UserLayer) layer);
+                if (layer instanceof NamedLayerImpl) {
+                    visit((NamedLayerImpl) layer);
+                } else if (layer instanceof UserLayerImpl) {
+                    visit((UserLayerImpl) layer);
                 } else {
                     throw new IllegalArgumentException(
                             "StyledLayer '" + layer.getClass().toString() + "' not found");
@@ -1002,7 +1002,7 @@ public class SLDTransformer extends TransformerBase {
                 element("Name", layer.getName()); // optional
             }
 
-            DataStore inlineFDS = ((UserLayer) layer).getInlineFeatureDatastore();
+            DataStore inlineFDS = ((UserLayerImpl) layer).getInlineFeatureDatastore();
             if (inlineFDS != null) {
                 visitInlineFeatureType(inlineFDS, layer.getInlineFeatureType());
             } else if (layer.getRemoteOWS() != null) {
@@ -1154,7 +1154,7 @@ public class SLDTransformer extends TransformerBase {
 
         @Override
         public void visit(org.geotools.api.style.Style style) {
-            if (style instanceof NamedStyle) {
+            if (style instanceof NamedStyleImpl) {
                 start("NamedStyle");
                 element("Name", style.getName());
                 end("NamedStyle");
@@ -1169,7 +1169,7 @@ public class SLDTransformer extends TransformerBase {
                 }
                 if (style.getDescription() != null && style.getDescription().getAbstract() != null)
                     element("Abstract", style.getDescription().getAbstract());
-                Fill background = (Fill) style.getBackground();
+                FillImpl background = (FillImpl) style.getBackground();
                 if (background != null) {
                     start("Background");
 
@@ -1336,7 +1336,7 @@ public class SLDTransformer extends TransformerBase {
             end("VendorOption");
         }
 
-        public void encodeStyles(Style[] styles) {
+        public void encodeStyles(StyleImpl[] styles) {
             this.styles = styles;
             try {
                 contentHandler.startDocument();
@@ -1344,7 +1344,7 @@ public class SLDTransformer extends TransformerBase {
                 start("StyledLayerDescriptor", NULL_ATTS);
                 start("NamedLayer", NULL_ATTS); // this is correct?
 
-                for (Style style : styles) {
+                for (StyleImpl style : styles) {
                     style.accept(this);
                 }
 
@@ -1371,8 +1371,8 @@ public class SLDTransformer extends TransformerBase {
         public void encode(Object o) throws IllegalArgumentException {
             if (o instanceof StyledLayerDescriptor) {
                 encodeStyles((StyledLayerDescriptor) o);
-            } else if (o instanceof Style[]) {
-                encodeStyles((Style[]) o);
+            } else if (o instanceof StyleImpl[]) {
+                encodeStyles((StyleImpl[]) o);
             } else {
                 Class<?> c = o.getClass();
 
@@ -1430,9 +1430,9 @@ public class SLDTransformer extends TransformerBase {
         public void visit(org.geotools.api.style.ChannelSelection cs) {
             if (cs == null) return;
             start("ChannelSelection");
-            SelectedChannelType[] sct = (SelectedChannelType[]) cs.getRGBChannels();
+            SelectedChannelTypeImpl[] sct = (SelectedChannelTypeImpl[]) cs.getRGBChannels();
             if (sct == null && cs.getGrayChannel() != null) {
-                sct = new SelectedChannelType[] {(SelectedChannelType) cs.getGrayChannel()};
+                sct = new SelectedChannelTypeImpl[] {(SelectedChannelTypeImpl) cs.getGrayChannel()};
             }
             for (int i = 0; sct != null && i < sct.length; i++) visit(sct[i]);
             end("ChannelSelection");
@@ -1450,7 +1450,8 @@ public class SLDTransformer extends TransformerBase {
         @Override
         public void visit(org.geotools.api.style.SelectedChannelType sct) {
             element("SourceChannelName", sct.getChannelName());
-            final ContrastEnhancement ce = (ContrastEnhancement) sct.getContrastEnhancement();
+            final ContrastEnhancementImpl ce =
+                    (ContrastEnhancementImpl) sct.getContrastEnhancement();
             if (ce != null) ce.accept(this);
         }
 

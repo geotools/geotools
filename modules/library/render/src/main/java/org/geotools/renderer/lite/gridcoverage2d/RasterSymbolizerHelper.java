@@ -35,9 +35,9 @@ import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.image.ImageWorker;
 import org.geotools.renderer.i18n.Vocabulary;
 import org.geotools.renderer.i18n.VocabularyKeys;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.ShadedRelief;
+import org.geotools.styling.ChannelSelectionImpl;
+import org.geotools.styling.ContrastEnhancementImpl;
+import org.geotools.styling.ShadedReliefImpl;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
 
@@ -235,7 +235,7 @@ public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessi
         currNode.addSource(prevNode);
         prevNode = currNode;
 
-        final ChannelSelection cs = (ChannelSelection) rs.getChannelSelection();
+        final ChannelSelectionImpl cs = (ChannelSelectionImpl) rs.getChannelSelection();
         csNode.visit(cs);
 
         // /////////////////////////////////////////////////////////////////////
@@ -267,7 +267,7 @@ public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessi
         prevNode.addSink(currNode);
         prevNode = currNode;
 
-        final ContrastEnhancement ce = (ContrastEnhancement) rs.getContrastEnhancement();
+        final ContrastEnhancementImpl ce = (ContrastEnhancementImpl) rs.getContrastEnhancement();
         ceNode.visit(ce);
 
         // /////////////////////////////////////////////////////////////////////
@@ -277,7 +277,7 @@ public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessi
         // /////////////////////////////////////////////////////////////////////
 
         final ShadedReliefNode srNode = new ShadedReliefNode(this.getHints());
-        final ShadedRelief sr = (ShadedRelief) rs.getShadedRelief();
+        final ShadedReliefImpl sr = (ShadedReliefImpl) rs.getShadedRelief();
         srNode.visit(sr);
         currNode = srNode;
 

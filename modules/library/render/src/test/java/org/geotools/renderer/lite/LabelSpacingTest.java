@@ -19,7 +19,7 @@ package org.geotools.renderer.lite;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import org.geotools.image.test.ImageAssert;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.junit.Test;
 
 /** Tests labels underling. */
@@ -28,7 +28,7 @@ public class LabelSpacingTest extends AbstractLabelLineTest {
     @Test
     public void testLabelsIncreaseSpacing() throws Exception {
         // load the style that will increase the char spacing
-        Style style =
+        StyleImpl style =
                 loadParametricStyle(
                         this,
                         "lineStyleTemplate.sld",
@@ -48,7 +48,7 @@ public class LabelSpacingTest extends AbstractLabelLineTest {
     @Test
     public void testLabelsDecreaseSpacing() throws Exception {
         // load the style that will decrease the char spacing
-        Style style =
+        StyleImpl style =
                 loadParametricStyle(
                         this,
                         "lineStyleTemplate.sld",
@@ -68,7 +68,7 @@ public class LabelSpacingTest extends AbstractLabelLineTest {
     @Test
     public void testLabelsIncreaseWordSpacing() throws Exception {
         // load the style that will increase the word spacing in labels
-        Style style =
+        StyleImpl style =
                 loadParametricStyle(
                         this,
                         "lineStyleTemplate.sld",

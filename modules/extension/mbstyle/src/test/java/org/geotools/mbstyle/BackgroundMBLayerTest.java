@@ -6,8 +6,8 @@ import static org.junit.Assert.assertNull;
 import java.awt.Color;
 import java.io.IOException;
 import org.geotools.mbstyle.layer.BackgroundMBLayer;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.Fill;
+import org.geotools.styling.ExternalGraphicImpl;
+import org.geotools.styling.FillImpl;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Before;
@@ -18,8 +18,8 @@ public class BackgroundMBLayerTest {
     MBStyle style;
     BackgroundMBLayer graphicLayer;
     MBStyle graphicStyle;
-    private Fill fill;
-    private Fill graphicFill;
+    private FillImpl fill;
+    private FillImpl graphicFill;
 
     @Before
     public void setUp() throws IOException, ParseException {
@@ -55,8 +55,8 @@ public class BackgroundMBLayerTest {
 
     @Test
     public void parsedGraphicBackground() {
-        ExternalGraphic eg =
-                (ExternalGraphic) graphicFill.getGraphicFill().graphicalSymbols().get(0);
+        ExternalGraphicImpl eg =
+                (ExternalGraphicImpl) graphicFill.getGraphicFill().graphicalSymbols().get(0);
         assertEquals(
                 "mapbox://sprites/testuser/ciz48dnnj004l2rplkpqsra81#icon=${strURLEncode('owl')}&size=${strURLEncode('1')}",
                 eg.getURI());

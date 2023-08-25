@@ -39,7 +39,7 @@ import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
 import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.label.LabelCacheImpl;
-import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.test.TestData;
 import org.geotools.util.logging.Logging;
 import org.junit.Before;
@@ -98,7 +98,7 @@ public class DrawTest {
     }
 
     private void runFillTest(String styleName) throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, styleName);
+        StyleImpl style = RendererBaseTest.loadStyle(this, styleName);
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(squareFS, style));
@@ -137,7 +137,7 @@ public class DrawTest {
     public void testRenderingHints() throws Exception {
         // check if rendering fails when there are no anti aliasing hints set.
         String styleName = "labeledPolygon.sld";
-        Style style = RendererBaseTest.loadStyle(this, styleName);
+        StyleImpl style = RendererBaseTest.loadStyle(this, styleName);
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(squareFS, style));
@@ -221,8 +221,8 @@ public class DrawTest {
 
     @Test
     public void testAnchorPointRotateBase() throws Exception {
-        Style pStyle = RendererBaseTest.loadStyle(this, "rotateSVGHouseBase.sld");
-        Style lStyle = RendererBaseTest.loadStyle(this, "lineGray.sld");
+        StyleImpl pStyle = RendererBaseTest.loadStyle(this, "rotateSVGHouseBase.sld");
+        StyleImpl lStyle = RendererBaseTest.loadStyle(this, "lineGray.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(lineFS, lStyle));
@@ -245,8 +245,8 @@ public class DrawTest {
 
     @Test
     public void testAnchorPointRotateSide() throws Exception {
-        Style pStyle = RendererBaseTest.loadStyle(this, "rotateSVGHouseSide.sld");
-        Style lStyle = RendererBaseTest.loadStyle(this, "lineGray.sld");
+        StyleImpl pStyle = RendererBaseTest.loadStyle(this, "rotateSVGHouseSide.sld");
+        StyleImpl lStyle = RendererBaseTest.loadStyle(this, "lineGray.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(lineFS, lStyle));
@@ -351,7 +351,7 @@ public class DrawTest {
         File property = new File(TestData.getResource(this, "lineJoins.properties").toURI());
         PropertyDataStore ds = new PropertyDataStore(property.getParentFile());
         SimpleFeatureSource lineJoins = ds.getFeatureSource("lineJoins");
-        Style miterStyle = RendererBaseTest.loadStyle(this, "lineGrayMiter.sld");
+        StyleImpl miterStyle = RendererBaseTest.loadStyle(this, "lineGrayMiter.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(lineJoins, miterStyle));
@@ -379,8 +379,8 @@ public class DrawTest {
     }
 
     private StreamingRenderer setupPointRenderer(String pointStyle) throws IOException {
-        Style pStyle = RendererBaseTest.loadStyle(this, pointStyle);
-        Style lStyle = RendererBaseTest.loadStyle(this, "lineGray.sld");
+        StyleImpl pStyle = RendererBaseTest.loadStyle(this, pointStyle);
+        StyleImpl lStyle = RendererBaseTest.loadStyle(this, "lineGray.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(lineFS, lStyle));
@@ -395,7 +395,7 @@ public class DrawTest {
     }
 
     private StreamingRenderer setupSinglePointRenderer(String pointStyle) throws IOException {
-        Style pStyle = RendererBaseTest.loadStyle(this, pointStyle);
+        StyleImpl pStyle = RendererBaseTest.loadStyle(this, pointStyle);
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(singlePointFS, pStyle));
@@ -410,8 +410,8 @@ public class DrawTest {
     }
 
     private StreamingRenderer setupLineRenderer(String lineStyle) throws IOException {
-        Style lStyle = RendererBaseTest.loadStyle(this, lineStyle);
-        Style baseStyle = RendererBaseTest.loadStyle(this, "lineGray.sld");
+        StyleImpl lStyle = RendererBaseTest.loadStyle(this, lineStyle);
+        StyleImpl baseStyle = RendererBaseTest.loadStyle(this, "lineGray.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(lineFS, baseStyle));

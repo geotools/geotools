@@ -17,9 +17,9 @@
 package org.geotools.brewer.styling.builder;
 
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.styling.ShadedRelief;
+import org.geotools.styling.ShadedReliefImpl;
 
-public class ShadedReliefBuilder extends AbstractStyleBuilder<ShadedRelief> {
+public class ShadedReliefBuilder extends AbstractStyleBuilder<ShadedReliefImpl> {
     private Expression factor;
 
     private boolean brightnessOnly;
@@ -54,11 +54,11 @@ public class ShadedReliefBuilder extends AbstractStyleBuilder<ShadedRelief> {
     }
 
     @Override
-    public ShadedRelief build() {
+    public ShadedReliefImpl build() {
         if (unset) {
             return null;
         }
-        ShadedRelief relief = sf.shadedRelief(factor, brightnessOnly);
+        ShadedReliefImpl relief = sf.shadedRelief(factor, brightnessOnly);
         return relief;
     }
 
@@ -71,7 +71,7 @@ public class ShadedReliefBuilder extends AbstractStyleBuilder<ShadedRelief> {
     }
 
     @Override
-    public ShadedReliefBuilder reset(ShadedRelief relief) {
+    public ShadedReliefBuilder reset(ShadedReliefImpl relief) {
         if (relief == null) {
             return reset();
         }

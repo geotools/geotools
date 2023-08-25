@@ -32,12 +32,8 @@ import org.geotools.geometry.jts.Decimator;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.GraphicLegend;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
+import org.geotools.styling.*;
+import org.geotools.styling.GraphicImpl;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.GeoTools;
 import org.junit.After;
@@ -82,8 +78,8 @@ public class StyledShapePainterTest {
         final int height = testImage.getHeight();
 
         // Get graphic legend from style
-        final Style style = RendererBaseTest.loadStyle(this, "testGraphicLegend.sld");
-        final Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        final StyleImpl style = RendererBaseTest.loadStyle(this, "testGraphicLegend.sld");
+        final RuleImpl rule = style.featureTypeStyles().get(0).rules().get(0);
         final GraphicLegend legend = (GraphicLegend) rule.getLegend();
 
         // Paint legend using StyledShapePainter
@@ -116,8 +112,8 @@ public class StyledShapePainterTest {
         URLCheckers.register(new MockURLChecker(u -> false));
 
         // Get graphic legend from style
-        Style style = RendererBaseTest.loadStyle(this, "testGraphicLegend.sld");
-        Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        StyleImpl style = RendererBaseTest.loadStyle(this, "testGraphicLegend.sld");
+        RuleImpl rule = style.featureTypeStyles().get(0).rules().get(0);
         GraphicLegend legend = (GraphicLegend) rule.getLegend();
 
         // The painter has nothing to paint if the URL check fails so passing in a null graphics and
@@ -135,8 +131,8 @@ public class StyledShapePainterTest {
         final int height = testImage.getHeight();
 
         // Get graphic legend from style
-        final Style style = RendererBaseTest.loadStyle(this, "testGraphicLegend.sld");
-        final Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        final StyleImpl style = RendererBaseTest.loadStyle(this, "testGraphicLegend.sld");
+        final RuleImpl rule = style.featureTypeStyles().get(0).rules().get(0);
         final GraphicLegend legend = (GraphicLegend) rule.getLegend();
 
         // Paint legend using StyledShapePainter
@@ -170,8 +166,8 @@ public class StyledShapePainterTest {
         final int height = testImage.getHeight();
 
         // Get graphic legend from style
-        final Style style = RendererBaseTest.loadStyle(this, "testGraphicLegend.sld");
-        final Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        final StyleImpl style = RendererBaseTest.loadStyle(this, "testGraphicLegend.sld");
+        final RuleImpl rule = style.featureTypeStyles().get(0).rules().get(0);
         final GraphicLegend legend = (GraphicLegend) rule.getLegend();
 
         // Set rotation to 45 degrees
@@ -231,14 +227,14 @@ public class StyledShapePainterTest {
     public void testGraphicLegend2() throws Exception {
 
         StyledShapePainter painter = new StyledShapePainter();
-        Graphic legend =
-                new Graphic(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
+        GraphicImpl legend =
+                new GraphicImpl(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         legend.setRotation(ff.literal(0));
         legend.setOpacity(ff.literal(1));
         URL url = StreamingRenderer.class.getResource("test-data/");
         StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
-        ExternalGraphic eg = sf.createExternalGraphic(url + "icon64.png", "image/png");
+        ExternalGraphicImpl eg = sf.createExternalGraphic(url + "icon64.png", "image/png");
         legend.graphicalSymbols().add(eg);
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = (Graphics2D) image.getGraphics();

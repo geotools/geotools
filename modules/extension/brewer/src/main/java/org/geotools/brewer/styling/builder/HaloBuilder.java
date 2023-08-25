@@ -17,7 +17,7 @@
 package org.geotools.brewer.styling.builder;
 
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.styling.Halo;
+import org.geotools.styling.HaloImpl;
 
 public class HaloBuilder extends AbstractStyleBuilder<org.geotools.api.style.Halo> {
     Expression radius;
@@ -97,10 +97,10 @@ public class HaloBuilder extends AbstractStyleBuilder<org.geotools.api.style.Hal
     }
 
     @Override
-    public Halo build() {
+    public HaloImpl build() {
         if (unset) return null;
 
-        Halo halo = sf.createHalo(fill.build(), radius);
+        HaloImpl halo = sf.createHalo(fill.build(), radius);
         if (parent == null) reset();
 
         return halo;

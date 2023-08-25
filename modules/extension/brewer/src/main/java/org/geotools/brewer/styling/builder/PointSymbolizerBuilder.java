@@ -19,9 +19,9 @@ package org.geotools.brewer.styling.builder;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.styling.PointSymbolizer;
+import org.geotools.styling.PointSymbolizerImpl;
 
-public class PointSymbolizerBuilder extends SymbolizerBuilder<PointSymbolizer> {
+public class PointSymbolizerBuilder extends SymbolizerBuilder<PointSymbolizerImpl> {
     Expression geometry;
 
     GraphicBuilder graphic = new GraphicBuilder(this).unset();
@@ -57,11 +57,11 @@ public class PointSymbolizerBuilder extends SymbolizerBuilder<PointSymbolizer> {
     }
 
     @Override
-    public PointSymbolizer build() {
+    public PointSymbolizerImpl build() {
         if (unset) {
             return null;
         }
-        PointSymbolizer ps = sf.createPointSymbolizer();
+        PointSymbolizerImpl ps = sf.createPointSymbolizer();
         ps.setGeometry(geometry);
         ps.setGraphic(graphic.build());
         if (uom != null) {
@@ -85,7 +85,7 @@ public class PointSymbolizerBuilder extends SymbolizerBuilder<PointSymbolizer> {
     }
 
     @Override
-    public Builder<PointSymbolizer> reset(PointSymbolizer original) {
+    public Builder<PointSymbolizerImpl> reset(PointSymbolizerImpl original) {
         if (original == null) {
             return unset();
         }
@@ -97,11 +97,11 @@ public class PointSymbolizerBuilder extends SymbolizerBuilder<PointSymbolizer> {
         return this;
     }
 
-    public Builder<PointSymbolizer> reset(org.geotools.api.style.PointSymbolizer original) {
+    public Builder<PointSymbolizerImpl> reset(org.geotools.api.style.PointSymbolizer original) {
         if (original == null) {
             return unset();
-        } else if (original instanceof PointSymbolizer) {
-            return reset((PointSymbolizer) original);
+        } else if (original instanceof PointSymbolizerImpl) {
+            return reset((PointSymbolizerImpl) original);
         }
         this.geometry = property(original.getGeometryPropertyName());
         this.graphic.reset(original.getGraphic());

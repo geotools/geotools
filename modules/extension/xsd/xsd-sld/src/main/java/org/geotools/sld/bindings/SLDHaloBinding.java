@@ -19,8 +19,8 @@ package org.geotools.sld.bindings;
 import javax.xml.namespace.QName;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Halo;
+import org.geotools.styling.FillImpl;
+import org.geotools.styling.HaloImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
@@ -89,7 +89,7 @@ public class SLDHaloBinding extends AbstractComplexBinding {
      */
     @Override
     public Class getType() {
-        return Halo.class;
+        return HaloImpl.class;
     }
 
     /**
@@ -112,9 +112,9 @@ public class SLDHaloBinding extends AbstractComplexBinding {
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // get the children and apply the defaults in case they are missing
-        Fill fill = (Fill) node.getChildValue("Fill");
+        FillImpl fill = (FillImpl) node.getChildValue("Fill");
         if (fill == null) {
-            fill = styleFactory.createFill(filterFactory.literal("#FFFFFF"));
+            fill = (FillImpl) styleFactory.createFill(filterFactory.literal("#FFFFFF"));
         }
         Expression radius = (Expression) node.getChildValue("Radius");
         if (radius == null) {

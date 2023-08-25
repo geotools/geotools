@@ -30,18 +30,8 @@ import org.geotools.api.style.ExternalGraphic;
 import org.geotools.api.style.GraphicalSymbol;
 import org.geotools.api.style.NamedLayer;
 import org.geotools.api.style.StyledLayerDescriptor;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Style;
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.*;
+import org.geotools.styling.ContrastEnhancementImpl;
 import org.geotools.xsd.Parser;
 import org.junit.Assert;
 import org.junit.Test;
@@ -91,29 +81,29 @@ public class SLDExampleTest {
         Assert.assertEquals("OCEANSEA_1M:Foundation", l.getName());
 
         Assert.assertEquals(1, l.getStyles().length);
-        Style s = (Style) l.getStyles()[0];
+        StyleImpl s = (StyleImpl) l.getStyles()[0];
         Assert.assertEquals("GEOSYM", s.getName());
         assertTrue(s.isDefault());
 
         Assert.assertEquals(1, s.featureTypeStyles().size());
-        FeatureTypeStyle fts = s.featureTypeStyles().get(0);
+        FeatureTypeStyleImpl fts = (FeatureTypeStyleImpl) s.featureTypeStyles().get(0);
 
         Assert.assertEquals("Foundation", fts.featureTypeNames().iterator().next().getLocalPart());
         Assert.assertEquals(1, fts.rules().size());
 
-        Rule r = fts.rules().get(0);
+        RuleImpl r = (RuleImpl) fts.rules().get(0);
         Assert.assertEquals("main", r.getName());
         Assert.assertEquals(1, r.symbolizers().size());
 
-        assertTrue(r.symbolizers().get(0) instanceof PolygonSymbolizer);
+        assertTrue(r.symbolizers().get(0) instanceof PolygonSymbolizerImpl);
     }
 
     @Test
     public void testParseGraphicFill() throws Exception {
         StyledLayerDescriptor sld = (StyledLayerDescriptor) parse("../graphicFill.xml");
         NamedLayer layer = (NamedLayer) sld.getStyledLayers()[0];
-        PolygonSymbolizer ps =
-                (PolygonSymbolizer)
+        PolygonSymbolizerImpl ps =
+                (PolygonSymbolizerImpl)
                         layer.getStyles()[0]
                                 .featureTypeStyles()
                                 .get(0)
@@ -121,7 +111,7 @@ public class SLDExampleTest {
                                 .get(0)
                                 .symbolizers()
                                 .get(0);
-        Graphic graphicFill = ps.getFill().getGraphicFill();
+        GraphicImpl graphicFill = ps.getFill().getGraphicFill();
         Assert.assertNotNull(graphicFill);
         ExternalGraphic eg = (ExternalGraphic) graphicFill.graphicalSymbols().get(0);
         Assert.assertEquals(
@@ -201,16 +191,16 @@ public class SLDExampleTest {
         Assert.assertEquals(1, sld.getStyledLayers().length);
         NamedLayer layer = (NamedLayer) sld.getStyledLayers()[0];
         Assert.assertEquals(1, layer.getStyles().length);
-        Style style = (Style) layer.getStyles()[0];
+        StyleImpl style = (StyleImpl) layer.getStyles()[0];
         Assert.assertEquals(1, style.featureTypeStyles().size());
-        FeatureTypeStyle fts = style.featureTypeStyles().get(0);
+        FeatureTypeStyleImpl fts = (FeatureTypeStyleImpl) style.featureTypeStyles().get(0);
         Assert.assertEquals(1, fts.rules().size());
-        Rule rule = fts.rules().get(0);
+        RuleImpl rule = (RuleImpl) fts.rules().get(0);
         Assert.assertEquals(1, rule.symbolizers().size());
 
         // every symbolizer has the vendor option
-        RasterSymbolizer raster = (RasterSymbolizer) rule.symbolizers().get(0);
-        ContrastEnhancement ce = raster.getContrastEnhancement();
+        RasterSymbolizerImpl raster = (RasterSymbolizerImpl) rule.symbolizers().get(0);
+        ContrastEnhancementImpl ce = raster.getContrastEnhancement();
         Assert.assertNotNull(ce);
         Expression gammaExp = ce.getGammaValue();
         Assert.assertNotNull(gammaExp);
@@ -227,27 +217,27 @@ public class SLDExampleTest {
         Assert.assertEquals(1, sld.getStyledLayers().length);
         NamedLayer layer = (NamedLayer) sld.getStyledLayers()[0];
         Assert.assertEquals(1, layer.getStyles().length);
-        Style style = (Style) layer.getStyles()[0];
+        StyleImpl style = (StyleImpl) layer.getStyles()[0];
         Assert.assertEquals(1, style.featureTypeStyles().size());
-        FeatureTypeStyle fts = style.featureTypeStyles().get(0);
+        FeatureTypeStyleImpl fts = (FeatureTypeStyleImpl) style.featureTypeStyles().get(0);
         Assert.assertEquals(1, fts.rules().size());
-        Rule rule = fts.rules().get(0);
+        RuleImpl rule = (RuleImpl) fts.rules().get(0);
         Assert.assertEquals(4, rule.symbolizers().size());
 
         // every symbolizer has the vendor option
-        PolygonSymbolizer poly = (PolygonSymbolizer) rule.symbolizers().get(0);
+        PolygonSymbolizerImpl poly = (PolygonSymbolizerImpl) rule.symbolizers().get(0);
         Assert.assertEquals(1, poly.getOptions().size());
         Assert.assertEquals("true", poly.getOptions().get("labelObstacle"));
 
-        LineSymbolizer line = (LineSymbolizer) rule.symbolizers().get(1);
+        LineSymbolizerImpl line = (LineSymbolizerImpl) rule.symbolizers().get(1);
         Assert.assertEquals(1, line.getOptions().size());
         Assert.assertEquals("true", line.getOptions().get("labelObstacle"));
 
-        PointSymbolizer point = (PointSymbolizer) rule.symbolizers().get(2);
+        PointSymbolizerImpl point = (PointSymbolizerImpl) rule.symbolizers().get(2);
         Assert.assertEquals(1, point.getOptions().size());
         Assert.assertEquals("true", point.getOptions().get("labelObstacle"));
 
-        TextSymbolizer text = (TextSymbolizer) rule.symbolizers().get(3);
+        TextSymbolizerImpl text = (TextSymbolizerImpl) rule.symbolizers().get(3);
         Assert.assertEquals(1, text.getOptions().size());
         Assert.assertEquals("100", text.getOptions().get("repeat"));
 
@@ -261,8 +251,8 @@ public class SLDExampleTest {
         String file = "../backgroundSolidSLD11.xml";
         StyledLayerDescriptor sld = (StyledLayerDescriptor) parse(file);
         NamedLayer layer = (NamedLayer) sld.getStyledLayers()[0];
-        Style style = (Style) layer.getStyles()[0];
-        Fill fill = style.getBackground();
+        StyleImpl style = (StyleImpl) layer.getStyles()[0];
+        FillImpl fill = style.getBackground();
         Assert.assertNotNull(fill);
         Assert.assertEquals(Color.RED, fill.getColor().evaluate(null, Color.class));
         Assert.assertEquals(1, fill.getOpacity().evaluate(null, Double.class), 1);
@@ -273,14 +263,14 @@ public class SLDExampleTest {
         String file = "../backgroundGraphicSLD11.xml";
         StyledLayerDescriptor sld = (StyledLayerDescriptor) parse(file);
         NamedLayer layer = (NamedLayer) sld.getStyledLayers()[0];
-        Style style = (Style) layer.getStyles()[0];
-        Fill fill = style.getBackground();
+        StyleImpl style = (StyleImpl) layer.getStyles()[0];
+        FillImpl fill = style.getBackground();
         Assert.assertNotNull(fill);
-        Graphic graphic = fill.getGraphicFill();
+        GraphicImpl graphic = fill.getGraphicFill();
         Assert.assertNotNull(graphic);
         GraphicalSymbol firstSymbol = graphic.graphicalSymbols().get(0);
-        assertTrue(firstSymbol instanceof Mark);
+        assertTrue(firstSymbol instanceof MarkImpl);
         Assert.assertEquals(
-                "square", ((Mark) firstSymbol).getWellKnownName().evaluate(null, String.class));
+                "square", ((MarkImpl) firstSymbol).getWellKnownName().evaluate(null, String.class));
     }
 }

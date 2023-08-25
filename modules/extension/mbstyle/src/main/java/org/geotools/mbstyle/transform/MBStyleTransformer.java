@@ -31,8 +31,8 @@ import org.geotools.mbstyle.layer.SymbolMBLayer.TextAnchor;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.sprite.SpriteGraphicFactory;
 import org.geotools.renderer.style.ExpressionExtractor;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.ExternalGraphic;
+import org.geotools.styling.AnchorPointImpl;
+import org.geotools.styling.ExternalGraphicImpl;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
 import org.geotools.util.logging.Logging;
@@ -78,7 +78,7 @@ public class MBStyleTransformer {
      * @return An external graphic with the full URL of the mage for the {@link
      *     SpriteGraphicFactory}.
      */
-    public ExternalGraphic createExternalGraphicForSprite(
+    public ExternalGraphicImpl createExternalGraphicForSprite(
             Expression iconName, Expression iconSize, MBStyle styleContext) {
         String spriteUrl;
         String iconNameCql = ECQL.toCQL(ff.function("strURLEncode", iconName));
@@ -124,7 +124,7 @@ public class MBStyleTransformer {
      * @return An external graphic with the full URL of the mage for the {@link
      *     SpriteGraphicFactory}.
      */
-    public ExternalGraphic createExternalGraphicForSprite(
+    public ExternalGraphicImpl createExternalGraphicForSprite(
             Expression iconName, MBStyle styleContext) {
         return createExternalGraphicForSprite(iconName, ff.literal("1"), styleContext);
     }
@@ -136,7 +136,7 @@ public class MBStyleTransformer {
      * @param textAnchor The value of the "text-anchor" property in the mapbox style.
      * @return AnchorPoint
      */
-    AnchorPoint getAnchorPoint(String textAnchor) {
+    AnchorPointImpl getAnchorPoint(String textAnchor) {
         TextAnchor anchor = TextAnchor.parse(textAnchor);
         return sb.createAnchorPoint(anchor.getX(), anchor.getY());
     }

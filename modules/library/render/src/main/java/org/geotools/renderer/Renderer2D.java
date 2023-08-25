@@ -18,6 +18,8 @@ package org.geotools.renderer;
 
 // J2SE dependencies
 
+import org.geotools.styling.StyleImpl;
+
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
@@ -33,7 +35,7 @@ import java.awt.geom.AffineTransform;
 public interface Renderer2D {
     /**
      * Render features based on the {@link org.geotools.map.LayerList}, bounding box and {@link
-     * org.geotools.styling.Style} specified in the {@linkplain org.geotools.map.Context context}.
+     * StyleImpl} specified in the {@linkplain org.geotools.map.Context context}.
      *
      * @param graphics The graphics handler to draw to.
      * @param paintArea The bounds of the output area in output units (usually pixels). The upper

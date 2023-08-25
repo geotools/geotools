@@ -20,7 +20,7 @@ import javax.xml.namespace.QName;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDGraphicStrokeBinding;
-import org.geotools.styling.Graphic;
+import org.geotools.styling.GraphicImpl;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 
@@ -55,7 +55,7 @@ public class GraphicStrokeBinding extends SLDGraphicStrokeBinding {
 
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        Graphic g = (Graphic) super.parse(instance, node, value);
+        GraphicImpl g = (GraphicImpl) super.parse(instance, node, value);
 
         // &lt;xsd:element minOccurs="0" ref="se:InitialGap"/&gt;
         if (node.hasChild("InitialGap")) {

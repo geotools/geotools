@@ -29,6 +29,7 @@ import org.geotools.api.referencing.operation.CoordinateOperation;
 import org.geotools.api.referencing.operation.CoordinateOperationFactory;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.geometry.AbstractPosition;
 import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.Position2D;
 import org.geotools.metadata.i18n.ErrorKeys;
@@ -245,23 +246,23 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
     }
 
     /**
-     * Creates a new envelope from an existing OGC envelope.
+     * Creates a new bounds from an existing OGC bounds.
      *
-     * <p>NOTE: if the envelope is empty, the resulting ReferencedEnvelope will not be. In case this
+     * <p>NOTE: if the bounds is empty, the resulting ReferencedEnvelope will not be. In case this
      * is needed use {@link #create(Bounds, CoordinateReferenceSystem)
-     * ReferencedEnvelope.create(envelope, envelope.getCoordinateReferenceSystem())}
+     * ReferencedEnvelope.create(bounds, bounds.getCoordinateReferenceSystem())}
      *
-     * @param envelope The envelope to initialize from.
+     * @param bounds The bounds to initialize from.
      * @throws MismatchedDimensionException if the CRS dimension is not valid.
      * @since 2.4
      */
-    public ReferencedEnvelope(final Bounds envelope) throws MismatchedDimensionException {
+    public ReferencedEnvelope(final Bounds bounds) throws MismatchedDimensionException {
         super(
-                envelope.getMinimum(0),
-                envelope.getMaximum(0),
-                envelope.getMinimum(1),
-                envelope.getMaximum(1));
-        this.crs = envelope.getCoordinateReferenceSystem();
+                bounds.getMinimum(0),
+                bounds.getMaximum(0),
+                bounds.getMinimum(1),
+                bounds.getMaximum(1));
+        this.crs = bounds.getCoordinateReferenceSystem();
         checkCoordinateReferenceSystemDimension();
     }
 
@@ -362,7 +363,15 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
         return crs;
     }
-
+    /**
+     * Set the coordinate reference system in which the coordinate are given.
+     *
+     * @param crs The new coordinate reference system, or {@code null}.
+     */
+    public void setCoordinateReferenceSystem(final CoordinateReferenceSystem crs) {
+        AbstractPosition.checkCoordinateReferenceSystemDimension(crs, getDimension());
+        this.crs = crs;
+    }
     /** Returns the number of dimensions. */
     @Override
     public int getDimension() {
@@ -729,6 +738,43 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
     }
 
     /**
+     * Returns {@code true} if {@code this} envelope bounds is equals to {@code that} envelope
+     * bounds in two specified dimensions. The coordinate reference system is not compared, since it
+     * doesn't need to have the same number of dimensions.
+     *
+     * @param that The envelope to compare to.
+     * @param xDim The dimension of {@code that} envelope to compare to the <var>x</var> dimension
+     *     of {@code this} envelope.
+     * @param yDim The dimension of {@code that} envelope to compare to the <var>y</var> dimension
+     *     of {@code this} envelope.
+     * @param eps A small tolerance number for floating point number comparaisons. This value will
+     *     be scaled according this envelope {@linkplain #width width} and {@linkplain #height
+     *     height}.
+     * @return {@code true} if the envelope bounds are the same (up to the specified tolerance
+     *     level) in the specified dimensions, or {@code false} otherwise.
+     */
+    public boolean boundsEquals(final Bounds that, final int xDim, final int yDim, double eps) {
+        eps *= 0.5 * (getWidth() + getHeight());
+        for (int i = 0; i < 4; i++) {
+            final int dim2D = (i & 1);
+            final int dimND = (dim2D == 0) ? xDim : yDim;
+            final double value2D, valueND;
+            if ((i & 2) == 0) {
+                value2D = this.getMinimum(dim2D);
+                valueND = that.getMinimum(dimND);
+            } else {
+                value2D = this.getMaximum(dim2D);
+                valueND = that.getMaximum(dimND);
+            }
+            // Use '!' for catching NaN values.
+            if (!(Math.abs(value2D - valueND) <= eps)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Returns a string representation of this envelope. The default implementation is okay for
      * occasional formatting (for example for debugging purpose).
      */
@@ -789,6 +835,27 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
         return new ReferencedEnvelope(crs);
     }
 
+    /**
+     * Utility method to create a ReferencedEnvelope from an opengis Envelope class, supporting 2d
+     * as well as 3d envelopes (returning the right class).
+     *
+     * @param bounds The opgenis Envelope object
+     * @return ReferencedEnvelope, ReferencedEnvelope3D if it is 3d,<br>
+     *     results in a null/an empty envelope, if input envelope was a null/an empty envelope
+     * @see {@link #reference(Bounds)}
+     */
+    public static ReferencedEnvelope create(Bounds bounds) {
+        if (bounds == null) {
+            return null;
+        }
+
+        if (bounds.getDimension() >= 3) {
+            // emptiness test is inside reference-method
+            return new ReferencedEnvelope3D((ReferencedEnvelope3D) reference(bounds), bounds.getCoordinateReferenceSystem());
+        }
+
+        return new ReferencedEnvelope(reference(bounds), bounds.getCoordinateReferenceSystem());
+    }
     /**
      * Utility method to create a ReferencedEnvelope from an opengis Envelope class, supporting 2d
      * as well as 3d envelopes (returning the right class).

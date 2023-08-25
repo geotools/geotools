@@ -71,6 +71,7 @@ import org.geotools.data.DataSourceException;
 import org.geotools.feature.NameImpl;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralBounds;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.util.XRectangle2D;
 import org.geotools.measure.UnitFormat;
 import org.geotools.metadata.iso.citation.Citations;
@@ -291,37 +292,39 @@ public class Utilities {
     /**
      * Get a WGS84 envelope for the specified envelope. The get2D parameter
      * allows to specify if we need the returned coverage as an
-     * {@code Envelope2D} or a more general {@code GeneralEnvelope} instance.
+     * {@code ReferencedEnvelope} or a more general {@code GeneralEnvelope} instance.
      *
-     *                if {@code true}, the requested envelope will be an
-     *                instance of {@link Envelope2D}. If {@code false} it will
-     *                be an instance of {@link GeneralBounds
+     * if {@code true}, the requested envelope will be an
+     * instance of {@link ReferencedEnvelope}. If {@code false} it will
+     * be an instance of {@link GeneralBounds}
+     *
      * @return a WGS84 envelope as {@link Envelope2D} in case of request for a
      *         2D WGS84 Envelope, or a {@link GeneralBounds } otherwise.
      */
-    public static Bounds getEnvelopeAsWGS84(final Bounds envelope, boolean get2D)
+    public static Bounds getEnvelopeAsWGS84(final Bounds bounds, boolean get2D)
             throws FactoryException, TransformException {
-        if (envelope == null) throw new IllegalArgumentException("Specified envelope is null");
-        Bounds requestedWGS84;
-        final CoordinateReferenceSystem crs = envelope.getCoordinateReferenceSystem();
+        if (bounds == null) {
+            throw new IllegalArgumentException("Specified envelope is null");
+        }
+        final CoordinateReferenceSystem crs = bounds.getCoordinateReferenceSystem();
 
         // do we need to transform the requested envelope?
         if (!CRS.equalsIgnoreMetadata(crs, DefaultGeographicCRS.WGS84)) {
-            GeneralBounds env = CRS.transform(envelope, DefaultGeographicCRS.WGS84);
+            GeneralBounds wgs84Bounds = CRS.transform(bounds, DefaultGeographicCRS.WGS84);
             if (get2D) {
-                requestedWGS84 = new Envelope2D(env);
-                ((Envelope2D) requestedWGS84)
-                        .setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
+                return ReferencedEnvelope.create( bounds, DefaultGeographicCRS.WGS84);
             } else {
-                requestedWGS84 = env;
-                ((GeneralBounds) requestedWGS84)
-                        .setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
+                wgs84Bounds.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
+                return wgs84Bounds;
             }
-            return requestedWGS84;
 
         } else {
-            if (get2D) return new Envelope2D(envelope);
-            else return new GeneralBounds(envelope);
+            if (get2D) {
+                return ReferencedEnvelope.create(bounds,bounds.getCoordinateReferenceSystem());
+            }
+            else {
+                return new GeneralBounds(bounds);
+            }
         }
     }
 

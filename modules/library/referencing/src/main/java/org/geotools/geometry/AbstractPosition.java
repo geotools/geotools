@@ -92,7 +92,7 @@ public abstract class AbstractPosition implements Position {
      * @param expected the dimension expected.
      * @throws MismatchedDimensionException if the CRS dimension is not valid.
      */
-    static void checkCoordinateReferenceSystemDimension(
+    public static void checkCoordinateReferenceSystemDimension(
             final CoordinateReferenceSystem crs, final int expected)
             throws MismatchedDimensionException {
         if (crs != null) {

@@ -153,8 +153,6 @@ public class GeneralBounds extends AbstractBounds implements Cloneable, Serializ
      * @since 2.2
      */
     public GeneralBounds(final CoordinateReferenceSystem crs) {
-        // Uncomment next line if Sun fixes RFE #4093999
-        // ensureNonNull("envelope", envelope);
         this(crs.getCoordinateSystem().getDimension());
         this.crs = crs;
     }
@@ -222,6 +220,21 @@ public class GeneralBounds extends AbstractBounds implements Cloneable, Serializ
     public GeneralBounds(final Rectangle2D rect) {
         ensureNonNull("rect", rect);
         ordinates = new double[] {rect.getMinX(), rect.getMinY(), rect.getMaxX(), rect.getMaxY()};
+        checkCoordinates(ordinates);
+    }
+
+    /**
+     * Constructs two-dimensional envelope defined by a {@link Rectangle2D}. The coordinate
+     * reference system is initially undefined.
+     *
+     * @param rect The rectangle to copy.
+     * @param crs
+     * @since 30
+     */
+    public GeneralBounds(final Rectangle2D rect,final CoordinateReferenceSystem crs){
+        ensureNonNull("rect", rect);
+        ordinates = new double[] {rect.getMinX(), rect.getMinY(), rect.getMaxX(), rect.getMaxY()};
+        this.crs = crs;
         checkCoordinates(ordinates);
     }
 

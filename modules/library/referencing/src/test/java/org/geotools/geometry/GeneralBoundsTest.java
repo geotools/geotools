@@ -34,7 +34,7 @@ import org.junit.Test;
  */
 // code is using equals with extra parameters and semantics compared to the built-in equals
 @SuppressWarnings("PMD.SimplifiableTestAssertion")
-public final class GeneralEnvelopeTest {
+public final class GeneralBoundsTest {
 
     @Test
     public void testConstruction() {

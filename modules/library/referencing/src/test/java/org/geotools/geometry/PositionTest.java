@@ -31,7 +31,7 @@ import org.junit.Test;
  * @version $Id$
  * @author Martin Desruisseaux
  */
-public final class DirectPositionTest {
+public final class PositionTest {
     /**
      * Tests {@link GeneralPosition#equals} method between different implementations. The purpose of
      * this test is also to run the assertion in the direct position implementations.

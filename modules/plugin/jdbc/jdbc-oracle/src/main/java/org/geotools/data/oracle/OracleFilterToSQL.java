@@ -51,15 +51,20 @@ import org.geotools.api.filter.temporal.EndedBy;
 import org.geotools.api.filter.temporal.Ends;
 import org.geotools.api.filter.temporal.TEquals;
 import org.geotools.api.filter.temporal.TOverlaps;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.geotools.data.oracle.filter.FilterFunction_sdonn;
 import org.geotools.data.oracle.sdo.SDOSqlDumper;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.function.FilterFunction_area;
 import org.geotools.filter.function.JsonArrayContainsFunction;
+import org.geotools.filter.function.JsonPointerFunction;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.geometry.jts.JTS;
+import org.geotools.jdbc.EscapeSql;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
@@ -120,6 +125,8 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
                     "anyinteract", "anyinteract",
                     "disjoint", "disjoint");
 
+    private static final Pattern ARRAY_INDEX_PATTERN = Pattern.compile("\\d+");
+
     /** Whether BBOX should be encoded as just a primary filter or primary+secondary */
     protected boolean looseBBOXEnabled;
 
@@ -156,6 +163,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
 
         caps.addType(FilterFunction_sdonn.class);
         caps.addType(JsonArrayContainsFunction.class);
+        caps.addType(JsonPointerFunction.class);
 
         // replaces the OracleDialect.registerFunction support
         caps.addType(FilterFunction_area.class);
@@ -235,9 +243,40 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
             } catch (IOException ioe) {
                 throw new RuntimeException(IO_ERROR, ioe);
             }
+        } else if (function instanceof JsonPointerFunction) {
+            try {
+                out.write(encodeJsonPointer(function, extraData));
+                return extraData;
+            } catch (IOException ioe) {
+                throw new RuntimeException(IO_ERROR, ioe);
+            }
         }
 
         return super.visit(function, extraData);
+    }
+
+    private String encodeJsonPointer(Function jsonPointer, Object extraData) {
+        Expression json = getParameter(jsonPointer, 0, true);
+        Expression pointer = getParameter(jsonPointer, 1, true);
+        if (json instanceof PropertyName && pointer instanceof Literal) {
+            String strPointer = ((Literal) pointer).getValue().toString();
+            String escapedLiteral = EscapeSql.escapeLiteral(strPointer, true, true);
+            List<String> pointerEl =
+                    Stream.of(escapedLiteral.split("/"))
+                            .filter(p -> !p.equals(""))
+                            .collect(Collectors.toList());
+
+            StringBuilder sb = new StringBuilder("$");
+            for (String property : pointerEl) {
+                if (ARRAY_INDEX_PATTERN.matcher(property).matches()) {
+                    sb.append("[" + property + "]");
+                } else {
+                    sb.append("." + property);
+                }
+            }
+            return String.format("JSON_VALUE(%s, '%s')", json, sb);
+        }
+        return null;
     }
 
     private String getPrimaryKeyColumnsAsCommaSeparatedList(List<PrimaryKeyColumn> pkColumns) {

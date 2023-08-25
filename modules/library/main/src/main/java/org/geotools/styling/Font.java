@@ -16,91 +16,174 @@
  */
 package org.geotools.styling;
 
+// J2SE dependencies
+// import java.util.logging.Logger;
+// OpenGIS dependencies
+
+import java.util.ArrayList;
 import java.util.List;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.util.Cloneable;
+import org.geotools.util.Utilities;
 
 /**
- * A system-independent object for holding SLD font information. This holds information on the text
- * font to use in text processing. Font-family, font-style, font-weight and font-size.
+ * Provides a Java representation of the Font element of an SLD.
  *
  * @author Ian Turton, CCG
  * @version $Id$
  */
-public interface Font extends org.geotools.api.style.Font {
-    /** default font-size value * */
-    static final int DEFAULT_FONTSIZE = 10;
+public class Font implements  Cloneable, org.geotools.api.style.Font {
+    /** The logger for the default core module. */
 
-    /**
-     * SVG font-family parameters in preferred order.
-     *
-     * @return live list of font-family parameters in preferred order
-     */
+    // private static final Logger LOGGER =
+    // org.geotools.util.logging.Logging.getLogger(FontImpl.class);
+    private final List<Expression> fontFamily = new ArrayList<>();
+
+    private Expression fontSize = null;
+    private Expression fontStyle = null;
+    private Expression fontWeight = null;
+
+    /** Creates a new instance of DefaultFont */
+    protected Font() {}
+
     @Override
-    List<Expression> getFamily();
-
-    /**
-     * The "font-style" SVG parameter should be "normal", "italic", or "oblique".
-     *
-     * <p>If null is returned the default value should be considered "normal".
-     *
-     * @return Expression or null
-     */
-    @Override
-    Expression getStyle();
-
-    /** @param style The "font-style" SVG parameter (one of "normal", "italic", or "oblique" */
-    void setStyle(Expression style);
-
-    /**
-     * The "font-weight" SVG parameter should be "normal" or "bold".
-     *
-     * <p>If null the default should be considered as "normal"
-     *
-     * @return font-weight SVG parameter
-     */
-    @Override
-    Expression getWeight();
-
-    /** @param weight The "font-weight" SVG parameter (one of "normal", "bold") */
-    void setWeight(Expression weight);
-
-    /**
-     * Font size in pixels with a default of 10 pixels.
-     *
-     * <p>Please note this is specified in pixels so you may need to take the resolution of your
-     * output into account when providing a size.
-     *
-     * @return font size
-     */
-    @Override
-    Expression getSize();
-
-    /** @param size the font size in pixels */
-    void setSize(Expression size);
-
-    /**
-     * Enumeration of allow font-style values.
-     *
-     * <p>This is a way to document the constants allowable for the setStyle method
-     *
-     * <p>enum Style2 implements Literal { NORMAL("normal"), ITALIC("italic"), OBLIQUE("oblique");
-     *
-     * <p>final String literal; final static int count=0; private Style2(String constant) { literal
-     * = constant; } public Object accept(ExpressionVisitor visitor, Object extraData) { return
-     * visitor.visit( this, extraData ); } public Object evaluate(Object object) { return literal; }
-     * public <T> T evaluate(Object object, Class<T> context) { // return
-     * Converters.convert(literal, context); if( context.isInstance( literal) ){ return
-     * context.cast(literal); } return null; } public Object getValue() { return literal; } }
-     */
-    interface Style {
-        static final String NORMAL = "normal";
-        static final String ITALIC = "italic";
-        static final String OBLIQUE = "oblique";
+    public List<Expression> getFamily() {
+        return fontFamily;
     }
 
-    /** Enumeration of allow font-weight values. */
-    interface Weight {
-        static final String NORMAL = "normal";
-        static final String BOLD = "bold";
+    @Override
+    public Expression getSize() {
+        return fontSize;
+    }
+
+    public void setSize(Expression size) {
+        this.fontSize = size;
+    }
+
+    @Override
+    public Expression getStyle() {
+        return fontStyle;
+    }
+
+    public void setStyle(Expression style) {
+        fontStyle = style;
+    }
+
+    @Override
+    public Expression getWeight() {
+        return fontWeight;
+    }
+
+    public void setWeight(Expression weight) {
+        fontWeight = weight;
+    }
+
+    /**
+     * Creates a clone of the font.
+     *
+     * @see Cloneable#clone()
+     */
+    @Override
+    public Object clone() {
+        try {
+            // all the members are immutable expression
+            // super.clone() is enough.
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("This should not happen", e);
+        }
+    }
+
+    /**
+     * Generates the hashcode for the font.
+     *
+     * @return the hash code.
+     */
+    @Override
+    public int hashCode() {
+        final int PRIME = 1000003;
+        int result = 0;
+
+        if (fontFamily != null) {
+            result = (PRIME * result) + fontFamily.hashCode();
+        }
+
+        if (fontSize != null) {
+            result = (PRIME * result) + fontSize.hashCode();
+        }
+
+        if (fontStyle != null) {
+            result = (PRIME * result) + fontStyle.hashCode();
+        }
+
+        if (fontWeight != null) {
+            result = (PRIME * result) + fontWeight.hashCode();
+        }
+
+        return result;
+    }
+
+    /**
+     * Compares this font with another for equality. Two fonts are equal if their family, style,
+     * weight and size are equal.
+     *
+     * @return True if this and oth are equal.
+     */
+    @Override
+    public boolean equals(Object oth) {
+        if (this == oth) {
+            return true;
+        }
+
+        if (oth == null) {
+            return false;
+        }
+
+        if (oth instanceof Font) {
+            Font other = (Font) oth;
+
+            return Utilities.equals(this.fontFamily, other.fontFamily)
+                    && Utilities.equals(this.fontSize, other.fontSize)
+                    && Utilities.equals(this.fontStyle, other.fontStyle)
+                    && Utilities.equals(this.fontWeight, other.fontWeight);
+        }
+
+        return false;
+    }
+
+    /** Utility method to capture the default font in one place. */
+    static Font createDefault(FilterFactory filterFactory) {
+        Font font = new Font();
+        try {
+            font.setSize(filterFactory.literal(Integer.valueOf(10)));
+            font.setStyle(filterFactory.literal("normal"));
+            font.setWeight(filterFactory.literal("normal"));
+            font.getFamily().add(filterFactory.literal("Serif"));
+        } catch (org.geotools.filter.IllegalFilterException ife) {
+            throw new RuntimeException("Error creating default", ife);
+        }
+        return font;
+    }
+
+    @Override
+    public Object accept(StyleVisitor visitor, Object data) {
+        return visitor.visit(this, data);
+    }
+
+    static Font cast(org.geotools.api.style.Font font) {
+        if (font == null) {
+            return null;
+        } else if (font instanceof Font) {
+            return (Font) font;
+        } else {
+            Font copy = new Font();
+            copy.getFamily().addAll(font.getFamily());
+            copy.setSize(font.getSize());
+            copy.setStyle(font.getStyle());
+            copy.setWeight(font.getWeight());
+            return copy;
+        }
     }
 }

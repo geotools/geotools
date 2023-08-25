@@ -17,44 +17,118 @@
 package org.geotools.styling;
 
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.StyleVisitor;
 
 /**
- * A basic interface for objects which can hold color map entries.
+ * Default color map entry implementation
  *
- * <pre>
- *  &lt;xs:element name="ColorMapEntry"&gt;
- *  &lt;xs:complexType&gt;
- *  &lt;xs:attribute name="color" type="xs:string" use="required"/&gt;
- *  &lt;xs:attribute name="opacity" type="xs:double"/&gt;
- *  &lt;xs:attribute name="quantity" type="xs:double"/&gt;
- *  &lt;xs:attribute name="label" type="xs:string"/&gt;
- *  &lt;/xs:complexType&gt;
- *  &lt;/xs:element&gt;
- *  </pre>
+ * @author aaime
  */
-public interface ColorMapEntry {
-    /** Label for this Color Map Entry */
-    String getLabel();
+public class ColorMapEntry implements org.geotools.api.style.ColorMapEntry {
+    // private static final java.util.logging.Logger LOGGER =
+    // org.geotools.util.logging.Logging.getLogger(ColorMapEntryImpl.class);
+    // private static final FilterFactory filterFactory =
+    // CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
+    private Expression quantity;
+    private Expression opacity;
+    private Expression color;
+    private String label;
 
-    /** @param label */
-    void setLabel(String label);
+    /** @see org.geotools.api.style.ColorMapEntry#getLabel */
+    @Override
+    public String getLabel() {
+        return this.label;
+    }
 
-    /** Expression resulting in a color */
-    void setColor(Expression color);
+    /** @see org.geotools.api.style.ColorMapEntry#setLabel */
+    @Override
+    public void setLabel(String label) {
+        this.label = label;
+    }
 
-    /** @return Expression evaluated into a color */
-    Expression getColor();
+    /** @see org.geotools.api.style.ColorMapEntry#setColor */
+    @Override
+    public void setColor(Expression color) {
+        this.color = color;
+    }
 
-    /** @param opacity Expressed as a value between 0 and 1 */
-    void setOpacity(Expression opacity);
-    /** @return Opacity expressed as a value between 0 and 1 */
-    Expression getOpacity();
+    /** @see org.geotools.api.style.ColorMapEntry#getColor */
+    @Override
+    public Expression getColor() {
+        return this.color;
+    }
 
-    /** Quantity marking the start of this color map entry. */
-    void setQuantity(Expression quantity);
+    /** @see org.geotools.api.style.ColorMapEntry#setOpacity */
+    @Override
+    public void setOpacity(Expression opacity) {
+        this.opacity = opacity;
+    }
 
-    /** @return Quanity marking the start of this color map entry */
-    Expression getQuantity();
+    /** @see org.geotools.api.style.ColorMapEntry#getOpacity() */
+    @Override
+    public Expression getOpacity() {
+        return this.opacity;
+    }
 
-    void accept(org.geotools.styling.StyleVisitor visitor);
+    /** @see org.geotools.api.style.ColorMapEntry#setQuantity */
+    @Override
+    public void setQuantity(Expression quantity) {
+        this.quantity = quantity;
+    }
+
+    /** @see org.geotools.api.style.ColorMapEntry#getQuantity() */
+    @Override
+    public Expression getQuantity() {
+        return quantity;
+    }
+
+    @Override
+    public void accept(StyleVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((color == null) ? 0 : color.hashCode());
+        result = prime * result + ((label == null) ? 0 : label.hashCode());
+        result = prime * result + ((opacity == null) ? 0 : opacity.hashCode());
+        result = prime * result + ((quantity == null) ? 0 : quantity.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+        ColorMapEntry other = (ColorMapEntry) obj;
+        if (color == null) {
+            if (other.color != null) return false;
+        } else if (!color.equals(other.color)) return false;
+        if (label == null) {
+            if (other.label != null) return false;
+        } else if (!label.equals(other.label)) return false;
+        if (opacity == null) {
+            if (other.opacity != null) return false;
+        } else if (!opacity.equals(other.opacity)) return false;
+        if (quantity == null) {
+            if (other.quantity != null) return false;
+        } else if (!quantity.equals(other.quantity)) return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "ColorMapEntryImpl [quantity="
+                + quantity
+                + ", opacity="
+                + opacity
+                + ", color="
+                + color
+                + ", label="
+                + label
+                + "]";
+    }
 }

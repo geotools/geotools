@@ -13,10 +13,12 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
+ *
+ * Created on 14 October 2002, 15:50
  */
 package org.geotools.styling;
 
-import java.net.URL;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -28,153 +30,229 @@ import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.metadata.citation.OnLineResource;
-import org.geotools.api.style.ContrastMethod;
+import org.geotools.api.style.*;
+import org.geotools.api.style.Description;
+import org.geotools.api.style.OverlapBehavior;
 import org.geotools.api.util.InternationalString;
-import org.geotools.util.factory.Factory;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.util.factory.GeoTools;
 
-/** Abstract base class for implementing style factories. */
-public interface StyleFactory extends Factory, org.geotools.api.style.StyleFactory {
+/**
+ * Factory for creating Styles. All style elements are returned as Interfaces from org.geotools.core
+ * as opposed to Implementations from org.geotools.defaultcore.
+ *
+ * <p>This class implements:
+ *
+ * <ul>
+ *   <li>StyleFactory for SLD 1.0
+ *   <li>StyleFactory2 for our own extension to text mark allowing a graphic beyond text
+ *   <li>org.geotools.api.style.StyleFactory for SE 1.1
+ * </ul>
+ *
+ * @author iant
+ * @version $Id$
+ */
+public class StyleFactory extends AbstractStyleFactory
+        implements StyleFactory2, org.geotools.api.style.StyleFactory {
 
-    public TextSymbolizer createTextSymbolizer(
-            Fill fill,
-            Font[] fonts,
-            Halo halo,
+    private FilterFactory filterFactory;
+    private StyleFactoryImpl2 delegate;
+
+    public StyleFactory() {
+        this(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
+    }
+
+    protected StyleFactory(FilterFactory factory) {
+        filterFactory = factory;
+        delegate = new StyleFactoryImpl2(filterFactory);
+    }
+
+    
+    public org.geotools.api.style.Style createStyle() {
+        return new Style();
+    }
+
+    
+    public NamedStyle createNamedStyle() {
+        return new NamedStyle();
+    }
+
+   
+    public org.geotools.api.style.PointSymbolizer createPointSymbolizer() {
+        return new PointSymbolizer();
+    }
+
+   
+    public org.geotools.api.style.PointSymbolizer createPointSymbolizer(org.geotools.api.style.Graphic graphic, String geometryPropertyName) {
+        org.geotools.api.style.PointSymbolizer pSymb = new PointSymbolizer();
+        pSymb.setGeometryPropertyName(geometryPropertyName);
+        pSymb.setGraphic(graphic);
+
+        return pSymb;
+    }
+
+   
+    public org.geotools.api.style.PolygonSymbolizer createPolygonSymbolizer() {
+        return new PolygonSymbolizer();
+    }
+
+   
+    public org.geotools.api.style.PolygonSymbolizer createPolygonSymbolizer(
+            org.geotools.api.style.Stroke stroke, org.geotools.api.style.Fill fill, String geometryPropertyName) {
+        org.geotools.api.style.PolygonSymbolizer pSymb = new PolygonSymbolizer();
+        pSymb.setGeometryPropertyName(geometryPropertyName);
+        pSymb.setStroke(stroke);
+        pSymb.setFill(fill);
+
+        return pSymb;
+    }
+
+   
+    public org.geotools.api.style.LineSymbolizer createLineSymbolizer() {
+        return new LineSymbolizer();
+    }
+
+    
+    public org.geotools.api.style.LineSymbolizer createLineSymbolizer(org.geotools.api.style.Stroke stroke, String geometryPropertyName) {
+        org.geotools.api.style.LineSymbolizer lSymb = new LineSymbolizer();
+        lSymb.setGeometryPropertyName(geometryPropertyName);
+        lSymb.setStroke(stroke);
+
+        return lSymb;
+    }
+
+    
+    public org.geotools.api.style.TextSymbolizer createTextSymbolizer() {
+        return new TextSymbolizer(filterFactory);
+    }
+
+    
+    public org.geotools.api.style.TextSymbolizer createTextSymbolizer(
+            org.geotools.api.style.Fill fill,
+            org.geotools.api.style.Font[] fonts,
+            org.geotools.api.style.Halo halo,
             Expression label,
             LabelPlacement labelPlacement,
-            String geometryPropertyName);
+            String geometryPropertyName) {
+        org.geotools.api.style.TextSymbolizer tSymb = new TextSymbolizer(filterFactory);
+        tSymb.setFill(fill);
+        if (fonts != null) {
+            tSymb.fonts().addAll(Arrays.asList(fonts));
+        }
+        tSymb.setGeometryPropertyName(geometryPropertyName);
 
-    public ExternalGraphic createExternalGraphic(URL url, String format);
+        tSymb.setHalo(halo);
+        tSymb.setLabel(label);
+        tSymb.setLabelPlacement(labelPlacement);
 
-    public ExternalGraphic createExternalGraphic(String uri, String format);
+        return tSymb;
+    }
 
-    public ExternalGraphic createExternalGraphic(Icon inlineContent, String format);
+    
+    public TextSymbolizer createTextSymbolizer(
+            org.geotools.api.style.Fill fill,
+            org.geotools.api.style.Font[] fonts,
+            org.geotools.api.style.Halo halo,
+            Expression label,
+            LabelPlacement labelPlacement,
+            String geometryPropertyName,
+            org.geotools.api.style.Graphic graphic) {
+        TextSymbolizer tSymb = new TextSymbolizer(filterFactory);
+        tSymb.setFill(fill);
+        if (fonts != null) {
+            tSymb.fonts().addAll(Arrays.asList(fonts));
+        }
+        tSymb.setGeometryPropertyName(geometryPropertyName);
 
-    public AnchorPoint createAnchorPoint(Expression x, Expression y);
+        tSymb.setHalo(halo);
+        tSymb.setLabel(label);
+        tSymb.setLabelPlacement(labelPlacement);
+        tSymb.setGraphic(graphic);
 
-    public Displacement createDisplacement(Expression x, Expression y);
+        return tSymb;
+    }
 
-    //    public  LinePlacement createLinePlacement();
-    public PointSymbolizer createPointSymbolizer();
+    
+    public org.geotools.api.style.Extent createExtent(String name, String value) {
+        org.geotools.api.style.Extent extent = new Extent();
+        extent.setName(name);
+        extent.setValue(value);
 
-    //    public  PointPlacement createPointPlacement();
-    public Mark createMark(
-            Expression wellKnownName,
-            Stroke stroke,
-            Fill fill,
-            Expression size,
-            Expression rotation);
+        return extent;
+    }
 
-    /**
-     * Convinence method for obtaining a mark of a fixed shape
-     *
-     * @return a Mark that matches the name in this method.
-     */
-    public Mark getCircleMark();
+    
+    public org.geotools.api.style.FeatureTypeConstraint createFeatureTypeConstraint(
+            String featureTypeName, Filter filter, org.geotools.api.style.Extent[] extents) {
+        org.geotools.api.style.FeatureTypeConstraint constraint = new FeatureTypeConstraint();
+        constraint.setFeatureTypeName(featureTypeName);
+        constraint.setFilter(filter);
+        constraint.setExtents(extents);
 
-    /**
-     * Convinence method for obtaining a mark of a fixed shape
-     *
-     * @return a Mark that matches the name in this method.
-     */
-    public Mark getXMark();
+        return constraint;
+    }
 
-    /**
-     * Convinence method for obtaining a mark of a fixed shape
-     *
-     * @return a Mark that matches the name in this method.
-     */
-    public Mark getStarMark();
-
-    /**
-     * Convinence method for obtaining a mark of a fixed shape
-     *
-     * @return a Mark that matches the name in this method.
-     */
-    public Mark getSquareMark();
-
-    /**
-     * Convinence method for obtaining a mark of a fixed shape
-     *
-     * @return a Mark that matches the name in this method.
-     */
-    public Mark getCrossMark();
-
-    /**
-     * Convinence method for obtaining a mark of a fixed shape
-     *
-     * @return a Mark that matches the name in this method.
-     */
-    public Mark getTriangleMark();
-
-    /**
-     * Creates a new extent.
-     *
-     * @param name The name of the extent.
-     * @param value The value of the extent.
-     * @return The new extent.
-     */
-    public Extent createExtent(String name, String value);
-
-    /**
-     * Creates a new feature type constraint.
-     *
-     * @param featureTypeName The feature type name.
-     * @param filter The filter.
-     * @param extents The extents.
-     * @return The new feature type constaint.
-     */
-    public FeatureTypeConstraint createFeatureTypeConstraint(
-            String featureTypeName, Filter filter, Extent... extents);
-
+    
     public LayerFeatureConstraints createLayerFeatureConstraints(
-            FeatureTypeConstraint... featureTypeConstraints);
+            org.geotools.api.style.FeatureTypeConstraint[] featureTypeConstraints) {
+        LayerFeatureConstraints constraints = new LayerFeatureConstraintsImpl();
+        constraints.setFeatureTypeConstraints(featureTypeConstraints);
 
-    public FeatureTypeStyle createFeatureTypeStyle(Rule... rules);
+        return constraints;
+    }
+
+    
+    public org.geotools.api.style.FeatureTypeStyle createFeatureTypeStyle() {
+        return new FeatureTypeStyle();
+    }
+
+    
+    public org.geotools.api.style.FeatureTypeStyle createFeatureTypeStyle(org.geotools.api.style.Rule[] rules) {
+        return new FeatureTypeStyle(rules);
+    }
+
+    
+    public org.geotools.api.style.Rule createRule() {
+        return new Rule();
+    }
+
+    public org.geotools.api.style.Rule createRule(
+            org.geotools.styling.Symbolizer[] symbolizers,
+            Description desc,
+            org.geotools.api.style.GraphicLegend legend,
+            String name,
+            Filter filter,
+            boolean isElseFilter,
+            double maxScale,
+            double minScale) {
+
+        org.geotools.api.style.Rule r =
+                new Rule(
+                        symbolizers, desc, legend, name, filter, isElseFilter, maxScale, minScale);
+
+        return r;
+    }
+
+    
+    public org.geotools.api.style.ImageOutline createImageOutline(Symbolizer symbolizer) {
+        org.geotools.api.style.ImageOutline outline = new ImageOutline();
+        outline.setSymbolizer(symbolizer);
+
+        return outline;
+    }
 
     /**
-     * Creates a new ImageOutline.
-     *
-     * @param symbolizer A line or polygon symbolizer.
-     * @return The new image outline.
-     */
-    public ImageOutline createImageOutline(Symbolizer symbolizer);
-
-    public LinePlacement createLinePlacement(Expression offset);
-
-    public PolygonSymbolizer createPolygonSymbolizer();
-
-    public Halo createHalo(Fill fill, Expression radius);
-
-    public Fill createFill(
-            Expression color, Expression backgroundColor, Expression opacity, Graphic graphicFill);
-
-    /** Create default line symbolizer */
-    public LineSymbolizer createLineSymbolizer();
-
-    public PointSymbolizer createPointSymbolizer(Graphic graphic, String geometryPropertyName);
-
-    public Style createStyle();
-
-    public NamedStyle createNamedStyle();
-
-    public Fill createFill(Expression color, Expression opacity);
-
-    public Fill createFill(Expression color);
-
-    public TextSymbolizer createTextSymbolizer();
-
-    public PointPlacement createPointPlacement(
-            AnchorPoint anchorPoint, Displacement displacement, Expression rotation);
-
-    /**
-     * A convienice method to make a simple stroke
+     * A method to make a simple stroke of a provided color and width.
      *
      * @param color the color of the line
      * @param width the width of the line
      * @return the stroke object
      * @see org.geotools.stroke
      */
-    public Stroke createStroke(Expression color, Expression width);
+    
+    public org.geotools.api.style.Stroke createStroke(Expression color, Expression width) {
+        return createStroke(color, width, filterFactory.literal(1.0));
+    }
 
     /**
      * A convienice method to make a simple stroke
@@ -185,7 +263,19 @@ public interface StyleFactory extends Factory, org.geotools.api.style.StyleFacto
      * @return The stroke
      * @see org.geotools.stroke
      */
-    public Stroke createStroke(Expression color, Expression width, Expression opacity);
+    
+    public org.geotools.api.style.Stroke createStroke(Expression color, Expression width, Expression opacity) {
+        return createStroke(
+                color,
+                width,
+                opacity,
+                filterFactory.literal("miter"),
+                filterFactory.literal("butt"),
+                null,
+                filterFactory.literal(0.0),
+                null,
+                null);
+    }
 
     /**
      * creates a stroke
@@ -202,7 +292,8 @@ public interface StyleFactory extends Factory, org.geotools.api.style.StyleFacto
      * @return The completed stroke.
      * @see org.geotools.stroke
      */
-    public Stroke createStroke(
+    
+    public org.geotools.api.style.Stroke createStroke(
             Expression color,
             Expression width,
             Expression opacity,
@@ -210,79 +301,372 @@ public interface StyleFactory extends Factory, org.geotools.api.style.StyleFacto
             Expression lineCap,
             float[] dashArray,
             Expression dashOffset,
-            Graphic graphicFill,
-            Graphic graphicStroke);
+            org.geotools.api.style.Graphic graphicFill,
+            org.geotools.api.style.Graphic graphicStroke) {
+        org.geotools.api.style.Stroke stroke = new Stroke(filterFactory);
 
-    public Rule createRule();
+        if (color == null) {
+            // use default
+            color = ConstantStroke.DEFAULT.getColor();
+        }
+        stroke.setColor(color);
 
-    public LineSymbolizer createLineSymbolizer(Stroke stroke, String geometryPropertyName);
+        if (width == null) {
+            // use default
+            width = ConstantStroke.DEFAULT.getWidth();
+        }
+        stroke.setWidth(width);
 
-    public FeatureTypeStyle createFeatureTypeStyle();
+        if (opacity == null) {
+            opacity = ConstantStroke.DEFAULT.getOpacity();
+        }
+        stroke.setOpacity(opacity);
 
-    public Graphic createGraphic(
-            ExternalGraphic[] externalGraphics,
-            Mark[] marks,
+        if (lineJoin == null) {
+            lineJoin = ConstantStroke.DEFAULT.getLineJoin();
+        }
+        stroke.setLineJoin(lineJoin);
+
+        if (lineCap == null) {
+            lineCap = ConstantStroke.DEFAULT.getLineCap();
+        }
+
+        stroke.setLineCap(lineCap);
+        stroke.setDashArray(dashArray);
+        stroke.setDashOffset(dashOffset);
+        stroke.setGraphicFill(graphicFill);
+        stroke.setGraphicStroke(graphicStroke);
+
+        return stroke;
+    }
+
+    
+    public org.geotools.api.style.Fill createFill(
+            Expression color, Expression backgroundColor, Expression opacity, org.geotools.api.style.Graphic graphicFill) {
+        org.geotools.api.style.Fill fill = new Fill(filterFactory);
+
+        if (color == null) {
+            color = org.geotools.api.style.Fill.DEFAULT.getColor();
+        }
+        fill.setColor(color);
+
+        if (opacity == null) {
+            opacity = org.geotools.api.style.Fill.DEFAULT.getOpacity();
+        }
+
+        // would be nice to check if this was within bounds but we have to wait until use since it
+        // may depend on an attribute
+        fill.setOpacity(opacity);
+        fill.setGraphicFill(graphicFill);
+
+        return fill;
+    }
+
+    
+    public org.geotools.api.style.Fill createFill(Expression color, Expression opacity) {
+        return createFill(color, null, opacity, null);
+    }
+
+    
+    public org.geotools.api.style.Fill createFill(Expression color) {
+        return createFill(color, null, filterFactory.literal(1.0), null);
+    }
+
+    
+    public org.geotools.api.style.Mark createMark(
+            Expression wellKnownName,
+            org.geotools.api.style.Stroke stroke,
+            org.geotools.api.style.Fill fill,
+            Expression size,
+            Expression rotation) {
+        org.geotools.api.style.Mark mark = new Mark(filterFactory, null);
+
+        if (wellKnownName == null) {
+            throw new IllegalArgumentException("WellKnownName can not be null in mark");
+        }
+
+        mark.setWellKnownName(wellKnownName);
+        mark.setStroke(stroke);
+        mark.setFill(fill);
+
+        return mark;
+    }
+
+    
+    public org.geotools.api.style.Mark getSquareMark() {
+        org.geotools.api.style.Mark mark =
+                createMark(
+                        filterFactory.literal("Square"),
+                        getDefaultStroke(),
+                        getDefaultFill(),
+                        filterFactory.literal(6),
+                        filterFactory.literal(0));
+
+        return mark;
+    }
+
+    
+    public org.geotools.api.style.Mark getCircleMark() {
+        org.geotools.api.style.Mark mark = getDefaultMark();
+        mark.setWellKnownName(filterFactory.literal("Circle"));
+
+        return mark;
+    }
+
+    
+    public org.geotools.api.style.Mark getCrossMark() {
+        org.geotools.api.style.Mark mark = getDefaultMark();
+        mark.setWellKnownName(filterFactory.literal("Cross"));
+
+        return mark;
+    }
+
+    
+    public org.geotools.api.style.Mark getXMark() {
+        org.geotools.api.style.Mark mark = getDefaultMark();
+        mark.setWellKnownName(filterFactory.literal("X"));
+
+        return mark;
+    }
+
+    
+    public org.geotools.api.style.Mark getTriangleMark() {
+        org.geotools.api.style.Mark mark = getDefaultMark();
+        mark.setWellKnownName(filterFactory.literal("Triangle"));
+
+        return mark;
+    }
+
+    
+    public org.geotools.api.style.Mark getStarMark() {
+        org.geotools.api.style.Mark mark = getDefaultMark();
+        mark.setWellKnownName(filterFactory.literal("Star"));
+
+        return mark;
+    }
+
+    
+    public org.geotools.api.style.Mark createMark() {
+        org.geotools.api.style.Mark mark = new Mark(filterFactory, null);
+
+        return mark;
+    }
+
+    
+    public org.geotools.api.style.Graphic createGraphic(
+            org.geotools.api.style.ExternalGraphic[] externalGraphics,
+            org.geotools.api.style.Mark[] marks,
             Symbol[] symbols,
             Expression opacity,
             Expression size,
-            Expression rotation);
+            Expression rotation) {
+        org.geotools.api.style.Graphic graphic = new Graphic(filterFactory);
 
+        symbols = symbols != null ? symbols : new Symbol[0];
+        graphic.graphicalSymbols().addAll(Arrays.asList(symbols));
+
+        // externalGraphics = externalGraphics != null ? externalGraphics : new ExternalGraphic[0];
+        // graphic.setExternalGraphics(externalGraphics);
+        if (externalGraphics != null) {
+            graphic.graphicalSymbols().addAll(Arrays.asList(externalGraphics));
+        }
+        // marks = marks != null ? marks : new Mark[0];
+        // graphic.setMarks(marks);
+        if (marks != null) {
+            graphic.graphicalSymbols().addAll(Arrays.asList(marks));
+        }
+        if (opacity == null) {
+            opacity = ConstantGraphic.DEFAULT.getOpacity();
+        }
+        graphic.setOpacity(opacity);
+
+        if (size == null) {
+            size = ConstantGraphic.DEFAULT.getSize();
+        }
+        graphic.setSize(size);
+
+        if (rotation == null) {
+            rotation = ConstantGraphic.DEFAULT.getRotation();
+        }
+
+        graphic.setRotation(rotation);
+
+        return graphic;
+    }
+
+    
+    public org.geotools.api.style.ExternalGraphic createExternalGraphic(String uri, String format) {
+        org.geotools.api.style.ExternalGraphic extg = new ExternalGraphic();
+        extg.setURI(uri);
+        extg.setFormat(format);
+
+        return extg;
+    }
+
+    
+    public org.geotools.api.style.ExternalGraphic createExternalGraphic(Icon inlineContent, String format) {
+        ExternalGraphic extg = new ExternalGraphic();
+        extg.setInlineContent(inlineContent);
+        extg.setFormat(format);
+        return extg;
+    }
+
+    
+    public org.geotools.api.style.ExternalGraphic createExternalGraphic(java.net.URL url, String format) {
+        org.geotools.api.style.ExternalGraphic extg = new ExternalGraphic();
+        extg.setLocation(url);
+        extg.setFormat(format);
+
+        return extg;
+    }
+
+    
     public Font createFont(
             Expression fontFamily,
             Expression fontStyle,
             Expression fontWeight,
-            Expression fontSize);
+            Expression fontSize) {
+        Font font = new Font();
 
-    public Mark createMark();
+        if (fontFamily == null) {
+            throw new IllegalArgumentException("Null font family specified");
+        }
+        font.getFamily().add(fontFamily);
 
-    public PolygonSymbolizer createPolygonSymbolizer(
-            Stroke stroke, Fill fill, String geometryPropertyName);
+        if (fontSize == null) {
+            throw new IllegalArgumentException("Null font size specified");
+        }
 
-    public RasterSymbolizer createRasterSymbolizer();
+        font.setSize(fontSize);
 
-    public RasterSymbolizer createRasterSymbolizer(
-            String geometryPropertyName,
-            Expression opacity,
-            ChannelSelection channel,
-            Expression overlap,
-            ColorMap colorMap,
-            ContrastEnhancement ce,
-            ShadedRelief relief,
-            Symbolizer outline);
+        if (fontStyle == null) {
+            throw new IllegalArgumentException("Null font Style specified");
+        }
 
-    public RasterSymbolizer getDefaultRasterSymbolizer();
+        font.setStyle(fontStyle);
 
-    public ChannelSelection createChannelSelection(SelectedChannelType... channels);
+        if (fontWeight == null) {
+            throw new IllegalArgumentException("Null font weight specified");
+        }
 
-    public ContrastEnhancement createContrastEnhancement();
+        font.setWeight(fontWeight);
 
-    public ContrastEnhancement createContrastEnhancement(Expression gammaValue);
+        return font;
+    }
 
-    public SelectedChannelType createSelectedChannelType(
-            Expression name, ContrastEnhancement enhancement);
+    //    public LinePlacement createLinePlacement(){
+    //        return new LinePlacementImpl();
+    //    }
+    
+    public org.geotools.api.style.LinePlacement createLinePlacement(Expression offset) {
+        org.geotools.api.style.LinePlacement linep = new LinePlacement(filterFactory);
+        linep.setPerpendicularOffset(offset);
 
-    public SelectedChannelType createSelectedChannelType(
-            String name, ContrastEnhancement enhancement);
+        return linep;
+    }
 
-    public SelectedChannelType createSelectedChannelType(Expression name, Expression gammaValue);
+    //    public PointPlacement createPointPlacement(){
+    //        return new PointPlacementImpl();
+    //    }
+    
+    public org.geotools.api.style.PointPlacement createPointPlacement(
+            AnchorPoint anchorPoint, org.geotools.api.style.Displacement displacement, Expression rotation) {
+        org.geotools.api.style.PointPlacement pointp = new PointPlacement(filterFactory);
+        pointp.setAnchorPoint(anchorPoint);
+        pointp.setDisplacement(displacement);
+        pointp.setRotation(rotation);
 
-    public ColorMap createColorMap();
+        return pointp;
+    }
 
-    public ColorMapEntry createColorMapEntry();
+    
+    public AnchorPoint createAnchorPoint(Expression x, Expression y) {
+        AnchorPoint anchorPoint = new AnchorPoint(filterFactory);
+        anchorPoint.setAnchorPointX(x);
+        anchorPoint.setAnchorPointY(y);
 
-    public Style getDefaultStyle();
+        return anchorPoint;
+    }
 
-    public Stroke getDefaultStroke();
+    
+    public org.geotools.api.style.Displacement createDisplacement(Expression x, Expression y) {
+        org.geotools.api.style.Displacement displacement = new Displacement(filterFactory);
+        displacement.setDisplacementX(x);
+        displacement.setDisplacementY(y);
 
-    public Fill getDefaultFill();
+        return displacement;
+    }
 
-    public Mark getDefaultMark();
+    
+    public org.geotools.api.style.Halo createHalo(org.geotools.api.style.Fill fill, Expression radius) {
+        Halo halo = new Halo(filterFactory);
+        halo.setFill(fill);
+        halo.setRadius(radius);
 
-    public PointSymbolizer getDefaultPointSymbolizer();
+        return halo;
+    }
 
-    public PolygonSymbolizer getDefaultPolygonSymbolizer();
+    
+    public org.geotools.api.style.Fill getDefaultFill() {
+        org.geotools.api.style.Fill fill = new Fill(filterFactory);
 
-    public LineSymbolizer getDefaultLineSymbolizer();
+        try {
+            fill.setColor(filterFactory.literal("#808080"));
+            fill.setOpacity(filterFactory.literal(Double.valueOf(1.0)));
+        } catch (org.geotools.filter.IllegalFilterException ife) {
+            throw new RuntimeException("Error creating fill", ife);
+        }
+
+        return fill;
+    }
+
+    
+    public org.geotools.api.style.LineSymbolizer getDefaultLineSymbolizer() {
+        return createLineSymbolizer(getDefaultStroke(), null);
+    }
+
+    
+    public org.geotools.api.style.Mark getDefaultMark() {
+        return getSquareMark();
+    }
+
+    
+    public org.geotools.api.style.PointSymbolizer getDefaultPointSymbolizer() {
+        return createPointSymbolizer(createDefaultGraphic(), null);
+    }
+
+    
+    public org.geotools.api.style.PolygonSymbolizer getDefaultPolygonSymbolizer() {
+        return createPolygonSymbolizer(getDefaultStroke(), getDefaultFill(), null);
+    }
+
+    
+    public org.geotools.api.style.Stroke getDefaultStroke() {
+        try {
+            org.geotools.api.style.Stroke stroke =
+                    createStroke(
+                            filterFactory.literal("#000000"),
+                            filterFactory.literal(Integer.valueOf(1)));
+
+            stroke.setDashOffset(filterFactory.literal(Integer.valueOf(0)));
+            stroke.setDashArray(ConstantStroke.DEFAULT.getDashArray());
+            stroke.setLineCap(filterFactory.literal("butt"));
+            stroke.setLineJoin(filterFactory.literal("miter"));
+            stroke.setOpacity(filterFactory.literal(Integer.valueOf(1)));
+
+            return stroke;
+        } catch (org.geotools.filter.IllegalFilterException ife) {
+            // we should never be in here
+            throw new RuntimeException("Error creating stroke", ife);
+        }
+    }
+
+    
+    public org.geotools.api.style.Style getDefaultStyle() {
+        org.geotools.api.style.Style style = createStyle();
+
+        return style;
+    }
 
     /**
      * Creates a default Text Symbolizer, using the defaultFill, defaultFont and
@@ -291,400 +675,577 @@ public interface StyleFactory extends Factory, org.geotools.api.style.StyleFacto
      *
      * @return A default TextSymbolizer
      */
-    public TextSymbolizer getDefaultTextSymbolizer();
+    
+    public org.geotools.api.style.TextSymbolizer getDefaultTextSymbolizer() {
+        return createTextSymbolizer(
+                getDefaultFill(),
+                new org.geotools.api.style.Font[] {getDefaultFont()},
+                null,
+                null,
+                getDefaultPointPlacement(),
+                "geometry:text");
+    }
 
-    public Graphic createDefaultGraphic();
+    /**
+     * Creates a defaultFont which is valid on all machines. The font is of size 10, Style and
+     * Weight normal and uses a serif font.
+     *
+     * @return the default Font
+     */
+    
+    public org.geotools.api.style.Font getDefaultFont() {
+        return Font.createDefault(filterFactory);
+    }
 
-    public Graphic getDefaultGraphic();
+    
+    public org.geotools.api.style.Graphic createDefaultGraphic() {
+        org.geotools.api.style.Graphic graphic = new Graphic(filterFactory);
+        graphic.graphicalSymbols()
+                .add(createMark()); // a default graphic is assumed to have a single Mark
+        graphic.setSize(Expression.NIL);
+        graphic.setOpacity(filterFactory.literal(1.0));
+        graphic.setRotation(filterFactory.literal(0.0));
 
-    public Font getDefaultFont();
+        return graphic;
+    }
 
-    public PointPlacement getDefaultPointPlacement();
+    
+    public org.geotools.api.style.Graphic getDefaultGraphic() {
+        return createDefaultGraphic();
+    }
 
-    public StyledLayerDescriptor createStyledLayerDescriptor();
+    /**
+     * returns a default PointPlacement with a 0,0 anchorPoint and a displacement of 0,0 and a
+     * rotation of 0
+     *
+     * @return a default PointPlacement.
+     */
+    
+    public org.geotools.api.style.PointPlacement getDefaultPointPlacement() {
+        return this.createPointPlacement(
+                PointPlacement.DEFAULT_ANCHOR_POINT,
+                this.createDisplacement(filterFactory.literal(0), filterFactory.literal(0)),
+                filterFactory.literal(0));
+    }
 
-    public UserLayer createUserLayer();
+    
+    public org.geotools.api.style.RasterSymbolizer createRasterSymbolizer() {
+        return new RasterSymbolizer(filterFactory);
+    }
 
-    public NamedLayer createNamedLayer();
+    
+    public org.geotools.api.style.RasterSymbolizer createRasterSymbolizer(
+            String geometryPropertyName,
+            Expression opacity,
+            ChannelSelection channel,
+            Expression overlap,
+            ColorMap colorMap,
+            org.geotools.api.style.ContrastEnhancement cenhancement,
+            org.geotools.api.style.ShadedRelief relief,
+            Symbolizer outline) {
+        org.geotools.api.style.RasterSymbolizer rastersym = new RasterSymbolizer(filterFactory);
 
-    public RemoteOWS createRemoteOWS(String service, String onlineResource);
+        if (geometryPropertyName != null) {
+            rastersym.setGeometryPropertyName(geometryPropertyName);
+        }
 
-    public ShadedRelief createShadedRelief(Expression reliefFactor);
+        if (opacity != null) {
+            rastersym.setOpacity(opacity);
+        }
 
+        if (channel != null) {
+            rastersym.setChannelSelection(channel);
+        }
+
+        if (overlap != null) {
+            rastersym.setOverlap(overlap);
+        }
+
+        if (colorMap != null) {
+            rastersym.setColorMap(colorMap);
+        }
+
+        if (cenhancement != null) {
+            rastersym.setContrastEnhancement(cenhancement);
+        }
+
+        if (relief != null) {
+            rastersym.setShadedRelief(relief);
+        }
+
+        if (outline != null) {
+            rastersym.setImageOutline(outline);
+        }
+
+        return rastersym;
+    }
+
+    
+    public org.geotools.api.style.RasterSymbolizer getDefaultRasterSymbolizer() {
+        return createRasterSymbolizer(
+                null, filterFactory.literal(1.0), null, null, null, null, null, null);
+    }
+
+    
+    public ChannelSelection createChannelSelection(org.geotools.api.style.SelectedChannelType[] channels) {
+        ChannelSelection channelSel = new ChannelSelectionImpl();
+
+        if ((channels != null) && (channels.length > 0)) {
+            if (channels.length == 1) {
+                channelSel.setGrayChannel(channels[0]);
+            } else {
+                channelSel.setRGBChannels(channels);
+            }
+        }
+
+        return channelSel;
+    }
+
+    
+    public ColorMap createColorMap() {
+        return new ColorMapImpl();
+    }
+
+    
+    public org.geotools.api.style.ColorMapEntry createColorMapEntry() {
+        return new ColorMapEntry();
+    }
+
+    
+    public org.geotools.api.style.ContrastEnhancement createContrastEnhancement() {
+        return new ContrastEnhancement(filterFactory);
+    }
+
+    
+    public org.geotools.api.style.ContrastEnhancement createContrastEnhancement(Expression gammaValue) {
+        org.geotools.api.style.ContrastEnhancement ce = new ContrastEnhancement();
+        ce.setGammaValue(gammaValue);
+
+        return ce;
+    }
+
+    
+    public org.geotools.api.style.SelectedChannelType createSelectedChannelType(
+            Expression name, org.geotools.api.style.ContrastEnhancement enhancement) {
+        org.geotools.api.style.SelectedChannelType sct = new SelectedChannelType(filterFactory);
+        sct.setChannelName(name);
+        sct.setContrastEnhancement(enhancement);
+
+        return sct;
+    }
+
+    
+    public org.geotools.api.style.SelectedChannelType createSelectedChannelType(
+            String name, org.geotools.api.style.ContrastEnhancement enhancement) {
+        Expression nameExp = filterFactory.literal(name);
+        return createSelectedChannelType(nameExp, enhancement);
+    }
+
+    
+    public org.geotools.api.style.SelectedChannelType createSelectedChannelType(Expression name, Expression gammaValue) {
+        org.geotools.api.style.SelectedChannelType sct = new SelectedChannelType(filterFactory);
+        sct.setChannelName(name);
+        sct.setContrastEnhancement(createContrastEnhancement(gammaValue));
+
+        return sct;
+    }
+
+    
+    public StyledLayerDescriptor createStyledLayerDescriptor() {
+        return new StyledLayerDescriptorImpl();
+    }
+
+    
+    public org.geotools.api.style.UserLayer createUserLayer() {
+        return new UserLayer();
+    }
+
+    
+    public org.geotools.api.style.NamedLayer createNamedLayer() {
+        return new NamedLayer();
+    }
+
+    
+    public org.geotools.api.style.RemoteOWS createRemoteOWS(String service, String onlineResource) {
+        RemoteOWS remoteOWS = new RemoteOWS();
+        remoteOWS.setService(service);
+        remoteOWS.setOnlineResource(onlineResource);
+
+        return remoteOWS;
+    }
+
+    
+    public org.geotools.api.style.ShadedRelief createShadedRelief(Expression reliefFactor) {
+        org.geotools.api.style.ShadedRelief relief = new ShadedRelief(filterFactory);
+        relief.setReliefFactor(reliefFactor);
+
+        return relief;
+    }
     //
-    // Type Narrow org.geotools.api.StyleFactory
+    // Start of GeoAPI StyleFacstory implementation
     //
-    /** Indicate what part of a Graphic is used to mark the location. */
-    @Override
-    AnchorPoint anchorPoint(Expression x, Expression y);
-    /** */
-    @Override
-    ChannelSelection channelSelection(org.geotools.api.style.SelectedChannelType gray);
-    /** */
-    @Override
-    ChannelSelection channelSelection(
+
+    
+    public AnchorPoint anchorPoint(Expression x, Expression y) {
+        return delegate.anchorPoint(x, y);
+    }
+
+    
+    public ChannelSelection channelSelection(org.geotools.api.style.SelectedChannelType gray) {
+        return delegate.channelSelection(gray);
+    }
+
+    
+    public ChannelSelection channelSelection(
             org.geotools.api.style.SelectedChannelType red,
             org.geotools.api.style.SelectedChannelType green,
-            org.geotools.api.style.SelectedChannelType blue);
+            org.geotools.api.style.SelectedChannelType blue) {
+        return delegate.channelSelection(red, green, blue);
+    }
 
-    /**
-     * Wrap up a "Categorize" function using the provided expressions.
-     *
-     * <p>The function will be created based on:
-     *
-     * <ol>
-     *   <li>PropertyName; use "Rasterdata" to indicate this is a color map
-     *   <li>Literal: lookup value
-     *   <li>Literal: threshold 1
-     *   <li>Literal: value 1
-     *   <li>Literal: threshold 2
-     *   <li>Literal: value 2
-     *   <li>Literal: (Optional) succeeding or preceding
-     * </ol>
-     *
-     * @param propertyName Property name to categorize, or use "Raster"
-     * @param mapping Defined as a series of Expressions
-     * @return ColorMap wrapped around the "Cateogize" function
-     */
-    @Override
-    ColorMap colorMap(Expression propertyName, Expression... mapping);
+    
+    public ColorMap colorMap(Expression propertyName, Expression... mapping) {
+        return delegate.colorMap(propertyName, mapping);
+    }
 
-    /**
-     * Wrap up a replacement function using the provided expressions.
-     *
-     * @param propertyName Property name to categorize, or use "Raster"
-     * @param mapping Defined as a series of Expressions
-     * @return ColorReplacement wrapped around a Function
-     */
-    @Override
-    ColorReplacement colorReplacement(Expression propertyName, Expression... mapping);
-    /** */
-    @Override
-    ContrastEnhancement contrastEnhancement(
-            Expression gamma, org.geotools.api.style.ContrastMethod method);
+    
+    public ColorReplacement colorReplacement(Expression propertyName, Expression... mapping) {
+        return delegate.colorReplacement(propertyName, mapping);
+    }
 
-    /** */
-    @Override
-    Description description(InternationalString title, InternationalString description);
+    
+    public org.geotools.api.style.ContrastEnhancement contrastEnhancement(Expression gamma, ContrastMethod method) {
+        return delegate.contrastEnhancement(gamma, method);
+    }
 
-    /** */
-    @Override
-    Displacement displacement(Expression dx, Expression dy);
+    
+    public org.geotools.styling.Description description(
+            InternationalString title, InternationalString description) {
+        return delegate.description(title, description);
+    }
 
-    /** */
-    @Override
-    ExternalGraphic externalGraphic(
-            OnLineResource resource,
-            String format,
-            Collection<org.geotools.api.style.ColorReplacement> replacements);
+    
+    public org.geotools.api.style.Displacement displacement(Expression dx, Expression dy) {
+        return delegate.displacement(dx, dy);
+    }
 
-    /** */
-    @Override
-    ExternalGraphic externalGraphic(
-            Icon inline, Collection<org.geotools.api.style.ColorReplacement> replacements);
+    
+    public org.geotools.api.style.ExternalGraphic externalGraphic(Icon inline, Collection<org.geotools.api.style.ColorReplacement> replacements) {
+        return delegate.externalGraphic(inline, replacements);
+    }
 
-    /** */
-    @Override
-    ExternalMark externalMark(OnLineResource resource, String format, int markIndex);
+    
+    public org.geotools.api.style.ExternalGraphic externalGraphic(
+            OnLineResource resource, String format, Collection<org.geotools.api.style.ColorReplacement> replacements) {
+        return delegate.externalGraphic(resource, format, replacements);
+    }
 
-    /** */
-    @Override
-    ExternalMark externalMark(Icon inline);
+    
+    public ExternalMark externalMark(Icon inline) {
+        return delegate.externalMark(inline);
+    }
 
-    /**
-     * Direct FeatureTypeStyle creation (with no default SLD values applied).
-     *
-     * @param name Name
-     * @param description Description with title and abstract information
-     * @param definedFor Currently unused
-     * @param featureTypeNames FeatureTypes this style applies to, use AbstractFeature to match all
-     * @param types SemanticType
-     * @param rules May not be null or empty
-     * @return feature type style
-     * @see SimpleFe
-     */
-    @Override
-    FeatureTypeStyle featureTypeStyle(
+    
+    public ExternalMark externalMark(OnLineResource resource, String format, int markIndex) {
+        return delegate.externalMark(resource, format, markIndex);
+    }
+
+    
+    public org.geotools.api.style.FeatureTypeStyle featureTypeStyle(
             String name,
-            org.geotools.api.style.Description description,
+            Description description,
             Id definedFor,
             Set<Name> featureTypeNames,
-            Set<org.geotools.api.style.SemanticType> types,
-            List<org.geotools.api.style.Rule> rules);
+            Set<SemanticType> types,
+            List<org.geotools.api.style.Rule> rules) {
+        return delegate.featureTypeStyle(
+                name, description, definedFor, featureTypeNames, types, rules);
+    }
 
-    /** */
-    @Override
-    Fill fill(org.geotools.api.style.GraphicFill fill, Expression color, Expression opacity);
+    
+    public org.geotools.api.style.Fill fill(GraphicFill fill, Expression color, Expression opacity) {
+        return delegate.fill(fill, color, opacity);
+    }
 
-    /** */
-    @Override
-    Font font(List<Expression> family, Expression style, Expression weight, Expression size);
+    
+    public org.geotools.api.style.Font font(
+            List<Expression> family, Expression style, Expression weight, Expression size) {
+        return delegate.font(family, style, weight, size);
+    }
 
-    @Override
-    Graphic graphic(
-            List<org.geotools.api.style.GraphicalSymbol> symbols,
+    
+    public org.geotools.api.style.Graphic graphic(
+            List<GraphicalSymbol> symbols,
             Expression opacity,
             Expression size,
             Expression rotation,
             org.geotools.api.style.AnchorPoint anchor,
-            org.geotools.api.style.Displacement disp);
+            org.geotools.api.style.Displacement disp) {
+        return delegate.graphic(symbols, opacity, size, rotation, anchor, disp);
+    }
 
-    /** */
-    @Override
-    Graphic graphicFill(
-            List<org.geotools.api.style.GraphicalSymbol> symbols,
+    
+    public GraphicFill graphicFill(
+            List<GraphicalSymbol> symbols,
             Expression opacity,
             Expression size,
             Expression rotation,
             org.geotools.api.style.AnchorPoint anchorPoint,
-            org.geotools.api.style.Displacement displacement);
+            org.geotools.api.style.Displacement displacement) {
+        return delegate.graphicFill(symbols, opacity, size, rotation, anchorPoint, displacement);
+    }
 
-    /** */
-    @Override
-    GraphicLegend graphicLegend(
-            List<org.geotools.api.style.GraphicalSymbol> symbols,
+    
+    public GraphicLegend graphicLegend(
+            List<GraphicalSymbol> symbols,
             Expression opacity,
             Expression size,
             Expression rotation,
             org.geotools.api.style.AnchorPoint anchorPoint,
-            org.geotools.api.style.Displacement displacement);
-    /** */
-    @Override
-    Graphic graphicStroke(
-            List<org.geotools.api.style.GraphicalSymbol> symbols,
+            org.geotools.api.style.Displacement displacement) {
+        return delegate.graphicLegend(symbols, opacity, size, rotation, anchorPoint, displacement);
+    }
+
+    
+    public GraphicStroke graphicStroke(
+            List<GraphicalSymbol> symbols,
             Expression opacity,
             Expression size,
             Expression rotation,
             org.geotools.api.style.AnchorPoint anchorPoint,
             org.geotools.api.style.Displacement displacement,
             Expression initialGap,
-            Expression gap);
+            Expression gap) {
+        return delegate.graphicStroke(
+                symbols, opacity, size, rotation, anchorPoint, displacement, initialGap, gap);
+    }
 
-    /** */
-    @Override
-    Halo halo(org.geotools.api.style.Fill fill, Expression radius);
+    
+    public org.geotools.api.style.Halo halo(org.geotools.api.style.Fill fill, Expression radius) {
+        return delegate.halo(fill, radius);
+    }
 
-    /** */
-    @Override
-    LinePlacement linePlacement(
+    
+    public org.geotools.api.style.LinePlacement linePlacement(
             Expression offset,
             Expression initialGap,
             Expression gap,
             boolean repeated,
             boolean aligned,
-            boolean generalizedLine);
-    /**
-     * @param name handle used to refer to this symbolizer (machine readible)
-     * @param geometry Expression used to produce the Geometry to renderer; often a PropertyName
-     * @param unit Unit of measure used to define this symbolizer
-     * @param stroke Definition of how to stroke linework
-     * @param offset Offset used to position line relative to origional
-     * @return Newly created Line Symbolizer
-     */
-    @Override
-    LineSymbolizer lineSymbolizer(
+            boolean generalizedLine) {
+        return delegate.linePlacement(offset, initialGap, gap, repeated, aligned, generalizedLine);
+    }
+
+    
+    public org.geotools.api.style.LineSymbolizer lineSymbolizer(
             String name,
             Expression geometry,
-            org.geotools.api.style.Description description,
+            Description description,
             Unit<?> unit,
             org.geotools.api.style.Stroke stroke,
-            Expression offset);
+            Expression offset) {
+        return delegate.lineSymbolizer(name, geometry, description, unit, stroke, offset);
+    }
 
-    /** */
-    @Override
-    Mark mark(
+    
+    public org.geotools.api.style.Mark mark(
             Expression wellKnownName,
             org.geotools.api.style.Fill fill,
-            org.geotools.api.style.Stroke stroke);
-    /** */
-    @Override
-    Mark mark(
+            org.geotools.api.style.Stroke stroke) {
+        return delegate.mark(wellKnownName, fill, stroke);
+    }
+
+    
+    public Mark mark(
             org.geotools.api.style.ExternalMark externalMark,
             org.geotools.api.style.Fill fill,
-            org.geotools.api.style.Stroke stroke);
-    /** */
-    @Override
-    PointPlacement pointPlacement(
+            org.geotools.api.style.Stroke stroke) {
+        return delegate.mark(externalMark, fill, stroke);
+    }
+
+    
+    public org.geotools.api.style.PointPlacement pointPlacement(
             org.geotools.api.style.AnchorPoint anchor,
             org.geotools.api.style.Displacement displacement,
-            Expression rotation);
-    /**
-     * Creation of a PointSymbolizer to describe how geometry can be rendered as a point.
-     *
-     * @param name handle used to refer to this symbolizer (machine readable)
-     * @param geometry Expression used to extract the Geometry rendered; usually a PropertyName
-     * @param description Human readable description of symboizer
-     * @param unit Unit of Measure used to interpret symbolizer distances
-     * @param graphic Graphic used to represent the geometry when rendering
-     * @return Newly created PointSymbolizer
-     */
-    @Override
-    PointSymbolizer pointSymbolizer(
+            Expression rotation) {
+        return delegate.pointPlacement(anchor, displacement, rotation);
+    }
+
+    
+    public org.geotools.api.style.PointSymbolizer pointSymbolizer(
             String name,
             Expression geometry,
-            org.geotools.api.style.Description description,
+            Description description,
             Unit<?> unit,
-            org.geotools.api.style.Graphic graphic);
-    /**
-     * @param name handle used to refer to this symbolizer (machine readable)
-     * @param geometry Expression used to extract the Geometry rendered; usually a PropertyName
-     * @param description Human readable description of symboizer
-     * @param unit Unit of Measure used to interpret symbolizer distances
-     */
-    @Override
-    PolygonSymbolizer polygonSymbolizer(
+            org.geotools.api.style.Graphic graphic) {
+        return delegate.pointSymbolizer(name, geometry, description, unit, graphic);
+    }
+
+    
+    public org.geotools.api.style.PolygonSymbolizer polygonSymbolizer(
             String name,
             Expression geometry,
-            org.geotools.api.style.Description description,
+            Description description,
             Unit<?> unit,
             org.geotools.api.style.Stroke stroke,
             org.geotools.api.style.Fill fill,
             org.geotools.api.style.Displacement displacement,
-            Expression offset);
-    /**
-     * @param name handle used to refer to this symbolizer (machine readable)
-     * @param geometry Expression used to extract the Geometry rendered; usually a PropertyName
-     * @param description Human readable description of symboizer
-     * @param unit Unit of Measure used to interpret symbolizer distances
-     * @return RasterSymbolizer
-     */
-    @Override
-    RasterSymbolizer rasterSymbolizer(
+            Expression offset) {
+        return delegate.polygonSymbolizer(
+                name, geometry, description, unit, stroke, fill, displacement, offset);
+    }
+
+    
+    public org.geotools.api.style.RasterSymbolizer rasterSymbolizer(
             String name,
             Expression geometry,
-            org.geotools.api.style.Description description,
+            Description description,
             Unit<?> unit,
             Expression opacity,
             org.geotools.api.style.ChannelSelection channelSelection,
-            org.geotools.api.style.OverlapBehavior overlapsBehaviour,
+            OverlapBehavior overlapsBehaviour,
             org.geotools.api.style.ColorMap colorMap,
             org.geotools.api.style.ContrastEnhancement contrast,
             org.geotools.api.style.ShadedRelief shaded,
-            org.geotools.api.style.Symbolizer outline);
-    /**
-     * Used to represent a symbolizer intended for a vendor specific rendering process. This
-     * facility should be used to control subject matter that is beyond the scope of the traditional
-     * symbology encoding data structure (subject matter like wind barbs or extra deegrees of
-     * freedom like temporal symbolizers are good examples of the use of this facility).
-     *
-     * @param name handle used to refer to this symbolizer (machine readible)
-     * @param geometry Geometry expression to renderer; formally a PropertyName
-     * @param description Description of this symbolizer; human readable
-     * @param unit Unit of measure to use when interpretting this symbolizer
-     * @param extensionName Extension name used to identify the vendor specific extension being
-     *     controlled
-     * @param parameters Named expressions used to configure the vendor specific rendering process
-     * @return newly created ExtensionSymbolizer
-     */
-    @Override
-    ExtensionSymbolizer extensionSymbolizer(
+            org.geotools.api.style.Symbolizer outline) {
+        return delegate.rasterSymbolizer(
+                name,
+                geometry,
+                description,
+                unit,
+                opacity,
+                channelSelection,
+                overlapsBehaviour,
+                colorMap,
+                contrast,
+                shaded,
+                outline);
+    }
+
+    
+    public ExtensionSymbolizer extensionSymbolizer(
             String name,
-            String geometry,
-            org.geotools.api.style.Description description,
+            String propertyName,
+            Description description,
             Unit<?> unit,
             String extensionName,
-            Map<String, Expression> parameters);
+            Map<String, Expression> parameters) {
+        return delegate.extensionSymbolizer(
+                name, propertyName, description, unit, extensionName, parameters);
+    }
 
-    /**
-     * Create a rule from the provided definition.
-     *
-     * @param name handle used to refer to this rule (machine readable)
-     * @param description Human readable description of this rule
-     * @param legend Graphic used to indicate this rule in a legend or user interface
-     * @param min minimum scale denominator used to control when this rule is applied
-     * @param max maximum scale denominator used to control when this rule is applied
-     * @return Newly created Rule
-     */
-    @Override
-    Rule rule(
+    
+    public org.geotools.api.style.Rule rule(
             String name,
-            org.geotools.api.style.Description description,
+            Description description,
             org.geotools.api.style.GraphicLegend legend,
             double min,
             double max,
             List<org.geotools.api.style.Symbolizer> symbolizers,
-            Filter filter);
+            Filter filter) {
+        return delegate.rule(name, description, legend, min, max, symbolizers, filter);
+    }
 
-    /** @return SelectedChannelType */
-    @Override
-    SelectedChannelType selectedChannelType(
-            Expression channelName, org.geotools.api.style.ContrastEnhancement contrastEnhancement);
+    
+    public org.geotools.api.style.SelectedChannelType selectedChannelType(
+            Expression channelName,
+            org.geotools.api.style.ContrastEnhancement contrastEnhancement) {
+        return delegate.selectedChannelType(channelName, contrastEnhancement);
+    }
 
-    /** @return SelectedChannelType */
-    @Override
-    SelectedChannelType selectedChannelType(
-            String channelName, org.geotools.api.style.ContrastEnhancement contrastEnhancement);
+    
+    public org.geotools.api.style.SelectedChannelType selectedChannelType(
+            String channelName, org.geotools.api.style.ContrastEnhancement contrastEnhancement) {
+        return delegate.selectedChannelType(channelName, contrastEnhancement);
+    }
 
-    /** @return ShadedRelief */
-    @Override
-    ShadedRelief shadedRelief(Expression reliefFactor, boolean brightnessOnly);
+    
+    public org.geotools.api.style.ShadedRelief shadedRelief(Expression reliefFactor, boolean brightnessOnly) {
+        return delegate.shadedRelief(reliefFactor, brightnessOnly);
+    }
 
-    @Override
-    Stroke stroke(
+    
+    public org.geotools.api.style.Stroke stroke(
             Expression color,
             Expression opacity,
             Expression width,
             Expression join,
             Expression cap,
             float[] dashes,
-            Expression offset);
+            Expression offset) {
+        return delegate.stroke(color, opacity, width, join, cap, dashes, offset);
+    }
 
-    @Override
-    Stroke stroke(
-            org.geotools.api.style.GraphicFill fill,
+    
+    public org.geotools.api.style.Stroke stroke(
+            GraphicFill fill,
             Expression color,
             Expression opacity,
             Expression width,
             Expression join,
             Expression cap,
             float[] dashes,
-            Expression offset);
+            Expression offset) {
+        return delegate.stroke(fill, color, opacity, width, join, cap, dashes, offset);
+    }
 
-    @Override
-    Stroke stroke(
-            org.geotools.api.style.GraphicStroke stroke,
+    
+    public org.geotools.api.style.Stroke stroke(
+            GraphicStroke stroke,
             Expression color,
             Expression opacity,
             Expression width,
             Expression join,
             Expression cap,
             float[] dashes,
-            Expression offset);
+            Expression offset) {
+        return delegate.stroke(stroke, color, opacity, width, join, cap, dashes, offset);
+    }
 
-    /** */
-    @Override
-    Style style(
+    
+    public org.geotools.api.style.Style style(
             String name,
-            org.geotools.api.style.Description description,
+            Description description,
             boolean isDefault,
             List<org.geotools.api.style.FeatureTypeStyle> featureTypeStyles,
-            org.geotools.api.style.Symbolizer defaultSymbolizer);
-    /**
-     * Creation of a TextSymbolizer defining how labels are portrayed.
-     *
-     * @param name Handle used to refer to this symbolizer (machine readable)
-     * @param geometry Geometry to be rendered
-     * @param description Human readable description
-     * @param unit Unit of measure used to interpret symbolizer sizes
-     * @param label Text displayed for this symbolizer
-     * @param font Font selected to renderer this symbolizer
-     * @param placement Placement information relative to orgiginal geometry
-     * @param halo definition of a halo or outline surrounding the symbolizer
-     * @param fill definition of fill used
-     * @return newly created TextSymbolizer
-     */
-    @Override
-    TextSymbolizer textSymbolizer(
+            org.geotools.api.style.Symbolizer defaultSymbolizer) {
+        return delegate.style(name, description, isDefault, featureTypeStyles, defaultSymbolizer);
+    }
+
+    
+    public org.geotools.api.style.TextSymbolizer textSymbolizer(
             String name,
             Expression geometry,
-            org.geotools.api.style.Description description,
+            Description description,
             Unit<?> unit,
             Expression label,
             org.geotools.api.style.Font font,
             org.geotools.api.style.LabelPlacement placement,
             org.geotools.api.style.Halo halo,
-            org.geotools.api.style.Fill fill);
+            org.geotools.api.style.Fill fill) {
+        return delegate.textSymbolizer(
+                name, geometry, description, unit, label, font, placement, halo, fill);
+    }
 
-    /** @return a deep copy of the method */
-    public ContrastMethod createContrastMethod(ContrastMethod method);
+    
+    public org.geotools.api.style.ContrastEnhancement contrastEnhancement(
+            Expression gamma, String method) {
+
+        ContrastMethod meth = ContrastMethod.NONE;
+        if (ContrastMethod.NORMALIZE.matches(method)) {
+            meth = ContrastMethod.NORMALIZE;
+        } else if (ContrastMethod.HISTOGRAM.matches(method)) {
+            meth = ContrastMethod.HISTOGRAM;
+        } else if (ContrastMethod.LOGARITHMIC.matches(method)) {
+            meth = ContrastMethod.LOGARITHMIC;
+        } else if (ContrastMethod.EXPONENTIAL.matches(method)) {
+            meth = ContrastMethod.EXPONENTIAL;
+        }
+        return new ContrastEnhancement(filterFactory, gamma, meth);
+    }
+
+    
+    public ContrastMethod createContrastMethod(ContrastMethod method) {
+        return method;
+    }
 }

@@ -21,7 +21,7 @@ import static org.junit.Assert.assertNotNull;
 
 import java.awt.Color;
 import org.geotools.filter.Filters;
-import org.geotools.styling.ColorMapEntry;
+import org.geotools.api.style.ColorMapEntry;
 import org.junit.Test;
 
 public class SLDColorMapEntryBindingTest extends SLDTestSupport {

@@ -17,7 +17,7 @@
 package org.geotools.sld.bindings;
 
 import javax.xml.namespace.QName;
-import org.geotools.styling.ImageOutline;
+import org.geotools.api.style.ImageOutline;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.Symbolizer;
 import org.geotools.xsd.AbstractComplexBinding;

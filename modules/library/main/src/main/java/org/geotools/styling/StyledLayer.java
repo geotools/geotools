@@ -17,13 +17,22 @@
 package org.geotools.styling;
 
 /**
- * 'StyledLayer' is not part of the SLD 1.0 spec. We're currently used it as a parent interface for
- * NamedLayer and UserLayer.
+ * Default implementation of StyledLayer.
  *
- * <p>TODO: investigate why this is here.
+ * @author jamesm
  */
-public interface StyledLayer {
-    public String getName();
+public class StyledLayer implements org.geotools.api.style.StyledLayer {
+    protected String name;
 
-    public void setName(String name);
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        if ((name == this.name) || ((name != null) && name.equals(this.name))) {
+            return;
+        }
+        this.name = name;
+    }
 }

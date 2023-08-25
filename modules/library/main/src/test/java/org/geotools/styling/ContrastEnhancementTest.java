@@ -30,7 +30,7 @@ import org.junit.Test;
  *
  * @author Jared Erickson
  */
-public class ContrastEnhancementImplTest {
+public class ContrastEnhancementTest {
 
     private static FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
 
@@ -38,11 +38,11 @@ public class ContrastEnhancementImplTest {
     @Test
     public void testGetSetGammaValue() {
         // System.out.println("getGammaValue");
-        ContrastEnhancementImpl contrastEnhancementImpl = new ContrastEnhancementImpl();
+        ContrastEnhancement contrastEnhancement = new ContrastEnhancement();
         double expected = 1.5;
-        contrastEnhancementImpl.setGammaValue(filterFactory.literal(expected));
+        contrastEnhancement.setGammaValue(filterFactory.literal(expected));
         double actual =
-                ((Double) ((Literal) contrastEnhancementImpl.getGammaValue()).getValue())
+                ((Double) ((Literal) contrastEnhancement.getGammaValue()).getValue())
                         .doubleValue();
         Assert.assertEquals(expected, actual, 0.1);
     }
@@ -52,9 +52,9 @@ public class ContrastEnhancementImplTest {
     public void testGetSetMethod() {
         // System.out.println("setMethod");
         ContrastMethod expected = ContrastMethod.HISTOGRAM;
-        ContrastEnhancementImpl contrastEnhancementImpl = new ContrastEnhancementImpl();
-        contrastEnhancementImpl.setMethod(expected);
-        ContrastMethod actual = contrastEnhancementImpl.getMethod();
+        ContrastEnhancement contrastEnhancement = new ContrastEnhancement();
+        contrastEnhancement.setMethod(expected);
+        ContrastMethod actual = contrastEnhancement.getMethod();
         Assert.assertEquals(expected, actual);
     }
 

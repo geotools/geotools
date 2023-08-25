@@ -19,6 +19,7 @@ package org.geotools.brewer.styling.builder;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.styling.ConstantStroke;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Stroke;
 
@@ -67,7 +68,7 @@ public class LineSymbolizerBuilder extends SymbolizerBuilder<LineSymbolizer> {
         }
         Stroke stroke = strokeBuilder.build();
         if (stroke == null) {
-            stroke = Stroke.DEFAULT;
+            stroke = ConstantStroke.DEFAULT;
         }
         LineSymbolizer ls = sf.createLineSymbolizer(stroke, null);
         if (geometry != null) {

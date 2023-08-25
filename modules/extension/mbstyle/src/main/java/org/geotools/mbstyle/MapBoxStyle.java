@@ -27,9 +27,9 @@ import org.geotools.mbstyle.layer.MBLayer;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBStyleParser;
 import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.NamedLayer;
-import org.geotools.styling.StyledLayer;
-import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.api.style.NamedLayer;
+import org.geotools.api.style.StyledLayer;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.json.simple.parser.ParseException;
 
 /**

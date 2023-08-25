@@ -26,6 +26,8 @@ import org.geotools.api.filter.PropertyIsGreaterThan;
 import org.geotools.api.filter.PropertyIsLessThan;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.style.ColorMapEntry;
+import org.geotools.api.style.LabelPlacement;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;

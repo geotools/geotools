@@ -43,80 +43,71 @@ public interface Graphic {
     // *************************************************************
 
     /**
-     * Indicates the level of translucency as a floating point number whose value is between 0.0 and
-     * 1.0 (inclusive). A value of zero means completely transparent. A value of 1.0 means
-     * completely opaque. If null, the default value is 1.0, totally opaque.
+     * This specifies the level of translucency to use when rendering the graphic.<br>
+     * The value is encoded as a floating-point value between 0.0 and 1.0 with 0.0 representing
+     * totally transparent and 1.0 representing totally opaque, with a linear scale of translucency
+     * for intermediate values.<br>
+     * For example, "0.65" would represent 65% opacity. The default value is 1.0 (opaque).
      *
-     * @return expression
+     * @return The opacity of the Graphic, where 0.0 is completely transparent and 1.0 is completely
+     *     opaque.
      */
     Expression getOpacity();
 
     /**
-     * The Size element gives the absolute size of the graphic in uoms encoded as a floating- point
-     * number. The default size for an object is context-dependent. Negative values are not allowed.
-     * The default size of an image format (such as GIF) is the inherent size of the image. The
-     * default size of a format without an inherent size (such as SVG which are not specially
-     * marked) is defined to be 16 pixels in height and the corresponding aspect in width. If a size
-     * is specified, the height of the graphic will be scaled to that size and the corresponding
-     * aspect will be used for the width. An expected common use case will be for image graphics to
-     * be on the order of 200 pixels in linear size and to be scaled to lower sizes. On systems that
-     * can resample these graphic images "smoothly," the results will be visually pleasing.
+     * The size of the mark if specified.
      *
-     * @return Expression
+     * <p>If unspecified:
+     *
+     * <ul>
+     *   <li>The natural size will be used for formats such as PNG that have an image width and
+     *       height
+     *   <li>16 x 16 will be used for formats like SVG that do not have a size
+     * </ul>
      */
     Expression getSize();
 
     /**
-     * Returns the expression that will be used to calculate the rotation of the graphic when it is
-     * drawn.
+     * This parameter defines the rotation of a graphic in the clockwise direction about its centre
+     * point in decimal degrees. The value encoded as a floating point number.
      *
-     * <p>The Rotation element gives the rotation of a graphic in the clockwise direction about its
-     * center point in decimal degrees, encoded as a floating-point number. Negative values mean
-     * counter-clockwise rotation. The default value is 0.0 (no rotation). Note that there is no
-     * connection between source geometry types and rotations; the point used for plotting has no
-     * inherent direction. Also, the point within the graphic about which it is rotated is format
-     * dependent. If a format does not include an inherent rotation point, then the point of
-     * rotation should be the centroid.
-     *
-     * @return Expression
+     * @return The angle of rotation in decimal degrees. Negative values represent counter-clockwise
+     *     rotation. The default is 0.0 (no rotation).
      */
     Expression getRotation();
 
     /**
-     * The AnchorPoint element of a PointSymbolizer gives the location inside of a Graphic (or label
-     * - see 11.4.4) to use for anchoring the graphic to the main-geometry point. The coordinates
-     * are given as two floating-point numbers in the AnchorPointX and AnchorPointY elements each
-     * with values between 0.0 and 1.0 inclusive. The bounding box of the graphic/label to be
-     * rendered is considered to be in a coordinate space from 0.0 (lower-left corner) to 1.0
-     * (upper-right corner), and the anchor position is specified as a point in this space. The
-     * default point is X=0.5, Y=0.5, which is at the middle height and middle length of the
-     * graphic/label text. A system may choose different anchor points to de-conflict
-     * graphics/labels.
+     * Location inside of the Graphic (or Label) to position the main-geometry point.
+     *
+     * <p>The coordinates are provided as 0.0 to 1.0 range amounting to a percentage of the graphic
+     * width/height. So the default of 0.5/0.5 indicates that the graphic would be centered.
+     *
+     * <p>Please keep in mind that a system may shuffle things around a bit in order to prevent
+     * graphics from overlapping (so this AnchorPoint is only a hint about how things should be if
+     * there is enough room).
      *
      * @return AnchorPoint , if null should use a default point X=0.5 Y=0.5
      */
     AnchorPoint getAnchorPoint();
 
-    /**
-     * The Displacement gives the X and Y displacements from the "hot-spot" point. This element may
-     * be used to avoid over-plotting of multiple graphic symbols used as part of the same point
-     * symbol. The displacements are in units of measure above and to the right of the point. The
-     * default displacement is X=0, Y=0.
-     *
-     * <p>If Displacement is used in conjunction with Size and/or Rotation then the graphic symbol
-     * shall be scaled and/or rotated before it is displaced.s
-     *
-     * @return Displacement
-     */
     Displacement getDisplacement();
 
     /**
-     * Calls the visit method of a StyleVisitor
-     *
-     * <p>Please note StlyeVisitor has methods to directly visit a Graphic, GraphicLegend, or
-     * GraphicFill or GraphicStroke; please call the most appropriate method.
+     * calls the visit method of a StyleVisitor
      *
      * @param visitor the style visitor
      */
     Object accept(StyleVisitor visitor, Object extraData);
+
+    Expression getGap();
+
+    /**
+     * accepts a StyleVisitor - used by xmlencoder and other packages which need to walk the style
+     * tree
+     *
+     * @param visitor - the visitor object
+     */
+    void accept(StyleVisitor visitor);
+
+    Expression getInitialGap();
 }

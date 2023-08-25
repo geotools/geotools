@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -18,77 +18,88 @@ package org.geotools.styling;
 
 import javax.swing.Icon;
 import org.geotools.api.metadata.citation.OnLineResource;
+import org.geotools.api.style.StyleVisitor;
 
 /**
- * Specify a mark using an image files (svg, png, gif) or using mark index a true type font file.
+ * Default implementation of ExternalMark.
  *
- * <p>Please note that not all render can handle all image file formats; please organize your marks
- * into a preferred order with the most specific (say SVG) followed by common formats (PNG, GIF) and
- * ending with an appropriate WellKnownName.
+ * @version $Id$
  */
-public interface ExternalMark extends org.geotools.api.style.ExternalMark {
+public class ExternalMark implements org.geotools.api.style.ExternalMark{
 
-    /**
-     * Online resource defined by an URI.
-     *
-     * <p>Only one of OnlineResource or InlineContent can be supplied.
-     *
-     * @return OnlineResource or <code>null</code>
-     */
+    private OnLineResource onlineResource;
+    private Icon inlineContent;
+    private int index;
+    private String format;
+
+    public ExternalMark() {}
+
+    public ExternalMark(Icon icon) {
+        this.inlineContent = icon;
+        this.index = -1;
+        this.onlineResource = null;
+        this.format = null;
+    }
+
+    public ExternalMark(OnLineResource resource, String format, int markIndex) {
+        this.inlineContent = null;
+        this.index = markIndex;
+        this.onlineResource = resource;
+        this.format = format;
+    }
+
     @Override
-    OnLineResource getOnlineResource();
+    public String getFormat() {
+        return format;
+    }
 
-    /** @param resource Online resource with format defined by getFormat() */
-    void setOnlineResource(OnLineResource resource);
-
-    /**
-     * Inline content.
-     *
-     * <p>Only one of OnlineResource or InlineContent can be supplied.
-     *
-     * @return InlineContent or <code>null</code>
-     */
     @Override
-    Icon getInlineContent();
+    public Icon getInlineContent() {
+        return inlineContent;
+    }
 
-    /**
-     * Icon to use for inline content.
-     *
-     * <p>This is often a SwingImageIcon with a format defined by getFormat()
-     */
-    void setInlineContent(Icon inline);
-
-    /**
-     * Mime type of the onlineResource/InlineContent
-     *
-     * <p>Common examples:
-     *
-     * <ul>
-     *   <li>image/svg
-     *   <li>image/png
-     *   <li>image/gif
-     * </ul>
-     *
-     * This information is used by a renderer to determine if it can support the image format being
-     * supplied.
-     *
-     * @return mime type
-     */
     @Override
-    String getFormat();
+    public int getMarkIndex() {
+        return index;
+    }
 
-    /** @param mimeType Mime type of external (or internal) resource */
-    void setFormat(String mimeType);
-
-    /**
-     * Returns an integer value that can used for accessing a particular Font character in a TTF
-     * file or a catalog for example.
-     *
-     * @return integer
-     */
     @Override
-    int getMarkIndex();
+    public OnLineResource getOnlineResource() {
+        return onlineResource;
+    }
 
-    /** Mark index used to specify true type font character; or frame of an animated gif. */
-    void setMarkIndex(int markIndex);
+    @Override
+    public Object accept(StyleVisitor visitor, Object extraData) {
+        return visitor.visit(this, extraData);
+    }
+
+    public void setInlineContent(Icon inline) {
+        this.inlineContent = inline;
+    }
+
+    public void setFormat(String mimeType) {
+        this.format = mimeType;
+    }
+
+    public void setMarkIndex(int markIndex) {
+        this.index = markIndex;
+    }
+
+    public void setOnlineResource(OnLineResource resource) {
+        this.onlineResource = resource;
+    }
+
+    static ExternalMark cast(org.geotools.api.style.ExternalMark mark) {
+        if (mark == null) {
+            return null;
+        } else if (mark instanceof ExternalMark) {
+            return (ExternalMark) mark;
+        } else {
+            ExternalMark copy = new ExternalMark();
+            copy.setFormat(mark.getFormat());
+            copy.setMarkIndex(mark.getMarkIndex());
+            copy.setOnlineResource(mark.getOnlineResource());
+            return copy;
+        }
+    }
 }

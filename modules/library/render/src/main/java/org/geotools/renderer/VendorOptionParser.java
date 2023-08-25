@@ -19,6 +19,8 @@ package org.geotools.renderer;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.regex.Pattern;
+
+import org.geotools.api.style.TextSymbolizer;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer.DisplacementMode;
 
@@ -163,13 +165,13 @@ public class VendorOptionParser {
             for (int i = 0; i < parsed.length; i++) {
                 try {
                     DisplacementMode mode =
-                            DisplacementMode.valueOf(values[i].trim().toUpperCase());
+                            TextSymbolizer.DisplacementMode.valueOf(values[i].trim().toUpperCase());
                     parsed[i] = mode.getAngle();
                 } catch (Exception e) {
                     throw new IllegalArgumentException(
                             values[i]
                                     + " is not legal. The values of displacement mode must be one of the following: "
-                                    + Arrays.toString(DisplacementMode.values()));
+                                    + Arrays.toString(TextSymbolizer.DisplacementMode.values()));
                 }
             }
             return parsed;

@@ -22,6 +22,8 @@
  */
 package org.geotools.styling;
 
+import org.geotools.api.style.StyleVisitor;
+
 /**
  * This an empty interface for styling symbol objects to implement
  *
@@ -30,5 +32,5 @@ package org.geotools.styling;
 public interface Symbol extends org.geotools.api.style.GraphicalSymbol {
     public static final Symbol[] SYMBOLS_EMPTY = new Symbol[0];
 
-    void accept(org.geotools.styling.StyleVisitor visitor);
+    void accept(StyleVisitor visitor);
 }

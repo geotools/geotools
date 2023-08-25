@@ -24,9 +24,9 @@ import org.geotools.api.filter.expression.Expression;
 public interface LineSymbolizer extends Symbolizer {
 
     /**
-     * Returns the object containing all the information necessary to draw styled lines.
+     * Provides the graphical-symbolization parameter to use for the linear geometry.
      *
-     * @return Stroke object, contain information about how to draw lines
+     * @return The Stroke style to use when rendering lines.
      */
     Stroke getStroke();
 

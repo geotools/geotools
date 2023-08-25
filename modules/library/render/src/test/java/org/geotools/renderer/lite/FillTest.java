@@ -36,11 +36,7 @@ import org.geotools.image.test.ImageAssert;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.renderer.style.FontCache;
-import org.geotools.styling.SLD;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.Symbolizer;
+import org.geotools.styling.*;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
@@ -234,7 +230,7 @@ public class FillTest {
         StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
         Symbolizer sym =
                 sf.createPolygonSymbolizer(
-                        Stroke.NULL, sf.createFill(ff2.literal(Color.CYAN)), null);
+                        ConstantStroke.NULL, sf.createFill(ff2.literal(Color.CYAN)), null);
         Style style = SLD.wrapSymbolizers(sym);
 
         MapContent mc = new MapContent();

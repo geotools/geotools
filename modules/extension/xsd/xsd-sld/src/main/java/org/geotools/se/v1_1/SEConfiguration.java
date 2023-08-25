@@ -78,7 +78,6 @@ import org.geotools.se.v1_1.bindings.VendorOptionBinding;
 import org.geotools.styling.DefaultResourceLocator;
 import org.geotools.styling.ResourceLocator;
 import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyleFactoryImpl;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Parser;
 import org.picocontainer.MutablePicoContainer;
@@ -195,7 +194,7 @@ public class SEConfiguration extends Configuration {
     protected void configureContext(MutablePicoContainer container) {
         super.configureContext(container);
 
-        container.registerComponentImplementation(StyleFactory.class, StyleFactoryImpl.class);
+        container.registerComponentImplementation(StyleFactory.class, StyleFactory.class);
         container.registerComponentInstance(ResourceLocator.class, new DefaultResourceLocator());
     }
 

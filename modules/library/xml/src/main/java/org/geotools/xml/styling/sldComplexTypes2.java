@@ -25,36 +25,11 @@ import javax.naming.OperationNotSupportedException;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.ContrastEnhancementImpl;
-import org.geotools.styling.FeatureTypeConstraint;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Halo;
-import org.geotools.styling.LabelPlacement;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.NamedLayer;
-import org.geotools.styling.NamedLayerImpl;
-import org.geotools.styling.NamedStyle;
-import org.geotools.styling.NamedStyleImpl;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.RemoteOWS;
-import org.geotools.styling.ShadedRelief;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.styling.StyledLayerImpl;
-import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.UserLayer;
-import org.geotools.styling.UserLayerImpl;
+import org.geotools.styling.*;
+import org.geotools.api.style.FeatureTypeConstraint;
+import org.geotools.api.style.LabelPlacememt;
+import org.geotools.api.style.RemoteOWS;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.xml.PrintHandler;
 import org.geotools.xml.schema.Attribute;
 import org.geotools.xml.schema.ComplexType;
@@ -657,7 +632,7 @@ public class sldComplexTypes2 {
                 ElementValue[] value,
                 Attributes attrs1,
                 Map<String, Object> hints) {
-            NamedLayer sld = new NamedLayerImpl();
+            org.geotools.api.style.NamedLayer sld = new NamedLayer();
 
             for (ElementValue elementValue : value) {
                 if ((elementValue == null) || elementValue.getElement() == null) {
@@ -769,7 +744,7 @@ public class sldComplexTypes2 {
                 ElementValue[] value,
                 Attributes attrs1,
                 Map<String, Object> hints) {
-            NamedStyle sld = new NamedStyleImpl();
+            NamedStyle sld = new NamedStyle();
 
             for (ElementValue elementValue : value) {
                 if ((elementValue == null) || elementValue.getElement() == null) {
@@ -2028,10 +2003,10 @@ public class sldComplexTypes2 {
                     sld.setAbstract((String) elementValue.getValue());
 
                 if (elems[NAMEDLAYER].getName().equals(e.getName()))
-                    sld.addStyledLayer((StyledLayerImpl) elementValue.getValue());
+                    sld.addStyledLayer((StyledLayer) elementValue.getValue());
 
                 if (elems[USERLAYER].getName().equals(e.getName()))
-                    sld.addStyledLayer((StyledLayerImpl) elementValue.getValue());
+                    sld.addStyledLayer((StyledLayer) elementValue.getValue());
             }
 
             return sld;
@@ -2185,7 +2160,7 @@ public class sldComplexTypes2 {
          */
         @Override
         public Class getInstanceType() {
-            return UserLayer.class;
+            return org.geotools.api.style.UserLayer.class;
         }
 
         /**
@@ -2222,7 +2197,7 @@ public class sldComplexTypes2 {
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
-            UserLayer sld = new UserLayerImpl();
+            org.geotools.api.style.UserLayer sld = new UserLayer();
 
             for (ElementValue elementValue : value) {
                 if ((elementValue == null) || elementValue.getElement() == null) {
@@ -2528,7 +2503,7 @@ public class sldComplexTypes2 {
                 Attributes attrs1,
                 Map<String, Object> hints) {
             org.geotools.styling.SelectedChannelType symbol =
-                    new org.geotools.styling.SelectedChannelTypeImpl();
+                    new org.geotools.styling.SelectedChannelType();
 
             for (ElementValue elementValue : value) {
                 if ((elementValue == null) || elementValue.getElement() == null) {
@@ -2542,7 +2517,7 @@ public class sldComplexTypes2 {
                 if (elems[CONTRASTENHANCEMENT].getName().equals(e.getName())) {
                     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
                     symbol.setContrastEnhancement(
-                            new ContrastEnhancementImpl(
+                            new ContrastEnhancement(
                                     ff, (Expression) elementValue.getValue(), null));
                 }
             }

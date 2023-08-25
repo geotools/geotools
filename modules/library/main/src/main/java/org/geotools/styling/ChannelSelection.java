@@ -16,6 +16,8 @@
  */
 package org.geotools.styling;
 
+import org.geotools.api.style.StyleVisitor;
+
 /**
  * The ChannelSelection element specifies the false-color channel selection for a multi-spectral
  * raster source (such as a multi-band satellite-imagery source). It is defined as:
@@ -88,5 +90,5 @@ public interface ChannelSelection extends org.geotools.api.style.ChannelSelectio
     @Override
     SelectedChannelType getGrayChannel();
 
-    void accept(org.geotools.styling.StyleVisitor visitor);
+    void accept(StyleVisitor visitor);
 }

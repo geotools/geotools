@@ -56,12 +56,7 @@ public class ColorReplacementBuilder extends AbstractStyleBuilder<ColorReplaceme
         return this;
     }
 
-    @Override
-    public ColorReplacementBuilder reset(ColorReplacement original) {
-        return reset((org.geotools.api.style.ColorReplacement) original);
-    }
-
-    public ColorReplacementBuilder reset(org.geotools.api.style.ColorReplacement replacement) {
+    public ColorReplacementBuilder reset(org.geotools.styling.ColorReplacement replacement) {
         if (replacement == null) {
             return unset();
         }

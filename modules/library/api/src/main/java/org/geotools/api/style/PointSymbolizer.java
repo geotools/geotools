@@ -22,9 +22,9 @@ package org.geotools.api.style;
 public interface PointSymbolizer extends Symbolizer {
 
     /**
-     * Returns the graphic that will be drawn at each point of the geometry.
+     * Provides the graphical-symbolization parameter to use for the point geometry.
      *
-     * @return Graphic
+     * @return The Graphic to be used when drawing a point.
      */
     Graphic getGraphic();
 

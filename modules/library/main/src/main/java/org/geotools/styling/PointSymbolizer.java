@@ -16,71 +16,141 @@
  */
 package org.geotools.styling;
 
+import javax.measure.Unit;
+import javax.measure.quantity.Length;
+
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.util.Cloneable;
+import org.geotools.util.SimpleInternationalString;
+
 /**
- * A symbolizer describes how a feature should appear on a map.
+ * Provides a Java representation of the PointSymbolizer. This defines how points are to be
+ * rendered.
  *
- * <p>The symbolizer defines not just the shape that should appear but also such graphical
- * properties as color and opacity.
- *
- * <p>A symbolizer is obtained by specifying one of a small number of different types of symbolizer
- * and then supplying parameters to overide its default behaviour.
- *
- * <p>The details of this object are taken from the <a
- * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor
- * Report (OGC 02-070) version 1.0.0.</a>:
- *
- * <pre><code>
- * &lt;xsd:element name="PointSymbolizer" substitutionGroup="sld:Symbolizer">
- *   &lt;xsd:annotation>
- *     &lt;xsd:documentation>
- *       A "PointSymbolizer" specifies the rendering of a "graphic symbol"
- *       at a point.
- *     &lt;/xsd:documentation>
- *   &lt;/xsd:annotation>
- *   &lt;xsd:complexType>
- *     &lt;xsd:complexContent>
- *       &lt;xsd:extension base="sld:SymbolizerType">
- *         &lt;xsd:sequence>
- *           &lt;xsd:element ref="sld:Geometry" minOccurs="0"/>
- *           &lt;xsd:element ref="sld:Graphic" minOccurs="0"/>
- *         &lt;/xsd:sequence>
- *       &lt;/xsd:extension>
- *     &lt;/xsd:complexContent>
- *   &lt;/xsd:complexType>
- * &lt;/xsd:element>
- * </code></pre>
- *
- * <p>Renderers can use this information when displaying styled features, though it must be
- * remembered that not all renderers will be able to fully represent strokes as set out by this
- * interface. For example, opacity may not be supported.
- *
- * <p>Notes:
- *
- * <ul>
- *   <li>The graphical parameters and their values are derived from SVG/CSS2 standards with names
- *       and semantics which are as close as possible.
- * </ul>
- *
- * @author James Macgill
+ * @author Ian Turton, CCG
+ * @author Johann Sorel (Geomatys)
  * @version $Id$
  */
-public interface PointSymbolizer extends org.geotools.api.style.PointSymbolizer, Symbolizer {
+public class PointSymbolizer extends AbstractSymbolizer implements  Cloneable, org.geotools.api.style.PointSymbolizer, Symbolizer {
 
     /**
      * Boolean vendor option, defaults to true. If true, in case no specified mark or graphics can
      * be used, the default square mark will be used instead. If false, the symbol will not be
      * painted.
      */
-    public static String FALLBACK_ON_DEFAULT_MARK = "fallbackOnDefaultMark";
+    public static final String FALLBACK_ON_DEFAULT_MARK = "fallbackOnDefaultMark";
+    private Graphic graphic = new Graphic();
+
+    /** Creates a new instance of DefaultPointSymbolizer */
+    protected PointSymbolizer() {
+        this(
+                new Graphic(),
+                null,
+                null,
+                null,
+                new Description(
+                        new SimpleInternationalString("title"),
+                        new SimpleInternationalString("abstract")));
+    }
+
+    protected PointSymbolizer(
+            Graphic graphic, Unit<Length> uom, String geom, String name, Description desc) {
+        super(name, desc, geom, uom);
+        this.graphic = Graphic.cast(graphic);
+    }
 
     /**
      * Provides the graphical-symbolization parameter to use for the point geometry.
      *
-     * @return The Graphic to be used when drawing a point.
+     * @return The Graphic to be used when drawing a point
      */
     @Override
-    Graphic getGraphic();
+    public Graphic getGraphic() {
+        return graphic;
+    }
 
-    /** Provides the graphical-symbolization parameter to use for the point geometry. */
-    void setGraphic(org.geotools.api.style.Graphic graphic);
+    /**
+     * Setter for property graphic.
+     *
+     * @param graphic New value of property graphic.
+     */
+    public void setGraphic(org.geotools.api.style.Graphic graphic) {
+        if (this.graphic == graphic) {
+            return;
+        }
+        this.graphic = Graphic.cast(graphic);
+    }
+
+    /**
+     * Accept a StyleVisitor to perform an operation on this symbolizer.
+     *
+     * @param visitor The StyleVisitor to accept.
+     */
+    @Override
+    public Object accept(StyleVisitor visitor, Object data) {
+        return visitor.visit(this, data);
+    }
+
+    @Override
+    public void accept(StyleVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    /**
+     * Creates a deep copy clone.
+     *
+     * @return The deep copy clone.
+     */
+    @Override
+    public Object clone() {
+        PointSymbolizer clone;
+
+        try {
+            clone = (PointSymbolizer) super.clone();
+            if (graphic != null) clone.graphic = (Graphic) ((Cloneable) graphic).clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e); // this should never happen.
+        }
+
+        return clone;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((graphic == null) ? 0 : graphic.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!super.equals(obj)) return false;
+        if (getClass() != obj.getClass()) return false;
+        PointSymbolizer other = (PointSymbolizer) obj;
+        if (graphic == null) {
+            if (other.graphic != null) return false;
+        } else if (!graphic.equals(other.graphic)) return false;
+        return true;
+    }
+
+    static PointSymbolizer cast(org.geotools.api.style.Symbolizer symbolizer) {
+        if (symbolizer == null) {
+            return null;
+        } else if (symbolizer instanceof PointSymbolizer) {
+            return (PointSymbolizer) symbolizer;
+        } else if (symbolizer instanceof org.geotools.api.style.PointSymbolizer) {
+            org.geotools.api.style.PointSymbolizer pointSymbolizer =
+                    (org.geotools.api.style.PointSymbolizer) symbolizer;
+            PointSymbolizer copy = new PointSymbolizer();
+            copy.setDescription(pointSymbolizer.getDescription());
+            copy.setGeometryPropertyName(pointSymbolizer.getGeometryPropertyName());
+            copy.setGraphic(pointSymbolizer.getGraphic());
+            copy.setName(pointSymbolizer.getName());
+            copy.setUnitOfMeasure(pointSymbolizer.getUnitOfMeasure());
+            return copy;
+        }
+        return null; // not a PointSymbolizer
+    }
 }

@@ -58,7 +58,7 @@ public class ChannelSelectionImpl implements ChannelSelection {
     }
 
     public void setGrayChannel(org.geotools.api.style.SelectedChannelType gray) {
-        this.gray = new SelectedChannelTypeImpl(gray);
+        this.gray = new SelectedChannelType(gray);
     }
 
     @Override
@@ -90,9 +90,9 @@ public class ChannelSelectionImpl implements ChannelSelection {
             org.geotools.api.style.SelectedChannelType red,
             org.geotools.api.style.SelectedChannelType green,
             org.geotools.api.style.SelectedChannelType blue) {
-        this.red = new SelectedChannelTypeImpl(red);
-        this.green = new SelectedChannelTypeImpl(green);
-        this.blue = new SelectedChannelTypeImpl(blue);
+        this.red = new SelectedChannelType(red);
+        this.green = new SelectedChannelType(green);
+        this.blue = new SelectedChannelType(blue);
     }
 
     @Override
@@ -100,14 +100,6 @@ public class ChannelSelectionImpl implements ChannelSelection {
         return visitor.visit(this, data);
     }
 
-    @Override
-    public void accept(org.geotools.styling.StyleVisitor visitor) {
-        visitor.visit(this);
-    }
-
-    public void accept(org.geotools.api.style.StyleVisitor visitor) {
-        visitor.visit(this, null);
-    }
 
     @Override
     public int hashCode() {

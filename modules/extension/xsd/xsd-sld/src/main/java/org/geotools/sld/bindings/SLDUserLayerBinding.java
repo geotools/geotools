@@ -18,10 +18,10 @@ package org.geotools.sld.bindings;
 
 import javax.xml.namespace.QName;
 import org.geotools.styling.LayerFeatureConstraints;
-import org.geotools.styling.RemoteOWS;
+import org.geotools.api.style.RemoteOWS;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
-import org.geotools.styling.UserLayer;
+import org.geotools.api.style.UserLayer;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;

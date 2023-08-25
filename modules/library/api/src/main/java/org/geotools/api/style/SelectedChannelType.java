@@ -26,16 +26,11 @@ public interface SelectedChannelType {
     /**
      * Returns the channel's name.
      *
-     * @return Expression
+     * @return Source channel name
      */
-    public Expression getChannelName();
+    Expression getChannelName();
 
-    /**
-     * Contrast enhancement may be applied to each channel in isolation.
-     *
-     * @return ContrastEnhancement
-     */
-    public ContrastEnhancement getContrastEnhancement();
+    ContrastEnhancement getContrastEnhancement();
 
     /**
      * calls the visit method of a StyleVisitor
@@ -43,4 +38,6 @@ public interface SelectedChannelType {
      * @param visitor the style visitor
      */
     Object accept(StyleVisitor visitor, Object extraData);
+
+    void accept(StyleVisitor visitor);
 }

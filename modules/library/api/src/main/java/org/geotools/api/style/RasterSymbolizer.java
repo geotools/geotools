@@ -60,6 +60,19 @@ public interface RasterSymbolizer extends Symbolizer {
     OverlapBehavior getOverlapBehavior();
 
     /**
+     * The OverlapBehavior element tells a system how to behave when multiple raster images in a
+     * layer overlap each other, for example with satellite-image scenes. LATEST_ON_TOP and
+     * EARLIEST_ON_TOP refer to the time the scene was captured. AVERAGE means to average multiple
+     * scenes together. This can produce blurry results if the source images are not perfectly
+     * aligned in their geo-referencing. RANDOM means to select an image (or piece thereof) randomly
+     * and place it on top. This can produce crisper results than AVERAGE potentially more
+     * efficiently than LATEST_ON_TOP or EARLIEST_ON_TOP. The default behaviour is system-dependent.
+     *
+     * @return The expression which evaluates to LATEST_ON_TOP, EARLIEST_ON_TOP, AVERAGE or RANDOM
+     */
+    Expression getOverlap();
+
+    /**
      * The ColorMap element defines either the colors of a palette-type raster source or the mapping
      * of fixed-numeric pixel values to colors. For example, a DEM raster giving elevations in
      * meters above sea level can be translated to a colored image with a ColorMap. The quantity
@@ -109,9 +122,20 @@ public interface RasterSymbolizer extends Symbolizer {
     /**
      * The ImageOutline element specifies that individual source rasters in a multi-raster set (such
      * as a set of satellite-image scenes) should be outlined with either a LineStringSymbol or
-     * PolygonSymbol.
+     * PolygonSymbol. It is defined as:
      *
-     * <p>An Opacity of 0.0 can be selected for the main raster to avoid rendering the main-raster
+     * <pre>
+     * &lt;xs:element name="ImageOutline"&gt;
+     *   &lt;xs:complexType&gt;
+     *     &lt;xs:choice&gt;
+     *       &lt;xs:element ref="sld:LineSymbolizer"/&gt;
+     *       &lt;xs:element ref="sld:PolygonSymbolizer"/&gt;
+     *     &lt;/xs:choice&gt;
+     *   &lt;/xs:complexType&gt;
+     * &lt;/xs:element&gt;
+     * </pre>
+     *
+     * An Opacity of 0.0 can be selected for the main raster to avoid rendering the main-raster
      * pixels, or an opacity can be used for a PolygonSymbolizer Fill to allow the main-raster data
      * be visible through the fill.
      *

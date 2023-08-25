@@ -20,21 +20,20 @@ import org.geotools.renderer.i18n.ErrorKeys;
 import org.geotools.renderer.i18n.Errors;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.ColorMapEntry;
+import org.geotools.api.style.ColorMapEntry;
 import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.Displacement;
 import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeConstraint;
+import org.geotools.api.style.FeatureTypeConstraint;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.Halo;
-import org.geotools.styling.ImageOutline;
+import org.geotools.api.style.ImageOutline;
 import org.geotools.styling.LinePlacement;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Mark;
-import org.geotools.styling.NamedLayer;
+import org.geotools.api.style.NamedLayer;
 import org.geotools.styling.OverlapBehavior;
 import org.geotools.styling.PointPlacement;
 import org.geotools.styling.PointSymbolizer;
@@ -45,11 +44,11 @@ import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.ShadedRelief;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
-import org.geotools.styling.StyleVisitor;
-import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.UserLayer;
+import org.geotools.api.style.UserLayer;
 
 /**
  * Simple empty implementation for the {@link StyleVisitor} interface.
@@ -67,7 +66,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.StyledLayerDescriptor)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.StyledLayerDescriptor)
      */
     @Override
     public void visit(StyledLayerDescriptor sld) {
@@ -78,7 +77,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.NamedLayer)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.NamedLayer)
      */
     @Override
     public void visit(NamedLayer layer) {
@@ -89,7 +88,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.UserLayer)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.UserLayer)
      */
     @Override
     public void visit(UserLayer layer) {
@@ -100,7 +99,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.FeatureTypeConstraint)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.FeatureTypeConstraint)
      */
     @Override
     public void visit(FeatureTypeConstraint ftc) {
@@ -111,7 +110,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Style)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.Style)
      */
     @Override
     public void visit(Style style) {
@@ -122,7 +121,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Rule)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.Rule)
      */
     @Override
     public void visit(Rule rule) {
@@ -133,7 +132,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.FeatureTypeStyle)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.FeatureTypeStyle)
      */
     @Override
     public void visit(FeatureTypeStyle fts) {
@@ -144,7 +143,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Fill)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.Fill)
      */
     @Override
     public void visit(Fill fill) {
@@ -155,7 +154,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Stroke)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.Stroke)
      */
     @Override
     public void visit(Stroke stroke) {
@@ -167,7 +166,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Symbolizer)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.Symbolizer)
      */
     @Override
     public void visit(Symbolizer sym) {
@@ -178,7 +177,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.PointSymbolizer)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.PointSymbolizer)
      */
     @Override
     public void visit(PointSymbolizer ps) {
@@ -189,7 +188,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.LineSymbolizer)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.LineSymbolizer)
      */
     @Override
     public void visit(LineSymbolizer line) {
@@ -200,7 +199,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.PolygonSymbolizer)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.PolygonSymbolizer)
      */
     @Override
     public void visit(PolygonSymbolizer poly) {
@@ -212,7 +211,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.TextSymbolizer)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.TextSymbolizer)
      */
     @Override
     public void visit(TextSymbolizer text) {
@@ -224,7 +223,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.RasterSymbolizer)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.RasterSymbolizer)
      */
     @Override
     public void visit(RasterSymbolizer raster) {
@@ -235,7 +234,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Graphic)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.Graphic)
      */
     @Override
     public void visit(Graphic gr) {
@@ -246,7 +245,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Mark)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.Mark)
      */
     @Override
     public void visit(Mark mark) {
@@ -257,7 +256,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.ExternalGraphic)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.ExternalGraphic)
      */
     @Override
     public void visit(ExternalGraphic exgr) {
@@ -268,7 +267,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.PointPlacement)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.PointPlacement)
      */
     @Override
     public void visit(PointPlacement pp) {
@@ -279,7 +278,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.AnchorPoint)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.AnchorPoint)
      */
     @Override
     public void visit(AnchorPoint ap) {
@@ -290,7 +289,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Displacement)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.Displacement)
      */
     @Override
     public void visit(Displacement dis) {
@@ -301,7 +300,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.LinePlacement)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.LinePlacement)
      */
     @Override
     public void visit(LinePlacement lp) {
@@ -312,7 +311,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Halo)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.Halo)
      */
     @Override
     public void visit(Halo halo) {
@@ -323,7 +322,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.ColorMap)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.ColorMap)
      */
     @Override
     public void visit(ColorMap colorMap) {
@@ -334,7 +333,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.ColorMapEntry)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.ColorMapEntry)
      */
     @Override
     public void visit(ColorMapEntry colorMapEntry) {
@@ -344,7 +343,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
 
     /*
      * (non-Javadoc)
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.ContrastEnhancement)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.ContrastEnhancement)
      */
     @Override
     public void visit(ContrastEnhancement ce) {
@@ -354,7 +353,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
 
     /*
      * (non-Javadoc)
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.ChannelSelection)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.ChannelSelection)
      */
     @Override
     public void visit(ChannelSelection cs) {
@@ -365,7 +364,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
 
     /*
      * (non-Javadoc)
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.SelectedChannelType)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.SelectedChannelType)
      */
     @Override
     public void visit(SelectedChannelType sct) {
@@ -376,7 +375,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
 
     /*
      * (non-Javadoc)
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.OverlapBehavior)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.OverlapBehavior)
      */
     @Override
     public void visit(OverlapBehavior ob) {
@@ -387,7 +386,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
 
     /*
      * (non-Javadoc)
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.ShadedRelief)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.ShadedRelief)
      */
     @Override
     public void visit(ShadedRelief sr) {
@@ -397,7 +396,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
 
     /*
      * (non-Javadoc)
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.ImageOutline)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.ImageOutline)
      */
     @Override
     public void visit(ImageOutline io) {

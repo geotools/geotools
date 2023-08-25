@@ -16,40 +16,74 @@
  */
 package org.geotools.styling;
 
-/**
- * An Extent gives feature/coverage/raster/matrix dimension extent.
- *
- * <p>
- *
- * <pre>
- *  <code>
- *  &lt;xsd:element name="Extent"&gt;
- *      &lt;xsd:annotation&gt;
- *          &lt;xsd:documentation&gt;         An Extent gives
- *              feature/coverage/raster/matrix dimension extent.        &lt;/xsd:documentation&gt;
- *      &lt;/xsd:annotation&gt;
- *      &lt;xsd:complexType&gt;
- *          &lt;xsd:sequence&gt;
- *              &lt;xsd:element ref="sld:Name"/&gt;
- *              &lt;xsd:element ref="sld:Value"/&gt;
- *          &lt;/xsd:sequence&gt;
- *      &lt;/xsd:complexType&gt;
- *  &lt;/xsd:element&gt;
- *  </code>
- *  </pre>
- *
- * @author Justin Deoliveira, The Open Planning Project
- */
-public interface Extent {
-    /** @return The name of the extent. */
-    String getName();
+import org.geotools.api.util.Cloneable;
+import org.geotools.util.Utilities;
 
-    /** @param name Thw new name of the extent. */
-    void setName(String name);
+public class Extent implements org.geotools.api.style.Extent, Cloneable {
+    private String name;
+    private String value;
 
-    /** @return The value of the exent. */
-    String getValue();
+    @Override
+    public String getName() {
+        return name;
+    }
 
-    /** @param value The new value of the exent. */
-    void setValue(String value);
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj instanceof Extent) {
+            Extent other = (Extent) obj;
+
+            return Utilities.equals(this.name, other.name)
+                    && Utilities.equals(this.value, other.value);
+        }
+
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        final int PRIME = 1000003;
+        int result = 0;
+
+        if (name != null) {
+            result = (PRIME * result) + name.hashCode();
+        }
+
+        if (value != null) {
+            result = (PRIME * result) + value.hashCode();
+        }
+
+        return result;
+    }
+
+    @Override
+    public Object clone() {
+        try {
+            Extent clone = (Extent) super.clone();
+            clone.setName(name);
+            clone.setValue(value);
+
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            // This will never happen
+            throw new RuntimeException("Failed to clone ExtentImpl");
+        }
+    }
 }

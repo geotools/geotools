@@ -26,7 +26,7 @@ import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.mbstyle.layer.MBLayer;
 import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;

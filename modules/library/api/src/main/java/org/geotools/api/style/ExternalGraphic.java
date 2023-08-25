@@ -9,7 +9,10 @@
  */
 package org.geotools.api.style;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Collection;
+import java.util.Map;
 import javax.swing.Icon;
 import org.geotools.api.metadata.citation.OnLineResource;
 
@@ -60,4 +63,27 @@ public interface ExternalGraphic extends GraphicalSymbol {
      * @param visitor the style visitor
      */
     Object accept(StyleVisitor visitor, Object extraData);
+
+    /**
+     * Returns the un-parsed URI for the mark (useful if the uri is using transformations or
+     * relative locations)
+     */
+    String getURI();
+
+    /**
+     * Provides the URL for where the external graphic resource can be located.
+     *
+     * <p>This method will be replaced by getOnlineResource().getLinkage() in 2.6.x
+     *
+     * @return The URL of the ExternalGraphic
+     * @throws MalformedURLException If the url held in the ExternalGraphic is malformed.
+     */
+    URL getLocation() throws MalformedURLException;
+
+    /**
+     * Custom user supplied properties available when working with an external graphic.
+     *
+     * @return properties
+     */
+    Map<String, Object> getCustomProperties();
 }

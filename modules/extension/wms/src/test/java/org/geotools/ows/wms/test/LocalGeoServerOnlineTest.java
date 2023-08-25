@@ -56,11 +56,10 @@ import org.geotools.ows.wms.response.GetStylesResponse;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.styling.NamedLayer;
+import org.geotools.api.style.NamedLayer;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyleFactoryImpl;
-import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.util.factory.Hints;
 import org.geotools.xml.styling.SLDParser;
 import org.geotools.xml.styling.SLDTransformer;
@@ -425,7 +424,7 @@ public class LocalGeoServerOnlineTest extends WMSOnlineTestSupport {
 
         URL url = new URL(baseUrl);
 
-        StyleFactory styleFactory = new StyleFactoryImpl();
+        StyleFactory styleFactory = new StyleFactory();
 
         WebMapServer server =
                 new WebMapServer(url) {

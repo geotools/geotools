@@ -20,6 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
+
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.StyledLayerDescriptor;
+import org.geotools.api.style.UserLayer;
 import org.geotools.util.Utilities;
 
 /**
@@ -61,7 +65,7 @@ public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
     /** Holds value of property abstract. */
     private String abstractStr;
 
-    private List<StyledLayer> layers = new ArrayList<>();
+    private List<org.geotools.api.style.StyledLayer> layers = new ArrayList<>();
 
     /**
      * Convenience method for grabbing the default style from the StyledLayerDescriptor.
@@ -70,7 +74,7 @@ public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
      */
     public Style getDefaultStyle() {
         // descend into the layers
-        for (StyledLayer layer : layers) {
+        for (org.geotools.api.style.StyledLayer layer : layers) {
             if (layer instanceof UserLayer) {
                 UserLayer userLayer = (UserLayer) layer;
 
@@ -90,15 +94,15 @@ public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
     }
 
     @Override
-    public StyledLayer[] getStyledLayers() {
-        return layers.toArray(new StyledLayerImpl[layers.size()]);
+    public org.geotools.api.style.StyledLayer[] getStyledLayers() {
+        return layers.toArray(new StyledLayer[layers.size()]);
     }
 
     @Override
-    public void setStyledLayers(StyledLayer[] layers) {
+    public void setStyledLayers(org.geotools.api.style.StyledLayer[] layers) {
         this.layers.clear();
 
-        for (StyledLayer layer : layers) {
+        for (org.geotools.api.style.StyledLayer layer : layers) {
             addStyledLayer(layer);
         }
 
@@ -106,12 +110,12 @@ public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
     }
 
     @Override
-    public List<StyledLayer> layers() {
+    public List<org.geotools.api.style.StyledLayer> layers() {
         return layers;
     }
 
     @Override
-    public void addStyledLayer(StyledLayer layer) {
+    public void addStyledLayer(org.geotools.api.style.StyledLayer layer) {
         layers.add(layer);
     }
 

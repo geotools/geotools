@@ -81,7 +81,7 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
 
     double goodnessOfFit = 0;
 
-    PolygonAlignOptions polygonAlign = PolygonAlignOptions.NONE;
+    PolygonAlignOptions polygonAlign = org.geotools.api.style.TextSymbolizer.PolygonAlignOptions.NONE;
 
     GraphicResize graphicsResize = GraphicResize.NONE;
 
@@ -410,7 +410,7 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
     }
 
     public TextSymbolizer.GraphicPlacement getGraphicPlacement() {
-        return graphicPlacement == null ? TextSymbolizer.GraphicPlacement.LABEL : graphicPlacement;
+        return graphicPlacement == null ? org.geotools.api.style.TextSymbolizer.GraphicPlacement.LABEL : graphicPlacement;
     }
 
     public void setGraphicPlacement(TextSymbolizer.GraphicPlacement graphicPlacement) {

@@ -16,6 +16,8 @@
  */
 package org.geotools.styling;
 
+import org.geotools.api.style.FeatureTypeConstraint;
+
 /**
  * LayerFeatureConstraints define what features and feature types are referenced in a layer.
  *

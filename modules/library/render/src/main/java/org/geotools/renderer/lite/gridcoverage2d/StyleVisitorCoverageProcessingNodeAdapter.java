@@ -22,7 +22,7 @@ import org.geotools.api.util.InternationalString;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Style;
-import org.geotools.styling.StyleVisitor;
+import org.geotools.api.style.StyleVisitor;
 import org.geotools.util.factory.Hints;
 
 /**

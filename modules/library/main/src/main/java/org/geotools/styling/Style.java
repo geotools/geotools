@@ -10,96 +10,214 @@
  *    version 2.1 of the License.
  *
  *    This library is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    but WITHOUT ANY WARRANTY; without even the ied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
 package org.geotools.styling;
 
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.util.Cloneable;
+import org.geotools.util.Utilities;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- * Indicates how geographical content should be displayed (we call this a style for simplicity; in
- * the spec it is called a UserStyle (user-defined style)).
+ * Implementation of style.
  *
- * <p>The details of this object are taken from the <a
- * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor
- * Report (OGC 02-070) version 1.0.0.</a>:
- *
- * <pre><code>
- * &lt;xsd:element name="UserStyle"&gt;
- *   &lt;xsd:annotation&gt;
- *     &lt;xsd:documentation&gt;
- *       A UserStyle allows user-defined styling and is semantically
- *       equivalent to a WMS named style.
- *     &lt;/xsd:documentation&gt;
- *   &lt;/xsd:annotation&gt;
- *   &lt;xsd:complexType&gt;
- *     &lt;xsd:sequence&gt;
- *       &lt;xsd:element ref="sld:Name" minOccurs="0"/&gt;
- *       &lt;xsd:element ref="sld:Title" minOccurs="0"/&gt;
- *       &lt;xsd:element ref="sld:Abstract" minOccurs="0"/&gt;
- *       &lt;xsd:element ref="sld:IsDefault" minOccurs="0"/&gt;
- *       &lt;xsd:element ref="sld:FeatureTypeStyle" maxOccurs="unbounded"/&gt;
- *     &lt;/xsd:sequence&gt;
- *   &lt;/xsd:complexType&gt;
- * &lt;/xsd:element&gt;
- * </code></pre>
- *
+ * @author James Macgill, CCG
  * @version $Id$
- * @author James Macgill
  */
-public interface Style extends org.geotools.api.style.Style {
+public class Style implements  Cloneable, org.geotools.api.style.Style {
+    /** The logger for the default core module. */
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(Style.class);
 
-    void setName(String name);
+    private List<FeatureTypeStyle> featureTypeStyles = new ArrayList<>();
+    private Description description = new Description();
+     String name = "Default Styler";
+    private boolean defaultB = false;
+    private Fill background;
 
-    /**
-     * Description for this style.
-     *
-     * @return Human readable description for use in user interfaces
-     * @since 2.5.x
-     */
+    private Symbolizer defaultSymbolizer;
+
+    /** Creates a new instance of Style */
+    protected Style() {}
+
     @Override
-    Description getDescription();
-
-    /**
-     * Indicates that this is the default style.
-     *
-     * <p>Assume this is kept for GeoServer enabling a WMS to track which style is considered the
-     * default. May consider providing a clientProperties mechanism similar to Swing JComponent
-     * allowing applications to mark up the Style content for custom uses.
-     */
-    void setDefault(boolean isDefault);
-
-    /** FeatureTypeStyles rendered in order of appearance in this list. */
-    @Override
-    public List<FeatureTypeStyle> featureTypeStyles();
-
-    /**
-     * This functionality is from an ISO specificaiton; and conflicts with the idea of an else rule
-     * presented by SLD.
-     *
-     * <p>Implementations may choose to look up the first symbolizer of an elseFilter or allow this
-     * to be provided?
-     *
-     * @return Symbolizer to use if no rules work out.
-     */
-    @Override
-    public Symbolizer getDefaultSpecification();
-
-    /** @param defaultSymbolizer To be used if a feature is not rendered by any of the rules */
-    public void setDefaultSpecification(Symbolizer defaultSymbolizer);
-
-    /** Used to navigate Style information during portrayal. */
-    void accept(org.geotools.styling.StyleVisitor visitor);
-
-    /** The background Fill , if any, <code>null</code> otherwise */
-    public default Fill getBackground() {
-        return null;
+    public Description getDescription() {
+        return description;
     }
 
-    /** Sets the background color. Might throw an {@link UnsupportedOperationException}. */
-    public default void setBackground(Fill background) {
-        throw new UnsupportedOperationException();
+    public FeatureTypeStyle[] getFeatureTypeStyles() {
+        FeatureTypeStyle[] ret = {new FeatureTypeStyle()};
+
+        if ((featureTypeStyles != null) && (!featureTypeStyles.isEmpty())) {
+            if (LOGGER.isLoggable(Level.FINE))
+                LOGGER.fine("number of fts set " + featureTypeStyles.size());
+
+            ret = featureTypeStyles.toArray(new FeatureTypeStyle[] {});
+        }
+
+        return ret;
+    }
+
+    @Override
+    public List<FeatureTypeStyle> featureTypeStyles() {
+        return featureTypeStyles;
+    }
+
+    @Override
+    public Symbolizer getDefaultSpecification() {
+        return defaultSymbolizer;
+    }
+
+    public void setDefaultSpecification(org.geotools.styling.Symbolizer defaultSymbolizer) {
+        this.defaultSymbolizer = defaultSymbolizer;
+    }
+
+    public void setFeatureTypeStyles(FeatureTypeStyle... styles) {
+        List<FeatureTypeStyle> newStyles = Arrays.asList(styles);
+
+        this.featureTypeStyles.clear();
+        this.featureTypeStyles.addAll(newStyles);
+
+        LOGGER.fine("Style added " + featureTypeStyles.size() + " feature types");
+    }
+
+    public void addFeatureTypeStyle(FeatureTypeStyle type) {
+        featureTypeStyles.add(type);
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public boolean isDefault() {
+        return defaultB;
+    }
+
+    public void setDefault(boolean isDefault) {
+        defaultB = isDefault;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void accept(StyleVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    /**
+     * Clones the Style. Creates deep copy clone of the style.
+     *
+     * @return the Clone of the style.
+     * @see org.geotools.styling.Style#clone()
+     */
+    @Override
+    public Object clone() {
+        Style clone;
+
+        try {
+            clone = (Style) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e); // this should never happen since we implement Cloneable
+        }
+
+        List<FeatureTypeStyle> ftsCopies = new ArrayList<>();
+
+        for (FeatureTypeStyle featureTypeStyle : featureTypeStyles) {
+            ftsCopies.add((FeatureTypeStyle) ((Cloneable) featureTypeStyle).clone());
+        }
+
+        clone.featureTypeStyles().clear();
+        clone.featureTypeStyles().addAll(ftsCopies);
+
+        return clone;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                featureTypeStyles, description, name, defaultB, background, defaultSymbolizer);
+    }
+
+    /**
+     * Compares this Style with another.
+     *
+     * <p>Two Style are equal if they have the same properties and the same list of
+     * FeatureTypeStyles.
+     *
+     * @param oth The object to compare with this for equality.
+     * @return True if this and oth are equal.
+     */
+    @Override
+    public boolean equals(Object oth) {
+        if (this == oth) {
+            return true;
+        }
+
+        if (oth instanceof Style) {
+            Style other = (Style) oth;
+
+            return Utilities.equals(name, other.name)
+                    && Utilities.equals(description, other.description)
+                    && Utilities.equals(featureTypeStyles, other.featureTypeStyles)
+                    && Utilities.equals(background, other.background);
+        }
+
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        StringBuffer buf = new StringBuffer();
+        buf.append("Style");
+        buf.append("[");
+        if (name != null) {
+            buf.append(" name=");
+            buf.append(name);
+        } else {
+            buf.append(" UNNAMED");
+        }
+        if (defaultB) {
+            buf.append(", DEFAULT");
+        }
+        //      if( title != null && title.length() != 0 ){
+        //              buf.append(", title=");
+        //              buf.append( title );
+        //      }
+        buf.append("]");
+        return buf.toString();
+    }
+
+    @Override
+    public Object accept(org.geotools.api.style.StyleVisitor visitor, Object extraData) {
+        return visitor.visit(this, extraData);
+    }
+
+    public void setDescription(Description description) {
+        if (description == null) {
+            this.description = new Description();
+        } else {
+            this.description = Description.cast(description);
+        }
+    }
+
+    @Override
+    public Fill getBackground() {
+        return background;
+    }
+
+    public void setBackground(Fill background) {
+        this.background = background;
     }
 }

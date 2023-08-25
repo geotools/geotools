@@ -10,7 +10,7 @@ import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.SLD;
-import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;

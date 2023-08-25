@@ -59,12 +59,12 @@ import org.junit.Test;
  *
  * @author iant
  */
-public class StyleFactoryImplTest {
+public class StyleFactoryTest {
     static StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
     static FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
     static SimpleFeature feature;
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(StyleFactoryImplTest.class);
+            org.geotools.util.logging.Logging.getLogger(StyleFactoryTest.class);
 
     @Test
     public void testCommonFactoryFinder() {

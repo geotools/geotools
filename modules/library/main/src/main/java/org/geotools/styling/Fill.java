@@ -13,140 +13,77 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
- *
  */
 package org.geotools.styling;
 
-import java.awt.Color;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.StyleVisitor;
-import org.geotools.filter.ConstantExpression;
+import org.geotools.api.util.Cloneable;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.util.Utilities;
+import org.geotools.util.factory.GeoTools;
 
 /**
- * The Fill object encapsulates the graphical-symbolization parameters for areas of geometries.
- *
- * <p>There are two types of fill: solid-color and repeated graphic fill.
- *
- * <p>The details of this object are taken from the <a
- * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor
- * Report (OGC 02-070) version 1.0.0.</a>:
- *
- * <pre><code>
- * &lt;xsd:element name="Fill"&gt;
- *   &lt;xsd:annotation&gt;
- *     &lt;xsd:documentation&gt;
- *       A "Fill" specifies the pattern for filling an area geometry.
- *       The allowed CssParameters are: "fill" (color) and "fill-opacity".
- *     &lt;/xsd:documentation&gt;
- *   &lt;/xsd:annotation&gt;
- *   &lt;xsd:complexType&gt;
- *     &lt;xsd:sequence&gt;
- *       &lt;xsd:element ref="sld:GraphicFill" minOccurs="0"/&gt;
- *       &lt;xsd:element ref="sld:CssParameter" minOccurs="0"
- *                    maxOccurs="unbounded"/&gt;
- *     &lt;/xsd:sequence&gt;
- *   &lt;/xsd:complexType&gt;
- * &lt;/xsd:element&gt;
- * </code></pre>
- *
- * <p>Renderers can use this information when displaying styled features, though it must be
- * remembered that not all renderers will be able to fully represent strokes as set out by this
- * interface. For example, opacity may not be supported.
- *
- * <p>Notes:
- *
- * <ul>
- *   <li>The graphical parameters and their values are derived from SVG/CSS2 standards with names
- *       and semantics which are as close as possible.
- * </ul>
- *
- * @author James Macgill, CCG
  * @version $Id$
+ * @author James Macgill, CCG
  */
-public interface Fill extends org.geotools.api.style.Fill {
-    static final Fill DEFAULT =
-            new ConstantFill() {
-                private void cannotModifyConstant() {
-                    throw new UnsupportedOperationException("Constant Stroke may not be modified");
-                }
+public class Fill implements Cloneable, org.geotools.api.style.Fill {
+    private FilterFactory filterFactory;
+    private Expression color = null;
+    private Expression opacity = null;
+    private Graphic graphicFill = null;
 
-                final Expression COLOR = ConstantExpression.color(new Color(128, 128, 128));
-                final Expression BGCOLOR = ConstantExpression.color(new Color(255, 255, 255, 0));
-                final Expression OPACITY = ConstantExpression.ONE;
+    /** Creates a new instance of DefaultFill */
+    protected Fill() {
+        this(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
+    }
 
-                @Override
-                public Expression getColor() {
-                    return COLOR;
-                }
+    public Fill(FilterFactory factory) {
+        filterFactory = factory;
+    }
 
-                @Override
-                public Expression getOpacity() {
-                    return OPACITY;
-                }
-
-                @Override
-                public Graphic getGraphicFill() {
-                    return Graphic.NULL;
-                }
-
-                @Override
-                public Object accept(StyleVisitor visitor, Object extraData) {
-                    cannotModifyConstant();
-                    return null;
-                }
-            };
-
-    static final Fill NULL =
-            new ConstantFill() {
-                private void cannotModifyConstant() {
-                    throw new UnsupportedOperationException("Constant Stroke may not be modified");
-                }
-
-                @Override
-                public Expression getColor() {
-                    return ConstantExpression.NULL;
-                }
-
-                @Override
-                public Expression getOpacity() {
-                    return ConstantExpression.NULL;
-                }
-
-                @Override
-                public Graphic getGraphicFill() {
-                    return Graphic.NULL;
-                }
-
-                @Override
-                public Object accept(StyleVisitor visitor, Object extraData) {
-                    cannotModifyConstant();
-                    return null;
-                }
-            };
+    public void setFilterFactory(FilterFactory factory) {
+        filterFactory = factory;
+    }
 
     /**
      * This parameter gives the solid color that will be used for a Fill.<br>
      * The color value is RGB-encoded using two hexidecimal digits per primary-color component, in
-     * the order Red, Green, Blue, prefixed with the hash (#) sign. The hexidecimal digits beetween
-     * A and F may be in either upper or lower case. For example, full red is encoded as "#ff0000"
-     * (with no quotation marks). The default color is defined to be 50% gray ("#808080"). Note: in
-     * CSS this parameter is just called Fill and not Color.
+     * the order Red, Green, Blue, prefixed with the hash (#) sign. The hexidecimal digits between A
+     * and F may be in either upper or lower case. For example, full red is encoded as "#ff0000"
+     * (with no quotation marks). The default color is defined to be 50% gray ("#808080").
+     *
+     * <p>Note: in CSS this parameter is just called Fill and not Color.
      *
      * @return The color of the Fill encoded as a hexidecimal RGB value.
      */
     @Override
-    Expression getColor();
+    public Expression getColor() {
+        return color;
+    }
 
     /**
      * This parameter gives the solid color that will be used for a Fill.<br>
      * The color value is RGB-encoded using two hexidecimal digits per primary-color component, in
-     * the order Red, Green, Blue, prefixed with the hash (#) sign. The hexidecimal digits beetween
-     * A and F may be in either upper or lower case. For example, full red is encoded as "#ff0000"
+     * the order Red, Green, Blue, prefixed with the hash (#) sign. The hexidecimal digits between A
+     * and F may be in either upper or lower case. For example, full red is encoded as "#ff0000"
      * (with no quotation marks).
      *
-     * @param color solid color that will be used for a Fill
+     * <p>Note: in CSS this parameter is just called Fill and not Color.
+     *
+     * @param rgb The color of the Fill encoded as a hexidecimal RGB value.
      */
-    void setColor(Expression color);
+    public void setColor(Expression rgb) {
+        if (color == rgb) return;
+        color = rgb;
+    }
+
+    public void setColor(String rgb) {
+        if (color.toString().equals(rgb)) return;
+
+        setColor(filterFactory.literal(rgb));
+    }
 
     /**
      * This specifies the level of translucency to use when rendering the fill. <br>
@@ -159,67 +96,136 @@ public interface Fill extends org.geotools.api.style.Fill {
      *     opaque.
      */
     @Override
-    Expression getOpacity();
+    public Expression getOpacity() {
+        return opacity;
+    }
 
     /**
-     * This specifies the level of translucency to use when rendering the fill. <br>
-     * The value is encoded as a floating-point value between 0.0 and 1.0 with 0.0 representing
-     * totally transparent and 1.0 representing totally opaque, with a linear scale of translucency
-     * for intermediate values.<br>
-     * For example, "0.65" would represent 65% opacity.
+     * Setter for property opacity.
+     *
+     * @param opacity New value of property opacity.
      */
-    void setOpacity(Expression opacity);
+    public void setOpacity(Expression opacity) {
+        if (this.opacity == opacity) return;
+
+        this.opacity = opacity;
+    }
+
+    public void setOpacity(String opacity) {
+        if (this.opacity.toString().equals(opacity)) return;
+
+        setOpacity(filterFactory.literal(opacity));
+    }
 
     /**
      * This parameter indicates that a stipple-fill repeated graphic will be used and specifies the
      * fill graphic to use.
      *
-     * @return The graphic to use as a stipple fill. If null then no stipple fill should be used.
+     * @return graphic The graphic to use as a stipple fill. If null then no Stipple fill should be
+     *     used.
      */
     @Override
-    Graphic getGraphicFill();
+    public org.geotools.styling.Graphic getGraphicFill() {
+        return graphicFill;
+    }
 
     /**
-     * This parameter indicates that a stipple-fill repeated graphic will be used and specifies the
-     * fill graphic to use.
+     * Setter for property graphic.
+     *
+     * @param graphicFill New value of property graphic.
      */
-    void setGraphicFill(org.geotools.api.style.Graphic graphicFill);
-
-    void accept(org.geotools.styling.StyleVisitor visitor);
-}
-
-abstract class ConstantFill implements Fill {
-    private void cannotModifyConstant() {
-        throw new UnsupportedOperationException("Constant Fill may not be modified");
-    }
-
-    @Override
-    public void setColor(Expression color) {
-        cannotModifyConstant();
-    }
-
-    public void setBackgroundColor(Expression backgroundColor) {
-        cannotModifyConstant();
-    }
-
-    @Override
-    public void setOpacity(Expression opacity) {
-        cannotModifyConstant();
-    }
-
-    @Override
     public void setGraphicFill(org.geotools.api.style.Graphic graphicFill) {
-        cannotModifyConstant();
+        if (this.graphicFill == graphicFill) return;
+        this.graphicFill = Graphic.cast(graphicFill);
     }
 
     @Override
-    public void accept(org.geotools.styling.StyleVisitor visitor) {
-        cannotModifyConstant();
+    public Object accept(StyleVisitor visitor, Object data) {
+        return visitor.visit(this, data);
     }
 
     @Override
-    public Object accept(org.geotools.api.style.StyleVisitor visitor, Object data) {
-        cannotModifyConstant();
-        return null;
+    public void accept(StyleVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    /**
+     * Returns a clone of the FillImpl.
+     *
+     * @see org.geotools.styling.Fill#clone()
+     */
+    @Override
+    public Object clone() {
+        try {
+            Fill clone = (Fill) super.clone();
+            if (graphicFill != null) {
+                clone.graphicFill = (Graphic) ((Cloneable) graphicFill).clone();
+            }
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            // This will never happen
+            throw new RuntimeException("Failed to clone FillImpl");
+        }
+    }
+
+    /**
+     * Generates a hashcode for the FillImpl.
+     *
+     * @return The hashcode.
+     */
+    @Override
+    public int hashCode() {
+        final int PRIME = 1000003;
+        int result = 0;
+        if (color != null) {
+            result = PRIME * result + color.hashCode();
+        }
+        if (opacity != null) {
+            result = PRIME * result + opacity.hashCode();
+        }
+        if (graphicFill != null) {
+            result = PRIME * result + graphicFill.hashCode();
+        }
+
+        return result;
+    }
+
+    /**
+     * Compares a FillImpl with another for equality.
+     *
+     * <p>Two FillImpls are equal if they contain the same, color, backgroundcolor, opacity and
+     * graphicFill.
+     *
+     * @param oth The other FillImpl
+     * @return True if this FillImpl is equal to oth.
+     */
+    @Override
+    public boolean equals(Object oth) {
+        if (this == oth) {
+            return true;
+        }
+
+        if (oth instanceof Fill) {
+            Fill other = (Fill) oth;
+            return Utilities.equals(this.color, other.color)
+                    && Utilities.equals(this.opacity, other.opacity)
+                    && Utilities.equals(this.graphicFill, other.graphicFill);
+        }
+
+        return false;
+    }
+
+    static Fill cast(org.geotools.api.style.Fill fill) {
+        if (fill == null) {
+            return null;
+        } else if (fill instanceof Fill) {
+            return (Fill) fill;
+        } else {
+            Fill copy = new Fill();
+            copy.color = fill.getColor();
+            copy.graphicFill = Graphic.cast(fill.getGraphicFill());
+            copy.opacity = fill.getOpacity();
+            return copy;
+        }
     }
 }

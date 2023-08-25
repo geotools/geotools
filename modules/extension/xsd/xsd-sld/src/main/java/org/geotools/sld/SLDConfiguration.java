@@ -72,7 +72,6 @@ import org.geotools.sld.bindings.SLDVendorOptionBinding;
 import org.geotools.styling.DefaultResourceLocator;
 import org.geotools.styling.ResourceLocator;
 import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyleFactoryImpl;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Parser;
 import org.picocontainer.MutablePicoContainer;
@@ -190,14 +189,14 @@ public class SLDConfiguration extends Configuration {
      * <p>The following factories are registered:
      *
      * <ul>
-     *   <li>{@link StyleFactoryImpl} under {@link StyleFactory}
+     *   <li>{@link StyleFactory} under {@link StyleFactory}
      * </ul>
      */
     @Override
     protected void configureContext(MutablePicoContainer container) {
         super.configureContext(container);
 
-        container.registerComponentImplementation(StyleFactory.class, StyleFactoryImpl.class);
+        container.registerComponentImplementation(StyleFactory.class, StyleFactory.class);
         container.registerComponentInstance(ResourceLocator.class, new DefaultResourceLocator());
     }
 

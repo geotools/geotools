@@ -25,20 +25,8 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.style.GraphicalSymbol;
 import org.geotools.measure.Units;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.LabelPlacement;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizer2;
+import org.geotools.styling.*;
+import org.geotools.api.style.LabelPlacement;
 
 /**
  * Visitor used for rescaling a Style given a map scale (e.g., meters per pixel) and taking into
@@ -253,12 +241,12 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
 
         // scale various options as well
         Map<String, String> options = copy.getOptions();
-        scaleIntOption(options, TextSymbolizer.MAX_DISPLACEMENT_KEY, uom);
-        scaleIntOption(options, TextSymbolizer.SPACE_AROUND_KEY, uom);
-        scaleIntOption(options, TextSymbolizer.MIN_GROUP_DISTANCE_KEY, uom);
-        scaleIntOption(options, TextSymbolizer.LABEL_REPEAT_KEY, uom);
-        scaleIntOption(options, TextSymbolizer.AUTO_WRAP_KEY, uom);
-        scaleIntArrayOption(options, TextSymbolizer.GRAPHIC_MARGIN_KEY, uom);
+        scaleIntOption(options, org.geotools.api.style.TextSymbolizer.MAX_DISPLACEMENT_KEY, uom);
+        scaleIntOption(options, org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY, uom);
+        scaleIntOption(options, org.geotools.api.style.TextSymbolizer.MIN_GROUP_DISTANCE_KEY, uom);
+        scaleIntOption(options, org.geotools.api.style.TextSymbolizer.LABEL_REPEAT_KEY, uom);
+        scaleIntOption(options, org.geotools.api.style.TextSymbolizer.AUTO_WRAP_KEY, uom);
+        scaleIntArrayOption(options, org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY, uom);
 
         copy.setUnitOfMeasure(Units.PIXEL);
     }

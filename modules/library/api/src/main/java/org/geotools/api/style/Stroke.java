@@ -30,25 +30,26 @@ import org.geotools.api.filter.expression.Expression;
 public interface Stroke {
 
     /**
-     * If non-null, indicates that line should be drawn by tiling the (thin) area of the line with
-     * the given graphic. Between {@code getGraphicFill()} and {@link #getGraphicStroke()}, only one
-     * may return a non-null value since a {@code Stroke} can have a {@code GraphicFill} or a {@code
-     * GraphicStroke}, but not both.
+     * This parameter indicates that a stipple-fill repeated graphic will be used and specifies the
+     * fill graphic to use.
      *
-     * @return Graphic
+     * @return The graphic to use as a stipple fill. If null, then no Stipple fill should be used.
      */
-    GraphicFill getGraphicFill();
+    Graphic getGraphicFill();
 
     /**
-     * If non-null, indicates that lines should be drawn by repeatedly plotting the given graphic
-     * along the path of the lines, rotating it according to the orientation of the line. Between
-     * {@link #getGraphicFill()} and {@code getGraphicStroke}, only one may return a non-null value
-     * since a {@code Stroke} can have a {@code GraphicFill} or a {@code GraphicStroke}, but not
-     * both.
+     * This parameter indicates that a repeated-linear-graphic graphic stroke type will be used and
+     * specifies the graphic to use.
      *
-     * @return Graphic
+     * <p>Proper stroking with a linear graphic requires two "hot-spot" points within the space of
+     * the graphic to indicate where the rendering line starts and stops. In the case of raster
+     * images with no special mark-up, this line will be assumed to be the middle pixel row of the
+     * image, starting from the first pixel column and ending at the last pixel column.
+     *
+     * @return The graphic to use as a linear graphic. If null, then no graphic stroke should be
+     *     used.
      */
-    GraphicStroke getGraphicStroke();
+    Graphic getGraphicStroke();
 
     // *************************************************************
     // SVG PARAMETERS
@@ -83,21 +84,10 @@ public interface Stroke {
      */
     Expression getWidth();
 
-    /**
-     * Indicates how the various segments of a (thick) line string should be joined. Valid values
-     * are "miter", "round", and "bevel". If null, the default value is system dependent (probably
-     * whichever one is fastest to render).
-     *
-     * @return expression
-     */
+    /** This parameter controls how line strings should be joined together. */
     Expression getLineJoin();
 
-    /**
-     * Indicates how the beginning and ending segments of a line string will be terminated. Valid
-     * values are "butt", "round", and "square". If null, the default value is system dependent.
-     *
-     * @return expression
-     */
+    /** This parameter controls how line strings should be capped. */
     Expression getLineCap();
 
     /**
@@ -113,10 +103,8 @@ public interface Stroke {
     float[] getDashArray();
 
     /**
-     * Indicates the distance offset into the dash array to begin drawing. If null, the default
-     * value is zero.
-     *
-     * @return expression
+     * A dash array need not start from the beginning. This method allows for an offset into the
+     * dash array before starting it.
      */
     Expression getDashOffset();
 
@@ -126,4 +114,6 @@ public interface Stroke {
      * @param visitor the style visitor
      */
     Object accept(StyleVisitor visitor, Object extraData);
+
+    void accept(org.geotools.api.style.StyleVisitor visitor);
 }

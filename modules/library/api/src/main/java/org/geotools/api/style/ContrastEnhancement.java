@@ -11,6 +11,8 @@ package org.geotools.api.style;
 
 import org.geotools.api.filter.expression.Expression;
 
+import java.util.Map;
+
 /**
  * The ContrastEnhancement object defines contrast enhancement for a channel of a false-color image
  * or for a color image.
@@ -38,11 +40,10 @@ public interface ContrastEnhancement {
     public ContrastMethod getMethod();
 
     /**
-     * A "GammaValue" tells how much to brighten (values greater than 1.0) or dim (values less than
-     * 1.0) an image. The default GammaValue is 1.0 (no change).
+     * How much to brighten (values greater than 1.0) or dim (values less than 1.0) an image. The
+     * default GammaValue is 1.0 (no change).
      *
-     * @return Expression to control gamma adjustment, null or Expression.NIL handled as the value
-     *     1.0
+     * @return Expression, if <code>null</code> a value of 1.0 is assumed indicating no change
      */
     Expression getGammaValue();
 
@@ -52,4 +53,25 @@ public interface ContrastEnhancement {
      * @param visitor the style visitor
      */
     Object accept(StyleVisitor visitor, Object extraData);
+
+    /**
+     * check if vendor option key is available
+     *
+     * @param key - the name of the option to check
+     * @return true if present
+     */
+    boolean hasOption(String key);
+
+    /** Traversal of the style data structure. */
+    void accept(StyleVisitor visitor);
+
+    /** @return An expression for the matching VendorOption */
+    Expression getOption(String string);
+
+    /**
+     * Return vendor options relating to the enhancement method
+     *
+     * @return a Map containing expressions with string keys.
+     */
+    Map<String, Expression> getOptions();
 }

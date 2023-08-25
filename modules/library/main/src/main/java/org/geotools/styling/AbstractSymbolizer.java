@@ -63,7 +63,7 @@ public abstract class AbstractSymbolizer implements Symbolizer {
 
     @Override
     public void setDescription(org.geotools.api.style.Description description) {
-        this.description = DescriptionImpl.cast(description);
+        this.description = Description.cast(description);
     }
 
     @Override

@@ -24,46 +24,33 @@ import org.geotools.api.filter.expression.Expression;
 public interface Mark extends GraphicalSymbol {
 
     /**
-     * Returns the expression whose value will indicate the symbol to draw. The WellKnownName
-     * element gives the well-known name of the shape of the mark. Allowed values include at least
-     * “square”, “circle”, “triangle”, “star”, “cross”, and “x”, though map servers may draw a
-     * different symbol instead if they don't have a shape for all of these. The default
-     * WellKnownName is “square”. Renderings of these marks may be made solid or hollow depending on
-     * Fill and Stroke elements.
+     * This parameter gives the well-known name of the shape of the mark.<br>
+     * Allowed names include at least "square", "circle", "triangle", "star", "cross" and "x" though
+     * renderers may draw a different symbol instead if they don't have a shape for all of these.
+     * <br>
      *
-     * <p>if the WellKnowname is null, check the ExternalMark before using the default square
-     * symbol.
-     *
-     * <p>Both WellKnowName and ExternalMark canot be set, but both can be null. If none are set
-     * then the default square symbol is used.
-     *
-     * @return Expression or null
+     * @return The well-known name of a shape. The default value is "square".
      */
     Expression getWellKnownName();
 
     /**
-     * The alternative to a WellKnownName is an external mark format. See {@link ExternalMark} for
-     * details.
+     * Mark defined by an external resource.
      *
-     * <p>Both WellKnowName and ExternalMark cannot be set, but both can be null. If none are set
-     * then the default square symbol is used.
-     *
-     * @return ExternalMark or null
+     * @return ExternalMark or null if WellKNownName is being used
      */
     ExternalMark getExternalMark();
 
     /**
-     * Returns the object that indicates how the mark should be filled. Null means no fill.
+     * This parameter defines which fill style to use when rendering the Mark.
      *
-     * @return Fill or null
+     * @return the Fill definition to use when rendering the Mark.
      */
     Fill getFill();
 
     /**
-     * Returns the object that indicates how the edges of the mark will be drawn. Null means that
-     * the edges will not be drawn at all.
+     * This paramterer defines which stroke style should be used when rendering the Mark.
      *
-     * @return stroke or null
+     * @return The Stroke definition to use when rendering the Mark.
      */
     Stroke getStroke();
 
@@ -73,4 +60,6 @@ public interface Mark extends GraphicalSymbol {
      * @param visitor the style visitor
      */
     Object accept(StyleVisitor visitor, Object extraData);
+
+    void accept(StyleVisitor visitor);
 }

@@ -27,28 +27,9 @@ import org.geotools.api.style.GraphicalSymbol;
  */
 public interface GraphicLegend extends org.geotools.api.style.GraphicLegend {
 
-    @Override
-    public AnchorPoint getAnchorPoint();
-
     public void setAnchorPoint(org.geotools.api.style.AnchorPoint anchor);
 
-    @Override
-    public Displacement getDisplacement();
-
     public void setDisplacement(org.geotools.api.style.Displacement displacement);
-
-    /**
-     * This specifies the level of translucency to use when rendering the graphic.<br>
-     * The value is encoded as a floating-point value between 0.0 and 1.0 with 0.0 representing
-     * totally transparent and 1.0 representing totally opaque, with a linear scale of translucency
-     * for intermediate values.<br>
-     * For example, "0.65" would represent 65% opacity. The default value is 1.0 (opaque).
-     *
-     * @return The opacity of the Graphic, where 0.0 is completely transparent and 1.0 is completely
-     *     opaque.
-     */
-    @Override
-    public Expression getOpacity();
 
     /**
      * Graphic opacity.
@@ -61,33 +42,9 @@ public interface GraphicLegend extends org.geotools.api.style.GraphicLegend {
      * This parameter defines the rotation of a graphic in the clockwise direction about its centre
      * point in decimal degrees. The value encoded as a floating point number.
      *
-     * @return The angle of rotation in decimal degrees. Negative values represent counter-clockwise
-     *     rotation. The default is 0.0 (no rotation).
-     */
-    @Override
-    public Expression getRotation();
-
-    /**
-     * This parameter defines the rotation of a graphic in the clockwise direction about its centre
-     * point in decimal degrees. The value encoded as a floating point number.
-     *
      * @param rotation in decimal degrees
      */
     void setRotation(Expression rotation);
-
-    /**
-     * The size of the mark if specified.
-     *
-     * <p>If unspecified:
-     *
-     * <ul>
-     *   <li>The natural size will be used for formats such as PNG that have an image width and
-     *       height
-     *   <li>16 x 16 will be used for formats like SVG that do not have a size
-     * </ul>
-     */
-    @Override
-    public Expression getSize();
 
     /**
      * Indicates the size at which the graphic should be displayed.

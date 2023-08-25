@@ -20,7 +20,6 @@ package org.geotools.ysld.parse;
 import java.util.Map;
 import org.geotools.api.style.ContrastMethod;
 import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.ColorMap;
 import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Rule;

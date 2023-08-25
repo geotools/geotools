@@ -24,41 +24,25 @@ import org.geotools.api.filter.expression.Expression;
 public interface PointPlacement extends LabelPlacement {
 
     /**
-     * The AnchorPoint element of a PointPlacement gives the location inside of a label to use for
-     * anchoring the label to the main-geometry point.
+     * Returns the AnchorPoint which identifies the location inside a text label to use as an
+     * "anchor" for positioning it relative to a point geometry.
      *
-     * <p>This will often be used to avoid over-plotting a graphic symbol marking a city or some
-     * such feature. The displacements are in units of pixels above and to the right of the point. A
-     * system may reflect this displacement about the X and/or Y axes to de-conflict labels. The
-     * default displacement is X=0, Y=0.
-     *
-     * <p>See {@link AnchorPoint} for details.
-     *
-     * @return AnchorPoint : if null use X=0.5 Y=0.5
+     * @return anchorPoint from the relative to the original geometry
      */
     AnchorPoint getAnchorPoint();
 
     /**
-     * The Displacement gives the X and Y displacements from the "hot-spot" point. This element may
-     * be used to avoid over-plotting of multiple graphic symbols used as part of the same point
-     * symbol. The displacements are in units of measure above and to the right of the point. The
-     * default displacement is X=0, Y=0.
+     * Returns the Displacement which gives X and Y offset displacements to use for rendering a text
+     * label near a point.
      *
-     * <p>If Displacement is used in conjunction with Size and/or Rotation then the graphic symbol
-     * shall be scaled and/or rotated before it is displaced.s
-     *
-     * @return Displacement
+     * @return Offset to use when rendering text near a point
      */
     Displacement getDisplacement();
 
     /**
-     * Returns the expression that will be used to calculate the rotation of the graphic when it is
-     * drawn.
+     * Returns the rotation of the label.
      *
-     * <p>The Rotation of a PointPlacement gives the clockwise rotation of the label in degrees from
-     * the normal direction for a font (left-to-right for Latin-derived human languages at least).
-     *
-     * @return Expression
+     * @return rotation of the label as a dynamic expression
      */
     Expression getRotation();
 

@@ -17,17 +17,11 @@
 
 package org.geotools.styling.visitor;
 
-import static org.geotools.styling.FeatureTypeStyle.RenderingSelectionOptions.NORMAL;
+import static org.geotools.api.style.FeatureTypeStyle.RenderingSelectionOptions.NORMAL;
 
 import java.util.Map;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
+
+import org.geotools.styling.*;
 
 /**
  * This abstract class applies the include VendorOptions to a Style eg. <VendorOption

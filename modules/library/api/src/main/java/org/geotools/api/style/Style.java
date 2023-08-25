@@ -41,9 +41,10 @@ public interface Style {
     String getName();
 
     /**
-     * Returns the description of this style.
+     * Description for this style.
      *
-     * @return Description with usual informations used for user interfaces.
+     * @return Human readable description for use in user interfaces
+     * @since 2.5.x
      */
     Description getDescription();
 
@@ -59,12 +60,14 @@ public interface Style {
     List<? extends FeatureTypeStyle> featureTypeStyles();
 
     /**
-     * Returns the default specification used if no rule return true. This specification should not
-     * use any external functions. This specification should use at least one spatial attribut.
+     * This functionality is from an ISO specificaiton; and conflicts with the idea of an else rule
+     * presented by SLD.
      *
-     * @return PortrayalSpecification
+     * <p>Implementations may choose to look up the first symbolizer of an elseFilter or allow this
+     * to be provided?
+     *
+     * @return Symbolizer to use if no rules work out.
      */
-    @UML(identifier = "defaultPortrayalSpec", obligation = MANDATORY, specification = ISO_19117)
     Symbolizer getDefaultSpecification();
 
     /**
@@ -73,4 +76,9 @@ public interface Style {
      * @param visitor the style visitor
      */
     Object accept(StyleVisitor visitor, Object extraData);
+
+    /** The background Fill , if any, <code>null</code> otherwise */
+    default Fill getBackground() {
+        return null;
+    }
 }

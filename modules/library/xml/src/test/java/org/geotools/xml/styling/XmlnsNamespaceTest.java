@@ -20,7 +20,7 @@ import static org.junit.Assert.fail;
 
 import java.io.StringReader;
 import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactoryImpl;
+import org.geotools.styling.StyleFactory;
 import org.geotools.test.TestData;
 import org.junit.Test;
 
@@ -37,7 +37,7 @@ public class XmlnsNamespaceTest {
     public void testXmlnsNamespaceOutput() throws Exception {
 
         java.net.URL sldUrl = TestData.getResource(this, "xmlnsNamespaces.sld");
-        SLDParser parser = new SLDParser(new StyleFactoryImpl(), sldUrl);
+        SLDParser parser = new SLDParser(new StyleFactory(), sldUrl);
         Style style = parser.readXML()[0];
 
         SLDTransformer transformer = new SLDTransformer();
@@ -47,7 +47,7 @@ public class XmlnsNamespaceTest {
         //        System.out.println(xml);
 
         try {
-            SLDParser parser2 = new SLDParser(new StyleFactoryImpl(), new StringReader(xml));
+            SLDParser parser2 = new SLDParser(new StyleFactory(), new StringReader(xml));
             parser2.readXML();
         } catch (Exception exc) {
             fail("Failed to persist object tree to XML and parse back: " + exc.getMessage());

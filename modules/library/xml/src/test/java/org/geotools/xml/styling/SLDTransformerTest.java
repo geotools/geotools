@@ -47,46 +47,11 @@ import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.style.ContrastMethod;
 import org.geotools.api.style.GraphicalSymbol;
-import org.geotools.api.style.Rule;
 import org.geotools.api.style.Symbolizer;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.ChannelSelectionImpl;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.ContrastEnhancementImpl;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.ExponentialContrastMethodStrategy;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.GraphicImpl;
-import org.geotools.styling.HistogramContrastMethodStrategy;
-import org.geotools.styling.LabelPlacement;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.LogarithmicContrastMethodStrategy;
-import org.geotools.styling.Mark;
-import org.geotools.styling.NamedLayer;
-import org.geotools.styling.NormalizeContrastMethodStrategy;
-import org.geotools.styling.OtherTextImpl;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.RuleImpl;
-import org.geotools.styling.SLD;
-import org.geotools.styling.SelectedChannelTypeImpl;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyleFactory2;
-import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizer2;
-import org.geotools.styling.UomOgcMapping;
+import org.geotools.styling.*;
+import org.geotools.api.style.NamedLayer;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.test.xml.XmlTestSupport;
 import org.geotools.util.GrowableInternationalString;
 import org.geotools.util.factory.GeoTools;
@@ -178,23 +143,23 @@ public class SLDTransformerTest extends XmlTestSupport {
         // set channel selection
         ChannelSelectionImpl csi = new ChannelSelectionImpl();
         // red
-        SelectedChannelTypeImpl redChannel = new SelectedChannelTypeImpl();
+        SelectedChannelType redChannel = new SelectedChannelType();
         redChannel.setChannelName("1");
-        ContrastEnhancementImpl rcei = new ContrastEnhancementImpl();
+        ContrastEnhancement rcei = new ContrastEnhancement();
         rcei.setMethod(ContrastMethod.HISTOGRAM);
         redChannel.setContrastEnhancement(rcei);
 
         // green
-        SelectedChannelTypeImpl greenChannel = new SelectedChannelTypeImpl();
+        SelectedChannelType greenChannel = new SelectedChannelType();
         greenChannel.setChannelName("4");
-        ContrastEnhancementImpl gcei = new ContrastEnhancementImpl();
+        ContrastEnhancement gcei = new ContrastEnhancement();
         gcei.setGammaValue(ff.literal(2.5));
         greenChannel.setContrastEnhancement(gcei);
 
         // blue
-        SelectedChannelTypeImpl blueChannel = new SelectedChannelTypeImpl();
+        SelectedChannelType blueChannel = new SelectedChannelType();
         blueChannel.setChannelName("2");
-        ContrastEnhancementImpl bcei = new ContrastEnhancementImpl();
+        ContrastEnhancement bcei = new ContrastEnhancement();
         bcei.setMethod(ContrastMethod.NORMALIZE);
         blueChannel.setContrastEnhancement(bcei);
 
@@ -240,7 +205,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
         Style style = parsed[0];
         assertNotNull(style);
-        Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        org.geotools.api.style.Rule rule = style.featureTypeStyles().get(0).rules().get(0);
         LineSymbolizer lineSymbolize = (LineSymbolizer) rule.symbolizers().get(0);
         Stroke stroke = lineSymbolize.getStroke();
 
@@ -308,7 +273,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
         Style style = parsed[0];
         assertNotNull(style);
-        Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        org.geotools.api.style.Rule rule = style.featureTypeStyles().get(0).rules().get(0);
         LineSymbolizer lineSymbolize = (LineSymbolizer) rule.symbolizers().get(0);
         Stroke stroke = lineSymbolize.getStroke();
 
@@ -364,7 +329,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
         Style style = parsed[0];
         assertNotNull(style);
-        Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        org.geotools.api.style.Rule rule = style.featureTypeStyles().get(0).rules().get(0);
         TextSymbolizer textSymbolize = (TextSymbolizer) rule.symbolizers().get(0);
         LabelPlacement labelPlacement = textSymbolize.getLabelPlacement();
 
@@ -421,7 +386,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
         Style style = parsed[0];
         assertNotNull(style);
-        Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        org.geotools.api.style.Rule rule = style.featureTypeStyles().get(0).rules().get(0);
         TextSymbolizer textSymbolize = (TextSymbolizer) rule.symbolizers().get(0);
         PointPlacement pointPlacement = (PointPlacement) textSymbolize.getLabelPlacement();
 
@@ -525,7 +490,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
         Style style = parsed[0];
         assertNotNull(style);
-        Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        org.geotools.api.style.Rule rule = style.featureTypeStyles().get(0).rules().get(0);
         List<? extends Symbolizer> symbolizers = rule.symbolizers();
         assertEquals(1, symbolizers.size());
         PointSymbolizer symbolize = (PointSymbolizer) symbolizers.get(0);
@@ -560,7 +525,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
             Style style = parsed[0];
             assertNotNull(style);
-            Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+            org.geotools.api.style.Rule rule = style.featureTypeStyles().get(0).rules().get(0);
             LineSymbolizer lineSymbolize = (LineSymbolizer) rule.symbolizers().get(0);
             Stroke stroke = lineSymbolize.getStroke();
 
@@ -986,19 +951,19 @@ public class SLDTransformerTest extends XmlTestSupport {
         ColorMap cm = sf.createColorMap();
 
         // Test type = values
-        cm.setType(ColorMap.TYPE_VALUES);
+        cm.setType(ColorMapImpl.TYPE_VALUES);
         assertTrue(
                 "parsed xml must contain attribbute type with correct value",
                 st.transform(cm).contains("type=\"values\""));
 
         // Test type = intervals
-        cm.setType(ColorMap.TYPE_INTERVALS);
+        cm.setType(ColorMapImpl.TYPE_INTERVALS);
         assertTrue(
                 "parsed xml must contain attribbute type with correct value",
                 st.transform(cm).contains("type=\"intervals\""));
 
         // Test type = ramp
-        cm.setType(ColorMap.TYPE_RAMP);
+        cm.setType(ColorMapImpl.TYPE_RAMP);
         assertEquals(
                 "parsed xml must contain attribbute type with correct value",
                 -1,
@@ -1011,21 +976,21 @@ public class SLDTransformerTest extends XmlTestSupport {
         ColorMap cm = sf.createColorMap();
 
         // Test type = values, extended = true
-        cm.setType(ColorMap.TYPE_VALUES);
+        cm.setType(ColorMapImpl.TYPE_VALUES);
         cm.setExtendedColors(true);
         assertTrue(
                 "parsed xml must contain attribbute type with correct value",
                 st.transform(cm).contains("extended=\"true\""));
 
         // Test type = intervals, extended = true
-        cm.setType(ColorMap.TYPE_INTERVALS);
+        cm.setType(ColorMapImpl.TYPE_INTERVALS);
         cm.setExtendedColors(true);
         assertTrue(
                 "parsed xml must contain attribbute type with correct value",
                 st.transform(cm).contains("extended=\"true\""));
 
         // Test type = ramp, extended = true
-        cm.setType(ColorMap.TYPE_RAMP);
+        cm.setType(ColorMapImpl.TYPE_RAMP);
         cm.setExtendedColors(true);
         assertTrue(
                 "parsed xml must contain attribbute type with correct value",
@@ -1185,7 +1150,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
     @Test
     public void testLocalizedTitle() throws TransformerException {
-        RuleImpl rule = (RuleImpl) CommonFactoryFinder.getStyleFactory().createRule();
+        Rule rule = (Rule) CommonFactoryFinder.getStyleFactory().createRule();
         GrowableInternationalString intString =
                 new GrowableInternationalString("title") {
 
@@ -1222,7 +1187,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
     @Test
     public void testLocalizedAbstract() throws TransformerException {
-        RuleImpl rule = (RuleImpl) CommonFactoryFinder.getStyleFactory().createRule();
+        Rule rule = (Rule) CommonFactoryFinder.getStyleFactory().createRule();
         GrowableInternationalString intString =
                 new GrowableInternationalString("title") {
 
@@ -1280,7 +1245,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
         TextSymbolizer2 ts2 = (TextSymbolizer2) sf.createTextSymbolizer();
         // Create a Graphic with two recognizable values
-        GraphicImpl gr = new GraphicImpl(ff);
+        Graphic gr = new Graphic(ff);
         gr.setOpacity(ff.literal(0.77));
         gr.setSize(ff.literal(77));
         ts2.setGraphic(gr);
@@ -1288,7 +1253,7 @@ public class SLDTransformerTest extends XmlTestSupport {
         ts2.setSnippet(snippet);
         Literal fD = ff.literal("some description");
         ts2.setFeatureDescription(fD);
-        OtherTextImpl otherText = new OtherTextImpl();
+        OtherText otherText = new OtherText();
         otherText.setTarget("otherTextTarget");
         otherText.setText(ff.literal("otherTextText"));
         ts2.setOtherText(otherText);
@@ -1726,7 +1691,7 @@ public class SLDTransformerTest extends XmlTestSupport {
                 1,
                 style.featureTypeStyles().get(0).rules().size());
 
-        Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        org.geotools.api.style.Rule rule = style.featureTypeStyles().get(0).rules().get(0);
         assertNotNull("rule is null", rule);
 
         List<? extends Symbolizer> symbolizers = rule.symbolizers();
@@ -1855,7 +1820,7 @@ public class SLDTransformerTest extends XmlTestSupport {
                 "more or less that one rule is available",
                 1,
                 style.featureTypeStyles().get(0).rules().size());
-        Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        org.geotools.api.style.Rule rule = style.featureTypeStyles().get(0).rules().get(0);
         assertNotNull("rule is null", rule);
 
         List<? extends Symbolizer> symbolizers = rule.symbolizers();
@@ -1906,7 +1871,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
     @Test
     public void testContrastEnhancement() throws TransformerException {
-        ContrastEnhancement ce = new ContrastEnhancementImpl();
+        ContrastEnhancement ce = new ContrastEnhancement();
         NormalizeContrastMethodStrategy normal = new NormalizeContrastMethodStrategy();
         normal.setAlgorithm(ff.literal("ClipToMinimumMaximum"));
         normal.addParameter("p1", ff.literal(false));
@@ -1960,7 +1925,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
     @Test
     public void testGammaValueExpressionContrastEnhancement() throws TransformerException {
-        ContrastEnhancement ce = new ContrastEnhancementImpl();
+        ContrastEnhancement ce = new ContrastEnhancement();
         ce.setGammaValue(ff.add(ff.literal(1.0), ff.literal(0.5)));
         SLDTransformer st = new SLDTransformer();
         String xml = st.transform(ce);
@@ -2241,7 +2206,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
         Style style = styles[0];
 
-        Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        org.geotools.api.style.Rule rule = style.featureTypeStyles().get(0).rules().get(0);
 
         List<? extends Symbolizer> symbolizers = rule.symbolizers();
 

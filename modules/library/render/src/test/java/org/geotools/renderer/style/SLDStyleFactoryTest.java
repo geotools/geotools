@@ -61,20 +61,8 @@ import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.lite.RendererUtilities;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.renderer.style.SLDStyleFactory.SymbolizerKey;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.Stroke;
+import org.geotools.styling.*;
 import org.geotools.styling.Style;
-import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.TextSymbolizer;
 import org.geotools.util.NumberRange;
 import org.geotools.util.factory.Hints;
 import org.hamcrest.CoreMatchers;
@@ -537,7 +525,7 @@ public class SLDStyleFactoryTest {
                         ff.literal("bold"),
                         ff.literal(20));
         ts.setFont(font);
-        ts.getOptions().put(TextSymbolizer.KERNING_KEY, "false");
+        ts.getOptions().put(org.geotools.api.style.TextSymbolizer.KERNING_KEY, "false");
 
         TextStyle2D tsd = (TextStyle2D) sld.createTextStyle(feature, ts, range);
         Assert.assertEquals(20, tsd.getFont().getSize());

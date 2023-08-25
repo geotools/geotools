@@ -1,8 +1,8 @@
 package org.geotools.styling.visitor;
 
-import static org.geotools.styling.FeatureTypeStyle.RenderingSelectionOptions.LEGENDONLY;
-import static org.geotools.styling.FeatureTypeStyle.RenderingSelectionOptions.MAPONLY;
-import static org.geotools.styling.FeatureTypeStyle.RenderingSelectionOptions.NORMAL;
+import static org.geotools.api.style.FeatureTypeStyle.RenderingSelectionOptions.LEGENDONLY;
+import static org.geotools.api.style.FeatureTypeStyle.RenderingSelectionOptions.MAPONLY;
+import static org.geotools.api.style.FeatureTypeStyle.RenderingSelectionOptions.NORMAL;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
@@ -10,12 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.Symbolizer;
+import org.geotools.styling.*;
 import org.junit.Before;
 import org.junit.Test;
 

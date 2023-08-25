@@ -20,7 +20,7 @@ import java.util.List;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.VolatileFunction;
 import org.geotools.styling.Font;
-import org.geotools.styling.StyleVisitor;
+import org.geotools.api.style.StyleVisitor;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 
@@ -67,7 +67,7 @@ public class StyleAttributeExtractorTruncated extends StyleAttributeExtractor
         return super.visit(expression, data);
     };
 
-    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.TextSymbolizer) */
+    /** @see StyleVisitor#visit(org.geotools.styling.TextSymbolizer) */
     @Override
     public void visit(TextSymbolizer text) {
 

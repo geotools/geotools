@@ -20,7 +20,7 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.renderer.style.ExpressionExtractor;
-import org.geotools.styling.ColorMapEntry;
+import org.geotools.api.style.ColorMapEntry;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 
 /**

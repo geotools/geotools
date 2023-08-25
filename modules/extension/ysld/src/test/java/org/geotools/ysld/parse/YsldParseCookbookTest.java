@@ -33,7 +33,7 @@ import org.geotools.api.style.ContrastMethod;
 import org.geotools.filter.Filters;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.text.ecql.ECQL;
-import org.geotools.styling.ColorMapEntry;
+import org.geotools.api.style.ColorMapEntry;
 import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.FeatureTypeStyle;

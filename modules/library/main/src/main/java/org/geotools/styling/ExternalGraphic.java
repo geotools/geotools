@@ -13,123 +13,251 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
- *
  */
 package org.geotools.styling;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+import javax.swing.Icon;
+import org.geotools.api.metadata.citation.OnLineResource;
+import org.geotools.api.style.ColorReplacement;
+import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.util.Cloneable;
+import org.geotools.metadata.iso.citation.OnLineResourceImpl;
+import org.geotools.util.Utilities;
 
 /**
- * Holds a reference to an external graphics file with a URL to its location and its expected MIME
- * type. Knowing the MIME type in advance allows stylers to select best-supported formats from a
- * list of external graphics.
- *
- * <p>
- *
- * <p>The details of this object are taken from the <a
- * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor
- * Report (OGC 02-070) version 1.0.0.</a>:
- *
- * <pre><code>
- * &lt;xsd:element name="ExternalGraphic"&gt;
- *   &lt;xsd:annotation&gt;
- *     &lt;xsd:documentation&gt;
- *       An "ExternalGraphic" gives a reference to an external raster or
- *       vector graphical object.
- *     &lt;/xsd:documentation&gt;
- *   &lt;/xsd:annotation&gt;
- *   &lt;xsd:complexType&gt;
- *     &lt;xsd:sequence&gt;
- *       &lt;xsd:element ref="sld:OnlineResource"/&gt;
- *       &lt;xsd:element ref="sld:Format"/&gt;
- *     &lt;/xsd:sequence&gt;
- *   &lt;/xsd:complexType&gt;
- * &lt;/xsd:element&gt;
- * </code></pre>
- *
- * <p>Renderers can use this information when displaying styled features, though it must be
- * remembered that not all renderers will be able to fully represent strokes as set out by this
- * interface. For example, opacity may not be supported.
- *
- * <p>Notes:
- *
- * <ul>
- *   <li>The graphical parameters and their values are derived from SVG/CSS2 standards with names
- *       and semantics which are as close as possible.
- * </ul>
- *
- * @author James Macgill, CCG
+ * @author Ian Turton, CCG
  * @version $Id$
  */
-public interface ExternalGraphic extends org.geotools.api.style.ExternalGraphic, Symbol {
+public class ExternalGraphic implements  Symbol, Cloneable, org.geotools.api.style.ExternalGraphic {
     public static final ExternalGraphic[] EXTERNAL_GRAPHICS_EMPTY = new ExternalGraphic[0];
+    /** The logger for the default core module. */
+    // private static final java.util.logging.Logger LOGGER =
+    // org.geotools.util.logging.Logging.getLogger(ExternalGraphicImpl.class);
+    private Icon inlineContent;
 
-    /**
-     * Converts a URI in a string to the location URL
-     *
-     * @param uri the uri of the external graphic
-     */
-    public void setURI(String uri);
+    private OnLineResource online;
 
-    /**
-     * Returns the un-parsed URI for the mark (useful if the uri is using transformations or
-     * relative locations)
-     */
-    public String getURI();
+    private URL location = null;
+    private String format = null;
+    private String uri = null;
+    private Map<String, Object> customProps = null;
 
-    /**
-     * Provides the URL for where the external graphic resource can be located.
-     *
-     * <p>This method will be replaced by getOnlineResource().getLinkage() in 2.6.x
-     *
-     * @return The URL of the ExternalGraphic
-     * @throws MalformedURLException If the url held in the ExternalGraphic is malformed.
-     */
-    URL getLocation() throws MalformedURLException;
+    private final Set<ColorReplacement> colorReplacements;
 
-    /**
-     * Provides the URL for where the external graphic resource can be located.
-     *
-     * @param url The URL of the ExternalGraphic
-     */
-    void setLocation(URL url);
+    public ExternalGraphic() {
+        this(null, null, null);
+    }
+
+    public ExternalGraphic(
+            Icon icon, Collection<ColorReplacement> replaces, OnLineResource source) {
+        this.inlineContent = icon;
+        if (replaces == null) {
+            colorReplacements = new TreeSet<>();
+        } else {
+            colorReplacements = new TreeSet<>(replaces);
+        }
+        this.online = source;
+    }
+
+    public void setURI(String uri) {
+        this.uri = uri;
+    }
+
+    @Override
+    public String getURI() {
+        return this.uri;
+    }
 
     /**
      * Provides the format of the external graphic.
      *
-     * @param format The format of the external graphic. Reported as its MIME type in a String
-     *     object.
+     * @return The format of the external graphic. Reported as its MIME type in a String object.
      */
-    void setFormat(String format);
+    @Override
+    public String getFormat() {
+        return format;
+    }
 
     /**
-     * Custom properties; renderer may consult these values when drawing graphic.
+     * Provides the URL for where the external graphic resource can be located.
      *
-     * <p>The default GeoTools renderer uses the following:
-     *
-     * <ul>
-     *   <li>radius: 50
-     *   <li>circle color: #000066
-     *   <li>bar height:150
-     *   <li>bar color:"#000000
-     *   <li>bar uncertainty:50
-     *   <li>bar uncertainty width:5
-     *   <li>bar uncertainty color:"#999999
-     *   <li>pointer length:100
-     *   <li>pointer color: #FF0000
-     *   <li>pointer direction: 21
-     *   <li>wedge width: 25
-     *   <li>wedge color: #9999FF"
-     * </ul>
+     * @return The URL of the ExternalGraphic
+     * @throws MalformedURLException If unable to represent external graphic as a URL
      */
-    public void setCustomProperties(Map<String, Object> properties);
+    @Override
+    public java.net.URL getLocation() throws MalformedURLException {
+        if (uri == null) {
+            return null;
+        }
+        if (location == null) {
+            location = new URL(uri);
+        }
+
+        return location;
+    }
 
     /**
-     * Custom user supplied properties available when working with an external graphic.
+     * Setter for property Format.
      *
-     * @return properties
+     * @param format New value of property Format.
      */
-    public Map<String, Object> getCustomProperties();
+    public void setFormat(java.lang.String format) {
+        this.format = format;
+    }
+
+    /**
+     * Setter for property location.
+     *
+     * @param location New value of property location.
+     */
+    public void setLocation(java.net.URL location) {
+        if (location == null) {
+            throw new IllegalArgumentException("ExternalGraphic location URL cannot be null");
+        }
+        this.uri = location.toString();
+        this.location = location;
+    }
+
+    @Override
+    public Object accept(StyleVisitor visitor, Object data) {
+        return visitor.visit(this, data);
+    }
+
+    @Override
+    public void accept(StyleVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    /**
+     * Returns a clone of the ExternalGraphic
+     *
+     * @see org.geotools.styling.ExternalGraphic#clone()
+     */
+    @Override
+    public Object clone() {
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            // This will never happen
+            throw new AssertionError(e);
+        }
+    }
+
+    /**
+     * Generates a hashcode for the ExternalGraphic
+     *
+     * @return The hash code.
+     */
+    @Override
+    public int hashCode() {
+        final int PRIME = 1000003;
+        int result = 0;
+
+        if (format != null) {
+            result = (PRIME * result) + format.hashCode();
+        }
+
+        if (uri != null) {
+            result = (PRIME * result) + uri.hashCode();
+        }
+
+        return result;
+    }
+
+    /**
+     * Compares this ExternalGraphi with another.
+     *
+     * <p>Two external graphics are equal if they have the same uri and format.
+     *
+     * @param oth The other External graphic.
+     * @return True if this and the other external graphic are equal.
+     */
+    @Override
+    public boolean equals(Object oth) {
+        if (this == oth) {
+            return true;
+        }
+
+        if (oth instanceof ExternalGraphic) {
+            ExternalGraphic other = (ExternalGraphic) oth;
+
+            return Utilities.equals(uri, other.uri) && Utilities.equals(format, other.format);
+        }
+
+        return false;
+    }
+
+    @Override
+    public java.util.Map<String, Object> getCustomProperties() {
+        return customProps;
+    }
+
+    public void setCustomProperties(java.util.Map<String, Object> list) {
+        customProps = list;
+    }
+
+    @Override
+    public OnLineResource getOnlineResource() {
+        if (online == null) {
+            OnLineResourceImpl impl = new OnLineResourceImpl();
+            try {
+                impl.setLinkage(new URI(uri));
+            } catch (URISyntaxException e) {
+                throw new IllegalArgumentException(e);
+            }
+            online = impl;
+        }
+        return online;
+    }
+
+    public void setOnlineResource(OnLineResource online) {
+        this.online = online;
+    }
+
+    @Override
+    public Icon getInlineContent() {
+        return inlineContent;
+    }
+
+    public void setInlineContent(Icon inlineContent) {
+        this.inlineContent = inlineContent;
+    }
+
+    @Override
+    public Collection<ColorReplacement> getColorReplacements() {
+        return Collections.unmodifiableCollection(colorReplacements);
+    }
+
+    public Set<ColorReplacement> colorReplacements() {
+        return this.colorReplacements;
+    }
+
+    static GraphicalSymbol cast(GraphicalSymbol item) {
+        if (item == null) {
+            return null;
+        } else if (item instanceof ExternalGraphic) {
+            return item;
+        } else if (item instanceof org.geotools.api.style.ExternalGraphic) {
+            org.geotools.api.style.ExternalGraphic graphic =
+                    (org.geotools.api.style.ExternalGraphic) item;
+            ExternalGraphic copy = new ExternalGraphic();
+            copy.colorReplacements().addAll(graphic.getColorReplacements());
+            copy.setFormat(graphic.getFormat());
+            copy.setInlineContent(graphic.getInlineContent());
+            copy.setOnlineResource(graphic.getOnlineResource());
+
+            return copy;
+        }
+        return null;
+    }
 }

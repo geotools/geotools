@@ -114,7 +114,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
-import org.geotools.styling.UserLayer;
+import org.geotools.api.style.UserLayer;
 import org.geotools.util.Converters;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;

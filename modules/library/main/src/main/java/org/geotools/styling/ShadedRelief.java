@@ -13,46 +13,67 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
+ *
+ * Created on 13 November 2002, 13:59
  */
 package org.geotools.styling;
 
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.util.Utilities;
+import org.geotools.util.factory.GeoTools;
 
 /**
- * The ShadedRelief element selects the application of relief shading (or ?hill shading?) to an
- * image for a three-dimensional visual effect. It is defined as:
- *
- * <pre>
- * &lt;xs:element name="ShadedRelief"&gt;
- *   &lt;xs:complexType&gt;
- *     &lt;xs:sequence&gt;
- *       &lt;xs:element ref="sld:BrightnessOnly" minOccurs="0"/&gt;
- *       &lt;xs:element ref="sld:ReliefFactor" minOccurs="0"/&gt;
- *     &lt;/xs:sequence&gt;
- *   &lt;/xs:complexType&gt;
- * &lt;/xs:element&gt;
- * &lt;xs:element name="BrightnessOnly" type="xs:boolean"/&gt;
- * &lt;xs:element name="ReliefFactor" type="xs:double"/&gt;
- * </pre>
- *
- * Exact parameters of the shading are system-dependent (for now). If the BrightnessOnly flag is ?0?
- * (false, default), the shading is applied to the layer being rendered as the current RasterSymbol.
- * If BrightnessOnly is ?1? (true), the shading is applied to the brightness of the colors in the
- * rendering canvas generated so far by other layers, with the effect of relief-shading these other
- * layers. The default for BrightnessOnly is ?0? (false). The ReliefFactor gives the amount of
- * exaggeration to use for the height of the ?hills.? A value of around 55 (times) gives reasonable
- * results for Earth-based DEMs. The default value is system-dependent.
+ * Default implementation of ShadedRelief.
  *
  * @author iant
  */
-public interface ShadedRelief extends org.geotools.api.style.ShadedRelief {
+public class ShadedRelief implements  org.geotools.api.style.ShadedRelief {
+    private FilterFactory filterFactory;
+    private Expression reliefFactor;
+    private boolean brightness = false;
+
+    public ShadedRelief() {
+        this(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
+    }
+
+    public ShadedRelief(FilterFactory factory) {
+        filterFactory = factory;
+        reliefFactor = filterFactory.literal(55);
+    }
+
+    /**
+     * The ReliefFactor gives the amount of exaggeration to use for the height of the ?hills.? A
+     * value of around 55 (times) gives reasonable results for Earth-based DEMs. The default value
+     * is system-dependent.
+     *
+     * @return an expression which evaluates to a double.
+     */
+    @Override
+    public Expression getReliefFactor() {
+        return reliefFactor;
+    }
+
+    /**
+     * indicates if brightnessOnly is true or false. Default is false.
+     *
+     * @return boolean brightnessOn.
+     */
+    @Override
+    public boolean isBrightnessOnly() {
+        return brightness;
+    }
 
     /**
      * turns brightnessOnly on or off depending on value of flag.
      *
      * @param flag boolean
      */
-    public void setBrightnessOnly(boolean flag);
+    public void setBrightnessOnly(boolean flag) {
+        brightness = flag;
+    }
 
     /**
      * The ReliefFactor gives the amount of exaggeration to use for the height of the ?hills.? A
@@ -61,7 +82,61 @@ public interface ShadedRelief extends org.geotools.api.style.ShadedRelief {
      *
      * @param reliefFactor an expression which evaluates to a double.
      */
-    public void setReliefFactor(Expression reliefFactor);
+    public void setReliefFactor(Expression reliefFactor) {
+        this.reliefFactor = reliefFactor;
+    }
 
-    public void accept(org.geotools.styling.StyleVisitor visitor);
+    @Override
+    public Object accept(StyleVisitor visitor, Object data) {
+        return visitor.visit(this, data);
+    }
+
+    @Override
+    public void accept(StyleVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    @Override
+    public int hashCode() {
+        final int PRIME = 1000003;
+        int result = 0;
+
+        if (reliefFactor != null) {
+            result = (PRIME * result) + reliefFactor.hashCode();
+        }
+
+        result = (PRIME * result) + (brightness ? 1 : 0);
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj instanceof ShadedRelief) {
+            ShadedRelief other = (ShadedRelief) obj;
+
+            return Utilities.equals(reliefFactor, other.reliefFactor)
+                    && Utilities.equals(brightness, other.brightness);
+        }
+
+        return false;
+    }
+
+    static ShadedRelief cast(org.geotools.api.style.ShadedRelief shadedRelief) {
+        if (shadedRelief == null) {
+            return null;
+        } else if (shadedRelief instanceof ShadedRelief) {
+            return (ShadedRelief) shadedRelief;
+        } else {
+            ShadedRelief copy = new ShadedRelief();
+            copy.setBrightnessOnly(shadedRelief.isBrightnessOnly());
+            copy.setReliefFactor(shadedRelief.getReliefFactor());
+
+            return copy;
+        }
+    }
 }

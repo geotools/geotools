@@ -38,7 +38,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.ResourceLocator;
-import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.xml.styling.SLDParser;
 import org.geotools.ysld.encode.YsldEncoder;
 import org.geotools.ysld.parse.YsldParser;

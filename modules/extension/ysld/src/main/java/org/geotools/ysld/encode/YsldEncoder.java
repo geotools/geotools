@@ -19,7 +19,7 @@ package org.geotools.ysld.encode;
 
 import java.io.IOException;
 import java.io.Writer;
-import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.ysld.UomMapper;
 import org.geotools.ysld.YamlUtil;
 import org.yaml.snakeyaml.DumperOptions;

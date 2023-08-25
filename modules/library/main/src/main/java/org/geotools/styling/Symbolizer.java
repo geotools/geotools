@@ -22,6 +22,7 @@ import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.style.StyleVisitor;
 
 /**
  * This is the parent interface of all Symbolizers.
@@ -49,7 +50,7 @@ import org.geotools.api.filter.expression.PropertyName;
  * @version $Id$
  */
 public interface Symbolizer extends org.geotools.api.style.Symbolizer {
-    void accept(org.geotools.styling.StyleVisitor visitor);
+    void accept(StyleVisitor visitor);
 
     /**
      * Defines a measure unit for the symbolizer. This parameter is inherited from GML. Renderers

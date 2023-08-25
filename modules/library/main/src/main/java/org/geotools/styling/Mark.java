@@ -13,52 +13,94 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
- *
  */
 package org.geotools.styling;
 
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.util.Cloneable;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.util.factory.GeoTools;
 
 /**
- * A Mark element defines a "shape" which has coloring applied to it.
+ * Default implementation of Mark.
  *
- * <p>The details of this object are taken from the <a
- * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor
- * Report (OGC 02-070) version 1.0.0.</a>:
- *
- * <pre><code>
- * &lt;xsd:element name="Mark"&gt;
- *   &lt;xsd:annotation&gt;
- *     &lt;xsd:documentation&gt;
- *       A "Mark" specifies a geometric shape and applies coloring to it.
- *     &lt;/xsd:documentation&gt;
- *   &lt;/xsd:annotation&gt;
- *   &lt;xsd:complexType&gt;
- *     &lt;xsd:sequence&gt;
- *       &lt;xsd:element ref="sld:WellKnownName" minOccurs="0"/&gt;
- *       &lt;xsd:element ref="sld:Fill" minOccurs="0"/&gt;
- *       &lt;xsd:element ref="sld:Stroke" minOccurs="0"/&gt;
- *     &lt;/xsd:sequence&gt;
- *   &lt;/xsd:complexType&gt;
- * &lt;/xsd:element&gt;
- * </code></pre>
- *
- * <p>Renderers can use this information when displaying styled features, though it must be
- * remembered that not all renderers will be able to fully represent strokes as set out by this
- * interface. For example, opacity may not be supported.
- *
- * <p>Notes:
- *
- * <ul>
- *   <li>The graphical parameters and their values are derived from SVG/CSS2 standards with names
- *       and semantics which are as close as possible.
- * </ul>
- *
- * @author James Macgill
+ * @author Ian Turton, CCG
+ * @author Johann Sorel (Geomatys)
  * @version $Id$
  */
-public interface Mark extends org.geotools.api.style.Mark, Symbol {
+public class Mark implements Cloneable, org.geotools.api.style.Mark, Symbol {
+
     public static final Mark[] MARKS_EMPTY = new Mark[0];
+    /** The logger for the default core module. */
+    private static final java.util.logging.Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(Mark.class);
+
+    private final FilterFactory filterFactory;
+    private Fill fill;
+    private Stroke stroke;
+
+    private ExternalMark external;
+    private Expression wellKnownName = null;
+
+    /** Creates a new instance of DefaultMark */
+    public Mark() {
+        this(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()), null);
+    }
+
+    public Mark(String name) {
+        this(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()), null);
+        LOGGER.fine("creating " + name + " type mark");
+        setWellKnownName(name);
+    }
+
+    public Mark(FilterFactory filterFactory, ExternalMark external) {
+        this.filterFactory = filterFactory;
+        LOGGER.fine("creating defaultMark");
+
+        try {
+            StyleFactory sfac = new StyleFactory();
+            fill = Fill.cast(sfac.getDefaultFill());
+            stroke = Stroke.cast(sfac.getDefaultStroke());
+
+            wellKnownName = filterFactory.literal("square");
+        } catch (org.geotools.filter.IllegalFilterException ife) {
+            severe("<init>", "Failed to build default mark: ", ife);
+        }
+        this.external = ExternalMark.cast(external);
+    }
+
+    /** Convenience method for logging a message with an exception. */
+    private static void severe(
+            final String method, final String message, final Exception exception) {
+        final java.util.logging.LogRecord record =
+                new java.util.logging.LogRecord(java.util.logging.Level.SEVERE, message);
+        record.setSourceMethodName(method);
+        record.setThrown(exception);
+        LOGGER.log(record);
+    }
+
+    /**
+     * This parameter defines which fill style to use when rendering the Mark.
+     *
+     * @return the Fill definition to use when rendering the Mark.
+     */
+    @Override
+    public Fill getFill() {
+        return fill;
+    }
+
+    /**
+     * This parameter defines which stroke style should be used when rendering the Mark.
+     *
+     * @return The Stroke definition to use when rendering the Mark.
+     */
+    @Override
+    public Stroke getStroke() {
+        return stroke;
+    }
 
     /**
      * This parameter gives the well-known name of the shape of the mark.<br>
@@ -69,63 +111,188 @@ public interface Mark extends org.geotools.api.style.Mark, Symbol {
      * @return The well-known name of a shape. The default value is "square".
      */
     @Override
-    Expression getWellKnownName();
+    public Expression getWellKnownName() {
+        return wellKnownName;
+    }
 
     /**
-     * This parameter gives the well-known name of the shape of the mark.<br>
-     * Allowed names include at least "square", "circle", "triangle", "star", "cross" and "x" though
-     * renderers may draw a different symbol instead if they don't have a shape for all of these.
-     * <br>
+     * Setter for property fill.
      *
-     * @param wellKnownName The well-known name of a shape. The default value is "square".
+     * @param fill New value of property fill.
      */
-    void setWellKnownName(Expression wellKnownName);
+    public void setFill(org.geotools.api.style.Fill fill) {
+        this.fill = Fill.cast(fill);
+    }
 
     /**
-     * This paramterer defines which stroke style should be used when rendering the Mark.
+     * Setter for property stroke.
      *
-     * @return The Stroke definition to use when rendering the Mark.
+     * @param stroke New value of property stroke.
      */
-    @Override
-    Stroke getStroke();
+    public void setStroke(org.geotools.api.style.Stroke stroke) {
+        this.stroke = Stroke.cast(stroke);
+    }
 
     /**
-     * This paramterer defines which stroke style should be used when rendering the Mark.
+     * Setter for property wellKnownName.
      *
-     * @param stroke The Stroke definition to use when rendering the Mark.
+     * @param wellKnownName New value of property wellKnownName.
      */
-    void setStroke(org.geotools.api.style.Stroke stroke);
+    public void setWellKnownName(Expression wellKnownName) {
+        LOGGER.entering("DefaultMark", "setWellKnownName");
+        this.wellKnownName = wellKnownName;
+    }
 
-    /**
-     * This parameter defines which fill style to use when rendering the Mark.
-     *
-     * @return the Fill definition to use when rendering the Mark.
-     */
-    @Override
-    Fill getFill();
-
-    /**
-     * This parameter defines which fill style to use when rendering the Mark.
-     *
-     * @param fill the Fill definition to use when rendering the Mark.
-     */
-    void setFill(org.geotools.api.style.Fill fill);
-
-    /**
-     * Mark defined by an external resource.
-     *
-     * @return ExternalMark or null if WellKNownName is being used
-     */
-    @Override
-    ExternalMark getExternalMark();
-
-    /**
-     * Mark defined by an external resource.
-     *
-     * @param externalMark Indicate an mark defined by an external resource
-     */
-    void setExternalMark(org.geotools.api.style.ExternalMark externalMark);
+    public void setWellKnownName(String name) {
+        setWellKnownName(filterFactory.literal(name));
+    }
 
     @Override
-    void accept(org.geotools.styling.StyleVisitor visitor);
+    public String toString() {
+        return wellKnownName.toString();
+    }
+
+    @Override
+    public Object accept(StyleVisitor visitor, Object data) {
+        return visitor.visit(this, data);
+    }
+
+    @Override
+    public void accept(StyleVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    /**
+     * Creates a deep copy of the Mark.
+     *
+     * <p>Only the fill and stroke are cloned since Expressions should be immutable.
+     *
+     * @see org.geotools.styling.Mark#clone()
+     */
+    @Override
+    public Object clone() {
+        try {
+            Mark clone = (Mark) super.clone();
+            if (fill != null) {
+                clone.fill = (Fill) ((Cloneable) fill).clone();
+            }
+            if (stroke != null && stroke instanceof Cloneable) {
+                clone.stroke = (Stroke) ((Cloneable) stroke).clone();
+            }
+
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            // this will never happen
+            throw new RuntimeException("Failed to clone MarkImpl");
+        }
+    }
+
+    /**
+     * The hashcode override for the MarkImpl.
+     *
+     * @return the Hashcode.
+     */
+    @Override
+    public int hashCode() {
+        final int PRIME = 1000003;
+        int result = 0;
+
+        if (fill != null) {
+            result = (PRIME * result) + fill.hashCode();
+        }
+
+        if (stroke != null) {
+            result = (PRIME * result) + stroke.hashCode();
+        }
+
+        if (wellKnownName != null) {
+            result = (PRIME * result) + wellKnownName.hashCode();
+        }
+
+        return result;
+    }
+
+    /**
+     * Compares this MarkImpl with another for equality.
+     *
+     * <p>Two MarkImpls are equal if they have the same well Known Name, the same size and rotation
+     * and the same stroke and fill.
+     *
+     * @param oth The Other MarkImpl to compare with.
+     * @return True if this and oth are equal.
+     */
+    @Override
+    public boolean equals(Object oth) {
+        if (this == oth) {
+            return true;
+        }
+
+        if (oth == null) {
+            return false;
+        }
+
+        if (oth.getClass() != getClass()) {
+            return false;
+        }
+
+        Mark other = (Mark) oth;
+
+        // check expressions first - easiest
+        if (this.wellKnownName == null) {
+            if (other.wellKnownName != null) {
+                return false;
+            }
+        } else {
+            if (!this.wellKnownName.equals(other.wellKnownName)) {
+                return false;
+            }
+        }
+
+        if (this.fill == null) {
+            if (other.fill != null) {
+                return false;
+            }
+        } else {
+            if (!this.fill.equals(other.fill)) {
+                return false;
+            }
+        }
+
+        if (this.stroke == null) {
+            if (other.stroke != null) {
+                return false;
+            }
+        } else {
+            if (!this.stroke.equals(other.stroke)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public ExternalMark getExternalMark() {
+        return external;
+    }
+
+    public void setExternalMark(org.geotools.api.style.ExternalMark external) {
+        this.external = ExternalMark.cast(external);
+    }
+
+    static Mark cast(GraphicalSymbol item) {
+        if (item == null) {
+            return null;
+        } else if (item instanceof Mark) {
+            return (Mark) item;
+        } else if (item instanceof Mark) {
+            Mark mark = (Mark) item;
+            Mark copy = new Mark();
+            copy.setStroke(mark.getStroke());
+            copy.setWellKnownName(mark.getWellKnownName());
+            copy.setExternalMark(mark.getExternalMark());
+            return copy;
+        }
+        return null;
+    }
 }

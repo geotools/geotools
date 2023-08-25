@@ -33,7 +33,7 @@ import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.GraphicImpl;
+import org.geotools.styling.Graphic;
 import org.geotools.styling.GraphicLegend;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
@@ -231,8 +231,8 @@ public class StyledShapePainterTest {
     public void testGraphicLegend2() throws Exception {
 
         StyledShapePainter painter = new StyledShapePainter();
-        GraphicImpl legend =
-                new GraphicImpl(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
+        Graphic legend =
+                new Graphic(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         legend.setRotation(ff.literal(0));
         legend.setOpacity(ff.literal(1));

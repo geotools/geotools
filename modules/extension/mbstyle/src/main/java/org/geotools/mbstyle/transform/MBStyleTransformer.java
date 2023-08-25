@@ -34,7 +34,7 @@ import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.util.logging.Logging;
 
 /**

@@ -104,7 +104,7 @@ public class LabelWrapTest {
     @Test
     public void testAutoWrapWithIncreasedSpacing() throws Exception {
         Style spacedStyle =
-                getCharSpacedStyle("textWrapEnabled.sld", TextSymbolizer.CHAR_SPACING_KEY, 5);
+                getCharSpacedStyle("textWrapEnabled.sld", org.geotools.api.style.TextSymbolizer.CHAR_SPACING_KEY, 5);
         BufferedImage image =
                 renderLabels(fs, spacedStyle, "Label wrap enabled with extra char spacing");
         String refPath =
@@ -115,7 +115,7 @@ public class LabelWrapTest {
     @Test
     public void testAutoWrapWithDecreasedSpacing() throws Exception {
         Style spacedStyle =
-                getCharSpacedStyle("textWrapEnabled.sld", TextSymbolizer.CHAR_SPACING_KEY, -2);
+                getCharSpacedStyle("textWrapEnabled.sld", org.geotools.api.style.TextSymbolizer.CHAR_SPACING_KEY, -2);
         BufferedImage image =
                 renderLabels(fs, spacedStyle, "Label wrap enabled with extra char spacing");
         String refPath =
@@ -126,7 +126,7 @@ public class LabelWrapTest {
     @Test
     public void testAutoWrapWithIncreasedWordSpacing() throws Exception {
         Style spacedStyle =
-                getCharSpacedStyle("textWrapEnabled.sld", TextSymbolizer.WORD_SPACING_KEY, 15);
+                getCharSpacedStyle("textWrapEnabled.sld", org.geotools.api.style.TextSymbolizer.WORD_SPACING_KEY, 15);
         BufferedImage image =
                 renderLabels(fs, spacedStyle, "Label wrap enabled with extra char spacing");
         String refPath =

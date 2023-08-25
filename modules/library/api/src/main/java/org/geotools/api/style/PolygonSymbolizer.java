@@ -24,28 +24,24 @@ import org.geotools.api.filter.expression.Expression;
 public interface PolygonSymbolizer extends Symbolizer {
 
     /**
-     * Returns the object containing all the information necessary to draw styled lines. This is
-     * used for the edges of polygons.
+     * Provides the graphical-symbolization parameter to use for the outline of the Polygon.
      *
-     * @return Stroke
+     * @return The Stroke style to use when rendering lines.
      */
     Stroke getStroke();
 
     /**
-     * Returns the object that holds the information about how the interior of polygons should be
-     * filled. This may be null if the polygons are not to be filled at all.
+     * Provides the graphical-symbolization parameter to use to fill the area of the geometry. Note
+     * that the area should be filled first before the outline is rendered.
      *
-     * @return Fill
+     * @return The Fill style to use when rendering the area.
      */
     Fill getFill();
 
     /**
-     * The Displacement gives the X and Y displacements from the original geometry. This element may
-     * be used to avoid over-plotting of multiple PolygonSymbolizers for one geometry or supplying
-     * "shadows" of polygon gemeotries. The displacements are in units of pixels above and to the
-     * right of the point. The default displacement is X=0, Y=0.
+     * Displacement from the original geometry in pixels.
      *
-     * @return Displacement
+     * @return Displacement above and to the right of the indicated point; default x=0, y=0
      */
     Displacement getDisplacement();
 

@@ -14,33 +14,15 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.styling;
+package org.geotools.api.style;
 
-import org.geotools.api.filter.expression.Expression;
+/**
+ * 'StyledLayer' is not part of the SLD 1.0 spec. We're currently used it as a parent interface for
+ * NamedLayer and UserLayer.
+ *
+ * <p>TODO: investigate why this is here.
+ */
+public interface StyledLayer {
+    public String getName();
 
-public class OtherTextImpl implements OtherText {
-
-    String location;
-
-    Expression text;
-
-    @Override
-    public String getTarget() {
-        return location;
-    }
-
-    @Override
-    public void setTarget(String location) {
-        this.location = location;
-    }
-
-    @Override
-    public Expression getText() {
-        return text;
-    }
-
-    @Override
-    public void setText(Expression text) {
-        this.text = text;
-    }
 }

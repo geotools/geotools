@@ -104,7 +104,7 @@ public class VendorSymbolizerImpl extends AbstractSymbolizer implements Extensio
     }
 
     @Override
-    public void accept(org.geotools.styling.StyleVisitor visitor) {
+    public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }
 }

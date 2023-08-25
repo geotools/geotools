@@ -14,6 +14,7 @@ import static org.geotools.api.annotation.Obligation.OPTIONAL;
 import static org.geotools.api.annotation.Specification.ISO_19117;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.geotools.api.annotation.UML;
 import org.geotools.api.feature.type.Name;
@@ -44,11 +45,11 @@ public interface FeatureTypeStyle {
     String getName();
 
     /**
-     * Returns the description of this style.
+     * Description for this style.
      *
-     * @return Description with usual informations used for user interfaces.
+     * @return Human readable description for use in user interfaces
+     * @since 2.5.x
      */
-    @UML(identifier = "description", obligation = OPTIONAL, specification = ISO_19117)
     Description getDescription();
 
     /**
@@ -112,10 +113,12 @@ public interface FeatureTypeStyle {
      */
     OnLineResource getOnlineResource();
 
+    void accept(StyleVisitor visitor);
+
     /**
-     * gets the transformation as expression
-     *
-     * @return Transformation or null
+     * The eventual transformation to be applied before rendering the data (should be an expression
+     * taking a feature collection or a grid coverage as the evaluation context and returns a
+     * feature collection or a grid coverage as an output)
      */
     Expression getTransformation();
 
@@ -125,4 +128,38 @@ public interface FeatureTypeStyle {
      * @param visitor the style visitor
      */
     Object accept(StyleVisitor visitor, Object extraData);
+
+    /**
+     * Sets the eventual transformation to be applied before rendering the data (should be an
+     * expression taking a feature collection or a grid coverage as an input and returns a feature
+     * collection or a grid coverage as an output)
+     */
+    void setTransformation(Expression transformation);
+
+    /** Determines if a vendor option with the specific key has been set on this symbolizer. */
+    boolean hasOption(String key);
+
+    /**
+     * Map of vendor options for the symbolizer.
+     *
+     * <p>Client code looking for the existence of a single option should use {@link
+     * #hasOption(String)}
+     */
+    Map<String, String> getOptions();
+
+    enum RenderingSelectionOptions {
+        NORMAL("normal"),
+        LEGENDONLY("legendOnly"),
+        MAPONLY("mapOnly");
+
+        private String option;
+
+        RenderingSelectionOptions(String option) {
+            this.option = option;
+        }
+
+        public String getOption() {
+            return option;
+        }
+    }
 }

@@ -401,7 +401,7 @@ public class StyleObjectTest {
     @Test
     public void testFeatureStyleImplCopy() throws Exception {
         // create FeatureTypeStyleImpl
-        FeatureTypeStyle fts = new FeatureTypeStyleImpl();
+        FeatureTypeStyle fts = new FeatureTypeStyle();
         Assert.assertNull(fts.getTransformation());
         Assert.assertNull(fts.getOnlineResource());
 
@@ -418,7 +418,7 @@ public class StyleObjectTest {
         Assert.assertEquals(fts.getOnlineResource(), new OnLineResourceImpl());
 
         // create copy fts2 from fts
-        FeatureTypeStyleImpl fts2 = new FeatureTypeStyleImpl(fts);
+        FeatureTypeStyle fts2 = new FeatureTypeStyle(fts);
 
         // test if values are equal and thus copied
         Assert.assertEquals(fts.getTransformation(), fts2.getTransformation());

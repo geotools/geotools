@@ -25,20 +25,15 @@ import org.geotools.api.util.InternationalString;
 public interface Description {
 
     /**
-     * Returns the human readable title of this style. This can be any string, but should be fairly
-     * short as it is intended to be used in list boxes or drop down menus or other selection
-     * interfaces.
+     * Human readable title.
      *
-     * @return the human readable title of this style.
+     * <p>
+     *
+     * @return the human readable title.
      */
     InternationalString getTitle();
 
-    /**
-     * Returns a human readable, prose description of this style. This can be any string and can
-     * consist of any amount of text.
-     *
-     * @return a human readable, prose description of this style.
-     */
+    /** Human readable description. */
     InternationalString getAbstract();
 
     /**
@@ -47,4 +42,11 @@ public interface Description {
      * @param visitor the style visitor
      */
     Object accept(StyleVisitor visitor, Object extraData);
+
+    /**
+     * calls the visit method of a StyleVisitor
+     *
+     * @param visitor the style visitor
+     */
+    void accept(StyleVisitor visitor);
 }

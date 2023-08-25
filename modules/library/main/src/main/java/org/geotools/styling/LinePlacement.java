@@ -14,66 +14,226 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-
 package org.geotools.styling;
 
+import java.util.logging.Logger;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.LabelPlacement;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.util.Cloneable;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.util.Utilities;
+import org.geotools.util.factory.GeoTools;
 
 /**
- * The "LinePlacement" specifies where and how a text label should be rendered relative to a line.
- *
- * <p>The details of this object are taken from the <a
- * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor
- * Report (OGC 02-070) version 1.0.0.</a>:
- *
- * <pre><code>
- * &lt;xsd:element name="LinePlacement"&gt;
- *   &lt;xsd:annotation&gt;
- *     &lt;xsd:documentation&gt;
- *       A "LinePlacement" specifies how a text label should be rendered
- *       relative to a linear geometry.
- *     &lt;/xsd:documentation&gt;
- *   &lt;/xsd:annotation&gt;
- *   &lt;xsd:complexType&gt;
- *     &lt;xsd:sequence&gt;
- *       &lt;xsd:element ref="sld:PerpendicularOffset" minOccurs="0"/&gt;
- *     &lt;/xsd:sequence&gt;
- *   &lt;/xsd:complexType&gt;
- * &lt;/xsd:element&gt;
- * </code></pre>
- *
- * <p>$Id$
+ * Default implementation of LinePlacement.
  *
  * @author Ian Turton, CCG
+ * @author Johann Sorel (Geomatys)
+ * @version $Id$
  */
-public interface LinePlacement extends org.geotools.api.style.LinePlacement, LabelPlacement {
+public class LinePlacement implements Cloneable, org.geotools.api.style.LinePlacement, LabelPlacement {
+    /** The logger for the default core module. */
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(LinePlacement.class);
 
-    /** Correct method name violation from GeoAPI. */
-    @Override
-    boolean isAligned();
+    private FilterFactory filterFactory;
+
+    private Expression perpendicularOffset;
+    private boolean generalized;
+    private boolean aligned;
+    private boolean repeated;
+    private Expression gap;
+    private Expression initialGap;
+
+    public LinePlacement() {
+        this(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
+    }
+
+    public LinePlacement(org.geotools.api.style.LinePlacement placement) {
+        this.gap = placement.getGap();
+        this.initialGap = placement.getInitialGap();
+        this.generalized = placement.isGeneralizeLine();
+        this.perpendicularOffset = placement.getPerpendicularOffset();
+        this.repeated = placement.isRepeated();
+        this.aligned = placement.isAligned();
+    }
+
+    public LinePlacement(FilterFactory factory) {
+        this(factory, false, false, false, null, null);
+    }
+
+    public LinePlacement(
+            FilterFactory factory,
+            boolean aligned,
+            boolean repeated,
+            boolean generalized,
+            Expression gap,
+            Expression initialGap) {
+        filterFactory = factory;
+        this.gap = gap;
+        this.initialGap = initialGap;
+        this.generalized = generalized;
+        this.aligned = aligned;
+        this.repeated = repeated;
+        init();
+    }
+
+    /** Creates a new instance of DefaultLinePlacement */
+    private void init() {
+        try {
+            perpendicularOffset = filterFactory.literal(0);
+        } catch (org.geotools.filter.IllegalFilterException ife) {
+            LOGGER.severe("Failed to build defaultLinePlacement: " + ife);
+        }
+    }
 
     /**
-     * Returns the expression that is used to compute how far from the lines the text will be drawn.
-     * The distance must evaluate to a non-negative number.
+     * Getter for property perpendicularOffset.
      *
-     * @return compute how far from the line the text will be drawn
+     * @return Value of property perpendicularOffset.
      */
     @Override
-    Expression getPerpendicularOffset();
+    public Expression getPerpendicularOffset() {
+        return perpendicularOffset;
+    }
 
     /**
-     * Sets the expression that is used to compute how far from the lines the text will be drawn.
-     * See {@link #getPerpendicularOffset} for details.
+     * Setter for property perpendicularOffset.
+     *
+     * @param perpendicularOffset New value of property perpendicularOffset.
      */
-    void setPerpendicularOffset(Expression offset);
+    public void setPerpendicularOffset(Expression perpendicularOffset) {
+        this.perpendicularOffset = perpendicularOffset;
+    }
 
-    public void setRepeated(boolean repeated);
+    @Override
+    public Expression getInitialGap() {
+        return initialGap;
+    }
 
-    public void setGeneralized(boolean generalized);
+    @Override
+    public Expression getGap() {
+        return gap;
+    }
 
-    public void setAligned(boolean aligned);
+    @Override
+    public boolean isRepeated() {
+        return repeated;
+    }
 
-    public void setGap(Expression gap);
+    @Override
+    public boolean isAligned() {
+        return aligned;
+    }
 
-    public void setInitialGap(Expression initialGap);
+    @Override
+    public boolean isGeneralizeLine() {
+        return generalized;
+    }
+
+    @Override
+    public Object accept(StyleVisitor visitor, Object data) {
+        return visitor.visit(this, data);
+    }
+
+    @Override
+    public void accept(StyleVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    /* (non-Javadoc)
+     * @see Cloneable#clone()
+     */
+    @Override
+    public Object clone() {
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("This can not happen");
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj instanceof LinePlacement) {
+            LinePlacement other = (LinePlacement) obj;
+
+            return Utilities.equals(perpendicularOffset, other.perpendicularOffset)
+                    && Utilities.equals(repeated, other.repeated)
+                    && Utilities.equals(generalized, other.generalized)
+                    && Utilities.equals(aligned, other.aligned)
+                    && Utilities.equals(initialGap, other.initialGap)
+                    && Utilities.equals(gap, other.gap);
+        }
+
+        return false;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int PRIME = 37;
+        int result = 17;
+
+        if (perpendicularOffset != null) {
+            result = (result * PRIME) + perpendicularOffset.hashCode();
+        }
+
+        if (gap != null) {
+            result = (result * PRIME) + gap.hashCode();
+        }
+
+        if (initialGap != null) {
+            result = (result * PRIME) + initialGap.hashCode();
+        }
+
+        result = (result * PRIME) + Boolean.valueOf(generalized).hashCode();
+        result = (result * PRIME) + Boolean.valueOf(aligned).hashCode();
+        result = (result * PRIME) + Boolean.valueOf(repeated).hashCode();
+
+        return result;
+    }
+
+    static LinePlacement cast(org.geotools.api.style.LabelPlacement placement) {
+        if (placement == null) {
+            return null;
+        } else if (placement instanceof LinePlacement) {
+            return (LinePlacement) placement;
+        } else if (placement instanceof LinePlacement) {
+            LinePlacement copy = new LinePlacement((LinePlacement) placement);
+            return copy;
+        }
+        return null;
+    }
+
+    public void setRepeated(boolean repeated) {
+        this.repeated = repeated;
+    }
+
+    public void setGeneralized(boolean generalized) {
+        this.generalized = generalized;
+    }
+
+    public void setAligned(boolean aligned) {
+        this.aligned = aligned;
+    }
+
+    public void setGap(Expression gap) {
+        this.gap = gap;
+    }
+
+    public void setInitialGap(Expression initialGap) {
+        this.initialGap = initialGap;
+    }
 }

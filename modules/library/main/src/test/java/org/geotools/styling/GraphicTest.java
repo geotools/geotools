@@ -21,7 +21,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /** This test case captures specific problems encountered with the GraphicImpl code. */
-public class GraphicImplTest {
+public class GraphicTest {
 
     /** Checks if creating a Graphic with an ExternalGraphics works. */
     @Test

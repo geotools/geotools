@@ -40,4 +40,19 @@ public interface ColorMap {
      * @param visitor the style visitor
      */
     Object accept(StyleVisitor visitor, Object extraData);
+
+    ColorMapEntry[] getColorMapEntries();
+
+    ColorMapEntry getColorMapEntry(int i);
+
+    /**
+     * Type of color map; matchinges the function returned by getFunction().getName()
+     *
+     * @return One of TYPE_RAMP, TYPE_INTERVALS, or TYPE_VALUE
+     */
+    int getType();
+
+    void accept(StyleVisitor visitor);
+
+    boolean getExtendedColors();
 }

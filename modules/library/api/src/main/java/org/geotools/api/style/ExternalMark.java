@@ -26,27 +26,36 @@ import org.geotools.api.metadata.citation.OnLineResource;
 public interface ExternalMark {
 
     /**
-     * Returns on online resource defined by an URI.
+     * Online resource defined by an URI.
      *
-     * <p>Both OnlineResource and InlineContent can't be null and both can't be set at the same
-     * time.
+     * <p>Only one of OnlineResource or InlineContent can be supplied.
      *
-     * @return OnlineResource or null
+     * @return OnlineResource or <code>null</code>
      */
     OnLineResource getOnlineResource();
 
     /**
-     * Returns on inline content.
+     * Inline content.
      *
-     * <p>Both OnlineResource and InlineContent can't be null and both can't be set at the same
-     * time.
+     * <p>Only one of OnlineResource or InlineContent can be supplied.
      *
-     * @return InlineContent or null
+     * @return InlineContent or <code>null</code>
      */
     Icon getInlineContent();
 
     /**
-     * Returns the mime type of the onlineResource/InlineContent
+     * Mime type of the onlineResource/InlineContent
+     *
+     * <p>Common examples:
+     *
+     * <ul>
+     *   <li>image/svg
+     *   <li>image/png
+     *   <li>image/gif
+     * </ul>
+     *
+     * This information is used by a renderer to determine if it can support the image format being
+     * supplied.
      *
      * @return mime type
      */

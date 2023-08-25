@@ -19,7 +19,7 @@ package org.geotools.sld.bindings;
 import javax.xml.namespace.QName;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.styling.ColorMapEntry;
+import org.geotools.api.style.ColorMapEntry;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;

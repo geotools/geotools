@@ -26,7 +26,7 @@ import org.junit.Test;
  *
  * @author Burkhard Strauss
  */
-public class FeatureTypeStyleImplTest {
+public class FeatureTypeStyleTest {
 
     /** Checks if clone method works. */
     @Test
@@ -36,7 +36,7 @@ public class FeatureTypeStyleImplTest {
         final Symbolizer symbolizer = sb.createPointSymbolizer();
         final Rule rule = sb.createRule(symbolizer);
 
-        final FeatureTypeStyleImpl original = new FeatureTypeStyleImpl(new Rule[] {rule});
+        final FeatureTypeStyle original = new FeatureTypeStyle(new Rule[] {rule});
         Assert.assertNotNull("orig: rules must not be null", original.rules());
         Assert.assertEquals("orig: one rule expected", 1, original.rules().size());
         original.featureTypeNames().add(new NameImpl("MyFeatureType1"));

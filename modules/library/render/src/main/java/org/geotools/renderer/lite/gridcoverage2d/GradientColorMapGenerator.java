@@ -25,9 +25,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.util.ColorConverterFactory;
 import org.geotools.filter.FilterFactoryImpl;
-import org.geotools.styling.ColorMap;
 import org.geotools.styling.ColorMapEntry;
-import org.geotools.styling.ColorMapEntryImpl;
 import org.geotools.styling.ColorMapImpl;
 import org.geotools.util.Converter;
 import org.geotools.util.SoftValueHashMap;
@@ -121,17 +119,17 @@ public class GradientColorMapGenerator {
         // Adding transparent color entry before the min
         final double offset = 0 /* intervals ? 0 : 1E-2 */;
         double start = min - offset;
-        ColorMapEntry startEntry = entries[0].getColorMapEntry(start);
+        org.geotools.api.style.ColorMapEntry startEntry = entries[0].getColorMapEntry(start);
         fillColorInEntry(startEntry, beforeColor);
         colorMap.addColorMapEntry(startEntry);
 
         if (intervals) {
-            colorMap.setType(ColorMap.TYPE_INTERVALS);
+            colorMap.setType(ColorMapImpl.TYPE_INTERVALS);
             for (int i = 1; i < numEntries - 1; i += 2) {
                 colorMap.addColorMapEntry(entries[i].getColorMapEntry(min, range));
             }
         } else {
-            colorMap.setType(ColorMap.TYPE_RAMP);
+            colorMap.setType(ColorMapImpl.TYPE_RAMP);
             for (int i = 0; i < numEntries - 1; i++) {
                 colorMap.addColorMapEntry(entries[i].getColorMapEntry(min, range));
             }
@@ -139,14 +137,14 @@ public class GradientColorMapGenerator {
         colorMap.addColorMapEntry(entries[numEntries - 1].getColorMapEntry(max));
 
         // Adding transparent color entry after the max
-        ColorMapEntry endEntry = entries[numEntries - 1].getColorMapEntry(max + offset);
+        org.geotools.api.style.ColorMapEntry endEntry = entries[numEntries - 1].getColorMapEntry(max + offset);
         fillColorInEntry(endEntry, afterColor);
         colorMap.addColorMapEntry(endEntry);
 
         return colorMap;
     }
 
-    private void fillColorInEntry(ColorMapEntry startEntry, Color color) {
+    private void fillColorInEntry(org.geotools.api.style.ColorMapEntry startEntry, Color color) {
         if (color == null) {
             color = TRANSPARENT;
         }
@@ -179,12 +177,12 @@ public class GradientColorMapGenerator {
         private double percentage;
         private Color color;
 
-        private ColorMapEntry getColorMapEntry(double value) {
+        private org.geotools.api.style.ColorMapEntry getColorMapEntry(double value) {
             return getColorMapEntry(value, Double.NaN);
         }
 
-        private ColorMapEntry getColorMapEntry(double min, double range) {
-            ColorMapEntry entry = new ColorMapEntryImpl();
+        private org.geotools.api.style.ColorMapEntry getColorMapEntry(double min, double range) {
+            org.geotools.api.style.ColorMapEntry entry = new ColorMapEntry();
             entry.setOpacity(filterFactory.literal(opacity));
             entry.setColor(filterFactory.literal(toHexColor(color)));
             entry.setQuantity(

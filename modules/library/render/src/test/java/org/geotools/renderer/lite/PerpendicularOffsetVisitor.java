@@ -17,7 +17,6 @@
 package org.geotools.renderer.lite;
 
 import org.geotools.styling.LinePlacement;
-import org.geotools.styling.LinePlacementImpl;
 import org.geotools.styling.Style;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
@@ -55,7 +54,7 @@ class PerpendicularOffsetVisitor extends DuplicatingStyleVisitor {
         // do we have follow line without line placement?
         if (ts.getLabelPlacement() == null
                 && "true".equalsIgnoreCase(ts.getOptions().get("followLine"))) {
-            ts.setLabelPlacement(new LinePlacementImpl());
+            ts.setLabelPlacement(new LinePlacement());
         }
     }
 }

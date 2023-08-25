@@ -21,11 +21,7 @@ import static org.junit.Assert.assertEquals;
 import java.awt.Color;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.*;
 import org.junit.Before;
 import org.junit.Test;
 import si.uom.SI;
@@ -64,10 +60,10 @@ public class DpiRescaleStyleVisitorTest {
         assertEquals(20.0f, clone.getDashArray()[1], 0f);
 
         TextSymbolizer ts = sb.createTextSymbolizer();
-        ts.getOptions().put(TextSymbolizer.SPACE_AROUND_KEY, "10");
+        ts.getOptions().put(org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY, "10");
         ts.accept(visitor);
         TextSymbolizer clonedTs = (TextSymbolizer) visitor.getCopy();
-        assertEquals("20.0", clonedTs.getOptions().get(TextSymbolizer.SPACE_AROUND_KEY));
+        assertEquals("20.0", clonedTs.getOptions().get(org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY));
     }
 
     @Test
@@ -83,11 +79,11 @@ public class DpiRescaleStyleVisitorTest {
         assertEquals(10f, clone.getDashArray()[1], 0f);
 
         TextSymbolizer ts = sb.createTextSymbolizer();
-        ts.getOptions().put(TextSymbolizer.SPACE_AROUND_KEY, "10");
+        ts.getOptions().put(org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY, "10");
         ts.setUnitOfMeasure(SI.METRE);
         ts.accept(visitor);
         TextSymbolizer clonedTs = (TextSymbolizer) visitor.getCopy();
-        assertEquals("10.0", clonedTs.getOptions().get(TextSymbolizer.SPACE_AROUND_KEY));
+        assertEquals("10.0", clonedTs.getOptions().get(org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY));
     }
 
     @Test
@@ -103,11 +99,11 @@ public class DpiRescaleStyleVisitorTest {
         assertEquals(10f, clone.getDashArray()[1], 0f);
 
         TextSymbolizer ts = sb.createTextSymbolizer();
-        ts.getOptions().put(TextSymbolizer.SPACE_AROUND_KEY, "10");
+        ts.getOptions().put(org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY, "10");
         ts.setUnitOfMeasure(USCustomary.FOOT);
         ts.accept(visitor);
         TextSymbolizer clonedTs = (TextSymbolizer) visitor.getCopy();
-        assertEquals("10.0", clonedTs.getOptions().get(TextSymbolizer.SPACE_AROUND_KEY));
+        assertEquals("10.0", clonedTs.getOptions().get(org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY));
     }
 
     @Test
@@ -126,12 +122,12 @@ public class DpiRescaleStyleVisitorTest {
         assertEquals(10f, clone.getDashArray()[1], 0f);
 
         TextSymbolizer ts = sb.createTextSymbolizer();
-        ts.getOptions().put(TextSymbolizer.SPACE_AROUND_KEY, "10px");
+        ts.getOptions().put(org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY, "10px");
         ts.setUnitOfMeasure(SI.METRE);
         ts.accept(visitor);
         TextSymbolizer clonedTs = (TextSymbolizer) visitor.getCopy();
         // this one has been rescaled
-        assertEquals("20.0", clonedTs.getOptions().get(TextSymbolizer.SPACE_AROUND_KEY));
+        assertEquals("20.0", clonedTs.getOptions().get(org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY));
     }
 
     @Test
@@ -149,10 +145,10 @@ public class DpiRescaleStyleVisitorTest {
         assertEquals(20f, clone.getDashArray()[1], 0f);
 
         TextSymbolizer ts = sb.createTextSymbolizer();
-        ts.getOptions().put(TextSymbolizer.SPACE_AROUND_KEY, "10m");
+        ts.getOptions().put(org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY, "10m");
         ts.accept(visitor);
         TextSymbolizer clonedTs = (TextSymbolizer) visitor.getCopy();
         // this one has not been rescaled
-        assertEquals("10.0m", clonedTs.getOptions().get(TextSymbolizer.SPACE_AROUND_KEY));
+        assertEquals("10.0m", clonedTs.getOptions().get(org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY));
     }
 }

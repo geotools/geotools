@@ -27,7 +27,6 @@ import org.geotools.sld.SLDConfiguration;
 import org.geotools.styling.Mark;
 import org.geotools.styling.ResourceLocator;
 import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyleFactoryImpl;
 import org.geotools.xsd.Configuration;
 import org.junit.Test;
 import org.picocontainer.MutablePicoContainer;
@@ -87,7 +86,7 @@ public class SLDMarkBindingTest extends SLDTestSupport {
             @Override
             protected void configureContext(MutablePicoContainer container) {
                 container.registerComponentImplementation(
-                        StyleFactory.class, StyleFactoryImpl.class);
+                        StyleFactory.class, StyleFactory.class);
 
                 container.registerComponentInstance(
                         ResourceLocator.class,

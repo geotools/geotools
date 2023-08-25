@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,19 +17,41 @@
 package org.geotools.styling;
 
 import org.geotools.api.filter.expression.Function;
+import org.geotools.api.style.StyleVisitor;
 
 /**
- * Apply color replacement to an external graphic.
+ * An implementation of ColorReplacement; this is a wrapper around an implementaiton of the "Recode"
+ * function as defined by SymbologyEncoding 1.1.
  *
- * <p>Can be used to indicate the background color to make transparent; or to swap colors around as
- * needed.
+ * @author Jody Garnett
  */
-public interface ColorReplacement extends org.geotools.api.style.ColorReplacement {
+public class ColorReplacement implements org.geotools.api.style.ColorReplacement {
 
-    /** Function providing recoding of values. */
+    private Function function;
+
+    public ColorReplacement(Function function) {
+        this.function = function;
+    }
+
+    /**
+     * Function used to perform color Replacement.
+     *
+     * <p>It is assumed this function is defined in accordance with the "Recode" function from
+     * Symbology Encoding 1.1.
+     *
+     * @return Implementation of "Recode" function
+     */
     @Override
-    Function getRecoding();
+    public Function getRecoding() {
+        return function;
+    }
 
-    /** @param function Recoding function to use */
-    void setRecoding(Function function);
+    @Override
+    public Object accept(StyleVisitor visitor, Object extraData) {
+        return visitor.visit(this, extraData);
+    }
+
+    public void setRecoding(Function function) {
+        this.function = function;
+    }
 }

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -13,52 +13,87 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
+ *
+ * Created on November 3, 2003, 10:10 AM
  */
 package org.geotools.styling;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+
+import org.geotools.api.style.FeatureTypeConstraint;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.util.Utilities;
 
 /**
- * A NamedLayer is used to refer to a layer that has a name in a WMS.
+ * Default implementation of named layer.
  *
- * <p>The details of this object are taken from the <a
- * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor
- * Report (OGC 02-070) version 1.0.0.</a>:
- *
- * <pre><code>
- * &lt;xsd:element name="NamedLayer"&gt;
- *   &lt;xsd:annotation&gt;
- *     &lt;xsd:documentation&gt;
- *       A NamedLayer is a layer of data that has a name advertised by a WMS.
- *     &lt;/xsd:documentation&gt;
- *   &lt;/xsd:annotation&gt;
- *   &lt;xsd:complexType&gt;
- *     &lt;xsd:sequence&gt;
- *       &lt;xsd:element ref="sld:Name"/&gt;
- *       &lt;xsd:element ref="sld:LayerFeatureConstraints" minOccurs="0"/&gt;
- *       &lt;xsd:choice minOccurs="0" maxOccurs="unbounded"&gt;
- *         &lt;xsd:element ref="sld:NamedStyle"/&gt;
- *         &lt;xsd:element ref="sld:UserStyle"/&gt;
- *       &lt;/xsd:choice&gt;
- *     &lt;/xsd:sequence&gt;
- *   &lt;/xsd:complexType&gt;
- * &lt;/xsd:element&gt;
- * </code></pre>
+ * @author jamesm
  */
-public interface NamedLayer extends StyledLayer {
+public class NamedLayer extends StyledLayer implements org.geotools.api.style.NamedLayer {
+    List<Style> styles = new ArrayList<>();
 
-    public List<FeatureTypeConstraint> layerFeatureConstraints();
+    // FeatureTypeConstraint[] featureTypeConstraints = new FeatureTypeConstraint[0];
+    List<FeatureTypeConstraint> featureTypeConstraints = new ArrayList<>();
 
-    public FeatureTypeConstraint[] getLayerFeatureConstraints();
+    @Override
+    public List<FeatureTypeConstraint> layerFeatureConstraints() {
+        return featureTypeConstraints;
+    }
 
-    public void setLayerFeatureConstraints(FeatureTypeConstraint... constraints);
+    @Override
+    public FeatureTypeConstraint[] getLayerFeatureConstraints() {
+        return featureTypeConstraints.toArray(new FeatureTypeConstraint[0]);
+    }
 
-    public List<Style> styles();
+    @Override
+    public void setLayerFeatureConstraints(FeatureTypeConstraint[] featureTypeConstraints) {
+        this.featureTypeConstraints.clear();
+        this.featureTypeConstraints.addAll(Arrays.asList(featureTypeConstraints));
+    }
 
-    public Style[] getStyles();
+    @Override
+    public Style[] getStyles() {
+        return styles.toArray(new Style[0]);
+    }
 
-    public void addStyle(Style sl);
 
-    /** Used to navigate a Style/SLD. */
-    void accept(StyleVisitor visitor);
+
+    public List<Style> styles() {
+        return styles;
+    }
+
+
+    public void addStyle(Style sl) {
+        styles.add(sl);
+    }
+
+    @Override
+    public void accept(StyleVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    @Override
+    public boolean equals(Object oth) {
+        if (this == oth) {
+            return true;
+        }
+
+        if (oth instanceof NamedLayer) {
+            NamedLayer other = (NamedLayer) oth;
+
+            if (!Utilities.equals(styles, other.styles)) return false;
+
+            return Utilities.equals(featureTypeConstraints, other.featureTypeConstraints);
+        }
+
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(styles, featureTypeConstraints);
+    }
 }

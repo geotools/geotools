@@ -46,10 +46,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
 import org.geotools.renderer.style.SLDStyleFactory;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
+import org.geotools.styling.*;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 
 /**

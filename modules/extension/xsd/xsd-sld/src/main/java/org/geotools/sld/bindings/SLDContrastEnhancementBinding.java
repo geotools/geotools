@@ -20,7 +20,7 @@ import javax.xml.namespace.QName;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.ContrastMethodStrategy;
+import org.geotools.api.style.ContrastMethodStrategy;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;

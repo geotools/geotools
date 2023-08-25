@@ -13,67 +13,181 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
- *
  */
 package org.geotools.styling;
 
+// OpenGIS dependencies
+
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.util.Cloneable;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.util.Utilities;
+import org.geotools.util.factory.GeoTools;
 
 /**
- * A Halo fills an extended area outside the glyphs of a rendered textlabel to make it easier to
- * read over a background.
- *
- * <p>The details of this object are taken from the <a
- * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor
- * Report (OGC 02-070) version 1.0.0.</a>:
- *
- * <pre><code>
- * &lt;xsd:element name="Halo"&gt;
- *   &lt;xsd:annotation&gt;
- *     &lt;xsd:documentation&gt;
- *      A "Halo" fills an extended area outside the glyphs of a rendered
- *       text label to make the label easier to read over a background.
- *     &lt;/xsd:documentation&gt;
- *   &lt;/xsd:annotation&gt;
- *   &lt;xsd:complexType&gt;
- *     &lt;xsd:sequence&gt;
- *       &lt;xsd:element ref="sld:Radius" minOccurs="0"/&gt;
- *       &lt;xsd:element ref="sld:Fill" minOccurs="0"/&gt;
- *     &lt;/xsd:sequence&gt;
- *   &lt;/xsd:complexType&gt;
- * &lt;/xsd:element&gt;
- * </code></pre>
- *
- * <p>Renderers can use this information when displaying styled features, though it must be
- * remembered that not all renderers will be able to fully represent strokes as set out by this
- * interface. For example, opacity may not be supported.
- *
- * <p>Notes:
- *
- * <ul>
- *   <li>The graphical parameters and their values are derived from SVG/CSS2 standards with names
- *       and semantics which are as close as possible.
- * </ul>
- *
- * $Id$
+ * Direct implementation of Halo.
  *
  * @author Ian Turton, CCG
+ * @version $Id$
  */
-public interface Halo extends org.geotools.api.style.Halo {
+public class Halo implements  Cloneable, org.geotools.api.style.Halo {
+    /** The logger for the default core module. */
+    private static final java.util.logging.Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(Halo.class);
 
-    /** Expression that represents the the distance the halo extends from the text */
-    void setRadius(Expression radius);
+    private FilterFactory filterFactory;
+    private Fill fill;
+    private Expression radius = null;
 
     /**
-     * The fill (color) of the halo
+     * Cast to HaloImpl (creating a copy if needed).
      *
-     * @return fill (color) of the halo
+     * @return HaloImpl equal to the provided halo
+     */
+    static Halo cast(org.geotools.api.style.Halo halo) {
+        if (halo == null) {
+            return null;
+        } else if (halo instanceof Halo) {
+            return (Halo) halo;
+        } else {
+            Halo copy = new Halo();
+            copy.setFill(halo.getFill());
+            copy.setRadius(halo.getRadius());
+
+            return copy;
+        }
+    }
+
+    public Halo() {
+        this(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
+    }
+
+    public Halo(FilterFactory factory) {
+        filterFactory = factory;
+        init();
+    }
+
+    public void setFilterFactory(FilterFactory factory) {
+        filterFactory = factory;
+        init();
+    }
+
+    private void init() {
+        try {
+            fill = new Fill(filterFactory);
+            radius = filterFactory.literal(1);
+        } catch (org.geotools.filter.IllegalFilterException ife) {
+            LOGGER.severe("Failed to build defaultHalo: " + ife);
+        }
+
+        fill.setColor(filterFactory.literal("#FFFFFF")); // default halo is white
+    }
+
+    /**
+     * Getter for property fill.
+     *
+     * @return Value of property fill.
      */
     @Override
-    Fill getFill();
+    public Fill getFill() {
+        return fill;
+    }
 
-    /** The fill (color) of the halo */
-    void setFill(org.geotools.api.style.Fill fill);
+    /**
+     * Setter for property fill.
+     *
+     * @param fill New value of property fill.
+     */
+    public void setFill(org.geotools.api.style.Fill fill) {
+        this.fill = Fill.cast(fill);
+    }
 
-    void accept(org.geotools.styling.StyleVisitor visitor);
+    /**
+     * Getter for property radius.
+     *
+     * @return Value of property radius.
+     */
+    @Override
+    public Expression getRadius() {
+        return radius;
+    }
+
+    /**
+     * Setter for property radius.
+     *
+     * @param radius New value of property radius.
+     */
+    public void setRadius(Expression radius) {
+        this.radius = radius;
+    }
+
+    @Override
+    public Object accept(StyleVisitor visitor, Object data) {
+        return visitor.visit(this, data);
+    }
+
+    @Override
+    public void accept(StyleVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    /**
+     * Creates a deep copy clone of the Halo.
+     *
+     * @return The clone.
+     */
+    @Override
+    public Object clone() {
+        try {
+            Halo clone = (Halo) super.clone();
+            clone.fill = (Fill) ((Cloneable) fill).clone();
+
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("This will never happen");
+        }
+    }
+
+    /**
+     * Compares this HaloImpl with another for equality.
+     *
+     * @param obj THe other HaloImpl.
+     * @return True if they are equal. They are equal if their fill and radius is equal.
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj instanceof Halo) {
+            Halo other = (Halo) obj;
+
+            return Utilities.equals(radius, other.radius) && Utilities.equals(fill, other.fill);
+        }
+
+        return false;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int PRIME = 37;
+        int result = 17;
+
+        if (radius != null) {
+            result = (result * PRIME) + radius.hashCode();
+        }
+
+        if (fill != null) {
+            result = (result * PRIME) + fill.hashCode();
+        }
+
+        return result;
+    }
 }

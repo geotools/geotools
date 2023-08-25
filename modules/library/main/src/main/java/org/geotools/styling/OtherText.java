@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -18,27 +18,27 @@ package org.geotools.styling;
 
 import org.geotools.api.filter.expression.Expression;
 
-/**
- * Allows open ended extensions for text oriented rendering formats. For example, with
- * target="kml:extrude" one could specify the height of a building in KML and activate 3D rendering,
- * or with "kml:time" one could specify the time or timespan associated to the
- *
- * @author Andrea Aime - TOPP
- */
-public interface OtherText {
-    /**
-     * The target location for the text. It can be anything, but it's up to the renderer to decide
-     * whether it can be used or not (some paths can be used, others are not understood)
-     */
-    public String getTarget();
+public class OtherText implements org.geotools.api.style.OtherText {
 
-    public void setTarget(String target);
+    String location;
 
-    /**
-     * The text expression to be used in the specified location. Normally it should be a string, but
-     * a renderer may accept something different (a number, a date)
-     */
-    public Expression getText();
+    Expression text;
 
-    public void setText(Expression otherText);
+    @Override
+    public String getTarget() {
+        return location;
+    }
+
+    public void setTarget(String location) {
+        this.location = location;
+    }
+
+    @Override
+    public Expression getText() {
+        return text;
+    }
+
+    public void setText(Expression text) {
+        this.text = text;
+    }
 }

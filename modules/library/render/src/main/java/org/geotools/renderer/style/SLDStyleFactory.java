@@ -56,26 +56,7 @@ import org.geotools.renderer.VendorOptionParser;
 import org.geotools.renderer.composite.BlendComposite;
 import org.geotools.renderer.composite.BlendComposite.BlendingMode;
 import org.geotools.renderer.style.RandomFillBuilder.PositionRandomizer;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Halo;
-import org.geotools.styling.LabelPlacement;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.MarkImpl;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizer2;
+import org.geotools.styling.*;
 import org.geotools.util.Range;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.factory.Hints;
@@ -882,15 +863,15 @@ public class SLDStyleFactory {
         // check vendor options
         boolean kerning =
                 voParser.getBooleanOption(
-                        symbolizer, TextSymbolizer.KERNING_KEY, TextSymbolizer.DEFAULT_KERNING);
+                        symbolizer, org.geotools.api.style.TextSymbolizer.KERNING_KEY, org.geotools.api.style.TextSymbolizer.DEFAULT_KERNING);
         if (kerning) {
             javaFont = applyKerning(javaFont);
         }
         double spacing =
                 voParser.getDoubleOption(
                         symbolizer,
-                        TextSymbolizer.CHAR_SPACING_KEY,
-                        TextSymbolizer.DEFAULT_CHAR_SPACING);
+                        org.geotools.api.style.TextSymbolizer.CHAR_SPACING_KEY,
+                        org.geotools.api.style.TextSymbolizer.DEFAULT_CHAR_SPACING);
         if (spacing != 0) {
             javaFont = applySpacing(javaFont, spacing);
         }
@@ -1728,7 +1709,7 @@ public class SLDStyleFactory {
         if (stroke.getGraphicStroke().graphicalSymbols().isEmpty()) return false;
         if (!(stroke.getGraphicStroke().graphicalSymbols().get(0) instanceof Mark)) return false;
 
-        MarkImpl mark = (MarkImpl) stroke.getGraphicStroke().graphicalSymbols().get(0);
+        Mark mark = (Mark) stroke.getGraphicStroke().graphicalSymbols().get(0);
         // does not have WKT
         if (mark.getWellKnownName() == null) return false;
         Iterator<MarkFactory> it = DynamicSymbolFactoryFinder.getMarkFactories();

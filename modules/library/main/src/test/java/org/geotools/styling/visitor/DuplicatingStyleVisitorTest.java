@@ -40,7 +40,7 @@ import org.geotools.feature.NameImpl;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.metadata.iso.citation.OnLineResourceImpl;
 import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.ColorMapEntry;
+import org.geotools.api.style.ColorMapEntry;
 import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.Displacement;
 import org.geotools.styling.ExternalGraphic;
@@ -49,13 +49,12 @@ import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
 import org.geotools.styling.Graphic;
-import org.geotools.styling.GraphicImpl;
 import org.geotools.styling.Halo;
-import org.geotools.styling.LabelPlacement;
+import org.geotools.api.style.LabelPlacememt;
 import org.geotools.styling.LinePlacement;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Mark;
-import org.geotools.styling.OtherTextImpl;
+import org.geotools.styling.OtherText;
 import org.geotools.styling.PointPlacement;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
@@ -820,7 +819,7 @@ public class DuplicatingStyleVisitorTest {
         TextSymbolizer2 symb = (TextSymbolizer2) sf.createTextSymbolizer();
 
         // Create a Graphic with two recognizable values
-        GraphicImpl gr = new GraphicImpl(ff);
+        Graphic gr = new Graphic(ff);
         gr.setOpacity(ff.literal(0.77));
         gr.setSize(ff.literal(77));
         symb.setGraphic(gr);
@@ -828,7 +827,7 @@ public class DuplicatingStyleVisitorTest {
         symb.setSnippet(snippet);
         Literal fD = ff.literal("some description");
         symb.setFeatureDescription(fD);
-        OtherTextImpl otherText = new OtherTextImpl();
+        OtherText otherText = new OtherText();
         otherText.setTarget("otherTextTarget");
         otherText.setText(ff.literal("otherTextText"));
         symb.setOtherText(otherText);

@@ -16,172 +16,78 @@
  */
 package org.geotools.styling;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.AnchorPoint;
 import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.util.Cloneable;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.ConstantExpression;
+import org.geotools.util.Utilities;
+import org.geotools.util.factory.GeoTools;
 
 /**
- * A Graphic is a "graphical symbol" with an inherent shape, color(s), and possibly size.
+ * Direct implementation of Graphic.
  *
- * <p>A "graphic" can very informally be defined as "a little picture" and can be of either a raster
- * or vector graphic source type. The term graphic is used since the term "symbol" is similar to
- * "symbolizer" which is used in a difference context in SLD. The graphical symbol to display can be
- * provided either as an external graphical resource or as a Mark.<br>
- * Multiple external URLs and marks can be referenced with the proviso that they all provide
- * equivalent graphics in different formats. The 'hot spot' to use for positioning the rendering at
- * a point must either be inherent from the external format or be defined to be the "central point"
- * of the graphic.
- *
- * <p>The details of this object are taken from the <a
- * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor
- * Report (OGC 02-070) version 1.0.0.</a>:
- *
- * <pre><code>
- * &lt;xsd:element name="Graphic"&gt;
- *   &lt;xsd:annotation&gt;
- *     &lt;xsd:documentation&gt;
- *       A "Graphic" specifies or refers to a "graphic symbol" with inherent
- *       shape, size, and coloring.
- *     &lt;/xsd:documentation&gt;
- *   &lt;/xsd:annotation&gt;
- *   &lt;xsd:complexType&gt;
- *     &lt;xsd:sequence&gt;
- *       &lt;xsd:choice minOccurs="0" maxOccurs="unbounded"&gt;
- *         &lt;xsd:element ref="sld:ExternalGraphic"/&gt;
- *         &lt;xsd:element ref="sld:Mark"/&gt;
- *       &lt;/xsd:choice&gt;
- *       &lt;xsd:sequence&gt;
- *         &lt;xsd:element ref="sld:Opacity" minOccurs="0"/&gt;
- *         &lt;xsd:element ref="sld:Size" minOccurs="0"/&gt;
- *         &lt;xsd:element ref="sld:Rotation" minOccurs="0"/&gt;
- *       &lt;/xsd:sequence&gt;
- *     &lt;/xsd:sequence&gt;
- *   &lt;/xsd:complexType&gt;
- * &lt;/xsd:element&gt;
- * </code></pre>
- *
- * <p>Renderers can ue this information when displaying styled features, though it must be
- * remembered that not all renderers will be able to fully represent strokes as set out by this
- * interface. For example, opacity may not be supported.
- *
- * <p>Notes:
- *
- * <ul>
- *   <li>The graphical parameters and their values are derived from SVG/CSS2 standards with names
- *       and semantics which are as close as possible.
- * </ul>
- *
- * @task REVISIT: There are no setter methods in this interface, is this a problem?
+ * @author Ian Turton, CCG
+ * @author Johann Sorel (Geomatys)
+ * @version $Id$
  */
-public interface Graphic
-        extends GraphicLegend,
-                org.geotools.api.style.Graphic,
-                org.geotools.api.style.GraphicFill,
-                org.geotools.api.style.GraphicStroke {
-    /**
-     * A default Graphic instance.
-     *
-     * <p>For some attributes the standard does not define a default, so a reasonable value is
-     * supplied.
-     */
-    public static final Graphic DEFAULT =
-            new ConstantGraphic() {
+public class Graphic implements org.geotools.api.style.Graphic, Cloneable {
 
-                @Override
-                public List<GraphicalSymbol> graphicalSymbols() {
-                    return Collections.emptyList();
-                }
 
-                @Override
-                public Expression getOpacity() {
-                    return ConstantExpression.ONE;
-                }
+    private final List<GraphicalSymbol> graphics = new ArrayList<>();
 
-                @Override
-                public Expression getSize() {
-                    // default size is unknown, it depends on the target
-                    return Expression.NIL;
-                }
+    private AnchorPoint anchor;
+    private Expression gap;
+    private Expression initialGap;
 
-                @Override
-                public Displacement getDisplacement() {
-                    return Displacement.DEFAULT;
-                }
+    private Expression rotation = null;
+    private Expression size = null;
+    private Displacement displacement = null;
+    private Expression opacity = null;
 
-                @Override
-                public Expression getRotation() {
-                    return ConstantExpression.ZERO;
-                }
-            };
+    /** Creates a new instance of DefaultGraphic */
+    protected Graphic() {
+        this(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
+    }
 
-    /**
-     * Indicates an absense of graphic.
-     *
-     * <p>This value is used to indicate that the Graphics based opperation should be skipped. Aka
-     * this is used by Stroke.Stroke as place holders for GRAPHIC_FILL and GRAPHIC_STROKE.
-     */
-    public static final Graphic NULL =
-            new ConstantGraphic() {
+    public Graphic(FilterFactory factory) {
+        this(factory, null, null, null);
+    }
 
-                @Override
-                public List<GraphicalSymbol> graphicalSymbols() {
-                    return Collections.emptyList();
-                }
+    public Graphic(
+            FilterFactory factory, AnchorPoint anchor, Expression gap, Expression initialGap) {
+        this.anchor = org.geotools.styling.AnchorPoint.cast(anchor);
 
-                @Override
-                public Expression getOpacity() {
-                    return ConstantExpression.NULL;
-                }
+        if (gap == null) this.gap = ConstantExpression.constant(0);
+        else this.gap = gap;
+        if (initialGap == null) this.initialGap = ConstantExpression.constant(0);
+        else this.initialGap = initialGap;
+    }
 
-                @Override
-                public Expression getSize() {
-                    return ConstantExpression.NULL;
-                }
-
-                @Override
-                public Displacement getDisplacement() {
-                    return Displacement.NULL;
-                }
-
-                @Override
-                public Expression getRotation() {
-                    return ConstantExpression.NULL;
-                }
-
-                //            public String getGeometryPropertyName() {
-                //                return "";
-                //            }
-
-            };
-
-    /**
-     * List of all symbols used to represent this graphic.
-     *
-     * @return List of ExternalGraphic or Mark in the order provided.
-     */
     @Override
-    List<GraphicalSymbol> graphicalSymbols();
+    public List<GraphicalSymbol> graphicalSymbols() {
+        return graphics;
+    }
 
-    /**
-     * Location inside of the Graphic (or Label) to position the main-geometry point.
-     *
-     * <p>The coordinates are provided as 0.0 to 1.0 range amounting to a percentage of the graphic
-     * width/height. So the default of 0.5/0.5 indicates that the graphic would be centered.
-     *
-     * <p>Please keep in mind that a system may shuffle things around a bit in order to prevent
-     * graphics from overlapping (so this AnchorPoint is only a hint about how things should be if
-     * there is enough room).
-     *
-     * @return AnchorPoint , if null should use a default point X=0.5 Y=0.5
-     */
     @Override
-    public AnchorPoint getAnchorPoint();
+    public AnchorPoint getAnchorPoint() {
+        return anchor;
+    }
 
-    /** Anchor point (expressed as an x/y percentage of the graphic size). */
-    @Override
-    public void setAnchorPoint(org.geotools.api.style.AnchorPoint anchorPoint);
+    public void setAnchorPoint(org.geotools.styling.AnchorPoint anchor) {
+        this.anchor = org.geotools.styling.AnchorPoint.cast(anchor);
+    }
+
+
+    public void setAnchorPoint(org.geotools.api.style.AnchorPoint anchorPoint) {
+        this.anchor = org.geotools.styling.AnchorPoint.cast(anchorPoint);
+    }
 
     /**
      * This specifies the level of translucency to use when rendering the graphic.<br>
@@ -194,38 +100,9 @@ public interface Graphic
      *     opaque.
      */
     @Override
-    Expression getOpacity();
-
-    /** @param opacity opacity between 0 and 1 */
-    @Override
-    void setOpacity(Expression opacity);
-
-    /**
-     * This paramteter gives the absolute size of the graphic in pixels encoded as a floating point
-     * number.
-     *
-     * <p>The default size of an image format (such as GIFD) is the inherent size of the image. The
-     * default size of a format without an inherent size (such as SVG) is defined to be 16 pixels in
-     * height and the corresponding aspect in width. If a size is specified, the height of the
-     * graphic will be scaled to that size and the corresponding aspect will be used for the width.
-     *
-     * @return The size of the graphic. The default is context specific. Negative values are not
-     *     possible.
-     */
-    @Override
-    Expression getSize();
-
-    /** @param size Size of graphic */
-    @Override
-    void setSize(Expression size);
-
-    /** @return Offset of graphic */
-    @Override
-    Displacement getDisplacement();
-
-    /** @param offset Amount to offset graphic */
-    @Override
-    void setDisplacement(org.geotools.api.style.Displacement offset);
+    public Expression getOpacity() {
+        return opacity;
+    }
 
     /**
      * This parameter defines the rotation of a graphic in the clockwise direction about its centre
@@ -235,131 +112,187 @@ public interface Graphic
      *     rotation. The default is 0.0 (no rotation).
      */
     @Override
-    Expression getRotation();
+    public Expression getRotation() {
+        return rotation;
+    }
 
     /**
-     * This parameter defines the rotation of a graphic in the clockwise direction about its centre
-     * point in decimal degrees. The value encoded as a floating point number.
+     * This parameter gives the absolute size of the graphic in pixels encoded as a floating point
+     * number.
      *
-     * @param rotation in decimal degrees
+     * <p>The default size of an image format (such as GIFD) is the inherent size of the image. The
+     * default size of a format without an inherent size (such as SVG) is defined to be 16 pixels in
+     * height and the corresponding aspect in width. If a size is specified, the height of the
+     * graphic will be scaled to that size and the corresponding aspect will be used for the width.
+     *
+     * @return The size of the graphic, the default is context specific. Negative values are not
+     *     possible.
      */
     @Override
-    void setRotation(Expression rotation);
-
-    @Override
-    Expression getGap();
-
-    void setGap(Expression gap);
-
-    @Override
-    Expression getInitialGap();
-
-    void setInitialGap(Expression initialGap);
-
-    /**
-     * accepts a StyleVisitor - used by xmlencoder and other packages which need to walk the style
-     * tree
-     *
-     * @param visitor - the visitor object
-     */
-    void accept(org.geotools.styling.StyleVisitor visitor);
-}
-
-abstract class ConstantGraphic implements Graphic {
-    private void cannotModifyConstant() {
-        throw new UnsupportedOperationException("Constant Graphic may not be modified");
+    public Expression getSize() {
+        return size;
     }
 
     @Override
-    public void setDisplacement(org.geotools.api.style.Displacement offset) {
-        cannotModifyConstant();
-    }
-
-    public void setExternalGraphics(ExternalGraphic... externalGraphics) {
-        cannotModifyConstant();
-    }
-
-    public void addExternalGraphic(ExternalGraphic externalGraphic) {
-        cannotModifyConstant();
-    }
-
-    public void setMarks(Mark... marks) {
-        cannotModifyConstant();
-    }
-
-    public void addMark(Mark mark) {
-        cannotModifyConstant();
-    }
-
-    @Override
-    public void setGap(Expression gap) {
-        cannotModifyConstant();
-    }
-
-    @Override
-    public void setInitialGap(Expression initialGap) {
-        cannotModifyConstant();
-    }
-
-    public void setSymbols(Symbol... symbols) {
-        cannotModifyConstant();
-    }
-
-    public void addSymbol(Symbol symbol) {
-        cannotModifyConstant();
-    }
-
-    @Override
-    public void setOpacity(Expression opacity) {
-        cannotModifyConstant();
-    }
-
-    @Override
-    public void setSize(Expression size) {
-        cannotModifyConstant();
-    }
-
-    @Override
-    public void setRotation(Expression rotation) {
-        cannotModifyConstant();
-    }
-
-    public void setAnchorPoint(AnchorPoint anchor) {
-        cannotModifyConstant();
-    }
-
-    @Override
-    public Object accept(org.geotools.api.style.StyleVisitor visitor, Object data) {
-        return visitor.visit((org.geotools.api.style.GraphicStroke) this, data);
-    }
-
-    @Override
-    public void accept(org.geotools.styling.StyleVisitor visitor) {
-        visitor.visit(this);
-    }
-
-    @Override
-    public List<GraphicalSymbol> graphicalSymbols() {
-        return Collections.emptyList();
-    }
-
-    @Override
-    public AnchorPoint getAnchorPoint() {
-        return org.geotools.styling.AnchorPoint.DEFAULT;
-    }
-
-    @Override
-    public void setAnchorPoint(org.geotools.api.style.AnchorPoint anchorPoint) {
-        cannotModifyConstant();
-    }
-
-    @Override
-    public Expression getGap() {
-        return ConstantExpression.constant(0);
+    public Displacement getDisplacement() {
+        return displacement;
     }
 
     @Override
     public Expression getInitialGap() {
-        return ConstantExpression.constant(0);
+        return initialGap;
+    }
+
+    public void setInitialGap(Expression initialGap) {
+        this.initialGap = initialGap;
+    }
+
+    @Override
+    public Expression getGap() {
+        return gap;
+    }
+
+    public void setGap(Expression gap) {
+        this.gap = gap;
+    }
+
+
+    public void setDisplacement(org.geotools.api.style.Displacement offset) {
+        this.displacement = Displacement.cast(offset);
+    }
+
+
+    public void setOpacity(Expression opacity) {
+        this.opacity = opacity;
+    }
+
+    /**
+     * Setter for property rotation.
+     *
+     * @param rotation New value of property rotation.
+     */
+
+    public void setRotation(Expression rotation) {
+        this.rotation = rotation;
+    }
+
+    /**
+     * Setter for property size.
+     *
+     * @param size New value of property size.
+     */
+
+    public void setSize(Expression size) {
+        this.size = size;
+    }
+
+    @Override
+    public Object accept(StyleVisitor visitor, Object data) {
+        return visitor.visit((org.geotools.api.style.GraphicStroke) this, data);
+    }
+
+    @Override
+    public void accept(StyleVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    /**
+     * Creates a deep copy clone.
+     *
+     * @return The deep copy clone.
+     */
+    @Override
+    public Object clone() {
+        Graphic clone;
+
+        try {
+            clone = (Graphic) super.clone();
+            clone.graphics.clear();
+            clone.graphics.addAll(graphics);
+
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e); // this should never happen.
+        }
+
+        return clone;
+    }
+
+    /**
+     * Override of hashcode
+     *
+     * @return The hashcode.
+     */
+    @Override
+    public int hashCode() {
+        final int PRIME = 1000003;
+        int result = 0;
+
+        if (graphics != null) {
+            result = (PRIME * result) + graphics.hashCode();
+        }
+
+        if (rotation != null) {
+            result = (PRIME * result) + rotation.hashCode();
+        }
+
+        if (size != null) {
+            result = (PRIME * result) + size.hashCode();
+        }
+
+        if (opacity != null) {
+            result = (PRIME * result) + opacity.hashCode();
+        }
+
+
+        return result;
+    }
+
+    /**
+     * Compares this GraphicImpl with another for equality.
+     *
+     * <p>Two graphics are equal if and only if they both have the same geometry property name and
+     * the same list of symbols and the same rotation, size and opacity.
+     *
+     * @param oth The other GraphicsImpl to compare with.
+     * @return True if this is equal to oth according to the above conditions.
+     */
+    @Override
+    public boolean equals(Object oth) {
+        if (this == oth) {
+            return true;
+        }
+
+        if (oth instanceof Graphic) {
+            Graphic other = (Graphic) oth;
+
+            return Utilities.equals(this.size, other.size)
+                    && Utilities.equals(this.rotation, other.rotation)
+                    && Utilities.equals(this.opacity, other.opacity)
+                    && Objects.equals(this.graphicalSymbols(), other.graphicalSymbols());
+        }
+
+        return false;
+    }
+
+    static Graphic cast(org.geotools.api.style.Graphic graphic) {
+        if (graphic == null) {
+            return null;
+        } else if (graphic instanceof Graphic) {
+            return (Graphic) graphic;
+        } else {
+            Graphic copy = new Graphic();
+            copy.setAnchorPoint(graphic.getAnchorPoint());
+            copy.setDisplacement(graphic.getDisplacement());
+            if (graphic.graphicalSymbols() != null) {
+                for (GraphicalSymbol item : graphic.graphicalSymbols()) {
+                    if (item instanceof org.geotools.api.style.ExternalGraphic) {
+                        copy.graphicalSymbols().add(ExternalGraphic.cast(item));
+                    } else if (item instanceof org.geotools.api.style.Mark) {
+                        copy.graphicalSymbols().add(Mark.cast(item));
+                    }
+                }
+            }
+            return copy;
+        }
     }
 }

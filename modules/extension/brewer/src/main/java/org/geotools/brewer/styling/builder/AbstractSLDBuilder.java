@@ -19,7 +19,7 @@ package org.geotools.brewer.styling.builder;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.api.style.StyledLayerDescriptor;
 
 abstract class AbstractSLDBuilder<T> implements Builder<T> {
 

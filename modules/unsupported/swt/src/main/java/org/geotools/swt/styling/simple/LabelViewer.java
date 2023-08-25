@@ -31,7 +31,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
-import org.geotools.styling.LabelPlacement;
+import org.geotools.api.style.LabelPlacememt;
 import org.geotools.styling.LinePlacement;
 import org.geotools.styling.PointPlacement;
 import org.geotools.styling.StyleBuilder;

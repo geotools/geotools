@@ -28,35 +28,24 @@ import javax.swing.Icon;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.style.Description;
-import org.geotools.api.style.ExternalMark;
-import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.*;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.ColorMapEntry;
 import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.DescriptionImpl;
+import org.geotools.styling.Description;
 import org.geotools.styling.Displacement;
-import org.geotools.styling.Extent;
 import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeConstraint;
 import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.FeatureTypeStyleImpl;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.Halo;
-import org.geotools.styling.ImageOutline;
-import org.geotools.styling.LabelPlacement;
 import org.geotools.styling.LinePlacement;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Mark;
-import org.geotools.styling.NamedLayer;
 import org.geotools.styling.OtherText;
-import org.geotools.styling.OtherTextImpl;
 import org.geotools.styling.OverlapBehavior;
 import org.geotools.styling.PointPlacement;
 import org.geotools.styling.PointSymbolizer;
@@ -68,14 +57,10 @@ import org.geotools.styling.ShadedRelief;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyleVisitor;
-import org.geotools.styling.StyledLayer;
-import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.Symbol;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizer2;
-import org.geotools.styling.UserLayer;
+import org.geotools.styling.TextSymbolizer;
 
 /**
  * Creates a deep copy of a Style, this class is *NOT THREAD SAFE*.
@@ -285,7 +270,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
 
         Graphic legendCopy = copy((Graphic) rule.getLegend());
 
-        Description descCopy = rule.getDescription();
+        org.geotools.api.style.Description descCopy = rule.getDescription();
         descCopy = copy(descCopy);
 
         Rule copy = sf.createRule();
@@ -307,7 +292,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     @Override
     public void visit(FeatureTypeStyle fts) {
 
-        FeatureTypeStyle copy = new FeatureTypeStyleImpl(fts);
+        FeatureTypeStyle copy = new FeatureTypeStyle(fts);
 
         //        copy = new StyleFactoryImpl().createFeatureTypeStyle(
         //                fts.getRules(),
@@ -469,9 +454,9 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
      *
      * @return copy of shaded or null if not provided
      */
-    protected Description copy(Description desc) {
+    protected org.geotools.api.style.Description copy(org.geotools.api.style.Description desc) {
         if (desc == null) return null;
-        DescriptionImpl copy = new DescriptionImpl(desc.getTitle(), desc.getAbstract());
+        Description copy = new Description(desc.getTitle(), desc.getAbstract());
         return copy;
     }
 
@@ -979,12 +964,12 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         return copy;
     }
 
-    private OtherText copy(OtherText otherText) {
+    private org.geotools.api.style.OtherText copy(org.geotools.api.style.OtherText otherText) {
         if (otherText == null) return null;
 
         // TODO: add methods to the factory to create OtherText instances
         // sf.createOtherText();
-        OtherTextImpl copy = new OtherTextImpl();
+        OtherText copy = new OtherText();
         copy.setTarget(otherText.getTarget());
         copy.setText(copy(otherText.getText()));
         return copy;

@@ -57,7 +57,7 @@ import org.geotools.styling.ExponentialContrastMethodStrategy;
 import org.geotools.styling.HistogramContrastMethodStrategy;
 import org.geotools.styling.LogarithmicContrastMethodStrategy;
 import org.geotools.styling.NormalizeContrastMethodStrategy;
-import org.geotools.styling.StyleVisitor;
+import org.geotools.api.style.StyleVisitor;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
 

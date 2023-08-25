@@ -18,8 +18,8 @@ package org.geotools.brewer.styling.builder;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.styling.FeatureTypeConstraint;
-import org.geotools.styling.NamedLayer;
+import org.geotools.api.style.FeatureTypeConstraint;
+import org.geotools.api.style.NamedLayer;
 import org.geotools.styling.Style;
 
 public class NamedLayerBuilder extends AbstractSLDBuilder<NamedLayer> {

@@ -16,49 +16,89 @@
  */
 package org.geotools.styling;
 
+import java.util.Arrays;
 import org.geotools.api.filter.Filter;
+import org.geotools.api.style.Extent;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.util.Utilities;
 
-/**
- * A FeatureTypeConstraint identifies a specific feature type and supplies filtering.
- *
- * <p>The details of this object are taken from the <a
- * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor
- * Report (OGC 02-070) version 1.0.0.</a>:
- *
- * <pre><code>
- * &lt;xsd:element name="FeatureTypeConstraint"&gt;
- *   &lt;xsd:annotation&gt;
- *     &lt;xsd:documentation&gt;
- *       A FeatureTypeConstraint identifies a specific feature type and
- *       supplies filtering.
- *     &lt;/xsd:documentation&gt;
- *   &lt;/xsd:annotation&gt;
- *   &lt;xsd:complexType&gt;
- *     &lt;xsd:sequence&gt;
- *       &lt;xsd:element ref="sld:FeatureTypeName" minOccurs="0"/&gt;
- *       &lt;xsd:element ref="ogc:Filter" minOccurs="0"/&gt;
- *       &lt;xsd:element ref="sld:Extent" minOccurs="0" maxOccurs="unbounded"/&gt;
- *     &lt;/xsd:sequence&gt;
- *   &lt;/xsd:complexType&gt;
- * &lt;/xsd:element&gt;
- * </code></pre>
- *
- * <p>
- *
- * @author James Macgill
- */
-public interface FeatureTypeConstraint {
-    public String getFeatureTypeName();
+public class FeatureTypeConstraint implements org.geotools.api.style.FeatureTypeConstraint, Cloneable {
+    /** the feature type name */
+    String featureTypeName;
 
-    public void setFeatureTypeName(String name);
+    /** the filter */
+    Filter filter;
 
-    public Filter getFilter();
+    /** the extents */
+    Extent[] extents;
 
-    public void setFilter(Filter filter);
+    @Override
+    public String getFeatureTypeName() {
+        return featureTypeName;
+    }
 
-    public Extent[] getExtents();
+    @Override
+    public void setFeatureTypeName(String name) {
+        this.featureTypeName = name;
+    }
 
-    public void setExtents(Extent... extents);
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
 
-    public void accept(org.geotools.styling.StyleVisitor visitor);
+    @Override
+    public void setFilter(Filter filter) {
+        this.filter = filter;
+    }
+
+    @Override
+    public Extent[] getExtents() {
+        return extents;
+    }
+
+    @Override
+    public void setExtents(Extent[] extents) {
+        this.extents = extents;
+    }
+
+    @Override
+    public void accept(StyleVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    @Override
+    public int hashCode() {
+        final int PRIME = 1000003;
+        int result = 0;
+
+        if (featureTypeName != null) {
+            result = (PRIME * result) + featureTypeName.hashCode();
+        }
+
+        if (filter != null) {
+            result = (PRIME * result) + filter.hashCode();
+        }
+
+        if (extents != null) {
+            result = (PRIME * result) + Arrays.hashCode(extents);
+        }
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj instanceof FeatureTypeConstraint) {
+            FeatureTypeConstraint other = (FeatureTypeConstraint) obj;
+            return Utilities.equals(featureTypeName, other.featureTypeName)
+                    && Utilities.equals(filter, other.filter)
+                    && Arrays.equals(extents, other.extents);
+        }
+
+        return false;
+    }
 }

@@ -36,24 +36,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.measure.Units;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.LineSymbolizerImpl;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PointSymbolizerImpl;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.PolygonSymbolizerImpl;
-import org.geotools.styling.SLD;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizerImpl;
+import org.geotools.styling.*;
 import org.geotools.util.Converters;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
@@ -111,8 +94,8 @@ public class UomRescaleStyleVisitorTest {
 
             StyleBuilder styleBuilder = new StyleBuilder();
 
-            PointSymbolizerImpl pointSymb =
-                    (PointSymbolizerImpl) styleBuilder.createPointSymbolizer();
+            PointSymbolizer pointSymb =
+                    (PointSymbolizer) styleBuilder.createPointSymbolizer();
             pointSymb.setUnitOfMeasure(uom);
 
             FilterFactory filterFactory = new FilterFactoryImpl();
@@ -140,7 +123,7 @@ public class UomRescaleStyleVisitorTest {
 
             StyleBuilder styleBuilder = new StyleBuilder();
 
-            LineSymbolizerImpl lineSymb = (LineSymbolizerImpl) styleBuilder.createLineSymbolizer();
+            LineSymbolizer lineSymb = (LineSymbolizer) styleBuilder.createLineSymbolizer();
             lineSymb.setUnitOfMeasure(uom);
 
             FilterFactory filterFactory = new FilterFactoryImpl();
@@ -175,8 +158,8 @@ public class UomRescaleStyleVisitorTest {
 
             StyleBuilder styleBuilder = new StyleBuilder();
 
-            PolygonSymbolizerImpl polySymb =
-                    (PolygonSymbolizerImpl) styleBuilder.createPolygonSymbolizer();
+            PolygonSymbolizer polySymb =
+                    (PolygonSymbolizer) styleBuilder.createPolygonSymbolizer();
             polySymb.setUnitOfMeasure(uom);
 
             FilterFactory filterFactory = new FilterFactoryImpl();
@@ -196,7 +179,7 @@ public class UomRescaleStyleVisitorTest {
             String[] splitted =
                     rescaledPolySymb
                             .getOptions()
-                            .get(TextSymbolizer.GRAPHIC_MARGIN_KEY)
+                            .get(org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY)
                             .split("\\s+");
             int rescaledGraphicMargin = Converters.convert(splitted[0], Integer.class).intValue();
             assertEquals(expectedGraphicMargin, rescaledGraphicMargin);
@@ -227,7 +210,7 @@ public class UomRescaleStyleVisitorTest {
 
             StyleBuilder styleBuilder = new StyleBuilder();
 
-            TextSymbolizerImpl textSymb = (TextSymbolizerImpl) styleBuilder.createTextSymbolizer();
+            TextSymbolizer textSymb = (TextSymbolizer) styleBuilder.createTextSymbolizer();
             textSymb.setUnitOfMeasure(uom);
 
             Font font =
@@ -243,7 +226,7 @@ public class UomRescaleStyleVisitorTest {
             textSymb.getOptions().put("maxDisplacement", String.valueOf(maxDisplacement));
             textSymb.getOptions()
                     .put(
-                            TextSymbolizer.GRAPHIC_MARGIN_KEY,
+                            org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY,
                             maxDisplacement + " " + maxDisplacement * 2);
 
             UomRescaleStyleVisitor visitor = new UomRescaleStyleVisitor(scaleMetersToPixel);
@@ -280,7 +263,7 @@ public class UomRescaleStyleVisitorTest {
                     Converters.convert(options.get("maxDisplacement"), Integer.class).intValue();
             assertEquals(rescaledMaxDisplacement, expectedMaxDisplacement);
 
-            String[] splitted = options.get(TextSymbolizer.GRAPHIC_MARGIN_KEY).split("\\s+");
+            String[] splitted = options.get(org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY).split("\\s+");
             int rescaledGraphicMargin1 = Converters.convert(splitted[0], Integer.class).intValue();
             int rescaledGraphicMargin2 = Converters.convert(splitted[1], Integer.class).intValue();
             assertEquals(expectedGraphicMargin1, rescaledGraphicMargin1);
@@ -308,7 +291,7 @@ public class UomRescaleStyleVisitorTest {
 
             StyleBuilder styleBuilder = new StyleBuilder();
 
-            LineSymbolizerImpl lineSymb = (LineSymbolizerImpl) styleBuilder.createLineSymbolizer();
+            LineSymbolizer lineSymb = (LineSymbolizer) styleBuilder.createLineSymbolizer();
             lineSymb.setUnitOfMeasure(uom);
             lineSymb.getStroke().setDashArray(Arrays.asList(filterFactory.literal("5.0 10.0")));
 
@@ -491,8 +474,8 @@ public class UomRescaleStyleVisitorTest {
             StyleBuilder styleBuilder = new StyleBuilder();
 
             Stroke stroke = null;
-            LineSymbolizerImpl lineSymb =
-                    (LineSymbolizerImpl) styleBuilder.createLineSymbolizer(stroke);
+            LineSymbolizer lineSymb =
+                    (LineSymbolizer) styleBuilder.createLineSymbolizer(stroke);
             lineSymb.setUnitOfMeasure(SI.METRE);
 
             UomRescaleStyleVisitor visitor = new UomRescaleStyleVisitor(10);
@@ -515,8 +498,8 @@ public class UomRescaleStyleVisitorTest {
             StyleBuilder styleBuilder = new StyleBuilder();
 
             Fill fill = styleBuilder.createFill(Color.RED);
-            PolygonSymbolizerImpl polySymb =
-                    (PolygonSymbolizerImpl) styleBuilder.createPolygonSymbolizer(null, fill);
+            PolygonSymbolizer polySymb =
+                    (PolygonSymbolizer) styleBuilder.createPolygonSymbolizer(null, fill);
 
             UomRescaleStyleVisitor visitor = new UomRescaleStyleVisitor(10);
 
@@ -552,7 +535,7 @@ public class UomRescaleStyleVisitorTest {
 
             StyleBuilder styleBuilder = new StyleBuilder();
 
-            TextSymbolizerImpl textSymb = (TextSymbolizerImpl) styleBuilder.createTextSymbolizer();
+            TextSymbolizer textSymb = (TextSymbolizer) styleBuilder.createTextSymbolizer();
             textSymb.setUnitOfMeasure(uom);
 
             Font font =
@@ -621,8 +604,8 @@ public class UomRescaleStyleVisitorTest {
             Expression color = styleBuilder.colorExpression(Color.RED);
             Expression width = styleBuilder.attributeExpression("width");
             Stroke stroke = styleBuilder.createStroke(color, width);
-            LineSymbolizerImpl lineSymb =
-                    (LineSymbolizerImpl) styleBuilder.createLineSymbolizer(stroke);
+            LineSymbolizer lineSymb =
+                    (LineSymbolizer) styleBuilder.createLineSymbolizer(stroke);
             lineSymb.setUnitOfMeasure(uom);
 
             // rescales symbolizer
@@ -730,7 +713,7 @@ public class UomRescaleStyleVisitorTest {
                 computeExpectedRescaleSize(size, scaleMetersToPixel, SI.METRE);
 
         StyleBuilder styleBuilder = new StyleBuilder();
-        LineSymbolizerImpl lineSymb = (LineSymbolizerImpl) styleBuilder.createLineSymbolizer();
+        LineSymbolizer lineSymb = (LineSymbolizer) styleBuilder.createLineSymbolizer();
         lineSymb.getStroke().setWidth(ff.literal(size + "m"));
 
         UomRescaleStyleVisitor visitor = new UomRescaleStyleVisitor(scaleMetersToPixel);
@@ -751,7 +734,7 @@ public class UomRescaleStyleVisitorTest {
                 computeExpectedRescaleSize(size, scaleMetersToPixel, SI.METRE);
 
         StyleBuilder styleBuilder = new StyleBuilder();
-        LineSymbolizerImpl lineSymb = (LineSymbolizerImpl) styleBuilder.createLineSymbolizer();
+        LineSymbolizer lineSymb = (LineSymbolizer) styleBuilder.createLineSymbolizer();
         lineSymb.setUnitOfMeasure(USCustomary.FOOT);
         lineSymb.getStroke().setWidth(ff.literal(size + "m"));
 
@@ -771,7 +754,7 @@ public class UomRescaleStyleVisitorTest {
         double scaleMetersToPixel = 10;
 
         StyleBuilder styleBuilder = new StyleBuilder();
-        LineSymbolizerImpl lineSymb = (LineSymbolizerImpl) styleBuilder.createLineSymbolizer();
+        LineSymbolizer lineSymb = (LineSymbolizer) styleBuilder.createLineSymbolizer();
         lineSymb.setUnitOfMeasure(SI.METRE);
         lineSymb.getStroke().setWidth(ff.literal(size + "px"));
 
@@ -803,13 +786,13 @@ public class UomRescaleStyleVisitorTest {
 
             StyleBuilder styleBuilder = new StyleBuilder();
 
-            TextSymbolizerImpl textSymb = (TextSymbolizerImpl) styleBuilder.createTextSymbolizer();
+            TextSymbolizer textSymb = (TextSymbolizer) styleBuilder.createTextSymbolizer();
             textSymb.setUnitOfMeasure(uom);
 
             // check for IntArrayOption
-            textSymb.getOptions().put(TextSymbolizer.GRAPHIC_MARGIN_KEY, null);
+            textSymb.getOptions().put(org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY, null);
             // check for IntOption
-            textSymb.getOptions().put(TextSymbolizer.SPACE_AROUND_KEY, null);
+            textSymb.getOptions().put(org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY, null);
 
             UomRescaleStyleVisitor visitor = new UomRescaleStyleVisitor(10);
 

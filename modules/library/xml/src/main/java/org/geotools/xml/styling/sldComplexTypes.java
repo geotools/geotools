@@ -27,7 +27,6 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.ContrastMethod;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.ContrastEnhancementImpl;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.Mark;
@@ -209,7 +208,7 @@ public class sldComplexTypes {
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
-            ContrastEnhancement symbol = new ContrastEnhancementImpl();
+            ContrastEnhancement symbol = new ContrastEnhancement();
 
             for (ElementValue elementValue : value) {
                 if ((elementValue == null) || elementValue.getElement() == null) {

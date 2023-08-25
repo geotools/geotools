@@ -147,15 +147,7 @@ import org.geotools.renderer.style.MarkAlongLine;
 import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.renderer.style.Style2D;
 import org.geotools.renderer.style.StyleAttributeExtractor;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.RuleImpl;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.*;
 import org.geotools.styling.visitor.DpiRescaleStyleVisitor;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 import org.geotools.styling.visitor.MapRenderingSelectorStyleVisitor;
@@ -2593,7 +2585,7 @@ public class StreamingRenderer implements GTRenderer {
 
         // clone the rule (the style can be reused over and over, we cannot alter it) and set the
         // new filter
-        Rule rr = new RuleImpl(rule);
+        Rule rr = new Rule(rule);
         rr.setFilter(reprojected);
         return rr;
     }

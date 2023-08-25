@@ -8,12 +8,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.geotools.api.style.ContrastMethod;
 import org.geotools.filter.function.EnvFunction;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.ColorMapEntry;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.SelectedChannelType;
-import org.geotools.styling.ShadedRelief;
-import org.geotools.styling.Style;
+import org.geotools.styling.*;
+import org.geotools.api.style.ColorMapEntry;
 import org.junit.Test;
 
 public class CookbookRasterTest extends AbstractStyleTest {
@@ -51,7 +47,7 @@ public class CookbookRasterTest extends AbstractStyleTest {
         RasterSymbolizer rs = (RasterSymbolizer) collector.symbolizers.get(0);
         assertNull(rs.getChannelSelection());
         ColorMap cmap = rs.getColorMap();
-        assertEquals(ColorMap.TYPE_RAMP, cmap.getType());
+        assertEquals(ColorMapImpl.TYPE_RAMP, cmap.getType());
         assertFalse(cmap.getExtendedColors());
         assertEntry("#008000", 70.0, 1.0, null, cmap.getColorMapEntry(0));
         assertEntry("#663333", 256.0, 1.0, null, cmap.getColorMapEntry(1));
@@ -75,7 +71,7 @@ public class CookbookRasterTest extends AbstractStyleTest {
         assertEquals(0.3, rs.getOpacity().evaluate(null, Double.class), 0.0);
         assertNull(rs.getChannelSelection());
         ColorMap cmap = rs.getColorMap();
-        assertEquals(ColorMap.TYPE_RAMP, cmap.getType());
+        assertEquals(ColorMapImpl.TYPE_RAMP, cmap.getType());
         assertFalse(cmap.getExtendedColors());
         assertEntry("#008000", 70.0, 1.0, null, cmap.getColorMapEntry(0));
         assertEntry("#663333", 256.0, 1.0, null, cmap.getColorMapEntry(1));
@@ -105,7 +101,7 @@ public class CookbookRasterTest extends AbstractStyleTest {
                 0.5, rs.getContrastEnhancement().getGammaValue().evaluate(null, Double.class), 0.0);
         assertNull(rs.getChannelSelection());
         ColorMap cmap = rs.getColorMap();
-        assertEquals(ColorMap.TYPE_RAMP, cmap.getType());
+        assertEquals(ColorMapImpl.TYPE_RAMP, cmap.getType());
         assertFalse(cmap.getExtendedColors());
         assertEntry("#008000", 70.0, 1.0, null, cmap.getColorMapEntry(0));
         assertEntry("#663333", 256.0, 1.0, null, cmap.getColorMapEntry(1));
@@ -129,7 +125,7 @@ public class CookbookRasterTest extends AbstractStyleTest {
         RasterSymbolizer rs = (RasterSymbolizer) collector.symbolizers.get(0);
         assertNull(rs.getChannelSelection());
         ColorMap cmap = rs.getColorMap();
-        assertEquals(ColorMap.TYPE_RAMP, cmap.getType());
+        assertEquals(ColorMapImpl.TYPE_RAMP, cmap.getType());
         assertFalse(cmap.getExtendedColors());
         assertEquals(3, cmap.getColorMapEntries().length);
         assertEntry("#0000FF", 150.0, 1.0, null, cmap.getColorMapEntry(0));
@@ -154,7 +150,7 @@ public class CookbookRasterTest extends AbstractStyleTest {
         RasterSymbolizer rs = (RasterSymbolizer) collector.symbolizers.get(0);
         assertNull(rs.getChannelSelection());
         ColorMap cmap = rs.getColorMap();
-        assertEquals(ColorMap.TYPE_RAMP, cmap.getType());
+        assertEquals(ColorMapImpl.TYPE_RAMP, cmap.getType());
         assertFalse(cmap.getExtendedColors());
         assertEquals(2, cmap.getColorMapEntries().length);
         assertEntry("#008000", 70.0, 1.0, null, cmap.getColorMapEntry(0));
@@ -163,7 +159,7 @@ public class CookbookRasterTest extends AbstractStyleTest {
 
     @Test
     public void testDiscreteColors() {
-        ColorMapBuilder cm = new ColorMapBuilder().type(ColorMap.TYPE_INTERVALS);
+        ColorMapBuilder cm = new ColorMapBuilder().type(ColorMapImpl.TYPE_INTERVALS);
         cm.entry().quantity(150).colorHex("#008000");
         cm.entry().quantity(256).colorHex("#663333");
         Style style = cm.buildStyle();
@@ -178,7 +174,7 @@ public class CookbookRasterTest extends AbstractStyleTest {
         RasterSymbolizer rs = (RasterSymbolizer) collector.symbolizers.get(0);
         assertNull(rs.getChannelSelection());
         ColorMap cmap = rs.getColorMap();
-        assertEquals(ColorMap.TYPE_INTERVALS, cmap.getType());
+        assertEquals(ColorMapImpl.TYPE_INTERVALS, cmap.getType());
         assertFalse(cmap.getExtendedColors());
         assertEquals(2, cmap.getColorMapEntries().length);
         assertEntry("#008000", 150.0, 1.0, null, cmap.getColorMapEntry(0));
@@ -308,7 +304,7 @@ public class CookbookRasterTest extends AbstractStyleTest {
         assertEquals(0.3, rs.getOpacity().evaluate(null, Double.class), 0.0);
         assertNull(rs.getChannelSelection());
         ColorMap cmap = rs.getColorMap();
-        assertEquals(ColorMap.TYPE_RAMP, cmap.getType());
+        assertEquals(ColorMapImpl.TYPE_RAMP, cmap.getType());
         assertFalse(cmap.getExtendedColors());
         assertEntry("#008000", 70.0, 1.0, "Label1", cmap.getColorMapEntry(0));
         assertEntry("#663333", 256.0, 1.0, "Label2", cmap.getColorMapEntry(1));

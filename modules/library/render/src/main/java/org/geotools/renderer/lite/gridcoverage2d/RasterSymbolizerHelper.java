@@ -34,11 +34,10 @@ import org.geotools.image.ImageWorker;
 import org.geotools.renderer.i18n.Vocabulary;
 import org.geotools.renderer.i18n.VocabularyKeys;
 import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.ColorMap;
 import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.ShadedRelief;
-import org.geotools.styling.StyleVisitor;
+import org.geotools.api.style.StyleVisitor;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
 

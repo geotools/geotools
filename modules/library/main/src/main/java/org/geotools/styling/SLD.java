@@ -30,8 +30,7 @@ import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.style.GraphicalSymbol;
-import org.geotools.api.style.SemanticType;
+import org.geotools.api.style.*;
 import org.geotools.data.DataStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.Filters;
@@ -173,7 +172,7 @@ public class SLD {
         Stroke stroke = symbolizer.getStroke();
 
         if (stroke == null) {
-            stroke = sf.createStroke(ff.literal(colour), Stroke.DEFAULT.getWidth());
+            stroke = sf.createStroke(ff.literal(colour), ConstantStroke.DEFAULT.getWidth());
             symbolizer.setStroke(stroke);
 
         } else {
@@ -573,7 +572,7 @@ public class SLD {
 
                 Stroke stroke = mark.getStroke();
                 if (stroke == null) {
-                    stroke = sf.createStroke(ff.literal(Color.BLACK), Stroke.DEFAULT.getWidth());
+                    stroke = sf.createStroke(ff.literal(Color.BLACK), ConstantStroke.DEFAULT.getWidth());
                     mark.setStroke(stroke);
                 }
 
@@ -967,7 +966,7 @@ public class SLD {
         Expression colourExp = ff.literal(colour);
         Stroke stroke = symbolizer.getStroke();
         if (stroke == null) {
-            stroke = sf.createStroke(colourExp, Stroke.DEFAULT.getWidth());
+            stroke = sf.createStroke(colourExp, ConstantStroke.DEFAULT.getWidth());
             symbolizer.setStroke(stroke);
         } else {
             stroke.setColor(ff.literal(colour));

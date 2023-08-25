@@ -9,11 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.*;
 import org.geotools.api.style.AnchorPoint;
-import org.geotools.api.style.Displacement;
 import org.geotools.api.style.Graphic;
-import org.geotools.api.style.GraphicalSymbol;
-import org.geotools.api.style.StyleVisitor;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Test;
 
@@ -35,18 +33,18 @@ public class StyleTest {
 
     @Test
     public void displacement() {
-        assertNull(DisplacementImpl.cast(null));
+        assertNull(Displacement.cast(null));
 
-        DisplacementImpl displacement = new DisplacementImpl();
+        Displacement displacement = new Displacement();
         displacement.setDisplacementX(1.0);
         displacement.setDisplacementY(1.0);
 
-        assertSame(displacement, DisplacementImpl.cast(displacement));
+        assertSame(displacement, Displacement.cast(displacement));
 
         assertEquals(displacement, sf.displacement(ff.literal(1.0), ff.literal(1.0)));
 
         org.geotools.api.style.Displacement external =
-                new Displacement() {
+                new org.geotools.api.style.Displacement() {
                     @Override
                     public Expression getDisplacementY() {
                         return ff.literal(1.0);
@@ -62,7 +60,7 @@ public class StyleTest {
                         return visitor.visit(this, data);
                     }
                 };
-        displacement = DisplacementImpl.cast(external);
+        displacement = Displacement.cast(external);
         assertEquals(ff.literal(1.0), displacement.getDisplacementX());
     }
 
@@ -77,14 +75,14 @@ public class StyleTest {
         Expression weight = ff.literal("normal");
         Expression size = ff.literal(12);
 
-        Font font = sf.font(family, style, weight, size);
+        org.geotools.api.style.Font font = sf.font(family, style, weight, size);
 
         assertEquals(family, font.getFamily());
         assertEquals(style, font.getStyle()); // oblique or italic
         assertEquals(weight, font.getWeight()); // bold or normal
         assertEquals(size, font.getSize());
 
-        FontImpl cast = FontImpl.cast(font);
+        Font cast = Font.cast(font);
         assertSame(cast, font);
     }
 
@@ -98,7 +96,7 @@ public class StyleTest {
         Expression size = null;
         Expression rotation = null;
         AnchorPoint anchor = null;
-        Displacement disp = null;
+        org.geotools.api.style.Displacement disp = null;
         Graphic graphic = sf.graphic(symbols, opacity, size, rotation, anchor, disp);
 
         assertNotNull(graphic);

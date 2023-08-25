@@ -89,13 +89,8 @@ import org.geotools.map.MapViewport;
 import org.geotools.referencing.CRS;
 import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.lite.StreamingRenderer.RenderingRequest;
-import org.geotools.styling.DescriptionImpl;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.StyleFactoryImpl;
-import org.geotools.styling.StyleImpl;
-import org.geotools.styling.Symbolizer;
+import org.geotools.styling.*;
+import org.geotools.styling.StyleFactory;
 import org.geotools.test.TestData;
 import org.junit.Assert;
 import org.junit.Before;
@@ -701,11 +696,11 @@ public class StreamingRendererTest {
 
         // simulate geofence adding a bbox
         BBOX bbox = StreamingRenderer.filterFactory.bbox("", 30, 60, 30, 60, "EPSG:4326");
-        StyleFactoryImpl sf = new StyleFactoryImpl();
+        StyleFactory sf = new StyleFactory();
         Rule bboxRule =
                 sf.createRule(
                         new Symbolizer[0],
-                        new DescriptionImpl(),
+                        new Description(),
                         null,
                         "bbox",
                         bbox,
@@ -800,7 +795,7 @@ public class StreamingRendererTest {
         // preparing the layer to be rendered, the provided style as a filter that will use
         // the default geometry attribute "", this will allow us to test that using geometry
         // default attribute "" is correctly handled
-        StyleImpl style = (StyleImpl) RendererBaseTest.loadStyle(this, "genericLines.sld");
+        Style style = (Style) RendererBaseTest.loadStyle(this, "genericLines.sld");
         File vectorDataFile =
                 new File(TestData.getResource(this, "genericLines.properties").toURI());
         PropertyDataStore dataStore = new PropertyDataStore(vectorDataFile.getParentFile());

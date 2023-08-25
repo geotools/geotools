@@ -16,177 +16,366 @@
  */
 package org.geotools.styling;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.metadata.citation.OnLineResource;
 import org.geotools.api.style.GraphicLegend;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.util.Cloneable;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.visitor.DuplicatingFilterVisitor;
+import org.geotools.util.Utilities;
 
 /**
- * A rule is used to attach a condition to, and group, the individual symbolizers used for
- * rendering. The Title and Abstract describe the rule and may be used to generate a legend, as may
- * the LegendGraphic. The Filter, ElseFilter, MinScale and MaxScale elements allow the selection of
- * features and rendering scales for a rule. The scale selection works as follows. When a map is to
- * be rendered, the scale denominator is computed and all rules in all UserStyles that have a scale
- * outside of the request range are dropped. (This also includes Rules that have an ElseFilter.) An
- * ElseFilter is simply an ELSE condition to the conditions (Filters) of all other rules in the same
- * UserStyle. The exact meaning of the ElseFilter is determined after Rules have been eliminated for
- * not fitting the rendering scale. This definition of the behaviour of ElseFilters may seem a
- * little strange, but it allows for scale-dependent and scale-independent ELSE conditions. For the
- * Filter, only SqlExpression is available for specification, but this is a hack and should be
- * replaced with Filter as defined in WFS. A missing Filter element means "always true". If a set of
- * Rules has no ElseFilters, then some features may not be rendered (which is presumably the desired
- * behavior). The Scales are actually scale denominators (as double floats), so "10e6" would be
- * interpreted as 1:10M. A missing MinScale means there is no lower bound to the scale-denominator
- * range (lim[x->0+](x)), and a missing MaxScale means there is no upper bound (infinity). 0.28mm
+ * Provides the default implementation of Rule.
  *
- * <p>The details of this object are taken from the <a
- * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor
- * Report (OGC 02-070) version 1.0.0.</a>:
- *
- * <pre><code>
- * &lt;xsd:element name="Rule"&gt;
- *   &lt;xsd:annotation&gt;
- *     &lt;xsd:documentation&gt;
- *       A Rule is used to attach property/scale conditions to and group
- *       the individual symbolizers used for rendering.
- *     &lt;/xsd:documentation&gt;
- *   &lt;/xsd:annotation&gt;
- *   &lt;xsd:complexType&gt;
- *     &lt;xsd:sequence&gt;
- *       &lt;xsd:element ref="sld:Name" minOccurs="0"/&gt;
- *       &lt;xsd:element ref="sld:Title" minOccurs="0"/&gt;
- *       &lt;xsd:element ref="sld:Abstract" minOccurs="0"/&gt;
- *       &lt;xsd:element ref="sld:LegendGraphic" minOccurs="0"/&gt;
- *       &lt;xsd:choice minOccurs="0"&gt;
- *         &lt;xsd:element ref="ogc:Filter"/&gt;
- *         &lt;xsd:element ref="sld:ElseFilter"/&gt;
- *       &lt;/xsd:choice&gt;
- *       &lt;xsd:element ref="sld:MinScaleDenominator" minOccurs="0"/&gt;
- *       &lt;xsd:element ref="sld:MaxScaleDenominator" minOccurs="0"/&gt;
- *       &lt;xsd:element ref="sld:Symbolizer" maxOccurs="unbounded"/&gt;
- *     &lt;/xsd:sequence&gt;
- *   &lt;/xsd:complexType&gt;
- * &lt;/xsd:element&gt;
- * </code></pre>
+ * @author James Macgill
+ * @author Johann Sorel (Geomatys)
+ * @version $Id$
  */
-public interface Rule extends org.geotools.api.style.Rule {
+public class Rule implements  Cloneable, org.geotools.api.style.Rule {
+    private List<Symbolizer> symbolizers = new ArrayList<>();
+
+    private GraphicLegend legend;
+    private String name;
+    private Description description = new Description();
+    private Filter filter = null;
+    private boolean hasElseFilter = false;
+    private double maxScaleDenominator = Double.POSITIVE_INFINITY;
+    private double minScaleDenominator = 0.0;
+    private OnLineResource online = null;
+    protected Map<String, String> options;
+
+    /** Creates a new instance of DefaultRule */
+    protected Rule() {}
+
+    /** Creates a new instance of DefaultRule */
+    protected Rule(Symbolizer... symbolizers) {
+        this.symbolizers.addAll(Arrays.asList(symbolizers));
+    }
+
+    protected Rule(
+            org.geotools.styling.Symbolizer[] symbolizers,
+            org.geotools.api.style.Description desc,
+            GraphicLegend legend,
+            String name,
+            Filter filter,
+            boolean isElseFilter,
+            double maxScale,
+            double minScale) {
+        this.symbolizers = new ArrayList<>(Arrays.asList(symbolizers));
+        description.setAbstract(desc.getAbstract());
+        description.setTitle(desc.getTitle());
+        this.legend = legend;
+        this.name = name;
+        this.filter = filter;
+        hasElseFilter = isElseFilter;
+        this.maxScaleDenominator = maxScale;
+        this.minScaleDenominator = minScale;
+    }
+
+    /** Copy constructor */
+    public Rule(org.geotools.api.style.Rule rule) {
+        this.symbolizers = new ArrayList<>();
+        for (org.geotools.api.style.Symbolizer sym : rule.symbolizers()) {
+            if (sym instanceof Symbolizer) {
+                this.symbolizers.add((Symbolizer) sym);
+            }
+        }
+        if (rule.getDescription() != null && rule.getDescription().getTitle() != null) {
+            this.description.setTitle(rule.getDescription().getTitle());
+        }
+        if (rule.getDescription() != null && rule.getDescription().getAbstract() != null) {
+            this.description.setTitle(rule.getDescription().getAbstract());
+        }
+        if (rule.getLegend() instanceof org.geotools.styling.Graphic) {
+            this.legend = rule.getLegend();
+        }
+        this.name = rule.getName();
+        this.filter = rule.getFilter();
+        this.hasElseFilter = rule.isElseFilter();
+        this.maxScaleDenominator = rule.getMaxScaleDenominator();
+        this.minScaleDenominator = rule.getMinScaleDenominator();
+    }
+
+    @Override
+    public GraphicLegend getLegend() {
+        return legend;
+    }
+
+    public void setLegend(GraphicLegend legend) {
+        this.legend = legend;
+    }
+
+    @Override
+    public List<Symbolizer> symbolizers() {
+        return symbolizers;
+    }
+
+    public org.geotools.styling.Symbolizer[] getSymbolizers() {
+
+        final Symbolizer[] ret = new Symbolizer[symbolizers.size()];
+        for (int i = 0, n = symbolizers.size(); i < n; i++) {
+            ret[i] = symbolizers.get(i);
+        }
+
+        return ret;
+    }
+
+    @Override
+    public Description getDescription() {
+        return description;
+    }
+
+    public void setDescription(org.geotools.api.style.Description description) {
+        this.description = Description.cast(description);
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+    public void setFilter(Filter filter) {
+        this.filter = filter;
+    }
+
+    @Override
+    public boolean isElseFilter() {
+        return hasElseFilter;
+    }
+
+    public void setElseFilter(boolean defaultb) {
+        hasElseFilter = defaultb;
+    }
 
     /**
-     * Sets the name of the rule.
+     * Getter for property maxScaleDenominator.
      *
-     * @param name The name of the rule. This provides a way to identify a rule.
-     */
-    void setName(String name);
-
-    /**
-     * Description for this rule.
-     *
-     * @return Human readable description for use in user interfaces
-     * @since 2.5.x
+     * @return Value of property maxScaleDenominator.
      */
     @Override
-    Description getDescription();
+    public double getMaxScaleDenominator() {
+        return maxScaleDenominator;
+    }
 
     /**
-     * Description for this rule.
+     * Setter for property maxScaleDenominator.
      *
-     * @param description Human readable title and abstract.
+     * @param maxScaleDenominator New value of property maxScaleDenominator.
      */
-    void setDescription(org.geotools.api.style.Description description);
+    public void setMaxScaleDenominator(double maxScaleDenominator) {
+        this.maxScaleDenominator = maxScaleDenominator;
+    }
 
     /**
-     * The smallest value for scale denominator at which symbolizers contained by this rule should
-     * be applied.
+     * Getter for property minScaleDenominator.
      *
-     * @param scale The smallest (inclusive) denominator value that this rule will be active for.
-     */
-    void setMinScaleDenominator(double scale);
-
-    /**
-     * The largest value for scale denominator at which symbolizers contained by this rule should be
-     * applied.
-     *
-     * @param scale The largest (exclusive) denominator value that this rule will be active for.
-     */
-    void setMaxScaleDenominator(double scale);
-
-    /**
-     * This is the filter used to select content for this rule to display
-     *
-     * <p>
-     *
-     * @return Filter use to select content for this rule to display, Filter.INCLUDES to include all
-     *     content; or use Filter.EXCLUDES to mark this as an "else" Rule accepting all remaining
-     *     content
+     * @return Value of property minScaleDenominator.
      */
     @Override
-    Filter getFilter();
+    public double getMinScaleDenominator() {
+        return minScaleDenominator;
+    }
 
     /**
-     * Filter used to select content for this rule to display.
+     * Setter for property minScaleDenominator.
      *
-     * <p>This filter is only consulted if isElseFilter is false.
+     * @param minScaleDenominator New value of property minScaleDenominator.
      */
-    void setFilter(Filter filter);
+    public void setMinScaleDenominator(double minScaleDenominator) {
+        this.minScaleDenominator = minScaleDenominator;
+    }
 
-    /** @param isElse if this rule should accept any features not already rendered */
-    void setElseFilter(boolean isElse);
-
-    /** */
     @Override
-    public GraphicLegend getLegend();
+    public Object accept(StyleVisitor visitor, Object data) {
+        return visitor.visit(this, data);
+    }
 
-    /** @param legend */
-    void setLegend(GraphicLegend legend);
+    @Override
+    public void accept(StyleVisitor visitor) {
+        visitor.visit(this);
+    }
 
     /**
-     * The symbolizers contain the actual styling information for different geometry types. A single
-     * feature may be rendered by more than one of the symbolizers returned by this method. It is
-     * important that the symbolizers be applied in the order in which they are returned if the end
-     * result is to be as intended. All symbolizers should be applied to all features which make it
-     * through the filters in this rule regardless of the features' geometry. For example, a polygon
-     * symbolizer should be applied to line geometries and even points. If this is not the desired
-     * beaviour, ensure that either the filters block inappropriate features or that the
-     * FeatureTypeStyler which contains this rule has its FeatureTypeName or SemanticTypeIdentifier
-     * set appropriately.
+     * Creates a deep copy clone of the rule.
      *
-     * @return An array of symbolizers to be applied, in sequence, to all of the features addressed
-     *     by the FeatureTypeStyler which contains this rule.
+     * @see org.geotools.styling.Rule#clone()
      */
-    Symbolizer[] getSymbolizers();
+    @Override
+    public Object clone() {
+        try {
+            Rule clone = (Rule) super.clone();
+
+            clone.name = name;
+            clone.description.setAbstract(description.getAbstract());
+            clone.description.setTitle(description.getTitle());
+            if (filter == null) {
+                clone.filter = null;
+            } else {
+                DuplicatingFilterVisitor visitor = new DuplicatingFilterVisitor();
+                clone.filter =
+                        (Filter)
+                                filter.accept(visitor, CommonFactoryFinder.getFilterFactory(null));
+            }
+            clone.hasElseFilter = hasElseFilter;
+            clone.legend = legend;
+
+            clone.symbolizers = new ArrayList<>(symbolizers);
+
+            clone.maxScaleDenominator = maxScaleDenominator;
+            clone.minScaleDenominator = minScaleDenominator;
+            clone.options = options;
+
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("This will never happen", e);
+        }
+    }
 
     /**
-     * Symbolizers used, in order, to portray the features selected by this rule.
+     * Generates a hashcode for the Rule.
      *
-     * <p>Please note that this list may be modified direct.
+     * <p>For complex styles this can be an expensive operation since the hash code is computed
+     * using all the hashcodes of the object within the style.
+     *
+     * @return The hashcode.
      */
     @Override
-    List<org.geotools.styling.Symbolizer> symbolizers();
+    public int hashCode() {
+        final int PRIME = 1000003;
+        int result = 0;
+        result = (PRIME * result) + symbolizers.hashCode();
 
-    /** @return Location where this style is defined; file or server; or null if unknown */
+        if (legend != null) result = (PRIME * result) + legend.hashCode();
+
+        if (name != null) {
+            result = (PRIME * result) + name.hashCode();
+        }
+
+        if (description != null) {
+            result = (PRIME * result) + description.hashCode();
+        }
+
+        if (filter != null) {
+            result = (PRIME * result) + filter.hashCode();
+        }
+
+        if (options != null) {
+            result = (PRIME * result) + options.hashCode();
+        }
+
+        result = (PRIME * result) + (hasElseFilter ? 1 : 0);
+
+        long temp = Double.doubleToLongBits(maxScaleDenominator);
+        result = (PRIME * result) + (int) (temp >>> 32);
+        result = (PRIME * result) + (int) (temp & 0xFFFFFFFF);
+        temp = Double.doubleToLongBits(minScaleDenominator);
+        result = (PRIME * result) + (int) (temp >>> 32);
+        result = (PRIME * result) + (int) (temp & 0xFFFFFFFF);
+
+        return result;
+    }
+
+    /**
+     * Compares this Rule with another for equality.
+     *
+     * <p>Two RuleImpls are equal if all their properties are equal.
+     *
+     * <p>For complex styles this can be an expensive operation since it checks all objects for
+     * equality.
+     *
+     * @param oth The other rule to compare with.
+     * @return True if this and oth are equal.
+     */
     @Override
-    public OnLineResource getOnlineResource();
+    public boolean equals(Object oth) {
+        if (this == oth) {
+            return true;
+        }
 
-    /** @param resource Indicates where this style is defined */
-    void setOnlineResource(OnLineResource resource);
+        if (oth instanceof Rule) {
+            Rule other = (Rule) oth;
 
-    /** Determines if a vendor option with the specific key has been set on this Rule. */
-    default boolean hasOption(String key) {
+            return Utilities.equals(name, other.name)
+                    && Utilities.equals(description, other.description)
+                    && Utilities.equals(filter, other.filter)
+                    && (hasElseFilter == other.hasElseFilter)
+                    && Utilities.equals(legend, other.legend)
+                    && Utilities.equals(symbolizers, other.symbolizers)
+                    && (Double.doubleToLongBits(maxScaleDenominator)
+                            == Double.doubleToLongBits(other.maxScaleDenominator))
+                    && (Double.doubleToLongBits(minScaleDenominator)
+                            == Double.doubleToLongBits(other.minScaleDenominator))
+                    && getOptions().equals(other.getOptions());
+        }
+
         return false;
     }
 
-    /**
-     * Map of vendor options for the Rule.
-     *
-     * <p>Client code looking for the existence of a single option should use {@link
-     * #hasOption(String)}
-     */
-    default Map<String, String> getOptions() {
-        return new HashMap<>();
+    @Override
+    public String toString() {
+        StringBuffer buf = new StringBuffer();
+        buf.append("<RuleImpl");
+        if (name != null) {
+            buf.append(":");
+            buf.append(name);
+        }
+        buf.append("> ");
+        buf.append(filter);
+        if (symbolizers != null) {
+            buf.append("\n");
+            for (Symbolizer symbolizer : symbolizers) {
+                buf.append("\t");
+                buf.append(symbolizer);
+                buf.append("\n");
+            }
+        }
+        buf.append(getOptions());
+        return buf.toString();
     }
 
-    /** Used to traverse the style data structure. */
-    void accept(org.geotools.styling.StyleVisitor visitor);
+    @Override
+    public OnLineResource getOnlineResource() {
+        return online;
+    }
+
+    public void setOnlineResource(OnLineResource online) {
+        this.online = online;
+    }
+
+    static Rule cast(org.geotools.api.style.Rule rule) {
+        if (rule == null) {
+            return null;
+        } else if (rule instanceof Rule) {
+            return (Rule) rule;
+        } else {
+            Rule copy = new Rule(rule); // replace with casting ...
+            return copy;
+        }
+    }
+
+    public boolean hasOption(String key) {
+        return options != null && options.containsKey(key);
+    }
+
+    public Map<String, String> getOptions() {
+        if (options == null) {
+            options = new LinkedHashMap<>();
+        }
+        return options;
+    }
 }

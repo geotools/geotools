@@ -13,36 +13,43 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
+ *
+ * Created on 13 November 2002, 13:52
  */
 package org.geotools.styling;
 
+import java.util.HashMap;
 import java.util.Map;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.ContrastMethod;
+import org.geotools.api.style.ContrastMethodStrategy;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.factory.CommonFactoryFinder;
 
 /**
  * The ContrastEnhancement object defines contrast enhancement for a channel of a false-color image
  * or for a color image. Its format is:
  *
  * <pre>
- * &lt;xs:element name="ContrastEnhancement"&gt;
+ * &lt;xs:element name=&quot;ContrastEnhancement&quot;&gt;
  *   &lt;xs:complexType&gt;
  *     &lt;xs:sequence&gt;
- *       &lt;xs:choice minOccurs="0"&gt;
- *         &lt;xs:element ref="sld:Normalize"/&gt;
- *         &lt;xs:element ref="sld:Histogram"/&gt;
+ *       &lt;xs:choice minOccurs=&quot;0&quot;&gt;
+ *         &lt;xs:element ref=&quot;sld:Normalize&quot;/&gt;
+ *         &lt;xs:element ref=&quot;sld:Histogram&quot;/&gt;
  *       &lt;/xs:choice&gt;
- *       &lt;xs:element ref="sld:GammaValue" minOccurs="0"/&gt;
+ *       &lt;xs:element ref=&quot;sld:GammaValue&quot; minOccurs=&quot;0&quot;/&gt;
  *     &lt;/xs:sequence&gt;
  *   &lt;/xs:complexType&gt;
  * &lt;/xs:element&gt;
- * &lt;xs:element name="Normalize"&gt;
+ * &lt;xs:element name=&quot;Normalize&quot;&gt;
  *   &lt;xs:complexType/&gt;
  * &lt;/xs:element&gt;
- * &lt;xs:element name="Histogram"&gt;
+ * &lt;xs:element name=&quot;Histogram&quot;&gt;
  *   &lt;xs:complexType/&gt;
  * &lt;/xs:element&gt;
- * &lt;xs:element name="GammaValue" type="xs:double"/&gt;
+ * &lt;xs:element name=&quot;GammaValue&quot; type=&quot;xs:double&quot;/&gt;
  * </pre>
  *
  * In the case of a color image, the relative grayscale brightness of a pixel color is used.
@@ -57,61 +64,178 @@ import org.geotools.api.style.ContrastMethod;
  *
  * @author iant
  */
-public interface ContrastEnhancement extends org.geotools.api.style.ContrastEnhancement {
-    /** Used to set the contrast enhancement method used. */
-    public void setMethod(ContrastMethod method);
+public class ContrastEnhancement implements org.geotools.api.style.ContrastEnhancement {
 
-    /**
-     * @param gamma How much to brighten (greater than 1) or dim (less than 1) this channel; use 1.0
-     *     to indicate no change.
-     */
-    public void setGammaValue(Expression gamma);
+    @SuppressWarnings("PMD.UnusedPrivateField")
+    private FilterFactory filterFactory;
 
-    /**
-     * How much to brighten (values greater than 1.0) or dim (values less than 1.0) an image. The
-     * default GammaValue is 1.0 (no change).
-     *
-     * @return Expression, if <code>null</code> a value of 1.0 is assumed indicating no change
-     */
+    private Expression gamma;
+
+    private ContrastMethod method;
+
+    private Map<String, Expression> options;
+
+    public ContrastEnhancement() {
+        this(CommonFactoryFinder.getFilterFactory(null));
+    }
+
+    public ContrastEnhancement(FilterFactory factory) {
+        this(factory, null);
+    }
+
+    public ContrastEnhancement(FilterFactory factory, ContrastMethod method) {
+        filterFactory = factory;
+        this.method = method;
+    }
+
+    public ContrastEnhancement(org.geotools.api.style.ContrastEnhancement contrastEnhancement) {
+        filterFactory = CommonFactoryFinder.getFilterFactory(null);
+        org.geotools.api.style.ContrastMethod meth = contrastEnhancement.getMethod();
+        if (meth != null) {
+            this.method = ContrastMethod.valueOf(meth.name());
+        }
+        this.gamma = contrastEnhancement.getGammaValue();
+        if (contrastEnhancement instanceof ContrastEnhancement) {
+            ContrastEnhancement other = (ContrastEnhancement) contrastEnhancement;
+            if (other.getOptions() != null) {
+                this.options = new HashMap<>();
+                this.options.putAll(other.getOptions());
+            }
+        }
+    }
+
+    public ContrastEnhancement(
+            FilterFactory factory, Expression gamma, ContrastMethod method) {
+        this.filterFactory = factory;
+        this.gamma = gamma;
+        this.method = method;
+    }
+
+    public void setFilterFactory(FilterFactory factory) {
+        filterFactory = factory;
+    }
+
     @Override
-    public Expression getGammaValue();
+    public Expression getGammaValue() {
+        return gamma;
+    }
 
-    /**
-     * Return vendor options relating to the enhancement method
-     *
-     * @return a Map containing expressions with string keys.
-     */
-    public Map<String, Expression> getOptions();
-    /**
-     * check if vendor option key is available
-     *
-     * @param key - the name of the option to check
-     * @return true if present
-     */
-    public boolean hasOption(String key);
+    public void setGammaValue(Expression gamma) {
+        this.gamma = gamma;
+    }
 
-    /**
-     * Store a vendor option
-     *
-     * @param key - the name of the option
-     * @param value an expression that evaluates to it's value
-     */
-    public void addOption(String key, Expression value);
+    @Override
+    public ContrastMethod getMethod() {
+        return method;
+    }
 
-    /** Traversal of the style data structure. */
-    public void accept(StyleVisitor visitor);
+    @Override
+    public Object accept(org.geotools.api.style.StyleVisitor visitor, Object extraData) {
+        return visitor.visit(this, extraData);
+    }
 
-    /** @param options a Map of VendorOptions */
-    public void setOptions(Map<String, Expression> options);
+    @Override
+    public void accept(StyleVisitor visitor) {
+        visitor.visit(this);
+    }
 
-    /** @return An expression for the matching VendorOption */
-    public Expression getOption(String string);
+    static ContrastEnhancement cast(org.geotools.api.style.ContrastEnhancement enhancement) {
+        if (enhancement == null) {
+            return null;
+        } else if (enhancement instanceof ContrastEnhancement) {
+            return (ContrastEnhancement) enhancement;
+        } else {
+            ContrastEnhancement copy = new ContrastEnhancement();
+            copy.setGammaValue(enhancement.getGammaValue());
+            copy.setMethod(enhancement.getMethod());
+            return copy;
+        }
+    }
 
-    /**
-     * Convenience method to allow users to pass in a {@link ContrastEnhancementMethod} to update
-     * {@link Method} and {@link Options} in one go.
-     *
-     * @param method the {@link ContrastEnhancementMethod} that underlies this enhancement
-     */
-    public void setMethod(ContrastMethodStrategy method);
+    public void setMethod(ContrastMethod method) {
+        this.method = method;
+    }
+
+    @Override
+    public Map<String, Expression> getOptions() {
+        if (this.options == null) {
+            this.options = new HashMap<>();
+        }
+        return this.options;
+    }
+
+    @Override
+    public boolean hasOption(String key) {
+        if (this.options == null) {
+            this.options = new HashMap<>();
+        }
+        return options.containsKey(key);
+    }
+
+    @Override
+    public Expression getOption(String key) {
+        return this.options.get(key);
+    }
+
+    public void addOption(String key, Expression value) {
+        if (this.options == null) {
+            this.options = new HashMap<>();
+        }
+        options.put(key, value);
+    }
+
+    public void setOptions(Map<String, Expression> options) {
+        this.options = options;
+    }
+
+    public void setMethod(ContrastMethodStrategy method) {
+        this.method = method.getMethod();
+        this.options = method.getOptions();
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((gamma == null) ? 0 : gamma.hashCode());
+        result = prime * result + ((method == null) ? 0 : method.hashCode());
+        result = prime * result + ((options == null) ? 0 : options.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof ContrastEnhancement)) {
+            return false;
+        }
+        ContrastEnhancement other = (ContrastEnhancement) obj;
+        if (gamma == null) {
+            if (other.gamma != null) {
+                return false;
+            }
+        } else if (!gamma.equals(other.gamma)) {
+            return false;
+        }
+        if (method == null) {
+            if (other.method != null) {
+                return false;
+            }
+        } else if (!method.equals(other.method)) {
+            return false;
+        }
+        if (options == null) {
+            if (other.options != null) {
+                return false;
+            }
+        } else if (!options.equals(other.options)) {
+            return false;
+        }
+        return true;
+    }
 }

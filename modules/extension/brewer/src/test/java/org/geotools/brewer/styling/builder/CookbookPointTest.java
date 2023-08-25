@@ -241,7 +241,7 @@ public class CookbookPointTest extends AbstractStyleTest {
         rb.point().graphic().size(6).mark().name("circle").fill().color(Color.RED);
         TextSymbolizerBuilder tb = rb.text().label("name");
         tb.fill().color(Color.BLACK);
-        tb.newFont().familyName("Arial").size(12).weightName(Font.Weight.BOLD);
+        tb.newFont().familyName("Arial").size(12).weightName(org.geotools.api.style.Font.Weight.BOLD);
         tb.pointPlacement().displacement().x(0).y(5);
         tb.pointPlacement().anchor().x(0.5);
         Style style = rb.buildStyle();
@@ -259,8 +259,8 @@ public class CookbookPointTest extends AbstractStyleTest {
         Font font = ps.getFont();
         assertEquals("Arial", font.getFamily().get(0).evaluate(null, String.class));
         assertEquals(12, (int) font.getSize().evaluate(null, Integer.class));
-        assertEquals(Font.Style.NORMAL, font.getStyle().evaluate(null, String.class));
-        assertEquals(Font.Weight.BOLD, font.getWeight().evaluate(null, String.class));
+        assertEquals(org.geotools.api.style.Font.Style.NORMAL, font.getStyle().evaluate(null, String.class));
+        assertEquals(org.geotools.api.style.Font.Weight.BOLD, font.getWeight().evaluate(null, String.class));
 
         // placement
         PointPlacement pp = (PointPlacement) ps.getLabelPlacement();
@@ -278,7 +278,7 @@ public class CookbookPointTest extends AbstractStyleTest {
         rb.point().graphic().size(6).mark().name("circle").fill().color(Color.RED);
         TextSymbolizerBuilder tb = rb.text().label("name");
         tb.fill().color(Color.BLACK);
-        tb.newFont().familyName("Arial").size(12).weightName(Font.Weight.BOLD);
+        tb.newFont().familyName("Arial").size(12).weightName(org.geotools.api.style.Font.Weight.BOLD);
         tb.pointPlacement().displacement().x(0).y(5);
         tb.pointPlacement().anchor().x(0.5);
         tb.pointPlacement().rotation(-45);
@@ -297,8 +297,8 @@ public class CookbookPointTest extends AbstractStyleTest {
         Font font = ps.getFont();
         assertEquals("Arial", font.getFamily().get(0).evaluate(null, String.class));
         assertEquals(12, (int) font.getSize().evaluate(null, Integer.class));
-        assertEquals(Font.Style.NORMAL, font.getStyle().evaluate(null, String.class));
-        assertEquals(Font.Weight.BOLD, font.getWeight().evaluate(null, String.class));
+        assertEquals(org.geotools.api.style.Font.Style.NORMAL, font.getStyle().evaluate(null, String.class));
+        assertEquals(org.geotools.api.style.Font.Weight.BOLD, font.getWeight().evaluate(null, String.class));
 
         // placement
         PointPlacement pp = (PointPlacement) ps.getLabelPlacement();

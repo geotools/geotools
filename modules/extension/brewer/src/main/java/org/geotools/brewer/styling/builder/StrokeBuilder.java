@@ -19,6 +19,7 @@ package org.geotools.brewer.styling.builder;
 import java.awt.Color;
 import java.util.List;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.styling.ConstantStroke;
 import org.geotools.styling.Stroke;
 import org.geotools.util.Converters;
 
@@ -60,14 +61,14 @@ public class StrokeBuilder extends AbstractStyleBuilder<Stroke> {
     /** Reset stroke to default values. */
     @Override
     public StrokeBuilder reset() {
-        color = Stroke.DEFAULT.getColor();
-        width = Stroke.DEFAULT.getWidth();
-        opacity = Stroke.DEFAULT.getOpacity();
-        lineCap = Stroke.DEFAULT.getLineCap();
-        lineJoin = Stroke.DEFAULT.getLineJoin();
-        dashArray = Stroke.DEFAULT.getDashArray();
-        dashArrayExpressions = Stroke.DEFAULT.dashArray();
-        dashOffset = Stroke.DEFAULT.getDashOffset();
+        color = ConstantStroke.DEFAULT.getColor();
+        width = ConstantStroke.DEFAULT.getWidth();
+        opacity = ConstantStroke.DEFAULT.getOpacity();
+        lineCap = ConstantStroke.DEFAULT.getLineCap();
+        lineJoin = ConstantStroke.DEFAULT.getLineJoin();
+        dashArray = ConstantStroke.DEFAULT.getDashArray();
+        dashArrayExpressions = ConstantStroke.DEFAULT.dashArray();
+        dashOffset = ConstantStroke.DEFAULT.getDashOffset();
         graphicFill.unset();
         graphicStroke.unset();
         unset = false;

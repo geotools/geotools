@@ -26,22 +26,7 @@ import org.geotools.api.style.SemanticType;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.IllegalFilterException;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.*;
 import org.junit.Before;
 import org.junit.Test;
 import si.uom.SI;
@@ -161,23 +146,23 @@ public class RescaleStyleVisitorTest {
     @Test
     public void testTextSymbolizer() throws Exception {
         TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, (Font) null, "label");
-        ts.getOptions().put(TextSymbolizer.MAX_DISPLACEMENT_KEY, "10");
-        ts.getOptions().put(TextSymbolizer.GRAPHIC_MARGIN_KEY, "10 20");
+        ts.getOptions().put(org.geotools.api.style.TextSymbolizer.MAX_DISPLACEMENT_KEY, "10");
+        ts.getOptions().put(org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY, "10 20");
 
         ts.accept(visitor);
         TextSymbolizer clone = (TextSymbolizer) visitor.getCopy();
-        assertEquals("20", clone.getOptions().get(TextSymbolizer.MAX_DISPLACEMENT_KEY));
-        assertEquals("20 40", clone.getOptions().get(TextSymbolizer.GRAPHIC_MARGIN_KEY));
+        assertEquals("20", clone.getOptions().get(org.geotools.api.style.TextSymbolizer.MAX_DISPLACEMENT_KEY));
+        assertEquals("20 40", clone.getOptions().get(org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY));
     }
 
     @Test
     public void testTextSymbolizerArraySingleValue() throws Exception {
         TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, (Font) null, "label");
-        ts.getOptions().put(TextSymbolizer.GRAPHIC_MARGIN_KEY, "10");
+        ts.getOptions().put(org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY, "10");
 
         ts.accept(visitor);
         TextSymbolizer clone = (TextSymbolizer) visitor.getCopy();
-        assertEquals("20", clone.getOptions().get(TextSymbolizer.GRAPHIC_MARGIN_KEY));
+        assertEquals("20", clone.getOptions().get(org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY));
     }
 
     @Test

@@ -21,11 +21,4 @@ package org.geotools.api.style;
  */
 public interface GraphicLegend extends Graphic {
 
-    /**
-     * calls the visit method of a StyleVisitor
-     *
-     * @param visitor the style visitor
-     */
-    @Override
-    Object accept(StyleVisitor visitor, Object extraData);
 }

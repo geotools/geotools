@@ -39,7 +39,6 @@ import org.geotools.renderer.style.MarkStyle2D;
 import org.geotools.renderer.style.Style2D;
 import org.geotools.renderer.style.TextStyle2D;
 import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyleFactoryImpl;
 import org.geotools.styling.TextSymbolizer;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,7 +49,7 @@ import org.mockito.Mockito;
 public class LabelPainterTest {
 
     private static GeometryFactory geometryFactory = new GeometryFactory();
-    private static StyleFactory styleFactory = new StyleFactoryImpl();
+    private static StyleFactory styleFactory = new StyleFactory();
     private Graphics2D graphics;
     private TextStyle2D style;
     private TextSymbolizer symbolizer;

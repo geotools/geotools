@@ -16,19 +16,24 @@
  */
 package org.geotools.styling;
 
+// OpenGIS dependencies
+
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.util.Cloneable;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.ConstantExpression;
+import org.geotools.util.Utilities;
+import org.geotools.util.factory.GeoTools;
 
 /**
- * A Displacement gives X and Y offset displacements to use for rendering a text label near a point.
- *
  * @author Ian Turton, CCG
  * @version $Id$
  */
-public interface Displacement extends org.geotools.api.style.Displacement {
+public class Displacement implements  Cloneable, org.geotools.api.style.Displacement {
     /** Default Displacement instance. */
-    static final Displacement DEFAULT =
+    public static final Displacement DEFAULT =
             new ConstantDisplacement() {
                 private void cannotModifyConstant() {
                     throw new UnsupportedOperationException("Constant Stroke may not be modified");
@@ -50,9 +55,8 @@ public interface Displacement extends org.geotools.api.style.Displacement {
                     return null;
                 }
             };
-
     /** Null Displacement instance. */
-    static final Displacement NULL =
+    public static final Displacement NULL =
             new ConstantDisplacement() {
                 private void cannotModifyConstant() {
                     throw new UnsupportedOperationException("Constant Stroke may not be modified");
@@ -74,47 +78,170 @@ public interface Displacement extends org.geotools.api.style.Displacement {
                     return null;
                 }
             };
+    /** The logger for the default core module. */
+    private static final java.util.logging.Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(Displacement.class);
+
+    private FilterFactory filterFactory;
+    private Expression displacementX = null;
+    private Expression displacementY = null;
+
+    public Displacement() {
+        this(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
+    }
+
+    public Displacement(FilterFactory factory) {
+        filterFactory = factory;
+
+        try {
+            displacementX = filterFactory.literal(0);
+            displacementY = filterFactory.literal(0);
+        } catch (org.geotools.filter.IllegalFilterException ife) {
+            LOGGER.severe("Failed to build defaultDisplacement: " + ife);
+        }
+    }
+
+    public Displacement(Expression dx, Expression dy) {
+        filterFactory = CommonFactoryFinder.getFilterFactory(null);
+        displacementX = dx;
+        displacementY = dy;
+    }
+
+    public void setFilterFactory(FilterFactory factory) {
+        filterFactory = factory;
+
+        try {
+            displacementX = filterFactory.literal(0);
+            displacementY = filterFactory.literal(0);
+        } catch (org.geotools.filter.IllegalFilterException ife) {
+            LOGGER.severe("Failed to build defaultDisplacement: " + ife);
+        }
+    }
 
     /**
-     * Returns an expression that computes a pixel offset from the geometry point. This offset point
-     * is where the text's anchor point gets located. If this expression is null, the default offset
-     * of zero is used.
+     * Setter for property displacementX.
      *
-     * @return Horizontal offeset
+     * @param displacementX New value of property displacementX.
+     */
+    public void setDisplacementX(Expression displacementX) {
+        this.displacementX = displacementX;
+    }
+    /**
+     * Set displacement x to the provided literal.
+     *
+     * @param displacementX New value of property displacementX.
+     */
+    public void setDisplacementX(double displacementX) {
+        this.displacementX = filterFactory.literal(displacementX);
+    }
+    /**
+     * Setter for property displacementY.
+     *
+     * @param displacementY New value of property displacementY.
+     */
+    public void setDisplacementY(Expression displacementY) {
+        this.displacementY = displacementY;
+    }
+    /**
+     * Set displacement y to the provided literal.
+     *
+     * @param displacementY New value of property displacementX.
+     */
+    public void setDisplacementY(double displacementY) {
+        this.displacementY = filterFactory.literal(displacementY);
+    }
+
+    /**
+     * Getter for property displacementX.
+     *
+     * @return Value of property displacementX.
      */
     @Override
-    Expression getDisplacementX();
+    public Expression getDisplacementX() {
+        return displacementX;
+    }
 
-    /** Sets the expression that computes a pixel offset from the geometry point. */
-    void setDisplacementX(Expression x);
-
-    /** Sets the expression that computes a pixel offset from the geometry point. */
-    void setDisplacementY(Expression y);
-
-    void accept(org.geotools.styling.StyleVisitor visitor);
-}
-
-abstract class ConstantDisplacement implements Displacement {
-    private void cannotModifyConstant() {
-        throw new UnsupportedOperationException("Constant Displacement may not be modified");
+    /**
+     * Getter for property displacementY.
+     *
+     * @return Value of property displacementY.
+     */
+    @Override
+    public Expression getDisplacementY() {
+        return displacementY;
     }
 
     @Override
-    public void setDisplacementX(Expression x) {
-        cannotModifyConstant();
+    public Object accept(StyleVisitor visitor, Object data) {
+        return visitor.visit(this, data);
     }
 
     @Override
-    public void setDisplacementY(Expression y) {
-        cannotModifyConstant();
-    }
-
-    @Override
-    public void accept(org.geotools.styling.StyleVisitor visitor) {
-        cannotModifyConstant();
-    }
-
     public void accept(StyleVisitor visitor) {
-        cannotModifyConstant();
+        visitor.visit(this);
+    }
+
+    /* (non-Javadoc)
+     * @see org.geotools.api.util.Cloneable#clone()
+     */
+    @Override
+    public Object clone() {
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("Will not happen");
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj instanceof Displacement) {
+            Displacement other = (Displacement) obj;
+
+            return Utilities.equals(displacementX, other.displacementX)
+                    && Utilities.equals(displacementY, other.displacementY);
+        }
+
+        return false;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int PRIME = 37;
+        int result = 17;
+
+        if (displacementX != null) {
+            result = (result * PRIME) + displacementX.hashCode();
+        }
+
+        if (displacementY != null) {
+            result = (result * PRIME) + displacementY.hashCode();
+        }
+
+        return result;
+    }
+
+    static Displacement cast(org.geotools.api.style.Displacement displacement) {
+        if (displacement == null) {
+            return null;
+        } else if (displacement instanceof Displacement) {
+            return (Displacement) displacement;
+        } else {
+            Displacement copy = new Displacement();
+            copy.setDisplacementX(displacement.getDisplacementX());
+            copy.setDisplacementY(displacement.getDisplacementY());
+
+            return copy;
+        }
     }
 }

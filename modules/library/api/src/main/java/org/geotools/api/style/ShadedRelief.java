@@ -55,4 +55,6 @@ public interface ShadedRelief {
      * @param visitor the style visitor
      */
     Object accept(StyleVisitor visitor, Object extraData);
+
+    void accept(StyleVisitor visitor);
 }

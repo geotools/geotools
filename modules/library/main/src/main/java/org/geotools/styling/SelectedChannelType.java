@@ -16,46 +16,115 @@
  */
 package org.geotools.styling;
 
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.util.Utilities;
 
-/**
- * A class to hold Channel information for use in ChannelSelction objects.
- *
- * <pre>
- * &lt;xs:complexType name="SelectedChannelType"&gt;
- *   &lt;xs:sequence&gt;
- *     &lt;xs:element ref="sld:SourceChannelName"/&gt;
- *     &lt;xs:element ref="sld:ContrastEnhancement" minOccurs="0"/&gt;
- *   &lt;/xs:sequence&gt;
- * &lt;/xs:complexType&gt;
- * &lt;xs:element name="SourceChannelName" type="xs:string"/&gt;
- *  </pre>
- *
- * @author iant
- */
-public interface SelectedChannelType extends org.geotools.api.style.SelectedChannelType {
+/** Default implementation of SelectedChannelType. */
+public class SelectedChannelType implements  org.geotools.api.style.SelectedChannelType {
+    private FilterFactory filterFactory;
 
-    /**
-     * Set the source channel name.
-     *
-     * @param name name of the source channel
-     */
-    public void setChannelName(Expression name);
+    // private Expression contrastEnhancement;
+    private ContrastEnhancement contrastEnhancement;
+    private Expression name = Expression.NIL;
 
-    public void setChannelName(String name);
+    public SelectedChannelType() {
+        this(CommonFactoryFinder.getFilterFactory(null));
+    }
 
-    /**
-     * Returns the channel's name.
-     *
-     * @return Source channel name
-     */
-    @Override
-    public Expression getChannelName();
+    public SelectedChannelType(FilterFactory factory) {
+        filterFactory = factory;
+        contrastEnhancement = contrastEnhancement(filterFactory.literal(1.0));
+    }
 
-    public void setContrastEnhancement(org.geotools.api.style.ContrastEnhancement enhancement);
+    public SelectedChannelType(FilterFactory factory, ContrastEnhancement contrast) {
+        filterFactory = factory;
+        contrastEnhancement = contrast;
+    }
+
+    public SelectedChannelType(org.geotools.api.style.SelectedChannelType gray) {
+        filterFactory = CommonFactoryFinder.getFilterFactory(null);
+        name = gray.getChannelName();
+        if (gray.getContrastEnhancement() != null) {
+            contrastEnhancement = new ContrastEnhancement(gray.getContrastEnhancement());
+        }
+    }
 
     @Override
-    public ContrastEnhancement getContrastEnhancement();
+    public Expression getChannelName() {
+        return name;
+    }
 
-    public void accept(org.geotools.styling.StyleVisitor visitor);
+    @Override
+    public ContrastEnhancement getContrastEnhancement() {
+        return contrastEnhancement;
+    }
+
+    public void setChannelName(Expression name) {
+        this.name = name;
+    }
+
+    public void setChannelName(String name) {
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        this.name = ff.literal(name);
+    }
+
+    public void setContrastEnhancement(org.geotools.api.style.ContrastEnhancement enhancement) {
+        this.contrastEnhancement = ContrastEnhancement.cast(enhancement);
+    }
+
+    public void setContrastEnhancement(Expression gammaValue) {
+        contrastEnhancement.setGammaValue(gammaValue);
+    }
+
+    protected ContrastEnhancement contrastEnhancement(Expression expr) {
+        ContrastEnhancement enhancement = new ContrastEnhancement();
+        enhancement.setGammaValue(filterFactory.literal(1.0));
+
+        return enhancement;
+    }
+
+    @Override
+    public Object accept(StyleVisitor visitor, Object data) {
+        return visitor.visit(this, data);
+    }
+
+    @Override
+    public void accept(StyleVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    @Override
+    public int hashCode() {
+        final int PRIME = 1000003;
+        int result = 0;
+
+        if (name != null) {
+            result = (PRIME * result) + name.hashCode();
+        }
+
+        if (contrastEnhancement != null) {
+            result = (PRIME * result) + contrastEnhancement.hashCode();
+        }
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj instanceof SelectedChannelType) {
+            SelectedChannelType other = (SelectedChannelType) obj;
+
+            return Utilities.equals(name, other.name)
+                    && Utilities.equals(contrastEnhancement, other.contrastEnhancement);
+        }
+
+        return false;
+    }
 }

@@ -43,43 +43,33 @@ import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.spatial.Disjoint;
-import org.geotools.api.style.ContrastMethod;
-import org.geotools.api.style.GraphicalSymbol;
-import org.geotools.api.style.SemanticType;
+import org.geotools.api.style.*;
+import org.geotools.api.style.ColorMapEntry;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.function.FilterFunction_buffer;
+import org.geotools.styling.*;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.ChannelSelection;
 import org.geotools.styling.ColorMap;
-import org.geotools.styling.ColorMapEntry;
 import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.Displacement;
 import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeConstraint;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Mark;
-import org.geotools.styling.NamedLayer;
-import org.geotools.styling.NamedStyle;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Rule;
-import org.geotools.styling.SLD;
 import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
-import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyledLayer;
-import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizer2;
-import org.geotools.styling.UserLayer;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.GeoTools;
 import org.junit.Assert;
@@ -126,7 +116,7 @@ public class SLDStyleTest {
                 "this is a sample style", style.getDescription().getAbstract().toString());
         Assert.assertTrue(style.isDefault());
 
-        FeatureTypeStyle fts = style.featureTypeStyles().get(0);
+        org.geotools.api.style.FeatureTypeStyle fts = style.featureTypeStyles().get(0);
         Rule rule = fts.rules().get(0);
         LineSymbolizer lineSym = (LineSymbolizer) rule.symbolizers().get(0);
         Assert.assertEquals(
@@ -244,7 +234,7 @@ public class SLDStyleTest {
     private Stroke validateDashArrayStyle(StyledLayerDescriptor sld) {
         Assert.assertEquals(1, ((UserLayer) sld.getStyledLayers()[0]).getUserStyles().length);
         Style style = ((UserLayer) sld.getStyledLayers()[0]).getUserStyles()[0];
-        List<FeatureTypeStyle> fts = style.featureTypeStyles();
+        List<org.geotools.api.style.FeatureTypeStyle> fts = style.featureTypeStyles();
         Assert.assertEquals(1, fts.size());
         List<Rule> rules = fts.get(0).rules();
         Assert.assertEquals(1, rules.size());
@@ -264,7 +254,7 @@ public class SLDStyleTest {
     private void validateDynamicDashArrayStyle(StyledLayerDescriptor sld) {
         Assert.assertEquals(1, ((UserLayer) sld.getStyledLayers()[0]).getUserStyles().length);
         Style style = ((UserLayer) sld.getStyledLayers()[0]).getUserStyles()[0];
-        List<FeatureTypeStyle> fts = style.featureTypeStyles();
+        List<org.geotools.api.style.FeatureTypeStyle> fts = style.featureTypeStyles();
         Assert.assertEquals(1, fts.size());
         List<Rule> rules = fts.get(0).rules();
         Assert.assertEquals(1, rules.size());
@@ -350,7 +340,7 @@ public class SLDStyleTest {
                                 .get(0);
 
         Assert.assertTrue(rs.getColorMap().getExtendedColors());
-        Assert.assertEquals(rs.getColorMap().getType(), ColorMap.TYPE_RAMP);
+        Assert.assertEquals(rs.getColorMap().getType(), ColorMapImpl.TYPE_RAMP);
     }
 
     @Test
@@ -469,7 +459,7 @@ public class SLDStyleTest {
         Rule rule1 = sb.createRule(sb.createLineSymbolizer(new Color(0), 2));
         // note: symbolizers containing a fill will likely fail, as the SLD
         // transformation loses a little data (background colour?)
-        FeatureTypeStyle fts1 = sf.createFeatureTypeStyle(rule1);
+        org.geotools.api.style.FeatureTypeStyle fts1 = sf.createFeatureTypeStyle(rule1);
         fts1.semanticTypeIdentifiers().add(SemanticType.valueOf("generic:geometry"));
         style.featureTypeStyles().add(fts1);
         layer.setUserStyles(style);
@@ -542,7 +532,7 @@ public class SLDStyleTest {
         StyledLayerDescriptor sld = stylereader.parseSLD();
 
         Assert.assertEquals(1, sld.getStyledLayers().length);
-        FeatureTypeStyle[] fts = SLD.featureTypeStyles(sld);
+        org.geotools.api.style.FeatureTypeStyle[] fts = SLD.featureTypeStyles(sld);
         Assert.assertEquals(2, fts.length);
         Assert.assertEquals(1, fts[0].semanticTypeIdentifiers().size());
         Assert.assertEquals(2, fts[1].semanticTypeIdentifiers().size());
@@ -645,7 +635,7 @@ public class SLDStyleTest {
         Style notDisjoint = styles[0];
         Assert.assertEquals(1, notDisjoint.featureTypeStyles().size());
 
-        FeatureTypeStyle fts = notDisjoint.featureTypeStyles().get(0);
+        org.geotools.api.style.FeatureTypeStyle fts = notDisjoint.featureTypeStyles().get(0);
         Assert.assertEquals(TYPE_NAME, fts.featureTypeNames().iterator().next().getLocalPart());
         Assert.assertEquals(1, fts.rules().size());
 
@@ -689,7 +679,7 @@ public class SLDStyleTest {
         Style style = styles[0];
         Assert.assertEquals(1, style.featureTypeStyles().size());
 
-        FeatureTypeStyle fts = style.featureTypeStyles().get(0);
+        org.geotools.api.style.FeatureTypeStyle fts = style.featureTypeStyles().get(0);
         Assert.assertEquals("Feature", fts.featureTypeNames().iterator().next().getLocalPart());
         Assert.assertEquals(1, fts.rules().size());
 
@@ -996,7 +986,7 @@ public class SLDStyleTest {
         Style[] styles = getStyles("transformation.xml");
         Assert.assertEquals(1, styles.length);
         Assert.assertEquals(1, styles[0].featureTypeStyles().size());
-        final FeatureTypeStyle fts = styles[0].featureTypeStyles().get(0);
+        final org.geotools.api.style.FeatureTypeStyle fts = styles[0].featureTypeStyles().get(0);
         Assert.assertEquals(1, fts.rules().size());
         Assert.assertNotNull(fts.getTransformation());
         Function tx = (Function) fts.getTransformation();
@@ -1008,7 +998,7 @@ public class SLDStyleTest {
         Style[] styles = getStyles("ruleEvaluationMode.xml");
         Assert.assertEquals(1, styles.length);
         Assert.assertEquals(1, styles[0].featureTypeStyles().size());
-        final FeatureTypeStyle fts = styles[0].featureTypeStyles().get(0);
+        final org.geotools.api.style.FeatureTypeStyle fts = styles[0].featureTypeStyles().get(0);
         Assert.assertEquals(1, fts.rules().size());
         Map<String, String> options = fts.getOptions();
         Assert.assertEquals(1, options.size());
@@ -1022,7 +1012,7 @@ public class SLDStyleTest {
         Style[] styles = getStyles("greenChannelSelection.sld");
         Assert.assertEquals(1, styles.length);
         Assert.assertEquals(1, styles[0].featureTypeStyles().size());
-        final FeatureTypeStyle fts = styles[0].featureTypeStyles().get(0);
+        final org.geotools.api.style.FeatureTypeStyle fts = styles[0].featureTypeStyles().get(0);
         Assert.assertEquals(1, fts.rules().size());
         RasterSymbolizer symbolizer = (RasterSymbolizer) fts.rules().get(0).symbolizers().get(0);
         final SelectedChannelType[] rgbChannels = symbolizer.getChannelSelection().getRGBChannels();
@@ -1036,7 +1026,7 @@ public class SLDStyleTest {
     public void testMultipleFonts() throws Exception {
         Style[] styles = getStyles("multifont.sld");
         Assert.assertEquals(1, styles.length);
-        List<FeatureTypeStyle> featureTypeStyles = styles[0].featureTypeStyles();
+        List<org.geotools.api.style.FeatureTypeStyle> featureTypeStyles = styles[0].featureTypeStyles();
         Assert.assertEquals(1, featureTypeStyles.size());
         List<Rule> rules = featureTypeStyles.get(0).rules();
         Assert.assertEquals(1, rules.size());

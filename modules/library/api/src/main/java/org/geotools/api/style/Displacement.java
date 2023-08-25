@@ -31,7 +31,7 @@ public interface Displacement {
      * is where the text's anchor point gets located. If this expression is null, the default offset
      * of zero is used.
      *
-     * @return Expression
+     * @return Horizontal offeset
      */
     Expression getDisplacementX();
 
@@ -50,4 +50,6 @@ public interface Displacement {
      * @param visitor the style visitor
      */
     Object accept(StyleVisitor visitor, Object extraData);
+
+    void accept(StyleVisitor visitor);
 }

@@ -24,13 +24,10 @@ import org.geotools.api.filter.expression.Expression;
 public interface LinePlacement extends LabelPlacement {
 
     /**
-     * The PerpendicularOffset element of a LinePlacement gives the perpendicular distance away from
-     * a line to draw a label.
+     * Returns the expression that is used to compute how far from the lines the text will be drawn.
+     * The distance must evaluate to a non-negative number.
      *
-     * <p>The distance is in uoms and is positive to the left-hand side of the line string. Negative
-     * numbers mean right. The default offset is 0.
-     *
-     * @return Expression
+     * @return compute how far from the line the text will be drawn
      */
     Expression getPerpendicularOffset();
 
@@ -57,12 +54,7 @@ public interface LinePlacement extends LabelPlacement {
      */
     boolean isRepeated();
 
-    /**
-     * Labels can either be aligned to the line geometry if IsAligned is "true" (the default) or are
-     * drawn horizontally.
-     *
-     * @return boolean
-     */
+    /** Correct method name violation from GeoAPI. */
     boolean isAligned();
 
     /**

@@ -46,7 +46,7 @@ import org.geotools.image.ImageWorker;
 import org.geotools.renderer.i18n.ErrorKeys;
 import org.geotools.renderer.i18n.Errors;
 import org.geotools.styling.ShadedRelief;
-import org.geotools.styling.StyleVisitor;
+import org.geotools.api.style.StyleVisitor;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
 import si.uom.SI;

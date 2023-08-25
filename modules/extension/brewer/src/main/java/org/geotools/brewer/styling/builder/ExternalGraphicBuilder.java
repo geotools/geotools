@@ -130,7 +130,7 @@ public class ExternalGraphicBuilder extends AbstractStyleBuilder<ExternalGraphic
         }
         if (original.getColorReplacements() != null) {
             for (ColorReplacement cr : original.getColorReplacements()) {
-                replacements.add(new ColorReplacementBuilder().reset(cr));
+                replacements.add(new ColorReplacementBuilder().reset((org.geotools.styling.ColorReplacement) cr));
             }
         }
         return this;

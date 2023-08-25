@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,39 +16,26 @@
  */
 package org.geotools.styling;
 
-/**
- * A RemoteOWS gives a reference to a remote WFS/WCS/other-OWS server.
- *
- * <p>The details of this object are taken from the <a
- * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor
- * Report (OGC 02-070) version 1.0.0.</a>:
- *
- * <pre><code>
- * &lt;xsd:element name="RemoteOWS"&gt;
- *   &lt;xsd:annotation&gt;
- *     &lt;xsd:documentation&gt;
- *       A RemoteOWS gives a reference to a remote WFS/WCS/other-OWS server.
- *     &lt;/xsd:documentation&gt;
- *   &lt;/xsd:annotation&gt;
- *   &lt;xsd:complexType&gt;
- *     &lt;xsd:sequence&gt;
- *       &lt;xsd:element ref="sld:Service"/&gt;
- *       &lt;xsd:element ref="sld:OnlineResource"/&gt;
- *     &lt;/xsd:sequence&gt;
- *   &lt;/xsd:complexType&gt;
- * &lt;/xsd:element&gt;
- * </code></pre>
- *
- * <p>
- *
- * @author James Macgill
- */
-public interface RemoteOWS {
-    String getService();
+public class RemoteOWS implements org.geotools.api.style.RemoteOWS {
 
-    void setService(String service);
+    private String service;
+    private String onlineResource;
 
-    String getOnlineResource();
+    @Override
+    public String getService() {
+        return service;
+    }
 
-    void setOnlineResource(String onlineResource);
+    public void setService(String service) {
+        this.service = service;
+    }
+
+    @Override
+    public String getOnlineResource() {
+        return onlineResource;
+    }
+
+    public void setOnlineResource(String onlineResource) {
+        this.onlineResource = onlineResource;
+    }
 }

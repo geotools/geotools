@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,33 +16,57 @@
  */
 package org.geotools.styling;
 
-/**
- * ImageOutline specifies how individual source rasters in a multi-raster set (such as a set of
- * satellite-image scenes) should be outlined to make the individual-image locations visible.
- *
- * <p>&lt;xsd:element name="ImageOutline"&gt; &lt;xsd:annotation&gt; &lt;xsd:documentation&gt;
- * &quot;ImageOutline&quot; specifies how individual source rasters in a multi-raster set (such as a
- * set of satellite-image scenes) should be outlined to make the individual-image locations visible.
- * &lt;/xsd:documentation&gt; &lt;/xsd:annotation&gt; &lt;xsd:complexType&gt; &lt;xsd:choice&gt;
- * &lt;xsd:element ref="sld:LineSymbolizer"/&gt; &lt;xsd:element ref="sld:PolygonSymbolizer"/&gt;
- * &lt;/xsd:choice&gt; &lt;/xsd:complexType&gt; &lt;/xsd:element&gt;
- *
- * @author Justin Deoliveira, The Open Planning Project
- */
-public interface ImageOutline {
-    /**
-     * Returns the symbolizer of the image outline.
-     *
-     * @return One of {@see PolygonSymbolizer},{@see LineSymbolizer}.
-     */
-    Symbolizer getSymbolizer();
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.util.Utilities;
 
-    /**
-     * Sets the symbolizer of the image outline.
-     *
-     * @param symbolizer The new symbolizer, one of {@see PolygonSymbolizer},{@see LineSymbolizer}.
-     */
-    void setSymbolizer(Symbolizer symbolizer);
+public abstract class ImageOutline implements org.geotools.api.style.ImageOutline {
 
-    void accept(org.geotools.styling.StyleVisitor visitor);
+    Symbolizer symbolizer;
+
+    @Override
+    public Symbolizer getSymbolizer() {
+        return symbolizer;
+    }
+
+
+    public void setSymbolizer(Symbolizer symbolizer) {
+        if (symbolizer instanceof LineSymbolizer || symbolizer instanceof PolygonSymbolizer) {
+            this.symbolizer = symbolizer;
+        } else {
+            throw new IllegalArgumentException("Symbolizer must be Line or Polygon.");
+        }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj instanceof ImageOutline) {
+            ImageOutline other = (ImageOutline) obj;
+            return Utilities.equals(symbolizer, other.symbolizer);
+        }
+
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        final int PRIME = 1000003;
+        int result = 0;
+
+        if (symbolizer != null) {
+            result = PRIME * result + symbolizer.hashCode();
+        }
+
+        return result;
+    }
+
+    @Override
+    public void accept(StyleVisitor visitor) {
+        visitor.visit(this);
+    }
+
+
 }

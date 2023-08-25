@@ -16,6 +16,7 @@
  */
 package org.geotools.styling;
 
+import org.geotools.api.style.StyleVisitor;
 import org.geotools.filter.ConstantExpression;
 
 /**
@@ -68,7 +69,7 @@ public class OverlapBehavior extends ConstantExpression {
         super(value);
     }
 
-    public void accept(org.geotools.styling.StyleVisitor visitor) {
+    public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }
 }

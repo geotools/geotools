@@ -27,13 +27,12 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.styling.ColorMapEntry;
-import org.geotools.styling.ColorMapEntryImpl;
 import org.junit.Before;
 import org.junit.Test;
 
 public class SLDColorMapBuilderTest {
     private SLDColorMapBuilder builder;
-    private ColorMapEntry entry;
+    private org.geotools.api.style.ColorMapEntry entry;
     FilterFactory ff = CommonFactoryFinder.getFilterFactory();
     Map<String, Object> envValues;
 
@@ -43,7 +42,7 @@ public class SLDColorMapBuilderTest {
         builder.setNumberColorMapEntries(1);
         builder.setLinearColorMapType(LinearColorMapType.TYPE_VALUES);
 
-        entry = new ColorMapEntryImpl();
+        entry = new ColorMapEntry();
         entry.setColor(ff.literal("#000000"));
         entry.setQuantity(ff.literal(1.0));
         entry.setOpacity(ff.literal(1.0));

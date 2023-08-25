@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,78 +16,90 @@
  */
 package org.geotools.styling;
 
+import javax.measure.Unit;
+import javax.measure.quantity.Length;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.util.Cloneable;
 
 /**
- * A symbolizer describes how a polygon feature should appear on a map.
+ * Provides a representation of a PolygonSymbolizer in an SLD Document. A PolygonSymbolizer defines
+ * how a polygon geometry should be rendered.
  *
- * <p>The symbolizer describes not just the shape that should appear but also such graphical
- * properties as color and opacity.
- *
- * <p>A symbolizer is obtained by specifying one of a small number of different types of symbolizer
- * and then supplying parameters to overide its default behaviour.
- *
- * <p>The details of this object are taken from the <a
- * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor
- * Report (OGC 02-070) version 1.0.0.</a>:
- *
- * <pre><code>
- * &lt;xsd:element name="PolygonSymbolizer" substitutionGroup="sld:Symbolizer">
- *    &lt;xsd:annotation>
- *      &lt;xsd:documentation>
- *        A "PolygonSymbolizer" specifies the rendering of a polygon or
- *        area geometry, including its interior fill and border stroke.
- *      &lt;/xsd:documentation>
- *    &lt;/xsd:annotation>
- *    &lt;xsd:complexType>
- *      &lt;xsd:complexContent>
- *       &lt;xsd:extension base="sld:SymbolizerType">
- *         &lt;xsd:sequence>
- *           &lt;xsd:element ref="sld:Geometry" minOccurs="0"/>
- *           &lt;xsd:element ref="sld:Fill" minOccurs="0"/>
- *           &lt;xsd:element ref="sld:Stroke" minOccurs="0"/>
- *         &lt;/xsd:sequence>
- *       &lt;/xsd:extension>
- *     &lt;/xsd:complexContent>
- *   &lt;/xsd:complexType>
- * &lt;/xsd:element>
- * </code></pre>
- *
- * <p>Renderers can use this information when displaying styled features, though it must be
- * remembered that not all renderers will be able to fully represent strokes as set out by this
- * interface. For example, opacity may not be supported.
- *
- * <p>Notes:
- *
- * <ul>
- *   <li>The graphical parameters and their values are derived from SVG/CSS2 standards with names
- *       and semantics which are as close as possible.
- * </ul>
- *
- * @author James Macgill
+ * @author James Macgill, CCG
+ * @author Johann Sorel (Geomatys)
  * @version $Id$
  */
-public interface PolygonSymbolizer extends org.geotools.api.style.PolygonSymbolizer, Symbolizer {
+public class PolygonSymbolizer extends AbstractSymbolizer
+        implements  Cloneable, org.geotools.api.style.PolygonSymbolizer, Symbolizer {
 
     /** Pixels between each graphic of a polygon fill */
-    public static String GRAPHIC_MARGIN_KEY = "graphic-margin";
+    public static final String GRAPHIC_MARGIN_KEY = "graphic-margin";
+    private Expression offset;
+    private Displacement disp;
 
+    private Fill fill = new Fill();
+    private Stroke stroke = new Stroke();
+
+    /** Creates a new instance of DefaultPolygonStyler */
+    protected PolygonSymbolizer() {
+        this(null, null, null, null, null, null, null, null);
+    }
+
+    protected PolygonSymbolizer(
+            Stroke stroke,
+            Fill fill,
+            Displacement disp,
+            Expression offset,
+            Unit<Length> uom,
+            String geom,
+            String name,
+            Description desc) {
+        super(name, desc, geom, uom);
+        this.stroke = Stroke.cast(stroke);
+        this.fill = fill;
+        this.disp = Displacement.cast(disp);
+        this.offset = offset;
+    }
+
+    @Override
+    public Expression getPerpendicularOffset() {
+        return offset;
+    }
+
+    public void setPerpendicularOffset(Expression offset) {
+        this.offset = offset;
+    }
+
+    @Override
+    public Displacement getDisplacement() {
+        return disp;
+    }
+
+    public void setDisplacement(org.geotools.api.style.Displacement displacement) {
+        this.disp = Displacement.cast(displacement);
+    }
     /**
-     * Provides the graphical-symbolization parameter to use to fill the area of the geometry. Note
-     * that the area should be filled first before the outline is rendered.
+     * Provides the graphical-symbolization parameter to use to fill the area of the geometry.
      *
      * @return The Fill style to use when rendering the area.
      */
     @Override
-    Fill getFill();
+    public Fill getFill() {
+        return fill;
+    }
 
     /**
-     * Provides the graphical-symbolization parameter to use to fill the area of the geometry. Note
-     * that the area should be filled first before the outline is rendered.
+     * Sets the graphical-symbolization parameter to use to fill the area of the geometry.
      *
      * @param fill The Fill style to use when rendering the area.
      */
-    void setFill(org.geotools.api.style.Fill fill);
+    public void setFill(org.geotools.api.style.Fill fill) {
+        if (this.fill == fill) {
+            return;
+        }
+        this.fill = Fill.cast(fill);
+    }
 
     /**
      * Provides the graphical-symbolization parameter to use for the outline of the Polygon.
@@ -95,32 +107,115 @@ public interface PolygonSymbolizer extends org.geotools.api.style.PolygonSymboli
      * @return The Stroke style to use when rendering lines.
      */
     @Override
-    Stroke getStroke();
+    public Stroke getStroke() {
+        return stroke;
+    }
 
     /**
-     * Provides the graphical-symbolization parameter to use for the outline of the Polygon.
+     * Sets the graphical-symbolization parameter to use for the outline of the Polygon.
      *
      * @param stroke The Stroke style to use when rendering lines.
      */
-    void setStroke(org.geotools.api.style.Stroke stroke);
+    public void setStroke(org.geotools.api.style.Stroke stroke) {
+        if (this.stroke == stroke) {
+            return;
+        }
+        this.stroke = Stroke.cast(stroke);
+    }
 
     /**
-     * PerpendicularOffset works as defined for LineSymbolizer, allowing to draw polygons smaller or
-     * larger than their actual geometry.
+     * Accepts a StyleVisitor to perform some operation on this LineSymbolizer.
      *
-     * @param offset Offset from the edge polygon positive outside; negative to the inside with a
-     *     default of 0.
-     */
-    public void setPerpendicularOffset(Expression offset);
-
-    /**
-     * Displacement from the original geometry in pixels.
-     *
-     * @return Displacement above and to the right of the indicated point; default x=0, y=0
+     * @param visitor The visitor to accept.
      */
     @Override
-    public Displacement getDisplacement();
+    public Object accept(StyleVisitor visitor, Object data) {
+        return visitor.visit(this, data);
+    }
 
-    /** Provide x / y offset in pixels used to crate shadows. */
-    public void setDisplacement(org.geotools.api.style.Displacement displacement);
+    @Override
+    public void accept(StyleVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    /**
+     * Creates a deep copy clone. TODO: Need to complete the deep copy, currently only shallow copy.
+     *
+     * @return The deep copy clone.
+     */
+    @Override
+    public Object clone() {
+        PolygonSymbolizer clone;
+
+        try {
+            clone = (PolygonSymbolizer) super.clone();
+
+            if (fill != null) {
+                clone.fill = (Fill) ((Cloneable) fill).clone();
+            }
+
+            if (stroke != null) {
+                clone.stroke = (Stroke) ((Cloneable) stroke).clone();
+            }
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e); // this should never happen.
+        }
+
+        return clone;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((disp == null) ? 0 : disp.hashCode());
+        result = prime * result + ((fill == null) ? 0 : fill.hashCode());
+        result = prime * result + ((offset == null) ? 0 : offset.hashCode());
+        result = prime * result + ((stroke == null) ? 0 : stroke.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!super.equals(obj)) return false;
+        if (getClass() != obj.getClass()) return false;
+        PolygonSymbolizer other = (PolygonSymbolizer) obj;
+        if (disp == null) {
+            if (other.disp != null) return false;
+        } else if (!disp.equals(other.disp)) return false;
+        if (fill == null) {
+            if (other.fill != null) return false;
+        } else if (!fill.equals(other.fill)) return false;
+        if (offset == null) {
+            if (other.offset != null) return false;
+        } else if (!offset.equals(other.offset)) return false;
+        if (stroke == null) {
+            if (other.stroke != null) return false;
+        } else if (!stroke.equals(other.stroke)) return false;
+        return true;
+    }
+
+    static PolygonSymbolizer cast(org.geotools.api.style.Symbolizer symbolizer) {
+        if (symbolizer == null) {
+            return null;
+        } else if (symbolizer instanceof PolygonSymbolizer) {
+            return (PolygonSymbolizer) symbolizer;
+        } else if (symbolizer instanceof org.geotools.api.style.PolygonSymbolizer) {
+            org.geotools.api.style.PolygonSymbolizer polygonSymbolizer =
+                    (org.geotools.api.style.PolygonSymbolizer) symbolizer;
+            PolygonSymbolizer copy = new PolygonSymbolizer();
+            copy.setStroke(Stroke.cast(polygonSymbolizer.getStroke()));
+            copy.setDescription(polygonSymbolizer.getDescription());
+            copy.setDisplacement(polygonSymbolizer.getDisplacement());
+            copy.setFill(polygonSymbolizer.getFill());
+            copy.setGeometryPropertyName(polygonSymbolizer.getGeometryPropertyName());
+            copy.setName(polygonSymbolizer.getName());
+            copy.setPerpendicularOffset(polygonSymbolizer.getPerpendicularOffset());
+            copy.setUnitOfMeasure(polygonSymbolizer.getUnitOfMeasure());
+            return copy;
+        } else {
+            return null; // not possible
+        }
+    }
 }

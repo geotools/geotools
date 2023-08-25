@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.FeatureTypeStyleImpl;
 import org.geotools.styling.Rule;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 
@@ -47,7 +46,7 @@ class SimplifyingStyleVisitor extends DuplicatingStyleVisitor {
     @Override
     public void visit(FeatureTypeStyle fts) {
 
-        FeatureTypeStyle copy = new FeatureTypeStyleImpl(fts);
+        FeatureTypeStyle copy = new FeatureTypeStyle(fts);
 
         List<Rule> rulesCopy =
                 fts.rules().stream()

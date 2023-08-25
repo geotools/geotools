@@ -22,7 +22,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.SLD;
-import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.ysld.Ysld;
 import org.junit.Test;
 

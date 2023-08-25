@@ -31,7 +31,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.StringReader;
 import java.io.StringWriter;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.xml.styling.SLDParser;
 import org.geotools.ysld.UomMapper;
 import org.geotools.ysld.YamlMap;

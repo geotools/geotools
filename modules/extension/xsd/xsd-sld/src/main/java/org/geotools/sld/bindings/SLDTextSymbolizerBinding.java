@@ -24,7 +24,7 @@ import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.Halo;
-import org.geotools.styling.LabelPlacement;
+import org.geotools.api.style.LabelPlacememt;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;

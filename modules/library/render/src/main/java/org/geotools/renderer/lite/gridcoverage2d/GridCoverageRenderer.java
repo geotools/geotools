@@ -81,7 +81,6 @@ import org.geotools.renderer.crs.WrappingProjectionHandler;
 import org.geotools.styling.ChannelSelection;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.SelectedChannelType;
-import org.geotools.styling.SelectedChannelTypeImpl;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.factory.Hints.Key;
 import org.locationtech.jts.geom.Envelope;
@@ -1157,7 +1156,7 @@ public final class GridCoverageRenderer {
             SelectedChannelType[] channels = new SelectedChannelType[originalChannels.length];
             for (SelectedChannelType originalChannel : originalChannels) {
                 // Remember, channel indices start from 1
-                SelectedChannelTypeImpl channel = new SelectedChannelTypeImpl();
+                SelectedChannelType channel = new SelectedChannelType();
                 channel.setChannelName(Integer.toString(i + 1));
                 channel.setContrastEnhancement(originalChannel.getContrastEnhancement());
                 channels[i] = channel;

@@ -29,4 +29,6 @@ public interface LabelPlacement {
      * @param visitor the style visitor
      */
     Object accept(StyleVisitor visitor, Object extraData);
+
+    void accept(StyleVisitor visitor);
 }

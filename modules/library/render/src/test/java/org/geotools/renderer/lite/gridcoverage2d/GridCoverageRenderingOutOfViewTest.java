@@ -42,7 +42,6 @@ import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.lite.GridCoverageRendererTest;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.RasterSymbolizerImpl;
 import org.geotools.styling.StyleBuilder;
 import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
@@ -114,7 +113,7 @@ public class GridCoverageRenderingOutOfViewTest {
                         8.899888225675163E9);
         GridCoverageRenderer renderer = new GridCoverageRenderer(crs, mapExtent, screenSize, w2s);
 
-        RasterSymbolizer rasterSymbolizer = new RasterSymbolizerImpl();
+        RasterSymbolizer rasterSymbolizer = new RasterSymbolizer();
 
         RenderedImage rendered =
                 renderer.renderImage(

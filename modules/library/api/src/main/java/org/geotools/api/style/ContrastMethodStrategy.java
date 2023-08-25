@@ -14,11 +14,11 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.styling;
+package org.geotools.api.style;
+
+import org.geotools.api.filter.expression.Expression;
 
 import java.util.Map;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.style.ContrastMethod;
 
 /**
  * This interface defines the strategy that a ContrastEnhancement will use to execute the

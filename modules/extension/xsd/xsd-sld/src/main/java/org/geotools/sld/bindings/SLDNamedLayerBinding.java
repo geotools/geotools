@@ -18,7 +18,7 @@ package org.geotools.sld.bindings;
 
 import javax.xml.namespace.QName;
 import org.geotools.styling.LayerFeatureConstraints;
-import org.geotools.styling.NamedLayer;
+import org.geotools.api.style.NamedLayer;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;

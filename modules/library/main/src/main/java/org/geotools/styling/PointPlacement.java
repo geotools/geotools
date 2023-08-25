@@ -13,91 +13,27 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
- *
  */
 package org.geotools.styling;
 
+// OpenGIS dependencies
+
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.LabelPlacement;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.util.Cloneable;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.ConstantExpression;
+import org.geotools.util.Utilities;
+import org.geotools.util.factory.GeoTools;
 
 /**
- * A PointPlacement specifies how a text label is positioned relative to a geometric point.
- *
- * <p>The details of this object are taken from the <a
- * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor
- * Report (OGC 02-070) version 1.0.0.</a>:
- *
- * <pre><code>
- * &lt;xsd:element name="PointPlacement"&gt;
- *   &lt;xsd:annotation&gt;
- *     &lt;xsd:documentation&gt;
- *       A "PointPlacement" specifies how a text label should be rendered
- *       relative to a geometric point.
- *     &lt;/xsd:documentation&gt;
- *   &lt;/xsd:annotation&gt;
- *   &lt;xsd:complexType&gt;
- *     &lt;xsd:sequence&gt;
- *       &lt;xsd:element ref="sld:AnchorPoint" minOccurs="0"/&gt;
- *       &lt;xsd:element ref="sld:Displacement" minOccurs="0"/&gt;
- *       &lt;xsd:element ref="sld:Rotation" minOccurs="0"/&gt;
- *     &lt;/xsd:sequence&gt;
- *   &lt;/xsd:complexType&gt;
- * &lt;/xsd:element&gt;
- * </code></pre>
- *
- * <p>$Id$
- *
- * @author Ian Turton
+ * @author Ian Turton, CCG
+ * @version $Id$
  */
-public interface PointPlacement extends org.geotools.api.style.PointPlacement, LabelPlacement {
-    /**
-     * Returns the AnchorPoint which identifies the location inside a textlabel to use as an
-     * "anchor" for positioning it relative to a point geometry.
-     *
-     * @return anchorPoint from the relative to the original geometry
-     */
-    @Override
-    AnchorPoint getAnchorPoint();
-
-    /**
-     * sets the AnchorPoint which identifies the location inside a textlabel to use as an "anchor"
-     * for positioning it relative to a point geometry.
-     *
-     * @param anchorPoint relative to the original geometry
-     */
-    void setAnchorPoint(org.geotools.api.style.AnchorPoint anchorPoint);
-
-    /**
-     * Returns the Displacement which gives X and Y offset displacements to use for rendering a text
-     * label near a point.
-     *
-     * @return Offset to use when rendering text near a point
-     */
-    @Override
-    Displacement getDisplacement();
-
-    /**
-     * sets the Displacement which gives X and Y offset displacements to use for rendering a text
-     * label near a point.
-     */
-    void setDisplacement(org.geotools.api.style.Displacement displacement);
-
-    /**
-     * Returns the rotation of the label.
-     *
-     * @return rotation of the label as a dynamic expression
-     */
-    @Override
-    Expression getRotation();
-
-    /**
-     * sets the rotation of the label.
-     *
-     * <p>Sets the rotation of the label.
-     */
-    void setRotation(Expression rotation);
-
-    static final AnchorPoint DEFAULT_ANCHOR_POINT =
+public class PointPlacement implements  Cloneable, org.geotools.api.style.PointPlacement, LabelPlacement {
+    public static final AnchorPoint DEFAULT_ANCHOR_POINT =
             new AnchorPoint() {
                 private void cannotModifyConstant() {
                     throw new UnsupportedOperationException(
@@ -114,13 +50,13 @@ public interface PointPlacement extends org.geotools.api.style.PointPlacement, L
                     cannotModifyConstant();
                 }
 
-                @Override
-                public void accept(org.geotools.styling.StyleVisitor visitor) {
+
+                public void accept(StyleVisitor visitor) {
                     cannotModifyConstant();
                 }
 
                 @Override
-                public Object accept(org.geotools.api.style.StyleVisitor visitor, Object data) {
+                public Object accept(StyleVisitor visitor, Object data) {
                     cannotModifyConstant();
                     return null;
                 }
@@ -135,4 +71,174 @@ public interface PointPlacement extends org.geotools.api.style.PointPlacement, L
                     return ConstantExpression.constant(0.5);
                 }
             };
+    /** The logger for the default core module. */
+    private static final java.util.logging.Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(PointPlacement.class);
+
+
+    private AnchorPoint anchorPoint = new AnchorPoint();
+    private Displacement displacement = new Displacement();
+    private Expression rotation = null;
+
+    public PointPlacement() {
+        this(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
+    }
+
+    public PointPlacement(FilterFactory factory) {
+        try {
+            rotation = factory.literal(Integer.valueOf(0));
+        } catch (org.geotools.filter.IllegalFilterException ife) {
+            LOGGER.severe("Failed to build defaultPointPlacement: " + ife);
+        }
+    }
+
+    /**
+     * Returns the AnchorPoint which identifies the location inside a text label to use as an
+     * "anchor" for positioning it relative to a point geometry.
+     *
+     * @return Label's AnchorPoint.
+     */
+    @Override
+    public AnchorPoint getAnchorPoint() {
+        return anchorPoint;
+    }
+
+    /**
+     * Setter for property anchorPoint.
+     *
+     * @param anchorPoint New value of property anchorPoint.
+     */
+    public void setAnchorPoint(org.geotools.api.style.AnchorPoint anchorPoint) {
+        if (this.anchorPoint == anchorPoint) {
+            return;
+        }
+        this.anchorPoint = AnchorPoint.cast(anchorPoint);
+    }
+
+    /**
+     * Returns the Displacement which gives X and Y offset displacements to use for rendering a text
+     * label near a point.
+     *
+     * @return The label displacement.
+     */
+    @Override
+    public Displacement getDisplacement() {
+        return displacement;
+    }
+
+    /**
+     * Setter for property displacement.
+     *
+     * @param displacement New value of property displacement.
+     */
+    public void setDisplacement(org.geotools.api.style.Displacement displacement) {
+        if (this.displacement == displacement) {
+            return;
+        }
+        this.displacement = Displacement.cast(displacement);
+    }
+
+    /**
+     * Returns the rotation of the label.
+     *
+     * @return The rotation of the label.
+     */
+    @Override
+    public Expression getRotation() {
+        return rotation;
+    }
+
+    /**
+     * Setter for property rotation.
+     *
+     * @param rotation New value of property rotation.
+     */
+    public void setRotation(Expression rotation) {
+        this.rotation = rotation;
+    }
+
+    @Override
+    public Object accept(StyleVisitor visitor, Object data) {
+        return visitor.visit(this, data);
+    }
+
+    @Override
+    public void accept(StyleVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    /* (non-Javadoc)
+     * @see Cloneable#clone()
+     */
+    @Override
+    public Object clone() {
+        try {
+            PointPlacement clone = (PointPlacement) super.clone();
+            clone.anchorPoint = (AnchorPoint) ((Cloneable) anchorPoint).clone();
+            clone.displacement = (Displacement) ((Cloneable) displacement).clone();
+
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("Won't happen");
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj instanceof PointPlacement) {
+            PointPlacement other = (PointPlacement) obj;
+
+            return Utilities.equals(anchorPoint, other.anchorPoint)
+                    && Utilities.equals(displacement, other.displacement)
+                    && Utilities.equals(rotation, other.rotation);
+        }
+
+        return false;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int PRIME = 37;
+        int result = 17;
+
+        if (anchorPoint != null) {
+            result = (result * PRIME) + anchorPoint.hashCode();
+        }
+
+        if (displacement != null) {
+            result = (result * PRIME) + displacement.hashCode();
+        }
+
+        if (rotation != null) {
+            result = (result * PRIME) + rotation.hashCode();
+        }
+
+        return result;
+    }
+
+    static PointPlacement cast(org.geotools.api.style.LabelPlacement placement) {
+        if (placement == null) {
+            return null;
+        } else if (placement instanceof PointPlacement) {
+            return (PointPlacement) placement;
+        } else if (placement instanceof org.geotools.api.style.PointPlacement) {
+            org.geotools.api.style.PointPlacement pointPlacement =
+                    (org.geotools.api.style.PointPlacement) placement;
+            PointPlacement copy = new PointPlacement();
+            copy.setAnchorPoint(AnchorPoint.cast(pointPlacement.getAnchorPoint()));
+            copy.setDisplacement(Displacement.cast(pointPlacement.getDisplacement()));
+            return copy;
+        }
+        return null;
+    }
 }

@@ -45,31 +45,25 @@ public interface Rule {
     String getName();
 
     /**
-     * Returns the description of this rule.
+     * Description for this rule.
      *
-     * @return Description with usual informations used for user interfaces.
+     * @return Human readable description for use in user interfaces
+     * @since 2.5.x
      */
-    @UML(identifier = "description", obligation = OPTIONAL, specification = ISO_19117)
     Description getDescription();
 
-    /**
-     * Returns a small Graphic that could be used by the rendering engine to draw a legend window.
-     *
-     * <p>A nice user interface may want to present the user with a legend that indicates how
-     * features of a given type are being portrayed. Through its {@code LegendGraphic} property, a
-     * {@code Rule} may provide a custom picture to be used in such a legend window.
-     */
+    /** */
     GraphicLegend getLegend();
 
     /**
-     * Returns the filter that will limit the features for which this {@code Rule} will fire. This
-     * can only be non-null if {@link #isElseFilter} returns false. If this value is null and {@code
-     * isElseFilter} is false, this means that this {@code Rule} should fire for all features.
+     * This is the filter used to select content for this rule to display
      *
-     * @return Filter, use Filter.INCLUDES to indicate everything; or Filter.EXCLUDES for an "else"
-     *     rule
+     * <p>
+     *
+     * @return Filter use to select content for this rule to display, Filter.INCLUDES to include all
+     *     content; or use Filter.EXCLUDES to mark this as an "else" Rule accepting all remaining
+     *     content
      */
-    @UML(identifier = "queryStatement", obligation = MANDATORY, specification = ISO_19117)
     Filter getFilter();
 
     /**
@@ -116,13 +110,7 @@ public interface Rule {
     @UML(identifier = "portrayAction", obligation = MANDATORY, specification = ISO_19117)
     List<? extends Symbolizer> symbolizers();
 
-    /**
-     * It is common to have a style coming from a external xml file, this method provide a way to
-     * get the original source if there is one. OGC SLD specification can use this method to know if
-     * a style must be written completely or if writing the online resource path is enough.
-     *
-     * @return OnlineResource or null
-     */
+    /** @return Location where this style is defined; file or server; or null if unknown */
     OnLineResource getOnlineResource();
 
     /**
@@ -131,4 +119,7 @@ public interface Rule {
      * @param visitor the style visitor
      */
     Object accept(StyleVisitor visitor, Object extraData);
+
+    /** Used to traverse the style data structure. */
+    void accept(StyleVisitor visitor);
 }

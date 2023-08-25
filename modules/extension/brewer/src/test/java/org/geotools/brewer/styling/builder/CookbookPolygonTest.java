@@ -157,8 +157,8 @@ public class CookbookPolygonTest extends AbstractStyleTest {
         Font font = ts.getFont();
         assertEquals("Arial", font.getFamily().get(0).evaluate(null, String.class));
         assertEquals(11, (int) font.getSize().evaluate(null, Integer.class));
-        assertEquals(Font.Style.NORMAL, font.getStyle().evaluate(null, String.class));
-        assertEquals(Font.Weight.BOLD, font.getWeight().evaluate(null, String.class));
+        assertEquals(org.geotools.api.style.Font.Style.NORMAL, font.getStyle().evaluate(null, String.class));
+        assertEquals(org.geotools.api.style.Font.Weight.BOLD, font.getWeight().evaluate(null, String.class));
 
         // placement
         PointPlacement pp = (PointPlacement) ts.getLabelPlacement();

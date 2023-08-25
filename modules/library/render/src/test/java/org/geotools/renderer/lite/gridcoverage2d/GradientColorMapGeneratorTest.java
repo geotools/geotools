@@ -24,8 +24,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.ColorMapEntry;
+
+import org.geotools.api.style.ColorMapEntry;
 import org.geotools.test.TestData;
 import org.junit.Test;
 import org.xml.sax.SAXException;

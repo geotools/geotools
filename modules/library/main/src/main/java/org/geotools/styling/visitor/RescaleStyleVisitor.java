@@ -16,18 +16,6 @@
  */
 package org.geotools.styling.visitor;
 
-import static org.geotools.styling.TextSymbolizer.AUTO_WRAP_KEY;
-import static org.geotools.styling.TextSymbolizer.DEFAULT_AUTO_WRAP;
-import static org.geotools.styling.TextSymbolizer.DEFAULT_LABEL_REPEAT;
-import static org.geotools.styling.TextSymbolizer.DEFAULT_MAX_DISPLACEMENT;
-import static org.geotools.styling.TextSymbolizer.DEFAULT_MIN_GROUP_DISTANCE;
-import static org.geotools.styling.TextSymbolizer.DEFAULT_SPACE_AROUND;
-import static org.geotools.styling.TextSymbolizer.GRAPHIC_MARGIN_KEY;
-import static org.geotools.styling.TextSymbolizer.LABEL_REPEAT_KEY;
-import static org.geotools.styling.TextSymbolizer.MAX_DISPLACEMENT_KEY;
-import static org.geotools.styling.TextSymbolizer.MIN_GROUP_DISTANCE_KEY;
-import static org.geotools.styling.TextSymbolizer.SPACE_AROUND_KEY;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -38,21 +26,8 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.style.GraphicalSymbol;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.LabelPlacement;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Symbol;
-import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.*;
+import org.geotools.api.style.LabelPlacement;
 import org.geotools.util.Converters;
 
 /**
@@ -265,12 +240,12 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
 
             // deal with the format options specified in pixels
             Map<String, String> options = copy.getOptions();
-            rescaleOption(options, SPACE_AROUND_KEY, DEFAULT_SPACE_AROUND);
-            rescaleOption(options, MAX_DISPLACEMENT_KEY, DEFAULT_MAX_DISPLACEMENT);
-            rescaleOption(options, MIN_GROUP_DISTANCE_KEY, DEFAULT_MIN_GROUP_DISTANCE);
-            rescaleOption(options, LABEL_REPEAT_KEY, DEFAULT_LABEL_REPEAT);
-            rescaleOption(options, AUTO_WRAP_KEY, DEFAULT_AUTO_WRAP);
-            rescaleArrayOption(options, GRAPHIC_MARGIN_KEY, 0);
+            rescaleOption(options, org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY, org.geotools.api.style.TextSymbolizer.DEFAULT_SPACE_AROUND);
+            rescaleOption(options, org.geotools.api.style.TextSymbolizer.MAX_DISPLACEMENT_KEY, org.geotools.api.style.TextSymbolizer.DEFAULT_MAX_DISPLACEMENT);
+            rescaleOption(options, org.geotools.api.style.TextSymbolizer.MIN_GROUP_DISTANCE_KEY, org.geotools.api.style.TextSymbolizer.DEFAULT_MIN_GROUP_DISTANCE);
+            rescaleOption(options, org.geotools.api.style.TextSymbolizer.LABEL_REPEAT_KEY, org.geotools.api.style.TextSymbolizer.DEFAULT_LABEL_REPEAT);
+            rescaleOption(options, org.geotools.api.style.TextSymbolizer.AUTO_WRAP_KEY, org.geotools.api.style.TextSymbolizer.DEFAULT_AUTO_WRAP);
+            rescaleArrayOption(options, org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY, 0);
         } finally {
             this.defaultUnit = null;
         }

@@ -25,12 +25,9 @@ import org.geotools.api.filter.expression.Expression;
 public interface Halo {
 
     /**
-     * Returns the object that indicates how the halo area around the text should be filled.
+     * The fill (color) of the halo
      *
-     * <p>The default halo fill is solid white (Color “#FFFFFF”). The glyph’s fill is plotted on top
-     * of the halo. The default font fill is solid black (Color “#000000”).
-     *
-     * @return Fill or null
+     * @return fill (color) of the halo
      */
     Fill getFill();
 
@@ -54,4 +51,6 @@ public interface Halo {
      * @param visitor the style visitor
      */
     Object accept(StyleVisitor visitor, Object extraData);
+
+    void accept(StyleVisitor visitor);
 }

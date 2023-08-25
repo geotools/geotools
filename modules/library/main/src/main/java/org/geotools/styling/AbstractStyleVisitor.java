@@ -16,7 +16,7 @@
  */
 package org.geotools.styling;
 
-import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.*;
 
 /**
  * A basic implementation of the StyleVisitor interface.

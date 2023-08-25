@@ -20,7 +20,7 @@ package org.geotools.process.raster;
 import java.util.Collection;
 import java.util.Iterator;
 import org.geotools.api.coverage.grid.GridEnvelope;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -76,8 +76,8 @@ public class BaseCoverageAlgebraProcess {
         //
         // checking same Envelope and grid range
         //
-        Envelope envA = coverageA.getEnvelope();
-        Envelope envB = coverageB.getEnvelope();
+        Bounds envA = coverageA.getEnvelope();
+        Bounds envB = coverageB.getEnvelope();
         if (!envA.equals(envB)) {
             throw new ProcessException(MISMATCHING_ENVELOPE_MESSAGE);
         }

@@ -29,14 +29,14 @@ import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
 import javax.measure.Unit;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
@@ -87,7 +87,7 @@ import org.geotools.util.factory.GeoTools;
  */
 public class GridCoverageBuilder {
     /** The envelope, including coordinate reference system. */
-    private GeneralEnvelope envelope;
+    private GeneralBounds envelope;
 
     /** The range of sample values. */
     private NumberRange<? extends Number> range;
@@ -130,10 +130,10 @@ public class GridCoverageBuilder {
     }
 
     /** Wraps an arbitrary envelope to an object that can be stored in {@link #envelope}. */
-    private static GeneralEnvelope wrap(final Envelope envelope) {
-        return (envelope == null || envelope instanceof GeneralEnvelope)
-                ? (GeneralEnvelope) envelope
-                : new GeneralEnvelope(envelope);
+    private static GeneralBounds wrap(final Bounds envelope) {
+        return (envelope == null || envelope instanceof GeneralBounds)
+                ? (GeneralBounds) envelope
+                : new GeneralBounds(envelope);
     }
 
     /**
@@ -160,7 +160,7 @@ public class GridCoverageBuilder {
             if (crs != null) {
                 envelope = wrap(CRS.getEnvelope(crs));
                 if (envelope == null) {
-                    envelope = new GeneralEnvelope(crs);
+                    envelope = new GeneralBounds(crs);
                     envelope.setToNull();
                 }
             }
@@ -196,14 +196,14 @@ public class GridCoverageBuilder {
      * explicitly defined}, then the default is inferred from the CRS (by default a geographic
      * envelope from 180°W to 180°E and 90°S to 90°N).
      */
-    public Envelope getEnvelope() {
+    public Bounds getEnvelope() {
         if (envelope != null) {
             return envelope.clone();
         } else {
             final CoordinateReferenceSystem crs = getCoordinateReferenceSystem();
-            Envelope candidate = CRS.getEnvelope(crs);
+            Bounds candidate = CRS.getEnvelope(crs);
             if (candidate == null) {
-                final GeneralEnvelope copy = new GeneralEnvelope(crs);
+                final GeneralBounds copy = new GeneralBounds(crs);
                 copy.setToNull();
                 candidate = copy;
             }
@@ -215,12 +215,12 @@ public class GridCoverageBuilder {
      * Sets the envelope to the specified value. If a {@linkplain #setCoordinateReferenceSystem CRS
      * was previously defined}, the envelope will be reprojected to that CRS. If no CRS was
      * previously defined, then the CRS will be set to the {@linkplain
-     * Envelope#getCoordinateReferenceSystem envelope CRS}.
+     * Bounds#getCoordinateReferenceSystem envelope CRS}.
      *
      * @throws IllegalArgumentException if the envelope is illegal for the {@linkplain
      *     #getCoordinateReferenceSystem current CRS}.
      */
-    public void setEnvelope(Envelope envelope) throws IllegalArgumentException {
+    public void setEnvelope(Bounds envelope) throws IllegalArgumentException {
         if (this.envelope != null)
             try {
                 envelope = CRS.transform(envelope, this.envelope.getCoordinateReferenceSystem());
@@ -228,7 +228,7 @@ public class GridCoverageBuilder {
                 throw new IllegalArgumentException(
                         Errors.format(ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM), exception);
             }
-        this.envelope = new GeneralEnvelope(envelope);
+        this.envelope = new GeneralBounds(envelope);
         coverage = null;
     }
 
@@ -242,9 +242,9 @@ public class GridCoverageBuilder {
      * <var>z</var><sub>max</sub>)
      */
     public void setEnvelope(final double... ordinates) throws IllegalArgumentException {
-        GeneralEnvelope envelope = this.envelope;
+        GeneralBounds envelope = this.envelope;
         if (envelope == null) {
-            envelope = new GeneralEnvelope(ordinates.length / 2);
+            envelope = new GeneralBounds(ordinates.length / 2);
         }
         envelope.setEnvelope(ordinates);
         this.envelope = envelope; // Assigns only if successful.
@@ -382,7 +382,7 @@ public class GridCoverageBuilder {
     public GridCoverage2D getGridCoverage2D() {
         if (coverage == null) {
             final BufferedImage image = getBufferedImage();
-            final Envelope envelope = getEnvelope();
+            final Bounds envelope = getEnvelope();
             final GridSampleDimension[] bands;
             if (variables.isEmpty()) {
                 bands = null;

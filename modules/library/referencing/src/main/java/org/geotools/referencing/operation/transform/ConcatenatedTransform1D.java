@@ -21,7 +21,7 @@ import org.geotools.api.referencing.operation.MathTransform1D;
 import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.DirectPosition1D;
+import org.geotools.geometry.Position1D;
 
 /**
  * Concatenated transform in which the resulting transform is one-dimensional.
@@ -58,7 +58,7 @@ final class ConcatenatedTransform1D extends ConcatenatedTransform implements Mat
     /** Gets the derivative of this function at a value. */
     @Override
     public double derivative(final double value) throws TransformException {
-        final DirectPosition1D p = new DirectPosition1D(value);
+        final Position1D p = new Position1D(value);
         final Matrix m = derivative(p);
         assert m.getNumRow() == 1 && m.getNumCol() == 1;
         return m.getElement(0, 0);

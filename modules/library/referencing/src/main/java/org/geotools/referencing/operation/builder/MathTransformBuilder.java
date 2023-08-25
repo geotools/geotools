@@ -50,8 +50,8 @@ import org.geotools.api.referencing.operation.MathTransformFactory;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.api.referencing.operation.Transformation;
 import org.geotools.api.util.InternationalString;
-import org.geotools.geometry.GeneralDirectPosition;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
+import org.geotools.geometry.GeneralPosition;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
@@ -460,7 +460,7 @@ public abstract class MathTransformBuilder {
      */
     private NumberFormat getNumberFormat(final Locale locale, final boolean target) {
         final NumberFormat format = NumberFormat.getNumberInstance(locale);
-        final GeneralEnvelope envelope = getEnvelope(target);
+        final GeneralBounds envelope = getEnvelope(target);
         double length = 0;
         for (int i = envelope.getDimension(); --i >= 0; ) {
             final double candidate = envelope.getSpan(i);
@@ -485,15 +485,15 @@ public abstract class MathTransformBuilder {
      * @param target {@code false} for the envelope of source points, or {@code true} for the
      *     envelope of target points.
      */
-    private GeneralEnvelope getEnvelope(final boolean target) {
-        GeneralEnvelope envelope = null;
+    private GeneralBounds getEnvelope(final boolean target) {
+        GeneralBounds envelope = null;
         CoordinateReferenceSystem crs = null;
         for (final MappedPosition mp : getMappedPositions()) {
             final Position point = target ? mp.getTarget() : mp.getSource();
             if (point != null) {
                 if (envelope == null) {
                     final double[] coordinates = point.getCoordinate();
-                    envelope = new GeneralEnvelope(coordinates, coordinates);
+                    envelope = new GeneralBounds(coordinates, coordinates);
                 } else {
                     envelope.add(point);
                 }
@@ -514,7 +514,7 @@ public abstract class MathTransformBuilder {
      *     valid area of target points.
      */
     private GeographicBoundingBox getValidArea(final boolean target) {
-        GeneralEnvelope envelope = getEnvelope(target);
+        GeneralBounds envelope = getEnvelope(target);
         if (envelope != null)
             try {
                 return new GeographicBoundingBoxImpl(envelope);
@@ -624,7 +624,7 @@ public abstract class MathTransformBuilder {
     public Statistics getErrorStatistics() throws FactoryException {
         final MathTransform mt = getMathTransform();
         final Statistics stats = new Statistics();
-        final Position buffer = new GeneralDirectPosition(getDimension());
+        final Position buffer = new GeneralPosition(getDimension());
         for (final MappedPosition mp : getMappedPositions()) {
             /*
              * Transforms the source point using the math transform calculated by this class.
@@ -691,8 +691,8 @@ public abstract class MathTransformBuilder {
             } else if (targetBox == null) {
                 validArea = sourceBox;
             } else {
-                final GeneralEnvelope area = new GeneralEnvelope(sourceBox);
-                area.intersect(new GeneralEnvelope(sourceBox));
+                final GeneralBounds area = new GeneralBounds(sourceBox);
+                area.intersect(new GeneralBounds(sourceBox));
                 try {
                     validArea = new GeographicBoundingBoxImpl(area);
                 } catch (TransformException e) {

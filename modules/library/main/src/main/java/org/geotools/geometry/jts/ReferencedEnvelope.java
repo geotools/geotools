@@ -18,6 +18,7 @@ package org.geotools.geometry.jts;
 
 import java.awt.geom.Rectangle2D;
 import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.geometry.MismatchedReferenceSystemException;
 import org.geotools.api.geometry.Position;
@@ -28,8 +29,8 @@ import org.geotools.api.referencing.operation.CoordinateOperation;
 import org.geotools.api.referencing.operation.CoordinateOperationFactory;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
+import org.geotools.geometry.Position2D;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
@@ -49,11 +50,10 @@ import org.locationtech.jts.geom.Envelope;
  * @author Martin Desruisseaux
  * @author Simone Giannecchini
  * @see org.geotools.geometry.Envelope2D
- * @see org.geotools.geometry.GeneralEnvelope
+ * @see GeneralBounds
  * @see org.geotools.api.metadata.extent.GeographicBoundingBox
  */
-public class ReferencedEnvelope extends Envelope
-        implements org.geotools.api.geometry.Envelope, BoundingBox {
+public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox {
 
     /** A ReferencedEnvelope containing "everything" */
     public static ReferencedEnvelope EVERYTHING =
@@ -228,9 +228,8 @@ public class ReferencedEnvelope extends Envelope
      * Creates a new envelope from an existing bounding box.
      *
      * <p>NOTE: if the bounding box is empty, the resulting ReferencedEnvelope will not be. In case
-     * this is needed use {@link #create(org.geotools.api.geometry.Envelope,
-     * CoordinateReferenceSystem) ReferencedEnvelope.create(bbox,
-     * bbox.getCoordinateReferenceSystem())}
+     * this is needed use {@link #create(Bounds, CoordinateReferenceSystem)
+     * ReferencedEnvelope.create(bbox, bbox.getCoordinateReferenceSystem())}
      *
      * @param bbox The bounding box to initialize from.
      * @throws MismatchedDimensionException if the CRS dimension is not valid.
@@ -249,15 +248,14 @@ public class ReferencedEnvelope extends Envelope
      * Creates a new envelope from an existing OGC envelope.
      *
      * <p>NOTE: if the envelope is empty, the resulting ReferencedEnvelope will not be. In case this
-     * is needed use {@link #create(org.geotools.api.geometry.Envelope, CoordinateReferenceSystem)
+     * is needed use {@link #create(Bounds, CoordinateReferenceSystem)
      * ReferencedEnvelope.create(envelope, envelope.getCoordinateReferenceSystem())}
      *
      * @param envelope The envelope to initialize from.
      * @throws MismatchedDimensionException if the CRS dimension is not valid.
      * @since 2.4
      */
-    public ReferencedEnvelope(final org.geotools.api.geometry.Envelope envelope)
-            throws MismatchedDimensionException {
+    public ReferencedEnvelope(final Bounds envelope) throws MismatchedDimensionException {
         super(
                 envelope.getMinimum(0),
                 envelope.getMaximum(0),
@@ -440,7 +438,7 @@ public class ReferencedEnvelope extends Envelope
      */
     @Override
     public Position getLowerCorner() {
-        return new DirectPosition2D(crs, getMinX(), getMinY());
+        return new Position2D(crs, getMinX(), getMinY());
     }
 
     /**
@@ -449,7 +447,7 @@ public class ReferencedEnvelope extends Envelope
      */
     @Override
     public Position getUpperCorner() {
-        return new DirectPosition2D(crs, getMaxX(), getMaxY());
+        return new Position2D(crs, getMaxX(), getMaxY());
     }
 
     /**
@@ -592,7 +590,7 @@ public class ReferencedEnvelope extends Envelope
      * @return The transformed envelope.
      * @throws FactoryException if the math transform can't be determined.
      * @throws TransformException if at least one coordinate can't be transformed.
-     * @see CRS#transform(CoordinateOperation, org.geotools.api.geometry.Envelope)
+     * @see CRS#transform(CoordinateOperation, Bounds)
      */
     public ReferencedEnvelope transform(CoordinateReferenceSystem targetCRS, boolean lenient)
             throws TransformException, FactoryException {
@@ -613,7 +611,7 @@ public class ReferencedEnvelope extends Envelope
      * @return The transformed envelope.
      * @throws FactoryException if the math transform can't be determined.
      * @throws TransformException if at least one coordinate can't be transformed.
-     * @see CRS#transform(CoordinateOperation, org.geotools.api.geometry.Envelope)
+     * @see CRS#transform(CoordinateOperation, Bounds)
      * @since 2.3
      */
     public ReferencedEnvelope transform(
@@ -653,7 +651,7 @@ public class ReferencedEnvelope extends Envelope
 
         final CoordinateOperation operation =
                 coordinateOperationFactory.createOperation(crs, targetCRS);
-        final GeneralEnvelope transformed = CRS.transform(operation, this);
+        final GeneralBounds transformed = CRS.transform(operation, this);
         transformed.setCoordinateReferenceSystem(targetCRS);
 
         /*
@@ -709,7 +707,7 @@ public class ReferencedEnvelope extends Envelope
      *     envlope's width and height
      * @return true if all bounding coordinates are equal within the set tolerance; false otherwise
      */
-    public boolean boundsEquals2D(final org.geotools.api.geometry.Envelope other, double eps) {
+    public boolean boundsEquals2D(final Bounds other, double eps) {
         eps *= 0.5 * (getWidth() + getHeight());
 
         double[] delta = new double[4];
@@ -798,10 +796,9 @@ public class ReferencedEnvelope extends Envelope
      * @param env The opgenis Envelope object
      * @return ReferencedEnvelope, ReferencedEnvelope3D if it is 3d,<br>
      *     results in a null/an empty envelope, if input envelope was a null/an empty envelope
-     * @see {@link #reference(org.geotools.api.geometry.Envelope)}
+     * @see {@link #reference(Bounds)}
      */
-    public static ReferencedEnvelope create(
-            org.geotools.api.geometry.Envelope env, CoordinateReferenceSystem crs) {
+    public static ReferencedEnvelope create(Bounds env, CoordinateReferenceSystem crs) {
 
         if (env == null) {
             return null;
@@ -822,7 +819,7 @@ public class ReferencedEnvelope extends Envelope
      * @return ReferencedEnvelope, ReferencedEnvelope3D if it is 3d
      */
     public static ReferencedEnvelope create(ReferencedEnvelope env, CoordinateReferenceSystem crs) {
-        return create((org.geotools.api.geometry.Envelope) env, crs);
+        return create((Bounds) env, crs);
     }
     /**
      * Utility method to create a ReferencedEnvelope from an JTS Envelope class, supporting 2d as
@@ -894,7 +891,7 @@ public class ReferencedEnvelope extends Envelope
      * @param e The envelope.
      */
     public static ReferencedEnvelope reference(ReferencedEnvelope e) {
-        return reference((org.geotools.api.geometry.Envelope) e);
+        return reference((Bounds) e);
     }
 
     /**
@@ -906,7 +903,7 @@ public class ReferencedEnvelope extends Envelope
      *     results in a null/an empty envelope, if input envelope was a null/an empty envelope (by
      *     JTS Envelope definition: getMaximum(0) < getMinimum(0))
      */
-    public static ReferencedEnvelope reference(org.geotools.api.geometry.Envelope env) {
+    public static ReferencedEnvelope reference(Bounds env) {
 
         if (env == null) {
             return null;

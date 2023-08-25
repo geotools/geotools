@@ -37,7 +37,7 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.coverage.grid.GeneralGridEnvelope;
 import org.geotools.coverage.grid.GridEnvelope2D;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -100,8 +100,8 @@ public final class GridToEnvelopeMapperTest {
         Point2D.Double point = new Point2D.Double();
         GeneralGridEnvelope gridRange =
                 new GeneralGridEnvelope(new int[] {10, 20}, new int[] {110, 220}, false);
-        GeneralEnvelope envelope =
-                new GeneralEnvelope(new double[] {1, 4, 6}, new double[] {11, 44, 66});
+        GeneralBounds envelope =
+                new GeneralBounds(new double[] {1, 4, 6}, new double[] {11, 44, 66});
         mapper.setGridRange(gridRange);
         assertSame(gridRange, mapper.getGridRange());
         try {

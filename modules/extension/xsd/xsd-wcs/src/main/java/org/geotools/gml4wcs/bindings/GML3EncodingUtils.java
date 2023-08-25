@@ -24,7 +24,7 @@ import javax.xml.namespace.QName;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.gml3.GML;
 import org.geotools.xlink.XLINK;
@@ -51,7 +51,7 @@ public class GML3EncodingUtils {
         for (int i = 0; i < dps.length; i++) {
             x = coordinates.getOrdinate(i, 0);
             y = coordinates.getOrdinate(i, 1);
-            dps[i] = new DirectPosition2D(x, y);
+            dps[i] = new Position2D(x, y);
         }
 
         return dps;

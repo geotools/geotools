@@ -50,8 +50,9 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.feature.DefaultFeatureCollection;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;
 import org.geotools.ows.wms.Layer;
@@ -94,8 +95,8 @@ public class FXMap extends Parent {
     private VBox vBox;
     private Label sourceLabel;
 
-    private GeneralEnvelope layerBBox;
-    private GeneralEnvelope maxBBox;
+    private GeneralBounds layerBBox;
+    private GeneralBounds maxBBox;
 
     private TextField epsgField;
     private Button updateImageButton;
@@ -196,7 +197,7 @@ public class FXMap extends Parent {
             Layer layer,
             int dimensionX,
             int dimensionY,
-            org.geotools.api.geometry.Envelope bounds)
+            Bounds bounds)
             throws NoSuchAuthorityCodeException, FactoryException {
 
         System.setProperty("org.geotools.referencing.forceXY", "true");
@@ -204,11 +205,11 @@ public class FXMap extends Parent {
         gc = mapCanvas.getGraphicsContext2D();
         zoomLevel = 0;
         lastZoomLevel = 0;
-        GeneralEnvelope layerBounds = null;
+        GeneralBounds layerBounds = null;
         this.crs = CRS.decode(this.INIT_SPACIAL_REF_SYS);
         layerBounds = layer.getEnvelope(crs);
 
-        this.layerBBox = new GeneralEnvelope(bounds);
+        this.layerBBox = new GeneralBounds(bounds);
         this.layerBBox.setCoordinateReferenceSystem(this.crs);
         this.maxBBox = layerBBox;
 
@@ -407,9 +408,9 @@ public class FXMap extends Parent {
         this.mapContent.getViewport().setCoordinateReferenceSystem(crs);
         try {
             this.maxBBox =
-                    new GeneralEnvelope(new ReferencedEnvelope(maxBBox).transform(crs, true));
+                    new GeneralBounds(new ReferencedEnvelope(maxBBox).transform(crs, true));
             this.layerBBox =
-                    new GeneralEnvelope(new ReferencedEnvelope(layerBBox).transform(crs, true));
+                    new GeneralBounds(new ReferencedEnvelope(layerBBox).transform(crs, true));
         } catch (Exception tEx) {
             log.log(Level.SEVERE, tEx.getMessage());
         }

@@ -30,7 +30,7 @@ import org.geotools.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.jts.Geometries;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -93,7 +93,7 @@ public class FeatureLayerHelper extends InfoToolHelper {
     }
 
     @Override
-    public InfoToolResult getInfo(DirectPosition2D pos) throws Exception {
+    public InfoToolResult getInfo(Position2D pos) throws Exception {
         InfoToolResult result = new InfoToolResult();
 
         if (isValid()) {
@@ -148,9 +148,9 @@ public class FeatureLayerHelper extends InfoToolHelper {
      * @param pos query position in map content coordaintes
      * @return point in layer coordinates
      */
-    private Geometry createSearchPoint(DirectPosition2D pos) {
+    private Geometry createSearchPoint(Position2D pos) {
         try {
-            DirectPosition2D trPos = new DirectPosition2D();
+            Position2D trPos = new Position2D();
             getContentToLayerTransform().transform(pos, trPos);
             Geometry point = geometryFactory.createPoint(new Coordinate(trPos.x, trPos.y));
             return point;
@@ -160,7 +160,7 @@ public class FeatureLayerHelper extends InfoToolHelper {
         }
     }
 
-    private ReferencedEnvelope createSearchEnv(DirectPosition2D pos) {
+    private ReferencedEnvelope createSearchEnv(Position2D pos) {
         ReferencedEnvelope mapBounds = getMapContent().getViewport().getBounds();
         if (mapBounds == null || mapBounds.isEmpty()) {
             // fall back to layer bounds

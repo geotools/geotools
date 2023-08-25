@@ -27,7 +27,7 @@ import java.util.Objects;
 import org.geotools.api.coverage.CannotEvaluateException;
 import org.geotools.api.coverage.grid.GridEnvelope;
 import org.geotools.api.coverage.grid.GridGeometry;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.metadata.spatial.PixelOrientation;
@@ -38,7 +38,7 @@ import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.PixelTranslation;
 import org.geotools.geometry.TransformedDirectPosition;
@@ -421,7 +421,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
     public GridGeometry2D(
             final PixelInCell anchor,
             final MathTransform gridToCRS,
-            final Envelope envelope,
+            final Bounds envelope,
             final Hints hints)
             throws MismatchedDimensionException, IllegalArgumentException {
         super(anchor, gridToCRS, envelope);
@@ -441,7 +441,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
 
     /**
      * Constructs a new grid geometry from an envelope. This constructors applies the same heuristic
-     * rules than the {@linkplain GeneralGridGeometry#GeneralGridGeometry(GridEnvelope,Envelope)
+     * rules than the {@linkplain GeneralGridGeometry#GeneralGridGeometry(GridEnvelope, Bounds)
      * super-class constructor}. However, they must obey to the same additional constraints than the
      * {@linkplain #GridGeometry2D(GridEnvelope, MathTransform, CoordinateReferenceSystem) main
      * constructor}.
@@ -454,7 +454,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
      *     dimensions.
      * @since 2.2
      */
-    public GridGeometry2D(final GridEnvelope gridRange, final Envelope userRange)
+    public GridGeometry2D(final GridEnvelope gridRange, final Bounds userRange)
             throws IllegalArgumentException, MismatchedDimensionException {
         this(gridRange, userRange, null, false, true);
     }
@@ -462,7 +462,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
     /** Implementation of heuristic constructors. */
     private GridGeometry2D(
             final GridEnvelope gridRange,
-            final Envelope userRange,
+            final Bounds userRange,
             final boolean[] reverse,
             final boolean swapXY,
             final boolean automatic)
@@ -482,7 +482,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
     /**
      * Constructs a new two-dimensional grid geometry using java.awt objects. Initialising
      * corresponding GeoTools objects if necessary, and calls {@linkplain
-     * #GridGeometry2D(GridEnvelope, Envelope)}
+     * #GridGeometry2D(GridEnvelope, Bounds)}
      *
      * @param gridRange The valid coordinate range of a grid coverage. Increasing <var>x</var>
      *     values goes right and increasing <var>y</var> values goes <strong>down</strong>.
@@ -493,8 +493,8 @@ public class GridGeometry2D extends GeneralGridGeometry {
                 gridRange instanceof GridEnvelope2D
                         ? (GridEnvelope2D) gridRange
                         : new GridEnvelope2D(gridRange),
-                userRange instanceof Envelope
-                        ? (Envelope) userRange
+                userRange instanceof Bounds
+                        ? (Bounds) userRange
                         : new Envelope2D(null, userRange));
     }
 
@@ -641,7 +641,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
      * two dimensions, then a new one is created using only the coordinates at ({@link
      * #axisDimensionX}, {@link #axisDimensionY}) index.
      *
-     * <p>The {@link Envelope#getCoordinateReferenceSystem coordinate reference system} of the
+     * <p>The {@link Bounds#getCoordinateReferenceSystem coordinate reference system} of the
      * source envelope is ignored. The coordinate reference system of the target envelope will be
      * {@link #getCoordinateReferenceSystem2D} or {@code null}.
      *
@@ -650,7 +650,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
      *     The returned envelope is always a new instance, so it can be modified safely.
      * @since 2.5
      */
-    public Envelope2D reduce(final Envelope envelope) {
+    public Envelope2D reduce(final Bounds envelope) {
         if (envelope == null) {
             return null;
         }
@@ -1035,7 +1035,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
 
         if (getGridRange2D().contains(point)) {
             Point2D trPoint = getGridToCRS2D().transform(point, null);
-            return new DirectPosition2D(
+            return new Position2D(
                     getCoordinateReferenceSystem2D(), trPoint.getX(), trPoint.getY());
 
         } else {
@@ -1071,8 +1071,8 @@ public class GridGeometry2D extends GeneralGridGeometry {
             Point2D trHigh = mt.transform(new Point2D.Double(high.x + 0.5, high.y + 0.5), null);
 
             return new Envelope2D(
-                    new DirectPosition2D(crs2D, trLow.getX(), trLow.getY()),
-                    new DirectPosition2D(crs2D, trHigh.getX(), trHigh.getY()));
+                    new Position2D(crs2D, trLow.getX(), trLow.getY()),
+                    new Position2D(crs2D, trHigh.getX(), trHigh.getY()));
 
         } else {
             throw new IllegalArgumentException(

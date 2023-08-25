@@ -28,11 +28,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.logging.Logger;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.referencing.ReferenceIdentifier;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.ows.wms.xml.Attribution;
 import org.geotools.ows.wms.xml.Dimension;
 import org.geotools.ows.wms.xml.Extent;
@@ -144,7 +144,7 @@ public class Layer implements Comparable<Layer> {
      * This is where we try and go from our rather lame CRSEnvelope data structure to an actual
      * ReferencedEnvelope with a real CoordinateReferenceSystem.
      */
-    private Map<CoordinateReferenceSystem, Envelope> envelopeCache =
+    private Map<CoordinateReferenceSystem, Bounds> envelopeCache =
             Collections.synchronizedMap(new WeakHashMap<>());
 
     private List<MetadataURL> metadataURL;
@@ -736,12 +736,12 @@ public class Layer implements Comparable<Layer> {
      *
      * @return GeneralEnvelope matching the provided crs; or null if unavailable.
      */
-    public GeneralEnvelope getEnvelope(CoordinateReferenceSystem crs) {
+    public GeneralBounds getEnvelope(CoordinateReferenceSystem crs) {
         if (crs == null) {
             return null;
         }
         // Check the cache!
-        GeneralEnvelope found = (GeneralEnvelope) envelopeCache.get(crs);
+        GeneralBounds found = (GeneralBounds) envelopeCache.get(crs);
         if (found != null) {
             return found;
         }
@@ -775,13 +775,13 @@ public class Layer implements Comparable<Layer> {
         }
 
         if (tempBBox != null) {
-            GeneralEnvelope env;
+            GeneralBounds env;
             try {
-                Envelope fixed = CRS.transform(tempBBox, crs);
-                env = new GeneralEnvelope(fixed);
+                Bounds fixed = CRS.transform(tempBBox, crs);
+                env = new GeneralBounds(fixed);
             } catch (TransformException e) {
                 env =
-                        new GeneralEnvelope(
+                        new GeneralBounds(
                                 new double[] {tempBBox.getMinX(), tempBBox.getMinY()},
                                 new double[] {tempBBox.getMaxX(), tempBBox.getMaxY()});
                 env.setCoordinateReferenceSystem(crs);

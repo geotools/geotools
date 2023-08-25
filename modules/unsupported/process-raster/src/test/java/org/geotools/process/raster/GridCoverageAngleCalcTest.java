@@ -18,7 +18,7 @@
 package org.geotools.process.raster;
 
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.referencing.CRS;
 import org.junit.Assert;
 import org.junit.Test;
@@ -46,11 +46,11 @@ public class GridCoverageAngleCalcTest {
                         + "PARAMETER[\"false_northing\",0],UNIT[\"m\",1.0]]";
         CoordinateReferenceSystem crs = CRS.parseWKT(wktString);
         GridConvergenceAngleCalc angleCalc = new GridConvergenceAngleCalc(crs);
-        DirectPosition2D position =
-                new DirectPosition2D(crs, 2626.018310546785 * 1000, -1118.3695068359375 * 1000);
+        Position2D position =
+                new Position2D(crs, 2626.018310546785 * 1000, -1118.3695068359375 * 1000);
         Assert.assertEquals(16.0573598047079d, angleCalc.getConvergenceAngle(position), TOLERANCE);
         position =
-                new DirectPosition2D(crs, -1201.9818115234375 * 1000, -1172.3695068359375 * 1000);
+                new Position2D(crs, -1201.9818115234375 * 1000, -1172.3695068359375 * 1000);
         Assert.assertEquals(
                 -7.461565880473206d, angleCalc.getConvergenceAngle(position), TOLERANCE);
     }
@@ -62,7 +62,7 @@ public class GridCoverageAngleCalcTest {
         //
         CoordinateReferenceSystem crs = CRS.decode("EPSG:3411");
         GridConvergenceAngleCalc angleCalc = new GridConvergenceAngleCalc(crs);
-        DirectPosition2D position = new DirectPosition2D(crs, -5050427.62537, -3831167.39071);
+        Position2D position = new Position2D(crs, -5050427.62537, -3831167.39071);
         Assert.assertEquals(
                 -52.81667373163404d, angleCalc.getConvergenceAngle(position), TOLERANCE);
     }
@@ -75,7 +75,7 @@ public class GridCoverageAngleCalcTest {
         //
         CoordinateReferenceSystem crs = CRS.decode("EPSG:3031");
         GridConvergenceAngleCalc angleCalc = new GridConvergenceAngleCalc(crs);
-        DirectPosition2D position = new DirectPosition2D(crs, 5450569.17764, -5333348.64467);
+        Position2D position = new Position2D(crs, 5450569.17764, -5333348.64467);
         Assert.assertEquals(
                 -134.37722187798775d, angleCalc.getConvergenceAngle(position), TOLERANCE);
     }

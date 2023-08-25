@@ -19,13 +19,13 @@ package org.geotools.gce.imagemosaic;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.referencing.CRS;
 import org.geotools.test.TestData;
 import org.junit.Test;
@@ -42,11 +42,11 @@ public class RasterLayerRequestTest {
         final ImageMosaicReader reader = new ImageMosaicFormat().getReader(testMosaic, null);
         final RasterManager manager = reader.getRasterManager(reader.getGridCoverageNames()[0]);
 
-        GeneralEnvelope oe = reader.getOriginalEnvelope();
+        GeneralBounds oe = reader.getOriginalEnvelope();
         double offset = oe.getSpan(0) * 0.9;
-        GeneralEnvelope reNative = new GeneralEnvelope(oe);
+        GeneralBounds reNative = new GeneralBounds(oe);
         reNative.setRange(0, oe.getMinimum(0) - offset, oe.getMaximum(0) - offset);
-        Envelope reTransformed = CRS.transform(reNative, CRS.decode("EPSG:3857", true));
+        Bounds reTransformed = CRS.transform(reNative, CRS.decode("EPSG:3857", true));
         // System.out.println(reader.getOriginalGridRange());
         // the raster has bands like this, let's ask for the coarser grained overview
         // Band 1 Block=140x58 Type=Byte, ColorInterp=Gray

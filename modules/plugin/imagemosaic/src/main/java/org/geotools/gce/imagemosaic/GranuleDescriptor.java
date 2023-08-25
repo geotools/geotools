@@ -80,7 +80,7 @@ import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.coverage.grid.io.imageio.MaskOverviewProvider;
 import org.geotools.coverage.grid.io.imageio.ReadType;
 import org.geotools.coverage.util.CoverageUtilities;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.util.XRectangle2D;
@@ -160,17 +160,17 @@ public class GranuleDescriptor {
 
     OverviewsController overviewsController;
 
-    private GeneralEnvelope granuleEnvelope;
+    private GeneralBounds granuleEnvelope;
     private AbstractGridFormat format;
 
     private boolean nativeBandSelection;
     private Hints hints;
 
-    public GeneralEnvelope getGranuleEnvelope() {
+    public GeneralBounds getGranuleEnvelope() {
         return granuleEnvelope;
     }
 
-    public void setGranuleEnvelope(GeneralEnvelope granuleEnvelope) {
+    public void setGranuleEnvelope(GeneralBounds granuleEnvelope) {
         this.granuleEnvelope = granuleEnvelope;
     }
 

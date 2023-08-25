@@ -21,8 +21,8 @@ import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.geometry.GeneralPosition;
+import org.geotools.geometry.Position2D;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
@@ -64,11 +64,11 @@ public class MappedPosition implements Serializable {
      */
     public MappedPosition(final int dimension) {
         if (dimension == 2) {
-            source = new DirectPosition2D();
-            target = new DirectPosition2D();
+            source = new Position2D();
+            target = new Position2D();
         } else {
-            source = new GeneralDirectPosition(dimension);
-            target = new GeneralDirectPosition(dimension);
+            source = new GeneralPosition(dimension);
+            target = new GeneralPosition(dimension);
         }
     }
 
@@ -110,10 +110,10 @@ public class MappedPosition implements Serializable {
 
     /** Set the source direct position to the specified value. */
     public void setSource(final Position point) {
-        if (source instanceof DirectPosition2D) {
-            ((DirectPosition2D) source).setLocation(point);
+        if (source instanceof Position2D) {
+            ((Position2D) source).setLocation(point);
         } else {
-            ((GeneralDirectPosition) source).setLocation(point);
+            ((GeneralPosition) source).setLocation(point);
         }
     }
 
@@ -128,10 +128,10 @@ public class MappedPosition implements Serializable {
 
     /** Set the target direct position to the specified value. */
     public void setTarget(final Position point) {
-        if (source instanceof DirectPosition2D) {
-            ((DirectPosition2D) target).setLocation(point);
+        if (source instanceof Position2D) {
+            ((Position2D) target).setLocation(point);
         } else {
-            ((GeneralDirectPosition) target).setLocation(point);
+            ((GeneralPosition) target).setLocation(point);
         }
     }
 

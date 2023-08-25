@@ -21,7 +21,7 @@ import java.awt.image.DataBuffer;
 import java.awt.image.WritableRaster;
 import javax.media.jai.RasterFactory;
 import org.geotools.api.coverage.grid.GridCoverage;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.geometry.Envelope2D;
@@ -58,7 +58,7 @@ public final class FloatRasterTest extends GridCoverageTestBase {
          * color (or grayscale) is performed on the fly everytime the image is rendered.
          */
         CoordinateReferenceSystem crs = DefaultGeographicCRS.WGS84;
-        Envelope envelope = new Envelope2D(crs, 0, 0, 30, 30);
+        Bounds envelope = new Envelope2D(crs, 0, 0, 30, 30);
         GridCoverageFactory factory = CoverageFactoryFinder.getGridCoverageFactory(null);
         GridCoverage gc = factory.create("My grayscale coverage", raster, envelope);
         if (SHOW) {
@@ -99,7 +99,7 @@ public final class FloatRasterTest extends GridCoverageTestBase {
             }
         }
         CoordinateReferenceSystem crs = DefaultGeographicCRS.WGS84;
-        Envelope envelope = new Envelope2D(crs, 0, 0, 30, 30);
+        Bounds envelope = new Envelope2D(crs, 0, 0, 30, 30);
         GridCoverageFactory factory = CoverageFactoryFinder.getGridCoverageFactory(null);
         GridCoverage gc = factory.create("My grayscale matrix", matrix, envelope);
         if (SHOW) {

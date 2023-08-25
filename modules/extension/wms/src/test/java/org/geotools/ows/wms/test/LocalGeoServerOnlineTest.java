@@ -38,7 +38,7 @@ import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.ows.OperationType;
 import org.geotools.data.ows.Specification;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.http.HTTPClientFinder;
 import org.geotools.http.commons.MultithreadedHttpClient;
@@ -354,7 +354,7 @@ public class LocalGeoServerOnlineTest extends WMSOnlineTestSupport {
     private GetMapRequest generateGetMap(
             WebMapServer wms2, Layer layer, CoordinateReferenceSystem crs) {
         layer.clearCache();
-        GeneralEnvelope envelope = wms2.getEnvelope(layer, crs);
+        GeneralBounds envelope = wms2.getEnvelope(layer, crs);
         Assert.assertFalse(envelope.isEmpty() || envelope.isNull() || envelope.isInfinite());
         Assert.assertNotNull("Envelope " + CRS.toSRS(crs), envelope);
 

@@ -35,9 +35,9 @@ import org.geotools.util.Utilities;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-public abstract class AbstractDirectPosition implements Position {
+public abstract class AbstractPosition implements Position {
     /** Constructs a direct position. */
-    protected AbstractDirectPosition() {}
+    protected AbstractPosition() {}
 
     /**
      * Returns always {@code this}, the direct position for this {@linkplain Position position}.

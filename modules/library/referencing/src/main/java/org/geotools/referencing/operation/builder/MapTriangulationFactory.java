@@ -19,7 +19,7 @@ package org.geotools.referencing.operation.builder;
 import java.util.HashMap;
 import java.util.List;
 import org.geotools.api.geometry.Position;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 
 /**
  * Implements methods for triangulation for {@linkplain
@@ -128,8 +128,7 @@ class MapTriangulationFactory {
                         + (nearestOne.getTarget().getCoordinate()[1]
                                 - nearestOne.getSource().getCoordinate()[1]);
         Position dst =
-                new DirectPosition2D(
-                        nearestOne.getTarget().getCoordinateReferenceSystem(), dstX, dstY);
+                new Position2D(nearestOne.getTarget().getCoordinateReferenceSystem(), dstX, dstY);
 
         return new MappedPosition(x, dst);
     }
@@ -142,14 +141,14 @@ class MapTriangulationFactory {
      * @return the MappedPosition to the x Coordinate.
      */
     protected MappedPosition nearestMappedCoordinate(Position dp, List<MappedPosition> vertices) {
-        DirectPosition2D x = new DirectPosition2D(dp);
+        Position2D x = new Position2D(dp);
 
         // Assert.isTrue(vectors.size() > 0);
         MappedPosition nearestOne = vertices.get(0);
 
         for (MappedPosition candidate : vertices) {
-            if (((DirectPosition2D) candidate.getSource()).distance(x.toPoint2D())
-                    < ((DirectPosition2D) nearestOne.getSource()).distance(x.toPoint2D())) {
+            if (((Position2D) candidate.getSource()).distance(x.toPoint2D())
+                    < ((Position2D) nearestOne.getSource()).distance(x.toPoint2D())) {
                 nearestOne = candidate;
             }
         }

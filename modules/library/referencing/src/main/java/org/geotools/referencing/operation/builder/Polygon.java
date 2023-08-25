@@ -21,7 +21,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.geometry.Position;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 
 /**
  * Simple polygons like three - sided (triangle) or four - sided (qadrilateral), that are used for
@@ -164,7 +164,7 @@ class Polygon implements Cloneable {
 
         for (Position vertex : vertices) {
             redCoords.add(
-                    new DirectPosition2D(
+                    new Position2D(
                             vertex.getCoordinateReferenceSystem(),
                             vertex.getCoordinate()[0] - vertices[0].getCoordinate()[0],
                             vertex.getCoordinate()[1] - vertices[0].getCoordinate()[1]));

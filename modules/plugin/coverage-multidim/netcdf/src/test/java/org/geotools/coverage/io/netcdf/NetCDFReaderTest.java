@@ -44,7 +44,7 @@ import org.geotools.api.coverage.grid.GridEnvelope;
 import org.geotools.api.coverage.processing.Operation;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.metadata.extent.Extent;
 import org.geotools.api.metadata.extent.GeographicExtent;
@@ -75,8 +75,8 @@ import org.geotools.data.FileResourceInfo;
 import org.geotools.data.ResourceInfo;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.Utils;
-import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.Position2D;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.imageio.netcdf.AncillaryFileManager;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.metadata.iso.extent.GeographicBoundingBoxImpl;
@@ -130,12 +130,12 @@ public class NetCDFReaderTest extends Assert {
 
             byte[] byteValue =
                     grid.evaluate(
-                            new DirectPosition2D(DefaultGeographicCRS.WGS84, 12, 70), new byte[1]);
+                            new Position2D(DefaultGeographicCRS.WGS84, 12, 70), new byte[1]);
             assertEquals(20, byteValue[0]);
 
             byteValue =
                     grid.evaluate(
-                            new DirectPosition2D(DefaultGeographicCRS.WGS84, 23, 40), new byte[1]);
+                            new Position2D(DefaultGeographicCRS.WGS84, 23, 40), new byte[1]);
             assertEquals(90, byteValue[0]);
 
         } finally {
@@ -168,13 +168,13 @@ public class NetCDFReaderTest extends Assert {
             assertNotNull(grid);
             float[] value =
                     grid.evaluate(
-                            (Position) new DirectPosition2D(DefaultGeographicCRS.WGS84, 5, 45),
+                            (Position) new Position2D(DefaultGeographicCRS.WGS84, 5, 45),
                             new float[1]);
             assertEquals(47.63341f, value[0], 0.00001);
 
             value =
                     grid.evaluate(
-                            (Position) new DirectPosition2D(DefaultGeographicCRS.WGS84, 5, 45.125),
+                            (Position) new Position2D(DefaultGeographicCRS.WGS84, 5, 45.125),
                             new float[1]);
             assertEquals(52.7991f, value[0], 0.000001);
 
@@ -208,7 +208,7 @@ public class NetCDFReaderTest extends Assert {
 
         float[] result =
                 coverage.evaluate(
-                        (Position) new DirectPosition2D(DefaultGeographicCRS.WGS84, 5.0, 45.0),
+                        (Position) new Position2D(DefaultGeographicCRS.WGS84, 5.0, 45.0),
                         new float[1]);
 
         assertEquals(1.615991, result[0], 1e-6f);
@@ -322,9 +322,9 @@ public class NetCDFReaderTest extends Assert {
                 // subsetting the envelope
                 final ParameterValue<GridGeometry2D> gg =
                         AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-                final GeneralEnvelope originalEnvelope = reader.getOriginalEnvelope(coverageName);
-                final GeneralEnvelope reducedEnvelope =
-                        new GeneralEnvelope(
+                final GeneralBounds originalEnvelope = reader.getOriginalEnvelope(coverageName);
+                final GeneralBounds reducedEnvelope =
+                        new GeneralBounds(
                                 new double[] {
                                     originalEnvelope.getLowerCorner().getOrdinate(0),
                                     originalEnvelope.getLowerCorner().getOrdinate(1)
@@ -435,9 +435,9 @@ public class NetCDFReaderTest extends Assert {
                 // subsetting the envelope
                 final ParameterValue<GridGeometry2D> gg =
                         AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-                final GeneralEnvelope originalEnvelope = reader.getOriginalEnvelope(coverageName);
-                final GeneralEnvelope reducedEnvelope =
-                        new GeneralEnvelope(
+                final GeneralBounds originalEnvelope = reader.getOriginalEnvelope(coverageName);
+                final GeneralBounds reducedEnvelope =
+                        new GeneralBounds(
                                 new double[] {
                                     originalEnvelope.getLowerCorner().getOrdinate(0),
                                     originalEnvelope.getLowerCorner().getOrdinate(1)
@@ -560,9 +560,9 @@ public class NetCDFReaderTest extends Assert {
                 // subsetting the envelope
                 final ParameterValue<GridGeometry2D> gg =
                         AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-                final GeneralEnvelope originalEnvelope = reader.getOriginalEnvelope(coverageName);
-                final GeneralEnvelope reducedEnvelope =
-                        new GeneralEnvelope(
+                final GeneralBounds originalEnvelope = reader.getOriginalEnvelope(coverageName);
+                final GeneralBounds reducedEnvelope =
+                        new GeneralBounds(
                                 new double[] {
                                     originalEnvelope.getLowerCorner().getOrdinate(0),
                                     originalEnvelope.getLowerCorner().getOrdinate(1)
@@ -694,9 +694,9 @@ public class NetCDFReaderTest extends Assert {
                 // subsetting the envelope
                 final ParameterValue<GridGeometry2D> gg =
                         AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-                final GeneralEnvelope originalEnvelope = reader.getOriginalEnvelope(coverageName);
-                final GeneralEnvelope reducedEnvelope =
-                        new GeneralEnvelope(
+                final GeneralBounds originalEnvelope = reader.getOriginalEnvelope(coverageName);
+                final GeneralBounds reducedEnvelope =
+                        new GeneralBounds(
                                 new double[] {
                                     originalEnvelope.getLowerCorner().getOrdinate(0),
                                     originalEnvelope.getLowerCorner().getOrdinate(1)
@@ -800,9 +800,9 @@ public class NetCDFReaderTest extends Assert {
                 // subsetting the envelope
                 final ParameterValue<GridGeometry2D> gg =
                         AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-                final GeneralEnvelope originalEnvelope = reader.getOriginalEnvelope(coverageName);
-                final GeneralEnvelope reducedEnvelope =
-                        new GeneralEnvelope(
+                final GeneralBounds originalEnvelope = reader.getOriginalEnvelope(coverageName);
+                final GeneralBounds reducedEnvelope =
+                        new GeneralBounds(
                                 new double[] {
                                     originalEnvelope.getLowerCorner().getOrdinate(0),
                                     originalEnvelope.getLowerCorner().getOrdinate(1)
@@ -931,8 +931,8 @@ public class NetCDFReaderTest extends Assert {
             String coverageName = names[0];
             final ParameterValue<GridGeometry2D> gg =
                     AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-            final GeneralEnvelope reducedEnvelope =
-                    new GeneralEnvelope(new double[] {7.1, 54}, new double[] {12.1, 63});
+            final GeneralBounds reducedEnvelope =
+                    new GeneralBounds(new double[] {7.1, 54}, new double[] {12.1, 63});
             reducedEnvelope.setCoordinateReferenceSystem(
                     reader.getCoordinateReferenceSystem(coverageName));
             final Rectangle rasterArea = new Rectangle(0, 3, 1, 1);
@@ -1052,9 +1052,9 @@ public class NetCDFReaderTest extends Assert {
             // subsetting the envelope
             final ParameterValue<GridGeometry2D> gg =
                     AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-            final GeneralEnvelope originalEnvelope = reader.getOriginalEnvelope(coverageName);
+            final GeneralBounds originalEnvelope = reader.getOriginalEnvelope(coverageName);
             final CoordinateReferenceSystem epsg3857 = CRS.decode("EPSG:3857", true);
-            final GeneralEnvelope projectedEnvelope = CRS.transform(originalEnvelope, epsg3857);
+            final GeneralBounds projectedEnvelope = CRS.transform(originalEnvelope, epsg3857);
 
             gg.setValue(
                     new GridGeometry2D(
@@ -1074,7 +1074,7 @@ public class NetCDFReaderTest extends Assert {
             GeographicBoundingBoxImpl impl = (GeographicBoundingBoxImpl) geographicExtent;
 
             // Getting the coverage Envelope for coordinates check
-            Envelope coverageEnvelope = coverage.getEnvelope();
+            Bounds coverageEnvelope = coverage.getEnvelope();
             assertTrue(impl.getEastBoundLongitude() >= coverageEnvelope.getMaximum(0));
             assertTrue(impl.getWestBoundLongitude() <= coverageEnvelope.getMinimum(0));
             assertTrue(impl.getNorthBoundLatitude() >= coverageEnvelope.getMaximum(1));
@@ -1353,9 +1353,9 @@ public class NetCDFReaderTest extends Assert {
             // subsetting the envelope
             final ParameterValue<GridGeometry2D> gg =
                     AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-            final GeneralEnvelope originalEnvelope = reader.getOriginalEnvelope(coverageName);
-            final GeneralEnvelope reducedEnvelope =
-                    new GeneralEnvelope(
+            final GeneralBounds originalEnvelope = reader.getOriginalEnvelope(coverageName);
+            final GeneralBounds reducedEnvelope =
+                    new GeneralBounds(
                             new double[] {
                                 originalEnvelope.getLowerCorner().getOrdinate(0),
                                 originalEnvelope.getLowerCorner().getOrdinate(1)
@@ -1413,7 +1413,7 @@ public class NetCDFReaderTest extends Assert {
     @Test
     public void testGetOriginalEnvelopeDefaultName() throws Exception {
         NetCDFReader reader = new NetCDFReader(TestData.file(this, "O3-NO2.nc"), null);
-        GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        GeneralBounds envelope = reader.getOriginalEnvelope();
         assertNotNull(envelope);
         assertFalse(envelope.isEmpty());
         reader.dispose();

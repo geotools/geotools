@@ -14,7 +14,7 @@ package org.geotools.tutorial.coverage;
 
 import java.io.File;
 import java.io.IOException;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -138,7 +138,7 @@ public class ImageTiler {
      * @return the cropped coverage
      */
     // docs start cropping
-    private GridCoverage2D cropCoverage(GridCoverage2D gridCoverage, Envelope envelope) {
+    private GridCoverage2D cropCoverage(GridCoverage2D gridCoverage, Bounds envelope) {
         CoverageProcessor processor = CoverageProcessor.getInstance();
 
         // An example of manually creating the operation and parameters we want
@@ -163,7 +163,7 @@ public class ImageTiler {
      * @return tile envelope
      */
     // docs start make envelope
-    private Envelope getTileEnvelope(
+    private Bounds getTileEnvelope(
             double coverageMinX,
             double coverageMinY,
             double geographicTileWidth,
@@ -231,7 +231,7 @@ public class ImageTiler {
 
                 System.out.println("Processing tile at indices i: " + i + " and j: " + j);
                 // create the envelope of the tile
-                Envelope envelope =
+                Bounds envelope =
                         getTileEnvelope(
                                 coverageMinX,
                                 coverageMinY,

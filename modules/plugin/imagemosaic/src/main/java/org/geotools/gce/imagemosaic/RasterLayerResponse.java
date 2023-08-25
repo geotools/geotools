@@ -98,7 +98,7 @@ import org.geotools.gce.imagemosaic.granulecollector.DefaultSubmosaicProducerFac
 import org.geotools.gce.imagemosaic.granulecollector.SubmosaicProducer;
 import org.geotools.gce.imagemosaic.granulecollector.SubmosaicProducerFactory;
 import org.geotools.geometry.Envelope2D;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.util.XRectangle2D;
@@ -469,7 +469,7 @@ public class RasterLayerResponse {
     private GridCoverageFactory coverageFactory;
 
     /** The base envelope related to the input coverage */
-    private GeneralEnvelope coverageEnvelope;
+    private GeneralBounds coverageEnvelope;
 
     private RasterManager rasterManager;
 
@@ -631,7 +631,7 @@ public class RasterLayerResponse {
     }
 
     /**
-     * This method loads the granules which overlap the requested {@link GeneralEnvelope} using the
+     * This method loads the granules which overlap the requested {@link GeneralBounds} using the
      * provided values for alpha and input ROI.
      *
      * @return the mosaic output for the request
@@ -790,7 +790,7 @@ public class RasterLayerResponse {
      * @throws TransformException In case transformation fails during the process.
      */
     private void initRasterBounds() throws TransformException {
-        final GeneralEnvelope tempRasterBounds = CRS.transform(finalWorldToGridCorner, mosaicBBox);
+        final GeneralBounds tempRasterBounds = CRS.transform(finalWorldToGridCorner, mosaicBBox);
         rasterBounds = tempRasterBounds.toRectangle2D().getBounds();
 
         // SG using the above may lead to problems since the reason is that may be a little (1 px)
@@ -808,7 +808,7 @@ public class RasterLayerResponse {
         // larger
         // (the above expansion might have made them so)
         if (!request.spatialRequestHelper.isSupportingAlternativeCRSOutput()) {
-            final GeneralEnvelope levelRasterArea_ =
+            final GeneralBounds levelRasterArea_ =
                     CRS.transform(
                             finalWorldToGridCorner, request.spatialRequestHelper.getCoverageBBox());
             final GridEnvelope2D levelRasterArea =
@@ -837,7 +837,7 @@ public class RasterLayerResponse {
             final double[] requestRes = spatialRequestHelper.getComputedResolution();
 
             BoundingBox computedBBox = spatialRequestHelper.getComputedBBox();
-            GeneralEnvelope requestedRasterArea =
+            GeneralBounds requestedRasterArea =
                     CRS.transform(baseGridToWorld.inverse(), computedBBox);
             double minxRaster = Math.round(requestedRasterArea.getMinimum(0));
             double minyRaster = Math.round(requestedRasterArea.getMinimum(1));

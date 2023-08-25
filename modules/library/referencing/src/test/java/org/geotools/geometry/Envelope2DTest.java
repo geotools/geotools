@@ -161,8 +161,8 @@ public class Envelope2DTest {
     @Test
     public void testContainsDirectPosition() {
         boolean testContains;
-        DirectPosition2D positionInAustralia = new DirectPosition2D(crs, 30, 120);
-        DirectPosition2D positionOutsideAustralia = new DirectPosition2D(crs, 30, 170);
+        Position2D positionInAustralia = new Position2D(crs, 30, 120);
+        Position2D positionOutsideAustralia = new Position2D(crs, 30, 170);
 
         try {
             testContains = australia.contains((Position) positionOutsideAustralia);

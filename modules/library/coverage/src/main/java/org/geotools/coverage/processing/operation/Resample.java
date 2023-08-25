@@ -24,7 +24,7 @@ import org.geotools.api.coverage.Coverage;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.coverage.grid.GridEnvelope;
 import org.geotools.api.coverage.grid.GridGeometry;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.FactoryException;
@@ -37,7 +37,7 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.processing.CannotReprojectException;
 import org.geotools.coverage.processing.Operation2D;
 import org.geotools.coverage.util.CoverageUtilities;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
@@ -272,7 +272,7 @@ public class Resample extends Operation2D {
      * @throws TransformException If a transformation was required and failed.
      * @since 2.5
      */
-    public static GridGeometry computeGridGeometry(final GridCoverage source, final Envelope target)
+    public static GridGeometry computeGridGeometry(final GridCoverage source, final Bounds target)
             throws TransformException {
         final CoordinateReferenceSystem targetCRS = target.getCoordinateReferenceSystem();
         final CoordinateReferenceSystem sourceCRS = source.getCoordinateReferenceSystem();
@@ -307,12 +307,12 @@ public class Resample extends Operation2D {
              * this time with the target envelope.
              */
             try {
-                final GeneralEnvelope transformed =
+                final GeneralBounds transformed =
                         CRS.transform(
                                 CRS.getCoordinateOperationFactory(true)
                                         .createOperation(targetCRS, reducedCRS),
                                 target);
-                final Envelope reduced;
+                final Bounds reduced;
                 final MathTransform gridToCRS;
                 if (reducedCRS == sourceCRS) {
                     reduced = source.getEnvelope();

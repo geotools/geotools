@@ -21,8 +21,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.geotools.api.geometry.Position;
-import org.geotools.geometry.DirectPosition1D;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position1D;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.Position3D;
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 import org.geotools.gml3.GML;
@@ -44,8 +44,8 @@ public class DirectPositionListTypeBindingTest extends GML3TestSupport {
         assertNotNull(dps);
 
         assertEquals(2, dps.length);
-        assertTrue(dps[0] instanceof DirectPosition1D);
-        assertTrue(dps[1] instanceof DirectPosition1D);
+        assertTrue(dps[0] instanceof Position1D);
+        assertTrue(dps[1] instanceof Position1D);
 
         assertEquals(1d, dps[0].getOrdinate(0), 0d);
         assertEquals(2d, dps[1].getOrdinate(0), 0d);
@@ -62,7 +62,7 @@ public class DirectPositionListTypeBindingTest extends GML3TestSupport {
         assertNotNull(dps);
 
         assertEquals(1, dps.length);
-        assertTrue(dps[0] instanceof DirectPosition2D);
+        assertTrue(dps[0] instanceof Position2D);
 
         assertEquals(1d, dps[0].getOrdinate(0), 0d);
         assertEquals(2d, dps[0].getOrdinate(1), 0d);

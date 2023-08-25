@@ -23,7 +23,7 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
  * @since GeoAPI 1.0
  * @see org.geotools.api.coverage.grid.GridEnvelope
  */
-public interface Envelope {
+public interface Bounds {
     /**
      * Returns the envelope coordinate reference system, or {@code null} if unknown. If non-null, it
      * shall be the same as {@linkplain #getLowerCorner lower corner} and {@linkplain

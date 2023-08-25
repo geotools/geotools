@@ -25,7 +25,7 @@ import javax.media.jai.iterator.RectIter;
 import javax.media.jai.iterator.RectIterFactory;
 import org.geotools.api.coverage.grid.GridCoverageReader;
 import org.geotools.api.coverage.grid.GridCoverageWriter;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.geometry.Position;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -92,7 +92,7 @@ public class GrassRasterReaderWriterTest {
 
         checkMatrixEqual(gc.getRenderedImage(), mapData, 0);
 
-        Envelope envelope = gc.getEnvelope();
+        Bounds envelope = gc.getEnvelope();
         Position lowerCorner = envelope.getLowerCorner();
         double[] westSouth = lowerCorner.getCoordinate();
         Position upperCorner = envelope.getUpperCorner();

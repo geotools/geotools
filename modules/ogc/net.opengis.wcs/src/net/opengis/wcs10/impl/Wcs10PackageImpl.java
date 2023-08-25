@@ -86,7 +86,7 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import org.eclipse.emf.ecore.xml.type.XMLTypePackage;
 
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.w3.xlink.XlinkPackage;
 
 /**
@@ -3957,7 +3957,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
 
 		initEClass(envelopeEClass, Envelope.class, "Envelope", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(generalEnvelopeEClass, GeneralEnvelope.class, "GeneralEnvelope", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+		initEClass(generalEnvelopeEClass, GeneralBounds.class, "GeneralEnvelope", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Initialize enums and add enum literals
 		initEEnum(capabilitiesSectionTypeEEnum, CapabilitiesSectionType.class, "CapabilitiesSectionType");

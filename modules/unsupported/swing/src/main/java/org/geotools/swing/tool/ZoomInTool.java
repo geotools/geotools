@@ -24,7 +24,7 @@ import java.awt.Toolkit;
 import java.awt.geom.Point2D;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.swing.event.MapMouseEvent;
 import org.geotools.swing.locale.LocaleUtils;
@@ -76,7 +76,7 @@ public class ZoomInTool extends AbstractZoomTool {
         cursor = tk.createCustomCursor(imgIcon.getImage(), CURSOR_HOTSPOT, TOOL_NAME);
 
         startPosDevice = new Point();
-        startPosWorld = new DirectPosition2D();
+        startPosWorld = new Position2D();
         dragged = false;
     }
 
@@ -89,13 +89,13 @@ public class ZoomInTool extends AbstractZoomTool {
     @Override
     public void onMouseClicked(MapMouseEvent e) {
         Rectangle paneArea = ((JComponent) getMapPane()).getVisibleRect();
-        DirectPosition2D mapPos = e.getWorldPos();
+        Position2D mapPos = e.getWorldPos();
 
         double scale = getMapPane().getWorldToScreenTransform().getScaleX();
         double newScale = scale * zoom;
 
-        DirectPosition2D corner =
-                new DirectPosition2D(
+        Position2D corner =
+                new Position2D(
                         mapPos.getX() - 0.5d * paneArea.getWidth() / newScale,
                         mapPos.getY() + 0.5d * paneArea.getHeight() / newScale);
 

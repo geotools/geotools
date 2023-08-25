@@ -23,7 +23,7 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.swing.event.MapMouseEvent;
 import org.geotools.swing.locale.LocaleUtils;
@@ -77,13 +77,13 @@ public class ZoomOutTool extends AbstractZoomTool {
     @Override
     public void onMouseClicked(MapMouseEvent ev) {
         Rectangle paneArea = ((JComponent) getMapPane()).getVisibleRect();
-        DirectPosition2D mapPos = ev.getWorldPos();
+        Position2D mapPos = ev.getWorldPos();
 
         double scale = getMapPane().getWorldToScreenTransform().getScaleX();
         double newScale = scale / zoom;
 
-        DirectPosition2D corner =
-                new DirectPosition2D(
+        Position2D corner =
+                new Position2D(
                         mapPos.getX() - 0.5d * paneArea.getWidth() / newScale,
                         mapPos.getY() + 0.5d * paneArea.getHeight() / newScale);
 

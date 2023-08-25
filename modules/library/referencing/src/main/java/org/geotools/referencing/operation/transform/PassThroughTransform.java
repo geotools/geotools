@@ -23,7 +23,7 @@ import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.geometry.GeneralPosition;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.operation.LinearTransform;
@@ -305,7 +305,7 @@ public class PassThroughTransform extends AbstractMathTransform implements Seria
                             pointDim,
                             transDim + nSkipped));
         }
-        final GeneralDirectPosition subPoint = new GeneralDirectPosition(transDim);
+        final GeneralPosition subPoint = new GeneralPosition(transDim);
         for (int i = 0; i < transDim; i++) {
             subPoint.ordinates[i] = point.getOrdinate(i + firstAffectedOrdinate);
         }

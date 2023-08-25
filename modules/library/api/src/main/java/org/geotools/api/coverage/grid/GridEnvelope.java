@@ -26,7 +26,7 @@ import java.awt.Rectangle;
  * @author Wim Koolhoven
  * @author Martin Schouwenburg
  * @since GeoAPI 2.1
- * @see org.geotools.api.geometry.Envelope
+ * @see Bounds
  */
 public interface GridEnvelope {
     /**

@@ -42,8 +42,8 @@ import org.geotools.api.referencing.datum.Datum;
 import org.geotools.api.referencing.datum.Ellipsoid;
 import org.geotools.api.referencing.datum.GeodeticDatum;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.geometry.GeneralPosition;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.TransformedDirectPosition;
 import org.geotools.measure.Angle;
 import org.geotools.measure.Latitude;
@@ -320,7 +320,7 @@ public class GeodeticCalculator {
      * of {@link CoordinateFormat}.
      */
     private static String format(final Format cf, final double longitude, final double latitude) {
-        return cf.format(new GeneralDirectPosition(longitude, latitude));
+        return cf.format(new GeneralPosition(longitude, latitude));
     }
 
     ///////////////////////////////////////////////////////////////
@@ -455,7 +455,7 @@ public class GeodeticCalculator {
     public Position getStartingPosition() throws TransformException {
         Position position = userToGeodetic;
         if (position == null) {
-            position = new DirectPosition2D();
+            position = new Position2D();
         }
         position.setOrdinate(0, long1);
         position.setOrdinate(1, lat1);
@@ -556,7 +556,7 @@ public class GeodeticCalculator {
         }
         Position position = userToGeodetic;
         if (position == null) {
-            position = new DirectPosition2D();
+            position = new Position2D();
         }
         position.setOrdinate(0, long2);
         position.setOrdinate(1, lat2);

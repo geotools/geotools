@@ -32,7 +32,7 @@ import java.util.logging.Logger;
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
 import org.geotools.api.coverage.grid.Format;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -42,7 +42,7 @@ import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wms.Layer;
@@ -218,7 +218,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
             time = requestedTime;
         }
 
-        Envelope requestedEnvelope = null;
+        Bounds requestedEnvelope = null;
         WMTSReadParameters readParameters =
                 new WMTSReadParameters(parameters, getOriginalEnvelope());
         requestedEnvelope = readParameters.getRequestedEnvelope();
@@ -465,24 +465,24 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
             return;
         }
         if (LOGGER.isLoggable(Level.FINER)) LOGGER.entering("WMTSCoverage", "updatingBounds");
-        GeneralEnvelope envelope = layer.getEnvelope(crs);
+        GeneralBounds envelope = layer.getEnvelope(crs);
         ReferencedEnvelope result = reference(envelope);
         if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("setting bounds to " + result);
 
         this.bounds = result;
-        this.originalEnvelope = new GeneralEnvelope(result);
+        this.originalEnvelope = new GeneralBounds(result);
     }
 
-    /** Converts a {@link Envelope} into a {@link ReferencedEnvelope} */
-    ReferencedEnvelope reference(Envelope envelope) {
+    /** Converts a {@link Bounds} into a {@link ReferencedEnvelope} */
+    ReferencedEnvelope reference(Bounds envelope) {
         ReferencedEnvelope env = new ReferencedEnvelope(envelope.getCoordinateReferenceSystem());
         env.expandToInclude(envelope.getMinimum(0), envelope.getMinimum(1));
         env.expandToInclude(envelope.getMaximum(0), envelope.getMaximum(1));
         return env;
     }
 
-    /** Converts a {@link GeneralEnvelope} into a {@link ReferencedEnvelope} */
-    ReferencedEnvelope reference(GeneralEnvelope ge) {
+    /** Converts a {@link GeneralBounds} into a {@link ReferencedEnvelope} */
+    ReferencedEnvelope reference(GeneralBounds ge) {
         return new ReferencedEnvelope(
                 ge.getMinimum(0),
                 ge.getMaximum(0),
@@ -581,7 +581,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
 
     private GridCoverage2D reproject(
             GridCoverage2D coverage2D,
-            GeneralEnvelope destEnvelope,
+            GeneralBounds destEnvelope,
             WMTSReadParameters readParameters) {
         try {
             Hints newHints = hints.clone();
@@ -638,7 +638,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
             // it should not be needed because already happened to make sure
             // map to raster space conversion doesn't fails due north east axis order.
             if (!CRS.equalsIgnoreMetadata(result.getCoordinateReferenceSystem(), targetCRS))
-                result = reproject(result, new GeneralEnvelope(requestedEnvelope), readParameters);
+                result = reproject(result, new GeneralBounds(requestedEnvelope), readParameters);
             return result;
         } catch (FactoryException | TransformException e) {
             if (LOGGER.isLoggable(Level.SEVERE))

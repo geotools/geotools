@@ -26,7 +26,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.Locale;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.metadata.extent.GeographicBoundingBox;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.metadata.i18n.ErrorKeys;
@@ -138,11 +138,11 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
      * @throws TransformException if the envelope can't be transformed.
      * @since 2.2
      */
-    public GeographicBoundingBoxImpl(final Envelope envelope) throws TransformException {
+    public GeographicBoundingBoxImpl(final Bounds envelope) throws TransformException {
         super(true);
         if (constructor == null) {
             // No need to synchronize; not a big deal if we set this field twice.
-            constructor = getMethod("copy", Envelope.class, GeographicBoundingBoxImpl.class);
+            constructor = getMethod("copy", Bounds.class, GeographicBoundingBoxImpl.class);
         }
         try {
             invoke(constructor, envelope, this);

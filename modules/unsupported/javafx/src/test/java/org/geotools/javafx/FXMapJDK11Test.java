@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.ows.wms.CRSEnvelope;
 import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wms.WebMapServer;
@@ -24,7 +24,7 @@ public class FXMapJDK11Test extends ApplicationTest {
     private static final int sceneHeight = 750;
     private static final int sceneWidth = 750;
 
-    private static GeneralEnvelope initialBounds;
+    private static GeneralBounds initialBounds;
     private static final Logger log = Logger.getLogger(FXMapJDK11Test.class.getName());
     private static final String mapEPSG = "EPSG:4326";
     private static final String wmsLayer = "OpenStreetMap WMS - by terrestris";
@@ -50,7 +50,7 @@ public class FXMapJDK11Test extends ApplicationTest {
         WebMapServer wms = null;
         try {
             wms = new WebMapServer(new URL(wmsURL));
-            initialBounds = new GeneralEnvelope(new double[] {-22, 31}, new double[] {50, 67});
+            initialBounds = new GeneralBounds(new double[] {-22, 31}, new double[] {50, 67});
         } catch (Exception e) {
             log.log(Level.SEVERE, e.toString());
         }

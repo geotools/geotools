@@ -23,7 +23,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import org.geotools.api.coverage.grid.GridCoordinates;
 import org.geotools.api.coverage.grid.GridEnvelope;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.referencing.datum.PixelInCell;
 import org.geotools.geometry.PixelTranslation;
 import org.geotools.metadata.i18n.ErrorKeys;
@@ -228,7 +228,7 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
      *     org.geotools.api.referencing.operation.MathTransform,
      *     org.geotools.api.referencing.crs.CoordinateReferenceSystem)
      */
-    public GeneralGridEnvelope(final Envelope envelope, final PixelInCell anchor)
+    public GeneralGridEnvelope(final Bounds envelope, final PixelInCell anchor)
             throws IllegalArgumentException {
         this(envelope, anchor, false);
     }
@@ -240,8 +240,8 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
      * point values are rounded toward the nearest integers.
      *
      * <p><b>Note about rounding mode</b><br>
-     * It would have been possible to round the {@linkplain Envelope#getMinimum minimal value}
-     * toward {@linkplain Math#floor floor} and the {@linkplain Envelope#getMaximum maximal value}
+     * It would have been possible to round the {@linkplain Bounds#getMinimum minimal value}
+     * toward {@linkplain Math#floor floor} and the {@linkplain Bounds#getMaximum maximal value}
      * toward {@linkplain Math#ceil ceil} in order to make sure that the grid envelope encompass
      * fully the envelope - like what Java2D does when converting {@link java.awt.geom.Rectangle2D}
      * to {@link Rectangle}). But this approach may increase by 1 or 2 units the image {@linkplain
@@ -280,7 +280,7 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
      *     org.geotools.api.referencing.crs.CoordinateReferenceSystem)
      */
     public GeneralGridEnvelope(
-            final Envelope envelope, final PixelInCell anchor, final boolean isHighIncluded)
+            final Bounds envelope, final PixelInCell anchor, final boolean isHighIncluded)
             throws IllegalArgumentException {
         final double offset = PixelTranslation.getPixelTranslation(anchor) + 0.5;
         final int dimension = envelope.getDimension();

@@ -31,7 +31,7 @@ import org.geotools.api.coverage.grid.GridGeometry;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.AbstractCoverage;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.logging.Logging;
@@ -205,7 +205,7 @@ public abstract class AbstractGridCoverage extends AbstractCoverage implements G
      * @since 2.5
      */
     protected String formatEvaluateError(final Point2D point, final boolean outside) {
-        return formatEvaluateError((Position) new DirectPosition2D(point), outside);
+        return formatEvaluateError((Position) new Position2D(point), outside);
     }
 
     /**
@@ -234,7 +234,7 @@ public abstract class AbstractGridCoverage extends AbstractCoverage implements G
      * @return The coordinate point as a string, without '(' or ')' characters.
      */
     static String toString(final Point2D point, final Locale locale) {
-        return toString((Position) new DirectPosition2D(point), locale);
+        return toString((Position) new Position2D(point), locale);
     }
 
     /**

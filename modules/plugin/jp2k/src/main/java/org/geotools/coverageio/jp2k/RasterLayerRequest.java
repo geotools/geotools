@@ -25,7 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import org.geotools.api.geometry.BoundingBox;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.metadata.Identifier;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
@@ -50,7 +50,7 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.PixelTranslation;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.util.XRectangle2D;
@@ -118,9 +118,9 @@ class RasterLayerRequest {
 
     private MathTransform destinationToSourceTransform;
 
-    private GeneralEnvelope requestedBBOXInCoverageGeographicCRS;
+    private GeneralBounds requestedBBOXInCoverageGeographicCRS;
 
-    private GeneralEnvelope approximateRequestedBBoInNativeCRS;
+    private GeneralBounds approximateRequestedBBoInNativeCRS;
 
     private Dimension tileDimensions;
 
@@ -197,7 +197,7 @@ class RasterLayerRequest {
                 if (value == null) continue;
                 final GridGeometry2D gg = (GridGeometry2D) value;
 
-                requestedBBox = new ReferencedEnvelope((Envelope) gg.getEnvelope2D());
+                requestedBBox = new ReferencedEnvelope((Bounds) gg.getEnvelope2D());
                 requestedRasterArea = gg.getGridRange2D().getBounds();
                 requestedGridToWorld = (AffineTransform) gg.getGridToCRS2D();
                 continue;
@@ -305,7 +305,7 @@ class RasterLayerRequest {
                 return;
             }
 
-            requestedBBox = new ReferencedEnvelope((Envelope) gg.getEnvelope2D());
+            requestedBBox = new ReferencedEnvelope((Bounds) gg.getEnvelope2D());
             requestedRasterArea = gg.getGridRange2D().getBounds();
             requestedGridToWorld = (AffineTransform) gg.getGridToCRS2D();
             return;
@@ -470,7 +470,7 @@ class RasterLayerRequest {
                 requestedBBox =
                         new ReferencedEnvelope(
                                 CRS.transform(
-                                        tempTransform, new GeneralEnvelope(requestedRasterArea)));
+                                        tempTransform, new GeneralBounds(requestedRasterArea)));
 
             } catch (MismatchedDimensionException | TransformException e) {
                 throw new DataSourceException("Unable to inspect request CRS", e);
@@ -567,7 +567,7 @@ class RasterLayerRequest {
                         new GeneralGridEnvelope(
                                         CRS.transform(
                                                 requestedWorldToGrid,
-                                                new GeneralEnvelope(cropBBox)),
+                                                new GeneralBounds(cropBBox)),
                                         PixelInCell.CELL_CORNER,
                                         false)
                                 .toRectangle();
@@ -579,7 +579,7 @@ class RasterLayerRequest {
             // reproject the crop bbox back and then crop, notice that we are imposing
             //
             try {
-                final GeneralEnvelope cropBBOXInRequestCRS =
+                final GeneralBounds cropBBOXInRequestCRS =
                         CRS.transform(cropBBox, requestedBBox.getCoordinateReferenceSystem());
                 cropBBOXInRequestCRS.setCoordinateReferenceSystem(
                         requestedBBox.getCoordinateReferenceSystem());
@@ -785,7 +785,7 @@ class RasterLayerRequest {
             // now transform the requested envelope to source crs
             if (destinationToSourceTransform != null
                     && !destinationToSourceTransform.isIdentity()) {
-                final GeneralEnvelope temp =
+                final GeneralBounds temp =
                         CRS.transform(
                                 requestedBBox, rasterManager.spatialDomainManager.coverageCRS2D);
                 temp.setCoordinateReferenceSystem(rasterManager.spatialDomainManager.coverageCRS2D);
@@ -852,7 +852,7 @@ class RasterLayerRequest {
                         rasterManager.spatialDomainManager.coverageGeographicCRS2D);
             }
             if (requestedBBOXInCoverageGeographicCRS == null)
-                requestedBBOXInCoverageGeographicCRS = new GeneralEnvelope(requestCRS);
+                requestedBBOXInCoverageGeographicCRS = new GeneralBounds(requestCRS);
 
             // STEP 2 intersection with the geographic bbox for this coverage
             if (!requestedBBOXInCoverageGeographicCRS.intersects(

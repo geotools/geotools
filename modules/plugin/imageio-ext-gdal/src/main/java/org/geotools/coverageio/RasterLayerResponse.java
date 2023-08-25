@@ -51,7 +51,7 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.coverage.util.CoverageUtilities;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.metadata.i18n.Vocabulary;
@@ -99,7 +99,7 @@ class RasterLayerResponse {
     private MathTransform raster2Model;
 
     /** The base envelope related to the input coverage */
-    private GeneralEnvelope coverageEnvelope;
+    private GeneralBounds coverageEnvelope;
 
     /** The CRS of the input coverage */
     private CoordinateReferenceSystem coverageCRS;
@@ -418,7 +418,7 @@ class RasterLayerResponse {
         return coverageFactory.create(
                 coverageName,
                 image,
-                new GeneralEnvelope(coverageEnvelope),
+                new GeneralBounds(coverageEnvelope),
                 bands,
                 null,
                 properties);

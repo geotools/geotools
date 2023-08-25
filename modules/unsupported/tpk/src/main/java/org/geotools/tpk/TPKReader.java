@@ -50,7 +50,7 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.util.factory.Hints;
@@ -103,7 +103,7 @@ public class TPKReader extends AbstractGridCoverage2DReader {
         } catch (Exception e) {
             bounds = null;
         }
-        originalEnvelope = new GeneralEnvelope(bounds == null ? WORLD_ENVELOPE : bounds);
+        originalEnvelope = new GeneralBounds(bounds == null ? WORLD_ENVELOPE : bounds);
 
         imageFormat = file.getImageFormat();
 

@@ -42,7 +42,7 @@ import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.util.CoverageUtilities;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.PixelTranslation;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.util.XRectangle2D;
@@ -298,7 +298,7 @@ class Granule {
             // we cannot just use the crop grid to world but we need to correct
             // it.
             final Rectangle sourceArea =
-                    CRS.transform(cropWorldToGrid, new GeneralEnvelope(intersection))
+                    CRS.transform(cropWorldToGrid, new GeneralBounds(intersection))
                             .toRectangle2D()
                             .getBounds();
             XRectangle2D.intersect(

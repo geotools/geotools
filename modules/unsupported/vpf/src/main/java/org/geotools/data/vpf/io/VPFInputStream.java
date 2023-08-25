@@ -27,8 +27,8 @@ import org.geotools.data.vpf.ifc.FileConstants;
 import org.geotools.data.vpf.ifc.VPFHeader;
 import org.geotools.data.vpf.ifc.VPFRow;
 import org.geotools.data.vpf.util.DataUtils;
-import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.geometry.Position2D;
+import org.geotools.geometry.GeneralPosition;
 
 /**
  * VPFInputStream.java Created: Mon Feb 24 22:39:57 2003
@@ -482,7 +482,7 @@ public abstract class VPFInputStream implements FileConstants, DataTypesDefiniti
         Position[] result = new Position[instancesCount];
 
         for (int inx = 0; inx < instancesCount; inx++) {
-            result[inx] = new GeneralDirectPosition(readFloat(), readFloat(), readFloat());
+            result[inx] = new GeneralPosition(readFloat(), readFloat(), readFloat());
         }
 
         return result;
@@ -492,7 +492,7 @@ public abstract class VPFInputStream implements FileConstants, DataTypesDefiniti
         Position[] result = new Position[instancesCount];
 
         for (int inx = 0; inx < instancesCount; inx++) {
-            result[inx] = new DirectPosition2D(readFloat(), readFloat());
+            result[inx] = new Position2D(readFloat(), readFloat());
         }
 
         return result;
@@ -502,7 +502,7 @@ public abstract class VPFInputStream implements FileConstants, DataTypesDefiniti
         Position[] result = new Position[instancesCount];
 
         for (int inx = 0; inx < instancesCount; inx++) {
-            result[inx] = new DirectPosition2D(readDouble(), readDouble());
+            result[inx] = new Position2D(readDouble(), readDouble());
         }
 
         return result;
@@ -512,7 +512,7 @@ public abstract class VPFInputStream implements FileConstants, DataTypesDefiniti
         Position[] result = new Position[instancesCount];
 
         for (int inx = 0; inx < instancesCount; inx++) {
-            result[inx] = new GeneralDirectPosition(readDouble(), readDouble(), readDouble());
+            result[inx] = new GeneralPosition(readDouble(), readDouble(), readDouble());
         }
 
         return result;

@@ -58,7 +58,7 @@ import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.sort.SortOrder;
 import org.geotools.api.geometry.BoundingBox;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.metadata.Identifier;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterDescriptor;
@@ -108,7 +108,7 @@ import org.geotools.gce.imagemosaic.granulecollector.DefaultSubmosaicProducerFac
 import org.geotools.gce.imagemosaic.granulecollector.SubmosaicProducerFactory;
 import org.geotools.gce.imagemosaic.granulecollector.SubmosaicProducerFactoryFinder;
 import org.geotools.gce.imagemosaic.properties.CRSExtractor;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.parameter.DefaultParameterDescriptor;
@@ -181,7 +181,7 @@ public class RasterManager implements Cloneable {
         //
         // ////////////////////////////////////////////////////////////////////////
         /** The base envelope read from file */
-        GeneralEnvelope coverageEnvelope = null;
+        GeneralBounds coverageEnvelope = null;
 
         double[] coverageFullResolution;
 
@@ -198,7 +198,7 @@ public class RasterManager implements Cloneable {
         GridEnvelope gridEnvelope;
 
         public SpatialDomainManager(
-                final GeneralEnvelope envelope,
+                final GeneralBounds envelope,
                 final GridEnvelope2D coverageGridrange,
                 final CoordinateReferenceSystem crs,
                 final MathTransform coverageGridToWorld2D,
@@ -235,7 +235,7 @@ public class RasterManager implements Cloneable {
             assert coverageCRS2D.getCoordinateSystem().getDimension() == 2;
             if (coverageCRS.getCoordinateSystem().getDimension() != 2) {
                 final MathTransform transform = CRS.findMathTransform(coverageCRS, coverageCRS2D);
-                final GeneralEnvelope bbox = CRS.transform(transform, coverageEnvelope);
+                final GeneralBounds bbox = CRS.transform(transform, coverageEnvelope);
                 coverageBBox = ReferencedEnvelope.create(bbox, coverageCRS2D);
             } else {
                 // it is already a bbox
@@ -887,7 +887,7 @@ public class RasterManager implements Cloneable {
 
     String name;
 
-    Envelope imposedEnvelope;
+    Bounds imposedEnvelope;
 
     MosaicConfigurationBean configuration;
 
@@ -1550,12 +1550,12 @@ public class RasterManager implements Cloneable {
 
         // we might have an imposed bbox
         CoordinateReferenceSystem crs = bounds.getCoordinateReferenceSystem();
-        GeneralEnvelope originalEnvelope = null;
+        GeneralBounds originalEnvelope = null;
 
         if (imposedEnvelope == null) {
-            originalEnvelope = new GeneralEnvelope(bounds);
+            originalEnvelope = new GeneralBounds(bounds);
         } else {
-            originalEnvelope = new GeneralEnvelope(imposedEnvelope);
+            originalEnvelope = new GeneralBounds(imposedEnvelope);
             originalEnvelope.setCoordinateReferenceSystem(crs);
         }
 
@@ -1800,7 +1800,7 @@ public class RasterManager implements Cloneable {
                         targetBounds.getUpperCorner().getOrdinate(1) - 0.5 * highestRes[1]);
         reprojected.spatialDomainManager =
                 new SpatialDomainManager(
-                        new GeneralEnvelope(targetBounds),
+                        new GeneralBounds(targetBounds),
                         originalGridRange,
                         granuleCRS,
                         raster2Model,

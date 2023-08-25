@@ -20,7 +20,7 @@ package org.geotools.gml4wcs.bindings;
 
 import javax.xml.namespace.QName;
 import org.geotools.api.geometry.Position;
-import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.geometry.GeneralPosition;
 import org.geotools.gml4wcs.GML;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
@@ -94,7 +94,7 @@ public class DirectPositionTypeBinding extends AbstractComplexBinding {
                 coordinates[c++] = Double.parseDouble(coord.trim());
             }
 
-            dp = new GeneralDirectPosition(coordinates);
+            dp = new GeneralPosition(coordinates);
         }
 
         return dp;

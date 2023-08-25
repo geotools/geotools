@@ -25,7 +25,7 @@ import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import javax.media.jai.PlanarImage;
 import org.geotools.api.coverage.ColorInterpretation;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.CoverageFactoryFinder;
@@ -52,7 +52,7 @@ public final class BandSelectTest extends GridProcessingTestBase {
          * Get the source coverage and build the cropped envelope.
          */
         final GridCoverage2D source = EXAMPLES.get(2);
-        final Envelope envelope = source.getEnvelope();
+        final Bounds envelope = source.getEnvelope();
         final RenderedImage rgbImage =
                 new ImageWorker(source.getRenderedImage())
                         .forceComponentColorModel()
@@ -90,7 +90,7 @@ public final class BandSelectTest extends GridProcessingTestBase {
          * Get the source coverage and build the cropped envelope.
          */
         final GridCoverage2D source = EXAMPLES.get(2);
-        final Envelope envelope = source.getEnvelope();
+        final Bounds envelope = source.getEnvelope();
         final RenderedImage rgbImage =
                 new ImageWorker(source.getRenderedImage())
                         .forceComponentColorModel()
@@ -157,7 +157,7 @@ public final class BandSelectTest extends GridProcessingTestBase {
          * Get the source coverage and build the cropped envelope.
          */
         final GridCoverage2D source = EXAMPLES.get(4);
-        final Envelope envelope = source.getEnvelope();
+        final Bounds envelope = source.getEnvelope();
         final RenderedImage rgbImage =
                 new ImageWorker(source.getRenderedImage())
                         .forceComponentColorModel()

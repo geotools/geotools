@@ -91,7 +91,7 @@ import org.geotools.util.factory.Hints;
  * @author Martin Desruisseaux (IRD)
  * @version $Id$
  */
-public class TransformedDirectPosition extends GeneralDirectPosition {
+public class TransformedDirectPosition extends GeneralPosition {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -3988283183934950437L;
 
@@ -285,7 +285,7 @@ public class TransformedDirectPosition extends GeneralDirectPosition {
         if (defaultCRS != null) {
             return inverseTransform(defaultCRS);
         } else {
-            return new GeneralDirectPosition(this);
+            return new GeneralPosition(this);
         }
     }
 

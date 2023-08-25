@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+import org.geotools.geometry.GeneralBounds;
 
 /**
  * <!-- begin-user-doc -->
@@ -3835,10 +3836,10 @@ public interface Wcs10Package extends EPackage {
 	int ENVELOPE_FEATURE_COUNT = 0;
 
 				/**
-	 * The meta object id for the '{@link org.geotools.geometry.GeneralEnvelope <em>General Envelope</em>}' class.
+	 * The meta object id for the '{@link GeneralBounds <em>General Envelope</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.geotools.geometry.GeneralEnvelope
+	 * @see GeneralBounds
 	 * @see net.opengis.wcs10.impl.Wcs10PackageImpl#getGeneralEnvelope()
 	 * @generated
 	 */
@@ -6663,11 +6664,11 @@ public interface Wcs10Package extends EPackage {
 	EClass getEnvelope();
 
 				/**
-	 * Returns the meta object for class '{@link org.geotools.geometry.GeneralEnvelope <em>General Envelope</em>}'.
+	 * Returns the meta object for class '{@link GeneralBounds <em>General Envelope</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>General Envelope</em>'.
-	 * @see org.geotools.geometry.GeneralEnvelope
+	 * @see GeneralBounds
 	 * @model instanceClass="org.geotools.geometry.GeneralEnvelope"
 	 * @generated
 	 */
@@ -8923,10 +8924,10 @@ public interface Wcs10Package extends EPackage {
 		EClass ENVELOPE = eINSTANCE.getEnvelope();
 
 								/**
-		 * The meta object literal for the '{@link org.geotools.geometry.GeneralEnvelope <em>General Envelope</em>}' class.
+		 * The meta object literal for the '{@link GeneralBounds <em>General Envelope</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.geotools.geometry.GeneralEnvelope
+		 * @see GeneralBounds
 		 * @see net.opengis.wcs10.impl.Wcs10PackageImpl#getGeneralEnvelope()
 		 * @generated
 		 */

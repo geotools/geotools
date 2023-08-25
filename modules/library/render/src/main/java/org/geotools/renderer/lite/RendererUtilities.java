@@ -40,7 +40,7 @@ import org.geotools.data.crs.ForceCoordinateSystemFeatureResults;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.Envelope2D;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
@@ -558,12 +558,12 @@ public final class RendererUtilities {
                         .getDirection()
                         .absolute()
                         .equals(AxisDirection.EAST);
-        final GeneralEnvelope newEnvelope =
+        final GeneralBounds newEnvelope =
                 lonFirst
-                        ? new GeneralEnvelope(
+                        ? new GeneralBounds(
                                 new double[] {mapExtent.getMinX(), mapExtent.getMinY()},
                                 new double[] {mapExtent.getMaxX(), mapExtent.getMaxY()})
-                        : new GeneralEnvelope(
+                        : new GeneralBounds(
                                 new double[] {mapExtent.getMinY(), mapExtent.getMinX()},
                                 new double[] {mapExtent.getMaxY(), mapExtent.getMaxX()});
         newEnvelope.setCoordinateReferenceSystem(destinationCrs);

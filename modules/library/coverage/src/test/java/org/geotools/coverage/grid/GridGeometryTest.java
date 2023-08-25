@@ -28,15 +28,16 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import org.geotools.api.coverage.grid.GridEnvelope;
 import org.geotools.api.coverage.grid.GridGeometry;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.metadata.spatial.PixelOrientation;
 import org.geotools.api.referencing.datum.PixelInCell;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.Envelope2D;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.PixelTranslation;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -106,7 +107,7 @@ public final class GridGeometryTest extends GridCoverageTestBase {
         final GridGeometry2D gg =
                 new GridGeometry2D(
                         new GeneralGridEnvelope(lower, upper, false),
-                        new GeneralEnvelope(minimum, maximum));
+                        new GeneralBounds(minimum, maximum));
         final AffineTransform tr = (AffineTransform) gg.getGridToCRS2D();
         assertEquals(
                 AffineTransform.TYPE_UNIFORM_SCALE
@@ -122,7 +123,7 @@ public final class GridGeometryTest extends GridCoverageTestBase {
         final MathTransform transform =
                 PixelTranslation.translate(
                         gg.getGridToCRS2D(), PixelInCell.CELL_CENTER, PixelInCell.CELL_CORNER);
-        final GeneralEnvelope envelope = CRS.transform(transform.inverse(), gg.getEnvelope2D());
+        final GeneralBounds envelope = CRS.transform(transform.inverse(), gg.getEnvelope2D());
         final GeneralGridEnvelope ge =
                 new GeneralGridEnvelope(envelope, PixelInCell.CELL_CORNER, true);
         assertEquals(0, ge.getLow(0), 0);
@@ -242,13 +243,13 @@ public final class GridGeometryTest extends GridCoverageTestBase {
         double cellWidthY = worldBounds.getHeight() / gridBounds.getHeight();
 
         GridCoordinates2D low = gridBounds.getLow();
-        DirectPosition2D dp = (DirectPosition2D) gg.gridToWorld(low);
+        Position2D dp = (Position2D) gg.gridToWorld(low);
 
         assertTrue(Math.abs(dp.x - (cellWidthX / 2) - worldBounds.getMinX()) < TOL);
         assertTrue(Math.abs(dp.y + (cellWidthY / 2) - worldBounds.getMaxY()) < TOL);
 
         GridCoordinates2D high = gridBounds.getHigh();
-        dp = (DirectPosition2D) gg.gridToWorld(high);
+        dp = (Position2D) gg.gridToWorld(high);
 
         assertTrue(Math.abs(dp.x + (cellWidthX / 2) - worldBounds.getMaxX()) < TOL);
         assertTrue(Math.abs(dp.y - (cellWidthY / 2) - worldBounds.getMinY()) < TOL);
@@ -295,7 +296,7 @@ public final class GridGeometryTest extends GridCoverageTestBase {
         GridGeometry2D gg =
                 new GridGeometry2D(
                         new GridEnvelope2D(1000, 1000, 100, 100),
-                        (org.geotools.api.geometry.Envelope) bbox);
+                        (Bounds) bbox);
 
         GridGeometry2D canonical = gg.toCanonical();
         assertEquivalentCanonical(gg, canonical);

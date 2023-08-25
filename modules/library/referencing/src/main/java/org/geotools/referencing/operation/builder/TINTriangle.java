@@ -21,7 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 
 /**
  * A triangle, with special methods for use with RubberSheetTransform.
@@ -78,13 +78,13 @@ class TINTriangle extends Polygon {
                 (0.5 * (((x1 * x1) + (y1 * y1)) - (x1 * x2) - (y1 * y2))) / ((y1 * x2) - (x1 * y2));
 
         // t = Math.abs(t);
-        DirectPosition2D center =
-                new DirectPosition2D(
+        Position2D center =
+                new Position2D(
                         crs,
                         (x2 / 2) - (t * y2) + p0.getCoordinate()[0],
                         (y2 / 2) + (t * x2) + p0.getCoordinate()[1]);
 
-        return new Circle(center.getDirectPosition(), center.distance(new DirectPosition2D(p0)));
+        return new Circle(center.getDirectPosition(), center.distance(new Position2D(p0)));
     }
 
     /**

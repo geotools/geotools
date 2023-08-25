@@ -33,7 +33,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.metadata.citation.Citation;
 import org.geotools.api.metadata.extent.Extent;
@@ -69,8 +69,8 @@ import org.geotools.api.referencing.operation.Projection;
 import org.geotools.api.referencing.operation.SingleOperation;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.geometry.Envelope2D;
-import org.geotools.geometry.GeneralDirectPosition;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
+import org.geotools.geometry.GeneralPosition;
 import org.geotools.geometry.util.XRectangle2D;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
@@ -585,12 +585,12 @@ public final class CRS {
      * @param crs The coordinate reference system, or {@code null}.
      * @return The envelope in terms of the specified CRS, or {@code null} if none.
      * @see #getGeographicBoundingBox
-     * @see org.geotools.geometry.GeneralEnvelope#normalize
+     * @see GeneralBounds#normalize
      * @since 2.2
      */
-    public static Envelope getEnvelope(final CoordinateReferenceSystem crs) {
-        Envelope envelope = null;
-        GeneralEnvelope merged = null;
+    public static Bounds getEnvelope(final CoordinateReferenceSystem crs) {
+        Bounds envelope = null;
+        GeneralBounds merged = null;
 
         /*
          * Use the geographic bounding box. We will need to transform it from WGS84 to the supplied CRS. This
@@ -600,7 +600,7 @@ public final class CRS {
         if (bounds != null && !Boolean.FALSE.equals(bounds.getInclusion())) {
             envelope =
                     merged =
-                            new GeneralEnvelope(
+                            new GeneralBounds(
                                     new double[] {
                                         bounds.getWestBoundLongitude(),
                                         bounds.getSouthBoundLatitude()
@@ -1332,7 +1332,7 @@ public final class CRS {
 
     /**
      * Transforms the given envelope to the specified CRS. If the given envelope is null, or the
-     * {@linkplain Envelope#getCoordinateReferenceSystem envelope CRS} is null, or the given target
+     * {@linkplain Bounds#getCoordinateReferenceSystem envelope CRS} is null, or the given target
      * CRS is null, or the transform {@linkplain MathTransform#isIdentity is identity}, then the
      * envelope is returned unchanged. Otherwise a new transformed envelope is returned.
      *
@@ -1350,9 +1350,8 @@ public final class CRS {
      * @throws TransformException If a transformation was required and failed.
      * @since 2.5
      */
-    public static GeneralEnvelope transform(
-            Envelope envelope, final CoordinateReferenceSystem targetCRS)
-            throws TransformException {
+    public static GeneralBounds transform(
+            Bounds envelope, final CoordinateReferenceSystem targetCRS) throws TransformException {
         if (envelope != null && targetCRS != null) {
             final CoordinateReferenceSystem sourceCRS = envelope.getCoordinateReferenceSystem();
             if (sourceCRS != null) {
@@ -1369,7 +1368,7 @@ public final class CRS {
                         envelope = transform(operation, envelope);
                     } else if (!equalsIgnoreMetadata(
                             envelope.getCoordinateReferenceSystem(), targetCRS)) {
-                        GeneralEnvelope tx = new GeneralEnvelope(envelope);
+                        GeneralBounds tx = new GeneralBounds(envelope);
                         tx.setCoordinateReferenceSystem(targetCRS);
                         envelope = tx;
                     }
@@ -1377,7 +1376,7 @@ public final class CRS {
                 assert equalsIgnoreMetadata(envelope.getCoordinateReferenceSystem(), targetCRS);
             }
         }
-        return GeneralEnvelope.toGeneralEnvelope(envelope);
+        return GeneralBounds.toGeneralEnvelope(envelope);
     }
 
     /**
@@ -1388,27 +1387,27 @@ public final class CRS {
      * <p>Note that this method can not handle the case where the envelope contains the North or
      * South pole, or when it cross the &plusmn;180° longitude, because {@linkplain MathTransform
      * math transforms} do not carry suffisient informations. For a more robust envelope
-     * transformation, use {@link #transform(CoordinateOperation, Envelope)} instead.
+     * transformation, use {@link #transform(CoordinateOperation, Bounds)} instead.
      *
      * @param transform The transform to use.
      * @param envelope Envelope to transform, or {@code null}. This envelope will not be modified.
      * @return The transformed envelope, or {@code null} if {@code envelope} was null.
      * @throws TransformException if a transform failed.
      * @since 2.4
-     * @see #transform(CoordinateOperation, Envelope)
+     * @see #transform(CoordinateOperation, Bounds)
      */
-    public static GeneralEnvelope transform(final MathTransform transform, final Envelope envelope)
+    public static GeneralBounds transform(final MathTransform transform, final Bounds envelope)
             throws TransformException {
         return transform(transform, envelope, null);
     }
 
     /**
-     * Implementation of {@link #transform(MathTransform, Envelope)} with the opportunity to save
-     * the projected center coordinate. If {@code targetPt} is non-null, then this method will set
-     * it to the center of the source envelope projected to the target CRS.
+     * Implementation of {@link #transform(MathTransform, Bounds)} with the opportunity to save the
+     * projected center coordinate. If {@code targetPt} is non-null, then this method will set it to
+     * the center of the source envelope projected to the target CRS.
      */
-    static GeneralEnvelope transform(
-            final MathTransform transform, final Envelope envelope, GeneralDirectPosition targetPt)
+    static GeneralBounds transform(
+            final MathTransform transform, final Bounds envelope, GeneralPosition targetPt)
             throws TransformException {
         if (envelope == null) {
             return null;
@@ -1419,7 +1418,7 @@ public final class CRS {
              * supposed to be. Even if an identity transform often imply that the target CRS is the same one than the source CRS, it is not always the
              * case. The metadata may be differents, or the transform may be a datum shift without Bursa-Wolf parameters, etc.
              */
-            final GeneralEnvelope e = new GeneralEnvelope(envelope);
+            final GeneralBounds e = new GeneralBounds(envelope);
             e.setCoordinateReferenceSystem(null);
             if (targetPt != null) {
                 for (int i = envelope.getDimension(); --i >= 0; ) {
@@ -1438,15 +1437,15 @@ public final class CRS {
                             ErrorKeys.MISMATCHED_DIMENSION_$2, sourceDim, envelope.getDimension()));
         }
         int coordinateNumber = 0;
-        GeneralEnvelope transformed = null;
+        GeneralBounds transformed = null;
         if (targetPt == null) {
-            targetPt = new GeneralDirectPosition(transform.getTargetDimensions());
+            targetPt = new GeneralPosition(transform.getTargetDimensions());
         }
         /*
          * Before to run the loops, we must initialize the coordinates to the minimal values. This coordinates will be updated in the 'switch'
          * statement inside the 'while' loop.
          */
-        final GeneralDirectPosition sourcePt = new GeneralDirectPosition(sourceDim);
+        final GeneralPosition sourcePt = new GeneralPosition(sourceDim);
         for (int i = sourceDim; --i >= 0; ) {
             sourcePt.setOrdinate(i, envelope.getMinimum(i));
         }
@@ -1462,7 +1461,7 @@ public final class CRS {
             if (transformed != null) {
                 transformed.add(targetPt);
             } else {
-                transformed = new GeneralEnvelope(targetPt, targetPt);
+                transformed = new GeneralBounds(targetPt, targetPt);
             }
             /*
              * Get the next point's coordinates. The 'coordinateNumber' variable should be seen as a number in base 5 where the number of digits is
@@ -1515,11 +1514,10 @@ public final class CRS {
      * @return The transformed envelope, or {@code null} if {@code envelope} was null.
      * @throws TransformException if a transform failed.
      * @since 2.4
-     * @see #transform(MathTransform, Envelope)
+     * @see #transform(MathTransform, Bounds)
      */
-    public static GeneralEnvelope transform(
-            final CoordinateOperation operation, final Envelope envelope)
-            throws TransformException {
+    public static GeneralBounds transform(
+            final CoordinateOperation operation, final Bounds envelope) throws TransformException {
         return EnvelopeReprojector.transform(operation, envelope);
     }
 
@@ -1660,7 +1658,7 @@ public final class CRS {
             return null;
         }
 
-        GeneralEnvelope result = transform(operation, new GeneralEnvelope(envelope));
+        GeneralBounds result = transform(operation, new GeneralBounds(envelope));
         if (destination == null) {
             return result.toRectangle2D();
         } else {

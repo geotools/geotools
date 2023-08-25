@@ -115,7 +115,7 @@ public class Position3D implements Position, Serializable, Cloneable {
      * @param crs The new coordinate reference system, or {@code null}.
      */
     public void setCoordinateReferenceSystem(final CoordinateReferenceSystem crs) {
-        AbstractDirectPosition.checkCoordinateReferenceSystemDimension(crs, 3);
+        AbstractPosition.checkCoordinateReferenceSystemDimension(crs, 3);
         this.crs = crs;
     }
 
@@ -196,7 +196,7 @@ public class Position3D implements Position, Serializable, Cloneable {
      * @throws MismatchedDimensionException if this point doesn't have the expected dimension.
      */
     public void setLocation(final Position position) throws MismatchedDimensionException {
-        AbstractDirectPosition.ensureDimensionMatch("position", position.getDimension(), 3);
+        AbstractPosition.ensureDimensionMatch("position", position.getDimension(), 3);
         setCoordinateReferenceSystem(position.getCoordinateReferenceSystem());
         x = position.getOrdinate(0);
         y = position.getOrdinate(1);
@@ -206,7 +206,7 @@ public class Position3D implements Position, Serializable, Cloneable {
     /** Returns a string representation of this coordinate. */
     @Override
     public String toString() {
-        return AbstractDirectPosition.toString(this);
+        return AbstractPosition.toString(this);
     }
 
     /**
@@ -217,7 +217,7 @@ public class Position3D implements Position, Serializable, Cloneable {
      */
     @Override
     public int hashCode() {
-        return AbstractDirectPosition.hashCode(this);
+        return AbstractPosition.hashCode(this);
     }
 
     /**

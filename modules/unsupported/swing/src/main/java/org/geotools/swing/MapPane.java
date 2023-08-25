@@ -17,7 +17,7 @@
 package org.geotools.swing;
 
 import java.awt.geom.AffineTransform;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;
 import org.geotools.swing.event.MapMouseEventDispatcher;
@@ -80,7 +80,7 @@ public interface MapPane {
      * @param envelope the new display area
      * @throws IllegalArgumentException if {@code envelope} is {@code null]
      */
-    void setDisplayArea(Envelope envelope);
+    void setDisplayArea(Bounds envelope);
 
     /** Reset the map area to include the full extent of all layers and redraw the display */
     void reset();

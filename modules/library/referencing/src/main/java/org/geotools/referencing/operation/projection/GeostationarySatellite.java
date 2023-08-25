@@ -30,8 +30,8 @@ import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.NamedIdentifier;
@@ -265,7 +265,7 @@ public abstract class GeostationarySatellite extends MapProjection {
         double satelliteHeight = parameters.parameter("satellite_height").doubleValue();
         double centralMeridian = parameters.parameter("central_meridian").doubleValue();
 
-        DirectPosition2D dp2d = new DirectPosition2D();
+        Position2D dp2d = new Position2D();
 
         double halfFoVRadians = Math.acos(semiMajorAxis / (satelliteHeight + semiMajorAxis));
         double halfFoVDegrees = Math.toDegrees(halfFoVRadians);

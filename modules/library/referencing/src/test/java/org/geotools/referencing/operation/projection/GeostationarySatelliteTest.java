@@ -26,8 +26,8 @@ import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.BeforeClass;
@@ -118,7 +118,7 @@ public class GeostationarySatelliteTest {
                 GeostationarySatellite.circumscribeFullDisk(sphericalGeosCRS);
         assertThat(circumscribed, is(notNullValue()));
 
-        final DirectPosition2D p = new DirectPosition2D();
+        final Position2D p = new Position2D();
 
         p.setLocation(circumscribed.getCenterX(), circumscribed.getMaxY());
         sphericalGeosToGeog.transform(p, p);
@@ -199,7 +199,7 @@ public class GeostationarySatelliteTest {
                 GeostationarySatellite.circumscribeFullDisk(ellipsoidalGeosCRS);
         assertThat(circumscribed, is(notNullValue()));
 
-        final DirectPosition2D p = new DirectPosition2D();
+        final Position2D p = new Position2D();
 
         p.setLocation(circumscribed.getCenterX(), circumscribed.getMaxY());
         ellipsoidalGeosToGeog.transform(p, p);
@@ -281,7 +281,7 @@ public class GeostationarySatelliteTest {
                 GeostationarySatellite.inscribeFullDiskEstimate(sphericalGeosCRS);
         assertThat(inscribed, is(notNullValue()));
 
-        final DirectPosition2D p = new DirectPosition2D();
+        final Position2D p = new Position2D();
 
         p.setLocation(inscribed.getMaxX(), inscribed.getMaxY());
         sphericalGeosToGeog.transform(p, p);
@@ -335,7 +335,7 @@ public class GeostationarySatelliteTest {
                 GeostationarySatellite.inscribeFullDiskEstimate(ellipsoidalGeosCRS);
         assertThat(inscribed, is(notNullValue()));
 
-        final DirectPosition2D p = new DirectPosition2D();
+        final Position2D p = new Position2D();
 
         p.setLocation(inscribed.getMaxX(), inscribed.getMaxY());
         ellipsoidalGeosToGeog.transform(p, p);

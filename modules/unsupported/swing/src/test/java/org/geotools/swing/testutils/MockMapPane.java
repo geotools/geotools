@@ -22,7 +22,7 @@ import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;
@@ -67,7 +67,7 @@ public class MockMapPane extends JPanel implements MapPane {
     }
 
     @Override
-    public void setDisplayArea(Envelope envelope) {
+    public void setDisplayArea(Bounds envelope) {
         CoordinateReferenceSystem crs = envelope.getCoordinateReferenceSystem();
         if (crs == null) {
             // assume that it is the current CRS

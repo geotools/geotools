@@ -63,7 +63,7 @@ import org.geotools.coverage.processing.CoverageProcessingException;
 import org.geotools.coverage.processing.OperationJAI;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.geometry.Envelope2D;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
@@ -463,7 +463,7 @@ public class Mosaic extends OperationJAI {
                                     GeoTools.getDefaultHints());
                     try {
                         // Transformation of the input envelope in the Raster Space
-                        GeneralEnvelope transformed =
+                        GeneralBounds transformed =
                                 CRS.transform(g2w.inverse(), inputGG.getEnvelope());
                         // Rounding of the bounds
                         Rectangle rect = transformed.toRectangle2D().getBounds();

@@ -26,25 +26,24 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
 
 /**
- * Tests the {@link GeneralDirectPosition} and {@link DirectPosition2D} classes.
+ * Tests the {@link GeneralPosition} and {@link Position2D} classes.
  *
  * @version $Id$
  * @author Martin Desruisseaux
  */
 public final class DirectPositionTest {
     /**
-     * Tests {@link GeneralDirectPosition#equals} method between different implementations. The
-     * purpose of this test is also to run the assertion in the direct position implementations.
+     * Tests {@link GeneralPosition#equals} method between different implementations. The purpose of
+     * this test is also to run the assertion in the direct position implementations.
      */
     @Test
     public void testEquals() {
-        assertTrue(GeneralDirectPosition.class.desiredAssertionStatus());
-        assertTrue(DirectPosition2D.class.desiredAssertionStatus());
+        assertTrue(GeneralPosition.class.desiredAssertionStatus());
+        assertTrue(Position2D.class.desiredAssertionStatus());
 
         CoordinateReferenceSystem WGS84 = DefaultGeographicCRS.WGS84;
-        Position p1 = new DirectPosition2D(WGS84, 48.543261561072285, -123.47009555832284);
-        GeneralDirectPosition p2 =
-                new GeneralDirectPosition(48.543261561072285, -123.47009555832284);
+        Position p1 = new Position2D(WGS84, 48.543261561072285, -123.47009555832284);
+        GeneralPosition p2 = new GeneralPosition(48.543261561072285, -123.47009555832284);
         assertNotEquals(p1, p2);
         assertNotEquals(p2, p1);
 

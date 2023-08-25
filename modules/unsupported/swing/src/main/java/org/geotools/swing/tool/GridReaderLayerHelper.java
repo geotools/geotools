@@ -29,7 +29,7 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.util.XRectangle2D;
 import org.geotools.map.GridReaderLayer;
 import org.geotools.map.Layer;
@@ -73,7 +73,7 @@ public class GridReaderLayerHelper extends InfoToolHelper {
     }
 
     @Override
-    public InfoToolResult getInfo(DirectPosition2D pos) throws Exception {
+    public InfoToolResult getInfo(Position2D pos) throws Exception {
         InfoToolResult result = new InfoToolResult();
 
         if (isValid()) {

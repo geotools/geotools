@@ -17,7 +17,7 @@
 package org.geotools.referencing.operation.builder;
 
 import org.geotools.api.geometry.Position;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 
 /**
  * DirectPosition associated with another DirectPosition.
@@ -26,7 +26,7 @@ import org.geotools.geometry.DirectPosition2D;
  * @version $Id$
  * @author Jan Jezek
  */
-class ExtendedPosition extends DirectPosition2D {
+class ExtendedPosition extends Position2D {
     /** */
     private static final long serialVersionUID = 4400395722009854165L;
 

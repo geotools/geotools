@@ -19,7 +19,7 @@ package org.geotools.swt.event;
 import java.awt.geom.AffineTransform;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Point;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.swt.SwtMapPane;
 
 /**
@@ -31,7 +31,7 @@ import org.geotools.swt.SwtMapPane;
  * @since 2.6
  */
 public final class MapMouseEvent {
-    private DirectPosition2D geoCoords;
+    private Position2D geoCoords;
 
     private boolean isWheelEvent;
 
@@ -55,7 +55,7 @@ public final class MapMouseEvent {
             wheelAmount = event.count;
         }
         AffineTransform tr = pane.getScreenToWorldTransform();
-        geoCoords = new DirectPosition2D(event.x, event.y);
+        geoCoords = new Position2D(event.x, event.y);
         tr.transform(geoCoords, geoCoords);
         geoCoords.setCoordinateReferenceSystem(pane.getMapContent().getCoordinateReferenceSystem());
     }
@@ -113,8 +113,8 @@ public final class MapMouseEvent {
      *
      * @return a new DirectPosition2D object for the world coordinates
      */
-    public DirectPosition2D getMapPosition() {
-        return new DirectPosition2D(
+    public Position2D getMapPosition() {
+        return new Position2D(
                 geoCoords.getCoordinateReferenceSystem(), geoCoords.x, geoCoords.y);
     }
 }

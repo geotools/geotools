@@ -17,12 +17,12 @@ import org.geotools.api.referencing.cs.AxisDirection;
 import org.geotools.api.referencing.operation.TransformException;
 
 /**
- * Represents a three-dimensional {@linkplain Envelope envelope}. Extends {@linkplain BoundingBox
+ * Represents a three-dimensional {@linkplain Bounds envelope}. Extends {@linkplain BoundingBox
  * BoundingBox} to support the third dimension. This interface combines the ideas of {@link
- * GeographicBoundingBox} with those of {@link Envelope}. It provides convenience methods to assist
- * in accessing the formal properties of this object.
+ * GeographicBoundingBox} with those of {@link Bounds}. It provides convenience methods to assist in
+ * accessing the formal properties of this object.
  *
- * <p>This object contains no additional information beyond that provided by {@link Envelope}.
+ * <p>This object contains no additional information beyond that provided by {@link Bounds}.
  *
  * @author Niels Charlier
  */

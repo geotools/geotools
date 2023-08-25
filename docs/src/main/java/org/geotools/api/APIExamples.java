@@ -12,6 +12,7 @@
 package org.geotools.api;
 
 import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -28,7 +29,7 @@ public class APIExamples {
     private void exampleISOEnvelope() throws Exception {
         // exampleISOEnvelope start
         CoordinateReferenceSystem wsg84 = CRS.decode("EPSG:4326");
-        org.geotools.api.geometry.Envelope envelope = new ReferencedEnvelope(0, 10, 0, 20, wsg84);
+        Bounds envelope = new ReferencedEnvelope(0, 10, 0, 20, wsg84);
 
         double xMin = envelope.getMinimum(0);
         double yMin = envelope.getMinimum(1);
@@ -221,7 +222,7 @@ public class APIExamples {
                 env; // can hold both regular ReferencedEnvelope as well as ReferencedEnvelope3D
         ReferencedEnvelope original = null; // can be instance of ReferencedEnvelope3D;
         CoordinateReferenceSystem crs = null; // can be 2D or 3D
-        org.geotools.api.geometry.Envelope opengis_env =
+        Bounds opengis_env =
                 null; // can be instance of ReferencedEnvelope(3D)
         org.locationtech.jts.geom.Envelope jts_env =
                 null; // can be instance of ReferencedEnvelope(3D)

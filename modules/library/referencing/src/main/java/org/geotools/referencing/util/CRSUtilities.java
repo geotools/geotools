@@ -41,7 +41,7 @@ import org.geotools.api.referencing.operation.CoordinateOperation;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.geometry.GeneralPosition;
 import org.geotools.measure.AngleFormat;
 import org.geotools.measure.Latitude;
 import org.geotools.measure.Longitude;
@@ -373,8 +373,8 @@ public final class CRSUtilities {
             throws TransformException {
         final int sourceDim = transform.getSourceDimensions();
         final int targetDim = transform.getTargetDimensions();
-        Position P1 = new GeneralDirectPosition(sourceDim);
-        Position P2 = new GeneralDirectPosition(sourceDim);
+        Position P1 = new GeneralPosition(sourceDim);
+        Position P2 = new GeneralPosition(sourceDim);
         for (int i = 0; i < sourceDim; i++) {
             final double c = origin.getOrdinate(i);
             final double d = source.getOrdinate(i) * 0.5;

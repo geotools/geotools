@@ -28,6 +28,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.ResourceInfo;
@@ -37,7 +39,7 @@ import org.geotools.data.ows.GetCapabilitiesRequest;
 import org.geotools.data.ows.GetCapabilitiesResponse;
 import org.geotools.data.ows.OperationType;
 import org.geotools.data.ows.Specification;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPClientFinder;
@@ -205,7 +207,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
 
         LayerInfo(Layer layer) {
             this.layer = layer;
-            org.geotools.api.geometry.Envelope env = null;
+            Bounds env = null;
             CoordinateReferenceSystem crs = null;
 
             if (layer.getBoundingBoxes().isEmpty()) {
@@ -609,7 +611,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
      *
      * @return an Envelope containing a valid bounding box, or null if none are found
      */
-    public GeneralEnvelope getEnvelope(Layer layer, CoordinateReferenceSystem crs) {
+    public GeneralBounds getEnvelope(Layer layer, CoordinateReferenceSystem crs) {
         return layer.getEnvelope(crs);
     }
 }

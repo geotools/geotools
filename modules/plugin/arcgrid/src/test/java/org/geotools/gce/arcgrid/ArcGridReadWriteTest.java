@@ -35,7 +35,7 @@ import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.factory.Hints;
 import org.junit.Test;
@@ -85,8 +85,8 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
      * @throws Exception If Coverages are not equal
      */
     static void compare(GridCoverage2D gc1, GridCoverage2D gc2) throws Exception {
-        final GeneralEnvelope e1 = (GeneralEnvelope) gc1.getEnvelope();
-        final GeneralEnvelope e2 = (GeneralEnvelope) gc2.getEnvelope();
+        final GeneralBounds e1 = (GeneralBounds) gc1.getEnvelope();
+        final GeneralBounds e2 = (GeneralBounds) gc2.getEnvelope();
 
         /** Checking Envelopes */
         if ((e1.getLowerCorner().getOrdinate(0) != e2.getLowerCorner().getOrdinate(0))

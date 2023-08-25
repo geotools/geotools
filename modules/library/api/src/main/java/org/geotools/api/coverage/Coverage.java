@@ -15,8 +15,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import org.geotools.api.annotation.Specification;
-import org.geotools.api.geometry.DirectPosition;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.util.Record;
@@ -101,7 +100,7 @@ public interface Coverage {
      * @return The bounding box for the coverage domain in coordinate system coordinates.
      * @todo We need to explain the relationship with {@link #getDomainExtents}, if any.
      */
-    Envelope getEnvelope();
+    Bounds getEnvelope();
 
     /**
      * Describes the range of the coverage. It consists of a list of attribute name/data type pairs.
@@ -154,8 +153,7 @@ public interface Coverage {
      * @throws CannotEvaluateException If the point can't be evaluated for some other reason.
      * @see Raster#getDataElements(int, int, Object)
      */
-    Object evaluate(Position point)
-            throws PointOutsideCoverageException, CannotEvaluateException;
+    Object evaluate(Position point) throws PointOutsideCoverageException, CannotEvaluateException;
 
     /**
      * Return a sequence of boolean values for a given point in the coverage. A value for each

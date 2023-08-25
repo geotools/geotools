@@ -24,7 +24,7 @@ import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.referencing.operation.transform.AbstractMathTransform;
 
 /**
@@ -114,7 +114,7 @@ class RubberSheetTransform extends AbstractMathTransform implements MathTransfor
     public void transform(double[] srcPts, int srcOff, final double[] dstPt, int dstOff, int numPts)
             throws TransformException {
         for (int i = srcOff; i < numPts; i++) {
-            Point2D pos = new DirectPosition2D(srcPts[2 * i], srcPts[(2 * i) + 1]);
+            Point2D pos = new Position2D(srcPts[2 * i], srcPts[(2 * i) + 1]);
 
             TINTriangle triangle = searchTriangle((Position) pos);
 

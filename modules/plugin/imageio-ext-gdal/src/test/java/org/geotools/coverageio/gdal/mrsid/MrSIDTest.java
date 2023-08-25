@@ -37,7 +37,7 @@ import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverageio.gdal.BaseGDALGridFormat;
 import org.geotools.coverageio.gdal.GDALTestCase;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.test.TestData;
 import org.junit.Assert;
@@ -112,9 +112,9 @@ public final class MrSIDTest extends GDALTestCase {
         final int originalW = gc.getRenderedImage().getWidth();
         final int originalH = gc.getRenderedImage().getHeight();
         final Rectangle range = ((GridEnvelope2D) reader.getOriginalGridRange());
-        final GeneralEnvelope originalEnvelope = reader.getOriginalEnvelope();
-        final GeneralEnvelope reducedEnvelope =
-                new GeneralEnvelope(
+        final GeneralBounds originalEnvelope = reader.getOriginalEnvelope();
+        final GeneralBounds reducedEnvelope =
+                new GeneralBounds(
                         new double[] {
                             originalEnvelope.getLowerCorner().getOrdinate(0),
                             originalEnvelope.getLowerCorner().getOrdinate(1)

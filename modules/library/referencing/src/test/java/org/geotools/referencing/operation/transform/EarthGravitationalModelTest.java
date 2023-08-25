@@ -22,7 +22,7 @@ import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.MathTransformFactory;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.geometry.GeneralPosition;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.junit.Assert;
 import org.junit.Test;
@@ -63,7 +63,7 @@ public class EarthGravitationalModelTest {
                 ReferencingFactoryFinder.getMathTransformFactory(null);
         final ParameterValueGroup p = mtFactory.getDefaultParameters("Earth gravitational model");
         final MathTransform mt = mtFactory.createParameterizedTransform(p);
-        Position pos = new GeneralDirectPosition(new double[] {45, 45, 1000});
+        Position pos = new GeneralPosition(new double[] {45, 45, 1000});
         pos = mt.transform(pos, pos);
         Assert.assertEquals(45.000, pos.getOrdinate(0), 0.001);
         Assert.assertEquals(45.000, pos.getOrdinate(1), 0.001);

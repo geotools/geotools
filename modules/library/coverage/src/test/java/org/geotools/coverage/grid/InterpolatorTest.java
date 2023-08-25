@@ -35,7 +35,7 @@ import javax.media.jai.Interpolation;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROIShape;
 import org.geotools.api.coverage.grid.GridEnvelope;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
@@ -108,7 +108,7 @@ public final class InterpolatorTest extends GridCoverageTestBase {
         final Raster data =
                 PlanarImage.wrapRenderedImage(coverage.getRenderedImage())
                         .getExtendedData(rectangle, be);
-        final Envelope envelope = coverage.getEnvelope();
+        final Bounds envelope = coverage.getEnvelope();
         final GridEnvelope range = coverage.getGridGeometry().getGridRange();
         final double left = envelope.getMinimum(0);
         final double upper = envelope.getMaximum(1);
@@ -183,7 +183,7 @@ public final class InterpolatorTest extends GridCoverageTestBase {
         final Raster data =
                 PlanarImage.wrapRenderedImage(coverage.getRenderedImage())
                         .getExtendedData(rectangle, be);
-        final Envelope envelope = coverage.getEnvelope();
+        final Bounds envelope = coverage.getEnvelope();
         final GridEnvelope range = coverage.getGridGeometry().getGridRange();
         final double left = envelope.getMinimum(0);
         final double upper = envelope.getMaximum(1);

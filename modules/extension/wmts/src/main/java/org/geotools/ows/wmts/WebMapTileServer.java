@@ -27,7 +27,7 @@ import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.ows.AbstractOpenWebService;
 import org.geotools.data.ows.OperationType;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPClientFinder;
 import org.geotools.ows.ServiceException;
@@ -364,16 +364,16 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
     }
 
     /** */
-    public GeneralEnvelope getEnvelope(Layer layer, CoordinateReferenceSystem crs) {
+    public GeneralBounds getEnvelope(Layer layer, CoordinateReferenceSystem crs) {
         Map<String, CRSEnvelope> boundingBoxes = layer.getBoundingBoxes();
         CRSEnvelope box = boundingBoxes.get(crs.getName().getCode());
         if (box != null) {
-            return new GeneralEnvelope(box);
+            return new GeneralBounds(box);
         }
         for (String key : boundingBoxes.keySet()) {
             box = boundingBoxes.get(key);
             if (CRS.equalsIgnoreMetadata(crs, box.getCoordinateReferenceSystem())) {
-                return new GeneralEnvelope(box);
+                return new GeneralBounds(box);
             }
         }
         return null;

@@ -21,7 +21,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import javax.measure.Unit;
 import org.geotools.api.coverage.grid.GridEnvelope;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.geometry.MismatchedReferenceSystemException;
 import org.geotools.api.geometry.Position;
@@ -64,7 +64,7 @@ import org.geotools.util.Utilities;
  * @see org.geotools.geometry.jts.ReferencedEnvelope
  * @see org.geotools.api.metadata.extent.GeographicBoundingBox
  */
-public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Serializable {
+public class GeneralBounds extends AbstractBounds implements Cloneable, Serializable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 1752330560227688940L;
 
@@ -86,7 +86,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      *
      * @param dimension The envelope dimension.
      */
-    public GeneralEnvelope(final int dimension) {
+    public GeneralBounds(final int dimension) {
         ordinates = new double[dimension * 2];
         for (int i = 0; i < dimension * 2; i++) {
             ordinates[i] = Double.NaN;
@@ -99,7 +99,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      * @param min The minimal value.
      * @param max The maximal value.
      */
-    public GeneralEnvelope(final double min, final double max) {
+    public GeneralBounds(final double min, final double max) {
         ordinates = new double[] {min, max};
         checkCoordinates(ordinates);
     }
@@ -113,7 +113,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      * @throws IllegalArgumentException if an ordinate value in the minimum point is not less than
      *     or equal to the corresponding ordinate value in the maximum point.
      */
-    public GeneralEnvelope(final double[] minDP, final double[] maxDP)
+    public GeneralBounds(final double[] minDP, final double[] maxDP)
             throws IllegalArgumentException {
         ensureNonNull("minDP", minDP);
         ensureNonNull("maxDP", maxDP);
@@ -135,14 +135,14 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      * @throws IllegalArgumentException if an ordinate value in the minimum point is not less than
      *     or equal to the corresponding ordinate value in the maximum point.
      */
-    public GeneralEnvelope(final GeneralDirectPosition minDP, final GeneralDirectPosition maxDP)
+    public GeneralBounds(final GeneralPosition minDP, final GeneralPosition maxDP)
             throws MismatchedReferenceSystemException, IllegalArgumentException {
         // Uncomment next lines if Sun fixes RFE #4093999
         // ensureNonNull("minDP", minDP);
         // ensureNonNull("maxDP", maxDP);
         this(minDP.ordinates, maxDP.ordinates);
         crs = getCoordinateReferenceSystem(minDP, maxDP);
-        AbstractDirectPosition.checkCoordinateReferenceSystemDimension(crs, ordinates.length / 2);
+        AbstractPosition.checkCoordinateReferenceSystemDimension(crs, ordinates.length / 2);
     }
 
     /**
@@ -152,7 +152,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      * @param crs The coordinate reference system.
      * @since 2.2
      */
-    public GeneralEnvelope(final CoordinateReferenceSystem crs) {
+    public GeneralBounds(final CoordinateReferenceSystem crs) {
         // Uncomment next line if Sun fixes RFE #4093999
         // ensureNonNull("envelope", envelope);
         this(crs.getCoordinateSystem().getDimension());
@@ -163,11 +163,11 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      * Converts the envelope to a general envelope, avoiding the construction of a new object in
      * case the input envelope is already a GeneralEnvelope
      */
-    public static GeneralEnvelope toGeneralEnvelope(final Envelope envelope) {
-        if (envelope instanceof GeneralEnvelope) {
-            return (GeneralEnvelope) envelope;
+    public static GeneralBounds toGeneralEnvelope(final Bounds envelope) {
+        if (envelope instanceof GeneralBounds) {
+            return (GeneralBounds) envelope;
         } else {
-            return new GeneralEnvelope(envelope);
+            return new GeneralBounds(envelope);
         }
     }
 
@@ -176,10 +176,10 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      *
      * @param envelope The envelope to copy.
      */
-    public GeneralEnvelope(final Envelope envelope) {
+    public GeneralBounds(final Bounds envelope) {
         ensureNonNull("envelope", envelope);
-        if (envelope instanceof GeneralEnvelope) {
-            final GeneralEnvelope e = (GeneralEnvelope) envelope;
+        if (envelope instanceof GeneralBounds) {
+            final GeneralBounds e = (GeneralBounds) envelope;
             ordinates = e.ordinates.clone();
             crs = e.crs;
         } else {
@@ -201,7 +201,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      * @param box The bounding box to copy.
      * @since 2.4
      */
-    public GeneralEnvelope(final GeographicBoundingBox box) {
+    public GeneralBounds(final GeographicBoundingBox box) {
         ensureNonNull("box", box);
         ordinates =
                 new double[] {
@@ -219,7 +219,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      *
      * @param rect The rectangle to copy.
      */
-    public GeneralEnvelope(final Rectangle2D rect) {
+    public GeneralBounds(final Rectangle2D rect) {
         ensureNonNull("rect", rect);
         ordinates = new double[] {rect.getMinX(), rect.getMinY(), rect.getMaxX(), rect.getMaxY()};
         checkCoordinates(ordinates);
@@ -248,9 +248,9 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      *     failure to use the provided math transform.
      * @since 2.3
      * @see
-     *     org.geotools.coverage.grid.GeneralGridEnvelope#GeneralGridEnvelope(Envelope,PixelInCell,boolean)
+     *     org.geotools.coverage.grid.GeneralGridEnvelope#GeneralGridEnvelope(Bounds,PixelInCell,boolean)
      */
-    public GeneralEnvelope(
+    public GeneralBounds(
             final GridEnvelope gridRange,
             final PixelInCell anchor,
             final MathTransform gridToCRS,
@@ -276,7 +276,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
              */
             setRange(i, gridRange.getLow(i) - offset, gridRange.getHigh(i) - (offset - 1));
         }
-        final GeneralEnvelope transformed;
+        final GeneralBounds transformed;
         try {
             transformed = CRS.transform(gridToCRS, this);
         } catch (TransformException exception) {
@@ -364,7 +364,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      */
     public void setCoordinateReferenceSystem(final CoordinateReferenceSystem crs)
             throws MismatchedDimensionException {
-        AbstractDirectPosition.checkCoordinateReferenceSystemDimension(crs, getDimension());
+        AbstractPosition.checkCoordinateReferenceSystemDimension(crs, getDimension());
         this.crs = crs;
     }
 
@@ -392,7 +392,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      *             <blockquote>
      *             <b>Example:</b> [185° ... 190°] of longitude is equivalent to [-175° ... -170°].
      *             But [175° ... 185°] would be equivalent to [175° ... -175°], which is likely to
-     *             mislead most users of {@link Envelope} since the lower bounds is numerically
+     *             mislead most users of {@link Bounds} since the lower bounds is numerically
      *             greater than the upper bounds. Reordering as [-175° ... 175°] would interchange
      *             the meaning of what is "inside" and "outside" the envelope. So this
      *             implementation conservatively expands the range to [-180° ... 180°] in order to
@@ -450,7 +450,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
                 }
             }
             if (crsDomain) {
-                final Envelope domain = CRS.getEnvelope(crs);
+                final Bounds domain = CRS.getEnvelope(crs);
                 if (domain != null) {
                     final CoordinateReferenceSystem domainCRS =
                             domain.getCoordinateReferenceSystem();
@@ -499,7 +499,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
     @Override
     public Position getLowerCorner() {
         final int dim = ordinates.length / 2;
-        final GeneralDirectPosition position = new GeneralDirectPosition(dim);
+        final GeneralPosition position = new GeneralPosition(dim);
         System.arraycopy(ordinates, 0, position.ordinates, 0, dim);
         position.setCoordinateReferenceSystem(crs);
         return position;
@@ -514,7 +514,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
     @Override
     public Position getUpperCorner() {
         final int dim = ordinates.length / 2;
-        final GeneralDirectPosition position = new GeneralDirectPosition(dim);
+        final GeneralPosition position = new GeneralPosition(dim);
         System.arraycopy(ordinates, dim, position.ordinates, 0, dim);
         position.setCoordinateReferenceSystem(crs);
         return position;
@@ -528,7 +528,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      * @since 2.5
      */
     public Position getMedian() {
-        final GeneralDirectPosition position = new GeneralDirectPosition(ordinates.length / 2);
+        final GeneralPosition position = new GeneralPosition(ordinates.length / 2);
         for (int i = position.ordinates.length; --i >= 0; ) {
             position.ordinates[i] = getMedian(i);
         }
@@ -686,10 +686,9 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      *     number of dimensions.
      * @since 2.2
      */
-    public void setEnvelope(final GeneralEnvelope envelope) throws MismatchedDimensionException {
+    public void setEnvelope(final GeneralBounds envelope) throws MismatchedDimensionException {
         ensureNonNull("envelope", envelope);
-        AbstractDirectPosition.ensureDimensionMatch(
-                "envelope", envelope.getDimension(), getDimension());
+        AbstractPosition.ensureDimensionMatch("envelope", envelope.getDimension(), getDimension());
         System.arraycopy(envelope.ordinates, 0, ordinates, 0, ordinates.length);
         if (envelope.crs != null) {
             crs = envelope.crs;
@@ -836,7 +835,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
     public void add(final Position position) throws MismatchedDimensionException {
         ensureNonNull("position", position);
         final int dim = ordinates.length / 2;
-        AbstractDirectPosition.ensureDimensionMatch("position", position.getDimension(), dim);
+        AbstractPosition.ensureDimensionMatch("position", position.getDimension(), dim);
         assert equalsIgnoreMetadata(crs, position.getCoordinateReferenceSystem()) : position;
         for (int i = 0; i < dim; i++) {
             final double value = position.getOrdinate(i);
@@ -858,10 +857,10 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      * @throws MismatchedDimensionException if the specified envelope doesn't have the expected
      *     dimension.
      */
-    public void add(final Envelope envelope) throws MismatchedDimensionException {
+    public void add(final Bounds envelope) throws MismatchedDimensionException {
         ensureNonNull("envelope", envelope);
         final int dim = ordinates.length / 2;
-        AbstractDirectPosition.ensureDimensionMatch("envelope", envelope.getDimension(), dim);
+        AbstractPosition.ensureDimensionMatch("envelope", envelope.getDimension(), dim);
         assert equalsIgnoreMetadata(crs, envelope.getCoordinateReferenceSystem()) : envelope;
         for (int i = 0; i < dim; i++) {
             final double min = envelope.getMinimum(i);
@@ -887,7 +886,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
     public boolean contains(final Position position) throws MismatchedDimensionException {
         ensureNonNull("position", position);
         final int dim = ordinates.length / 2;
-        AbstractDirectPosition.ensureDimensionMatch("point", position.getDimension(), dim);
+        AbstractPosition.ensureDimensionMatch("point", position.getDimension(), dim);
         assert equalsIgnoreMetadata(crs, position.getCoordinateReferenceSystem()) : position;
         for (int i = 0; i < dim; i++) {
             final double value = position.getOrdinate(i);
@@ -911,15 +910,15 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      * @return {@code true} if this envelope completly encloses the specified one.
      * @throws MismatchedDimensionException if the specified envelope doesn't have the expected
      *     dimension.
-     * @see #intersects(Envelope, boolean)
-     * @see #equals(Envelope, double)
+     * @see #intersects(Bounds, boolean)
+     * @see #equals(Bounds, double)
      * @since 2.2
      */
-    public boolean contains(final Envelope envelope, final boolean edgesInclusive)
+    public boolean contains(final Bounds envelope, final boolean edgesInclusive)
             throws MismatchedDimensionException {
         ensureNonNull("envelope", envelope);
         final int dim = ordinates.length / 2;
-        AbstractDirectPosition.ensureDimensionMatch("envelope", envelope.getDimension(), dim);
+        AbstractPosition.ensureDimensionMatch("envelope", envelope.getDimension(), dim);
         assert equalsIgnoreMetadata(crs, envelope.getCoordinateReferenceSystem()) : envelope;
         for (int i = 0; i < dim; i++) {
             double inner = envelope.getMinimum(i);
@@ -950,15 +949,15 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      * @return {@code true} if this envelope intersects the specified one.
      * @throws MismatchedDimensionException if the specified envelope doesn't have the expected
      *     dimension.
-     * @see #contains(Envelope, boolean)
-     * @see #equals(Envelope, double)
+     * @see #contains(Bounds, boolean)
+     * @see #equals(Bounds, double)
      * @since 2.2
      */
-    public boolean intersects(final Envelope envelope, final boolean edgesInclusive)
+    public boolean intersects(final Bounds envelope, final boolean edgesInclusive)
             throws MismatchedDimensionException {
         ensureNonNull("envelope", envelope);
         final int dim = ordinates.length / 2;
-        AbstractDirectPosition.ensureDimensionMatch("envelope", envelope.getDimension(), dim);
+        AbstractPosition.ensureDimensionMatch("envelope", envelope.getDimension(), dim);
         assert equalsIgnoreMetadata(crs, envelope.getCoordinateReferenceSystem()) : envelope;
         for (int i = 0; i < dim; i++) {
             double inner = envelope.getMaximum(i);
@@ -985,10 +984,10 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      * @throws MismatchedDimensionException if the specified envelope doesn't have the expected
      *     dimension.
      */
-    public void intersect(final Envelope envelope) throws MismatchedDimensionException {
+    public void intersect(final Bounds envelope) throws MismatchedDimensionException {
         ensureNonNull("envelope", envelope);
         final int dim = ordinates.length / 2;
-        AbstractDirectPosition.ensureDimensionMatch("envelope", envelope.getDimension(), dim);
+        AbstractPosition.ensureDimensionMatch("envelope", envelope.getDimension(), dim);
         assert equalsIgnoreMetadata(crs, envelope.getCoordinateReferenceSystem()) : envelope;
         for (int i = 0; i < dim; i++) {
             double min = Math.max(ordinates[i], envelope.getMinimum(i));
@@ -1014,7 +1013,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      * @return The subenvelope.
      * @throws IndexOutOfBoundsException if an index is out of bounds.
      */
-    public GeneralEnvelope getSubEnvelope(final int lower, final int upper)
+    public GeneralBounds getSubEnvelope(final int lower, final int upper)
             throws IndexOutOfBoundsException {
         final int curDim = ordinates.length / 2;
         final int newDim = upper - lower;
@@ -1026,7 +1025,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
             throw new IndexOutOfBoundsException(
                     Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "upper", upper));
         }
-        final GeneralEnvelope envelope = new GeneralEnvelope(newDim);
+        final GeneralBounds envelope = new GeneralBounds(newDim);
         System.arraycopy(ordinates, lower, envelope.ordinates, 0, newDim);
         System.arraycopy(ordinates, lower + curDim, envelope.ordinates, newDim, newDim);
         return envelope;
@@ -1041,7 +1040,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      * @return The subenvelope.
      * @throws IndexOutOfBoundsException if an index is out of bounds.
      */
-    public GeneralEnvelope getReducedEnvelope(final int lower, final int upper)
+    public GeneralBounds getReducedEnvelope(final int lower, final int upper)
             throws IndexOutOfBoundsException {
         final int curDim = ordinates.length / 2;
         final int rmvDim = upper - lower;
@@ -1053,7 +1052,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
             throw new IndexOutOfBoundsException(
                     Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "upper", upper));
         }
-        final GeneralEnvelope envelope = new GeneralEnvelope(curDim - rmvDim);
+        final GeneralBounds envelope = new GeneralBounds(curDim - rmvDim);
         System.arraycopy(ordinates, 0, envelope.ordinates, 0, lower);
         System.arraycopy(ordinates, lower, envelope.ordinates, upper, curDim - upper);
         return envelope;
@@ -1091,7 +1090,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
     @Override
     public boolean equals(final Object object) {
         if (object != null && object.getClass().equals(getClass())) {
-            final GeneralEnvelope that = (GeneralEnvelope) object;
+            final GeneralBounds that = (GeneralBounds) object;
             return Arrays.equals(this.ordinates, that.ordinates)
                     && Utilities.equals(this.crs, that.crs);
         }
@@ -1126,11 +1125,11 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      *     or {@code false} if it is an absolute value.
      * @return {@code true} if the given object is equals to this envelope up to the given tolerance
      *     value.
-     * @see #contains(Envelope, boolean)
-     * @see #intersects(Envelope, boolean)
+     * @see #contains(Bounds, boolean)
+     * @see #intersects(Bounds, boolean)
      * @since 2.4
      */
-    public boolean equals(final Envelope envelope, final double eps, final boolean epsIsRelative) {
+    public boolean equals(final Bounds envelope, final double eps, final boolean epsIsRelative) {
         ensureNonNull("envelope", envelope);
         final int dimension = getDimension();
         if (envelope.getDimension() != dimension) {
@@ -1160,9 +1159,9 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      * @return A clone of this envelope.
      */
     @Override
-    public GeneralEnvelope clone() {
+    public GeneralBounds clone() {
         try {
-            GeneralEnvelope e = (GeneralEnvelope) super.clone();
+            GeneralBounds e = (GeneralBounds) super.clone();
             e.ordinates = e.ordinates.clone();
             return e;
         } catch (CloneNotSupportedException exception) {

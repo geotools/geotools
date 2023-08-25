@@ -27,7 +27,7 @@ import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.referencing.CRS;
 
 /**
@@ -98,11 +98,11 @@ public class RubberSheetBuilder extends MathTransformBuilder {
         //  This is a quick check by envelope, can be more rigorous when we move
         //  to n dimensional operations.
         Position[] dpa = this.getSourcePoints();
-        GeneralEnvelope srcextnt = new GeneralEnvelope(2);
+        GeneralBounds srcextnt = new GeneralBounds(2);
         for (Position directPosition : dpa) {
             srcextnt.add(directPosition);
         }
-        GeneralEnvelope vtxextnt = new GeneralEnvelope(2);
+        GeneralBounds vtxextnt = new GeneralBounds(2);
         vtxextnt.add(ddpp[0]);
         vtxextnt.add(ddpp[1]);
         vtxextnt.add(ddpp[2]);

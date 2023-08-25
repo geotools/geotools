@@ -24,7 +24,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.DataBuffer;
 import java.awt.image.WritableRaster;
 import javax.media.jai.RasterFactory;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.CoverageFactoryFinder;
@@ -66,7 +66,7 @@ public final class StatisticsOperationsTest extends GridProcessingTestBase {
             }
         }
         final CoordinateReferenceSystem crs = DefaultGeographicCRS.WGS84;
-        final Envelope envelope = new Envelope2D(crs, 0, 0, 30, 30);
+        final Bounds envelope = new Envelope2D(crs, 0, 0, 30, 30);
         final GridCoverageFactory factory = CoverageFactoryFinder.getGridCoverageFactory(null);
         return factory.create("My grayscale float coverage", raster, envelope);
     }

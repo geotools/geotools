@@ -34,7 +34,7 @@ import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.geometry.Envelope2D;
-import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.geometry.GeneralPosition;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeocentricCRS;
@@ -325,7 +325,7 @@ public class JTSTest extends JTSTestBase {
         Coordinate c = new Coordinate(40, 40);
         Position wrapper = JTS.toDirectPosition(c, DefaultGeographicCRS.WGS84);
 
-        GeneralDirectPosition expected = new GeneralDirectPosition(DefaultGeographicCRS.WGS84);
+        GeneralPosition expected = new GeneralPosition(DefaultGeographicCRS.WGS84);
         expected.setOrdinate(0, 40);
         expected.setOrdinate(1, 40);
 

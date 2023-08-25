@@ -19,8 +19,8 @@ package org.geotools.gml3.bindings;
 import javax.xml.namespace.QName;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.geometry.DirectPosition1D;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position1D;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.Position3D;
 import org.geotools.gml.producer.CoordinateFormatter;
 import org.geotools.gml3.GML;
@@ -111,10 +111,10 @@ public class DirectPositionTypeBinding extends AbstractComplexBinding {
         Position dp = null;
 
         if (position.length < 2) {
-            dp = (crs != null) ? new DirectPosition1D(crs) : new DirectPosition1D();
+            dp = (crs != null) ? new Position1D(crs) : new Position1D();
             dp.setOrdinate(0, position[0].doubleValue());
         } else if (position.length < 3) {
-            dp = (crs != null) ? new DirectPosition2D(crs) : new DirectPosition2D();
+            dp = (crs != null) ? new Position2D(crs) : new Position2D();
             dp.setOrdinate(0, position[0].doubleValue());
             dp.setOrdinate(1, position[1].doubleValue());
         } else {

@@ -44,7 +44,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.filter.FunctionFactory;
 import org.geotools.filter.text.cql2.CQL;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -258,7 +258,7 @@ public class FilterExamples {
 
     // distance start
     SimpleFeatureCollection distance(MapMouseEvent ev) throws Exception {
-        DirectPosition2D worldPosition = ev.getWorldPos();
+        Position2D worldPosition = ev.getWorldPos();
 
         // get the unit of measurement
         SimpleFeatureType schema = featureSource.getSchema();

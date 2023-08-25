@@ -31,8 +31,8 @@ import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.geotools.geometry.DirectPosition1D;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position1D;
+import org.geotools.geometry.Position2D;
 import org.geotools.referencing.CRS;
 
 /**
@@ -136,10 +136,10 @@ public class ToDirectPositionFunction implements Function {
             }
             if (parameters.size() == 3) {
                 // 1D
-                geom = new DirectPosition1D(crs);
+                geom = new Position1D(crs);
             } else {
                 // 2D
-                geom = new DirectPosition2D(crs);
+                geom = new Position2D(crs);
                 geom.setOrdinate(1, parameters.get(3).evaluate(object, Double.class));
             }
             geom.setOrdinate(0, parameters.get(2).evaluate(object, Double.class));
@@ -154,10 +154,10 @@ public class ToDirectPositionFunction implements Function {
             }
             if (parameters.size() == 1) {
                 // 1D
-                geom = new DirectPosition1D();
+                geom = new Position1D();
             } else {
                 // 2D
-                geom = new DirectPosition2D();
+                geom = new Position2D();
                 geom.setOrdinate(1, parameters.get(1).evaluate(object, Double.class));
             }
             geom.setOrdinate(0, param1.evaluate(object, Double.class));

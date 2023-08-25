@@ -46,7 +46,7 @@ import org.geotools.api.coverage.PointOutsideCoverageException;
 import org.geotools.api.coverage.SampleDimension;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.coverage.grid.GridEnvelope;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.datum.PixelInCell;
@@ -149,7 +149,7 @@ public class GridCoverage2D extends AbstractGridCoverage {
 
     /**
      * Constructs a grid coverage with the specified {@linkplain GridGeometry2D grid geometry} and
-     * {@linkplain GridSampleDimension sample dimensions}. The {@linkplain Envelope envelope}
+     * {@linkplain GridSampleDimension sample dimensions}. The {@linkplain Bounds envelope}
      * (including the {@linkplain CoordinateReferenceSystem coordinate reference system}) is
      * inferred from the grid geometry.
      *
@@ -274,7 +274,7 @@ public class GridCoverage2D extends AbstractGridCoverage {
      * coverage has some extent in other dimensions (for example a depth, or a start and end time).
      */
     @Override
-    public Envelope getEnvelope() {
+    public Bounds getEnvelope() {
         return gridGeometry.getEnvelope();
     }
 

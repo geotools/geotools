@@ -34,7 +34,7 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.gce.imagemosaic.granulecollector.DefaultSubmosaicProducerFactory;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.test.TestData;
@@ -55,7 +55,7 @@ public class RasterLayerResponseTest {
 
             final ParameterValue<GridGeometry2D> gg =
                     AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-            final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+            final GeneralBounds envelope = reader.getOriginalEnvelope();
             final Dimension dim = new Dimension();
             dim.setSize(10, 20);
             final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
@@ -115,7 +115,7 @@ public class RasterLayerResponseTest {
             reader = new ImageMosaicFormat().getReader(testMosaic, null);
             ParameterValue<GridGeometry2D> gg =
                     AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-            GeneralEnvelope envelope = reader.getOriginalEnvelope();
+            GeneralBounds envelope = reader.getOriginalEnvelope();
             Dimension dim = new Dimension();
             dim.setSize(10, 20);
             Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());

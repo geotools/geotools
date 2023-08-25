@@ -42,7 +42,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.test.TestData;
 import org.geotools.util.URLs;
 import org.junit.Test;
@@ -96,7 +96,7 @@ public class ImageLevelsMapperTest extends AbstractPyramidTest {
         // Read a reduced view of the RGB coverage
         final ParameterValue<GridGeometry2D> gg =
                 AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        final GeneralBounds envelope = reader.getOriginalEnvelope();
         GridEnvelope2D gridRange =
                 new GridEnvelope2D(((GridEnvelope2D) reader.getOriginalGridRange()).getBounds());
         final Dimension dim = new Dimension();
@@ -116,8 +116,8 @@ public class ImageLevelsMapperTest extends AbstractPyramidTest {
         assertEquals(4, gridEnvelope.getSpan(1), DELTA);
 
         // test on expanded Envelope (Double the size of the envelope)
-        final GeneralEnvelope doubleEnvelope =
-                new GeneralEnvelope(
+        final GeneralBounds doubleEnvelope =
+                new GeneralBounds(
                         new double[] {
                             envelope.getLowerCorner().getOrdinate(0),
                             envelope.getLowerCorner().getOrdinate(1)

@@ -50,7 +50,7 @@ import javax.media.jai.RenderedOp;
 import org.geotools.api.coverage.ColorInterpretation;
 import org.geotools.api.coverage.grid.Format;
 import org.geotools.api.coverage.grid.GridCoverage;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.api.referencing.FactoryException;
@@ -69,7 +69,7 @@ import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.PrjFileReader;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
@@ -335,7 +335,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
     @Override
     public GridCoverage2D read(GeneralParameterValue[] params)
             throws IllegalArgumentException, IOException {
-        GeneralEnvelope readEnvelope = null;
+        GeneralBounds readEnvelope = null;
         Rectangle requestedDim = null;
         OverviewPolicy overviewPolicy = null;
         if (params != null) {
@@ -344,7 +344,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
                 final String name = param.getDescriptor().getName().getCode();
                 if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName().toString())) {
                     final GridGeometry2D gg = (GridGeometry2D) param.getValue();
-                    readEnvelope = new GeneralEnvelope((Envelope) gg.getEnvelope2D());
+                    readEnvelope = new GeneralBounds((Bounds) gg.getEnvelope2D());
                     requestedDim = gg.getGridRange2D().getBounds();
                     continue;
                 }
@@ -363,7 +363,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
      * @throws java.io.IOException
      */
     private GridCoverage2D createCoverage(
-            GeneralEnvelope requestedEnvelope,
+            GeneralBounds requestedEnvelope,
             Rectangle requestedDim,
             OverviewPolicy overviewPolicy)
             throws IOException {
@@ -567,7 +567,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
         }
 
         originalEnvelope =
-                new GeneralEnvelope(
+                new GeneralBounds(
                         new double[] {xll, yll},
                         new double[] {xll + (hrWidth * cellsizeX), yll + (hrHeight * cellsizeY)});
 

@@ -101,7 +101,7 @@ import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.Utils.Prop;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.imageio.netcdf.NetCDFImageReader;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
@@ -1217,7 +1217,7 @@ public class NetCDFMosaicReaderTest {
             assertTrue(
                     CRS.equalsIgnoreMetadata(
                             DefaultGeographicCRS.WGS84, reader.getCoordinateReferenceSystem()));
-            GeneralEnvelope envelope = reader.getOriginalEnvelope("NO2");
+            GeneralBounds envelope = reader.getOriginalEnvelope("NO2");
             assertEquals(-360, envelope.getMinimum(0), 0d);
             assertEquals(360, envelope.getMaximum(0), 0d);
             assertEquals(-180, envelope.getMinimum(1), 0d);
@@ -1425,7 +1425,7 @@ public class NetCDFMosaicReaderTest {
                     CRS.equalsIgnoreMetadata(
                             DefaultGeographicCRS.WGS84,
                             reader.getCoordinateReferenceSystem("NO2")));
-            GeneralEnvelope envelope = reader.getOriginalEnvelope("NO2");
+            GeneralBounds envelope = reader.getOriginalEnvelope("NO2");
             assertEquals(-360, envelope.getMinimum(0), 0d);
             assertEquals(360, envelope.getMaximum(0), 0d);
             assertEquals(-180, envelope.getMinimum(1), 0d);
@@ -1524,7 +1524,7 @@ public class NetCDFMosaicReaderTest {
         // limit yourself to reading just a bit of it
         final ParameterValue<GridGeometry2D> gg =
                 AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        final GeneralEnvelope envelope = reader.getOriginalEnvelope(name);
+        final GeneralBounds envelope = reader.getOriginalEnvelope(name);
         final Dimension dim = new Dimension();
         dim.setSize(
                 reader.getOriginalGridRange(name).getSpan(0) / 2.0,

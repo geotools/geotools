@@ -27,7 +27,7 @@ import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.geometry.GeneralPosition;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.operation.LinearTransform;
@@ -514,7 +514,7 @@ public class ConcatenatedTransform extends AbstractMathTransform implements Seri
      */
     @Override
     public Matrix derivative(final Point2D point) throws TransformException {
-        return derivative(new GeneralDirectPosition(point));
+        return derivative(new GeneralPosition(point));
     }
 
     /**

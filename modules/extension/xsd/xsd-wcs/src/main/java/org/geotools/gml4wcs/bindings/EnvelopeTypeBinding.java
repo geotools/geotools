@@ -26,8 +26,8 @@ import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CompoundCRS;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.crs.GeographicCRS;
-import org.geotools.geometry.GeneralDirectPosition;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralPosition;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.gml4wcs.GML;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultCompoundCRS;
@@ -80,8 +80,8 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     @Override
-    public Class<GeneralEnvelope> getType() {
-        return GeneralEnvelope.class;
+    public Class<GeneralBounds> getType() {
+        return GeneralBounds.class;
     }
 
     /**
@@ -99,10 +99,10 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
         if (!positions.isEmpty() && (positions.size() == 2)) {
             Node n1 = (Node) positions.get(0);
             Node n2 = (Node) positions.get(1);
-            GeneralDirectPosition p1 = (GeneralDirectPosition) n1.getValue();
-            GeneralDirectPosition p2 = (GeneralDirectPosition) n2.getValue();
+            GeneralPosition p1 = (GeneralPosition) n1.getValue();
+            GeneralPosition p2 = (GeneralPosition) n2.getValue();
 
-            GeneralEnvelope envelope = new GeneralEnvelope(p1, p2);
+            GeneralBounds envelope = new GeneralBounds(p1, p2);
 
             for (AttributeInstance att : instance.getAttributes()) {
                 if (att.getName().equals("srsName"))
@@ -135,7 +135,7 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
      */
     @Override
     public Element encode(Object object, Document document, Element value) throws Exception {
-        GeneralEnvelope envelope = (GeneralEnvelope) object;
+        GeneralBounds envelope = (GeneralBounds) object;
 
         if (envelope == null) {
             value.appendChild(
@@ -148,7 +148,7 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
 
     @Override
     public Object getProperty(Object object, QName name) {
-        GeneralEnvelope envelope = (GeneralEnvelope) object;
+        GeneralBounds envelope = (GeneralBounds) object;
 
         if (envelope == null) {
             return null;
@@ -182,10 +182,10 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
             if (spatialCRS != null) {
                 List<Position> envelopePositions = new LinkedList<>();
 
-                GeneralDirectPosition lowerCorner =
-                        new GeneralDirectPosition(envelope.getCoordinateReferenceSystem());
-                GeneralDirectPosition upperCorner =
-                        new GeneralDirectPosition(envelope.getCoordinateReferenceSystem());
+                GeneralPosition lowerCorner =
+                        new GeneralPosition(envelope.getCoordinateReferenceSystem());
+                GeneralPosition upperCorner =
+                        new GeneralPosition(envelope.getCoordinateReferenceSystem());
 
                 for (int i = 0; i < spatialCRS.getCoordinateSystem().getDimension(); i++) {
                     lowerCorner.setOrdinate(i, envelope.getLowerCorner().getOrdinate(i));

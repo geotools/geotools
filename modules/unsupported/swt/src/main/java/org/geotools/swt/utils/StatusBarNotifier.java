@@ -17,7 +17,7 @@
 package org.geotools.swt.utils;
 
 import org.eclipse.jface.window.ApplicationWindow;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.swt.SwtMapPane;
 import org.geotools.swt.event.MapMouseAdapter;
 import org.geotools.swt.event.MapMouseEvent;
@@ -88,7 +88,7 @@ public class StatusBarNotifier {
      *
      * @param mapPos mouse cursor position (world coords)
      */
-    public void displayCoords(DirectPosition2D mapPos) {
+    public void displayCoords(Position2D mapPos) {
         if (mapPos != null) {
             applicationWindow.setStatus(String.format("  %.2f %.2f", mapPos.x, mapPos.y));
         }

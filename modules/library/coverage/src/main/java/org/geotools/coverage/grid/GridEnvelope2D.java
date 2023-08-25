@@ -19,7 +19,7 @@ package org.geotools.coverage.grid;
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
 import org.geotools.api.coverage.grid.GridEnvelope;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.referencing.datum.PixelInCell;
 import org.geotools.api.util.Cloneable;
 import org.geotools.geometry.Envelope2D;
@@ -107,8 +107,8 @@ public class GridEnvelope2D extends Rectangle implements GridEnvelope, Cloneable
      * point values are rounded toward the nearest integers.
      *
      * <p><b>Note about rounding mode</b><br>
-     * It would have been possible to round the {@linkplain Envelope#getMinimum minimal value}
-     * toward {@linkplain Math#floor floor} and the {@linkplain Envelope#getMaximum maximal value}
+     * It would have been possible to round the {@linkplain Bounds#getMinimum minimal value}
+     * toward {@linkplain Math#floor floor} and the {@linkplain Bounds#getMaximum maximal value}
      * toward {@linkplain Math#ceil ceil} in order to make sure that the grid envelope encompass
      * fully the envelope - like what Java2D does when converting {@link java.awt.geom.Rectangle2D}
      * to {@link Rectangle}). But this approach may increase by 1 or 2 units the image {@linkplain

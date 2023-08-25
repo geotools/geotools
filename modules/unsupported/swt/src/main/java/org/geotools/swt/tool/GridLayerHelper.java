@@ -23,7 +23,7 @@ import java.util.List;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
@@ -89,7 +89,7 @@ public class GridLayerHelper extends InfoToolHelper<List<Number>> {
      * @throws Exception if the grid coverage could not be queried
      */
     @Override
-    public List<Number> getInfo(DirectPosition2D pos, Object... params) throws Exception {
+    public List<Number> getInfo(Position2D pos, Object... params) throws Exception {
 
         List<Number> list = new ArrayList<>();
 
@@ -165,7 +165,7 @@ public class GridLayerHelper extends InfoToolHelper<List<Number>> {
      * @param pos query position in {@code MapContext} coordinates
      * @return query position in data ({@code MapLayer}) coordinates
      */
-    private Position getTransformed(DirectPosition2D pos) {
+    private Position getTransformed(Position2D pos) {
         if (isTransformRequired()) {
             MathTransform tr = getTransform();
             if (tr == null) {

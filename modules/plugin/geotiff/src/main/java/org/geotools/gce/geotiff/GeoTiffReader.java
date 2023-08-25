@@ -85,7 +85,7 @@ import org.geotools.api.coverage.ColorInterpretation;
 import org.geotools.api.coverage.grid.Format;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.coverage.grid.GridEnvelope;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.api.referencing.FactoryException;
@@ -115,7 +115,7 @@ import org.geotools.data.FileGroupProvider.FileGroup;
 import org.geotools.data.MapInfoFileReader;
 import org.geotools.data.PrjFileReader;
 import org.geotools.data.WorldFileReader;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.image.util.ImageUtilities;
@@ -510,7 +510,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             originalEnvelope =
                     CRS.transform(
                             ProjectiveTransform.create(tempTransform),
-                            new GeneralEnvelope(actualDim));
+                            new GeneralBounds(actualDim));
             originalEnvelope.setCoordinateReferenceSystem(crs);
 
             // ///
@@ -625,7 +625,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
      */
     @Override
     public GridCoverage2D read(GeneralParameterValue[] params) throws IOException {
-        GeneralEnvelope requestedEnvelope = null;
+        GeneralBounds requestedEnvelope = null;
         Rectangle dim = null;
         Color inputTransparentColor = null;
         OverviewPolicy overviewPolicy = null;
@@ -642,7 +642,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                 final ReferenceIdentifier name = param.getDescriptor().getName();
                 if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName())) {
                     final GridGeometry2D gg = (GridGeometry2D) param.getValue();
-                    requestedEnvelope = new GeneralEnvelope((Envelope) gg.getEnvelope2D());
+                    requestedEnvelope = new GeneralBounds((Bounds) gg.getEnvelope2D());
                     dim = gg.getGridRange2D().getBounds();
                     continue;
                 }
@@ -1019,7 +1019,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
         return coverageFactory.create(
                 coverageName,
                 image,
-                new GeneralEnvelope(originalEnvelope),
+                new GeneralBounds(originalEnvelope),
                 bands,
                 null,
                 properties);

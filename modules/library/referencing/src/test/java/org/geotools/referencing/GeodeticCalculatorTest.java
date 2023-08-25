@@ -36,7 +36,7 @@ import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.GeographicCRS;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
 import org.geotools.referencing.cs.DefaultEllipsoidalCS;
@@ -154,7 +154,7 @@ public final class GeodeticCalculatorTest {
 
         final double x = 45;
         final double y = 30;
-        calculator.setStartingPosition(new DirectPosition2D(x, y));
+        calculator.setStartingPosition(new Position2D(x, y));
         Point2D point = calculator.getStartingGeographicPoint();
         assertEquals(y, point.getX(), 1E-5);
         assertEquals(x, point.getY(), 1E-5);

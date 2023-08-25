@@ -26,7 +26,7 @@ import org.geotools.api.coverage.PointOutsideCoverageException;
 import org.geotools.api.coverage.SampleDimension;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.coverage.grid.GridGeometry;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.util.Record;
@@ -74,7 +74,7 @@ public class DefaultGridCoverageResponse implements GridCoverageResponse {
     }
 
     @Override
-    public Envelope getEnvelope() {
+    public Bounds getEnvelope() {
         return gridCoverage.getEnvelope();
     }
 

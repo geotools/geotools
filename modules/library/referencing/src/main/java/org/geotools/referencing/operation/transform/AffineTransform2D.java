@@ -27,7 +27,7 @@ import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.api.util.Cloneable;
-import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.geometry.GeneralPosition;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.operation.LinearTransform;
@@ -110,7 +110,7 @@ public class AffineTransform2D extends XAffineTransform
     @Override
     public Position transform(final Position ptSrc, Position ptDst) {
         if (ptDst == null) {
-            ptDst = new GeneralDirectPosition(2);
+            ptDst = new GeneralPosition(2);
         } else {
             final int dimension = ptDst.getDimension();
             if (dimension != 2) {

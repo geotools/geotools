@@ -31,7 +31,7 @@ import org.geotools.api.feature.Property;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.map.Layer;
 import org.geotools.swing.testutils.GraphicsTestRunner;
 import org.geotools.swing.testutils.TestDataUtils;
@@ -92,7 +92,7 @@ public class InfoToolTest extends CursorToolTestBase {
             }
         }
 
-        DirectPosition2D queryPos = TestDataUtils.getPosInFeature(feature);
+        Position2D queryPos = TestDataUtils.getPosInFeature(feature);
         Point2D p2d = mapPane.getWorldToScreenTransform().transform(queryPos, null);
 
         Point windowOrigin = mapPaneFixture.target().getLocationOnScreen();

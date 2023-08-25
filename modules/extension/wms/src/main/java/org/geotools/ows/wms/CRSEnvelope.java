@@ -16,11 +16,11 @@
  */
 package org.geotools.ows.wms;
 
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.geometry.GeneralPosition;
 import org.geotools.ows.wms.request.AbstractGetMapRequest;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
@@ -46,7 +46,7 @@ import org.geotools.referencing.crs.DefaultEngineeringCRS;
  *
  * @author Richard Gould
  */
-public class CRSEnvelope implements Envelope {
+public class CRSEnvelope implements Bounds {
     /**
      * Represents the Coordinate Reference System this bounding box is in. This is usually an EPSG
      * code such as "EPSG:4326"
@@ -94,7 +94,7 @@ public class CRSEnvelope implements Envelope {
         this.maxY = maxY;
     }
 
-    public CRSEnvelope(Envelope envelope) {
+    public CRSEnvelope(Bounds envelope) {
         this.srsName = CRS.toSRS(envelope.getCoordinateReferenceSystem());
         // this.srsName = epsgCode;
         this.minX = envelope.getMinimum(0);
@@ -232,12 +232,12 @@ public class CRSEnvelope implements Envelope {
 
     @Override
     public Position getUpperCorner() {
-        return new GeneralDirectPosition(getMaxX(), getMaxY());
+        return new GeneralPosition(getMaxX(), getMaxY());
     }
 
     @Override
     public Position getLowerCorner() {
-        return new GeneralDirectPosition(getMinX(), getMinY());
+        return new GeneralPosition(getMinX(), getMinY());
     }
 
     /**

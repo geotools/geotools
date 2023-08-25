@@ -51,7 +51,7 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.OverviewPolicy;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
@@ -96,7 +96,7 @@ public class PGRasterReader extends AbstractGridCoverage2DReader {
 
         // crs and bounds
         crs = raster.crs;
-        originalEnvelope = GeneralEnvelope.toGeneralEnvelope(raster.bounds());
+        originalEnvelope = GeneralBounds.toGeneralEnvelope(raster.bounds());
         if (raster.scale != null) {
             originalGridRange =
                     new GridEnvelope2D(
@@ -223,7 +223,7 @@ public class PGRasterReader extends AbstractGridCoverage2DReader {
                 String code = param.getDescriptor().getName().getCode();
                 if (code.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName().toString())) {
                     final GridGeometry2D gg = (GridGeometry2D) param.getValue();
-                    req.bounds = GeneralEnvelope.toGeneralEnvelope(gg.getEnvelope());
+                    req.bounds = GeneralBounds.toGeneralEnvelope(gg.getEnvelope());
                     req.region = gg.toCanonical().getGridRange2D().getBounds();
                 } else if (code.equals(AbstractGridFormat.TIME.getName().toString())) {
                     req.times = (List<?>) param.getValue();
@@ -239,7 +239,7 @@ public class PGRasterReader extends AbstractGridCoverage2DReader {
 
         if (req.bounds == null) {
             // default to entire bounds
-            req.bounds = GeneralEnvelope.toGeneralEnvelope(raster.bounds());
+            req.bounds = GeneralBounds.toGeneralEnvelope(raster.bounds());
         }
         if (req.region == null && raster.size != null) {
             req.region = new Rectangle(raster.size);

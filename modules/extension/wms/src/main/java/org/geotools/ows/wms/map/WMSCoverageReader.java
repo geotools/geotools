@@ -33,7 +33,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.geotools.api.coverage.grid.Format;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.api.referencing.ReferenceIdentifier;
@@ -43,8 +43,8 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.Position2D;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.ows.ServiceException;
@@ -240,7 +240,7 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
 
     /** Issues GetFeatureInfo against a point using the params of the last GetMap request */
     public InputStream getFeatureInfo(
-            DirectPosition2D pos, String infoFormat, int featureCount, GetMapRequest getmap)
+            Position2D pos, String infoFormat, int featureCount, GetMapRequest getmap)
             throws IOException {
         GetFeatureInfoRequest request = wms.createGetFeatureInfoRequest(getmap);
         request.setFeatureCount(1);
@@ -280,7 +280,7 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
     public GridCoverage2D read(GeneralParameterValue[] parameters)
             throws IllegalArgumentException, IOException {
         // try to get request params from the request
-        Envelope requestedEnvelope = null;
+        Bounds requestedEnvelope = null;
         int width = -1;
         int height = -1;
         Color backgroundColor = null;
@@ -449,19 +449,19 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
         }
 
         this.bounds = result;
-        this.originalEnvelope = new GeneralEnvelope(result);
+        this.originalEnvelope = new GeneralBounds(result);
     }
 
-    /** Converts a {@link Envelope} into a {@link ReferencedEnvelope} */
-    ReferencedEnvelope reference(Envelope envelope) {
+    /** Converts a {@link Bounds} into a {@link ReferencedEnvelope} */
+    ReferencedEnvelope reference(Bounds envelope) {
         ReferencedEnvelope env = new ReferencedEnvelope(envelope.getCoordinateReferenceSystem());
         env.expandToInclude(envelope.getMinimum(0), envelope.getMinimum(1));
         env.expandToInclude(envelope.getMaximum(0), envelope.getMaximum(1));
         return env;
     }
 
-    /** Converts a {@link GeneralEnvelope} into a {@link ReferencedEnvelope} */
-    ReferencedEnvelope reference(GeneralEnvelope ge) {
+    /** Converts a {@link GeneralBounds} into a {@link ReferencedEnvelope} */
+    ReferencedEnvelope reference(GeneralBounds ge) {
         return new ReferencedEnvelope(
                 ge.getMinimum(0),
                 ge.getMaximum(0),

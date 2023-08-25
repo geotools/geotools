@@ -45,7 +45,7 @@ import javax.media.jai.TiledImage;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -62,7 +62,7 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.util.NullProgressListener;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.jts.Geometries;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -150,7 +150,7 @@ public class VectorToRasterProcess implements VectorProcess {
             SimpleFeatureCollection features,
             Object attribute,
             Dimension gridDim,
-            Envelope bounds,
+            Bounds bounds,
             String covName,
             ProgressListener monitor)
             throws VectorToRasterException {
@@ -199,7 +199,7 @@ public class VectorToRasterProcess implements VectorProcess {
                             description = "Bounding box of the area to rasterize",
                             min = 0,
                             max = 1)
-                    Envelope bounds,
+            Bounds bounds,
             ProgressListener progressListener) {
 
         Expression attributeExpr = null;
@@ -295,7 +295,7 @@ public class VectorToRasterProcess implements VectorProcess {
             SimpleFeatureCollection features,
             Object attribute,
             Dimension gridDim,
-            Envelope bounds,
+            Bounds bounds,
             String covName,
             ProgressListener monitor)
             throws VectorToRasterException {
@@ -332,7 +332,7 @@ public class VectorToRasterProcess implements VectorProcess {
     }
 
     private void initialize(
-            SimpleFeatureCollection features, Envelope bounds, Object attribute, Dimension gridDim)
+            SimpleFeatureCollection features, Bounds bounds, Object attribute, Dimension gridDim)
             throws VectorToRasterException {
 
         // check the attribute argument
@@ -443,7 +443,7 @@ public class VectorToRasterProcess implements VectorProcess {
      *
      * @throws org.geotools.process.raster.VectorToRasterException
      */
-    private void setBounds(SimpleFeatureCollection features, Envelope bounds)
+    private void setBounds(SimpleFeatureCollection features, Bounds bounds)
             throws TransformException {
 
         ReferencedEnvelope featureBounds = features.getBounds();
@@ -642,7 +642,7 @@ public class VectorToRasterProcess implements VectorProcess {
         }
 
         // Go through coordinate array in order received
-        DirectPosition2D worldPos = new DirectPosition2D();
+        Position2D worldPos = new Position2D();
         for (int n = 0; n < coords.length; n++) {
             worldPos.setLocation(coords[n].x, coords[n].y);
             GridCoordinates2D gridPos = gridGeom.worldToGrid(worldPos);

@@ -20,7 +20,7 @@ import static org.junit.Assert.assertArrayEquals;
 
 import java.util.Locale;
 import java.util.Set;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.metadata.citation.Citation;
 import org.geotools.api.referencing.FactoryException;
@@ -34,8 +34,8 @@ import org.geotools.api.referencing.operation.CoordinateOperation;
 import org.geotools.api.referencing.operation.CoordinateOperationFactory;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -550,9 +550,8 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         // test coordinate: Berne, old reference point
         // see
         // http://www.swisstopo.admin.ch/internet/swisstopo/en/home/topics/survey/sys/refsys/switzerland.html
-        DirectPosition2D source =
-                new DirectPosition2D(sourceCRS, 46.9510827861504654, 7.4386324175389165);
-        DirectPosition2D result = new DirectPosition2D();
+        Position2D source = new Position2D(sourceCRS, 46.9510827861504654, 7.4386324175389165);
+        Position2D result = new Position2D();
 
         transform.transform(source, result);
         assertEquals(600000.0, result.x, 0.1);
@@ -575,7 +574,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         Envelope2D envelope = new Envelope2D(DefaultGeographicCRS.WGS84);
         envelope.add(-180, -90);
         envelope.add(180, 0);
-        Envelope transformed = CRS.transform(envelope, crs);
+        Bounds transformed = CRS.transform(envelope, crs);
         // the result is a square
         assertEquals(transformed.getMaximum(0), transformed.getMaximum(1), 1d);
         assertEquals(transformed.getMinimum(0), transformed.getMinimum(1), 1d);
@@ -591,7 +590,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         // random bbox that does include the pole
         envelope.add(-4223632.8125, -559082.03125);
         envelope.add(5053710.9375, 3347167.96875);
-        Envelope transformed = CRS.transform(envelope, DefaultGeographicCRS.WGS84);
+        Bounds transformed = CRS.transform(envelope, DefaultGeographicCRS.WGS84);
         // check we got the whole range of longitudes, since the original bbox contains the pole
         assertEquals(-180d, transformed.getMinimum(0), 0d);
         assertEquals(180d, transformed.getMaximum(0), 0d);
@@ -611,7 +610,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         // random bbox that does include the pole
         envelope.add(-3142000, -3142000);
         envelope.add(3142000, 3142000);
-        Envelope transformed = CRS.transform(envelope, DefaultGeographicCRS.WGS84);
+        Bounds transformed = CRS.transform(envelope, DefaultGeographicCRS.WGS84);
         // check we got the whole range of longitudes, since the original bbox contains the pole
         assertEquals(-180d, transformed.getMinimum(0), 0d);
         assertEquals(180d, transformed.getMaximum(0), 0d);
@@ -623,7 +622,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         // a bbox that does _not_ include the pole
         Envelope2D envelope = new Envelope2D(crs);
         envelope.setFrameFromDiagonal(4029000, 2676000, 4696500, 3567700);
-        Envelope transformed = CRS.transform(envelope, DefaultGeographicCRS.WGS84);
+        Bounds transformed = CRS.transform(envelope, DefaultGeographicCRS.WGS84);
         // check we did _not_ get the whole range of longitudes
         assertEquals(5.42, transformed.getMinimum(0), 1e-2);
         assertEquals(15.88, transformed.getMaximum(0), 1e-2);
@@ -636,7 +635,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         Envelope2D envelope = new Envelope2D(crs);
         envelope.add(5900000, 5900000);
         envelope.add(6100000, 6100000);
-        Envelope transformed = CRS.transform(envelope, DefaultGeographicCRS.WGS84);
+        Bounds transformed = CRS.transform(envelope, DefaultGeographicCRS.WGS84);
         // check we got the whole range of longitudes, since the original bbox contains the pole
         assertEquals(-180d, transformed.getMinimum(0), 0d);
         assertEquals(180d, transformed.getMaximum(0), 0d);
@@ -649,7 +648,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         Envelope2D envelope = new Envelope2D(antarcticPs);
         envelope.add(-4223632.8125, -559082.03125);
         envelope.add(5053710.9375, 3347167.96875);
-        Envelope transformed = CRS.transform(envelope, australianPs);
+        Bounds transformed = CRS.transform(envelope, australianPs);
         // has a false easting and northing, we can only check the spans are equal
         assertEquals(transformed.getSpan(0), transformed.getSpan(1), 1d);
 
@@ -723,7 +722,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         envelope.add(-180, -90);
         envelope.add(180, 0);
 
-        Envelope transformed = CRS.transform(envelope, polar);
+        Bounds transformed = CRS.transform(envelope, polar);
         assertEquals(-1.271387435620243E7, transformed.getMinimum(0), 1e3);
         assertEquals(-1.271387435620243E7, transformed.getMinimum(1), 1e3);
         assertEquals(1.271387435620243E7, transformed.getMaximum(0), 1e3);
@@ -747,7 +746,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         Envelope2D envelope = new Envelope2D(DefaultGeographicCRS.WGS84);
         envelope.add(-156, 0);
         envelope.add(-40, 48);
-        Envelope transformed = CRS.transform(envelope, crs);
+        Bounds transformed = CRS.transform(envelope, crs);
 
         // transformation of -90, 0, which is included in the range, and
         // a extreme point in the reprojected space (quadrant point)
@@ -760,7 +759,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         Envelope2D envelope = new Envelope2D(DefaultGeographicCRS.WGS84);
         envelope.add(40, 0);
         envelope.add(156, 48);
-        Envelope transformed = CRS.transform(envelope, crs);
+        Bounds transformed = CRS.transform(envelope, crs);
 
         // transformation of 90, 0, which is included in the range, and
         // a extreme point in the reprojected space (quadrant point)
@@ -773,7 +772,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         Envelope2D envelope = new Envelope2D(DefaultGeographicCRS.WGS84);
         envelope.add(-156, 0);
         envelope.add(156, 48);
-        Envelope transformed = CRS.transform(envelope, crs);
+        Bounds transformed = CRS.transform(envelope, crs);
 
         // Touches both ends
         assertEquals(-12367396.22, transformed.getMinimum(0), 1d);
@@ -786,7 +785,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         Envelope2D envelope = new Envelope2D(DefaultGeographicCRS.WGS84);
         envelope.add(-200, 0);
         envelope.add(-160, 48);
-        Envelope transformed = CRS.transform(envelope, crs);
+        Bounds transformed = CRS.transform(envelope, crs);
 
         // transformation of -180, 0, which is included in the range, and
         // a extreme point in the reprojected space (quadrant point)
@@ -799,7 +798,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         Envelope2D envelope = new Envelope2D(DefaultGeographicCRS.WGS84);
         envelope.add(-20, 0);
         envelope.add(20, 48);
-        Envelope transformed = CRS.transform(envelope, crs);
+        Bounds transformed = CRS.transform(envelope, crs);
 
         // transformation of 0, 0, which is included in the range, and
         // a extreme point in the reprojected space (quadrant point)
@@ -812,7 +811,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         Envelope2D envelope = new Envelope2D(DefaultGeographicCRS.WGS84);
         envelope.add(-200, 0);
         envelope.add(20, 48);
-        Envelope transformed = CRS.transform(envelope, crs);
+        Bounds transformed = CRS.transform(envelope, crs);
 
         // transformation of 0, 0, which is included in the range, and
         // a extreme point in the reprojected space (quadrant point)

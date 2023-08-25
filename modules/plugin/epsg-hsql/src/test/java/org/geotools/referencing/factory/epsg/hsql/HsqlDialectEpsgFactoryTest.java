@@ -25,7 +25,7 @@ import org.geotools.api.referencing.IdentifiedObject;
 import org.geotools.api.referencing.ReferenceIdentifier;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.factory.IdentifiedObjectFinder;
@@ -69,7 +69,7 @@ public class HsqlDialectEpsgFactoryTest {
 
         // reproject
         MathTransform transform = CRS.findMathTransform(crs1, crs2, true);
-        Position pos = new DirectPosition2D(48.417, 123.35);
+        Position pos = new Position2D(48.417, 123.35);
         transform.transform(pos, null);
     }
 

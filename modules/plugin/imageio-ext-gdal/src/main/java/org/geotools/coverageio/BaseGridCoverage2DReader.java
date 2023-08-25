@@ -34,7 +34,7 @@ import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.media.jai.JAI;
 import org.geotools.api.coverage.grid.GridCoverage;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.datum.PixelInCell;
@@ -55,7 +55,7 @@ import org.geotools.data.PrjFileReader;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.WorldFileReader;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.PixelTranslation;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -455,8 +455,8 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
                 MathTransform tempTransform =
                         PixelTranslation.translate(
                                 raster2Model, PixelInCell.CELL_CENTER, PixelInCell.CELL_CORNER);
-                final Envelope gridRange = new GeneralEnvelope((GridEnvelope2D) originalGridRange);
-                final GeneralEnvelope coverageEnvelope = CRS.transform(tempTransform, gridRange);
+                final Bounds gridRange = new GeneralBounds((GridEnvelope2D) originalGridRange);
+                final GeneralBounds coverageEnvelope = CRS.transform(tempTransform, gridRange);
                 originalEnvelope = coverageEnvelope;
                 return;
             } catch (TransformException | IOException | IllegalStateException e) {

@@ -76,7 +76,7 @@ import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -317,7 +317,7 @@ public class StreamingRendererTest {
         // mocking a GridCoverageReader to wrap the testing coverage
         GridCoverage2DReader gridCoverageReader = Mockito.mock(GridCoverage2DReader.class);
         Mockito.when(gridCoverageReader.getOriginalEnvelope())
-                .thenReturn(new GeneralEnvelope(reWgs));
+                .thenReturn(new GeneralBounds(reWgs));
         Mockito.when(gridCoverageReader.getCoordinateReferenceSystem()).thenReturn(WGS84);
         Mockito.when(gridCoverageReader.read(Mockito.any(GeneralParameterValue[].class)))
                 .thenReturn(coverage);

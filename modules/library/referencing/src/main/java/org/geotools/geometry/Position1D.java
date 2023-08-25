@@ -29,10 +29,10 @@ import org.geotools.api.util.Cloneable;
  * @since 2.0
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
- * @see DirectPosition2D
+ * @see Position2D
  * @see GeneralPosition
  */
-public class DirectPosition1D extends AbstractDirectPosition implements Serializable, Cloneable {
+public class Position1D extends AbstractPosition implements Serializable, Cloneable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 3235094562875693710L;
 
@@ -43,14 +43,14 @@ public class DirectPosition1D extends AbstractDirectPosition implements Serializ
     public double ordinate;
 
     /** Constructs a position initialized to (0) with a {@code null} coordinate reference system. */
-    public DirectPosition1D() {}
+    public Position1D() {}
 
     /**
      * Constructs a position with the specified coordinate reference system.
      *
      * @param crs The coordinate reference system.
      */
-    public DirectPosition1D(final CoordinateReferenceSystem crs) {
+    public Position1D(final CoordinateReferenceSystem crs) {
         setCoordinateReferenceSystem(crs);
     }
 
@@ -59,7 +59,7 @@ public class DirectPosition1D extends AbstractDirectPosition implements Serializ
      *
      * @param ordinate The ordinate value.
      */
-    public DirectPosition1D(final double ordinate) {
+    public Position1D(final double ordinate) {
         this.ordinate = ordinate;
     }
 
@@ -68,7 +68,7 @@ public class DirectPosition1D extends AbstractDirectPosition implements Serializ
      *
      * @param point The position to copy.
      */
-    public DirectPosition1D(final Position point) {
+    public Position1D(final Position point) {
         setLocation(point);
     }
 
@@ -159,7 +159,7 @@ public class DirectPosition1D extends AbstractDirectPosition implements Serializ
      * @throws MismatchedDimensionException if this point doesn't have the expected dimension.
      */
     public void setLocation(final Position position) throws MismatchedDimensionException {
-        AbstractDirectPosition.ensureDimensionMatch("position", position.getDimension(), 1);
+        AbstractPosition.ensureDimensionMatch("position", position.getDimension(), 1);
         setCoordinateReferenceSystem(position.getCoordinateReferenceSystem());
         ordinate = position.getOrdinate(0);
     }
@@ -181,15 +181,15 @@ public class DirectPosition1D extends AbstractDirectPosition implements Serializ
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        DirectPosition1D that = (DirectPosition1D) o;
+        Position1D that = (Position1D) o;
         return Double.compare(that.ordinate, ordinate) == 0 && Objects.equals(crs, that.crs);
     }
 
     /** Returns a copy of this position. */
     @Override
-    public DirectPosition1D clone() {
+    public Position1D clone() {
         try {
-            return (DirectPosition1D) super.clone();
+            return (Position1D) super.clone();
         } catch (CloneNotSupportedException exception) {
             // Should not happen, since we are cloneable.
             throw new AssertionError(exception);

@@ -35,7 +35,7 @@ import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
@@ -424,8 +424,8 @@ public class MapInfoFileReader {
                     double d3 = Double.parseDouble(matcherPoint.group(3));
                     double d4 = Double.parseDouble(matcherPoint.group(4));
 
-                    Position p1 = new DirectPosition2D(null, d1, d2);
-                    Position p2 = new DirectPosition2D(null, d3, d4);
+                    Position p1 = new Position2D(null, d1, d2);
+                    Position p2 = new Position2D(null, d3, d4);
 
                     controlPoints.add(new MappedPosition(p2, p1));
                 } else {

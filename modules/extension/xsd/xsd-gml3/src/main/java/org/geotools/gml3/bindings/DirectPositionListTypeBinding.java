@@ -20,8 +20,8 @@ import java.math.BigInteger;
 import javax.xml.namespace.QName;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.geometry.DirectPosition1D;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position1D;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.Position3D;
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 import org.geotools.gml.producer.CoordinateFormatter;
@@ -133,7 +133,7 @@ public class DirectPositionListTypeBinding extends AbstractComplexBinding {
 
         if (dim == 1) {
             for (int i = 0; i < coordCount; i++) {
-                dps[i] = new DirectPosition1D(crs);
+                dps[i] = new Position1D(crs);
                 dps[i].setOrdinate(0, values[i].doubleValue());
             }
         } else if (dim == 2) {
@@ -141,7 +141,7 @@ public class DirectPositionListTypeBinding extends AbstractComplexBinding {
             // HACK: not sure if its correct to assign ordinates 0 to 0 and 1 to
             // 1 or it should be inferred from the crs
             for (int coordIndex = 0; coordIndex < coordCount; coordIndex++) {
-                dps[coordIndex] = new DirectPosition2D(crs);
+                dps[coordIndex] = new Position2D(crs);
                 dps[coordIndex].setOrdinate(0, values[ordinateIdx].doubleValue());
                 dps[coordIndex].setOrdinate(1, values[ordinateIdx + 1].doubleValue());
                 ordinateIdx += crsDimension;

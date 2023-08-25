@@ -88,7 +88,7 @@ import org.geotools.data.DefaultServiceInfo;
 import org.geotools.data.FileGroupProvider.FileGroup;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
@@ -141,7 +141,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     protected CoordinateReferenceSystem crs = null;
 
     /** Envelope read from file */
-    protected GeneralEnvelope originalEnvelope = null;
+    protected GeneralBounds originalEnvelope = null;
 
     /** Coverage name */
     protected String coverageName = "geotools_coverage";
@@ -315,14 +315,14 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      *     {@link Hints#VALUE_OVERVIEW_POLICY_SPEED}. It specifies the policy to compute the
      *     overviews level upon request.
      * @param readP an instance of {@link ImageReadParam} for setting the subsampling factors.
-     * @param requestedEnvelope the {@link GeneralEnvelope} we are requesting.
+     * @param requestedEnvelope the {@link GeneralBounds} we are requesting.
      * @param requestedDim the requested dimensions.
      * @return the index of the raster to read in the underlying data source.
      */
     protected Integer setReadParams(
             OverviewPolicy overviewPolicy,
             ImageReadParam readP,
-            GeneralEnvelope requestedEnvelope,
+            GeneralBounds requestedEnvelope,
             Rectangle requestedDim)
             throws IOException, TransformException {
         return setReadParams(coverageName, overviewPolicy, readP, requestedEnvelope, requestedDim);
@@ -343,7 +343,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      *     {@link Hints#VALUE_OVERVIEW_POLICY_SPEED}. It specifies the policy to compute the
      *     overviews level upon request.
      * @param readP an instance of {@link ImageReadParam} for setting the subsampling factors.
-     * @param requestedEnvelope the {@link GeneralEnvelope} we are requesting.
+     * @param requestedEnvelope the {@link GeneralBounds} we are requesting.
      * @param requestedDim the requested dimensions.
      * @return the index of the raster to read in the underlying data source.
      */
@@ -351,7 +351,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
             String coverageName,
             OverviewPolicy overviewPolicy,
             ImageReadParam readP,
-            GeneralEnvelope requestedEnvelope,
+            GeneralBounds requestedEnvelope,
             Rectangle requestedDim)
             throws IOException, TransformException {
 
@@ -754,7 +754,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         return coverageFactory.create(
                 coverageName,
                 image,
-                new GeneralEnvelope(getOriginalEnvelope(coverageName)),
+                new GeneralBounds(getOriginalEnvelope(coverageName)),
                 bands,
                 null,
                 null);
@@ -774,7 +774,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      * @param envelope the GeneralEnvelope
      */
     protected static final double[] getResolution(
-            GeneralEnvelope envelope, Rectangle2D dim, CoordinateReferenceSystem crs)
+            GeneralBounds envelope, Rectangle2D dim, CoordinateReferenceSystem crs)
             throws DataSourceException {
         double[] requestedRes = null;
         try {
@@ -833,9 +833,9 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     }
 
     /**
-     * Retrieves the {@link GeneralEnvelope} for this {@link AbstractGridCoverage2DReader}.
+     * Retrieves the {@link GeneralBounds} for this {@link AbstractGridCoverage2DReader}.
      *
-     * @return the {@link GeneralEnvelope} for this {@link AbstractGridCoverage2DReader}.
+     * @return the {@link GeneralBounds} for this {@link AbstractGridCoverage2DReader}.
      */
     @Override
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
@@ -844,9 +844,9 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     }
 
     /**
-     * Retrieves the {@link GeneralEnvelope} for this {@link AbstractGridCoverage2DReader}.
+     * Retrieves the {@link GeneralBounds} for this {@link AbstractGridCoverage2DReader}.
      *
-     * @return the {@link GeneralEnvelope} for this {@link AbstractGridCoverage2DReader}.
+     * @return the {@link GeneralBounds} for this {@link AbstractGridCoverage2DReader}.
      */
     @Override
     public CoordinateReferenceSystem getCoordinateReferenceSystem(String coverageName) {
@@ -859,27 +859,27 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     }
 
     /**
-     * Retrieves the {@link GeneralEnvelope} for this {@link AbstractGridCoverage2DReader}.
+     * Retrieves the {@link GeneralBounds} for this {@link AbstractGridCoverage2DReader}.
      *
-     * @return the {@link GeneralEnvelope} for this {@link AbstractGridCoverage2DReader}.
+     * @return the {@link GeneralBounds} for this {@link AbstractGridCoverage2DReader}.
      */
     @Override
-    public GeneralEnvelope getOriginalEnvelope() {
+    public GeneralBounds getOriginalEnvelope() {
         return getOriginalEnvelope(coverageName);
     }
 
     /**
-     * Retrieves the {@link GeneralEnvelope} for this {@link AbstractGridCoverage2DReader}.
+     * Retrieves the {@link GeneralBounds} for this {@link AbstractGridCoverage2DReader}.
      *
-     * @return the {@link GeneralEnvelope} for this {@link AbstractGridCoverage2DReader}.
+     * @return the {@link GeneralBounds} for this {@link AbstractGridCoverage2DReader}.
      */
     @Override
-    public GeneralEnvelope getOriginalEnvelope(String coverageName) {
+    public GeneralBounds getOriginalEnvelope(String coverageName) {
         if (!checkName(coverageName)) {
             throw new IllegalArgumentException(
                     "The specified coverageName " + coverageName + "is not supported");
         }
-        return new GeneralEnvelope(originalEnvelope);
+        return new GeneralBounds(originalEnvelope);
     }
 
     /**

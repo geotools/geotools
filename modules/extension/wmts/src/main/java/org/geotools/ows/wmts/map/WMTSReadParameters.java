@@ -19,14 +19,14 @@ package org.geotools.ows.wmts.map;
 import java.awt.Color;
 import javax.media.jai.Interpolation;
 import javax.media.jai.InterpolationNearest;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.renderer.lite.gridcoverage2d.GridCoverageRendererUtilities;
 
 /** This class is used to centralize the handling of generic raster read params used in WMTS. */
@@ -36,13 +36,13 @@ class WMTSReadParameters {
     private Color backGround;
     private Interpolation interpolation;
 
-    private GeneralEnvelope originalEnvelope;
+    private GeneralBounds originalEnvelope;
 
     private CoordinateReferenceSystem sourceCRS;
 
     private static final int DEF_WIDTH = 640;
 
-    WMTSReadParameters(GeneralParameterValue[] parameters, GeneralEnvelope originalEnvelope) {
+    WMTSReadParameters(GeneralParameterValue[] parameters, GeneralBounds originalEnvelope) {
         if (parameters != null) initFromGeneralParams(parameters);
         this.originalEnvelope = originalEnvelope;
     }
@@ -76,8 +76,8 @@ class WMTSReadParameters {
     }
 
     /** Get the requestedEnvelope. */
-    Envelope getRequestedEnvelope() {
-        Envelope result = gridGeom.getEnvelope();
+    Bounds getRequestedEnvelope() {
+        Bounds result = gridGeom.getEnvelope();
         if (result == null) result = originalEnvelope;
         return result;
     }

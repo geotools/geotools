@@ -40,7 +40,7 @@ import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.api.referencing.operation.Operation;
 import org.geotools.api.referencing.operation.OperationMethod;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.geometry.GeneralPosition;
 import org.geotools.geometry.util.ShapeUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
@@ -225,8 +225,8 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
              * that the destination will be the Geotools implementation, write directly into the
              * 'ordinates' array.
              */
-            final GeneralDirectPosition destination;
-            ptDst = destination = new GeneralDirectPosition(dimTarget);
+            final GeneralPosition destination;
+            ptDst = destination = new GeneralPosition(dimTarget);
             final double[] source;
             if (dimSource <= dimTarget) {
                 source = destination.ordinates;

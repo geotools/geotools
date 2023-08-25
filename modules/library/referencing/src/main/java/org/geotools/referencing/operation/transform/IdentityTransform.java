@@ -24,7 +24,7 @@ import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.geometry.GeneralPosition;
 import org.geotools.referencing.operation.LinearTransform;
 import org.geotools.referencing.operation.matrix.MatrixFactory;
 
@@ -154,7 +154,7 @@ public class IdentityTransform extends AbstractMathTransform
     public Position transform(final Position ptSrc, final Position ptDst) {
         if (ptSrc.getDimension() == dimension) {
             if (ptDst == null) {
-                return new GeneralDirectPosition(ptSrc);
+                return new GeneralPosition(ptSrc);
             }
             if (ptDst.getDimension() == dimension) {
                 for (int i = 0; i < dimension; i++) {

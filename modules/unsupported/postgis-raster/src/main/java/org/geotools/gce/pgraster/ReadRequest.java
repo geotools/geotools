@@ -23,7 +23,7 @@ import java.util.List;
 import javax.media.jai.Interpolation;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.coverage.grid.io.OverviewPolicy;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /** All of the information in a {@link PGRasterReader#read(GeneralParameterValue[])} request. */
@@ -36,7 +36,7 @@ class ReadRequest {
     RasterColumn raster;
 
     /** Requested bounds in world coordinates */
-    GeneralEnvelope bounds;
+    GeneralBounds bounds;
 
     /** Requested bounds transformed to raster native crs */
     ReferencedEnvelope nativeBounds;

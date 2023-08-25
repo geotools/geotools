@@ -26,7 +26,7 @@ import java.util.List;
 import javax.media.jai.ROI;
 import org.geotools.api.coverage.SampleDimensionType;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.operation.TransformException;
@@ -370,7 +370,7 @@ public class CoverageUtilities {
             GridCoverage2D gridCoverage) {
         HashMap<String, Double> envelopeParams = new HashMap<>();
 
-        Envelope envelope = gridCoverage.getEnvelope();
+        Bounds envelope = gridCoverage.getEnvelope();
 
         Position lowerCorner = envelope.getLowerCorner();
         double[] westSouth = lowerCorner.getCoordinate();

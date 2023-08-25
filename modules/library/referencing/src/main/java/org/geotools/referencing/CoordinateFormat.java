@@ -37,6 +37,7 @@ import org.geotools.api.referencing.cs.CoordinateSystem;
 import org.geotools.api.referencing.cs.CoordinateSystemAxis;
 import org.geotools.api.referencing.datum.Datum;
 import org.geotools.api.referencing.datum.TemporalDatum;
+import org.geotools.geometry.GeneralPosition;
 import org.geotools.measure.Angle;
 import org.geotools.measure.AngleFormat;
 import org.geotools.measure.Latitude;
@@ -52,9 +53,9 @@ import si.uom.NonSI;
 import si.uom.SI;
 
 /**
- * Formats a {@linkplain org.geotools.geometry.GeneralDirectPosition direct position} in an
- * arbitrary {@linkplain CoordinateReferenceSystem coordinate reference system}. The format for each
- * ordinate is infered from the coordinate system units using the following rules:
+ * Formats a {@linkplain GeneralPosition direct position} in an arbitrary {@linkplain
+ * CoordinateReferenceSystem coordinate reference system}. The format for each ordinate is infered
+ * from the coordinate system units using the following rules:
  *
  * <ul>
  *   <li>Ordinate values in {@linkplain NonSI#DEGREE_ANGLE degrees} are formated as angles using

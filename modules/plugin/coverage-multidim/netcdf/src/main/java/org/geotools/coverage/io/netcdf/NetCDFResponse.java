@@ -71,7 +71,7 @@ import org.geotools.data.Query;
 import org.geotools.feature.visitor.FeatureCalc;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.feature.visitor.MinVisitor;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.util.ImageUtilities;
@@ -109,7 +109,7 @@ class NetCDFResponse extends CoverageResponse {
     private static final GridCoverageFactory COVERAGE_FACTORY = new GridCoverageFactory();
 
     /** The base envelope related to the input coverage */
-    private GeneralEnvelope coverageEnvelope;
+    private GeneralBounds coverageEnvelope;
 
     private ReferencedEnvelope targetBBox;
 
@@ -496,7 +496,7 @@ class NetCDFResponse extends CoverageResponse {
      * @throws TransformException In case transformation fails during the process.
      */
     private void initRasterBounds() throws TransformException {
-        final GeneralEnvelope tempRasterBounds = CRS.transform(finalWorldToGridCorner, targetBBox);
+        final GeneralBounds tempRasterBounds = CRS.transform(finalWorldToGridCorner, targetBBox);
         rasterBounds = tempRasterBounds.toRectangle2D().getBounds();
 
         // SG using the above may lead to problems since the reason is that may be a little (1 px)

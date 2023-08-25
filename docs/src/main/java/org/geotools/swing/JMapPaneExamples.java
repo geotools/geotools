@@ -11,7 +11,7 @@
  */
 package org.geotools.swing;
 
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.swing.event.MapMouseAdapter;
 import org.geotools.swing.event.MapMouseEvent;
 
@@ -29,7 +29,7 @@ public class JMapPaneExamples {
                         System.out.println("mouse click at");
                         System.out.printf("  screen: x=%d y=%d \n", ev.getX(), ev.getY());
 
-                        DirectPosition2D pos = ev.getWorldPos();
+                        Position2D pos = ev.getWorldPos();
                         System.out.printf("  world: x=%.2f y=%.2f \n", pos.x, pos.y);
                     }
 

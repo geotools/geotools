@@ -48,7 +48,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.coverage.grid.GridEnvelope;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.ReferenceIdentifier;
@@ -70,7 +70,7 @@ import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataSourceException;
 import org.geotools.feature.NameImpl;
 import org.geotools.geometry.Envelope2D;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.util.XRectangle2D;
 import org.geotools.measure.UnitFormat;
 import org.geotools.metadata.iso.citation.Citations;
@@ -295,33 +295,33 @@ public class Utilities {
      *
      *                if {@code true}, the requested envelope will be an
      *                instance of {@link Envelope2D}. If {@code false} it will
-     *                be an instance of {@link GeneralEnvelope
+     *                be an instance of {@link GeneralBounds
      * @return a WGS84 envelope as {@link Envelope2D} in case of request for a
-     *         2D WGS84 Envelope, or a {@link GeneralEnvelope} otherwise.
+     *         2D WGS84 Envelope, or a {@link GeneralBounds } otherwise.
      */
-    public static Envelope getEnvelopeAsWGS84(final Envelope envelope, boolean get2D)
+    public static Bounds getEnvelopeAsWGS84(final Bounds envelope, boolean get2D)
             throws FactoryException, TransformException {
         if (envelope == null) throw new IllegalArgumentException("Specified envelope is null");
-        Envelope requestedWGS84;
+        Bounds requestedWGS84;
         final CoordinateReferenceSystem crs = envelope.getCoordinateReferenceSystem();
 
         // do we need to transform the requested envelope?
         if (!CRS.equalsIgnoreMetadata(crs, DefaultGeographicCRS.WGS84)) {
-            GeneralEnvelope env = CRS.transform(envelope, DefaultGeographicCRS.WGS84);
+            GeneralBounds env = CRS.transform(envelope, DefaultGeographicCRS.WGS84);
             if (get2D) {
                 requestedWGS84 = new Envelope2D(env);
                 ((Envelope2D) requestedWGS84)
                         .setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
             } else {
                 requestedWGS84 = env;
-                ((GeneralEnvelope) requestedWGS84)
+                ((GeneralBounds) requestedWGS84)
                         .setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
             }
             return requestedWGS84;
 
         } else {
             if (get2D) return new Envelope2D(envelope);
-            else return new GeneralEnvelope(envelope);
+            else return new GeneralBounds(envelope);
         }
     }
 
@@ -331,11 +331,11 @@ public class Utilities {
      * @param requestedEnvelope the {@code GeneralEnvelope} to be returned as 2D.
      * @return the 2D requested envelope
      */
-    public static GeneralEnvelope getRequestedEnvelope2D(GeneralEnvelope requestedEnvelope)
+    public static GeneralBounds getRequestedEnvelope2D(GeneralBounds requestedEnvelope)
             throws FactoryException, TransformException {
         if (requestedEnvelope == null)
             throw new IllegalArgumentException("requested envelope is null");
-        GeneralEnvelope requestedEnvelope2D = null;
+        GeneralBounds requestedEnvelope2D = null;
         final MathTransform transformTo2D;
         CoordinateReferenceSystem requestedEnvelopeCRS2D =
                 requestedEnvelope.getCoordinateReferenceSystem();
@@ -355,7 +355,7 @@ public class Utilities {
         if (!transformTo2D.isIdentity()) {
             requestedEnvelope2D = CRS.transform(transformTo2D, requestedEnvelope);
             requestedEnvelope2D.setCoordinateReferenceSystem(requestedEnvelopeCRS2D);
-        } else requestedEnvelope2D = new GeneralEnvelope(requestedEnvelope);
+        } else requestedEnvelope2D = new GeneralBounds(requestedEnvelope);
 
         assert requestedEnvelopeCRS2D.getCoordinateSystem().getDimension() == 2;
         return requestedEnvelope2D;
@@ -370,7 +370,7 @@ public class Utilities {
      * @throws TransformException in case a problem occurs when going back to raster space.
      */
     public static Rectangle getCropRegion(
-            GeneralEnvelope envelope, final MathTransform gridToWorldTransform)
+            GeneralBounds envelope, final MathTransform gridToWorldTransform)
             throws TransformException {
         if (envelope == null || gridToWorldTransform == null) {
             boolean isEnvelope = envelope == null;
@@ -386,7 +386,7 @@ public class Utilities {
             throw new IllegalArgumentException(errorMessage.toString());
         }
         final MathTransform worldToGridTransform = gridToWorldTransform.inverse();
-        final GeneralEnvelope rasterArea = CRS.transform(worldToGridTransform, envelope);
+        final GeneralBounds rasterArea = CRS.transform(worldToGridTransform, envelope);
         final Rectangle2D ordinates = rasterArea.toRectangle2D();
         return ordinates.getBounds();
     }
@@ -408,10 +408,10 @@ public class Utilities {
      *     reprojection. Moreover add a boolean parameter saying if trying to reproject to WGS84
      *     always need to be done
      */
-    public static GeneralEnvelope getIntersection(
+    public static GeneralBounds getIntersection(
             final Envelope2D baseEnvelope2D,
             final CoordinateReferenceSystem spatialReferenceSystem2D,
-            GeneralEnvelope requestedEnvelope2D,
+            GeneralBounds requestedEnvelope2D,
             Rectangle requestedDim,
             MathTransform2D readGridToWorld,
             final Envelope2D wgs84BaseEnvelope2D)
@@ -437,7 +437,7 @@ public class Utilities {
                                             : "");
             throw new IllegalArgumentException(sb.toString());
         }
-        GeneralEnvelope adjustedRequestedEnvelope = new GeneralEnvelope(2);
+        GeneralBounds adjustedRequestedEnvelope = new GeneralBounds(2);
         final CoordinateReferenceSystem requestedEnvelopeCRS2D =
                 requestedEnvelope2D.getCoordinateReferenceSystem();
         boolean tryWithWGS84 = false;
@@ -463,7 +463,7 @@ public class Utilities {
             // space to the requested raster space
             //
             // //
-            final Envelope requestedEnvelopeCropped =
+            final Bounds requestedEnvelopeCropped =
                     CRS.transform(adjustedRequestedEnvelope, requestedEnvelopeCRS2D);
             final Rectangle2D ordinates =
                     CRS.transform(readGridToWorld.inverse(), requestedEnvelopeCropped)
@@ -486,14 +486,14 @@ public class Utilities {
         //
         // //
         if (tryWithWGS84) {
-            final GeneralEnvelope requestedEnvelopeWGS84 =
-                    (GeneralEnvelope) getEnvelopeAsWGS84(requestedEnvelope2D, false);
+            final GeneralBounds requestedEnvelopeWGS84 =
+                    (GeneralBounds) getEnvelopeAsWGS84(requestedEnvelope2D, false);
 
             // checking the intersection in wgs84
             if (!requestedEnvelopeWGS84.intersects(wgs84BaseEnvelope2D, true)) return null;
 
             // intersect
-            adjustedRequestedEnvelope = new GeneralEnvelope(requestedEnvelopeWGS84);
+            adjustedRequestedEnvelope = new GeneralBounds(requestedEnvelopeWGS84);
             adjustedRequestedEnvelope.intersect(wgs84BaseEnvelope2D);
             adjustedRequestedEnvelope =
                     CRS.transform(adjustedRequestedEnvelope, spatialReferenceSystem2D);
@@ -548,19 +548,19 @@ public class Utilities {
      *     region).
      * @throws DataSourceException in case something bad occurs
      */
-    public static GeneralEnvelope evaluateRequestedParams(
+    public static GeneralBounds evaluateRequestedParams(
             GridEnvelope originalGridRange,
             Envelope2D baseEnvelope2D,
             CoordinateReferenceSystem spatialReferenceSystem2D,
             MathTransform originalGridToWorld,
-            GeneralEnvelope requestedEnvelope,
+            GeneralBounds requestedEnvelope,
             Rectangle sourceRegion,
             Rectangle requestedDim,
             MathTransform2D readGridToWorld,
             Envelope2D wgs84BaseEnvelope2D)
             throws DataSourceException {
 
-        GeneralEnvelope adjustedRequestedEnvelope = new GeneralEnvelope(2);
+        GeneralBounds adjustedRequestedEnvelope = new GeneralBounds(2);
         GeneralGridEnvelope baseGridRange = (GeneralGridEnvelope) originalGridRange;
 
         try {
@@ -571,7 +571,7 @@ public class Utilities {
             //
             // ////////////////////////////////////////////////////////////////
             if (requestedEnvelope != null) {
-                final GeneralEnvelope requestedEnvelope2D =
+                final GeneralBounds requestedEnvelope2D =
                         Utilities.getRequestedEnvelope2D(requestedEnvelope);
 
                 // ////////////////////////////////////////////////////////////
@@ -655,7 +655,7 @@ public class Utilities {
             PlanarImage image,
             MathTransform raster2Model,
             final CoordinateReferenceSystem spatialReferenceSystem2D,
-            GeneralEnvelope coverageEnvelope2D,
+            GeneralBounds coverageEnvelope2D,
             final GridSampleDimension[] sampleDimensions)
             throws IOException {
         final GridSampleDimension[] bands = sampleDimensions;
@@ -756,13 +756,13 @@ public class Utilities {
      *     {@link Hints#VALUE_OVERVIEW_POLICY_SPEED}. It specifies the policy to compute the
      *     overviews level upon request.
      * @param readParam an instance of {@link ImageReadParam} for setting the subsampling factors.
-     * @param requestedEnvelope the {@link GeneralEnvelope} we are requesting.
+     * @param requestedEnvelope the {@link GeneralBounds} we are requesting.
      * @param requestedDim the requested dimensions.
      */
     public static void setReadParameters(
             OverviewPolicy overviewPolicy,
             ImageReadParam readParam,
-            GeneralEnvelope requestedEnvelope,
+            GeneralBounds requestedEnvelope,
             Rectangle requestedDim,
             double[] highestRes,
             GridEnvelope gridRange,
@@ -851,7 +851,7 @@ public class Utilities {
             GridCoverageFactory coverageFactory,
             MathTransform raster2Model,
             CoordinateReferenceSystem coordinateReferenceSystem,
-            GeneralEnvelope coverageEnvelope2D)
+            GeneralBounds coverageEnvelope2D)
             throws IOException {
         // ////////////////////////////////////////////////////////////////////
         //
@@ -1017,7 +1017,7 @@ public class Utilities {
             final GridCoverageFactory coverageFactory,
             final MathTransform raster2Model,
             final CoordinateReferenceSystem coordinateReferenceSystem,
-            final GeneralEnvelope envelope2D)
+            final GeneralBounds envelope2D)
             throws IOException {
 
         if (isEmptyRequest) {

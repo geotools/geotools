@@ -42,8 +42,8 @@ import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
 import org.geotools.coverageio.gdal.BaseGDALGridCoverage2DReader;
 import org.geotools.coverageio.gdal.GDALTestCase;
-import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.Position2D;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.Hints;
@@ -113,9 +113,9 @@ public final class ECWTest extends GDALTestCase {
         // /////////////////////////////////////////////////////////////////////
         final double cropFactor = 2.0;
         final Rectangle range = ((GridEnvelope2D) reader.getOriginalGridRange());
-        final GeneralEnvelope oldEnvelope = reader.getOriginalEnvelope();
-        final GeneralEnvelope cropEnvelope =
-                new GeneralEnvelope(
+        final GeneralBounds oldEnvelope = reader.getOriginalEnvelope();
+        final GeneralBounds cropEnvelope =
+                new GeneralBounds(
                         new double[] {
                             oldEnvelope.getLowerCorner().getOrdinate(0)
                                     + (oldEnvelope.getSpan(0) / cropFactor),
@@ -159,8 +159,8 @@ public final class ECWTest extends GDALTestCase {
         // /////////////////////////////////////////////////////////////////////
         final double translate0 = oldEnvelope.getSpan(0) + 100;
         final double translate1 = oldEnvelope.getSpan(1) + 100;
-        final GeneralEnvelope wrongEnvelope =
-                new GeneralEnvelope(
+        final GeneralBounds wrongEnvelope =
+                new GeneralBounds(
                         new double[] {
                             oldEnvelope.getLowerCorner().getOrdinate(0) + translate0,
                             oldEnvelope.getLowerCorner().getOrdinate(1) + translate1
@@ -237,8 +237,8 @@ public final class ECWTest extends GDALTestCase {
         LOGGER.info(gc.toString());
         forceDataLoading(gc);
 
-        Position pointInGreenland = new DirectPosition2D(-43.3, 75.9);
-        Position pointInAfrica = new DirectPosition2D(20, 0);
+        Position pointInGreenland = new Position2D(-43.3, 75.9);
+        Position pointInAfrica = new Position2D(20, 0);
         byte[] pixel = new byte[4];
 
         // Assert point in Greenland is masked out

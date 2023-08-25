@@ -43,7 +43,7 @@ import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
@@ -303,7 +303,7 @@ public final class FeatureUtilities {
      * Convert the crop envelope into a polygon and the use the world-to-grid transform to get a ROI
      * for the source coverage.
      */
-    public static Polygon getPolygon(final GeneralEnvelope env, final GeometryFactory gf)
+    public static Polygon getPolygon(final GeneralBounds env, final GeometryFactory gf)
             throws IllegalStateException, MismatchedDimensionException {
         final Rectangle2D rect = env.toRectangle2D();
         final Coordinate[] coord = {

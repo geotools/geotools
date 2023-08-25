@@ -99,7 +99,7 @@ import org.geotools.data.store.DecoratingDataStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.image.util.ImageUtilities;
@@ -655,7 +655,7 @@ public class HeterogenousCRSTest {
 
         // getting the expected bounds (more or less)
         double EPS = 0.5d / 110; // pixel size is 1km, use half a pixel tolerance
-        GeneralEnvelope envelope = imReader.getOriginalEnvelope();
+        GeneralBounds envelope = imReader.getOriginalEnvelope();
 
         assertEquals(expected.getMinX(), envelope.getMinimum(0), EPS);
         assertEquals(expected.getMaxX(), envelope.getMaximum(0), EPS);
@@ -858,8 +858,8 @@ public class HeterogenousCRSTest {
 
         ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, null);
         CoordinateReferenceSystem utmZone32N = CRS.decode("EPSG:32632", true);
-        GeneralEnvelope envelope =
-                new GeneralEnvelope(new double[] {150000, 600000}, new double[] {850000, 1200000});
+        GeneralBounds envelope =
+                new GeneralBounds(new double[] {150000, 600000}, new double[] {850000, 1200000});
         envelope.setCoordinateReferenceSystem(utmZone32N);
         GridEnvelope2D gridRange = new GridEnvelope2D(0, 0, 700, 600);
 

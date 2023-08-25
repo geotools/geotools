@@ -21,7 +21,7 @@ import java.lang.ref.WeakReference;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.jts.Geometries;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.JTSFactoryFinder;
@@ -110,7 +110,7 @@ public class VectorLayerHelper extends InfoToolHelper<SimpleFeatureCollection> {
      *     valid an empty collection will be returned
      * @throws IOException if the feature source for the layer cannot be accessed
      */
-    public SimpleFeatureCollection getInfo(DirectPosition2D pos, Object... params)
+    public SimpleFeatureCollection getInfo(Position2D pos, Object... params)
             throws IOException {
 
         SimpleFeatureCollection collection = null;
@@ -144,7 +144,7 @@ public class VectorLayerHelper extends InfoToolHelper<SimpleFeatureCollection> {
         return collection;
     }
 
-    private Geometry createSearchPos(DirectPosition2D pos) {
+    private Geometry createSearchPos(Position2D pos) {
         Geometry point = geometryFactory.createPoint(new Coordinate(pos.x, pos.y));
         if (isTransformRequired()) {
             MathTransform transform = getTransform();
@@ -160,7 +160,7 @@ public class VectorLayerHelper extends InfoToolHelper<SimpleFeatureCollection> {
         return point;
     }
 
-    private ReferencedEnvelope createSearchEnv(DirectPosition2D pos, double radius) {
+    private ReferencedEnvelope createSearchEnv(Position2D pos, double radius) {
         final CoordinateReferenceSystem contextCRS = getMapContent().getCoordinateReferenceSystem();
         ReferencedEnvelope env =
                 new ReferencedEnvelope(

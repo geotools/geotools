@@ -61,7 +61,7 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geopkg.GeoPackage;
 import org.geotools.geopkg.Tile;
@@ -133,13 +133,13 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
     }
 
     @Override
-    public GeneralEnvelope getOriginalEnvelope(String coverageName) {
+    public GeneralBounds getOriginalEnvelope(String coverageName) {
         if (!checkName(coverageName)) {
             throw new IllegalArgumentException(
                     "The specified coverageName " + coverageName + "is not supported");
         }
 
-        return new GeneralEnvelope(tiles.get(coverageName).getTileMatrixSetBounds());
+        return new GeneralBounds(tiles.get(coverageName).getTileMatrixSetBounds());
     }
 
     @Override

@@ -37,7 +37,7 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.metadata.iso.citation.Citations;
@@ -249,10 +249,10 @@ public abstract class BaseStatisticsOperationJAI extends OperationJAI {
 
                 // build the new one that spans over the requested area
                 // NOTE:
-                final DirectPosition2D LLC = new DirectPosition2D(crs, envelope.x, envelope.y);
+                final Position2D LLC = new Position2D(crs, envelope.x, envelope.y);
                 LLC.setCoordinateReferenceSystem(crs);
-                final DirectPosition2D URC =
-                        new DirectPosition2D(crs, envelope.x + xPeriod, envelope.y + yPeriod);
+                final Position2D URC =
+                        new Position2D(crs, envelope.x + xPeriod, envelope.y + yPeriod);
                 URC.setCoordinateReferenceSystem(crs);
                 final Envelope2D shrinkedEnvelope = new Envelope2D(LLC, URC);
 

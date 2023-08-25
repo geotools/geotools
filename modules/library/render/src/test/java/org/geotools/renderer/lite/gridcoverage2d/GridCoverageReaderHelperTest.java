@@ -34,7 +34,7 @@ import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.geotools.TestData;
 import org.geotools.api.coverage.grid.Format;
 import org.geotools.api.geometry.BoundingBox;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -51,7 +51,7 @@ import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.geometry.Envelope2D;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
@@ -316,7 +316,7 @@ public class GridCoverageReaderHelperTest {
                     {
                         this.crs = DefaultGeographicCRS.WGS84;
                         this.originalEnvelope =
-                                new GeneralEnvelope((BoundingBox) coverage.getEnvelope2D());
+                                new GeneralBounds((BoundingBox) coverage.getEnvelope2D());
                         this.originalGridRange = coverage.getGridGeometry().getGridRange();
                     }
 
@@ -375,7 +375,7 @@ public class GridCoverageReaderHelperTest {
             assertEquals(1, coverages.size());
             // check it has been cut
             GridCoverage2D gc = coverages.get(0);
-            Envelope envelope = gc.getEnvelope();
+            Bounds envelope = gc.getEnvelope();
             assertEquals(-90, envelope.getMinimum(0), EPS);
             assertEquals(0, envelope.getMaximum(0), EPS);
             assertEquals(-45, envelope.getMinimum(1), EPS);

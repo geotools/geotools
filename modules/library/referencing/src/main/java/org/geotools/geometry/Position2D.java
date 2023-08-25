@@ -68,11 +68,11 @@ import org.geotools.util.Utilities;
  * @since 2.0
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
- * @see DirectPosition1D
- * @see GeneralDirectPosition
+ * @see Position1D
+ * @see GeneralPosition
  * @see java.awt.geom.Point2D
  */
-public class DirectPosition2D extends Point2D.Double implements Position, Serializable, Cloneable {
+public class Position2D extends Point2D.Double implements Position, Serializable, Cloneable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 835130287438466996L;
 
@@ -82,14 +82,14 @@ public class DirectPosition2D extends Point2D.Double implements Position, Serial
     /**
      * Constructs a position initialized to (0,0) with a {@code null} coordinate reference system.
      */
-    public DirectPosition2D() {}
+    public Position2D() {}
 
     /**
      * Constructs a position with the specified coordinate reference system.
      *
      * @param crs The coordinate reference system, or {@code null}.
      */
-    public DirectPosition2D(final CoordinateReferenceSystem crs) {
+    public Position2D(final CoordinateReferenceSystem crs) {
         setCoordinateReferenceSystem(crs);
     }
 
@@ -98,13 +98,13 @@ public class DirectPosition2D extends Point2D.Double implements Position, Serial
      * (<var>x</var>,<var>y</var>) coordinates don't need to be oriented toward ({@linkplain
      * org.geotools.api.referencing.cs.AxisDirection#EAST East}, {@linkplain
      * org.geotools.api.referencing.cs.AxisDirection#NORTH North}). Those parameter names simply
-     * match the {@linkplain #x x} and {@linkplain #y y} fields. See the {@linkplain
-     * DirectPosition2D class javadoc} for details.
+     * match the {@linkplain #x x} and {@linkplain #y y} fields. See the {@linkplain Position2D
+     * class javadoc} for details.
      *
      * @param x The <var>x</var> value.
      * @param y The <var>y</var> value.
      */
-    public DirectPosition2D(final double x, final double y) {
+    public Position2D(final double x, final double y) {
         super(x, y);
     }
 
@@ -114,14 +114,13 @@ public class DirectPosition2D extends Point2D.Double implements Position, Serial
      * ({@linkplain org.geotools.api.referencing.cs.AxisDirection#EAST East}, {@linkplain
      * org.geotools.api.referencing.cs.AxisDirection#NORTH North}). Those parameter names simply
      * match the {@linkplain #x x} and {@linkplain #y y} fields. The actual axis orientations are
-     * determined by the specified CRS. See the {@linkplain DirectPosition2D class javadoc} for
-     * details.
+     * determined by the specified CRS. See the {@linkplain Position2D class javadoc} for details.
      *
      * @param crs The coordinate reference system, or {@code null}.
      * @param x The <var>x</var> value.
      * @param y The <var>y</var> value.
      */
-    public DirectPosition2D(final CoordinateReferenceSystem crs, final double x, final double y) {
+    public Position2D(final CoordinateReferenceSystem crs, final double x, final double y) {
         super(x, y);
         setCoordinateReferenceSystem(crs);
     }
@@ -131,7 +130,7 @@ public class DirectPosition2D extends Point2D.Double implements Position, Serial
      *
      * @param point The point to copy.
      */
-    public DirectPosition2D(final Point2D point) {
+    public Position2D(final Point2D point) {
         super(point.getX(), point.getY());
         if (point instanceof Position) {
             setCoordinateReferenceSystem(((Position) point).getCoordinateReferenceSystem());
@@ -143,7 +142,7 @@ public class DirectPosition2D extends Point2D.Double implements Position, Serial
      *
      * @param point The point to copy.
      */
-    public DirectPosition2D(final Position point) {
+    public Position2D(final Position point) {
         setLocation(point);
     }
 
@@ -175,7 +174,7 @@ public class DirectPosition2D extends Point2D.Double implements Position, Serial
      * @param crs The new coordinate reference system, or {@code null}.
      */
     public void setCoordinateReferenceSystem(final CoordinateReferenceSystem crs) {
-        AbstractDirectPosition.checkCoordinateReferenceSystemDimension(crs, 2);
+        AbstractPosition.checkCoordinateReferenceSystemDimension(crs, 2);
         this.crs = crs;
     }
 
@@ -252,7 +251,7 @@ public class DirectPosition2D extends Point2D.Double implements Position, Serial
      * @throws MismatchedDimensionException if this point doesn't have the expected dimension.
      */
     public void setLocation(final Position position) throws MismatchedDimensionException {
-        AbstractDirectPosition.ensureDimensionMatch("position", position.getDimension(), 2);
+        AbstractPosition.ensureDimensionMatch("position", position.getDimension(), 2);
         setCoordinateReferenceSystem(position.getCoordinateReferenceSystem());
         x = position.getOrdinate(0);
         y = position.getOrdinate(1);
@@ -276,7 +275,7 @@ public class DirectPosition2D extends Point2D.Double implements Position, Serial
      */
     @Override
     public String toString() {
-        return AbstractDirectPosition.toString(this);
+        return AbstractPosition.toString(this);
     }
 
     /**
@@ -287,7 +286,7 @@ public class DirectPosition2D extends Point2D.Double implements Position, Serial
      */
     @Override
     public int hashCode() {
-        return AbstractDirectPosition.hashCode(this);
+        return AbstractPosition.hashCode(this);
     }
 
     /**
@@ -330,8 +329,8 @@ public class DirectPosition2D extends Point2D.Double implements Position, Serial
      * @return A clone of this position.
      */
     @Override
-    public DirectPosition2D clone() {
-        return (DirectPosition2D) super.clone();
+    public Position2D clone() {
+        return (Position2D) super.clone();
     }
 
     /**

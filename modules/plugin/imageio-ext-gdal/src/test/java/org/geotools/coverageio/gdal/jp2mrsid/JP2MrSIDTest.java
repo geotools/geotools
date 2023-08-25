@@ -34,7 +34,7 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverageio.gdal.GDALTestCase;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.test.TestData;
 import org.junit.Assert;
 import org.junit.Test;
@@ -87,7 +87,7 @@ public final class JP2MrSIDTest extends GDALTestCase {
         final JP2MrSIDReader reader = new JP2MrSIDReader(file);
         final ParameterValue gg =
                 ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();
-        final GeneralEnvelope oldEnvelope = reader.getOriginalEnvelope();
+        final GeneralBounds oldEnvelope = reader.getOriginalEnvelope();
         gg.setValue(new GridGeometry2D(reader.getOriginalGridRange(), oldEnvelope));
 
         final GridCoverage2D gc = reader.read(new GeneralParameterValue[] {gg});

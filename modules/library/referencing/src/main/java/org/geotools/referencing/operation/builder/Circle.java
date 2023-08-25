@@ -17,7 +17,7 @@
 package org.geotools.referencing.operation.builder;
 
 import org.geotools.api.geometry.Position;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 
 /**
  * Simple Circle focused on Delaunays triangulation.
@@ -28,7 +28,7 @@ import org.geotools.geometry.DirectPosition2D;
  */
 class Circle {
     /** Coordinates of center. */
-    private DirectPosition2D center;
+    private Position2D center;
 
     /** Value of radius */
     private double radius;
@@ -38,7 +38,7 @@ class Circle {
 
     /** Creates a circle with center [0,0] and radius = 0. */
     protected Circle() {
-        this(new DirectPosition2D(0, 0), 0);
+        this(new Position2D(0, 0), 0);
     }
 
     /**
@@ -48,7 +48,7 @@ class Circle {
      * @param radius of the circle.
      */
     protected Circle(Position center, double radius) {
-        this.center = new DirectPosition2D(center);
+        this.center = new Position2D(center);
         this.radius = radius;
     }
 
@@ -58,7 +58,7 @@ class Circle {
      * @param center coordinates
      */
     protected void setCenter(Position center) {
-        this.center = new DirectPosition2D(center);
+        this.center = new Position2D(center);
     }
 
     /**
@@ -116,7 +116,7 @@ class Circle {
      * @return True if the circle contais p, False if not.
      */
     protected boolean contains(Position p) {
-        if (center.distance(new DirectPosition2D(p)) < (this.radius - tolerance)) {
+        if (center.distance(new Position2D(p)) < (this.radius - tolerance)) {
             return true;
         } else {
             return false;

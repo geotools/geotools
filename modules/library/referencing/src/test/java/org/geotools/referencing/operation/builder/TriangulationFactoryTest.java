@@ -21,27 +21,27 @@ import static org.junit.Assert.assertFalse;
 import java.util.List;
 import java.util.Random;
 import org.geotools.api.geometry.Position;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.junit.Test;
 
 public final class TriangulationFactoryTest {
     /** Test (@link TringulationFactory). */
     @Test
     public void testTringulationFactory() {
-        Position sp1 = new DirectPosition2D(10, 10);
-        Position tp1 = new DirectPosition2D(10, 10);
+        Position sp1 = new Position2D(10, 10);
+        Position tp1 = new Position2D(10, 10);
 
-        Position sp2 = new DirectPosition2D(20, 10);
-        Position tp2 = new DirectPosition2D(20, 10);
+        Position sp2 = new Position2D(20, 10);
+        Position tp2 = new Position2D(20, 10);
 
-        Position sp3 = new DirectPosition2D(20, 20);
-        Position tp3 = new DirectPosition2D(20, 20);
+        Position sp3 = new Position2D(20, 20);
+        Position tp3 = new Position2D(20, 20);
 
-        Position sp4 = new DirectPosition2D(10, 20);
-        Position tp4 = new DirectPosition2D(10, 20);
+        Position sp4 = new Position2D(10, 20);
+        Position tp4 = new Position2D(10, 20);
 
-        Position sp5 = new DirectPosition2D(14, 16);
-        Position tp5 = new DirectPosition2D(14, 16);
+        Position sp5 = new Position2D(14, 16);
+        Position tp5 = new Position2D(14, 16);
 
         ExtendedPosition mtp1 = new ExtendedPosition(sp1, tp1);
         ExtendedPosition mtp2 = new ExtendedPosition(sp2, tp2);
@@ -64,10 +64,10 @@ public final class TriangulationFactoryTest {
     @Test
     public void testDelaunay() throws TriangulationException {
         // coordinates of quadrilateral for triangulation
-        DirectPosition2D leftDown = new DirectPosition2D(100, 100);
-        DirectPosition2D rightDown = new DirectPosition2D(200, 100);
-        DirectPosition2D rightTop = new DirectPosition2D(200, 250);
-        DirectPosition2D leftTop = new DirectPosition2D(100, 250);
+        Position2D leftDown = new Position2D(100, 100);
+        Position2D rightDown = new Position2D(200, 100);
+        Position2D rightTop = new Position2D(200, 250);
+        Position2D leftTop = new Position2D(100, 250);
 
         // generator for points within the quadrilateral:
         Random randomCoord = new Random(872066443);
@@ -79,7 +79,7 @@ public final class TriangulationFactoryTest {
         for (int i = 0; i < number; i++) {
             double x = leftDown.x + (randomCoord.nextDouble() * (rightDown.x - leftDown.x));
             double y = leftDown.y + (randomCoord.nextDouble() * (leftTop.y - leftDown.y));
-            vertices[i] = new DirectPosition2D(x, y);
+            vertices[i] = new Position2D(x, y);
         }
 
         Quadrilateral quad = new Quadrilateral(leftDown, rightDown, rightTop, leftTop);

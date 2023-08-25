@@ -34,7 +34,7 @@ import org.geotools.api.referencing.operation.CoordinateOperationFactory;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.geometry.GeneralPosition;
 import org.geotools.measure.Measure;
 import org.geotools.measure.UnitFormat;
 import org.geotools.metadata.i18n.ErrorKeys;
@@ -380,11 +380,11 @@ public class Console extends AbstractConsole {
                     // -------------------------------
                     if (key1.equalsIgnoreCase("pt")) {
                         if (key0.equalsIgnoreCase("source")) {
-                            sourcePosition = new GeneralDirectPosition(parseVector(value));
+                            sourcePosition = new GeneralPosition(parseVector(value));
                             return;
                         }
                         if (key0.equalsIgnoreCase("target")) {
-                            targetPosition = new GeneralDirectPosition(parseVector(value));
+                            targetPosition = new GeneralPosition(parseVector(value));
                             if (tolerance != null && sourcePosition != null) {
                                 update();
                                 if (transform != null) {
@@ -472,9 +472,8 @@ public class Console extends AbstractConsole {
                 } catch (NoninvertibleTransformException exception) {
                     targetException = exception.getLocalizedMessage();
                     if (sourcePosition != null) {
-                        final GeneralDirectPosition p;
-                        transformedTarget =
-                                p = new GeneralDirectPosition(sourcePosition.getDimension());
+                        final GeneralPosition p;
+                        transformedTarget = p = new GeneralPosition(sourcePosition.getDimension());
                         Arrays.fill(p.ordinates, Double.NaN);
                     }
                 }

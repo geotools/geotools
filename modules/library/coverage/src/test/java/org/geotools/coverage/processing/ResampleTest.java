@@ -43,7 +43,7 @@ import javax.media.jai.RasterFactory;
 import javax.media.jai.TiledImage;
 import org.geotools.TestData;
 import org.geotools.api.coverage.grid.GridGeometry;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.FactoryException;
@@ -61,7 +61,7 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.processing.operation.Extrema;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.PixelTranslation;
 import org.geotools.image.ImageWorker;
@@ -429,7 +429,7 @@ public final class ResampleTest extends GridProcessingTestBase {
 
         // verify we're good
         int[] pixel = new int[3];
-        coverage.evaluate((Position) new DirectPosition2D(4, 6), pixel);
+        coverage.evaluate((Position) new Position2D(4, 6), pixel);
         assertEquals(0, pixel[0]);
         assertEquals(255, pixel[1]);
         assertEquals(0, pixel[2]);
@@ -439,7 +439,7 @@ public final class ResampleTest extends GridProcessingTestBase {
         GridGeometry gg =
                 new GridGeometry2D(
                         new GridEnvelope2D(-10, -10, 5, 5),
-                        (Envelope) new Envelope2D(wgs84LonLat, 5, 3, 8, 6));
+                        (Bounds) new Envelope2D(wgs84LonLat, 5, 3, 8, 6));
         GridCoverage2D flipped =
                 (GridCoverage2D)
                         Operations.DEFAULT.resample(
@@ -449,7 +449,7 @@ public final class ResampleTest extends GridProcessingTestBase {
                                 Interpolation.getInstance(Interpolation.INTERP_NEAREST));
 
         // before the fix the pixel would have been black
-        flipped.evaluate((Position) new DirectPosition2D(6, 4), pixel);
+        flipped.evaluate((Position) new Position2D(6, 4), pixel);
         assertEquals(0, pixel[0]);
         assertEquals(255, pixel[1]);
         assertEquals(0, pixel[2]);

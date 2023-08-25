@@ -28,7 +28,7 @@ import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
@@ -89,8 +89,7 @@ public final class MathTransformBuilderTest {
             double xd = randomCoord.nextDouble() * 1000;
             double yd = randomCoord.nextDouble() * 1000;
             MappedPosition p =
-                    new MappedPosition(
-                            new DirectPosition2D(crs, xs, ys), new DirectPosition2D(crs, xd, yd));
+                    new MappedPosition(new Position2D(crs, xs, ys), new Position2D(crs, xd, yd));
             if (includeAccuracy) {
                 p.setAccuracy(randomCoord.nextDouble());
             }
@@ -127,10 +126,10 @@ public final class MathTransformBuilderTest {
         List<MappedPosition> pts = generateCoords(20, 8324);
         CoordinateReferenceSystem crs = DefaultEngineeringCRS.CARTESIAN_2D;
         List<Position> dpl = new ArrayList<>();
-        dpl.add(new DirectPosition2D(crs, 1000, 0));
-        dpl.add(new DirectPosition2D(crs, 0, 0));
-        dpl.add(new DirectPosition2D(crs, 0, 1000));
-        dpl.add(new DirectPosition2D(crs, 1000, 1000));
+        dpl.add(new Position2D(crs, 1000, 0));
+        dpl.add(new Position2D(crs, 0, 0));
+        dpl.add(new Position2D(crs, 0, 1000));
+        dpl.add(new Position2D(crs, 1000, 1000));
         MathTransformBuilder ppc = new RubberSheetBuilder(pts, dpl);
         transformTest(ppc.getMathTransform(), pts);
         assertTrue(ppc.getErrorStatistics().rms() < 0.00001);

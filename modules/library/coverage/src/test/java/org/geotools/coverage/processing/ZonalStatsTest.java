@@ -54,7 +54,7 @@ import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.util.logging.Logging;
@@ -213,7 +213,7 @@ public class ZonalStatsTest {
                     final ParameterValueGroup param =
                             processor.getOperation("CoverageCrop").getParameters();
                     param.parameter("Source").setValue(gridCoverage2D);
-                    param.parameter("Envelope").setValue(new GeneralEnvelope(bbox));
+                    param.parameter("Envelope").setValue(new GeneralBounds(bbox));
                     final GridCoverage2D cropped = (GridCoverage2D) processor.doOperation(param);
 
                     ROI roi = null;

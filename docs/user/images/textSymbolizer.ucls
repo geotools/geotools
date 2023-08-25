@@ -8,7 +8,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </interface>  
-  <interface id="2" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.TextSymbolizer" project="gt-api" 
+  <interface id="2" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.TextSymbolizerImpl" project="gt-api"
     file="/gt-api/src/main/java/org/geotools/styling/TextSymbolizer.java" binary="false">    
     <position x="434" y="186" width="-1" height="-1"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      

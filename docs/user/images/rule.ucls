@@ -1,6 +1,6 @@
 <class-diagram version="1.0.1" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
   realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
-  <interface id="1" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.Rule" project="gt-api" 
+  <interface id="1" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.RuleImpl" project="gt-api"
     file="/gt-api/src/main/java/org/geotools/styling/Rule.java" binary="false">    
     <position x="163" y="513" width="-1" height="-1"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      

@@ -1,6 +1,6 @@
 <class-diagram version="1.0.1" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
   realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
-  <interface id="1" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.TextSymbolizer" project="gt-api" 
+  <interface id="1" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.TextSymbolizerImpl" project="gt-api"
     file="/gt-api/src/main/java/org/geotools/styling/TextSymbolizer.java" binary="false">    
     <position x="158" y="149" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
@@ -8,7 +8,7 @@
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </interface>  
-  <interface id="2" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.Font" project="gt-api" 
+  <interface id="2" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.FontImpl" project="gt-api"
     file="/gt-api/src/main/java/org/geotools/styling/Font.java" binary="false">    
     <position x="353" y="111" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
@@ -16,7 +16,7 @@
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </interface>  
-  <interface id="3" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.Halo" project="gt-api" 
+  <interface id="3" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.HaloImpl" project="gt-api"
     file="/gt-api/src/main/java/org/geotools/styling/Halo.java" binary="false">    
     <position x="355" y="192" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
@@ -80,7 +80,7 @@
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </interface>  
-  <interface id="15" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.RasterSymbolizer" project="gt-api" 
+  <interface id="15" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.RasterSymbolizerImpl" project="gt-api"
     file="/gt-api/src/main/java/org/geotools/styling/RasterSymbolizer.java" binary="false">    
     <position x="165" y="66" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
@@ -88,7 +88,7 @@
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </interface>  
-  <interface id="16" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.ColorMap" project="gt-api" 
+  <interface id="16" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.ColorMapImpl" project="gt-api"
     file="/gt-api/src/main/java/org/geotools/styling/ColorMap.java" binary="false">    
     <position x="353" y="66" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
@@ -96,7 +96,7 @@
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </interface>  
-  <interface id="17" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.LineSymbolizer" project="gt-api" 
+  <interface id="17" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.LineSymbolizerImpl" project="gt-api"
     file="/gt-api/src/main/java/org/geotools/styling/LineSymbolizer.java" binary="false">    
     <position x="158" y="290" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
@@ -104,7 +104,7 @@
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </interface>  
-  <interface id="18" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.PolygonSymbolizer" 
+  <interface id="18" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.PolygonSymbolizerImpl"
     project="gt-api" file="/gt-api/src/main/java/org/geotools/styling/PolygonSymbolizer.java" binary="false">    
     <position x="171" y="240" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      

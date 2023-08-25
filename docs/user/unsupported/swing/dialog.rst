@@ -62,7 +62,7 @@ This is used by ``JSimpleStyleDialog`` but is also available for general use. It
 
 * Basic use::
     
-    import org.geotools.styling.Font;
+    import org.geotools.styling.FontImpl;
     
     ...
     
@@ -74,7 +74,7 @@ This is used by ``JSimpleStyleDialog`` but is also available for general use. It
 
 * Setting a default font::
     
-    import org.geotools.styling.Font;
+    import org.geotools.styling.FontImpl;
     
     ...
     

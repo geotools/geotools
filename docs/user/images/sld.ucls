@@ -32,7 +32,7 @@
       <operations public="true" package="false" protected="false" private="false"/>    
     </display>  
   </interface>  
-  <interface id="13" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.Style" project="gt-api" 
+  <interface id="13" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.StyleImpl" project="gt-api"
     file="/gt-api/src/main/java/org/geotools/styling/Style.java" binary="false">    
     <position x="422" y="649" width="-1" height="-1"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
@@ -40,7 +40,7 @@
       <operations public="true" package="false" protected="false" private="false"/>    
     </display>  
   </interface>  
-  <interface id="16" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.FeatureTypeStyle" project="gt-api" 
+  <interface id="16" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.FeatureTypeStyleImpl" project="gt-api"
     file="/gt-api/src/main/java/org/geotools/styling/FeatureTypeStyle.java" binary="false">    
     <position x="422" y="833" width="-1" height="-1"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      

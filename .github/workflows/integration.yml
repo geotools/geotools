@@ -85,8 +85,11 @@ jobs:
       run: |
         cd ~/mapfish-print-v3/
         touch CI.asc
+        echo "staging ~/.m2/repository folder"
         mkdir -p m2/org
-        cp -r ~/.m2/repository/org/geotools m2/org/geotools 
+        cp -r ~/.m2/repository/org/geotools m2/org/geotools
+        echo "checking contents of m2/org/geotools"
+        ls m2/org/geotools
         make build
     - name: Build Mapfish-print v2 with tests
       run: |

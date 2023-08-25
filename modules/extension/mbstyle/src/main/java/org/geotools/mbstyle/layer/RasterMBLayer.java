@@ -227,7 +227,8 @@ public class RasterMBLayer extends MBLayer {
     @Override
     public List<FeatureTypeStyleImpl> transformInternal(MBStyle styleContext) {
         ContrastEnhancementImpl ce =
-                (ContrastEnhancementImpl) sf.contrastEnhancement(ff.literal(1.0), ContrastMethod.NONE);
+                (ContrastEnhancementImpl)
+                        sf.contrastEnhancement(ff.literal(1.0), ContrastMethod.NONE);
 
         // Use of builder is easier for code examples; but fills in SLD defaults
         // Currently only applies the opacity.

@@ -454,6 +454,7 @@ public interface StyleFactory {
 
     FeatureTypeStyle createFeatureTypeStyle(Rule... rules);
 
+    FeatureTypeStyle createFeatureTypeStyle(Rule rule);
     /**
      * Creates a new ImageOutline.
      *

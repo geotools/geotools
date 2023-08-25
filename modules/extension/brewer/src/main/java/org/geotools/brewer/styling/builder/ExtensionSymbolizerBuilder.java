@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.measure.Unit;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.styling.AbstractSymbolizer;
+import org.geotools.styling.DescriptionImpl;
 import org.geotools.styling.ExtensionSymbolizer;
 
 public class ExtensionSymbolizerBuilder extends AbstractStyleBuilder<ExtensionSymbolizer> {
@@ -92,14 +94,15 @@ public class ExtensionSymbolizerBuilder extends AbstractStyleBuilder<ExtensionSy
         if (unset) {
             return null;
         }
-        ExtensionSymbolizer symbolizer =
-                sf.extensionSymbolizer(
-                        name, null, description.build(), uom, extensionName, parameters);
+        AbstractSymbolizer symbolizer =
+                (AbstractSymbolizer)
+                        sf.extensionSymbolizer(
+                                name, null, description.build(), uom, extensionName, parameters);
         symbolizer.setGeometry(geometry);
         if (parent == null) {
             reset();
         }
-        return symbolizer;
+        return (ExtensionSymbolizer) symbolizer;
     }
 
     @Override
@@ -121,7 +124,7 @@ public class ExtensionSymbolizerBuilder extends AbstractStyleBuilder<ExtensionSy
         }
         this.name = symbolizer.getName();
         this.geometry = symbolizer.getGeometry();
-        this.description.reset(symbolizer.getDescription());
+        this.description.reset((DescriptionImpl) symbolizer.getDescription());
         this.uom = symbolizer.getUnitOfMeasure();
         this.extensionName = symbolizer.getExtensionName();
         this.parameters.clear();

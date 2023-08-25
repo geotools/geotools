@@ -108,13 +108,9 @@ public class RootEncoder extends YsldEncodeHandler<StyledLayerDescriptor> {
                             public boolean test(StyledLayer styledLayer) {
                                 List<StyleImpl> styles;
                                 if (styledLayer instanceof NamedLayer)
-                                    styles =
-                                            ((NamedLayerImpl) styledLayer)
-                                                    .styles();
+                                    styles = ((NamedLayerImpl) styledLayer).styles();
                                 else if (styledLayer instanceof UserLayer) {
-                                    styles =
-                                            ((UserLayerImpl) styledLayer)
-                                                    .userStyles();
+                                    styles = ((UserLayerImpl) styledLayer).userStyles();
                                 } else {
                                     styles = Collections.emptyList();
                                 }

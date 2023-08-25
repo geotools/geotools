@@ -46,7 +46,7 @@ public class StyleCoverage implements RasterProcess {
                             name = "style",
                             description =
                                     "Styled Layer Descriptor (SLD) style containing a raster symbolizer")
-            StyleImpl style)
+                    StyleImpl style)
             throws IOException {
         // TODO: perform a lookup in the entire style?
         final RasterSymbolizerImpl symbolizer =

@@ -15,8 +15,8 @@ import org.geotools.map.FeatureLayer;
 import org.geotools.map.GridCoverageLayer;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.styling.StyleImpl;
 import org.geotools.styling.StyleBuilder;
+import org.geotools.styling.StyleImpl;
 import org.geotools.test.TestData;
 import org.junit.Test;
 

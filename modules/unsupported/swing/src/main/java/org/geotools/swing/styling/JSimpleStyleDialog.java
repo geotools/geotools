@@ -38,6 +38,7 @@ import net.miginfocom.swing.MigLayout;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.style.Symbolizer;
 import org.geotools.data.DataStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.Geometries;
@@ -186,7 +187,8 @@ public class JSimpleStyleDialog extends JDialog {
      * @param initialStyle an optional Style object to initialize the dialog (may be {@code null})
      * @return a new Style instance or null if the user cancels the dialog
      */
-    public static StyleImpl showDialog(Component parent, DataStore dataStore, StyleImpl initialStyle) {
+    public static StyleImpl showDialog(
+            Component parent, DataStore dataStore, StyleImpl initialStyle) {
         SimpleFeatureType type = null;
         try {
             String typeName = dataStore.getTypeNames()[0];
@@ -678,7 +680,7 @@ public class JSimpleStyleDialog extends JDialog {
                 if (featureTypeStyle.rules() == null || featureTypeStyle.rules().isEmpty()) {
                     return;
                 }
-                rule = featureTypeStyle.rules().get(0);
+                rule = (RuleImpl) featureTypeStyle.rules().get(0);
 
                 if (rule.symbolizers() == null) {
                     return;
@@ -701,11 +703,12 @@ public class JSimpleStyleDialog extends JDialog {
                 for (int ifts = 0;
                         featureTypeStyle == null && ifts < style.featureTypeStyles().size();
                         ifts++) {
-                    FeatureTypeStyleImpl fts = style.featureTypeStyles().get(ifts);
+                    FeatureTypeStyleImpl fts =
+                            (FeatureTypeStyleImpl) style.featureTypeStyles().get(ifts);
                     for (int irule = 0;
                             featureTypeStyle == null && irule < fts.rules().size();
                             irule++) {
-                        RuleImpl r = fts.rules().get(irule);
+                        RuleImpl r = (RuleImpl) fts.rules().get(irule);
                         for (Symbolizer sym : r.symbolizers()) {
                             if (isValidSymbolizer(sym, geomType)) {
                                 featureTypeStyle = fts;

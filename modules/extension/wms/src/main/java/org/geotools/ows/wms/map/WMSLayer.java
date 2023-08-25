@@ -53,7 +53,7 @@ public class WMSLayer extends GridReaderLayer {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
         RasterSymbolizerImpl symbolizer = factory.createRasterSymbolizer();
 
-        RuleImpl rule = factory.createRule();
+        RuleImpl rule = (RuleImpl) factory.createRule();
         rule.symbolizers().add(symbolizer);
 
         FeatureTypeStyleImpl type = factory.createFeatureTypeStyle();

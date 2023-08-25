@@ -79,18 +79,20 @@ public class StyleImplBuilderTest {
                         .featureTypeName("Feature")
                         .option(
                                 org.geotools.styling.FeatureTypeStyleImpl.KEY_EVALUATION_MODE,
-                                org.geotools.styling.FeatureTypeStyleImpl.VALUE_EVALUATION_MODE_FIRST)
+                                org.geotools.styling.FeatureTypeStyleImpl
+                                        .VALUE_EVALUATION_MODE_FIRST)
                         .rule();
         rule.point().graphic().mark().name("circle");
 
         StyleImpl style = builder.build();
 
         assertNotNull(style);
-        FeatureTypeStyleImpl fts = style.featureTypeStyles().get(0);
+        FeatureTypeStyleImpl fts = (FeatureTypeStyleImpl) style.featureTypeStyles().get(0);
         assertEquals(1, fts.getOptions().size());
         assertEquals(
                 org.geotools.styling.FeatureTypeStyleImpl.VALUE_EVALUATION_MODE_FIRST,
-                fts.getOptions().get(org.geotools.styling.FeatureTypeStyleImpl.KEY_EVALUATION_MODE));
+                fts.getOptions()
+                        .get(org.geotools.styling.FeatureTypeStyleImpl.KEY_EVALUATION_MODE));
     }
 
     @Test
@@ -105,7 +107,7 @@ public class StyleImplBuilderTest {
         StyleImpl style = builder.build();
 
         assertNotNull(style);
-        FeatureTypeStyleImpl fts = style.featureTypeStyles().get(0);
+        FeatureTypeStyleImpl fts = (FeatureTypeStyleImpl) style.featureTypeStyles().get(0);
         Expression ex = fts.getTransformation();
         assertThat(ex, instanceOf(Function.class));
         Function tx = (Function) ex;

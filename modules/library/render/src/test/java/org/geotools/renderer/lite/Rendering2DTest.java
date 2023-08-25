@@ -114,35 +114,35 @@ public class Rendering2DTest {
         PointSymbolizerImpl pointsym = sFac.createPointSymbolizer();
         pointsym.setGraphic(sFac.getDefaultGraphic());
 
-        RuleImpl rule = sFac.createRule();
+        RuleImpl rule = (RuleImpl) sFac.createRule();
         rule.symbolizers().add(polysym(sFac));
         FeatureTypeStyleImpl fts = (FeatureTypeStyleImpl) sFac.createFeatureTypeStyle(rule);
         fts.featureTypeNames().add(new NameImpl("polygonfeature"));
 
-        RuleImpl rule1 = sFac.createRule();
+        RuleImpl rule1 = (RuleImpl) sFac.createRule();
         rule.symbolizers().add(polysym(sFac));
         FeatureTypeStyleImpl fts1 = (FeatureTypeStyleImpl) sFac.createFeatureTypeStyle(rule1);
         fts1.featureTypeNames().add(new NameImpl("polygonfeature"));
 
-        RuleImpl rule2 = sFac.createRule();
+        RuleImpl rule2 = (RuleImpl) sFac.createRule();
         rule2.symbolizers().add(linesym(sFac));
         FeatureTypeStyleImpl fts2 = sFac.createFeatureTypeStyle();
         fts2.rules().add(rule2);
         fts2.featureTypeNames().add(new NameImpl("linefeature"));
 
-        RuleImpl rule3 = sFac.createRule();
+        RuleImpl rule3 = (RuleImpl) sFac.createRule();
         rule3.symbolizers().add(pointsym);
         FeatureTypeStyleImpl fts3 = sFac.createFeatureTypeStyle();
         fts3.rules().add(rule3);
         fts3.featureTypeNames().add(new NameImpl("pointfeature"));
 
-        RuleImpl rule4 = sFac.createRule();
+        RuleImpl rule4 = (RuleImpl) sFac.createRule();
         rule4.symbolizers().addAll(Arrays.asList(polysym(sFac), linesym(sFac)));
         FeatureTypeStyleImpl fts4 = sFac.createFeatureTypeStyle();
         fts4.rules().add(rule4);
         fts4.featureTypeNames().add(new NameImpl("collFeature"));
 
-        RuleImpl rule5 = sFac.createRule();
+        RuleImpl rule5 = (RuleImpl) sFac.createRule();
         rule5.symbolizers().add(linesym(sFac));
         FeatureTypeStyleImpl fts5 = sFac.createFeatureTypeStyle();
         fts5.rules().add(rule5);
@@ -154,7 +154,7 @@ public class Rendering2DTest {
     }
 
     private LineSymbolizerImpl linesym(StyleFactory sFac) throws IllegalFilterException {
-        LineSymbolizerImpl linesym = sFac.createLineSymbolizer();
+        LineSymbolizerImpl linesym = (LineSymbolizerImpl) sFac.createLineSymbolizer();
         StrokeImpl myStroke = sFac.getDefaultStroke();
         myStroke.setColor(filterFactory.literal("#0000ff"));
         myStroke.setWidth(filterFactory.literal(Integer.valueOf(5)));
@@ -165,7 +165,7 @@ public class Rendering2DTest {
 
     private PolygonSymbolizerImpl polysym(StyleFactory sFac) throws IllegalFilterException {
         PolygonSymbolizerImpl polysym = sFac.createPolygonSymbolizer();
-        FillImpl myFill = sFac.getDefaultFill();
+        FillImpl myFill = (FillImpl) sFac.getDefaultFill();
         myFill.setColor(filterFactory.literal("#ff0000"));
         polysym.setFill(myFill);
         StrokeImpl myStroke = sFac.getDefaultStroke();

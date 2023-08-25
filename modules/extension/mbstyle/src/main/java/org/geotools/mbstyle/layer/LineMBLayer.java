@@ -146,8 +146,8 @@ public class LineMBLayer extends MBLayer {
     }
 
     /**
-     * Maps {@link #getLineJoin()} to {@link StrokeImpl#getLineJoin()} values of "mitre", "round", and
-     * "bevel" Literals. Defaults to "mitre".
+     * Maps {@link #getLineJoin()} to {@link StrokeImpl#getLineJoin()} values of "mitre", "round",
+     * and "bevel" Literals. Defaults to "mitre".
      *
      * <p>Since piecewise constant functions is supported a {@link RecodeFunction} may be generated.
      *

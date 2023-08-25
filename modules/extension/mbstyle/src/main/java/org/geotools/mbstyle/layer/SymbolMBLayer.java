@@ -249,8 +249,8 @@ public class SymbolMBLayer extends MBLayer {
 
     /**
      * When any of these strings is provided as the sprite source in an MB style, the style's
-     * 'icon-image' will actually be interpreted as the well-known name of a GeoTools {@link MarkImpl}
-     * rather than an actual sprite sheet location.
+     * 'icon-image' will actually be interpreted as the well-known name of a GeoTools {@link
+     * MarkImpl} rather than an actual sprite sheet location.
      */
     protected static final Set<String> MARK_SHEET_ALIASES =
             ImmutableSet.of("geotoolsmarks", "geoservermarks", "");
@@ -2036,9 +2036,9 @@ public class SymbolMBLayer extends MBLayer {
     }
 
     /**
-     * Get a graphic for this style's 'icon-image'. It will usually be an {@link ExternalGraphicImpl} to
-     * be handled by the {@link SpriteGraphicFactory}, but this method also supports GeoTools {@link
-     * MarkImpl}s as a special case.
+     * Get a graphic for this style's 'icon-image'. It will usually be an {@link
+     * ExternalGraphicImpl} to be handled by the {@link SpriteGraphicFactory}, but this method also
+     * supports GeoTools {@link MarkImpl}s as a special case.
      *
      * @param styleContext The containing style (used to get the sprite source)
      * @return A graphic based on this style's 'icon-image' property.

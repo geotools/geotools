@@ -3,10 +3,10 @@ package org.geotools.brewer.styling.builder;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.style.*;
+import org.geotools.api.style.Symbolizer;
 import org.geotools.styling.FeatureTypeStyleImpl;
 import org.geotools.styling.RuleImpl;
 import org.geotools.styling.StyleImpl;
-import org.geotools.styling.Symbolizer;
 
 public class StyleCollector extends AbstractStyleVisitor implements StyleVisitor {
 

@@ -100,7 +100,7 @@ public class HaloBuilder extends AbstractStyleBuilder<org.geotools.api.style.Hal
     public HaloImpl build() {
         if (unset) return null;
 
-        HaloImpl halo = sf.createHalo(fill.build(), radius);
+        HaloImpl halo = (HaloImpl) sf.createHalo(fill.build(), radius);
         if (parent == null) reset();
 
         return halo;

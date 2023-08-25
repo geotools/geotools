@@ -17,11 +17,10 @@
  */
 package org.geotools.ysld.transform.sld;
 
-import org.geotools.styling.LineSymbolizerImpl;
-
 import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import org.geotools.styling.LineSymbolizerImpl;
 
 /** Handles xml parse events for {@link LineSymbolizerImpl} elements. */
 public class LineSymbolizerHandler extends SymbolizerHandler {

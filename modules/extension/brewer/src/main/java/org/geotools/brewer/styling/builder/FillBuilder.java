@@ -91,7 +91,7 @@ public class FillBuilder extends AbstractStyleBuilder<org.geotools.api.style.Fil
         if (unset) {
             return null;
         }
-        FillImpl fill = sf.createFill(color, null, opacity, graphic.build());
+        FillImpl fill = (FillImpl) sf.createFill(color, null, opacity, graphic.build());
 
         if (parent == null) {
             reset();

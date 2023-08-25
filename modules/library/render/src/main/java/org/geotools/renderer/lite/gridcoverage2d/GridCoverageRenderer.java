@@ -527,7 +527,10 @@ public final class GridCoverageRenderer {
 
     /** */
     private GridCoverage2D affine(
-            GridCoverage2D input, double[] bkgValues, RasterSymbolizerImpl symbolizer, Hints hints) {
+            GridCoverage2D input,
+            double[] bkgValues,
+            RasterSymbolizerImpl symbolizer,
+            Hints hints) {
         // NOTICE that at this stage the image we get should be 8 bits, either RGB, RGBA, Gray,
         // GrayA either multiband or indexed. It could also be 16 bits indexed!!!!
 
@@ -1145,7 +1148,8 @@ public final class GridCoverageRenderer {
      * Takes into account that the band selection has been delegated down to the reader by producing
      * a new channel selection
      */
-    public static RasterSymbolizerImpl setupSymbolizerForBandsSelection(RasterSymbolizerImpl symbolizer) {
+    public static RasterSymbolizerImpl setupSymbolizerForBandsSelection(
+            RasterSymbolizerImpl symbolizer) {
         ChannelSelectionImpl selection = symbolizer.getChannelSelection();
         SelectedChannelTypeImpl[] originalChannels = selection.getRGBChannels();
         if (originalChannels == null && selection.getGrayChannel() != null) {
@@ -1153,7 +1157,8 @@ public final class GridCoverageRenderer {
         }
         if (originalChannels != null) {
             int i = 0;
-            SelectedChannelTypeImpl[] channels = new SelectedChannelTypeImpl[originalChannels.length];
+            SelectedChannelTypeImpl[] channels =
+                    new SelectedChannelTypeImpl[originalChannels.length];
             for (SelectedChannelTypeImpl originalChannel : originalChannels) {
                 // Remember, channel indices start from 1
                 SelectedChannelTypeImpl channel = new SelectedChannelTypeImpl();

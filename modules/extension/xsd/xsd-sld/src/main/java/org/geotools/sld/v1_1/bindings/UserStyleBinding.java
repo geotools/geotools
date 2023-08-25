@@ -18,8 +18,8 @@ package org.geotools.sld.v1_1.bindings;
 
 import org.geotools.sld.bindings.SLDUserStyleBinding;
 import org.geotools.styling.DescriptionImpl;
-import org.geotools.styling.StyleImpl;
 import org.geotools.styling.StyleFactory;
+import org.geotools.styling.StyleImpl;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 

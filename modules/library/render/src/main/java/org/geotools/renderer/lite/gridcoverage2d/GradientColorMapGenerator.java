@@ -25,8 +25,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.util.ColorConverterFactory;
 import org.geotools.filter.FilterFactoryImpl;
-import org.geotools.styling.ColorMapImpl;
 import org.geotools.styling.ColorMapEntryImpl;
+import org.geotools.styling.ColorMapImpl;
 import org.geotools.util.Converter;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.Utilities;
@@ -98,8 +98,8 @@ public class GradientColorMapGenerator {
     }
 
     /**
-     * Generate a {@link ColorMapImpl} object, by updating the ColorMapEntries quantities on top of the
-     * min and max values reported here.
+     * Generate a {@link ColorMapImpl} object, by updating the ColorMapEntries quantities on top of
+     * the min and max values reported here.
      */
     public ColorMapImpl generateColorMap(double min, double max) {
         final int numEntries = entries.length;

@@ -62,7 +62,7 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public TextSymbolizer createTextSymbolizer() {
+    public TextSymbolizerImpl createTextSymbolizer() {
         return new TextSymbolizerImpl(filterFactory);
     }
 
@@ -177,7 +177,13 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public Graphic createGraphic(ExternalGraphic[] externalGraphics, Mark[] marks, Symbol[] symbols, Expression opacity, Expression size, Expression rotation) {
+    public Graphic createGraphic(
+            ExternalGraphic[] externalGraphics,
+            Mark[] marks,
+            Symbol[] symbols,
+            Expression opacity,
+            Expression size,
+            Expression rotation) {
         GraphicImpl g = new GraphicImpl();
         g.graphicalSymbols().addAll(List.of(externalGraphics));
         g.graphicalSymbols().addAll(List.of(marks));
@@ -186,6 +192,13 @@ public class StyleFactory extends AbstractStyleFactory
         g.setRotation(rotation);
         g.setSize(size);
         return g;
+    }
+
+    @Override
+    public FeatureTypeStyle createFeatureTypeStyle(Rule rule) {
+        FeatureTypeStyleImpl fts = new FeatureTypeStyleImpl();
+        fts.rules().add(rule);
+        return fts;
     }
 
     @Override
@@ -1332,7 +1345,7 @@ public class StyleFactory extends AbstractStyleFactory
         extension.setUnitOfMeasure((Unit<Length>) unit);
         extension.setExtensionName(extensionName);
         extension.getParameters().putAll(parameters);
-        return extension;
+        return (ExtensionSymbolizer) extension;
     }
 
     @Override

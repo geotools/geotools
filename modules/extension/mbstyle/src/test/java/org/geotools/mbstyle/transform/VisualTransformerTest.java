@@ -809,7 +809,7 @@ public class VisualTransformerTest {
     }
 
     public StyleImpl defaultLineStyle() {
-        RuleImpl rule = styleFactory.createRule();
+        RuleImpl rule = (RuleImpl) styleFactory.createRule();
         StrokeImpl stroke =
                 styleFactory.createStroke(
                         filterFactory.literal(Color.BLACK), filterFactory.literal(1));
@@ -833,8 +833,8 @@ public class VisualTransformerTest {
         gr.graphicalSymbols().add(mark);
         gr.setSize(filterFactory.literal(1));
 
-        RuleImpl rule = styleFactory.createRule();
-        PointSymbolizerImpl p = styleFactory.createPointSymbolizer(gr, null);
+        RuleImpl rule = (RuleImpl) styleFactory.createRule();
+        PointSymbolizerImpl p = (PointSymbolizerImpl) styleFactory.createPointSymbolizer(gr, null);
 
         rule.symbolizers().add(p);
         FeatureTypeStyleImpl fts = (FeatureTypeStyleImpl) styleFactory.createFeatureTypeStyle(rule);
@@ -854,15 +854,17 @@ public class VisualTransformerTest {
 
         // create a partial opaque fill
         FillImpl fill =
-                styleFactory.createFill(
-                        filterFactory.literal(Color.BLACK), filterFactory.literal(1));
+                (FillImpl)
+                        styleFactory.createFill(
+                                filterFactory.literal(Color.BLACK), filterFactory.literal(1));
 
         /*
          * Setting the geometryPropertyName arg to null signals that we want to draw the default geometry of features
          */
-        PolygonSymbolizerImpl sym = styleFactory.createPolygonSymbolizer(stroke, fill, null);
+        PolygonSymbolizerImpl sym =
+                (PolygonSymbolizerImpl) styleFactory.createPolygonSymbolizer(stroke, fill, null);
 
-        RuleImpl rule = styleFactory.createRule();
+        RuleImpl rule = (RuleImpl) styleFactory.createRule();
         rule.symbolizers().add(sym);
         FeatureTypeStyleImpl fts = (FeatureTypeStyleImpl) styleFactory.createFeatureTypeStyle(rule);
         StyleImpl style = styleFactory.createStyle();

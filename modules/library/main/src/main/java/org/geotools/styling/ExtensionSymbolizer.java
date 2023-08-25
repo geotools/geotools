@@ -36,9 +36,6 @@ public interface ExtensionSymbolizer
     @Override
     String getExtensionName();
 
-    /** Name of vendor specific extensions */
-    void setExtensionName(String name);
-
     /**
      * Live map symbolizer expressions.
      *

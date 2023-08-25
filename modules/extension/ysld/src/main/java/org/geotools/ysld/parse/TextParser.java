@@ -107,7 +107,7 @@ public class TextParser extends SymbolizerParser<TextSymbolizerImpl> {
 
         HaloParser() {
             super(TextParser.this.factory);
-            halo = this.factory.style.createHalo(null, null);
+            halo = (HaloImpl) this.factory.style.createHalo(null, null);
         }
 
         @Override
@@ -140,7 +140,7 @@ public class TextParser extends SymbolizerParser<TextSymbolizerImpl> {
 
         protected PlacementParser() {
             super(TextParser.this.factory);
-            point = factory.style.createPointPlacement(null, null, null);
+            point = (PointPlacementImpl) factory.style.createPointPlacement(null, null, null);
             line = factory.style.createLinePlacement(null);
         }
 
@@ -168,7 +168,7 @@ public class TextParser extends SymbolizerParser<TextSymbolizerImpl> {
             // anchor point is manditory for SLD encoding
             if (point.getAnchorPoint() == null) {
                 AnchorPointImpl defaultAnchor =
-                        factory.style.getDefaultPointPlacement().getAnchorPoint();
+                        (AnchorPointImpl) factory.style.getDefaultPointPlacement().getAnchorPoint();
                 point.setAnchorPoint(defaultAnchor);
             }
         }

@@ -54,7 +54,7 @@ public abstract class FillParser extends YsldParseHandler {
 
     FillImpl fill() {
         if (fill == null) {
-            fill(fill = factory.style.createFill(null));
+            fill(fill = (FillImpl) factory.style.createFill(null));
         }
         return fill;
     }

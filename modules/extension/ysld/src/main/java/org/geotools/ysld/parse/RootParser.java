@@ -163,7 +163,7 @@ public class RootParser extends YsldParseHandler {
     }
 
     public RuleImpl newRule() {
-        RuleImpl rule = factory.style.createRule();
+        RuleImpl rule = (RuleImpl) factory.style.createRule();
         newFeatureTypeStyle().rules().add(rule);
         return rule;
     }

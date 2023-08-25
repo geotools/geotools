@@ -32,6 +32,7 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.Rule;
 import org.geotools.data.DataTestCase;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -44,14 +45,13 @@ import org.geotools.filter.function.EqualIntervalFunction;
 import org.geotools.filter.function.ExplicitClassifier;
 import org.geotools.filter.function.RangedClassifier;
 import org.geotools.styling.FeatureTypeStyleImpl;
-import org.geotools.styling.RuleImpl;
 import org.junit.Test;
 
 public class StyleImplGeneratorTest extends DataTestCase {
 
     public void checkFilteredResultNotEmpty(
-            List<RuleImpl> rules, SimpleFeatureSource fs, String attribName) throws IOException {
-        for (RuleImpl rule : rules) {
+            List<Rule> rules, SimpleFeatureSource fs, String attribName) throws IOException {
+        for (Rule rule : rules) {
             Filter filter = rule.getFilter();
             SimpleFeatureCollection filteredCollection = fs.getFeatures(filter);
             assertTrue(filteredCollection.size() > 0);
@@ -127,7 +127,7 @@ public class StyleImplGeneratorTest extends DataTestCase {
         assertNotNull(fts);
 
         // test each filter
-        List<RuleImpl> rules = fts.rules();
+        List<Rule> rules = fts.rules();
         assertEquals(2, rules.size());
         // do a preliminary test to make sure each rule's filter returns some results
         checkFilteredResultNotEmpty(rules, fs, attribName);
@@ -185,7 +185,7 @@ public class StyleImplGeneratorTest extends DataTestCase {
 
         // test each filter
         // we would expect two rules here - one for each of the two bins created
-        List<RuleImpl> rules = fts.rules();
+        List<Rule> rules = fts.rules();
         assertEquals(1, rules.size());
 
         // do a preliminary test to make sure each rule's filter returns some results

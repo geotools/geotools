@@ -25,6 +25,7 @@ import java.util.Set;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.Rule;
 import org.geotools.api.style.SemanticType;
 import org.geotools.brewer.styling.filter.IdBuilder;
 import org.geotools.feature.NameImpl;
@@ -209,8 +210,8 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
         }
         this.rules.clear();
         if (fts.rules() != null) {
-            for (RuleImpl rule : fts.rules()) {
-                this.rules.add(new RuleBuilder(this).reset(rule));
+            for (Rule rule : fts.rules()) {
+                this.rules.add(new RuleBuilder(this).reset((RuleImpl) rule));
             }
         }
         this.options.clear();

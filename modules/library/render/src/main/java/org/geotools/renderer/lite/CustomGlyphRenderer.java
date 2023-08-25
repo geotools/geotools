@@ -86,7 +86,8 @@ public class CustomGlyphRenderer implements GlyphRenderer {
 
     /** djb -- addd "height" which is ignored as per API change */
     @Override
-    public BufferedImage render(GraphicImpl graphic, ExternalGraphicImpl eg, Object feature, int height) {
+    public BufferedImage render(
+            GraphicImpl graphic, ExternalGraphicImpl eg, Object feature, int height) {
         Map props = eg.getCustomProperties();
         Set propNames = props.keySet();
         Iterator it = propNames.iterator();

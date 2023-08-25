@@ -261,8 +261,8 @@ public class MapboxSpriteTest {
                         null,
                         null,
                         null);
-        RuleImpl rule = styleFactory.createRule();
-        PointSymbolizerImpl p = styleFactory.createPointSymbolizer(gr, null);
+        RuleImpl rule = (RuleImpl) styleFactory.createRule();
+        PointSymbolizerImpl p = (PointSymbolizerImpl) styleFactory.createPointSymbolizer(gr, null);
         rule.symbolizers().add(p);
         FeatureTypeStyleImpl fts = (FeatureTypeStyleImpl) styleFactory.createFeatureTypeStyle(rule);
         StyleImpl pointStyle = styleFactory.createStyle();

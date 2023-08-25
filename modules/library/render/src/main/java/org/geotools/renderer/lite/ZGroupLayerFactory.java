@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.sort.SortBy;
+import org.geotools.api.style.FeatureTypeStyle;
 import org.geotools.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.map.DirectLayer;
@@ -30,8 +31,8 @@ import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
 import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.styling.FeatureTypeStyleImpl;
-import org.geotools.styling.StyleImpl;
 import org.geotools.styling.StyleFactory;
+import org.geotools.styling.StyleImpl;
 
 /**
  * Builds {@link ZGroupLayer} instances from a MapContent using {@link
@@ -44,8 +45,8 @@ class ZGroupLayerFactory {
     private static StyleFactory STYLE_FACTORY = CommonFactoryFinder.getStyleFactory();
 
     /**
-     * Filters a MapContent and returns a new one where adjacent {@link FeatureTypeStyleImpl} using the
-     * same {@link FeatureTypeStyleImpl#SORT_BY_GROUP} key are turned into {@link ZGroupLayer}
+     * Filters a MapContent and returns a new one where adjacent {@link FeatureTypeStyleImpl} using
+     * the same {@link FeatureTypeStyleImpl#SORT_BY_GROUP} key are turned into {@link ZGroupLayer}
      */
     public static MapContent filter(MapContent mapContent) {
         // Quick check, do we have any z-group to care for? For the common
@@ -109,8 +110,9 @@ class ZGroupLayerFactory {
         }
         String currentGroupId = previousGroup != null ? previousGroup.getGroupId() : null;
         List<FeatureTypeStyleImpl> featureTypeStyles = new ArrayList<>();
-        for (FeatureTypeStyleImpl fts : layer.getStyle().featureTypeStyles()) {
-            String groupName = fts.getOptions().get(org.geotools.styling.FeatureTypeStyleImpl.SORT_BY_GROUP);
+        for (FeatureTypeStyle fts : layer.getStyle().featureTypeStyles()) {
+            String groupName =
+                    fts.getOptions().get(org.geotools.styling.FeatureTypeStyleImpl.SORT_BY_GROUP);
             if (!(groupName == currentGroupId
                             || (groupName != null && groupName.equals(currentGroupId)))
                     && !featureTypeStyles.isEmpty()) {
@@ -118,7 +120,7 @@ class ZGroupLayerFactory {
                 addToSplitLayers(
                         layer, previousGroup, splitLayers, currentGroupId, featureTypeStyles);
             }
-            featureTypeStyles.add(fts);
+            featureTypeStyles.add((FeatureTypeStyleImpl) fts);
             currentGroupId = groupName;
         }
         // add the residual fts, if needed
@@ -201,23 +203,26 @@ class ZGroupLayerFactory {
     private static boolean hasZGroup(Layer layer, boolean checkValid) {
         boolean hasGroup = false;
         if (layer.getStyle() != null) {
-            for (FeatureTypeStyleImpl fts : layer.getStyle().featureTypeStyles()) {
+            for (FeatureTypeStyle fts : layer.getStyle().featureTypeStyles()) {
                 Map<String, String> options = fts.getOptions();
-                String groupName = options.get(org.geotools.styling.FeatureTypeStyleImpl.SORT_BY_GROUP);
+                String groupName =
+                        options.get(org.geotools.styling.FeatureTypeStyleImpl.SORT_BY_GROUP);
                 if (groupName != null && !groupName.trim().isEmpty()) {
                     hasGroup = true;
                     if (checkValid) {
                         if (fts.getTransformation() != null) {
                             throw new IllegalArgumentException(
                                     "Invalid "
-                                            + org.geotools.styling.FeatureTypeStyleImpl.SORT_BY_GROUP
+                                            + org.geotools.styling.FeatureTypeStyleImpl
+                                                    .SORT_BY_GROUP
                                             + " usage in layer "
                                             + layer.getTitle()
                                             + ": cannot be mixed with rendering transformations");
                         } else if (options.get(FeatureTypeStyleImpl.SORT_BY) == null) {
                             throw new IllegalArgumentException(
                                     "Invalid "
-                                            + org.geotools.styling.FeatureTypeStyleImpl.SORT_BY_GROUP
+                                            + org.geotools.styling.FeatureTypeStyleImpl
+                                                    .SORT_BY_GROUP
                                             + " usage in layer "
                                             + layer.getTitle()
                                             + ": the corresponding sortBy vendor option is missing");

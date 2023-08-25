@@ -51,7 +51,7 @@ public class WMTSMapLayer extends GridReaderLayer {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
         RasterSymbolizerImpl symbolizer = factory.createRasterSymbolizer();
 
-        RuleImpl rule = factory.createRule();
+        RuleImpl rule = (RuleImpl) factory.createRule();
         rule.symbolizers().add(symbolizer);
 
         final FeatureTypeStyleImpl type = factory.createFeatureTypeStyle();

@@ -30,7 +30,7 @@ public class RuleEncoder extends YsldEncodeHandler<RuleImpl> {
     private static StyleFactory sf = CommonFactoryFinder.getStyleFactory();
 
     public RuleEncoder(FeatureTypeStyleImpl featureStyle) {
-        super(featureStyle.rules().iterator());
+        super((RuleImpl) featureStyle.rules().iterator());
     }
 
     @Override

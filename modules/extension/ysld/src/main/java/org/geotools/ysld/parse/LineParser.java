@@ -17,10 +17,10 @@
  */
 package org.geotools.ysld.parse;
 
+import org.geotools.api.style.Symbolizer;
 import org.geotools.styling.LineSymbolizerImpl;
 import org.geotools.styling.RuleImpl;
 import org.geotools.styling.StrokeImpl;
-import org.geotools.styling.Symbolizer;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
@@ -28,7 +28,7 @@ import org.geotools.ysld.YamlObject;
 public class LineParser extends SymbolizerParser<LineSymbolizerImpl> {
 
     protected LineParser(RuleImpl rule, Factory factory) {
-        super(rule, factory.style.createLineSymbolizer(), factory);
+        super(rule, (LineSymbolizerImpl) factory.style.createLineSymbolizer(), factory);
     }
 
     @Override

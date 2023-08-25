@@ -11,6 +11,7 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CRSAuthorityFactory;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.style.Symbolizer;
 import org.geotools.data.Query;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -24,7 +25,9 @@ import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
-import org.geotools.styling.*;
+import org.geotools.styling.PolygonSymbolizerImpl;
+import org.geotools.styling.RuleImpl;
+import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleImpl;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.Hints;
@@ -119,7 +122,7 @@ public class SpatialFilterTest {
         StyleBuilder sb = new StyleBuilder();
         PolygonSymbolizerImpl ps = sb.createPolygonSymbolizer();
         StyleImpl style = sb.createStyle(ps);
-        RuleImpl rule = style.featureTypeStyles().get(0).rules().get(0);
+        RuleImpl rule = (RuleImpl) style.featureTypeStyles().get(0).rules().get(0);
         rule.setFilter(ff.bbox("geom", 1, 1, 4, 4, "EPSG:4326"));
 
         content.addLayer(new FeatureLayer(squareFS, style));
@@ -134,7 +137,7 @@ public class SpatialFilterTest {
         StyleBuilder sb = new StyleBuilder();
         PolygonSymbolizerImpl ps = sb.createPolygonSymbolizer();
         StyleImpl style = sb.createStyle(ps);
-        RuleImpl rule = style.featureTypeStyles().get(0).rules().get(0);
+        RuleImpl rule = (RuleImpl) style.featureTypeStyles().get(0).rules().get(0);
         rule.setFilter(ff.bbox("geom", 1, 1, 4, 4, null));
 
         content.addLayer(new FeatureLayer(squareFS, style));
@@ -148,9 +151,9 @@ public class SpatialFilterTest {
         // a spatial filter in the same SRS as the geometry... but with a different axis order
         // interpretation, if we assume lat/lon we should pick point.4
         StyleBuilder sb = new StyleBuilder();
-        Symbolizer ps = sb.createPointSymbolizer();
+        org.geotools.api.style.Symbolizer ps = sb.createPointSymbolizer();
         StyleImpl style = sb.createStyle(ps);
-        RuleImpl rule = style.featureTypeStyles().get(0).rules().get(0);
+        RuleImpl rule = (RuleImpl) style.featureTypeStyles().get(0).rules().get(0);
         rule.setFilter(ff.bbox("geom", 5, 1, 7, 3, null));
 
         // force EPSG axis order interpretation
@@ -175,7 +178,7 @@ public class SpatialFilterTest {
         StyleBuilder sb = new StyleBuilder();
         Symbolizer ps = sb.createPointSymbolizer();
         StyleImpl style = sb.createStyle(ps);
-        RuleImpl rule = style.featureTypeStyles().get(0).rules().get(0);
+        RuleImpl rule = (RuleImpl) style.featureTypeStyles().get(0).rules().get(0);
         rule.setFilter(
                 ff.bbox(
                         "geom",
@@ -207,7 +210,7 @@ public class SpatialFilterTest {
         StyleBuilder sb = new StyleBuilder();
         Symbolizer ps = sb.createPointSymbolizer();
         StyleImpl style = sb.createStyle(ps);
-        RuleImpl rule = style.featureTypeStyles().get(0).rules().get(0);
+        RuleImpl rule = (RuleImpl) style.featureTypeStyles().get(0).rules().get(0);
         Polygon polygon = JTS.toGeometry(envUTM31N);
         polygon.setUserData(utm31n);
         rule.setFilter(ff.intersects(ff.property("geom"), ff.literal(polygon)));

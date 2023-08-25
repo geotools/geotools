@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.Symbolizer;
 
 /**
  * ExtensioSymbolizer capturing a vendor specific extension.
@@ -31,7 +32,8 @@ import org.geotools.api.style.StyleVisitor;
  * @author Johann Sorel (Geomatys)
  * @version $Id$
  */
-public class VendorSymbolizer extends AbstractSymbolizer implements ExtensionSymbolizer {
+public class VendorSymbolizer extends AbstractSymbolizer
+        implements org.geotools.api.style.ExtensionSymbolizer, Symbolizer {
 
     private String extensionName;
     private Map<String, Expression> parameters = new HashMap<>();
@@ -93,7 +95,6 @@ public class VendorSymbolizer extends AbstractSymbolizer implements ExtensionSym
         return parameters;
     }
 
-    @Override
     public void setExtensionName(String name) {
         this.extensionName = name;
     }

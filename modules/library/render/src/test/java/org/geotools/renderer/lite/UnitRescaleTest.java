@@ -53,7 +53,8 @@ public class UnitRescaleTest {
         rule.symbolizers().add(lineSymbolizer);
 
         RuleImpl[] rules = {rule};
-        FeatureTypeStyleImpl featureTypeStyle = (FeatureTypeStyleImpl) sf.createFeatureTypeStyle(rules);
+        FeatureTypeStyleImpl featureTypeStyle =
+                (FeatureTypeStyleImpl) sf.createFeatureTypeStyle(rules);
 
         List<FeatureTypeStyleImpl> featureTypeStyles = new ArrayList<>();
         featureTypeStyles.add(featureTypeStyle);

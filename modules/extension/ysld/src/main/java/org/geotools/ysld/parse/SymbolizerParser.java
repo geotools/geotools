@@ -17,8 +17,9 @@
  */
 package org.geotools.ysld.parse;
 
+import org.geotools.api.style.Symbolizer;
+import org.geotools.styling.AbstractSymbolizer;
 import org.geotools.styling.RuleImpl;
-import org.geotools.styling.Symbolizer;
 import org.geotools.ysld.UomMapper;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
@@ -29,7 +30,7 @@ import org.geotools.ysld.YamlObject;
  *
  * @param <T> The type of {@link Symbolizer} being parsed.
  */
-public class SymbolizerParser<T extends Symbolizer> extends YsldParseHandler {
+public class SymbolizerParser<T extends AbstractSymbolizer> extends YsldParseHandler {
 
     protected T sym;
 

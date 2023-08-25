@@ -20,7 +20,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
-
 import org.geotools.api.style.FeatureTypeStyle;
 import org.geotools.api.style.Symbolizer;
 import org.geotools.kml.KML;
@@ -47,7 +46,7 @@ public class StyleImplTypeBindingTest extends KMLTestSupport {
         buildDocument(xml);
 
         FeatureTypeStyle style = (FeatureTypeStyleImpl) parse();
-        List<Symbolizer> syms = ((RuleImpl)style.rules().get(0)).symbolizers();
+        List<Symbolizer> syms = ((RuleImpl) style.rules().get(0)).symbolizers();
 
         assertEquals(3, syms.size());
         assertTrue(syms.get(0) instanceof LineSymbolizerImpl);

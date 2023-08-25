@@ -18,11 +18,10 @@ package org.geotools.renderer;
 
 // J2SE dependencies
 
-import org.geotools.styling.StyleImpl;
-
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import org.geotools.styling.StyleImpl;
 
 /**
  * Renderer draws a map on behalf on <code>MapPane</code>. It determines what features to draw,

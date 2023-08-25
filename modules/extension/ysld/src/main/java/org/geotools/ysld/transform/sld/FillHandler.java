@@ -17,11 +17,10 @@
  */
 package org.geotools.ysld.transform.sld;
 
-import org.geotools.styling.FillImpl;
-
 import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import org.geotools.styling.FillImpl;
 
 /** Handles xml parse events for the {@link FillImpl} element. */
 public class FillHandler extends SldTransformHandler {

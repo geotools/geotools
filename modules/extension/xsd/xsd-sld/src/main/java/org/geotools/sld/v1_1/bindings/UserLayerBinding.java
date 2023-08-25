@@ -76,8 +76,7 @@ public class UserLayerBinding extends SLDUserLayerBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        UserLayerImpl layer =
-                (UserLayerImpl) super.parse(instance, node, value);
+        UserLayerImpl layer = (UserLayerImpl) super.parse(instance, node, value);
 
         // TODO: description
 

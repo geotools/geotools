@@ -147,7 +147,8 @@ public class GraphicBuilder extends AbstractStyleBuilder<org.geotools.api.style.
         for (Builder<? extends Symbol> symbol : symbols) {
             list.add(symbol.build());
         }
-        GraphicImpl g = sf.graphic(list, opacity, size, rotation, anchor.build(), displacement.build());
+        GraphicImpl g =
+                sf.graphic(list, opacity, size, rotation, anchor.build(), displacement.build());
 
         if (parent == null) {
             reset();

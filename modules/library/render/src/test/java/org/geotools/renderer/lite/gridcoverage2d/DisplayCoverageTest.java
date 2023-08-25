@@ -160,10 +160,12 @@ public class DisplayCoverageTest {
         StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
-        ContrastEnhancementImpl ce = sf.contrastEnhancement(ff.literal(1.0), ContrastMethod.NORMALIZE);
-        SelectedChannelTypeImpl sct = sf.createSelectedChannelType(bandName, ce);
+        ContrastEnhancementImpl ce =
+                sf.contrastEnhancement(ff.literal(1.0), ContrastMethod.NORMALIZE);
+        SelectedChannelTypeImpl sct =
+                (SelectedChannelTypeImpl) sf.createSelectedChannelType(bandName, ce);
 
-        RasterSymbolizerImpl sym = sf.getDefaultRasterSymbolizer();
+        RasterSymbolizerImpl sym = (RasterSymbolizerImpl) sf.getDefaultRasterSymbolizer();
         ChannelSelectionImpl sel = sf.channelSelection(sct);
         sym.setChannelSelection(sel);
 
@@ -178,9 +180,10 @@ public class DisplayCoverageTest {
                 sf.contrastEnhancement(
                         ff.function("env", ff.literal("gamma"), ff.literal(1)),
                         ContrastMethod.NORMALIZE);
-        SelectedChannelTypeImpl sct = sf.createSelectedChannelType(bandName, ce);
+        SelectedChannelTypeImpl sct =
+                (SelectedChannelTypeImpl) sf.createSelectedChannelType(bandName, ce);
 
-        RasterSymbolizerImpl sym = sf.getDefaultRasterSymbolizer();
+        RasterSymbolizerImpl sym = (RasterSymbolizerImpl) sf.getDefaultRasterSymbolizer();
         ChannelSelectionImpl sel = sf.channelSelection(sct);
         sym.setChannelSelection(sel);
 
@@ -191,13 +194,15 @@ public class DisplayCoverageTest {
         StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
-        ContrastEnhancementImpl ce = sf.contrastEnhancement(ff.literal(1.0), ContrastMethod.NORMALIZE);
+        ContrastEnhancementImpl ce =
+                sf.contrastEnhancement(ff.literal(1.0), ContrastMethod.NORMALIZE);
         ce.addOption("algorithm", ff.literal("StretchToMinimumMaximum"));
         ce.addOption("minValue", ff.function("env", ff.literal("range_min"), ff.literal(0)));
         ce.addOption("maxValue", ff.function("env", ff.literal("range_max"), ff.literal(220)));
-        SelectedChannelTypeImpl sct = sf.createSelectedChannelType(bandName, ce);
+        SelectedChannelTypeImpl sct =
+                (SelectedChannelTypeImpl) sf.createSelectedChannelType(bandName, ce);
 
-        RasterSymbolizerImpl sym = sf.getDefaultRasterSymbolizer();
+        RasterSymbolizerImpl sym = (RasterSymbolizerImpl) sf.getDefaultRasterSymbolizer();
         ChannelSelectionImpl sel = sf.channelSelection(sct);
         sym.setChannelSelection(sel);
 

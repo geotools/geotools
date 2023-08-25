@@ -26,6 +26,7 @@ import java.net.URL;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Add;
 import org.geotools.api.filter.expression.Function;
+import org.geotools.api.style.Symbolizer;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.styling.*;
@@ -63,7 +64,8 @@ public class RenderingBufferExtractorTest {
 
     @Test
     public void testSimpleStroke() {
-        StyleImpl style = sb.createStyle(sb.createLineSymbolizer((StrokeImpl) sb.createStroke(10.0)));
+        StyleImpl style =
+                sb.createStyle(sb.createLineSymbolizer((StrokeImpl) sb.createStroke(10.0)));
         MetaBufferEstimator rbe = new MetaBufferEstimator();
         rbe.visit(style);
         assertEquals(10, rbe.getBuffer());
@@ -119,7 +121,8 @@ public class RenderingBufferExtractorTest {
 
     @Test
     public void testNonIntegerStroke() {
-        StyleImpl style = sb.createStyle(sb.createLineSymbolizer((StrokeImpl) sb.createStroke(10.8)));
+        StyleImpl style =
+                sb.createStyle(sb.createLineSymbolizer((StrokeImpl) sb.createStroke(10.8)));
         MetaBufferEstimator rbe = new MetaBufferEstimator();
         rbe.visit(style);
         assertEquals(11, rbe.getBuffer());
@@ -129,7 +132,8 @@ public class RenderingBufferExtractorTest {
     @Test
     public void testMultiSymbolizers() {
         Symbolizer ls = sb.createLineSymbolizer((StrokeImpl) sb.createStroke(10.8));
-        Symbolizer ps = sb.createPolygonSymbolizer((StrokeImpl) sb.createStroke(12), sb.createFill());
+        Symbolizer ps =
+                sb.createPolygonSymbolizer((StrokeImpl) sb.createStroke(12), sb.createFill());
         RuleImpl r = sb.createRule(ls, ps);
         MetaBufferEstimator rbe = new MetaBufferEstimator();
         rbe.visit(r);
@@ -143,7 +147,8 @@ public class RenderingBufferExtractorTest {
                 sb.createLineSymbolizer(
                         sb.createStroke(
                                 sb.colorExpression(Color.BLACK), sb.attributeExpression("gimbo")));
-        Symbolizer ps = sb.createPolygonSymbolizer((StrokeImpl) sb.createStroke(12), sb.createFill());
+        Symbolizer ps =
+                sb.createPolygonSymbolizer((StrokeImpl) sb.createStroke(12), sb.createFill());
         RuleImpl r = sb.createRule(ls, ps);
         MetaBufferEstimator rbe = new MetaBufferEstimator();
         rbe.visit(r);

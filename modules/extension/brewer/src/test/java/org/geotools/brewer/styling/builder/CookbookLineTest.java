@@ -75,7 +75,8 @@ public class CookbookLineTest extends AbstractStyleTest {
 
     @Test
     public void testDashed() {
-        StyleImpl style = new StrokeBuilder().color(Color.BLUE).width(3).dashArray(5, 2).buildStyle();
+        StyleImpl style =
+                new StrokeBuilder().color(Color.BLUE).width(3).dashArray(5, 2).buildStyle();
         // print(style);
 
         // round up the basic elements and check its simple
@@ -339,7 +340,8 @@ public class CookbookLineTest extends AbstractStyleTest {
                         ff.literal("#0055CC2"),
                         ff.literal("highway"),
                         ff.literal("#FF0000"));
-        StyleImpl style = new LineSymbolizerBuilder().stroke().color(color).width(width).buildStyle();
+        StyleImpl style =
+                new LineSymbolizerBuilder().stroke().color(color).width(width).buildStyle();
         // print(style);
 
         StyleCollector collector = new StyleCollector();

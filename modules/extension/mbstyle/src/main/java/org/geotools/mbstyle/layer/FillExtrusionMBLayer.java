@@ -261,8 +261,10 @@ public class FillExtrusionMBLayer extends MBLayer {
         }
 
         // Create 3 symbolizers one each for shadow, sides, and roof.
-        PolygonSymbolizerImpl shadowSymbolizer = (PolygonSymbolizerImpl) sf.createPolygonSymbolizer();
-        PolygonSymbolizerImpl sidesSymbolizer = (PolygonSymbolizerImpl) sf.createPolygonSymbolizer();
+        PolygonSymbolizerImpl shadowSymbolizer =
+                (PolygonSymbolizerImpl) sf.createPolygonSymbolizer();
+        PolygonSymbolizerImpl sidesSymbolizer =
+                (PolygonSymbolizerImpl) sf.createPolygonSymbolizer();
         PolygonSymbolizerImpl roofSymbolizer = (PolygonSymbolizerImpl) sf.createPolygonSymbolizer();
 
         shadowSymbolizer.setName("shadow");

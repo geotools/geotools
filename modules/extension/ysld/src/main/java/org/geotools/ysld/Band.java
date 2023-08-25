@@ -37,9 +37,7 @@ public enum Band {
         }
 
         @Override
-        public void setTo(
-                ChannelSelectionImpl sel,
-                SelectedChannelTypeImpl chan) {
+        public void setTo(ChannelSelectionImpl sel, SelectedChannelTypeImpl chan) {
             sel.setGrayChannel(chan);
         }
     },
@@ -50,9 +48,7 @@ public enum Band {
         }
 
         @Override
-        public void setTo(
-                ChannelSelectionImpl sel,
-                SelectedChannelTypeImpl chan) {
+        public void setTo(ChannelSelectionImpl sel, SelectedChannelTypeImpl chan) {
             SelectedChannelTypeImpl[] channels = sel.getRGBChannels();
             channels[0] = chan;
             sel.setRGBChannels(channels);
@@ -65,9 +61,7 @@ public enum Band {
         }
 
         @Override
-        public void setTo(
-                ChannelSelectionImpl sel,
-                SelectedChannelTypeImpl chan) {
+        public void setTo(ChannelSelectionImpl sel, SelectedChannelTypeImpl chan) {
             SelectedChannelTypeImpl[] channels = sel.getRGBChannels();
             channels[1] = chan;
             sel.setRGBChannels(channels);
@@ -80,9 +74,7 @@ public enum Band {
         }
 
         @Override
-        public void setTo(
-                ChannelSelectionImpl sel,
-                SelectedChannelTypeImpl chan) {
+        public void setTo(ChannelSelectionImpl sel, SelectedChannelTypeImpl chan) {
             SelectedChannelTypeImpl[] channels = sel.getRGBChannels();
             channels[2] = chan;
             sel.setRGBChannels(channels);
@@ -98,9 +90,7 @@ public enum Band {
             org.geotools.api.style.ChannelSelection sel);
 
     /** Set the {@link SelectedChannelType} in sel that is represented by this band to chan. */
-    public abstract void setTo(
-            ChannelSelectionImpl sel,
-            SelectedChannelTypeImpl chan);
+    public abstract void setTo(ChannelSelectionImpl sel, SelectedChannelTypeImpl chan);
 
     public final String key;
 

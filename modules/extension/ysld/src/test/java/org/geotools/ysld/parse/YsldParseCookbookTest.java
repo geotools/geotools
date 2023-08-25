@@ -31,6 +31,7 @@ import java.util.Map;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.ColorMapEntry;
 import org.geotools.api.style.ContrastMethod;
+import org.geotools.api.style.Rule;
 import org.geotools.filter.Filters;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.text.ecql.ECQL;
@@ -238,7 +239,7 @@ public class YsldParseCookbookTest {
         //      </FeatureTypeStyle>
         //    </UserStyle>
         StyleImpl style = parse("point", "zoom.sld");
-        RuleImpl rule = style.featureTypeStyles().get(0).rules().get(0);
+        RuleImpl rule = (RuleImpl) style.featureTypeStyles().get(0).rules().get(0);
         assertEquals("Large", rule.getName());
         assertEquals(160000000.0, rule.getMaxScaleDenominator(), 0.1);
 
@@ -247,7 +248,7 @@ public class YsldParseCookbookTest {
         assertEquals(color("CC3300"), SLD.color(SLD.fill(point)));
         assertEquals(12, SLD.pointSize(point));
 
-        rule = style.featureTypeStyles().get(0).rules().get(1);
+        rule = (RuleImpl) style.featureTypeStyles().get(0).rules().get(1);
         assertEquals("Medium", rule.getName());
         assertEquals(160000000.0, rule.getMinScaleDenominator(), 0.1);
         assertEquals(320000000.0, rule.getMaxScaleDenominator(), 0.1);
@@ -257,7 +258,7 @@ public class YsldParseCookbookTest {
         assertEquals(color("CC3300"), SLD.color(SLD.fill(point)));
         assertEquals(8, SLD.pointSize(point));
 
-        rule = style.featureTypeStyles().get(0).rules().get(2);
+        rule = (RuleImpl) style.featureTypeStyles().get(0).rules().get(2);
         assertEquals("Small", rule.getName());
         assertEquals(320000000.0, rule.getMinScaleDenominator(), 0.1);
 
@@ -345,15 +346,15 @@ public class YsldParseCookbookTest {
         //    </UserStyle>
         StyleImpl style = parse("point", "attribute.sld");
 
-        RuleImpl rule = style.featureTypeStyles().get(0).rules().get(0);
+        RuleImpl rule = (RuleImpl) style.featureTypeStyles().get(0).rules().get(0);
         assertEquals("SmallPop", rule.getName());
         assertEquals("pop < '50000'", ECQL.toCQL(rule.getFilter()));
 
-        rule = style.featureTypeStyles().get(0).rules().get(1);
+        rule = (RuleImpl) style.featureTypeStyles().get(0).rules().get(1);
         assertEquals("MediumPop", rule.getName());
         assertEquals("pop >= '50000' AND pop < '100000'", ECQL.toCQL(rule.getFilter()));
 
-        rule = style.featureTypeStyles().get(0).rules().get(2);
+        rule = (RuleImpl) style.featureTypeStyles().get(0).rules().get(2);
         assertEquals("LargePop", rule.getName());
         assertEquals("pop >= '100000'", ECQL.toCQL(rule.getFilter()));
     }
@@ -626,7 +627,7 @@ public class YsldParseCookbookTest {
         //   </FeatureTypeStyle>
         // </UserStyle>
         StyleImpl style = parse("point", "rule-option.sld");
-        List<RuleImpl> rules = style.featureTypeStyles().get(0).rules();
+        List<Rule> rules = style.featureTypeStyles().get(0).rules();
         assertThat(rules.get(0).getOptions(), hasEntry("inclusion", "mapOnly"));
         assertThat(rules.get(1).getOptions(), hasEntry("inclusion", "legendOnly"));
     }
@@ -712,8 +713,8 @@ public class YsldParseCookbookTest {
 
         StyleImpl style = parse("line", "attribute.sld");
 
-        FeatureTypeStyleImpl featureStyle = style.featureTypeStyles().get(0);
-        RuleImpl rule = featureStyle.rules().get(0);
+        FeatureTypeStyleImpl featureStyle = (FeatureTypeStyleImpl) style.featureTypeStyles().get(0);
+        RuleImpl rule = (RuleImpl) featureStyle.rules().get(0);
         assertEquals("local-road", rule.getName());
         assertEquals("type = 'local-road'", ECQL.toCQL(rule.getFilter()));
 
@@ -721,8 +722,8 @@ public class YsldParseCookbookTest {
         assertEquals(color("009933"), SLD.color(line));
         assertEquals(2, SLD.width(line));
 
-        featureStyle = style.featureTypeStyles().get(1);
-        rule = featureStyle.rules().get(0);
+        featureStyle = (FeatureTypeStyleImpl) style.featureTypeStyles().get(1);
+        rule = (RuleImpl) featureStyle.rules().get(0);
         assertEquals("secondary", rule.getName());
         assertEquals("type = 'secondary'", ECQL.toCQL(rule.getFilter()));
 
@@ -730,8 +731,8 @@ public class YsldParseCookbookTest {
         assertEquals(color("0055CC"), SLD.color(line));
         assertEquals(3, SLD.width(line));
 
-        featureStyle = style.featureTypeStyles().get(2);
-        rule = featureStyle.rules().get(0);
+        featureStyle = (FeatureTypeStyleImpl) style.featureTypeStyles().get(2);
+        rule = (RuleImpl) featureStyle.rules().get(0);
         assertEquals("highway", rule.getName());
         assertEquals("type = 'highway'", ECQL.toCQL(rule.getFilter()));
 
@@ -770,14 +771,14 @@ public class YsldParseCookbookTest {
 
         StyleImpl style = parse("line", "border.sld");
 
-        FeatureTypeStyleImpl featureStyle = style.featureTypeStyles().get(0);
+        FeatureTypeStyleImpl featureStyle = (FeatureTypeStyleImpl) style.featureTypeStyles().get(0);
         LineSymbolizerImpl line = SLD.lineSymbolizer(featureStyle);
 
         assertEquals(color("333333"), SLD.color(line));
         assertEquals(5, SLD.width(line));
         assertEquals("round", SLD.lineLinecap(line));
 
-        featureStyle = style.featureTypeStyles().get(1);
+        featureStyle = (FeatureTypeStyleImpl) style.featureTypeStyles().get(1);
         line = SLD.lineSymbolizer(featureStyle);
 
         assertEquals(color("6699FF"), SLD.color(line));
@@ -1070,7 +1071,7 @@ public class YsldParseCookbookTest {
 
         StyleImpl style = parse("line", "zoom.sld");
 
-        RuleImpl rule = style.featureTypeStyles().get(0).rules().get(0);
+        RuleImpl rule = (RuleImpl) style.featureTypeStyles().get(0).rules().get(0);
         assertEquals("Large", rule.getName());
         assertEquals(180000000d, rule.getMaxScaleDenominator(), 0.1);
 
@@ -1078,7 +1079,7 @@ public class YsldParseCookbookTest {
         assertEquals(color("009933"), SLD.color(line));
         assertEquals(6, SLD.width(line));
 
-        rule = style.featureTypeStyles().get(0).rules().get(1);
+        rule = (RuleImpl) style.featureTypeStyles().get(0).rules().get(1);
         assertEquals("Medium", rule.getName());
         assertEquals(360000000d, rule.getMaxScaleDenominator(), 0.1);
         assertEquals(180000000d, rule.getMinScaleDenominator(), 0.1);
@@ -1087,7 +1088,7 @@ public class YsldParseCookbookTest {
         assertEquals(color("009933"), SLD.color(line));
         assertEquals(4, SLD.width(line));
 
-        rule = style.featureTypeStyles().get(0).rules().get(2);
+        rule = (RuleImpl) style.featureTypeStyles().get(0).rules().get(2);
         assertEquals("Small", rule.getName());
         assertEquals(360000000d, rule.getMinScaleDenominator(), 0.1);
 
@@ -1282,21 +1283,21 @@ public class YsldParseCookbookTest {
 
         StyleImpl style = parse("poly", "attribute.sld");
 
-        RuleImpl rule = style.featureTypeStyles().get(0).rules().get(0);
+        RuleImpl rule = (RuleImpl) style.featureTypeStyles().get(0).rules().get(0);
         assertEquals("SmallPop", rule.getName());
         assertEquals("pop < '200000'", ECQL.toCQL(rule.getFilter()));
 
         PolygonSymbolizerImpl poly = (PolygonSymbolizerImpl) rule.symbolizers().get(0);
         assertEquals(color("66FF66"), SLD.color(poly.getFill()));
 
-        rule = style.featureTypeStyles().get(0).rules().get(1);
+        rule = (RuleImpl) style.featureTypeStyles().get(0).rules().get(1);
         assertEquals("MediumPop", rule.getName());
         assertEquals("pop >= '200000' AND pop < '500000'", ECQL.toCQL(rule.getFilter()));
 
         poly = (PolygonSymbolizerImpl) rule.symbolizers().get(0);
         assertEquals(color("33CC33"), SLD.color(poly.getFill()));
 
-        rule = style.featureTypeStyles().get(0).rules().get(2);
+        rule = (RuleImpl) style.featureTypeStyles().get(0).rules().get(2);
         assertEquals("LargePop", rule.getName());
         assertEquals("pop > '500000'", ECQL.toCQL(rule.getFilter()));
 
@@ -1656,7 +1657,7 @@ public class YsldParseCookbookTest {
 
         StyleImpl style = parse("poly", "zoom.sld");
 
-        RuleImpl rule = style.featureTypeStyles().get(0).rules().get(0);
+        RuleImpl rule = (RuleImpl) style.featureTypeStyles().get(0).rules().get(0);
         assertEquals("Large", rule.getName());
         assertEquals(100000000d, rule.getMaxScaleDenominator(), 0.1);
 
@@ -1665,7 +1666,7 @@ public class YsldParseCookbookTest {
         assertEquals(color("000000"), SLD.color(poly.getStroke()));
         assertEquals(7, SLD.width(poly.getStroke()));
 
-        rule = style.featureTypeStyles().get(0).rules().get(1);
+        rule = (RuleImpl) style.featureTypeStyles().get(0).rules().get(1);
         assertEquals("Medium", rule.getName());
         assertEquals(200000000d, rule.getMaxScaleDenominator(), 0.1);
         assertEquals(100000000d, rule.getMinScaleDenominator(), 0.1);
@@ -1675,7 +1676,7 @@ public class YsldParseCookbookTest {
         assertEquals(color("000000"), SLD.color(poly.getStroke()));
         assertEquals(4, SLD.width(poly.getStroke()));
 
-        rule = style.featureTypeStyles().get(0).rules().get(2);
+        rule = (RuleImpl) style.featureTypeStyles().get(0).rules().get(2);
         assertEquals("Small", rule.getName());
         assertEquals(200000000d, rule.getMinScaleDenominator(), 0.1);
 

@@ -37,7 +37,8 @@ public class SpriteGraphicFactoryMockTestImpl {
     static final URL pngURL =
             SpriteGraphicFactoryMockTestImpl.class.getResource("test-data/liberty/osm-liberty.png");
     static final URL jsonURL =
-            SpriteGraphicFactoryMockTestImpl.class.getResource("test-data/liberty/osm-liberty.json");
+            SpriteGraphicFactoryMockTestImpl.class.getResource(
+                    "test-data/liberty/osm-liberty.json");
 
     @Before
     public void setup() throws Exception {

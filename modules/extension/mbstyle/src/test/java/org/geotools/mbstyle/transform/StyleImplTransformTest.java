@@ -36,8 +36,10 @@ import org.geotools.TestData;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.FeatureTypeStyle;
 import org.geotools.api.style.GraphicalSymbol;
 import org.geotools.api.style.StyledLayerDescriptor;
+import org.geotools.api.style.Symbolizer;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureSource;
@@ -215,7 +217,7 @@ public class StyleImplTransformTest {
         List<FeatureTypeStyleImpl> fts = mbFill.transform(mbStyle);
 
         assertEquals(1, fts.get(0).rules().size());
-        RuleImpl r = fts.get(0).rules().get(0);
+        RuleImpl r = (RuleImpl) fts.get(0).rules().get(0);
 
         assertEquals(1, r.symbolizers().size());
         Symbolizer symbolizer = r.symbolizers().get(0);
@@ -240,7 +242,7 @@ public class StyleImplTransformTest {
         List<FeatureTypeStyleImpl> fts = mbLine.transform(mbStyle);
 
         assertEquals(1, fts.get(0).rules().size());
-        RuleImpl r = fts.get(0).rules().get(0);
+        RuleImpl r = (RuleImpl) fts.get(0).rules().get(0);
 
         assertEquals(1, r.symbolizers().size());
         Symbolizer symbolizer = r.symbolizers().get(0);
@@ -279,7 +281,7 @@ public class StyleImplTransformTest {
         List<FeatureTypeStyleImpl> fts = mbLine.transform(mbStyle);
 
         assertEquals(1, fts.get(0).rules().size());
-        RuleImpl r = fts.get(0).rules().get(0);
+        RuleImpl r = (RuleImpl) fts.get(0).rules().get(0);
 
         assertEquals(2, r.symbolizers().size());
         Symbolizer symbolizer = r.symbolizers().get(0);
@@ -310,12 +312,12 @@ public class StyleImplTransformTest {
         assertThat(layers.get(0), CoreMatchers.instanceOf(LineMBLayer.class));
 
         StyledLayerDescriptor sld = mbStyle.transform();
-        List<FeatureTypeStyleImpl> fts = MapboxTestUtils.getStyle(sld, 0).featureTypeStyles();
+        List<FeatureTypeStyle> fts = MapboxTestUtils.getStyle(sld, 0).featureTypeStyles();
         assertEquals(fts.size(), 1);
 
         // first and only fts
         assertEquals(1, fts.get(0).rules().size());
-        RuleImpl r0 = fts.get(0).rules().get(0);
+        RuleImpl r0 = (RuleImpl) fts.get(0).rules().get(0);
         assertEquals(2, r0.symbolizers().size());
         LineSymbolizerImpl s_0_0 = (LineSymbolizerImpl) r0.symbolizers().get(0);
         assertEquals(
@@ -350,7 +352,7 @@ public class StyleImplTransformTest {
         List<FeatureTypeStyleImpl> fts = mbLine.transform(mbStyle);
 
         assertEquals(1, fts.get(0).rules().size());
-        RuleImpl r = fts.get(0).rules().get(0);
+        RuleImpl r = (RuleImpl) fts.get(0).rules().get(0);
 
         assertEquals(1, r.symbolizers().size());
         Symbolizer symbolizer = r.symbolizers().get(0);
@@ -382,7 +384,7 @@ public class StyleImplTransformTest {
         List<FeatureTypeStyleImpl> fts = mbCircle.transform(mbStyle);
 
         assertEquals(1, fts.get(0).rules().size());
-        RuleImpl r = fts.get(0).rules().get(0);
+        RuleImpl r = (RuleImpl) fts.get(0).rules().get(0);
 
         assertEquals(1, r.symbolizers().size());
         Symbolizer symbolizer = r.symbolizers().get(0);
@@ -438,7 +440,7 @@ public class StyleImplTransformTest {
         List<FeatureTypeStyleImpl> fts = mbCircle.transform(mbStyle);
 
         assertEquals(1, fts.get(0).rules().size());
-        RuleImpl r = fts.get(0).rules().get(0);
+        RuleImpl r = (RuleImpl) fts.get(0).rules().get(0);
 
         assertEquals(1, r.symbolizers().size());
         Symbolizer symbolizer = r.symbolizers().get(0);
@@ -534,7 +536,7 @@ public class StyleImplTransformTest {
         List<FeatureTypeStyleImpl> fts = layers.get(0).transform(mbStyle);
 
         assertEquals(1, fts.get(0).rules().size());
-        RuleImpl r = fts.get(0).rules().get(0);
+        RuleImpl r = (RuleImpl) fts.get(0).rules().get(0);
 
         assertEquals(1, r.symbolizers().size());
         Symbolizer symbolizer = r.symbolizers().get(0);
@@ -559,7 +561,7 @@ public class StyleImplTransformTest {
         MBStyle mbStyle = new MBStyle(jsonObject);
         List<MBLayer> layers = mbStyle.layers("testsource");
         List<FeatureTypeStyleImpl> fts = layers.get(0).transform(mbStyle);
-        RuleImpl r = fts.get(0).rules().get(0);
+        RuleImpl r = (RuleImpl) fts.get(0).rules().get(0);
         // only one symbolizer
         List<Symbolizer> symbolizers = r.symbolizers();
         assertEquals(1, symbolizers.size());
@@ -584,7 +586,7 @@ public class StyleImplTransformTest {
         MBStyle mbStyle = new MBStyle(jsonObject);
         List<MBLayer> layers = mbStyle.layers("testsource");
         List<FeatureTypeStyleImpl> fts = layers.get(0).transform(mbStyle);
-        RuleImpl r = fts.get(0).rules().get(0);
+        RuleImpl r = (RuleImpl) fts.get(0).rules().get(0);
         Symbolizer symbolizer = r.symbolizers().get(0);
         assertEquals("false", symbolizer.getOptions().get("partials"));
     }
@@ -601,7 +603,7 @@ public class StyleImplTransformTest {
         MBStyle mbStyle = new MBStyle(jsonObject);
         List<MBLayer> layers = mbStyle.layers("testsource");
         List<FeatureTypeStyleImpl> fts = layers.get(0).transform(mbStyle);
-        RuleImpl r = fts.get(0).rules().get(0);
+        RuleImpl r = (RuleImpl) fts.get(0).rules().get(0);
         Symbolizer symbolizer = r.symbolizers().get(0);
         assertEquals("false", symbolizer.getOptions().get("partials"));
     }
@@ -618,7 +620,7 @@ public class StyleImplTransformTest {
         MBStyle mbStyle = new MBStyle(jsonObject);
         List<MBLayer> layers = mbStyle.layers("testsource");
         List<FeatureTypeStyleImpl> fts = layers.get(0).transform(mbStyle);
-        RuleImpl r = fts.get(0).rules().get(0);
+        RuleImpl r = (RuleImpl) fts.get(0).rules().get(0);
         Symbolizer symbolizer = r.symbolizers().get(0);
         assertEquals("false", symbolizer.getOptions().get("partials"));
     }
@@ -635,7 +637,7 @@ public class StyleImplTransformTest {
         MBStyle mbStyle = new MBStyle(jsonObject);
         List<MBLayer> layers = mbStyle.layers("testsource");
         List<FeatureTypeStyleImpl> fts = layers.get(0).transform(mbStyle);
-        RuleImpl r = fts.get(0).rules().get(0);
+        RuleImpl r = (RuleImpl) fts.get(0).rules().get(0);
         Symbolizer symbolizer = r.symbolizers().get(0);
         // no way to have only partial conflict resolution atm
         assertEquals(
@@ -657,7 +659,7 @@ public class StyleImplTransformTest {
         MBStyle mbStyle = new MBStyle(jsonObject);
         List<MBLayer> layers = mbStyle.layers("testsource");
         List<FeatureTypeStyleImpl> fts = layers.get(0).transform(mbStyle);
-        RuleImpl r = fts.get(0).rules().get(0);
+        RuleImpl r = (RuleImpl) fts.get(0).rules().get(0);
         Symbolizer symbolizer = r.symbolizers().get(0);
         // no way to have only partial conflict resolution right now
         assertEquals(
@@ -679,7 +681,7 @@ public class StyleImplTransformTest {
         MBStyle mbStyle = new MBStyle(jsonObject);
         List<MBLayer> layers = mbStyle.layers("testsource");
         List<FeatureTypeStyleImpl> fts = layers.get(0).transform(mbStyle);
-        RuleImpl r = fts.get(0).rules().get(0);
+        RuleImpl r = (RuleImpl) fts.get(0).rules().get(0);
         TextSymbolizerImpl symbolizer = (TextSymbolizerImpl) r.symbolizers().get(0);
         assertEquals(
                 "true",
@@ -701,7 +703,7 @@ public class StyleImplTransformTest {
         MBStyle mbStyle = new MBStyle(jsonObject);
         List<MBLayer> layers = mbStyle.layers("testsource");
         List<FeatureTypeStyleImpl> fts = layers.get(0).transform(mbStyle);
-        RuleImpl r = fts.get(0).rules().get(0);
+        RuleImpl r = (RuleImpl) fts.get(0).rules().get(0);
         Symbolizer symbolizer = r.symbolizers().get(0);
         assertNull("true", symbolizer.getOptions().get("labelObstacle"));
     }
@@ -741,7 +743,7 @@ public class StyleImplTransformTest {
         List<FeatureTypeStyleImpl> fts = layers.get(0).transform(mbStyle);
 
         assertEquals(1, fts.get(0).rules().size());
-        RuleImpl r = fts.get(0).rules().get(0);
+        RuleImpl r = (RuleImpl) fts.get(0).rules().get(0);
 
         assertEquals(1, r.symbolizers().size());
         Symbolizer symbolizer = r.symbolizers().get(0);
@@ -778,7 +780,7 @@ public class StyleImplTransformTest {
 
         assertEquals(1, style.featureTypeStyles().size());
 
-        FeatureTypeStyleImpl ft = style.featureTypeStyles().get(0);
+        FeatureTypeStyleImpl ft = (FeatureTypeStyleImpl) style.featureTypeStyles().get(0);
         TextSymbolizerImpl ts = (TextSymbolizerImpl) ft.rules().get(0).symbolizers().get(0);
         PointPlacementImpl pp = (PointPlacementImpl) ts.getLabelPlacement();
         AnchorPointImpl ap = pp.getAnchorPoint();
@@ -851,14 +853,18 @@ public class StyleImplTransformTest {
         MBStyle mbStyle = new MBStyle(jsonObject);
         StyledLayerDescriptor sld = mbStyle.transform();
         StyleImpl style = MapboxTestUtils.getStyle(sld, 0);
-        List<FeatureTypeStyleImpl> featureTypeStyles = style.featureTypeStyles();
-        TextSymbolizerImpl ts0 = getFirstSymbolizer(featureTypeStyles.get(0));
+        List<FeatureTypeStyle> featureTypeStyles = style.featureTypeStyles();
+        TextSymbolizerImpl ts0 =
+                getFirstSymbolizer((FeatureTypeStyleImpl) featureTypeStyles.get(0));
         assertEquals(1000, (int) ts0.getPriority().evaluate(null, Integer.class));
-        TextSymbolizerImpl ts1 = getFirstSymbolizer(featureTypeStyles.get(1));
+        TextSymbolizerImpl ts1 =
+                getFirstSymbolizer((FeatureTypeStyleImpl) featureTypeStyles.get(1));
         assertEquals(2000, (int) ts1.getPriority().evaluate(null, Integer.class));
-        TextSymbolizerImpl ts2 = getFirstSymbolizer(featureTypeStyles.get(2));
+        TextSymbolizerImpl ts2 =
+                getFirstSymbolizer((FeatureTypeStyleImpl) featureTypeStyles.get(2));
         assertEquals(3000, (int) ts2.getPriority().evaluate(null, Integer.class));
-        TextSymbolizerImpl ts3 = getFirstSymbolizer(featureTypeStyles.get(3));
+        TextSymbolizerImpl ts3 =
+                getFirstSymbolizer((FeatureTypeStyleImpl) featureTypeStyles.get(3));
         assertEquals(4000, (int) ts3.getPriority().evaluate(null, Integer.class));
     }
 

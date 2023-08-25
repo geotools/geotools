@@ -35,8 +35,8 @@ import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
 
 /**
- * {@link CoverageProcessingNode} that actually implement a {@link ChannelSelectionImpl} operation as
- * stated in SLD 1.0 spec from OGC.
+ * {@link CoverageProcessingNode} that actually implement a {@link ChannelSelectionImpl} operation
+ * as stated in SLD 1.0 spec from OGC.
  *
  * <p>This node internally creates a small chain that does all that�'s needed to satisfy a {@link
  * ChannelSelectionImpl} element.
@@ -135,7 +135,8 @@ class ChannelSelectionNode extends SubchainStyleVisitorCoverageProcessingAdapter
                         Errors.format(
                                 ErrorKeys.ILLEGAL_ARGUMENT_$1,
                                 "Both gray and rgb channel selection are valid!"));
-            final SelectedChannelTypeImpl[] sc = gray == null ? rgb : new SelectedChannelTypeImpl[] {gray};
+            final SelectedChannelTypeImpl[] sc =
+                    gray == null ? rgb : new SelectedChannelTypeImpl[] {gray};
 
             // If we do not really select any bands from the original coverage, we try to entirely
             // skip this operation

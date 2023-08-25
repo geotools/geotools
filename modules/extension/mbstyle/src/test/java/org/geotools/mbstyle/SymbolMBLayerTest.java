@@ -126,7 +126,7 @@ public class SymbolMBLayerTest {
         // Default MBStyle value
         assertEquals(0, testLayerDefault.getTextRotate().intValue());
         // Default values from FeatureTypeStyle transform
-        RuleImpl r = featureTypeDefaults.get(0).rules().get(0);
+        RuleImpl r = (RuleImpl) featureTypeDefaults.get(0).rules().get(0);
         TextSymbolizerImpl symbolizer = (TextSymbolizerImpl) r.symbolizers().get(0);
         PointPlacementImpl pp = (PointPlacementImpl) symbolizer.getLabelPlacement();
         assertEquals("0.0", pp.getRotation().toString());
@@ -137,7 +137,7 @@ public class SymbolMBLayerTest {
         // Test generated MBStyle value
         assertEquals(10, testLayer.getTextRotate().intValue());
         // Test values from FeatureTypeStyle transform
-        RuleImpl r = featureTypeTestValues.get(0).rules().get(0);
+        RuleImpl r = (RuleImpl) featureTypeTestValues.get(0).rules().get(0);
         TextSymbolizerImpl symbolizer = (TextSymbolizerImpl) r.symbolizers().get(0);
         PointPlacementImpl pp = (PointPlacementImpl) symbolizer.getLabelPlacement();
         assertEquals("10", pp.getRotation().toString());
@@ -278,7 +278,7 @@ public class SymbolMBLayerTest {
 
     @Test
     public void testTextFeatureTypeDefaults() {
-        RuleImpl rule = featureTypeDefaults.get(0).rules().get(0);
+        RuleImpl rule = (RuleImpl) featureTypeDefaults.get(0).rules().get(0);
         TextSymbolizerImpl textSymbolizer = (TextSymbolizerImpl) rule.symbolizers().get(0);
         FontImpl font = textSymbolizer.fonts().get(0);
 

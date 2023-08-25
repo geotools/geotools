@@ -16,12 +16,11 @@
  */
 package org.geotools.kml;
 
-import org.geotools.styling.FeatureTypeStyleImpl;
-
 import java.net.URI;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import org.geotools.styling.FeatureTypeStyleImpl;
 
 /**
  * Simple container for holding styles by uri.

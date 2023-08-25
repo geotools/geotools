@@ -19,7 +19,6 @@ package org.geotools.ysld.encode;
 
 import java.util.Optional;
 import java.util.logging.Logger;
-
 import org.geotools.styling.FeatureTypeStyleImpl;
 import org.geotools.styling.StyleImpl;
 import org.geotools.util.logging.Logging;
@@ -33,7 +32,7 @@ public class FeatureStyleEncoder extends YsldEncodeHandler<FeatureTypeStyleImpl>
     static Logger LOG = Logging.getLogger(FeatureStyleEncoder.class);
 
     public FeatureStyleEncoder(StyleImpl style) {
-        super(style.featureTypeStyles().iterator());
+        super((FeatureTypeStyleImpl) style.featureTypeStyles().iterator());
     }
 
     @Override

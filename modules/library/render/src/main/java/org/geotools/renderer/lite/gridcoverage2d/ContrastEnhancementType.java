@@ -53,8 +53,8 @@ import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
 
 /**
- * Starting with version 14.x, {@link ContrastEnhancementImpl} can be customized to support different
- * {@link ContrastMethod}s algorithm and parameters.
+ * Starting with version 14.x, {@link ContrastEnhancementImpl} can be customized to support
+ * different {@link ContrastMethod}s algorithm and parameters.
  *
  * <p>This class contains implementations from previously defined algorithm, as well as new ones.
  *

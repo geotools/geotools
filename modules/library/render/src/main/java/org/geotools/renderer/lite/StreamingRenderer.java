@@ -87,8 +87,7 @@ import org.geotools.api.referencing.datum.PixelInCell;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.api.style.LineSymbolizer;
-import org.geotools.api.style.PolygonSymbolizer;
+import org.geotools.api.style.*;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -148,6 +147,7 @@ import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.renderer.style.Style2D;
 import org.geotools.renderer.style.StyleAttributeExtractor;
 import org.geotools.styling.*;
+import org.geotools.styling.StyleFactory;
 import org.geotools.styling.visitor.DpiRescaleStyleVisitor;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 import org.geotools.styling.visitor.MapRenderingSelectorStyleVisitor;
@@ -1054,7 +1054,7 @@ public class StreamingRenderer implements GTRenderer {
      * paint(Graphics2D, Rectangle, AffineTransform)</code>. It is package protected just to allow
      * unit testing it.
      *
-     * @param envelope the spatial extent which is the target area of the rendering process
+     * @param mapArea the spatial extent which is the target area of the rendering process
      * @return the set of features resulting from <code>currLayer</code> after querying its feature
      *     source
      * @throws IllegalFilterException if something goes wrong constructing the bbox filter
@@ -1994,8 +1994,9 @@ public class StreamingRenderer implements GTRenderer {
         layer.getStyle().accept(selectorStyleVisitor);
         StyleImpl style = (StyleImpl) selectorStyleVisitor.getCopy();
 
-        for (FeatureTypeStyleImpl fts : style.featureTypeStyles()) {
-            if (isFeatureTypeStyleActive(layer.getFeatureSource().getSchema(), fts)) {
+        for (FeatureTypeStyle fts : style.featureTypeStyles()) {
+            if (isFeatureTypeStyleActive(
+                    layer.getFeatureSource().getSchema(), (FeatureTypeStyleImpl) fts)) {
 
                 SimplifyingStyleVisitor simplifier = new SimplifyingStyleVisitor();
                 fts.accept(simplifier);
@@ -2004,7 +2005,7 @@ public class StreamingRenderer implements GTRenderer {
                 // DJB: this FTS is compatible with this FT.
 
                 // get applicable rules at the current scale
-                List<List<RuleImpl>> splittedRules = splitRules(fts);
+                List<List<RuleImpl>> splittedRules = splitRules((FeatureTypeStyleImpl) fts);
                 List<RuleImpl> ruleList = splittedRules.get(0);
                 List<RuleImpl> elseRuleList = splittedRules.get(1);
 
@@ -2035,7 +2036,10 @@ public class StreamingRenderer implements GTRenderer {
                 }
                 lfts.composite = composite;
                 if (org.geotools.styling.FeatureTypeStyleImpl.VALUE_EVALUATION_MODE_FIRST.equals(
-                        fts.getOptions().get(org.geotools.styling.FeatureTypeStyleImpl.KEY_EVALUATION_MODE))) {
+                        fts.getOptions()
+                                .get(
+                                        org.geotools.styling.FeatureTypeStyleImpl
+                                                .KEY_EVALUATION_MODE))) {
                     lfts.matchFirst = true;
                 }
 
@@ -2105,10 +2109,10 @@ public class StreamingRenderer implements GTRenderer {
         List<RuleImpl> ruleList = new ArrayList<>();
         List<RuleImpl> elseRuleList = new ArrayList<>();
 
-        for (RuleImpl r : fts.rules())
-            if (isWithInScale(r)) {
+        for (Rule r : fts.rules())
+            if (isWithInScale((RuleImpl) r)) {
                 if (r.isElseFilter()) {
-                    elseRuleList.add(r);
+                    elseRuleList.add((RuleImpl) r);
                 } else {
                     // rules can have dynamic bits related to env variables that we evaluate and
                     // skip at this this time
@@ -2130,7 +2134,7 @@ public class StreamingRenderer implements GTRenderer {
                             ruleList.add(copy);
                         }
                     } else {
-                        ruleList.add(r);
+                        ruleList.add((RuleImpl) r);
                     }
                 }
             }
@@ -2187,10 +2191,10 @@ public class StreamingRenderer implements GTRenderer {
             // count how many lite feature type styles are active
             int currCount = 0;
             FeatureType ftype = layer.getFeatureSource().getSchema();
-            for (FeatureTypeStyleImpl fts : styleLayer.getStyle().featureTypeStyles()) {
-                if (isFeatureTypeStyleActive(ftype, fts)) {
+            for (FeatureTypeStyle fts : styleLayer.getStyle().featureTypeStyles()) {
+                if (isFeatureTypeStyleActive(ftype, (FeatureTypeStyleImpl) fts)) {
                     // get applicable rules at the current scale
-                    List<List<RuleImpl>> splittedRules = splitRules(fts);
+                    List<List<RuleImpl>> splittedRules = splitRules((FeatureTypeStyleImpl) fts);
                     List<RuleImpl> ruleList = splittedRules.get(0);
                     List<RuleImpl> elseRuleList = splittedRules.get(1);
 

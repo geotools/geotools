@@ -178,9 +178,10 @@ public class ScreenMapShapefileTest {
         ExternalGraphicImpl icon = sf.createExternalGraphic(iconUrl, "image/png");
         GraphicImpl graphic =
                 sf.createGraphic(new ExternalGraphicImpl[] {icon}, null, null, null, null, null);
-        PointSymbolizerImpl symbolizer = sf.createPointSymbolizer(graphic, "the_geom");
+        PointSymbolizerImpl symbolizer =
+                (PointSymbolizerImpl) sf.createPointSymbolizer(graphic, "the_geom");
 
-        RuleImpl rule = sf.createRule();
+        RuleImpl rule = (RuleImpl) sf.createRule();
         rule.symbolizers().add(symbolizer);
 
         FeatureTypeStyleImpl fts = sf.createFeatureTypeStyle();

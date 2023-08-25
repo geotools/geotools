@@ -17,11 +17,10 @@
  */
 package org.geotools.ysld.transform.sld;
 
-import org.geotools.styling.StrokeImpl;
-
 import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import org.geotools.styling.StrokeImpl;
 
 /** Handles xml parse events for {@link StrokeImpl} elements. */
 public class StrokeHandler extends SldTransformHandler {

@@ -40,6 +40,7 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.style.SemanticType;
+import org.geotools.api.style.Symbolizer;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.function.Classifier;
@@ -388,7 +389,7 @@ public class StyleGenerator {
     /** Used to update an existing style based on the provided input. */
     public static void modifyFTS(FeatureTypeStyleImpl fts, int ruleIndex, String styleExpression)
             throws IllegalFilterException {
-        RuleImpl thisRule = fts.rules().get(ruleIndex);
+        RuleImpl thisRule = (RuleImpl) fts.rules().get(ruleIndex);
         Filter filter = thisRule.getFilter();
 
         if (filter instanceof And) { // ranged expression

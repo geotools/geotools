@@ -137,7 +137,8 @@ public class SLDTest {
 
         StyleImpl s = (StyleImpl) ((UserLayer) (sld.layers().get(0))).getUserStyles()[0];
         TextSymbolizerImpl symbolizer =
-                (TextSymbolizerImpl) (s.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0));
+                (TextSymbolizerImpl)
+                        (s.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0));
         FontImpl font = symbolizer.fonts().get(0);
         assertTrue(font.getFamily().size() > 0);
 

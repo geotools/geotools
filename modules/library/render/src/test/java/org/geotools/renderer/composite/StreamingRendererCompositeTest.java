@@ -28,6 +28,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.style.Symbolizer;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.data.DataUtilities;
@@ -365,7 +366,9 @@ public class StreamingRendererCompositeTest {
         StyleImpl baseStyle = sb.createStyle(sb.createRasterSymbolizer());
         mc.addLayer(new GridCoverageLayer(first, baseStyle));
         FeatureTypeStyleImpl compositeFts = sb.createFeatureTypeStyle(sb.createRasterSymbolizer());
-        compositeFts.getOptions().put(org.geotools.styling.FeatureTypeStyleImpl.COMPOSITE, composite);
+        compositeFts
+                .getOptions()
+                .put(org.geotools.styling.FeatureTypeStyleImpl.COMPOSITE, composite);
         StyleImpl compositeStyle = sb.createStyle();
         compositeStyle.featureTypeStyles().add(compositeFts);
         mc.addLayer(new GridCoverageLayer(second, compositeStyle));
@@ -523,7 +526,8 @@ public class StreamingRendererCompositeTest {
     }
 
     private StyleImpl applyCompositeOnFirstSymbolizer(String styleName) throws IOException {
-        StyleImpl style = RendererBaseTest.loadStyle(StreamingRendererCompositeTest.class, styleName);
+        StyleImpl style =
+                RendererBaseTest.loadStyle(StreamingRendererCompositeTest.class, styleName);
         Symbolizer symbolizer =
                 style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
         symbolizer.getOptions().put(org.geotools.styling.FeatureTypeStyleImpl.COMPOSITE, composite);

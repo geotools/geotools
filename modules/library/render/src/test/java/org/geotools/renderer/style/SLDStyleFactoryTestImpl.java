@@ -126,7 +126,7 @@ public class SLDStyleFactoryTestImpl {
 
     @Test
     public void testCreateLineStyle() {
-        LineSymbolizerImpl ls = sf.createLineSymbolizer();
+        LineSymbolizerImpl ls = (LineSymbolizerImpl) sf.createLineSymbolizer();
         ls.setPerpendicularOffset(ff.literal(5));
         NumberRange<Double> scaleRange = NumberRange.create(1.0, 50000.0);
         LineStyle2D style = (LineStyle2D) sld.createLineStyle(null, ls, scaleRange);
@@ -326,7 +326,7 @@ public class SLDStyleFactoryTestImpl {
         GraphicImpl g =
                 sf.createGraphic(
                         new ExternalGraphicImpl[] {eg}, null, null, null, ff.literal(20), null);
-        FillImpl fill = sf.createFill(null, null, null, g);
+        FillImpl fill = (FillImpl) sf.createFill(null, null, null, g);
         symb.setFill(fill);
 
         PolygonStyle2D ps = sld.createPolygonStyle(feature, symb, range);
@@ -360,7 +360,7 @@ public class SLDStyleFactoryTestImpl {
 
     @Test
     public void testDefaultLineSymbolizerWithColor() throws Exception {
-        LineSymbolizerImpl symb = sf.createLineSymbolizer();
+        LineSymbolizerImpl symb = (LineSymbolizerImpl) sf.createLineSymbolizer();
         symb.setStroke(sf.createStroke(ff.literal("#0000FF"), ff.literal(1.0)));
         symb.setPerpendicularOffset(ff.literal(10));
 
@@ -380,8 +380,9 @@ public class SLDStyleFactoryTestImpl {
         PolygonSymbolizerImpl symb = sf.createPolygonSymbolizer();
         MarkImpl myMark = sf.createMark();
         myMark.setWellKnownName(ff.literal("square"));
-        FillImpl fill = sf.createFill(null);
-        fill.setGraphicFill(sf.createGraphic(null, new MarkImpl[] {myMark}, null, null, null, null));
+        FillImpl fill = (FillImpl) sf.createFill(null);
+        fill.setGraphicFill(
+                sf.createGraphic(null, new MarkImpl[] {myMark}, null, null, null, null));
         symb.setFill(fill);
 
         PolygonStyle2D ps = sld.createPolygonStyle(feature, symb, range);
@@ -578,7 +579,7 @@ public class SLDStyleFactoryTestImpl {
                         Color.red);
         GraphicImpl graphic = sb.createGraphic(null, mark, null);
         graphic.setSize(ff.literal("40px"));
-        FillImpl fill = sf.createFill(null, null, null, graphic);
+        FillImpl fill = (FillImpl) sf.createFill(null, null, null, graphic);
         PolygonSymbolizerImpl symb = sb.createPolygonSymbolizer();
         symb.setFill(fill);
 
@@ -615,7 +616,7 @@ public class SLDStyleFactoryTestImpl {
 
     @Test
     public void testDashArrayZero() throws Exception {
-        LineSymbolizerImpl ls = sf.createLineSymbolizer();
+        LineSymbolizerImpl ls = (LineSymbolizerImpl) sf.createLineSymbolizer();
         StrokeImpl stroke = sf.createStroke(ff.literal("red"), ff.literal(1));
         Expression nonObviousZero = ff.subtract(ff.literal(10), ff.literal(10));
         stroke.setDashArray(Arrays.asList(nonObviousZero, nonObviousZero, nonObviousZero));

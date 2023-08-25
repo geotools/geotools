@@ -1287,8 +1287,8 @@ public class RasterSymbolizerImplTest extends org.junit.Assert {
         // build the RasterSymbolizer
         final UserLayer nl = (UserLayer) sld.getStyledLayers()[0];
         final StyleImpl style = (StyleImpl) nl.getUserStyles()[0];
-        final FeatureTypeStyleImpl fts = style.featureTypeStyles().get(0);
-        final RuleImpl rule = fts.rules().get(0);
+        final FeatureTypeStyleImpl fts = (FeatureTypeStyleImpl) style.featureTypeStyles().get(0);
+        final RuleImpl rule = (RuleImpl) fts.rules().get(0);
         final RasterSymbolizerImpl rs_1 = (RasterSymbolizerImpl) rule.symbolizers().get(0);
 
         // visit the RasterSymbolizer
@@ -1577,8 +1577,8 @@ public class RasterSymbolizerImplTest extends org.junit.Assert {
     private static RasterSymbolizerImpl extractRasterSymbolizer(StyledLayerDescriptor sld) {
         final UserLayer nl = (UserLayer) sld.getStyledLayers()[0];
         final StyleImpl style = (StyleImpl) nl.getUserStyles()[0];
-        final FeatureTypeStyleImpl fts = style.featureTypeStyles().get(0);
-        final RuleImpl rule = fts.rules().get(0);
+        final FeatureTypeStyleImpl fts = (FeatureTypeStyleImpl) style.featureTypeStyles().get(0);
+        final RuleImpl rule = (RuleImpl) fts.rules().get(0);
         final RasterSymbolizerImpl rs_1 = (RasterSymbolizerImpl) rule.symbolizers().get(0);
         return rs_1;
     }
@@ -2515,7 +2515,8 @@ public class RasterSymbolizerImplTest extends org.junit.Assert {
             SelectedChannelTypeImpl postBandSelectionChannel = postBandSelectionChannels[i];
             // Before the fix, the following assertion would fail
             assertNotNull(postBandSelectionChannel);
-            final ContrastEnhancementImpl cntEnh = postBandSelectionChannel.getContrastEnhancement();
+            final ContrastEnhancementImpl cntEnh =
+                    postBandSelectionChannel.getContrastEnhancement();
             ContrastMethod method = cntEnh.getMethod();
 
             // Assert channels number have been re-arranged

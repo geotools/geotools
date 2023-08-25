@@ -70,7 +70,7 @@ public class LineSymbolizerBuilder extends SymbolizerBuilder<LineSymbolizerImpl>
         if (stroke == null) {
             stroke = ConstantStroke.DEFAULT;
         }
-        LineSymbolizerImpl ls = sf.createLineSymbolizer(stroke, null);
+        LineSymbolizerImpl ls = (LineSymbolizerImpl) sf.createLineSymbolizer(stroke, null);
         if (geometry != null) {
             ls.setGeometry(geometry);
         }

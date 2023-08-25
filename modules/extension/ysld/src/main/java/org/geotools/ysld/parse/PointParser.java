@@ -17,9 +17,10 @@
  */
 package org.geotools.ysld.parse;
 
+import org.geotools.api.style.Symbolizer;
+import org.geotools.styling.GraphicImpl;
 import org.geotools.styling.PointSymbolizerImpl;
 import org.geotools.styling.RuleImpl;
-import org.geotools.styling.Symbolizer;
 import org.geotools.ysld.YamlObject;
 
 /** Handles parsing a Ysld "point" symbolizer property into a {@link Symbolizer} object. */
@@ -32,6 +33,6 @@ public class PointParser extends SymbolizerParser<PointSymbolizerImpl> {
     @Override
     public void handle(YamlObject<?> obj, YamlParseContext context) {
         super.handle(obj, context);
-        context.push(new GraphicParser(factory, sym.getGraphic()));
+        context.push(new GraphicParser(factory, (GraphicImpl) sym.getGraphic()));
     }
 }

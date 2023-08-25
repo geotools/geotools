@@ -43,9 +43,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Similar to {@link FillImplTest}, but uses the vector rendering hint, and only tests stuff that can
- * work with such hint. Also accounts for the fact the texture paint and the full vector rendering
- * do not provide the same output
+ * Similar to {@link FillImplTest}, but uses the vector rendering hint, and only tests stuff that
+ * can work with such hint. Also accounts for the fact the texture paint and the full vector
+ * rendering do not provide the same output
  */
 public class VectorFillTestImpl {
     private static final long TIME = 40000;

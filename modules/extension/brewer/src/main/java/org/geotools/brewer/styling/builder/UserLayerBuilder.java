@@ -93,8 +93,7 @@ public class UserLayerBuilder extends AbstractSLDBuilder<UserLayer> {
             return unset();
         }
 
-        inlineFeatureDataStore =
-                ((UserLayerImpl) other).getInlineFeatureDatastore();
+        inlineFeatureDataStore = ((UserLayerImpl) other).getInlineFeatureDatastore();
         inlineFeatureType = other.getInlineFeatureType();
         remoteOWS.reset(other.getRemoteOWS());
         featureTypeConstraint.clear();

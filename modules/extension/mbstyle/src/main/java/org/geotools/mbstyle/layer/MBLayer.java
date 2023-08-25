@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.style.Rule;
 import org.geotools.api.style.SemanticType;
 import org.geotools.api.style.StyleFactory;
 import org.geotools.mbstyle.MBStyle;
@@ -348,12 +349,12 @@ public abstract class MBLayer {
             return Collections.emptyList();
         }
         for (FeatureTypeStyleImpl fts : style) {
-            for (RuleImpl rule : fts.rules()) {
+            for (Rule rule : fts.rules()) {
                 if (minScaleDenominator != null) {
-                    rule.setMinScaleDenominator(minScaleDenominator);
+                    ((RuleImpl) rule).setMinScaleDenominator(minScaleDenominator);
                 }
                 if (maxScaleDenominator != null) {
-                    rule.setMaxScaleDenominator(maxScaleDenominator);
+                    ((RuleImpl) rule).setMaxScaleDenominator(maxScaleDenominator);
                 }
             }
         }

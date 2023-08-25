@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.style.FeatureTypeStyle;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -210,7 +211,7 @@ public class ZOrderTest {
 
     private void forceSortBy(StyleImpl style, String sortBy) {
         if (sortBy != null) {
-            for (FeatureTypeStyleImpl fts : style.featureTypeStyles()) {
+            for (FeatureTypeStyle fts : style.featureTypeStyles()) {
                 fts.getOptions().put(org.geotools.styling.FeatureTypeStyleImpl.SORT_BY, sortBy);
             }
         }
@@ -218,7 +219,7 @@ public class ZOrderTest {
 
     private void forceSortByGroup(StyleImpl style, String sortByGroup) {
         if (sortByGroup != null) {
-            for (FeatureTypeStyleImpl fts : style.featureTypeStyles()) {
+            for (FeatureTypeStyle fts : style.featureTypeStyles()) {
                 fts.getOptions().put(FeatureTypeStyleImpl.SORT_BY_GROUP, sortByGroup);
             }
         }
@@ -423,7 +424,7 @@ public class ZOrderTest {
         StyleImpl roadsStyle = RendererBaseTest.loadStyle(this, "zorder/zroads.sld");
         forceSortBy(roadsStyle, "z");
         forceSortByGroup(roadsStyle, "theGroup");
-        FeatureTypeStyleImpl fts = roadsStyle.featureTypeStyles().get(0);
+        FeatureTypeStyleImpl fts = (FeatureTypeStyleImpl) roadsStyle.featureTypeStyles().get(0);
         fts.getOptions().put(org.geotools.styling.FeatureTypeStyleImpl.COMPOSITE_BASE, "true");
         fts.getOptions().put(org.geotools.styling.FeatureTypeStyleImpl.COMPOSITE, "destination-in");
 

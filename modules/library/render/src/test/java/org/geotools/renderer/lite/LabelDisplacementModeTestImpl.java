@@ -150,7 +150,8 @@ public class LabelDisplacementModeTestImpl {
 
     @Test
     public void testDisplacementNorth() throws Exception {
-        StyleImpl style = RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementN.sld");
+        StyleImpl style =
+                RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementN.sld");
         BufferedImage image = renderLabels(fs, style, "Label North Displacement");
         // ImageIO.write(image, "PNG", new
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth1.png"));
@@ -161,7 +162,8 @@ public class LabelDisplacementModeTestImpl {
 
     @Test
     public void testDisplacementSouth() throws Exception {
-        StyleImpl style = RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementS.sld");
+        StyleImpl style =
+                RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementS.sld");
         BufferedImage image = renderLabels(fs, style, "Label South Displacement");
         // ImageIO.write(image, "PNG", new
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth1.png"));
@@ -172,7 +174,8 @@ public class LabelDisplacementModeTestImpl {
 
     @Test
     public void testDisplacementEast() throws Exception {
-        StyleImpl style = RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementE.sld");
+        StyleImpl style =
+                RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementE.sld");
         BufferedImage image = renderLabels(fs, style, "Label East Displacement");
         // ImageIO.write(image, "PNG", new
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth1.png"));
@@ -183,7 +186,8 @@ public class LabelDisplacementModeTestImpl {
 
     @Test
     public void testDisplacementWest() throws Exception {
-        StyleImpl style = RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementW.sld");
+        StyleImpl style =
+                RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementW.sld");
         BufferedImage image = renderLabels(fs, style, "Label West Displacement");
         // ImageIO.write(image, "PNG", new
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth1.png"));
@@ -194,7 +198,8 @@ public class LabelDisplacementModeTestImpl {
 
     @Test
     public void testDisplacementNE() throws Exception {
-        StyleImpl style = RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementNE.sld");
+        StyleImpl style =
+                RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementNE.sld");
         BufferedImage image = renderLabels(fs, style, "Label NE Displacement");
         // ImageIO.write(image, "PNG", new
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth1.png"));
@@ -205,7 +210,8 @@ public class LabelDisplacementModeTestImpl {
 
     @Test
     public void testDisplacementNW() throws Exception {
-        StyleImpl style = RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementNW.sld");
+        StyleImpl style =
+                RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementNW.sld");
         BufferedImage image = renderLabels(fs, style, "Label NW Displacement");
         // ImageIO.write(image, "PNG", new
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth1.png"));
@@ -216,7 +222,8 @@ public class LabelDisplacementModeTestImpl {
 
     @Test
     public void testDisplacementSE() throws Exception {
-        StyleImpl style = RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementSE.sld");
+        StyleImpl style =
+                RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementSE.sld");
         BufferedImage image = renderLabels(fs, style, "Label SE Displacement");
         // ImageIO.write(image, "PNG", new
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth1.png"));
@@ -227,7 +234,8 @@ public class LabelDisplacementModeTestImpl {
 
     @Test
     public void testDisplacementSW() throws Exception {
-        StyleImpl style = RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementSW.sld");
+        StyleImpl style =
+                RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementSW.sld");
         BufferedImage image = renderLabels(fs, style, "Label SW Displacement");
         // ImageIO.write(image, "PNG", new
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth1.png"));
@@ -263,7 +271,8 @@ public class LabelDisplacementModeTestImpl {
 
     @Test
     public void testDisplacementE_NE() throws Exception {
-        StyleImpl style = RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementE_NE.sld");
+        StyleImpl style =
+                RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementE_NE.sld");
         BufferedImage image = renderLabels(fs, style, "Label E or NE Displacement");
         // ImageIO.write(image, "PNG", new
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth1.png"));

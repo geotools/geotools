@@ -361,7 +361,10 @@ public class SLDStyleFactory {
      * Style2D fill.
      */
     void setPolygonStyleFill(
-            Object feature, PolygonStyle2D style, PolygonSymbolizerImpl symbolizer, Range scaleRange) {
+            Object feature,
+            PolygonStyle2D style,
+            PolygonSymbolizerImpl symbolizer,
+            Range scaleRange) {
         FillImpl fill = symbolizer.getFill();
         if (fill == null) return;
 
@@ -690,9 +693,13 @@ public class SLDStyleFactory {
         // compute label position, anchor, rotation and displacement
         LabelPlacement placement = symbolizer.getLabelPlacement();
         double anchorX =
-                PointPlacementImpl.DEFAULT_ANCHOR_POINT.getAnchorPointX().evaluate(null, Double.class);
+                PointPlacementImpl.DEFAULT_ANCHOR_POINT
+                        .getAnchorPointX()
+                        .evaluate(null, Double.class);
         double anchorY =
-                PointPlacementImpl.DEFAULT_ANCHOR_POINT.getAnchorPointY().evaluate(null, Double.class);
+                PointPlacementImpl.DEFAULT_ANCHOR_POINT
+                        .getAnchorPointY()
+                        .evaluate(null, Double.class);
         double rotation = 0;
         double dispX = 0;
         double dispY = 0;
@@ -782,7 +789,8 @@ public class SLDStyleFactory {
      *     current machine is returned
      * @return The first of the specified fonts found on this machine (Serif 10 if none found)
      */
-    private java.awt.Font[] getFonts(Object feature, List<FontImpl> fonts, TextSymbolizerImpl symbolizer) {
+    private java.awt.Font[] getFonts(
+            Object feature, List<FontImpl> fonts, TextSymbolizerImpl symbolizer) {
 
         List<java.awt.Font> result = new ArrayList<>();
         // try to build a font using the full spec
@@ -896,10 +904,7 @@ public class SLDStyleFactory {
     // scaling will
     // be needed during rendering
     private Style2D getGraphicStroke(
-            Symbolizer symbolizer,
-            StrokeImpl stroke,
-            Object feature,
-            Range scaleRange) {
+            Symbolizer symbolizer, StrokeImpl stroke, Object feature, Range scaleRange) {
         if ((stroke == null) || (stroke.getGraphicStroke() == null)) {
             return null;
         }
@@ -1058,8 +1063,7 @@ public class SLDStyleFactory {
         return composite;
     }
 
-    TexturePaint getTexturePaint(
-            GraphicImpl gr, Object feature, Symbolizer symbolizer) {
+    TexturePaint getTexturePaint(GraphicImpl gr, Object feature, Symbolizer symbolizer) {
         // -1 to have the image use its natural size if none was provided by the
         // user
         double graphicSize = evalToDouble(gr.getSize(), feature, -1);
@@ -1712,7 +1716,8 @@ public class SLDStyleFactory {
         if (stroke == null) return false;
         if (stroke.getGraphicStroke() == null) return false;
         if (stroke.getGraphicStroke().graphicalSymbols().isEmpty()) return false;
-        if (!(stroke.getGraphicStroke().graphicalSymbols().get(0) instanceof MarkImpl)) return false;
+        if (!(stroke.getGraphicStroke().graphicalSymbols().get(0) instanceof MarkImpl))
+            return false;
 
         MarkImpl mark = (MarkImpl) stroke.getGraphicStroke().graphicalSymbols().get(0);
         // does not have WKT

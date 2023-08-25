@@ -226,7 +226,7 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
     /** @see StyleVisitor#visit(TextSymbolizerImpl) */
     @Override
     public void visit(org.geotools.api.style.TextSymbolizer text) {
-        TextSymbolizer input = (TextSymbolizer) text;
+        TextSymbolizerImpl input = (TextSymbolizerImpl) text;
         // while we cannot account for the label size, we should at least
         // account for its height, anchor point, and eventual offsets
         if (input.fonts() != null && !input.fonts().isEmpty()) {
@@ -235,13 +235,13 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
                 int delta = -1;
                 if (input.getLabelPlacement() instanceof PointPlacement) {
                     PointPlacement pp = (PointPlacement) input.getLabelPlacement();
-                    DisplacementImpl pd = pp.getDisplacement();
+                    DisplacementImpl pd = (DisplacementImpl) pp.getDisplacement();
                     if (pd != null) {
                         int dx = getPositiveValue(pd.getDisplacementX());
                         int dy = getPositiveValue(pd.getDisplacementY());
                         delta = Math.max(dx, dy);
                     }
-                    AnchorPointImpl ap = pp.getAnchorPoint();
+                    AnchorPointImpl ap = (AnchorPointImpl) pp.getAnchorPoint();
                     if (ap != null) {
                         double ax = Math.abs(getDouble(ap.getAnchorPointX()) - 0.5);
                         double ay = Math.abs(getDouble(ap.getAnchorPointY()) - 0.5);
@@ -270,7 +270,7 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
 
         // take into account label shields if any
         if (text instanceof TextSymbolizer) {
-            GraphicImpl graphic = ((TextSymbolizer) text).getGraphic();
+            GraphicImpl graphic = (GraphicImpl) text.getGraphic();
             if (graphic != null) {
                 graphic.accept(this);
             }

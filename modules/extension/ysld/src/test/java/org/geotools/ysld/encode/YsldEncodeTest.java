@@ -49,6 +49,7 @@ import org.geotools.api.style.Graphic;
 import org.geotools.api.style.GraphicLegend;
 import org.geotools.api.style.RemoteOWS;
 import org.geotools.api.style.StyledLayerDescriptor;
+import org.geotools.api.style.Symbolizer;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.*;
 import org.geotools.styling.ExternalGraphicImpl;
@@ -58,9 +59,8 @@ import org.geotools.styling.PointSymbolizerImpl;
 import org.geotools.styling.RasterSymbolizerImpl;
 import org.geotools.styling.RuleImpl;
 import org.geotools.styling.StrokeImpl;
-import org.geotools.styling.StyleImpl;
 import org.geotools.styling.StyleFactory;
-import org.geotools.styling.Symbolizer;
+import org.geotools.styling.StyleImpl;
 import org.geotools.styling.TextSymbolizerImpl;
 import org.geotools.util.logging.Logging;
 import org.geotools.ysld.Tuple;
@@ -138,7 +138,7 @@ public class YsldEncodeTest {
         StyleImpl style = styleFactory.createStyle();
         layer.userStyles().add(style);
 
-        RuleImpl rule = styleFactory.createRule();
+        RuleImpl rule = (RuleImpl) styleFactory.createRule();
 
         style.featureTypeStyles().add(styleFactory.createFeatureTypeStyle());
         style.featureTypeStyles().get(0).rules().add(rule);
@@ -306,7 +306,7 @@ public class YsldEncodeTest {
         Function rt = filterFactory.function("vec:Heatmap", p1, p2, p3, p4, p5, p6, p7);
         featureStyle.setTransformation(rt);
 
-        RuleImpl rule = styleFactory.createRule();
+        RuleImpl rule = (RuleImpl) styleFactory.createRule();
         rule.setName("Za'Ha'Dum");
         featureStyle.rules().add(rule);
 
@@ -379,7 +379,7 @@ public class YsldEncodeTest {
         Function rt = filterFactory.function("vec:Heatmap", p1, p2, p3, p4, p5, p6, p7);
         featureStyle.setTransformation(rt);
 
-        RuleImpl rule = styleFactory.createRule();
+        RuleImpl rule = (RuleImpl) styleFactory.createRule();
         rule.setName("Za'Ha'Dum");
         featureStyle.rules().add(rule);
 
@@ -450,7 +450,7 @@ public class YsldEncodeTest {
         Function rt = filterFactory.function("vec:Simplify", p1, p2, p3, p5, p6, p7);
         featureStyle.setTransformation(rt);
 
-        RuleImpl rule = styleFactory.createRule();
+        RuleImpl rule = (RuleImpl) styleFactory.createRule();
         rule.setName("Za'Ha'Dum");
         featureStyle.rules().add(rule);
 
@@ -563,11 +563,12 @@ public class YsldEncodeTest {
         layer.userStyles().add(style);
         FeatureTypeStyleImpl featureStyle = sf.createFeatureTypeStyle();
         style.featureTypeStyles().add(featureStyle);
-        RuleImpl rule = sf.createRule();
+        RuleImpl rule = (RuleImpl) sf.createRule();
         featureStyle.rules().add(rule);
         StrokeImpl stroke = sf.stroke(ff.literal("#555555"), null, null, null, null, null, null);
         rule.symbolizers().add(sf.lineSymbolizer("line", null, null, null, stroke, null));
-        MarkImpl mark = sf.mark(ff.literal("circle"), sf.fill(null, ff.literal("#995555"), null), null);
+        MarkImpl mark =
+                sf.mark(ff.literal("circle"), sf.fill(null, ff.literal("#995555"), null), null);
         List<GraphicalSymbol> symbols = new ArrayList<>();
         symbols.add(mark);
         TextSymbolizerImpl text =
@@ -612,7 +613,7 @@ public class YsldEncodeTest {
         layer.userStyles().add(style);
         FeatureTypeStyleImpl featureStyle = sf.createFeatureTypeStyle();
         style.featureTypeStyles().add(featureStyle);
-        RuleImpl rule = sf.createRule();
+        RuleImpl rule = (RuleImpl) sf.createRule();
         featureStyle.rules().add(rule);
 
         LabelPlacement place =
@@ -667,7 +668,7 @@ public class YsldEncodeTest {
         layer.userStyles().add(style);
         FeatureTypeStyleImpl featureStyle = sf.createFeatureTypeStyle();
         style.featureTypeStyles().add(featureStyle);
-        RuleImpl rule = sf.createRule();
+        RuleImpl rule = (RuleImpl) sf.createRule();
         featureStyle.rules().add(rule);
 
         LabelPlacement place = sf.createLinePlacement(ff.literal(10));
@@ -1054,7 +1055,7 @@ public class YsldEncodeTest {
         StyleImpl style = styleFactory.createStyle();
         layer.userStyles().add(style);
 
-        RuleImpl rule = styleFactory.createRule();
+        RuleImpl rule = (RuleImpl) styleFactory.createRule();
 
         rule.setFilter(filterFactory.less(filterFactory.property("foo"), filterFactory.literal(2)));
 
@@ -1086,7 +1087,7 @@ public class YsldEncodeTest {
         StyleImpl style = styleFactory.createStyle();
         layer.userStyles().add(style);
 
-        RuleImpl rule = styleFactory.createRule();
+        RuleImpl rule = (RuleImpl) styleFactory.createRule();
 
         rule.setFilter(
                 filterFactory.less(filterFactory.property("foo"), filterFactory.literal("}$")));
@@ -1120,14 +1121,14 @@ public class YsldEncodeTest {
 
         style.featureTypeStyles().add(styleFactory.createFeatureTypeStyle());
 
-        RuleImpl rule = styleFactory.createRule();
+        RuleImpl rule = (RuleImpl) styleFactory.createRule();
 
         rule.setMinScaleDenominator(5_000_000);
         rule.setMaxScaleDenominator(10_000_000);
 
         style.featureTypeStyles().get(0).rules().add(rule);
 
-        rule = styleFactory.createRule();
+        rule = (RuleImpl) styleFactory.createRule();
 
         rule.setMinScaleDenominator(2_000_000);
         rule.setMaxScaleDenominator(5_000_000);
@@ -1170,13 +1171,13 @@ public class YsldEncodeTest {
 
         style.featureTypeStyles().add(styleFactory.createFeatureTypeStyle());
 
-        RuleImpl rule = styleFactory.createRule();
+        RuleImpl rule = (RuleImpl) styleFactory.createRule();
 
         rule.setMinScaleDenominator(5_000_000);
 
         style.featureTypeStyles().get(0).rules().add(rule);
 
-        rule = styleFactory.createRule();
+        rule = (RuleImpl) styleFactory.createRule();
 
         rule.setMaxScaleDenominator(5_000_000);
 
@@ -1288,8 +1289,9 @@ public class YsldEncodeTest {
     public void testStrokeGraphic() throws Exception {
         StyleFactory sf = CommonFactoryFinder.getStyleFactory();
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
-        LineSymbolizerImpl l = sf.createLineSymbolizer();
-        MarkImpl mark = sf.mark(ff.literal("circle"), sf.fill(null, ff.literal("#995555"), null), null);
+        LineSymbolizerImpl l = (LineSymbolizerImpl) sf.createLineSymbolizer();
+        MarkImpl mark =
+                sf.mark(ff.literal("circle"), sf.fill(null, ff.literal("#995555"), null), null);
         Graphic g = sf.createGraphic(null, new MarkImpl[] {mark}, null, null, null, null);
         StrokeImpl s = sf.createStroke(null, null);
         s.setGraphicStroke(g);
@@ -1329,8 +1331,9 @@ public class YsldEncodeTest {
     public void testStrokeGraphicFill() throws Exception {
         StyleFactory sf = CommonFactoryFinder.getStyleFactory();
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
-        LineSymbolizerImpl l = sf.createLineSymbolizer();
-        MarkImpl mark = sf.mark(ff.literal("circle"), sf.fill(null, ff.literal("#995555"), null), null);
+        LineSymbolizerImpl l = (LineSymbolizerImpl) sf.createLineSymbolizer();
+        MarkImpl mark =
+                sf.mark(ff.literal("circle"), sf.fill(null, ff.literal("#995555"), null), null);
         Graphic g = sf.createGraphic(null, new MarkImpl[] {mark}, null, null, null, null);
         StrokeImpl s = sf.createStroke(null, ff.literal(10));
         s.setGraphicFill(g);
@@ -1418,8 +1421,7 @@ public class YsldEncodeTest {
                                 styleFactory.createContrastEnhancement(filterFactory.literal(1.2))),
                         styleFactory.createSelectedChannelType(
                                 "baz", styleFactory.createContrastEnhancement()));
-        ((ContrastEnhancementImpl)
-                        sel.getRGBChannels()[2].getContrastEnhancement())
+        ((ContrastEnhancementImpl) sel.getRGBChannels()[2].getContrastEnhancement())
                 .setMethod(ContrastMethod.HISTOGRAM);
         r.setChannelSelection(sel);
 
@@ -1491,7 +1493,7 @@ public class YsldEncodeTest {
     private FeatureTypeStyleImpl fts(Symbolizer sym) {
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
 
-        RuleImpl rule = styleFactory.createRule();
+        RuleImpl rule = (RuleImpl) styleFactory.createRule();
 
         FeatureTypeStyleImpl fts = styleFactory.createFeatureTypeStyle();
         fts.rules().add(rule);
@@ -1813,14 +1815,16 @@ public class YsldEncodeTest {
         StyleFactory sf = CommonFactoryFinder.getStyleFactory();
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         PointSymbolizerImpl p = sf.createPointSymbolizer();
-        MarkImpl mark = sf.mark(ff.literal("circle"), sf.fill(null, ff.literal("#FF0000"), null), null);
+        MarkImpl mark =
+                sf.mark(ff.literal("circle"), sf.fill(null, ff.literal("#FF0000"), null), null);
         p.setGraphic(sf.createGraphic(null, new MarkImpl[] {mark}, null, null, null, null));
-        RuleImpl rule = sf.createRule();
+        RuleImpl rule = (RuleImpl) sf.createRule();
         rule.symbolizers().add(p);
         ExternalGraphicImpl eg = sf.createExternalGraphic("smileyface.png", "image/png");
         rule.setLegend(
                 (GraphicLegend)
-                        sf.createGraphic(new ExternalGraphicImpl[] {eg}, null, null, null, null, null));
+                        sf.createGraphic(
+                                new ExternalGraphicImpl[] {eg}, null, null, null, null, null));
 
         StringWriter out = new StringWriter();
         Ysld.encode(sld((FeatureTypeStyleImpl) sf.createFeatureTypeStyle(rule)), out);

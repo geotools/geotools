@@ -59,8 +59,8 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.NamedLayerImpl;
-import org.geotools.styling.StyleImpl;
 import org.geotools.styling.StyleFactory;
+import org.geotools.styling.StyleImpl;
 import org.geotools.util.factory.Hints;
 import org.geotools.xml.styling.SLDParser;
 import org.geotools.xml.styling.SLDTransformer;
@@ -478,8 +478,7 @@ public class LocalGeoServerOnlineTest extends WMSOnlineTestSupport {
 
             NamedLayer namedLayer = namedLayerBuilder.build();
 
-            for (StyleImpl style : styles)
-                ((NamedLayerImpl) namedLayer).addStyle(style);
+            for (StyleImpl style : styles) ((NamedLayerImpl) namedLayer).addStyle(style);
 
             StyledLayerDescriptor sld = (new StyledLayerDescriptorBuilder()).build();
             sld.addStyledLayer(namedLayer);

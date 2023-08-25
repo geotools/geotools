@@ -58,6 +58,7 @@ import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.api.style.Symbolizer;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
@@ -699,7 +700,14 @@ public class StreamingRendererTest {
         StyleFactory sf = new StyleFactory();
         RuleImpl bboxRule =
                 sf.createRule(
-                        new Symbolizer[0], new DescriptionImpl(), null, "bbox", bbox, false, 1e12, 0);
+                        new Symbolizer[0],
+                        new DescriptionImpl(),
+                        null,
+                        "bbox",
+                        bbox,
+                        false,
+                        1e12,
+                        0);
         style.featureTypeStyles().get(0).rules().add(bboxRule);
 
         BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);

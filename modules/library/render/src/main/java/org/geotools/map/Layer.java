@@ -31,8 +31,8 @@ import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.styling.StyleImpl;
 import org.geotools.styling.StyleFactory;
+import org.geotools.styling.StyleImpl;
 import org.geotools.util.logging.Logging;
 
 /**

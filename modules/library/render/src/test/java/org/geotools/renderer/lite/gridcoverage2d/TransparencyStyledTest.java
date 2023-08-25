@@ -305,8 +305,8 @@ public class TransparencyStyledTest {
     private static RasterSymbolizerImpl extractRasterSymbolizer(StyledLayerDescriptor sld) {
         final UserLayer nl = (UserLayer) sld.getStyledLayers()[0];
         final StyleImpl style = (StyleImpl) nl.getUserStyles()[0];
-        final FeatureTypeStyleImpl fts = style.featureTypeStyles().get(0);
-        final RuleImpl rule = fts.rules().get(0);
+        final FeatureTypeStyleImpl fts = (FeatureTypeStyleImpl) style.featureTypeStyles().get(0);
+        final RuleImpl rule = (RuleImpl) fts.rules().get(0);
         final RasterSymbolizerImpl rs_1 = (RasterSymbolizerImpl) rule.symbolizers().get(0);
         return rs_1;
     }

@@ -40,7 +40,6 @@ import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.renderer.VendorOptionParser;
 import org.geotools.styling.GraphicImpl;
 import org.geotools.styling.MarkImpl;
-
 import org.locationtech.jts.algorithm.MinimumDiameter;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.index.quadtree.Quadtree;

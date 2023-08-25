@@ -319,9 +319,7 @@ public class Drawer {
             SLDStyleFactory styleFactory = new SLDStyleFactory();
             Style2D tmp =
                     styleFactory.createStyle(
-                            feature,
-                            symb,
-                            NumberRange.create(Double.MIN_VALUE, Double.MAX_VALUE));
+                            feature, symb, NumberRange.create(Double.MIN_VALUE, Double.MAX_VALUE));
 
             if (tmp instanceof MarkStyle2D) {
                 MarkStyle2D style = (MarkStyle2D) tmp;

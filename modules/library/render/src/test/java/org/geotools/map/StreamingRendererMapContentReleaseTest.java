@@ -138,10 +138,10 @@ public class StreamingRendererMapContentReleaseTest extends LoggerTest {
                 sf.stroke(ff.literal(foreground), null, ff.literal(thick), null, null, null, null);
 
         // create line symbolizer
-        LineSymbolizerImpl lineSym = sf.createLineSymbolizer(stroke, null);
+        LineSymbolizerImpl lineSym = (LineSymbolizerImpl) sf.createLineSymbolizer(stroke, null);
 
         // create rule
-        RuleImpl r = sf.createRule();
+        RuleImpl r = (RuleImpl) sf.createRule();
         r.symbolizers().add(lineSym);
 
         // add it to style

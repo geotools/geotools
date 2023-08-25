@@ -27,7 +27,6 @@ import org.geotools.api.style.*;
 import org.geotools.api.style.ColorMapEntry;
 import org.geotools.api.style.LineSymbolizer;
 import org.geotools.api.style.NamedLayer;
-import org.geotools.api.style.OverlapBehavior;
 import org.geotools.api.style.PointSymbolizer;
 import org.geotools.api.style.PolygonSymbolizer;
 import org.geotools.api.style.RasterSymbolizer;
@@ -121,10 +120,10 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
         }
     }
 
-    /** @see StyleVisitor#visit(StrokeImpl) */
+    /** @see StyleVisitor#visit(Stroke) */
     @Override
     public void visit(org.geotools.api.style.Stroke stroke) {
-        Stroke input = (Stroke) stroke;
+        StrokeImpl input = (StrokeImpl) stroke;
         if (input.getColor() != null) {
             input.getColor().accept(this, null);
         }
@@ -266,7 +265,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
     /** @see StyleVisitor#visit(TextSymbolizerImpl) */
     @Override
     public void visit(org.geotools.api.style.TextSymbolizer text) {
-        TextSymbolizer input = (TextSymbolizer) text;
+        TextSymbolizerImpl input = (TextSymbolizerImpl) text;
         if (symbolizerGeometriesVisitEnabled) {
             if (input.getGeometry() != null) {
                 input.getGeometry().accept(this, null);
@@ -520,7 +519,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
 
     @Override
     public void visit(org.geotools.api.style.OverlapBehavior ob) {
-        OverlapBehavior.cast(ob).accept(this);
+        OverlapBehaviorImpl.cast(ob).accept(this);
     }
 
     @Override

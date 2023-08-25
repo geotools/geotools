@@ -81,8 +81,8 @@ import org.locationtech.jts.operation.linemerge.LineMerger;
  * configuration and the TextSymbolizer options.
  *
  * <p>The basic functionality of the label cache consist in finding the best label position for each
- * Feature according to the {@link TextSymbolizerImpl} specifications, and drawing it, provided it does
- * not overlap with other labels.
+ * Feature according to the {@link TextSymbolizerImpl} specifications, and drawing it, provided it
+ * does not overlap with other labels.
  *
  * <p>This basic behaviour can be customised in a number of ways.
  *

@@ -481,7 +481,7 @@ public class GridCoverageRendererTest {
         StyleImpl rasterstyle = sb.createStyle();
         RasterSymbolizerImpl raster = sb.createRasterSymbolizer();
         rasterstyle.featureTypeStyles().add(sb.createFeatureTypeStyle(raster));
-        rasterstyle.featureTypeStyles().get(0).setName("GridCoverage");
+        ((FeatureTypeStyleImpl) rasterstyle.featureTypeStyles().get(0)).setName("GridCoverage");
         return rasterstyle;
     }
 

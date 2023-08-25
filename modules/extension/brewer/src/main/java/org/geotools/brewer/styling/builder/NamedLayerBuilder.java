@@ -59,8 +59,7 @@ public class NamedLayerBuilder extends AbstractSLDBuilder<NamedLayer> {
         if (unset) {
             return null;
         }
-        NamedLayerImpl layer =
-                (NamedLayerImpl) sf.createNamedLayer();
+        NamedLayerImpl layer = (NamedLayerImpl) sf.createNamedLayer();
         layer.setName(name);
         List<FeatureTypeConstraint> list = new ArrayList<>();
         for (FeatureTypeConstraintBuilder constraint : featureTypeConstraint) {

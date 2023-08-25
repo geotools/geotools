@@ -33,7 +33,7 @@ public class SimplifyingStyleVisitorTestImpl {
         style.accept(visitor);
 
         StyleImpl copy = (StyleImpl) visitor.getCopy();
-        RuleImpl rule = copy.featureTypeStyles().get(0).rules().get(0);
+        RuleImpl rule = (RuleImpl) copy.featureTypeStyles().get(0).rules().get(0);
         // filter has been simplified
         assertEquals(CQL.toFilter("value = 11"), rule.getFilter());
         LineSymbolizerImpl symbolizer = (LineSymbolizerImpl) rule.symbolizers().get(0);

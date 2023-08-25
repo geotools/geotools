@@ -79,7 +79,7 @@ public class StyledShapePainterTest {
 
         // Get graphic legend from style
         final StyleImpl style = RendererBaseTest.loadStyle(this, "testGraphicLegend.sld");
-        final RuleImpl rule = style.featureTypeStyles().get(0).rules().get(0);
+        final RuleImpl rule = (RuleImpl) style.featureTypeStyles().get(0).rules().get(0);
         final GraphicLegend legend = (GraphicLegend) rule.getLegend();
 
         // Paint legend using StyledShapePainter
@@ -113,7 +113,7 @@ public class StyledShapePainterTest {
 
         // Get graphic legend from style
         StyleImpl style = RendererBaseTest.loadStyle(this, "testGraphicLegend.sld");
-        RuleImpl rule = style.featureTypeStyles().get(0).rules().get(0);
+        RuleImpl rule = (RuleImpl) style.featureTypeStyles().get(0).rules().get(0);
         GraphicLegend legend = (GraphicLegend) rule.getLegend();
 
         // The painter has nothing to paint if the URL check fails so passing in a null graphics and
@@ -132,7 +132,7 @@ public class StyledShapePainterTest {
 
         // Get graphic legend from style
         final StyleImpl style = RendererBaseTest.loadStyle(this, "testGraphicLegend.sld");
-        final RuleImpl rule = style.featureTypeStyles().get(0).rules().get(0);
+        final RuleImpl rule = (RuleImpl) style.featureTypeStyles().get(0).rules().get(0);
         final GraphicLegend legend = (GraphicLegend) rule.getLegend();
 
         // Paint legend using StyledShapePainter
@@ -167,7 +167,7 @@ public class StyledShapePainterTest {
 
         // Get graphic legend from style
         final StyleImpl style = RendererBaseTest.loadStyle(this, "testGraphicLegend.sld");
-        final RuleImpl rule = style.featureTypeStyles().get(0).rules().get(0);
+        final RuleImpl rule = (RuleImpl) style.featureTypeStyles().get(0).rules().get(0);
         final GraphicLegend legend = (GraphicLegend) rule.getLegend();
 
         // Set rotation to 45 degrees

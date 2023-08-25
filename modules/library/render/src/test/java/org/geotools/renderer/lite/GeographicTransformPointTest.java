@@ -113,7 +113,8 @@ public class GeographicTransformPointTest {
         ImageAssert.assertEquals(reference, actual, 10);
     }
 
-    private BufferedImage toImage(SimpleFeatureSource featuerSource, StyleImpl style) throws Exception {
+    private BufferedImage toImage(SimpleFeatureSource featuerSource, StyleImpl style)
+            throws Exception {
         String typeName = featuerSource.getSchema().getTypeName();
 
         MapContent content = new MapContent();

@@ -299,7 +299,8 @@ public class SEExampleTest extends SETestSupport {
 
     @Test
     public void testParsePointSymbolizerMarkIndex() throws Exception {
-        PointSymbolizerImpl sym = (PointSymbolizerImpl) parse("example-pointsymbolizer-markindex.xml");
+        PointSymbolizerImpl sym =
+                (PointSymbolizerImpl) parse("example-pointsymbolizer-markindex.xml");
 
         GraphicImpl g = sym.getGraphic();
         assertEquals(1, g.graphicalSymbols().size());
@@ -555,7 +556,8 @@ public class SEExampleTest extends SETestSupport {
     /** Test the Expression parser for SelectChannel */
     @Test
     public void testParseRasterChannelExpression() throws Exception {
-        RasterSymbolizerImpl sym = (RasterSymbolizerImpl) parse("example-raster-channel-expression.xml");
+        RasterSymbolizerImpl sym =
+                (RasterSymbolizerImpl) parse("example-raster-channel-expression.xml");
         assertEquals(1.0, sym.getOpacity().evaluate(null, Double.class), 0d);
         assertEquals(OverlapBehavior.LATEST_ON_TOP, sym.getOverlapBehavior());
 
@@ -675,7 +677,8 @@ public class SEExampleTest extends SETestSupport {
 
     @Test
     public void testParseValidatePointSymbolizerGeomTransform() throws Exception {
-        PointSymbolizerImpl ps = (PointSymbolizerImpl) parse("example-pointsymbolizer-geotrans.xml");
+        PointSymbolizerImpl ps =
+                (PointSymbolizerImpl) parse("example-pointsymbolizer-geotrans.xml");
         assertTrue(ps.getGeometry() instanceof Function);
 
         List errors = validate("example-pointsymbolizer-geotrans.xml");

@@ -30,7 +30,8 @@ import org.geotools.ysld.YamlObject;
 import org.geotools.ysld.YamlSeq;
 
 /**
- * Handles parsing a Ysld "rules" property into {@link RuleImpl} objects for a {@link FeatureTypeStyleImpl}.
+ * Handles parsing a Ysld "rules" property into {@link RuleImpl} objects for a {@link
+ * FeatureTypeStyleImpl}.
  */
 public class RuleParser extends YsldParseHandler {
 
@@ -47,7 +48,7 @@ public class RuleParser extends YsldParseHandler {
         for (YamlObject o : seq) {
             YamlMap r = o.map();
 
-            RuleImpl rule = factory.style.createRule();
+            RuleImpl rule = (RuleImpl) factory.style.createRule();
             featureStyle.rules().add(rule);
 
             rule.setName(r.str("name"));

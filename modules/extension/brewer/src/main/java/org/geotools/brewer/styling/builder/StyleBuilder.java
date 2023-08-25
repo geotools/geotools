@@ -19,7 +19,7 @@ package org.geotools.brewer.styling.builder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+import org.geotools.api.style.FeatureTypeStyle;
 import org.geotools.styling.FeatureTypeStyleImpl;
 import org.geotools.styling.StyleImpl;
 import org.geotools.util.SimpleInternationalString;
@@ -129,8 +129,8 @@ public class StyleBuilder extends AbstractStyleBuilder<StyleImpl> {
             return unset();
         }
         fts.clear();
-        for (FeatureTypeStyleImpl ft : style.featureTypeStyles()) {
-            fts.add(new FeatureTypeStyleBuilder(this).reset(ft));
+        for (FeatureTypeStyle ft : style.featureTypeStyles()) {
+            fts.add(new FeatureTypeStyleBuilder(this).reset((FeatureTypeStyleImpl) ft));
         }
         name = style.getName();
         styleAbstract =

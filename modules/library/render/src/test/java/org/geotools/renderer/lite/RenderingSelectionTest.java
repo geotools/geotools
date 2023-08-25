@@ -75,7 +75,8 @@ public class RenderingSelectionTest {
         // test <VendorOption name=renderingMap>false</VendorOption> option in symbolizers;
         // of all the points only one should have a yellow contour around
         // for the other points the additional symbolizer is disabled
-        StyleImpl pStyle = RendererBaseTest.loadStyle(this, "pointRenderingSelectionSymbolizer.sld");
+        StyleImpl pStyle =
+                RendererBaseTest.loadStyle(this, "pointRenderingSelectionSymbolizer.sld");
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(pointFS, pStyle));

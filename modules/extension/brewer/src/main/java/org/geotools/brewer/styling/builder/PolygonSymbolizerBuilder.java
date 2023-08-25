@@ -71,7 +71,9 @@ public class PolygonSymbolizerBuilder extends SymbolizerBuilder<PolygonSymbolize
         if (unset) {
             return null;
         }
-        PolygonSymbolizerImpl ps = sf.createPolygonSymbolizer(stroke.build(), fill.build(), null);
+        PolygonSymbolizerImpl ps =
+                (PolygonSymbolizerImpl)
+                        sf.createPolygonSymbolizer(stroke.build(), fill.build(), null);
         if (geometry != null) {
             ps.setGeometry(geometry);
         }

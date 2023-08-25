@@ -91,7 +91,8 @@ public class StrokeBuilder extends AbstractStyleBuilder<StrokeImpl> {
         lineCap = stroke.getLineCap();
         lineJoin = stroke.getLineJoin();
         dashArray = stroke.getDashArray();
-        dashArrayExpressions = (stroke instanceof StrokeImpl) ? ((StrokeImpl) stroke).dashArray() : null;
+        dashArrayExpressions =
+                (stroke instanceof StrokeImpl) ? ((StrokeImpl) stroke).dashArray() : null;
         dashOffset = stroke.getDashOffset();
         graphicFill.reset(stroke.getGraphicFill());
         graphicStroke.reset(stroke.getGraphicStroke());
@@ -218,16 +219,17 @@ public class StrokeBuilder extends AbstractStyleBuilder<StrokeImpl> {
             return null;
         }
         StrokeImpl stroke =
-                sf.createStroke(
-                        color,
-                        width,
-                        opacity,
-                        lineJoin,
-                        lineCap,
-                        dashArray,
-                        dashOffset,
-                        graphicFill.build(),
-                        this.graphicStroke.build());
+                (StrokeImpl)
+                        sf.createStroke(
+                                color,
+                                width,
+                                opacity,
+                                lineJoin,
+                                lineCap,
+                                dashArray,
+                                dashOffset,
+                                graphicFill.build(),
+                                this.graphicStroke.build());
         if (dashArrayExpressions != null && !dashArrayExpressions.isEmpty()) {
             stroke.setDashArray(dashArrayExpressions);
         }

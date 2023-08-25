@@ -133,16 +133,17 @@ public class StyleImplFactoryTest {
         Assert.assertNotNull("Failed to build stroke ", s);
 
         s =
-                (StrokeImpl) styleFactory.createStroke(
-                        filterFactory.literal("#000000"),
-                        filterFactory.literal(2.0),
-                        filterFactory.literal(0.5),
-                        filterFactory.literal("bevel"),
-                        filterFactory.literal("square"),
-                        new float[] {1.1f, 2.1f, 6f, 2.1f, 1.1f, 5f},
-                        filterFactory.literal(3),
-                        null,
-                        null);
+                (StrokeImpl)
+                        styleFactory.createStroke(
+                                filterFactory.literal("#000000"),
+                                filterFactory.literal(2.0),
+                                filterFactory.literal(0.5),
+                                filterFactory.literal("bevel"),
+                                filterFactory.literal("square"),
+                                new float[] {1.1f, 2.1f, 6f, 2.1f, 1.1f, 5f},
+                                filterFactory.literal(3),
+                                null,
+                                null);
 
         Assert.assertNotNull("Failed to build stroke ", s);
 
@@ -167,7 +168,10 @@ public class StyleImplFactoryTest {
 
         Assert.assertNotNull("Failed to build fill", f);
 
-        f = (FillImpl) styleFactory.createFill(filterFactory.literal("#808080"), filterFactory.literal(1.0));
+        f =
+                (FillImpl)
+                        styleFactory.createFill(
+                                filterFactory.literal("#808080"), filterFactory.literal(1.0));
         Assert.assertNotNull("Failed to build fill", f);
 
         f = (FillImpl) styleFactory.createFill(null);
@@ -282,7 +286,8 @@ public class StyleImplFactoryTest {
                         filterFactory.literal(10.0), filterFactory.literal(5.0));
         Expression rotation = filterFactory.literal(90.0);
         PointPlacementImpl pp =
-                (PointPlacementImpl) styleFactory.createPointPlacement(anchorPoint, displacement, rotation);
+                (PointPlacementImpl)
+                        styleFactory.createPointPlacement(anchorPoint, displacement, rotation);
 
         Assert.assertNotNull("failed to create PointPlacement", pp);
 
@@ -312,7 +317,9 @@ public class StyleImplFactoryTest {
         LOGGER.finer("testCreateHalo");
 
         HaloImpl h =
-                (HaloImpl) styleFactory.createHalo(styleFactory.getDefaultFill(), filterFactory.literal(4));
+                (HaloImpl)
+                        styleFactory.createHalo(
+                                styleFactory.getDefaultFill(), filterFactory.literal(4));
 
         Assert.assertNotNull("Failed to build halo", h);
 

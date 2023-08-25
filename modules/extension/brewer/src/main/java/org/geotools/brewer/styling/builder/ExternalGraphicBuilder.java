@@ -131,9 +131,7 @@ public class ExternalGraphicBuilder extends AbstractStyleBuilder<ExternalGraphic
         }
         if (original.getColorReplacements() != null) {
             for (ColorReplacement cr : original.getColorReplacements()) {
-                replacements.add(
-                        new ColorReplacementBuilder()
-                                .reset((ColorReplacementImpl) cr));
+                replacements.add(new ColorReplacementBuilder().reset((ColorReplacementImpl) cr));
             }
         }
         return this;

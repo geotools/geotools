@@ -17,6 +17,7 @@
  */
 package org.geotools.ysld.encode;
 
+import org.geotools.api.style.Symbolizer;
 import org.geotools.styling.*;
 import org.geotools.styling.LineSymbolizerImpl;
 

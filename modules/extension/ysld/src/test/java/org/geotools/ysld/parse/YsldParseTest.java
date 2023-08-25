@@ -79,8 +79,7 @@ public class YsldParseTest {
     @Test
     public void testRoot() throws Exception {
         StyledLayerDescriptor sld = Ysld.parse("layer-name: MyLayer\nname: MyStyle");
-        NamedLayerImpl namedLayer =
-                (NamedLayerImpl) sld.layers().get(0);
+        NamedLayerImpl namedLayer = (NamedLayerImpl) sld.layers().get(0);
         assertEquals("MyLayer", namedLayer.getName());
         assertEquals("MyStyle", namedLayer.styles().get(0).getName());
 
@@ -94,8 +93,7 @@ public class YsldParseTest {
         assertEquals("SLD Title", sld.getTitle());
         assertEquals("Remote user layer", sld.getAbstract());
 
-        UserLayerImpl userlayer =
-                (UserLayerImpl) sld.layers().get(0);
+        UserLayerImpl userlayer = (UserLayerImpl) sld.layers().get(0);
         assertEquals("RemoteLayer", userlayer.getName());
         assertEquals("wms", userlayer.getRemoteOWS().getService());
         assertEquals(
@@ -138,11 +136,12 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         RuleImpl r =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0)
-                        .rules()
-                        .get(0);
+                (RuleImpl)
+                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
+                                .featureTypeStyles()
+                                .get(0)
+                                .rules()
+                                .get(0);
 
         PropertyIsEqualTo f = (PropertyIsEqualTo) r.getFilter();
         Function func = (Function) f.getExpression1();
@@ -159,11 +158,12 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         RuleImpl r =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0)
-                        .rules()
-                        .get(0);
+                (RuleImpl)
+                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
+                                .featureTypeStyles()
+                                .get(0)
+                                .rules()
+                                .get(0);
 
         PropertyIsEqualTo f = (PropertyIsEqualTo) r.getFilter();
         Function func = (Function) f.getExpression1();
@@ -180,11 +180,12 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         RuleImpl r =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0)
-                        .rules()
-                        .get(0);
+                (RuleImpl)
+                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
+                                .featureTypeStyles()
+                                .get(0)
+                                .rules()
+                                .get(0);
 
         Filter f = r.getFilter();
         assertThat(f, Matchers.instanceOf(PropertyIsLessThan.class));
@@ -198,11 +199,12 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         RuleImpl r =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0)
-                        .rules()
-                        .get(0);
+                (RuleImpl)
+                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
+                                .featureTypeStyles()
+                                .get(0)
+                                .rules()
+                                .get(0);
 
         Filter f = r.getFilter();
         assertThat(f, Matchers.instanceOf(PropertyIsEqualTo.class));
@@ -223,10 +225,11 @@ public class YsldParseTest {
                         + "      - 1200\n";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
-        FeatureTypeStyleImpl fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+        FeatureTypeStyle fs =
+                (FeatureTypeStyle)
+                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
+                                .featureTypeStyles()
+                                .get(0);
 
         Expression tx = fs.getTransformation();
         assertNotNull(tx);
@@ -298,10 +301,11 @@ public class YsldParseTest {
                         + "      outputHeight: ${env('wms_height')}\n";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
-        FeatureTypeStyleImpl fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+        FeatureTypeStyle fs =
+                (FeatureTypeStyle)
+                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
+                                .featureTypeStyles()
+                                .get(0);
 
         Expression tx = fs.getTransformation();
         assertNotNull(tx);
@@ -336,10 +340,11 @@ public class YsldParseTest {
                         + "      - 1200\n";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
-        FeatureTypeStyleImpl fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+        FeatureTypeStyle fs =
+                (FeatureTypeStyle)
+                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
+                                .featureTypeStyles()
+                                .get(0);
 
         Expression tx = fs.getTransformation();
         assertNotNull(tx);
@@ -367,10 +372,11 @@ public class YsldParseTest {
                         + "      pixelsPerCell: 10\n";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
-        FeatureTypeStyleImpl fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+        FeatureTypeStyle fs =
+                (FeatureTypeStyle)
+                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
+                                .featureTypeStyles()
+                                .get(0);
 
         Expression tx = fs.getTransformation();
         assertNotNull(tx);
@@ -404,10 +410,11 @@ public class YsldParseTest {
                         + "      outputBBOX: ${env('test')}\n";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
-        FeatureTypeStyleImpl fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+        FeatureTypeStyle fs =
+                (FeatureTypeStyle)
+                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
+                                .featureTypeStyles()
+                                .get(0);
 
         Expression tx = fs.getTransformation();
         assertNotNull(tx);
@@ -447,10 +454,11 @@ public class YsldParseTest {
                         + "";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
-        FeatureTypeStyleImpl fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+        FeatureTypeStyle fs =
+                (FeatureTypeStyle)
+                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
+                                .featureTypeStyles()
+                                .get(0);
 
         Expression tx = fs.getTransformation();
         assertNotNull(tx);
@@ -513,13 +521,13 @@ public class YsldParseTest {
                         + "\n";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
-        FeatureTypeStyleImpl fs =
+        FeatureTypeStyle fs =
                 SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
                         .featureTypeStyles()
                         .get(0);
 
         assertThat(
-                (Iterable<RuleImpl>) fs.rules(),
+                (Iterable<Rule>) fs.rules(),
                 hasItems(
                         allOf(
                                 appliesToScale(5000000),
@@ -540,12 +548,12 @@ public class YsldParseTest {
                         + "\n";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
-        FeatureTypeStyleImpl fs =
+        FeatureTypeStyle fs =
                 SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
                         .featureTypeStyles()
                         .get(0);
 
-        RuleImpl r = fs.rules().get(0);
+        Rule r = fs.rules().get(0);
 
         assertThat(r, appliesToScale(5000000 / 2)); // Z=1
         assertThat(r, appliesToScale(5000000 / 4)); // Z=2
@@ -571,13 +579,13 @@ public class YsldParseTest {
                         + "\n";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
-        FeatureTypeStyleImpl fs =
+        FeatureTypeStyle fs =
                 SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
                         .featureTypeStyles()
                         .get(0);
 
         assertThat(
-                (Iterable<RuleImpl>) fs.rules(),
+                (Iterable<Rule>) fs.rules(),
                 hasItems(
                         allOf(
                                 appliesToScale(5000000 * 8),
@@ -610,13 +618,13 @@ public class YsldParseTest {
                         + "\n";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
-        FeatureTypeStyleImpl fs =
+        FeatureTypeStyle fs =
                 SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
                         .featureTypeStyles()
                         .get(0);
 
         assertThat(
-                (Iterable<RuleImpl>) fs.rules(),
+                (Iterable<Rule>) fs.rules(),
                 hasItems(
                         allOf(appliesToScale(5000000d), not(appliesToScale(2000000d))),
                         allOf(
@@ -647,13 +655,13 @@ public class YsldParseTest {
                         + "\n";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
-        FeatureTypeStyleImpl fs =
+        FeatureTypeStyle fs =
                 SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
                         .featureTypeStyles()
                         .get(0);
 
         assertThat(
-                (Iterable<RuleImpl>) fs.rules(),
+                (Iterable<Rule>) fs.rules(),
                 hasItems(
                         allOf(appliesToScale(5000000d), not(appliesToScale(2000000d))),
                         allOf(
@@ -688,13 +696,13 @@ public class YsldParseTest {
                         + "\n";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
-        FeatureTypeStyleImpl fs =
+        FeatureTypeStyle fs =
                 SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
                         .featureTypeStyles()
                         .get(0);
 
         assertThat(
-                (Iterable<RuleImpl>) fs.rules(),
+                (Iterable<Rule>) fs.rules(),
                 hasItems(
                         allOf(
                                 appliesToScale(5000000d),
@@ -745,13 +753,13 @@ public class YsldParseTest {
                         + "\n";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
-        FeatureTypeStyleImpl fs =
+        FeatureTypeStyle fs =
                 SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
                         .featureTypeStyles()
                         .get(0);
 
         assertThat(
-                (Iterable<RuleImpl>) fs.rules(),
+                (Iterable<Rule>) fs.rules(),
                 hasItems(
                         allOf(
                                 appliesToScale(5000000d),
@@ -794,13 +802,13 @@ public class YsldParseTest {
                         + "\n";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
-        FeatureTypeStyleImpl fs =
+        FeatureTypeStyle fs =
                 SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
                         .featureTypeStyles()
                         .get(0);
 
         assertThat(
-                (Iterable<RuleImpl>) fs.rules(),
+                (Iterable<Rule>) fs.rules(),
                 hasItems(
                         allOf(
                                 appliesToScale(5000000d),
@@ -843,13 +851,13 @@ public class YsldParseTest {
                         + "\n";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
-        FeatureTypeStyleImpl fs =
+        FeatureTypeStyle fs =
                 SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
                         .featureTypeStyles()
                         .get(0);
 
         assertThat(
-                (Iterable<RuleImpl>) fs.rules(),
+                (Iterable<Rule>) fs.rules(),
                 hasItems(
                         allOf(
                                 appliesToScale(5000000d),
@@ -1102,7 +1110,7 @@ public class YsldParseTest {
             scaleDenominators[i] = OGC_DPI * INCHES_PER_METRE * GOOGLE_MERCATOR_PIXEL_SIZES[i];
         }
 
-        FeatureTypeStyleImpl fs =
+        FeatureTypeStyle fs =
                 SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
                         .featureTypeStyles()
                         .get(0);
@@ -1167,14 +1175,14 @@ public class YsldParseTest {
     }
 
     private void doTestForWGS84(StyledLayerDescriptor sld) throws IOException {
-        FeatureTypeStyleImpl fs =
+        FeatureTypeStyle fs =
                 SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
                         .featureTypeStyles()
                         .get(0);
 
         assertThat(fs.rules().size(), is(21));
 
-        RuleImpl first = fs.rules().get(0);
+        Rule first = fs.rules().get(0);
         assertThat(
                 first,
                 allOf(
@@ -1182,7 +1190,7 @@ public class YsldParseTest {
                         not(appliesToScale(WGS84_SCALE_DENOMS[1]))));
 
         for (int i = 1; i < 20; i++) {
-            RuleImpl r = fs.rules().get(i);
+            Rule r = fs.rules().get(i);
             assertThat(
                     r,
                     describedAs(
@@ -1195,7 +1203,7 @@ public class YsldParseTest {
                             WGS84_SCALE_DENOMS[i]));
         }
 
-        RuleImpl last = fs.rules().get(20);
+        Rule last = fs.rules().get(20);
         assertThat(
                 last,
                 allOf(
@@ -1224,13 +1232,13 @@ public class YsldParseTest {
         replay(finder, context);
 
         StyledLayerDescriptor sld = Ysld.parse(yaml, Arrays.asList(finder), null);
-        FeatureTypeStyleImpl fs =
+        FeatureTypeStyle fs =
                 SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
                         .featureTypeStyles()
                         .get(0);
         fs.rules().get(0).getMaxScaleDenominator();
         assertThat(
-                (Iterable<RuleImpl>) fs.rules(),
+                (Iterable<Rule>) fs.rules(),
                 hasItems(
                         allOf(
                                 Matchers.hasProperty(
@@ -1286,13 +1294,13 @@ public class YsldParseTest {
         replay(finder, context);
 
         StyledLayerDescriptor sld = Ysld.parse(yaml, Arrays.asList(finder), null);
-        FeatureTypeStyleImpl fs =
+        FeatureTypeStyle fs =
                 SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
                         .featureTypeStyles()
                         .get(0);
         fs.rules().get(0).getMaxScaleDenominator();
         assertThat(
-                (Iterable<RuleImpl>) fs.rules(),
+                (Iterable<Rule>) fs.rules(),
                 hasItems(
                         allOf(
                                 Matchers.hasProperty(
@@ -1371,7 +1379,7 @@ public class YsldParseTest {
                         + "";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
-        FeatureTypeStyleImpl fs =
+        FeatureTypeStyle fs =
                 SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
                         .featureTypeStyles()
                         .get(0);
@@ -1409,7 +1417,7 @@ public class YsldParseTest {
                         "";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
-        FeatureTypeStyleImpl fs =
+        FeatureTypeStyle fs =
                 SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
                         .featureTypeStyles()
                         .get(0);
@@ -1441,7 +1449,7 @@ public class YsldParseTest {
                         + "";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
-        FeatureTypeStyleImpl fs =
+        FeatureTypeStyle fs =
                 SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
                         .featureTypeStyles()
                         .get(0);
@@ -1465,7 +1473,7 @@ public class YsldParseTest {
         String yaml = "text: \n" + "  label: test literal\n" + "";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
-        FeatureTypeStyleImpl fs =
+        FeatureTypeStyle fs =
                 SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
                         .featureTypeStyles()
                         .get(0);
@@ -1482,7 +1490,7 @@ public class YsldParseTest {
         String yaml = "text: \n" + "  label: literal0${attribute1}literal2\n" + "";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
-        FeatureTypeStyleImpl fs =
+        FeatureTypeStyle fs =
                 SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
                         .featureTypeStyles()
                         .get(0);
@@ -1502,7 +1510,7 @@ public class YsldParseTest {
         String yaml = "text: \n" + "  label: ${testAttribute}\n" + "";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
-        FeatureTypeStyleImpl fs =
+        FeatureTypeStyle fs =
                 SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
                         .featureTypeStyles()
                         .get(0);
@@ -1517,7 +1525,7 @@ public class YsldParseTest {
         String yaml = "text: \n" + "  geometry: test literal\n" + "";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
-        FeatureTypeStyleImpl fs =
+        FeatureTypeStyle fs =
                 SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
                         .featureTypeStyles()
                         .get(0);
@@ -1534,7 +1542,7 @@ public class YsldParseTest {
         String yaml = "text: \n" + "  geometry: literal0${attribute1}literal2\n" + "";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
-        FeatureTypeStyleImpl fs =
+        FeatureTypeStyle fs =
                 SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
                         .featureTypeStyles()
                         .get(0);
@@ -1555,7 +1563,7 @@ public class YsldParseTest {
                 "polygon:\n"
                         + "  fill-color: ${recode(MAPCOLOR7, 1.0, '#FFC3C3', 2.0, '#FFE3C3', 3.0, '#FFFFC3', 4.0, '#C3FFE3', 5.0, '#C3FFFF', 6.0, '#C3C3FF', 7.0, '#BFC3FF')}\n";
         StyledLayerDescriptor sld = Ysld.parse(yaml);
-        FeatureTypeStyleImpl fs =
+        FeatureTypeStyle fs =
                 SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
                         .featureTypeStyles()
                         .get(0);
@@ -1596,7 +1604,7 @@ public class YsldParseTest {
                         + "    6.0, '#C3C3FF', \n"
                         + "    7.0, '#BFC3FF')}\n";
         StyledLayerDescriptor sld = Ysld.parse(yaml);
-        FeatureTypeStyleImpl fs =
+        FeatureTypeStyle fs =
                 SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
                         .featureTypeStyles()
                         .get(0);
@@ -1639,7 +1647,7 @@ public class YsldParseTest {
                         + "    6.0, '#C3C3FF', \n"
                         + "    7.0, '#BFC3FF')}\n";
         StyledLayerDescriptor sld = Ysld.parse(yaml);
-        FeatureTypeStyleImpl fs =
+        FeatureTypeStyle fs =
                 SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
                         .featureTypeStyles()
                         .get(0);
@@ -1682,7 +1690,7 @@ public class YsldParseTest {
                         + "    6.0, '#C3C3FF', \n"
                         + "    7.0, '#BFC3FF')}\n";
         StyledLayerDescriptor sld = Ysld.parse(yaml);
-        FeatureTypeStyleImpl fs =
+        FeatureTypeStyle fs =
                 SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
                         .featureTypeStyles()
                         .get(0);
@@ -1715,7 +1723,7 @@ public class YsldParseTest {
         String yaml = "text: \n" + "  geometry: ${testAttribute}\n" + "";
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
-        FeatureTypeStyleImpl fs =
+        FeatureTypeStyle fs =
                 SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
                         .featureTypeStyles()
                         .get(0);
@@ -2282,7 +2290,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
-        FeatureTypeStyleImpl fts =
+        FeatureTypeStyle fts =
                 SLD.featureTypeStyles((org.geotools.styling.StyledLayerDescriptor) sld)[0];
 
         assertThat(fts, hasProperty("options", hasEntry("composite", "multiply")));
@@ -2308,7 +2316,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
-        FeatureTypeStyleImpl fts =
+        FeatureTypeStyle fts =
                 SLD.featureTypeStyles((org.geotools.styling.StyledLayerDescriptor) sld)[0];
 
         assertThat(fts, hasProperty("options", hasEntry("composite-base", "true")));
@@ -2497,8 +2505,10 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         RuleImpl rule =
                 SLD.rules(SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld))[0];
-        assertThat(rule.getLegend().graphicalSymbols().get(0), instanceOf(ExternalGraphicImpl.class));
-        ExternalGraphicImpl legend = (ExternalGraphicImpl) rule.getLegend().graphicalSymbols().get(0);
+        assertThat(
+                rule.getLegend().graphicalSymbols().get(0), instanceOf(ExternalGraphicImpl.class));
+        ExternalGraphicImpl legend =
+                (ExternalGraphicImpl) rule.getLegend().graphicalSymbols().get(0);
         assertEquals(new URL("file:smileyface.png"), legend.getLocation());
         assertEquals("image/png", legend.getFormat());
         PointSymbolizerImpl p =
